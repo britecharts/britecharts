@@ -1,0 +1,27 @@
+{
+  "name": "britecharts",
+  "version": "1.0.0",
+  "description": "Eventbrite's Charting Library",
+  "main": "README.md",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eventbrite/britecharts.git"
+  },
+  "keywords": [
+    "d3",
+    "chart",
+    "graph"
+  ],
+  "author": "Eventbrite",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eventbrite/britecharts/issues"
+  },
+  "homepage": "https://github.com/eventbrite/britecharts",
+  "devDependencies": {
+    "generator-ebjs": "git+ssh://git@github.com/eventbrite/generator-ebjs.git"
+  }
+}
