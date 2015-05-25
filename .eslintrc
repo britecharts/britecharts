@@ -1,0 +1,47 @@
+{
+    "globals": {
+        "sinon": 1
+    },
+    "env": {
+        "browser": true,
+        "jasmine": true,
+        "amd": true,
+    },
+    "rules": {
+        "complexity": 1,
+        "default-case": 1,
+        "guard-for-in": 1,
+        "no-unused-vars": 1,
+        "quotes": [2, "single"],
+        "vars-on-top" : 1,
+        "no-div-regex": 1,
+        "no-eq-null": 1,
+        "no-floating-decimal": 1,
+        "block-scoped-var": 1,
+        "no-param-reassign": 0,
+        "no-self-compare": 1,
+        "no-throw-literal": 1,
+        "no-void": 1,
+        "radix": 1,
+        "wrap-iife": [2, "inside"],
+        "no-warning-comments": [1, {
+            "terms": ["FIXME", "TODO"],
+            "location": "anywhere"
+            }],
+        "new-cap": [2, {
+            "capIsNewExceptions": ["Backbone", "Deferred"]
+        }],
+        "dot-notation": 0,
+        "no-underscore-dangle": 0,
+
+        "space-after-keywords": ["1", "always"],
+        "consistent-this": [0, "self"],
+        "comma-style": [2, "last"],
+        "func-style": [2, "declaration"],
+        "newline-after-var": 1,
+        "no-inline-comments": 1,
+        "no-multiple-empty-lines": [2, {"max": 2}],
+        "no-nested-ternary": 1,
+        "one-var": ["2", 'always']
+    }
+}
