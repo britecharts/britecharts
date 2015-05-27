@@ -7,10 +7,12 @@ Setup
 ----
 
     npm install
-
+    npm install -g karma-cli
 
 Charts
 ----
+    
+    karma start
 
 
 Chart Instantiation
