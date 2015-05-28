@@ -5,17 +5,22 @@ define(function(require){
 
     return function module() {
 
-        var margin = {top: 20, right: 20, bottom: 30, left: 40},
+        var margin = {
+                top: 20,
+                right: 50,
+                bottom: 20,
+                left: 50
+            },
             width = 300,
             height = 300,
             data,
             chartWidth, chartHeight,
             svg,
+            ease = 'bounce',
             layout,
             shape,
             colorScale = d3.scale.category20c(),
             colorScheme,
-            DOMContainer,
             externalRadius = 140,
             internalRadius = 45.5,
             sortComparator = null,
@@ -47,19 +52,22 @@ define(function(require){
                 .outerRadius(externalRadius);
         }
 
-        function drawSVG() {
-            if (!svg) {
-                svg = d3.select(DOMContainer)
-                    .append('svg')
-                    .classed('donut-chart', true)
-                    .append('g')
-                        .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
-            }
+        function drawSVG(container) {
+            svg = d3.select(container)
+                .selectAll('svg')
+                .data([data]);
 
-            svg.attr({
-                width: width + margin.left + margin.right,
-                height: height + margin.top + margin.bottom
-            });
+            svg.enter().append('svg')
+                .attr('class', 'donut-chart');
+
+            buildContainerGroups();
+
+            svg.transition().ease(ease)
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom);
+
+            svg.select('.container-group')
+                .attr('transform', 'translate(' + (chartWidth / 2) + ',' + (chartHeight / 2) + ')');
         }
 
         function drawSlices() {
@@ -76,14 +84,12 @@ define(function(require){
             _selection.each(function(_data) {
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
-                data = _data,
-                DOMContainer = this;
+                data = _data;
 
                 buildLayout();
                 buildColorScale();
                 buildShape();
-                drawSVG();
-                buildContainerGroups();
+                drawSVG(this);
                 drawSlices();
             });
         }

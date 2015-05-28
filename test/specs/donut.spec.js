@@ -51,7 +51,12 @@ define(['jquery', 'd3', 'src/charts/donut'], function($, d3, chart) {
             f.load('testContainer.html');
 
             containerFixture = d3.select('.test-container');
+
+            donutChart
+                .width(600).height(600)
+                .externalRadius(250).internalRadius(50);
             containerFixture.datum(dataset).call(donutChart);
+
         });
 
         afterEach(function(){
@@ -73,12 +78,12 @@ define(['jquery', 'd3', 'src/charts/donut'], function($, d3, chart) {
 
         it('should create a layout', function() {
             expect(donutChart.layout()).toBeDefined();
-            expect(typeof donutChart.layout() === 'function').toBeTruthy();
+            expect(typeof donutChart.layout).toBe('function');
         });
 
         it('should build the shape for the donut', function() {
             expect(donutChart.shape()).toBeDefined();
-            expect(typeof donutChart.shape() === 'function').toBeTruthy();
+            expect(typeof donutChart.shape).toBe('function');
         });
 
         it('should render a slice for each data entry', function(){
