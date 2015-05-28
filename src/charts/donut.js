@@ -74,10 +74,31 @@ define(function(require){
             svg.select('.chart-group').selectAll('path')
                 .data(layout(data))
               .enter().append('path')
-                // .each(function(d) { this._current = d; })
                 .attr('d', shape)
                 .attr('fill', getSliceFill)
                 .attr('class', 'slice');
+        }
+
+        function drawTooltip() {
+            svg.select('.tooltip-group').append('text')
+                .attr('x', 0 - internalRadius / 2)
+                .attr('y', 0 + internalRadius / 10)
+                .attr('class', 'tooltip-text')
+                .style('font-weight', 'bold')
+                .style('font-size', internalRadius / 3 + 'px');
+
+            svg.selectAll('.slice').on('mouseover', function(obj) {
+                svg.select('.tooltip-text')
+                    .style('fill', 'black')
+                    .text(function() {
+                        return obj.value;
+                    });
+            });
+
+            svg.selectAll('.slice').on('mouseout', function() {
+                svg.select('.tooltip-text')
+                    .text('');
+            });
         }
 
         function exports(_selection) {
@@ -91,6 +112,8 @@ define(function(require){
                 buildShape();
                 drawSVG(this);
                 drawSlices();
+
+                drawTooltip();
             });
         }
 

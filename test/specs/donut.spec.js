@@ -92,6 +92,10 @@ define(['jquery', 'd3', 'src/charts/donut'], function($, d3, chart) {
             expect(containerFixture.selectAll('.slice')[0].length).toEqual(numSlices);
         });
 
+        it('should append text to the tooltip container', function() {
+            expect(containerFixture.select('text.tooltip-text')[0][0]).not.toBeNull();
+        });
+
         // test color scheme later
     });
 
