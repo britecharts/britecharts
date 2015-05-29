@@ -13,16 +13,17 @@ define(function(require){
             },
             width = 300,
             height = 300,
+            externalRadius = 140,
+            internalRadius = 45.5,
+            colorScale = d3.scale.category20c(),
+            colorScheme,
+            tooltipWidth = externalRadius + internalRadius,
             data,
             chartWidth, chartHeight,
             svg,
             ease = 'bounce',
             layout,
             shape,
-            colorScale = d3.scale.category20c(),
-            colorScheme,
-            externalRadius = 140,
-            internalRadius = 45.5,
             sortComparator = null,
             getQuantity = function(d) { return parseInt(d.quantity, 10); },
             getSliceFill = function(d) { return colorScale(d.data.name); };
@@ -58,7 +59,7 @@ define(function(require){
                 .data([data]);
 
             svg.enter().append('svg')
-                .attr('class', 'donut-chart');
+                .attr('class', 'js-donut-chart');
 
             buildContainerGroups();
 
@@ -79,20 +80,64 @@ define(function(require){
                 .attr('class', 'slice');
         }
 
+        function wrap(text, tooltipWidth) {
+            text.each(function() {
+                var text = d3.select(this),
+                    words = text.text().split(/\s+/).reverse(),
+                    word,
+                    line = [],
+                    lineNumber = 0,
+                    lineHeight = 1.1,
+                    y = text.attr('y'),
+                    dy = parseFloat(text.attr('dy')),
+                    tspan = text.text(null).append('tspan')
+                        .attr('x', 0)
+                        .attr('y', y)
+                        .attr('dy', dy + 'em')
+                        .style('font-weight', 'bold')
+                        .style('font-size', externalRadius / 3.5 + 'px');
+
+                tspan.text(words.pop());
+                tspan = text.append('tspan')
+                    .attr('x', 0)
+                    .attr('y', y)
+                    .attr('dy', ++lineNumber * lineHeight + dy + 'em');
+
+                while (word = words.pop()) {
+                    line.push(word);
+                    tspan.text(line.join(' '));
+                    if (tspan.node().getComputedTextLength() > tooltipWidth - 50) {
+                        line.pop();
+                        tspan.text(line.join(' '));
+                        line = [word];
+                        tspan = text.append('tspan')
+                            .attr('x', 0)
+                            .attr('y', y)
+                            .attr('dy', ++lineNumber * lineHeight + dy + 'em')
+                            .text(word);
+                    }
+                }
+            });
+        }
+
         function drawTooltip() {
             svg.select('.tooltip-group').append('text')
-                .attr('x', 0 - internalRadius / 2)
-                .attr('y', 0 + internalRadius / 10)
                 .attr('class', 'tooltip-text')
-                .style('font-weight', 'bold')
-                .style('font-size', internalRadius / 3 + 'px');
+                .style('font-weight', 'normal')
+                .style('font-size', internalRadius / 3 + 'px')
+                .attr('x', -100);
 
             svg.selectAll('.slice').on('mouseover', function(obj) {
                 svg.select('.tooltip-text')
-                    .style('fill', 'black')
+                // TODO: make this an accessor so people can customize how
+                // their data is presented in the tooltip?
                     .text(function() {
-                        return obj.value;
-                    });
+                        return obj.data.percentage + '% ' + obj.data.name;
+                    })
+                    .attr('dy', '.35em')
+                    .attr('text-anchor', 'middle');
+
+                svg.select('.tooltip-text').call(wrap, tooltipWidth);
             });
 
             svg.selectAll('.slice').on('mouseout', function() {
