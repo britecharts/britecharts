@@ -1,10 +1,10 @@
 define(['jquery', 'd3', 'src/charts/donut'], function($, d3, chart) {
     'use strict';
 
-    describe('Reusable donutChart Test Suite', function(){
+    describe('Reusable donutChart Test Suite', function() {
         var donutChart, dataset, containerFixture, f;
 
-        beforeEach(function(){
+        beforeEach(function() {
             dataset = [
               {
                 'name': 'VALENTINES VIP SPECIAL',
@@ -59,7 +59,7 @@ define(['jquery', 'd3', 'src/charts/donut'], function($, d3, chart) {
 
         });
 
-        afterEach(function(){
+        afterEach(function() {
             containerFixture.remove();
             f = jasmine.getFixtures();
             f.cleanUp();
