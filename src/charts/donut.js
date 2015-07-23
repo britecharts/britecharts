@@ -1,7 +1,7 @@
 define(function(require){
     'use strict';
 
-    var d3 = require('d3');
+    var d3 = require('vendor/d3');
 
     return function module() {
 
@@ -24,6 +24,7 @@ define(function(require){
             ease = 'bounce',
             layout,
             shape,
+            slices,
             sortComparator = null,
             getQuantity = function(d) { return parseInt(d.quantity, 10); },
             getSliceFill = function(d) { return colorScale(d.data.name); };
@@ -61,7 +62,9 @@ define(function(require){
             svg.enter().append('svg')
                 .attr('class', 'js-donut-chart');
 
-            buildContainerGroups();
+            if (!$('.container-group').length) {
+                buildContainerGroups();
+            }
 
             svg.transition().ease(ease)
                 .attr('width', width + margin.left + margin.right)
@@ -71,13 +74,31 @@ define(function(require){
                 .attr('transform', 'translate(' + (chartWidth / 2) + ',' + (chartHeight / 2) + ')');
         }
 
+        function arcTween(a) {
+            var i = d3.interpolate(this._current, a);
+            this._current = i(0);
+            return function(t) {
+                return shape(i(t));
+            };
+        }
+
         function drawSlices() {
-            svg.select('.chart-group').selectAll('path')
-                .data(layout(data))
-              .enter().append('path')
-                .attr('d', shape)
-                .attr('fill', getSliceFill)
-                .attr('class', 'slice');
+            if (!slices) {
+                slices = svg.select('.chart-group').selectAll('path')
+                    .data(layout(data))
+                  .enter().append('path')
+                    .each(function(d) { this._current = d; })
+                    .attr('d', shape)
+                    .attr('fill', getSliceFill)
+                    .attr('class', 'slice');
+            }
+            else {
+                slices = svg.select('.chart-group').selectAll('path')
+                    .data(layout(data))
+                    .attr('d', shape);
+
+                slices.transition().duration(750).attrTween('d', arcTween);
+            }
         }
 
         function wrap(text, tooltipWidth) {
