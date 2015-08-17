@@ -1,3 +1,9 @@
+/**
+ * Bar Chart Module
+ *
+ * @module Bar Chart
+ * @version 0.0.1
+ */
 define(function(require){
     'use strict';
 
@@ -14,26 +20,14 @@ define(function(require){
             xAxis, yAxis,
             svg,
             // extractors
-            getFrequency = function(d) { return d.frequency };
+            getLetter = function(d) { return d.letter; },
+            getFrequency = function(d) { return d.frequency; };
 
-        function buildContainerGroups(){
-            var container = svg.append('g').classed('container-group', true);
-
-            container.append('g').classed('chart-group', true);
-            container.append('g').classed('x-axis-group', true);
-            container.append('g').classed('y-axis-group', true);
-        }
-
-        function buildScales(){
-            xScale = d3.scale.ordinal()
-                .domain(data.map(function(d) { return d.letter; }))
-                .rangeRoundBands([0, chartWidth], 0.1);
-
-            yScale = d3.scale.linear()
-                .domain([0, d3.max(data, getFrequency)])
-                .range([chartHeight, 0]);
-        }
-
+        /**
+         * @name buildAxis
+         * @description Creates the d3 x and y axis, setting orientations
+         * @private
+         */
         function buildAxis(){
             xAxis = d3.svg.axis()
                 .scale(xScale)
@@ -45,6 +39,58 @@ define(function(require){
                 .ticks(10, '%');
         }
 
+        /**
+         * @name buildContainer Groups
+         * @description Builds containers for the chart, the axis and a wrapper for all of them
+         * @private
+         */
+        function buildContainerGroups(){
+            var container = svg.append('g').classed('container-group', true);
+
+            container.append('g').classed('chart-group', true);
+            container.append('g').classed('x-axis-group', true);
+            container.append('g').classed('y-axis-group', true);
+        }
+
+        /**
+         * @name buildScales
+         * @description Creates the x and y scales of the graph
+         * @private
+         */
+        function buildScales(){
+            xScale = d3.scale.ordinal()
+                .domain(data.map(getLetter))
+                .rangeRoundBands([0, chartWidth], 0.1);
+
+            yScale = d3.scale.linear()
+                .domain([0, d3.max(data, getFrequency)])
+                .range([chartHeight, 0]);
+        }
+
+        /**
+         * @name buildSVG
+         * @param  {dom element} container DOM element that will work as the container of the graph
+         * @private
+         */
+        function buildSVG(container){
+            if (!svg) {
+                svg = d3.select(container)
+                    .append('svg')
+                    .classed('bar-chart', true);
+            }
+            svg.attr({
+                width: width + margin.left + margin.right,
+                height: height + margin.top + margin.bottom
+            });
+        }
+
+        /**
+         * @name drawAxis
+         * @description
+         * Draws the x and y axis on the svg object within their
+         * respective groups
+         * @private
+         */
         function drawAxis(){
             svg.select('.x-axis-group')
                 .append('g')
@@ -64,6 +110,11 @@ define(function(require){
                 .text('Frequency');
         }
 
+        /**
+         * @name drawAxis
+         * @description Draws the bar elements within the chart group
+         * @private
+         */
         function drawBars(){
             // Setup the enter, exit and update of the actual bars in the chart.
             // Select the bars, and bind the data to the .bar elements.
@@ -79,6 +130,14 @@ define(function(require){
                 .attr('height', function(d) { return chartHeight - yScale(d.frequency); });
         }
 
+        /**
+         * @description
+         * This function creates the graph using the selection and data provided
+         * @name exports
+         * @param  {d3 selection} _selection A d3 selection that represents
+         * the container(s) where the chart(s) will be rendered
+         * @param {[] object} _data The data to attach and generate the chart
+         */
         function exports(_selection){
             _selection.each(function(_data){
                 chartWidth = width - margin.left - margin.right;
@@ -87,24 +146,19 @@ define(function(require){
 
                 buildScales();
                 buildAxis();
-
-                if (!svg) {
-                    svg = d3.select(this)
-                        .append('svg')
-                        .classed('bar-chart', true);
-                }
-                svg.attr({
-                    width: width + margin.left + margin.right,
-                    height: height + margin.top + margin.bottom
-                });
-
+                buildSVG(this);
                 buildContainerGroups();
                 drawBars();
                 drawAxis();
             });
         }
 
-        // Acessors
+        /**
+         * @name margin
+         * @param  {object} _x Margin object to get/set
+         * @return { margin | module} Current margin or Bar Chart module to chain calls
+         * @public
+         */
         exports.margin = function(_x) {
             if (!arguments.length) {
                 return margin;
@@ -113,6 +167,12 @@ define(function(require){
             return this;
         };
 
+        /**
+         * @name width
+         * @param  {number} _x Desired width for the graph
+         * @return { width | module} Current width or Bar Chart module to chain calls
+         * @public
+         */
         exports.width = function(_x) {
             if (!arguments.length) {
                 return width;
@@ -121,6 +181,12 @@ define(function(require){
             return this;
         };
 
+        /**
+         * @name height
+         * @param  {number} _x Desired width for the graph
+         * @return { height | module} Current height or Bar Char module to chain calls
+         * @public
+         */
         exports.height = function(_x) {
             if (!arguments.length) {
                 return height;
