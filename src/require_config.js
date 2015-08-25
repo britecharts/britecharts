@@ -3,6 +3,7 @@ var requireConfig = {
     baseUrl: '',
 
     paths: {
+        'underscore': './node_modules/underscore/underscore',
         'es6': './node_modules/js-common/src/utils/es6',
         'sinon': './node_modules/sinon/lib/sinon',
         'jasmine-jquery': 'node_modules/jasmine-jquery/lib/jasmine-jquery',
@@ -13,7 +14,8 @@ var requireConfig = {
         'jasmine-jquery': {
             deps: ['jquery']
         },
-        'd3': { exports: 'd3'}
+        'd3': { exports: 'd3'},
+        'underscore': { exports: '_'}
     },
     map: {},
     packages: []
