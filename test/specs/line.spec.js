@@ -1,31 +1,30 @@
-define(['underscore', 'jquery', 'd3', 'src/charts/line'], function(_, $, d3, chart) {
+define([
+    'underscore',
+    'jquery',
+    'd3',
+    'src/charts/line',
+    'test/fixtures/lineChartDataBuilder'
+    ], function(
+        _,
+        $,
+        d3,
+        chart,
+        dataBuilder
+    ) {
     'use strict';
 
     describe('Reusable Line Chart Test Suite', function(){
-        var $dfd = new $.Deferred(),
-            dataset,
-            dataDate,
-            _data,
-            containerFixture, f, lineChart;
+        var containerFixture, f, lineChart;
 
-        d3.json('base/test/fixtures/lineData.json', function(chartData){
+        function aTestDataSet() {
+            return new dataBuilder.SalesDataBuilder();
+        }
 
-            _data = _.compact(chartData.data);
+        aTestDataSet()
+            .with5Topics()
+            .build()
+            .done(function(dataset){
 
-            _data.forEach(function(kv) {
-                kv.Data.forEach(function(d) {
-                    d.date = new Date(d.fullDate._i);
-                    d.date.setHours(0, 0, 0);
-                });
-            });
-
-            dataDate = chartData.dataByDate;
-
-            dataset = { data: _data, dataByDate: dataDate};
-            $dfd.resolve();
-        });
-
-        $dfd.done(function(){
             beforeEach(function(){
                 lineChart = chart();
                 // DOM Fixture Setup
@@ -54,6 +53,7 @@ define(['underscore', 'jquery', 'd3', 'src/charts/line'], function(_, $, d3, cha
                 expect(containerFixture.select('g.x-axis-group')[0][0]).not.toBeNull();
                 expect(containerFixture.select('g.y-axis-group')[0][0]).not.toBeNull();
                 expect(containerFixture.select('g.grid-lines-group')[0][0]).not.toBeNull();
+                expect(containerFixture.select('g.metadata-group')[0][0]).not.toBeNull();
             });
 
             it('should render grid lines', function(){
@@ -70,22 +70,49 @@ define(['underscore', 'jquery', 'd3', 'src/charts/line'], function(_, $, d3, cha
 
                 expect(containerFixture.selectAll('.line')[0].length).toEqual(numLines);
             });
+
+            it('should render an overlay to trigger the hover effect', function(){
+                expect(containerFixture.select('.overlay')[0][0]).not.toBeNull();
+            });
+
+            // API
+            it('should provide margin getter and setter', function(){
+                var defaultMargin = lineChart.margin(),
+                    testMargin = {top: 4, right: 4, bottom: 4, left: 4},
+                    newMargin;
+
+                lineChart.margin(testMargin);
+                newMargin = lineChart.margin();
+
+                expect(defaultMargin).not.toBe(testMargin);
+                expect(newMargin).toBe(testMargin);
+            });
+
+            it('should provide width getter and setter', function(){
+                var defaultWidth = lineChart.width(),
+                    testWidth = 200,
+                    newWidth;
+
+                lineChart.width(testWidth);
+                newWidth = lineChart.width();
+
+                expect(defaultWidth).not.toBe(testWidth);
+                expect(newWidth).toBe(testWidth);
+            });
+
+            it('should provide height getter and setter', function(){
+                var defaultHeight = lineChart.height(),
+                    testHeight = 200,
+                    newHeight;
+
+                lineChart.height(testHeight);
+                newHeight = lineChart.height();
+
+                expect(defaultHeight).not.toBe(testHeight);
+                expect(newHeight).toBe(testHeight);
+            });
+
         });
-
-
-
-
-        // it('should provide margin getter and setter', function(){
-        //     var defaultMargin = barChart.margin(),
-        //         testMargin = {top: 4, right: 4, bottom: 4, left: 4},
-        //         newMargin;
-
-        //     barChart.margin(testMargin);
-        //     newMargin = barChart.margin();
-
-        //     expect(defaultMargin).not.toBe(testMargin);
-        //     expect(newMargin).toBe(testMargin);
-        // });
 
     });
 

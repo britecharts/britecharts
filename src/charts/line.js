@@ -15,6 +15,13 @@ define(function(require){
             colorRange = ['#00A8F2', '#00CC52', '#FFDB00', '#F20CB6', '#8400FF', '#051C48'],
             width = 960,
             height = 500,
+            yAxisPadding = {
+                top: 0,
+                left: 35,
+                bottom: 0,
+                right: 0
+            },
+            numVerticalTics = 5,
             data,
             dataByDate,
             chartWidth, chartHeight,
@@ -22,12 +29,14 @@ define(function(require){
             xAxis, yAxis,
             maskGridLines,
             svg,
+            overlay,
             // extractors
             getDate = function(d) { return d.date; },
             getValue = function(d) { return d.value; },
             getTopic = function(d) { return d.topic; },
             // formats
-            xTickFormat = d3.time.format('%-d-%b');
+            yTickNumberFormat = d3.format('s'),
+            xTickDateFormat = d3.time.format('%e');
 
         /**
          * @name buildAxis
@@ -38,50 +47,32 @@ define(function(require){
             xAxis = d3.svg.axis()
                 .scale(xScale)
                 .orient('bottom')
-                .ticks(getMaxNumOfTicks(width, dataByDate))
+                .ticks(getMaxNumOfHorizontalTicks(width, dataByDate.length))
                 .tickSize(10, 0).tickPadding(5)
-                .tickFormat(xTickFormat);
+                .tickFormat(xTickDateFormat);
 
             yAxis = d3.svg.axis()
                 .scale(yScale)
                 .orient('left')
-                .ticks(5)
-                .tickFormat(formatNumbers);
+                .ticks(numVerticalTics)
+                .tickSize([0])
+                .tickPadding([4])
+                .tickFormat(yTickNumberFormat);
         }
 
-        function getMaxNumOfTicks(width, data) {
+        /**
+         * @name getMaxNumOfHorizontalTicks
+         * @description Calculates the maximum number of ticks for the x axis
+         * @param  {number} width Chart width
+         * @param  {number} dataPointNumber  Number of entries on the data
+         * @return {number}       Number of ticks to render
+         */
+        function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
             var singleTickWidth = 20,
                 spacing = 40,
                 ticksForWidth = Math.ceil(width / (singleTickWidth + spacing));
 
-            return Math.min(data.length, ticksForWidth);
-        }
-
-        function formatNumbers(value) {
-            var number = value,
-                decPlaces = 1,
-                abbrev = [ 'k', 'm', 'b', 't' ],
-                size;
-
-            decPlaces = Math.pow(10, decPlaces);
-
-            for (var i = abbrev.length - 1; i >= 0; i--) {
-                size = Math.pow(10, (i + 1) * 3);
-
-                if (size <= number) {
-                    number = Math.round(number * decPlaces / size) / decPlaces;
-
-                    if ((number === 1000) && (i < abbrev.length - 1)) {
-                        number = 1;
-                        i++;
-                    }
-
-                    number += abbrev[i];
-
-                    break;
-                }
-            }
-            return number;
+            return Math.min(dataPointNumber, ticksForWidth);
         }
 
         /**
@@ -96,6 +87,7 @@ define(function(require){
             container.append('g').classed('x-axis-group', true);
             container.append('g').classed('y-axis-group', true);
             container.append('g').classed('grid-lines-group', true);
+            container.append('g').classed('metadata-group', true);
         }
 
         /**
@@ -105,7 +97,6 @@ define(function(require){
          */
         function buildScales(){
             var minX = d3.min(data, function(kv) {
-                    debugger
                     return d3.min(kv.Data, getDate);
                 }),
                 maxX = d3.max(data, function(kv) { return d3.max(kv.Data, getDate); }),
@@ -135,6 +126,7 @@ define(function(require){
             if (!svg) {
                 svg = d3.select(container)
                     .append('svg')
+                    .classed('britechart', true)
                     .classed('line-chart', true);
             }
             svg.attr({
@@ -156,52 +148,12 @@ define(function(require){
                 .attr('class', 'x axis')
                 .attr('transform', 'translate(0,' + chartHeight + ')')
                 .call(xAxis);
-                // .selectAll('text')
-                // .style({
-                //     'text-anchor': 'end',
-                //     'font-weight': 'normal'
-                // }).call(this.wrap, 20, this, 0, this.xaxisLabelFormatterForWrap);
-
-            //remove empty ticks, in case the text is zero (this is a fix for repeating dates in
-            // very small data range )
-            // d3.selectAll('.x.axis .tick')
-            //     .each(function() {
-            //         if (d3.select(this).select('text').text() === '') {
-            //             this.remove();
-            //         }
-            //     });
 
             svg.select('.y-axis-group')
                 .append('g')
                 .attr('class', 'y axis')
+                .attr('transform', 'translate(' + yAxisPadding.left + ', 0)')
                 .call(yAxis);
-                // .selectAll('text')
-                // .style({
-                //     'text-anchor': 'end',
-                //     'font-weight': 'normal'
-                // });
-                // NOTE: Deepthi added too some padding on this axis
-
-            // hide 0th value on y axis
-            // d3.select('.y.axis .tick').style('display', 'none');
-
-            // sort the border and the label text
-            // d3.select('.y.axis').selectAll('.tick').select('text').each(function() {
-            //     d3.select(this.parentNode)
-            //     .append('rect')
-            //     .attr({
-            //         'x': -25,
-            //         'y': -10,
-            //         'width': 30,
-            //         'height': 20,
-            //         'rx': 10,
-            //         'ry': 10
-            //     }).style({
-            //         'fill': '#ffffff',
-            //         'fill-opacity': 1
-            //     });
-            //     self.moveToFront(this);
-            // });
         }
 
         /**
@@ -210,15 +162,11 @@ define(function(require){
          * @private
          */
         function drawLines(){
-            // Setup the enter, exit and update of the actual lines in the chart.
-            // Select the lines, and bind the data to the .line elements.
             var lines,
-                topicLine,
-                maskRect;
+                topicLine;
 
             topicLine = d3.svg.line()
                 .x(function(d) {
-                    debugger
                     return xScale(d.date);
                 })
                 .y(function(d) { return yScale(d.value); });
@@ -235,25 +183,7 @@ define(function(require){
                     return topicLine(d.Data);
                 })
                 .style({
-                    'stroke': function(d) { return colorScale(d.topic); },
-                    'stroke-linecap': 'round'
-                });
-
-            // No idea what this is
-            maskRect = svg.append('rect')
-                .attr('class', 'maskRect')
-                .attr('width', chartWidth - 30)
-                .attr('height', chartHeight + 20)
-                .attr('x', 60)
-                .attr('y', -18);
-
-            maskRect.transition()
-                .duration(2000)
-                .ease('cubic-out')
-                .attr('x', chartWidth)
-                .each('end', function() {
-                    maskRect.remove();
-                    maskGridLines.remove();
+                    'stroke': function(d) { return colorScale(d.topic); }
                 });
         }
 
@@ -273,19 +203,29 @@ define(function(require){
                         'x1': 0,
                         'x2': chartWidth + 20,
                         'y1': function(d) { return yScale(d); },
-                        'y2': function(d) { return yScale(d); },
-                        'fill': 'none',
-                        'shape-rendering': 'crispEdges',
-                        'stroke': '#DEDEDE',
-                        'stroke-width': '1px',
-                        'stroke-dasharray': '2,2'
+                        'y2': function(d) { return yScale(d); }
                     });
         }
 
         /**
-         * @description
-         * This function creates the graph using the selection and data provided
+         * @name drawHoverOverlay
+         * @description Draws an overlay element over the graph
+         * @return void
+         */
+        function drawHoverOverlay(){
+            overlay = svg.select('.metadata-group').append('rect')
+                .attr('class','overlay')
+                .attr('y1', 0)
+                .attr('y2', height)
+                .attr('height', height)
+                .attr('width', width)
+                .attr('fill','rgba(65, 72, 83, 0.12)')
+                .style('display', 'none');
+        }
+
+        /**
          * @name exports
+         * @description This function creates the graph using the selection and data provided
          * @param  {d3 selection} _selection A d3 selection that represents
          * the container(s) where the chart(s) will be rendered
          * @param {[] object} _data The data to attach and generate the chart
@@ -296,7 +236,7 @@ define(function(require){
                 chartHeight = height - margin.top - margin.bottom;
                 data = _data.data;
                 dataByDate = _data.dataByDate;
-debugger
+
                 buildScales();
                 buildAxis();
                 buildSVG(this);
@@ -305,6 +245,7 @@ debugger
                 drawGridLines();
                 drawAxis();
                 drawLines();
+                drawHoverOverlay();
             });
         }
 

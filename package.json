@@ -4,7 +4,7 @@
   "description": "Eventbrite's Charting Library",
   "main": "README.md",
   "scripts": {
-    "test": "grunt test"
+    "test": "karma start"
   },
   "repository": {
     "type": "git",
@@ -17,9 +17,6 @@
   ],
   "publishConfig": {
     "registry": "http://packages:8889"
-  },
-  "scripts": {
-    "test": "karma start"
   },
   "author": "Eventbrite",
   "license": "ISC",
