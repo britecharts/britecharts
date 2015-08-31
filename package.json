@@ -1,6 +1,6 @@
 {
   "name": "britecharts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Eventbrite's Charting Library",
   "main": "README.md",
   "scripts": {
