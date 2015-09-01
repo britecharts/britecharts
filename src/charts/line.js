@@ -1,14 +1,18 @@
-/**
- * Line Chart Module
- *
- * @module Line Chart
- * @version 0.0.1
- */
+
 define(function(require){
     'use strict';
 
     var d3 = require('d3');
 
+    /**
+     * @fileOverview Line Chart reusable API module that allows us
+     * rendering a multi line and configurable chart.
+     *
+     * @tutorial using-line-chart
+     * @exports charts/line
+     * @requires d3
+     * @version 0.0.1
+     */
     return function module(){
 
         var margin = {top: 60, right: 0, bottom: 60, left: 0},
@@ -43,8 +47,7 @@ define(function(require){
             dispatch = d3.dispatch('customHover');
 
         /**
-         * @name buildAxis
-         * @description Creates the d3 x and y axis, setting orientations
+         * Creates the d3 x and y axis, setting orientations
          * @private
          */
         function buildAxis(){
@@ -65,8 +68,7 @@ define(function(require){
         }
 
         /**
-         * @name getMaxNumOfHorizontalTicks
-         * @description Calculates the maximum number of ticks for the x axis
+         * Calculates the maximum number of ticks for the x axis
          * @param  {number} width Chart width
          * @param  {number} dataPointNumber  Number of entries on the data
          * @return {number}       Number of ticks to render
@@ -80,8 +82,7 @@ define(function(require){
         }
 
         /**
-         * @name buildContainer Groups
-         * @description Builds containers for the chart, the axis and a wrapper for all of them
+         * Builds containers for the chart, the axis and a wrapper for all of them
          * @private
          */
         function buildContainerGroups(){
@@ -95,8 +96,7 @@ define(function(require){
         }
 
         /**
-         * @name buildScales
-         * @description Creates the x and y scales of the graph
+         * Creates the x and y scales of the graph
          * @private
          */
         function buildScales(){
@@ -122,8 +122,7 @@ define(function(require){
         }
 
         /**
-         * @name buildSVG
-         * @param  {dom element} container DOM element that will work as the container of the graph
+         * @param  {HTMLElement} container DOM element that will work as the container of the graph
          * @private
          */
         function buildSVG(container){
@@ -140,7 +139,6 @@ define(function(require){
         }
 
         /**
-         * @name drawAxis
          * @description
          * Draws the x and y axis on the svg object within their
          * respective groups
@@ -161,8 +159,7 @@ define(function(require){
         }
 
         /**
-         * @name drawLines
-         * @description Draws the line elements within the chart group
+         * Draws the line elements within the chart group
          * @private
          */
         function drawLines(){
@@ -193,8 +190,7 @@ define(function(require){
         }
 
         /**
-         * @name drawGridLines
-         * @description Draws grid lines on the background of the chart
+         * Draws grid lines on the background of the chart
          * @return void
          */
         function drawGridLines(){
@@ -213,8 +209,8 @@ define(function(require){
         }
 
         /**
-         * @name drawHoverOverlay
-         * @description Draws an overlay element over the graph
+         * Draws an overlay element over the graph
+         * @inner
          * @return void
          */
         function drawHoverOverlay(){
@@ -229,13 +225,12 @@ define(function(require){
         }
 
         /**
-         * @name exports
-         * @description This function creates the graph using the selection and data provided
-         * @param  {d3 selection} _selection A d3 selection that represents
+         * This function creates the graph using the selection and data provided
+         * @param  {D3Selection} _selection A d3 selection that represents
          * the container(s) where the chart(s) will be rendered
-         * @param {[] object} _data The data to attach and generate the chart
          */
         function exports(_selection){
+            /** @param {object} _data The data to attach and generate the chart */
             _selection.each(function(_data){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
@@ -288,7 +283,7 @@ define(function(require){
         // }
 
         /**
-         * @name margin
+         * Gets or Sets the margin of the chart
          * @param  {object} _x Margin object to get/set
          * @return { margin | module} Current margin or Line Chart module to chain calls
          * @public
@@ -302,7 +297,7 @@ define(function(require){
         };
 
         /**
-         * @name width
+         * Gets or Sets the width of the chart
          * @param  {number} _x Desired width for the graph
          * @return { width | module} Current width or Line Chart module to chain calls
          * @public
@@ -316,7 +311,7 @@ define(function(require){
         };
 
         /**
-         * @name height
+         * Gets or Sets the height of the chart
          * @param  {number} _x Desired width for the graph
          * @return { height | module} Current height or Line Chart module to chain calls
          * @public
@@ -330,7 +325,7 @@ define(function(require){
         };
 
         /**
-         * @name lineInterpolation
+         * Gets or Sets the line's interpolation mode
          * @param  {string} _x Desired interpolation mode for the lines
          * @return { lineInterpolation | module} Current lineInterpolation or Line Chart module to chain calls
          * @public
