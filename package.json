@@ -28,25 +28,25 @@
     "d3": "^3.5.5"
   },
   "devDependencies": {
+    "generator-ebjs": "git+ssh://git@github.com/eventbrite/generator-ebjs.git",
     "grunt": "~0.4.5",
     "grunt-contrib-requirejs": "~0.4.4",
     "grunt-contrib-watch": "~0.6.1",
+    "grunt-jsdoc": "^0.6.8",
     "grunt-release": "~0.9.0",
-    "grunt-sass": "~1.0.0",
     "grunt-shell": "~1.1.2",
     "ink-docstrap": "~0.4.12",
-    "jquery": "^2.1.4",
     "jasmine-jquery": "^2.0.6",
+    "jquery": "^2.1.4",
     "jsdoc": "~3.2.2",
     "karma": "~0.12.31",
     "karma-chrome-launcher": "~0.1.10",
     "karma-jasmine": "~0.3.5",
     "karma-requirejs": "~0.2.2",
     "load-grunt-tasks": "~0.4.0",
-    "underscore": "~1.8.3",
     "reggie": "~0.2.1",
     "shelljs": "~0.3.0",
     "sinon": "~1.9.0",
-    "generator-ebjs": "git+ssh://git@github.com/eventbrite/generator-ebjs.git"
+    "underscore": "~1.8.3"
   }
 }
