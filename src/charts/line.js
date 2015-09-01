@@ -30,13 +30,17 @@ define(function(require){
             maskGridLines,
             svg,
             overlay,
+            focus,
+            lineInterpolation = 'basis',
             // extractors
             getDate = function(d) { return d.date; },
             getValue = function(d) { return d.value; },
             getTopic = function(d) { return d.topic; },
             // formats
             yTickNumberFormat = d3.format('s'),
-            xTickDateFormat = d3.time.format('%e');
+            xTickDateFormat = d3.time.format('%e'),
+            // events
+            dispatch = d3.dispatch('customHover');
 
         /**
          * @name buildAxis
@@ -169,7 +173,8 @@ define(function(require){
                 .x(function(d) {
                     return xScale(d.date);
                 })
-                .y(function(d) { return yScale(d.value); });
+                .y(function(d) { return yScale(d.value); })
+                .interpolate(lineInterpolation);
 
             lines = svg.select('.chart-group').selectAll('.line')
                 .data(data)
@@ -245,14 +250,47 @@ define(function(require){
                 drawGridLines();
                 drawAxis();
                 drawLines();
+
+                addMouseEvents();
                 drawHoverOverlay();
+                prepareTooltip();
             });
         }
+
+        function prepareTooltip(){
+        }
+
+        function addMouseEvents(){
+            svg.select('.container-group')
+                .on('mouseover', handleMouseOver)
+                .on('mouseout', handleMouseOut)
+                .on('mousemove', handleMouseMove);
+        }
+
+        function handleMouseOver(){
+            console.log('MouseOver!');
+            overlay.style('display', null);
+        }
+
+        function handleMouseOut(){
+            console.log('MouseOut!');
+            overlay.style('display', 'none');
+        }
+
+        function handleMouseMove(){
+            console.log('MouseMove!');
+        }
+
+        // function listenToEvents(){
+        //     exports.on('customHover', function(){
+        //         console.log('hey!');
+        //     });
+        // }
 
         /**
          * @name margin
          * @param  {object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Bar Chart module to chain calls
+         * @return { margin | module} Current margin or Line Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -266,7 +304,7 @@ define(function(require){
         /**
          * @name width
          * @param  {number} _x Desired width for the graph
-         * @return { width | module} Current width or Bar Chart module to chain calls
+         * @return { width | module} Current width or Line Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
@@ -280,7 +318,7 @@ define(function(require){
         /**
          * @name height
          * @param  {number} _x Desired width for the graph
-         * @return { height | module} Current height or Bar Char module to chain calls
+         * @return { height | module} Current height or Line Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -290,6 +328,23 @@ define(function(require){
             height = _x;
             return this;
         };
+
+        /**
+         * @name lineInterpolation
+         * @param  {string} _x Desired interpolation mode for the lines
+         * @return { lineInterpolation | module} Current lineInterpolation or Line Chart module to chain calls
+         * @public
+         */
+        exports.lineInterpolation = function(_x) {
+            if (!arguments.length) {
+                return lineInterpolation;
+            }
+            lineInterpolation = _x;
+            return this;
+        };
+
+        // Rebind 'customHover' event to the "exports" function, so it's available "externally" under the typical "on" method:
+        d3.rebind(exports, dispatch, 'on');
 
         return exports;
     };
