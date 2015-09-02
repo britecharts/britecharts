@@ -10,12 +10,26 @@ define(function(require) {
     function SalesDataBuilder(config){
         this.Klass = SalesDataBuilder;
 
-        this.config = _.defaults({}, config, {});
+        this.config = _.defaults({}, config, {
+            jsonURL: 'base/test/fixtures/lineDataFiveTopics.json'
+        });
 
         this.with5Topics = function(){
+            var attributes = _.extend({}, this.config);
+
+            return new this.Klass(attributes);
+        };
+
+        /**
+         * Sets the path for fetching the data
+         * @param  {string} path Desired path for test data
+         * @return {SalesDataBuilder}      Builder object
+         */
+        this.withPath = function(path){
             var attributes = _.extend({}, this.config, {
-                jsonURL: 'base/test/fixtures/lineDataFiveTopics.json'
+                jsonURL: path
             });
+
             return new this.Klass(attributes);
         };
 
