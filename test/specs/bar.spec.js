@@ -1,7 +1,7 @@
 define(['jquery', 'd3', 'src/charts/bar'], function($, d3, chart) {
     'use strict';
 
-    describe('Reusable barChart Test Suite', function(){
+    describe('Reusable Bar Chart Test Suite', function(){
         var barChart, dataset, containerFixture, f;
 
         beforeEach(function(){
