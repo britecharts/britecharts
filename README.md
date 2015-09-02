@@ -1,7 +1,8 @@
 Britecharts
 ====
 
-Eventbrite charting library. AMD modules containing D3.js graphs written with the Reusable API methodology.
+Britecharts is a reusable charting library based on [D3.js](http://d3js.org/). It features 
+AMD modules containing D3.js charts written with the Reusable API methodology and fully tested.
 
 Setup
 ----
@@ -11,22 +12,19 @@ Setup
 
 Charts
 ----
-    
-    karma start
-
+Bar Chart
+Line Chart    
 
 Chart Instantiation
 ----
+Check the code or documentation to see examples
 
 
 Testing
 ----
-
-
-To Contribute
-----
+    karma start
 
 
 License
 ----
-
+To decide

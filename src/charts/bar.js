@@ -1,14 +1,21 @@
-/**
- * Bar Chart Module
- *
- * @module Bar Chart
- * @version 0.0.1
- */
 define(function(require){
     'use strict';
 
     var d3 = require('d3');
 
+    /**
+     * @typdef D3Selection
+     * @type Array[]
+     */
+
+    /**
+     * @fileOverview Bar Chart reusable API class that renders a
+     * simple and configurable bar chart.
+     *
+     * @exports charts/bar
+     * @requires d3
+     * @version 0.0.1
+     */
     return function module(){
 
         var margin = {top: 20, right: 20, bottom: 30, left: 40},
@@ -24,8 +31,7 @@ define(function(require){
             getFrequency = function(d) { return d.frequency; };
 
         /**
-         * @name buildAxis
-         * @description Creates the d3 x and y axis, setting orientations
+         * Creates the d3 x and y axis, setting orientations
          * @private
          */
         function buildAxis(){
@@ -40,8 +46,7 @@ define(function(require){
         }
 
         /**
-         * @name buildContainer Groups
-         * @description Builds containers for the chart, the axis and a wrapper for all of them
+         * Builds containers for the chart, the axis and a wrapper for all of them
          * @private
          */
         function buildContainerGroups(){
@@ -53,8 +58,7 @@ define(function(require){
         }
 
         /**
-         * @name buildScales
-         * @description Creates the x and y scales of the graph
+         * Creates the x and y scales of the graph
          * @private
          */
         function buildScales(){
@@ -68,8 +72,7 @@ define(function(require){
         }
 
         /**
-         * @name buildSVG
-         * @param  {dom element} container DOM element that will work as the container of the graph
+         * @param  {HTMLElement} container DOM element that will work as the container of the graph
          * @private
          */
         function buildSVG(container){
@@ -85,7 +88,6 @@ define(function(require){
         }
 
         /**
-         * @name drawAxis
          * @description
          * Draws the x and y axis on the svg object within their
          * respective groups
@@ -111,8 +113,7 @@ define(function(require){
         }
 
         /**
-         * @name drawAxis
-         * @description Draws the bar elements within the chart group
+         * Draws the bar elements within the chart group
          * @private
          */
         function drawBars(){
@@ -131,14 +132,12 @@ define(function(require){
         }
 
         /**
-         * @description
-         * This function creates the graph using the selection and data provided
-         * @name exports
-         * @param  {d3 selection} _selection A d3 selection that represents
+         * This function creates the graph using the selection as container
+         * @param  {D3Selection} _selection A d3 selection that represents
          * the container(s) where the chart(s) will be rendered
-         * @param {[] object} _data The data to attach and generate the chart
          */
         function exports(_selection){
+            /* @param {object} _data The data to attach and generate the chart */
             _selection.each(function(_data){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
@@ -154,7 +153,7 @@ define(function(require){
         }
 
         /**
-         * @name margin
+         * Gets or Sets the margin of the chart
          * @param  {object} _x Margin object to get/set
          * @return { margin | module} Current margin or Bar Chart module to chain calls
          * @public
@@ -168,7 +167,7 @@ define(function(require){
         };
 
         /**
-         * @name width
+         * Gets or Sets the width of the chart
          * @param  {number} _x Desired width for the graph
          * @return { width | module} Current width or Bar Chart module to chain calls
          * @public
@@ -182,7 +181,7 @@ define(function(require){
         };
 
         /**
-         * @name height
+         * Gets or Sets the height of the chart
          * @param  {number} _x Desired width for the graph
          * @return { height | module} Current height or Bar Char module to chain calls
          * @public
