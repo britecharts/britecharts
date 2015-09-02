@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Britecharts</title>
+    <style type="text/css">
+        .britechart {}
+        .maskRect {
+            fill: none;
+            pointer-events: all;
+        }
+        .topic .line {
+            stroke-width: 3;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .horizontal-grid-line {
+            fill: none;
+            shape-rendering: crispEdges;
+            stroke: #DEDEDE;
+            stroke-width: 1px;
+            stroke-dasharray: 2,2;
+        }
+        .tick text {
+            font-size: 0.8em;
+            fill: rgba(0, 0, 0, 0.3);
+            text-anchor: middle;
+
+            padding: 10px;
+            background-color: red;
+        }
+        .y.axis path {
+            display: none;
+        }
+        .hover-marker line {
+            stroke: '#FF0044';
+            stroke-width: 1;
+            fill: none;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <h1>Sandbox page for Britecharts</h1>
+        <article>
+            <h2>LineChart</h2>
+            <div class="js-line-chart-container"></div>
+        </article>
+    </section>
+
+    <script type="text/javascript" data-main="sandbox/sandbox-main" src="node_modules/requirejs/require.js"></script>
+</body>
+</html>
