@@ -183,6 +183,10 @@ define([
         //     }
         // };
 
+        function hasClass(element, className) {
+            return _.contains(element[0][0].classList, className);
+        }
+
         aTestDataSet()
             .with5Topics()
             .build()
@@ -234,24 +238,63 @@ define([
                 expect(containerFixture.selectAll('.line')[0].length).toEqual(numLines);
             });
 
+
+            // Event Setting
+            it('should trigger an event on hover', function(){
+                var callback = jasmine.createSpy('hoverCallback'),
+                    container = containerFixture.selectAll('.container-group');
+
+                lineChart.on('customMouseOver', callback);
+                container[0][0].__onmouseover();
+
+                expect(callback.calls.count()).toBe(1);
+            });
+
+            it('should trigger an event on mouse out', function(){
+                var callback = jasmine.createSpy('mouseOutCallback'),
+                    container = containerFixture.selectAll('.container-group');
+
+                lineChart.on('customMouseOut', callback);
+                container[0][0].__onmouseout();
+                expect(callback.calls.count()).toBe(1);
+            });
+
+            // it('should trigger an event on mouse move', function(){
+            //     var callback = jasmine.createSpy('mouseMoveCallback'),
+            //         container = containerFixture.selectAll('.container-group');
+
+            //     lineChart.on('customMouseMove', callback);
+            //     container[0][0].__onmousemove();
+
+            //     expect(callback.calls.count()).toBe(1);
+            // });
+
+
+            // Tooltip and Markers
             it('should render an overlay to trigger the hover effect', function(){
-                debugger
                 expect(containerFixture.select('.overlay')[0][0]).not.toBeNull();
             });
 
-            // it('should trigger an event on hover', function(){
-            //     var callback = jasmine.createSpy("hoverCallback"),
-            //         hoverOverlay = containerFixture.selectAll('.overlay'),
-            //         callbackArguments;
+            it('should show a vertical line where the mouse is hovering', function() {
+                var container = containerFixture.selectAll('.container-group'),
+                    verticalLine = d3.select('.hover-marker line');
 
-            //     lineChart.on('customHover', callback);
-            //     debugger
-            //     hoverOverlay[0][0].__onmouseover();
-            //     callbackArguments = callback.argsForCall[0][0];
+                container[0][0].__onmouseover();
 
-            //     expect(callback).toHaveBeenCalled();
-            //     expect(callbackArguments).toBe(dataset);
-            // });
+                expect(hasClass(verticalLine, 'bc-is-active')).toBe(true);
+            });
+
+            it('should not show the tooltip on mobile', function() {
+                var container = containerFixture.selectAll('.container-group'),
+                    overlay = d3.select('.overlay');
+
+                lineChart.isMobile(true);
+                containerFixture.datum(dataset).call(lineChart);
+
+                container[0][0].__onmouseover();
+
+                expect(overlay.style('display')).toBe('none');
+            });
 
             // API
             it('should provide margin getter and setter', function(){
@@ -301,7 +344,6 @@ define([
                 expect(defaultLineInterpolation).not.toBe(testLineInterpolation);
                 expect(newLineInterpolation).toBe(testLineInterpolation);
             });
-
         });
 
     });
