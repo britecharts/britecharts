@@ -34,8 +34,10 @@ define(function(require){
             maskGridLines,
             svg,
             overlay,
-            focus,
+            verticalMarkerContainer,
+            verticalMarkerLine,
             lineInterpolation = 'basis',
+            isMobile = false,
             // extractors
             getDate = function(d) { return d.date; },
             getValue = function(d) { return d.value; },
@@ -44,7 +46,50 @@ define(function(require){
             yTickNumberFormat = d3.format('s'),
             xTickDateFormat = d3.time.format('%e'),
             // events
-            dispatch = d3.dispatch('customHover');
+            dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+
+        /**
+         * This function creates the graph using the selection and data provided
+         * @param  {D3Selection} _selection A d3 selection that represents
+         * the container(s) where the chart(s) will be rendered
+         */
+        function exports(_selection){
+            /** @param {object} _data The data to attach and generate the chart */
+            _selection.each(function(_data){
+                chartWidth = width - margin.left - margin.right;
+                chartHeight = height - margin.top - margin.bottom;
+                data = _data.data;
+                dataByDate = _data.dataByDate;
+
+                buildScales();
+                buildAxis();
+                buildSVG(this);
+                buildContainerGroups();
+
+                drawGridLines();
+                drawAxis();
+                drawLines();
+
+                addMouseEvents();
+                drawHoverOverlay();
+                drawVerticalMarker();
+            });
+        }
+
+        /**
+         * Adds events to the container group
+         * Adding: mouseover, mouseout and mousemove
+         */
+        function addMouseEvents(){
+            if (isMobile) {
+                return;
+            }
+
+            svg.select('.container-group')
+                .on('mouseover', handleMouseOver)
+                .on('mouseout', handleMouseOut)
+                .on('mousemove', handleMouseMove);
+        }
 
         /**
          * Creates the d3 x and y axis, setting orientations
@@ -214,7 +259,8 @@ define(function(require){
          * @return void
          */
         function drawHoverOverlay(){
-            overlay = svg.select('.metadata-group').append('rect')
+            overlay = svg.select('.metadata-group')
+                .append('rect')
                 .attr('class','overlay')
                 .attr('y1', 0)
                 .attr('y2', height)
@@ -224,63 +270,70 @@ define(function(require){
                 .style('display', 'none');
         }
 
-        /**
-         * This function creates the graph using the selection and data provided
-         * @param  {D3Selection} _selection A d3 selection that represents
-         * the container(s) where the chart(s) will be rendered
-         */
-        function exports(_selection){
-            /** @param {object} _data The data to attach and generate the chart */
-            _selection.each(function(_data){
-                chartWidth = width - margin.left - margin.right;
-                chartHeight = height - margin.top - margin.bottom;
-                data = _data.data;
-                dataByDate = _data.dataByDate;
+        function drawVerticalMarker(){
+            verticalMarkerContainer = overlay
+                .append('g')
+                .attr('class', 'hover-marker');
 
-                buildScales();
-                buildAxis();
-                buildSVG(this);
-                buildContainerGroups();
-
-                drawGridLines();
-                drawAxis();
-                drawLines();
-
-                addMouseEvents();
-                drawHoverOverlay();
-                prepareTooltip();
-            });
-        }
-
-        function prepareTooltip(){
-        }
-
-        function addMouseEvents(){
-            svg.select('.container-group')
-                .on('mouseover', handleMouseOver)
-                .on('mouseout', handleMouseOut)
-                .on('mousemove', handleMouseMove);
+            verticalMarkerLine = verticalMarkerContainer.selectAll('path')
+                .data([{
+                    'x1': 0,
+                    'y1': 0,
+                    'x2': 0,
+                    'y2': 0
+                }])
+                .enter()
+                .append('line')
+                .attr({
+                    'x1': 0,
+                    'y1': height,
+                    'x2': 0,
+                    'y2': 0
+                });
         }
 
         function handleMouseOver(){
-            console.log('MouseOver!');
-            overlay.style('display', null);
+            overlay.style('display', 'block');
+            verticalMarkerLine.classed('bc-is-active', true);
+
+            dispatch.customMouseOver();
         }
 
         function handleMouseOut(){
-            console.log('MouseOut!');
             overlay.style('display', 'none');
+            verticalMarkerLine.classed('bc-is-active', false);
+
+            dispatch.customMouseOut();
         }
 
         function handleMouseMove(){
-            console.log('MouseMove!');
+            var nearestDataPoint;
+
+            nearestDataPoint = getNearestDataPoint(getMouseXPosition(this));
+            // Get mouse x position
+            // Get nearest datapoint
+            // More verticalMarker to that datapoint
+            dispatch.customMouseMove();
         }
 
-        // function listenToEvents(){
-        //     exports.on('customHover', function(){
-        //         console.log('hey!');
-        //     });
-        // }
+        function getMouseXPosition(event) {
+            return d3.mouse(event)[0];
+        }
+
+        function getNearestDataPoint(mouseX) {
+            var invertedX = xScale.invert(mouseX),
+                bisectDate = d3.bisector(function(d) { return d.date; }).left,
+                i;
+
+            // i = bisectDate(dataByDate, invertedX, 1);
+            // debugger;
+            // var epsilon = (keys[1]-keys[0])/2;
+            // var nearest = _.find(keys, function(a) {
+            //     return Math.abs(a - mouseX) <= epsilon;
+            // });
+            // var tooltipXposition;
+
+        }
 
         /**
          * Gets or Sets the margin of the chart
@@ -335,6 +388,20 @@ define(function(require){
                 return lineInterpolation;
             }
             lineInterpolation = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets whether the chart is being rendered on mobile
+         * @param  {boolean} _x True is mobile, false is not mobile
+         * @return { isMobile | module} Current mode (mobile or not mobile) or Line Chart module to chain calls
+         * @public
+         */
+        exports.isMobile = function(_x) {
+            if (!arguments.length) {
+                return isMobile;
+            }
+            isMobile = _x;
             return this;
         };
 
