@@ -42,7 +42,8 @@ define(function(require) {
 
     function dataCleaning(chartData) {
         var _data = _.compact(chartData.data),
-            dataByDate = chartData.dataByDate;
+            dataByDate = chartData.dataByDate,
+            readableDataType = chartData.readableDataType;
 
         _data.forEach(function(kv) {
             kv.Data.forEach(function(d) {
@@ -51,7 +52,7 @@ define(function(require) {
             });
         });
 
-        dataSet = { data: _data, dataByDate: dataByDate };
+        dataSet = { data: _data, dataByDate: dataByDate, readableDataType: readableDataType };
         $dfd.resolve(dataSet);
     }
 
