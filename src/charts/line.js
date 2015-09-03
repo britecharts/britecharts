@@ -2,7 +2,8 @@
 define(function(require){
     'use strict';
 
-    var d3 = require('d3');
+    var _ = require('underscore'),
+        d3 = require('d3');
 
     /**
      * @fileOverview Line Chart reusable API module that allows us
@@ -17,6 +18,7 @@ define(function(require){
 
         var margin = {top: 60, right: 0, bottom: 60, left: 0},
             colorRange = ['#00A8F2', '#00CC52', '#FFDB00', '#F20CB6', '#8400FF', '#051C48'],
+            topicColorMap,
             width = 960,
             height = 500,
             yAxisPadding = {
@@ -26,8 +28,11 @@ define(function(require){
                 right: 0
             },
             numVerticalTics = 5,
+
             data,
             dataByDate,
+            readableDataType,
+
             chartWidth, chartHeight,
             xScale, yScale, colorScale,
             xAxis, yAxis,
@@ -36,7 +41,15 @@ define(function(require){
             overlay,
             verticalMarkerContainer,
             verticalMarkerLine,
-            lineInterpolation = 'basis',
+
+            tooltip,
+            tooltipTextContainer,
+            tooltipBackground,
+            tooltipDivider,
+            tooltipBody,
+            tooltipWidth = 250,
+            tooltipHeight = 45,
+
             isMobile = false,
             // extractors
             getDate = function(d) { return d.date; },
@@ -45,6 +58,7 @@ define(function(require){
             // formats
             yTickNumberFormat = d3.format('s'),
             xTickDateFormat = d3.time.format('%e'),
+            tooltipDateFormat = d3.time.format('%b %d, %Y'),
             // events
             dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
 
@@ -60,6 +74,7 @@ define(function(require){
                 chartHeight = height - margin.top - margin.bottom;
                 data = _data.data;
                 dataByDate = _data.dataByDate;
+                readableDataType = _data.readableDataType;
 
                 buildScales();
                 buildAxis();
@@ -70,14 +85,15 @@ define(function(require){
                 drawAxis();
                 drawLines();
 
-                addMouseEvents();
-                drawHoverOverlay();
                 drawVerticalMarker();
+                drawTooltip();
+                drawHoverOverlay();
+                addMouseEvents();
             });
         }
 
         /**
-         * Adds events to the container group
+         * Adds events to the container group if the environment is not mobile
          * Adding: mouseover, mouseout and mousemove
          */
         function addMouseEvents(){
@@ -85,7 +101,7 @@ define(function(require){
                 return;
             }
 
-            svg.select('.container-group')
+            svg
                 .on('mouseover', handleMouseOver)
                 .on('mouseout', handleMouseOut)
                 .on('mousemove', handleMouseMove);
@@ -153,7 +169,7 @@ define(function(require){
                 maxY = d3.max(data, function(kv) { return d3.max(kv.Data, getValue); });
 
             xScale = d3.time.scale()
-                .rangeRound([60, chartWidth - 20])
+                .rangeRound([0, chartWidth])
                 .domain([minX, maxX]);
 
             yScale = d3.scale.linear()
@@ -215,8 +231,7 @@ define(function(require){
                 .x(function(d) {
                     return xScale(d.date);
                 })
-                .y(function(d) { return yScale(d.value); })
-                .interpolate(lineInterpolation);
+                .y(function(d) { return yScale(d.value); });
 
             lines = svg.select('.chart-group').selectAll('.line')
                 .data(data)
@@ -271,9 +286,10 @@ define(function(require){
         }
 
         function drawVerticalMarker(){
-            verticalMarkerContainer = overlay
+            verticalMarkerContainer = svg.select('.metadata-group')
                 .append('g')
-                .attr('class', 'hover-marker');
+                .attr('class', 'hover-marker')
+                .attr('transform', 'translate(' + '9999' + ',' + '0' + ')');
 
             verticalMarkerLine = verticalMarkerContainer.selectAll('path')
                 .data([{
@@ -284,11 +300,84 @@ define(function(require){
                 }])
                 .enter()
                 .append('line')
+                .classed('vertical-marker', true)
                 .attr({
                     'x1': 0,
                     'y1': height,
                     'x2': 0,
                     'y2': 0
+                });
+        }
+
+        function drawTooltip(){
+            tooltipTextContainer = verticalMarkerContainer
+                .append('g')
+                .classed('tooltip-text', true);
+
+            tooltipBackground = tooltipTextContainer
+                .append('rect')
+                .classed('tooltip-background', true)
+                .attr({
+                    'x': -tooltipWidth / 4 + 10,
+                    'y': -1,
+                    'width': tooltipWidth,
+                    'height': tooltipHeight,
+                    'rx': 3,
+                    'ry': 3
+                })
+                .style({
+                    'fill': '#FFFFFF',
+                    'stroke': '#D9D9D9',
+                    'stroke-width': 2
+                });
+
+            tooltip = tooltipTextContainer
+                .append('rect')
+                .classed('tooltip', true)
+                .attr({
+                    'x': -tooltipWidth / 4 + 8,
+                    'y': 0,
+                    'width': tooltipWidth,
+                    'height': tooltipHeight,
+                    'rx': 3,
+                    'ry': 3
+                })
+                .style({
+                    'fill': '#FFFFFF',
+                    'stroke': '#D9D9D9',
+                    'stroke-width': 1
+                });
+
+            tooltipTextContainer
+                .append('text')
+                .classed('tooltip-title', true)
+                .attr({
+                    'x': -tooltipWidth / 4 + 17,
+                    'dy': '.35em',
+                    'y': 16
+                })
+                .style({
+                    'fill': '#666666'
+                });
+
+            tooltipDivider = tooltipTextContainer
+                .append('line')
+                .classed('tooltip-divider', true)
+                .attr({
+                    'x1': -tooltipWidth / 4 + 15,
+                    'y1': 31,
+                    'x2': 265,
+                    'y2': 31
+                })
+                .style({
+                    'stroke': '#D9D9D9'
+                });
+
+            tooltipBody = tooltipTextContainer
+                .append('g')
+                .classed('tooltip-body', true)
+                .style({
+                    'fill': '#404040'
                 });
         }
 
@@ -302,37 +391,211 @@ define(function(require){
         function handleMouseOut(){
             overlay.style('display', 'none');
             verticalMarkerLine.classed('bc-is-active', false);
+            verticalMarkerContainer.attr('transform', 'translate(' + '9999' + ',' + '0' + ')');
 
             dispatch.customMouseOut();
         }
 
         function handleMouseMove(){
-            var nearestDataPoint;
+            var dataPoint = getNearestDataPoint(getMouseXPosition(this));
 
-            nearestDataPoint = getNearestDataPoint(getMouseXPosition(this));
-            // Get mouse x position
-            // Get nearest datapoint
             // More verticalMarker to that datapoint
+            moveVerticalMarker(dataPoint);
+            // Add data points highlighting
+            highlightDataPoints(dataPoint);
+            // Fill tooltip
+            updateTooltip(dataPoint);
+
             dispatch.customMouseMove();
+        }
+
+        function cleanTooltipContent(){
+            tooltipBody.selectAll('text').remove();
+            tooltipBody.selectAll('circle').remove();
+        }
+
+        function updateTooltipTitle(dataPoint) {
+            var tooltipTitle = readableDataType.name + ' - ' + tooltipDateFormat(new Date(dataPoint.date));
+
+            tooltipTextContainer.text(tooltipTitle);
+        }
+
+        function updateTooltipContent(topic){
+            var ttTextX = 0,
+                ttTextY = 37,
+                tooltipRight,
+                tooltipLeftText, tooltipRightText, elementText;
+
+            tooltipLeftText = $.trim(topic.topicName);
+
+            if (topic.missingValue) {
+                tooltipRightText = '-';
+            } else {
+                if (readableDataType.type === 'money') {
+                    tooltipRightText = topic.value;
+                    // tooltipRightText = EB.Intl.formatMoney(topic.value);
+                } else {
+                    tooltipRightText = topic.value;
+                    // tooltipRightText = EB.Intl.formatNumber(topic.value, {precision: 0});
+                }
+            }
+
+            elementText = tooltipBody
+                .append('text')
+                .attr({
+                    'dy': '1em',
+                    'x': ttTextX,
+                    'y': ttTextY
+                })
+                .style('fill', 'black')
+                .text(tooltipLeftText);
+
+            // TODO: wrap text
+
+            tooltipRight = tooltipBody
+                .append('text')
+                .attr({
+                    'dy': '1em',
+                    'x': ttTextX + 8,
+                    'y': ttTextY
+                })
+                .style('fill', 'black')
+                .text(tooltipRightText);
+
+            // Not sure if necessary
+            tooltipRight.attr({
+                'x': tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4
+            });
+
+            tooltipBody
+                .append('circle')
+                .attr({
+                    'cx': 22 - tooltipWidth / 4,
+                    'cy': (ttTextY + 7),
+                    'r': 5
+                })
+                .style({
+                    'fill': topicColorMap[topic.name],
+                    'stroke-width': 1
+                });
+        }
+
+        /**
+         * Updates tooltip title, content, size and position
+         * @param  {object} dataPoint Current datapoint to show info about
+         * @return void
+         */
+        function updateTooltip(dataPoint){
+            cleanTooltipContent();
+            updateTooltipTitle(dataPoint);
+            _.each(dataPoint.topics, updateTooltipContent);
+            updateTooltipPositionAndSize(dataPoint);
+        }
+
+        /**
+         * Updates size and position of tooltip depending on the side of the chart we are in
+         * @param  {object} dataPoint DataPoint of the tooltip
+         * @return void
+         */
+        function updateTooltipPositionAndSize(dataPoint){
+            tooltip
+                .attr({
+                    'width': tooltipWidth,
+                    'height': tooltipHeight + 10
+                });
+
+            tooltipBackground
+                .attr({
+                    'width': tooltipWidth - 3,
+                    'height': tooltipHeight + 12
+                });
+
+
+            // show tooltip to the right
+            if ((xScale(new Date(dataPoint.date)) - tooltipWidth / 3) < 0) {
+                tooltipTextContainer
+                    .attr('transform', 'translate(' + (tooltipWidth - 5) + ',' + (0) + ')');
+            } else {
+                tooltipTextContainer
+                    .attr('transform', 'translate(' + (-25) + ',' + (0) + ')');
+            }
+
+            tooltipDivider
+                .attr({
+                    'x2': tooltipWidth - 60
+                });
+        }
+
+        function cleanDataPointHighlights(){
+            verticalMarkerContainer.selectAll('.circle-container').remove();
+        }
+
+        function highlightDataPoints(dataPoint){
+            cleanDataPointHighlights();
+
+            topicColorMap = _.object(
+                colorScale.domain(),
+                colorScale.range()
+            );
+
+            _.each(dataPoint.topics, function(topic, index){
+                var marker = verticalMarkerContainer
+                                .append('g')
+                                .classed('circle-container', true),
+                    circleSize = 12;
+
+                marker.append('circle')
+                    .classed('data-point-highlighter', true)
+                    .attr({
+                        'cx': circleSize,
+                        'cy': 0,
+                        'r': 5.5
+                    })
+                    .style({
+                        'fill': topicColorMap[topic.name]
+                    });
+
+                marker.attr('transform', 'translate(' + (- circleSize) + ',' + (yScale(dataPoint.topics[index].value)) + ')');
+            });
+        }
+
+        function moveVerticalMarker(dataPoint){
+            var date = new Date(dataPoint.date),
+                verticalMarkerXPosition = xScale(date);
+
+            verticalMarkerContainer.attr('transform', 'translate(' + verticalMarkerXPosition + ',' + '0' + ')');
         }
 
         function getMouseXPosition(event) {
             return d3.mouse(event)[0];
         }
 
+        function getFormattedDateFromData(date) {
+            return date.toISOString().split('T')[0] + 'T00:00:00Z';
+        }
+
         function getNearestDataPoint(mouseX) {
             var invertedX = xScale.invert(mouseX),
-                bisectDate = d3.bisector(function(d) { return d.date; }).left,
-                i;
+                bisectDate = d3.bisector(getDate).left,
+                dataEntryIndex, dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition,
+                nearestDataPoint;
 
-            // i = bisectDate(dataByDate, invertedX, 1);
-            // debugger;
-            // var epsilon = (keys[1]-keys[0])/2;
-            // var nearest = _.find(keys, function(a) {
-            //     return Math.abs(a - mouseX) <= epsilon;
-            // });
-            // var tooltipXposition;
+            dateOnCursorXPosition = getFormattedDateFromData(invertedX);
+            dataEntryIndex = bisectDate(dataByDate, dateOnCursorXPosition, 1);
+            dataEntryForXPosition = dataByDate[dataEntryIndex];
+            previousDataEntryForXPosition = dataByDate[dataEntryIndex - 1];
 
+            if (previousDataEntryForXPosition) {
+                nearestDataPoint = findOutNearestDate(dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition);
+            } else {
+                nearestDataPoint = dataEntryForXPosition;
+            }
+
+            return nearestDataPoint;
+        }
+
+        function findOutNearestDate(x0, d0, d1){
+            return (new Date(x0).getTime() - new Date(d0.date).getTime()) > (new Date(d1.date).getTime() - new Date(x0).getTime()) ? d1 : d0;
         }
 
         /**
@@ -374,20 +637,6 @@ define(function(require){
                 return height;
             }
             height = _x;
-            return this;
-        };
-
-        /**
-         * Gets or Sets the line's interpolation mode
-         * @param  {string} _x Desired interpolation mode for the lines
-         * @return { lineInterpolation | module} Current lineInterpolation or Line Chart module to chain calls
-         * @public
-         */
-        exports.lineInterpolation = function(_x) {
-            if (!arguments.length) {
-                return lineInterpolation;
-            }
-            lineInterpolation = _x;
             return this;
         };
 

@@ -242,7 +242,7 @@ define([
             // Event Setting
             it('should trigger an event on hover', function(){
                 var callback = jasmine.createSpy('hoverCallback'),
-                    container = containerFixture.selectAll('.container-group');
+                    container = containerFixture.selectAll('svg');
 
                 lineChart.on('customMouseOver', callback);
                 container[0][0].__onmouseover();
@@ -252,23 +252,22 @@ define([
 
             it('should trigger an event on mouse out', function(){
                 var callback = jasmine.createSpy('mouseOutCallback'),
-                    container = containerFixture.selectAll('.container-group');
+                    container = containerFixture.selectAll('svg');
 
                 lineChart.on('customMouseOut', callback);
                 container[0][0].__onmouseout();
                 expect(callback.calls.count()).toBe(1);
             });
 
+            // We need to stub some code in order to be able to run this test
             // it('should trigger an event on mouse move', function(){
             //     var callback = jasmine.createSpy('mouseMoveCallback'),
-            //         container = containerFixture.selectAll('.container-group');
-
+            //         container = containerFixture.selectAll('svg');
             //     lineChart.on('customMouseMove', callback);
             //     container[0][0].__onmousemove();
 
             //     expect(callback.calls.count()).toBe(1);
             // });
-
 
             // Tooltip and Markers
             it('should render an overlay to trigger the hover effect', function(){
@@ -276,7 +275,7 @@ define([
             });
 
             it('should show a vertical line where the mouse is hovering', function() {
-                var container = containerFixture.selectAll('.container-group'),
+                var container = containerFixture.selectAll('svg'),
                     verticalLine = d3.select('.hover-marker line');
 
                 container[0][0].__onmouseover();
@@ -285,7 +284,7 @@ define([
             });
 
             it('should not show the tooltip on mobile', function() {
-                var container = containerFixture.selectAll('.container-group'),
+                var container = containerFixture.selectAll('svg'),
                     overlay = d3.select('.overlay');
 
                 lineChart.isMobile(true);
@@ -333,17 +332,6 @@ define([
                 expect(newHeight).toBe(testHeight);
             });
 
-            it('should provide interpolation mode getter and setter', function(){
-                var defaultLineInterpolation = lineChart.lineInterpolation(),
-                    testLineInterpolation = 'step',
-                    newLineInterpolation;
-
-                lineChart.lineInterpolation(testLineInterpolation);
-                newLineInterpolation = lineChart.lineInterpolation();
-
-                expect(defaultLineInterpolation).not.toBe(testLineInterpolation);
-                expect(newLineInterpolation).toBe(testLineInterpolation);
-            });
         });
 
     });
