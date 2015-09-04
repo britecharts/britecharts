@@ -16,28 +16,35 @@ define(function(require){
      */
     return function module(){
 
-        var margin = {top: 20, right: 0, bottom: 20, left: 0},
+        var margin = {top: 20, right: 0, bottom: 20, left: 80},
             width = 960,
             height = 500,
             svg,
             isMobile = false,
             chartWidth, chartHeight,
             xScale, yScale, colorScale,
-            xAxis, yAxis,
-            yAxisPadding = {
+            xAxis, xMonthAxis, yAxis,
+            xAxisPadding = {
                 top: 0,
-                left: 35,
+                left: 25,
                 bottom: 0,
                 right: 0
             },
-
-            colorRange = ['#00A8F2', '#00CC52', '#FFDB00', '#F20CB6', '#8400FF', '#051C48'],
+            colorRange = [
+                '#4DC2F5',
+                '#4DDB86',
+                '#E5C400',
+                '#FF4D7C',
+                '#9963D5',
+                '#051C48'
+            ],
             colorOrder = {
-                '#00A8F2': 0,
-                '#00CC52': 1,
-                '#FFDB00': 2,
-                '#F20CB6': 3,
-                '#8400FF': 4
+                '#4DC2F5': 0,
+                '#4DDB86': 1,
+                '#E5C400': 2,
+                '#FF4D7C': 3,
+                '#9963D5': 4,
+                '#051C48': 5
             },
             topicColorMap,
             ease = 'ease',
@@ -76,6 +83,7 @@ define(function(require){
             // formats
             yTickNumberFormat = d3.format('s'),
             xTickDateFormat = d3.time.format('%e'),
+            xTickMonthFormat = d3.time.format('%B'),
             tooltipDateFormat = d3.time.format('%B %d, %Y'),
 
             // events
@@ -148,6 +156,13 @@ define(function(require){
                 .tickSize(10, 0).tickPadding(5)
                 .tickFormat(xTickDateFormat);
 
+            xMonthAxis = d3.svg.axis()
+                .scale(xScale)
+                .ticks(3)
+                .tickSize(0, 0)
+                .orient('bottom')
+                .tickFormat(xTickMonthFormat);
+
             yAxis = d3.svg.axis()
                 .scale(yScale)
                 .orient('left')
@@ -176,9 +191,6 @@ define(function(require){
                 .append('g').classed('chart-group', true);
             container
                 .append('g').classed('metadata-group', true);
-
-            container
-                .attr({transform: 'translate(' + margin.left + ',' + margin.top + ')'});
         }
 
         /**
@@ -216,14 +228,14 @@ define(function(require){
                 svg = d3.select(container)
                     .append('svg')
                     .classed('britechart', true)
-                    .classed('line-chart', true);
+                    .classed('line-chart', true)
+                    .attr({
+                        width: width + margin.left + margin.right,
+                        height: height + margin.top + margin.bottom
+                    })
+                    .append('g')
+                    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
             }
-            svg
-                .transition().ease(ease)
-                .attr({
-                    width: width + margin.left + margin.right,
-                    height: height + margin.top + margin.bottom
-                });
         }
 
         /**
@@ -258,12 +270,20 @@ define(function(require){
                 .attr('transform', 'translate(0,' + chartHeight + ')')
                 .call(xAxis);
 
+            svg.select('.x-axis-group')
+                .append('g')
+                .attr('class', 'month-axis')
+                .transition()
+                .ease(ease)
+                .attr('transform', 'translate(0,' + (chartHeight + margin.bottom + 8) + ')')
+                .call(xMonthAxis);
+
             svg.select('.y-axis-group')
                 .append('g')
                 .attr('class', 'y axis')
                 .transition()
                 .ease(ease)
-                .attr('transform', 'translate(' + yAxisPadding.left + ', 0)')
+                .attr('transform', 'translate(' + (-xAxisPadding.left) + ', 0)')
                 .call(yAxis)
                 .call(adjustYTickLabels);
         }
@@ -328,11 +348,21 @@ define(function(require){
                     .append('line')
                     .attr({
                         'class': 'horizontal-grid-line',
-                        'x1': 0,
-                        'x2': chartWidth + 20,
+                        'x1': (-xAxisPadding.left - 30),
+                        'x2': chartWidth,
                         'y1': function(d) { return yScale(d); },
                         'y2': function(d) { return yScale(d); }
                     });
+
+            //draw a horizontal line to extend x-axis till the edges
+            svg.select('.grid-lines-group')
+                .append('line').attr({
+                    'class': 'extended-x-line',
+                    'x1': (-xAxisPadding.left - 30),
+                    'x2': chartWidth,
+                    'y1': height - margin.bottom - margin.top,
+                    'y2': height - margin.bottom - margin.top
+                });
         }
 
         /**
@@ -510,7 +540,7 @@ define(function(require){
             dataEntryForXPosition = dataByDate[dataEntryIndex];
             previousDataEntryForXPosition = dataByDate[dataEntryIndex - 1];
 
-            if (previousDataEntryForXPosition) {
+            if (previousDataEntryForXPosition && dataEntryForXPosition) {
                 nearestDataPoint = findOutNearestDate(dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition);
             } else {
                 nearestDataPoint = dataEntryForXPosition;
@@ -525,14 +555,17 @@ define(function(require){
          * @return void
          */
         function handleMouseMove(){
-            var dataPoint = getNearestDataPoint(getMouseXPosition(this));
+            var xPositionOffset = 10, //Arbitrary number, will love to know how to assess it
+                dataPoint = getNearestDataPoint(getMouseXPosition(this) + xPositionOffset);
 
-            // More verticalMarker to that datapoint
-            moveVerticalMarker(dataPoint);
-            // Add data points highlighting
-            highlightDataPoints(dataPoint);
-            // Fill tooltip
-            updateTooltip(dataPoint);
+            if(dataPoint) {
+                // More verticalMarker to that datapoint
+                moveVerticalMarker(dataPoint);
+                // Add data points highlighting
+                highlightDataPoints(dataPoint);
+                // Fill tooltip
+                updateTooltip(dataPoint);
+            }
 
             dispatch.customMouseMove();
         }
