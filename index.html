@@ -23,11 +23,17 @@
         }
         .tick text {
             font-size: 0.8em;
-            fill: rgba(0, 0, 0, 0.3);
+            fill: rgba(0, 0, 0, 0.45);
             text-anchor: middle;
 
             padding: 10px;
             background-color: red;
+        }
+        .tick line {
+            fill: none;
+            stroke: rgba(0, 0, 0, 0.45);
+            stroke-width: 1;
+            shape-rendering: crispEdges;
         }
         .y.axis path {
             display: none;
@@ -38,11 +44,16 @@
             fill: none;
         }
         .hover-marker .data-point-highlighter{
-            stroke-width: 2;
-            stroke: #ffffff;
+            stroke-width: 3;
+            fill: #ffffff;
         }
         .masking-rectangle {
             fill: #FFFFFF;
+        }
+        .tooltip-background {
+            fill: #FFFFFF;
+            stroke: #D9D9D9;
+            stroke-width: 1;
         }
     </style>
 </head>

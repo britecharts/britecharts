@@ -50,7 +50,7 @@ define(function(require){
             numVerticalTics = 5,
 
             overlay,
-            overlayColor = 'rgba(0, 0, 0, 0.02)',
+            overlayColor = 'rgba(0, 0, 0, 0)',
             verticalMarkerContainer,
             verticalMarkerLine,
 
@@ -366,16 +366,11 @@ define(function(require){
                 .classed('tooltip-background', true)
                 .attr({
                     'x': -tooltipWidth / 4 + 10,
-                    'y': -1,
+                    'y': 0,
                     'width': tooltipWidth,
-                    'height': tooltipHeight,
+                    'height': tooltipHeight-1,
                     'rx': 3,
                     'ry': 3
-                })
-                .style({
-                    'fill': '#FFFFFF',
-                    'stroke': '#D9D9D9',
-                    'stroke-width': 2
                 });
 
             tooltip = tooltipTextContainer
@@ -450,7 +445,7 @@ define(function(require){
                 .classed('vertical-marker', true)
                 .attr({
                     'x1': 0,
-                    'y1': height,
+                    'y1': height - margin.top - margin.bottom,
                     'x2': 0,
                     'y2': 0
                 });
@@ -585,7 +580,7 @@ define(function(require){
                 return colorOrder[topicColorMap[el.name]];
             });
 
-            _.each(dataPoint.topics, function(topic, index){
+            dataPoint.topics.forEach(function(topic, index){
                 var marker = verticalMarkerContainer
                                 .append('g')
                                 .classed('circle-container', true),
@@ -596,10 +591,10 @@ define(function(require){
                     .attr({
                         'cx': circleSize,
                         'cy': 0,
-                        'r': 5.5
+                        'r': 5
                     })
                     .style({
-                        'fill': topicColorMap[topic.name]
+                        'stroke': topicColorMap[topic.name]
                     });
 
                 marker.attr('transform', 'translate(' + (- circleSize) + ',' + (yScale(dataPoint.topics[index].value)) + ')');
@@ -630,7 +625,7 @@ define(function(require){
 
             cleanTooltipContent();
             updateTooltipTitle(dataPoint);
-            _.each(dataPoint.topics, updateTooltipContent);
+            dataPoint.topics.forEach(updateTooltipContent);
             updateTooltipPositionAndSize(dataPoint);
         }
 
@@ -663,7 +658,7 @@ define(function(require){
                 .append('text')
                 .attr({
                     'dy': '1em',
-                    'x': ttTextX,
+                    'x': ttTextX - 20,
                     'y': ttTextY
                 })
                 .style('fill', 'black')
@@ -692,8 +687,8 @@ define(function(require){
             tooltipBody
                 .append('circle')
                 .attr({
-                    'cx': 22 - tooltipWidth / 4,
-                    'cy': (ttTextY + 7),
+                    'cx': 25 - tooltipWidth / 4,
+                    'cy': (ttTextY + 10),
                     'r': 5
                 })
                 .style({
