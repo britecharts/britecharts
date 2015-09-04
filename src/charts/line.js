@@ -47,8 +47,12 @@ define(function(require){
             tooltipBackground,
             tooltipDivider,
             tooltipBody,
+            tooltipTitle,
             tooltipWidth = 250,
             tooltipHeight = 45,
+            ttTextX,
+            ttTextY,
+            textSize,
 
             isMobile = false,
             // extractors
@@ -285,6 +289,10 @@ define(function(require){
                 .style('display', 'none');
         }
 
+        /**
+         * Creates the vertical marker
+         * @return void
+         */
         function drawVerticalMarker(){
             verticalMarkerContainer = svg.select('.metadata-group')
                 .append('g')
@@ -309,6 +317,10 @@ define(function(require){
                 });
         }
 
+        /**
+         * Draws the different elements of the Tooltip box
+         * @return void
+         */
         function drawTooltip(){
             tooltipTextContainer = verticalMarkerContainer
                 .append('g')
@@ -348,7 +360,7 @@ define(function(require){
                     'stroke-width': 1
                 });
 
-            tooltipTextContainer
+            tooltipTitle = tooltipTextContainer
                 .append('text')
                 .classed('tooltip-title', true)
                 .attr({
@@ -381,6 +393,10 @@ define(function(require){
                 });
         }
 
+        /**
+         * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
+         * @return void
+         */
         function handleMouseOver(){
             overlay.style('display', 'block');
             verticalMarkerLine.classed('bc-is-active', true);
@@ -388,6 +404,11 @@ define(function(require){
             dispatch.customMouseOver();
         }
 
+        /**
+         * MouseOut handler, hides overlay and removes active class on verticalMarkerLine
+         * It also resets the container of the vertical marker
+         * @return {[type]} [description]
+         */
         function handleMouseOut(){
             overlay.style('display', 'none');
             verticalMarkerLine.classed('bc-is-active', false);
@@ -396,6 +417,11 @@ define(function(require){
             dispatch.customMouseOut();
         }
 
+        /**
+         * MouseMove handler, calculates the nearest dataPoint to the cursor
+         * and updates metadata related to it
+         * @return void
+         */
         function handleMouseMove(){
             var dataPoint = getNearestDataPoint(getMouseXPosition(this));
 
@@ -409,22 +435,36 @@ define(function(require){
             dispatch.customMouseMove();
         }
 
+        /**
+         * Resets the tooltipBody content
+         * @return void
+         */
         function cleanTooltipContent(){
             tooltipBody.selectAll('text').remove();
             tooltipBody.selectAll('circle').remove();
         }
 
+        /**
+         * Updates value of tooltipTitle with the data meaning and the date
+         * @param  {obj} dataPoint Point of data to use as source
+         * @return void
+         */
         function updateTooltipTitle(dataPoint) {
-            var tooltipTitle = readableDataType.name + ' - ' + tooltipDateFormat(new Date(dataPoint.date));
+            var tooltipTitleText = readableDataType.name + ' - ' + tooltipDateFormat(new Date(dataPoint.date));
 
-            tooltipTextContainer.text(tooltipTitle);
+            tooltipTitle.text(tooltipTitleText);
         }
 
+        /**
+         * Draws the data entries inside the tooltip for a given topic
+         * @param  {obj} topic Topic to extract data from
+         * @return void
+         */
         function updateTooltipContent(topic){
-            var ttTextX = 0,
-                ttTextY = 37,
-                tooltipRight,
-                tooltipLeftText, tooltipRightText, elementText;
+            var tooltipRight,
+                tooltipLeftText,
+                tooltipRightText,
+                elementText;
 
             tooltipLeftText = $.trim(topic.topicName);
 
@@ -462,6 +502,9 @@ define(function(require){
                 .style('fill', 'black')
                 .text(tooltipRightText);
 
+            textSize = elementText.node().getBBox();
+            tooltipHeight += textSize.height + 5;
+
             // Not sure if necessary
             tooltipRight.attr({
                 'x': tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4
@@ -478,6 +521,8 @@ define(function(require){
                     'fill': topicColorMap[topic.name],
                     'stroke-width': 1
                 });
+
+            ttTextY += textSize.height + 7;
         }
 
         /**
@@ -486,6 +531,10 @@ define(function(require){
          * @return void
          */
         function updateTooltip(dataPoint){
+            ttTextX = 0;
+            ttTextY = 37;
+            tooltipHeight = 40;
+
             cleanTooltipContent();
             updateTooltipTitle(dataPoint);
             _.each(dataPoint.topics, updateTooltipContent);
@@ -512,12 +561,14 @@ define(function(require){
 
 
             // show tooltip to the right
-            if ((xScale(new Date(dataPoint.date)) - tooltipWidth / 3) < 0) {
+            if ((xScale(new Date(dataPoint.date)) - tooltipWidth) < 0) {
+                // Tooltip on the right
                 tooltipTextContainer
-                    .attr('transform', 'translate(' + (tooltipWidth - 5) + ',' + (0) + ')');
+                    .attr('transform', 'translate(' + (tooltipWidth - 190) + ',' + (0) + ')');
             } else {
+                // Tooltip on the left
                 tooltipTextContainer
-                    .attr('transform', 'translate(' + (-25) + ',' + (0) + ')');
+                    .attr('transform', 'translate(' + (-200) + ',' + (0) + ')');
             }
 
             tooltipDivider
@@ -526,10 +577,19 @@ define(function(require){
                 });
         }
 
+        /**
+         * Removes all the datapoints highlighter circles added to the marker container
+         * @return void
+         */
         function cleanDataPointHighlights(){
             verticalMarkerContainer.selectAll('.circle-container').remove();
         }
 
+        /**
+         * Creates coloured circles marking where the exact data y value is for a given data point
+         * @param  {obj} dataPoint Data point to extract info from
+         * @return void
+         */
         function highlightDataPoints(dataPoint){
             cleanDataPointHighlights();
 
@@ -559,6 +619,11 @@ define(function(require){
             });
         }
 
+        /**
+         * Helper method to update the x position of the vertical marker
+         * @param  {obj} dataPoint Data entry to extract info
+         * @return void
+         */
         function moveVerticalMarker(dataPoint){
             var date = new Date(dataPoint.date),
                 verticalMarkerXPosition = xScale(date);
@@ -566,14 +631,29 @@ define(function(require){
             verticalMarkerContainer.attr('transform', 'translate(' + verticalMarkerXPosition + ',' + '0' + ')');
         }
 
+        /**
+         * Extract X position on the graph from a given mouse event
+         * @param  {obj} event D3 mouse event
+         * @return {number}       Position on the x axis of the mouse
+         */
         function getMouseXPosition(event) {
             return d3.mouse(event)[0];
         }
 
+        /**
+         * Formats the date in ISOString
+         * @param  {string} date Date as given in data entries
+         * @return {string}      Date in ISO format in a neutral timezone
+         */
         function getFormattedDateFromData(date) {
             return date.toISOString().split('T')[0] + 'T00:00:00Z';
         }
 
+        /**
+         * Finds out the data entry that is closer to the given position on pixels
+         * @param  {number} mouseX X position of the mouse
+         * @return {obj}        Data entry that is closer to that x axis position
+         */
         function getNearestDataPoint(mouseX) {
             var invertedX = xScale.invert(mouseX),
                 bisectDate = d3.bisector(getDate).left,
