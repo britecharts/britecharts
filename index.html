@@ -21,6 +21,12 @@
             stroke: #EEEEEE;
             stroke-width: 1px;
         }
+        .extended-x-line {
+            fill: none;
+            shape-rendering: crispEdges;
+            stroke: rgba(0, 0, 0, 0.45);
+            stroke-width: 1;
+        }
         .tick text {
             font-size: 0.8em;
             fill: rgba(0, 0, 0, 0.45);
@@ -36,6 +42,9 @@
             shape-rendering: crispEdges;
         }
         .y.axis path {
+            display: none;
+        }
+        .month-axis path {
             display: none;
         }
         .hover-marker .vertical-marker {
