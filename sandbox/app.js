@@ -13,7 +13,8 @@ function(
         .withPath('../test/fixtures/lineDataFiveTopics.json')
         .build()
         .done(function(dataset){
-            lineChart.width(600).height(400);
+            lineChart
+                .width(780).height(330);
             container.datum(dataset).call(lineChart);
         });
 });
