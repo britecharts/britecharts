@@ -18,6 +18,13 @@ define(function(require){
 
         var margin = {top: 60, right: 0, bottom: 60, left: 0},
             colorRange = ['#00A8F2', '#00CC52', '#FFDB00', '#F20CB6', '#8400FF', '#051C48'],
+            colorOrder = {
+                '#00A8F2': 0,
+                '#00CC52': 1,
+                '#FFDB00': 2,
+                '#F20CB6': 3,
+                '#8400FF': 4
+            },
             topicColorMap,
             width = 960,
             height = 500,
@@ -133,20 +140,6 @@ define(function(require){
         }
 
         /**
-         * Calculates the maximum number of ticks for the x axis
-         * @param  {number} width Chart width
-         * @param  {number} dataPointNumber  Number of entries on the data
-         * @return {number}       Number of ticks to render
-         */
-        function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
-            var singleTickWidth = 20,
-                spacing = 40,
-                ticksForWidth = Math.ceil(width / (singleTickWidth + spacing));
-
-            return Math.min(dataPointNumber, ticksForWidth);
-        }
-
-        /**
          * Builds containers for the chart, the axis and a wrapper for all of them
          * @private
          */
@@ -201,6 +194,23 @@ define(function(require){
                 width: width + margin.left + margin.right,
                 height: height + margin.top + margin.bottom
             });
+        }
+
+        /**
+         * Removes all the datapoints highlighter circles added to the marker container
+         * @return void
+         */
+        function cleanDataPointHighlights(){
+            verticalMarkerContainer.selectAll('.circle-container').remove();
+        }
+
+        /**
+         * Resets the tooltipBody content
+         * @return void
+         */
+        function cleanTooltipContent(){
+            tooltipBody.selectAll('text').remove();
+            tooltipBody.selectAll('circle').remove();
         }
 
         /**
@@ -290,34 +300,6 @@ define(function(require){
         }
 
         /**
-         * Creates the vertical marker
-         * @return void
-         */
-        function drawVerticalMarker(){
-            verticalMarkerContainer = svg.select('.metadata-group')
-                .append('g')
-                .attr('class', 'hover-marker')
-                .attr('transform', 'translate(' + '9999' + ',' + '0' + ')');
-
-            verticalMarkerLine = verticalMarkerContainer.selectAll('path')
-                .data([{
-                    'x1': 0,
-                    'y1': 0,
-                    'x2': 0,
-                    'y2': 0
-                }])
-                .enter()
-                .append('line')
-                .classed('vertical-marker', true)
-                .attr({
-                    'x1': 0,
-                    'y1': height,
-                    'x2': 0,
-                    'y2': 0
-                });
-        }
-
-        /**
          * Draws the different elements of the Tooltip box
          * @return void
          */
@@ -394,27 +376,99 @@ define(function(require){
         }
 
         /**
-         * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
+         * Creates the vertical marker
          * @return void
          */
-        function handleMouseOver(){
-            overlay.style('display', 'block');
-            verticalMarkerLine.classed('bc-is-active', true);
+        function drawVerticalMarker(){
+            verticalMarkerContainer = svg.select('.metadata-group')
+                .append('g')
+                .attr('class', 'hover-marker')
+                .attr('transform', 'translate(' + '9999' + ',' + '0' + ')');
 
-            dispatch.customMouseOver();
+            verticalMarkerLine = verticalMarkerContainer.selectAll('path')
+                .data([{
+                    'x1': 0,
+                    'y1': 0,
+                    'x2': 0,
+                    'y2': 0
+                }])
+                .enter()
+                .append('line')
+                .classed('vertical-marker', true)
+                .attr({
+                    'x1': 0,
+                    'y1': height,
+                    'x2': 0,
+                    'y2': 0
+                });
         }
 
         /**
-         * MouseOut handler, hides overlay and removes active class on verticalMarkerLine
-         * It also resets the container of the vertical marker
-         * @return {[type]} [description]
+         * Finds out which datapoint is closer to the given x position
+         * @param  {number} x0 Date value for data point
+         * @param  {obj} d0 Previous datapoint
+         * @param  {obj} d1 Next datapoint
+         * @return {obj}    d0 or d1, the datapoint with closest date to x0
          */
-        function handleMouseOut(){
-            overlay.style('display', 'none');
-            verticalMarkerLine.classed('bc-is-active', false);
-            verticalMarkerContainer.attr('transform', 'translate(' + '9999' + ',' + '0' + ')');
+        function findOutNearestDate(x0, d0, d1){
+            return (new Date(x0).getTime() - new Date(d0.date).getTime()) > (new Date(d1.date).getTime() - new Date(x0).getTime()) ? d1 : d0;
+        }
 
-            dispatch.customMouseOut();
+        /**
+         * Calculates the maximum number of ticks for the x axis
+         * @param  {number} width Chart width
+         * @param  {number} dataPointNumber  Number of entries on the data
+         * @return {number}       Number of ticks to render
+         */
+        function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
+            var singleTickWidth = 20,
+                spacing = 40,
+                ticksForWidth = Math.ceil(width / (singleTickWidth + spacing));
+
+            return Math.min(dataPointNumber, ticksForWidth);
+        }
+
+        /**
+         * Extract X position on the graph from a given mouse event
+         * @param  {obj} event D3 mouse event
+         * @return {number}       Position on the x axis of the mouse
+         */
+        function getMouseXPosition(event) {
+            return d3.mouse(event)[0];
+        }
+
+        /**
+         * Formats the date in ISOString
+         * @param  {string} date Date as given in data entries
+         * @return {string}      Date in ISO format in a neutral timezone
+         */
+        function getFormattedDateFromData(date) {
+            return date.toISOString().split('T')[0] + 'T00:00:00Z';
+        }
+
+        /**
+         * Finds out the data entry that is closer to the given position on pixels
+         * @param  {number} mouseX X position of the mouse
+         * @return {obj}        Data entry that is closer to that x axis position
+         */
+        function getNearestDataPoint(mouseX) {
+            var invertedX = xScale.invert(mouseX),
+                bisectDate = d3.bisector(getDate).left,
+                dataEntryIndex, dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition,
+                nearestDataPoint;
+
+            dateOnCursorXPosition = getFormattedDateFromData(invertedX);
+            dataEntryIndex = bisectDate(dataByDate, dateOnCursorXPosition, 1);
+            dataEntryForXPosition = dataByDate[dataEntryIndex];
+            previousDataEntryForXPosition = dataByDate[dataEntryIndex - 1];
+
+            if (previousDataEntryForXPosition) {
+                nearestDataPoint = findOutNearestDate(dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition);
+            } else {
+                nearestDataPoint = dataEntryForXPosition;
+            }
+
+            return nearestDataPoint;
         }
 
         /**
@@ -436,23 +490,95 @@ define(function(require){
         }
 
         /**
-         * Resets the tooltipBody content
-         * @return void
+         * MouseOut handler, hides overlay and removes active class on verticalMarkerLine
+         * It also resets the container of the vertical marker
+         * @return {[type]} [description]
          */
-        function cleanTooltipContent(){
-            tooltipBody.selectAll('text').remove();
-            tooltipBody.selectAll('circle').remove();
+        function handleMouseOut(){
+            overlay.style('display', 'none');
+            verticalMarkerLine.classed('bc-is-active', false);
+            verticalMarkerContainer.attr('transform', 'translate(' + '9999' + ',' + '0' + ')');
+
+            dispatch.customMouseOut();
         }
 
         /**
-         * Updates value of tooltipTitle with the data meaning and the date
-         * @param  {obj} dataPoint Point of data to use as source
+         * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
          * @return void
          */
-        function updateTooltipTitle(dataPoint) {
-            var tooltipTitleText = readableDataType.name + ' - ' + tooltipDateFormat(new Date(dataPoint.date));
+        function handleMouseOver(){
+            overlay.style('display', 'block');
+            verticalMarkerLine.classed('bc-is-active', true);
 
-            tooltipTitle.text(tooltipTitleText);
+            dispatch.customMouseOver();
+        }
+
+        /**
+         * Creates coloured circles marking where the exact data y value is for a given data point
+         * @param  {obj} dataPoint Data point to extract info from
+         * @return void
+         */
+        function highlightDataPoints(dataPoint){
+            cleanDataPointHighlights();
+
+            topicColorMap = _.object(
+                colorScale.domain(),
+                colorScale.range()
+            );
+
+            // sorting the topics based on the order of the colors,
+            // so that the order always stays constant
+            dataPoint.topics = _.sortBy(dataPoint.topics, function(el) {
+                return colorOrder[topicColorMap[el.name]];
+            });
+
+            _.each(dataPoint.topics, function(topic, index){
+                var marker = verticalMarkerContainer
+                                .append('g')
+                                .classed('circle-container', true),
+                    circleSize = 12;
+
+                marker.append('circle')
+                    .classed('data-point-highlighter', true)
+                    .attr({
+                        'cx': circleSize,
+                        'cy': 0,
+                        'r': 5.5
+                    })
+                    .style({
+                        'fill': topicColorMap[topic.name]
+                    });
+
+                marker.attr('transform', 'translate(' + (- circleSize) + ',' + (yScale(dataPoint.topics[index].value)) + ')');
+            });
+        }
+
+        /**
+         * Helper method to update the x position of the vertical marker
+         * @param  {obj} dataPoint Data entry to extract info
+         * @return void
+         */
+        function moveVerticalMarker(dataPoint){
+            var date = new Date(dataPoint.date),
+                verticalMarkerXPosition = xScale(date);
+
+            verticalMarkerContainer.attr('transform', 'translate(' + verticalMarkerXPosition + ',' + '0' + ')');
+        }
+
+        /**
+         * Updates tooltip title, content, size and position
+         * @param  {object} dataPoint Current datapoint to show info about
+         * @return void
+         */
+        function updateTooltip(dataPoint){
+            ttTextX = 0;
+            ttTextY = 37;
+            tooltipHeight = 40;
+
+            cleanTooltipContent();
+            updateTooltipTitle(dataPoint);
+            _.each(dataPoint.topics, updateTooltipContent);
+            updateTooltipPositionAndSize(dataPoint);
         }
 
         /**
@@ -526,22 +652,6 @@ define(function(require){
         }
 
         /**
-         * Updates tooltip title, content, size and position
-         * @param  {object} dataPoint Current datapoint to show info about
-         * @return void
-         */
-        function updateTooltip(dataPoint){
-            ttTextX = 0;
-            ttTextY = 37;
-            tooltipHeight = 40;
-
-            cleanTooltipContent();
-            updateTooltipTitle(dataPoint);
-            _.each(dataPoint.topics, updateTooltipContent);
-            updateTooltipPositionAndSize(dataPoint);
-        }
-
-        /**
          * Updates size and position of tooltip depending on the side of the chart we are in
          * @param  {object} dataPoint DataPoint of the tooltip
          * @return void
@@ -577,134 +687,20 @@ define(function(require){
                 });
         }
 
+
         /**
-         * Removes all the datapoints highlighter circles added to the marker container
+         * Updates value of tooltipTitle with the data meaning and the date
+         * @param  {obj} dataPoint Point of data to use as source
          * @return void
          */
-        function cleanDataPointHighlights(){
-            verticalMarkerContainer.selectAll('.circle-container').remove();
+        function updateTooltipTitle(dataPoint) {
+            var tooltipTitleText = readableDataType.name + ' - ' + tooltipDateFormat(new Date(dataPoint.date));
+
+            tooltipTitle.text(tooltipTitleText);
         }
 
-        /**
-         * Creates coloured circles marking where the exact data y value is for a given data point
-         * @param  {obj} dataPoint Data point to extract info from
-         * @return void
-         */
-        function highlightDataPoints(dataPoint){
-            cleanDataPointHighlights();
 
-            topicColorMap = _.object(
-                colorScale.domain(),
-                colorScale.range()
-            );
-
-            _.each(dataPoint.topics, function(topic, index){
-                var marker = verticalMarkerContainer
-                                .append('g')
-                                .classed('circle-container', true),
-                    circleSize = 12;
-
-                marker.append('circle')
-                    .classed('data-point-highlighter', true)
-                    .attr({
-                        'cx': circleSize,
-                        'cy': 0,
-                        'r': 5.5
-                    })
-                    .style({
-                        'fill': topicColorMap[topic.name]
-                    });
-
-                marker.attr('transform', 'translate(' + (- circleSize) + ',' + (yScale(dataPoint.topics[index].value)) + ')');
-            });
-        }
-
-        /**
-         * Helper method to update the x position of the vertical marker
-         * @param  {obj} dataPoint Data entry to extract info
-         * @return void
-         */
-        function moveVerticalMarker(dataPoint){
-            var date = new Date(dataPoint.date),
-                verticalMarkerXPosition = xScale(date);
-
-            verticalMarkerContainer.attr('transform', 'translate(' + verticalMarkerXPosition + ',' + '0' + ')');
-        }
-
-        /**
-         * Extract X position on the graph from a given mouse event
-         * @param  {obj} event D3 mouse event
-         * @return {number}       Position on the x axis of the mouse
-         */
-        function getMouseXPosition(event) {
-            return d3.mouse(event)[0];
-        }
-
-        /**
-         * Formats the date in ISOString
-         * @param  {string} date Date as given in data entries
-         * @return {string}      Date in ISO format in a neutral timezone
-         */
-        function getFormattedDateFromData(date) {
-            return date.toISOString().split('T')[0] + 'T00:00:00Z';
-        }
-
-        /**
-         * Finds out the data entry that is closer to the given position on pixels
-         * @param  {number} mouseX X position of the mouse
-         * @return {obj}        Data entry that is closer to that x axis position
-         */
-        function getNearestDataPoint(mouseX) {
-            var invertedX = xScale.invert(mouseX),
-                bisectDate = d3.bisector(getDate).left,
-                dataEntryIndex, dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition,
-                nearestDataPoint;
-
-            dateOnCursorXPosition = getFormattedDateFromData(invertedX);
-            dataEntryIndex = bisectDate(dataByDate, dateOnCursorXPosition, 1);
-            dataEntryForXPosition = dataByDate[dataEntryIndex];
-            previousDataEntryForXPosition = dataByDate[dataEntryIndex - 1];
-
-            if (previousDataEntryForXPosition) {
-                nearestDataPoint = findOutNearestDate(dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition);
-            } else {
-                nearestDataPoint = dataEntryForXPosition;
-            }
-
-            return nearestDataPoint;
-        }
-
-        function findOutNearestDate(x0, d0, d1){
-            return (new Date(x0).getTime() - new Date(d0.date).getTime()) > (new Date(d1.date).getTime() - new Date(x0).getTime()) ? d1 : d0;
-        }
-
-        /**
-         * Gets or Sets the margin of the chart
-         * @param  {object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Line Chart module to chain calls
-         * @public
-         */
-        exports.margin = function(_x) {
-            if (!arguments.length) {
-                return margin;
-            }
-            margin = _x;
-            return this;
-        };
-
-        /**
-         * Gets or Sets the width of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { width | module} Current width or Line Chart module to chain calls
-         * @public
-         */
-        exports.width = function(_x) {
-            if (!arguments.length) {
-                return width;
-            }
-            width = _x;
-            return this;
-        };
+        // API Methods
 
         /**
          * Gets or Sets the height of the chart
@@ -731,6 +727,34 @@ define(function(require){
                 return isMobile;
             }
             isMobile = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the margin of the chart
+         * @param  {object} _x Margin object to get/set
+         * @return { margin | module} Current margin or Line Chart module to chain calls
+         * @public
+         */
+        exports.margin = function(_x) {
+            if (!arguments.length) {
+                return margin;
+            }
+            margin = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the width of the chart
+         * @param  {number} _x Desired width for the graph
+         * @return { width | module} Current width or Line Chart module to chain calls
+         * @public
+         */
+        exports.width = function(_x) {
+            if (!arguments.length) {
+                return width;
+            }
+            width = _x;
             return this;
         };
 
