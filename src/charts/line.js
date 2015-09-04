@@ -17,6 +17,20 @@ define(function(require){
     return function module(){
 
         var margin = {top: 60, right: 0, bottom: 60, left: 0},
+            width = 960,
+            height = 500,
+            svg,
+            isMobile = false,
+            chartWidth, chartHeight,
+            xScale, yScale, colorScale,
+            xAxis, yAxis,
+            yAxisPadding = {
+                top: 0,
+                left: 35,
+                bottom: 0,
+                right: 0
+            },
+
             colorRange = ['#00A8F2', '#00CC52', '#FFDB00', '#F20CB6', '#8400FF', '#051C48'],
             colorOrder = {
                 '#00A8F2': 0,
@@ -26,29 +40,19 @@ define(function(require){
                 '#8400FF': 4
             },
             topicColorMap,
-            width = 960,
-            height = 500,
-            yAxisPadding = {
-                top: 0,
-                left: 35,
-                bottom: 0,
-                right: 0
-            },
-            numVerticalTics = 5,
 
             data,
             dataByDate,
             readableDataType,
 
-            chartWidth, chartHeight,
-            xScale, yScale, colorScale,
-            xAxis, yAxis,
             maskGridLines,
-            svg,
+            numVerticalTics = 5,
+
             overlay,
             verticalMarkerContainer,
             verticalMarkerLine,
 
+            // tooltip
             tooltip,
             tooltipTextContainer,
             tooltipBackground,
@@ -61,15 +65,16 @@ define(function(require){
             ttTextY,
             textSize,
 
-            isMobile = false,
             // extractors
             getDate = function(d) { return d.date; },
             getValue = function(d) { return d.value; },
             getTopic = function(d) { return d.topic; },
+
             // formats
             yTickNumberFormat = d3.format('s'),
             xTickDateFormat = d3.time.format('%e'),
             tooltipDateFormat = d3.time.format('%b %d, %Y'),
+
             // events
             dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
 
