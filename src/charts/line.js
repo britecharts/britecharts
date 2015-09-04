@@ -16,30 +16,38 @@ define(function(require){
      */
     return function module(){
 
-        var margin = {top: 60, right: 0, bottom: 60, left: 0},
+        var margin = {top: 20, right: 0, bottom: 20, left: 80},
             width = 960,
             height = 500,
             svg,
             isMobile = false,
             chartWidth, chartHeight,
             xScale, yScale, colorScale,
-            xAxis, yAxis,
-            yAxisPadding = {
+            xAxis, xMonthAxis, yAxis,
+            xAxisPadding = {
                 top: 0,
-                left: 35,
+                left: 25,
                 bottom: 0,
                 right: 0
             },
-
-            colorRange = ['#00A8F2', '#00CC52', '#FFDB00', '#F20CB6', '#8400FF', '#051C48'],
+            colorRange = [
+                '#4DC2F5',
+                '#4DDB86',
+                '#E5C400',
+                '#FF4D7C',
+                '#9963D5',
+                '#051C48'
+            ],
             colorOrder = {
-                '#00A8F2': 0,
-                '#00CC52': 1,
-                '#FFDB00': 2,
-                '#F20CB6': 3,
-                '#8400FF': 4
+                '#4DC2F5': 0,
+                '#4DDB86': 1,
+                '#E5C400': 2,
+                '#FF4D7C': 3,
+                '#9963D5': 4,
+                '#051C48': 5
             },
             topicColorMap,
+            ease = 'ease',
 
             data,
             dataByDate,
@@ -49,6 +57,7 @@ define(function(require){
             numVerticalTics = 5,
 
             overlay,
+            overlayColor = 'rgba(0, 0, 0, 0)',
             verticalMarkerContainer,
             verticalMarkerLine,
 
@@ -69,11 +78,13 @@ define(function(require){
             getDate = function(d) { return d.date; },
             getValue = function(d) { return d.value; },
             getTopic = function(d) { return d.topic; },
+            getLineColor = function(d) { return colorScale(d.topic); },
 
             // formats
             yTickNumberFormat = d3.format('s'),
             xTickDateFormat = d3.time.format('%e'),
-            tooltipDateFormat = d3.time.format('%b %d, %Y'),
+            xTickMonthFormat = d3.time.format('%B'),
+            tooltipDateFormat = d3.time.format('%B %d, %Y'),
 
             // events
             dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
@@ -124,6 +135,16 @@ define(function(require){
         }
 
         /**
+         * Adjusts the position of the y axis' ticks
+         * @param  {D3Selection} selection Y axis group
+         * @return void
+         */
+        function adjustYTickLabels(selection){
+            selection.selectAll('.tick text')
+                .attr('transform', 'translate(0, -7)');
+        }
+
+        /**
          * Creates the d3 x and y axis, setting orientations
          * @private
          */
@@ -134,6 +155,13 @@ define(function(require){
                 .ticks(getMaxNumOfHorizontalTicks(width, dataByDate.length))
                 .tickSize(10, 0).tickPadding(5)
                 .tickFormat(xTickDateFormat);
+
+            xMonthAxis = d3.svg.axis()
+                .scale(xScale)
+                .ticks(3)
+                .tickSize(0, 0)
+                .orient('bottom')
+                .tickFormat(xTickMonthFormat);
 
             yAxis = d3.svg.axis()
                 .scale(yScale)
@@ -146,16 +174,23 @@ define(function(require){
 
         /**
          * Builds containers for the chart, the axis and a wrapper for all of them
+         * NOTE: The order of drawing of this group elements is really important,
+         * as everything else will be drawn on top of them
          * @private
          */
         function buildContainerGroups(){
             var container = svg.append('g').classed('container-group', true);
 
-            container.append('g').classed('chart-group', true);
-            container.append('g').classed('x-axis-group', true);
-            container.append('g').classed('y-axis-group', true);
-            container.append('g').classed('grid-lines-group', true);
-            container.append('g').classed('metadata-group', true);
+            container
+                .append('g').classed('x-axis-group', true);
+            container
+                .append('g').classed('y-axis-group', true);
+            container
+                .append('g').classed('grid-lines-group', true);
+            container
+                .append('g').classed('chart-group', true);
+            container
+                .append('g').classed('metadata-group', true);
         }
 
         /**
@@ -193,12 +228,14 @@ define(function(require){
                 svg = d3.select(container)
                     .append('svg')
                     .classed('britechart', true)
-                    .classed('line-chart', true);
+                    .classed('line-chart', true)
+                    .attr({
+                        width: width + margin.left + margin.right,
+                        height: height + margin.top + margin.bottom
+                    })
+                    .append('g')
+                    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
             }
-            svg.attr({
-                width: width + margin.left + margin.right,
-                height: height + margin.top + margin.bottom
-            });
         }
 
         /**
@@ -228,14 +265,27 @@ define(function(require){
             svg.select('.x-axis-group')
                 .append('g')
                 .attr('class', 'x axis')
+                .transition()
+                .ease(ease)
                 .attr('transform', 'translate(0,' + chartHeight + ')')
                 .call(xAxis);
+
+            svg.select('.x-axis-group')
+                .append('g')
+                .attr('class', 'month-axis')
+                .transition()
+                .ease(ease)
+                .attr('transform', 'translate(0,' + (chartHeight + margin.bottom + 8) + ')')
+                .call(xMonthAxis);
 
             svg.select('.y-axis-group')
                 .append('g')
                 .attr('class', 'y axis')
-                .attr('transform', 'translate(' + yAxisPadding.left + ', 0)')
-                .call(yAxis);
+                .transition()
+                .ease(ease)
+                .attr('transform', 'translate(' + (-xAxisPadding.left) + ', 0)')
+                .call(yAxis)
+                .call(adjustYTickLabels);
         }
 
         /**
@@ -244,7 +294,8 @@ define(function(require){
          */
         function drawLines(){
             var lines,
-                topicLine;
+                topicLine,
+                maskingRectangle;
 
             topicLine = d3.svg.line()
                 .x(function(d) {
@@ -264,7 +315,24 @@ define(function(require){
                     return topicLine(d.Data);
                 })
                 .style({
-                    'stroke': function(d) { return colorScale(d.topic); }
+                    'stroke': getLineColor
+                });
+
+            // We use a white rectangle to simulate the line drawing animation
+            maskingRectangle = svg.append('rect')
+                .attr('class', 'masking-rectangle')
+                .attr('width', width - 30)
+                .attr('height', height + 20)
+                .attr('x', 60)
+                .attr('y', -18);
+
+            maskingRectangle.transition()
+                .duration(2000)
+                .ease('cubic-out')
+                .attr('x', width)
+                .each('end', function() {
+                    maskingRectangle.remove();
+                    // self.maskGridLines.remove();
                 });
         }
 
@@ -280,11 +348,21 @@ define(function(require){
                     .append('line')
                     .attr({
                         'class': 'horizontal-grid-line',
-                        'x1': 0,
-                        'x2': chartWidth + 20,
+                        'x1': (-xAxisPadding.left - 30),
+                        'x2': chartWidth,
                         'y1': function(d) { return yScale(d); },
                         'y2': function(d) { return yScale(d); }
                     });
+
+            //draw a horizontal line to extend x-axis till the edges
+            svg.select('.grid-lines-group')
+                .append('line').attr({
+                    'class': 'extended-x-line',
+                    'x1': (-xAxisPadding.left - 30),
+                    'x2': chartWidth,
+                    'y1': height - margin.bottom - margin.top,
+                    'y2': height - margin.bottom - margin.top
+                });
         }
 
         /**
@@ -300,7 +378,7 @@ define(function(require){
                 .attr('y2', height)
                 .attr('height', height)
                 .attr('width', width)
-                .attr('fill','rgba(65, 72, 83, 0.12)')
+                .attr('fill', overlayColor)
                 .style('display', 'none');
         }
 
@@ -318,16 +396,11 @@ define(function(require){
                 .classed('tooltip-background', true)
                 .attr({
                     'x': -tooltipWidth / 4 + 10,
-                    'y': -1,
+                    'y': 0,
                     'width': tooltipWidth,
-                    'height': tooltipHeight,
+                    'height': tooltipHeight-1,
                     'rx': 3,
                     'ry': 3
-                })
-                .style({
-                    'fill': '#FFFFFF',
-                    'stroke': '#D9D9D9',
-                    'stroke-width': 2
                 });
 
             tooltip = tooltipTextContainer
@@ -402,7 +475,7 @@ define(function(require){
                 .classed('vertical-marker', true)
                 .attr({
                     'x1': 0,
-                    'y1': height,
+                    'y1': height - margin.top - margin.bottom,
                     'x2': 0,
                     'y2': 0
                 });
@@ -467,7 +540,7 @@ define(function(require){
             dataEntryForXPosition = dataByDate[dataEntryIndex];
             previousDataEntryForXPosition = dataByDate[dataEntryIndex - 1];
 
-            if (previousDataEntryForXPosition) {
+            if (previousDataEntryForXPosition && dataEntryForXPosition) {
                 nearestDataPoint = findOutNearestDate(dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition);
             } else {
                 nearestDataPoint = dataEntryForXPosition;
@@ -482,14 +555,17 @@ define(function(require){
          * @return void
          */
         function handleMouseMove(){
-            var dataPoint = getNearestDataPoint(getMouseXPosition(this));
+            var xPositionOffset = 10, //Arbitrary number, will love to know how to assess it
+                dataPoint = getNearestDataPoint(getMouseXPosition(this) + xPositionOffset);
 
-            // More verticalMarker to that datapoint
-            moveVerticalMarker(dataPoint);
-            // Add data points highlighting
-            highlightDataPoints(dataPoint);
-            // Fill tooltip
-            updateTooltip(dataPoint);
+            if(dataPoint) {
+                // More verticalMarker to that datapoint
+                moveVerticalMarker(dataPoint);
+                // Add data points highlighting
+                highlightDataPoints(dataPoint);
+                // Fill tooltip
+                updateTooltip(dataPoint);
+            }
 
             dispatch.customMouseMove();
         }
@@ -537,7 +613,7 @@ define(function(require){
                 return colorOrder[topicColorMap[el.name]];
             });
 
-            _.each(dataPoint.topics, function(topic, index){
+            dataPoint.topics.forEach(function(topic, index){
                 var marker = verticalMarkerContainer
                                 .append('g')
                                 .classed('circle-container', true),
@@ -548,10 +624,10 @@ define(function(require){
                     .attr({
                         'cx': circleSize,
                         'cy': 0,
-                        'r': 5.5
+                        'r': 5
                     })
                     .style({
-                        'fill': topicColorMap[topic.name]
+                        'stroke': topicColorMap[topic.name]
                     });
 
                 marker.attr('transform', 'translate(' + (- circleSize) + ',' + (yScale(dataPoint.topics[index].value)) + ')');
@@ -582,7 +658,7 @@ define(function(require){
 
             cleanTooltipContent();
             updateTooltipTitle(dataPoint);
-            _.each(dataPoint.topics, updateTooltipContent);
+            dataPoint.topics.forEach(updateTooltipContent);
             updateTooltipPositionAndSize(dataPoint);
         }
 
@@ -615,7 +691,7 @@ define(function(require){
                 .append('text')
                 .attr({
                     'dy': '1em',
-                    'x': ttTextX,
+                    'x': ttTextX - 20,
                     'y': ttTextY
                 })
                 .style('fill', 'black')
@@ -644,8 +720,8 @@ define(function(require){
             tooltipBody
                 .append('circle')
                 .attr({
-                    'cx': 22 - tooltipWidth / 4,
-                    'cy': (ttTextY + 7),
+                    'cx': 25 - tooltipWidth / 4,
+                    'cy': (ttTextY + 10),
                     'r': 5
                 })
                 .style({
@@ -691,7 +767,6 @@ define(function(require){
                     'x2': tooltipWidth - 60
                 });
         }
-
 
         /**
          * Updates value of tooltipTitle with the data meaning and the date
