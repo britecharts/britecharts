@@ -16,7 +16,7 @@ define(function(require){
      */
     return function module(){
 
-        var margin = {top: 60, right: 0, bottom: 60, left: 0},
+        var margin = {top: 20, right: 0, bottom: 20, left: 0},
             width = 960,
             height = 500,
             svg,
@@ -40,6 +40,7 @@ define(function(require){
                 '#8400FF': 4
             },
             topicColorMap,
+            ease = 'ease',
 
             data,
             dataByDate,
@@ -49,6 +50,7 @@ define(function(require){
             numVerticalTics = 5,
 
             overlay,
+            overlayColor = 'rgba(0, 0, 0, 0.02)',
             verticalMarkerContainer,
             verticalMarkerLine,
 
@@ -69,11 +71,12 @@ define(function(require){
             getDate = function(d) { return d.date; },
             getValue = function(d) { return d.value; },
             getTopic = function(d) { return d.topic; },
+            getLineColor = function(d) { return colorScale(d.topic); },
 
             // formats
             yTickNumberFormat = d3.format('s'),
             xTickDateFormat = d3.time.format('%e'),
-            tooltipDateFormat = d3.time.format('%b %d, %Y'),
+            tooltipDateFormat = d3.time.format('%B %d, %Y'),
 
             // events
             dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
@@ -124,6 +127,16 @@ define(function(require){
         }
 
         /**
+         * Adjusts the position of the y axis' ticks
+         * @param  {D3Selection} selection Y axis group
+         * @return void
+         */
+        function adjustYTickLabels(selection){
+            selection.selectAll('.tick text')
+                .attr('transform', 'translate(0, -7)');
+        }
+
+        /**
          * Creates the d3 x and y axis, setting orientations
          * @private
          */
@@ -146,16 +159,26 @@ define(function(require){
 
         /**
          * Builds containers for the chart, the axis and a wrapper for all of them
+         * NOTE: The order of drawing of this group elements is really important,
+         * as everything else will be drawn on top of them
          * @private
          */
         function buildContainerGroups(){
             var container = svg.append('g').classed('container-group', true);
 
-            container.append('g').classed('chart-group', true);
-            container.append('g').classed('x-axis-group', true);
-            container.append('g').classed('y-axis-group', true);
-            container.append('g').classed('grid-lines-group', true);
-            container.append('g').classed('metadata-group', true);
+            container
+                .append('g').classed('x-axis-group', true);
+            container
+                .append('g').classed('y-axis-group', true);
+            container
+                .append('g').classed('grid-lines-group', true);
+            container
+                .append('g').classed('chart-group', true);
+            container
+                .append('g').classed('metadata-group', true);
+
+            container
+                .attr({transform: 'translate(' + margin.left + ',' + margin.top + ')'});
         }
 
         /**
@@ -195,10 +218,12 @@ define(function(require){
                     .classed('britechart', true)
                     .classed('line-chart', true);
             }
-            svg.attr({
-                width: width + margin.left + margin.right,
-                height: height + margin.top + margin.bottom
-            });
+            svg
+                .transition().ease(ease)
+                .attr({
+                    width: width + margin.left + margin.right,
+                    height: height + margin.top + margin.bottom
+                });
         }
 
         /**
@@ -228,14 +253,19 @@ define(function(require){
             svg.select('.x-axis-group')
                 .append('g')
                 .attr('class', 'x axis')
+                .transition()
+                .ease(ease)
                 .attr('transform', 'translate(0,' + chartHeight + ')')
                 .call(xAxis);
 
             svg.select('.y-axis-group')
                 .append('g')
                 .attr('class', 'y axis')
+                .transition()
+                .ease(ease)
                 .attr('transform', 'translate(' + yAxisPadding.left + ', 0)')
-                .call(yAxis);
+                .call(yAxis)
+                .call(adjustYTickLabels);
         }
 
         /**
@@ -244,7 +274,8 @@ define(function(require){
          */
         function drawLines(){
             var lines,
-                topicLine;
+                topicLine,
+                maskingRectangle;
 
             topicLine = d3.svg.line()
                 .x(function(d) {
@@ -264,7 +295,24 @@ define(function(require){
                     return topicLine(d.Data);
                 })
                 .style({
-                    'stroke': function(d) { return colorScale(d.topic); }
+                    'stroke': getLineColor
+                });
+
+            // We use a white rectangle to simulate the line drawing animation
+            maskingRectangle = svg.append('rect')
+                .attr('class', 'masking-rectangle')
+                .attr('width', width - 30)
+                .attr('height', height + 20)
+                .attr('x', 60)
+                .attr('y', -18);
+
+            maskingRectangle.transition()
+                .duration(2000)
+                .ease('cubic-out')
+                .attr('x', width)
+                .each('end', function() {
+                    maskingRectangle.remove();
+                    // self.maskGridLines.remove();
                 });
         }
 
@@ -300,7 +348,7 @@ define(function(require){
                 .attr('y2', height)
                 .attr('height', height)
                 .attr('width', width)
-                .attr('fill','rgba(65, 72, 83, 0.12)')
+                .attr('fill', overlayColor)
                 .style('display', 'none');
         }
 
@@ -691,7 +739,6 @@ define(function(require){
                     'x2': tooltipWidth - 60
                 });
         }
-
 
         /**
          * Updates value of tooltipTitle with the data meaning and the date
