@@ -16,9 +16,15 @@ define(function(require){
      */
     return function module(){
 
-        var margin = {top: 20, right: 0, bottom: 20, left: 80},
+        var margin = {
+                top: 60,
+                right: 20,
+                bottom: 60,
+                left: 80
+            },
             width = 960,
             height = 500,
+            aspectRatio = null,
             svg,
             isMobile = false,
             chartWidth, chartHeight,
@@ -53,6 +59,7 @@ define(function(require){
             dataByDate,
             readableDataType,
 
+            baseLine,
             maskGridLines,
             numVerticalTics = 5,
 
@@ -63,6 +70,11 @@ define(function(require){
 
             // tooltip
             tooltip,
+            tooltipOffset = {
+                y: -40,
+                x: 0
+            },
+            tooltipThreshold = 480,
             tooltipTextContainer,
             tooltipBackground,
             tooltipDivider,
@@ -106,16 +118,17 @@ define(function(require){
                 buildScales();
                 buildAxis();
                 buildSVG(this);
-                buildContainerGroups();
 
                 drawGridLines();
                 drawAxis();
                 drawLines();
 
-                drawVerticalMarker();
-                drawTooltip();
-                drawHoverOverlay();
-                addMouseEvents();
+                if(shouldShowTooltip()){
+                    drawVerticalMarker();
+                    drawTooltip();
+                    drawHoverOverlay();
+                    addMouseEvents();
+                }
             });
         }
 
@@ -179,12 +192,17 @@ define(function(require){
          * @private
          */
         function buildContainerGroups(){
-            var container = svg.append('g').classed('container-group', true);
+            var container = svg.append('g')
+                .classed('container-group', true)
+                .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
             container
-                .append('g').classed('x-axis-group', true);
+                .append('g').classed('x-axis-group', true)
+                .append('g').classed('axis x', true);
+            container.selectAll('.x-axis-group')
+                .append('g').classed('month-axis', true);
             container
-                .append('g').classed('y-axis-group', true);
+                .append('g').classed('y-axis-group axis y', true);
             container
                 .append('g').classed('grid-lines-group', true);
             container
@@ -224,18 +242,22 @@ define(function(require){
          * @private
          */
         function buildSVG(container){
-            if (!svg) {
-                svg = d3.select(container)
-                    .append('svg')
-                    .classed('britechart', true)
-                    .classed('line-chart', true)
-                    .attr({
-                        width: width + margin.left + margin.right,
-                        height: height + margin.top + margin.bottom
-                    })
-                    .append('g')
-                    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-            }
+            svg = d3.select(container)
+                .selectAll('svg')
+                .data([data]);
+
+            svg.enter().append('svg')
+                .classed('britechart line-chart', true);
+
+            buildContainerGroups();
+
+            svg
+                .transition()
+                .ease(ease)
+                .attr({
+                    width: width,
+                    height: height
+                });
         }
 
         /**
@@ -262,25 +284,19 @@ define(function(require){
          * @private
          */
         function drawAxis(){
-            svg.select('.x-axis-group')
-                .append('g')
-                .attr('class', 'x axis')
+            svg.select('.x-axis-group .axis.x')
                 .transition()
                 .ease(ease)
                 .attr('transform', 'translate(0,' + chartHeight + ')')
                 .call(xAxis);
 
-            svg.select('.x-axis-group')
-                .append('g')
-                .attr('class', 'month-axis')
+            svg.select('.x-axis-group .month-axis')
                 .transition()
                 .ease(ease)
-                .attr('transform', 'translate(0,' + (chartHeight + margin.bottom + 8) + ')')
+                .attr('transform', 'translate(0,' + (chartHeight + 28) + ')')
                 .call(xMonthAxis);
 
-            svg.select('.y-axis-group')
-                .append('g')
-                .attr('class', 'y axis')
+            svg.select('.y-axis-group.axis.y')
                 .transition()
                 .ease(ease)
                 .attr('transform', 'translate(' + (-xAxisPadding.left) + ', 0)')
@@ -355,14 +371,18 @@ define(function(require){
                     });
 
             //draw a horizontal line to extend x-axis till the edges
-            svg.select('.grid-lines-group')
-                .append('line').attr({
-                    'class': 'extended-x-line',
-                    'x1': (-xAxisPadding.left - 30),
-                    'x2': chartWidth,
-                    'y1': height - margin.bottom - margin.top,
-                    'y2': height - margin.bottom - margin.top
-                });
+            baseLine = svg.select('.grid-lines-group')
+                .selectAll('line.extended-x-line')
+                .data([0])
+                .enter()
+                    .append('line')
+                    .attr({
+                        'class': 'extended-x-line',
+                        'x1': (-xAxisPadding.left - 30),
+                        'x2': chartWidth,
+                        'y1': height - margin.bottom - margin.top,
+                        'y2': height - margin.bottom - margin.top
+                    });
         }
 
         /**
@@ -489,7 +509,7 @@ define(function(require){
          * @return {obj}    d0 or d1, the datapoint with closest date to x0
          */
         function findOutNearestDate(x0, d0, d1){
-            return (new Date(x0).getTime() - new Date(d0.date).getTime()) > (new Date(d1.date).getTime() - new Date(x0).getTime()) ? d1 : d0;
+            return (new Date(x0).getTime() - new Date(d0.date).getTime()) > (new Date(d1.date).getTime() - new Date(x0).getTime()) ? d0 : d1;
         }
 
         /**
@@ -555,7 +575,7 @@ define(function(require){
          * @return void
          */
         function handleMouseMove(){
-            var xPositionOffset = 10, //Arbitrary number, will love to know how to assess it
+            var xPositionOffset = 7 - margin.left, //Arbitrary number, will love to know how to assess it
                 dataPoint = getNearestDataPoint(getMouseXPosition(this) + xPositionOffset);
 
             if(dataPoint) {
@@ -644,6 +664,15 @@ define(function(require){
                 verticalMarkerXPosition = xScale(date);
 
             verticalMarkerContainer.attr('transform', 'translate(' + verticalMarkerXPosition + ',' + '0' + ')');
+        }
+
+        /**
+         * Determines if we should add the tooltip related logic depending on the
+         * size of the chart and the tooltipThreshold variable value
+         * @return {boolean} Should we build the tooltip?
+         */
+        function shouldShowTooltip() {
+            return width > tooltipThreshold;
         }
 
         /**
@@ -755,11 +784,11 @@ define(function(require){
             if ((xScale(new Date(dataPoint.date)) - tooltipWidth) < 0) {
                 // Tooltip on the right
                 tooltipTextContainer
-                    .attr('transform', 'translate(' + (tooltipWidth - 190) + ',' + (0) + ')');
+                    .attr('transform', 'translate(' + (tooltipWidth - 185) + ',' + tooltipOffset.y + ')');
             } else {
                 // Tooltip on the left
                 tooltipTextContainer
-                    .attr('transform', 'translate(' + (-200) + ',' + (0) + ')');
+                    .attr('transform', 'translate(' + (-205) + ',' + tooltipOffset.y + ')');
             }
 
             tooltipDivider
@@ -783,6 +812,20 @@ define(function(require){
         // API Methods
 
         /**
+         * Gets or Sets the aspect ratio of the chart
+         * @param  {number} _x Desired aspect ratio for the graph
+         * @return { aspect ratio | module} Current aspect ratio or Line Chart module to chain calls
+         * @public
+         */
+        exports.aspectRatio = function(_x) {
+            if (!arguments.length) {
+                return aspectRatio;
+            }
+            aspectRatio = _x;
+            return this;
+        };
+
+        /**
          * Gets or Sets the height of the chart
          * @param  {number} _x Desired width for the graph
          * @return { height | module} Current height or Line Chart module to chain calls
@@ -791,6 +834,9 @@ define(function(require){
         exports.height = function(_x) {
             if (!arguments.length) {
                 return height;
+            }
+            if (aspectRatio) {
+                width = Math.ceil(_x / aspectRatio);
             }
             height = _x;
             return this;
@@ -825,6 +871,21 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the minimum width of the graph in order to show the tooltip
+         * NOTE: This could also depend on the aspect ratio
+         * @param  {number} _x Desired tooltip threshold for the graph
+         * @return { tooltip threshold | module} Current tooltip threshold or Line Chart module to chain calls
+         * @public
+         */
+        exports.tooltipThreshold = function(_x) {
+            if (!arguments.length) {
+                return tooltipThreshold;
+            }
+            tooltipThreshold = _x;
+            return this;
+        };
+
+        /**
          * Gets or Sets the width of the chart
          * @param  {number} _x Desired width for the graph
          * @return { width | module} Current width or Line Chart module to chain calls
@@ -833,6 +894,9 @@ define(function(require){
         exports.width = function(_x) {
             if (!arguments.length) {
                 return width;
+            }
+            if (aspectRatio) {
+                height = Math.ceil(_x * aspectRatio);
             }
             width = _x;
             return this;
