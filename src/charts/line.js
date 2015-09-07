@@ -26,7 +26,6 @@ define(function(require){
             height = 500,
             aspectRatio = null,
             svg,
-            isMobile = false,
             chartWidth, chartHeight,
             xScale, yScale, colorScale,
             xAxis, xMonthAxis, yAxis,
@@ -75,6 +74,7 @@ define(function(require){
                 x: 0
             },
             tooltipThreshold = 480,
+            tooltipMaxTopicLength = 170,
             tooltipTextContainer,
             tooltipBackground,
             tooltipDivider,
@@ -123,7 +123,7 @@ define(function(require){
                 drawAxis();
                 drawLines();
 
-                if(shouldShowTooltip() || !isMobile){
+                if(shouldShowTooltip()){
                     drawVerticalMarker();
                     drawTooltip();
                     drawHoverOverlay();
@@ -720,9 +720,8 @@ define(function(require){
                     'y': ttTextY
                 })
                 .style('fill', 'black')
-                .text(tooltipLeftText);
-
-            // TODO: wrap text
+                .text(tooltipLeftText)
+                .call(wrap, tooltipMaxTopicLength, -30);
 
             tooltipRight = tooltipBody
                 .append('text')
@@ -804,6 +803,51 @@ define(function(require){
             tooltipTitle.text(tooltipTitleText);
         }
 
+        /**
+         * Wraps a text given the text, width, x position and textFormatter function
+         * @param  {D3Selection} text  Selection with the text to wrap inside
+         * @param  {number} width Desired max width for that line
+         * @param  {number} xpos  Initial x position of the text
+         * @return void
+         *
+         * REF: http://bl.ocks.org/mbostock/7555321
+         */
+        function wrap(text, width, xpos) {
+            xpos = xpos || 0;
+
+            text.each(function() {
+                var words,
+                    word,
+                    line,
+                    lineNumber,
+                    lineHeight,
+                    y,
+                    dy,
+                    tspan;
+
+                text = d3.select(this);
+
+                words = text.text().split(/\s+/).reverse();
+                line = [];
+                lineNumber = 0;
+                lineHeight = 1.2;
+                y = text.attr('y');
+                dy = parseFloat(text.attr('dy'));
+                tspan = text.text(null).append('tspan').attr('x', xpos).attr('y', y).attr('dy', dy + 'em');
+
+                while ((word = words.pop())) {
+                    line.push(word);
+                    tspan.text(line.join(' '));
+                    if (tspan.node().getComputedTextLength() > width) {
+                        line.pop();
+                        tspan.text(line.join(' '));
+                        line = [word];
+                        tspan = text.append('tspan').attr('x', xpos).attr('y', y).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);
+                    }
+                }
+            });
+        }
+
 
         // API Methods
 
@@ -835,20 +879,6 @@ define(function(require){
                 width = Math.ceil(_x / aspectRatio);
             }
             height = _x;
-            return this;
-        };
-
-        /**
-         * Gets or Sets whether the chart is being rendered on mobile
-         * @param  {boolean} _x True is mobile, false is not mobile
-         * @return { isMobile | module} Current mode (mobile or not mobile) or Line Chart module to chain calls
-         * @public
-         */
-        exports.isMobile = function(_x) {
-            if (!arguments.length) {
-                return isMobile;
-            }
-            isMobile = _x;
             return this;
         };
 
