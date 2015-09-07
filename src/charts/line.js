@@ -123,7 +123,7 @@ define(function(require){
                 drawAxis();
                 drawLines();
 
-                if(shouldShowTooltip()){
+                if(shouldShowTooltip() || !isMobile){
                     drawVerticalMarker();
                     drawTooltip();
                     drawHoverOverlay();
@@ -137,10 +137,6 @@ define(function(require){
          * Adding: mouseover, mouseout and mousemove
          */
         function addMouseEvents(){
-            if (isMobile) {
-                return;
-            }
-
             svg
                 .on('mouseover', handleMouseOver)
                 .on('mouseout', handleMouseOut)
@@ -593,7 +589,7 @@ define(function(require){
         /**
          * MouseOut handler, hides overlay and removes active class on verticalMarkerLine
          * It also resets the container of the vertical marker
-         * @return {[type]} [description]
+         * @return void
          */
         function handleMouseOut(){
             overlay.style('display', 'none');
@@ -814,7 +810,7 @@ define(function(require){
         /**
          * Gets or Sets the aspect ratio of the chart
          * @param  {number} _x Desired aspect ratio for the graph
-         * @return { aspect ratio | module} Current aspect ratio or Line Chart module to chain calls
+         * @return { number | module} Current aspect ratio or Line Chart module to chain calls
          * @public
          */
         exports.aspectRatio = function(_x) {
@@ -874,7 +870,7 @@ define(function(require){
          * Gets or Sets the minimum width of the graph in order to show the tooltip
          * NOTE: This could also depend on the aspect ratio
          * @param  {number} _x Desired tooltip threshold for the graph
-         * @return { tooltip threshold | module} Current tooltip threshold or Line Chart module to chain calls
+         * @return { number | module} Current tooltip threshold or Line Chart module to chain calls
          * @public
          */
         exports.tooltipThreshold = function(_x) {
