@@ -14,7 +14,22 @@ function(
         .build()
         .done(function(dataset){
             lineChart
-                .width(780).height(330);
+                .aspectRatio(0.42)
+                .tooltipThreshold(400)
+                .width(780);
             container.datum(dataset).call(lineChart);
+
+            d3.select(window).on('resize', function(){
+                var newWidth = d3.select('body').node().getBoundingClientRect().width;
+
+                d3.select('.line-chart').remove();
+
+                lineChart
+                    .aspectRatio(0.42)
+                    .tooltipThreshold(400)
+                    .width(newWidth);
+                container.datum(dataset).call(lineChart);
+            });
         });
+
 });
