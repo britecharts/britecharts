@@ -70,7 +70,7 @@ define(function(require){
             // tooltip
             tooltip,
             tooltipOffset = {
-                y: -40,
+                y: -55,
                 x: 0
             },
             tooltipThreshold = 480,
@@ -744,8 +744,8 @@ define(function(require){
             tooltipBody
                 .append('circle')
                 .attr({
-                    'cx': 25 - tooltipWidth / 4,
-                    'cy': (ttTextY + 10),
+                    'cx': 23 - tooltipWidth / 4,
+                    'cy': (ttTextY + 7),
                     'r': 5
                 })
                 .style({
