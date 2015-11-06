@@ -1,7 +1,7 @@
 define(function(require){
     'use strict';
 
-    var d3 = require('vendor/d3');
+    var d3 = require('d3');
 
     return function module() {
 
