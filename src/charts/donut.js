@@ -62,9 +62,7 @@ define(function(require){
             svg.enter().append('svg')
                 .attr('class', 'js-donut-chart');
 
-            if (!$('.container-group').length) {
-                buildContainerGroups();
-            }
+            buildContainerGroups();
 
             svg.transition().ease(ease)
                 .attr('width', width + margin.left + margin.right)
