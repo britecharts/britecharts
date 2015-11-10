@@ -31,7 +31,7 @@ define(function(require){
             xAxis, xMonthAxis, yAxis,
             xAxisPadding = {
                 top: 0,
-                left: 25,
+                left: 15,
                 bottom: 0,
                 right: 0
             },
@@ -465,6 +465,7 @@ define(function(require){
                 .append('g')
                 .classed('tooltip-body', true)
                 .style({
+                    'transform': 'translateY(8px)',
                     'fill': '#404040'
                 });
         }
@@ -679,7 +680,7 @@ define(function(require){
         function updateTooltip(dataPoint){
             ttTextX = 0;
             ttTextY = 37;
-            tooltipHeight = 40;
+            tooltipHeight = 48;
 
             cleanTooltipContent();
             updateTooltipTitle(dataPoint);
