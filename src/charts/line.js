@@ -167,7 +167,7 @@ define(function(require){
 
             xMonthAxis = d3.svg.axis()
                 .scale(xScale)
-                .ticks(3)
+                .ticks(d3.time.months)
                 .tickSize(0, 0)
                 .orient('bottom')
                 .tickFormat(xTickMonthFormat);
