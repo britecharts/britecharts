@@ -316,12 +316,13 @@ define(function(require){
                 .y(function(d) { return yScale(d.value); });
 
             lines = svg.select('.chart-group').selectAll('.line')
-                .data(data)
+                .data(data);
+
+            lines
                 .enter()
                 .append('g')
-                .attr('class', 'topic');
-
-            lines.append('path')
+                .attr('class', 'topic')
+                .append('path')
                 .attr('class', 'line')
                 .attr('d', function(d) {
                     return topicLine(d.Data);
@@ -329,6 +330,10 @@ define(function(require){
                 .style({
                     'stroke': getLineColor
                 });
+
+            lines
+                .exit()
+                .remove();
 
             // We use a white rectangle to simulate the line drawing animation
             maskingRectangle = svg.append('rect')
@@ -344,7 +349,6 @@ define(function(require){
                 .attr('x', width)
                 .each('end', function() {
                     maskingRectangle.remove();
-                    // self.maskGridLines.remove();
                 });
         }
 
@@ -626,9 +630,12 @@ define(function(require){
 
             // sorting the topics based on the order of the colors,
             // so that the order always stays constant
-            dataPoint.topics = _.sortBy(dataPoint.topics, function(el) {
-                return colorOrder[topicColorMap[el.name]];
-            });
+            dataPoint.topics = _.chain(dataPoint.topics)
+                .compact()
+                .sortBy(function(el) {
+                    return colorOrder[topicColorMap[el.name]];
+                })
+                .value();
 
             dataPoint.topics.forEach(function(topic, index){
                 var marker = verticalMarkerContainer
