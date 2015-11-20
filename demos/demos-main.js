@@ -14,8 +14,19 @@ require.config({
     },
 
     callback: function(){
-        require(['./sandbox/app.js'], function(){
-        });
+        'use strict';
+
+        var page = document.querySelector('body').id;
+
+        if (page === 'bar') {
+            require(['./bar.js'], function(){});
+        }
+        if (page === 'line') {
+            require(['./line.js'], function(){});
+        }
+        if (page === 'donut') {
+            require(['./donut.js'], function(){});
+        }
     },
 
     shim: {
