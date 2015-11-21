@@ -14,7 +14,7 @@ define(function(require){
      *
      * @exports charts/bar
      * @requires d3
-     * @version 0.0.1
+     * @version 0.0.2
      */
     return function module(){
 
@@ -99,9 +99,6 @@ define(function(require){
          * @private
          */
         function drawAxis(){
-            // svg.select('.container-group')
-            //     .attr({transform: 'translate(' + margin.left + ',' + margin.top + ')'});
-
             svg.select('.x-axis-group')
                 .append('g')
                 .attr('class', 'x axis')
@@ -135,12 +132,15 @@ define(function(require){
                 .data(data);
 
             // If there aren't any bars create them
-            bars.enter().append('rect')
-                .attr('class', 'bar')
-                .attr('x', function(d) { return xScale(d.letter); })
-                .attr('width', xScale.rangeBand())
-                .attr('y', function(d) { return yScale(d.frequency); })
-                .attr('height', function(d) { return chartHeight - yScale(d.frequency); });
+            bars.enter()
+                .append('rect')
+                .attr({
+                    'class': 'bar',
+                    'x': function(d) { return xScale(d.letter); },
+                    'width': xScale.rangeBand(),
+                    'y': function(d) { return yScale(d.frequency); },
+                    'height': function(d) { return chartHeight - yScale(d.frequency); }
+                });
         }
 
         /**
