@@ -14,7 +14,7 @@ define(function(require){
      *
      * @exports charts/bar
      * @requires d3
-     * @version 0.0.2
+     * @version 0.0.3
      */
     return function module(){
 
@@ -22,6 +22,7 @@ define(function(require){
             width = 960,
             height = 500,
             ease = 'ease',
+            gap = 2,
             data,
             chartWidth, chartHeight,
             xScale, yScale,
@@ -55,8 +56,8 @@ define(function(require){
             var container = svg.append('g').classed('container-group', true);
 
             container.append('g').classed('chart-group', true);
-            container.append('g').classed('x-axis-group', true);
-            container.append('g').classed('y-axis-group', true);
+            container.append('g').classed('x-axis-group axis', true);
+            container.append('g').classed('y-axis-group axis', true);
 
             container
                 .attr({transform: 'translate(' + margin.left + ',' + margin.top + ')'});
@@ -85,6 +86,8 @@ define(function(require){
                 svg = d3.select(container)
                     .append('svg')
                     .classed('bar-chart', true);
+
+                buildContainerGroups();
             }
             svg.transition().attr({
                 width: width + margin.left + margin.right,
@@ -99,26 +102,14 @@ define(function(require){
          * @private
          */
         function drawAxis(){
-            svg.select('.x-axis-group')
-                .append('g')
-                .attr('class', 'x axis')
+            svg.select('.x-axis-group.axis')
                 .transition()
                 .ease(ease)
                 .attr('transform', 'translate(0,' + chartHeight + ')')
                 .call(xAxis);
 
-            svg.select('.y-axis-group')
-                .append('g')
-                .attr('class', 'y axis')
-                .call(yAxis)
-              .append('text')
-                .transition()
-                .ease(ease)
-                .attr('transform', 'rotate(-90)')
-                .attr('y', 6)
-                .attr('dy', '.71em')
-                .style('text-anchor', 'end')
-                .text('Frequency');
+            svg.select('.y-axis-group.axis')
+                .call(yAxis);
         }
 
         /**
@@ -126,21 +117,34 @@ define(function(require){
          * @private
          */
         function drawBars(){
-            // Setup the enter, exit and update of the actual bars in the chart.
-            // Select the bars, and bind the data to the .bar elements.
-            var bars = svg.select('.chart-group').selectAll('.bar')
-                .data(data);
+            var gapSize = xScale.rangeBand() / 100 * gap,
+                barW = xScale.rangeBand() - gapSize,
+                bars = svg.select('.chart-group').selectAll('.bar').data(data);
 
-            // If there aren't any bars create them
+            // Enter
             bars.enter()
                 .append('rect')
+                .classed('bar', true)
                 .attr({
-                    'class': 'bar',
-                    'x': function(d) { return xScale(d.letter); },
-                    'width': xScale.rangeBand(),
-                    'y': function(d) { return yScale(d.frequency); },
-                    'height': function(d) { return chartHeight - yScale(d.frequency); }
+                    width: barW,
+                    x: chartWidth, // Initially drawing the bars at the end of Y axis
+                    y: function(d) { return yScale(d.frequency); },
+                    height: function(d) { return chartHeight - yScale(d.frequency); }
                 });
+
+            // Update
+            bars.transition()
+                .ease(ease)
+                .attr({
+                    width: barW,
+                    x: function(d) { return xScale(d.letter) + gapSize/2; },
+                    y: function(d) { return yScale(d.frequency); },
+                    height: function(d) { return chartHeight - yScale(d.frequency); }
+                });
+
+            // Exit
+            bars.exit()
+                .transition().style({ opacity: 0 }).remove();
         }
 
         /**
@@ -158,7 +162,6 @@ define(function(require){
                 buildScales();
                 buildAxis();
                 buildSVG(this);
-                buildContainerGroups();
                 drawBars();
                 drawAxis();
             });
