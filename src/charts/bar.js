@@ -21,6 +21,7 @@ define(function(require){
         var margin = {top: 20, right: 20, bottom: 30, left: 40},
             width = 960,
             height = 500,
+            ease = 'ease',
             data,
             chartWidth, chartHeight,
             xScale, yScale,
@@ -47,6 +48,7 @@ define(function(require){
 
         /**
          * Builds containers for the chart, the axis and a wrapper for all of them
+         * Also applies the Margin convention
          * @private
          */
         function buildContainerGroups(){
@@ -55,6 +57,9 @@ define(function(require){
             container.append('g').classed('chart-group', true);
             container.append('g').classed('x-axis-group', true);
             container.append('g').classed('y-axis-group', true);
+
+            container
+                .attr({transform: 'translate(' + margin.left + ',' + margin.top + ')'});
         }
 
         /**
@@ -81,7 +86,7 @@ define(function(require){
                     .append('svg')
                     .classed('bar-chart', true);
             }
-            svg.attr({
+            svg.transition().attr({
                 width: width + margin.left + margin.right,
                 height: height + margin.top + margin.bottom
             });
@@ -94,9 +99,14 @@ define(function(require){
          * @private
          */
         function drawAxis(){
+            // svg.select('.container-group')
+            //     .attr({transform: 'translate(' + margin.left + ',' + margin.top + ')'});
+
             svg.select('.x-axis-group')
                 .append('g')
                 .attr('class', 'x axis')
+                .transition()
+                .ease(ease)
                 .attr('transform', 'translate(0,' + chartHeight + ')')
                 .call(xAxis);
 
@@ -105,6 +115,8 @@ define(function(require){
                 .attr('class', 'y axis')
                 .call(yAxis)
               .append('text')
+                .transition()
+                .ease(ease)
                 .attr('transform', 'rotate(-90)')
                 .attr('y', 6)
                 .attr('dy', '.71em')

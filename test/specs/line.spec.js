@@ -283,7 +283,7 @@ define([
                 expect(hasClass(verticalLine, 'bc-is-active')).toBe(true);
             });
 
-            it('should not show the tooltip on mobile', function() {
+            xit('should not show the tooltip on mobile', function() {
                 var container = containerFixture.selectAll('svg'),
                     overlay = d3.select('.overlay');
 
