@@ -1,10 +1,9 @@
-define(['jquery', 'd3', 'src/charts/bar'], function($, d3, chart) {
+require(['d3', 'bar'],
+function(d3, bar){
     'use strict';
 
-    describe('Reusable Bar Chart Test Suite', function(){
-        var barChart, dataset, containerFixture, f;
-
-        beforeEach(function(){
+    function createBarChart() {
+        var barChart = bar(),
             dataset = [
                 {
                     letter: 'A',
@@ -110,59 +109,26 @@ define(['jquery', 'd3', 'src/charts/bar'], function($, d3, chart) {
                     letter: 'Z',
                     frequency: .00074
                 }
-            ];
-            barChart = chart();
+            ],
+            barContainer = d3.select('.js-bar-chart-container');
 
-            // DOM Fixture Setup
-            f = jasmine.getFixtures();
-            f.fixturesPath = 'base/test/fixtures/';
-            f.load('testContainer.html');
+        barChart
+            .width(500)
+            .height(300);
+        barContainer.datum(dataset).call(barChart);
 
-            containerFixture = d3.select('.test-container');
-            containerFixture.datum(dataset).call(barChart);
+        d3.select(window).on('resize', function(){
+            var newWidth = d3.select('body').node().getBoundingClientRect().width;
+
+            d3.select('.line-chart').remove();
+
+            barChart
+                .width(newWidth)
+                .height(300);
+            barContainer.datum(dataset).call(barChart);
         });
+    }
 
-        afterEach(function(){
-            containerFixture.remove();
-            f = jasmine.getFixtures();
-            f.cleanUp();
-            f.clearCache();
-        });
-
-        it('should render a chart with minimal requirements', function(){
-            expect(containerFixture.select('.bar-chart').empty()).toBeFalsy();
-        });
-
-        it('should render container, axis and chart groups', function(){
-            expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.x-axis-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.y-axis-group').empty()).toBeFalsy();
-        });
-
-        it('should render an X and Y axis', function(){
-            expect(containerFixture.select('.x.axis').empty()).toBeFalsy();
-            expect(containerFixture.select('.y.axis').empty()).toBeFalsy();
-        });
-
-        it('should render a bar for each data entry', function(){
-            var numBars = dataset.length;
-
-            expect(containerFixture.selectAll('.bar').size()).toEqual(numBars);
-        });
-
-        it('should provide margin getter and setter', function(){
-            var defaultMargin = barChart.margin(),
-                testMargin = {top: 4, right: 4, bottom: 4, left: 4},
-                newMargin;
-
-            barChart.margin(testMargin);
-            newMargin = barChart.margin();
-
-            expect(defaultMargin).not.toBe(testMargin);
-            expect(newMargin).toBe(testMargin);
-        });
-
-    });
-
+    // Show proper charts
+    createBarChart();
 });
