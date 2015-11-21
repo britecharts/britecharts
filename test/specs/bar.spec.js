@@ -130,25 +130,25 @@ define(['jquery', 'd3', 'src/charts/bar'], function($, d3, chart) {
         });
 
         it('should render a chart with minimal requirements', function(){
-            expect(containerFixture.select('.bar-chart')).toBeDefined(1);
+            expect(containerFixture.select('.bar-chart').empty()).toBeFalsy();
         });
 
         it('should render container, axis and chart groups', function(){
-            expect(containerFixture.select('g.container-group')[0][0]).not.toBeNull();
-            expect(containerFixture.select('g.chart-group')[0][0]).not.toBeNull();
-            expect(containerFixture.select('g.x-axis-group')[0][0]).not.toBeNull();
-            expect(containerFixture.select('g.y-axis-group')[0][0]).not.toBeNull();
+            expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.x-axis-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.y-axis-group').empty()).toBeFalsy();
         });
 
         it('should render an X and Y axis', function(){
-            expect(containerFixture.select('.x.axis')[0][0]).not.toBeNull();
-            expect(containerFixture.select('.y.axis')[0][0]).not.toBeNull();
+            expect(containerFixture.select('.x.axis').empty()).toBeFalsy();
+            expect(containerFixture.select('.y.axis').empty()).toBeFalsy();
         });
 
         it('should render a bar for each data entry', function(){
             var numBars = dataset.length;
 
-            expect(containerFixture.selectAll('.bar')[0].length).toEqual(numBars);
+            expect(containerFixture.selectAll('.bar').size()).toEqual(numBars);
         });
 
         it('should provide margin getter and setter', function(){
