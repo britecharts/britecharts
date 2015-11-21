@@ -3,13 +3,22 @@ Britecharts
 
 Britecharts is a reusable charting library based on [D3.js](http://d3js.org/). It features AMD modules containing D3.js charts written with the Reusable API methodology and fully tested.
 
+
 ## Requirements
 node and npm
 
+
 ## Chart Documentation
-Currently Britecharts exposes 2 charts:
+Currently Britecharts exposes 3 charts:
   * Bar Chart
-  * Line Chart    
+  * Line Chart
+  * Donut Chart
+
+
+You can see the demos for this charts by running:
+
+    grunt demos
+
 
 In order to generate the documentation for this elements and the project in general you would need to run, once in the repository root folder:
 
@@ -36,3 +45,9 @@ In order to generate the documentation for this elements and the project in gene
 
 ## License
 To decide
+
+## Next Steps
+- Add documentation for donut chart
+- Improve Demos
+- Integrate demos and docs
+- Add getting started guide
