@@ -1,0 +1,25 @@
+{
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "ops": {
+        "tutorials": "./tutorials",
+        "demos": "./demos"
+    },
+    "source": {
+        "includePattern": ".+\\.js(doc)?$",
+        "excludePattern": "(^|\\/|\\\\)_",
+        "include": ["./README.md"]
+    },
+    "plugins": [],
+    "templates": {
+        "theme": "flatly",
+        "cleverLinks": false,
+        "monospaceLinks": false,
+        "default": {
+            "outputSourceFiles": true
+        },
+        "copyright": "Eventbrite Copyright",
+        "systemName": "Britecharts"
+    }
+}

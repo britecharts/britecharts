@@ -211,25 +211,25 @@ define([
             });
 
             it('should render a chart with minimal requirements', function(){
-                expect(containerFixture.select('.line-chart')).toBeDefined(1);
+                expect(containerFixture.select('.line-chart').empty()).toBeFalsy();
             });
 
             it('should render container, axis and chart groups', function(){
-                expect(containerFixture.select('g.container-group')[0][0]).not.toBeNull();
-                expect(containerFixture.select('g.chart-group')[0][0]).not.toBeNull();
-                expect(containerFixture.select('g.x-axis-group')[0][0]).not.toBeNull();
-                expect(containerFixture.select('g.y-axis-group')[0][0]).not.toBeNull();
-                expect(containerFixture.select('g.grid-lines-group')[0][0]).not.toBeNull();
-                expect(containerFixture.select('g.metadata-group')[0][0]).not.toBeNull();
+                expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
+                expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
+                expect(containerFixture.select('g.x-axis-group').empty()).toBeFalsy();
+                expect(containerFixture.select('g.y-axis-group').empty()).toBeFalsy();
+                expect(containerFixture.select('g.grid-lines-group').empty()).toBeFalsy();
+                expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
             });
 
             it('should render grid lines', function(){
-                expect(containerFixture.select('.horizontal-grid-line')[0][0]).not.toBeNull();
+                expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
             });
 
             it('should render an X and Y axis', function(){
-                expect(containerFixture.select('.x.axis')[0][0]).not.toBeNull();
-                expect(containerFixture.select('.y.axis')[0][0]).not.toBeNull();
+                expect(containerFixture.select('.x.axis').empty()).toBeFalsy();
+                expect(containerFixture.select('.y.axis').empty()).toBeFalsy();
             });
 
             it('should render a line for each data topic', function(){
@@ -271,7 +271,7 @@ define([
 
             // Tooltip and Markers
             it('should render an overlay to trigger the hover effect', function(){
-                expect(containerFixture.select('.overlay')[0][0]).not.toBeNull();
+                expect(containerFixture.select('.overlay').empty()).toBeFalsy();
             });
 
             it('should show a vertical line where the mouse is hovering', function() {

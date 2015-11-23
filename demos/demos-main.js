@@ -8,9 +8,9 @@ require.config({
         'd3': '../node_modules/d3/d3',
 
         'dataBuilder': '../test/fixtures/lineChartDataBuilder',
-        'line': '../src/charts/line',
-        'bar': '../src/charts/bar',
-        'donut': '../src/charts/donut'
+        'line': '/src/charts/line',
+        'bar': '/src/charts/bar',
+        'donut': '/src/charts/donut'
     },
 
     callback: function(){
@@ -19,13 +19,13 @@ require.config({
         var page = document.querySelector('body').id;
 
         if (page === 'bar') {
-            require(['./bar.js'], function(){});
+            require(['/demos/bar.js'], function(){});
         }
         if (page === 'line') {
-            require(['./line.js'], function(){});
+            require(['/demos/line.js'], function(){});
         }
         if (page === 'donut') {
-            require(['./donut.js'], function(){});
+            require(['/demos/donut.js'], function(){});
         }
     },
 

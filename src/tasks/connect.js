@@ -7,18 +7,15 @@ module.exports = function(grunt) {
     // We set here the default page for the server
     // Small server configuration.
     grunt.config.set('connect', {
-        server : {
+        docs : {
             options: {
                 port: port,
                 base: './',
                 open: {
-                    target: 'http://localhost:' + port + '/demos/index.html' // target url to open
+                    target: 'http://localhost:' + port + '/docs/index.html' // target url to open
                 },
                 keepalive: true
             }
         }
     });
-
-    grunt.registerTask('server', 'connect:server');
-    grunt.registerTask('demos', 'connect:server');
 };

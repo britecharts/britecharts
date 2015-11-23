@@ -5,6 +5,7 @@ function(d3, line, dataBuilder){
     function createLineChart() {
         var lineChart = line(),
             testDataSet = new dataBuilder.SalesDataBuilder(),
+            containerWidth = d3.select('.js-line-chart-container').node().getBoundingClientRect().width,
             container = d3.select('.js-line-chart-container');
 
         testDataSet
@@ -15,23 +16,40 @@ function(d3, line, dataBuilder){
                 lineChart
                     .aspectRatio(0.42)
                     .tooltipThreshold(400)
-                    .width(780);
+                    .width(containerWidth);
+
                 container.datum(dataset).call(lineChart);
+            });
+    }
 
-                d3.select(window).on('resize', function(){
-                    var newWidth = d3.select('body').node().getBoundingClientRect().width;
+    function createLineChartWithFixedHeight() {
+        var lineChart = line(),
+            testDataSet = new dataBuilder.SalesDataBuilder(),
+            containerWidth = d3.select('.js-fixed-line-chart-container').node().getBoundingClientRect().width,
+            container = d3.select('.js-fixed-line-chart-container');
 
-                    d3.select('.line-chart').remove();
+        testDataSet
+            .with5Topics()
+            .withPath('../test/fixtures/lineDataFiveTopics.json')
+            .build()
+            .done(function(dataset){
+                lineChart
+                    .tooltipThreshold(400)
+                    .height(300)
+                    .width(containerWidth);
 
-                    lineChart
-                        .aspectRatio(0.42)
-                        .tooltipThreshold(400)
-                        .width(newWidth);
-                    container.datum(dataset).call(lineChart);
-                });
+                container.datum(dataset).call(lineChart);
             });
     }
 
     // Show proper charts
     createLineChart();
+    createLineChartWithFixedHeight();
+
+
+    d3.select(window).on('resize', function(){
+        d3.selectAll('.line-chart').remove();
+        createLineChart();
+        createLineChartWithFixedHeight();
+    });
 });

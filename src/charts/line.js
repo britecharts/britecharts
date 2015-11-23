@@ -9,7 +9,7 @@ define(function(require){
      * @fileOverview Line Chart reusable API module that allows us
      * rendering a multi line and configurable chart.
      *
-     * @tutorial using-line-chart
+     * @tutorial line
      * @exports charts/line
      * @requires d3
      * @version 0.0.1
@@ -118,7 +118,6 @@ define(function(require){
                 buildScales();
                 buildAxis();
                 buildSVG(this);
-
                 drawGridLines();
                 drawAxis();
                 drawLines();
@@ -238,14 +237,13 @@ define(function(require){
          * @private
          */
         function buildSVG(container){
-            svg = d3.select(container)
-                .selectAll('svg')
-                .data([data]);
+            if (!svg) {
+                svg = d3.select(container)
+                    .append('svg')
+                    .classed('britechart line-chart', true);
 
-            svg.enter().append('svg')
-                .classed('britechart line-chart', true);
-
-            buildContainerGroups();
+                buildContainerGroups();
+            }
 
             svg
                 .transition()
