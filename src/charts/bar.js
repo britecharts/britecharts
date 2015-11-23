@@ -12,6 +12,7 @@ define(function(require){
      * @fileOverview Bar Chart reusable API class that renders a
      * simple and configurable bar chart.
      *
+     * @tutorial bar
      * @exports charts/bar
      * @requires d3
      * @version 0.0.3
