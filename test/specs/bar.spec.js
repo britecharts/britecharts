@@ -141,8 +141,8 @@ define(['jquery', 'd3', 'src/charts/bar'], function($, d3, chart) {
         });
 
         it('should render an X and Y axis', function(){
-            expect(containerFixture.select('.x.axis').empty()).toBeFalsy();
-            expect(containerFixture.select('.y.axis').empty()).toBeFalsy();
+            expect(containerFixture.select('.x-axis-group.axis').empty()).toBeFalsy();
+            expect(containerFixture.select('.y-axis-group.axis').empty()).toBeFalsy();
         });
 
         it('should render a bar for each data entry', function(){
