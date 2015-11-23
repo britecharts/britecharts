@@ -68,13 +68,28 @@
 </head>
 <body id="donut">
     <section>
+        <p>This is a donut chart that we plan to use in core soon.</p>
         <article>
             <h2>Simple Donut Chart</h2>
             <div class="britechart js-donut-chart-container"></div>
+            <pre>
+                donutChart
+                    .width(600).height(600)
+                    .externalRadius(250).internalRadius(50);
+
+                donutContainer.datum(dataset).call(donutChart);
+            </pre>
         </article>
         <article>
             <h2>Small Donut Chart</h2>
             <div class="britechart js-small-donut-chart-container"></div>
+            <pre>
+                donutChart
+                    .width(300).height(300)
+                    .externalRadius(100).internalRadius(40);
+
+                donutContainer.datum(dataset).call(donutChart);
+            </pre>
         </article>
     </section>
     <script type="text/javascript" data-main="/demos/demos-main" src="../node_modules/requirejs/require.js"></script>

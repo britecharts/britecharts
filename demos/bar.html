@@ -68,9 +68,17 @@
 </head>
 <body id="bar">
     <section>
+        <p>This is a simple bar chart whose code it's used as a coding standard. We hope to style it and include it on core soon.</p>
         <article>
             <h2>Simple Bar Chart</h2>
             <div class="britechart js-bar-chart-container"></div>
+            <pre>
+                barChart
+                    .width(500)
+                    .height(300);
+
+                barContainer.datum(dataset).call(barChart);
+            </pre>
         </article>
     </section>
     <script type="text/javascript" data-main="/demos/demos-main" src="../node_modules/requirejs/require.js"></script>
