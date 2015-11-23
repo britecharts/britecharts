@@ -48,7 +48,7 @@ function(d3, line, dataBuilder){
 
 
     d3.select(window).on('resize', function(){
-        d3.select('.line-chart').remove();
+        d3.selectAll('.line-chart').remove();
         createLineChart();
         createLineChartWithFixedHeight();
     });

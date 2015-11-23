@@ -32,6 +32,27 @@ define(function(require){
             getLetter = function(d) { return d.letter; },
             getFrequency = function(d) { return d.frequency; };
 
+
+        /**
+         * This function creates the graph using the selection as container
+         * @param  {D3Selection} _selection A d3 selection that represents
+         * the container(s) where the chart(s) will be rendered
+         */
+        function exports(_selection){
+            /* @param {object} _data The data to attach and generate the chart */
+            _selection.each(function(_data){
+                chartWidth = width - margin.left - margin.right;
+                chartHeight = height - margin.top - margin.bottom;
+                data = _data;
+
+                buildScales();
+                buildAxis();
+                buildSVG(this);
+                drawBars();
+                drawAxis();
+            });
+        }
+
         /**
          * Creates the d3 x and y axis, setting orientations
          * @private
@@ -53,14 +74,15 @@ define(function(require){
          * @private
          */
         function buildContainerGroups(){
-            var container = svg.append('g').classed('container-group', true);
+            var container = svg.append('g')
+                .classed('container-group', true)
+                .attr({
+                    transform: 'translate(' + margin.left + ',' + margin.top + ')'
+                });
 
             container.append('g').classed('chart-group', true);
             container.append('g').classed('x-axis-group axis', true);
             container.append('g').classed('y-axis-group axis', true);
-
-            container
-                .attr({transform: 'translate(' + margin.left + ',' + margin.top + ')'});
         }
 
         /**
@@ -85,7 +107,7 @@ define(function(require){
             if (!svg) {
                 svg = d3.select(container)
                     .append('svg')
-                    .classed('bar-chart', true);
+                    .classed('britechart bar-chart', true);
 
                 buildContainerGroups();
             }
@@ -145,26 +167,6 @@ define(function(require){
             // Exit
             bars.exit()
                 .transition().style({ opacity: 0 }).remove();
-        }
-
-        /**
-         * This function creates the graph using the selection as container
-         * @param  {D3Selection} _selection A d3 selection that represents
-         * the container(s) where the chart(s) will be rendered
-         */
-        function exports(_selection){
-            /* @param {object} _data The data to attach and generate the chart */
-            _selection.each(function(_data){
-                chartWidth = width - margin.left - margin.right;
-                chartHeight = height - margin.top - margin.bottom;
-                data = _data;
-
-                buildScales();
-                buildAxis();
-                buildSVG(this);
-                drawBars();
-                drawAxis();
-            });
         }
 
         /**
