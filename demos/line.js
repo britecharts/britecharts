@@ -5,7 +5,7 @@ function(d3, line, dataBuilder){
     function createLineChart() {
         var lineChart = line(),
             testDataSet = new dataBuilder.SalesDataBuilder(),
-            containerWidth = d3.select('body').node().getBoundingClientRect().width,
+            containerWidth = d3.select('.js-line-chart-container').node().getBoundingClientRect().width,
             container = d3.select('.js-line-chart-container');
 
         testDataSet
@@ -25,7 +25,7 @@ function(d3, line, dataBuilder){
     function createLineChartWithFixedHeight() {
         var lineChart = line(),
             testDataSet = new dataBuilder.SalesDataBuilder(),
-            containerWidth = d3.select('body').node().getBoundingClientRect().width,
+            containerWidth = d3.select('.js-fixed-line-chart-container').node().getBoundingClientRect().width,
             container = d3.select('.js-fixed-line-chart-container');
 
         testDataSet
