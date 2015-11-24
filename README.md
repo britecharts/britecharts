@@ -15,7 +15,7 @@ The typical use of Britecharts involves creating a chart using it's simple API, 
 
     barContainer.datum(dataset).call(barChart);
 
-All this charts expose some basic API methods like width, height and margin. Each specific chart or component can expose more methods, without any limit. They will be ready to check in the documentation, under the proper chart module section.
+All the components expose some basic API methods like width, height and margin. Each specific chart or component can expose more methods, without any limit. They will be ready to check in the documentation, under the proper chart module section.
 
 
 ## Charts
@@ -45,9 +45,10 @@ In order to generate and see the documentation for this charts and the project i
 This task will generate the docs with its current contents, and after finished, will open the docs interface where you will be able to check the specific methods for each chart. You can also see some use examples under the "Tutorials" dropdown section.
 
 
-## To Contribute
+## Standards
 
 We have followed a couple of standards outside of the regular Eventbrite workflow in this project: [JSDoc](http://usejsdoc.org) comments and Test Driven Development.
+
 
 #### JSDoc
 
