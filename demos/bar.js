@@ -114,7 +114,11 @@ function(d3, bar){
 
         barChart
             .width(500)
-            .height(300);
+            .height(300)
+            .on('customHover', function(d, i){
+                console.log('Bar data is ', d);
+                console.log('Bar index is ', i);
+            });
         barContainer.datum(dataset).call(barChart);
 
         d3.select(window).on('resize', function(){
