@@ -15,8 +15,7 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-jsdoc');
-    grunt.registerTask('docs', [
+    grunt.registerTask('docs', 'Generates docs and triggers server to view them', [
         'jsdoc:dist',
         'connect:docs'
     ]);

@@ -163,6 +163,26 @@ define(['jquery', 'd3', 'src/charts/bar'], function($, d3, chart) {
             expect(newMargin).toBe(testMargin);
         });
 
+        describe('on hovering a bar', function() {
+
+            beforeEach(function() {
+                this.callbackSpy = jasmine.createSpy('callback');
+
+                barChart.on('customHover', this.callbackSpy);
+            });
+
+            it('should trigger a callback', function() {
+                var bars = containerFixture.selectAll('.bar');
+
+                bars[0][0].__onmouseover();
+
+                expect(this.callbackSpy).toHaveBeenCalled();
+                // TODO: Figure out why the callback has this shape
+                // arguments: data, index, ?
+                expect(this.callbackSpy).toHaveBeenCalledWith(dataset[0], 0, 0);
+            });
+        });
+
     });
 
 });
