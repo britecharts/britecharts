@@ -122,14 +122,13 @@ function(d3, bar){
         barContainer.datum(dataset).call(barChart);
 
         d3.select(window).on('resize', function(){
-            var newWidth = d3.select('body').node().getBoundingClientRect().width;
+            var newWidth = d3.select('.js-bar-chart-container').node().getBoundingClientRect().width;
 
             d3.select('.line-chart').remove();
 
             barChart
-                .width(newWidth)
-                .height(300);
-            barContainer.datum(dataset).call(barChart);
+                .width(newWidth);
+            barContainer.call(barChart);
         });
     }
 
