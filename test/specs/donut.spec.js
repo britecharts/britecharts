@@ -6,41 +6,47 @@ define(['jquery', 'd3', 'src/charts/donut'], function($, d3, chart) {
 
         beforeEach(function() {
             dataset = [
-              {
-                'name': 'VALENTINES VIP SPECIAL',
-                'id': 33571136,
-                'quantity': 86,
-                'quantity_human': '86'
-              },
-              {
-                'name': 'Groupon 4 - Pack',
-                'id': 32913851,
-                'quantity': 300,
-                'quantity_human': '300'
-              },
-              {
-                'name': 'Groupon 2 - Pack',
-                'id': 32913850,
-                'quantity': 276,
-                'quantity_human': '276'
-              },
-              {
-                'name': 'Groupon Individual Runner',
-                'id': 32913849,
-                'quantity': 195,
-                'quantity_human': '195'
-              },
-              {
-                'name': 'LivingSocial Individual Runner',
-                'id': 32780575,
-                'quantity': 36,
-                'quantity_human': '36'
-              },
-              {
-                'name': 'Other',
-                'id': 0,
-                'quantity': 5814
-              }
+                {
+                    'name': 'VALENTINES VIP SPECIAL',
+                    'id': 33571136,
+                    'quantity': 86,
+                    'quantity_human': '86',
+                    'percentage': 3
+                },
+                {
+                    'name': 'Groupon 4 - Pack',
+                    'id': 32913851,
+                    'quantity': 300,
+                    'quantity_human': '300',
+                    'percentage': 10
+                },
+                {
+                    'name': 'Groupon 2 - Pack',
+                    'id': 32913850,
+                    'quantity': 276,
+                    'quantity_human': '276',
+                    'percentage': 10
+                },
+                {
+                    'name': 'Groupon Individual Runner',
+                    'id': 32913849,
+                    'quantity': 195,
+                    'quantity_human': '195',
+                    'percentage': 10
+                },
+                {
+                    'name': 'LivingSocial Individual Runner',
+                    'id': 32780575,
+                    'quantity': 36,
+                    'quantity_human': '36',
+                    'percentage': 1
+                },
+                {
+                    'name': 'Other',
+                    'id': 0,
+                    'quantity': 5814,
+                    'percentage': 65
+                }
             ];
 
             donutChart = chart();
