@@ -29,11 +29,12 @@ define(function(require){
             height = 300,
             ease = 'bounce',
             arcTransitionDuration = 750,
+            pieDrawingTransitionDuration = 1200,
             data,
             chartWidth, chartHeight,
             externalRadius = 140,
             internalRadius = 45.5,
-            tooltipWidth = externalRadius + internalRadius,
+            legendWidth = externalRadius + internalRadius,
             sortComparator = null,
             layout,
             shape,
@@ -83,7 +84,7 @@ define(function(require){
         }
 
         /**
-         * Builds containers for the chart, the tooltip and a wrapper for all of them
+         * Builds containers for the chart, the legend and a wrapper for all of them
          * @private
          */
         function buildContainerGroups() {
@@ -94,7 +95,7 @@ define(function(require){
                 });
 
             container.append('g').classed('chart-group', true);
-            container.append('g').classed('tooltip-group', true);
+            container.append('g').classed('legend-group', true);
         }
 
         /**
@@ -144,7 +145,7 @@ define(function(require){
          * Check out {@link http://bl.ocks.org/mbostock/1346410| this example}
          * @private
          */
-        function arcTween(a) {
+        function tweenArc(a) {
             var i = d3.interpolate(this._current, a);
 
             this._current = i(0);
@@ -155,22 +156,63 @@ define(function(require){
         }
 
         /**
+         * Animation for donut shaped sections
+         * @param  {obj} b Data point
+         * @return {funct}   Tween function
+         * Check out {@link http://bl.ocks.org/mbostock/4341574| this example}
+         * @private
+         */
+        function tweenDonut(b) {
+          var i;
+
+          b.innerRadius = internalRadius;
+          i = d3.interpolate({ innerRadius: 0 }, b);
+
+          return function(t) { return shape(i(t)); };
+        }
+
+        /**
+         * Animation for pie shaped sections
+         * @param  {obj} b Data point
+         * @return {funct}   Tween function
+         * Check out {@link http://bl.ocks.org/mbostock/4341574| this example}
+         * @private
+         */
+        function tweenPie(b) {
+            var i;
+
+            b.innerRadius = 0;
+            i = d3.interpolate({startAngle: 0, endAngle: 0}, b);
+
+            return function(t) { return shape(i(t)); };
+        }
+
+        /**
          * Draws the slices of the donut
          * @private
          */
         function drawSlices() {
             if (!slices) {
-                slices = svg.select('.chart-group').selectAll('path')
-                    .data(layout(data));
+                slices = svg.select('.chart-group')
+                    .selectAll('g.arc')
+                    .data(layout(data))
+                    .enter().append('g')
+                        .each(storeAngle)
+                        .classed('arc', true)
+                        .on('mouseover', drawLegend)
+                        .on('mouseout', cleanTooltip);
 
-                slices.enter()
-                    .append('path')
-                    .each(storeAngle)
-                    .attr('d', shape)
+                slices.append('path')
                     .attr('fill', getSliceFill)
-                    .attr('class', 'slice')
-                    .on('mouseover', drawTooltip)
-                    .on('mouseout', cleanTooltip);
+                  .transition()
+                    .ease(ease)
+                    .duration(pieDrawingTransitionDuration)
+                    .attrTween('d', tweenPie)
+                  .transition()
+                    .ease('elastic')
+                    .delay(function(d, i) { return 1500 + i * 50; })
+                    .duration(arcTransitionDuration)
+                    .attrTween('d', tweenDonut);
             } else {
                 slices = svg.select('.chart-group').selectAll('path')
                     .data(layout(data));
@@ -181,7 +223,7 @@ define(function(require){
                 // Redraws the angles of the data
                 slices
                     .transition().duration(arcTransitionDuration)
-                    .attrTween('d', arcTween);
+                    .attrTween('d', tweenArc);
             }
         }
 
@@ -189,44 +231,44 @@ define(function(require){
          * Creates the text element that will hold the legend of the chart
          */
         function initTooltip() {
-            svg.select('.tooltip-group').append('text')
-                .attr('class', 'tooltip-text')
+            svg.select('.legend-group').append('text')
+                .attr('class', 'legend-text')
                 .style('font-weight', 'normal')
                 .style('font-size', internalRadius / 3 + 'px')
                 .attr('x', -100);
         }
 
         /**
-         * Draws the values on the donut slice inside the tooltip text element
+         * Draws the values on the donut slice inside the text element
          * @param  {obj} obj Data object
          * @private
          */
-        function drawTooltip(obj) {
-            svg.select('.tooltip-text')
+        function drawLegend(obj) {
+            svg.select('.legend-text')
                 .text(function() {
                     return obj.data.percentage + '% ' + obj.data.name;
                 })
                 .attr('dy', '.35em')
                 .attr('text-anchor', 'middle');
 
-            svg.select('.tooltip-text').call(wrapText, tooltipWidth);
+            svg.select('.legend-text').call(wrapText, legendWidth);
         }
 
         /**
-         * Cleans any value that could be on the tooltip text element
+         * Cleans any value that could be on the legend text element
          * @private
          */
         function cleanTooltip() {
-            svg.select('.tooltip-text').text('');
+            svg.select('.legend-text').text('');
         }
 
         /**
          * Utility function that wraps a text into the given width
          * @param  {string} text         Text to write
-         * @param  {number} tooltipWidth Width of the container
+         * @param  {number} legendWidth Width of the container
          * @private
          */
-        function wrapText(text, tooltipWidth) {
+        function wrapText(text, legendWidth) {
             text.each(function() {
                 var text = d3.select(this),
                     words = text.text().split(/\s+/).reverse(),
@@ -252,7 +294,7 @@ define(function(require){
                 while (word = words.pop()) {
                     line.push(word);
                     tspan.text(line.join(' '));
-                    if (tspan.node().getComputedTextLength() > tooltipWidth - 50) {
+                    if (tspan.node().getComputedTextLength() > legendWidth - 50) {
                         line.pop();
                         tspan.text(line.join(' '));
                         line = [word];
