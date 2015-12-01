@@ -41,11 +41,14 @@ function(d3, donut){
                     'quantity': 5814
                   }
             ],
-            donutContainer = d3.select('.js-donut-chart-container');
+            donutContainer = d3.select('.js-donut-chart-container'),
+            containerWidth = donutContainer.node().getBoundingClientRect().width;
 
         donutChart
-            .width(600).height(600)
-            .externalRadius(250).internalRadius(50);
+            .width(containerWidth)
+            .height(containerWidth)
+            .externalRadius(containerWidth/3)
+            .internalRadius(containerWidth/12);
         donutContainer.datum(dataset).call(donutChart);
     }
 
@@ -88,11 +91,14 @@ function(d3, donut){
                     'quantity': 5814
                   }
             ],
-            donutContainer = d3.select('.js-small-donut-chart-container');
+            donutContainer = d3.select('.js-small-donut-chart-container'),
+            containerWidth = donutContainer.node().getBoundingClientRect().width;
 
         donutChart
-            .width(300).height(300)
-            .externalRadius(100).internalRadius(40);
+            .width(containerWidth)
+            .height(containerWidth)
+            .externalRadius(containerWidth/5)
+            .internalRadius(containerWidth/15);
         donutContainer.datum(dataset).call(donutChart);
     }
 
@@ -100,4 +106,9 @@ function(d3, donut){
     createDonutChart();
     createSmallDonutChart();
 
+    d3.select(window).on('resize', function(){
+        d3.selectAll('.donut-chart').remove();
+        createDonutChart();
+        createSmallDonutChart();
+    });
 });

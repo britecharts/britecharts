@@ -42,7 +42,7 @@ define(function(require){
         /**
          * This function creates the graph using the selection as container
          * @param  {D3Selection} _selection A d3 selection that represents
-         * the container(s) where the chart(s) will be rendered
+         *                                  the container(s) where the chart(s) will be rendered
          */
         function exports(_selection){
             /* @param {object} _data The data to attach and generate the chart */
@@ -106,6 +106,7 @@ define(function(require){
         }
 
         /**
+         * Builds the SVG element that will contain the chart
          * @param  {HTMLElement} container DOM element that will work as the container of the graph
          * @private
          */
@@ -124,7 +125,6 @@ define(function(require){
         }
 
         /**
-         * @description
          * Draws the x and y axis on the svg object within their
          * respective groups
          * @private
@@ -207,7 +207,7 @@ define(function(require){
         /**
          * Gets or Sets the height of the chart
          * @param  {number} _x Desired width for the graph
-         * @return { height | module} Current height or Bar Char module to chain calls
+         * @return { height | module} Current height or Bar Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {

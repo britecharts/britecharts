@@ -1,7 +1,7 @@
 define(['jquery', 'd3', 'src/charts/donut'], function($, d3, chart) {
     'use strict';
 
-    describe('Reusable donutChart Test Suite', function() {
+    describe('Reusable Donut Chart', function() {
         var donutChart, dataset, containerFixture, f;
 
         beforeEach(function() {
@@ -67,36 +67,37 @@ define(['jquery', 'd3', 'src/charts/donut'], function($, d3, chart) {
         });
 
         it('should render a chart with minimal requirements', function() {
-            expect(containerFixture.select('.donut-chart')).toBeDefined(1);
+            expect(containerFixture.select('.donut-chart').empty()).toBeFalsy();
         });
 
         it('should render container, chart and tooltip groups', function() {
-            expect(containerFixture.select('g.container-group')[0][0]).not.toBeNull();
-            expect(containerFixture.select('g.chart-group')[0][0]).not.toBeNull();
-            expect(containerFixture.select('g.tooltip-group')[0][0]).not.toBeNull();
-        });
-
-        it('should create a layout', function() {
-            expect(donutChart.layout()).toBeDefined();
-            expect(typeof donutChart.layout).toBe('function');
-        });
-
-        it('should build the shape for the donut', function() {
-            expect(donutChart.shape()).toBeDefined();
-            expect(typeof donutChart.shape).toBe('function');
+            expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.tooltip-group').empty()).toBeFalsy();
         });
 
         it('should render a slice for each data entry', function(){
             var numSlices = dataset.length;
 
-            expect(containerFixture.selectAll('.slice')[0].length).toEqual(numSlices);
+            expect(containerFixture.selectAll('.slice').size()).toEqual(numSlices);
         });
 
         it('should append text to the tooltip container', function() {
-            expect(containerFixture.select('text.tooltip-text')[0][0]).not.toBeNull();
+            expect(containerFixture.select('text.tooltip-text').empty()).toBeFalsy();
         });
 
-        // test color scheme later
+        it('should provide margin getter and setter', function(){
+            var defaultMargin = donutChart.margin(),
+                testMargin = {top: 4, right: 4, bottom: 4, left: 4},
+                newMargin;
+
+            donutChart.margin(testMargin);
+            newMargin = donutChart.margin();
+
+            expect(defaultMargin).not.toBe(testMargin);
+            expect(newMargin).toBe(testMargin);
+        });
+
     });
 
 });
