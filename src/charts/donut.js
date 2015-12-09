@@ -31,7 +31,8 @@ define(function(require){
             arcTransitionDuration = 750,
             pieDrawingTransitionDuration = 1200,
             pieHoverTransitionDuration = 150,
-            radiusHoverOffset = 30,
+            radiusHoverOffset = 15,
+            paddingAngle = 0.015,
             data,
             chartWidth, chartHeight,
             externalRadius = 140,
@@ -113,6 +114,7 @@ define(function(require){
          */
         function buildLayout() {
             layout = d3.layout.pie()
+                .padAngle(paddingAngle)
                 .value(getQuantity)
                 .sort(sortComparator);
         }
@@ -153,14 +155,14 @@ define(function(require){
          * @private
          */
         function drawLegend(obj) {
-            svg.select('.legend-text')
+            svg.select('.donut-text')
                 .text(function() {
                     return obj.data.percentage + '% ' + obj.data.name;
                 })
-                .attr('dy', '.35em')
+                .attr('dy', '.2em')
                 .attr('text-anchor', 'middle');
 
-            svg.select('.legend-text').call(wrapText, legendWidth);
+            svg.select('.donut-text').call(wrapText, legendWidth);
         }
 
         /**
@@ -179,7 +181,7 @@ define(function(require){
                     .each(reduceOuterRadius)
                     .classed('arc', true)
                     .on('mouseover', handleMouseOver)
-                    .on('mouseout', handleMouseOut);
+                    // .on('mouseout', handleMouseOut);
 
                 slices
                     .append('path')
@@ -211,7 +213,7 @@ define(function(require){
          * @private
          */
         function cleanLegend() {
-            svg.select('.legend-text').text('');
+            svg.select('.donut-text').text('');
         }
 
         function handleMouseOver(datum) {
@@ -226,11 +228,9 @@ define(function(require){
          * Creates the text element that will hold the legend of the chart
          */
         function initTooltip() {
-            svg.select('.legend-group').append('text')
-                .attr('class', 'legend-text')
-                .style('font-weight', 'normal')
-                .style('font-size', internalRadius / 3 + 'px')
-                .attr('x', -100);
+            svg.select('.legend-group')
+                .append('text')
+                .attr('class', 'donut-text');
         }
 
         /**
@@ -292,6 +292,7 @@ define(function(require){
 
         /**
          * Utility function that wraps a text into the given width
+         * TODO: Candidate to refactoring
          * @param  {string} text         Text to write
          * @param  {number} legendWidth Width of the container
          * @private
@@ -303,18 +304,19 @@ define(function(require){
                     word,
                     line = [],
                     lineNumber = 0,
-                    lineHeight = 1.1,
+                    lineHeight = 1.2,
                     y = text.attr('y'),
                     dy = parseFloat(text.attr('dy')),
                     tspan = text.text(null).append('tspan')
                         .attr('x', 0)
-                        .attr('y', y)
+                        .attr('y', y - 10)
                         .attr('dy', dy + 'em')
-                        .style('font-weight', 'bold')
+                        .classed('donut-value', true)
                         .style('font-size', externalRadius / 3.5 + 'px');
 
                 tspan.text(words.pop());
                 tspan = text.append('tspan')
+                    .classed('donut-label', true)
                     .attr('x', 0)
                     .attr('y', y)
                     .attr('dy', ++lineNumber * lineHeight + dy + 'em');
@@ -329,7 +331,7 @@ define(function(require){
                         tspan = text.append('tspan')
                             .attr('x', 0)
                             .attr('y', y)
-                            .attr('dy', ++lineNumber * lineHeight + dy + 'em')
+                            .attr('dy', ++lineNumber * (lineHeight/2) + dy + 'em')
                             .text(word);
                     }
                 }

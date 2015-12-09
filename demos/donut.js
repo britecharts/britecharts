@@ -13,18 +13,11 @@ function(d3, donut){
                     'percentage': 4
                   },
                   {
-                    'name': 'Groupon 4 - Pack',
-                    'id': 32913851,
-                    'quantity': 10000,
-                    'quantity_human': '1000',
-                    'percentage': 10
-                  },
-                  {
                     'name': 'Groupon 2 - Pack',
                     'id': 32913850,
-                    'quantity': 10000,
-                    'quantity_human': '10000',
-                    'percentage': 10
+                    'quantity': 15000,
+                    'quantity_human': '15000',
+                    'percentage': 15
                   },
                   {
                     'name': 'Groupon Individual Runner',
@@ -36,9 +29,9 @@ function(d3, donut){
                   {
                     'name': 'LivingSocial Individual Runner',
                     'id': 32780575,
-                    'quantity': 1000,
-                    'quantity_human': '1000',
-                    'percentage': 1
+                    'quantity': 6000,
+                    'quantity_human': '6000',
+                    'percentage': 6
                   },
                   {
                     'name': 'Other',

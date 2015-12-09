@@ -89,7 +89,7 @@ define(['jquery', 'd3', 'src/charts/donut'], function($, d3, chart) {
         });
 
         it('should append text to the legend container', function() {
-            expect(containerFixture.select('text.legend-text').empty()).toBeFalsy();
+            expect(containerFixture.select('text.donut-text').empty()).toBeFalsy();
         });
 
         it('should provide margin getter and setter', function(){
