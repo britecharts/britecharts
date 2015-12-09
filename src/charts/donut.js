@@ -30,6 +30,8 @@ define(function(require){
             ease = 'cubic-in-out',
             arcTransitionDuration = 750,
             pieDrawingTransitionDuration = 1200,
+            pieHoverTransitionDuration = 150,
+            radiusHoverOffset = 20,
             data,
             chartWidth, chartHeight,
             externalRadius = 140,
@@ -46,7 +48,12 @@ define(function(require){
             colorScheme = ['#00AF38', '#41C2C9', '#F6C664', '#F4693A', '#9A66D7'],
 
             // utils
-            storeAngle = function(d) { this._current = d; },
+            storeAngle = function(d) {
+                this._current = d;
+            },
+            reduceOuterRadius = function(d) {
+                d.outerRadius = externalRadius - radiusHoverOffset;
+            },
 
             // extractors
             getQuantity = function(d) { return parseInt(d.quantity, 10); },
@@ -114,8 +121,8 @@ define(function(require){
          */
         function buildShape() {
             shape = d3.svg.arc()
-                .innerRadius(externalRadius - internalRadius)
-                .outerRadius(externalRadius);
+                .innerRadius(internalRadius)
+                .padRadius(externalRadius);
         }
 
         /**
@@ -139,6 +146,92 @@ define(function(require){
         }
 
         /**
+         * Draws the values on the donut slice inside the text element
+         * @param  {obj} obj Data object
+         * @private
+         */
+        function drawLegend(obj) {
+            svg.select('.legend-text')
+                .text(function() {
+                    return obj.data.percentage + '% ' + obj.data.name;
+                })
+                .attr('dy', '.35em')
+                .attr('text-anchor', 'middle');
+
+            svg.select('.legend-text').call(wrapText, legendWidth);
+        }
+
+        /**
+         * Draws the slices of the donut
+         * @private
+         */
+        function drawSlices() {
+            if (!slices) {
+                slices = svg.select('.chart-group')
+                    .selectAll('g.arc')
+                    .data(layout(data));
+
+                slices.enter()
+                    .append('g')
+                    .each(storeAngle)
+                    .each(reduceOuterRadius)
+                    .classed('arc', true)
+                    .on('mouseover', handleMouseOver)
+                    .on('mouseout', handleMouseOut);
+
+                slices
+                    .append('path')
+                    .attr('fill', getSliceFill)
+                    .on('mouseover', tweenGrowthFactory(externalRadius, 0))
+                    .on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration))
+                  .transition()
+                    .ease(ease)
+                    .duration(pieDrawingTransitionDuration)
+                    .attrTween('d', tweenLoading);
+
+            } else {
+                slices = svg.select('.chart-group')
+                    .selectAll('path')
+                    .data(layout(data));
+
+                slices
+                    .attr('d', shape);
+
+                // Redraws the angles of the data
+                slices
+                    .transition().duration(arcTransitionDuration)
+                    .attrTween('d', tweenArc);
+            }
+        }
+
+        /**
+         * Cleans any value that could be on the legend text element
+         * @private
+         */
+        function cleanLegend() {
+            svg.select('.legend-text').text('');
+        }
+
+        function handleMouseOver(datum) {
+            drawLegend(datum);
+        }
+
+        function handleMouseOut() {
+            cleanLegend();
+        }
+
+        /**
+         * Creates the text element that will hold the legend of the chart
+         */
+        function initTooltip() {
+            svg.select('.legend-group').append('text')
+                .attr('class', 'legend-text')
+                .style('font-weight', 'normal')
+                .style('font-size', internalRadius / 3 + 'px')
+                .attr('x', -100);
+        }
+
+        /**
          * Stores current angles and interpolates with new angles
          * @param {obj} a New data for slice
          *
@@ -156,24 +249,15 @@ define(function(require){
         }
 
         /**
-         * Animation for donut shaped sections
-         * @param  {obj} b Data point
-         * @return {funct}   Tween function
-         * Check out {@link http://bl.ocks.org/mbostock/4341574| this example}
+         * Generates animations with tweens depending on the attributes given
+         * @param  {number} outerRadius Final outer radius value
+         * @param  {number} delay       Delay of animation
+         * @return {function}           Function that when called will tween the element
          * @private
          */
-        function tweenDonut(b) {
-          var i;
-
-          b.innerRadius = internalRadius;
-          i = d3.interpolate({ innerRadius: 0 }, b);
-
-          return function(t) { return shape(i(t)); };
-        }
-
-        function tweenGrowth(arc, outerRadius, delay) {
+        function tweenGrowthFactory(outerRadius, delay) {
             return function() {
-                d3.select(arc)
+                d3.select(this)
                     .transition()
                     .delay(delay)
                     .attrTween('d', function(d) {
@@ -181,119 +265,27 @@ define(function(require){
 
                         return function(t) {
                             d.outerRadius = i(t);
-                            return tweenPie(d);
+
+                            return shape(d);
                         };
                     });
             };
         }
 
         /**
-         * Animation for pie shaped sections
+         * Animation for chart loading
          * @param  {obj} b Data point
          * @return {funct}   Tween function
          * Check out {@link http://bl.ocks.org/mbostock/4341574| this example}
          * @private
          */
-        function tweenPie(b) {
+        function tweenLoading(b) {
             var i;
 
             b.innerRadius = 0;
             i = d3.interpolate({ startAngle: 0, endAngle: 0}, b);
 
             return function(t) { return shape(i(t)); };
-        }
-
-        /**
-         * Draws the slices of the donut
-         * @private
-         */
-        function drawSlices() {
-            if (!slices) {
-                slices = svg.select('.chart-group')
-                    .selectAll('g.arc')
-                    .data(layout(data));
-
-                slices.enter()
-                    .append('g')
-                    .each(storeAngle)
-                    .classed('arc', true)
-                    .on('mouseover', handleMouseOver)
-                    .on('mouseout', handleMouseOut);
-
-                slices
-                    .append('path')
-                    .attr('fill', getSliceFill)
-                  .transition()
-                    .ease(ease)
-                    .duration(pieDrawingTransitionDuration)
-                    .each(function(d) {
-                        d.outerRadius = externalRadius - 20;
-                    })
-                    .attrTween('d', tweenPie);
-
-            } else {
-                slices = svg.select('.chart-group')
-                    .selectAll('path')
-                    .data(layout(data));
-
-                slices
-                    .attr('d', shape);
-
-                // Redraws the angles of the data
-                slices
-                    .transition().duration(arcTransitionDuration)
-                    .attrTween('d', tweenArc);
-            }
-        }
-
-        function handleMouseOver() {
-            var arc = this,
-                datum = arguments[0];
-
-            tweenGrowth(arc, externalRadius, 0);
-            drawLegend(datum);
-        }
-
-        function handleMouseOut() {
-            var arc = this;
-
-            tweenGrowth(arc, externalRadius - 20, 150);
-            cleanLegend();
-        }
-
-        /**
-         * Creates the text element that will hold the legend of the chart
-         */
-        function initTooltip() {
-            svg.select('.legend-group').append('text')
-                .attr('class', 'legend-text')
-                .style('font-weight', 'normal')
-                .style('font-size', internalRadius / 3 + 'px')
-                .attr('x', -100);
-        }
-
-        /**
-         * Draws the values on the donut slice inside the text element
-         * @param  {obj} obj Data object
-         * @private
-         */
-        function drawLegend(obj) {
-            svg.select('.legend-text')
-                .text(function() {
-                    return obj.data.percentage + '% ' + obj.data.name;
-                })
-                .attr('dy', '.35em')
-                .attr('text-anchor', 'middle');
-
-            svg.select('.legend-text').call(wrapText, legendWidth);
-        }
-
-        /**
-         * Cleans any value that could be on the legend text element
-         * @private
-         */
-        function cleanLegend() {
-            svg.select('.legend-text').text('');
         }
 
         /**
@@ -343,6 +335,20 @@ define(function(require){
         }
 
         /**
+         * Gets or Sets the colorScheme of the chart
+         * @param  {array} _x Color scheme array to get/set
+         * @return { colorScheme | module} Current colorScheme or Donut Chart module to chain calls
+         * @public
+         */
+        exports.colorScheme = function(_x) {
+            if (!arguments.length) {
+                return colorScheme;
+            }
+            colorScheme = _x;
+            return this;
+        };
+
+        /**
          * Gets or Sets the externalRadius of the chart
          * @param  {number} _x ExternalRadius number to get/set
          * @return { externalRadius | module} Current externalRadius or Donut Chart module to chain calls
@@ -357,6 +363,20 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the height of the chart
+         * @param  {number} _x Desired width for the graph
+         * @return { height | module} Current height or Donut Chart module to chain calls
+         * @public
+         */
+        exports.height = function(_x) {
+            if (!arguments.length) {
+                return height;
+            }
+            height = _x;
+            return this;
+        };
+
+        /**
          * Gets or Sets the internalRadius of the chart
          * @param  {number} _x InternalRadius number to get/set
          * @return { internalRadius | module} Current internalRadius or Donut Chart module to chain calls
@@ -367,20 +387,6 @@ define(function(require){
                 return internalRadius;
             }
             internalRadius = _x;
-            return this;
-        };
-
-        /**
-         * Gets or Sets the colorScheme of the chart
-         * @param  {array} _x Color scheme array to get/set
-         * @return { colorScheme | module} Current colorScheme or Donut Chart module to chain calls
-         * @public
-         */
-        exports.colorScheme = function(_x) {
-            if (!arguments.length) {
-                return colorScheme;
-            }
-            colorScheme = _x;
             return this;
         };
 
@@ -409,20 +415,6 @@ define(function(require){
                 return width;
             }
             width = _x;
-            return this;
-        };
-
-        /**
-         * Gets or Sets the height of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { height | module} Current height or Donut Chart module to chain calls
-         * @public
-         */
-        exports.height = function(_x) {
-            if (!arguments.length) {
-                return height;
-            }
-            height = _x;
             return this;
         };
 

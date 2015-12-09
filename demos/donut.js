@@ -54,7 +54,7 @@ function(d3, donut){
             .width(containerWidth)
             .height(containerWidth)
             .externalRadius(containerWidth/2.5)
-            .internalRadius(containerWidth/8);
+            .internalRadius(containerWidth/5);
         donutContainer.datum(dataset).call(donutChart);
     }
 
