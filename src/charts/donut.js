@@ -31,13 +31,12 @@ define(function(require){
             arcTransitionDuration = 750,
             pieDrawingTransitionDuration = 1200,
             pieHoverTransitionDuration = 150,
-            radiusHoverOffset = 20,
+            radiusHoverOffset = 30,
             data,
             chartWidth, chartHeight,
             externalRadius = 140,
             internalRadius = 45.5,
             legendWidth = externalRadius + internalRadius,
-            sortComparator = null,
             layout,
             shape,
             slices,
@@ -53,6 +52,9 @@ define(function(require){
             },
             reduceOuterRadius = function(d) {
                 d.outerRadius = externalRadius - radiusHoverOffset;
+            },
+            sortComparator = function(a, b) {
+                return b.quantity - a.quantity;
             },
 
             // extractors
