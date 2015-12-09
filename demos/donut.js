@@ -53,8 +53,8 @@ function(d3, donut){
         donutChart
             .width(containerWidth)
             .height(containerWidth)
-            .externalRadius(containerWidth/3)
-            .internalRadius(containerWidth/12);
+            .externalRadius(containerWidth/2.5)
+            .internalRadius(containerWidth/8);
         donutContainer.datum(dataset).call(donutChart);
     }
 

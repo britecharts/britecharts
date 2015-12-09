@@ -10,7 +10,7 @@ function(d3, line, dataBuilder){
 
         testDataSet
             .with5Topics()
-            .withPath('../test/fixtures/lineDataFiveTopics.json')
+            .withPath('../test/fixtures/lineDataFiveTopicsBis.json')
             .build()
             .done(function(dataset){
                 lineChart
@@ -30,7 +30,7 @@ function(d3, line, dataBuilder){
 
         testDataSet
             .with5Topics()
-            .withPath('../test/fixtures/lineDataFiveTopics.json')
+            .withPath('../test/fixtures/lineDataFiveTopicsBis.json')
             .build()
             .done(function(dataset){
                 lineChart

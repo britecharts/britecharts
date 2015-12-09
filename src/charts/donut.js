@@ -20,14 +20,14 @@ define(function(require){
     return function module() {
 
         var margin = {
-                top: 20,
-                right: 20,
-                bottom: 20,
-                left: 20
+                top: 60,
+                right: 60,
+                bottom: 60,
+                left: 60
             },
             width = 300,
             height = 300,
-            ease = 'bounce',
+            ease = 'cubic-in-out',
             arcTransitionDuration = 750,
             pieDrawingTransitionDuration = 1200,
             data,
@@ -43,7 +43,7 @@ define(function(require){
 
             // colors
             colorScale = d3.scale.category20c(),
-            colorScheme,
+            colorScheme = ['#00AF38', '#41C2C9', '#F6C664', '#F4693A', '#9A66D7'],
 
             // utils
             storeAngle = function(d) { this._current = d; },
@@ -182,7 +182,7 @@ define(function(require){
             var i;
 
             b.innerRadius = 0;
-            i = d3.interpolate({startAngle: 0, endAngle: 0}, b);
+            i = d3.interpolate({ startAngle: 0, endAngle: 0}, b);
 
             return function(t) { return shape(i(t)); };
         }
@@ -195,24 +195,23 @@ define(function(require){
             if (!slices) {
                 slices = svg.select('.chart-group')
                     .selectAll('g.arc')
-                    .data(layout(data))
-                    .enter().append('g')
-                        .each(storeAngle)
-                        .classed('arc', true)
-                        .on('mouseover', drawLegend)
-                        .on('mouseout', cleanTooltip);
+                    .data(layout(data));
 
-                slices.append('path')
+                slices.enter()
+                    .append('g')
+                    .each(storeAngle)
+                    .classed('arc', true)
+                    .on('mouseover', drawLegend)
+                    .on('mouseout', cleanLegend);
+
+                slices
+                    .append('path')
                     .attr('fill', getSliceFill)
                   .transition()
                     .ease(ease)
                     .duration(pieDrawingTransitionDuration)
-                    .attrTween('d', tweenPie)
-                  .transition()
-                    .ease('elastic')
-                    .delay(function(d, i) { return 1500 + i * 50; })
-                    .duration(arcTransitionDuration)
-                    .attrTween('d', tweenDonut);
+                    .attrTween('d', tweenPie);
+
             } else {
                 slices = svg.select('.chart-group').selectAll('path')
                     .data(layout(data));
@@ -258,7 +257,7 @@ define(function(require){
          * Cleans any value that could be on the legend text element
          * @private
          */
-        function cleanTooltip() {
+        function cleanLegend() {
             svg.select('.legend-text').text('');
         }
 
