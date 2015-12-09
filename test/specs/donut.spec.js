@@ -76,20 +76,20 @@ define(['jquery', 'd3', 'src/charts/donut'], function($, d3, chart) {
             expect(containerFixture.select('.donut-chart').empty()).toBeFalsy();
         });
 
-        it('should render container, chart and tooltip groups', function() {
+        it('should render container, chart and legend groups', function() {
             expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.tooltip-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.legend-group').empty()).toBeFalsy();
         });
 
         it('should render a slice for each data entry', function(){
             var numSlices = dataset.length;
 
-            expect(containerFixture.selectAll('.slice').size()).toEqual(numSlices);
+            expect(containerFixture.selectAll('.arc').size()).toEqual(numSlices);
         });
 
-        it('should append text to the tooltip container', function() {
-            expect(containerFixture.select('text.tooltip-text').empty()).toBeFalsy();
+        it('should append text to the legend container', function() {
+            expect(containerFixture.select('text.legend-text').empty()).toBeFalsy();
         });
 
         it('should provide margin getter and setter', function(){
