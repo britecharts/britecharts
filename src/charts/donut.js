@@ -171,6 +171,22 @@ define(function(require){
           return function(t) { return shape(i(t)); };
         }
 
+        function tweenGrowth(arc, outerRadius, delay) {
+            return function() {
+                d3.select(arc)
+                    .transition()
+                    .delay(delay)
+                    .attrTween('d', function(d) {
+                        var i = d3.interpolate(d.outerRadius, outerRadius);
+
+                        return function(t) {
+                            d.outerRadius = i(t);
+                            return tweenPie(d);
+                        };
+                    });
+            };
+        }
+
         /**
          * Animation for pie shaped sections
          * @param  {obj} b Data point
@@ -201,8 +217,8 @@ define(function(require){
                     .append('g')
                     .each(storeAngle)
                     .classed('arc', true)
-                    .on('mouseover', drawLegend)
-                    .on('mouseout', cleanLegend);
+                    .on('mouseover', handleMouseOver)
+                    .on('mouseout', handleMouseOut);
 
                 slices
                     .append('path')
@@ -210,10 +226,14 @@ define(function(require){
                   .transition()
                     .ease(ease)
                     .duration(pieDrawingTransitionDuration)
+                    .each(function(d) {
+                        d.outerRadius = externalRadius - 20;
+                    })
                     .attrTween('d', tweenPie);
 
             } else {
-                slices = svg.select('.chart-group').selectAll('path')
+                slices = svg.select('.chart-group')
+                    .selectAll('path')
                     .data(layout(data));
 
                 slices
@@ -224,6 +244,21 @@ define(function(require){
                     .transition().duration(arcTransitionDuration)
                     .attrTween('d', tweenArc);
             }
+        }
+
+        function handleMouseOver() {
+            var arc = this,
+                datum = arguments[0];
+
+            tweenGrowth(arc, externalRadius, 0);
+            drawLegend(datum);
+        }
+
+        function handleMouseOut() {
+            var arc = this;
+
+            tweenGrowth(arc, externalRadius - 20, 150);
+            cleanLegend();
         }
 
         /**
