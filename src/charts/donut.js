@@ -181,7 +181,7 @@ define(function(require){
                     .each(reduceOuterRadius)
                     .classed('arc', true)
                     .on('mouseover', handleMouseOver)
-                    // .on('mouseout', handleMouseOut);
+                    .on('mouseout', handleMouseOut);
 
                 slices
                     .append('path')
