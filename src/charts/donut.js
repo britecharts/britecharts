@@ -305,21 +305,26 @@ define(function(require){
                     line = [],
                     lineNumber = 0,
                     lineHeight = 1.2,
+                    smallLineHeight = lineHeight * 0.9,
+                    smallTextOffset = 15,
                     y = text.attr('y'),
                     dy = parseFloat(text.attr('dy')),
+                    fontSize = externalRadius / 4,
+                    smallFontSize = fontSize / 2.5,
                     tspan = text.text(null).append('tspan')
                         .attr('x', 0)
-                        .attr('y', y - 10)
+                        .attr('y', y - 5)
                         .attr('dy', dy + 'em')
                         .classed('donut-value', true)
-                        .style('font-size', externalRadius / 3.5 + 'px');
+                        .style('font-size', fontSize + 'px');
 
                 tspan.text(words.pop());
                 tspan = text.append('tspan')
                     .classed('donut-label', true)
                     .attr('x', 0)
-                    .attr('y', y)
-                    .attr('dy', ++lineNumber * lineHeight + dy + 'em');
+                    .attr('y', y + smallTextOffset)
+                    .attr('dy', ++lineNumber * smallLineHeight + dy + 'em')
+                    .style('font-size', smallFontSize + 'px');
 
                 while (word = words.pop()) {
                     line.push(word);
@@ -329,10 +334,12 @@ define(function(require){
                         tspan.text(line.join(' '));
                         line = [word];
                         tspan = text.append('tspan')
+                            .classed('donut-label', true)
                             .attr('x', 0)
-                            .attr('y', y)
-                            .attr('dy', ++lineNumber * (lineHeight/2) + dy + 'em')
-                            .text(word);
+                            .attr('y', y+ smallTextOffset)
+                            .attr('dy', ++lineNumber * smallLineHeight + dy + 'em')
+                            .text(word)
+                            .style('font-size', smallFontSize + 'px');
                     }
                 }
             });
