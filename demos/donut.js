@@ -6,7 +6,7 @@ function(d3, donut){
         var donutChart = donut(),
             dataset = [
                   {
-                    'name': 'VALENTINES VIP SPECIAL',
+                    'name': 'Valentines VIP special',
                     'id': 33571136,
                     'quantity': 4000,
                     'quantity_human': '4000',
