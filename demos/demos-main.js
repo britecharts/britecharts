@@ -10,7 +10,8 @@ require.config({
         'dataBuilder': '../test/fixtures/lineChartDataBuilder',
         'line': '/src/charts/line',
         'bar': '/src/charts/bar',
-        'donut': '/src/charts/donut'
+        'donut': '/src/charts/donut',
+        'tooltip': '/src/charts/tooltip'
     },
 
     callback: function(){
