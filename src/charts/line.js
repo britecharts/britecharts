@@ -25,6 +25,7 @@ define(function(require){
             width = 960,
             height = 500,
             aspectRatio = null,
+            tooltipThreshold = 480,
             svg,
             chartWidth, chartHeight,
             xScale, yScale, colorScale,
@@ -67,25 +68,6 @@ define(function(require){
             verticalMarkerContainer,
             verticalMarkerLine,
 
-            // tooltip
-            tooltip,
-            tooltipOffset = {
-                y: -55,
-                x: 0
-            },
-            tooltipThreshold = 480,
-            tooltipMaxTopicLength = 170,
-            tooltipTextContainer,
-            tooltipBackground,
-            tooltipDivider,
-            tooltipBody,
-            tooltipTitle,
-            tooltipWidth = 250,
-            tooltipHeight = 45,
-            ttTextX,
-            ttTextY,
-            textSize,
-
             // extractors
             getDate = function(d) { return d.date; },
             getValue = function(d) { return d.value; },
@@ -96,7 +78,6 @@ define(function(require){
             yTickNumberFormat = d3.format('s'),
             xTickDateFormat = d3.time.format('%e'),
             xTickMonthFormat = d3.time.format('%B'),
-            tooltipDateFormat = d3.time.format('%B %d, %Y'),
 
             // events
             dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
@@ -124,7 +105,6 @@ define(function(require){
 
                 if(shouldShowTooltip()){
                     drawVerticalMarker();
-                    drawTooltip();
                     drawHoverOverlay();
                     addMouseEvents();
                 }
@@ -230,6 +210,11 @@ define(function(require){
             colorScale = d3.scale.ordinal()
                 .range(colorRange)
                 .domain(data.map(getTopic));
+
+            topicColorMap = _.object(
+                colorScale.domain(),
+                colorScale.range()
+            );
         }
 
         /**
@@ -260,15 +245,6 @@ define(function(require){
          */
         function cleanDataPointHighlights(){
             verticalMarkerContainer.selectAll('.circle-container').remove();
-        }
-
-        /**
-         * Resets the tooltipBody content
-         * @return void
-         */
-        function cleanTooltipContent(){
-            tooltipBody.selectAll('text').remove();
-            tooltipBody.selectAll('circle').remove();
         }
 
         /**
@@ -394,82 +370,10 @@ define(function(require){
                 .attr('class','overlay')
                 .attr('y1', 0)
                 .attr('y2', height)
-                .attr('height', height)
-                .attr('width', width)
+                .attr('height', height - margin.top - margin.bottom)
+                .attr('width', width - margin.left - margin.right)
                 .attr('fill', overlayColor)
                 .style('display', 'none');
-        }
-
-        /**
-         * Draws the different elements of the Tooltip box
-         * @return void
-         */
-        function drawTooltip(){
-            tooltipTextContainer = verticalMarkerContainer
-                .append('g')
-                .classed('tooltip-text', true);
-
-            tooltipBackground = tooltipTextContainer
-                .append('rect')
-                .classed('tooltip-background', true)
-                .attr({
-                    'x': -tooltipWidth / 4 + 10,
-                    'y': 0,
-                    'width': tooltipWidth,
-                    'height': tooltipHeight-1,
-                    'rx': 3,
-                    'ry': 3
-                });
-
-            tooltip = tooltipTextContainer
-                .append('rect')
-                .classed('tooltip', true)
-                .attr({
-                    'x': -tooltipWidth / 4 + 8,
-                    'y': 0,
-                    'width': tooltipWidth,
-                    'height': tooltipHeight,
-                    'rx': 3,
-                    'ry': 3
-                })
-                .style({
-                    'fill': '#FFFFFF',
-                    'stroke': '#D9D9D9',
-                    'stroke-width': 1
-                });
-
-            tooltipTitle = tooltipTextContainer
-                .append('text')
-                .classed('tooltip-title', true)
-                .attr({
-                    'x': -tooltipWidth / 4 + 17,
-                    'dy': '.35em',
-                    'y': 16
-                })
-                .style({
-                    'fill': '#666666'
-                });
-
-            tooltipDivider = tooltipTextContainer
-                .append('line')
-                .classed('tooltip-divider', true)
-                .attr({
-                    'x1': -tooltipWidth / 4 + 15,
-                    'y1': 31,
-                    'x2': 265,
-                    'y2': 31
-                })
-                .style({
-                    'stroke': '#D9D9D9'
-                });
-
-            tooltipBody = tooltipTextContainer
-                .append('g')
-                .classed('tooltip-body', true)
-                .style({
-                    'transform': 'translateY(8px)',
-                    'fill': '#404040'
-                });
         }
 
         /**
@@ -574,19 +478,19 @@ define(function(require){
          * @return void
          */
         function handleMouseMove(){
-            var xPositionOffset = 7 - margin.left, //Arbitrary number, will love to know how to assess it
-                dataPoint = getNearestDataPoint(getMouseXPosition(this) + xPositionOffset);
+            var xPositionOffset = -margin.left, //Arbitrary number, will love to know how to assess it
+                dataPoint = getNearestDataPoint(getMouseXPosition(this) + xPositionOffset),
+                dataPointXPosition;
 
             if(dataPoint) {
                 // More verticalMarker to that datapoint
                 moveVerticalMarker(dataPoint);
                 // Add data points highlighting
                 highlightDataPoints(dataPoint);
-                // Fill tooltip
-                updateTooltip(dataPoint);
+                // Emit event with xPosition for tooltip or similar feature
+                dataPointXPosition = xScale(new Date(dataPoint.date));
+                dispatch.customMouseMove(dataPoint, topicColorMap, dataPointXPosition);
             }
-
-            dispatch.customMouseMove();
         }
 
         /**
@@ -594,23 +498,23 @@ define(function(require){
          * It also resets the container of the vertical marker
          * @return void
          */
-        function handleMouseOut(){
+        function handleMouseOut(data){
             overlay.style('display', 'none');
             verticalMarkerLine.classed('bc-is-active', false);
             verticalMarkerContainer.attr('transform', 'translate(' + '9999' + ',' + '0' + ')');
 
-            dispatch.customMouseOut();
+            dispatch.customMouseOut(data);
         }
 
         /**
          * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
          * @return void
          */
-        function handleMouseOver(){
+        function handleMouseOver(data){
             overlay.style('display', 'block');
             verticalMarkerLine.classed('bc-is-active', true);
 
-            dispatch.customMouseOver();
+            dispatch.customMouseOver(data);
         }
 
         /**
@@ -620,11 +524,6 @@ define(function(require){
          */
         function highlightDataPoints(dataPoint){
             cleanDataPointHighlights();
-
-            topicColorMap = _.object(
-                colorScale.domain(),
-                colorScale.range()
-            );
 
             // sorting the topics based on the order of the colors,
             // so that the order always stays constant
@@ -676,184 +575,6 @@ define(function(require){
         function shouldShowTooltip() {
             return width > tooltipThreshold;
         }
-
-        /**
-         * Updates tooltip title, content, size and position
-         * @param  {object} dataPoint Current datapoint to show info about
-         * @return void
-         */
-        function updateTooltip(dataPoint){
-            ttTextX = 0;
-            ttTextY = 37;
-            tooltipHeight = 48;
-
-            cleanTooltipContent();
-            updateTooltipTitle(dataPoint);
-            dataPoint.topics.forEach(updateTooltipContent);
-            updateTooltipPositionAndSize(dataPoint);
-        }
-
-        /**
-         * Draws the data entries inside the tooltip for a given topic
-         * @param  {obj} topic Topic to extract data from
-         * @return void
-         */
-        function updateTooltipContent(topic){
-            var tooltipRight,
-                tooltipLeftText,
-                tooltipRightText,
-                elementText;
-
-            tooltipLeftText = $.trim(topic.topicName);
-
-            if (topic.missingValue) {
-                tooltipRightText = '-';
-            } else {
-                if (readableDataType.type === 'money') {
-                    tooltipRightText = topic.value;
-                    // tooltipRightText = EB.Intl.formatMoney(topic.value);
-                } else {
-                    tooltipRightText = topic.value;
-                    // tooltipRightText = EB.Intl.formatNumber(topic.value, {precision: 0});
-                }
-            }
-
-            elementText = tooltipBody
-                .append('text')
-                .attr({
-                    'dy': '1em',
-                    'x': ttTextX - 20,
-                    'y': ttTextY
-                })
-                .style('fill', 'black')
-                .text(tooltipLeftText)
-                .call(wrap, tooltipMaxTopicLength, -30);
-
-            tooltipRight = tooltipBody
-                .append('text')
-                .attr({
-                    'dy': '1em',
-                    'x': ttTextX + 8,
-                    'y': ttTextY
-                })
-                .style('fill', 'black')
-                .text(tooltipRightText);
-
-            textSize = elementText.node().getBBox();
-            tooltipHeight += textSize.height + 5;
-
-            // Not sure if necessary
-            tooltipRight.attr({
-                'x': tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4
-            });
-
-            tooltipBody
-                .append('circle')
-                .attr({
-                    'cx': 23 - tooltipWidth / 4,
-                    'cy': (ttTextY + 7),
-                    'r': 5
-                })
-                .style({
-                    'fill': topicColorMap[topic.name],
-                    'stroke-width': 1
-                });
-
-            ttTextY += textSize.height + 7;
-        }
-
-        /**
-         * Updates size and position of tooltip depending on the side of the chart we are in
-         * @param  {object} dataPoint DataPoint of the tooltip
-         * @return void
-         */
-        function updateTooltipPositionAndSize(dataPoint){
-            tooltip
-                .attr({
-                    'width': tooltipWidth,
-                    'height': tooltipHeight + 10
-                });
-
-            tooltipBackground
-                .attr({
-                    'width': tooltipWidth - 3,
-                    'height': tooltipHeight + 12
-                });
-
-
-            // show tooltip to the right
-            if ((xScale(new Date(dataPoint.date)) - tooltipWidth) < 0) {
-                // Tooltip on the right
-                tooltipTextContainer
-                    .attr('transform', 'translate(' + (tooltipWidth - 185) + ',' + tooltipOffset.y + ')');
-            } else {
-                // Tooltip on the left
-                tooltipTextContainer
-                    .attr('transform', 'translate(' + (-205) + ',' + tooltipOffset.y + ')');
-            }
-
-            tooltipDivider
-                .attr({
-                    'x2': tooltipWidth - 60
-                });
-        }
-
-        /**
-         * Updates value of tooltipTitle with the data meaning and the date
-         * @param  {obj} dataPoint Point of data to use as source
-         * @return void
-         */
-        function updateTooltipTitle(dataPoint) {
-            var tooltipTitleText = readableDataType.name + ' - ' + tooltipDateFormat(new Date(dataPoint.date));
-
-            tooltipTitle.text(tooltipTitleText);
-        }
-
-        /**
-         * Wraps a text given the text, width, x position and textFormatter function
-         * @param  {D3Selection} text  Selection with the text to wrap inside
-         * @param  {number} width Desired max width for that line
-         * @param  {number} xpos  Initial x position of the text
-         * @return void
-         *
-         * REF: http://bl.ocks.org/mbostock/7555321
-         */
-        function wrap(text, width, xpos) {
-            xpos = xpos || 0;
-
-            text.each(function() {
-                var words,
-                    word,
-                    line,
-                    lineNumber,
-                    lineHeight,
-                    y,
-                    dy,
-                    tspan;
-
-                text = d3.select(this);
-
-                words = text.text().split(/\s+/).reverse();
-                line = [];
-                lineNumber = 0;
-                lineHeight = 1.2;
-                y = text.attr('y');
-                dy = parseFloat(text.attr('dy'));
-                tspan = text.text(null).append('tspan').attr('x', xpos).attr('y', y).attr('dy', dy + 'em');
-
-                while ((word = words.pop())) {
-                    line.push(word);
-                    tspan.text(line.join(' '));
-                    if (tspan.node().getComputedTextLength() > width) {
-                        line.pop();
-                        tspan.text(line.join(' '));
-                        line = [word];
-                        tspan = text.append('tspan').attr('x', xpos).attr('y', y).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);
-                    }
-                }
-            });
-        }
-
 
         // API Methods
 
