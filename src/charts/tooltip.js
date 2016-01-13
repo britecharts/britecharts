@@ -48,7 +48,7 @@ define(function(require){
             ttTextY = 37,
             textSize,
 
-            circleYOffset = 10,
+            circleYOffset = 8,
 
             colorMap,
 
