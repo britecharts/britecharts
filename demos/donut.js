@@ -1,9 +1,10 @@
-require(['d3', 'donut'],
-function(d3, donut){
+require(['d3', 'donut', 'legend'],
+function(d3, donut, legend){
     'use strict';
 
     function createDonutChart() {
         var donutChart = donut(),
+            legendChart = legend(),
             dataset = [
                   {
                     'name': 'Valentines VIP special',
@@ -41,6 +42,7 @@ function(d3, donut){
                   }
             ],
             donutContainer = d3.select('.js-donut-chart-container'),
+            legendContainer = d3.select('.js-legend-chart-container'),
             containerWidth = donutContainer.node().getBoundingClientRect().width;
 
         donutChart
@@ -49,6 +51,8 @@ function(d3, donut){
             .externalRadius(containerWidth/2.5)
             .internalRadius(containerWidth/5);
         donutContainer.datum(dataset).call(donutChart);
+
+        legendContainer.datum(dataset).call(legendChart);
     }
 
     function createSmallDonutChart() {

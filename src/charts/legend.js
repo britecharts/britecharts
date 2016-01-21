@@ -20,17 +20,24 @@ define(function(require){
     return function module() {
 
         var margin = {
-                top: 5,
-                right: 5,
-                bottom: 5,
-                left: 5
+                top: 20,
+                right: 10,
+                bottom: 10,
+                left: 10
             },
-            width = 300,
-            height = 100,
+            width = 320,
+            height = 180,
 
-            lineHeight = 30,
-            textHeight = 25,
-            circleRadius = 5,
+            lineMargin = 15,
+
+            circleRadius = 10,
+            circleYOffset = -5,
+
+            valueReservedSpace = 50,
+
+            // colors
+            colorScale = d3.scale.category20c(),
+            colorScheme = ['#00AF38', '#41C2C9', '#F6C664', '#F4693A', '#9A66D7'],
 
             entries,
             chartWidth, chartHeight,
@@ -50,6 +57,7 @@ define(function(require){
                 chartHeight = height - margin.top - margin.bottom;
                 data = _data;
 
+                buildColorScale();
                 buildSVG(this);
                 drawEntries();
             });
@@ -67,7 +75,19 @@ define(function(require){
                     transform: 'translate(' + margin.left + ',' + margin.top + ')'
                 });
 
-            container.append('g').classed('legend-group', true);
+            container
+                .append('g')
+                .classed('legend-group', true);
+        }
+
+        /**
+         * Builds color scale for chart, if any colorScheme was defined
+         * @private
+         */
+        function buildColorScale() {
+            if (colorScheme) {
+                colorScale = d3.scale.ordinal().range(colorScheme);
+            }
         }
 
         /**
@@ -78,7 +98,7 @@ define(function(require){
         function buildSVG(container) {
             if (!svg) {
                 svg = d3.select(container)
-                    .append('g')
+                    .append('svg')
                     .classed('britechart britechart-legend', true);
 
                 buildContainerGroups();
@@ -102,15 +122,11 @@ define(function(require){
             entries.enter()
                 .append('g')
                 .classed('legend-line', true)
-                // .attr({
-                //     'dy': '1em',
-                //     'x': 20,
-                //     'y': textHeight
-                // });
                 .attr('data-item', function(d) { return d.id; })
                 .attr('transform', function(d, i) {
                     var horizontalOffset = 2 * circleRadius + 10,
-                        verticalOffset = i * lineHeight;
+                        lineHeightBis = chartHeight/data.length,
+                        verticalOffset = i * lineHeightBis;
 
                     return 'translate(' + horizontalOffset + ',' + verticalOffset + ')';
                 });
@@ -119,43 +135,32 @@ define(function(require){
                 .append('circle')
                 .classed('legend-circle', true)
                 .attr({
-                    'cx': 20,
-                    // 'cx': 23 - tooltipWidth / 4,
-                    'cy': textHeight,
-                    // 'cy': (ttTextY + circleYOffset),
+                    'cx': 0,
+                    'cy': circleYOffset,
                     'r': circleRadius
                 })
                 .style({
-                    'fill': 'red',
+                    'fill': function(d) {
+                        return colorScale(d.quantity);
+                    },
                     'stroke-width': 1
                 });
 
             entries
                 .append('text')
                 .classed('legend-entry-name', true)
-                .text(function(d) { return d.name; });
-                // .attr({
-                //     text: function(d) { return d.name; }
-                // });
+                .text(function(d) { return d.name; })
+                .attr({
+                    x: (2 * circleRadius) + lineMargin
+                });
 
             entries
                 .append('text')
                 .classed('legend-entry-value', true)
-                .text(function(d) { return d['quantity_human']; });
-
-
-                // tooltipBody
-                //     .append('circle')
-                //     .classed('tooltip-circle', true)
-                //     .attr({
-                //         'cx': 23 - tooltipWidth / 4,
-                //         'cy': (ttTextY + circleYOffset),
-                //         'r': 5
-                //     })
-                //     .style({
-                //         'fill': colorMap[topic.name],
-                //         'stroke-width': 1
-                //     });
+                .text(function(d) { return d['quantity']; })
+                .attr({
+                    x: chartWidth - valueReservedSpace
+                });
 
             // Update
             entries.transition()
@@ -163,23 +168,6 @@ define(function(require){
                 .attr({
                     width: chartWidth
                 });
-
-            // Exit
-            entries.exit()
-                .transition().style({ opacity: 0 }).remove();
-
-
-            // // Enter
-            // bars.enter()
-            //     .append('rect')
-            //     .classed('bar', true)
-            //     .attr({
-            //         width: barW,
-            //         x: chartWidth, // Initially drawing the bars at the end of Y axis
-            //         y: function(d) { return yScale(d.frequency); },
-            //         height: function(d) { return chartHeight - yScale(d.frequency); }
-            //     })
-            //     .on('mouseover', dispatch.customHover);
 
             // // Update
             // bars.transition()
@@ -191,13 +179,52 @@ define(function(require){
             //         height: function(d) { return chartHeight - yScale(d.frequency); }
             //     });
 
-            // // Exit
-            // bars.exit()
-            //     .transition().style({ opacity: 0 }).remove();
-
-
-
+            // Exit
+            entries.exit()
+                .transition().style({ opacity: 0 }).remove();
         }
+
+        /**
+         * Gets or Sets the height of the legend chart
+         * @param  {number} _x Desired width for the chart
+         * @return { height | module} Current height or Legend module to chain calls
+         * @public
+         */
+        exports.height = function(_x) {
+            if (!arguments.length) {
+                return height;
+            }
+            height = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the margin of the legend chart
+         * @param  {object} _x Margin object to get/set
+         * @return { margin | module} Current margin or Legend module to chain calls
+         * @public
+         */
+        exports.margin = function(_x) {
+            if (!arguments.length) {
+                return margin;
+            }
+            margin = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the width of the legend chart
+         * @param  {number} _x Desired width for the graph
+         * @return { width | module} Current width or Legend module to chain calls
+         * @public
+         */
+        exports.width = function(_x) {
+            if (!arguments.length) {
+                return width;
+            }
+            width = _x;
+            return this;
+        };
 
         return exports;
 

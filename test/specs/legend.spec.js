@@ -35,13 +35,6 @@ define(['jquery', 'd3', 'src/charts/legend'], function($, d3, legend) {
                     'percentage': 10
                 },
                 {
-                    'name': 'LivingSocial Individual Runner',
-                    'id': 32780575,
-                    'quantity': 36,
-                    'quantity_human': '36',
-                    'percentage': 1
-                },
-                {
                     'name': 'Other',
                     'id': 0,
                     'quantity': 5814,
@@ -60,7 +53,7 @@ define(['jquery', 'd3', 'src/charts/legend'], function($, d3, legend) {
         });
 
         afterEach(function(){
-            // debugger
+            debugger
             containerFixture.remove();
             f = jasmine.getFixtures();
             f.cleanUp();
@@ -68,7 +61,7 @@ define(['jquery', 'd3', 'src/charts/legend'], function($, d3, legend) {
         });
 
         it('should render a legend with minimal requirements', function() {
-            expect(containerFixture.select('.britechart-legend').empty()).toBeFalsy();
+            expect(containerFixture.select('svg.britechart-legend').empty()).toBeFalsy();
         });
 
         it('should render container, chart and legend groups', function() {
@@ -81,7 +74,7 @@ define(['jquery', 'd3', 'src/charts/legend'], function($, d3, legend) {
                 containerFixture.select('.britechart-legend')
                     .selectAll('.legend-line')
                     .size()
-            ).toEqual(6);
+            ).toEqual(5);
         });
 
         it('should add the proper data identifier to each entry', function() {
@@ -102,7 +95,7 @@ define(['jquery', 'd3', 'src/charts/legend'], function($, d3, legend) {
                 containerFixture.select('.britechart-legend')
                     .selectAll('.legend-circle')
                     .size()
-            ).toEqual(6);
+            ).toEqual(5);
         });
 
         it('should add a text element for each entry', function() {
@@ -110,7 +103,7 @@ define(['jquery', 'd3', 'src/charts/legend'], function($, d3, legend) {
                 containerFixture.select('.britechart-legend')
                     .selectAll('.legend-entry-name')
                     .size()
-            ).toEqual(6);
+            ).toEqual(5);
         });
 
         it('should add the proper text to each text element', function() {
@@ -129,7 +122,7 @@ define(['jquery', 'd3', 'src/charts/legend'], function($, d3, legend) {
                 containerFixture.select('.britechart-legend')
                     .selectAll('.legend-entry-value')
                     .size()
-            ).toEqual(6);
+            ).toEqual(5);
         });
 
         it('should add the proper value to each value element', function() {
@@ -139,8 +132,47 @@ define(['jquery', 'd3', 'src/charts/legend'], function($, d3, legend) {
                 elements = texts[0];
 
             texts.each(function(d, index) {
-                expect(elements[index]).toEqual(dataset[index]['quantity_human']);
+                expect(elements[index]).toEqual(dataset[index]['quantity']);
             });
+        });
+
+
+
+        // API
+        it('should provide margin getter and setter', function(){
+            var defaultMargin = legendChart.margin(),
+                testMargin = {top: 4, right: 4, bottom: 4, left: 4},
+                newMargin;
+
+            legendChart.margin(testMargin);
+            newMargin = legendChart.margin();
+
+            expect(defaultMargin).not.toBe(testMargin);
+            expect(newMargin).toBe(testMargin);
+        });
+
+        it('should provide width getter and setter', function(){
+            var defaultWidth = legendChart.width(),
+                testWidth = 200,
+                newWidth;
+
+            legendChart.width(testWidth);
+            newWidth = legendChart.width();
+
+            expect(defaultWidth).not.toBe(testWidth);
+            expect(newWidth).toBe(testWidth);
+        });
+
+        it('should provide height getter and setter', function(){
+            var defaultHeight = legendChart.height(),
+                testHeight = 200,
+                newHeight;
+
+            legendChart.height(testHeight);
+            newHeight = legendChart.height();
+
+            expect(defaultHeight).not.toBe(testHeight);
+            expect(newHeight).toBe(testHeight);
         });
     });
 });
