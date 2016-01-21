@@ -49,7 +49,14 @@ function(d3, donut, legend){
             .width(containerWidth)
             .height(containerWidth)
             .externalRadius(containerWidth/2.5)
-            .internalRadius(containerWidth/5);
+            .internalRadius(containerWidth/5)
+            .on('customMouseOver', function(data) {
+                legendChart.highlight(data.data.id);
+            })
+            .on('customMouseOut', function() {
+                legendChart.clearHighlight();
+            });
+
         donutContainer.datum(dataset).call(donutChart);
 
         legendContainer.datum(dataset).call(legendChart);
@@ -107,7 +114,7 @@ function(d3, donut, legend){
             .width(containerWidth)
             .height(containerWidth)
             .externalRadius(containerWidth/5)
-            .internalRadius(containerWidth/15);
+            .internalRadius(containerWidth/10);
         donutContainer.datum(dataset).call(donutChart);
     }
 

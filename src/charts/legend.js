@@ -28,12 +28,19 @@ define(function(require){
             width = 320,
             height = 180,
 
-            lineMargin = 15,
+            lineMargin = 10,
 
-            circleRadius = 10,
+            circleRadius = 8,
             circleYOffset = -5,
 
-            valueReservedSpace = 50,
+            textSize = 12,
+            textLetterSpacing = 0.5,
+
+            valueReservedSpace = 40,
+            numberLetterSpacing = 0.8,
+            numberFormat = d3.format('s'),
+
+            isFadedClassName = 'is-faded',
 
             // colors
             colorScale = d3.scale.category20c(),
@@ -110,6 +117,13 @@ define(function(require){
         }
 
         /**
+         * Removes the faded class from all the entry lines
+         */
+        function cleanFadedLines() {
+            entries.classed(isFadedClassName, false);
+        }
+
+        /**
          * Draws the entries of the legend
          * @private
          */
@@ -152,37 +166,49 @@ define(function(require){
                 .text(function(d) { return d.name; })
                 .attr({
                     x: (2 * circleRadius) + lineMargin
+                })
+                .style({
+                    'font-size': textSize + 'px',
+                    'letter-spacing': textLetterSpacing + 'px'
                 });
 
             entries
                 .append('text')
                 .classed('legend-entry-value', true)
-                .text(function(d) { return d['quantity']; })
+                .text(function(d) {
+                    return numberFormat(d['quantity']);
+                })
                 .attr({
                     x: chartWidth - valueReservedSpace
+                })
+                .style({
+                    'font-size': textSize + 'px',
+                    'letter-spacing': numberLetterSpacing + 'px',
+                    'text-anchor': 'end',
+                    'startOffset': '100%'
                 });
-
-            // Update
-            entries.transition()
-                .ease('linear')
-                .attr({
-                    width: chartWidth
-                });
-
-            // // Update
-            // bars.transition()
-            //     .ease(ease)
-            //     .attr({
-            //         width: barW,
-            //         x: function(d) { return xScale(d.letter) + gapSize/2; },
-            //         y: function(d) { return yScale(d.frequency); },
-            //         height: function(d) { return chartHeight - yScale(d.frequency); }
-            //     });
 
             // Exit
             entries.exit()
                 .transition().style({ opacity: 0 }).remove();
         }
+
+        /**
+         * Applies the faded class to all lines but the one that has the given id
+         * @param  {number} exceptionItemId Id of the line that needs to stay the same
+         */
+        function fadeLinesBut(exceptionItemId) {
+            entries.classed(isFadedClassName, true);
+            d3.select('[data-item="' + exceptionItemId + '"]')
+                .classed(isFadedClassName, false);
+        }
+
+        /**
+         * Clears the highlighted line entry
+         */
+        exports.clearHighlight = function() {
+            cleanFadedLines();
+        };
 
         /**
          * Gets or Sets the height of the legend chart
@@ -196,6 +222,15 @@ define(function(require){
             }
             height = _x;
             return this;
+        };
+
+        /**
+         * Highlights a line entry by fading the rest of lines
+         * @param  {number} entryId ID of the entry line
+         */
+        exports.highlight = function(entryId) {
+            cleanFadedLines();
+            fadeLinesBut(entryId);
         };
 
         /**
