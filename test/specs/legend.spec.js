@@ -53,7 +53,6 @@ define(['jquery', 'd3', 'src/charts/legend'], function($, d3, legend) {
         });
 
         afterEach(function(){
-            debugger
             containerFixture.remove();
             f = jasmine.getFixtures();
             f.cleanUp();
@@ -173,6 +172,38 @@ define(['jquery', 'd3', 'src/charts/legend'], function($, d3, legend) {
 
             expect(defaultHeight).not.toBe(testHeight);
             expect(newHeight).toBe(testHeight);
+        });
+
+        it('should provide a highlight function', function() {
+            var lines = containerFixture
+                    .select('.britechart-legend')
+                    .selectAll('.legend-line'),
+                elements = lines[0];
+
+            legendChart.highlight(dataset[0].id);
+
+            expect(d3.select(elements[0]).attr('class')).toEqual('legend-line');
+            expect(d3.select(elements[1]).attr('class')).toEqual('legend-line is-faded');
+            expect(d3.select(elements[2]).attr('class')).toEqual('legend-line is-faded');
+            expect(d3.select(elements[3]).attr('class')).toEqual('legend-line is-faded');
+            expect(d3.select(elements[4]).attr('class')).toEqual('legend-line is-faded');
+        });
+
+        it('should provide a clear highlight function', function() {
+            var lines = containerFixture
+                    .select('.britechart-legend')
+                    .selectAll('.legend-line'),
+                elements = lines[0];
+
+            legendChart.highlight(dataset[0].id);
+            legendChart.clearHighlight();
+
+            expect(d3.select(elements[0]).attr('class')).toEqual('legend-line');
+            expect(d3.select(elements[1]).attr('class')).toEqual('legend-line');
+            expect(d3.select(elements[2]).attr('class')).toEqual('legend-line');
+            expect(d3.select(elements[3]).attr('class')).toEqual('legend-line');
+            expect(d3.select(elements[4]).attr('class')).toEqual('legend-line');
+
         });
     });
 });

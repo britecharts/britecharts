@@ -76,6 +76,27 @@
         .donut-value {
             fill: #333;
         }
+        .js-legend-chart-container {
+            text-align: center;
+        }
+        .js-legend-chart-container svg {
+            margin: 0 auto;
+        }
+        .is-faded {}
+            .is-faded .legend-entry-name,
+            .is-faded .legend-entry-value,
+            .is-faded .legend-circle {
+                opacity: 1;
+                transition: opacity .2s ease-out;
+                -moz-transition: opacity .2s ease-out;
+                -webkit-transition: opacity .2s ease-out;
+            }
+
+            .is-faded .legend-entry-name,
+            .is-faded .legend-entry-value,
+            .is-faded .legend-circle {
+                opacity: 0.2;
+            }
     </style>
 </head>
 <body id="donut">
@@ -87,10 +108,20 @@
             <div class="js-legend-chart-container"></div>
             <pre>
                 donutChart
-                    .width(600).height(600)
-                    .externalRadius(250).internalRadius(50);
+                    .width(containerWidth)
+                    .height(containerWidth)
+                    .externalRadius(containerWidth/2.5)
+                    .internalRadius(containerWidth/5)
+                    .on('customMouseOver', function(data) {
+                        legendChart.highlight(data.data.id);
+                    })
+                    .on('customMouseOut', function() {
+                        legendChart.clearHighlight();
+                    });
 
                 donutContainer.datum(dataset).call(donutChart);
+
+                legendContainer.datum(dataset).call(legendChart);
             </pre>
         </article>
         <article>
@@ -98,8 +129,10 @@
             <div class="js-small-donut-chart-container"></div>
             <pre>
                 donutChart
-                    .width(300).height(300)
-                    .externalRadius(100).internalRadius(40);
+                    .width(containerWidth)
+                    .height(containerWidth)
+                    .externalRadius(containerWidth/5)
+                    .internalRadius(containerWidth/10);
 
                 donutContainer.datum(dataset).call(donutChart);
             </pre>

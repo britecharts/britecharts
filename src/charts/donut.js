@@ -60,7 +60,10 @@ define(function(require){
 
             // extractors
             getQuantity = function(d) { return parseInt(d.quantity, 10); },
-            getSliceFill = function(d) { return colorScale(d.data.name); };
+            getSliceFill = function(d) { return colorScale(d.data.name); },
+
+            // events
+            dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
 
         /**
          * This function creates the graph using the selection as container
@@ -155,14 +158,16 @@ define(function(require){
          * @private
          */
         function drawLegend(obj) {
-            svg.select('.donut-text')
-                .text(function() {
-                    return obj.data.percentage + '% ' + obj.data.name;
-                })
-                .attr('dy', '.2em')
-                .attr('text-anchor', 'middle');
+            if (obj.data) {
+                svg.select('.donut-text')
+                    .text(function() {
+                        return obj.data.percentage + '% ' + obj.data.name;
+                    })
+                    .attr('dy', '.2em')
+                    .attr('text-anchor', 'middle');
 
-            svg.select('.donut-text').call(wrapText, legendWidth);
+                svg.select('.donut-text').call(wrapText, legendWidth);
+            }
         }
 
         /**
@@ -218,10 +223,14 @@ define(function(require){
 
         function handleMouseOver(datum) {
             drawLegend(datum);
+
+            dispatch.customMouseOver(datum);
         }
 
         function handleMouseOut() {
             cleanLegend();
+
+            dispatch.customMouseOut();
         }
 
         /**
@@ -428,6 +437,9 @@ define(function(require){
             width = _x;
             return this;
         };
+
+        // Rebind 'customHover' event to the "exports" function, so it's available "externally" under the typical "on" method:
+        d3.rebind(exports, dispatch, 'on');
 
         return exports;
     };
