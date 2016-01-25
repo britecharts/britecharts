@@ -437,7 +437,6 @@ define(function(require){
             return this;
         };
 
-
         return exports;
 
     };

@@ -104,6 +104,27 @@ define(['jquery', 'd3', 'src/charts/donut'], function($, d3, chart) {
             expect(newMargin).toBe(testMargin);
         });
 
+        describe('when mouse events are triggered', function() {
+
+            it('should trigger an event on hover', function(){
+                var callback = jasmine.createSpy('hoverCallback'),
+                    firstSlice = containerFixture.select('.chart-group .arc');
+
+                donutChart.on('customMouseOver', callback);
+                firstSlice[0][0].__onmouseover();
+                expect(callback.calls.count()).toBe(1);
+            });
+
+            it('should trigger an event on mouse out', function(){
+                var callback = jasmine.createSpy('mouseOutCallback'),
+                    firstSlice = containerFixture.select('.chart-group .arc');
+
+                donutChart.on('customMouseOut', callback);
+                firstSlice[0][0].__onmouseout();
+                expect(callback.calls.count()).toBe(1);
+            });
+        });
+
     });
 
 });

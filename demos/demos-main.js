@@ -11,7 +11,8 @@ require.config({
         'line': '/src/charts/line',
         'bar': '/src/charts/bar',
         'donut': '/src/charts/donut',
-        'tooltip': '/src/charts/tooltip'
+        'tooltip': '/src/charts/tooltip',
+        'legend': '/src/charts/legend'
     },
 
     callback: function(){

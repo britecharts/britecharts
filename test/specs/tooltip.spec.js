@@ -1,7 +1,7 @@
 define(['jquery', 'd3', 'src/charts/tooltip'], function($, d3, tooltip) {
     'use strict';
 
-    describe('Reusable Tooltip Component Test Suite', function(){
+    describe('Reusable Tooltip Component', function(){
         var topicColorMap = {
                 0: '#9963D5',
                 60: '#E5C400',
