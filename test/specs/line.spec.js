@@ -2,7 +2,7 @@ define([
     'underscore',
     'jquery',
     'd3',
-    'src/charts/line',
+    'dist/charts/line',
     'test/fixtures/lineChartDataBuilder'
     ], function(
         _,
@@ -13,8 +13,8 @@ define([
     ) {
     'use strict';
 
-    describe('Reusable Line Chart Test Suite', function(){
-        var containerFixture, f, lineChart;
+    describe('Reusable Line Chart Test Suite', () => {
+        let containerFixture, f, lineChart;
 
         function aTestDataSet() {
             return new dataBuilder.SalesDataBuilder();
@@ -29,7 +29,7 @@ define([
             .build()
             .done(function(dataset){
 
-            beforeEach(function(){
+            beforeEach(() => {
                 lineChart = chart();
                 // DOM Fixture Setup
                 f = jasmine.getFixtures();
@@ -40,18 +40,18 @@ define([
                 containerFixture.datum(dataset).call(lineChart);
             });
 
-            afterEach(function(){
+            afterEach(() => {
                 containerFixture.remove();
                 f = jasmine.getFixtures();
                 f.cleanUp();
                 f.clearCache();
             });
 
-            it('should render a chart with minimal requirements', function(){
+            it('should render a chart with minimal requirements', () => {
                 expect(containerFixture.select('.line-chart').empty()).toBeFalsy();
             });
 
-            it('should render container, axis and chart groups', function(){
+            it('should render container, axis and chart groups', () => {
                 expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
                 expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
                 expect(containerFixture.select('g.x-axis-group').empty()).toBeFalsy();
@@ -60,25 +60,25 @@ define([
                 expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
             });
 
-            it('should render grid lines', function(){
+            it('should render grid lines', () => {
                 expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
             });
 
-            it('should render an X and Y axis', function(){
+            it('should render an X and Y axis', () => {
                 expect(containerFixture.select('.x.axis').empty()).toBeFalsy();
                 expect(containerFixture.select('.y.axis').empty()).toBeFalsy();
             });
 
-            it('should render a line for each data topic', function(){
-                var numLines = dataset.data.length;
+            it('should render a line for each data topic', () => {
+                let numLines = dataset.data.length;
 
                 expect(containerFixture.selectAll('.line')[0].length).toEqual(numLines);
             });
 
 
             // Event Setting
-            it('should trigger an event on hover', function(){
-                var callback = jasmine.createSpy('hoverCallback'),
+            it('should trigger an event on hover', () => {
+                let callback = jasmine.createSpy('hoverCallback'),
                     container = containerFixture.selectAll('svg');
 
                 lineChart.on('customMouseOver', callback);
@@ -87,8 +87,8 @@ define([
                 expect(callback.calls.count()).toBe(1);
             });
 
-            it('should trigger an event on mouse out', function(){
-                var callback = jasmine.createSpy('mouseOutCallback'),
+            it('should trigger an event on mouse out', () => {
+                let callback = jasmine.createSpy('mouseOutCallback'),
                     container = containerFixture.selectAll('svg');
 
                 lineChart.on('customMouseOut', callback);
@@ -97,8 +97,8 @@ define([
             });
 
             // We need to stub some code in order to be able to run this test
-            // it('should trigger an event on mouse move', function(){
-            //     var callback = jasmine.createSpy('mouseMoveCallback'),
+            // it('should trigger an event on mouse move', () => {
+            //     let callback = jasmine.createSpy('mouseMoveCallback'),
             //         container = containerFixture.selectAll('svg');
             //     lineChart.on('customMouseMove', callback);
             //     container[0][0].__onmousemove();
@@ -107,12 +107,12 @@ define([
             // });
 
             // Tooltip and Markers
-            it('should render an overlay to trigger the hover effect', function(){
+            it('should render an overlay to trigger the hover effect', () => {
                 expect(containerFixture.select('.overlay').empty()).toBeFalsy();
             });
 
-            it('should show a vertical line where the mouse is hovering', function() {
-                var container = containerFixture.selectAll('svg'),
+            it('should show a vertical line where the mouse is hovering', () =>  {
+                let container = containerFixture.selectAll('svg'),
                     verticalLine = d3.select('.hover-marker line');
 
                 container[0][0].__onmouseover();
@@ -120,8 +120,8 @@ define([
                 expect(hasClass(verticalLine, 'bc-is-active')).toBe(true);
             });
 
-            xit('should not show the tooltip on mobile', function() {
-                var container = containerFixture.selectAll('svg'),
+            xit('should not show the tooltip on mobile', () =>  {
+                let container = containerFixture.selectAll('svg'),
                     overlay = d3.select('.overlay');
 
                 lineChart.isMobile(true);
@@ -133,8 +133,8 @@ define([
             });
 
             // API
-            it('should provide margin getter and setter', function(){
-                var defaultMargin = lineChart.margin(),
+            it('should provide margin getter and setter', () => {
+                let defaultMargin = lineChart.margin(),
                     testMargin = {top: 4, right: 4, bottom: 4, left: 4},
                     newMargin;
 
@@ -145,8 +145,8 @@ define([
                 expect(newMargin).toBe(testMargin);
             });
 
-            it('should provide width getter and setter', function(){
-                var defaultWidth = lineChart.width(),
+            it('should provide width getter and setter', () => {
+                let defaultWidth = lineChart.width(),
                     testWidth = 200,
                     newWidth;
 
@@ -157,8 +157,8 @@ define([
                 expect(newWidth).toBe(testWidth);
             });
 
-            it('should provide height getter and setter', function(){
-                var defaultHeight = lineChart.height(),
+            it('should provide height getter and setter', () => {
+                let defaultHeight = lineChart.height(),
                     testHeight = 200,
                     newHeight;
 
