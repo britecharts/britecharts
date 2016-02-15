@@ -18,6 +18,7 @@ module.exports = function(config) {
       {pattern: 'src/require_config.js', included: true },
       'test-main.js',
       {pattern: 'jasmine*.js', included: false},
+      {pattern: 'dist/**/*.js', included: false},
       {pattern: 'src/**/*.js', included: false},
       {pattern: 'node_modules/**/*.js', included: false, watched: false},
       {pattern: 'test/**/*.spec.js', watched: true, included: false},
