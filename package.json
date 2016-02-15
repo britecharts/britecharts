@@ -43,6 +43,7 @@
     "jquery": "^2.1.4",
     "jsdoc": "~3.2.2",
     "karma": "~0.12.31",
+    "karma-babel-preprocessor": "^6.0.1",
     "karma-chrome-launcher": "~0.1.10",
     "karma-jasmine": "~0.3.5",
     "karma-requirejs": "~0.2.2",

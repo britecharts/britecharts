@@ -17,7 +17,8 @@
     "onevar": false,
     "strict" : true,
     "globalstrict" : false,
-    "es3": true,
+    "esnext": true,
+
 
     "globals": {
         "$": false,

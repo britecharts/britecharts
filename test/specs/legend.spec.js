@@ -1,10 +1,10 @@
 define(['jquery', 'd3', 'dist/charts/legend'], function($, d3, legend) {
     'use strict';
 
-    describe('Reusable Legend Component', function(){
-        var legendChart, dataset, containerFixture, f;
+    describe('Reusable Legend Component', () =>{
+        let legendChart, dataset, containerFixture, f;
 
-        beforeEach(function(){
+        beforeEach(() =>{
             dataset = [
                 {
                     'name': 'VALENTINES VIP SPECIAL',
@@ -52,23 +52,23 @@ define(['jquery', 'd3', 'dist/charts/legend'], function($, d3, legend) {
             containerFixture.datum(dataset).call(legendChart);
         });
 
-        afterEach(function(){
+        afterEach(() =>{
             containerFixture.remove();
             f = jasmine.getFixtures();
             f.cleanUp();
             f.clearCache();
         });
 
-        it('should render a legend with minimal requirements', function() {
+        it('should render a legend with minimal requirements', () => {
             expect(containerFixture.select('svg.britechart-legend').empty()).toBeFalsy();
         });
 
-        it('should render container, chart and legend groups', function() {
+        it('should render container, chart and legend groups', () => {
             expect(containerFixture.select('g.legend-container-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.legend-group').empty()).toBeFalsy();
         });
 
-        it('should add a line group for each entry', function() {
+        it('should add a line group for each entry', () => {
             expect(
                 containerFixture.select('.britechart-legend')
                     .selectAll('.legend-line')
@@ -76,8 +76,8 @@ define(['jquery', 'd3', 'dist/charts/legend'], function($, d3, legend) {
             ).toEqual(5);
         });
 
-        it('should add the proper data identifier to each entry', function() {
-            var lines = containerFixture
+        it('should add the proper data identifier to each entry', () => {
+            let lines = containerFixture
                     .select('.britechart-legend')
                     .selectAll('.legend-line'),
                 elements = lines[0];
@@ -89,7 +89,7 @@ define(['jquery', 'd3', 'dist/charts/legend'], function($, d3, legend) {
             });
         });
 
-        it('should add a circle for each entry', function() {
+        it('should add a circle for each entry', () => {
             expect(
                 containerFixture.select('.britechart-legend')
                     .selectAll('.legend-circle')
@@ -97,7 +97,7 @@ define(['jquery', 'd3', 'dist/charts/legend'], function($, d3, legend) {
             ).toEqual(5);
         });
 
-        it('should add a text element for each entry', function() {
+        it('should add a text element for each entry', () => {
             expect(
                 containerFixture.select('.britechart-legend')
                     .selectAll('.legend-entry-name')
@@ -105,8 +105,8 @@ define(['jquery', 'd3', 'dist/charts/legend'], function($, d3, legend) {
             ).toEqual(5);
         });
 
-        it('should add the proper text to each text element', function() {
-            var texts = containerFixture
+        it('should add the proper text to each text element', () => {
+            let texts = containerFixture
                     .select('.britechart-legend')
                     .selectAll('.legend-entry-name text'),
                 elements = texts[0];
@@ -116,7 +116,7 @@ define(['jquery', 'd3', 'dist/charts/legend'], function($, d3, legend) {
             });
         });
 
-        it('should add a value element for each entry', function() {
+        it('should add a value element for each entry', () => {
             expect(
                 containerFixture.select('.britechart-legend')
                     .selectAll('.legend-entry-value')
@@ -124,8 +124,8 @@ define(['jquery', 'd3', 'dist/charts/legend'], function($, d3, legend) {
             ).toEqual(5);
         });
 
-        it('should add the proper value to each value element', function() {
-            var texts = containerFixture
+        it('should add the proper value to each value element', () => {
+            let texts = containerFixture
                     .select('.britechart-legend')
                     .selectAll('.legend-entry-value text'),
                 elements = texts[0];
@@ -138,8 +138,8 @@ define(['jquery', 'd3', 'dist/charts/legend'], function($, d3, legend) {
 
 
         // API
-        it('should provide margin getter and setter', function(){
-            var defaultMargin = legendChart.margin(),
+        it('should provide margin getter and setter', () =>{
+            let defaultMargin = legendChart.margin(),
                 testMargin = {top: 4, right: 4, bottom: 4, left: 4},
                 newMargin;
 
@@ -150,8 +150,8 @@ define(['jquery', 'd3', 'dist/charts/legend'], function($, d3, legend) {
             expect(newMargin).toBe(testMargin);
         });
 
-        it('should provide width getter and setter', function(){
-            var defaultWidth = legendChart.width(),
+        it('should provide width getter and setter', () =>{
+            let defaultWidth = legendChart.width(),
                 testWidth = 200,
                 newWidth;
 
@@ -162,8 +162,8 @@ define(['jquery', 'd3', 'dist/charts/legend'], function($, d3, legend) {
             expect(newWidth).toBe(testWidth);
         });
 
-        it('should provide height getter and setter', function(){
-            var defaultHeight = legendChart.height(),
+        it('should provide height getter and setter', () =>{
+            let defaultHeight = legendChart.height(),
                 testHeight = 200,
                 newHeight;
 
@@ -174,8 +174,8 @@ define(['jquery', 'd3', 'dist/charts/legend'], function($, d3, legend) {
             expect(newHeight).toBe(testHeight);
         });
 
-        it('should provide a highlight function', function() {
-            var lines = containerFixture
+        it('should provide a highlight function', () => {
+            let lines = containerFixture
                     .select('.britechart-legend')
                     .selectAll('.legend-line'),
                 elements = lines[0];
@@ -189,8 +189,8 @@ define(['jquery', 'd3', 'dist/charts/legend'], function($, d3, legend) {
             expect(d3.select(elements[4]).attr('class')).toEqual('legend-line is-faded');
         });
 
-        it('should provide a clear highlight function', function() {
-            var lines = containerFixture
+        it('should provide a clear highlight function', () => {
+            let lines = containerFixture
                     .select('.britechart-legend')
                     .selectAll('.legend-line'),
                 elements = lines[0];

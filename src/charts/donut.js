@@ -1,7 +1,7 @@
 define(function(require){
     'use strict';
 
-    var d3 = require('d3');
+    const d3 = require('d3');
 
     /**
      * @typdef D3Selection
@@ -19,7 +19,7 @@ define(function(require){
      */
     return function module() {
 
-        var margin = {
+        let margin = {
                 top: 60,
                 right: 60,
                 bottom: 60,
@@ -51,16 +51,14 @@ define(function(require){
             storeAngle = function(d) {
                 this._current = d;
             },
-            reduceOuterRadius = function(d) {
+            reduceOuterRadius = d => {
                 d.outerRadius = externalRadius - radiusHoverOffset;
             },
-            sortComparator = function(a, b) {
-                return b.quantity - a.quantity;
-            },
+            sortComparator = (a, b) => b.quantity - a.quantity,
 
             // extractors
-            getQuantity = function(d) { return parseInt(d.quantity, 10); },
-            getSliceFill = function(d) { return colorScale(d.data.name); },
+            getQuantity = d => parseInt(d.quantity, 10),
+            getSliceFill = d => colorScale(d.data.name),
 
             // events
             dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
@@ -101,10 +99,10 @@ define(function(require){
          * @private
          */
         function buildContainerGroups() {
-            var container = svg.append('g')
+            let container = svg.append('g')
                 .classed('container-group', true)
                 .attr({
-                    transform: 'translate(' + (width / 2) + ',' + (height / 2) + ')'
+                    transform: `translate(${width / 2}, ${height / 2})`
                 });
 
             container.append('g').classed('chart-group', true);
@@ -160,9 +158,7 @@ define(function(require){
         function drawLegend(obj) {
             if (obj.data) {
                 svg.select('.donut-text')
-                    .text(function() {
-                        return obj.data.percentage + '% ' + obj.data.name;
-                    })
+                    .text(() => `${obj.data.percentage}% ${ obj.data.name}`)
                     .attr('dy', '.2em')
                     .attr('text-anchor', 'middle');
 
@@ -250,7 +246,7 @@ define(function(require){
          * @private
          */
         function tweenArc(a) {
-            var i = d3.interpolate(this._current, a);
+            let i = d3.interpolate(this._current, a);
 
             this._current = i(0);
 
@@ -272,9 +268,9 @@ define(function(require){
                     .transition()
                     .delay(delay)
                     .attrTween('d', function(d) {
-                        var i = d3.interpolate(d.outerRadius, outerRadius);
+                        let i = d3.interpolate(d.outerRadius, outerRadius);
 
-                        return function(t) {
+                        return (t) => {
                             d.outerRadius = i(t);
 
                             return shape(d);
@@ -291,7 +287,7 @@ define(function(require){
          * @private
          */
         function tweenLoading(b) {
-            var i;
+            let i;
 
             b.innerRadius = 0;
             i = d3.interpolate({ startAngle: 0, endAngle: 0}, b);
@@ -308,7 +304,7 @@ define(function(require){
          */
         function wrapText(text, legendWidth) {
             text.each(function() {
-                var text = d3.select(this),
+                let text = d3.select(this),
                     words = text.text().split(/\s+/).reverse(),
                     word,
                     line = [],

@@ -2,7 +2,7 @@
 define(function(require){
     'use strict';
 
-    var _ = require('underscore'),
+    const _ = require('underscore'),
         d3 = require('d3');
 
     /**
@@ -16,7 +16,7 @@ define(function(require){
      */
     return function module(){
 
-        var margin = {
+        let margin = {
                 top: 60,
                 right: 20,
                 bottom: 60,
@@ -69,10 +69,10 @@ define(function(require){
             verticalMarkerLine,
 
             // extractors
-            getDate = function(d) { return d.date; },
-            getValue = function(d) { return d.value; },
-            getTopic = function(d) { return d.topic; },
-            getLineColor = function(d) { return colorScale(d.topic); },
+            getDate = d => { return d.date; },
+            getValue = d => { return d.value; },
+            getTopic = d => { return d.topic; },
+            getLineColor = d => { return colorScale(d.topic); },
 
             // formats
             yTickNumberFormat = d3.format('s'),
@@ -167,9 +167,9 @@ define(function(require){
          * @private
          */
         function buildContainerGroups(){
-            var container = svg.append('g')
+           let container = svg.append('g')
                 .classed('container-group', true)
-                .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+                .attr('transform', `translate(${margin.left},${margin.top})`);
 
             container
                 .append('g').classed('x-axis-group', true)
@@ -191,7 +191,7 @@ define(function(require){
          * @private
          */
         function buildScales(){
-            var minX = d3.min(data, function(kv) {
+            let minX = d3.min(data, kv => {
                     return d3.min(kv.Data, getDate);
                 }),
                 maxX = d3.max(data, function(kv) { return d3.max(kv.Data, getDate); }),
@@ -279,7 +279,7 @@ define(function(require){
          * @private
          */
         function drawLines(){
-            var lines,
+            let lines,
                 topicLine,
                 maskingRectangle;
 
@@ -422,7 +422,7 @@ define(function(require){
          * @return {number}       Number of ticks to render
          */
         function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
-            var singleTickWidth = 20,
+            let singleTickWidth = 20,
                 spacing = 40,
                 ticksForWidth = Math.ceil(width / (singleTickWidth + spacing));
 
@@ -453,7 +453,7 @@ define(function(require){
          * @return {obj}        Data entry that is closer to that x axis position
          */
         function getNearestDataPoint(mouseX) {
-            var invertedX = xScale.invert(mouseX),
+            let invertedX = xScale.invert(mouseX),
                 bisectDate = d3.bisector(getDate).left,
                 dataEntryIndex, dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition,
                 nearestDataPoint;
@@ -478,7 +478,7 @@ define(function(require){
          * @return void
          */
         function handleMouseMove(){
-            var xPositionOffset = -margin.left, //Arbitrary number, will love to know how to assess it
+            let xPositionOffset = -margin.left, //Arbitrary number, will love to know how to assess it
                 dataPoint = getNearestDataPoint(getMouseXPosition(this) + xPositionOffset),
                 dataPointXPosition;
 
@@ -535,7 +535,7 @@ define(function(require){
                 .value();
 
             dataPoint.topics.forEach(function(topic, index){
-                var marker = verticalMarkerContainer
+                let marker = verticalMarkerContainer
                                 .append('g')
                                 .classed('circle-container', true),
                     circleSize = 12;
@@ -561,10 +561,10 @@ define(function(require){
          * @return void
          */
         function moveVerticalMarker(dataPoint){
-            var date = new Date(dataPoint.date),
+            let date = new Date(dataPoint.date),
                 verticalMarkerXPosition = xScale(date);
 
-            verticalMarkerContainer.attr('transform', 'translate(' + verticalMarkerXPosition + ',' + '0' + ')');
+            verticalMarkerContainer.attr('transform', `translate(${verticalMarkerXPosition},0)`);
         }
 
         /**

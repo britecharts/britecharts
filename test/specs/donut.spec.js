@@ -1,10 +1,10 @@
-define(['jquery', 'd3', 'src/charts/donut'], function($, d3, chart) {
+define(['jquery', 'd3', 'dist/charts/donut'], function($, d3, chart) {
     'use strict';
 
-    describe('Reusable Donut Chart', function() {
-        var donutChart, dataset, containerFixture, f;
+    describe('Reusable Donut Chart', () => {
+        let donutChart, dataset, containerFixture, f;
 
-        beforeEach(function() {
+        beforeEach(() => {
             dataset = [
                 {
                     'name': 'VALENTINES VIP SPECIAL',
@@ -65,35 +65,35 @@ define(['jquery', 'd3', 'src/charts/donut'], function($, d3, chart) {
 
         });
 
-        afterEach(function() {
+        afterEach(() => {
             containerFixture.remove();
             f = jasmine.getFixtures();
             f.cleanUp();
             f.clearCache();
         });
 
-        it('should render a chart with minimal requirements', function() {
+        it('should render a chart with minimal requirements', () => {
             expect(containerFixture.select('.donut-chart').empty()).toBeFalsy();
         });
 
-        it('should render container, chart and legend groups', function() {
+        it('should render container, chart and legend groups', () => {
             expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.legend-group').empty()).toBeFalsy();
         });
 
-        it('should render a slice for each data entry', function(){
-            var numSlices = dataset.length;
+        it('should render a slice for each data entry', () =>{
+            let numSlices = dataset.length;
 
             expect(containerFixture.selectAll('.arc').size()).toEqual(numSlices);
         });
 
-        it('should append text to the legend container', function() {
+        it('should append text to the legend container', () => {
             expect(containerFixture.select('text.donut-text').empty()).toBeFalsy();
         });
 
-        it('should provide margin getter and setter', function(){
-            var defaultMargin = donutChart.margin(),
+        it('should provide margin getter and setter', () =>{
+            let defaultMargin = donutChart.margin(),
                 testMargin = {top: 4, right: 4, bottom: 4, left: 4},
                 newMargin;
 
@@ -104,10 +104,10 @@ define(['jquery', 'd3', 'src/charts/donut'], function($, d3, chart) {
             expect(newMargin).toBe(testMargin);
         });
 
-        describe('when mouse events are triggered', function() {
+        describe('when mouse events are triggered', () => {
 
-            it('should trigger an event on hover', function(){
-                var callback = jasmine.createSpy('hoverCallback'),
+            it('should trigger an event on hover', () =>{
+                let callback = jasmine.createSpy('hoverCallback'),
                     firstSlice = containerFixture.select('.chart-group .arc');
 
                 donutChart.on('customMouseOver', callback);
@@ -115,8 +115,8 @@ define(['jquery', 'd3', 'src/charts/donut'], function($, d3, chart) {
                 expect(callback.calls.count()).toBe(1);
             });
 
-            it('should trigger an event on mouse out', function(){
-                var callback = jasmine.createSpy('mouseOutCallback'),
+            it('should trigger an event on mouse out', () =>{
+                let callback = jasmine.createSpy('mouseOutCallback'),
                     firstSlice = containerFixture.select('.chart-group .arc');
 
                 donutChart.on('customMouseOut', callback);

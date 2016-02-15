@@ -136,7 +136,7 @@ define(function(require){
             entries.enter()
                 .append('g')
                 .classed('legend-line', true)
-                .attr('data-item', function(d) { return d.id; })
+                .attr('data-item', d => d.id )
                 .attr('transform', function(d, i) {
                     let horizontalOffset = 2 * circleRadius + 10,
                         lineHeightBis = chartHeight/data.length,
@@ -163,7 +163,7 @@ define(function(require){
             entries
                 .append('text')
                 .classed('legend-entry-name', true)
-                .text(function(d) { return d.name; })
+                .text( d => d.name )
                 .attr({
                     x: (2 * circleRadius) + lineMargin
                 })
@@ -175,9 +175,7 @@ define(function(require){
             entries
                 .append('text')
                 .classed('legend-entry-value', true)
-                .text(function(d) {
-                    return numberFormat(d['quantity']);
-                })
+                .text( d => numberFormat(d['quantity']) )
                 .attr({
                     x: chartWidth - valueReservedSpace
                 })
