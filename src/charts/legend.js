@@ -1,7 +1,7 @@
 define(function(require){
     'use strict';
 
-    var d3 = require('d3');
+    const d3 = require('d3');
 
     /**
      * @typdef D3Selection
@@ -19,7 +19,7 @@ define(function(require){
      */
     return function module() {
 
-        var margin = {
+        let margin = {
                 top: 20,
                 right: 10,
                 bottom: 10,
@@ -76,10 +76,10 @@ define(function(require){
          * @private
          */
         function buildContainerGroups() {
-            var container = svg.append('g')
+            let container = svg.append('g')
                 .classed('legend-container-group', true)
                 .attr({
-                    transform: 'translate(' + margin.left + ',' + margin.top + ')'
+                    transform: `translate(${margin.left},${margin.top})`
                 });
 
             container
@@ -138,11 +138,11 @@ define(function(require){
                 .classed('legend-line', true)
                 .attr('data-item', function(d) { return d.id; })
                 .attr('transform', function(d, i) {
-                    var horizontalOffset = 2 * circleRadius + 10,
+                    let horizontalOffset = 2 * circleRadius + 10,
                         lineHeightBis = chartHeight/data.length,
                         verticalOffset = i * lineHeightBis;
 
-                    return 'translate(' + horizontalOffset + ',' + verticalOffset + ')';
+                    return `translate(${horizontalOffset},${verticalOffset})`;
                 });
 
             entries
@@ -168,8 +168,8 @@ define(function(require){
                     x: (2 * circleRadius) + lineMargin
                 })
                 .style({
-                    'font-size': textSize + 'px',
-                    'letter-spacing': textLetterSpacing + 'px'
+                    'font-size': `${textSize}px`,
+                    'letter-spacing': `${textLetterSpacing}px`
                 });
 
             entries
@@ -182,8 +182,8 @@ define(function(require){
                     x: chartWidth - valueReservedSpace
                 })
                 .style({
-                    'font-size': textSize + 'px',
-                    'letter-spacing': numberLetterSpacing + 'px',
+                    'font-size': `${textSize}px`,
+                    'letter-spacing': `${numberLetterSpacing}px`,
                     'text-anchor': 'end',
                     'startOffset': '100%'
                 });
@@ -199,7 +199,7 @@ define(function(require){
          */
         function fadeLinesBut(exceptionItemId) {
             entries.classed(isFadedClassName, true);
-            d3.select('[data-item="' + exceptionItemId + '"]')
+            d3.select(`[data-item="${exceptionItemId}"]`)
                 .classed(isFadedClassName, false);
         }
 

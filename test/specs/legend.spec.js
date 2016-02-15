@@ -1,4 +1,4 @@
-define(['jquery', 'd3', 'src/charts/legend'], function($, d3, legend) {
+define(['jquery', 'd3', 'dist/charts/legend'], function($, d3, legend) {
     'use strict';
 
     describe('Reusable Legend Component', function(){

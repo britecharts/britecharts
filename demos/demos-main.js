@@ -8,11 +8,11 @@ require.config({
         'd3': '../node_modules/d3/d3',
 
         'dataBuilder': '../test/fixtures/lineChartDataBuilder',
-        'line': '/src/charts/line',
-        'bar': '/src/charts/bar',
-        'donut': '/src/charts/donut',
-        'tooltip': '/src/charts/tooltip',
-        'legend': '/src/charts/legend'
+        'line': '/dist/charts/line',
+        'bar': '/dist/charts/bar',
+        'donut': '/dist/charts/donut',
+        'tooltip': '/dist/charts/tooltip',
+        'legend': '/dist/charts/legend'
     },
 
     callback: function(){
