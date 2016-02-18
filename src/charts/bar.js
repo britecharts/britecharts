@@ -1,7 +1,7 @@
 define(function(require){
     'use strict';
 
-    var d3 = require('d3');
+    const d3 = require('d3');
 
     /**
      * @typdef D3Selection
@@ -19,7 +19,7 @@ define(function(require){
      */
     return function module(){
 
-        var margin = {top: 20, right: 20, bottom: 30, left: 40},
+        let margin = {top: 20, right: 20, bottom: 30, left: 40},
             width = 960,
             height = 500,
             ease = 'ease',
@@ -35,8 +35,8 @@ define(function(require){
             dispatch = d3.dispatch('customHover'),
 
             // extractors
-            getLetter = function(d) { return d.letter; },
-            getFrequency = function(d) { return d.frequency; };
+            getLetter = d => d.letter,
+            getFrequency = d => d.frequency;
 
 
         /**
@@ -80,10 +80,10 @@ define(function(require){
          * @private
          */
         function buildContainerGroups(){
-            var container = svg.append('g')
+            let container = svg.append('g')
                 .classed('container-group', true)
                 .attr({
-                    transform: 'translate(' + margin.left + ',' + margin.top + ')'
+                    transform: `translate(${margin.left}, ${margin.top})`
                 });
 
             container.append('g').classed('chart-group', true);
@@ -145,7 +145,7 @@ define(function(require){
          * @private
          */
         function drawBars(){
-            var gapSize = xScale.rangeBand() / 100 * gap,
+            let gapSize = xScale.rangeBand() / 100 * gap,
                 barW = xScale.rangeBand() - gapSize,
                 bars = svg.select('.chart-group').selectAll('.bar').data(data);
 

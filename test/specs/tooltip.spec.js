@@ -1,8 +1,8 @@
-define(['jquery', 'd3', 'src/charts/tooltip'], function($, d3, tooltip) {
+define(['jquery', 'd3', 'dist/charts/tooltip'], function($, d3, tooltip) {
     'use strict';
 
-    describe('Reusable Tooltip Component', function(){
-        var topicColorMap = {
+    describe('Reusable Tooltip Component', () => {
+        let topicColorMap = {
                 0: '#9963D5',
                 60: '#E5C400',
                 81: '#FF4D7C',
@@ -11,7 +11,7 @@ define(['jquery', 'd3', 'src/charts/tooltip'], function($, d3, tooltip) {
             },
             tooltipChart, dataset, containerFixture, f;
 
-        beforeEach(function(){
+        beforeEach(() => {
             dataset = [];
             tooltipChart = tooltip();
 
@@ -24,29 +24,29 @@ define(['jquery', 'd3', 'src/charts/tooltip'], function($, d3, tooltip) {
             containerFixture.datum(dataset).call(tooltipChart);
         });
 
-        afterEach(function(){
+        afterEach(() => {
             containerFixture.remove();
             f = jasmine.getFixtures();
             f.cleanUp();
             f.clearCache();
         });
 
-        it('should render a tooltip with minimal requirements', function() {
+        it('should render a tooltip with minimal requirements', () =>  {
             expect(containerFixture.select('.britechart-tooltip').empty()).toBeFalsy();
         });
 
-        it('should not be visible by default', function() {
+        it('should not be visible by default', () =>  {
             expect(containerFixture.select('.britechart-tooltip').style('display')).toBe('none');
         });
 
-        it('should be visible when required', function() {
+        it('should be visible when required', () =>  {
             expect(containerFixture.select('.britechart-tooltip').style('display')).toBe('none');
             tooltipChart.show();
             expect(containerFixture.select('.britechart-tooltip').style('display')).not.toBe('none');
             expect(containerFixture.select('.britechart-tooltip').style('display')).toBe('block');
         });
 
-        it('should update the title of the tooltip', function() {
+        it('should update the title of the tooltip', () =>  {
             tooltipChart.update({
                 date: '2015-08-05T07:00:00.000Z',
                 topics: []
@@ -59,7 +59,7 @@ define(['jquery', 'd3', 'src/charts/tooltip'], function($, d3, tooltip) {
             ).toBe('Tooltip title - August 05, 2015');
         });
 
-        it('should add a line of text for each topic', function() {
+        it('should add a line of text for each topic', () =>  {
             tooltipChart.update({
                 date: '2015-08-05T07:00:00.000Z',
                 topics: [
@@ -83,7 +83,7 @@ define(['jquery', 'd3', 'src/charts/tooltip'], function($, d3, tooltip) {
             ).toEqual(2);
         });
 
-        it('should add a circle for each topic', function() {
+        it('should add a circle for each topic', () =>  {
             tooltipChart.update({
                 date: '2015-08-05T07:00:00.000Z',
                 topics: [
@@ -108,7 +108,7 @@ define(['jquery', 'd3', 'src/charts/tooltip'], function($, d3, tooltip) {
         });
 
         // TODO: develop
-        it('should position the tooltip in the right coordinates', function() {
+        it('should position the tooltip in the right coordinates', () =>  {
             tooltipChart.update({
                 date: '2015-08-05T07:00:00.000Z',
                 topics: [
@@ -125,7 +125,7 @@ define(['jquery', 'd3', 'src/charts/tooltip'], function($, d3, tooltip) {
             ).toEqual('translate(65,-55)');
         });
 
-        it('should resize the tooltip depending of number of topics', function() {
+        it('should resize the tooltip depending of number of topics', () =>  {
             tooltipChart.update({
                 date: '2015-08-05T07:00:00.000Z',
                 topics: [
@@ -140,7 +140,7 @@ define(['jquery', 'd3', 'src/charts/tooltip'], function($, d3, tooltip) {
             expect(
                 containerFixture.select('.tooltip-text-container')
                     .attr('height')
-            ).toEqual('81');
+            ).toEqual('81.5');
 
             tooltipChart.update({
                 date: '2015-08-05T07:00:00.000Z',
@@ -161,11 +161,11 @@ define(['jquery', 'd3', 'src/charts/tooltip'], function($, d3, tooltip) {
             expect(
                 containerFixture.select('.tooltip-text-container')
                     .attr('height')
-            ).toEqual('104');
+            ).toEqual('105');
         });
 
-        it('should provide title getter and setter', function(){
-            var defaultTitle = tooltipChart.title(),
+        it('should provide title getter and setter', () => {
+            let defaultTitle = tooltipChart.title(),
                 testTitle = 'test',
                 newTitle;
 
