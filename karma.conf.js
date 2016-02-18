@@ -18,6 +18,7 @@ module.exports = function(config) {
       {pattern: 'src/require_config.js', included: true },
       'test-main.js',
       {pattern: 'jasmine*.js', included: false},
+      {pattern: 'dist/**/*.js', included: false},
       {pattern: 'src/**/*.js', included: false},
       {pattern: 'node_modules/**/*.js', included: false, watched: false},
       {pattern: 'test/**/*.spec.js', watched: true, included: false},
@@ -37,6 +38,15 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+        'test/specs/*.spec.js': ['babel']
+    },
+
+    // Setup of babel settings
+    // Check more in: https://github.com/babel/karma-babel-preprocessor
+    babelPreprocessor: {
+        options: {
+            presets: ['es2015']
+        }
     },
 
 

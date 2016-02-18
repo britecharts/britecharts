@@ -4,7 +4,7 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.config.set('jsdoc', {
         dist : {
-            src: ['./src/charts/*.js'],
+            src: ['./dist/charts/*.js'],
             jsdoc: './node_modules/.bin/jsdoc',
             options: {
                 destination: 'docs',
@@ -16,6 +16,7 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('docs', 'Generates docs and triggers server to view them', [
+        'babel',
         'jsdoc:dist',
         'connect:docs'
     ]);
