@@ -14,4 +14,8 @@ module.exports = function(grunt) {
         }]
       }
     });
+
+    grunt.registerTask('dist', 'Create the distributable version of the library', [
+        'babel'
+    ]);
 };

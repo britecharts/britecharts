@@ -1,4 +1,4 @@
-define(['jquery', 'd3', 'dist/charts/donut'], function($, d3, chart) {
+define(['jquery', 'd3', 'donut'], function($, d3, chart) {
     'use strict';
 
     describe('Reusable Donut Chart', () => {
@@ -62,7 +62,6 @@ define(['jquery', 'd3', 'dist/charts/donut'], function($, d3, chart) {
                 .width(600).height(600)
                 .externalRadius(250).internalRadius(50);
             containerFixture.datum(dataset).call(donutChart);
-
         });
 
         afterEach(() => {

@@ -1,4 +1,4 @@
-define(['jquery', 'd3', 'dist/charts/bar'], function($, d3, chart) {
+define(['jquery', 'd3', 'bar'], function($, d3, chart) {
     'use strict';
 
     describe('Reusable Bar Chart Test Suite', () => {

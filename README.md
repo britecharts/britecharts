@@ -20,11 +20,13 @@ All the components expose some basic API methods like width, height and margin. 
 
 ## Charts
 
-Currently Britecharts exposes only 3 charts:
+Currently Britecharts exposes 5 charts:
 
  - Bar Chart
  - Line Chart
  - Donut Chart
+ - Tooltip Chart
+ - Legend Chart
 
 
 ## Chart Documentation
@@ -34,13 +36,15 @@ In order to generate and see the documentation for this charts and the project i
  + Download and install [node](https://nodejs.org/en/download/) if you don't have it yet
  + Clone the repository with:
 
-    git clone git@github.com:eventbrite/britecharts.git
+        git clone git@github.com:eventbrite/britecharts.git
+
  + Change directory into the repository root and install its dependencies:
 
-    npm install
+        npm install
+
  + Again, in the root or the repository folder, run:
 
-    grunt docs
+        grunt docs
 
 This task will generate the docs with its current contents, and after finished, will open the docs interface where you will be able to check the specific methods for each chart. You can also see some use examples under the "Tutorials" dropdown section.
 
@@ -72,16 +76,26 @@ To install Karma and start running test you would need to follow this steps:
 2- Get into the repository folder and install dependencies with:
 
     npm install
-    npm install -g karma-cli
 
 3- Run the tests with:
 
-    karma start
+    grunt test
+
+This process will watch the test and spec files, re-running the tests when those change.
+
+#### ES6 transpiling
+
+Britecharts modules are written in ES6, so we would need to create an ES5-compatible version of the charts before releasing a new version.
+
+In order to do it, we just need to run:
+
+    grunt dist
 
 
 ## Next Steps
 This project is in active development. We are working on:
 
-- Add documentation for donut chart
-- Improve Demo pages
-- Add getting started guide
+- Style Bar Chart
+- Make webpack generate UMD modules
+- Move demos to use Webpack
+- Plug [webpack dev-server](http://webpack.github.io/docs/webpack-dev-server.html)
