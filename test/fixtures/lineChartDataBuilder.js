@@ -2,20 +2,16 @@ define(function(require) {
     'use strict';
 
     var _ = require('underscore'),
-        $ = require('jquery'),
-        d3 = require('d3'),
-        $dfd = new $.Deferred(),
-        dataSet;
+
+        jsonFiveTopics = require('json!./lineDataFiveTopics.json');
 
     function SalesDataBuilder(config){
         this.Klass = SalesDataBuilder;
 
-        this.config = _.defaults({}, config, {
-            jsonURL: 'base/test/fixtures/lineDataFiveTopics.json'
-        });
+        this.config = _.defaults({}, config);
 
         this.with5Topics = function(){
-            var attributes = _.extend({}, this.config);
+            var attributes = _.extend({}, this.config, jsonFiveTopics);
 
             return new this.Klass(attributes);
         };
@@ -34,9 +30,7 @@ define(function(require) {
         };
 
         this.build = function() {
-            d3.json(this.config.jsonURL, dataCleaning);
-
-            return $dfd.promise();
+            return dataCleaning(this.config);
         };
     }
 
@@ -52,8 +46,7 @@ define(function(require) {
             });
         });
 
-        dataSet = { data: _data, dataByDate: dataByDate, readableDataType: readableDataType };
-        $dfd.resolve(dataSet);
+        return { data: _data, dataByDate: dataByDate, readableDataType: readableDataType };
     }
 
     return {
