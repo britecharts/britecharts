@@ -4,7 +4,9 @@
   "description": "Eventbrite's Charting Library",
   "main": "README.md",
   "scripts": {
-    "test": "karma start"
+    "dev": "WEBPACK_ENV=dev ./node_modules/.bin/webpack",
+    "prod": "WEBPACK_ENV=prod ./node_modules/.bin/webpack",
+    "test": "WEBPACK_ENV=test karma start"
   },
   "repository": {
     "type": "git",
