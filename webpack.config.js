@@ -4,7 +4,7 @@ var webpack = require('webpack'),
     UglifyJsPlugin = webpack.optimize.UglifyJsPlugin,
 
     env = process.env.WEBPACK_ENV, // dev | build
-    isProduction = env === 'prod' || env === 'prodDiv',
+    isProduction = env === 'prod' || env === 'prodUMD',
 
     chartModulesPath = path.resolve('./src/charts'),
     fixturesPath = path.resolve('./test/fixtures'),
@@ -159,7 +159,7 @@ config = {
     },
 
     // Creates minified versions of each chart
-    prodDiv: {
+    prodUMD: {
         entry:  currentCharts,
 
         devtool: 'source-map',
@@ -168,6 +168,48 @@ config = {
             path:     'dist/umd',
             filename: '[name].min.js',
             libraryTarget: 'umd'
+        },
+
+        externals: {
+            d3: 'd3',
+            underscore: '_'
+        },
+
+        module: {
+
+            loaders: [
+                {
+                    test: /\.js$/,
+                    loader: 'babel',
+                    exclude: /(node_modules)/
+                }
+            ],
+
+            // Tell Webpack not to parse certain modules.
+            noParse: [
+                new RegExp(vendorsPath + '/d3/d3.js')
+            ]
+        },
+
+        resolve: {
+            alias: {
+                d3: vendorsPath + '/d3'
+            }
+        },
+
+        plugins: plugins
+    },
+
+    // Creates minified versions of each chart
+    prodAMD: {
+        entry:  currentCharts,
+
+        devtool: 'source-map',
+
+        output: {
+            path:     'dist/amd',
+            filename: '[name].js',
+            libraryTarget: 'amd'
         },
 
         externals: {
