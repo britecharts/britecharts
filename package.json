@@ -6,10 +6,11 @@
   "scripts": {
     "dev": "WEBPACK_ENV=dev ./node_modules/.bin/webpack",
     "prod": "WEBPACK_ENV=prod ./node_modules/.bin/webpack",
-    "prodDiv": "WEBPACK_ENV=prodDiv ./node_modules/.bin/webpack",
+    "prodUMD": "WEBPACK_ENV=prodUMD ./node_modules/.bin/webpack",
+    "prodAMD": "WEBPACK_ENV=prodAMD ./node_modules/.bin/webpack",
 
-    "build": "npm run prod && npm run prodDiv",
-    "buildAll": "npm run dev && npm run prod && npm run prodDiv",
+    "build": "npm run prod && npm run prodUMD",
+    "buildAll": "npm run dev && npm run prod && npm run prodUMD",
 
     "test": "WEBPACK_ENV=test karma start",
     "docs": "nmp run dev && grunt docs"
