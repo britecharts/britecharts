@@ -4,14 +4,20 @@ var webpack = require('webpack'),
     UglifyJsPlugin = webpack.optimize.UglifyJsPlugin,
 
     env = process.env.WEBPACK_ENV, // dev | build
-    isProduction = env === 'prod' || 'prodDiv',
-    isDevelopment = env === 'dev',
+    isProduction = env === 'prod' || env === 'prodDiv',
 
     chartModulesPath = path.resolve('./src/charts'),
     fixturesPath = path.resolve('./test/fixtures'),
     vendorsPath = path.resolve('./node_modules'),
 
     projectName = 'britecharts',
+    currentCharts = {
+        'bar': './src/charts/bar.js',
+        'donut': './src/charts/donut.js',
+        'legend': './src/charts/legend.js',
+        'line': './src/charts/line.js',
+        'tooltip': './src/charts/tooltip.js'
+    },
 
     plugins = [],
     outputFile,
@@ -22,29 +28,27 @@ var webpack = require('webpack'),
 if (isProduction) {
     plugins.push(new UglifyJsPlugin({ minimize: true }));
     outputFile = projectName + '.min.js';
-} else {
-    outputFile = projectName + '.js';
 }
 
 config = {
 
+    // Transpiles files into dist/charts to use in demos
     dev: {
         // allows webpack to determine where your app begins execution, and it creates chunks out of it
-        entry:  {
-            'bar': './src/charts/bar.js',
-            'donut': './src/charts/donut.js',
-            'legend': './src/charts/legend.js',
-            'line': './src/charts/line.js',
-            'tooltip': './src/charts/tooltip.js'
-        },
+        entry:  currentCharts,
 
         devtool: 'source-map',
 
         // tells webpack what to name your files after the build process, and where to place them
         output: {
-            path:     'dist/umd',
+            path:     'dist/charts',
             filename: '[name].js',
             libraryTarget: 'umd'
+        },
+
+        externals: {
+            d3: 'd3',
+            underscore: '_'
         },
 
         module: {
@@ -71,6 +75,7 @@ config = {
         plugins: plugins
     },
 
+    // Test configuration for Karma runner
     test: {
         resolve: {
             root: [chartModulesPath, fixturesPath],
@@ -111,26 +116,23 @@ config = {
         plugins: plugins
     },
 
-    // TODO: Check if this is actually right
+    // Creates a bundle with all britecharts
     prod: {
-        entry:  {
-            'bar': './src/charts/bar.js',
-            'donut': './src/charts/donut.js',
-            'legend': './src/charts/legend.js',
-            'line': './src/charts/line.js',
-            'tooltip': './src/charts/tooltip.js'
-        },
+        entry:  currentCharts,
+
         devtool: 'source-map',
-        resolve: {
-            alias: {
-                d3: vendorsPath + '/d3'
-            }
-        },
+
         output: {
             path:     'dist/bundled',
-            filename: 'monster.js',
+            filename: outputFile,
             libraryTarget: 'umd'
         },
+
+        externals: {
+            d3: 'd3',
+            underscore: '_'
+        },
+
         module: {
 
             loaders: [
@@ -146,29 +148,33 @@ config = {
                 new RegExp(vendorsPath + '/d3/d3.js')
             ]
         },
+
+        resolve: {
+            alias: {
+                d3: vendorsPath + '/d3'
+            }
+        },
+
         plugins: plugins
     },
 
-    // TODO: Check if this is actually right
+    // Creates minified versions of each chart
     prodDiv: {
-        entry:  {
-            'bar': './src/charts/bar.js',
-            'donut': './src/charts/donut.js',
-            'legend': './src/charts/legend.js',
-            'line': './src/charts/line.js',
-            'tooltip': './src/charts/tooltip.js'
-        },
+        entry:  currentCharts,
+
         devtool: 'source-map',
-        resolve: {
-            alias: {
-                d3: vendorsPath + '/d3'
-            }
-        },
+
         output: {
-            path:     'dist/tmp',
+            path:     'dist/umd',
             filename: '[name].min.js',
             libraryTarget: 'umd'
         },
+
+        externals: {
+            d3: 'd3',
+            underscore: '_'
+        },
+
         module: {
 
             loaders: [
@@ -184,11 +190,16 @@ config = {
                 new RegExp(vendorsPath + '/d3/d3.js')
             ]
         },
+
+        resolve: {
+            alias: {
+                d3: vendorsPath + '/d3'
+            }
+        },
+
         plugins: plugins
     }
 };
 
-if (isDevelopment) {
-}
 
 module.exports = config[env];
