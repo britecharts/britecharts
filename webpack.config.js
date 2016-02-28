@@ -4,7 +4,7 @@ var webpack = require('webpack'),
     UglifyJsPlugin = webpack.optimize.UglifyJsPlugin,
 
     env = process.env.WEBPACK_ENV, // dev | build
-    isProduction = env === 'prod',
+    isProduction = env === 'prod' || 'prodDiv',
     isDevelopment = env === 'dev',
 
     chartModulesPath = path.resolve('./src/charts'),
@@ -113,7 +113,13 @@ config = {
 
     // TODO: Check if this is actually right
     prod: {
-        entry:  './src/charts/bar.js',
+        entry:  {
+            'bar': './src/charts/bar.js',
+            'donut': './src/charts/donut.js',
+            'legend': './src/charts/legend.js',
+            'line': './src/charts/line.js',
+            'tooltip': './src/charts/tooltip.js'
+        },
         devtool: 'source-map',
         resolve: {
             alias: {
@@ -122,7 +128,45 @@ config = {
         },
         output: {
             path:     'dist/bundled',
-            filename: outputFile,
+            filename: 'monster.js',
+            libraryTarget: 'umd'
+        },
+        module: {
+
+            loaders: [
+                {
+                    test: /\.js$/,
+                    loader: 'babel',
+                    exclude: /(node_modules)/
+                }
+            ],
+
+            // Tell Webpack not to parse certain modules.
+            noParse: [
+                new RegExp(vendorsPath + '/d3/d3.js')
+            ]
+        },
+        plugins: plugins
+    },
+
+    // TODO: Check if this is actually right
+    prodDiv: {
+        entry:  {
+            'bar': './src/charts/bar.js',
+            'donut': './src/charts/donut.js',
+            'legend': './src/charts/legend.js',
+            'line': './src/charts/line.js',
+            'tooltip': './src/charts/tooltip.js'
+        },
+        devtool: 'source-map',
+        resolve: {
+            alias: {
+                d3: vendorsPath + '/d3'
+            }
+        },
+        output: {
+            path:     'dist/tmp',
+            filename: '[name].min.js',
             libraryTarget: 'umd'
         },
         module: {
