@@ -19,6 +19,14 @@ var webpack = require('webpack'),
         'tooltip': './src/charts/tooltip.js'
     },
 
+    defaultJSLoader = {
+        test: /\.js$/,
+        loader: 'babel',
+        exclude: /(node_modules)/,
+        query: {
+            presets: ['es2015']
+        }
+    },
     plugins = [],
     outputFile,
     config;
@@ -48,17 +56,11 @@ config = {
 
         externals: {
             d3: 'd3',
-            underscore: '_'
+            underscore: 'underscore'
         },
 
         module: {
-            loaders: [
-                {
-                    test: /\.js$/,
-                    loader: 'babel',
-                    exclude: /(node_modules)/
-                }
-            ],
+            loaders: [ defaultJSLoader ],
 
             // Tell Webpack not to parse certain modules.
             noParse: [
@@ -88,30 +90,26 @@ config = {
                 {
                     test: /\.js$/,
                     include: /src/,
-                    exclude: /(bower_components|node_modules)/,
+                    exclude: /(node_modules)/,
                     loader: 'babel',
                     query: {
+                        presets: ['es2015'],
                         cacheDirectory: true,
                     },
                 },
                 {
                     test: /\.js?$/,
                     include: /src/,
-                    exclude: /(node_modules|bower_components|__tests__)/,
+                    exclude: /(node_modules|__tests__)/,
                     loader: 'babel-istanbul',
                     query: {
+                        presets: ['es2015'],
                         cacheDirectory: true,
                     },
                 }
             ],
 
-            loaders: [
-                {
-                    test: /\.js$/,
-                    loader: 'babel',
-                    exclude: /(node_modules)/
-                }
-            ]
+            loaders: [ defaultJSLoader ]
         },
         plugins: plugins
     },
@@ -130,18 +128,12 @@ config = {
 
         externals: {
             d3: 'd3',
-            underscore: '_'
+            underscore: 'underscore'
         },
 
         module: {
 
-            loaders: [
-                {
-                    test: /\.js$/,
-                    loader: 'babel',
-                    exclude: /(node_modules)/
-                }
-            ],
+            loaders: [ defaultJSLoader ],
 
             // Tell Webpack not to parse certain modules.
             noParse: [
@@ -158,7 +150,7 @@ config = {
         plugins: plugins
     },
 
-    // Creates minified versions of each chart
+    // Creates minified UMD versions of each chart
     prodUMD: {
         entry:  currentCharts,
 
@@ -172,60 +164,13 @@ config = {
 
         externals: {
             d3: 'd3',
-            underscore: '_'
+            underscore: 'underscore'
         },
 
         module: {
 
-            loaders: [
-                {
-                    test: /\.js$/,
-                    loader: 'babel',
-                    exclude: /(node_modules)/
-                }
-            ],
+            loaders: [ defaultJSLoader ],
 
-            // Tell Webpack not to parse certain modules.
-            noParse: [
-                new RegExp(vendorsPath + '/d3/d3.js')
-            ]
-        },
-
-        resolve: {
-            alias: {
-                d3: vendorsPath + '/d3'
-            }
-        },
-
-        plugins: plugins
-    },
-
-    // Creates minified versions of each chart
-    prodAMD: {
-        entry:  currentCharts,
-
-        devtool: 'source-map',
-
-        output: {
-            path:     'dist/amd',
-            filename: '[name].js',
-            libraryTarget: 'amd'
-        },
-
-        externals: {
-            d3: 'd3',
-            underscore: '_'
-        },
-
-        module: {
-
-            loaders: [
-                {
-                    test: /\.js$/,
-                    loader: 'babel',
-                    exclude: /(node_modules)/
-                }
-            ],
 
             // Tell Webpack not to parse certain modules.
             noParse: [

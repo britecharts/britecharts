@@ -7,7 +7,6 @@
     "dev": "WEBPACK_ENV=dev ./node_modules/.bin/webpack",
     "prod": "WEBPACK_ENV=prod ./node_modules/.bin/webpack",
     "prodUMD": "WEBPACK_ENV=prodUMD ./node_modules/.bin/webpack",
-    "prodAMD": "WEBPACK_ENV=prodAMD ./node_modules/.bin/webpack",
 
     "build": "npm run prod && npm run prodUMD",
     "buildAll": "npm run dev && npm run prod && npm run prodUMD",

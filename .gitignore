@@ -22,7 +22,6 @@ coverage
 docs
 fonts
 styleguide_fonts
-dist
 
 # node-waf configuration
 .lock-wscript
