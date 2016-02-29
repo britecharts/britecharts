@@ -4,13 +4,12 @@
   "description": "Eventbrite's Charting Library",
   "main": "README.md",
   "scripts": {
+    "start": "npm run dev",
     "dev": "WEBPACK_ENV=dev ./node_modules/.bin/webpack",
     "prod": "WEBPACK_ENV=prod ./node_modules/.bin/webpack",
     "prodUMD": "WEBPACK_ENV=prodUMD ./node_modules/.bin/webpack",
-
     "build": "npm run prod && npm run prodUMD",
     "buildAll": "npm run dev && npm run prod && npm run prodUMD",
-
     "test": "WEBPACK_ENV=test karma start",
     "docs": "npm run dev && grunt docs",
     "release": "npm run buildAll && grunt release"
