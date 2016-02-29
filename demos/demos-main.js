@@ -21,13 +21,13 @@ require.config({
         var page = document.querySelector('body').id;
 
         if (page === 'bar') {
-            require(['/demos/bar.js'], function(){});
+            require(['/demos/demo-bar.js'], function(){});
         }
         if (page === 'line') {
-            require(['/demos/line.js'], function(){});
+            require(['/demos/demo-line.js'], function(){});
         }
         if (page === 'donut') {
-            require(['/demos/donut.js'], function(){});
+            require(['/demos/demo-donut.js'], function(){});
         }
     },
 

@@ -5,7 +5,7 @@ Britecharts
 
 Britecharts is a client-side **reusable Charting Library** based on [D3.js](http://d3js.org/) that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.
 
-It is structured in AMD modules using [requireJS](http://requirejs.org/), each one exposing a D3.js component written with the [Reusable API pattern](http://bost.ocks.org/mike/chart/). They have been created with a Test Driven methodology so they are **fully tested**, and we are commited to keep it that way.
+It is structured in UMD modules using [webpack](https://webpack.github.io/), each one exposing a D3.js component written with the [Reusable API pattern](http://bost.ocks.org/mike/chart/). They have been created with a Test Driven methodology so they are **fully tested**, and we are commited to keep it that way.
 
 The typical use of Britecharts involves creating a chart using it's simple API, and render it on a container which has been previously applyied some data. The code will look like this:
 
@@ -44,7 +44,7 @@ In order to generate and see the documentation for this charts and the project i
 
  + Again, in the root or the repository folder, run:
 
-        grunt docs
+        npm run docs
 
 This task will generate the docs with its current contents, and after finished, will open the docs interface where you will be able to check the specific methods for each chart. You can also see some use examples under the "Tutorials" dropdown section.
 
@@ -79,7 +79,7 @@ To install Karma and start running test you would need to follow this steps:
 
 3- Run the tests with:
 
-    grunt test
+    npm run test
 
 This process will watch the test and spec files, re-running the tests when those change.
 
@@ -87,15 +87,17 @@ This process will watch the test and spec files, re-running the tests when those
 
 Britecharts modules are written in ES6, so we would need to create an ES5-compatible version of the charts before releasing a new version.
 
-In order to do it, we just need to run:
+In order to work with the development version of the charts, we just need to run:
 
-    grunt dist
+    npm run dev
+
+However, if you want to use the production version of the charts, you should run:
+
+    npm run buildAll
 
 
 ## Next Steps
 This project is in active development. We are working on:
 
 - Style Bar Chart
-- Make webpack generate UMD modules
-- Move demos to use Webpack
 - Plug [webpack dev-server](http://webpack.github.io/docs/webpack-dev-server.html)

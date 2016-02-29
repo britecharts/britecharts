@@ -13,7 +13,7 @@ In order to use a Britecharts chart in your project you would need to:
 ```
 - Require the proper chart as a requirejs module, for example, in core we do:
 ```
-    LineChart = require('britecharts/charts/line')
+    LineChart = require('britecharts/umd/line.min')
 ```
 - Require D3 as a dependency too.
 ```
@@ -47,23 +47,23 @@ We have created this charts with Tests First, and we encourage you to do the sam
 For a TDD workflow, the process would look like this:
 
 - Create a new branch for your modification
-- Find the test of the chart you want to modify in /test/specs/*.spec.js
+- Find the test of the chart you want to modify in ``/test/specs/*.spec.js``
 - Write a failing test for the API accessor or the feature you want to add
 - Check that it fails
 - Write the code that would make that test pass
 - Make the test pass
 - Update the comments so that the proper documentation gets generated when running
 ```
-grunt docs
+npm run docs
 ```
 - Check the demos to see the code in action (you can also add a new demo there if necessary)
 - Create a pull request and ask people of the team to review it
 - Once you have a shipit, merge it!
 - If you are using it on core, you will need to release a new version of Britecharts:
 ```
-grunt release
+npm run release
 ```
-- Update the new version number on npm.json and npm-shinkwrap.json
+- Update the new version number on ``npm.json`` and ``npm-shinkwrap.json``
 - Build your core-frontend container and reload your environment
 
 
@@ -73,22 +73,22 @@ grunt release
 Adding a new chart is a bunch of work, but we hope the current code and documentation will help you in the process.
 
 - Create a new branch for your new chart
-- Create a file for the tests and the chart
-- Create a file for the demo too, and it's corresponding html
+- Create a file for the tests and the chart (on ``src/charts`` and ``test/specs``)
+- Create a file for the demo too, and it's corresponding html (find them on ``demos/``)
 - Using the bar chart tests as a jumpstart, add one test and make it fail
 - Write the code that makes that test pass and keep on adding tests
 - Once you think you are close to have something working, start adding JSDoc comments to your code
 - Generate your docs with:
 ```
-    grunt docs
+    npm run docs
 ```
 - Create a pull request with your branch and ping one of the core authors to get it reviewed
 - Once you have a shipit, merge it
 - If you are using it on core, you will need to release a new version of Britecharts:
 ```
-    grunt release
+    npm run release
 ```
-- Update the new version number on npm.json and npm-shinkwrap.json
+- Update the new version number on ``npm.json`` and ``npm-shinkwrap.json``
 - Build your core-frontend container and reload your environment
 
 
