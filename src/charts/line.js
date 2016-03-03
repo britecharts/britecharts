@@ -247,9 +247,9 @@ define(function(require){
         }
 
         /**
-         * @description
          * Draws the x and y axis on the svg object within their
          * respective groups
+         * TODO: Use string templates
          * @private
          */
         function drawAxis(){
