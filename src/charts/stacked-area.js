@@ -5,6 +5,11 @@ define(function(require){
         d3 = require('d3');
 
     /**
+     * @typdef D3Layout
+     * @type function
+     */
+
+    /**
      * @fileOverview Stacked Area Chart reusable API module that allows us
      * rendering a multi area and configurable chart.
      *
@@ -43,10 +48,19 @@ define(function(require){
             numVerticalTicks = 5,
             numHorizontalTicks = 5,
 
+            layers,
+
             ease = 'linear',
             svg,
             chartWidth, chartHeight,
             data,
+
+            // getters
+            getValues = d => { return d.values; },
+            getCategory = d => { return d.category; },
+            getViews = d => { return d.views; },
+            getDate = d => { return d.date; },
+
 
             // formats
             yTickFormat = d3.format('s'),
@@ -64,7 +78,7 @@ define(function(require){
                 chartHeight = height - margin.top - margin.bottom;
                 data = _data;
 
-                // buildLayers();
+                buildLayers();
                 buildScales();
                 buildAxis();
                 buildSVG(this);
@@ -102,6 +116,45 @@ define(function(require){
                 .outerTickSize([50])
                 .tickPadding([4])
                 .orient('right');
+        }
+
+        /**
+         * Builds containers for the chart, the axis and a wrapper for all of them
+         * NOTE: The order of drawing of this group elements is really important,
+         * as everything else will be drawn on top of them
+         * @private
+         */
+        function buildContainerGroups(){
+           let container = svg.append('g')
+                .classed('container-group', true)
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
+            container
+                .append('g').classed('x-axis-group axis', true);
+            container
+                .append('g').classed('y-axis-group axis', true);
+            container
+                .append('g').classed('grid-lines-group', true);
+            container
+                .append('g').classed('chart-group', true);
+            container
+                .append('g').classed('metadata-group', true);
+        }
+
+        /**
+         * Builds the stacked layers layout
+         * @return {D3Layout} Layout for drawing the chart
+         */
+        function buildLayers(){
+            let stack = d3.layout.stack()
+                    .offset('zero')
+                    .values(getValues)
+                    .x(getDate)
+                    .y(getViews),
+                nest = d3.nest()
+                    .key(getCategory);
+
+            layers = stack(nest.entries(data));
         }
 
         /**
@@ -145,29 +198,6 @@ define(function(require){
         }
 
         /**
-         * Builds containers for the chart, the axis and a wrapper for all of them
-         * NOTE: The order of drawing of this group elements is really important,
-         * as everything else will be drawn on top of them
-         * @private
-         */
-        function buildContainerGroups(){
-           let container = svg.append('g')
-                .classed('container-group', true)
-                .attr('transform', `translate(${margin.left},${margin.top})`);
-
-            container
-                .append('g').classed('x-axis-group axis', true);
-            container
-                .append('g').classed('y-axis-group axis', true);
-            container
-                .append('g').classed('grid-lines-group', true);
-            container
-                .append('g').classed('chart-group', true);
-            container
-                .append('g').classed('metadata-group', true);
-        }
-
-        /**
          * Draws the x and y axis on the svg object within their
          * respective groups
          * @private
@@ -194,7 +224,6 @@ define(function(require){
             // Moving the YAxis tick labels to the right side
             d3.selectAll('.y-axis-group .tick text')
                 .attr('transform', `translate( ${verticalTicksLabelOffset}, -10)` );
-
         }
 
         return exports;
