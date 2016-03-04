@@ -103,9 +103,23 @@ define([
         //     expect(callback.calls.count()).toBe(1);
         // });
 
-        // Tooltip and Markers
+        // Overlay
         it('should render an overlay to trigger the hover effect', () => {
             expect(containerFixture.select('.overlay').empty()).toBeFalsy();
+        });
+
+        it('should show the overlay when the mouse is hovering', () =>  {
+            let container = containerFixture.selectAll('svg');
+
+            expect(containerFixture.select('.overlay').style('display')).toBe('none');
+            container[0][0].__onmouseover();
+            expect(containerFixture.select('.overlay').style('display')).toBe('block');
+        });
+
+        // Vertical Marker
+        it('should render a vertical marker and its container', () => {
+            expect(containerFixture.select('.hover-marker').empty()).toBeFalsy();
+            expect(containerFixture.select('.vertical-marker').empty()).toBeFalsy();
         });
 
         it('should show a vertical line where the mouse is hovering', () =>  {
@@ -117,17 +131,17 @@ define([
             expect(hasClass(verticalLine, 'bc-is-active')).toBe(true);
         });
 
-        xit('should not show the tooltip on mobile', () =>  {
+        it('should hide the vertical marker when the mouse is out', () =>  {
             let container = containerFixture.selectAll('svg'),
-                overlay = d3.select('.overlay');
+                verticalLine = d3.select('.hover-marker line');
 
-            lineChart.isMobile(true);
-            containerFixture.datum(dataset).call(lineChart);
-
+            expect(hasClass(verticalLine, 'bc-is-active')).toBe(false);
             container[0][0].__onmouseover();
-
-            expect(overlay.style('display')).toBe('none');
+            expect(hasClass(verticalLine, 'bc-is-active')).toBe(true);
+            container[0][0].__onmouseout();
+            expect(hasClass(verticalLine, 'bc-is-active')).toBe(false);
         });
+
 
         // API
         it('should provide margin getter and setter', () => {

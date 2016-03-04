@@ -8,58 +8,52 @@ function(d3, line, tooltip, dataBuilder){
             testDataSet = new dataBuilder.SalesDataBuilder(),
             containerWidth = d3.select('.js-line-chart-container').node().getBoundingClientRect().width,
             container = d3.select('.js-line-chart-container'),
-            tooltipContainer;
+            tooltipContainer,
+            dataset;
 
-        testDataSet
-            .with5Topics()
-            .withPath('../test/fixtures/lineDataFiveTopicsBis.json')
-            .build()
-            .done(function(dataset){
-                // LineChart Setup and start
-                lineChart
-                    .aspectRatio(0.42)
-                    .tooltipThreshold(400)
-                    .width(containerWidth)
-                    .on('customMouseOver', function() {
-                        chartTooltip.show();
-                    })
-                    .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-                        chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-                    })
-                    .on('customMouseOut', function() {
-                        chartTooltip.hide();
-                    });
-                container.datum(dataset).call(lineChart);
+        dataset = testDataSet.with5Topics().build();
 
-                // Tooltip Setup and start
-                chartTooltip
-                    .title(dataset.readableDataType.name);
-
-                // Note that if the viewport width is less than the tooltipThreshold value,
-                // this container won't exist, and the tooltip won't show up
-                tooltipContainer = d3.select('.metadata-group .hover-marker');
-                tooltipContainer.datum([]).call(chartTooltip);
+        // LineChart Setup and start
+        lineChart
+            .aspectRatio(0.42)
+            .tooltipThreshold(400)
+            .width(containerWidth)
+            .on('customMouseOver', function() {
+                chartTooltip.show();
+            })
+            .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
+                chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+            })
+            .on('customMouseOut', function() {
+                chartTooltip.hide();
             });
+        container.datum(dataset).call(lineChart);
+
+        // Tooltip Setup and start
+        chartTooltip
+            .title(dataset.readableDataType.name);
+
+        // Note that if the viewport width is less than the tooltipThreshold value,
+        // this container won't exist, and the tooltip won't show up
+        tooltipContainer = d3.select('.metadata-group .hover-marker');
+        tooltipContainer.datum([]).call(chartTooltip);
     }
 
     function createLineChartWithFixedHeight() {
         var lineChart = line(),
             testDataSet = new dataBuilder.SalesDataBuilder(),
             containerWidth = d3.select('.js-fixed-line-chart-container').node().getBoundingClientRect().width,
-            container = d3.select('.js-fixed-line-chart-container');
+            container = d3.select('.js-fixed-line-chart-container'),
+            dataset;
 
-        testDataSet
-            .with5Topics()
-            .withPath('../test/fixtures/lineDataFiveTopicsBis.json')
-            .build()
-            .done(function(dataset){
-                lineChart
-                    .tooltipThreshold(2400)
-                    .height(300)
-                    .width(containerWidth);
+        dataset = testDataSet.with5Topics().build();
 
-                container.datum(dataset).call(lineChart);
-            });
+        lineChart
+            .tooltipThreshold(2400)
+            .height(300)
+            .width(containerWidth);
+
+        container.datum(dataset).call(lineChart);
     }
 
     // Show proper charts

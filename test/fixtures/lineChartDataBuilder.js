@@ -3,7 +3,10 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonFiveTopics = require('json!./lineDataFiveTopics.json');
+        // This works on tests:
+        // jsonFiveTopics = require('json!./lineDataFiveTopics.json');
+        // This works on demos:
+        jsonFiveTopics = require('json!/test/fixtures/lineDataFiveTopics.json');
 
     function SalesDataBuilder(config){
         this.Klass = SalesDataBuilder;
