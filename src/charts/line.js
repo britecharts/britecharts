@@ -383,7 +383,7 @@ define(function(require){
             verticalMarkerContainer = svg.select('.metadata-group')
                 .append('g')
                 .attr('class', 'hover-marker')
-                .attr('transform', 'translate(' + '9999' + ',' + '0' + ')');
+                .attr('transform', 'translate(9999, 0)');
 
             verticalMarkerLine = verticalMarkerContainer.selectAll('path')
                 .data([{
@@ -474,7 +474,7 @@ define(function(require){
         /**
          * MouseMove handler, calculates the nearest dataPoint to the cursor
          * and updates metadata related to it
-         * @return void
+         * @private
          */
         function handleMouseMove(){
             let xPositionOffset = -margin.left, //Arbitrary number, will love to know how to assess it
@@ -482,12 +482,12 @@ define(function(require){
                 dataPointXPosition;
 
             if(dataPoint) {
+                dataPointXPosition = xScale(new Date(dataPoint.date));
                 // More verticalMarker to that datapoint
-                moveVerticalMarker(dataPoint);
+                moveVerticalMarker(dataPointXPosition);
                 // Add data points highlighting
                 highlightDataPoints(dataPoint);
                 // Emit event with xPosition for tooltip or similar feature
-                dataPointXPosition = xScale(new Date(dataPoint.date));
                 dispatch.customMouseMove(dataPoint, topicColorMap, dataPointXPosition);
             }
         }
@@ -495,7 +495,7 @@ define(function(require){
         /**
          * MouseOut handler, hides overlay and removes active class on verticalMarkerLine
          * It also resets the container of the vertical marker
-         * @return void
+         * @private
          */
         function handleMouseOut(data){
             overlay.style('display', 'none');
@@ -507,7 +507,7 @@ define(function(require){
 
         /**
          * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
-         * @return void
+         * @private
          */
         function handleMouseOver(data){
             overlay.style('display', 'block');
@@ -519,7 +519,7 @@ define(function(require){
         /**
          * Creates coloured circles marking where the exact data y value is for a given data point
          * @param  {obj} dataPoint Data point to extract info from
-         * @return void
+         * @private
          */
         function highlightDataPoints(dataPoint){
             cleanDataPointHighlights();
@@ -550,7 +550,7 @@ define(function(require){
                         'stroke': topicColorMap[topic.name]
                     });
 
-                marker.attr('transform', 'translate(' + (- circleSize) + ',' + (yScale(dataPoint.topics[index].value)) + ')');
+                marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(dataPoint.topics[index].value))} )` );
             });
         }
 
@@ -559,10 +559,7 @@ define(function(require){
          * @param  {obj} dataPoint Data entry to extract info
          * @return void
          */
-        function moveVerticalMarker(dataPoint){
-            let date = new Date(dataPoint.date),
-                verticalMarkerXPosition = xScale(date);
-
+        function moveVerticalMarker(verticalMarkerXPosition){
             verticalMarkerContainer.attr('transform', `translate(${verticalMarkerXPosition},0)`);
         }
 

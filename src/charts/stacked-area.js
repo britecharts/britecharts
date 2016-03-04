@@ -32,7 +32,6 @@ define(function(require){
             xScale, xAxis,
             yScale, yAxis,
 
-            colorScale,
             colors = [
                 '#4DC2F5',
                 '#4DDB86',
@@ -41,6 +40,17 @@ define(function(require){
                 '#9963D5',
                 '#051C48'
             ],
+            colorOrder = {
+                '#4DC2F5': 0,
+                '#4DDB86': 1,
+                '#E5C400': 2,
+                '#FF4D7C': 3,
+                '#9963D5': 4,
+                '#051C48': 5
+            },
+            colorScale,
+            categoryColorMap,
+
             axisTextColor = '#4a5864',
 
             verticalTicksLabelOffset = -50,
@@ -49,22 +59,43 @@ define(function(require){
             numHorizontalTicks = 5,
 
             layers,
+            area,
 
-            ease = 'linear',
+            overlay,
+            overlayColor = 'rgba(0, 0, 0, 0.1)',
+
+            verticalMarkerContainer,
+            verticalMarker,
+
+            dataPoints            = {},
+            pointsSize            = 1.5,
+            pointsColor           = '#c0c6cc',
+            pointsBorderColor     = '#ffffff',
+
+            ease = 'bounce',
             svg,
             chartWidth, chartHeight,
             data,
+            dataByDate,
+
+            tooltipThreshold = 480,
 
             // getters
-            getValues = d => { return d.values; },
-            getCategory = d => { return d.category; },
-            getViews = d => { return d.views; },
-            getDate = d => { return d.date; },
+            getValues = d => d.values,
+            getCategory = d => d.category,
+            getViews = d => d.views,
+            getDate = d => d.date,
+            getDateUTC = d => d.dateUTC,
+            getValue = d => d.value,
+            getKey = d => d.key,
 
 
             // formats
             yTickFormat = d3.format('s'),
-            xTickFormat = d3.time.format('%e');
+            xTickFormat = d3.time.format('%e'),
+
+            // events
+            dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
 
         /**
          * This function creates the graph using the selection and data provided
@@ -77,22 +108,37 @@ define(function(require){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
                 data = _data;
+                dataByDate = d3.nest()
+                    .key( getDateUTC )
+                    .entries(
+                        _(_data).sortBy('date')
+                    );
 
                 buildLayers();
                 buildScales();
                 buildAxis();
                 buildSVG(this);
+                drawStackedAreas();
                 drawAxis();
+                drawDataReferencePoints();
 
-                // drawStackedAreas();
-                // drawDataReferencePoints();
-                // drawTitle();
-                // drawGraphLegend();
-
-                // addMouseEvents();
-                // drawHoverOverlay();
-                // drawTooltip();
+                if(shouldShowTooltip()){
+                    drawHoverOverlay();
+                    drawVerticalMarker();
+                    addMouseEvents();
+                }
             });
+        }
+
+        /**
+         * Adds events to the container group if the environment is not mobile
+         * Adding: mouseover, mouseout and mousemove
+         */
+        function addMouseEvents(){
+            svg
+                .on('mouseover', handleMouseOver)
+                .on('mouseout', handleMouseOut)
+                .on('mousemove', handleMouseMove);
         }
 
         /**
@@ -163,16 +209,22 @@ define(function(require){
          */
         function buildScales(){
             xScale = d3.time.scale()
-                .domain(d3.extent(data, function(d) { return d.date; }))
+                .domain(d3.extent(data, d => d.date))
                 .range([0, width]);
 
             yScale = d3.scale.linear()
-                .domain([0, d3.max(data, function(d) { return d.y0 + d.y; })])
+                .domain([0, d3.max(data, d => (d.y0 + d.y) )])
                 .range([height, 0])
                 .nice([numVerticalTicks + 1]);
 
             colorScale = d3.scale.ordinal()
-                  .range(colors);
+                  .range(colors)
+                  .domain(data.map(getCategory));
+
+            categoryColorMap = _.object(
+                colorScale.domain(),
+                colorScale.range()
+            );
         }
 
         /**
@@ -195,6 +247,14 @@ define(function(require){
                     width: width,
                     height: height
                 });
+        }
+
+        /**
+         * Removes all the datapoints highlighter circles added to the marker container
+         * @return void
+         */
+        function cleanDataPointHighlights(){
+            verticalMarkerContainer.selectAll('.circle-container').remove();
         }
 
         /**
@@ -225,6 +285,360 @@ define(function(require){
             d3.selectAll('.y-axis-group .tick text')
                 .attr('transform', `translate( ${verticalTicksLabelOffset}, -10)` );
         }
+
+        /**
+         * Creates SVG dot elements for each data entry and draws them
+         */
+        function drawDataReferencePoints() {
+            // Creates Dots on Data points
+            var points = svg.select('.chart-group').selectAll('.dots')
+                .data(layers)
+              .enter().append('g')
+                .attr({
+                    'class': 'dots',
+                    'd': d => area(d.values),
+                    'clip-path': 'url(#clip)'
+                });
+
+            // Processes the points
+            // TODO: Optimize this code
+            points.selectAll('.dot')
+                .data(function(d, index){
+                    var a = [];
+
+                    d.values.forEach(function(point){
+                        a.push({'index': index, 'point': point});
+                    });
+                    return a;
+                })
+                .enter()
+                .append('circle')
+                .attr('class','dot')
+                .attr('r', function(){
+                    return pointsSize;
+                })
+                .attr('fill', function(){
+                    return pointsColor;
+                })
+                .attr('stroke-width', '0')
+                .attr('stroke', pointsBorderColor)
+                .attr('transform', function(d) {
+                    var key = xScale(d.point.date);
+
+                    dataPoints[key] = dataPoints[key] || [];
+                    dataPoints[key].push(d);
+
+                    return `translate( ${xScale(d.point.date)}, ${yScale(d.point.y+d.point.y0)} )`;
+                });
+
+        }
+
+        /**
+         * Draws an overlay element over the graph
+         * @private
+         */
+        function drawHoverOverlay(){
+            overlay = svg.select('.metadata-group')
+                .append('rect')
+                .attr('class','overlay')
+                .attr('y1', 0)
+                .attr('y2', height)
+                .attr('height', height - margin.top - margin.bottom)
+                .attr('width', width - margin.left - margin.right)
+                .attr('fill', overlayColor)
+                .style('display', 'none');
+        }
+
+        /**
+         * Draws the different areas into the chart-group element
+         * @private
+         */
+        function drawStackedAreas(){
+            // Creating Area function
+            area = d3.svg.area()
+                .interpolate('cardinal')
+                .x( d => xScale(d.date) )
+                .y0( d => yScale(d.y0) )
+                .y1( d => yScale(d.y0 + d.y) );
+
+            // Drawing Areas
+            svg.select('.chart-group').selectAll('.layer')
+                .data(layers)
+              .enter()
+                .append('path')
+                .attr('class', 'layer')
+                .transition()
+                .ease(ease)
+                .attr('d', d => area(d.values))
+                .style('fill', d => categoryColorMap[d.key]);
+        }
+
+        /**
+         * Creates the vertical marker
+         * @return void
+         */
+        function drawVerticalMarker(){
+            verticalMarkerContainer = svg.select('.metadata-group')
+                .append('g')
+                .attr('class', 'vertical-marker-container')
+                .attr('transform', 'translate(9999, 0)');
+
+            verticalMarker = verticalMarkerContainer.selectAll('path')
+                .data([{
+                    'x1': 0,
+                    'y1': 0,
+                    'x2': 0,
+                    'y2': 0
+                }])
+                .enter()
+                .append('line')
+                .classed('vertical-marker', true)
+                .attr({
+                    'x1': 0,
+                    'y1': height - margin.top - margin.bottom,
+                    'x2': 0,
+                    'y2': 0
+                });
+        }
+
+        /**
+         * Finds out which datapoint is closer to the given x position
+         * @param  {number} x0 Date value for data point
+         * @param  {obj} d0 Previous datapoint
+         * @param  {obj} d1 Next datapoint
+         * @return {obj}    d0 or d1, the datapoint with closest date to x0
+         */
+        function findOutNearestDate(x0, d0, d1){
+            return (new Date(x0).getTime() - new Date(d0.key).getTime()) > (new Date(d1.key).getTime() - new Date(x0).getTime()) ? d0 : d1;
+        }
+
+        /**
+         * Formats the date in ISOString
+         * @param  {string} date Date as given in data entries
+         * @return {string}      Date in ISO format in a neutral timezone
+         */
+        function getFormattedDateFromData(date) {
+            return date.toISOString().split('T')[0] + 'T00:00:00Z';
+        }
+
+        /**
+         * Extract X position on the chart from a given mouse event
+         * @param  {obj} event D3 mouse event
+         * @return {number}       Position on the x axis of the mouse
+         * @private
+         */
+        function getMouseXPosition(event) {
+            return d3.mouse(event)[0];
+        }
+
+        /**
+         * Finds out the data entry that is closer to the given position on pixels
+         * @param  {number} mouseX X position of the mouse
+         * @return {obj}        Data entry that is closer to that x axis position
+         */
+        function getNearestDataPoint(mouseX) {
+            let invertedX = xScale.invert(mouseX),
+                bisectDate = d3.bisector(getKey).right,
+                dataEntryIndex, dateOnCursorXPosition,
+                dataEntryForXPosition, previousDataEntryForXPosition,
+                nearestDataPoint;
+
+            dateOnCursorXPosition = getFormattedDateFromData(invertedX);
+            dataEntryIndex = bisectDate(dataByDate, dateOnCursorXPosition, 1);
+            dataEntryForXPosition = dataByDate[dataEntryIndex];
+            previousDataEntryForXPosition = dataByDate[dataEntryIndex - 1];
+
+            if (previousDataEntryForXPosition && dataEntryForXPosition) {
+                nearestDataPoint = findOutNearestDate(dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition);
+            } else {
+                nearestDataPoint = dataEntryForXPosition;
+            }
+
+            return nearestDataPoint;
+        }
+
+        /**
+         * MouseMove handler, calculates the nearest dataPoint to the cursor
+         * and updates metadata related to it
+         * @private
+         */
+        function handleMouseMove(){
+            let xPositionOffset = -margin.left, //Arbitrary number, will love to know how to assess it
+                dataPoint = getNearestDataPoint(getMouseXPosition(this) + xPositionOffset),
+                dataPointXPosition;
+
+            if(dataPoint) {
+                dataPointXPosition = xScale(new Date( dataPoint.key ));
+                // More verticalMarker to that datapoint
+                moveVerticalMarker(dataPointXPosition);
+                // Add data points highlighting
+                highlightDataPoints(dataPoint);
+                // Emit event with xPosition for tooltip or similar feature
+                dispatch.customMouseMove(dataPoint, categoryColorMap, dataPointXPosition);
+            }
+        }
+
+        /**
+         * MouseOut handler, hides overlay and removes active class on verticalMarkerLine
+         * It also resets the container of the vertical marker
+         * @private
+         */
+        function handleMouseOut(data){
+            overlay.style('display', 'none');
+            verticalMarker.classed('bc-is-active', false);
+            verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
+
+            dispatch.customMouseOut(data);
+        }
+
+        /**
+         * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
+         * @private
+         */
+        function handleMouseOver(data){
+            overlay.style('display', 'block');
+            verticalMarker.classed('bc-is-active', true);
+
+            dispatch.customMouseOver(data);
+        }
+
+        /**
+         * Creates coloured circles marking where the exact data y value is for a given data point
+         * @param  {obj} dataPoint Data point to extract info from
+         * @private
+         */
+        function highlightDataPoints(dataPoint) {
+            let accumulator = 0;
+
+            cleanDataPointHighlights();
+
+            // sorting the values based on the order of the colors,
+            // so that the order always stays constant
+            dataPoint.values = _.chain(dataPoint.values)
+                .compact()
+                .sortBy(function(el) {
+                    return colorOrder[categoryColorMap[el.category]];
+                })
+                .value();
+
+            dataPoint.values.forEach(function(value, index){
+                let marker = verticalMarkerContainer
+                                .append('g')
+                                .classed('circle-container', true),
+                    circleSize = 12;
+
+                accumulator = accumulator + dataPoint.values[index].views;
+
+                marker.append('circle')
+                    .classed('data-point-highlighter', true)
+                    .attr({
+                        'cx': circleSize,
+                        'cy': 0,
+                        'r': 5
+                    })
+                    .style({
+                        'stroke-width': 3,
+                        'stroke': categoryColorMap[value.category]
+                    });
+
+                marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(accumulator))} )` );
+            });
+
+
+        }
+
+        /**
+         * Helper method to update the x position of the vertical marker
+         * @param  {obj} dataPoint Data entry to extract info
+         * @return void
+         */
+        function moveVerticalMarker(verticalMarkerXPosition){
+            verticalMarkerContainer.attr('transform', `translate(${verticalMarkerXPosition},0)`);
+        }
+
+        /**
+         * Determines if we should add the tooltip related logic depending on the
+         * size of the chart and the tooltipThreshold variable value
+         * @return {boolean} Should we build the tooltip?
+         * @private
+         */
+        function shouldShowTooltip() {
+            return width > tooltipThreshold;
+        }
+
+        // Accessors
+        /**
+         * Gets or Sets the ease of the chart
+         * @param  {number} _x Desired width for the graph
+         * @return { ease | module} Current ease animation or Area Chart module to chain calls
+         * @public
+         */
+        exports.ease = function(_x) {
+            if (!arguments.length) {
+                return ease;
+            }
+            ease = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the height of the chart
+         * @param  {number} _x Desired width for the graph
+         * @return { height | module} Current height or Area Chart module to chain calls
+         * @public
+         */
+        exports.height = function(_x) {
+            if (!arguments.length) {
+                return height;
+            }
+            height = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the margin of the chart
+         * @param  {object} _x Margin object to get/set
+         * @return { margin | module} Current margin or Area Chart module to chain calls
+         * @public
+         */
+        exports.margin = function(_x) {
+            if (!arguments.length) {
+                return margin;
+            }
+            margin = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the tooltipThreshold of the chart
+         * @param  {object} _x Margin object to get/set
+         * @return { tooltipThreshold | module} Current tooltipThreshold or Area Chart module to chain calls
+         * @public
+         */
+        exports.tooltipThreshold = function(_x) {
+            if (!arguments.length) {
+                return tooltipThreshold;
+            }
+            tooltipThreshold = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the width of the chart
+         * @param  {number} _x Desired width for the graph
+         * @return { width | module} Current width or Area Chart module to chain calls
+         * @public
+         */
+        exports.width = function(_x) {
+            if (!arguments.length) {
+                return width;
+            }
+            width = _x;
+            return this;
+        };
+
+        // Rebind 'customHover' event to the "exports" function, so it's available "externally" under the typical "on" method:
+        d3.rebind(exports, dispatch, 'on');
 
         return exports;
     };
