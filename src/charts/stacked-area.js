@@ -21,48 +21,45 @@ define(function(require){
     return function module(){
 
         let margin = {
-                left: 5,
-                right: 5,
-                top: 5,
-                bottom: 5
+                left: 40,
+                right: 20,
+                top: 60,
+                bottom: 40
             },
             width = 960,
             height = 500,
 
-            xScale, xAxis,
+            xScale, xAxis, xMonthAxis,
             yScale, yAxis,
 
+            monthAxisPadding = 30,
+            numVerticalTicks = 5,
+            yTickTextYOffset = -8,
+
             colors = [
-                '#4DC2F5',
-                '#4DDB86',
-                '#E5C400',
-                '#FF4D7C',
+                '#051C48',
                 '#9963D5',
-                '#051C48'
+                '#FF4D7C',
+                '#E5C400',
+                '#4DDB86',
+                '#4DC2F5'
             ],
             colorOrder = {
-                '#4DC2F5': 0,
-                '#4DDB86': 1,
-                '#E5C400': 2,
-                '#FF4D7C': 3,
-                '#9963D5': 4,
-                '#051C48': 5
+                '#051C48': 0,
+                '#9963D5': 1,
+                '#FF4D7C': 2,
+                '#E5C400': 3,
+                '#4DDB86': 4,
+                '#4DC2F5': 5
             },
+            areaOpacity = 0.8,
             colorScale,
             categoryColorMap,
-
-            axisTextColor = '#4a5864',
-
-            verticalTicksLabelOffset = -50,
-
-            numVerticalTicks = 5,
-            numHorizontalTicks = 5,
 
             layers,
             area,
 
             overlay,
-            overlayColor = 'rgba(0, 0, 0, 0.1)',
 
             verticalMarkerContainer,
             verticalMarker,
@@ -82,7 +79,7 @@ define(function(require){
 
             // getters
             getValues = d => d.values,
-            getCategory = d => d.category,
+            getName = d => d.name,
             getViews = d => d.views,
             getDate = d => d.date,
             getDateUTC = d => d.dateUTC,
@@ -93,6 +90,7 @@ define(function(require){
             // formats
             yTickFormat = d3.format('s'),
             xTickFormat = d3.time.format('%e'),
+            xTickMonthFormat = d3.time.format('%B'),
 
             // events
             dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
@@ -148,17 +146,26 @@ define(function(require){
         function buildAxis(){
             xAxis = d3.svg.axis()
                 .scale(xScale)
-                .ticks(numHorizontalTicks)
-                .orient('bottom')
-                .tickSize(-(height), 0, 0)
+                .ticks(d3.time.days)
+                .tickFormat(xTickFormat)
+                .tickSize(10, 0, 0)
+                .outerTickSize([50])
                 .tickPadding([10])
-                .tickFormat(xTickFormat);
+                .orient('bottom');
+
+            xMonthAxis = d3.svg.axis()
+                .scale(xScale)
+                .ticks(d3.time.months)
+                .tickFormat(xTickMonthFormat)
+                .tickSize(10, 0, 0)
+                .tickPadding([10])
+                .orient('bottom');
 
             yAxis = d3.svg.axis()
                 .scale(yScale)
                 .ticks(numVerticalTicks)
                 .tickFormat(yTickFormat)
-                .tickSize(-(width), 0, 0)
+                .tickSize(width, 0, 0)
                 .outerTickSize([50])
                 .tickPadding([4])
                 .orient('right');
@@ -176,11 +183,12 @@ define(function(require){
                 .attr('transform', `translate(${margin.left},${margin.top})`);
 
             container
-                .append('g').classed('x-axis-group axis', true);
+                .append('g').classed('x-axis-group', true)
+                .append('g').classed('x axis', true);
+            container.selectAll('.x-axis-group')
+                .append('g').classed('month-axis', true);
             container
                 .append('g').classed('y-axis-group axis', true);
-            container
-                .append('g').classed('grid-lines-group', true);
             container
                 .append('g').classed('chart-group', true);
             container
@@ -198,7 +206,7 @@ define(function(require){
                     .x(getDate)
                     .y(getViews),
                 nest = d3.nest()
-                    .key(getCategory);
+                    .key(getName);
 
             layers = stack(nest.entries(data));
         }
@@ -210,16 +218,16 @@ define(function(require){
         function buildScales(){
             xScale = d3.time.scale()
                 .domain(d3.extent(data, d => d.date))
-                .range([0, width]);
+                .range([0, chartWidth]);
 
             yScale = d3.scale.linear()
                 .domain([0, d3.max(data, d => (d.y0 + d.y) )])
-                .range([height, 0])
+                .range([chartHeight, 0])
                 .nice([numVerticalTicks + 1]);
 
             colorScale = d3.scale.ordinal()
                   .range(colors)
-                  .domain(data.map(getCategory));
+                  .domain(data.map(getName));
 
             categoryColorMap = _.object(
                 colorScale.domain(),
@@ -235,7 +243,7 @@ define(function(require){
             if (!svg) {
                 svg = d3.select(container)
                     .append('svg')
-                    .classed('stacked-area', true);
+                    .classed('britechart stacked-area', true);
 
                 buildContainerGroups();
             }
@@ -263,27 +271,27 @@ define(function(require){
          * @private
          */
         function drawAxis(){
-            svg.select('.x-axis-group.axis')
+            svg.select('.x-axis-group .axis.x')
                 .transition()
                 .ease(ease)
-                .attr({
-                    transform: `translate( 0, ${chartHeight + margin.top + margin.top} )`
-                })
-                .style('fill', axisTextColor)
+                .attr('transform', `translate( 0, ${chartHeight} )`)
                 .call(xAxis);
+
+            svg.select('.x-axis-group .month-axis')
+                .transition()
+                .ease(ease)
+                .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
+                .call(xMonthAxis);
 
             svg.select('.y-axis-group.axis')
                 .transition()
                 .ease(ease)
-                .attr({
-                    transform: `translate( ${chartWidth}, 0)`
-                })
-                .style('fill', axisTextColor)
+                .attr('transform', `translate( ${-margin.left}, 0)`)
                 .call(yAxis);
 
             // Moving the YAxis tick labels to the right side
             d3.selectAll('.y-axis-group .tick text')
-                .attr('transform', `translate( ${verticalTicksLabelOffset}, -10)` );
+                .attr('transform', `translate( ${- width}, ${yTickTextYOffset})` );
         }
 
         /**
@@ -330,7 +338,6 @@ define(function(require){
 
                     return `translate( ${xScale(d.point.date)}, ${yScale(d.point.y+d.point.y0)} )`;
                 });
-
         }
 
         /**
@@ -340,12 +347,14 @@ define(function(require){
         function drawHoverOverlay(){
             overlay = svg.select('.metadata-group')
                 .append('rect')
-                .attr('class','overlay')
-                .attr('y1', 0)
-                .attr('y2', height)
-                .attr('height', height - margin.top - margin.bottom)
-                .attr('width', width - margin.left - margin.right)
-                .attr('fill', overlayColor)
+                .attr({
+                    'class': 'overlay',
+                    'y1': 0,
+                    'y2': chartHeight,
+                    'height': chartHeight,
+                    'width': chartWidth
+                })
+                .attr('fill', 'rgba(0,0,0,0)') // TODO: remove after development
                 .style('display', 'none');
         }
 
@@ -370,6 +379,7 @@ define(function(require){
                 .transition()
                 .ease(ease)
                 .attr('d', d => area(d.values))
+                .style('opacity', areaOpacity)
                 .style('fill', d => categoryColorMap[d.key]);
         }
 
@@ -395,7 +405,7 @@ define(function(require){
                 .classed('vertical-marker', true)
                 .attr({
                     'x1': 0,
-                    'y1': height - margin.top - margin.bottom,
+                    'y1': chartHeight,
                     'x2': 0,
                     'y2': 0
                 });
@@ -403,6 +413,8 @@ define(function(require){
 
         /**
          * Finds out which datapoint is closer to the given x position
+         * NOTE: this would round to the previous one, we should try to make this
+         * work using the xMouse position instead of the date for the datapoint
          * @param  {number} x0 Date value for data point
          * @param  {obj} d0 Previous datapoint
          * @param  {obj} d1 Next datapoint
@@ -538,13 +550,11 @@ define(function(require){
                     })
                     .style({
                         'stroke-width': 3,
-                        'stroke': categoryColorMap[value.category]
+                        'stroke': categoryColorMap[value.name]
                     });
 
                 marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(accumulator))} )` );
             });
-
-
         }
 
         /**

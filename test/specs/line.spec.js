@@ -63,6 +63,7 @@ define([
 
         it('should render an X and Y axis', () => {
             expect(containerFixture.select('.x.axis').empty()).toBeFalsy();
+            expect(containerFixture.select('.x-axis-group .month-axis').empty()).toBeFalsy();
             expect(containerFixture.select('.y.axis').empty()).toBeFalsy();
         });
 
@@ -180,6 +181,29 @@ define([
             expect(newHeight).toBe(testHeight);
         });
 
+        it('should provide a tooltip threshold getter and setter', () => {
+            let defaultHeight = lineChart.tooltipThreshold(),
+                testTooltipThreshold = 600,
+                newTooltipThreshold;
+
+            lineChart.tooltipThreshold(testTooltipThreshold);
+            newTooltipThreshold = lineChart.tooltipThreshold();
+
+            expect(defaultHeight).not.toBe(testTooltipThreshold);
+            expect(newTooltipThreshold).toBe(testTooltipThreshold);
+        });
+
+        it('should provide animation getters and setters', () => {
+            let defaultEase = lineChart.ease(),
+                testEase = 'linear',
+                newEase;
+
+            lineChart.ease(testEase);
+            newEase = lineChart.ease();
+
+            expect(defaultEase).not.toBe(testEase);
+            expect(newEase).toBe(testEase);
+        });
     });
 
 });
