@@ -133,7 +133,7 @@ define(function(require){
             svg.select('.x-axis-group.axis')
                 .transition()
                 .ease(ease)
-                .attr('transform', 'translate(0,' + chartHeight + ')')
+                .attr('transform', `translate(0, ${chartHeight})`)
                 .call(xAxis);
 
             svg.select('.y-axis-group.axis')

@@ -1,14 +1,53 @@
 require([
     'd3',
     'stacked-area',
-    'stackedDataBuilder'
+    'stackedDataBuilder',
+    'tooltip'
     ],
     function(
         d3,
         stackedAreaChart,
-        stackedDataBuilder
+        stackedDataBuilder,
+        tooltip
     ){
     'use strict';
+
+    function createStackedAreaChartWithTooltip() {
+        var stackedArea = stackedAreaChart(),
+            chartTooltip = tooltip(),
+            testDataSet = new stackedDataBuilder.StackedAreaDataBuilder(),
+            containerWidth = d3.select('.js-stacked-area-chart-tooltip-container').node().getBoundingClientRect().width,
+            container = d3.select('.js-stacked-area-chart-tooltip-container'),
+            tooltipContainer,
+            dataset;
+
+        dataset = testDataSet.with6Sources().build();
+
+        // StackedAreChart Setup and start
+        stackedArea
+            .tooltipThreshold(400)
+            .width(containerWidth)
+            .on('customMouseOver', function() {
+                chartTooltip.show();
+            })
+            .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
+                chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+            })
+            .on('customMouseOut', function() {
+                chartTooltip.hide();
+            });
+        container.datum(dataset.data).call(stackedArea);
+
+        // Tooltip Setup and start
+        chartTooltip
+            .title('Testing tooltip');
+
+        // Note that if the viewport width is less than the tooltipThreshold value,
+        // this container won't exist, and the tooltip won't show up
+        tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
+        tooltipContainer.datum([]).call(chartTooltip);
+
+    }
 
     function createStackedAreaChart() {
         var stackedArea = stackedAreaChart(),
@@ -28,10 +67,12 @@ require([
     }
 
     // Show charts
+    createStackedAreaChartWithTooltip();
     createStackedAreaChart();
 
     d3.select(window).on('resize', function(){
         d3.selectAll('.stacked-area').remove();
+        createStackedAreaChartWithTooltip();
         createStackedAreaChart();
     });
 });

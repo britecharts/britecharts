@@ -1,7 +1,7 @@
 define(function(require){
     'use strict';
 
-    var d3 = require('d3');
+    const d3 = require('d3');
 
     /**
      * @typdef D3Selection
@@ -19,7 +19,7 @@ define(function(require){
      */
     return function module() {
 
-        var margin = {
+        let margin = {
                 top: 2,
                 right: 2,
                 bottom: 2,
@@ -38,7 +38,6 @@ define(function(require){
             },
             tooltipMaxTopicLength = 170,
             tooltipTextContainer,
-            tooltipBackground,
             tooltipDivider,
             tooltipBody,
             tooltipTitle,
@@ -51,7 +50,12 @@ define(function(require){
             circleYOffset = 8,
 
             colorMap,
+            bodyFillColor = '#FFFFFF',
+            borderStrokeColor = '#D2D6DF',
+            titleFillColor = '#6D717A',
+            textFillColor = '#282C35',
 
+            // formats
             tooltipDateFormat = d3.time.format('%B %d, %Y'),
 
             chartWidth, chartHeight,
@@ -84,7 +88,7 @@ define(function(require){
             var container = svg.append('g')
                 .classed('tooltip-container-group', true)
                 .attr({
-                    transform: 'translate(' + margin.left + ',' + margin.top + ')'
+                    transform: `translate( ${margin.left}, ${margin.top})`
                 });
 
             container.append('g').classed('tooltip-group', true);
@@ -130,18 +134,6 @@ define(function(require){
                 .append('g')
                 .classed('tooltip-text', true);
 
-            tooltipBackground = tooltipTextContainer
-                .append('rect')
-                .classed('tooltip-background', true)
-                .attr({
-                    'x': -tooltipWidth / 4 + 10,
-                    'y': 0,
-                    'width': tooltipWidth,
-                    'height': tooltipHeight-1,
-                    'rx': 3,
-                    'ry': 3
-                });
-
             tooltip = tooltipTextContainer
                 .append('rect')
                 .classed('tooltip-text-container', true)
@@ -154,8 +146,8 @@ define(function(require){
                     'ry': 3
                 })
                 .style({
-                    'fill': '#FFFFFF',
-                    'stroke': '#D9D9D9',
+                    'fill': bodyFillColor,
+                    'stroke': borderStrokeColor,
                     'stroke-width': 1
                 });
 
@@ -168,7 +160,7 @@ define(function(require){
                     'y': 16
                 })
                 .style({
-                    'fill': '#666666'
+                    'fill': titleFillColor
                 });
 
             tooltipDivider = tooltipTextContainer
@@ -181,7 +173,7 @@ define(function(require){
                     'y2': 31
                 })
                 .style({
-                    'stroke': '#D9D9D9'
+                    'stroke': borderStrokeColor
                 });
 
             tooltipBody = tooltipTextContainer
@@ -189,7 +181,7 @@ define(function(require){
                 .classed('tooltip-body', true)
                 .style({
                     'transform': 'translateY(8px)',
-                    'fill': '#404040'
+                    'fill': textFillColor
                 });
         }
 
@@ -209,17 +201,19 @@ define(function(require){
          * @return void
          */
         function updateContent(topic){
-            var tooltipRight,
+            var value = topic.value ? topic.value : topic.views,
+                name = topic.name,
+                tooltipRight,
                 tooltipLeftText,
                 tooltipRightText,
                 elementText;
 
-            tooltipLeftText = topic.topicName;
+            tooltipLeftText = topic.topicName || name;
 
             if (topic.missingValue) {
                 tooltipRightText = '-';
             } else {
-                tooltipRightText = topic.value;
+                tooltipRightText = value;
             }
 
             elementText = tooltipBody
@@ -262,7 +256,7 @@ define(function(require){
                     'r': 5
                 })
                 .style({
-                    'fill': colorMap[topic.name],
+                    'fill': colorMap[name],
                     'stroke-width': 1
                 });
 
@@ -281,13 +275,6 @@ define(function(require){
                     'width': tooltipWidth,
                     'height': tooltipHeight + 10
                 });
-
-            tooltipBackground
-                .attr({
-                    'width': tooltipWidth - 3,
-                    'height': tooltipHeight + 12
-                });
-
 
             // show tooltip to the right
             if ((xPosition - tooltipWidth) < 0) {
@@ -312,7 +299,8 @@ define(function(require){
          * @return void
          */
         function updateTitle(dataPoint) {
-            var tooltipTitleText = title + ' - ' + tooltipDateFormat(new Date(dataPoint.date));
+            var date = dataPoint.date ? new Date(dataPoint.date) : new Date(dataPoint.key),
+                tooltipTitleText = title + ' - ' + tooltipDateFormat(date);
 
             tooltipTitle.text(tooltipTitleText);
         }
@@ -320,13 +308,16 @@ define(function(require){
         /**
          * Updates tooltip title, content, size and position
          * @param  {object} dataPoint Current datapoint to show info about
+         * TODO: Think about data normalization here or conventions
          * @return void
          */
         function updateTooltip(dataPoint, position) {
+            var topics = dataPoint.topics ? dataPoint.topics : dataPoint.values;
+
             cleanContent();
             resetSizeAndPositionPointers();
             updateTitle(dataPoint);
-            dataPoint.topics.forEach(updateContent);
+            topics.forEach(updateContent);
             updatePositionAndSize(dataPoint, position);
         }
 

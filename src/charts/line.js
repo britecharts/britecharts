@@ -249,26 +249,25 @@ define(function(require){
         /**
          * Draws the x and y axis on the svg object within their
          * respective groups
-         * TODO: Use string templates
          * @private
          */
         function drawAxis(){
             svg.select('.x-axis-group .axis.x')
                 .transition()
                 .ease(ease)
-                .attr('transform', 'translate(0,' + chartHeight + ')')
+                .attr('transform', `translate(0, ${chartHeight})`)
                 .call(xAxis);
 
             svg.select('.x-axis-group .month-axis')
                 .transition()
                 .ease(ease)
-                .attr('transform', 'translate(0,' + (chartHeight + 28) + ')')
+                .attr('transform', `translate(0, ${(chartHeight + 28)})`)
                 .call(xMonthAxis);
 
             svg.select('.y-axis-group.axis.y')
                 .transition()
                 .ease(ease)
-                .attr('transform', 'translate(' + (-xAxisPadding.left) + ', 0)')
+                .attr('transform', `translate(${-xAxisPadding.left}, 0)`)
                 .call(yAxis)
                 .call(adjustYTickLabels);
         }
@@ -339,8 +338,8 @@ define(function(require){
                         'class': 'horizontal-grid-line',
                         'x1': (-xAxisPadding.left - 30),
                         'x2': chartWidth,
-                        'y1': function(d) { return yScale(d); },
-                        'y2': function(d) { return yScale(d); }
+                        'y1': d => yScale(d),
+                        'y2': d => yScale(d)
                     });
 
             //draw a horizontal line to extend x-axis till the edges

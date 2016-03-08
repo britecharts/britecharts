@@ -3,6 +3,7 @@ define(function(require) {
 
     var _ = require('underscore'),
 
+        jsonSixSources = require('json!/test/fixtures/areaDataSixSources.json'),
         // This works on tests:
         // jsonThreeSources = require('json!./areaDataThreeSources.json');
         // This works on demos:
@@ -15,6 +16,12 @@ define(function(require) {
 
         this.with3Sources = function(){
             var attributes = _.extend({}, this.config, jsonThreeSources);
+
+            return new this.Klass(attributes);
+        };
+
+        this.with6Sources = function(){
+            var attributes = _.extend({}, this.config, jsonSixSources);
 
             return new this.Klass(attributes);
         };
