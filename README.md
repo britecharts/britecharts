@@ -33,7 +33,11 @@ Currently Britecharts exposes 5 charts:
 
 In order to generate and see the documentation for this charts and the project in general you would need to:
 
- + Download and install [node](https://nodejs.org/en/download/) if you don't have it yet
+ + Download and install [node](https://nodejs.org/en/download/) (note we need npm version 2.X)
+ + Install the grunt task runner (if you don't have it yet) with:
+        
+        npm install -g grunt-cli
+
  + Clone the repository with:
 
         git clone git@github.com:eventbrite/britecharts.git
