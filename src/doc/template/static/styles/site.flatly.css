@@ -3743,13 +3743,23 @@ input[type="submit"].btn.btn-mini {
 .navbar .brand {
   float: left;
   display: block;
-  padding: 15px 20px 15px;
+  padding: 10px 20px;
   margin-left: -20px;
   font-size: 20px;
   font-weight: 200;
   color: #ffffff;
   text-shadow: 0 1px 0 #2c3e50;
 }
+.brand .britecharts-logo {
+    -webkit-transition: fill .4s ease;
+    -o-transition: fill .4s ease;
+    transition: fill .4s ease;
+    fill: #27E2C2;
+}
+.brand:hover .britecharts-logo {
+    fill: #F7C75B;
+}
+
 .navbar .brand:hover,
 .navbar .brand:focus {
   text-decoration: none;
