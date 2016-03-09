@@ -25,6 +25,7 @@ Currently Britecharts exposes 5 charts:
  - Bar Chart
  - Line Chart
  - Donut Chart
+ - Stacked Area Chart
  - Tooltip Chart
  - Legend Chart
 

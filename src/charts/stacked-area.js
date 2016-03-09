@@ -57,7 +57,13 @@ define(function(require){
             categoryColorMap,
 
             layers,
+            layersInitial,
             area,
+
+            // Area Animation
+            maxAreaNumber = 8,
+            areaAnimationDelayStep = 20,
+            areaAnimationDelays = d3.range(areaAnimationDelayStep, maxAreaNumber* areaAnimationDelayStep, areaAnimationDelayStep),
 
             overlay,
 
@@ -69,7 +75,9 @@ define(function(require){
             pointsColor           = '#c0c6cc',
             pointsBorderColor     = '#ffffff',
 
-            ease = 'bounce',
+            ease = 'quad-out',
+            areaAnimationDuration = 1000,
+
             svg,
             chartWidth, chartHeight,
             data,
@@ -83,9 +91,7 @@ define(function(require){
             getViews = d => d.views,
             getDate = d => d.date,
             getDateUTC = d => d.dateUTC,
-            getValue = d => d.value,
             getKey = d => d.key,
-
 
             // formats
             yTickFormat = d3.format('s'),
@@ -153,6 +159,7 @@ define(function(require){
                 .tickPadding([10])
                 .orient('bottom');
 
+            //TODO: Review this axis with real data
             xMonthAxis = d3.svg.axis()
                 .scale(xScale)
                 .ticks(d3.time.months)
@@ -198,6 +205,7 @@ define(function(require){
         /**
          * Builds the stacked layers layout
          * @return {D3Layout} Layout for drawing the chart
+         * @private
          */
         function buildLayers(){
             let stack = d3.layout.stack()
@@ -208,6 +216,7 @@ define(function(require){
                 nest = d3.nest()
                     .key(getName);
 
+            layersInitial = stack(nest.entries(createEmptyInitialSet(data)));
             layers = stack(nest.entries(data));
         }
 
@@ -266,26 +275,33 @@ define(function(require){
         }
 
         /**
+         * Creates a copy of the data with values set to 0
+         * @param  {obj[]} data Array of objects with the original data
+         * @return {obj[]}      Array of objects with the original data and 0 values
+         */
+        function createEmptyInitialSet(data) {
+            return JSON.parse(JSON.stringify(data))
+                .map(function(value){
+                    value.views = 0;
+                    return value;
+                });
+        }
+
+        /**
          * Draws the x and y axis on the svg object within their
          * respective groups
          * @private
          */
         function drawAxis(){
             svg.select('.x-axis-group .axis.x')
-                .transition()
-                .ease(ease)
                 .attr('transform', `translate( 0, ${chartHeight} )`)
                 .call(xAxis);
 
             svg.select('.x-axis-group .month-axis')
-                .transition()
-                .ease(ease)
                 .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
                 .call(xMonthAxis);
 
             svg.select('.y-axis-group.axis')
-                .transition()
-                .ease(ease)
                 .attr('transform', `translate( ${-margin.left}, 0)`)
                 .call(yAxis);
 
@@ -363,6 +379,9 @@ define(function(require){
          * @private
          */
         function drawStackedAreas(){
+            let areas =  svg.select('.chart-group').selectAll('.layer')
+                .data(layersInitial);
+
             // Creating Area function
             area = d3.svg.area()
                 .interpolate('cardinal')
@@ -370,17 +389,27 @@ define(function(require){
                 .y0( d => yScale(d.y0) )
                 .y1( d => yScale(d.y0 + d.y) );
 
-            // Drawing Areas
-            svg.select('.chart-group').selectAll('.layer')
-                .data(layers)
-              .enter()
+            // Enter
+            areas.enter()
                 .append('path')
                 .attr('class', 'layer')
+                .attr('d', d => area(d.values))
+                .style('fill', d => categoryColorMap[d.key]);
+
+            // Update
+            svg.select('.chart-group').selectAll('.layer')
+                .data(layers)
                 .transition()
+                .delay( (d, i) => areaAnimationDelays[i])
+                .duration(areaAnimationDuration)
                 .ease(ease)
                 .attr('d', d => area(d.values))
                 .style('opacity', areaOpacity)
                 .style('fill', d => categoryColorMap[d.key]);
+
+            // Exit
+            areas.exit()
+                .transition().style({ opacity: 0 }).remove();
         }
 
         /**
