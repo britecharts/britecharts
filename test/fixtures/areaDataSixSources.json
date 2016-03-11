@@ -1,0 +1,148 @@
+{
+    "data": [
+        {
+            "name": "Direct",
+            "views": 0,
+            "date": "1294185600000",
+            "dateUTC": "2011-01-05T00:00:00Z"
+        },
+        {
+            "name": "Direct",
+            "views": 10,
+            "date": "1294272000000",
+            "dateUTC": "2011-01-06T00:00:00Z"
+        },
+        {
+            "name": "Direct",
+            "views": 16,
+            "date": "1294358400000",
+            "dateUTC": "2011-01-07T00:00:00Z"
+        },
+        {
+            "name": "Direct",
+            "views": 20,
+            "date": "1294444800000",
+            "dateUTC": "2011-01-08T00:00:00Z"
+        },
+        {
+            "name": "Eventbrite",
+            "views": 13,
+            "date": "1294185600000",
+            "dateUTC": "2011-01-05T00:00:00Z"
+        },
+        {
+            "name": "Eventbrite",
+            "views": 16,
+            "date": "1294272000000",
+            "dateUTC": "2011-01-06T00:00:00Z"
+        },
+        {
+            "name": "Eventbrite",
+            "views": 10,
+            "date": "1294358400000",
+            "dateUTC": "2011-01-07T00:00:00Z"
+        },
+        {
+            "name": "Eventbrite",
+            "views": 5,
+            "date": "1294444800000",
+            "dateUTC": "2011-01-08T00:00:00Z"
+        },
+        {
+            "name": "Email",
+            "views": 10,
+            "date": "1294185600000",
+            "dateUTC": "2011-01-05T00:00:00Z"
+        },
+        {
+            "name": "Email",
+            "views": 20,
+            "date": "1294272000000",
+            "dateUTC": "2011-01-06T00:00:00Z"
+        },
+        {
+            "name": "Email",
+            "views": 22,
+            "date": "1294358400000",
+            "dateUTC": "2011-01-07T00:00:00Z"
+        },
+        {
+            "name": "Email",
+            "views": 7,
+            "date": "1294444800000",
+            "dateUTC": "2011-01-08T00:00:00Z"
+        },
+        {
+            "name": "Sun's Website",
+            "views": 0,
+            "date": "1294185600000",
+            "dateUTC": "2011-01-05T00:00:00Z"
+        },
+        {
+            "name": "Sun's Website",
+            "views": 10,
+            "date": "1294272000000",
+            "dateUTC": "2011-01-06T00:00:00Z"
+        },
+        {
+            "name": "Sun's Website",
+            "views": 16,
+            "date": "1294358400000",
+            "dateUTC": "2011-01-07T00:00:00Z"
+        },
+        {
+            "name": "Sun's Website",
+            "views": 3,
+            "date": "1294444800000",
+            "dateUTC": "2011-01-08T00:00:00Z"
+        },
+        {
+            "name": "Related Events",
+            "views": 18,
+            "date": "1294185600000",
+            "dateUTC": "2011-01-05T00:00:00Z"
+        },
+        {
+            "name": "Related Events",
+            "views": 12,
+            "date": "1294272000000",
+            "dateUTC": "2011-01-06T00:00:00Z"
+        },
+        {
+            "name": "Related Events",
+            "views": 5,
+            "date": "1294358400000",
+            "dateUTC": "2011-01-07T00:00:00Z"
+        },
+        {
+            "name": "Related Events",
+            "views": 3,
+            "date": "1294444800000",
+            "dateUTC": "2011-01-08T00:00:00Z"
+        },
+        {
+            "name": "Facebook",
+            "views": 4,
+            "date": "1294185600000",
+            "dateUTC": "2011-01-05T00:00:00Z"
+        },
+        {
+            "name": "Facebook",
+            "views": 9,
+            "date": "1294272000000",
+            "dateUTC": "2011-01-06T00:00:00Z"
+        },
+        {
+            "name": "Facebook",
+            "views": 6,
+            "date": "1294358400000",
+            "dateUTC": "2011-01-07T00:00:00Z"
+        },
+        {
+            "name": "Facebook",
+            "views": 3,
+            "date": "1294444800000",
+            "dateUTC": "2011-01-08T00:00:00Z"
+        }
+    ]
+}

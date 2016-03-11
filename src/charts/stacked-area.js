@@ -5,77 +5,97 @@ define(function(require){
         d3 = require('d3');
 
     /**
-     * @fileOverview Line Chart reusable API module that allows us
-     * rendering a multi line and configurable chart.
+     * @typdef D3Layout
+     * @type function
+     */
+
+    /**
+     * @fileOverview Stacked Area Chart reusable API module that allows us
+     * rendering a multi area and configurable chart.
      *
-     * @tutorial line
-     * @exports charts/line
+     * @tutorial stacked-area
+     * @exports charts/stacked-area
      * @requires d3
      * @version 0.0.1
      */
     return function module(){
 
         let margin = {
-                top: 60,
+                left: 40,
                 right: 20,
-                bottom: 60,
-                left: 80
+                top: 60,
+                bottom: 40
             },
             width = 960,
             height = 500,
-            aspectRatio = null,
-            tooltipThreshold = 480,
-            svg,
-            chartWidth, chartHeight,
-            xScale, yScale, colorScale,
-            xAxis, xMonthAxis, yAxis,
-            xAxisPadding = {
-                top: 0,
-                left: 15,
-                bottom: 0,
-                right: 0
-            },
-            colorRange = [
-                '#4DC2F5',
-                '#4DDB86',
-                '#E5C400',
-                '#FF4D7C',
+
+            xScale, xAxis, xMonthAxis,
+            yScale, yAxis,
+
+            monthAxisPadding = 30,
+            numVerticalTicks = 5,
+            yTickTextYOffset = -8,
+
+            colors = [
+                '#051C48',
                 '#9963D5',
-                '#051C48'
+                '#FF4D7C',
+                '#E5C400',
+                '#4DDB86',
+                '#4DC2F5'
             ],
             colorOrder = {
-                '#4DC2F5': 0,
-                '#4DDB86': 1,
-                '#E5C400': 2,
-                '#FF4D7C': 3,
-                '#9963D5': 4,
-                '#051C48': 5
+                '#051C48': 0,
+                '#9963D5': 1,
+                '#FF4D7C': 2,
+                '#E5C400': 3,
+                '#4DDB86': 4,
+                '#4DC2F5': 5
             },
-            topicColorMap,
-            ease = 'ease',
+            areaOpacity = 0.8,
+            colorScale,
+            categoryColorMap,
 
-            data,
-            dataByDate,
-            readableDataType,
+            layers,
+            layersInitial,
+            area,
 
-            baseLine,
-            maskGridLines,
-            numVerticalTics = 5,
+            // Area Animation
+            maxAreaNumber = 8,
+            areaAnimationDelayStep = 20,
+            areaAnimationDelays = d3.range(areaAnimationDelayStep, maxAreaNumber* areaAnimationDelayStep, areaAnimationDelayStep),
 
             overlay,
-            overlayColor = 'rgba(0, 0, 0, 0)',
-            verticalMarkerContainer,
-            verticalMarkerLine,
 
-            // extractors
-            getDate = d => { return d.date; },
-            getValue = d => { return d.value; },
-            getTopic = d => { return d.topic; },
-            getLineColor = d => { return colorScale(d.topic); },
+            verticalMarkerContainer,
+            verticalMarker,
+
+            dataPoints            = {},
+            pointsSize            = 1.5,
+            pointsColor           = '#c0c6cc',
+            pointsBorderColor     = '#ffffff',
+
+            ease = 'quad-out',
+            areaAnimationDuration = 1000,
+
+            svg,
+            chartWidth, chartHeight,
+            data,
+            dataByDate,
+
+            tooltipThreshold = 480,
+
+            // getters
+            getValues = d => d.values,
+            getName = d => d.name,
+            getViews = d => d.views,
+            getDate = d => d.date,
+            getDateUTC = d => d.dateUTC,
+            getKey = d => d.key,
 
             // formats
-            yTickNumberFormat = d3.format('s'),
-            xTickDateFormat = d3.time.format('%e'),
+            yTickFormat = d3.format('s'),
+            xTickFormat = d3.time.format('%e'),
             xTickMonthFormat = d3.time.format('%B'),
 
             // events
@@ -86,25 +106,29 @@ define(function(require){
          * @param  {D3Selection} _selection A d3 selection that represents
          * the container(s) where the chart(s) will be rendered
          */
-        function exports(_selection){
+        function exports(_selection) {
             /** @param {object} _data The data to attach and generate the chart */
             _selection.each(function(_data){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
-                data = _data.data;
-                dataByDate = _data.dataByDate;
-                readableDataType = _data.readableDataType;
+                data = _data;
+                dataByDate = d3.nest()
+                    .key( getDateUTC )
+                    .entries(
+                        _(_data).sortBy('date')
+                    );
 
+                buildLayers();
                 buildScales();
                 buildAxis();
                 buildSVG(this);
-                drawGridLines();
+                drawStackedAreas();
                 drawAxis();
-                drawLines();
+                drawDataReferencePoints();
 
                 if(shouldShowTooltip()){
-                    drawVerticalMarker();
                     drawHoverOverlay();
+                    drawVerticalMarker();
                     addMouseEvents();
                 }
             });
@@ -122,41 +146,36 @@ define(function(require){
         }
 
         /**
-         * Adjusts the position of the y axis' ticks
-         * @param  {D3Selection} selection Y axis group
-         * @return void
-         */
-        function adjustYTickLabels(selection){
-            selection.selectAll('.tick text')
-                .attr('transform', 'translate(0, -7)');
-        }
-
-        /**
          * Creates the d3 x and y axis, setting orientations
          * @private
          */
         function buildAxis(){
             xAxis = d3.svg.axis()
                 .scale(xScale)
-                .orient('bottom')
-                .ticks(getMaxNumOfHorizontalTicks(width, dataByDate.length))
-                .tickSize(10, 0).tickPadding(5)
-                .tickFormat(xTickDateFormat);
+                .ticks(d3.time.days)
+                .tickFormat(xTickFormat)
+                .tickSize(10, 0, 0)
+                .outerTickSize([50])
+                .tickPadding([10])
+                .orient('bottom');
 
+            //TODO: Review this axis with real data
             xMonthAxis = d3.svg.axis()
                 .scale(xScale)
                 .ticks(d3.time.months)
-                .tickSize(0, 0)
-                .orient('bottom')
-                .tickFormat(xTickMonthFormat);
+                .tickFormat(xTickMonthFormat)
+                .tickSize(10, 0, 0)
+                .tickPadding([10])
+                .orient('bottom');
 
             yAxis = d3.svg.axis()
                 .scale(yScale)
-                .orient('left')
-                .ticks(numVerticalTics)
-                .tickSize([0])
+                .ticks(numVerticalTicks)
+                .tickFormat(yTickFormat)
+                .tickSize(width, 0, 0)
+                .outerTickSize([50])
                 .tickPadding([4])
-                .tickFormat(yTickNumberFormat);
+                .orient('right');
         }
 
         /**
@@ -172,13 +191,11 @@ define(function(require){
 
             container
                 .append('g').classed('x-axis-group', true)
-                .append('g').classed('axis x', true);
+                .append('g').classed('x axis', true);
             container.selectAll('.x-axis-group')
                 .append('g').classed('month-axis', true);
             container
-                .append('g').classed('y-axis-group axis y', true);
-            container
-                .append('g').classed('grid-lines-group', true);
+                .append('g').classed('y-axis-group axis', true);
             container
                 .append('g').classed('chart-group', true);
             container
@@ -186,31 +203,42 @@ define(function(require){
         }
 
         /**
-         * Creates the x and y scales of the graph
+         * Builds the stacked layers layout
+         * @return {D3Layout} Layout for drawing the chart
+         * @private
+         */
+        function buildLayers(){
+            let stack = d3.layout.stack()
+                    .offset('zero')
+                    .values(getValues)
+                    .x(getDate)
+                    .y(getViews),
+                nest = d3.nest()
+                    .key(getName);
+
+            layersInitial = stack(nest.entries(createEmptyInitialSet(data)));
+            layers = stack(nest.entries(data));
+        }
+
+        /**
+         * Creates the x, y and color scales of the chart
          * @private
          */
         function buildScales(){
-            let minX = d3.min(data, kv => {
-                    return d3.min(kv.Data, getDate);
-                }),
-                maxX = d3.max(data, function(kv) { return d3.max(kv.Data, getDate); }),
-                minY = d3.min(data, function(kv) { return d3.min(kv.Data, getValue); }),
-                maxY = d3.max(data, function(kv) { return d3.max(kv.Data, getValue); });
-
             xScale = d3.time.scale()
-                .rangeRound([0, chartWidth])
-                .domain([minX, maxX]);
+                .domain(d3.extent(data, d => d.date))
+                .range([0, chartWidth]);
 
             yScale = d3.scale.linear()
-                .rangeRound([chartHeight, 0])
-                .domain([Math.abs(minY), Math.abs(maxY)])
-                .nice(3);
+                .domain([0, d3.max(data, d => (d.y0 + d.y) )])
+                .range([chartHeight, 0])
+                .nice([numVerticalTicks + 1]);
 
             colorScale = d3.scale.ordinal()
-                .range(colorRange)
-                .domain(data.map(getTopic));
+                  .range(colors)
+                  .domain(data.map(getName));
 
-            topicColorMap = _.object(
+            categoryColorMap = _.object(
                 colorScale.domain(),
                 colorScale.range()
             );
@@ -224,7 +252,7 @@ define(function(require){
             if (!svg) {
                 svg = d3.select(container)
                     .append('svg')
-                    .classed('britechart line-chart', true);
+                    .classed('britechart stacked-area', true);
 
                 buildContainerGroups();
             }
@@ -247,131 +275,141 @@ define(function(require){
         }
 
         /**
+         * Creates a copy of the data with values set to 0
+         * @param  {obj[]} data Array of objects with the original data
+         * @return {obj[]}      Array of objects with the original data and 0 values
+         */
+        function createEmptyInitialSet(data) {
+            return JSON.parse(JSON.stringify(data))
+                .map(function(value){
+                    value.views = 0;
+                    return value;
+                });
+        }
+
+        /**
          * Draws the x and y axis on the svg object within their
          * respective groups
          * @private
          */
         function drawAxis(){
             svg.select('.x-axis-group .axis.x')
-                .transition()
-                .ease(ease)
-                .attr('transform', `translate(0, ${chartHeight})`)
+                .attr('transform', `translate( 0, ${chartHeight} )`)
                 .call(xAxis);
 
             svg.select('.x-axis-group .month-axis')
-                .transition()
-                .ease(ease)
-                .attr('transform', `translate(0, ${(chartHeight + 28)})`)
+                .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
                 .call(xMonthAxis);
 
-            svg.select('.y-axis-group.axis.y')
-                .transition()
-                .ease(ease)
-                .attr('transform', `translate(${-xAxisPadding.left}, 0)`)
-                .call(yAxis)
-                .call(adjustYTickLabels);
+            svg.select('.y-axis-group.axis')
+                .attr('transform', `translate( ${-margin.left}, 0)`)
+                .call(yAxis);
+
+            // Moving the YAxis tick labels to the right side
+            d3.selectAll('.y-axis-group .tick text')
+                .attr('transform', `translate( ${- width}, ${yTickTextYOffset})` );
         }
 
         /**
-         * Draws the line elements within the chart group
-         * @private
+         * Creates SVG dot elements for each data entry and draws them
          */
-        function drawLines(){
-            let lines,
-                topicLine,
-                maskingRectangle;
-
-            topicLine = d3.svg.line()
-                .x(function(d) {
-                    return xScale(d.date);
-                })
-                .y(function(d) { return yScale(d.value); });
-
-            lines = svg.select('.chart-group').selectAll('.line')
-                .data(data);
-
-            lines
-                .enter()
-                .append('g')
-                .attr('class', 'topic')
-                .append('path')
-                .attr('class', 'line')
-                .attr('d', function(d) {
-                    return topicLine(d.Data);
-                })
-                .style({
-                    'stroke': getLineColor
+        function drawDataReferencePoints() {
+            // Creates Dots on Data points
+            var points = svg.select('.chart-group').selectAll('.dots')
+                .data(layers)
+              .enter().append('g')
+                .attr({
+                    'class': 'dots',
+                    'd': d => area(d.values),
+                    'clip-path': 'url(#clip)'
                 });
 
-            lines
-                .exit()
-                .remove();
+            // Processes the points
+            // TODO: Optimize this code
+            points.selectAll('.dot')
+                .data(function(d, index){
+                    var a = [];
 
-            // We use a white rectangle to simulate the line drawing animation
-            maskingRectangle = svg.append('rect')
-                .attr('class', 'masking-rectangle')
-                .attr('width', width - 30)
-                .attr('height', height + 20)
-                .attr('x', 60)
-                .attr('y', -18);
+                    d.values.forEach(function(point){
+                        a.push({'index': index, 'point': point});
+                    });
+                    return a;
+                })
+                .enter()
+                .append('circle')
+                .attr('class','dot')
+                .attr('r', function(){
+                    return pointsSize;
+                })
+                .attr('fill', function(){
+                    return pointsColor;
+                })
+                .attr('stroke-width', '0')
+                .attr('stroke', pointsBorderColor)
+                .attr('transform', function(d) {
+                    var key = xScale(d.point.date);
 
-            maskingRectangle.transition()
-                .duration(2000)
-                .ease('cubic-out')
-                .attr('x', width)
-                .each('end', function() {
-                    maskingRectangle.remove();
+                    dataPoints[key] = dataPoints[key] || [];
+                    dataPoints[key].push(d);
+
+                    return `translate( ${xScale(d.point.date)}, ${yScale(d.point.y+d.point.y0)} )`;
                 });
-        }
-
-        /**
-         * Draws grid lines on the background of the chart
-         * @return void
-         */
-        function drawGridLines(){
-            maskGridLines = svg.select('.grid-lines-group')
-                .selectAll('line.horizontal-grid-line')
-                .data(yScale.ticks(5))
-                .enter()
-                    .append('line')
-                    .attr({
-                        'class': 'horizontal-grid-line',
-                        'x1': (-xAxisPadding.left - 30),
-                        'x2': chartWidth,
-                        'y1': d => yScale(d),
-                        'y2': d => yScale(d)
-                    });
-
-            //draw a horizontal line to extend x-axis till the edges
-            baseLine = svg.select('.grid-lines-group')
-                .selectAll('line.extended-x-line')
-                .data([0])
-                .enter()
-                    .append('line')
-                    .attr({
-                        'class': 'extended-x-line',
-                        'x1': (-xAxisPadding.left - 30),
-                        'x2': chartWidth,
-                        'y1': height - margin.bottom - margin.top,
-                        'y2': height - margin.bottom - margin.top
-                    });
         }
 
         /**
          * Draws an overlay element over the graph
-         * @inner
-         * @return void
+         * @private
          */
         function drawHoverOverlay(){
             overlay = svg.select('.metadata-group')
                 .append('rect')
-                .attr('class','overlay')
-                .attr('y1', 0)
-                .attr('y2', height)
-                .attr('height', height - margin.top - margin.bottom)
-                .attr('width', width - margin.left - margin.right)
-                .attr('fill', overlayColor)
+                .attr({
+                    'class': 'overlay',
+                    'y1': 0,
+                    'y2': chartHeight,
+                    'height': chartHeight,
+                    'width': chartWidth
+                })
+                .attr('fill', 'rgba(0,0,0,0)') // TODO: remove after development
                 .style('display', 'none');
+        }
+
+        /**
+         * Draws the different areas into the chart-group element
+         * @private
+         */
+        function drawStackedAreas(){
+            let areas =  svg.select('.chart-group').selectAll('.layer')
+                .data(layersInitial);
+
+            // Creating Area function
+            area = d3.svg.area()
+                .interpolate('cardinal')
+                .x( d => xScale(d.date) )
+                .y0( d => yScale(d.y0) )
+                .y1( d => yScale(d.y0 + d.y) );
+
+            // Enter
+            areas.enter()
+                .append('path')
+                .attr('class', 'layer')
+                .attr('d', d => area(d.values))
+                .style('fill', d => categoryColorMap[d.key]);
+
+            // Update
+            svg.select('.chart-group').selectAll('.layer')
+                .data(layers)
+                .transition()
+                .delay( (d, i) => areaAnimationDelays[i])
+                .duration(areaAnimationDuration)
+                .ease(ease)
+                .attr('d', d => area(d.values))
+                .style('opacity', areaOpacity)
+                .style('fill', d => categoryColorMap[d.key]);
+
+            // Exit
+            areas.exit()
+                .transition().style({ opacity: 0 }).remove();
         }
 
         /**
@@ -381,10 +419,10 @@ define(function(require){
         function drawVerticalMarker(){
             verticalMarkerContainer = svg.select('.metadata-group')
                 .append('g')
-                .attr('class', 'hover-marker')
+                .attr('class', 'vertical-marker-container')
                 .attr('transform', 'translate(9999, 0)');
 
-            verticalMarkerLine = verticalMarkerContainer.selectAll('path')
+            verticalMarker = verticalMarkerContainer.selectAll('path')
                 .data([{
                     'x1': 0,
                     'y1': 0,
@@ -396,7 +434,7 @@ define(function(require){
                 .classed('vertical-marker', true)
                 .attr({
                     'x1': 0,
-                    'y1': height - margin.top - margin.bottom,
+                    'y1': chartHeight,
                     'x2': 0,
                     'y2': 0
                 });
@@ -404,36 +442,15 @@ define(function(require){
 
         /**
          * Finds out which datapoint is closer to the given x position
+         * NOTE: this would round to the previous one, we should try to make this
+         * work using the xMouse position instead of the date for the datapoint
          * @param  {number} x0 Date value for data point
          * @param  {obj} d0 Previous datapoint
          * @param  {obj} d1 Next datapoint
          * @return {obj}    d0 or d1, the datapoint with closest date to x0
          */
         function findOutNearestDate(x0, d0, d1){
-            return (new Date(x0).getTime() - new Date(d0.date).getTime()) > (new Date(d1.date).getTime() - new Date(x0).getTime()) ? d0 : d1;
-        }
-
-        /**
-         * Calculates the maximum number of ticks for the x axis
-         * @param  {number} width Chart width
-         * @param  {number} dataPointNumber  Number of entries on the data
-         * @return {number}       Number of ticks to render
-         */
-        function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
-            let singleTickWidth = 20,
-                spacing = 40,
-                ticksForWidth = Math.ceil(width / (singleTickWidth + spacing));
-
-            return Math.min(dataPointNumber, ticksForWidth);
-        }
-
-        /**
-         * Extract X position on the graph from a given mouse event
-         * @param  {obj} event D3 mouse event
-         * @return {number}       Position on the x axis of the mouse
-         */
-        function getMouseXPosition(event) {
-            return d3.mouse(event)[0];
+            return (new Date(x0).getTime() - new Date(d0.key).getTime()) > (new Date(d1.key).getTime() - new Date(x0).getTime()) ? d0 : d1;
         }
 
         /**
@@ -446,14 +463,25 @@ define(function(require){
         }
 
         /**
+         * Extract X position on the chart from a given mouse event
+         * @param  {obj} event D3 mouse event
+         * @return {number}       Position on the x axis of the mouse
+         * @private
+         */
+        function getMouseXPosition(event) {
+            return d3.mouse(event)[0];
+        }
+
+        /**
          * Finds out the data entry that is closer to the given position on pixels
          * @param  {number} mouseX X position of the mouse
          * @return {obj}        Data entry that is closer to that x axis position
          */
         function getNearestDataPoint(mouseX) {
             let invertedX = xScale.invert(mouseX),
-                bisectDate = d3.bisector(getDate).left,
-                dataEntryIndex, dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition,
+                bisectDate = d3.bisector(getKey).right,
+                dataEntryIndex, dateOnCursorXPosition,
+                dataEntryForXPosition, previousDataEntryForXPosition,
                 nearestDataPoint;
 
             dateOnCursorXPosition = getFormattedDateFromData(invertedX);
@@ -481,13 +509,13 @@ define(function(require){
                 dataPointXPosition;
 
             if(dataPoint) {
-                dataPointXPosition = xScale(new Date(dataPoint.date));
+                dataPointXPosition = xScale(new Date( dataPoint.key ));
                 // More verticalMarker to that datapoint
                 moveVerticalMarker(dataPointXPosition);
                 // Add data points highlighting
                 highlightDataPoints(dataPoint);
                 // Emit event with xPosition for tooltip or similar feature
-                dispatch.customMouseMove(dataPoint, topicColorMap, dataPointXPosition);
+                dispatch.customMouseMove(dataPoint, categoryColorMap, dataPointXPosition);
             }
         }
 
@@ -498,8 +526,8 @@ define(function(require){
          */
         function handleMouseOut(data){
             overlay.style('display', 'none');
-            verticalMarkerLine.classed('bc-is-active', false);
-            verticalMarkerContainer.attr('transform', 'translate(' + '9999' + ',' + '0' + ')');
+            verticalMarker.classed('bc-is-active', false);
+            verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
 
             dispatch.customMouseOut(data);
         }
@@ -510,7 +538,7 @@ define(function(require){
          */
         function handleMouseOver(data){
             overlay.style('display', 'block');
-            verticalMarkerLine.classed('bc-is-active', true);
+            verticalMarker.classed('bc-is-active', true);
 
             dispatch.customMouseOver(data);
         }
@@ -520,23 +548,27 @@ define(function(require){
          * @param  {obj} dataPoint Data point to extract info from
          * @private
          */
-        function highlightDataPoints(dataPoint){
+        function highlightDataPoints(dataPoint) {
+            let accumulator = 0;
+
             cleanDataPointHighlights();
 
-            // sorting the topics based on the order of the colors,
+            // sorting the values based on the order of the colors,
             // so that the order always stays constant
-            dataPoint.topics = _.chain(dataPoint.topics)
+            dataPoint.values = _.chain(dataPoint.values)
                 .compact()
                 .sortBy(function(el) {
-                    return colorOrder[topicColorMap[el.name]];
+                    return colorOrder[categoryColorMap[el.category]];
                 })
                 .value();
 
-            dataPoint.topics.forEach(function(topic, index){
+            dataPoint.values.forEach(function(value, index){
                 let marker = verticalMarkerContainer
                                 .append('g')
                                 .classed('circle-container', true),
                     circleSize = 12;
+
+                accumulator = accumulator + dataPoint.values[index].views;
 
                 marker.append('circle')
                     .classed('data-point-highlighter', true)
@@ -546,10 +578,11 @@ define(function(require){
                         'r': 5
                     })
                     .style({
-                        'stroke': topicColorMap[topic.name]
+                        'stroke-width': 3,
+                        'stroke': categoryColorMap[value.name]
                     });
 
-                marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(dataPoint.topics[index].value))} )` );
+                marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(accumulator))} )` );
             });
         }
 
@@ -566,39 +599,36 @@ define(function(require){
          * Determines if we should add the tooltip related logic depending on the
          * size of the chart and the tooltipThreshold variable value
          * @return {boolean} Should we build the tooltip?
+         * @private
          */
         function shouldShowTooltip() {
             return width > tooltipThreshold;
         }
 
-        // API Methods
-
+        // Accessors
         /**
-         * Gets or Sets the aspect ratio of the chart
-         * @param  {number} _x Desired aspect ratio for the graph
-         * @return { number | module} Current aspect ratio or Line Chart module to chain calls
+         * Gets or Sets the ease of the chart
+         * @param  {number} _x Desired width for the graph
+         * @return { ease | module} Current ease animation or Area Chart module to chain calls
          * @public
          */
-        exports.aspectRatio = function(_x) {
+        exports.ease = function(_x) {
             if (!arguments.length) {
-                return aspectRatio;
+                return ease;
             }
-            aspectRatio = _x;
+            ease = _x;
             return this;
         };
 
         /**
          * Gets or Sets the height of the chart
          * @param  {number} _x Desired width for the graph
-         * @return { height | module} Current height or Line Chart module to chain calls
+         * @return { height | module} Current height or Area Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
             if (!arguments.length) {
                 return height;
-            }
-            if (aspectRatio) {
-                width = Math.ceil(_x / aspectRatio);
             }
             height = _x;
             return this;
@@ -607,7 +637,7 @@ define(function(require){
         /**
          * Gets or Sets the margin of the chart
          * @param  {object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Line Chart module to chain calls
+         * @return { margin | module} Current margin or Area Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -619,10 +649,9 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the minimum width of the graph in order to show the tooltip
-         * NOTE: This could also depend on the aspect ratio
-         * @param  {number} _x Desired tooltip threshold for the graph
-         * @return { number | module} Current tooltip threshold or Line Chart module to chain calls
+         * Gets or Sets the tooltipThreshold of the chart
+         * @param  {object} _x Margin object to get/set
+         * @return { tooltipThreshold | module} Current tooltipThreshold or Area Chart module to chain calls
          * @public
          */
         exports.tooltipThreshold = function(_x) {
@@ -636,15 +665,12 @@ define(function(require){
         /**
          * Gets or Sets the width of the chart
          * @param  {number} _x Desired width for the graph
-         * @return { width | module} Current width or Line Chart module to chain calls
+         * @return { width | module} Current width or Area Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
             if (!arguments.length) {
                 return width;
-            }
-            if (aspectRatio) {
-                height = Math.ceil(_x * aspectRatio);
             }
             width = _x;
             return this;

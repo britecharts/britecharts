@@ -1,18 +1,22 @@
 require.config({
 
-    // baseUrl: '../',
+    baseUrl: '../',
 
     paths: {
         'underscore': '../node_modules/underscore/underscore',
         'jquery': '../node_modules/jquery/dist/jquery',
         'd3': '../node_modules/d3/d3',
+        'json': '../node_modules/requirejs-plugins/src/json',
+        'text': '../node_modules/text/text',
 
         'dataBuilder': '../test/fixtures/lineChartDataBuilder',
+        'stackedDataBuilder': '../test/fixtures/stackedAreaDataBuilder',
         'line': '/dist/charts/line',
         'bar': '/dist/charts/bar',
         'donut': '/dist/charts/donut',
         'tooltip': '/dist/charts/tooltip',
-        'legend': '/dist/charts/legend'
+        'legend': '/dist/charts/legend',
+        'stacked-area': '/dist/charts/stacked-area'
     },
 
     callback: function(){
@@ -28,6 +32,9 @@ require.config({
         }
         if (page === 'donut') {
             require(['/demos/demo-donut.js'], function(){});
+        }
+        if (page === 'stacked-area') {
+            require(['/demos/demo-stacked-area.js'], function(){});
         }
     },
 

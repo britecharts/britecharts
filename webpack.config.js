@@ -16,7 +16,8 @@ var webpack = require('webpack'),
         'donut': './src/charts/donut.js',
         'legend': './src/charts/legend.js',
         'line': './src/charts/line.js',
-        'tooltip': './src/charts/tooltip.js'
+        'tooltip': './src/charts/tooltip.js',
+        'stacked-area': './src/charts/stacked-area.js'
     },
 
     defaultJSLoader = {
