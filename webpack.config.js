@@ -17,6 +17,7 @@ var webpack = require('webpack'),
         'legend': './src/charts/legend.js',
         'line': './src/charts/line.js',
         'tooltip': './src/charts/tooltip.js',
+        'sparkline': './src/charts/sparkline.js',
         'stacked-area': './src/charts/stacked-area.js'
     },
 
