@@ -588,6 +588,20 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the ease of the chart
+         * @param  {number} _x Desired width for the graph
+         * @return { ease | module} Current ease animation or Line Chart module to chain calls
+         * @public
+         */
+        exports.ease = function(_x) {
+            if (!arguments.length) {
+                return ease;
+            }
+            ease = _x;
+            return this;
+        };
+
+        /**
          * Gets or Sets the height of the chart
          * @param  {number} _x Desired width for the graph
          * @return { height | module} Current height or Line Chart module to chain calls
