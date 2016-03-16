@@ -4,9 +4,9 @@ define(function(require) {
     var _ = require('underscore'),
 
         // This works on tests:
-        // jsonFiveTopics = require('json!./lineDataFiveTopics.json');
+        jsonFiveTopics = require('json!./lineDataFiveTopics.json');
         // This works on demos:
-        jsonFiveTopics = require('json!/test/fixtures/lineDataFiveTopics.json');
+        // jsonFiveTopics = require('json!/test/fixtures/lineDataFiveTopics.json');
 
     function SalesDataBuilder(config){
         this.Klass = SalesDataBuilder;
