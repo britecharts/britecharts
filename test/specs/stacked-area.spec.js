@@ -53,12 +53,7 @@ define([
             expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.x-axis-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.y-axis-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.grid-lines-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
-        });
-
-        it('should render grid lines', () => {
-            expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
         });
 
         it('should render an X and Y axis', () => {
@@ -69,7 +64,7 @@ define([
 
         it('should render an area for each category', () => {
             var numAreas = _.chain(dataset.data)
-                .pluck('category')
+                .pluck('name')
                 .unique()
                 .value()
                 .length;

@@ -3,11 +3,11 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonSixSources = require('json!/test/fixtures/areaDataSixSources.json'),
+        // jsonSixSources = require('json!/test/fixtures/areaDataSixSources.json'),
         // This works on tests:
-        // jsonThreeSources = require('json!./areaDataThreeSources.json');
+        jsonThreeSources = require('json!./areaDataThreeSources.json');
         // This works on demos:
-        jsonThreeSources = require('json!/test/fixtures/areaDataThreeSources.json');
+        // jsonThreeSources = require('json!/test/fixtures/areaDataThreeSources.json');
 
     function StackedAreaDataBuilder(config){
         this.Klass = StackedAreaDataBuilder;

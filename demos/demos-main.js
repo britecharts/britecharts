@@ -11,12 +11,15 @@ require.config({
 
         'dataBuilder': '../test/fixtures/lineChartDataBuilder',
         'stackedDataBuilder': '../test/fixtures/stackedAreaDataBuilder',
+        'sparklineDataBuilder': '../test/fixtures/sparklineDataBuilder',
+
         'line': '/dist/charts/line',
         'bar': '/dist/charts/bar',
         'donut': '/dist/charts/donut',
         'tooltip': '/dist/charts/tooltip',
         'legend': '/dist/charts/legend',
-        'stacked-area': '/dist/charts/stacked-area'
+        'stacked-area': '/dist/charts/stacked-area',
+        'sparkline': '/dist/charts/sparkline'
     },
 
     callback: function(){
@@ -35,6 +38,9 @@ require.config({
         }
         if (page === 'stacked-area') {
             require(['/demos/demo-stacked-area.js'], function(){});
+        }
+        if (page === 'sparkline') {
+            require(['/demos/demo-sparkline.js'], function(){});
         }
     },
 
