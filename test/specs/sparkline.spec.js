@@ -97,15 +97,27 @@ define([
         });
 
         it('should provide valueLabel getter and setter', () => {
-            let defaultHeight = sparklineChart.valueLabel(),
+            let defaultValueLabel = sparklineChart.valueLabel(),
                 testValueLabel = 'quantity',
                 newValueLabel;
 
             sparklineChart.valueLabel(testValueLabel);
             newValueLabel = sparklineChart.valueLabel();
 
-            expect(defaultHeight).not.toBe(testValueLabel);
+            expect(defaultValueLabel).not.toBe(testValueLabel);
             expect(newValueLabel).toBe(testValueLabel);
+        });
+
+        it('should provide dateLabel getter and setter', () => {
+            let defaultDateLabel = sparklineChart.dateLabel(),
+                testDateLabel = 'dateUTC',
+                newDateLabel;
+
+            sparklineChart.valueLabel(testDateLabel);
+            newDateLabel = sparklineChart.valueLabel();
+
+            expect(defaultDateLabel).not.toBe(testDateLabel);
+            expect(newDateLabel).toBe(testDateLabel);
         });
     });
 });
