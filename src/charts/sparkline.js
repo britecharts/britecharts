@@ -42,6 +42,7 @@ define(function(require){
             markerSize = 1.5,
 
             valueLabel = 'views',
+            dateLabel = 'date',
 
             // getters
             getDate = d => d.date,
@@ -126,7 +127,7 @@ define(function(require){
          */
         function cleanData(data) {
             data.forEach(function(d){
-                d.date = new Date (d.dateUTC);
+                d.date = new Date (d[dateLabel]);
                 d[valueLabel] = +d[valueLabel];
             });
 
@@ -221,6 +222,20 @@ define(function(require){
                 return valueLabel;
             }
             valueLabel = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the dateLabel of the chart
+         * @param  {number} _x Desired dateLabel for the graph
+         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+         * @public
+         */
+        exports.dateLabel = function(_x) {
+            if (!arguments.length) {
+                return dateLabel;
+            }
+            dateLabel = _x;
             return this;
         };
 

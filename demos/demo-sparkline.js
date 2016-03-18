@@ -21,6 +21,7 @@ require([
 
         // Sparkline Chart Setup and start
         sparkline
+            .dateLabel('dateUTC')
             .width(containerWidth / 2);
 
         container.datum(dataset.data).call(sparkline);
