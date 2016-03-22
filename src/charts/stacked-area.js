@@ -85,21 +85,28 @@ define(function(require){
 
             tooltipThreshold = 480,
 
+            dateLabel = 'dateUTC',
+            valueLabel = 'views',
+
             // getters
+            getValueLabel = d => d[valueLabel],
             getValues = d => d.values,
-            getName = d => d.name,
-            getViews = d => d.views,
-            getDate = d => d.date,
-            getDateUTC = d => d.dateUTC,
             getKey = d => d.key,
+            getName = d => d.name,
+            getDate = d => d.date,
+
 
             // formats
+            utc = d3.time.format.utc('%Y-%m-%dT%H:%M:%SZ'),
+            parseUTC = utc.parse,
+
             yTickFormat = d3.format('s'),
             xTickFormat = d3.time.format('%e'),
             xTickMonthFormat = d3.time.format('%B'),
 
             // events
             dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+
 
         /**
          * This function creates the graph using the selection and data provided
@@ -111,9 +118,10 @@ define(function(require){
             _selection.each(function(_data){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
-                data = _data;
+                data = cleanData(_data);
+
                 dataByDate = d3.nest()
-                    .key( getDateUTC )
+                    .key( getDate )
                     .entries(
                         _(_data).sortBy('date')
                     );
@@ -212,7 +220,7 @@ define(function(require){
                     .offset('zero')
                     .values(getValues)
                     .x(getDate)
-                    .y(getViews),
+                    .y(getValueLabel),
                 nest = d3.nest()
                     .key(getName);
 
@@ -267,10 +275,24 @@ define(function(require){
         }
 
         /**
+         * Parses dates and values into JS Date objects and numbers
+         * @param  {obj} data Raw data from JSON file
+         * @return {obj}      Parsed data with values and dates
+         */
+        function cleanData(data) {
+            data.forEach(function(d){
+                d.date = parseUTC( d[dateLabel] );
+                d[valueLabel] = +d[valueLabel];
+            });
+
+            return data;
+        }
+
+        /**
          * Removes all the datapoints highlighter circles added to the marker container
          * @return void
          */
-        function cleanDataPointHighlights(){
+        function eraseDataPointHighlights(){
             verticalMarkerContainer.selectAll('.circle-container').remove();
         }
 
@@ -280,11 +302,15 @@ define(function(require){
          * @return {obj[]}      Array of objects with the original data and 0 values
          */
         function createEmptyInitialSet(data) {
-            return JSON.parse(JSON.stringify(data))
-                .map(function(value){
-                    value.views = 0;
-                    return value;
-                });
+            // Parsing and stringify is a way of duplicating an array of objects
+            return cleanData(
+                JSON.parse(JSON.stringify(data))
+                    .map(function(value){
+                        value[valueLabel] = 0;
+                        // value.date = parseUTC(value)
+                        return value;
+                    })
+                );
         }
 
         /**
@@ -551,7 +577,7 @@ define(function(require){
         function highlightDataPoints(dataPoint) {
             let accumulator = 0;
 
-            cleanDataPointHighlights();
+            eraseDataPointHighlights();
 
             // sorting the values based on the order of the colors,
             // so that the order always stays constant
@@ -568,7 +594,7 @@ define(function(require){
                                 .classed('circle-container', true),
                     circleSize = 12;
 
-                accumulator = accumulator + dataPoint.values[index].views;
+                accumulator = accumulator + dataPoint.values[index][valueLabel];
 
                 marker.append('circle')
                     .classed('data-point-highlighter', true)
@@ -673,6 +699,34 @@ define(function(require){
                 return width;
             }
             width = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the valueLabel of the chart
+         * @param  {number} _x Desired valueLabel for the graph
+         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+         * @public
+         */
+        exports.valueLabel = function(_x) {
+            if (!arguments.length) {
+                return valueLabel;
+            }
+            valueLabel = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the dateLabel of the chart
+         * @param  {number} _x Desired dateLabel for the graph
+         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+         * @public
+         */
+        exports.dateLabel = function(_x) {
+            if (!arguments.length) {
+                return dateLabel;
+            }
+            dateLabel = _x;
             return this;
         };
 

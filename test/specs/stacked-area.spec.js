@@ -25,7 +25,7 @@ define([
         }
 
         beforeEach(() => {
-            dataset = aTestDataSet().with3Sources().build();
+            dataset = aTestDataSet().withReportData().build();
             stackedAreaChart = stackedArea();
 
             // DOM Fixture Setup
