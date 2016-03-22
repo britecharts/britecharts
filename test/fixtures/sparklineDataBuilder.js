@@ -2,9 +2,11 @@ define(function(require) {
     'use strict';
 
     var _ = require('underscore'),
+        jsonOneSource;
 
         // This works on tests:
         jsonOneSource = require('json!./sparklineOneSource.json');
+
         // This works on demos:
         // jsonOneSource = require('json!/test/fixtures/sparklineOneSource.json');
 

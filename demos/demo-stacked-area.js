@@ -21,6 +21,8 @@ require([
             tooltipContainer,
             dataset;
 
+        // dataset = testDataSet.withReportData().build();
+        // dataset = testDataSet.with3Sources().build();
         dataset = testDataSet.with6Sources().build();
 
         // StackedAreChart Setup and start
