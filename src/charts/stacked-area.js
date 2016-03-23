@@ -574,7 +574,7 @@ define(function(require){
             dataPoint.values = _.chain(dataPoint.values)
                 .compact()
                 .sortBy(function(el) {
-                    return colorOrder[categoryColorMap[el.category]];
+                    return colorOrder[categoryColorMap[el.name]];
                 })
                 .value();
 
