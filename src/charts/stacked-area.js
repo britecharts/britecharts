@@ -154,13 +154,27 @@ define(function(require){
         }
 
         /**
+         * Calculates the maximum number of ticks for the x axis
+         * @param  {number} width Chart width
+         * @param  {number} dataPointNumber  Number of entries on the data
+         * @return {number}       Number of ticks to render
+         */
+        function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
+            let singleTickWidth = 30,
+                spacing = 30,
+                ticksForWidth = Math.ceil(width / (singleTickWidth + spacing));
+
+            return Math.min(dataPointNumber, ticksForWidth);
+        }
+
+        /**
          * Creates the d3 x and y axis, setting orientations
          * @private
          */
         function buildAxis(){
             xAxis = d3.svg.axis()
                 .scale(xScale)
-                .ticks(d3.time.days)
+                .ticks(getMaxNumOfHorizontalTicks(chartWidth, dataByDate.length))
                 .tickFormat(xTickFormat)
                 .tickSize(10, 0, 0)
                 .outerTickSize([50])
@@ -394,9 +408,9 @@ define(function(require){
                     'y1': 0,
                     'y2': chartHeight,
                     'height': chartHeight,
-                    'width': chartWidth
+                    'width': chartWidth,
+                    'fill': 'rgba(0,0,0,0)'
                 })
-                .attr('fill', 'rgba(0,0,0,0)') // TODO: remove after development
                 .style('display', 'none');
         }
 
@@ -467,28 +481,6 @@ define(function(require){
         }
 
         /**
-         * Finds out which datapoint is closer to the given x position
-         * NOTE: this would round to the previous one, we should try to make this
-         * work using the xMouse position instead of the date for the datapoint
-         * @param  {number} x0 Date value for data point
-         * @param  {obj} d0 Previous datapoint
-         * @param  {obj} d1 Next datapoint
-         * @return {obj}    d0 or d1, the datapoint with closest date to x0
-         */
-        function findOutNearestDate(x0, d0, d1){
-            return (new Date(x0).getTime() - new Date(d0.key).getTime()) > (new Date(d1.key).getTime() - new Date(x0).getTime()) ? d0 : d1;
-        }
-
-        /**
-         * Formats the date in ISOString
-         * @param  {string} date Date as given in data entries
-         * @return {string}      Date in ISO format in a neutral timezone
-         */
-        function getFormattedDateFromData(date) {
-            return date.toISOString().split('T')[0] + 'T00:00:00Z';
-        }
-
-        /**
          * Extract X position on the chart from a given mouse event
          * @param  {obj} event D3 mouse event
          * @return {number}       Position on the x axis of the mouse
@@ -504,24 +496,23 @@ define(function(require){
          * @return {obj}        Data entry that is closer to that x axis position
          */
         function getNearestDataPoint(mouseX) {
-            let invertedX = xScale.invert(mouseX),
-                bisectDate = d3.bisector(getKey).right,
-                dataEntryIndex, dateOnCursorXPosition,
-                dataEntryForXPosition, previousDataEntryForXPosition,
-                nearestDataPoint;
+            let dataByDateParsed,
+                epsilon,
+                nearest;
 
-            dateOnCursorXPosition = getFormattedDateFromData(invertedX);
-            dataEntryIndex = bisectDate(dataByDate, dateOnCursorXPosition, 1);
-            dataEntryForXPosition = dataByDate[dataEntryIndex];
-            previousDataEntryForXPosition = dataByDate[dataEntryIndex - 1];
+            dataByDateParsed = _(dataByDate)
+                .map(function(d){
+                    d.key = new Date(d.key);
+                    return d;
+                });
 
-            if (previousDataEntryForXPosition && dataEntryForXPosition) {
-                nearestDataPoint = findOutNearestDate(dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition);
-            } else {
-                nearestDataPoint = dataEntryForXPosition;
-            }
+            epsilon = (xScale(dataByDateParsed[1].key) - xScale(dataByDateParsed[0].key))/2;
+            nearest = _(dataByDateParsed)
+                .find(function(d) {
+                    return Math.abs(xScale(d.key) - mouseX) <= epsilon;
+                });
 
-            return nearestDataPoint;
+            return nearest;
         }
 
         /**
@@ -530,8 +521,7 @@ define(function(require){
          * @private
          */
         function handleMouseMove(){
-            let xPositionOffset = -margin.left, //Arbitrary number, will love to know how to assess it
-                dataPoint = getNearestDataPoint(getMouseXPosition(this) + xPositionOffset),
+            let dataPoint = getNearestDataPoint(getMouseXPosition(this) - margin.left),
                 dataPointXPosition;
 
             if(dataPoint) {
