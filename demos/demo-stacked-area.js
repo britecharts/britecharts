@@ -1,22 +1,9 @@
-// require([
-//     'd3',
-//     'stacked-area',
-//     'stackedDataBuilder',
-//     'tooltip'
-//     ],
-//     function(
-//         d3,
-//         stackedAreaChart,
-//         stackedDataBuilder,
-//         tooltip
-//     ){
-    // 'use strict';
+    'use strict';
 
-    var d3 = require('d3');
-    var _ = require('underscore');
-    var stackedAreaChart = require('./../dist/charts/stacked-area');
-    var tooltip = require('./../dist/charts/tooltip');
-    var stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder');
+    var d3 = require('d3'),
+        stackedAreaChart = require('./../dist/charts/stacked-area'),
+        tooltip = require('./../dist/charts/tooltip'),
+        stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder');
 
     function createStackedAreaChartWithTooltip() {
         var stackedArea = stackedAreaChart(),

@@ -11,11 +11,12 @@
     "build": "npm run prod && npm run prodUMD",
     "buildAll": "npm run dev && npm run prod && npm run prodUMD",
     "test": "WEBPACK_ENV=test karma start",
-    "docs": "npm run dev && grunt docs",
     "release": "npm run buildAll && grunt release",
+    "docs": "npm run dev && grunt docs",
+
     "compileDemos": "WEBPACK_ENV=demos ./node_modules/.bin/webpack",
     "watchDemos" : "WEBPACK_ENV=demos ./node_modules/.bin/webpack --watch --progress --colors",
-    "serveDemos": "WEBPACK_ENV=demos ./node_modules/.bin/webpack-dev-server --inline --hot --content-base=demos/"
+    "serveDemos": "WEBPACK_ENV=demos ./node_modules/.bin/webpack-dev-server --inline --hot"
   },
   "repository": {
     "type": "git",

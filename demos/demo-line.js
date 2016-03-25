@@ -1,12 +1,9 @@
-// require(['d3', 'line', 'tooltip', 'dataBuilder'],
-// function(d3, line, tooltip, dataBuilder){
-
-    var d3 = require('d3');
-    var line = require('./../dist/charts/line');
-    var tooltip = require('./../dist/charts/tooltip');
-    var dataBuilder = require('./../test/fixtures/lineChartDataBuilder');
-
     'use strict';
+
+    var d3 = require('d3'),
+        line = require('./../dist/charts/line'),
+        tooltip = require('./../dist/charts/tooltip'),
+        dataBuilder = require('./../test/fixtures/lineChartDataBuilder');
 
     function createLineChart() {
         var lineChart = line(),
@@ -74,5 +71,3 @@
             createLineChartWithFixedHeight();
         });
     }
-// });
-
