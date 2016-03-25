@@ -11,8 +11,12 @@
     "build": "npm run prod && npm run prodUMD",
     "buildAll": "npm run dev && npm run prod && npm run prodUMD",
     "test": "WEBPACK_ENV=test karma start",
+    "release": "npm run buildAll && grunt release",
     "docs": "npm run dev && grunt docs",
-    "release": "npm run buildAll && grunt release"
+
+    "compileDemos": "WEBPACK_ENV=demos ./node_modules/.bin/webpack",
+    "watchDemos" : "WEBPACK_ENV=demos ./node_modules/.bin/webpack --watch --progress --colors",
+    "serveDemos": "WEBPACK_ENV=demos ./node_modules/.bin/webpack-dev-server --inline --hot"
   },
   "repository": {
     "type": "git",
@@ -47,10 +51,11 @@
     "grunt-babel": "^6.0.0",
     "grunt-contrib-connect": "^0.11.2",
     "grunt-contrib-requirejs": "~0.4.4",
-    "grunt-contrib-watch": "~0.6.1",
+    "grunt-contrib-watch": "^1.0.0",
     "grunt-jsdoc": "^0.6.8",
     "grunt-karma": "^0.12.1",
     "grunt-release": "~0.9.0",
+    "grunt-reload": "^0.2.0",
     "grunt-shell": "~1.1.2",
     "ink-docstrap": "~0.4.12",
     "jasmine-jquery": "^2.0.6",
@@ -72,6 +77,8 @@
     "sinon": "~1.9.0",
     "text": "requirejs/text",
     "underscore": "~1.8.3",
-    "webpack": "^1.12.13"
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.14.1",
+    "webpack-livereload-plugin": "^0.7.0"
   }
 }

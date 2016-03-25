@@ -41,3 +41,6 @@ node_modules
 
 # OSX
 .DS_Store
+
+# Demos
+demos/build

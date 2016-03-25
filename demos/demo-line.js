@@ -1,6 +1,9 @@
-require(['d3', 'line', 'tooltip', 'dataBuilder'],
-function(d3, line, tooltip, dataBuilder){
     'use strict';
+
+    var d3 = require('d3'),
+        line = require('./../dist/charts/line'),
+        tooltip = require('./../dist/charts/tooltip'),
+        dataBuilder = require('./../test/fixtures/lineChartDataBuilder');
 
     function createLineChart() {
         var lineChart = line(),
@@ -56,14 +59,15 @@ function(d3, line, tooltip, dataBuilder){
         container.datum(dataset).call(lineChart);
     }
 
-    // Show proper charts
-    createLineChart();
-    createLineChartWithFixedHeight();
-
-
-    d3.select(window).on('resize', function(){
-        d3.selectAll('.line-chart').remove();
+    // Show charts if container available
+    if(d3.select('.js-line-chart-container').node()) {
         createLineChart();
         createLineChartWithFixedHeight();
-    });
-});
+
+
+        d3.select(window).on('resize', function(){
+            d3.selectAll('.line-chart').remove();
+            createLineChart();
+            createLineChartWithFixedHeight();
+        });
+    }
