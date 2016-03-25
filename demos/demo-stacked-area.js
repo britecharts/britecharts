@@ -1,16 +1,9 @@
-require([
-    'd3',
-    'stacked-area',
-    'stackedDataBuilder',
-    'tooltip'
-    ],
-    function(
-        d3,
-        stackedAreaChart,
-        stackedDataBuilder,
-        tooltip
-    ){
     'use strict';
+
+    var d3 = require('d3'),
+        stackedAreaChart = require('./../dist/charts/stacked-area'),
+        tooltip = require('./../dist/charts/tooltip'),
+        stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder');
 
     function createStackedAreaChartWithTooltip() {
         var stackedArea = stackedAreaChart(),
@@ -68,13 +61,16 @@ require([
         container.datum(dataset.data).call(stackedArea);
     }
 
-    // Show charts
-    createStackedAreaChartWithTooltip();
-    createStackedAreaChart();
 
-    d3.select(window).on('resize', function(){
-        d3.selectAll('.stacked-area').remove();
+    if(d3.select('.js-stacked-area-chart-tooltip-container').node()){
+        // Show charts if container available
         createStackedAreaChartWithTooltip();
         createStackedAreaChart();
-    });
-});
+
+        d3.select(window).on('resize', function(){
+            d3.selectAll('.stacked-area').remove();
+            createStackedAreaChartWithTooltip();
+            createStackedAreaChart();
+        });
+    }
+// });
