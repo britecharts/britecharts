@@ -1,6 +1,10 @@
-require(['d3', 'donut', 'legend'],
-function(d3, donut, legend){
+// require(['d3', 'donut', 'legend'],
+// function(d3, donut, legend){
     'use strict';
+
+    var d3 = require('d3');
+    var donut = require('./../dist/charts/donut');
+    var legend = require('./../dist/charts/legend');
 
     function createDonutChart() {
         var donutChart = donut(),
@@ -118,14 +122,18 @@ function(d3, donut, legend){
         donutContainer.datum(dataset).call(donutChart);
     }
 
-    // Show proper charts
-    createDonutChart();
-    createSmallDonutChart();
+    // Show charts if container available
+    if(d3.select('.js-donut-chart-container').node()) {
 
-    d3.select(window).on('resize', function(){
-        d3.selectAll('.donut-chart').remove();
         createDonutChart();
-        createSmallDonutChart();
-    });
+        createSmallDonutChart();   
 
-});
+        d3.select(window).on('resize', function(){
+            d3.selectAll('.donut-chart').remove();
+            createDonutChart();
+            createSmallDonutChart();
+        });
+    }
+
+
+// });

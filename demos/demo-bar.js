@@ -1,7 +1,9 @@
-require(['d3', 'bar'],
-function(d3, bar){
+// require(['d3', 'bar'],
+// function(d3, bar){
     'use strict';
-
+    var d3 = require('d3');
+    var bar = require('./../dist/charts/bar');
+    
     function createBarChart() {
         var barChart = bar(),
             dataset = [
@@ -111,7 +113,7 @@ function(d3, bar){
                 }
             ],
             barContainer = d3.select('.js-bar-chart-container');
-
+            console.log(barContainer);
         barChart
             .width(500)
             .height(300)
@@ -132,6 +134,8 @@ function(d3, bar){
         });
     }
 
-    // Show proper charts
-    createBarChart();
-});
+    // Show charts if container available
+    if(d3.select('.js-bar-chart-container').node()){
+        createBarChart();
+    }
+// });

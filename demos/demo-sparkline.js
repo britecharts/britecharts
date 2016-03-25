@@ -1,14 +1,18 @@
-require([
-    'd3',
-    'sparkline',
-    'sparklineDataBuilder'
-    ],
-    function(
-        d3,
-        sparklineChart,
-        sparklineDataBuilder
-    ){
+// require([
+//     'd3',
+//     'sparkline',
+//     'sparklineDataBuilder'
+//     ],
+//     function(
+//         d3,
+//         sparklineChart,
+//         sparklineDataBuilder
+//     ){
     'use strict';
+
+    var d3 = require('d3');
+    var sparklineChart = require('./../dist/charts/sparkline');
+    var sparklineDataBuilder = require('./../test/fixtures/sparklineDataBuilder');
 
     function createSparklineChart() {
         var sparkline = sparklineChart(),
@@ -27,11 +31,13 @@ require([
         container.datum(dataset.data).call(sparkline);
     }
 
-    // Show charts
-    createSparklineChart();
-
-    d3.select(window).on('resize', function(){
-        d3.selectAll('.sparkline').remove();
+    // Show charts if container available
+    if(d3.select('.js-sparkline-chart-container').node()){
         createSparklineChart();
-    });
-});
+
+        d3.select(window).on('resize', function(){
+            d3.selectAll('.sparkline').remove();
+            createSparklineChart();
+        });
+    }
+// });

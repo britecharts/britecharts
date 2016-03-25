@@ -1,6 +1,6 @@
 var webpack = require('webpack'),
     path = require('path'),
-
+    LiveReloadPlugin = require('webpack-livereload-plugin'),
     UglifyJsPlugin = webpack.optimize.UglifyJsPlugin,
 
     env = process.env.WEBPACK_ENV, // dev | build
@@ -77,6 +77,33 @@ config = {
         },
 
         plugins: plugins
+    },
+
+    demos : {
+        entry: [
+            './demos/index.js',
+        ],
+        output: {
+            path: './demos/build/',
+            filename: 'bundle.js',
+        },
+        resolve:{
+            root: [
+                __dirname,
+            ],
+        },
+        loaders: [{
+            test: /\.js$/,
+            exclude: /node_modules/,
+            laoder: 'babel',
+            query: {
+                presets: ['es2015'],
+                cacheDirectory: true,
+            },
+        }],
+        plugins : [
+            new LiveReloadPlugin({appendScriptTag:true})
+        ]
     },
 
     // Test configuration for Karma runner
