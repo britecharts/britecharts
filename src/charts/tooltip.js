@@ -57,6 +57,7 @@ define(function(require){
 
             // formats
             tooltipDateFormat = d3.time.format('%B %d, %Y'),
+            tooltipValueFormat = d3.format(',2f'),
 
             chartWidth, chartHeight,
             data,
@@ -213,7 +214,7 @@ define(function(require){
             if (topic.missingValue) {
                 tooltipRightText = '-';
             } else {
-                tooltipRightText = value;
+                tooltipRightText = tooltipValueFormat(value);
             }
 
             elementText = tooltipBody
