@@ -1,9 +1,12 @@
     'use strict';
 
     var d3 = require('d3'),
+        $ = require('jquery'),
         line = require('./../dist/charts/line'),
         tooltip = require('./../dist/charts/tooltip'),
         dataBuilder = require('./../test/fixtures/lineChartDataBuilder');
+
+
 
     function createLineChart() {
         var lineChart = line(),
@@ -13,6 +16,11 @@
             container = d3.select('.js-line-chart-container'),
             tooltipContainer,
             dataset;
+
+
+        d3.select("#button").on('click', function() {
+            lineChart.exportChart();
+        });
 
         dataset = testDataSet.with5Topics().build();
 
@@ -62,12 +70,13 @@
     // Show charts if container available
     if(d3.select('.js-line-chart-container').node()) {
         createLineChart();
-        createLineChartWithFixedHeight();
+        // createLineChartWithFixedHeight();
 
 
         d3.select(window).on('resize', function(){
             d3.selectAll('.line-chart').remove();
             createLineChart();
-            createLineChartWithFixedHeight();
+            // createLineChartWithFixedHeight();
         });
     }
+
