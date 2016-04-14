@@ -1,5 +1,7 @@
 define(function(require) {
 
+    'use strict';
+
     const d3 = require('d3');
     const $ = require('jquery');
 
@@ -10,195 +12,104 @@ define(function(require) {
         backgroundStyle: '.britechart{background:white;}'
     };
 
+    const encoder = window.btoa || require('./Base64').encode.bind(base64);
 
-    const exportToPNG = function(svg, type) {
-        let css,
-            style,
-            html,
-            img,
-            canvas,
-            context;
+    const chartTypeMap = {
+        'line': './css/line.css'
+    };
 
-        const chartTypeMap = {
-            'line': './css/line.css'
-        }
+    const exportToPNG = function(d3svg, type) {
 
-        const encoder = window.btoa || require('./Base64').encode.bind(base64);
+        const svgWidth = $(d3svg[0]).width();
+        const svgHeight = $(d3svg[0]).height();
 
+        const exportChartMainMethod = (importedCssString) => {
+            let styleElement,
+                html,
+                img,
+                canvas;
+
+            styleElement = createStyleElement(importedCssString);
+
+            addStyleToSVG(styleElement, d3svg);
+
+            html = convertSvgToHtml(d3svg);
+
+            removeStyleFromSVG();
+
+            canvas = createCanvas(svgWidth, svgHeight);
+
+            img = createImage(html);
+
+            img.onload = handleImageLoad.bind(this, img, canvas);
+        };
+
+        const errorRetrievingCssFile = (err) => {
+            console.log(`error: ${err}`);
+        };
 
         $.get(chartTypeMap[type])
-            .then(function(css) {
-                css = css;
+            .then(exportChartMainMethod)
+            .catch(errorRetrievingCssFile);
+    };
 
+    const convertSvgToHtml = (d3svg) => {
+        if(!d3svg || !d3svg.datum) {
+            return console.log(`Error: d3 object not passed to convertSvgToHtml, you passed ${d3svg}`);
+        }
+        return d3svg
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg")
+            .node().parentNode.innerHTML;
+    };
 
-                style = document.createElement('style');
-                style.className = config.britechartStyle;
+    const addStyleToSVG = (styleElement, d3svg) => {
+        d3svg.node().insertBefore(styleElement, this.nextSibling);
+    };
 
-                style.innerHTML = css.concat(config.backgroundStyle);
-                svg.node().insertBefore(style, this.nextSibling);
+    const removeStyleFromSVG = () => {
+        $(`.${config.styleClass}`).remove();
+    };
 
-                html = svg
-                    .attr("version", 1.1)
-                    .attr("xmlns", "http://www.w3.org/2000/svg")
-                    .node().parentNode.innerHTML;
+    const handleImageLoad = (image, canvas, e) => {
+        e.preventDefault();
+        drawImageOnCanvas(image, canvas);
+        downloadCanvas(canvas, config.filename);
+    };
 
-                $(`.${config.styleClass}`).remove();
-                img = new Image();
-                img.src = `${config.imageSourceBase}${encoder(html)}`;
+    const drawImageOnCanvas = (image, canvas) => {
+        canvas.getContext('2d').drawImage(image, 0, 0);
+    };
 
-                canvas = document.createElement('canvas');
-                canvas.width = $(svg[0]).width();
-                canvas.height = $(svg[0]).height();
-                context = canvas.getContext('2d');
+    const createImage = (svgHtml) => {
+        let img = new Image();
+        img.src = `${config.imageSourceBase}${encoder(svgHtml)}`;
+        return img;
+    };
 
+    const createStyleElement = (importedCssString) => {
+        let styleElement = document.createElement('style');
+        styleElement.className = config.britechartStyle;
+        styleElement.innerHTML = importedCssString.concat(config.backgroundStyle);
+        return styleElement;
+    };
 
-                img.onload = function(e) {
-                    e.preventDefault();
-                    context.drawImage(img, 0, 0);
-                    document.body.appendChild(canvas);
-
-                    downloadCanvas(canvas, config.filename);
-                }
-        });
-    }
+    const createCanvas = (width, height) => {
+        let canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        return canvas;
+    };
 
     const downloadCanvas = (canvas, filename='image.png', extensionType='image/png') => {
         let a = document.createElement('a');
         a.download = filename;
         a.href = canvas.toDataURL(extensionType);
         a.click();
-    }
+    };
 
     return exportToPNG;
-})
+});
 
 
 
-
-
-// var chart = c3.generate({
-//     bindto: '#svg-container',
-//     data: {
-//         columns: [
-//             ['data1', 30, 200, 100, 400, 150, 250],
-//             ['data2', 130, 100, 140, 200, 150, 50]
-//         ],
-//         type: 'area'
-//     }
-// });
-
-// d3.select('body').append('canvas')
-// d3.select('#button').on('click', function() {
-//     // https://developer.mozilla.org/en/XMLSerializer
-
-//     var svg = d3.select('svg')
-//     .attr("version", 1.1)
-//   .attr("xmlns", "http://www.w3.org/2000/svg")
-// .node()
-
-//        svg_xml = (new XMLSerializer()).serializeToString(svg);
-//    var canvas  = document.querySelector('canvas'),
-//         context = canvas.getContext('2d');
-
-//        // this is just a JavaScript (HTML) image
-//        var img = new Image();
-//        // http://en.wikipedia.org/wiki/SVG#Native_support
-//        // https://developer.mozilla.org/en/DOM/window.btoa
-//        img.src = "data:image/svg+xml;base64," + btoa(svg_xml);
-
-//        img.onload = function() {
-//            // after this, Canvas’ origin-clean is DIRTY
-//            context.drawImage(img, 0, 0);
-//        }
-// })
-//
-//
-// d3.select('body').append('canvas');
-
-// d3.select("#button").on("click", function(){
-    // var html = d3.select("svg")
-    //       .attr("version", 1.1)
-    //       .attr("xmlns", "http://www.w3.org/2000/svg")
-    //       .node().parentNode.innerHTML;
-
-//     var imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
-
-//     var canvas  = document.querySelector('canvas'),
-//         context = canvas.getContext('2d');
-//     var image = new Image;
-//     image.src = imgsrc;
-
-//     image.onload = function(){
-//         context.drawImage(image,0,0);
-
-//         var a = document.createElement('a');
-//         a.download=imgsrc;
-//         a.href=canvas.toDataURL('image/png');
-//         $('a').click();
-//     };
-
-// });
-
-
-
-// d3.select("#button").on("click", function(){
-//   var html = d3.select("svg")
-//         .attr("version", 1.1)
-//         .attr("xmlns", "http://www.w3.org/2000/svg")
-//         .node().parentNode.innerHTML;
-
-//   //console.log(html);
-  // var imgsrc = 'data:image/svg+xml;base64,'+ btoa(html);
-  // var img = '<img src="'+imgsrc+'">';
-//   d3.select("#svgdataurl").html(img);
-
-//   d3.select('body').append('canvas');
-
-//   var canvas = document.querySelector("canvas"),
-//       context = canvas.getContext("2d");
-
-//   var image = new Image;
-//   image.src = imgsrc;
-
-//   setTimeout(function(){
-//       context.drawImage(image, 0, 0);
-
-//       var canvasdata = canvas.toDataURL("image/png");
-
-//       var pngimg = '<img src="'+canvasdata+'">';
-//       d3.select("#pngdataurl").html(pngimg);
-
-//       var a = document.createElement("a");
-//       a.download = "sample.png";
-//       a.href = canvasdata;
-//       a.click();
-//   },4000);
-// });
-
-
-// $('#button').on('click', function() {
-//     // debugger;
-
-//     html2canvas($('#chart')).then(function(chart){
-//         document.body.appendChild(chart);
-//     });
-// });
-
-// $('#button').on('click', function() {
-//     debugger;
-//     var canvas = d3.select('body').append('canvas').node();
-//     canvas.width = 100;
-//     canvas.height = 100;
-//     var ctx = canvas.getContext('2d');
-//     ctx.drawImage(d3.select('#chart')[0][0].children[0], 0, 0);
-//     var canvasUrl = canvas.toDataURL("image/png");
-//     var img2 = d3.select('body').append('img')
-//         .attr('width', 100)
-//         .attr('height', 100)
-//         .node();
-//     // this is now the base64 encoded version of our PNG! you could optionally
-//     // redirect the user to download the PNG by sending them to the url with
-//     // `window.location.href= canvasUrl`.
-//     img2.src = canvasUrl;
-//     window.location.href = canvasUrl;
-// });
