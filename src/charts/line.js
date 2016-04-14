@@ -1,8 +1,9 @@
 define(function(require){
     'use strict';
 
-    const _ = require('underscore'),
-        d3 = require('d3');
+    const _ = require('underscore');
+    const d3 = require('d3');
+    const exportChart = require('./exportChart');
 
     /**
      * @fileOverview Line Chart reusable API module that allows us
@@ -25,6 +26,7 @@ define(function(require){
             height = 500,
             aspectRatio = null,
             tooltipThreshold = 480,
+            type = 'line',
             svg,
             chartWidth, chartHeight,
             xScale, yScale, colorScale,
@@ -661,6 +663,11 @@ define(function(require){
                 height = Math.ceil(_x * aspectRatio);
             }
             width = _x;
+            return this;
+        };
+
+        exports.exportChart = function(_x) {
+            exportChart.call(this, svg, type);
             return this;
         };
 
