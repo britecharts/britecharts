@@ -76,7 +76,7 @@ define(function(require){
             // formats
             yTickNumberFormat = d3.format('s'),
             xTickDateFormat = d3.time.format('%e'),
-            xTickMonthFormat = d3.time.format('%B'),
+            xTickMonthFormat = d3.time.format('%b'),
 
             // events
             dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
