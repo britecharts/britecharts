@@ -214,7 +214,7 @@ define(function(require){
             if (topic.missingValue) {
                 tooltipRightText = '-';
             } else {
-                tooltipRightText = tooltipValueFormat(value);
+                tooltipRightText = value ? tooltipValueFormat(value) : 0;
             }
 
             elementText = tooltipBody
