@@ -1,6 +1,6 @@
 {
   "name": "britecharts",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "Eventbrite's Charting Library",
   "main": "README.md",
   "scripts": {
@@ -13,9 +13,8 @@
     "test": "WEBPACK_ENV=test karma start",
     "release": "npm run buildAll && grunt release",
     "docs": "npm run dev && grunt docs",
-
     "compileDemos": "WEBPACK_ENV=demos ./node_modules/.bin/webpack",
-    "watchDemos" : "WEBPACK_ENV=demos ./node_modules/.bin/webpack --watch --progress --colors",
+    "watchDemos": "WEBPACK_ENV=demos ./node_modules/.bin/webpack --watch --progress --colors",
     "serveDemos": "WEBPACK_ENV=demos ./node_modules/.bin/webpack-dev-server --inline --hot"
   },
   "repository": {
