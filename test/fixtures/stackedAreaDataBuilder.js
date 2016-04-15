@@ -2,19 +2,11 @@ define(function(require) {
     'use strict';
 
     var _ = require('underscore'),
-        jsonThreeSources,
-        jsonSixSources,
-        jsonReportService;
 
-        // This works on tests:
-        jsonThreeSources = require('json!./areaDataThreeSources.json');
-        jsonSixSources = require('json!./areaDataSixSources.json');
-        jsonReportService = require('json!./stackedAreaReportService.json');
+        jsonThreeSources = require('json!../json/areaDataThreeSources.json'),
+        jsonSixSources = require('json!../json/areaDataSixSources.json'),
+        jsonReportService = require('json!../json/stackedAreaReportService.json');
 
-        // This works on demos:
-        // jsonReportService = require('json!/test/fixtures/stackedAreaReportService.json');
-        // jsonSixSources = require('json!/test/fixtures/areaDataSixSources.json');
-        // jsonThreeSources = require('json!/test/fixtures/areaDataThreeSources.json');
 
     function StackedAreaDataBuilder(config){
         this.Klass = StackedAreaDataBuilder;
