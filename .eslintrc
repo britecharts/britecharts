@@ -34,7 +34,7 @@
         "dot-notation": 0,
         "no-underscore-dangle": 0,
 
-        "space-after-keywords": ["1", "always"],
+        "keyword-spacing": 1,
         "consistent-this": [0, "self"],
         "comma-style": [2, "last"],
         "func-style": [2, "declaration"],
@@ -42,6 +42,6 @@
         "no-inline-comments": 1,
         "no-multiple-empty-lines": [2, {"max": 2}],
         "no-nested-ternary": 1,
-        "one-var": ["2", 'always']
+        "one-var": [2, 'always']
     }
 }
