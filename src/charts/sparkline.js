@@ -2,6 +2,7 @@ define(function(require){
     'use strict';
 
     const d3 = require('d3');
+    const exportChart = require('./helpers/exportChart');
 
     /**
      * @typdef D3Layout
@@ -19,7 +20,8 @@ define(function(require){
      */
     return function module(){
 
-        let margin = {
+        let type = "sparkline",
+            margin = {
                 left: 5,
                 right: 5,
                 top: 5,
@@ -237,6 +239,14 @@ define(function(require){
             }
             dateLabel = _x;
             return this;
+        };
+
+        /**
+         * Chart exported to png and a download action is fired
+         * @public
+         */
+        exports.exportChart = function(filename) {
+            exportChart.call(exports, svg, filename);
         };
 
         return exports;

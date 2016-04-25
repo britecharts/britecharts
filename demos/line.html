@@ -3,7 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <title>Test Britecharts</title>
-    <link rel="stylesheet" type="text/css" href="./css/line.css">
+    <style type="text/css">
+        @font-face {
+            font-family: Benton;
+            src: url("/src/fonts/BentonSans-Regular.otf") format("opentype");
+        }
+        body {
+            font-family: Benton;
+        }
+        .britechart {}
+        .maskRect {
+            fill: none;
+            pointer-events: all;
+        }
+        .topic .line {
+            fill: none;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .horizontal-grid-line {
+            fill: none;
+            shape-rendering: crispEdges;
+            stroke: #EDEFF5;
+            stroke-width: 1px;
+        }
+        .extended-x-line {
+            fill: none;
+            shape-rendering: crispEdges;
+            stroke: rgba(0, 0, 0, 0.45);
+            stroke-width: 1;
+        }
+        .tick text {
+            font-size: 0.8em;
+            fill: rgba(0, 0, 0, 0.45);
+            text-anchor: middle;
+
+            padding: 10px;
+            background-color: red;
+        }
+        .tick line {
+            fill: none;
+            stroke: rgba(0, 0, 0, 0.45);
+            stroke-width: 1;
+            shape-rendering: crispEdges;
+        }
+        .y.axis path {
+            display: none;
+        }
+        .month-axis path {
+            display: none;
+        }
+        .hover-marker .vertical-marker {
+            stroke: #FF0044;
+            stroke-width: 1;
+            fill: none;
+        }
+        .hover-marker .data-point-highlighter{
+            stroke-width: 3;
+            fill: #ffffff;
+        }
+        .masking-rectangle {
+            fill: #FFFFFF;
+        }
+        .tooltip-background {
+            fill: #FFFFFF;
+            stroke: #D9D9D9;
+            stroke-width: 1;
+        }
+    </style>
 </head>
 <body id="line">
     <section>
@@ -22,7 +90,7 @@
                 container.datum(dataset).call(lineChart);
             </pre>
         </article>
-        <input id="button" type="button" value="image" />
+        <input id="button" type="button" value="download" />
         <article>
             <h3>Line Chart with Fixed Height</h3>
             <p>In this case, we have set a <strong>fixed height</strong> on the chart, as we are currently doing on the Sales report:</p>
