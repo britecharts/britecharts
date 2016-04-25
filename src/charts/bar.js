@@ -1,7 +1,8 @@
-define(function(require){
+define(function(require) {
     'use strict';
 
     const d3 = require('d3');
+    const exportChart = require('./helpers/exportChart');
 
     /**
      * @typdef D3Selection
@@ -17,9 +18,10 @@ define(function(require){
      * @requires d3
      * @version 0.0.3
      */
-    return function module(){
+    return function module() {
 
-        let margin = {top: 20, right: 20, bottom: 30, left: 40},
+        let type="bar",
+            margin = {top: 20, right: 20, bottom: 30, left: 40},
             width = 960,
             height = 500,
             ease = 'ease',
@@ -216,6 +218,14 @@ define(function(require){
             }
             height = _x;
             return this;
+        };
+
+        /**
+         * Chart exported to png and a download action is fired
+         * @public
+         */
+        exports.exportChart = function(filename) {
+            exportChart.call(exports, svg, filename);
         };
 
         // Copies the method "on" from dispatch to exports, making it accesible

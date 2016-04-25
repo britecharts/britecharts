@@ -3,7 +3,8 @@ define(function(require){
 
     const _ = require('underscore');
     const d3 = require('d3');
-    const exportChart = require('./exportChart');
+
+    const exportChart = require('./helpers/exportChart');
 
     /**
      * @fileOverview Line Chart reusable API module that allows us
@@ -16,7 +17,8 @@ define(function(require){
      */
     return function module(){
 
-        let margin = {
+        let type = 'line',
+            margin = {
                 top: 60,
                 right: 20,
                 bottom: 60,
@@ -24,9 +26,9 @@ define(function(require){
             },
             width = 960,
             height = 500,
+
             aspectRatio = null,
             tooltipThreshold = 480,
-            type = 'line',
             svg,
             chartWidth, chartHeight,
             xScale, yScale, colorScale,
@@ -666,9 +668,12 @@ define(function(require){
             return this;
         };
 
-        exports.exportChart = function(_x) {
-            exportChart.call(this, svg, type);
-            return this;
+        /**
+         * Chart exported to png and a download action is fired
+         * @public
+         */
+        exports.exportChart = function(filename) {
+            exportChart.call(exports, svg, filename);
         };
 
         // Rebind 'customHover' event to the "exports" function, so it's available "externally" under the typical "on" method:
