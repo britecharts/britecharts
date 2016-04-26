@@ -37,6 +37,7 @@ define(function(require){
             radiusHoverOffset = 15,
             paddingAngle = 0.015,
             data,
+            chartWidth, chartHeight,
             externalRadius = 140,
             internalRadius = 45.5,
             legendWidth = externalRadius + internalRadius,
