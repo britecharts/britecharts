@@ -1,7 +1,7 @@
 module.exports = (function() {
 
     'use strict';
-    // function serializeWithStyles(elem) {
+
     // Mapping between tag names and css default values lookup tables. This allows to exclude default values in the result.
     const defaultStylesByTagName = {};
 
@@ -13,16 +13,16 @@ module.exports = (function() {
     const tagNames = ['A','ABBR','ADDRESS','AREA','ARTICLE','ASIDE','AUDIO','B','BASE','BDI','BDO','BLOCKQUOTE','BODY','BR','BUTTON','CANVAS','CAPTION','CENTER','CITE','CODE','COL','COLGROUP','COMMAND','DATALIST','DD','DEL','DETAILS','DFN','DIV','DL','DT','EM','EMBED','FIELDSET','FIGCAPTION','FIGURE','FONT','FOOTER','FORM','H1','H2','H3','H4','H5','H6','HEAD','HEADER','HGROUP','HR','HTML','I','IFRAME','IMG','INPUT','INS','KBD','LABEL','LEGEND','LI','LINK','MAP','MARK','MATH','MENU','META','METER','NAV','NOBR','NOSCRIPT','OBJECT','OL','OPTION','OPTGROUP','OUTPUT','P','PARAM','PRE','PROGRESS','Q','RP','RT','RUBY','S','SAMP','SCRIPT','SECTION','SELECT','SMALL','SOURCE','SPAN','STRONG','STYLE','SUB','SUMMARY','SUP','SVG','TABLE','TBODY','TD','TEXTAREA','TFOOT','TH','THEAD','TIME','TITLE','TR','TRACK','U','UL','VAR','VIDEO','WBR'];
 
     // Precompute the lookup tables.
-    for(let i = 0; i < tagNames.length; i++) {
-        if(!noStyleTags[tagNames[i]]) {
+    for (let i = 0; i < tagNames.length; i++) {
+        if (!noStyleTags[tagNames[i]]) {
             defaultStylesByTagName[tagNames[i]] = computeDefaultStyleByTagName(tagNames[i]);
         }
     };
 
     function computeDefaultStyleByTagName(tagName) {
-        let defaultStyle = {};
-        let element = document.body.appendChild(document.createElement(tagName));
-        let computedStyle = window.getComputedStyle(element);
+        let defaultStyle = {},
+            element = document.body.appendChild(document.createElement(tagName)),
+            computedStyle = window.getComputedStyle(element);
 
         for (let i = 0; i < computedStyle.length; i++) {
             defaultStyle[computedStyle[i]] = computedStyle[computedStyle[i]];
@@ -43,14 +43,12 @@ module.exports = (function() {
 
         let cssTexts = [],
             elements,
-            e,
             computedStyle,
             defaultStyle,
-            cssPropName,
             result;
 
         if (!elem || elem.nodeType !== Node.ELEMENT_NODE) {
-            console.error('Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE')
+            console.error('Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE');
             return;
         }
         cssTexts = [];
@@ -61,7 +59,7 @@ module.exports = (function() {
                 computedStyle = window.getComputedStyle(el);
                 defaultStyle = getDefaultStyleByTagName(el.tagName);
                 cssTexts[i] = el.style.cssText;
-                [].forEach.call(computedStyle, (cssPropName)=>{
+                [].forEach.call(computedStyle, (cssPropName) => {
                     if (computedStyle[cssPropName] !== defaultStyle[cssPropName]) {
                         el.style[cssPropName] = computedStyle[cssPropName];
                     }
@@ -80,4 +78,4 @@ module.exports = (function() {
     };
 
     return serializeWithStyles;
-}());
+})();

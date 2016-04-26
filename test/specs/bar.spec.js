@@ -189,7 +189,5 @@ define(['jquery', 'd3', 'bar'], function($, d3, chart) {
                 expect(barChart.exportChart).toBeDefined();
             });
         });
-
     });
-
 });

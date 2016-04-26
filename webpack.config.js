@@ -18,7 +18,7 @@ var webpack = require('webpack'),
         'line': './src/charts/line.js',
         'tooltip': './src/charts/tooltip.js',
         'sparkline': './src/charts/sparkline.js',
-        'stacked-area': './src/charts/stacked-area.js',
+        'stacked-area': './src/charts/stacked-area.js'
     },
 
     defaultJSLoader = {
@@ -29,10 +29,7 @@ var webpack = require('webpack'),
             presets: ['es2015']
         }
     },
-    cssToStringLoader = {
-        test: /\.css$/,
-        loader: 'raw-loader'
-    },
+
     plugins = [],
     outputFile,
     config;
@@ -66,7 +63,7 @@ config = {
         },
 
         module: {
-            loaders: [ defaultJSLoader, cssToStringLoader ],
+            loaders: [ defaultJSLoader ],
 
             // Tell Webpack not to parse certain modules.
             noParse: [
@@ -96,7 +93,7 @@ config = {
                 __dirname,
             ],
         },
-        loaders: [ defaultJSLoader, cssToStringLoader ],
+        loaders: [ defaultJSLoader ],
         plugins : [
             new LiveReloadPlugin({appendScriptTag:true})
         ]
@@ -134,7 +131,7 @@ config = {
                 }
             ],
 
-            loaders: [ defaultJSLoader, cssToStringLoader ]
+            loaders: [ defaultJSLoader ]
         },
         plugins: plugins
     },
@@ -158,7 +155,7 @@ config = {
 
         module: {
 
-            loaders: [ defaultJSLoader, cssToStringLoader ],
+            loaders: [ defaultJSLoader ],
 
             // Tell Webpack not to parse certain modules.
             noParse: [
@@ -194,7 +191,7 @@ config = {
 
         module: {
 
-            loaders: [ defaultJSLoader, cssToStringLoader ],
+            loaders: [ defaultJSLoader ],
 
 
             // Tell Webpack not to parse certain modules.

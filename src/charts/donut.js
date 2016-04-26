@@ -21,7 +21,7 @@ define(function(require){
      */
     return function module() {
 
-        let type="donut",
+        let type = 'donut',
             margin = {
                 top: 60,
                 right: 60,
@@ -37,7 +37,6 @@ define(function(require){
             radiusHoverOffset = 15,
             paddingAngle = 0.015,
             data,
-            chartWidth, chartHeight,
             externalRadius = 140,
             internalRadius = 45.5,
             legendWidth = externalRadius + internalRadius,
