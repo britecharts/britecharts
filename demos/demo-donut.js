@@ -47,8 +47,8 @@ function createDonutChart() {
         legendContainer = d3.select('.js-legend-chart-container'),
         containerWidth = donutContainer.node().getBoundingClientRect().width;
 
-    d3.select("#button").on('click', function() {
-        donutChart.exportChart(legendChart);
+    d3.select('#button').on('click', function() {
+        donutChart.exportChart();
     });
 
     donutChart

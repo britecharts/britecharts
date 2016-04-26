@@ -128,12 +128,11 @@ define(function(require){
          * @private
          */
         function cleanData(data) {
-            data.forEach(function(d) {
-                d.date = new Date (+d[dateLabel]);
+            return data.map((d) => {
+                d.date = new Date(d[dateLabel]);
                 d[valueLabel] = +d[valueLabel];
+                return d;
             });
-
-            return data;
         }
 
         /**
@@ -143,12 +142,8 @@ define(function(require){
         function drawLine(){
             line = d3.svg.line()
                 .interpolate('basis')
-                .x(function(d) {
-                    return xScale(d.date);
-                })
-                .y(function(d) {
-                    return yScale(d[valueLabel]);
-                });
+                .x((d) => xScale(d.date))
+                .y((d) => yScale(d[valueLabel]));
 
             svg
                 .select('.chart-group')
