@@ -128,8 +128,8 @@ define(function(require){
          * @private
          */
         function cleanData(data) {
-            data.forEach(function(d){
-                d.date = new Date (d[dateLabel]);
+            data.forEach(function(d) {
+                d.date = new Date (+d[dateLabel]);
                 d[valueLabel] = +d[valueLabel];
             });
 

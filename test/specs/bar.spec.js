@@ -183,6 +183,13 @@ define(['jquery', 'd3', 'bar'], function($, d3, chart) {
             });
         });
 
+        describe('Export chart functionality', () => {
+
+            it('should have exportChart defined', () => {
+                expect(barChart.exportChart).toBeDefined();
+            });
+        });
+
     });
 
 });

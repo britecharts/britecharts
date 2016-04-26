@@ -204,6 +204,12 @@ define([
             expect(defaultEase).not.toBe(testEase);
             expect(newEase).toBe(testEase);
         });
-    });
 
+        describe('Export chart functionality', () => {
+
+            it('should have exportChart defined', () => {
+                expect(lineChart.exportChart).toBeDefined();
+            });
+        });
+    });
 });
