@@ -20,7 +20,7 @@ define(function(require){
      */
     return function module(){
 
-        let type = "sparkline",
+        let type = 'sparkline',
             margin = {
                 left: 5,
                 right: 5,

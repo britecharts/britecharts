@@ -259,7 +259,7 @@ define(function(require){
             return this;
         };
 
-        exports.getD3SVG = function() {
+        exports.getD3Svg = function() {
             return svg;
         }
 

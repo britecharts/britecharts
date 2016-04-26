@@ -26,7 +26,6 @@ define(function(require){
             },
             width = 960,
             height = 500,
-
             aspectRatio = null,
             tooltipThreshold = 480,
             svg,

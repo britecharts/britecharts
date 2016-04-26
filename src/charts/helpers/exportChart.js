@@ -2,11 +2,9 @@ define(function(require) {
 
     'use strict';
 
-    const d3 = require('d3');
     const $ = require('jquery');
 
     const serializeWithStyles = require('./serializeWithStyles.js');
-
     const encoder = window.btoa ||  require('./base64');
 
     const config = {
@@ -19,7 +17,6 @@ define(function(require) {
         imageSourceBase: 'data:image/svg+xml;base64,',
         styleString: `<style>svg{background:${config.chartBackground};}</style>`
     };
-
 
     /**
      * Main function to be used as a method by chart
@@ -39,13 +36,13 @@ define(function(require) {
             canvasWidth = this.width(),
             canvasHeight = this.height();
 
-        if(svgs.data) {
+        if (svgs.data) {
             d3svg = svgs;
         } else {
             [d3svg,legend] = svgs;
         }
         //legend functionality not complete
-        if(legend) {
+        if (legend) {
             canvasHeight += legend.height();
             legendHtml = convertSvgToHtml(legend.getD3SVG());
             legendImg = createImage(legendHtml);
@@ -57,9 +54,9 @@ define(function(require) {
 
         img = createImage(html);
 
-
-        if(legendImg) {
+        if (legendImg) {
             img.onload = function(e) {
+                e.preventDefault();
                 drawImageOnCanvas(img, canvas);
                 legendImg.onload = handleImageLoad.bind(this, legendImg, canvas);
             };
@@ -77,8 +74,8 @@ define(function(require) {
     function convertSvgToHtml (d3svg) {
         let serialized;
 
-        if(!d3svg){ return; }
-        d3svg.attr({ version: 1.1, xmlns: "http://www.w3.org/2000/svg"});
+        if (!d3svg){ return; }
+        d3svg.attr({ version: 1.1, xmlns: 'http://www.w3.org/2000/svg'});
         serialized = serializeWithStyles(d3svg.node());
         return serialized.replace('>',`>${baseStrings.styleString}`);
     }
@@ -91,6 +88,7 @@ define(function(require) {
      */
     function createCanvas(width, height) {
         let canvas = document.createElement('canvas');
+
         canvas.height = height;
         canvas.width = width;
         return canvas;
@@ -103,6 +101,7 @@ define(function(require) {
      */
     function createImage(svgHtml) {
         let img = new Image();
+
         img.src = `${baseStrings.imageSourceBase}${encoder(svgHtml)}`;
         return img;
     };
@@ -125,6 +124,7 @@ define(function(require) {
      */
     function downloadCanvas(canvas, filename='britechart.png', extensionType='image/png') {
         let url = canvas.toDataURL(extensionType);
+
         $('<a></a>', {href: url, download: filename})[0].click();
     }
 
@@ -142,6 +142,4 @@ define(function(require) {
 
     return exportChart;
 });
-
-
 

@@ -210,6 +210,5 @@ define([
                 expect(stackedAreaChart.exportChart).toBeDefined();
             });
         });
-
     });
 });
