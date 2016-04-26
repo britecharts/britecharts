@@ -13,20 +13,20 @@ module.exports = (function() {
     const tagNames = ['A','ABBR','ADDRESS','AREA','ARTICLE','ASIDE','AUDIO','B','BASE','BDI','BDO','BLOCKQUOTE','BODY','BR','BUTTON','CANVAS','CAPTION','CENTER','CITE','CODE','COL','COLGROUP','COMMAND','DATALIST','DD','DEL','DETAILS','DFN','DIV','DL','DT','EM','EMBED','FIELDSET','FIGCAPTION','FIGURE','FONT','FOOTER','FORM','H1','H2','H3','H4','H5','H6','HEAD','HEADER','HGROUP','HR','HTML','I','IFRAME','IMG','INPUT','INS','KBD','LABEL','LEGEND','LI','LINK','MAP','MARK','MATH','MENU','META','METER','NAV','NOBR','NOSCRIPT','OBJECT','OL','OPTION','OPTGROUP','OUTPUT','P','PARAM','PRE','PROGRESS','Q','RP','RT','RUBY','S','SAMP','SCRIPT','SECTION','SELECT','SMALL','SOURCE','SPAN','STRONG','STYLE','SUB','SUMMARY','SUP','SVG','TABLE','TBODY','TD','TEXTAREA','TFOOT','TH','THEAD','TIME','TITLE','TR','TRACK','U','UL','VAR','VIDEO','WBR'];
 
     // Precompute the lookup tables.
-    for (let i = 0; i < tagNames.length; i++) {
-        if (!noStyleTags[tagNames[i]]) {
-            defaultStylesByTagName[tagNames[i]] = computeDefaultStyleByTagName(tagNames[i]);
+    [].forEach.call(tagNames, (name) => {
+        if (!noStyleTags[name]) {
+            defaultStylesByTagName[name] = computeDefaultStyleByTagName(name);
         }
-    };
+    });
 
     function computeDefaultStyleByTagName(tagName) {
         let defaultStyle = {},
             element = document.body.appendChild(document.createElement(tagName)),
             computedStyle = window.getComputedStyle(element);
 
-        for (let i = 0; i < computedStyle.length; i++) {
-            defaultStyle[computedStyle[i]] = computedStyle[computedStyle[i]];
-        }
+        [].forEach.call(computedStyle, (style) => {
+            defaultStyle[style] = computedStyle[style];
+        });
         document.body.removeChild(element);
         return defaultStyle;
     }
