@@ -2,6 +2,7 @@ define(function(require){
     'use strict';
 
     const d3 = require('d3');
+    const exportChart = require('./helpers/exportChart');
 
     /**
      * @typdef D3Layout
@@ -19,7 +20,8 @@ define(function(require){
      */
     return function module(){
 
-        let margin = {
+        let type = 'sparkline',
+            margin = {
                 left: 5,
                 right: 5,
                 top: 5,
@@ -126,12 +128,11 @@ define(function(require){
          * @private
          */
         function cleanData(data) {
-            data.forEach(function(d){
-                d.date = new Date (d[dateLabel]);
+            return data.map((d) => {
+                d.date = new Date(d[dateLabel]);
                 d[valueLabel] = +d[valueLabel];
+                return d;
             });
-
-            return data;
         }
 
         /**
@@ -141,12 +142,8 @@ define(function(require){
         function drawLine(){
             line = d3.svg.line()
                 .interpolate('basis')
-                .x(function(d) {
-                    return xScale(d.date);
-                })
-                .y(function(d) {
-                    return yScale(d[valueLabel]);
-                });
+                .x((d) => xScale(d.date))
+                .y((d) => yScale(d[valueLabel]));
 
             svg
                 .select('.chart-group')
@@ -237,6 +234,14 @@ define(function(require){
             }
             dateLabel = _x;
             return this;
+        };
+
+        /**
+         * Chart exported to png and a download action is fired
+         * @public
+         */
+        exports.exportChart = function(filename) {
+            exportChart.call(exports, svg, filename);
         };
 
         return exports;

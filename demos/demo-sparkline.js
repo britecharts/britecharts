@@ -11,6 +11,10 @@ function createSparklineChart() {
         container = d3.select('.js-sparkline-chart-container'),
         dataset;
 
+    d3.select("#button").on('click', function() {
+        sparkline.exportChart();
+    });
+
     dataset = testDataSet.with1Source().build();
 
     // Sparkline Chart Setup and start

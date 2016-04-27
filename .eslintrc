@@ -3,6 +3,7 @@
         "sinon": 1
     },
     "env": {
+        "es6": true,
         "browser": true,
         "jasmine": true,
         "amd": true,

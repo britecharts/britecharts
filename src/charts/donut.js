@@ -3,6 +3,8 @@ define(function(require){
 
     const d3 = require('d3');
 
+    const exportChart = require('./helpers/exportChart');
+
     /**
      * @typdef D3Selection
      * @type Array[]
@@ -19,7 +21,8 @@ define(function(require){
      */
     return function module() {
 
-        let margin = {
+        let type = 'donut',
+            margin = {
                 top: 60,
                 right: 60,
                 bottom: 60,
@@ -432,6 +435,14 @@ define(function(require){
             }
             width = _x;
             return this;
+        };
+
+        /**
+         * Chart exported to png and a download action is fired
+         * @public
+         */
+        exports.exportChart = function(filename) {
+            exportChart.call(exports, svg, filename);
         };
 
         // Rebind 'customHover' event to the "exports" function, so it's available "externally" under the typical "on" method:

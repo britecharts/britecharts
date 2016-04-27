@@ -1,8 +1,9 @@
 define(function(require){
     'use strict';
 
-    const _ = require('underscore'),
-        d3 = require('d3');
+    const _ = require('underscore');
+    const d3 = require('d3');
+    const exportChart = require('./helpers/exportChart');
 
     /**
      * @typdef D3Layout
@@ -20,7 +21,8 @@ define(function(require){
      */
     return function module(){
 
-        let margin = {
+        let type = 'stackedArea',
+            margin = {
                 left: 40,
                 right: 20,
                 top: 60,
@@ -718,6 +720,14 @@ define(function(require){
             }
             dateLabel = _x;
             return this;
+        };
+
+        /**
+         * Chart exported to png and a download action is fired
+         * @public
+         */
+        exports.exportChart = function(filename) {
+            exportChart.call(exports, svg, filename);
         };
 
         // Rebind 'customHover' event to the "exports" function, so it's available "externally" under the typical "on" method:
