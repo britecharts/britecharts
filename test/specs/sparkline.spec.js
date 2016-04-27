@@ -27,7 +27,6 @@ define([
         beforeEach(() => {
             dataset = aTestDataSet().with1Source().build();
             sparklineChart = sparkline();
-
             // DOM Fixture Setup
             f = jasmine.getFixtures();
             f.fixturesPath = 'base/test/fixtures/';
@@ -118,6 +117,13 @@ define([
 
             expect(defaultDateLabel).not.toBe(testDateLabel);
             expect(newDateLabel).toBe(testDateLabel);
+        });
+
+        describe('Export chart functionality', () => {
+
+            it('should have exportChart defined', () => {
+                expect(sparklineChart.exportChart).toBeDefined();
+            });
         });
     });
 });

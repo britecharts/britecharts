@@ -29,6 +29,7 @@ var webpack = require('webpack'),
             presets: ['es2015']
         }
     },
+
     plugins = [],
     outputFile,
     config;
@@ -92,15 +93,7 @@ config = {
                 __dirname,
             ],
         },
-        loaders: [{
-            test: /\.js$/,
-            exclude: /node_modules/,
-            laoder: 'babel',
-            query: {
-                presets: ['es2015'],
-                cacheDirectory: true,
-            },
-        }],
+        loaders: [ defaultJSLoader ],
         plugins : [
             new LiveReloadPlugin({appendScriptTag:true})
         ]

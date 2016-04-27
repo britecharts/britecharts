@@ -124,6 +124,11 @@ define(['jquery', 'd3', 'donut'], function($, d3, chart) {
             });
         });
 
-    });
+        describe('Export chart functionality', () => {
 
+            it('should have exportChart defined', () => {
+                expect(donutChart.exportChart).toBeDefined();
+            });
+        });
+    });
 });

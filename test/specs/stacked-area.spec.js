@@ -204,5 +204,11 @@ define([
             expect(newTooltipThreshold).toBe(testTooltipThreshold);
         });
 
+        describe('Export chart functionality', () => {
+
+            it('should have exportChart defined', () => {
+                expect(stackedAreaChart.exportChart).toBeDefined();
+            });
+        });
     });
 });

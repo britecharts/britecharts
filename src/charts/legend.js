@@ -259,6 +259,10 @@ define(function(require){
             return this;
         };
 
+        exports.getD3Svg = function() {
+            return svg;
+        }
+
         return exports;
 
     };
