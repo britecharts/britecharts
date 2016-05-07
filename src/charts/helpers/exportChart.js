@@ -2,8 +2,6 @@ define(function(require) {
 
     'use strict';
 
-    const $ = require('jquery');
-
     const serializeWithStyles = require('./serializeWithStyles.js');
     const encoder = window.btoa ||  require('./base64');
 
@@ -91,6 +89,7 @@ define(function(require) {
 
     /**
      * Triggers browser to download image, convert canvas to url,
+     * we need to append the link el to the dom before clicking it for Firefox to register
      * point <a> at it and trigger click
      * @param  {object} canvas TYPE: el <canvas>
      * @param  {string} filename
@@ -98,8 +97,13 @@ define(function(require) {
      */
     function downloadCanvas(canvas, filename='britechart.png', extensionType='image/png') {
         let url = canvas.toDataURL(extensionType);
+        let link = document.createElement('a');
 
-        $('<a></a>', {href: url, download: filename})[0].click();
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
     /**
