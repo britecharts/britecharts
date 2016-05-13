@@ -30,7 +30,12 @@
     "registry": "http://packages:8889"
   },
   "author": "Eventbrite",
-  "license": "ISC",
+  "licenses": [
+      {
+        "type": "Apache-2.0",
+        "url": "LICENSE.md"
+      }
+  ],
   "bugs": {
     "url": "https://github.com/eventbrite/britecharts/issues"
   },
