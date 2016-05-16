@@ -46,6 +46,7 @@ define(function(require){
             ttTextX = 0,
             ttTextY = 37,
             textSize,
+            entryLineLimit = 3,
 
             circleYOffset = 8,
 
@@ -364,15 +365,19 @@ define(function(require){
                 while ((word = words.pop())) {
                     line.push(word);
                     tspan.text(line.join(' '));
+
                     if (tspan.node().getComputedTextLength() > width) {
                         line.pop();
                         tspan.text(line.join(' '));
-                        line = [word];
-                        tspan = text.append('tspan')
-                            .attr('x', xpos)
-                            .attr('y', y)
-                            .attr('dy', ++lineNumber * lineHeight + dy + 'em')
-                            .text(word);
+
+                        if (lineNumber < entryLineLimit - 1) {
+                            line = [word];
+                            tspan = text.append('tspan')
+                                .attr('x', xpos)
+                                .attr('y', y)
+                                .attr('dy', ++lineNumber * lineHeight + dy + 'em')
+                                .text(word);
+                        }
                     }
                 }
             });
