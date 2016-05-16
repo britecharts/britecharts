@@ -1,6 +1,6 @@
 {
   "name": "britecharts",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Eventbrite's Charting Library",
   "main": "README.md",
   "scripts": {
@@ -31,10 +31,10 @@
   },
   "author": "Eventbrite",
   "licenses": [
-      {
-        "type": "Apache-2.0",
-        "url": "LICENSE.md"
-      }
+    {
+      "type": "Apache-2.0",
+      "url": "LICENSE.md"
+    }
   ],
   "bugs": {
     "url": "https://github.com/eventbrite/britecharts/issues"
