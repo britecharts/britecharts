@@ -3,18 +3,23 @@ define(function(require) {
     'use strict';
 
     const serializeWithStyles = require('./serializeWithStyles.js');
-    const encoder = window.btoa ||  require('./base64');
+
+    let encoder = window.btoa;
+
+    if (!encoder) {
+        encoder = require('base-64').encode;
+    }
 
     const config = {
         styleClass : 'britechartStyle',
         defaultFilename: 'britechart.png',
-        chartBackground: 'white'
+        chartBackground: 'white',
+        imageSourceBase: 'data:image/svg+xml;base64,',
+        get styleString () {
+            return `<style>svg{background:${this.chartBackground};}</style>`;
+        }
     };
 
-    const baseStrings = {
-        imageSourceBase: 'data:image/svg+xml;base64,',
-        styleString: `<style>svg{background:${config.chartBackground};}</style>`
-    };
 
     /**
      * Main function to be used as a method by chart instances to export charts to png
@@ -49,7 +54,7 @@ define(function(require) {
         if (!d3svg){ return; }
         d3svg.attr({ version: 1.1, xmlns: 'http://www.w3.org/2000/svg'});
         serialized = serializeWithStyles(d3svg.node());
-        return serialized.replace('>',`>${baseStrings.styleString}`);
+        return serialized.replace('>',`>${config.styleString}`);
     }
 
     /**
@@ -74,7 +79,7 @@ define(function(require) {
     function createImage(svgHtml) {
         let img = new Image();
 
-        img.src = `${baseStrings.imageSourceBase}${encoder(svgHtml)}`;
+        img.src = `${config.imageSourceBase}${encoder(svgHtml)}`;
         return img;
     };
 
