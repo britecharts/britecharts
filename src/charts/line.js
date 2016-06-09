@@ -71,10 +71,10 @@ define(function(require){
             verticalMarkerLine,
 
             // extractors
-            getDate = d => { return d.date; },
-            getValue = d => { return d.value; },
-            getTopic = d => { return d.topic; },
-            getLineColor = d => { return colorScale(d.topic); },
+            getDate = ({date}) => date,
+            getValue = ({value}) => value,
+            getTopic = ({topic}) => topic,
+            getLineColor = ({topic}) => colorScale(topic),
 
             // formats
             yTickNumberFormat = d3.format('s'),
@@ -91,12 +91,16 @@ define(function(require){
          */
         function exports(_selection){
             /** @param {object} _data The data to attach and generate the chart */
-            _selection.each(function(_data){
+            _selection.each((_data) => {
+                ({
+                    data,
+                    dataByDate,
+                    readableDataType
+                } = _data);
+
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
-                data = _data.data;
-                dataByDate = _data.dataByDate;
-                readableDataType = _data.readableDataType;
+
 
                 buildScales();
                 buildAxis();
@@ -193,12 +197,10 @@ define(function(require){
          * @private
          */
         function buildScales(){
-            let minX = d3.min(data, kv => {
-                    return d3.min(kv.Data, getDate);
-                }),
-                maxX = d3.max(data, function(kv) { return d3.max(kv.Data, getDate); }),
-                minY = d3.min(data, function(kv) { return d3.min(kv.Data, getValue); }),
-                maxY = d3.max(data, function(kv) { return d3.max(kv.Data, getValue); });
+            let minX = d3.min(data, ({Data}) => d3.min(Data, getDate)),
+                maxX = d3.max(data, ({Data}) => d3.max(Data, getDate)),
+                minY = d3.min(data, ({Data}) => d3.min(Data, getValue)),
+                maxY = d3.max(data, ({Data}) => d3.max(Data, getValue));
 
             xScale = d3.time.scale()
                 .rangeRound([0, chartWidth])
@@ -236,8 +238,8 @@ define(function(require){
                 .transition()
                 .ease(ease)
                 .attr({
-                    width: width,
-                    height: height
+                    width,
+                    height
                 });
         }
 
@@ -285,10 +287,8 @@ define(function(require){
                 maskingRectangle;
 
             topicLine = d3.svg.line()
-                .x(function(d) {
-                    return xScale(d.date);
-                })
-                .y(function(d) { return yScale(d.value); });
+                .x(({date}) => xScale(date))
+                .y(({value}) => yScale(value));
 
             lines = svg.select('.chart-group').selectAll('.line')
                 .data(data);
@@ -299,11 +299,9 @@ define(function(require){
                 .attr('class', 'topic')
                 .append('path')
                 .attr('class', 'line')
-                .attr('d', function(d) {
-                    return topicLine(d.Data);
-                })
+                .attr('d', ({Data}) => topicLine(Data))
                 .style({
-                    'stroke': getLineColor
+                    stroke: getLineColor
                 });
 
             lines
@@ -322,9 +320,7 @@ define(function(require){
                 .duration(2000)
                 .ease('cubic-out')
                 .attr('x', width)
-                .each('end', function() {
-                    maskingRectangle.remove();
-                });
+                .each('end', () => maskingRectangle.remove());
         }
 
         /**
@@ -338,11 +334,11 @@ define(function(require){
                 .enter()
                     .append('line')
                     .attr({
-                        'class': 'horizontal-grid-line',
-                        'x1': (-xAxisPadding.left - 30),
-                        'x2': chartWidth,
-                        'y1': d => yScale(d),
-                        'y2': d => yScale(d)
+                        class: 'horizontal-grid-line',
+                        x1: (-xAxisPadding.left - 30),
+                        x2: chartWidth,
+                        y1: (d) => yScale(d),
+                        y2: (d) => yScale(d)
                     });
 
             //draw a horizontal line to extend x-axis till the edges
@@ -352,11 +348,11 @@ define(function(require){
                 .enter()
                     .append('line')
                     .attr({
-                        'class': 'extended-x-line',
-                        'x1': (-xAxisPadding.left - 30),
-                        'x2': chartWidth,
-                        'y1': height - margin.bottom - margin.top,
-                        'y2': height - margin.bottom - margin.top
+                        class: 'extended-x-line',
+                        x1: (-xAxisPadding.left - 30),
+                        x2: chartWidth,
+                        y1: height - margin.bottom - margin.top,
+                        y2: height - margin.bottom - margin.top
                     });
         }
 
@@ -389,19 +385,19 @@ define(function(require){
 
             verticalMarkerLine = verticalMarkerContainer.selectAll('path')
                 .data([{
-                    'x1': 0,
-                    'y1': 0,
-                    'x2': 0,
-                    'y2': 0
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 0
                 }])
                 .enter()
                 .append('line')
                 .classed('vertical-marker', true)
                 .attr({
-                    'x1': 0,
-                    'y1': height - margin.top - margin.bottom,
-                    'x2': 0,
-                    'y2': 0
+                    x1: 0,
+                    y1: height - margin.top - margin.bottom,
+                    x2: 0,
+                    y2: 0
                 });
         }
 
@@ -502,7 +498,7 @@ define(function(require){
         function handleMouseOut(data){
             overlay.style('display', 'none');
             verticalMarkerLine.classed('bc-is-active', false);
-            verticalMarkerContainer.attr('transform', 'translate(' + '9999' + ',' + '0' + ')');
+            verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
 
             dispatch.customMouseOut(data);
         }
@@ -530,12 +526,10 @@ define(function(require){
             // so that the order always stays constant
             dataPoint.topics = _.chain(dataPoint.topics)
                 .compact()
-                .sortBy(function(el) {
-                    return colorOrder[topicColorMap[el.name]];
-                })
+                .sortBy(({name}) => colorOrder[topicColorMap[name]])
                 .value();
 
-            dataPoint.topics.forEach(function(topic, index){
+            dataPoint.topics.forEach(({name}, index) => {
                 let marker = verticalMarkerContainer
                                 .append('g')
                                 .classed('circle-container', true),
@@ -544,12 +538,12 @@ define(function(require){
                 marker.append('circle')
                     .classed('data-point-highlighter', true)
                     .attr({
-                        'cx': circleSize,
-                        'cy': 0,
-                        'r': 5
+                        cx: circleSize,
+                        cy: 0,
+                        r: 5
                     })
                     .style({
-                        'stroke': topicColorMap[topic.name]
+                        stroke: topicColorMap[name]
                     });
 
                 marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(dataPoint.topics[index].value))} )` );
