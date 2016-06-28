@@ -9,13 +9,13 @@
     "prod": "WEBPACK_ENV=prod ./node_modules/.bin/webpack",
     "prodUMD": "WEBPACK_ENV=prodUMD ./node_modules/.bin/webpack",
     "build": "npm run prod && npm run prodUMD",
-    "buildAll": "npm run dev && npm run prod && npm run prodUMD",
+    "build:all": "npm run dev && npm run prod && npm run prodUMD",
     "test": "WEBPACK_ENV=test karma start",
-    "release": "npm run buildAll && grunt release",
-    "docs": "npm run dev && grunt docs",
-    "compileDemos": "WEBPACK_ENV=demos ./node_modules/.bin/webpack",
-    "watchDemos": "WEBPACK_ENV=demos ./node_modules/.bin/webpack --watch --progress --colors",
-    "serveDemos": "WEBPACK_ENV=demos ./node_modules/.bin/webpack-dev-server --inline --hot"
+    "release": "npm run build:all && grunt release",
+    "docs": "npm run demos:compile && grunt docs",
+    "demos:compile": "WEBPACK_ENV=demos ./node_modules/.bin/webpack",
+    "demos:watch": "WEBPACK_ENV=demos ./node_modules/.bin/webpack --watch --progress --colors",
+    "demos:serve": "WEBPACK_ENV=demos ./node_modules/.bin/webpack-dev-server --inline --hot"
   },
   "repository": {
     "type": "git",
@@ -30,12 +30,7 @@
     "registry": "http://packages:8889"
   },
   "author": "Eventbrite",
-  "licenses": [
-    {
-      "type": "Apache-2.0",
-      "url": "LICENSE.md"
-    }
-  ],
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/eventbrite/britecharts/issues"
   },
