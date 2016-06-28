@@ -3,6 +3,7 @@
 var d3 = require('d3'),
     bar = require('./../dist/charts/bar');
 
+
 function createBarChart() {
     var barChart = bar(),
         dataset = [
@@ -112,7 +113,7 @@ function createBarChart() {
             }
         ],
         barContainer = d3.select('.js-bar-chart-container');
-        console.log(barContainer);
+
     barChart
         .width(500)
         .height(300)
@@ -120,6 +121,7 @@ function createBarChart() {
             console.log('Bar data is ', d);
             console.log('Bar index is ', i);
         });
+
     barContainer.datum(dataset).call(barChart);
 
     d3.select(window).on('resize', function(){
@@ -134,6 +136,6 @@ function createBarChart() {
 }
 
 // Show charts if container available
-if(d3.select('.js-bar-chart-container').node()){
+if (d3.select('.js-bar-chart-container').node()){
     createBarChart();
 }
