@@ -4,6 +4,7 @@ var d3 = require('d3'),
     sparklineChart = require('./../dist/charts/sparkline'),
     sparklineDataBuilder = require('./../test/fixtures/sparklineDataBuilder');
 
+
 function createSparklineChart() {
     var sparkline = sparklineChart(),
         testDataSet = new sparklineDataBuilder.SparklineDataBuilder(),
@@ -26,7 +27,7 @@ function createSparklineChart() {
 }
 
 // Show charts if container available
-if(d3.select('.js-sparkline-chart-container').node()){
+if (d3.select('.js-sparkline-chart-container').node()){
     createSparklineChart();
 
     d3.select(window).on('resize', function(){
