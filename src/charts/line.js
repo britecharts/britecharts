@@ -17,8 +17,7 @@ define(function(require){
      */
     return function module(){
 
-        let type = 'line',
-            margin = {
+        let margin = {
                 top: 60,
                 right: 20,
                 bottom: 60,
@@ -59,10 +58,7 @@ define(function(require){
 
             data,
             dataByDate,
-            readableDataType,
 
-            baseLine,
-            maskGridLines,
             numVerticalTics = 5,
 
             overlay,
@@ -105,7 +101,7 @@ define(function(require){
                 drawAxis();
                 drawLines();
 
-                if(shouldShowTooltip()){
+                if (shouldShowTooltip()){
                     drawVerticalMarker();
                     drawHoverOverlay();
                     addMouseEvents();
@@ -483,7 +479,7 @@ define(function(require){
                 dataPoint = getNearestDataPoint(getMouseXPosition(this) + xPositionOffset),
                 dataPointXPosition;
 
-            if(dataPoint) {
+            if (dataPoint) {
                 dataPointXPosition = xScale(new Date(dataPoint.date));
                 // More verticalMarker to that datapoint
                 moveVerticalMarker(dataPointXPosition);

@@ -21,8 +21,7 @@ define(function(require){
      */
     return function module(){
 
-        let type = 'stackedArea',
-            margin = {
+        let margin = {
                 left: 40,
                 right: 20,
                 top: 60,

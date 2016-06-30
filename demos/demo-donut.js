@@ -4,6 +4,7 @@ var d3 = require('d3'),
     donut = require('./../dist/charts/donut'),
     legend = require('./../dist/charts/legend');
 
+
 function createDonutChart() {
     var donutChart = donut(),
         legendChart = legend(),
@@ -125,8 +126,7 @@ function createSmallDonutChart() {
 }
 
 // Show charts if container available
-if(d3.select('.js-donut-chart-container').node()) {
-
+if (d3.select('.js-donut-chart-container').node()) {
     createDonutChart();
     createSmallDonutChart();
 
