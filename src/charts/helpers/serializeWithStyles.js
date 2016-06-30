@@ -39,6 +39,21 @@ module.exports = (function() {
         return defaultStylesByTagName[tagName];
     };
 
+    //ie9 only supports outerHTML on certain tags
+    function outerHTMLPolyfill () {
+        Object.defineProperty(SVGElement.prototype, 'outerHTML', {
+            get : () => {
+                let temp = document.createElement('div');
+                let node = this.cloneNode(true);
+
+                temp.appendChild(node);
+                return temp.innerHTML;
+            },
+            enumerable: false,
+            configurable: true
+        });
+    }
+
     function serializeWithStyles(elem) {
 
         let cssTexts = [],
@@ -51,6 +66,11 @@ module.exports = (function() {
             console.error('Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE');
             return;
         }
+
+        if (!elem.outerHTML) {
+            outerHTMLPolyfill();
+        }
+
         cssTexts = [];
         elements = elem.querySelectorAll('*');
 
