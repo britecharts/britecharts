@@ -17,8 +17,7 @@ define(function(require){
      */
     return function module(){
 
-        let type = 'line',
-            margin = {
+        let margin = {
                 top: 60,
                 right: 20,
                 bottom: 60,

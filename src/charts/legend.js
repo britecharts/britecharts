@@ -259,15 +259,6 @@ define(function(require){
             return this;
         };
 
-        /**
-         * Exposes the main svg element of the chart
-         * @return {svg} Main SVG of the chart
-         * @public
-         */
-        exports.getD3Svg = function() {
-            return svg;
-        };
-
         return exports;
     };
 

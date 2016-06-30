@@ -21,8 +21,7 @@ define(function(require){
      */
     return function module() {
 
-        let type = 'donut',
-            margin = {
+        let margin = {
                 top: 60,
                 right: 60,
                 bottom: 60,
