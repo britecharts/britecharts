@@ -58,6 +58,7 @@ define(function(require){
 
             data,
             dataByDate,
+            readableDataType,
 
             numVerticalTics = 5,
 
@@ -65,6 +66,8 @@ define(function(require){
             overlayColor = 'rgba(0, 0, 0, 0)',
             verticalMarkerContainer,
             verticalMarkerLine,
+            maskGridLines,
+            baseLine,
 
             // extractors
             getDate = ({date}) => date,
@@ -87,7 +90,7 @@ define(function(require){
          */
         function exports(_selection){
             /** @param {object} _data The data to attach and generate the chart */
-            _selection.each((_data) => {
+            _selection.each(function(_data) {
                 ({
                     data,
                     dataByDate,
@@ -96,7 +99,6 @@ define(function(require){
 
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
-
 
                 buildScales();
                 buildAxis();
