@@ -1,0 +1,30 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+}
+@media (min-width: 979px) {
+    body {
+        padding-top: 51px;
+    }
+}
+
+/* Headings */
+h1, h2, h3, h4 {
+    font-family: 'Slabo 27px', serif;
+    color: #666A73;
+}
+h1 {
+    font-size: 34px;
+}
+h2 {
+    font-size: 28px;
+    margin-top: 22px;
+}
+h3 {
+    font-size: 22px;
+}
+
+
+.main-container {
+    margin-top: 42px;
+}

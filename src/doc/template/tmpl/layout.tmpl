@@ -8,16 +8,16 @@
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Slabo+27px' rel='stylesheet' type='text/css'>
+
     <link type="text/css" rel="stylesheet" href="styles/sunlight.<?js= this.navOptions.syntaxTheme ?>.css">
 
     <link type="text/css" rel="stylesheet" href="styles/site.<?js= this.navOptions.theme ?>.css">
+    <link type="text/css" rel="stylesheet" href="styles/custom.css">
     <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.min.css">
+
     <style>
-        @media (min-width: 979px) {
-            body {
-                padding-top: 51px;
-            }
-        }
         .page-title {
             display: none;
         }
@@ -70,7 +70,7 @@
     		<div class="span9">
     			<?js }else{ ?>
 				<?js } ?>
-				<div id="main clearfix">
+				<div id="main" class="main-container clearfix">
 					<?js= content ?>
 				</div>
             </div>
