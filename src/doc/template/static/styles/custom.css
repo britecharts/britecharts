@@ -1,30 +1,120 @@
+/* Typesetting */
+
 body {
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 400;
-}
-@media (min-width: 979px) {
-    body {
-        padding-top: 51px;
-    }
+    font-family: 'Heebo', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+    text-rendering: optimizeLegibility;
+    color: #282C35;
+    line-height: 1.5rem;
 }
 
-/* Headings */
+strong {
+    font-weight: 400;
+}
+
+p {
+    margin-top: 1.2rem;
+    margin-bototm: 0 !important;
+}
+
 h1, h2, h3, h4 {
-    font-family: 'Slabo 27px', serif;
-    color: #666A73;
+    font-family: 'Slabo 13px', sans-serif;
+    font-weight: 400;
 }
 h1 {
-    font-size: 34px;
+    font-size: 42px;
 }
 h2 {
-    font-size: 28px;
+    font-size: 32px;
     margin-top: 22px;
 }
 h3 {
     font-size: 22px;
 }
 
+a {
+    color: #009FA1;
+    transition: all 0.2s ease;
+}
 
-.main-container {
-    margin-top: 42px;
+a:hover {
+    color: #00817D;
+}
+
+p a, article li a {
+    color: #282c35;
+    position: relative;
+}
+
+p a:after, article li a:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0.2rem;
+    width: 100%;
+    height: 4px;
+    background-color: #009FA1;
+    opacity: 0.4;
+    transition: all 0.2s ease;
+}
+
+p a:hover, article li a:hover {
+    cursor: pointer;
+    text-decoration: none;
+    color: #282C35;
+}
+
+p a:hover:after, article li a:hover:after {
+    opacity: 0.8;
+}
+
+code {
+    background-color: #F7FAFC;
+    border-radius: 0;
+    padding: 4px 12px;
+    font-family: 'Anonymous Pro', Consolas, Monaco, "Courier New", monospace !important;
+    font-size: 14px;
+    line-height: 1rem;
+    color: #F6682F;
+}
+
+/* Spacing */
+@media (min-width: 979px) {
+    body {
+        padding-top: 72px;
+    }
+}
+
+/* Nav */
+.navbar-inner {
+    padding-left: 42px;
+    background-color: white;
+    background-image: none;
+    border: none;
+    box-shadow: 0px 1px 4px 0px rgba(40,44,52,0.10), 0px 0px 8px 0px rgba(40,44,52,0.10) !important;
+}
+
+.navbar a.brand {
+    color: black;
+    font-family: 'Slabo 13px', sans-serif;
+}
+
+.navbar .nav > li > a {
+    color: #666A73;
+}
+
+.nav-pills > .active > a, .nav-pills > .active > a:hover, .nav-pills > .active > a:focus {
+    background-color: #009FA1;
+}
+
+/* Code container */
+.sunlight-code-container {
+    background-color: #F7FAFC !important;
+    border: 1px solid #eff2f5;
+    padding: 12px;
+}
+
+.sunlight-menu a:after {
+    background-color: transparent;
 }
