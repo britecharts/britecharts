@@ -9,9 +9,37 @@ define(function(require){
      */
 
     /**
-     * @fileOverview Tooltip Component reusable API class that renders a
-     * simple and configurable tooltip element.
+     * Tooltip Component reusable API class that renders a
+     * simple and configurable tooltip element for the line chart.
      *
+     * @example
+     * var lineChart = line(),
+     *     tooltip = tooltip();
+     *
+     * tooltip
+     *     .title('Tooltip title');
+     *
+     * lineChart
+     *     .width(500)
+     *     .on('customMouseOver', function() {
+     *          tooltip.show();
+     *     })
+     *     .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
+     *          tooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+     *     })
+     *     .on('customMouseOut', function() {
+     *          tooltip.hide();
+     *     });
+     *
+     * d3.select('.css-selector')
+     *     .datum(dataset)
+     *     .call(lineChart);
+     *
+     * d3.select('.metadata-group .hover-marker')
+     *     .datum([])
+     *     .call(tooltip);
+     *
+     * @module Tooltip
      * @tutorial tooltip
      * @exports charts/tooltip
      * @requires d3
@@ -69,9 +97,9 @@ define(function(require){
          * This function creates the graph using the selection as container
          * @param  {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
+         * @param {object} _data The data to attach and generate the chart
          */
         function exports(_selection) {
-            /* @param {object} _data The data to attach and generate the chart */
             _selection.each(function(_data){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;

@@ -10,9 +10,21 @@ define(function(require){
      */
 
     /**
-     * @fileOverview Sparkline Chart reusable API module that allows us
+     * Sparkline Chart reusable API module that allows us
      * rendering a sparkline configurable chart.
      *
+     * @example
+     * var sparkLineChart = sparkline();
+     *
+     * sparkLineChart
+     *     .width(200)
+     *     .height(100);
+     *
+     * d3.select('.css-selector')
+     *     .datum(dataset)
+     *     .call(sparkLineChart);
+     *
+     * @module Sparkline
      * @tutorial sparkline
      * @exports charts/sparkline
      * @requires d3
@@ -53,9 +65,9 @@ define(function(require){
          * This function creates the graph using the selection and data provided
          * @param  {D3Selection} _selection A d3 selection that represents
          * the container(s) where the chart(s) will be rendered
+         * @param {object} _data The data to attach and generate the chart
          */
         function exports(_selection) {
-            /** @param {object} _data The data to attach and generate the chart */
             _selection.each(function(_data){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;

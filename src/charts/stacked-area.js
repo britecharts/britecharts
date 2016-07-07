@@ -11,9 +11,10 @@ define(function(require){
      */
 
     /**
-     * @fileOverview Stacked Area Chart reusable API module that allows us
+     * Stacked Area Chart reusable API module that allows us
      * rendering a multi area and configurable chart.
      *
+     * @module Stacked Area
      * @tutorial stacked-area
      * @exports charts/stacked-area
      * @requires d3
@@ -113,9 +114,9 @@ define(function(require){
          * This function creates the graph using the selection and data provided
          * @param  {D3Selection} _selection A d3 selection that represents
          * the container(s) where the chart(s) will be rendered
+         * @param {object} _data The data to attach and generate the chart
          */
         function exports(_selection) {
-            /** @param {object} _data The data to attach and generate the chart */
             _selection.each(function(_data){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;

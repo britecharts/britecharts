@@ -7,15 +7,29 @@ define(function(require){
     const exportChart = require('./helpers/exportChart');
 
     /**
-     * @fileOverview Line Chart reusable API module that allows us
+     * Line Chart reusable API module that allows us
      * rendering a multi line and configurable chart.
      *
-     * @tutorial line
-     * @exports charts/line
-     * @requires d3
+     * @module Line
      * @version 0.0.1
+     * @tutorial line
+     * @requires d3
+     *
+     * @example
+     * var lineChart = line();
+     *
+     * lineChart
+     *     .aspectRatio(0.5)
+     *     .width(500);
+     *
+     * d3.select('.css-selector')
+     *     .datum(dataset)
+     *     .call(lineChart);
+     *
+     * @exports charts/line
+     * @name Line
      */
-    return function module(){
+    return function line(){
 
         let margin = {
                 top: 60,
@@ -85,11 +99,12 @@ define(function(require){
 
         /**
          * This function creates the graph using the selection and data provided
+         *
          * @param  {D3Selection} _selection A d3 selection that represents
-         * the container(s) where the chart(s) will be rendered
+         *                                  the container(s) where the chart(s) will be rendered
+         * @param {object} _data The data to attach and generate the chart
          */
         function exports(_selection){
-            /** @param {object} _data The data to attach and generate the chart */
             _selection.each(function(_data) {
                 ({
                     data,
