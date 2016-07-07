@@ -14,8 +14,19 @@ define(function(require){
      * @fileOverview Reusable Donut Chart API class that renders a
      * simple and configurable donut chart.
      *
+     * @module Donut
+     * @example
+     * var donutChart = donut();
+     *
+     * donutChart
+     *     .externalRadius(500)
+     *     .internalRadius(200);
+     *
+     * d3.select('.css-selector')
+     *     .datum(dataset)
+     *     .call(donutChart);
+     *
      * @tutorial donut
-     * @exports charts/donut
      * @requires d3
      * @version 0.0.1
      */
@@ -69,9 +80,9 @@ define(function(require){
          * This function creates the graph using the selection as container
          * @param  {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
+         * @param {object} _data The data to attach and generate the chart
          */
         function exports(_selection) {
-            /* @param {object} _data The data to attach and generate the chart */
             _selection.each(function(_data) {
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
