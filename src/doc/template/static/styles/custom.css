@@ -7,6 +7,7 @@ body {
     text-rendering: optimizeLegibility;
     color: #282C35;
     line-height: 1.5rem;
+    padding-bottom: 6rem;
 }
 
 strong {
@@ -15,22 +16,33 @@ strong {
 
 p {
     margin-top: 1.2rem;
-    margin-bototm: 0 !important;
+    margin-bottom: 1.2rem !important;
 }
 
 h1, h2, h3, h4 {
     font-family: 'Slabo 13px', sans-serif;
     font-weight: 400;
 }
+
 h1 {
     font-size: 42px;
 }
+
 h2 {
     font-size: 32px;
-    margin-top: 22px;
+    margin-top: 44px;
 }
+
 h3 {
-    font-size: 22px;
+    font-size: 24px;
+}
+
+h4 {
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Heebo', helvetica, Arial, sans-serif;
+    border-top: 1px solid #eff2f5;
+    padding-top: 16px;
 }
 
 a {
@@ -82,8 +94,12 @@ code {
 /* Spacing */
 @media (min-width: 979px) {
     body {
-        padding-top: 72px;
+        padding-top: 56px;
     }
+}
+
+#main {
+    margin-top: 0;
 }
 
 /* Nav */
@@ -106,6 +122,10 @@ code {
 
 .nav-pills > .active > a, .nav-pills > .active > a:hover, .nav-pills > .active > a:focus {
     background-color: #009FA1;
+}
+
+.navbar .brand {
+    padding-top: 14px;
 }
 
 /* Code container */
