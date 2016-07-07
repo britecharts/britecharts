@@ -1,5 +1,3 @@
-Britecharts
-====
 
 ## Overview
 
@@ -51,23 +49,23 @@ In order to generate and see the documentation for this charts and the project i
  + Download and install [node](https://nodejs.org/en/download/) (note we need npm version 2.X)
  + Install the grunt task runner (if you don't have it yet) with:
 
-        npm install -g grunt-cli
+    `npm install -g grunt-cli`
 
  + Clone the repository with:
 
-        git clone git@github.com:eventbrite/britecharts.git
+    `git clone git@github.com:eventbrite/britecharts.git`
 
  + Change directory into the repository root and install its dependencies:
 
-        npm install
+    `npm install`
 
  + In the root or the repository folder, run:
 
-        npm run demos:serve
+    `npm run demos:serve`
 
  + In another terminal window, run:
 
-        npm run docs
+    `npm run docs`
 
 
 This process will generate the docs with its current contents and open the interface where you will be able to navigate the API of each chart. You can also see some use examples under the "Tutorials" dropdown section.
