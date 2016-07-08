@@ -8,16 +8,17 @@
 	clear: both !important;
 	position: relative !important;
 	border: none;
-	border-color: #969696 !important;
+	border-color: #D2D6DF !important;
 	background-color: #FFFFFF !important;
 }
 .sunlight-highlighted, .sunlight-container, .sunlight-container textarea {
-	font-family: Consolas, Inconsolata, Monaco, "Courier New" !important;
-	font-size: 12px !important;
-	line-height: 15px !important;
+	font-family: 'Anonymous Pro', Consolas, Monaco, "Courier New", monospace !important;
+	font-size: 14px !important;
+	line-height: 16px !important;
 }
 .sunlight-highlighted, .sunlight-container textarea {
-	color: #000000 !important;
+	color: #282c35 !important;
+	background-color: #F7FAFC !important;
 	margin: 0 !important;
 }
 .sunlight-container textarea {
@@ -93,7 +94,7 @@
 	margin-left: 5px !important;
 }
 .sunlight-menu a, .sunlight-menu img {
-	color: #000099 !important;
+	color: #666a73 !important;
 	text-decoration: none !important;
 	border: none !important;
 }
@@ -121,7 +122,7 @@
 .sunlight-punctuation,
 .sunlight-delimiter,
 .sunlight-diff .sunlight-unchanged {
-	color: #000000 !important;
+	color: #45494e !important;
 }
 
 .sunlight-comment,
@@ -134,7 +135,7 @@
 .sunlight-number,
 .sunlight-guid,
 .sunlight-cdata {
-	color: #CC6600 !important;
+	color: #F6682F !important;
 }
 
 .sunlight-named-ident,
