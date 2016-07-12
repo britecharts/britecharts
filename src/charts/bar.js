@@ -5,13 +5,18 @@ define(function(require) {
     const exportChart = require('./helpers/exportChart');
 
     /**
-     * @typdef D3Selection
+     * @typedef D3Selection
      * @type Array[]
      */
 
     /**
      * Bar Chart reusable API class that renders a
      * simple and configurable bar chart.
+     *
+     * @module Bar
+     * @version 0.0.3
+     * @tutorial bar
+     * @requires d3
      *
      * @example
      * var barChart = bar();
@@ -24,11 +29,6 @@ define(function(require) {
      *     .datum(dataset)
      *     .call(barChart);
      *
-     * @module Bar
-     * @tutorial bar
-     * @exports charts/bar
-     * @requires d3
-     * @version 0.0.3
      */
     return function module() {
 

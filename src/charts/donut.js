@@ -6,15 +6,19 @@ define(function(require){
     const exportChart = require('./helpers/exportChart');
 
     /**
-     * @typdef D3Selection
+     * @typedef D3Selection
      * @type Array[]
      */
 
     /**
-     * @fileOverview Reusable Donut Chart API class that renders a
+     * Reusable Donut Chart API class that renders a
      * simple and configurable donut chart.
      *
      * @module Donut
+     * @version 0.0.1
+     * @tutorial donut
+     * @requires d3
+     *
      * @example
      * var donutChart = donut();
      *
@@ -26,9 +30,6 @@ define(function(require){
      *     .datum(dataset)
      *     .call(donutChart);
      *
-     * @tutorial donut
-     * @requires d3
-     * @version 0.0.1
      */
     return function module() {
 
@@ -78,9 +79,10 @@ define(function(require){
 
         /**
          * This function creates the graph using the selection as container
-         * @param  {D3Selection} _selection A d3 selection that represents
+         *
+         * @param {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
-         * @param {object} _data The data to attach and generate the chart
+         * @param {Object} _data The data to attach and generate the chart
          */
         function exports(_selection) {
             _selection.each(function(_data) {
@@ -145,6 +147,7 @@ define(function(require){
 
         /**
          * Builds the SVG element that will contain the chart
+         *
          * @param  {HTMLElement} container DOM element that will work as the container of the graph
          * @private
          */
@@ -165,7 +168,8 @@ define(function(require){
 
         /**
          * Draws the values on the donut slice inside the text element
-         * @param  {obj} obj Data object
+         *
+         * @param  {Object} obj Data object
          * @private
          */
         function drawLegend(obj) {
@@ -253,9 +257,10 @@ define(function(require){
 
         /**
          * Stores current angles and interpolates with new angles
-         * @param {obj} a New data for slice
-         *
          * Check out {@link http://bl.ocks.org/mbostock/1346410| this example}
+         *
+         * @param  {Object}     a   New data for slice
+         * @return {Function}       Tweening function for the donut shape
          * @private
          */
         function tweenArc(a) {
@@ -270,9 +275,10 @@ define(function(require){
 
         /**
          * Generates animations with tweens depending on the attributes given
-         * @param  {number} outerRadius Final outer radius value
-         * @param  {number} delay       Delay of animation
-         * @return {function}           Function that when called will tween the element
+         *
+         * @param  {Number} outerRadius Final outer radius value
+         * @param  {Number} delay       Delay of animation
+         * @return {Function}           Function that when called will tween the element
          * @private
          */
         function tweenGrowthFactory(outerRadius, delay) {
@@ -294,9 +300,10 @@ define(function(require){
 
         /**
          * Animation for chart loading
-         * @param  {obj} b Data point
-         * @return {funct}   Tween function
          * Check out {@link http://bl.ocks.org/mbostock/4341574| this example}
+         *
+         * @param  {Object} b Data point
+         * @return {Function}   Tween function
          * @private
          */
         function tweenLoading(b) {
@@ -311,8 +318,9 @@ define(function(require){
         /**
          * Utility function that wraps a text into the given width
          * TODO: Candidate to refactoring
-         * @param  {string} text         Text to write
-         * @param  {number} legendWidth Width of the container
+         *
+         * @param  {String} text         Text to write
+         * @param  {Number} legendWidth Width of the container
          * @private
          */
         function wrapText(text, legendWidth) {
@@ -365,8 +373,8 @@ define(function(require){
 
         /**
          * Gets or Sets the colorScheme of the chart
-         * @param  {array} _x Color scheme array to get/set
-         * @return { colorScheme | module} Current colorScheme or Donut Chart module to chain calls
+         * @param  {Array} _x Color scheme array to get/set
+         * @return { (Number | Module) } Current colorScheme or Donut Chart module to chain calls
          * @public
          */
         exports.colorScheme = function(_x) {
@@ -379,8 +387,8 @@ define(function(require){
 
         /**
          * Gets or Sets the externalRadius of the chart
-         * @param  {number} _x ExternalRadius number to get/set
-         * @return { externalRadius | module} Current externalRadius or Donut Chart module to chain calls
+         * @param  {Number} _x ExternalRadius number to get/set
+         * @return { (Number | Module) } Current externalRadius or Donut Chart module to chain calls
          * @public
          */
         exports.externalRadius = function(_x) {
@@ -393,8 +401,8 @@ define(function(require){
 
         /**
          * Gets or Sets the height of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { height | module} Current height or Donut Chart module to chain calls
+         * @param  {Number} _x Desired width for the graph
+         * @return { (Number | Module) } Current height or Donut Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -407,8 +415,8 @@ define(function(require){
 
         /**
          * Gets or Sets the internalRadius of the chart
-         * @param  {number} _x InternalRadius number to get/set
-         * @return { internalRadius | module} Current internalRadius or Donut Chart module to chain calls
+         * @param  {Number} _x InternalRadius number to get/set
+         * @return { (Number | Module) } Current internalRadius or Donut Chart module to chain calls
          * @public
          */
         exports.internalRadius = function(_x) {
@@ -421,8 +429,8 @@ define(function(require){
 
         /**
          * Gets or Sets the margin of the chart
-         * @param  {object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Donut Chart module to chain calls
+         * @param  {Object} _x Margin object to get/set
+         * @return { (Number | Module) } Current margin or Donut Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -435,8 +443,8 @@ define(function(require){
 
         /**
          * Gets or Sets the width of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { width | module} Current width or Donut Chart module to chain calls
+         * @param  {Number} _x Desired width for the graph
+         * @return { (Number | Module) } Current width or Donut Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
