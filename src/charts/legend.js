@@ -4,7 +4,7 @@ define(function(require){
     const d3 = require('d3');
 
     /**
-     * @typdef D3Selection
+     * @typedef D3Selection
      * @type Array[]
      */
 

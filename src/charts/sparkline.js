@@ -5,13 +5,18 @@ define(function(require){
     const exportChart = require('./helpers/exportChart');
 
     /**
-     * @typdef D3Layout
-     * @type function
+     * @typedef D3Selection
+     * @type Array[]
      */
 
     /**
      * Sparkline Chart reusable API module that allows us
      * rendering a sparkline configurable chart.
+     *
+     * @module Sparkline
+     * @version 0.0.1
+     * @tutorial sparkline
+     * @requires d3
      *
      * @example
      * var sparkLineChart = sparkline();
@@ -24,11 +29,6 @@ define(function(require){
      *     .datum(dataset)
      *     .call(sparkLineChart);
      *
-     * @module Sparkline
-     * @tutorial sparkline
-     * @exports charts/sparkline
-     * @requires d3
-     * @version 0.0.1
      */
     return function module(){
 
@@ -63,9 +63,10 @@ define(function(require){
 
         /**
          * This function creates the graph using the selection and data provided
-         * @param  {D3Selection} _selection A d3 selection that represents
+         *
+         * @param {D3Selection} _selection A d3 selection that represents
          * the container(s) where the chart(s) will be rendered
-         * @param {object} _data The data to attach and generate the chart
+         * @param {Object} _data The data to attach and generate the chart
          */
         function exports(_selection) {
             _selection.each(function(_data){
@@ -112,6 +113,7 @@ define(function(require){
         }
 
         /**
+         * Builds the SVG element that will contain the chart
          * @param  {HTMLElement} container DOM element that will work as the container of the graph
          * @private
          */
@@ -179,7 +181,7 @@ define(function(require){
         // Accessors
         /**
          * Gets or Sets the height of the chart
-         * @param  {number} _x Desired width for the graph
+         * @param  {Number} _x Desired width for the graph
          * @return { height | module} Current height or Area Chart module to chain calls
          * @public
          */
@@ -193,7 +195,7 @@ define(function(require){
 
         /**
          * Gets or Sets the margin of the chart
-         * @param  {object} _x Margin object to get/set
+         * @param  {Object} _x Margin object to get/set
          * @return { margin | module} Current margin or Area Chart module to chain calls
          * @public
          */
@@ -207,7 +209,7 @@ define(function(require){
 
         /**
          * Gets or Sets the width of the chart
-         * @param  {number} _x Desired width for the graph
+         * @param  {Number} _x Desired width for the graph
          * @return { width | module} Current width or Area Chart module to chain calls
          * @public
          */
@@ -221,7 +223,7 @@ define(function(require){
 
         /**
          * Gets or Sets the valueLabel of the chart
-         * @param  {number} _x Desired valueLabel for the graph
+         * @param  {Number} _x Desired valueLabel for the graph
          * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
          * @public
          */
@@ -235,7 +237,7 @@ define(function(require){
 
         /**
          * Gets or Sets the dateLabel of the chart
-         * @param  {number} _x Desired dateLabel for the graph
+         * @param  {Number} _x Desired dateLabel for the graph
          * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
          * @public
          */

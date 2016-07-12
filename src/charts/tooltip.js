@@ -4,13 +4,19 @@ define(function(require){
     const d3 = require('d3');
 
     /**
-     * @typdef D3Selection
+     * @typedef D3Selection
      * @type Array[]
      */
 
     /**
      * Tooltip Component reusable API class that renders a
-     * simple and configurable tooltip element for the line chart.
+     * simple and configurable tooltip element for Britechart's
+     * line chart or stacked area chart.
+     *
+     * @module Tooltip
+     * @version 0.0.1
+     * @tutorial tooltip
+     * @requires d3
      *
      * @example
      * var lineChart = line(),
@@ -39,11 +45,6 @@ define(function(require){
      *     .datum([])
      *     .call(tooltip);
      *
-     * @module Tooltip
-     * @tutorial tooltip
-     * @exports charts/tooltip
-     * @requires d3
-     * @version 0.0.1
      */
     return function module() {
 
@@ -95,9 +96,9 @@ define(function(require){
 
         /**
          * This function creates the graph using the selection as container
-         * @param  {D3Selection} _selection A d3 selection that represents
+         * @param {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
-         * @param {object} _data The data to attach and generate the chart
+         * @param {Object} _data The data to attach and generate the chart
          */
         function exports(_selection) {
             _selection.each(function(_data){
@@ -227,7 +228,7 @@ define(function(require){
 
         /**
          * Draws the data entries inside the tooltip for a given topic
-         * @param  {obj} topic Topic to extract data from
+         * @param  {Object} topic Topic to extract data from
          * @return void
          */
         function updateContent(topic){
@@ -295,8 +296,8 @@ define(function(require){
 
         /**
          * Updates size and position of tooltip depending on the side of the chart we are in
-         * @param  {object} dataPoint DataPoint of the tooltip
-         * @param  {number} xPosition DataPoint's x position in the chart
+         * @param  {Object} dataPoint DataPoint of the tooltip
+         * @param  {Number} xPosition DataPoint's x position in the chart
          * @return void
          */
         function updatePositionAndSize(dataPoint, xPosition){
@@ -325,7 +326,7 @@ define(function(require){
 
         /**
          * Updates value of tooltipTitle with the data meaning and the date
-         * @param  {obj} dataPoint Point of data to use as source
+         * @param  {Object} dataPoint Point of data to use as source
          * @return void
          */
         function updateTitle(dataPoint) {
@@ -337,8 +338,9 @@ define(function(require){
 
         /**
          * Updates tooltip title, content, size and position
-         * @param  {object} dataPoint Current datapoint to show info about
          * TODO: Think about data normalization here or conventions
+         *
+         * @param  {Object} dataPoint Current datapoint to show info about
          * @return void
          */
         function updateTooltip(dataPoint, position) {
@@ -354,8 +356,8 @@ define(function(require){
         /**
          * Wraps a text given the text, width, x position and textFormatter function
          * @param  {D3Selection} text  Selection with the text to wrap inside
-         * @param  {number} width Desired max width for that line
-         * @param  {number} xpos  Initial x position of the text
+         * @param  {Number} width Desired max width for that line
+         * @param  {Number} xpos  Initial x position of the text
          *
          * REF: http://bl.ocks.org/mbostock/7555321
          * More discussions on https://github.com/mbostock/d3/issues/1642
@@ -413,7 +415,7 @@ define(function(require){
 
         /**
          * Hides the tooltip
-         * @return {module} Tooltip module to chain calls
+         * @return {Module} Tooltip module to chain calls
          * @public
          */
         exports.hide = function() {
@@ -424,7 +426,7 @@ define(function(require){
 
         /**
          * Shows the tooltip
-         * @return {module} Tooltip module to chain calls
+         * @return {Module} Tooltip module to chain calls
          * @public
          */
         exports.show = function() {
@@ -449,10 +451,10 @@ define(function(require){
 
         /**
          * Updates the position and content of the tooltip
-         * @param  {obj} dataPoint    Datapoint to represent
-         * @param  {obj} colorMapping Color scheme of the topics
-         * @param  {number} position     X-scale position in pixels
-         * @return {module} Tooltip module to chain calls
+         * @param  {Object} dataPoint    Datapoint to represent
+         * @param  {Object} colorMapping Color scheme of the topics
+         * @param  {Number} position     X-scale position in pixels
+         * @return {Module} Tooltip module to chain calls
          * @public
          */
         exports.update = function(dataPoint, colorMapping, position) {

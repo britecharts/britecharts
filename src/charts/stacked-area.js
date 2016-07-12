@@ -15,10 +15,10 @@ define(function(require){
      * rendering a multi area and configurable chart.
      *
      * @module Stacked Area
-     * @tutorial stacked-area
-     * @exports charts/stacked-area
-     * @requires d3
      * @version 0.0.1
+     * @tutorial stacked-area
+     * @requires d3
+     *
      */
     return function module(){
 
@@ -112,9 +112,9 @@ define(function(require){
 
         /**
          * This function creates the graph using the selection and data provided
-         * @param  {D3Selection} _selection A d3 selection that represents
+         * @param {D3Selection} _selection A d3 selection that represents
          * the container(s) where the chart(s) will be rendered
-         * @param {object} _data The data to attach and generate the chart
+         * @param {Object} _data The data to attach and generate the chart
          */
         function exports(_selection) {
             _selection.each(function(_data){
@@ -157,9 +157,9 @@ define(function(require){
 
         /**
          * Calculates the maximum number of ticks for the x axis
-         * @param  {number} width Chart width
-         * @param  {number} dataPointNumber  Number of entries on the data
-         * @return {number}       Number of ticks to render
+         * @param  {Number} width Chart width
+         * @param  {Number} dataPointNumber  Number of entries on the data
+         * @return {Number}       Number of ticks to render
          */
         function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
             let singleTickWidth = 30,
@@ -485,7 +485,7 @@ define(function(require){
         /**
          * Extract X position on the chart from a given mouse event
          * @param  {obj} event D3 mouse event
-         * @return {number}       Position on the x axis of the mouse
+         * @return {Number}       Position on the x axis of the mouse
          * @private
          */
         function getMouseXPosition(event) {
@@ -494,7 +494,7 @@ define(function(require){
 
         /**
          * Finds out the data entry that is closer to the given position on pixels
-         * @param  {number} mouseX X position of the mouse
+         * @param  {Number} mouseX X position of the mouse
          * @return {obj}        Data entry that is closer to that x axis position
          */
         function getNearestDataPoint(mouseX) {
@@ -626,7 +626,7 @@ define(function(require){
         // Accessors
         /**
          * Gets or Sets the ease of the chart
-         * @param  {number} _x Desired width for the graph
+         * @param  {Number} _x Desired width for the graph
          * @return { ease | module} Current ease animation or Area Chart module to chain calls
          * @public
          */
@@ -640,7 +640,7 @@ define(function(require){
 
         /**
          * Gets or Sets the height of the chart
-         * @param  {number} _x Desired width for the graph
+         * @param  {Number} _x Desired width for the graph
          * @return { height | module} Current height or Area Chart module to chain calls
          * @public
          */
@@ -654,7 +654,7 @@ define(function(require){
 
         /**
          * Gets or Sets the margin of the chart
-         * @param  {object} _x Margin object to get/set
+         * @param  {Object} _x Margin object to get/set
          * @return { margin | module} Current margin or Area Chart module to chain calls
          * @public
          */
@@ -668,7 +668,7 @@ define(function(require){
 
         /**
          * Gets or Sets the tooltipThreshold of the chart
-         * @param  {object} _x Margin object to get/set
+         * @param  {Object} _x Margin object to get/set
          * @return { tooltipThreshold | module} Current tooltipThreshold or Area Chart module to chain calls
          * @public
          */
@@ -682,7 +682,7 @@ define(function(require){
 
         /**
          * Gets or Sets the width of the chart
-         * @param  {number} _x Desired width for the graph
+         * @param  {Number} _x Desired width for the graph
          * @return { width | module} Current width or Area Chart module to chain calls
          * @public
          */
@@ -696,7 +696,7 @@ define(function(require){
 
         /**
          * Gets or Sets the valueLabel of the chart
-         * @param  {number} _x Desired valueLabel for the graph
+         * @param  {Number} _x Desired valueLabel for the graph
          * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
          * @public
          */
@@ -710,7 +710,7 @@ define(function(require){
 
         /**
          * Gets or Sets the dateLabel of the chart
-         * @param  {number} _x Desired dateLabel for the graph
+         * @param  {Number} _x Desired dateLabel for the graph
          * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
          * @public
          */
