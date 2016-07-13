@@ -1,8 +1,8 @@
 'use strict';
 
 var d3 = require('d3'),
-    donut = require('./../dist/charts/donut'),
-    legend = require('./../dist/charts/legend');
+    donut = require('./../src/charts/donut'),
+    legend = require('./../src/charts/legend');
 
 
 function createDonutChart() {

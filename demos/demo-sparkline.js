@@ -1,7 +1,7 @@
 'use strict';
 
 var d3 = require('d3'),
-    sparklineChart = require('./../dist/charts/sparkline'),
+    sparklineChart = require('./../src/charts/sparkline'),
     sparklineDataBuilder = require('./../test/fixtures/sparklineDataBuilder');
 
 

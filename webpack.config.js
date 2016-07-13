@@ -26,7 +26,7 @@ var webpack = require('webpack'),
         loader: 'babel',
         exclude: /(node_modules)/,
         query: {
-            presets: ['es2015']
+            presets : ['es2015', 'stage-0']
         }
     },
 
@@ -42,43 +42,6 @@ if (isProduction) {
 }
 
 config = {
-
-    // Transpiles files into dist/charts to use in demos
-    dev: {
-        // allows webpack to determine where your app begins execution, and it creates chunks out of it
-        entry:  currentCharts,
-
-        devtool: 'source-map',
-
-        // tells webpack what to name your files after the build process, and where to place them
-        output: {
-            path:     'dist/charts',
-            filename: '[name].js',
-            libraryTarget: 'umd'
-        },
-
-        externals: {
-            d3: 'd3',
-            underscore: 'underscore'
-        },
-
-        module: {
-            loaders: [ defaultJSLoader ],
-
-            // Tell Webpack not to parse certain modules.
-            noParse: [
-                new RegExp(vendorsPath + '/d3/d3.js')
-            ]
-        },
-
-        resolve: {
-            alias: {
-                d3: vendorsPath + '/d3'
-            }
-        },
-
-        plugins: plugins
-    },
 
     demos : {
         devtool: 'source-map',
@@ -116,7 +79,7 @@ config = {
                     exclude: /(node_modules)/,
                     loader: 'babel',
                     query: {
-                        presets: ['es2015'],
+                        presets: ['es2015', 'stage-0'],
                         cacheDirectory: true,
                     },
                 },
@@ -126,7 +89,7 @@ config = {
                     exclude: /(node_modules|__tests__)/,
                     loader: 'babel-istanbul',
                     query: {
-                        presets: ['es2015'],
+                        presets: ['es2015', 'stage-0'],
                         cacheDirectory: true,
                     },
                 }
@@ -194,7 +157,6 @@ config = {
 
             loaders: [ defaultJSLoader ],
 
-
             // Tell Webpack not to parse certain modules.
             noParse: [
                 new RegExp(vendorsPath + '/d3/d3.js')
@@ -213,3 +175,5 @@ config = {
 
 
 module.exports = config[env];
+
+
