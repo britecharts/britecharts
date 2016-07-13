@@ -1,8 +1,8 @@
 'use strict';
 
 var d3 = require('d3'),
-    stackedAreaChart = require('./../dist/charts/stacked-area'),
-    tooltip = require('./../dist/charts/tooltip'),
+    stackedAreaChart = require('./../src/charts/stacked-area'),
+    tooltip = require('./../src/charts/tooltip'),
     stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder');
 
 

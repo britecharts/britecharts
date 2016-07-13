@@ -1,7 +1,7 @@
 'use strict';
 
 var d3 = require('d3'),
-    bar = require('./../dist/charts/bar');
+    bar = require('./../src/charts/bar');
 
 
 function createBarChart() {
