@@ -81,6 +81,7 @@ config = {
     },
 
     demos : {
+        devtool: 'source-map',
         entry: [
             './demos/index.js',
         ],
