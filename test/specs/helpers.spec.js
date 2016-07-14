@@ -2,8 +2,7 @@ define([
     'underscore',
     'jquery',
     'd3',
-    'helpers/serializeWithStyles',
-    'helpers/base64'
+    'helpers/serializeWithStyles'
     ], function (
         _,
         $,
@@ -57,14 +56,6 @@ define([
                 styledHTML = serializeWithStyles(node).replace(' ','');
                 expect(styledHTML).not.toBe(node.outerHTML.replace(' ',''));
                 expect(styledHTML.indexOf(randomColor).length).not.toBe(0);
-            });
-        });
-
-        describe('base64', () => {
-            it('should encode string to to a base64 string', () => {
-                let expectedString = 'dGhlIG9sZCBtYW4gd2VhcnMgYSBmdW5ueSBoYXQ=',
-                    testString = 'the old man wears a funny hat';
-                expect(encoder(testString)).toBe(expectedString);
             });
         });
     });
