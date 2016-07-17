@@ -10,6 +10,14 @@ define(function(require) {
      */
 
     /**
+     * @typedef ChartData
+     * @type Object[]
+     *
+     * @param {String} letter       Letter we measure
+     * @param {Number} frequency    Frequency of the letter
+     */
+
+    /**
      * Bar Chart reusable API class that renders a
      * simple and configurable bar chart.
      *
