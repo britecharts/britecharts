@@ -7,15 +7,32 @@ define(function(require){
     const exportChart = require('./helpers/exportChart');
 
     /**
-     * @fileOverview Line Chart reusable API module that allows us
+     * @typedef D3Selection
+     * @type Array[]
+     */
+
+    /**
+     * Line Chart reusable API module that allows us
      * rendering a multi line and configurable chart.
      *
-     * @tutorial line
-     * @exports charts/line
-     * @requires d3
+     * @module Line
      * @version 0.0.1
+     * @tutorial line
+     * @requires d3
+     *
+     * @example
+     * var lineChart = line();
+     *
+     * lineChart
+     *     .aspectRatio(0.5)
+     *     .width(500);
+     *
+     * d3.select('.css-selector')
+     *     .datum(dataset)
+     *     .call(lineChart);
+     *
      */
-    return function module(){
+    return function line(){
 
         let margin = {
                 top: 60,
@@ -85,11 +102,12 @@ define(function(require){
 
         /**
          * This function creates the graph using the selection and data provided
-         * @param  {D3Selection} _selection A d3 selection that represents
-         * the container(s) where the chart(s) will be rendered
+         *
+         * @param {D3Selection} _selection A d3 selection that represents
+         *                                  the container(s) where the chart(s) will be rendered
+         * @param {Object} _data The data to attach and generate the chart
          */
         function exports(_selection){
-            /** @param {object} _data The data to attach and generate the chart */
             _selection.each(function(_data) {
                 ({
                     data,
@@ -220,6 +238,8 @@ define(function(require){
         }
 
         /**
+         * Builds the SVG element that will contain the chart
+         *
          * @param  {HTMLElement} container DOM element that will work as the container of the graph
          * @private
          */
@@ -401,10 +421,10 @@ define(function(require){
 
         /**
          * Finds out which datapoint is closer to the given x position
-         * @param  {number} x0 Date value for data point
-         * @param  {obj} d0 Previous datapoint
-         * @param  {obj} d1 Next datapoint
-         * @return {obj}    d0 or d1, the datapoint with closest date to x0
+         * @param  {Number} x0 Date value for data point
+         * @param  {Object} d0 Previous datapoint
+         * @param  {Object} d1 Next datapoint
+         * @return {Object}    d0 or d1, the datapoint with closest date to x0
          */
         function findOutNearestDate(x0, d0, d1){
             return (new Date(x0).getTime() - new Date(d0.date).getTime()) > (new Date(d1.date).getTime() - new Date(x0).getTime()) ? d0 : d1;
@@ -412,9 +432,9 @@ define(function(require){
 
         /**
          * Calculates the maximum number of ticks for the x axis
-         * @param  {number} width Chart width
-         * @param  {number} dataPointNumber  Number of entries on the data
-         * @return {number}       Number of ticks to render
+         * @param  {Number} width Chart width
+         * @param  {Number} dataPointNumber  Number of entries on the data
+         * @return {Number}       Number of ticks to render
          */
         function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
             let singleTickWidth = 20,
@@ -426,8 +446,8 @@ define(function(require){
 
         /**
          * Extract X position on the graph from a given mouse event
-         * @param  {obj} event D3 mouse event
-         * @return {number}       Position on the x axis of the mouse
+         * @param  {Object} event D3 mouse event
+         * @return {Number}       Position on the x axis of the mouse
          */
         function getMouseXPosition(event) {
             return d3.mouse(event)[0];
@@ -435,8 +455,8 @@ define(function(require){
 
         /**
          * Formats the date in ISOString
-         * @param  {string} date Date as given in data entries
-         * @return {string}      Date in ISO format in a neutral timezone
+         * @param  {String} date Date as given in data entries
+         * @return {String}      Date in ISO format in a neutral timezone
          */
         function getFormattedDateFromData(date) {
             return date.toISOString().split('T')[0] + 'T00:00:00Z';
@@ -444,8 +464,8 @@ define(function(require){
 
         /**
          * Finds out the data entry that is closer to the given position on pixels
-         * @param  {number} mouseX X position of the mouse
-         * @return {obj}        Data entry that is closer to that x axis position
+         * @param  {Number} mouseX X position of the mouse
+         * @return {Object}        Data entry that is closer to that x axis position
          */
         function getNearestDataPoint(mouseX) {
             let invertedX = xScale.invert(mouseX),
@@ -514,7 +534,7 @@ define(function(require){
 
         /**
          * Creates coloured circles marking where the exact data y value is for a given data point
-         * @param  {obj} dataPoint Data point to extract info from
+         * @param  {Object} dataPoint Data point to extract info from
          * @private
          */
         function highlightDataPoints(dataPoint){
@@ -550,7 +570,7 @@ define(function(require){
 
         /**
          * Helper method to update the x position of the vertical marker
-         * @param  {obj} dataPoint Data entry to extract info
+         * @param  {Object} dataPoint Data entry to extract info
          * @return void
          */
         function moveVerticalMarker(verticalMarkerXPosition){
@@ -560,7 +580,7 @@ define(function(require){
         /**
          * Determines if we should add the tooltip related logic depending on the
          * size of the chart and the tooltipThreshold variable value
-         * @return {boolean} Should we build the tooltip?
+         * @return {Boolean} Should we build the tooltip?
          */
         function shouldShowTooltip() {
             return width > tooltipThreshold;
@@ -570,8 +590,8 @@ define(function(require){
 
         /**
          * Gets or Sets the aspect ratio of the chart
-         * @param  {number} _x Desired aspect ratio for the graph
-         * @return { number | module} Current aspect ratio or Line Chart module to chain calls
+         * @param  {Number} _x Desired aspect ratio for the graph
+         * @return { (Number | Module) } Current aspect ratio or Line Chart module to chain calls
          * @public
          */
         exports.aspectRatio = function(_x) {
@@ -584,8 +604,8 @@ define(function(require){
 
         /**
          * Gets or Sets the ease of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { ease | module} Current ease animation or Line Chart module to chain calls
+         * @param  {Number} _x Desired width for the graph
+         * @return { (Number | Module) } Current ease animation or Line Chart module to chain calls
          * @public
          */
         exports.ease = function(_x) {
@@ -598,8 +618,8 @@ define(function(require){
 
         /**
          * Gets or Sets the height of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { height | module} Current height or Line Chart module to chain calls
+         * @param  {Number} _x Desired width for the graph
+         * @return { (Number | Module) } Current height or Line Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -615,8 +635,8 @@ define(function(require){
 
         /**
          * Gets or Sets the margin of the chart
-         * @param  {object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Line Chart module to chain calls
+         * @param  {Object} _x Margin object to get/set
+         * @return { (Number | Module) } Current margin or Line Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -630,8 +650,8 @@ define(function(require){
         /**
          * Gets or Sets the minimum width of the graph in order to show the tooltip
          * NOTE: This could also depend on the aspect ratio
-         * @param  {number} _x Desired tooltip threshold for the graph
-         * @return { number | module} Current tooltip threshold or Line Chart module to chain calls
+         * @param  {Number} _x Desired tooltip threshold for the graph
+         * @return { (Number | Module) } Current tooltip threshold or Line Chart module to chain calls
          * @public
          */
         exports.tooltipThreshold = function(_x) {
@@ -644,8 +664,8 @@ define(function(require){
 
         /**
          * Gets or Sets the width of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { width | module} Current width or Line Chart module to chain calls
+         * @param  {Number} _x Desired width for the graph
+         * @return { (Number | Module) } Current width or Line Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {

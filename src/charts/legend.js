@@ -4,7 +4,7 @@ define(function(require){
     const d3 = require('d3');
 
     /**
-     * @typdef D3Selection
+     * @typedef D3Selection
      * @type Array[]
      */
 
@@ -12,6 +12,29 @@ define(function(require){
      * @fileOverview Legend Component reusable API class that renders a
      * simple and configurable legend element.
      *
+     * @example
+     * var donutChart = donut(),
+     *     legendBox = legend();
+     *
+     * donutChart
+     *     .externalRadius(500)
+     *     .internalRadius(200)
+     *     .on('customMouseOver', function(data) {
+     *         legendBox.highlight(data.data.id);
+     *     })
+     *     .on('customMouseOut', function() {
+     *         legendBox.clearHighlight();
+     *     });
+     *
+     * d3.select('.css-selector')
+     *     .datum(dataset)
+     *     .call(donutChart);
+     *
+     * d3.select('.other-css-selector')
+     *     .datum(dataset)
+     *     .call(legendBox);
+     *
+     * @module Legend
      * @tutorial legend
      * @exports charts/legend
      * @requires d3
@@ -56,9 +79,9 @@ define(function(require){
          * This function creates the graph using the selection as container
          * @param  {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
+         * @param {object} _data The data to attach and generate the chart
          */
         function exports(_selection) {
-            /* @param {object} _data The data to attach and generate the chart */
             _selection.each(function(_data){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
