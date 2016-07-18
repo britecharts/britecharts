@@ -5,6 +5,7 @@ var d3 = require('d3'),
     tooltip = require('./../dist/charts/tooltip'),
     stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder');
 
+
 function createStackedAreaChartWithTooltip() {
     var stackedArea = stackedAreaChart(),
         chartTooltip = tooltip(),
@@ -16,7 +17,8 @@ function createStackedAreaChartWithTooltip() {
 
     // dataset = testDataSet.withReportData().build();
     // dataset = testDataSet.with3Sources().build();
-    dataset = testDataSet.with6Sources().build();
+    // dataset = testDataSet.with6Sources().build();
+    dataset = testDataSet.withLargeData().build();
 
     // StackedAreChart Setup and start
     stackedArea
