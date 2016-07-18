@@ -5,18 +5,30 @@ define(function(require) {
     const exportChart = require('./helpers/exportChart');
 
     /**
-     * @typdef D3Selection
+     * @typedef D3Selection
      * @type Array[]
      */
 
     /**
-     * @fileOverview Bar Chart reusable API class that renders a
+     * Bar Chart reusable API class that renders a
      * simple and configurable bar chart.
      *
-     * @tutorial bar
-     * @exports charts/bar
-     * @requires d3
+     * @module Bar
      * @version 0.0.3
+     * @tutorial bar
+     * @requires d3
+     *
+     * @example
+     * var barChart = bar();
+     *
+     * barChart
+     *     .height(500)
+     *     .width(800);
+     *
+     * d3.select('.css-selector')
+     *     .datum(dataset)
+     *     .call(barChart);
+     *
      */
     return function module() {
 
@@ -44,9 +56,9 @@ define(function(require) {
          * This function creates the graph using the selection as container
          * @param  {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
+         * @param {object} _data The data to attach and generate the chart
          */
         function exports(_selection){
-            /* @param {object} _data The data to attach and generate the chart */
             _selection.each(function(_data){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
