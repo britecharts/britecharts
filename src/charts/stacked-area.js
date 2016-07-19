@@ -1,7 +1,6 @@
 define(function(require){
     'use strict';
 
-    const _ = require('underscore');
     const d3 = require('d3');
     const exportChart = require('./helpers/exportChart');
 
@@ -92,10 +91,10 @@ define(function(require){
 
             // getters
             getValueLabel = d => d[valueLabel],
-            getValues = d => d.values,
-            getKey = d => d.key,
-            getName = d => d.name,
-            getDate = d => d.date,
+            getValues = ({values}) => values,
+            getKey = ({key}) => key,
+            getName = ({name}) => name,
+            getDate = ({date}) => date,
 
 
             // formats
@@ -110,7 +109,7 @@ define(function(require){
             dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
 
 
-        /**
+       /**
          * This function creates the graph using the selection and data provided
          * @param {D3Selection} _selection A d3 selection that represents
          * the container(s) where the chart(s) will be rendered
@@ -121,13 +120,15 @@ define(function(require){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
-
                 dataByDate = d3.nest()
                     .key( getDate )
                     .entries(
-                        _(_data).sortBy('date')
+                        _data.sort((a,b) => {
+                            if(a.date < b.date) return -1;
+                            if(a.date > b.date) return 1;
+                            return 0;
+                        })
                     );
-
                 buildLayers();
                 buildScales();
                 buildAxis();
@@ -148,7 +149,7 @@ define(function(require){
          * Adds events to the container group if the environment is not mobile
          * Adding: mouseover, mouseout and mousemove
          */
-        function addMouseEvents(){
+        function addMouseEvents() {
             svg
                 .on('mouseover', handleMouseOver)
                 .on('mouseout', handleMouseOut)
@@ -236,8 +237,9 @@ define(function(require){
                     .offset('zero')
                     .values(getValues)
                     .x(getDate)
-                    .y(getValueLabel),
-                nest = d3.nest()
+                    .y(getValueLabel);
+
+            let nest = d3.nest()
                     .key(getName);
 
             layersInitial = stack(nest.entries(createEmptyInitialSet(data)));
@@ -250,11 +252,11 @@ define(function(require){
          */
         function buildScales(){
             xScale = d3.time.scale()
-                .domain(d3.extent(data, d => d.date))
+                .domain(d3.extent(data, ({date}) => date))
                 .range([0, chartWidth]);
 
             yScale = d3.scale.linear()
-                .domain([0, d3.max(data, d => (d.y0 + d.y) )])
+                .domain([0, d3.max(data, ({y0, y}) => (y0 + y) )])
                 .range([chartHeight, 0])
                 .nice([numVerticalTicks + 1]);
 
@@ -262,10 +264,17 @@ define(function(require){
                   .range(colors)
                   .domain(data.map(getName));
 
-            categoryColorMap = _.object(
-                colorScale.domain(),
-                colorScale.range()
-            );
+            // TODO add spread and rest operators to britecharts
+            /*
+                let range = colorScale.range();
+                categoryColorMap = colorScale.domain().reduce((memo, item, i) => ({...memo, [item]: range[i], }), {});
+             */
+
+            let range = colorScale.range();
+            categoryColorMap = colorScale.domain().reduce((memo, item, i) => {
+                memo[item] = range[i];
+                return memo;
+            }, {});
         }
 
         /**
@@ -284,10 +293,7 @@ define(function(require){
             svg
                 .transition()
                 .ease(ease)
-                .attr({
-                    width: width,
-                    height: height
-                });
+                .attr({width, height});
         }
 
         /**
@@ -296,19 +302,23 @@ define(function(require){
          * @return {obj}      Parsed data with values and dates
          */
         function cleanData(data) {
-            data.forEach(function(d){
-                d.date = parseUTC( d[dateLabel] );
-                d[valueLabel] = +d[valueLabel];
-            });
 
-            return data;
+            // could be rewritten using spread operator
+            /*
+                return data.map((d) => {...d, date: parseUTC(d[dateLabel], [valueLabel] : +d[valueLabel]})
+             */
+            return data.map((d) => {
+                d.date = parseUTC(d[dateLabel]);
+                d[valueLabel] = +d[valueLabel];
+                return d;
+            });
         }
 
         /**
          * Removes all the datapoints highlighter circles added to the marker container
          * @return void
          */
-        function eraseDataPointHighlights(){
+        function eraseDataPointHighlights() {
             verticalMarkerContainer.selectAll('.circle-container').remove();
         }
 
@@ -319,6 +329,7 @@ define(function(require){
          */
         function createEmptyInitialSet(data) {
             // Parsing and stringify is a way of duplicating an array of objects
+            // spread could refactor this .map((value) => ({ ...value, [valueLabel]: 0}))
             return cleanData(
                 JSON.parse(JSON.stringify(data))
                     .map(function(value){
@@ -362,39 +373,30 @@ define(function(require){
               .enter().append('g')
                 .attr({
                     'class': 'dots',
-                    'd': d => area(d.values),
+                    'd': ({values}) => area(values),
                     'clip-path': 'url(#clip)'
                 });
 
             // Processes the points
             // TODO: Optimize this code
             points.selectAll('.dot')
-                .data(function(d, index){
-                    var a = [];
-
-                    d.values.forEach(function(point){
-                        a.push({'index': index, 'point': point});
-                    });
-                    return a;
-                })
+                .data(({values}, index) => values.map((point) => ({index, point})))
                 .enter()
                 .append('circle')
                 .attr('class','dot')
-                .attr('r', function(){
-                    return pointsSize;
-                })
-                .attr('fill', function(){
-                    return pointsColor;
-                })
+                .attr('r', () => pointsSize)
+                .attr('fill', () => pointsColor)
                 .attr('stroke-width', '0')
                 .attr('stroke', pointsBorderColor)
                 .attr('transform', function(d) {
-                    var key = xScale(d.point.date);
+                    let {point} = d;
+                    let key = xScale(point.date);
 
                     dataPoints[key] = dataPoints[key] || [];
                     dataPoints[key].push(d);
 
-                    return `translate( ${xScale(d.point.date)}, ${yScale(d.point.y+d.point.y0)} )`;
+                    let {date, y, y0} = point;
+                    return `translate( ${xScale(date)}, ${yScale(y + y0)} )`;
                 });
         }
 
@@ -406,12 +408,12 @@ define(function(require){
             overlay = svg.select('.metadata-group')
                 .append('rect')
                 .attr({
-                    'class': 'overlay',
-                    'y1': 0,
-                    'y2': chartHeight,
-                    'height': chartHeight,
-                    'width': chartWidth,
-                    'fill': 'rgba(0,0,0,0)'
+                    class: 'overlay',
+                    y1: 0,
+                    y2: chartHeight,
+                    height: chartHeight,
+                    width: chartWidth,
+                    fill: 'rgba(0,0,0,0)'
                 })
                 .style('display', 'none');
         }
@@ -427,27 +429,27 @@ define(function(require){
             // Creating Area function
             area = d3.svg.area()
                 .interpolate('cardinal')
-                .x( d => xScale(d.date) )
-                .y0( d => yScale(d.y0) )
-                .y1( d => yScale(d.y0 + d.y) );
+                .x( ({date}) => xScale(date) )
+                .y0( ({y0}) => yScale(y0) )
+                .y1( ({y0, y}) => yScale(y0 + y) );
 
             // Enter
             areas.enter()
                 .append('path')
                 .attr('class', 'layer')
-                .attr('d', d => area(d.values))
-                .style('fill', d => categoryColorMap[d.key]);
+                .attr('d', ({values}) => area(values))
+                .style('fill', ({key}) => categoryColorMap[key]);
 
             // Update
             svg.select('.chart-group').selectAll('.layer')
                 .data(layers)
                 .transition()
-                .delay( (d, i) => areaAnimationDelays[i])
+                .delay( (_, i) => areaAnimationDelays[i])
                 .duration(areaAnimationDuration)
                 .ease(ease)
-                .attr('d', d => area(d.values))
+                .attr('d', ({values}) => area(values))
                 .style('opacity', areaOpacity)
-                .style('fill', d => categoryColorMap[d.key]);
+                .style('fill', ({key}) => categoryColorMap[key]);
 
             // Exit
             areas.exit()
@@ -466,19 +468,19 @@ define(function(require){
 
             verticalMarker = verticalMarkerContainer.selectAll('path')
                 .data([{
-                    'x1': 0,
-                    'y1': 0,
-                    'x2': 0,
-                    'y2': 0
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 0
                 }])
                 .enter()
                 .append('line')
                 .classed('vertical-marker', true)
                 .attr({
-                    'x1': 0,
-                    'y1': chartHeight,
-                    'x2': 0,
-                    'y2': 0
+                    x1: 0,
+                    y1: chartHeight,
+                    x2: 0,
+                    y2: 0
                 });
         }
 
@@ -498,21 +500,20 @@ define(function(require){
          * @return {obj}        Data entry that is closer to that x axis position
          */
         function getNearestDataPoint(mouseX) {
-            let dataByDateParsed,
-                epsilon,
+            let epsilon,
                 nearest;
 
-            dataByDateParsed = _(dataByDate)
-                .map(function(d){
-                    d.key = new Date(d.key);
-                    return d;
-                });
+            //could use spread operator, would prevent mutation of original data
+            /*
+                let dataByDateParsed = dataByDate.map((item) => ({...item, key: new Date(item.key)}))
+             */
+            let dataByDateParsed = dataByDate.map((item) => {
+                item.key = new Date(item.key);
+                return item;
+            });
 
-            epsilon = (xScale(dataByDateParsed[1].key) - xScale(dataByDateParsed[0].key))/2;
-            nearest = _(dataByDateParsed)
-                .find(function(d) {
-                    return Math.abs(xScale(d.key) - mouseX) <= epsilon;
-                });
+            epsilon = (xScale(dataByDateParsed[1].key) - xScale(dataByDateParsed[0].key)) / 2;
+            nearest = dataByDateParsed.find(({key}) => Math.abs(xScale(key) - mouseX) <= epsilon);
 
             return nearest;
         }
@@ -528,7 +529,7 @@ define(function(require){
 
             if(dataPoint) {
                 dataPointXPosition = xScale(new Date( dataPoint.key ));
-                // More verticalMarker to that datapoint
+                // Move verticalMarker to that datapoint
                 moveVerticalMarker(dataPointXPosition);
                 // Add data points highlighting
                 highlightDataPoints(dataPoint);
@@ -573,14 +574,11 @@ define(function(require){
 
             // sorting the values based on the order of the colors,
             // so that the order always stays constant
-            dataPoint.values = _.chain(dataPoint.values)
-                .compact()
-                .sortBy(function(el) {
-                    return colorOrder[categoryColorMap[el.name]];
-                })
-                .value();
+            dataPoint.values = dataPoint.values
+                                    .filter(v => !!v)
+                                    .sort((a, b) => colorOrder[a.el] > colorOrder[b.el]);
 
-            dataPoint.values.forEach(function(value, index){
+            dataPoint.values.forEach(({name}, index) => {
                 let marker = verticalMarkerContainer
                                 .append('g')
                                 .classed('circle-container', true),
@@ -597,7 +595,7 @@ define(function(require){
                     })
                     .style({
                         'stroke-width': 3,
-                        'stroke': categoryColorMap[value.name]
+                        'stroke': categoryColorMap[name]
                     });
 
                 marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(accumulator))} )` );
