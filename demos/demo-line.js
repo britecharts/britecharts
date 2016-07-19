@@ -1,8 +1,8 @@
 'use strict';
 
 var d3 = require('d3'),
-    line = require('./../dist/charts/line'),
-    tooltip = require('./../dist/charts/tooltip'),
+    line = require('./../src/charts/line'),
+    tooltip = require('./../src/charts/tooltip'),
     dataBuilder = require('./../test/fixtures/lineChartDataBuilder');
 
 
