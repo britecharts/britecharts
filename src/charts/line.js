@@ -1,7 +1,6 @@
 define(function(require){
     'use strict';
 
-    const _ = require('underscore');
     const d3 = require('d3');
 
     const exportChart = require('./helpers/exportChart');
@@ -231,10 +230,19 @@ define(function(require){
                 .range(colorRange)
                 .domain(data.map(getTopic));
 
-            topicColorMap = _.object(
-                colorScale.domain(),
-                colorScale.range()
-            );
+
+            // TODO add spread and rest operators to britecharts
+            /*
+                let range = colorScale.range();
+                topicColorMap = colorScale.domain().reduce((memo, item, i) => ({...memo, [item]: range[i], }), {});
+             */
+
+            let range = colorScale.range();
+            topicColorMap = colorScale.domain().reduce((memo, item, i) => {
+                memo[item] = range[i];
+                return memo;
+            }, {});
+
         }
 
         /**
@@ -537,15 +545,14 @@ define(function(require){
          * @param  {Object} dataPoint Data point to extract info from
          * @private
          */
-        function highlightDataPoints(dataPoint){
+        function highlightDataPoints(dataPoint) {
             cleanDataPointHighlights();
 
             // sorting the topics based on the order of the colors,
             // so that the order always stays constant
-            dataPoint.topics = _.chain(dataPoint.topics)
-                .compact()
-                .sortBy(({name}) => colorOrder[topicColorMap[name]])
-                .value();
+            dataPoint.topics = dataPoint.topics
+                                    .filter(t => !!t)
+                                    .sort((a, b) => topicColorMap[a.name] > topicColorMap[b.name]);
 
             dataPoint.topics.forEach(({name}, index) => {
                 let marker = verticalMarkerContainer
