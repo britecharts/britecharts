@@ -4,15 +4,15 @@
   "description": "Eventbrite's Charting Library",
   "main": "README.md",
   "scripts": {
-    "demos:compile": "WEBPACK_ENV=demos ./node_modules/.bin/webpack --progress --colors",
-    "demos:watch": "WEBPACK_ENV=demos ./node_modules/.bin/webpack --watch --progress --colors",
-    "demos:serve": "WEBPACK_ENV=demos ./node_modules/.bin/webpack-dev-server --inline --hot",
-    "docs": "WEBPACK_ENV=demos ./node_modules/.bin/webpack && grunt docs",
+    "demos:compile": "WEBPACK_ENV=demos webpack --progress --colors",
+    "demos:watch": "WEBPACK_ENV=demos webpack --watch --progress --colors",
+    "demos:serve": "WEBPACK_ENV=demos webpack-dev-server --inline --hot",
+    "docs": "WEBPACK_ENV=demos webpack && grunt docs",
     "prod": "npm run _prod && npm run _prodUMD",
     "release": "npm run prod && grunt release",
     "test": "WEBPACK_ENV=test karma start",
-    "_prod": "WEBPACK_ENV=prod ./node_modules/.bin/webpack",
-    "_prodUMD": "WEBPACK_ENV=prodUMD ./node_modules/.bin/webpack"
+    "_prod": "WEBPACK_ENV=prod webpack",
+    "_prodUMD": "WEBPACK_ENV=prodUMD webpack"
   },
   "repository": {
     "type": "git",
