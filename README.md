@@ -75,7 +75,6 @@ This process will generate the docs with its current contents and open the inter
 This project is in active development. We are working on:
 
 - Style Bar Chart
-- Simplify the webpack environment
 - Document each graphs data input
 
 
@@ -95,4 +94,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-Read more in LICENSE.md
+Read more in the [license document](../LICENSE.md)
