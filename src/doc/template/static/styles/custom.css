@@ -179,6 +179,9 @@ code {
     padding: 12px;
 }
 
+.sunlight-menu {
+    display: none;
+}
 .sunlight-menu a:after {
     background-color: transparent;
 }
