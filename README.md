@@ -14,16 +14,17 @@ The main characteristics of this library are:
 - Fully tested
 - ES6 source (transpiled to ES5)
 
-### Charts
+## Charts
 
-Currently Britecharts exposes 5 charts:
+Currently Britecharts exposes 7 charts:
 
- - Bar Chart
- - Line Chart
- - Donut Chart
- - Stacked Area Chart
- - Tooltip Chart
- - Legend Chart
+ - [Bar Chart](/docs/tutorial-bar.html)
+ - [Line Chart](/docs/tutorial-line.html)
+ - [Donut Chart](/docs/tutorial-donut.html)
+ - [Sparkline Chart](/docs/tutorial-sparkline.html)
+ - [Stacked Area Chart](/docs/tutorial-stacked-area.html)
+ - [Tooltip Chart](/docs/tutorial-stacked-area.html)
+ - [Legend Chart](/docs/tutorial-donut.html)
 
 ## TLDR: Using it
 
@@ -61,9 +62,13 @@ In order to generate and see the documentation for this charts and the project i
 
  + In the root or the repository folder, run:
 
+    `npm run demos:watch`
+
+ + In another terminal, run:
+
     `npm run demos:serve`
 
- + In another terminal window, run:
+ + In a third terminal window, run:
 
     `npm run docs`
 
