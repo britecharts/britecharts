@@ -10,6 +10,14 @@ define(function(require) {
      */
 
     /**
+     * @typedef ChartData
+     * @type Object[]
+     *
+     * @param {String} letter       Letter we measure
+     * @param {Number} frequency    Frequency of the letter
+     */
+
+    /**
      * Bar Chart reusable API class that renders a
      * simple and configurable bar chart.
      *
@@ -56,7 +64,7 @@ define(function(require) {
          * This function creates the graph using the selection as container
          * @param  {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
-         * @param {object} _data The data to attach and generate the chart
+         * @param {ChartData} _data The data to attach and generate the chart
          */
         function exports(_selection){
             _selection.each(function(_data){

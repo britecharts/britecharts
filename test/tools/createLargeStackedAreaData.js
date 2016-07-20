@@ -1,17 +1,23 @@
 // to run `node <path to>createLargeStackedAreaData.js`
-var fs = require('fs');
+var fs = require('fs'),
+    writable,
+    config,
+    monthHash,
+    currentDate,
+    toAdd,
+    i = 0;
 
-var writable = {
+writable = {
     data : []
 };
 
-var config = {
+config = {
     path: './../json/areaDataLarge.json',
     sources: ['google', 'facebook','twitter', 'user_newsvarter', 'user_email', 'unknown'],
     startDate: new Date()
-}
+};
 
-var monthHash = {
+monthHash = {
     Jan: '01',
     Feb: '02',
     Mar: '03',
@@ -26,9 +32,8 @@ var monthHash = {
     Dev: '12'
 };
 
-for (var i = 0; i < 100; i++) {
-    var currentDate = new Date(new Date().setDate(config.startDate.getDate() + i)),
-        toAdd;
+for (; i < 100; i++) {
+    currentDate = new Date(new Date().setDate(config.startDate.getDate() + i));
 
     config.sources.forEach(function(name) {
         toAdd = {};
@@ -42,11 +47,11 @@ for (var i = 0; i < 100; i++) {
 }
 
 fs.writeFile(config.path, JSON.stringify(writable), function(err) {
-    if(err) {console.log('error', err)}
+    if (err) { console.log('error', err); };
 });
 
 function formatPrependZero(n) {
-    if(JSON.stringify(n).length === 1) {
+    if (JSON.stringify(n).length === 1) {
         return '0' + n;
     }
     return n;
