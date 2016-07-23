@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Test Britecharts</title>
+    <title>Line Chart Demo - Britecharts</title>
     <style type="text/css">
         @font-face {
             font-family: Benton;
@@ -40,7 +40,6 @@
             text-anchor: middle;
 
             padding: 10px;
-            background-color: red;
         }
         .tick line {
             fill: none;
@@ -81,6 +80,8 @@
             <h3>Line Chart with fixed Aspect Ratio</h3>
             <p>The code for this example can be found in /demos/demo-line.js and it calls the line chart with a <strong>fixed aspect ratio</strong>:</p>
             <div class="britechart js-line-chart-container"></div>
+
+            <strong>Example:</strong>
             <pre>
                 lineChart
                     .aspectRatio(0.42)
@@ -89,8 +90,8 @@
 
                 container.datum(dataset).call(lineChart);
             </pre>
+            <p>You can also export this chart by pressing: <input id="button" type="button" value="download" /></p>
         </article>
-        <input id="button" type="button" value="download" />
         <article>
             <h3>Line Chart with Fixed Height</h3>
             <p>In this case, we have set a <strong>fixed height</strong> on the chart, as we are currently doing on the Sales report:</p>
