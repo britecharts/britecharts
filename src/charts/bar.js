@@ -48,8 +48,18 @@ define(function(require) {
             data,
             chartWidth, chartHeight,
             xScale, yScale,
+            numOfVerticalTicks = 5,
             xAxis, yAxis,
+            xAxisPadding = {
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0
+            },
             svg,
+
+            maskGridLines,
+            baseLine,
 
             // Dispatcher object to broadcast the 'customHover' event
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
@@ -75,6 +85,7 @@ define(function(require) {
                 buildScales();
                 buildAxis();
                 buildSVG(this);
+                drawGridLines();
                 drawBars();
                 drawAxis();
             });
@@ -92,7 +103,7 @@ define(function(require) {
             yAxis = d3.svg.axis()
                 .scale(yScale)
                 .orient('left')
-                .ticks(10, '%');
+                .ticks(numOfVerticalTicks, '%');
         }
 
         /**
@@ -103,13 +114,16 @@ define(function(require) {
         function buildContainerGroups(){
             let container = svg.append('g')
                 .classed('container-group', true)
-                .attr({
-                    transform: `translate(${margin.left}, ${margin.top})`
-                });
+                .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-            container.append('g').classed('chart-group', true);
-            container.append('g').classed('x-axis-group axis', true);
-            container.append('g').classed('y-axis-group axis', true);
+            container
+                .append('g').classed('grid-lines-group', true);
+            container
+                .append('g').classed('chart-group', true);
+            container
+                .append('g').classed('x-axis-group axis', true);
+            container
+                .append('g').classed('y-axis-group axis', true);
         }
 
         /**
@@ -139,10 +153,14 @@ define(function(require) {
 
                 buildContainerGroups();
             }
-            svg.transition().attr({
-                width: width + margin.left + margin.right,
-                height: height + margin.top + margin.bottom
-            });
+
+            svg
+                .transition()
+                .ease(ease)
+                .attr({
+                    width: width + margin.left + margin.right,
+                    height: height + margin.top + margin.bottom
+                });
         }
 
         /**
@@ -195,6 +213,39 @@ define(function(require) {
             // Exit
             bars.exit()
                 .transition().style({ opacity: 0 }).remove();
+        }
+
+        /**
+         * Draws grid lines on the background of the chart
+         * @return void
+         */
+        function drawGridLines(){
+            maskGridLines = svg.select('.grid-lines-group')
+                .selectAll('line.horizontal-grid-line')
+                .data(yScale.ticks(4))
+                .enter()
+                    .append('line')
+                    .attr({
+                        class: 'horizontal-grid-line',
+                        x1: (xAxisPadding.left),
+                        x2: chartWidth,
+                        y1: (d) => yScale(d),
+                        y2: (d) => yScale(d)
+                    });
+
+            //draw a horizontal line to extend x-axis till the edges
+            baseLine = svg.select('.grid-lines-group')
+                .selectAll('line.extended-x-line')
+                .data([0])
+                .enter()
+                    .append('line')
+                    .attr({
+                        class: 'extended-x-line',
+                        x1: (xAxisPadding.left),
+                        x2: chartWidth,
+                        y1: height - margin.bottom - margin.top,
+                        y2: height - margin.bottom - margin.top
+                    });
         }
 
         /**

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Test Britecharts</title>
+    <title>Donut Chart Demo - Britecharts</title>
     <style type="text/css">
         @font-face {
             font-family: Benton;
@@ -106,6 +106,7 @@
             <h2>Simple Donut Chart</h2>
             <div class="js-donut-chart-container donut-chart-container"></div>
             <div class="js-legend-chart-container legend-chart-container"></div>
+            <strong>Example:</strong>
             <pre>
                 donutChart
                     .width(containerWidth)
@@ -123,8 +124,8 @@
 
                 legendContainer.datum(dataset).call(legendChart);
             </pre>
+            <input id="button" type="button" value="download" />
         </article>
-        <input id="button" type="button" value="download" />
         <article>
             <h2>Small Donut Chart</h2>
             <div class="js-small-donut-chart-container"></div>
