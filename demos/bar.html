@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Test Britecharts</title>
+    <title>Bar Chart Demo - Britecharts</title>
     <style type="text/css">
         @font-face {
             font-family: Benton;
@@ -11,61 +11,55 @@
         body {
             font-family: Benton;
         }
-        .britechart {}
-        .maskRect {
-            fill: none;
-            pointer-events: all;
-        }
-        .topic .line {
-            stroke-width: 3;
-            fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-        .horizontal-grid-line {
-            fill: none;
-            shape-rendering: crispEdges;
-            stroke: #EEEEEE;
-            stroke-width: 1px;
-        }
-        .extended-x-line {
-            fill: none;
-            shape-rendering: crispEdges;
-            stroke: rgba(0, 0, 0, 0.45);
-            stroke-width: 1;
-        }
-        .tick text {
-            font-size: 0.8em;
-            fill: rgba(0, 0, 0, 0.45);
-            text-anchor: middle;
 
-            padding: 10px;
-            background-color: red;
-        }
-        .tick line {
-            fill: none;
-            stroke: rgba(0, 0, 0, 0.45);
-            stroke-width: 1;
-            shape-rendering: crispEdges;
-        }
-        .y.axis path {
-            display: none;
-        }
-        .month-axis path {
-            display: none;
-        }
-        .hover-marker .vertical-marker {
-            stroke: #FF0044;
-            stroke-width: 1;
-            fill: none;
-        }
-        .hover-marker .data-point-highlighter{
-            stroke-width: 3;
-            fill: #ffffff;
-        }
-        .masking-rectangle {
-            fill: #FFFFFF;
-        }
+        .britechart {}
+        .container-group {}
+        .chart-group {}
+            .bar {
+                fill: #8FDAD8;
+                stroke-width: 0;
+                shape-rendering:    crispEdges;
+            }
+            .bar:hover {
+                fill: #39C2C9;
+            }
+
+        .axis {}
+        .x-axis-group {}
+            .axis path {
+                display: none;
+            }
+            .tick {}
+            .tick line {
+                display: none;
+                fill: none;
+                stroke: rgba(0, 0, 0, 0.45);
+                stroke-width: 1;
+                shape-rendering: crispEdges;
+            }
+            .tick text {
+                font-size: 0.8em;
+                fill: rgba(0, 0, 0, 0.45);
+                text-anchor: middle;
+
+                padding: 10px;
+            }
+
+        .grid-lines-group {}
+            .horizontal-grid-line {
+                fill: none;
+                shape-rendering: crispEdges;
+                stroke: #EBEBEB;
+                stroke-width: 1;
+            }
+            .extended-x-line {
+                fill: none;
+                shape-rendering: crispEdges;
+                stroke: #ECECEC;
+                stroke-width: 1;
+            }
+
+        /* TODO: Implement */
         .tooltip-background {
             fill: #FFFFFF;
             stroke: #D9D9D9;
@@ -79,6 +73,7 @@
         <article>
             <h2>Simple Bar Chart</h2>
             <div class="britechart js-bar-chart-container"></div>
+            <strong>Example:</strong>
             <pre>
                 barChart
                     .width(500)
@@ -86,8 +81,8 @@
 
                 barContainer.datum(dataset).call(barChart);
             </pre>
+            <p>You can also export this chart by pressing: <input id="button" type="button" value="download" /></p>
         </article>
-        <input id="button" type="button" value="download" />
     </section>
 </body>
 </html>
