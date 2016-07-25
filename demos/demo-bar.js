@@ -8,13 +8,18 @@ var d3 = require('d3'),
 function createBarChart() {
     var barChart = bar(),
         testDataSet = new dataBuilder.BarDataBuilder(),
+        containerWidth = d3.select('.js-bar-chart-container').node().getBoundingClientRect().width,
         barContainer = d3.select('.js-bar-chart-container'),
         dataset;
+
+    d3.select('#button').on('click', function() {
+        barChart.exportChart();
+    });
 
     dataset = testDataSet.withLettersFrequency().build();
 
     barChart
-        .width(500)
+        .width(containerWidth)
         .height(300)
         .on('customHover', function(d, i){
             console.log('Bar data is ', d);
@@ -22,19 +27,14 @@ function createBarChart() {
         });
 
     barContainer.datum(dataset).call(barChart);
-
-    d3.select(window).on('resize', function(){
-        var newWidth = d3.select('.js-bar-chart-container').node().getBoundingClientRect().width;
-
-        d3.select('.line-chart').remove();
-
-        barChart
-            .width(newWidth);
-        barContainer.call(barChart);
-    });
 }
 
 // Show charts if container available
 if (d3.select('.js-bar-chart-container').node()){
     createBarChart();
+
+    d3.select(window).on('resize', function(){
+        d3.select('.bar-chart').remove();
+        createBarChart();
+    });
 }

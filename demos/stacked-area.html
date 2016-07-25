@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Test Britecharts</title>
+    <title>Stacked Area Chart Demo - Britecharts</title>
     <style type="text/css">
         @font-face {
             font-family: Benton;
@@ -70,6 +70,7 @@
             <h3>Stacked Area Chart with Tooltip</h3>
             <p>The code for this example can be found in /demos/demo-stacked-area.js:</p>
             <div class="britechart js-stacked-area-chart-tooltip-container"></div>
+            <strong>Example:</strong>
             <pre>
                 // StackedAreChart Setup and start
                 stackedArea
@@ -95,8 +96,8 @@
                 tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
                 tooltipContainer.datum([]).call(chartTooltip);
             </pre>
+            <p>You can also export this chart by pressing: <input id="button" type="button" value="download" /></p>
         </article>
-        <input id="button" type="button" value="download" />
         <article>
             <h3>Stacked Area Chart</h3>
             <p>The code for this example can be found in /demos/demo-stacked-area.js:</p>

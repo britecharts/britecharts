@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Test Britecharts</title>
+    <title>Sparkline Chart Demo - Britecharts</title>
     <style type="text/css">
         @font-face {
             font-family: Benton;
@@ -37,14 +37,15 @@
             <h3>Sparkline Chart</h3>
             <p>The code for this example can be found in /demos/demo-sparkline.js and it calls the sparkline chart:</p>
             <div class="britechart js-sparkline-chart-container"></div>
+            <strong>Example:</strong>
             <pre>
                 sparklineChart
                     .width(containerWidth);
 
                 container.datum(dataset).call(sparklineChart);
             </pre>
+            <p>You can also export this chart by pressing: <input id="button" type="button" value="download" /></p>
         </article>
-        <input id="button" type="button" value="download" />
     </section>
 </body>
 </html>
