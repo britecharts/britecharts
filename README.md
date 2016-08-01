@@ -28,7 +28,7 @@ Currently Britecharts exposes 7 charts:
 
 ## TLDR: Using it
 
-The typical use of Britecharts involves creating a chart using it's simple API, and render it on a container which has been previously applyied some data. The code will look like this:
+The typical use of Britecharts involves creating a chart using it's simple API, and render it on a container which has been previously applied some data. The code will look like this:
 
     barChart
         .width(500)
