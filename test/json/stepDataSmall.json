@@ -1,0 +1,36 @@
+{
+    "data": [
+        {
+            "key": "Appetizer",
+            "value": 400
+        },
+        {
+            "key": "Soup",
+            "value": 300
+        },
+        {
+            "key": "Salad",
+            "value": 300
+        },
+        {
+            "key": "Brunch",
+            "value": 250
+        },
+        {
+            "key": "Lunch",
+            "value": 250
+        },
+        {
+            "key": "Dinner",
+            "value": 220
+        },
+        {
+            "key": "Dessert",
+            "value": 100
+        },
+        {
+            "key": "Midnight snack",
+            "value": 20
+        }
+    ]
+}
