@@ -1,18 +1,18 @@
-define(['jquery', 'd3', 'bar', 'barChartDataBuilder'], function($, d3, chart, dataBuilder) {
+define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, dataBuilder) {
     'use strict';
 
-    describe('Reusable Bar Chart Test Suite', () => {
-        let barChart, dataset, containerFixture, f;
+    describe('Reusable Step Chart Test Suite', () => {
+        let stepChart, dataset, containerFixture, f;
 
         function aTestDataSet() {
-            return new dataBuilder.BarDataBuilder();
+            return new dataBuilder.StepDataBuilder();
         }
 
         beforeEach(() => {
             dataset = aTestDataSet()
-                .withLettersFrequency()
+                .withSmallData()
                 .build();
-            barChart = chart();
+            stepChart = chart();
 
             // DOM Fixture Setup
             f = jasmine.getFixtures();
@@ -20,7 +20,7 @@ define(['jquery', 'd3', 'bar', 'barChartDataBuilder'], function($, d3, chart, da
             f.load('testContainer.html');
 
             containerFixture = d3.select('.test-container');
-            containerFixture.datum(dataset).call(barChart);
+            containerFixture.datum(dataset.data).call(stepChart);
         });
 
         afterEach(() => {
@@ -31,7 +31,7 @@ define(['jquery', 'd3', 'bar', 'barChartDataBuilder'], function($, d3, chart, da
         });
 
         it('should render a chart with minimal requirements', () => {
-            expect(containerFixture.select('.bar-chart').empty()).toBeFalsy();
+            expect(containerFixture.select('.step-chart').empty()).toBeFalsy();
         });
 
         it('should render container, axis and chart groups', () => {
@@ -51,76 +51,86 @@ define(['jquery', 'd3', 'bar', 'barChartDataBuilder'], function($, d3, chart, da
             expect(containerFixture.select('.y-axis-group.axis').empty()).toBeFalsy();
         });
 
-        it('should render a bar for each data entry', () => {
-            let numBars = dataset.length;
+        it('should render a step for each data entry', () => {
+            let numSteps = dataset.data.length;
 
-            expect(containerFixture.selectAll('.bar').size()).toEqual(numBars);
+            expect(containerFixture.selectAll('.step').size()).toEqual(numSteps);
         });
 
         describe('setters and getters', function() {
             it('should provide margin getter and setter', () => {
-                let defaultMargin = barChart.margin(),
+                let defaultMargin = stepChart.margin(),
                     testMargin = {top: 4, right: 4, bottom: 4, left: 4},
                     newMargin;
 
-                barChart.margin(testMargin);
-                newMargin = barChart.margin();
+                stepChart.margin(testMargin);
+                newMargin = stepChart.margin();
 
                 expect(defaultMargin).not.toBe(newMargin);
                 expect(newMargin).toBe(testMargin);
             });
 
             it('should provide height getter and setter', () => {
-                let defaultHeight = barChart.height(),
+                let defaultHeight = stepChart.height(),
                     testHeight = {top: 4, right: 4, bottom: 4, left: 4},
                     newHeight;
 
-                barChart.height(testHeight);
-                newHeight = barChart.height();
+                stepChart.height(testHeight);
+                newHeight = stepChart.height();
 
                 expect(defaultHeight).not.toBe(newHeight);
                 expect(newHeight).toBe(testHeight);
             });
-        });
+
+            it('should provide numOfVerticalTicks getter and setter', () => {
+                let defaultNumOfVerticalTicks = stepChart.numOfVerticalTicks(),
+                    testNumOfVerticalTicks = {top: 4, right: 4, bottom: 4, left: 4},
+                    newNumOfVerticalTicks;
+
+                stepChart.numOfVerticalTicks(testNumOfVerticalTicks);
+                newNumOfVerticalTicks = stepChart.numOfVerticalTicks();
+
+                expect(defaultNumOfVerticalTicks).not.toBe(newNumOfVerticalTicks);
+                expect(newNumOfVerticalTicks).toBe(testNumOfVerticalTicks);
+            });
 
             it('should provide width getter and setter', () => {
-                let defaultWidth = barChart.width(),
+                let defaultWidth = stepChart.width(),
                     testWidth = {top: 4, right: 4, bottom: 4, left: 4},
                     newWidth;
 
-                barChart.width(testWidth);
-                newWidth = barChart.width();
+                stepChart.width(testWidth);
+                newWidth = stepChart.width();
 
                 expect(defaultWidth).not.toBe(newWidth);
                 expect(newWidth).toBe(testWidth);
             });
-
         });
 
-        describe('on hovering a bar', function() {
+        describe('on hovering a step', function() {
 
             beforeEach(() => {
                 this.callbackSpy = jasmine.createSpy('callback');
 
-                barChart.on('customHover', this.callbackSpy);
+                stepChart.on('customHover', this.callbackSpy);
             });
 
             it('should trigger a callback', () => {
-                let bars = containerFixture.selectAll('.bar');
+                let steps = containerFixture.selectAll('.step');
 
-                bars[0][0].__onmouseover();
+                steps[0][0].__onmouseover();
 
                 expect(this.callbackSpy).toHaveBeenCalled();
                 // TODO: Figure out why the callback has this shape
                 // arguments: data, index, ?
-                expect(this.callbackSpy).toHaveBeenCalledWith(dataset[0], 0, 0);
+                expect(this.callbackSpy).toHaveBeenCalledWith(dataset.data[0], 0, 0);
             });
         });
 
         describe('Export chart functionality', () => {
 
             it('should have exportChart defined', () => {
-                expect(barChart.exportChart).toBeDefined();
+                expect(stepChart.exportChart).toBeDefined();
             });
         });
     });

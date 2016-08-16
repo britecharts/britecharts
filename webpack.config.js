@@ -18,7 +18,8 @@ var webpack = require('webpack'),
         'line': './src/charts/line.js',
         'tooltip': './src/charts/tooltip.js',
         'sparkline': './src/charts/sparkline.js',
-        'stacked-area': './src/charts/stacked-area.js'
+        'stacked-area': './src/charts/stacked-area.js',
+        'step': './src/charts/step.js'
     },
 
     defaultJSLoader = {
