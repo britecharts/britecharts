@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Bar Chart Demo - Britecharts</title>
+    <title>Step Chart Demo - Britecharts</title>
     <style type="text/css">
         @font-face {
             font-family: Benton;
@@ -13,37 +13,40 @@
         }
 
         .britechart {}
+
         .container-group {}
+
         .chart-group {}
-            .bar {
-                fill: #8FDAD8;
+            .step {
+                fill: #00a8f2;
                 stroke-width: 0;
-                shape-rendering:    crispEdges;
+                shape-rendering: crispEdges;
             }
-            .bar:hover {
-                fill: #39C2C9;
-            }
+
+        .step:hover {
+            fill: #33ccff;
+        }
 
         .axis {}
         .x-axis-group {}
-            .axis path {
-                display: none;
-            }
-            .tick {}
-            .tick line {
-                display: none;
-                fill: none;
-                stroke: rgba(0, 0, 0, 0.45);
-                stroke-width: 1;
-                shape-rendering: crispEdges;
-            }
-            .tick text {
-                font-size: 0.8em;
-                fill: rgba(0, 0, 0, 0.45);
-                text-anchor: middle;
+        .axis path {
+            display: none;
+        }
 
-                padding: 10px;
-            }
+        .tick {}
+        .tick line {
+            display: none;
+            fill: none;
+            stroke: rgba(0, 0, 0, 0.45);
+            stroke-width: 1;
+            shape-rendering: crispEdges;
+        }
+        .tick text {
+            font-size: 0.8em;
+            fill: rgba(0, 0, 0, 0.45);
+            text-anchor: middle;
+            padding: 10px;
+        }
 
         .grid-lines-group {}
             .horizontal-grid-line {
@@ -58,28 +61,21 @@
                 stroke: #ECECEC;
                 stroke-width: 1;
             }
-
-        /* TODO: Implement */
-        .tooltip-background {
-            fill: #FFFFFF;
-            stroke: #D9D9D9;
-            stroke-width: 1;
-        }
     </style>
 </head>
-<body id="bar">
+<body id="step">
     <section>
-        <p>This is a simple bar chart whose code it's used as a coding standard. We hope to improve it soon.</p>
+        <p>This is a simple step chart.</p>
         <article>
-            <h2>Simple Bar Chart</h2>
-            <div class="britechart js-bar-chart-container"></div>
+            <h2>Simple Step Chart</h2>
+            <div class="britechart js-step-chart-container"></div>
             <strong>Example:</strong>
             <pre>
-                barChart
+                stepChart
                     .width(500)
                     .height(300);
 
-                barContainer.datum(dataset).call(barChart);
+                stepContainer.datum(dataset).call(stepChart);
             </pre>
             <p>You can also export this chart by pressing: <input id="button" type="button" value="download" /></p>
         </article>
