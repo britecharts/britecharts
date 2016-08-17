@@ -13,37 +13,40 @@
         }
 
         .britechart {}
+
         .container-group {}
+
         .chart-group {}
-            .bar {
-                fill: #8FDAD8;
+            .step {
+                fill: #00a8f2;
                 stroke-width: 0;
-                shape-rendering:    crispEdges;
+                shape-rendering: crispEdges;
             }
-            .bar:hover {
-                fill: #39C2C9;
-            }
+
+        .step:hover {
+            fill: #33ccff;
+        }
 
         .axis {}
         .x-axis-group {}
-            .axis path {
-                display: none;
-            }
-            .tick {}
-            .tick line {
-                display: none;
-                fill: none;
-                stroke: rgba(0, 0, 0, 0.45);
-                stroke-width: 1;
-                shape-rendering: crispEdges;
-            }
-            .tick text {
-                font-size: 0.8em;
-                fill: rgba(0, 0, 0, 0.45);
-                text-anchor: middle;
+        .axis path {
+            display: none;
+        }
 
-                padding: 10px;
-            }
+        .tick {}
+        .tick line {
+            display: none;
+            fill: none;
+            stroke: rgba(0, 0, 0, 0.45);
+            stroke-width: 1;
+            shape-rendering: crispEdges;
+        }
+        .tick text {
+            font-size: 0.8em;
+            fill: rgba(0, 0, 0, 0.45);
+            text-anchor: middle;
+            padding: 10px;
+        }
 
         .grid-lines-group {}
             .horizontal-grid-line {
@@ -58,13 +61,6 @@
                 stroke: #ECECEC;
                 stroke-width: 1;
             }
-
-        /* TODO: Implement */
-        .tooltip-background {
-            fill: #FFFFFF;
-            stroke: #D9D9D9;
-            stroke-width: 1;
-        }
     </style>
 </head>
 <body id="step">
