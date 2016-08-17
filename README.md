@@ -25,6 +25,7 @@ Currently Britecharts exposes 7 charts:
  - [Stacked Area Chart](/docs/tutorial-stacked-area.html)
  - [Tooltip Chart](/docs/tutorial-stacked-area.html)
  - [Legend Chart](/docs/tutorial-donut.html)
+ - [Step Chart](/docs/tutorial-step.html)
 
 ## TLDR: Using it
 
@@ -82,6 +83,10 @@ This project is in active development. We are working on:
 - Style Bar Chart
 - Document each graphs data input
 
+## Resources
+- Documentation
+- Demos
+- [Release Notes](https://github.com/eventbrite/britecharts/releases)
 
 ## License
 

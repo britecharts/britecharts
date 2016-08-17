@@ -22,7 +22,7 @@ define(function(require) {
      * simple and configurable bar chart.
      *
      * @module Bar
-     * @version 0.0.3
+     * @version 0.1.0
      * @tutorial bar
      * @requires d3
      *
