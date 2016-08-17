@@ -22,7 +22,7 @@ define(function(require) {
      * simple and configurable step chart.
      *
      * @module Step
-     * @version 0.0.1
+     * @version 0.1.0
      * @tutorial step
      * @requires d3
      *

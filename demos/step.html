@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Bar Chart Demo - Britecharts</title>
+    <title>Step Chart Demo - Britecharts</title>
     <style type="text/css">
         @font-face {
             font-family: Benton;
@@ -67,19 +67,19 @@
         }
     </style>
 </head>
-<body id="bar">
+<body id="step">
     <section>
-        <p>This is a simple bar chart whose code it's used as a coding standard. We hope to improve it soon.</p>
+        <p>This is a simple step chart.</p>
         <article>
-            <h2>Simple Bar Chart</h2>
-            <div class="britechart js-bar-chart-container"></div>
+            <h2>Simple Step Chart</h2>
+            <div class="britechart js-step-chart-container"></div>
             <strong>Example:</strong>
             <pre>
-                barChart
+                stepChart
                     .width(500)
                     .height(300);
 
-                barContainer.datum(dataset).call(barChart);
+                stepContainer.datum(dataset).call(stepChart);
             </pre>
             <p>You can also export this chart by pressing: <input id="button" type="button" value="download" /></p>
         </article>
