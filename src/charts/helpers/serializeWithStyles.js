@@ -60,10 +60,6 @@ module.exports = (function() {
                     return;
                 }
 
-                if (!elem.outerHTML) {
-                    outerHTMLPolyfill();
-                }
-
                 cssTexts = [];
                 elements = elem.querySelectorAll('*');
 
