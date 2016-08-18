@@ -15,11 +15,10 @@ define(function(require) {
         defaultFilename: 'britechart.png',
         chartBackground: 'white',
         imageSourceBase: 'data:image/svg+xml;base64,',
-        get styleString () {
+        get styleBackgroundString () {
             return `<style>svg{background:${this.chartBackground};}</style>`;
         }
     };
-
 
     /**
      * Main function to be used as a method by chart instances to export charts to png
@@ -27,19 +26,28 @@ define(function(require) {
      * @param  {string} filename [download to be called <filename>.png]
      */
     function exportChart(d3svg, filename) {
-        let html,
-            img,
-            canvas,
-            canvasWidth = this.width(),
+        let canvasWidth = this.width(),
             canvasHeight = this.height();
 
-        html = convertSvgToHtml(d3svg);
+        let html = convertSvgToHtml(d3svg);
 
-        canvas = createCanvas(canvasWidth, canvasHeight);
+        let canvas = createCanvas(canvasWidth, canvasHeight);
 
-        img = createImage(html);
+        let img = createImage(html);
 
         img.onload = handleImageLoad.bind(img, canvas, filename);
+    }
+
+    /**
+     * Handles on load event fired by img.onload, this=img
+     * @param  {object} canvas TYPE: el <canvas>
+     * @param  {string} filename
+     * @param  {object} e
+     */
+    function handleImageLoad(canvas, filename, e) {
+        e.preventDefault();
+        drawImageOnCanvas(this, canvas);
+        downloadCanvas(canvas, filename || config.defaultFilename);
     }
 
     /**
@@ -49,12 +57,15 @@ define(function(require) {
      * @return {string} string of passed d3
      */
     function convertSvgToHtml (d3svg) {
-        let serialized;
+        let serializer = serializeWithStyles.initializeSerializer();
 
         if (!d3svg){ return; }
+
         d3svg.attr({ version: 1.1, xmlns: 'http://www.w3.org/2000/svg'});
-        serialized = serializeWithStyles(d3svg.node());
-        return serialized.replace('>',`>${config.styleString}`);
+
+        let serialized = serializer(d3svg.node());
+
+        return serialized.replace('>',`>${config.styleBackgroundString}`);
     }
 
     /**
@@ -109,18 +120,6 @@ define(function(require) {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-    }
-
-    /**
-     * Handles on load event fired by img.onload, this=img
-     * @param  {object} canvas TYPE: el <canvas>
-     * @param  {string} filename
-     * @param  {object} e
-     */
-    function handleImageLoad(canvas, filename, e) {
-        e.preventDefault();
-        drawImageOnCanvas(this, canvas);
-        downloadCanvas(canvas, filename || config.defaultFilename);
     }
 
     return exportChart;
