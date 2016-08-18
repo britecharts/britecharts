@@ -3,6 +3,7 @@ define(function(require){
 
     const d3 = require('d3');
     const exportChart = require('./helpers/exportChart');
+    const _ = require('underscore');
 
     /**
      * @typdef D3Layout
@@ -19,8 +20,8 @@ define(function(require){
      * @requires d3
      *
      */
-    return function module(){
 
+    return function module() {
         let margin = {
                 left: 40,
                 right: 20,
@@ -123,11 +124,7 @@ define(function(require){
                 dataByDate = d3.nest()
                     .key( getDate )
                     .entries(
-                        _data.sort((a,b) => {
-                            if(a.date < b.date) return -1;
-                            if(a.date > b.date) return 1;
-                            return 0;
-                        })
+                         _(_data).sortBy('date')
                     );
                 buildLayers();
                 buildScales();
