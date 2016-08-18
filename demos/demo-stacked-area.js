@@ -43,9 +43,15 @@ function createStackedAreaChartWithTooltip() {
     // this container won't exist, and the tooltip won't show up
     tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
     tooltipContainer.datum([]).call(chartTooltip);
+
+    d3.select('#button').on('click',
+        function(){
+            stackedArea.exportChart();
+    });
 }
 
 function createStackedAreaChart() {
+
     var stackedArea = stackedAreaChart(),
         testDataSet = new stackedDataBuilder.StackedAreaDataBuilder(),
         containerWidth = d3.select('.js-stacked-area-chart-container').node().getBoundingClientRect().width,
@@ -61,6 +67,8 @@ function createStackedAreaChart() {
 
     container.datum(dataset.data).call(stackedArea);
 }
+
+
 
 if (d3.select('.js-stacked-area-chart-tooltip-container').node()){
     // Show charts if container available
