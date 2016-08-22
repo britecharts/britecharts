@@ -48,7 +48,11 @@ define(function(require) {
             chartWidth, chartHeight,
             xScale, yScale,
             numOfVerticalTicks = 6,
-            xAxis, yAxis,
+            xAxis, xAxisLabel,
+            yAxis, yAxisLabel,
+            xAxisLabelOffset = 45,
+            yAxisTickFormat = d3.format('.2s'),
+            yAxisLabelOffset = -40,
             xAxisPadding = {
                 top: 0,
                 left: 0,
@@ -77,6 +81,7 @@ define(function(require) {
          */
         function exports(_selection){
             _selection.each(function(_data){
+                // Make space on the left of the graph for the y axis label
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
                 data = _data;
@@ -102,7 +107,8 @@ define(function(require) {
             yAxis = d3.svg.axis()
                 .scale(yScale)
                 .orient('left')
-                .ticks(numOfVerticalTicks);
+                .ticks(numOfVerticalTicks)
+                .tickFormat(yAxisTickFormat);
         }
 
         /**
@@ -120,9 +126,11 @@ define(function(require) {
             container
                 .append('g').classed('chart-group', true);
             container
-                .append('g').classed('x-axis-group axis', true);
+                .append('g').classed('x-axis-group axis', true)
+                .append('g').classed('x-axis-label', true);
             container
-                .append('g').classed('y-axis-group axis', true);
+                .append('g').classed('y-axis-group axis', true)
+                .append('g').classed('y-axis-label', true);
         }
 
         /**
@@ -169,13 +177,34 @@ define(function(require) {
          */
         function drawAxis(){
             svg.select('.x-axis-group.axis')
-                .transition()
-                .ease(ease)
                 .attr('transform', `translate(0, ${chartHeight})`)
                 .call(xAxis);
 
+            if (xAxisLabel) {
+                svg.select('.x-axis-label')
+                    .append('text')
+                    .attr({
+                        'text-anchor': 'middle',
+                        'x': chartWidth/2,
+                        'y': xAxisLabelOffset
+                    })
+                    .text(xAxisLabel);
+            }
+
             svg.select('.y-axis-group.axis')
                 .call(yAxis);
+
+            if (yAxisLabel) {
+                svg.select('.y-axis-label')
+                    .append('text')
+                    .attr({
+                        'x': chartHeight/-2,
+                        'y': yAxisLabelOffset,
+                        'text-anchor': 'middle',
+                        'transform': 'rotate(270 0 0)'
+                    })
+                    .text(yAxisLabel);
+            }
         }
 
         /**
@@ -299,6 +328,62 @@ define(function(require) {
                 return numOfVerticalTicks;
             }
             numOfVerticalTicks = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the text of the xAxisLabel on the chart
+         * @param  {text} _x Desired text for the label
+         * @return { text | module} label or Step Chart module to chain calls
+         * @public
+         */
+        exports.xAxisLabel = function(_x) {
+            if (!arguments.length) {
+                return xAxisLabel;
+            }
+            xAxisLabel = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the offset of the xAxisLabel on the chart
+         * @param  {integer} _x Desired offset for the label
+         * @return { integer | module} label or Step Chart module to chain calls
+         * @public
+         */
+        exports.xAxisLabelOffset = function(_x) {
+            if (!arguments.length) {
+                return xAxisLabelOffset;
+            }
+            xAxisLabelOffset = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the text of the yAxisLabel on the chart
+         * @param  {text} _x Desired text for the label
+         * @return { text | module} label or Step Chart module to chain calls
+         * @public
+         */
+        exports.yAxisLabel = function(_x) {
+            if (!arguments.length) {
+                return yAxisLabel;
+            }
+            yAxisLabel = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the offset of the yAxisLabel on the chart
+         * @param  {integer} _x Desired offset for the label
+         * @return { integer | module} label or Step Chart module to chain calls
+         * @public
+         */
+        exports.yAxisLabelOffset = function(_x) {
+            if (!arguments.length) {
+                return yAxisLabelOffset;
+            }
+            yAxisLabelOffset = _x;
             return this;
         };
 
