@@ -1,6 +1,8 @@
 'use strict';
 
-var d3 = require('d3'),
+var _ = require('underscore'),
+    d3 = require('d3'),
+
     bar = require('./../src/charts/bar'),
     dataBuilder = require('./../test/fixtures/barChartDataBuilder');
 
@@ -33,8 +35,8 @@ function createBarChart() {
 if (d3.select('.js-bar-chart-container').node()){
     createBarChart();
 
-    d3.select(window).on('resize', function(){
+    d3.select(window).on('resize', _.debounce(function(){
         d3.select('.bar-chart').remove();
         createBarChart();
-    });
+    }, 200));
 }

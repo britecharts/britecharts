@@ -1,6 +1,8 @@
 'use strict';
 
-var d3 = require('d3'),
+var _ = require('underscore'),
+    d3 = require('d3'),
+
     stackedAreaChart = require('./../src/charts/stacked-area'),
     tooltip = require('./../src/charts/tooltip'),
     stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder');
@@ -69,15 +71,14 @@ function createStackedAreaChart() {
 }
 
 
-
 if (d3.select('.js-stacked-area-chart-tooltip-container').node()){
     // Show charts if container available
     createStackedAreaChartWithTooltip();
     createStackedAreaChart();
 
-    d3.select(window).on('resize', function(){
+    d3.select(window).on('resize', _.debounce(function(){
         d3.selectAll('.stacked-area').remove();
         createStackedAreaChartWithTooltip();
         createStackedAreaChart();
-    });
+    }, 200));
 }

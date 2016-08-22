@@ -1,6 +1,8 @@
 'use strict';
 
-var d3 = require('d3'),
+var _ = require('underscore'),
+    d3 = require('d3'),
+
     sparklineChart = require('./../src/charts/sparkline'),
     sparklineDataBuilder = require('./../test/fixtures/sparklineDataBuilder');
 
@@ -12,7 +14,7 @@ function createSparklineChart() {
         container = d3.select('.js-sparkline-chart-container'),
         dataset;
 
-    d3.select("#button").on('click', function() {
+    d3.select('#button').on('click', function() {
         sparkline.exportChart();
     });
 
@@ -30,8 +32,8 @@ function createSparklineChart() {
 if (d3.select('.js-sparkline-chart-container').node()){
     createSparklineChart();
 
-    d3.select(window).on('resize', function(){
+    d3.select(window).on('resize', _.debounce(function(){
         d3.selectAll('.sparkline').remove();
         createSparklineChart();
-    });
+    }, 200));
 }

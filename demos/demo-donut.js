@@ -1,14 +1,12 @@
 'use strict';
 
-var d3 = require('d3'),
+var _ = require('underscore'),
+    d3 = require('d3'),
+
     donut = require('./../src/charts/donut'),
-    legend = require('./../src/charts/legend');
+    legend = require('./../src/charts/legend'),
 
-
-function createDonutChart() {
-    var donutChart = donut(),
-        legendChart = legend(),
-        dataset = [
+    dataset = [
               {
                 'name': 'Valentines VIP special',
                 'id': 33571136,
@@ -44,8 +42,11 @@ function createDonutChart() {
                 'percentage': 65
               }
         ],
+    legendChart;
+
+function createDonutChart(dataset, legendChart) {
+    var donutChart = donut(),
         donutContainer = d3.select('.js-donut-chart-container'),
-        legendContainer = d3.select('.js-legend-chart-container'),
         containerWidth = donutContainer.node().getBoundingClientRect().width;
 
     d3.select('#button').on('click', function() {
@@ -65,8 +66,14 @@ function createDonutChart() {
         });
 
     donutContainer.datum(dataset).call(donutChart);
+}
+function getLegendChart(dataset) {
+    var legendChart = legend(),
+        legendContainer = d3.select('.js-legend-chart-container');
 
     legendContainer.datum(dataset).call(legendChart);
+
+    return legendChart;
 }
 
 function createSmallDonutChart() {
@@ -127,12 +134,15 @@ function createSmallDonutChart() {
 
 // Show charts if container available
 if (d3.select('.js-donut-chart-container').node()) {
-    createDonutChart();
+    legendChart = getLegendChart(dataset);
+
+    createDonutChart(dataset, legendChart);
     createSmallDonutChart();
 
-    d3.select(window).on('resize', function(){
+    d3.select(window).on('resize', _.debounce(function(){
         d3.selectAll('.donut-chart').remove();
-        createDonutChart();
+
+        createDonutChart(dataset, legendChart);
         createSmallDonutChart();
-    });
+    }, 200));
 }
