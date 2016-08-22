@@ -1,0 +1,60 @@
+// TODO
+// - Use variables
+
+.stacked-area {
+
+    // Data points
+    .dot {
+        display: none;
+    }
+
+    // Axes
+    .y-axis-group path {
+        display: none;
+    }
+    .x-axis-group path {
+        display: none;
+    }
+    .tick {
+
+        text {
+            font-size: 0.8em;
+            fill: #9B9EA7;
+            text-anchor: middle;
+            padding: 10px;
+        }
+        line {
+            fill: none;
+            stroke: #D2D6DF;
+            stroke-width: 1;
+            shape-rendering: crispEdges;
+        }
+    }
+
+    // Grid
+    .horizontal-grid-line {
+        fill: none;
+        shape-rendering: crispEdges;
+        stroke: #EDEFF5;
+        stroke-width: 1px;
+    }
+
+    // Tooltip
+    .vertical-marker-container .vertical-marker {
+        stroke: #EDEFF5;
+        /*stroke: #FF0044;*/
+        stroke-width: 1;
+        fill: none;
+    }
+    .data-point-highlighter {
+        fill: #FFFFFF;
+    }
+    .masking-rectangle {
+        fill: #FFFFFF;
+    }
+    .tooltip-background {
+        fill: #FFFFFF;
+        stroke: #D9D9D9;
+        stroke-width: 1;
+    }
+}

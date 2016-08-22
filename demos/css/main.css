@@ -1,0 +1,213 @@
+@font-face {
+  font-family: Benton;
+  src: url("/src/fonts/BentonSans-Regular.otf") format("opentype");
+}
+body {
+  font-family: Benton;
+}
+
+.bar-chart .bar {
+  fill: #8FDAD8;
+  stroke-width: 0;
+  shape-rendering: crispEdges;
+}
+.bar-chart .bar:hover {
+  fill: #39C2C9;
+}
+.bar-chart .axis path {
+  display: none;
+}
+.bar-chart .tick line {
+  display: none;
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.45);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.bar-chart .tick text {
+  font-size: 0.8em;
+  fill: rgba(0, 0, 0, 0.45);
+  text-anchor: middle;
+  padding: 10px;
+}
+.bar-chart .horizontal-grid-line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: #EBEBEB;
+  stroke-width: 1;
+}
+.bar-chart .extended-x-line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: #ECECEC;
+  stroke-width: 1;
+}
+.bar-chart .tooltip-background {
+  fill: #FFFFFF;
+  stroke: #D9D9D9;
+  stroke-width: 1;
+}
+
+.britechart-legend .legend-line.is-faded .legend-entry-name,
+.britechart-legend .legend-line.is-faded .legend-entry-value,
+.britechart-legend .legend-line.is-faded .legend-circle {
+  opacity: 1;
+  transition: opacity .2s ease-out;
+  -moz-transition: opacity .2s ease-out;
+  -webkit-transition: opacity .2s ease-out;
+}
+.britechart-legend .legend-line.is-faded .legend-entry-name,
+.britechart-legend .legend-line.is-faded .legend-entry-value,
+.britechart-legend .legend-line.is-faded .legend-circle {
+  opacity: 0.2;
+}
+
+.line-chart .topic .line {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.line-chart .y.axis path {
+  display: none;
+}
+.line-chart .month-axis path {
+  display: none;
+}
+.line-chart .tick line {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.45);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.line-chart .tick text {
+  font-size: 0.8em;
+  fill: rgba(0, 0, 0, 0.45);
+  text-anchor: middle;
+  padding: 10px;
+}
+.line-chart .horizontal-grid-line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: #EDEFF5;
+  stroke-width: 1px;
+}
+.line-chart .extended-x-line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: rgba(0, 0, 0, 0.45);
+  stroke-width: 1;
+}
+.line-chart .hover-marker .vertical-marker {
+  stroke: #FF0044;
+  stroke-width: 1;
+  fill: none;
+}
+.line-chart .hover-marker .data-point-highlighter {
+  stroke-width: 3;
+  fill: #ffffff;
+}
+.line-chart .masking-rectangle {
+  fill: #FFFFFF;
+}
+.line-chart .tooltip-background {
+  fill: #FFFFFF;
+  stroke: #D9D9D9;
+  stroke-width: 1;
+}
+
+.sparkline {
+  stroke: #888;
+  stroke-width: 1;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sparkline .sparkline-circle {
+  fill: red;
+  stroke-width: 0;
+}
+
+.stacked-area .dot {
+  display: none;
+}
+.stacked-area .y-axis-group path {
+  display: none;
+}
+.stacked-area .x-axis-group path {
+  display: none;
+}
+.stacked-area .tick text {
+  font-size: 0.8em;
+  fill: #9B9EA7;
+  text-anchor: middle;
+  padding: 10px;
+}
+.stacked-area .tick line {
+  fill: none;
+  stroke: #D2D6DF;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.stacked-area .horizontal-grid-line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: #EDEFF5;
+  stroke-width: 1px;
+}
+.stacked-area .vertical-marker-container .vertical-marker {
+  stroke: #EDEFF5;
+  /*stroke: #FF0044;*/
+  stroke-width: 1;
+  fill: none;
+}
+.stacked-area .data-point-highlighter {
+  fill: #FFFFFF;
+}
+.stacked-area .masking-rectangle {
+  fill: #FFFFFF;
+}
+.stacked-area .tooltip-background {
+  fill: #FFFFFF;
+  stroke: #D9D9D9;
+  stroke-width: 1;
+}
+
+.step-chart .step {
+  fill: #8FDAD8;
+  stroke-width: 0;
+  shape-rendering: crispEdges;
+}
+.step-chart .step:hover {
+  fill: #39C2C9;
+}
+.step-chart .axis path {
+  display: none;
+}
+.step-chart .tick line {
+  display: none;
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.45);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.step-chart .tick text {
+  font-size: 0.8em;
+  fill: rgba(0, 0, 0, 0.45);
+  text-anchor: middle;
+  padding: 10px;
+}
+.step-chart .horizontal-grid-line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: #EBEBEB;
+  stroke-width: 1;
+}
+.step-chart .extended-x-line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: #ECECEC;
+  stroke-width: 1;
+}
+
+/*# sourceMappingURL=main.css.map */
