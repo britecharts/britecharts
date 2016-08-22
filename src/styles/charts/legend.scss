@@ -1,0 +1,29 @@
+// TODO:
+// - Review the naming
+// - Create mixins for animation
+
+.britechart-legend {
+
+    .legend-line {
+
+        &.is-faded {
+
+            .legend-entry-name,
+            .legend-entry-value,
+            .legend-circle {
+                opacity: 1;
+                transition: opacity .2s ease-out;
+                -moz-transition: opacity .2s ease-out;
+                -webkit-transition: opacity .2s ease-out;
+            }
+            .legend-entry-name,
+            .legend-entry-value,
+            .legend-circle {
+                opacity: 0.2;
+            }
+        }
+    }
+}
+
+.is-faded {}
+

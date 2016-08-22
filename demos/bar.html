@@ -3,76 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Bar Chart Demo - Britecharts</title>
-    <style type="text/css">
-        @font-face {
-            font-family: Benton;
-            src: url("/src/fonts/BentonSans-Regular.otf") format("opentype");
-        }
-        body {
-            font-family: Benton;
-        }
-
-        .britechart {}
-        .container-group {}
-        .chart-group {}
-            .bar {
-                fill: #8FDAD8;
-                stroke-width: 0;
-                shape-rendering:    crispEdges;
-            }
-            .bar:hover {
-                fill: #39C2C9;
-            }
-
-        .axis {}
-        .x-axis-group {}
-            .axis path {
-                display: none;
-            }
-            .tick {}
-            .tick line {
-                display: none;
-                fill: none;
-                stroke: rgba(0, 0, 0, 0.45);
-                stroke-width: 1;
-                shape-rendering: crispEdges;
-            }
-            .tick text {
-                font-size: 0.8em;
-                fill: rgba(0, 0, 0, 0.45);
-                text-anchor: middle;
-
-                padding: 10px;
-            }
-
-        .grid-lines-group {}
-            .horizontal-grid-line {
-                fill: none;
-                shape-rendering: crispEdges;
-                stroke: #EBEBEB;
-                stroke-width: 1;
-            }
-            .extended-x-line {
-                fill: none;
-                shape-rendering: crispEdges;
-                stroke: #ECECEC;
-                stroke-width: 1;
-            }
-
-        /* TODO: Implement */
-        .tooltip-background {
-            fill: #FFFFFF;
-            stroke: #D9D9D9;
-            stroke-width: 1;
-        }
-    </style>
+    <link type="text/css" rel="stylesheet" href="/demos/css/main.css" />
 </head>
 <body id="bar">
     <section>
         <p>This is a simple bar chart whose code it's used as a coding standard. We hope to improve it soon.</p>
         <article>
             <h2>Simple Bar Chart</h2>
-            <div class="britechart js-bar-chart-container"></div>
+            <div class="js-bar-chart-container"></div>
             <strong>Example:</strong>
             <pre>
                 barChart

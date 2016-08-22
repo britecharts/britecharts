@@ -3,100 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Donut Chart Demo - Britecharts</title>
+    <link type="text/css" rel="stylesheet" href="/demos/css/main.css" />
     <style type="text/css">
-        @font-face {
-            font-family: Benton;
-            src: url("/src/fonts/BentonSans-Regular.otf") format("opentype");
-        }
-        body {
-            font-family: Benton;
-        }
-        .britechart {}
-        .maskRect {
-            fill: none;
-            pointer-events: all;
-        }
-        .topic .line {
-            stroke-width: 3;
-            fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-        .horizontal-grid-line {
-            fill: none;
-            shape-rendering: crispEdges;
-            stroke: #EEEEEE;
-            stroke-width: 1px;
-        }
-        .extended-x-line {
-            fill: none;
-            shape-rendering: crispEdges;
-            stroke: rgba(0, 0, 0, 0.45);
-            stroke-width: 1;
-        }
-        .tick text {
-            font-size: 0.8em;
-            fill: rgba(0, 0, 0, 0.45);
-            text-anchor: middle;
-
-            padding: 10px;
-            background-color: red;
-        }
-        .tick line {
-            fill: none;
-            stroke: rgba(0, 0, 0, 0.45);
-            stroke-width: 1;
-            shape-rendering: crispEdges;
-        }
-        .y.axis path {
-            display: none;
-        }
-        .month-axis path {
-            display: none;
-        }
-        .hover-marker .vertical-marker {
-            stroke: #FF0044;
-            stroke-width: 1;
-            fill: none;
-        }
-        .hover-marker .data-point-highlighter{
-            stroke-width: 3;
-            fill: #ffffff;
-        }
-        .masking-rectangle {
-            fill: #FFFFFF;
-        }
-        .tooltip-background {
-            fill: #FFFFFF;
-            stroke: #D9D9D9;
-            stroke-width: 1;
-        }
-
-        /* Donut Styles */
-        .donut-value {
-            fill: #333;
-        }
+        /*TODO: Do this with Bootstrap*/
         .legend-chart-container {
             text-align: center;
         }
         .legend-chart-container svg {
             margin: 0 auto;
         }
-        .is-faded {}
-            .is-faded .legend-entry-name,
-            .is-faded .legend-entry-value,
-            .is-faded .legend-circle {
-                opacity: 1;
-                transition: opacity .2s ease-out;
-                -moz-transition: opacity .2s ease-out;
-                -webkit-transition: opacity .2s ease-out;
-            }
-
-            .is-faded .legend-entry-name,
-            .is-faded .legend-entry-value,
-            .is-faded .legend-circle {
-                opacity: 0.2;
-            }
     </style>
 </head>
 <body id="donut">
