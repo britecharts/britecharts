@@ -1,6 +1,8 @@
 'use strict';
 
-var d3 = require('d3'),
+var _ = require('underscore'),
+    d3 = require('d3'),
+
     line = require('./../src/charts/line'),
     tooltip = require('./../src/charts/tooltip'),
     dataBuilder = require('./../test/fixtures/lineChartDataBuilder');
@@ -70,9 +72,9 @@ if (d3.select('.js-line-chart-container').node()) {
     createLineChart();
     createLineChartWithFixedHeight();
 
-    d3.select(window).on('resize', function(){
+    d3.select(window).on('resize', _.debounce(function(){
         d3.selectAll('.line-chart').remove();
         createLineChart();
         createLineChartWithFixedHeight();
-    });
+    }, 200));
 }
