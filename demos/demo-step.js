@@ -1,6 +1,8 @@
 'use strict';
 
-var d3 = require('d3'),
+var _ = require('underscore'),
+    d3 = require('d3'),
+
     step = require('./../src/charts/step'),
     dataBuilder = require('./../test/fixtures/stepChartDataBuilder');
 
@@ -33,8 +35,8 @@ function createStepChart() {
 if (d3.select('.js-step-chart-container').node()){
     createStepChart();
 
-    d3.select(window).on('resize', function(){
+    d3.select(window).on('resize', _.debounce(function(){
         d3.select('.step-chart').remove();
         createStepChart();
-    });
+    }, 200));
 }
