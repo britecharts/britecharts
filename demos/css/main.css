@@ -1,0 +1,47 @@
+@font-face {
+  font-family: Benton;
+  src: url("/src/fonts/BentonSans-Regular.otf") format("opentype"); }
+
+body {
+  font-family: Benton; }
+
+.britechart .bar {
+  fill: #8FDAD8;
+  stroke-width: 0;
+  shape-rendering: crispEdges; }
+
+.britechart .bar:hover {
+  fill: #39C2C9; }
+
+.britechart .axis path {
+  display: none; }
+
+.britechart .tick line {
+  display: none;
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.45);
+  stroke-width: 1;
+  shape-rendering: crispEdges; }
+
+.britechart .tick text {
+  font-size: 0.8em;
+  fill: rgba(0, 0, 0, 0.45);
+  text-anchor: middle;
+  padding: 10px; }
+
+.britechart .horizontal-grid-line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: #EBEBEB;
+  stroke-width: 1; }
+
+.britechart .extended-x-line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: #ECECEC;
+  stroke-width: 1; }
+
+.britechart .tooltip-background {
+  fill: #FFFFFF;
+  stroke: #D9D9D9;
+  stroke-width: 1; }
