@@ -1,0 +1,16 @@
+// TODO:
+// - Use variables
+// - Style
+
+.sparkline {
+    stroke: #888;
+    stroke-width: 1;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    .sparkline-circle {
+        fill: red;
+        stroke-width: 0;
+    }
+}

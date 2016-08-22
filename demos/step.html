@@ -3,72 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Step Chart Demo - Britecharts</title>
-    <style type="text/css">
-        @font-face {
-            font-family: Benton;
-            src: url("/src/fonts/BentonSans-Regular.otf") format("opentype");
-        }
-        body {
-            font-family: Benton;
-        }
-
-        .britechart {}
-
-        .container-group {}
-
-        .chart-group {}
-            .step {
-                fill: #8FDAD8;
-                stroke-width: 0;
-                shape-rendering: crispEdges;
-            }
-
-        .step:hover {
-            fill: #39C2C9;
-        }
-
-        .axis {}
-        .x-axis-group {}
-        .axis path {
-            display: none;
-        }
-
-        .tick {}
-        .tick line {
-            display: none;
-            fill: none;
-            stroke: rgba(0, 0, 0, 0.45);
-            stroke-width: 1;
-            shape-rendering: crispEdges;
-        }
-        .tick text {
-            font-size: 0.8em;
-            fill: rgba(0, 0, 0, 0.45);
-            text-anchor: middle;
-            padding: 10px;
-        }
-
-        .grid-lines-group {}
-            .horizontal-grid-line {
-                fill: none;
-                shape-rendering: crispEdges;
-                stroke: #EBEBEB;
-                stroke-width: 1;
-            }
-            .extended-x-line {
-                fill: none;
-                shape-rendering: crispEdges;
-                stroke: #ECECEC;
-                stroke-width: 1;
-            }
-    </style>
+    <link type="text/css" rel="stylesheet" href="/demos/css/main.css" />
 </head>
 <body id="step">
     <section>
         <p>This is a simple step chart.</p>
         <article>
             <h2>Simple Step Chart</h2>
-            <div class="britechart js-step-chart-container"></div>
+            <div class="js-step-chart-container"></div>
             <strong>Example:</strong>
             <pre>
                 stepChart

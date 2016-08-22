@@ -24,8 +24,8 @@ function createLineChart() {
 
     // LineChart Setup and start
     lineChart
-        .aspectRatio(0.42)
-        .tooltipThreshold(400)
+        .aspectRatio(0.5)
+        .tooltipThreshold(600)
         .width(containerWidth)
         .on('customMouseOver', function() {
             chartTooltip.show();
@@ -58,7 +58,7 @@ function createLineChartWithFixedHeight() {
     dataset = testDataSet.with5Topics().build();
 
     lineChart
-        .tooltipThreshold(2400)
+        .tooltipThreshold(600)
         .height(300)
         .width(containerWidth);
 
