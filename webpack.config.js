@@ -44,6 +44,7 @@ if (isProduction) {
 
 config = {
 
+    // Add here listener to sccs files?
     demos : {
         devtool: 'source-map',
         entry: [

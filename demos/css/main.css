@@ -5,43 +5,56 @@
 body {
   font-family: Benton; }
 
-.britechart .bar {
+.bar-chart .bar {
   fill: #8FDAD8;
   stroke-width: 0;
   shape-rendering: crispEdges; }
 
-.britechart .bar:hover {
+.bar-chart .bar:hover {
   fill: #39C2C9; }
 
-.britechart .axis path {
+.bar-chart .axis path {
   display: none; }
 
-.britechart .tick line {
+.bar-chart .tick line {
   display: none;
   fill: none;
   stroke: rgba(0, 0, 0, 0.45);
   stroke-width: 1;
   shape-rendering: crispEdges; }
 
-.britechart .tick text {
+.bar-chart .tick text {
   font-size: 0.8em;
   fill: rgba(0, 0, 0, 0.45);
   text-anchor: middle;
   padding: 10px; }
 
-.britechart .horizontal-grid-line {
+.bar-chart .horizontal-grid-line {
   fill: none;
   shape-rendering: crispEdges;
   stroke: #EBEBEB;
   stroke-width: 1; }
 
-.britechart .extended-x-line {
+.bar-chart .extended-x-line {
   fill: none;
   shape-rendering: crispEdges;
   stroke: #ECECEC;
   stroke-width: 1; }
 
-.britechart .tooltip-background {
+.bar-chart .tooltip-background {
   fill: #FFFFFF;
   stroke: #D9D9D9;
   stroke-width: 1; }
+
+.britechart-legend .legend-line.is-faded .legend-entry-name,
+.britechart-legend .legend-line.is-faded .legend-entry-value,
+.britechart-legend .legend-line.is-faded .legend-circle {
+  opacity: 1;
+  transition: opacity .2s ease-out;
+  -moz-transition: opacity .2s ease-out;
+  -webkit-transition: opacity .2s ease-out; }
+
+.britechart-legend .legend-line.is-faded .legend-entry-name,
+.britechart-legend .legend-line.is-faded .legend-entry-value,
+.britechart-legend .legend-line.is-faded .legend-circle {
+  opacity: 0.2; }
