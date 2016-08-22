@@ -38,7 +38,9 @@ define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, 
             expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.x-axis-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.x-axis-label').empty()).toBeFalsy();
             expect(containerFixture.select('g.y-axis-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.y-axis-label').empty()).toBeFalsy();
             expect(containerFixture.select('g.grid-lines-group').empty()).toBeFalsy();
         });
 
@@ -72,7 +74,7 @@ define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, 
 
             it('should provide height getter and setter', () => {
                 let defaultHeight = stepChart.height(),
-                    testHeight = {top: 4, right: 4, bottom: 4, left: 4},
+                    testHeight = 200,
                     newHeight;
 
                 stepChart.height(testHeight);
@@ -84,7 +86,7 @@ define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, 
 
             it('should provide numOfVerticalTicks getter and setter', () => {
                 let defaultNumOfVerticalTicks = stepChart.numOfVerticalTicks(),
-                    testNumOfVerticalTicks = {top: 4, right: 4, bottom: 4, left: 4},
+                    testNumOfVerticalTicks = 20,
                     newNumOfVerticalTicks;
 
                 stepChart.numOfVerticalTicks(testNumOfVerticalTicks);
@@ -96,7 +98,7 @@ define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, 
 
             it('should provide width getter and setter', () => {
                 let defaultWidth = stepChart.width(),
-                    testWidth = {top: 4, right: 4, bottom: 4, left: 4},
+                    testWidth = 200,
                     newWidth;
 
                 stepChart.width(testWidth);
@@ -104,6 +106,54 @@ define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, 
 
                 expect(defaultWidth).not.toBe(newWidth);
                 expect(newWidth).toBe(testWidth);
+            });
+
+            it('should provide yAxisLabel getter and setter', () => {
+                let defaultYAxisLabel = 'Hello',
+                    testYAxisLabel = 'World',
+                    newYAxisLabel;
+
+                stepChart.yAxisLabel(testYAxisLabel);
+                newYAxisLabel = stepChart.yAxisLabel();
+
+                expect(defaultYAxisLabel).not.toBe(newYAxisLabel);
+                expect(newYAxisLabel).toBe(testYAxisLabel);
+            });
+
+            it('should provide yAxisLabelOffset getter and setter', () => {
+                let defaultYAxisLabelOffset = -40,
+                    testYAxisLabelOffset = -30,
+                    newYAxisLabelOffset;
+
+                stepChart.yAxisLabelOffset(testYAxisLabelOffset);
+                newYAxisLabelOffset = stepChart.yAxisLabelOffset();
+
+                expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
+                expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
+            });
+
+            it('should provide xAxisLabel getter and setter', () => {
+                let defaultXAxisLabel = 'World',
+                    testXAxisLabel = 'Hello',
+                    newXAxisLabel;
+
+                stepChart.xAxisLabel(testXAxisLabel);
+                newXAxisLabel = stepChart.xAxisLabel();
+
+                expect(defaultXAxisLabel).not.toBe(newXAxisLabel);
+                expect(newXAxisLabel).toBe(testXAxisLabel);
+            });
+
+            it('should provide xAxisLabelOffset getter and setter', () => {
+                let defaultXAxisLabelOffset = 30,
+                    testXAxisLabelOffset = 40,
+                    newXAxisLabelOffset;
+
+                stepChart.xAxisLabelOffset(testXAxisLabelOffset);
+                newXAxisLabelOffset = stepChart.xAxisLabelOffset();
+
+                expect(defaultXAxisLabelOffset).not.toBe(newXAxisLabelOffset);
+                expect(newXAxisLabelOffset).toBe(testXAxisLabelOffset);
             });
         });
 
