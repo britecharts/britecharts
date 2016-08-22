@@ -2,6 +2,7 @@ define(function(require){
     'use strict';
 
     const d3 = require('d3');
+    const _ = require('underscore');
     const exportChart = require('./helpers/exportChart');
     const _ = require('underscore');
 
@@ -124,7 +125,7 @@ define(function(require){
                 dataByDate = d3.nest()
                     .key( getDate )
                     .entries(
-                         _(_data).sortBy('date')
+                        _(_data).sortBy('date')
                     );
                 buildLayers();
                 buildScales();
