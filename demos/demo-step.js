@@ -23,6 +23,16 @@ function createStepChart() {
     stepChart
         .width(containerWidth)
         .height(300)
+        .xAxisLabel('Fruit Type')
+        .xAxisLabelOffset(45)
+        .yAxisLabel('Quantity')
+        .yAxisLabelOffset(-45)
+        .margin({
+            top: 20,
+            right: 20,
+            bottom: 30,
+            left: 65
+        })
         .on('customHover', function(d, i){
             console.log('Step data is ', d);
             console.log('Step index is ', i);
