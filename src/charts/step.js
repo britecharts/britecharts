@@ -51,7 +51,7 @@ define(function(require) {
             xAxis, xAxisLabel,
             yAxis, yAxisLabel,
             xAxisLabelOffset = 45,
-            yAxisTickFormat = d3.format('.2s'),
+            yAxisTickFormat = d3.format('.2f'),
             yAxisLabelOffset = -40,
             xAxisPadding = {
                 top: 0,
