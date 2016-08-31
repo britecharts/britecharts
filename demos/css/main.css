@@ -6,45 +6,45 @@ body {
   font-family: Benton;
 }
 
-.bar-chart .bar {
-  fill: #8FDAD8;
-  stroke-width: 0;
-  shape-rendering: crispEdges;
-}
-.bar-chart .bar:hover {
-  fill: #39C2C9;
-}
-.bar-chart .axis path {
-  display: none;
-}
-.bar-chart .tick line {
-  display: none;
+.horizontal-grid-line {
   fill: none;
-  stroke: rgba(0, 0, 0, 0.45);
+  shape-rendering: crispEdges;
+  stroke: #EFF2F5;
+  stroke-width: 1px;
+}
+
+.extended-x-line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: #D2D6DF;
+  stroke-width: 1;
+}
+
+.tick line {
+  fill: none;
+  stroke: #ADB0B6;
   stroke-width: 1;
   shape-rendering: crispEdges;
 }
-.bar-chart .tick text {
+.tick text {
   font-size: 0.8em;
-  fill: rgba(0, 0, 0, 0.45);
+  fill: #ADB0B6;
   text-anchor: middle;
   padding: 10px;
 }
-.bar-chart .horizontal-grid-line {
-  fill: none;
-  shape-rendering: crispEdges;
-  stroke: #EBEBEB;
+
+.vertical-marker-container .vertical-marker {
+  stroke: #ff0044;
   stroke-width: 1;
-}
-.bar-chart .extended-x-line {
   fill: none;
-  shape-rendering: crispEdges;
-  stroke: #ECECEC;
-  stroke-width: 1;
 }
-.bar-chart .tooltip-background {
-  fill: #FFFFFF;
-  stroke: #D9D9D9;
+.vertical-marker-container .data-point-highlighter {
+  fill: #ffffff;
+}
+
+.tooltip-background {
+  fill: #ffffff;
+  stroke: #D2D6DF;
   stroke-width: 1;
 }
 
@@ -62,6 +62,21 @@ body {
   opacity: 0.2;
 }
 
+.bar-chart .bar {
+  fill: #8FDAD8;
+  stroke-width: 0;
+  shape-rendering: crispEdges;
+}
+.bar-chart .bar:hover {
+  fill: #39C2C9;
+}
+.bar-chart .axis path {
+  display: none;
+}
+.bar-chart .tick line {
+  display: none;
+}
+
 .line-chart .topic .line {
   fill: none;
   stroke-width: 3;
@@ -74,57 +89,19 @@ body {
 .line-chart .month-axis path {
   display: none;
 }
-.line-chart .tick line {
-  fill: none;
-  stroke: rgba(0, 0, 0, 0.45);
-  stroke-width: 1;
-  shape-rendering: crispEdges;
-}
-.line-chart .tick text {
-  font-size: 0.8em;
-  fill: rgba(0, 0, 0, 0.45);
-  text-anchor: middle;
-  padding: 10px;
-}
-.line-chart .horizontal-grid-line {
-  fill: none;
-  shape-rendering: crispEdges;
-  stroke: #EDEFF5;
-  stroke-width: 1px;
-}
-.line-chart .extended-x-line {
-  fill: none;
-  shape-rendering: crispEdges;
-  stroke: rgba(0, 0, 0, 0.45);
-  stroke-width: 1;
-}
-.line-chart .hover-marker .vertical-marker {
-  stroke: #FF0044;
-  stroke-width: 1;
-  fill: none;
-}
-.line-chart .hover-marker .data-point-highlighter {
-  stroke-width: 3;
-  fill: #ffffff;
-}
 .line-chart .masking-rectangle {
-  fill: #FFFFFF;
-}
-.line-chart .tooltip-background {
-  fill: #FFFFFF;
-  stroke: #D9D9D9;
-  stroke-width: 1;
+  fill: #ffffff;
 }
 
 .sparkline {
-  stroke: #888;
+  stroke: #ADB0B6;
   stroke-width: 1;
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 .sparkline .sparkline-circle {
-  fill: red;
+  fill: #ff0044;
   stroke-width: 0;
 }
 
@@ -136,41 +113,6 @@ body {
 }
 .stacked-area .x-axis-group path {
   display: none;
-}
-.stacked-area .tick text {
-  font-size: 0.8em;
-  fill: #9B9EA7;
-  text-anchor: middle;
-  padding: 10px;
-}
-.stacked-area .tick line {
-  fill: none;
-  stroke: #D2D6DF;
-  stroke-width: 1;
-  shape-rendering: crispEdges;
-}
-.stacked-area .horizontal-grid-line {
-  fill: none;
-  shape-rendering: crispEdges;
-  stroke: #EDEFF5;
-  stroke-width: 1px;
-}
-.stacked-area .vertical-marker-container .vertical-marker {
-  stroke: #EDEFF5;
-  /*stroke: #FF0044;*/
-  stroke-width: 1;
-  fill: none;
-}
-.stacked-area .data-point-highlighter {
-  fill: #FFFFFF;
-}
-.stacked-area .masking-rectangle {
-  fill: #FFFFFF;
-}
-.stacked-area .tooltip-background {
-  fill: #FFFFFF;
-  stroke: #D9D9D9;
-  stroke-width: 1;
 }
 
 .step-chart .step {
@@ -186,28 +128,6 @@ body {
 }
 .step-chart .tick line {
   display: none;
-  fill: none;
-  stroke: rgba(0, 0, 0, 0.45);
-  stroke-width: 1;
-  shape-rendering: crispEdges;
-}
-.step-chart .tick text {
-  font-size: 0.8em;
-  fill: rgba(0, 0, 0, 0.45);
-  text-anchor: middle;
-  padding: 10px;
-}
-.step-chart .horizontal-grid-line {
-  fill: none;
-  shape-rendering: crispEdges;
-  stroke: #EBEBEB;
-  stroke-width: 1;
-}
-.step-chart .extended-x-line {
-  fill: none;
-  shape-rendering: crispEdges;
-  stroke: #ECECEC;
-  stroke-width: 1;
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -1,0 +1,13 @@
+.horizontal-grid-line {
+    fill: none;
+    shape-rendering: crispEdges;
+    stroke: $grey-200;
+    stroke-width: 1px;
+}
+
+.extended-x-line {
+    fill: none;
+    shape-rendering: crispEdges;
+    stroke: $grey-300;
+    stroke-width: 1;
+}

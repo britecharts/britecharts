@@ -1,11 +1,11 @@
-// TODO:
-// - Add color variables
+$line-width: 3;
 
 .line-chart {
+
     // Lines
     .topic .line {
         fill: none;
-        stroke-width: 3;
+        stroke-width: $line-width;
         stroke-linecap: round;
         stroke-linejoin: round;
     }
@@ -17,52 +17,10 @@
     .month-axis path {
         display: none;
     }
-    .tick {
-        line {
-            fill: none;
-            stroke: rgba(0, 0, 0, 0.45);
-            stroke-width: 1;
-            shape-rendering: crispEdges;
-        }
-        text {
-            font-size: 0.8em;
-            fill: rgba(0, 0, 0, 0.45);
-            text-anchor: middle;
 
-            padding: 10px;
-        }
-    }
-
-    // Grids
-    .horizontal-grid-line {
-        fill: none;
-        shape-rendering: crispEdges;
-        stroke: #EDEFF5;
-        stroke-width: 1px;
-    }
-    .extended-x-line {
-        fill: none;
-        shape-rendering: crispEdges;
-        stroke: rgba(0, 0, 0, 0.45);
-        stroke-width: 1;
-    }
-
-    // Tooltip
-    .hover-marker .vertical-marker {
-        stroke: #FF0044;
-        stroke-width: 1;
-        fill: none;
-    }
-    .hover-marker .data-point-highlighter{
-        stroke-width: 3;
-        fill: #ffffff;
-    }
+    // This is the div that we use to simulate a line drawing animation
+    // NOTE: it should be of the same color of the background of the chart
     .masking-rectangle {
-        fill: #FFFFFF;
-    }
-    .tooltip-background {
-        fill: #FFFFFF;
-        stroke: #D9D9D9;
-        stroke-width: 1;
+        fill: $white;
     }
 }

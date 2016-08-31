@@ -406,7 +406,7 @@ define(function(require){
         function drawVerticalMarker(){
             verticalMarkerContainer = svg.select('.metadata-group')
                 .append('g')
-                .attr('class', 'hover-marker')
+                .attr('class', 'hover-marker vertical-marker-container')
                 .attr('transform', 'translate(9999, 0)');
 
             verticalMarkerLine = verticalMarkerContainer.selectAll('path')
