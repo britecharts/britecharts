@@ -54,6 +54,7 @@ define([
             it('should add styles from stylesheets to inline of element', () => {
                 node = containerFixture[0];
                 styledHTML = serializeWithStyles(node).replace(' ','');
+
                 expect(styledHTML).not.toBe(node.outerHTML.replace(' ',''));
                 expect(styledHTML.indexOf(randomColor).length).not.toBe(0);
             });

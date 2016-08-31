@@ -81,7 +81,6 @@ define(['jquery', 'd3', 'bar', 'barChartDataBuilder'], function($, d3, chart, da
                 expect(defaultHeight).not.toBe(newHeight);
                 expect(newHeight).toBe(testHeight);
             });
-        });
 
             it('should provide width getter and setter', () => {
                 let defaultWidth = barChart.width(),
@@ -94,7 +93,6 @@ define(['jquery', 'd3', 'bar', 'barChartDataBuilder'], function($, d3, chart, da
                 expect(defaultWidth).not.toBe(newWidth);
                 expect(newWidth).toBe(testWidth);
             });
-
         });
 
         describe('on hovering a bar', function() {

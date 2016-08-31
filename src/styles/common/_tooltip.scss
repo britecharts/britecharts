@@ -1,0 +1,22 @@
+$marker-width: 1;
+$tooltip-width: 1;
+
+// Tooltip Container
+.vertical-marker-container {
+    .vertical-marker {
+        stroke: $brand-color-red;
+        stroke-width: $marker-width;
+        fill: none;
+    }
+    .data-point-highlighter {
+        fill: $white;
+    }
+}
+
+// Tooltip
+.tooltip-background {
+    fill: $white;
+    stroke: $grey-300;
+    stroke-width: $tooltip-width;
+}
+
