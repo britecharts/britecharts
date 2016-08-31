@@ -2,6 +2,9 @@
 // - Review the naming
 // - Create mixins for animation
 
+$enter-opacity: 1;
+$exit-opacity: .2;
+
 .britechart-legend {
 
     .legend-line {
@@ -11,7 +14,7 @@
             .legend-entry-name,
             .legend-entry-value,
             .legend-circle {
-                opacity: 1;
+                opacity: $enter-opacity;
                 transition: opacity .2s ease-out;
                 -moz-transition: opacity .2s ease-out;
                 -webkit-transition: opacity .2s ease-out;
@@ -19,7 +22,7 @@
             .legend-entry-name,
             .legend-entry-value,
             .legend-circle {
-                opacity: 0.2;
+                opacity: $exit-opacity;
             }
         }
     }

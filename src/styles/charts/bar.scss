@@ -1,15 +1,16 @@
-// TODO:
-// - Add colors to variables
+$bar-color: #8FDAD8;
+$bar-color-hover: #39C2C9;
+$bar-stroke-width: 0;
 
 .bar-chart {
     // Bars
     .bar {
-        fill: #8FDAD8;
-        stroke-width: 0;
+        fill: $bar-color;
+        stroke-width: $bar-stroke-width;
         shape-rendering:    crispEdges;
     }
     .bar:hover {
-        fill: #39C2C9;
+        fill: $bar-color-hover;
     }
 
     // Axes
@@ -21,38 +22,6 @@
     .tick {
         line {
             display: none;
-            fill: none;
-            stroke: rgba(0, 0, 0, 0.45);
-            stroke-width: 1;
-            shape-rendering: crispEdges;
         }
-        text {
-            font-size: 0.8em;
-            fill: rgba(0, 0, 0, 0.45);
-            text-anchor: middle;
-
-            padding: 10px;
-        }
-    }
-
-    // Grid
-    .horizontal-grid-line {
-        fill: none;
-        shape-rendering: crispEdges;
-        stroke: #EBEBEB;
-        stroke-width: 1;
-    }
-    .extended-x-line {
-        fill: none;
-        shape-rendering: crispEdges;
-        stroke: #ECECEC;
-        stroke-width: 1;
-    }
-
-    // Tooltip (TODO)
-    .tooltip-background {
-        fill: #FFFFFF;
-        stroke: #D9D9D9;
-        stroke-width: 1;
     }
 }

@@ -1,16 +1,16 @@
-// TODO
-// - Use variables
+$step-color: #8FDAD8;
+$step-color-hover: #39C2C9;
 
 .step-chart {
 
     // Steps
     .step {
-        fill: #8FDAD8;
+        fill: $step-color;
         stroke-width: 0;
         shape-rendering: crispEdges;
 
         &:hover {
-            fill: #39C2C9;
+            fill: $bar-color-hover;
         }
     }
 
@@ -19,33 +19,8 @@
         display: none;
     }
     .tick {
-
         line {
             display: none;
-            fill: none;
-            stroke: rgba(0, 0, 0, 0.45);
-            stroke-width: 1;
-            shape-rendering: crispEdges;
         }
-        text {
-            font-size: 0.8em;
-            fill: rgba(0, 0, 0, 0.45);
-            text-anchor: middle;
-            padding: 10px;
-        }
-    }
-
-    // Grids
-    .horizontal-grid-line {
-        fill: none;
-        shape-rendering: crispEdges;
-        stroke: #EBEBEB;
-        stroke-width: 1;
-    }
-    .extended-x-line {
-        fill: none;
-        shape-rendering: crispEdges;
-        stroke: #ECECEC;
-        stroke-width: 1;
     }
 }
