@@ -4,9 +4,8 @@ module.exports = function (grunt, configOptions) {
     var distFiles = [
             // Main bundle with all the styles on the library
             {
-                compatability: 'ie9',
                 expand: true,
-                cwd: './dist/css/',
+                cwd: './dist/css',
                 src: ['bundle.css', '!bundle.min.css'],
                 dest: './dist/css',
                 ext: '.min.css'
@@ -14,7 +13,6 @@ module.exports = function (grunt, configOptions) {
             // Common bundle including axes and gridlines
             // specified on common.scss
             {
-                compatability: 'ie9',
                 expand: true,
                 cwd: './dist/css/common',
                 src: ['common.css', '!common.min.css'],
@@ -23,7 +21,6 @@ module.exports = function (grunt, configOptions) {
             },
             // Individual styles for each chart
             {
-                compatability: 'ie9',
                 expand: true,
                 cwd: './dist/css/charts',
                 src: ['*.css', '!*.min.css'],
