@@ -1,3 +1,5 @@
+@import "../helpers/_variables.scss";
+
 $bar-color: #8FDAD8;
 $bar-color-hover: #39C2C9;
 $bar-stroke-width: 0;
@@ -7,7 +9,7 @@ $bar-stroke-width: 0;
     .bar {
         fill: $bar-color;
         stroke-width: $bar-stroke-width;
-        shape-rendering:    crispEdges;
+        shape-rendering: crispEdges;
     }
     .bar:hover {
         fill: $bar-color-hover;

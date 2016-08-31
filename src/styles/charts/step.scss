@@ -1,3 +1,5 @@
+@import "../helpers/_variables.scss";
+
 $step-color: #8FDAD8;
 $step-color-hover: #39C2C9;
 
@@ -10,7 +12,7 @@ $step-color-hover: #39C2C9;
         shape-rendering: crispEdges;
 
         &:hover {
-            fill: $bar-color-hover;
+            fill: $step-color-hover;
         }
     }
 
