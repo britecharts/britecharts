@@ -1,16 +1,15 @@
-// TODO:
-// - Use variables
-// - Style
+$line-width: 1;
+$dot-size: 0;
 
 .sparkline {
-    stroke: #888;
-    stroke-width: 1;
+    stroke: $grey-500;
+    stroke-width: $line-width;
     fill: none;
     stroke-linecap: round;
     stroke-linejoin: round;
 
     .sparkline-circle {
-        fill: red;
-        stroke-width: 0;
+        fill: $brand-color-red;
+        stroke-width: $dot-size;
     }
 }
