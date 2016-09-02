@@ -16,7 +16,7 @@ define([
         randomColor = 'rgb(222,163,12)';
 
 
-    describe('Helpers', () => {
+    xdescribe('Helpers', () => {
         beforeEach(() => {
 
             f = jasmine.getFixtures();

@@ -26,7 +26,7 @@ define([
 
         beforeEach(() => {
             dataset = aTestDataSet().with1Source().build();
-            sparklineChart = sparkline();
+            sparklineChart = sparkline().dateLabel('dateUTC');
             // DOM Fixture Setup
             f = jasmine.getFixtures();
             f.fixturesPath = 'base/test/fixtures/';
@@ -54,69 +54,116 @@ define([
         });
 
         it('should render a sparkline', () => {
-            expect(containerFixture.selectAll('.sparkline')[0].length).toEqual(1);
+            expect(containerFixture.selectAll('.sparkline').empty()).toEqual(false);
         });
 
-
-        // API
-        it('should provide margin getter and setter', () => {
-            let defaultMargin = sparklineChart.margin(),
-                testMargin = {top: 4, right: 4, bottom: 4, left: 4},
-                newMargin;
-
-            sparklineChart.margin(testMargin);
-            newMargin = sparklineChart.margin();
-
-            expect(defaultMargin).not.toBe(testMargin);
-            expect(newMargin).toBe(testMargin);
+        it('should create a gradient for the area', () => {
+            expect(containerFixture.selectAll('#sparkline-area-gradient').empty()).toEqual(false);
         });
 
-        it('should provide width getter and setter', () => {
-            let defaultWidth = sparklineChart.width(),
-                testWidth = 200,
-                newWidth;
-
-            sparklineChart.width(testWidth);
-            newWidth = sparklineChart.width();
-
-            expect(defaultWidth).not.toBe(testWidth);
-            expect(newWidth).toBe(testWidth);
+        it('should render the sparkline area', () => {
+            expect(containerFixture.selectAll('.sparkline-area').empty()).toEqual(false);
         });
 
-        it('should provide height getter and setter', () => {
-            let defaultHeight = sparklineChart.height(),
-                testHeight = 200,
-                newHeight;
-
-            sparklineChart.height(testHeight);
-            newHeight = sparklineChart.height();
-
-            expect(defaultHeight).not.toBe(testHeight);
-            expect(newHeight).toBe(testHeight);
+        it('should create a gradient for the line', () => {
+            expect(containerFixture.selectAll('#sparkline-line-gradient').empty()).toEqual(false);
         });
 
-        it('should provide valueLabel getter and setter', () => {
-            let defaultValueLabel = sparklineChart.valueLabel(),
-                testValueLabel = 'quantity',
-                newValueLabel;
+        describe('when isAnimated is true', () => {
 
-            sparklineChart.valueLabel(testValueLabel);
-            newValueLabel = sparklineChart.valueLabel();
+            it('should create a masking clip', () => {
+                sparklineChart.isAnimated(true);
+                containerFixture.datum(dataset.data).call(sparklineChart);
 
-            expect(defaultValueLabel).not.toBe(testValueLabel);
-            expect(newValueLabel).toBe(testValueLabel);
+                expect(containerFixture.selectAll('#maskingClip').empty()).toEqual(false);
+            });
         });
 
-        it('should provide dateLabel getter and setter', () => {
-            let defaultDateLabel = sparklineChart.dateLabel(),
-                testDateLabel = 'dateUTC',
-                newDateLabel;
+        describe('API', () => {
 
-            sparklineChart.valueLabel(testDateLabel);
-            newDateLabel = sparklineChart.valueLabel();
+            it('should provide margin getter and setter', () => {
+                let defaultMargin = sparklineChart.margin(),
+                    testMargin = {top: 4, right: 4, bottom: 4, left: 4},
+                    newMargin;
 
-            expect(defaultDateLabel).not.toBe(testDateLabel);
-            expect(newDateLabel).toBe(testDateLabel);
+                sparklineChart.margin(testMargin);
+                newMargin = sparklineChart.margin();
+
+                expect(defaultMargin).not.toBe(testMargin);
+                expect(newMargin).toBe(testMargin);
+            });
+
+            it('should provide width getter and setter', () => {
+                let defaultWidth = sparklineChart.width(),
+                    testWidth = 200,
+                    newWidth;
+
+                sparklineChart.width(testWidth);
+                newWidth = sparklineChart.width();
+
+                expect(defaultWidth).not.toBe(testWidth);
+                expect(newWidth).toBe(testWidth);
+            });
+
+            it('should provide height getter and setter', () => {
+                let defaultHeight = sparklineChart.height(),
+                    testHeight = 200,
+                    newHeight;
+
+                sparklineChart.height(testHeight);
+                newHeight = sparklineChart.height();
+
+                expect(defaultHeight).not.toBe(testHeight);
+                expect(newHeight).toBe(testHeight);
+            });
+
+            it('should provide valueLabel getter and setter', () => {
+                let defaultValueLabel = sparklineChart.valueLabel(),
+                    testValueLabel = 'quantity',
+                    newValueLabel;
+
+                sparklineChart.valueLabel(testValueLabel);
+                newValueLabel = sparklineChart.valueLabel();
+
+                expect(defaultValueLabel).not.toBe(testValueLabel);
+                expect(newValueLabel).toBe(testValueLabel);
+            });
+
+            it('should provide dateLabel getter and setter', () => {
+                let defaultDateLabel = sparklineChart.dateLabel(),
+                    testDateLabel = 'date',
+                    newDateLabel;
+
+                sparklineChart.valueLabel(testDateLabel);
+                newDateLabel = sparklineChart.valueLabel();
+
+                expect(defaultDateLabel).not.toBe(testDateLabel);
+                expect(newDateLabel).toBe(testDateLabel);
+            });
+
+            it('should provide animation getter and setter', () => {
+                let defaultAnimation = sparklineChart.isAnimated(),
+                    testAnimation = true,
+                    newAnimation;
+
+                sparklineChart.isAnimated(testAnimation);
+                newAnimation = sparklineChart.isAnimated();
+
+                expect(defaultAnimation).not.toBe(testAnimation);
+                expect(newAnimation).toBe(testAnimation);
+            });
+
+            it('should provide animation duration getter and setter', () => {
+                let defaultAnimationDuration = sparklineChart.duration(),
+                    testAnimationDuration = 2000,
+                    newAnimationDuration;
+
+                sparklineChart.duration(testAnimationDuration);
+                newAnimationDuration = sparklineChart.duration();
+
+                expect(defaultAnimationDuration).not.toBe(testAnimationDuration);
+                expect(newAnimationDuration).toBe(testAnimationDuration);
+            });
         });
 
         describe('Export chart functionality', () => {

@@ -23,6 +23,9 @@ function createSparklineChart() {
     // Sparkline Chart Setup and start
     sparkline
         .dateLabel('dateUTC')
+        .isAnimated(true)
+        .duration(2500)
+        .height(containerWidth / 3)
         .width(containerWidth / 2);
 
     container.datum(dataset.data).call(sparkline);
