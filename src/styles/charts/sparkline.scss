@@ -10,8 +10,19 @@ $dot-size: 0;
     stroke-linecap: round;
     stroke-linejoin: round;
 
+    .line {
+        stroke: url(#sparkline-line-gradient);
+        stroke-width: 4;
+    }
+
     .sparkline-circle {
         fill: $brand-color-red;
         stroke-width: $dot-size;
+        display: none;
+    }
+
+    .sparkline-area {
+        fill: url(#sparkline-area-gradient);
+        stroke: none;
     }
 }
