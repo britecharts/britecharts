@@ -56,7 +56,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                 containerFixture.select('.britechart-tooltip')
                     .selectAll('.tooltip-title')
                     .text()
-            ).toBe('Tooltip title - August 05, 2015');
+            ).toBe('Tooltip title - Aug 05, 2015');
         });
 
         it('should add a line of text for each topic', () =>  {
