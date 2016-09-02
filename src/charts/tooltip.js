@@ -86,7 +86,7 @@ define(function(require){
             textFillColor = '#282C35',
 
             // formats
-            tooltipDateFormat = d3.time.format('%B %d, %Y'),
+            tooltipDateFormat = d3.time.format('%b %d, %Y'),
             tooltipValueFormat = d3.format(',2f'),
 
             chartWidth, chartHeight,
