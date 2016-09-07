@@ -59,7 +59,9 @@ config = {
                 __dirname,
             ],
         },
-        loaders: [ defaultJSLoader ],
+        module: {
+            loaders: [ defaultJSLoader ]
+        },
         plugins : [
             new LiveReloadPlugin({appendScriptTag:true})
         ]

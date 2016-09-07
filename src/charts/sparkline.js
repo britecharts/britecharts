@@ -169,36 +169,36 @@ define(function(require){
             let metadataGroup = svg.select('.metadata-group');
 
             metadataGroup.append('linearGradient')
-                    .attr('id', 'sparkline-area-gradient')
-                    .attr('gradientUnits', 'userSpaceOnUse')
-                    .attr('x1', 0)
-                    .attr('x2', xScale(data[data.length - 1].date))
-                    .attr('y1', 0)
-                    .attr('y2', 0)
-                .selectAll('stop')
-                    .data([
-                        {offset: '0%', color: '#F5FDFF'},
-                        {offset: '100%', color: '#F6FEFC'}
-                    ])
-                .enter().append('stop')
-                    .attr('offset', ({offset}) => offset)
-                    .attr('stop-color', ({color}) => color);
+                .attr('id', 'sparkline-area-gradient')
+                .attr('gradientUnits', 'userSpaceOnUse')
+                .attr('x1', 0)
+                .attr('x2', xScale(data[data.length - 1].date))
+                .attr('y1', 0)
+                .attr('y2', 0)
+              .selectAll('stop')
+                .data([
+                    {offset: '0%', color: '#F5FDFF'},
+                    {offset: '100%', color: '#F6FEFC'}
+                ])
+              .enter().append('stop')
+                .attr('offset', ({offset}) => offset)
+                .attr('stop-color', ({color}) => color);
 
             metadataGroup.append('linearGradient')
-                    .attr('id', 'sparkline-line-gradient')
-                    .attr('gradientUnits', 'userSpaceOnUse')
-                    .attr('x1', 0)
-                    .attr('x2', xScale(data[data.length - 1].date))
-                    .attr('y1', 0)
-                    .attr('y2', 0)
-                .selectAll('stop')
-                    .data([
-                        {offset: '0%', color: '#39C7EA'},
-                        {offset: '100%', color: '#4CDCBA'}
-                    ])
-                .enter().append('stop')
-                    .attr('offset', ({offset}) => offset)
-                    .attr('stop-color', ({color}) => color);
+                .attr('id', 'sparkline-line-gradient')
+                .attr('gradientUnits', 'userSpaceOnUse')
+                .attr('x1', 0)
+                .attr('x2', xScale(data[data.length - 1].date))
+                .attr('y1', 0)
+                .attr('y2', 0)
+              .selectAll('stop')
+                .data([
+                    {offset: '0%', color: '#39C7EA'},
+                    {offset: '100%', color: '#4CDCBA'}
+                ])
+              .enter().append('stop')
+                .attr('offset', ({offset}) => offset)
+                .attr('stop-color', ({color}) => color);
         }
 
         /**
@@ -235,9 +235,8 @@ define(function(require){
                 .y1((d) => yScale(d[valueLabel]))
                 .interpolate('basis');
 
-            svg
-                .select('.chart-group')
-                .append('path')
+            svg.select('.chart-group')
+              .append('path')
                 .datum(data)
                 .attr('class', 'sparkline-area')
                 .attr('d', area)
@@ -254,9 +253,8 @@ define(function(require){
                 .x((d) => xScale(d.date))
                 .y((d) => yScale(d[valueLabel]));
 
-            svg
-                .select('.chart-group')
-                .append('path')
+            svg.select('.chart-group')
+              .append('path')
                 .datum(data)
                 .attr('class', 'line')
                 .attr('d', line)
@@ -268,7 +266,7 @@ define(function(require){
          */
         function drawEndMarker(){
             svg.selectAll('.chart-group')
-                .append('circle')
+              .append('circle')
                 .attr('class', 'sparkline-circle')
                 .attr('cx', xScale(data[data.length - 1].date))
                 .attr('cy', yScale(data[data.length - 1][valueLabel]))
