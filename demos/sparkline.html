@@ -15,8 +15,13 @@
             <div class="britechart js-sparkline-chart-container"></div>
             <strong>Example:</strong>
             <pre>
+
                 sparklineChart
-                    .width(containerWidth);
+                    .dateLabel('dateUTC')
+                    .isAnimated(true)
+                    .duration(2500)
+                    .height(containerWidth / 3)
+                    .width(containerWidth / 2);
 
                 container.datum(dataset).call(sparklineChart);
             </pre>

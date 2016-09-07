@@ -44,11 +44,20 @@ define(function(require){
             xScale,
             yScale,
 
+            colorRange = [
+                '#4DC2F5',
+                '#051C48'
+            ],
+
             ease = 'quad-out',
 
             svg,
             chartWidth, chartHeight,
             data,
+
+            hasArea = true,
+            isAnimated = false,
+            clipDuration = 3000,
 
             line,
 
@@ -76,7 +85,10 @@ define(function(require){
 
                 buildScales();
                 buildSVG(this);
+                createGradients();
+                createMaskingClip();
                 drawLine();
+                drawArea();
                 drawEndMarker();
             });
         }
@@ -144,8 +156,91 @@ define(function(require){
             return data.map((d) => {
                 d.date = new Date(d[dateLabel]);
                 d[valueLabel] = +d[valueLabel];
+
                 return d;
             });
+        }
+
+        /**
+         * Creates the gradient on the area below the line
+         * @return {void}
+         */
+        function createGradients() {
+            let metadataGroup = svg.select('.metadata-group');
+
+            metadataGroup.append('linearGradient')
+                .attr('id', 'sparkline-area-gradient')
+                .attr('gradientUnits', 'userSpaceOnUse')
+                .attr('x1', 0)
+                .attr('x2', xScale(data[data.length - 1].date))
+                .attr('y1', 0)
+                .attr('y2', 0)
+              .selectAll('stop')
+                .data([
+                    {offset: '0%', color: '#F5FDFF'},
+                    {offset: '100%', color: '#F6FEFC'}
+                ])
+              .enter().append('stop')
+                .attr('offset', ({offset}) => offset)
+                .attr('stop-color', ({color}) => color);
+
+            metadataGroup.append('linearGradient')
+                .attr('id', 'sparkline-line-gradient')
+                .attr('gradientUnits', 'userSpaceOnUse')
+                .attr('x1', 0)
+                .attr('x2', xScale(data[data.length - 1].date))
+                .attr('y1', 0)
+                .attr('y2', 0)
+              .selectAll('stop')
+                .data([
+                    {offset: '0%', color: '#39C7EA'},
+                    {offset: '100%', color: '#4CDCBA'}
+                ])
+              .enter().append('stop')
+                .attr('offset', ({offset}) => offset)
+                .attr('stop-color', ({color}) => color);
+        }
+
+        /**
+         * Creates a masking clip that would help us fake an animation if the
+         * proper flag is true
+         *
+         * @return {void}
+         */
+        function createMaskingClip() {
+            if (isAnimated) {
+                svg.select('.metadata-group')
+                    .append('clipPath')
+                    .attr('id', 'maskingClip')
+                  .append('rect')
+                    .attr('width', 0)
+                    .attr('height', height);
+
+                d3.select('#maskingClip rect')
+                    .transition()
+                    .ease(ease)
+                    .duration(clipDuration)
+                    .attr('width', width);
+            }
+        }
+
+        /**
+         * Draws the area that will be placed below the line
+         * @private
+         */
+        function drawArea(){
+            let area = d3.svg.area()
+                .x((d) => xScale(d.date))
+                .y0(() => yScale(0))
+                .y1((d) => yScale(d[valueLabel]))
+                .interpolate('basis');
+
+            svg.select('.chart-group')
+              .append('path')
+                .datum(data)
+                .attr('class', 'sparkline-area')
+                .attr('d', area)
+                .attr('clip-path', 'url(#maskingClip)');
         }
 
         /**
@@ -158,12 +253,12 @@ define(function(require){
                 .x((d) => xScale(d.date))
                 .y((d) => yScale(d[valueLabel]));
 
-            svg
-                .select('.chart-group')
-                .append('path')
+            svg.select('.chart-group')
+              .append('path')
                 .datum(data)
                 .attr('class', 'line')
-                .attr('d', line);
+                .attr('d', line)
+                .attr('clip-path', 'url(#maskingClip)');
         }
 
         /**
@@ -171,7 +266,7 @@ define(function(require){
          */
         function drawEndMarker(){
             svg.selectAll('.chart-group')
-                .append('circle')
+              .append('circle')
                 .attr('class', 'sparkline-circle')
                 .attr('cx', xScale(data[data.length - 1].date))
                 .attr('cy', yScale(data[data.length - 1][valueLabel]))
@@ -180,9 +275,39 @@ define(function(require){
 
         // Accessors
         /**
+         * Gets or Sets the dateLabel of the chart
+         * @param  {Number} _x Desired dateLabel for the graph
+         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+         * @public
+         */
+        exports.dateLabel = function(_x) {
+            if (!arguments.length) {
+                return dateLabel;
+            }
+            dateLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the duration of the animation
+         * @param  {Number} _x Desired animation duration for the graph
+         * @return { dateLabel | module} Current animation duration or Chart module to chain calls
+         * @public
+         */
+        exports.duration = function(_x) {
+            if (!arguments.length) {
+                return clipDuration;
+            }
+            clipDuration = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the height of the chart
          * @param  {Number} _x Desired width for the graph
-         * @return { height | module} Current height or Area Chart module to chain calls
+         * @return { height | module} Current height or Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -190,13 +315,29 @@ define(function(require){
                 return height;
             }
             height = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the isAnimated property of the chart
+         * @param  {Boolean} _x Desired animation flag
+         * @return { isAnimated | module} Current isAnimated flag or Chart module
+         * @public
+         */
+        exports.isAnimated = function(_x) {
+            if (!arguments.length) {
+                return isAnimated;
+            }
+            isAnimated = _x;
+
             return this;
         };
 
         /**
          * Gets or Sets the margin of the chart
          * @param  {Object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Area Chart module to chain calls
+         * @return { margin | module} Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -204,13 +345,14 @@ define(function(require){
                 return margin;
             }
             margin = _x;
+
             return this;
         };
 
         /**
          * Gets or Sets the width of the chart
          * @param  {Number} _x Desired width for the graph
-         * @return { width | module} Current width or Area Chart module to chain calls
+         * @return { width | module} Current width or Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
@@ -218,6 +360,7 @@ define(function(require){
                 return width;
             }
             width = _x;
+
             return this;
         };
 
@@ -232,22 +375,10 @@ define(function(require){
                 return valueLabel;
             }
             valueLabel = _x;
+
             return this;
         };
 
-        /**
-         * Gets or Sets the dateLabel of the chart
-         * @param  {Number} _x Desired dateLabel for the graph
-         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
-         * @public
-         */
-        exports.dateLabel = function(_x) {
-            if (!arguments.length) {
-                return dateLabel;
-            }
-            dateLabel = _x;
-            return this;
-        };
 
         /**
          * Chart exported to png and a download action is fired
