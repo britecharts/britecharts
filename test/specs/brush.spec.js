@@ -92,6 +92,18 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
                 expect(defaultHeight).not.toBe(testHeight);
                 expect(newHeight).toBe(testHeight);
             });
+
+            it('should provide onBrush getter and setter', function() {
+                var defaultCallback = brushChart.onBrush(),
+                    testCallback = function() {},
+                    newCallback;
+
+                brushChart.onBrush(testCallback);
+                newCallback = brushChart.onBrush();
+
+                expect(defaultCallback).not.toBe(testCallback);
+                expect(newCallback).toBe(testCallback);
+            });
         });
     });
 });

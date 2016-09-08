@@ -139,4 +139,18 @@ body {
   display: none;
 }
 
+.brush-chart .brush-area {
+  fill: url("#brush-area-gradient");
+}
+.brush-chart .brush-area:hover {
+  opacity: 0.8;
+}
+.brush-chart .extent.brush-rect {
+  fill: #EFF2F5;
+  opacity: 0.4;
+}
+.brush-chart .axis path {
+  display: none;
+}
+
 /*# sourceMappingURL=bundle.css.map */
