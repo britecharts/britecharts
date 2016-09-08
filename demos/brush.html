@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Brush Chart Demo - Britecharts</title>
+    <link type="text/css" rel="stylesheet" href="/demos/css/bundle.css" />
+
+    <style type="text/css">
+        .date-range {
+            color: ADB0B6;
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+        .is-hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body id="brush">
+    <section>
+        <p>This is a simple brush chart targeted to be used in conjunction with other charts.</p>
+        <article>
+            <h2>Simple Brush Chart</h2>
+            <div class="js-brush-chart-container"></div>
+            <p class="js-date-range date-range is-hidden">Selected from <span class="js-start-date"></span> to <span class="js-end-date"></span></p>
+            <strong>Example:</strong>
+            <pre>
+                brushChart
+                    .width(500)
+                    .height(300)
+                    .onBrush(function(brushExtent) {
+                        // Do something with the brushExtent
+                    });
+
+                brushContainer.datum(dataset).call(brushChart);
+            </pre>
+        </article>
+    </section>
+</body>
+</html>

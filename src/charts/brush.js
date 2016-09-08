@@ -324,9 +324,23 @@ define(function(require) {
 
 
         /**
+         * Gets or Sets the height of the chart
+         * @param  {number} _x Desired width for the graph
+         * @return { height | module} Current height or Chart module to chain calls
+         * @public
+         */
+        exports.height = function(_x) {
+            if (!arguments.length) {
+                return height;
+            }
+            height = _x;
+            return this;
+        };
+
+        /**
          * Gets or Sets the margin of the chart
          * @param  {object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Bar Chart module to chain calls
+         * @return { margin | module} Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -338,9 +352,21 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the callback that will be called when the user brushes over the area
+         * @param  {Function} _x Callback to call
+         * @return {Function | module}    Current callback function or the Chart Module
+         */
+        exports.onBrush = function(_x) {
+            if (!arguments.length) return onBrush;
+            onBrush = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the width of the chart
          * @param  {number} _x Desired width for the graph
-         * @return { width | module} Current width or Bar Chart module to chain calls
+         * @return { width | module} Current width or Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
@@ -350,21 +376,6 @@ define(function(require) {
             width = _x;
             return this;
         };
-
-        /**
-         * Gets or Sets the height of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { height | module} Current height or Bar Chart module to chain calls
-         * @public
-         */
-        exports.height = function(_x) {
-            if (!arguments.length) {
-                return height;
-            }
-            height = _x;
-            return this;
-        };
-
         return exports;
     };
 
