@@ -18,7 +18,7 @@ function createBrushChart() {
 
     brushChart
         .width(containerWidth)
-        .height(300)
+        .height(200)
         .onBrush(function(brushExtent) {
             var format = d3.time.format('%m/%d/%Y');
 
