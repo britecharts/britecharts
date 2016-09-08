@@ -4,15 +4,12 @@
 
     .brush-area {
         fill: url('#brush-area-gradient');
-
-        &:hover {
-            opacity: 0.8;
-        }
     }
 
     .extent.brush-rect {
-        fill: #EFF2F5;
-        opacity: 0.4;
+        stroke: #fff;
+        stroke-width: 3;
+        fill: rgba(69, 73, 78, 0.05);
     }
 
     // Axes
