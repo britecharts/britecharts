@@ -1,0 +1,21 @@
+@import "../helpers/_variables.scss";
+
+.brush-chart {
+
+    .brush-area {
+        fill: url('#brush-area-gradient');
+    }
+
+    .extent.brush-rect {
+        stroke: #fff;
+        stroke-width: 3;
+        fill: rgba(69, 73, 78, 0.05);
+    }
+
+    // Axes
+    .axis {
+        path {
+            display: none;
+        }
+    }
+}
