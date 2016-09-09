@@ -79,8 +79,8 @@ define(function(require) {
             xTickMonthFormat = d3.time.format('%b'),
 
             // extractors
-            getValue = d => d.value,
-            getDate = d => d.date;
+            getValue = ({value}) => value,
+            getDate = ({date}) => date;
 
 
         /**
