@@ -7,8 +7,7 @@
 </head>
 <body id="line">
     <section>
-        <p>This is the line chart used on the Sales Analytics Report.</p>
-        <p>We have included a resize listener to show how the different charts respond to changes on the viewport.</p>
+
         <article>
             <h3>Line Chart with fixed Aspect Ratio</h3>
             <p>The code for this example can be found in /demos/demo-line.js and it calls the line chart with a <strong>fixed aspect ratio</strong>:</p>
@@ -23,7 +22,20 @@
 
                 container.datum(dataset).call(lineChart);
             </pre>
-            <p>You can also export this chart by pressing: <input id="button" type="button" value="download" /></p>
+            <p>This chart uses a helper to allow the chart to be exported: <input id="button" type="button" value="download" /></p>
+        </article>
+        <article>
+            <h3>Line Chart with a single data source</h3>
+            <p>This is the same chart as above, but when there is a single data source we apply a gradient to the line to give it a little flair.</p>
+            <p>This chart has a fixed height like the one below.</p>
+            <div class="britechart js-single-line-chart-container"></div>
+            <strong>Example:</strong>
+            <pre>
+                lineChart
+                    .tooltipThreshold(600)
+                    .height(300)
+                    .width(containerWidth);
+            </pre>
         </article>
         <article>
             <h3>Line Chart with Fixed Height</h3>

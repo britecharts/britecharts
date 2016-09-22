@@ -3,7 +3,8 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonFiveTopics = require('json!../json/lineDataFiveTopics.json');
+        jsonFiveTopics = require('json!../json/lineDataFiveTopics.json'),
+        jsonOneSource = require('json!../json/lineDataOneSet.json');
 
 
     function SalesDataBuilder(config){
@@ -13,6 +14,12 @@ define(function(require) {
 
         this.with5Topics = function(){
             var attributes = _.extend({}, this.config, jsonFiveTopics);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withOneSource = function() {
+            var attributes = _.extend({}, this.config, jsonOneSource);
 
             return new this.Klass(attributes);
         };
