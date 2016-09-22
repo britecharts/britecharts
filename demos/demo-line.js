@@ -50,6 +50,23 @@ function createLineChart() {
     tooltipContainer.datum([]).call(chartTooltip);
 }
 
+function createLineChartWithSingleLine() {
+    var lineChart = line(),
+        testDataSet = new dataBuilder.SalesDataBuilder(),
+        containerWidth = d3.select('.js-single-line-chart-container').node().getBoundingClientRect().width,
+        container = d3.select('.js-single-line-chart-container'),
+        dataset;
+
+    dataset = testDataSet.withOneSource().build();
+
+    lineChart
+        .tooltipThreshold(600)
+        .height(500)
+        .width(containerWidth);
+
+    container.datum(dataset).call(lineChart);
+}
+
 function createLineChartWithFixedHeight() {
     var lineChart = line(),
         testDataSet = new dataBuilder.SalesDataBuilder(),
@@ -70,11 +87,13 @@ function createLineChartWithFixedHeight() {
 // Show charts if container available
 if (d3.select('.js-line-chart-container').node()) {
     createLineChart();
+    createLineChartWithSingleLine();
     createLineChartWithFixedHeight();
 
     d3.select(window).on('resize', _.debounce(function(){
         d3.selectAll('.line-chart').remove();
         createLineChart();
+        createLineChartWithSingleLine();
         createLineChartWithFixedHeight();
     }, 200));
 }

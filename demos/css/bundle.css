@@ -9,13 +9,13 @@ body {
   fill: none;
   shape-rendering: crispEdges;
   stroke: #EFF2F5;
-  stroke-width: 1px; }
+  stroke-width: 2; }
 
 .extended-x-line {
   fill: none;
   shape-rendering: crispEdges;
   stroke: #D2D6DF;
-  stroke-width: 1; }
+  stroke-width: 2; }
 
 .tick line {
   fill: none;

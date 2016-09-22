@@ -1,0 +1,1374 @@
+{
+  "data": [
+    {
+      "topic": -1,
+      "Data": [
+        {
+          "date": "30-Dec-15",
+          "value": 18,
+          "fullDate": "2015-12-30T00:00:00-08:00"
+        },
+        {
+          "date": "31-Dec-15",
+          "value": 18,
+          "fullDate": "2015-12-31T00:00:00-08:00"
+        },
+        {
+          "date": "1-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-01T00:00:00-08:00"
+        },
+        {
+          "date": "2-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-02T00:00:00-08:00"
+        },
+        {
+          "date": "3-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-03T00:00:00-08:00"
+        },
+        {
+          "date": "4-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-04T00:00:00-08:00"
+        },
+        {
+          "date": "5-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-05T00:00:00-08:00"
+        },
+        {
+          "date": "6-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-06T00:00:00-08:00"
+        },
+        {
+          "date": "7-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-07T00:00:00-08:00"
+        },
+        {
+          "date": "8-Jan-16",
+          "value": 21,
+          "fullDate": "2016-01-08T00:00:00-08:00"
+        },
+        {
+          "date": "9-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-09T00:00:00-08:00"
+        },
+        {
+          "date": "10-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-10T00:00:00-08:00"
+        },
+        {
+          "date": "11-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-11T00:00:00-08:00"
+        },
+        {
+          "date": "12-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-12T00:00:00-08:00"
+        },
+        {
+          "date": "13-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-13T00:00:00-08:00"
+        },
+        {
+          "date": "14-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-14T00:00:00-08:00"
+        },
+        {
+          "date": "15-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-15T00:00:00-08:00"
+        },
+        {
+          "date": "16-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-16T00:00:00-08:00"
+        },
+        {
+          "date": "17-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-17T00:00:00-08:00"
+        },
+        {
+          "date": "18-Jan-16",
+          "value": 20,
+          "fullDate": "2016-01-18T00:00:00-08:00"
+        },
+        {
+          "date": "19-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-19T00:00:00-08:00"
+        },
+        {
+          "date": "20-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-20T00:00:00-08:00"
+        },
+        {
+          "date": "21-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-21T00:00:00-08:00"
+        },
+        {
+          "date": "22-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-22T00:00:00-08:00"
+        },
+        {
+          "date": "23-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-23T00:00:00-08:00"
+        },
+        {
+          "date": "24-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-24T00:00:00-08:00"
+        },
+        {
+          "date": "25-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-25T00:00:00-08:00"
+        },
+        {
+          "date": "26-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-26T00:00:00-08:00"
+        },
+        {
+          "date": "27-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-27T00:00:00-08:00"
+        },
+        {
+          "date": "28-Jan-16",
+          "value": 21,
+          "fullDate": "2016-01-28T00:00:00-08:00"
+        },
+        {
+          "date": "29-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-29T00:00:00-08:00"
+        },
+        {
+          "date": "30-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-30T00:00:00-08:00"
+        },
+        {
+          "date": "31-Jan-16",
+          "value": 18,
+          "fullDate": "2016-01-31T00:00:00-08:00"
+        },
+        {
+          "date": "1-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-01T00:00:00-08:00"
+        },
+        {
+          "date": "2-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-02T00:00:00-08:00"
+        },
+        {
+          "date": "3-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-03T00:00:00-08:00"
+        },
+        {
+          "date": "4-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-04T00:00:00-08:00"
+        },
+        {
+          "date": "5-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-05T00:00:00-08:00"
+        },
+        {
+          "date": "6-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-06T00:00:00-08:00"
+        },
+        {
+          "date": "7-Feb-16",
+          "value": 20,
+          "fullDate": "2016-02-07T00:00:00-08:00"
+        },
+        {
+          "date": "8-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-08T00:00:00-08:00"
+        },
+        {
+          "date": "9-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-09T00:00:00-08:00"
+        },
+        {
+          "date": "10-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-10T00:00:00-08:00"
+        },
+        {
+          "date": "11-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-11T00:00:00-08:00"
+        },
+        {
+          "date": "12-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-12T00:00:00-08:00"
+        },
+        {
+          "date": "13-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-13T00:00:00-08:00"
+        },
+        {
+          "date": "14-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-14T00:00:00-08:00"
+        },
+        {
+          "date": "15-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-15T00:00:00-08:00"
+        },
+        {
+          "date": "16-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-16T00:00:00-08:00"
+        },
+        {
+          "date": "17-Feb-16",
+          "value": 21,
+          "fullDate": "2016-02-17T00:00:00-08:00"
+        },
+        {
+          "date": "18-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-18T00:00:00-08:00"
+        },
+        {
+          "date": "19-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-19T00:00:00-08:00"
+        },
+        {
+          "date": "20-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-20T00:00:00-08:00"
+        },
+        {
+          "date": "21-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-21T00:00:00-08:00"
+        },
+        {
+          "date": "22-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-22T00:00:00-08:00"
+        },
+        {
+          "date": "23-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-23T00:00:00-08:00"
+        },
+        {
+          "date": "24-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-24T00:00:00-08:00"
+        },
+        {
+          "date": "25-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-25T00:00:00-08:00"
+        },
+        {
+          "date": "26-Feb-16",
+          "value": 18,
+          "fullDate": "2016-02-26T00:00:00-08:00"
+        },
+        {
+          "date": "27-Feb-16",
+          "value": 20,
+          "fullDate": "2016-02-27T00:00:00-08:00"
+        },
+        {
+          "date": "28-Feb-16",
+          "value": 17,
+          "fullDate": "2016-02-28T00:00:00-08:00"
+        },
+        {
+          "date": "29-Feb-16",
+          "value": 17,
+          "fullDate": "2016-02-29T00:00:00-08:00"
+        },
+        {
+          "date": "1-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-01T00:00:00-08:00"
+        },
+        {
+          "date": "2-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-02T00:00:00-08:00"
+        },
+        {
+          "date": "3-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-03T00:00:00-08:00"
+        },
+        {
+          "date": "4-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-04T00:00:00-08:00"
+        },
+        {
+          "date": "5-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-05T00:00:00-08:00"
+        },
+        {
+          "date": "6-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-06T00:00:00-08:00"
+        },
+        {
+          "date": "7-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-07T00:00:00-08:00"
+        },
+        {
+          "date": "8-Mar-16",
+          "value": 20,
+          "fullDate": "2016-03-08T00:00:00-08:00"
+        },
+        {
+          "date": "9-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-09T00:00:00-08:00"
+        },
+        {
+          "date": "10-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-10T00:00:00-08:00"
+        },
+        {
+          "date": "11-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-11T00:00:00-08:00"
+        },
+        {
+          "date": "12-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-12T00:00:00-08:00"
+        },
+        {
+          "date": "13-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-13T00:00:00-08:00"
+        },
+        {
+          "date": "14-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-14T00:00:00-07:00"
+        },
+        {
+          "date": "15-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-15T00:00:00-07:00"
+        },
+        {
+          "date": "16-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-16T00:00:00-07:00"
+        },
+        {
+          "date": "17-Mar-16",
+          "value": 17,
+          "fullDate": "2016-03-17T00:00:00-07:00"
+        },
+        {
+          "date": "18-Mar-16",
+          "value": 20,
+          "fullDate": "2016-03-18T00:00:00-07:00"
+        },
+        {
+          "date": "19-Mar-16",
+          "value": 18,
+          "fullDate": "2016-03-19T00:00:00-07:00"
+        },
+        {
+          "date": "20-Mar-16",
+          "value": 18,
+          "fullDate": "2016-03-20T00:00:00-07:00"
+        },
+        {
+          "date": "21-Mar-16",
+          "value": 18,
+          "fullDate": "2016-03-21T00:00:00-07:00"
+        },
+        {
+          "date": "22-Mar-16",
+          "value": 18,
+          "fullDate": "2016-03-22T00:00:00-07:00"
+        },
+        {
+          "date": "23-Mar-16",
+          "value": 18,
+          "fullDate": "2016-03-23T00:00:00-07:00"
+        },
+        {
+          "date": "24-Mar-16",
+          "value": 18,
+          "fullDate": "2016-03-24T00:00:00-07:00"
+        },
+        {
+          "date": "25-Mar-16",
+          "value": 18,
+          "fullDate": "2016-03-25T00:00:00-07:00"
+        },
+        {
+          "date": "26-Mar-16",
+          "value": 18,
+          "fullDate": "2016-03-26T00:00:00-07:00"
+        },
+        {
+          "date": "27-Mar-16",
+          "value": 18,
+          "fullDate": "2016-03-27T00:00:00-07:00"
+        },
+        {
+          "date": "28-Mar-16",
+          "value": 21,
+          "fullDate": "2016-03-28T00:00:00-07:00"
+        }
+      ],
+      "topicName": "Sales"
+    }
+  ],
+  "dataByDate": [
+    {
+      "date": "2015-12-30T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2015-12-31T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-01T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-02T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-03T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-04T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-05T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-06T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-07T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-08T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 21,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-09T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-10T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-11T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-12T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-13T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-14T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-15T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-16T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-17T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-18T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 20,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-19T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-20T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-21T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-22T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-23T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-24T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-25T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-26T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-27T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-28T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 21,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-29T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-30T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-01-31T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-01T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-02T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-03T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-04T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-05T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-06T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-07T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 20,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-08T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-09T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-10T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-11T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-12T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-13T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-14T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-15T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-16T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-17T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 21,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-18T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-19T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-20T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-21T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-22T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-23T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-24T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-25T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-26T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-27T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 20,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-28T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-02-29T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-01T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-02T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-03T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-04T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-05T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-06T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-07T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-08T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 20,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-09T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-10T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-11T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-12T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-13T08:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-14T07:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-15T07:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-16T07:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-17T07:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 17,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-18T07:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 20,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-19T07:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-20T07:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-21T07:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-22T07:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-23T07:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-24T07:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-25T07:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-26T07:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-27T07:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 18,
+          "topicName": "Sales"
+        }
+      ]
+    },
+    {
+      "date": "2016-03-28T07:00:00.000Z",
+      "topics": [
+        {
+          "name": -1,
+          "value": 21,
+          "topicName": "Sales"
+        }
+      ]
+    }
+  ],
+  "readableDataType": {
+    "name": "Quantity Sold",
+    "type": "number"
+  },
+  "topicList": {
+    "topicIds": [
+      -1
+    ],
+    "topicNames": [
+      null
+    ]
+  }
+}
