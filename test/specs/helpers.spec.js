@@ -16,7 +16,7 @@ define([
         randomColor = 'rgb(222,163,12)';
 
 
-    xdescribe('Helpers', () => {
+    describe('Helpers', () => {
         beforeEach(() => {
 
             f = jasmine.getFixtures();
@@ -38,22 +38,25 @@ define([
             let styledHTML;
 
             beforeEach(() => {
+                this.serializer = serializeWithStyles.initializeSerializer();
                 styles = document.createElement('style');
                 styles.innerHTML = `.child{background:${randomColor};}`;
                 document.body.appendChild(styles);
             });
 
             afterEach(() => {
+                this.serializer = null;
                 document.body.removeChild(styles);
             });
 
-            it('Should expect serializeWithStyles to be defined', () => {
-                expect(serializeWithStyles).toBeDefined();
+            it('Should expect serializer to be defined', () => {
+                expect(this.serializer).toBeDefined();
             });
 
             it('should add styles from stylesheets to inline of element', () => {
                 node = containerFixture[0];
-                styledHTML = serializeWithStyles(node).replace(' ','');
+
+                styledHTML = this.serializer(node).replace(' ','');
 
                 expect(styledHTML).not.toBe(node.outerHTML.replace(' ',''));
                 expect(styledHTML.indexOf(randomColor).length).not.toBe(0);
