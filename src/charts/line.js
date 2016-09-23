@@ -69,6 +69,10 @@ define(function(require){
                 '#9963D5': 4,
                 '#051C48': 5
             },
+            singleLineGradientColors = [
+                '#39C7EA',
+                '#4CDCBA'
+            ],
             topicColorMap,
             ease = 'ease',
 
@@ -122,6 +126,7 @@ define(function(require){
                 buildSVG(this);
                 drawGridLines();
                 drawAxis();
+                buildGradient();
                 drawLines();
 
                 if (shouldShowTooltip()){
@@ -193,18 +198,41 @@ define(function(require){
                 .attr('transform', `translate(${margin.left},${margin.top})`);
 
             container
-                .append('g').classed('x-axis-group', true)
-                .append('g').classed('axis x', true);
+              .append('g').classed('x-axis-group', true)
+              .append('g').classed('axis x', true);
             container.selectAll('.x-axis-group')
-                .append('g').classed('month-axis', true);
+              .append('g').classed('month-axis', true);
             container
-                .append('g').classed('y-axis-group axis y', true);
+              .append('g').classed('y-axis-group axis y', true);
             container
-                .append('g').classed('grid-lines-group', true);
+              .append('g').classed('grid-lines-group', true);
             container
-                .append('g').classed('chart-group', true);
+              .append('g').classed('chart-group', true);
             container
-                .append('g').classed('metadata-group', true);
+              .append('g').classed('metadata-group', true);
+        }
+
+        /**
+         * Builds the gradient element to be used later
+         * @return {void}
+         */
+        function buildGradient() {
+            svg.select('.metadata-group')
+              .append('linearGradient')
+                .attr('id', 'line-area-gradient')
+                .attr('x1', '0%')
+                .attr('y1', '0%')
+                .attr('x2', '100%')
+                .attr('y2', '0%')
+                .selectAll('stop')
+                .data([
+                    {offset:'0%', color: singleLineGradientColors[0]},
+                    {offset:'100%', color: singleLineGradientColors[1]}
+                ])
+                .enter()
+              .append('stop')
+                .attr('offset', ({offset}) => offset)
+                .attr('stop-color', ({color}) => color)
         }
 
         /**
@@ -242,7 +270,6 @@ define(function(require){
                 memo[item] = range[i];
                 return memo;
             }, {});
-
         }
 
         /**
@@ -254,7 +281,7 @@ define(function(require){
         function buildSVG(container){
             if (!svg) {
                 svg = d3.select(container)
-                    .append('svg')
+                  .append('svg')
                     .classed('britechart line-chart', true);
 
                 buildContainerGroups();
@@ -321,14 +348,14 @@ define(function(require){
 
             lines
                 .enter()
-                .append('g')
+              .append('g')
                 .attr('class', 'topic')
-                .append('path')
+              .append('path')
                 .attr('class', 'line')
                 .attr('d', ({Data}) => topicLine(Data))
-                .style({
-                    stroke: getLineColor
-                });
+                .style('stroke', (d) => (
+                    data.length === 1 ? 'url(#line-area-gradient)' : getLineColor(d)
+                ));
 
             lines
                 .exit()
@@ -372,14 +399,14 @@ define(function(require){
                 .selectAll('line.extended-x-line')
                 .data([0])
                 .enter()
-                    .append('line')
-                    .attr({
-                        class: 'extended-x-line',
-                        x1: (-xAxisPadding.left - 30),
-                        x2: chartWidth,
-                        y1: height - margin.bottom - margin.top,
-                        y2: height - margin.bottom - margin.top
-                    });
+              .append('line')
+                .attr({
+                    class: 'extended-x-line',
+                    x1: (-xAxisPadding.left - 30),
+                    x2: chartWidth,
+                    y1: height - margin.bottom - margin.top,
+                    y2: height - margin.bottom - margin.top
+                });
         }
 
         /**
@@ -389,7 +416,7 @@ define(function(require){
          */
         function drawHoverOverlay(){
             overlay = svg.select('.metadata-group')
-                .append('rect')
+              .append('rect')
                 .attr('class','overlay')
                 .attr('y1', 0)
                 .attr('y2', height)
@@ -405,7 +432,7 @@ define(function(require){
          */
         function drawVerticalMarker(){
             verticalMarkerContainer = svg.select('.metadata-group')
-                .append('g')
+              .append('g')
                 .attr('class', 'hover-marker vertical-marker-container')
                 .attr('transform', 'translate(9999, 0)');
 
@@ -417,7 +444,7 @@ define(function(require){
                     y2: 0
                 }])
                 .enter()
-                .append('line')
+              .append('line')
                 .classed('vertical-marker', true)
                 .attr({
                     x1: 0,
