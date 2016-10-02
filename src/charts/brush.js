@@ -9,11 +9,22 @@ define(function(require) {
      */
 
     /**
-     * @typedef ChartData
-     * @type Object[]
+     * @typedef BrushChartData
+     * @type {Object[]}
+     * @property {Number} value        Value to chart (required)
+     * @property {Date} date           Date of the value (required)
      *
-     * @param {Date} date           Date of data entry
-     * @param {Number} value        Value of data entry
+     * @example
+     * [
+     *     {
+     *         value: 1,
+     *         date: '2011-01-06T00:00:00Z'
+     *     },
+     *     {
+     *         value: 2,
+     *         date: '2011-01-07T00:00:00Z'
+     *     }
+     * ]
      */
 
     /**
@@ -87,7 +98,7 @@ define(function(require) {
          * This function creates the graph using the selection as container
          * @param  {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
-         * @param {ChartData} _data The data to attach and generate the chart
+         * @param {BrushChartData} _data The data to attach and generate the chart
          */
         function exports(_selection){
             _selection.each(function(_data){

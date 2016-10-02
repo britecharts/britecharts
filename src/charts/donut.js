@@ -34,6 +34,7 @@ define(function(require){
      *         name: 'luminous',
      *         id: 2
      *     }
+     * ]
      */
 
     /**
