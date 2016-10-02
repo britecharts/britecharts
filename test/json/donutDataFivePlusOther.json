@@ -4,35 +4,30 @@
             "name": "Shiny",
             "id": 1,
             "quantity": 86,
-            "quantity_human": "86",
             "percentage": 3
         },
         {
             "name": "Blazing",
             "id": 2,
             "quantity": 300,
-            "quantity_human": "300",
             "percentage": 10
         },
         {
             "name": "Dazzling",
             "id": 3,
             "quantity": 276,
-            "quantity_human": "276",
             "percentage": 10
         },
         {
             "name": "Radiant",
             "id": 4,
             "quantity": 195,
-            "quantity_human": "195",
             "percentage": 10
         },
         {
             "name": "Sparkling",
             "id": 5,
             "quantity": 36,
-            "quantity_human": "36",
             "percentage": 1
         },
         {
