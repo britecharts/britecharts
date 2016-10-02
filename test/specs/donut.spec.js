@@ -1,54 +1,17 @@
-define(['jquery', 'd3', 'donut'], function($, d3, chart) {
+define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder) {
     'use strict';
+
+    function aTestDataSet() {
+        return new dataBuilder.DonutDataBuilder();
+    }
 
     describe('Reusable Donut Chart', () => {
         let donutChart, dataset, containerFixture, f;
 
         beforeEach(() => {
-            dataset = [
-                {
-                    'name': 'VALENTINES VIP SPECIAL',
-                    'id': 33571136,
-                    'quantity': 86,
-                    'quantity_human': '86',
-                    'percentage': 3
-                },
-                {
-                    'name': 'Groupon 4 - Pack',
-                    'id': 32913851,
-                    'quantity': 300,
-                    'quantity_human': '300',
-                    'percentage': 10
-                },
-                {
-                    'name': 'Groupon 2 - Pack',
-                    'id': 32913850,
-                    'quantity': 276,
-                    'quantity_human': '276',
-                    'percentage': 10
-                },
-                {
-                    'name': 'Groupon Individual Runner',
-                    'id': 32913849,
-                    'quantity': 195,
-                    'quantity_human': '195',
-                    'percentage': 10
-                },
-                {
-                    'name': 'LivingSocial Individual Runner',
-                    'id': 32780575,
-                    'quantity': 36,
-                    'quantity_human': '36',
-                    'percentage': 1
-                },
-                {
-                    'name': 'Other',
-                    'id': 0,
-                    'quantity': 5814,
-                    'percentage': 65
-                }
-            ];
-
+            dataset = aTestDataSet()
+                        .withFivePlusOther()
+                        .build();
             donutChart = chart();
 
             // DOM Fixture Setup
@@ -91,16 +54,79 @@ define(['jquery', 'd3', 'donut'], function($, d3, chart) {
             expect(containerFixture.select('text.donut-text').empty()).toBeFalsy();
         });
 
-        it('should provide margin getter and setter', () =>{
-            let defaultMargin = donutChart.margin(),
-                testMargin = {top: 4, right: 4, bottom: 4, left: 4},
-                newMargin;
+        describe('API', function() {
 
-            donutChart.margin(testMargin);
-            newMargin = donutChart.margin();
+            it('should provide margin getter and setter', () =>{
+                let previous = donutChart.margin(),
+                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    actual;
 
-            expect(defaultMargin).not.toBe(testMargin);
-            expect(newMargin).toBe(testMargin);
+                donutChart.margin(expected);
+                actual = donutChart.margin();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide colorScheme getter and setter', () =>{
+                let previous = donutChart.colorScheme(),
+                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    actual;
+
+                donutChart.colorScheme(expected);
+                actual = donutChart.colorScheme();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide externalRadius getter and setter', () =>{
+                let previous = donutChart.externalRadius(),
+                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    actual;
+
+                donutChart.externalRadius(expected);
+                actual = donutChart.externalRadius();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide internalRadius getter and setter', () =>{
+                let previous = donutChart.internalRadius(),
+                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    actual;
+
+                donutChart.internalRadius(expected);
+                actual = donutChart.internalRadius();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide width getter and setter', () =>{
+                let previous = donutChart.width(),
+                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    actual;
+
+                donutChart.width(expected);
+                actual = donutChart.width();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide height getter and setter', () =>{
+                let previous = donutChart.height(),
+                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    actual;
+
+                donutChart.height(expected);
+                actual = donutChart.height();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
         });
 
         describe('when mouse events are triggered', () => {
