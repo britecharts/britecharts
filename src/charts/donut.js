@@ -2,14 +2,8 @@ define(function(require){
     'use strict';
 
     const d3 = require('d3');
-
     const exportChart = require('./helpers/exportChart');
     const textHelper = require('./helpers/text');
-
-    /**
-     * @typedef D3Selection
-     * @type {Array[]}
-     */
 
 
     /**
@@ -200,7 +194,7 @@ define(function(require){
 
         /**
          * Cleaning data adding the proper format
-         * @param  {array} data Data
+         * @param  {DonutChartData} data Data
          * @private
          */
         function cleanData(data) {

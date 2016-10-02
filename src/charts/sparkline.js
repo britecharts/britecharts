@@ -4,10 +4,6 @@ define(function(require){
     const d3 = require('d3');
     const exportChart = require('./helpers/exportChart');
 
-    /**
-     * @typedef D3Selection
-     * @type Array[]
-     */
 
     /**
      * @typedef SparklineChartData
