@@ -232,6 +232,20 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the colorScheme of the chart
+         * @param  {Array} _x Color scheme array to get/set
+         * @return { (Number | Module) } Current colorScheme or Donut Chart module to chain calls
+         * @public
+         */
+        exports.colorScheme = function(_x) {
+            if (!arguments.length) {
+                return colorScheme;
+            }
+            colorScheme = _x;
+            return this;
+        };
+
+        /**
          * Gets or Sets the height of the legend chart
          * @param  {number} _x Desired width for the chart
          * @return { height | module} Current height or Legend module to chain calls

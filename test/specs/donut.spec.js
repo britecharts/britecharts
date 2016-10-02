@@ -70,7 +70,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
             it('should provide colorScheme getter and setter', () =>{
                 let previous = donutChart.colorScheme(),
-                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    expected = ['red', 'gray', 'black'],
                     actual;
 
                 donutChart.colorScheme(expected);
@@ -82,7 +82,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
             it('should provide externalRadius getter and setter', () =>{
                 let previous = donutChart.externalRadius(),
-                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    expected = 32,
                     actual;
 
                 donutChart.externalRadius(expected);
@@ -94,7 +94,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
             it('should provide internalRadius getter and setter', () =>{
                 let previous = donutChart.internalRadius(),
-                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    expected = 12,
                     actual;
 
                 donutChart.internalRadius(expected);
@@ -106,7 +106,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
             it('should provide width getter and setter', () =>{
                 let previous = donutChart.width(),
-                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    expected = 20,
                     actual;
 
                 donutChart.width(expected);
@@ -118,7 +118,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
             it('should provide height getter and setter', () =>{
                 let previous = donutChart.height(),
-                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    expected = 20,
                     actual;
 
                 donutChart.height(expected);

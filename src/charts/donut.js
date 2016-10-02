@@ -115,7 +115,8 @@ define(function(require){
          * @private
          */
         function buildContainerGroups() {
-            let container = svg.append('g')
+            let container = svg
+              .append('g')
                 .classed('container-group', true)
                 .attr({
                     transform: `translate(${width / 2}, ${height / 2})`
@@ -195,7 +196,7 @@ define(function(require){
                     .data(layout(data));
 
                 slices.enter()
-                    .append('g')
+                  .append('g')
                     .each(storeAngle)
                     .each(reduceOuterRadius)
                     .classed('arc', true)
@@ -203,7 +204,7 @@ define(function(require){
                     .on('mouseout', handleMouseOut);
 
                 slices
-                    .append('path')
+                  .append('path')
                     .attr('fill', getSliceFill)
                     .on('mouseover', tweenGrowthFactory(externalRadius, 0))
                     .on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration))
@@ -318,7 +319,6 @@ define(function(require){
 
         /**
          * Utility function that wraps a text into the given width
-         * TODO: Candidate to refactoring
          *
          * @param  {D3Selection} text         Text to write
          * @param  {Number} legendWidth Width of the container

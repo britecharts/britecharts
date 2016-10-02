@@ -9,7 +9,7 @@ var _ = require('underscore'),
 
 
 function createLineChart() {
-    var lineChart = line(),
+    var lineChart1 = line(),
         chartTooltip = tooltip(),
         testDataSet = new dataBuilder.SalesDataBuilder(),
         containerWidth = d3.select('.js-line-chart-container').node().getBoundingClientRect().width,
@@ -19,13 +19,13 @@ function createLineChart() {
 
 
     d3.select('#button').on('click', function() {
-        lineChart.exportChart();
+        lineChart1.exportChart();
     });
 
     dataset = testDataSet.with5Topics().build();
 
     // LineChart Setup and start
-    lineChart
+    lineChart1
         .aspectRatio(0.5)
         .tooltipThreshold(600)
         .width(containerWidth)
@@ -38,7 +38,7 @@ function createLineChart() {
         .on('customMouseOut', function() {
             chartTooltip.hide();
         });
-    container.datum(dataset).call(lineChart);
+    container.datum(dataset).call(lineChart1);
 
     // Tooltip Setup and start
     chartTooltip
@@ -46,29 +46,49 @@ function createLineChart() {
 
     // Note that if the viewport width is less than the tooltipThreshold value,
     // this container won't exist, and the tooltip won't show up
-    tooltipContainer = d3.select('.metadata-group .hover-marker');
+    tooltipContainer = d3.select('.js-line-chart-container .metadata-group .hover-marker');
     tooltipContainer.datum([]).call(chartTooltip);
 }
 
 function createLineChartWithSingleLine() {
-    var lineChart = line(),
+    var lineChart2 = line(),
+        chartTooltip = tooltip(),
         testDataSet = new dataBuilder.SalesDataBuilder(),
         containerWidth = d3.select('.js-single-line-chart-container').node().getBoundingClientRect().width,
         container = d3.select('.js-single-line-chart-container'),
+        tooltipContainer,
         dataset;
 
     dataset = testDataSet.withOneSource().build();
 
-    lineChart
+    lineChart2
         .tooltipThreshold(600)
         .height(500)
-        .width(containerWidth);
+        .width(containerWidth)
+        .on('customMouseOver', function() {
+            chartTooltip.show();
+        })
+        .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
+            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+        })
+        .on('customMouseOut', function() {
+            chartTooltip.hide();
+        });
 
-    container.datum(dataset).call(lineChart);
+    container.datum(dataset).call(lineChart2);
+
+    // Tooltip Setup and start
+    chartTooltip
+        .title(dataset.readableDataType.name);
+
+    // Note that if the viewport width is less than the tooltipThreshold value,
+    // this container won't exist, and the tooltip won't show up
+    tooltipContainer = d3.select('.js-single-line-chart-container .metadata-group .hover-marker');
+    tooltipContainer.datum([]).call(chartTooltip);
 }
 
 function createLineChartWithFixedHeight() {
-    var lineChart = line(),
+    var lineChart3 = line(),
         testDataSet = new dataBuilder.SalesDataBuilder(),
         containerWidth = d3.select('.js-fixed-line-chart-container').node().getBoundingClientRect().width,
         container = d3.select('.js-fixed-line-chart-container'),
@@ -76,12 +96,12 @@ function createLineChartWithFixedHeight() {
 
     dataset = testDataSet.with5Topics().build();
 
-    lineChart
+    lineChart3
         .tooltipThreshold(600)
         .height(300)
         .width(containerWidth);
 
-    container.datum(dataset).call(lineChart);
+    container.datum(dataset).call(lineChart3);
 }
 
 // Show charts if container available

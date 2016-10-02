@@ -51,7 +51,6 @@ define(function(require) {
             xAxis, xAxisLabel,
             yAxis, yAxisLabel,
             xAxisLabelOffset = 45,
-            yAxisTickFormat = d3.format('.2f'),
             yAxisLabelOffset = -40,
             xAxisPadding = {
                 top: 0,
@@ -68,9 +67,12 @@ define(function(require) {
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
             dispatch = d3.dispatch('customHover'),
 
+            // Formats
+            yAxisTickFormat = d3.format('.1f'),
+
             // extractors
-            getKey = d => d.key,
-            getValue = d => d.value;
+            getKey = ({key}) => key,
+            getValue = ({value}) => value;
 
 
         /**

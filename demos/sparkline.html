@@ -6,27 +6,35 @@
     <link type="text/css" rel="stylesheet" href="/demos/css/bundle.css" />
 </head>
 <body id="sparkline">
-    <section>
-        <p>This is the sparkline chart used for showing trends in data over time.</p>
-        <p>We have included a resize listener to show how the different charts respond to changes on the viewport.</p>
-        <article>
-            <h3>Sparkline Chart</h3>
-            <p>The code for this example can be found in /demos/demo-sparkline.js and it calls the sparkline chart:</p>
-            <div class="britechart js-sparkline-chart-container"></div>
-            <strong>Example:</strong>
-            <pre>
+    <div class="container">
+        <div class="row">
+            <div class="span6">
+                <article>
+                    <h2>Sparkline Chart</h2>
+                    <div class="britechart js-sparkline-chart-container"></div>
+                    <p>This is the sparkline chart used for showing trends in data over time.</p>
+                    <p>We have included a resize listener to show how the different charts respond to changes on the viewport.</p>
+                    <p>The code for this example can be found in /demos/demo-sparkline.js and it calls the sparkline chart:</p>
+                </article>
+            </div>
+            <div class="span6 sidebar">
+                <h3>The code</h3>
+                <pre>
+sparklineChart
+    .dateLabel('dateUTC')
+    .isAnimated(true)
+    .duration(2500)
+    .height(containerWidth / 3)
+    .width(containerWidth / 2);
 
-                sparklineChart
-                    .dateLabel('dateUTC')
-                    .isAnimated(true)
-                    .duration(2500)
-                    .height(containerWidth / 3)
-                    .width(containerWidth / 2);
+container.datum(dataset)
+    .call(sparklineChart);
+                </pre>
 
-                container.datum(dataset).call(sparklineChart);
-            </pre>
-            <p>You can also export this chart by pressing: <input id="button" type="button" value="download" /></p>
-        </article>
-    </section>
+                <h3>Download</h3>
+                <p>You can also export this chart by pressing: <input id="button" type="button" value="download" /></p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

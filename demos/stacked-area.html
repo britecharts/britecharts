@@ -6,53 +6,46 @@
     <link type="text/css" rel="stylesheet" href="/demos/css/bundle.css" />
 </head>
 <body id="stacked-area">
-    <section>
-        <p>This is the stacked area chart used on the Traffic Analytics Report.</p>
-        <p>We have included a resize listener to show how the chart respond to changes on the viewport.</p>
-        <article>
-            <h3>Stacked Area Chart with Tooltip</h3>
-            <p>The code for this example can be found in /demos/demo-stacked-area.js:</p>
-            <div class="britechart js-stacked-area-chart-tooltip-container"></div>
-            <strong>Example:</strong>
-            <pre>
-                // StackedAreChart Setup and start
-                stackedArea
-                    .tooltipThreshold(400)
-                    .width(containerWidth)
-                    .on('customMouseOver', function() {
-                        chartTooltip.show();
-                    })
-                    .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-                        chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-                    })
-                    .on('customMouseOut', function() {
-                        chartTooltip.hide();
-                    });
-                container.datum(dataset.data).call(stackedArea);
+    <div class="container">
+        <div class="row">
+            <div class="span8">
+                <h3>Stacked Area Chart with Tooltip</h3>
+                <div class="britechart js-stacked-area-chart-tooltip-container"></div>
+                <p>The code for this example can be found in /demos/demo-stacked-area.js:</p>
+            </div>
+            <div class="span4 sidebar">
+                <h3>Example</h3>
+                <pre>
+// StackedAreChart Setup and start
+stackedArea
+    .tooltipThreshold(400)
+    .width(containerWidth)
+    .on('customMouseOver', function() {
+        chartTooltip.show();
+    })
+    .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
+        chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+    })
+    .on('customMouseOut', function() {
+        chartTooltip.hide();
+    });
+container.datum(dataset.data).call(stackedArea);
 
-                // Tooltip Setup and start
-                chartTooltip
-                    .title('Testing tooltip');
+// Tooltip Setup and start
+chartTooltip
+    .title('Testing tooltip');
 
-                // Note that if the viewport width is less than the tooltipThreshold value,
-                // this container won't exist, and the tooltip won't show up
-                tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
-                tooltipContainer.datum([]).call(chartTooltip);
-            </pre>
-            <p>You can also export this chart by pressing: <input id="button" type="button" value="download" /></p>
-        </article>
-        <article>
-            <h3>Stacked Area Chart</h3>
-            <p>The code for this example can be found in /demos/demo-stacked-area.js:</p>
-            <div class="britechart js-stacked-area-chart-container"></div>
-            <pre>
-                stackedAreaChart
-                    .tooltipThreshold(400)
-                    .width(containerWidth);
-
-                container.datum(dataset).call(stackedAreaChart);
-            </pre>
-        </article>
-    </section>
+// Note that if the viewport width is less than the tooltipThreshold value,
+// this container won't exist, and the tooltip won't show up
+tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
+tooltipContainer.datum([]).call(chartTooltip);
+                </pre>
+                <h3>Download</h3>
+                <p>You can also export this chart by pressing: <input id="button" type="button" value="download" /></p>
+            </div>
+            <article>
+            </article>
+        </div>
+    </div>
 </body>
 </html>
