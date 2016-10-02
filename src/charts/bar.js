@@ -6,15 +6,25 @@ define(function(require) {
 
     /**
      * @typedef D3Selection
-     * @type Array[]
+     * @type {Array[]}
      */
 
     /**
-     * @typedef ChartData
-     * @type Object[]
+     * @typedef BarChartData
+     * @type {Object[]}
+     * @property {Number} value        Value of the group (required)
+     * @property {String} name         Name of the group (required)
      *
-     * @param {String} letter       Letter we measure
-     * @param {Number} frequency    Frequency of the letter
+     * @example
+     * [
+     *     {
+     *         value: 1,
+     *         name: 'glittering'
+     *     },
+     *     {
+     *         value: 1,
+     *         name: 'luminous'
+     *     }
      */
 
     /**
@@ -58,6 +68,9 @@ define(function(require) {
             },
             svg,
 
+            valueLabel = 'value',
+            nameLabel = 'name',
+
             maskGridLines,
             baseLine,
 
@@ -66,21 +79,21 @@ define(function(require) {
             dispatch = d3.dispatch('customHover'),
 
             // extractors
-            getLetter = ({letter}) => letter,
-            getFrequency = ({frequency}) => frequency;
+            getName = ({name}) => name,
+            getValue = ({value}) => value;
 
 
         /**
          * This function creates the graph using the selection as container
          * @param  {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
-         * @param {ChartData} _data The data to attach and generate the chart
+         * @param {BarChartData} _data The data to attach and generate the chart
          */
         function exports(_selection){
             _selection.each(function(_data){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
-                data = _data;
+                data = cleanData(_data);
 
                 buildScales();
                 buildAxis();
@@ -132,11 +145,11 @@ define(function(require) {
          */
         function buildScales(){
             xScale = d3.scale.ordinal()
-                .domain(data.map(getLetter))
+                .domain(data.map(getName))
                 .rangeRoundBands([0, chartWidth], 0.1);
 
             yScale = d3.scale.linear()
-                .domain([0, d3.max(data, getFrequency)])
+                .domain([0, d3.max(data, getValue)])
                 .range([chartHeight, 0]);
         }
 
@@ -161,6 +174,20 @@ define(function(require) {
                     width: width + margin.left + margin.right,
                     height: height + margin.top + margin.bottom
                 });
+        }
+
+        /**
+         * Cleaning data adding the proper format
+         * @param  {array} data Data
+         * @private
+         */
+        function cleanData(data) {
+            return data.map((d) => {
+                d.value = +d[valueLabel];
+                d.name = String(d[nameLabel]);
+
+                return d;
+            });
         }
 
         /**
@@ -195,8 +222,8 @@ define(function(require) {
                 .attr({
                     width: barW,
                     x: chartWidth, // Initially drawing the bars at the end of Y axis
-                    y: function(d) { return yScale(d.frequency); },
-                    height: function(d) { return chartHeight - yScale(d.frequency); }
+                    y: function(d) { return yScale(d.value); },
+                    height: function(d) { return chartHeight - yScale(d.value); }
                 })
                 .on('mouseover', dispatch.customHover);
 
@@ -205,9 +232,9 @@ define(function(require) {
                 .ease(ease)
                 .attr({
                     width: barW,
-                    x: function(d) { return xScale(d.letter) + gapSize/2; },
-                    y: function(d) { return yScale(d.frequency); },
-                    height: function(d) { return chartHeight - yScale(d.frequency); }
+                    x: function(d) { return xScale(d.name) + gapSize/2; },
+                    y: function(d) { return yScale(d.value); },
+                    height: function(d) { return chartHeight - yScale(d.value); }
                 });
 
             // Exit

@@ -8,7 +8,32 @@ define(function(require){
 
     /**
      * @typedef D3Selection
-     * @type Array[]
+     * @type {Array[]}
+     */
+
+
+    /**
+     * @typedef DonutChartData
+     * @type {Object[]}
+     * @property {Number} quantity     Quantity of the group (required)
+     * @property {Number} percentage   Percentage of the total (required)
+     * @property {String} name         Name of the group (required)
+     * @property {Number} id           Identifier for the group required for legend feature (optional)
+     *
+     * @example
+     * [
+     *     {
+     *         quantity: 1,
+     *         percentage: 50,
+     *         name: 'glittering',
+     *         id: 1
+     *     },
+     *     {
+     *         quantity: 1,
+     *         percentage: 50,
+     *         name: 'luminous',
+     *         id: 2
+     *     }
      */
 
     /**
@@ -58,6 +83,10 @@ define(function(require){
             slices,
             svg,
 
+            quantityLabel = 'quantity',
+            nameLabel = 'name',
+            percentageLabel = 'percentage',
+
             // colors
             colorScale = d3.scale.category20c(),
             colorScheme = ['#00AF38', '#41C2C9', '#F6C664', '#F4693A', '#9A66D7'],
@@ -72,7 +101,7 @@ define(function(require){
             sortComparator = (a, b) => b.quantity - a.quantity,
 
             // extractors
-            getQuantity = ({quantity}) => parseInt(quantity, 10),
+            getQuantity = ({quantity}) => quantity,
             getSliceFill = ({data}) => colorScale(data.name),
 
             // events
@@ -83,13 +112,13 @@ define(function(require){
          *
          * @param {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
-         * @param {Object} _data The data to attach and generate the chart
+         * @param {DonutChartData} _data The data to attach and generate the chart
          */
         function exports(_selection) {
             _selection.each(function(_data) {
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
-                data = _data;
+                data = cleanData(_data);
 
                 buildLayout();
                 buildColorScale();
@@ -166,6 +195,21 @@ define(function(require){
             svg.transition().ease(ease)
                 .attr('width', width + margin.left + margin.right)
                 .attr('height', height + margin.top + margin.bottom);
+        }
+
+        /**
+         * Cleaning data adding the proper format
+         * @param  {array} data Data
+         * @private
+         */
+        function cleanData(data) {
+            return data.map((d) => {
+                d.quantity = +d[quantityLabel];
+                d.name = String(d[nameLabel]);
+                d.percentage = String(d[percentageLabel]);
+
+                return d;
+            });
         }
 
         /**
