@@ -42,6 +42,8 @@ function getLegendChart(dataset) {
     var legendChart = legend(),
         legendContainer = d3.select('.js-legend-chart-container');
 
+    legendChart.colorScheme(briteChartsColors);
+
     legendContainer.datum(dataset).call(legendChart);
 
     return legendChart;
@@ -54,7 +56,7 @@ function createSmallDonutChart() {
 
     donutChart
         .width(containerWidth)
-        .height(containerWidth)
+        .height(containerWidth/1.5)
         .externalRadius(containerWidth/5)
         .internalRadius(containerWidth/10);
     donutContainer.datum(dataset).call(donutChart);

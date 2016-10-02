@@ -15,45 +15,66 @@
     </style>
 </head>
 <body id="donut">
-    <section>
-        <p>This is a donut chart that we plan to use in core soon.</p>
-        <article>
-            <h2>Simple Donut Chart</h2>
-            <div class="js-donut-chart-container donut-chart-container"></div>
-            <div class="js-legend-chart-container legend-chart-container"></div>
-            <strong>Example:</strong>
-            <pre>
-                donutChart
-                    .width(containerWidth)
-                    .height(containerWidth)
-                    .externalRadius(containerWidth/2.5)
-                    .internalRadius(containerWidth/5)
-                    .on('customMouseOver', function(data) {
-                        legendChart.highlight(data.data.id);
-                    })
-                    .on('customMouseOut', function() {
-                        legendChart.clearHighlight();
-                    });
+    <div class="container">
+        <div class="row">
+            <div class="span6">
+                <article>
+                    <h2>Donut Chart with Legend</h2>
+                    <div class="js-donut-chart-container donut-chart-container"></div>
+                </article>
+            </div>
+            <div class="span6 sidebar">
+                <h3>The code</h3>
+                <pre>
+donutChart
+    .width(containerWidth)
+    .height(containerWidth)
+    .externalRadius(containerWidth/2.5)
+    .internalRadius(containerWidth/5)
+    .colorScheme(briteChartsColors)
+    .on('customMouseOver', function(data) {
+        legendChart.highlight(data.data.id);
+    })
+    .on('customMouseOut', function() {
+        legendChart.clearHighlight();
+    });
 
-                donutContainer.datum(dataset).call(donutChart);
+donutContainer.datum(dataset).call(donutChart);
 
-                legendContainer.datum(dataset).call(legendChart);
-            </pre>
-            <input id="button" type="button" value="download" />
-        </article>
-        <article>
-            <h2>Small Donut Chart</h2>
-            <div class="js-small-donut-chart-container"></div>
-            <pre>
-                donutChart
-                    .width(containerWidth)
-                    .height(containerWidth)
-                    .externalRadius(containerWidth/5)
-                    .internalRadius(containerWidth/10);
+legendContainer.datum(dataset).call(legendChart);
+                </pre>
 
-                donutContainer.datum(dataset).call(donutChart);
-            </pre>
-        </article>
-    </section>
+                <h3>Legend</h3>
+                <div class="js-legend-chart-container legend-chart-container"></div>
+
+                <h3>Download</h3>
+                <p>You can also export this chart by pressing: <input id="button" type="button" value="Download" /></p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="span6">
+                <section>
+                    <article>
+                        <h2>Simple Donut Chart</h2>
+                        <div class="js-small-donut-chart-container"></div>
+                    </article>
+                </section>
+            </div>
+            <div class="span6 sidebar">
+                <h3>The code    </h3>
+                <pre>
+donutChart
+    .width(containerWidth)
+    .height(containerWidth)
+    .externalRadius(containerWidth/4)
+    .internalRadius(containerWidth/8);
+
+donutContainer.datum(dataset).call(donutChart);
+                </pre>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

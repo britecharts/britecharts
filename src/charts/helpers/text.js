@@ -2,7 +2,7 @@ define(function(require) {
 
     const wrapConfig = {
         lineHeight: 1.2,
-        smallTextOffset: 15,
+        smallTextOffset: 10,
         smallTextLineHeightRatio: 0.9,
         smallTextRatio: 0.4,
         valueClassName: 'value',
