@@ -4,6 +4,7 @@ define(function(require){
     const d3 = require('d3');
 
     const exportChart = require('./helpers/exportChart');
+    const textHelper = require('./helpers/text');
 
     /**
      * @typedef D3Selection
@@ -71,8 +72,8 @@ define(function(require){
             sortComparator = (a, b) => b.quantity - a.quantity,
 
             // extractors
-            getQuantity = d => parseInt(d.quantity, 10),
-            getSliceFill = d => colorScale(d.data.name),
+            getQuantity = ({quantity}) => parseInt(quantity, 10),
+            getSliceFill = ({data}) => colorScale(data.name),
 
             // events
             dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
@@ -319,56 +320,14 @@ define(function(require){
          * Utility function that wraps a text into the given width
          * TODO: Candidate to refactoring
          *
-         * @param  {String} text         Text to write
+         * @param  {D3Selection} text         Text to write
          * @param  {Number} legendWidth Width of the container
          * @private
          */
         function wrapText(text, legendWidth) {
-            text.each(function() {
-                let text = d3.select(this),
-                    words = text.text().split(/\s+/).reverse(),
-                    word,
-                    line = [],
-                    lineNumber = 0,
-                    lineHeight = 1.2,
-                    smallLineHeight = lineHeight * 0.9,
-                    smallTextOffset = 15,
-                    y = text.attr('y'),
-                    dy = parseFloat(text.attr('dy')),
-                    fontSize = externalRadius / 4,
-                    smallFontSize = fontSize / 2.5,
-                    tspan = text.text(null).append('tspan')
-                        .attr('x', 0)
-                        .attr('y', y - 5)
-                        .attr('dy', dy + 'em')
-                        .classed('donut-value', true)
-                        .style('font-size', fontSize + 'px');
+            let fontSize = externalRadius / 5;
 
-                tspan.text(words.pop());
-                tspan = text.append('tspan')
-                    .classed('donut-label', true)
-                    .attr('x', 0)
-                    .attr('y', y + smallTextOffset)
-                    .attr('dy', ++lineNumber * smallLineHeight + dy + 'em')
-                    .style('font-size', smallFontSize + 'px');
-
-                while (word = words.pop()) {
-                    line.push(word);
-                    tspan.text(line.join(' '));
-                    if (tspan.node().getComputedTextLength() > legendWidth - 50) {
-                        line.pop();
-                        tspan.text(line.join(' '));
-                        line = [word];
-                        tspan = text.append('tspan')
-                            .classed('donut-label', true)
-                            .attr('x', 0)
-                            .attr('y', y+ smallTextOffset)
-                            .attr('dy', ++lineNumber * smallLineHeight + dy + 'em')
-                            .text(word)
-                            .style('font-size', smallFontSize + 'px');
-                    }
-                }
-            });
+            textHelper.wrapText.call(null, fontSize, legendWidth, text.node());
         }
 
         /**

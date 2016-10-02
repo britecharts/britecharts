@@ -66,8 +66,8 @@ define(function(require) {
             dispatch = d3.dispatch('customHover'),
 
             // extractors
-            getLetter = d => d.letter,
-            getFrequency = d => d.frequency;
+            getLetter = ({letter}) => letter,
+            getFrequency = ({frequency}) => frequency;
 
 
         /**
