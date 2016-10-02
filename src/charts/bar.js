@@ -25,6 +25,7 @@ define(function(require) {
      *         value: 1,
      *         name: 'luminous'
      *     }
+     * ]
      */
 
     /**
