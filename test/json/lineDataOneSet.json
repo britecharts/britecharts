@@ -1358,9 +1358,5 @@
         }
       ]
     }
-  ],
-  "readableDataType": {
-    "name": "Quantity Sold",
-    "type": "number"
-  }
+  ]
 }

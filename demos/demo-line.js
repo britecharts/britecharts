@@ -42,7 +42,7 @@ function createLineChart() {
 
     // Tooltip Setup and start
     chartTooltip
-        .title(dataset.readableDataType.name);
+        .title('Quantity Sold');
 
     // Note that if the viewport width is less than the tooltipThreshold value,
     // this container won't exist, and the tooltip won't show up
@@ -79,7 +79,7 @@ function createLineChartWithSingleLine() {
 
     // Tooltip Setup and start
     chartTooltip
-        .title(dataset.readableDataType.name);
+        .title('Quantity Sold');
 
     // Note that if the viewport width is less than the tooltipThreshold value,
     // this container won't exist, and the tooltip won't show up

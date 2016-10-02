@@ -4,17 +4,25 @@ define(function(require) {
     const d3 = require('d3');
     const exportChart = require('./helpers/exportChart');
 
-    /**
-     * @typedef D3Selection
-     * @type Array[]
-     */
 
     /**
-     * @typedef ChartData
+     * @typedef StepChartData
      * @type Object[]
      *
-     * @param {String} key      Key we measure
-     * @param {Number} value    value of the key
+     * @property {String} key      Key we measure (required)
+     * @property {Number} value    value of the key (required)
+     *
+     * @example
+     * [
+     *     {
+     *         value: 1,
+     *         key: 'glittering'
+     *     },
+     *     {
+     *         value: 1,
+     *         key: 'luminous'
+     *     }
+     * ]
      */
 
     /**
@@ -60,6 +68,9 @@ define(function(require) {
             },
             svg,
 
+            valueLabel = 'value',
+            nameLabel = 'key',
+
             maskGridLines,
             baseLine,
 
@@ -79,14 +90,14 @@ define(function(require) {
          * This function creates the graph using the selection as container
          * @param  {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
-         * @param {ChartData} _data The data to attach and generate the chart
+         * @param {StepChartData} _data The data to attach and generate the chart
          */
         function exports(_selection){
             _selection.each(function(_data){
                 // Make space on the left of the graph for the y axis label
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
-                data = _data;
+                data = cleanData(_data);
 
                 buildScales();
                 buildAxis();
@@ -170,6 +181,20 @@ define(function(require) {
                     width: width + margin.left + margin.right,
                     height: height + margin.top + margin.bottom
                 });
+        }
+
+        /**
+         * Cleaning data adding the proper format
+         * @param  {StepChartData} data Data
+         * @private
+         */
+        function cleanData(data) {
+            return data.map((d) => {
+                d.value = +d[valueLabel];
+                d.key = String(d[nameLabel]);
+
+                return d;
+            });
         }
 
         /**

@@ -3,10 +3,6 @@ define(function(require) {
 
     const d3 = require('d3');
 
-    /**
-     * @typedef D3Selection
-     * @type Array[]
-     */
 
     /**
      * @typedef BrushChartData
@@ -230,7 +226,7 @@ define(function(require) {
         /**
          * Cleaning data adding the proper format
          *
-         * @param  {array} data Data
+         * @param  {BrushChartData} data Data
          */
         function cleanData(data) {
             let parseDate = d3.time.format(defaultTimeFormat).parse;
