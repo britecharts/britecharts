@@ -10,6 +10,24 @@ define(function(require){
      */
 
     /**
+     * @typedef SparklineChartData
+     * @type {Object[]}
+     * @property {Number} value        Value of the group (required)
+     * @property {String} name         Name of the group (required)
+     *
+     * @example
+     * [
+     *     {
+     *         value: 1,
+     *         date: '2011-01-06T00:00:00Z'
+     *     },
+     *     {
+     *         value: 2,
+     *         date: '2011-01-07T00:00:00Z'
+     *     }
+     */
+
+    /**
      * Sparkline Chart reusable API module that allows us
      * rendering a sparkline configurable chart.
      *
@@ -63,19 +81,19 @@ define(function(require){
 
             markerSize = 1.5,
 
-            valueLabel = 'views',
+            valueLabel = 'value',
             dateLabel = 'date',
 
             // getters
-            getDate = d => d.date,
-            getValue = d => d[valueLabel];
+            getDate = ({date}) => date,
+            getValue = ({value}) => value;
 
         /**
          * This function creates the graph using the selection and data provided
          *
          * @param {D3Selection} _selection A d3 selection that represents
          * the container(s) where the chart(s) will be rendered
-         * @param {Object} _data The data to attach and generate the chart
+         * @param {SparklineChartData} _data The data to attach and generate the chart
          */
         function exports(_selection) {
             _selection.each(function(_data){
@@ -155,7 +173,7 @@ define(function(require){
         function cleanData(data) {
             return data.map((d) => {
                 d.date = new Date(d[dateLabel]);
-                d[valueLabel] = +d[valueLabel];
+                d.value = +d[valueLabel];
 
                 return d;
             });
@@ -230,9 +248,9 @@ define(function(require){
          */
         function drawArea(){
             let area = d3.svg.area()
-                .x((d) => xScale(d.date))
+                .x(({date}) => xScale(date))
                 .y0(() => yScale(0))
-                .y1((d) => yScale(d[valueLabel]))
+                .y1(({value}) => yScale(value))
                 .interpolate('basis');
 
             svg.select('.chart-group')
@@ -250,8 +268,8 @@ define(function(require){
         function drawLine(){
             line = d3.svg.line()
                 .interpolate('basis')
-                .x((d) => xScale(d.date))
-                .y((d) => yScale(d[valueLabel]));
+                .x(({date}) => xScale(date))
+                .y(({value}) => yScale(value));
 
             svg.select('.chart-group')
               .append('path')
@@ -269,7 +287,7 @@ define(function(require){
               .append('circle')
                 .attr('class', 'sparkline-circle')
                 .attr('cx', xScale(data[data.length - 1].date))
-                .attr('cy', yScale(data[data.length - 1][valueLabel]))
+                .attr('cy', yScale(data[data.length - 1].value))
                 .attr('r', markerSize);
         }
 
