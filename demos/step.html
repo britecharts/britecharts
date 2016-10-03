@@ -6,39 +6,48 @@
     <link type="text/css" rel="stylesheet" href="/demos/css/bundle.css" />
 </head>
 <body id="step">
-    <section>
-        <p>This is a simple step chart.</p>
-        <article>
-            <h2>Simple Step Chart</h2>
-            <div class="js-step-chart-container"></div>
-            <strong>Example:</strong>
-            <pre>
-                // StepChart without Axis Labels:
-                stepChart
-                    .width(500)
-                    .height(300);
-                stepContainer.datum(dataset).call(stepChart);
+    <div class="container">
+        <div class="row">
+            <div class="span8">
+                <article>
+                    <h2>Step Chart</h2>
+                    <div class="js-step-chart-container"></div>
+                    <p>This is a simple step chart.</p>
+                    <p>The code for this example can be found in /demos/demo-step.js and it calls the step chart.</p>
+                </article>
+            </div>
+            <div class="span4 sidebar">
+                <h3>The code</h3>
+                <pre>
+// StepChart without Axis Labels:
+stepChart
+    .width(500)
+    .height(300);
+stepContainer.datum(dataset).call(stepChart);
 
-                // StepChart with Axis Labels:
-                // If the labels get cutoff when added, it's a good idea
-                // to tweak the left margin to get the look you want
-                stepChart
-                    .width(500)
-                    .height(300)
-                    .xAxisLabel('Fruit Type')
-                    .xAxisLabelOffset(45)
-                    .yAxisLabel('Quantity')
-                    .yAxisLabelOffset(-45)
-                    .margin({
-                        top: 20,
-                        right: 20,
-                        bottom: 30,
-                        left: 65
-                    });
-                stepContainer.datum(dataset).call(stepChart);
-            </pre>
-            <p>You can also export this chart by pressing: <input id="button" type="button" value="download" /></p>
-        </article>
-    </section>
+// StepChart with Axis Labels:
+// If the labels get cutoff when added, it's a good idea
+// to tweak the left margin to get the look you want
+stepChart
+    .width(500)
+    .height(300)
+    .xAxisLabel('Fruit Type')
+    .xAxisLabelOffset(45)
+    .yAxisLabel('Quantity')
+    .yAxisLabelOffset(-45)
+    .margin({
+        top: 20,
+        right: 20,
+        bottom: 30,
+        left: 65
+    });
+stepContainer.datum(dataset).call(stepChart);
+                </pre>
+
+                <h3>Download</h3>
+                <p>You can also export this chart by pressing: <input id="button" type="button" value="download" /></p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

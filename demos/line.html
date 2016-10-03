@@ -6,50 +6,73 @@
     <link type="text/css" rel="stylesheet" href="/demos/css/bundle.css" />
 </head>
 <body id="line">
-    <section>
+    <div class="container">
+        <div class="row">
+            <div class="span8">
+                <article>
+                    <h2>Line Chart with fixed Aspect Ratio</h2>
+                    <div class="britechart js-line-chart-container"></div>
+                    <p>The code for this example can be found in /demos/demo-line.js and it calls the line chart with a <strong>fixed aspect ratio</strong>:</p>
+                </article>
+            </div>
+            <div class="span4 sidebar">
+                <h3>The code</h3>
+                <pre>
+lineChart
+    .aspectRatio(0.5)
+    .tooltipThreshold(600)
+    .width(containerWidth);
 
-        <article>
-            <h3>Line Chart with fixed Aspect Ratio</h3>
-            <p>The code for this example can be found in /demos/demo-line.js and it calls the line chart with a <strong>fixed aspect ratio</strong>:</p>
-            <div class="britechart js-line-chart-container"></div>
+container.datum(dataset).call(lineChart);
+                </pre>
 
-            <strong>Example:</strong>
-            <pre>
-                lineChart
-                    .aspectRatio(0.5)
-                    .tooltipThreshold(600)
-                    .width(containerWidth);
+                <h3>Download</h3>
+                <p>You can also export this chart by pressing: <input id="button" type="button" value="Download" /></p>
+            </div>
+        </div>
 
-                container.datum(dataset).call(lineChart);
-            </pre>
-            <p>This chart uses a helper to allow the chart to be exported: <input id="button" type="button" value="download" /></p>
-        </article>
-        <article>
-            <h3>Line Chart with a single data source</h3>
-            <p>This is the same chart as above, but when there is a single data source we apply a gradient to the line to give it a little flair.</p>
-            <p>This chart has a fixed height like the one below.</p>
-            <div class="britechart js-single-line-chart-container"></div>
-            <strong>Example:</strong>
-            <pre>
-                lineChart
-                    .tooltipThreshold(600)
-                    .height(300)
-                    .width(containerWidth);
-            </pre>
-        </article>
-        <article>
-            <h3>Line Chart with Fixed Height</h3>
-            <p>In this case, we have set a <strong>fixed height</strong> on the chart, as we are currently doing on the Sales report:</p>
-            <div class="britechart js-fixed-line-chart-container"></div>
-            <pre>
-                lineChart
-                    .tooltipThreshold(600)
-                    .height(300)
-                    .width(containerWidth);
+        <div class="row">
+            <div class="span8">
+                <article>
+                    <h2>Line Chart with a single data source</h2>
+                    <div class="britechart js-single-line-chart-container"></div>
+                    <p>This is the same chart as above, but when there is a single data source we apply a gradient to the line to give it a little flair.</p>
+                    <p>This chart has a fixed height like the one below.</p>
+                </article>
+            </div>
+            <div class="span4 sidebar">
+                <h3>The code</h3>
+                <pre>
+lineChart
+    .tooltipThreshold(600)
+    .height(300)
+    .width(containerWidth);
 
-                container.datum(dataset).call(lineChart);
-            </pre>
-        </article>
-    </section>
+container.datum(dataset).call(lineChart);
+                </pre>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="span8">
+                <article>
+                    <h2>Line Chart with Fixed Height</h2>
+                    <div class="britechart js-fixed-line-chart-container"></div>
+                    <p>In this case, we have set a <strong>fixed height</strong> on the chart, as we are currently doing on the Sales report:</p>
+                </article>
+            </div>
+            <div class="span4 sidebar">
+                <h3>The code</h3>
+                <pre>
+lineChart
+    .tooltipThreshold(600)
+    .height(300)
+    .width(containerWidth);
+
+container.datum(dataset).call(lineChart);
+                </pre>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
