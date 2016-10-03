@@ -27,6 +27,7 @@ define([
         beforeEach(() => {
             dataset = aTestDataSet().with1Source().build();
             sparklineChart = sparkline().dateLabel('dateUTC');
+
             // DOM Fixture Setup
             f = jasmine.getFixtures();
             f.fixturesPath = 'base/test/fixtures/';

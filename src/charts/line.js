@@ -7,8 +7,117 @@ define(function(require){
 
     /**
      * @typedef D3Selection
-     * @type Array[]
+     * @type {Array[]}
+     * @property {Number} length            Size of the selection
+     * @property {DOMElement} parentNode    Parent of the selection
      */
+
+     /**
+      * @typedef lineChartPointByTopic
+      * @type {Object}
+      * @property {Object[]} Data       All data entries for a given topic (required)
+      * @property {Number} topic        Topic identifier (required)
+      * @property {String} topicName    Topic name (required)
+      *
+      * @example
+      * {
+      *     Data: [
+      *         {
+      *             date: '',
+      *             fullDate: '',
+      *             value: 1
+      *         },
+      *         {
+      *             date: '',
+      *             fullDate: '',
+      *             value: 2
+      *         }
+      *     ],
+      *     topic: 123,
+      *     topicName: 'San Francisco'
+      * }
+      */
+
+     /**
+      * @typedef lineChartPointByDate
+      * @type {Object}
+      * @property {Date} date               Date value (required)
+      * @property {Object[]} topics         Data entries for that day (required)
+      *
+      * @example
+      * {
+      *     date: '2015-06-27T07:00:00.000Z'
+      *     topics: [
+      *         {
+      *             name: 123,
+      *             topicName: 'San Francisco',
+      *             value: 1
+      *         },
+      *         {
+      *             name: 345,
+      *             topicName: 'Other',
+      *             value: 2
+      *         }
+      *     ]
+      * }
+      */
+
+
+     /**
+      * @typedef LineChartData
+      * @type {Object[]}
+      * @property {lineChartPointByTopic[]} data                   Data values to chart (required)
+      * @property {lineChartPointByDate[]} dataByDate    Data values to chart ordered by date (required)
+      *
+      * @example
+      * {
+      *     data: [
+      *         {
+      *             Data: [
+      *                 {
+      *                     date: '',
+      *                     fullDate: '',
+      *                     value: 1
+      *                 },
+      *                 {
+      *                     date: '',
+      *                     fullDate: '',
+      *                     value: 2
+      *                 }
+      *             ],
+      *             topic: 123,
+      *             topicName: 'San Francisco'
+      *         },
+      *         {
+      *             Data: [
+      *                 {...},
+      *                 {...}
+      *             ],
+      *             topic: 345,
+      *             topicName: 'Other'
+      *         }
+      *     ],
+      *     dataByDate: [
+      *         {
+      *             date: '2015-06-27T07:00:00.000Z'
+      *             topics: [
+      *                 {
+      *                     name: 123,
+      *                     topicName: 'San Francisco',
+      *                     value: 1
+      *                 },
+      *                 {
+      *                     name: 345,
+      *                     topicName: 'Other',
+      *                     value: 2
+      *                 }
+      *             ]
+      *         },
+      *         {...}
+      *     ]
+      * }
+      */
+
 
     /**
      * Line Chart reusable API module that allows us
@@ -78,7 +187,6 @@ define(function(require){
 
             data,
             dataByDate,
-            readableDataType,
 
             numVerticalTics = 5,
 
@@ -108,14 +216,13 @@ define(function(require){
          *
          * @param {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
-         * @param {Object} _data The data to attach and generate the chart
+         * @param {LineChartData} _data The data to attach and generate the chart
          */
         function exports(_selection){
             _selection.each(function(_data) {
                 ({
                     data,
-                    dataByDate,
-                    readableDataType
+                    dataByDate
                 } = _data);
 
                 chartWidth = width - margin.left - margin.right;

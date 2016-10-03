@@ -44,8 +44,7 @@ define(function(require) {
 
     function dataCleaning(chartData) {
         var _data = _.compact(chartData.data),
-            dataByDate = chartData.dataByDate,
-            readableDataType = chartData.readableDataType;
+            dataByDate = chartData.dataByDate;
 
         _data.forEach(function(kv) {
             kv.Data.forEach(function(d) {
@@ -54,7 +53,7 @@ define(function(require) {
             });
         });
 
-        return { data: _data, dataByDate: dataByDate, readableDataType: readableDataType };
+        return { data: _data, dataByDate: dataByDate};
     }
 
     return {
