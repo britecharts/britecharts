@@ -40,6 +40,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             expect(containerFixture.select('g.x-axis-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.y-axis-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.grid-lines-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
         });
 
         it('should render grid lines', () => {
@@ -58,6 +59,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
         });
 
         describe('API', function() {
+
             it('should provide margin getter and setter', () => {
                 let previous = barChart.margin(),
                     expected = {top: 4, right: 4, bottom: 4, left: 4},
