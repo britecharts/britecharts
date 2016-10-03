@@ -2,42 +2,42 @@
     "data": [
         {
             "name": "Direct",
-            "views": 2,
+            "value": 2,
             "dateUTC": "2011-01-05T00:00:00Z"
         },
         {
             "name": "Direct",
-            "views": 5,
+            "value": 5,
             "dateUTC": "2011-01-06T00:00:00Z"
         },
         {
             "name": "Direct",
-            "views": 16,
+            "value": 16,
             "dateUTC": "2011-01-07T00:00:00Z"
         },
         {
             "name": "Direct",
-            "views": 23,
+            "value": 23,
             "dateUTC": "2011-01-08T00:00:00Z"
         },
         {
             "name": "Direct",
-            "views": 18,
+            "value": 18,
             "dateUTC": "2011-01-09T00:00:00Z"
         },
         {
             "name": "Direct",
-            "views": 25,
+            "value": 25,
             "dateUTC": "2011-01-10T00:00:00Z"
         },
         {
             "name": "Direct",
-            "views": 28,
+            "value": 28,
             "dateUTC": "2011-01-11T00:00:00Z"
         },
         {
             "name": "Direct",
-            "views": 2,
+            "value": 2,
             "dateUTC": "2011-01-12T00:00:00Z"
         }
     ]

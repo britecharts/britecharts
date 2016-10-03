@@ -2452,25 +2452,5 @@
         }
       ]
     }
-  ],
-  "readableDataType": {
-    "name": "Quantity Sold",
-    "type": "number"
-  },
-  "topicList": {
-    "topicIds": [
-      103,
-      149,
-      60,
-      81,
-      0
-    ],
-    "topicNames": [
-      "San Francisco",
-      "Unknown Location with a very long name.",
-      "Los Angeles",
-      "Oakland",
-      "Other"
-    ]
-  }
+  ]
 }

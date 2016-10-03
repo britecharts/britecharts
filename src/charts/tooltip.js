@@ -3,10 +3,6 @@ define(function(require){
 
     const d3 = require('d3');
 
-    /**
-     * @typedef D3Selection
-     * @type Array[]
-     */
 
     /**
      * Tooltip Component reusable API class that renders a
@@ -338,19 +334,19 @@ define(function(require){
 
         /**
          * Updates tooltip title, content, size and position
-         * TODO: Think about data normalization here or conventions
          *
-         * @param  {Object} dataPoint Current datapoint to show info about
+         * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
+         * @param  {Number} xPosition           Position of the mouse on the X axis
          * @return void
          */
-        function updateTooltip(dataPoint, position) {
+        function updateTooltip(dataPoint, xPosition) {
             var topics = dataPoint.topics ? dataPoint.topics : dataPoint.values;
 
             cleanContent();
             resetSizeAndPositionPointers();
             updateTitle(dataPoint);
             topics.forEach(updateContent);
-            updatePositionAndSize(dataPoint, position);
+            updatePositionAndSize(dataPoint, xPosition);
         }
 
         /**

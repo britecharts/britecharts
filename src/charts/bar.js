@@ -4,10 +4,6 @@ define(function(require) {
     const d3 = require('d3');
     const exportChart = require('./helpers/exportChart');
 
-    /**
-     * @typedef D3Selection
-     * @type {Array[]}
-     */
 
     /**
      * @typedef BarChartData
@@ -25,6 +21,7 @@ define(function(require) {
      *         value: 1,
      *         name: 'luminous'
      *     }
+     * ]
      */
 
     /**
@@ -178,7 +175,7 @@ define(function(require) {
 
         /**
          * Cleaning data adding the proper format
-         * @param  {array} data Data
+         * @param  {BarChartData} data Data
          * @private
          */
         function cleanData(data) {

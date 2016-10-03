@@ -3,10 +3,28 @@ define(function(require){
 
     const d3 = require('d3');
 
+
     /**
-     * @typedef D3Selection
-     * @type Array[]
+     * @typedef LegendChartData
+     * @type {Object[]}
+     * @property {Number} id        Id of the group (required)
+     * @property {Number} quantity  Quantity of the group (required)
+     * @property {String} name      Name of the group (required)
+     *
+     * @example
+     * [
+     *     {
+     *         id: 1,
+     *         quantity: 2,
+     *         name: 'glittering'
+     *     },
+     *     {
+     *         id: 2,
+     *         quantity: 3,
+     *         name: 'luminous'
+     *     }
      */
+
 
     /**
      * @fileOverview Legend Component reusable API class that renders a
@@ -68,6 +86,10 @@ define(function(require){
             // colors
             colorScale = d3.scale.category20c(),
             colorScheme = ['#00AF38', '#41C2C9', '#F6C664', '#F4693A', '#9A66D7'],
+
+            getId = ({id}) => id,
+            getName = ({name}) => name,
+            getFormattedQuantity = ({quantity}) => numberFormat(quantity),
 
             entries,
             chartWidth, chartHeight,
@@ -159,7 +181,7 @@ define(function(require){
             entries.enter()
                 .append('g')
                 .classed('legend-line', true)
-                .attr('data-item', d => d.id )
+                .attr('data-item', getId)
                 .attr('transform', function(d, i) {
                     let horizontalOffset = 2 * circleRadius + 10,
                         lineHeightBis = chartHeight/data.length,
@@ -177,8 +199,8 @@ define(function(require){
                     'r': circleRadius
                 })
                 .style({
-                    'fill': function(d) {
-                        return colorScale(d.quantity);
+                    'fill': function({quantity}) {
+                        return colorScale(quantity);
                     },
                     'stroke-width': 1
                 });
@@ -186,7 +208,7 @@ define(function(require){
             entries
                 .append('text')
                 .classed('legend-entry-name', true)
-                .text( d => d.name )
+                .text(getName)
                 .attr({
                     x: (2 * circleRadius) + lineMargin
                 })
@@ -198,7 +220,7 @@ define(function(require){
             entries
                 .append('text')
                 .classed('legend-entry-value', true)
-                .text( d => numberFormat(d['quantity']) )
+                .text(getFormattedQuantity)
                 .attr({
                     x: chartWidth - valueReservedSpace
                 })
