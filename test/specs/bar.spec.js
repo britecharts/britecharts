@@ -1,12 +1,12 @@
-define(['jquery', 'd3', 'bar', 'barChartDataBuilder'], function($, d3, chart, dataBuilder) {
+define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
     'use strict';
 
-    describe('Reusable Bar Chart Test Suite', () => {
-        let barChart, dataset, containerFixture, f;
+    function aTestDataSet() {
+        return new dataBuilder.BarDataBuilder();
+    }
 
-        function aTestDataSet() {
-            return new dataBuilder.BarDataBuilder();
-        }
+    describe('Reusable Bar Chart', () => {
+        let barChart, dataset, containerFixture, f;
 
         beforeEach(() => {
             dataset = aTestDataSet()
@@ -57,45 +57,45 @@ define(['jquery', 'd3', 'bar', 'barChartDataBuilder'], function($, d3, chart, da
             expect(containerFixture.selectAll('.bar').size()).toEqual(numBars);
         });
 
-        describe('setters and getters', function() {
+        describe('API', function() {
             it('should provide margin getter and setter', () => {
-                let defaultMargin = barChart.margin(),
-                    testMargin = {top: 4, right: 4, bottom: 4, left: 4},
-                    newMargin;
+                let previous = barChart.margin(),
+                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    actual;
 
-                barChart.margin(testMargin);
-                newMargin = barChart.margin();
+                barChart.margin(expected);
+                actual = barChart.margin();
 
-                expect(defaultMargin).not.toBe(newMargin);
-                expect(newMargin).toBe(testMargin);
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
             });
 
             it('should provide height getter and setter', () => {
-                let defaultHeight = barChart.height(),
-                    testHeight = {top: 4, right: 4, bottom: 4, left: 4},
-                    newHeight;
+                let previous = barChart.height(),
+                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    actual;
 
-                barChart.height(testHeight);
-                newHeight = barChart.height();
+                barChart.height(expected);
+                actual = barChart.height();
 
-                expect(defaultHeight).not.toBe(newHeight);
-                expect(newHeight).toBe(testHeight);
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
             });
 
             it('should provide width getter and setter', () => {
-                let defaultWidth = barChart.width(),
-                    testWidth = {top: 4, right: 4, bottom: 4, left: 4},
-                    newWidth;
+                let previous = barChart.width(),
+                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    actual;
 
-                barChart.width(testWidth);
-                newWidth = barChart.width();
+                barChart.width(expected);
+                actual = barChart.width();
 
-                expect(defaultWidth).not.toBe(newWidth);
-                expect(newWidth).toBe(testWidth);
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
             });
         });
 
-        describe('on hovering a bar', function() {
+        describe('when hovering a bar', function() {
 
             beforeEach(() => {
                 this.callbackSpy = jasmine.createSpy('callback');

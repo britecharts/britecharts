@@ -2,12 +2,14 @@ define([
     'underscore',
     'jquery',
     'd3',
-    'helpers/serializeWithStyles'
+    'helpers/serializeWithStyles',
+    'helpers/text'
     ], function (
         _,
         $,
         d3,
         serializeWithStyles,
+        textHelper,
         encoder
     ) {
     'use strict';
@@ -18,16 +20,13 @@ define([
 
     describe('Helpers', () => {
         beforeEach(() => {
-
             f = jasmine.getFixtures();
             f.fixturesPath = 'base/test/fixtures/';
             f.load('testContainer.html');
             containerFixture = $('.test-container');
-            containerFixture.append($('<span></span>',{class:'child'}));
         });
 
         afterEach(() => {
-
             containerFixture.remove();
             f = jasmine.getFixtures();
             f.cleanUp();
@@ -38,6 +37,8 @@ define([
             let styledHTML;
 
             beforeEach(() => {
+                containerFixture.append($('<span></span>',{class:'child'}));
+
                 this.serializer = serializeWithStyles.initializeSerializer();
                 styles = document.createElement('style');
                 styles.innerHTML = `.child{background:${randomColor};}`;
@@ -60,6 +61,27 @@ define([
 
                 expect(styledHTML).not.toBe(node.outerHTML.replace(' ',''));
                 expect(styledHTML.indexOf(randomColor).length).not.toBe(0);
+            });
+        });
+
+        // TODO: Let's get to this tests later
+        xdescribe('text wrapper', () => {
+
+            it('should wrap the text in X lines', () => {
+                let text = 'brilliant dazzling flashing',
+                    fontSize = 20,
+                    availableWidth = 20,
+                    expected = 3;
+
+                d3.select('.test-container')
+                  .append('text')
+                    .attr('dy', '.2em')
+                    .text(text);
+
+                textHelper.wrapText.call(null, fontSize, availableWidth, d3.selectAll('.test-container text').node());
+
+                expect(d3.selectAll('.test-container value').size()).toEqual(1);
+                expect(d3.selectAll('.test-container label').size()).toEqual(expected);
             });
         });
     });

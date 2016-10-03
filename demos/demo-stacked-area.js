@@ -52,33 +52,12 @@ function createStackedAreaChartWithTooltip() {
     });
 }
 
-function createStackedAreaChart() {
-
-    var stackedArea = stackedAreaChart(),
-        testDataSet = new stackedDataBuilder.StackedAreaDataBuilder(),
-        containerWidth = d3.select('.js-stacked-area-chart-container').node().getBoundingClientRect().width,
-        container = d3.select('.js-stacked-area-chart-container'),
-        dataset;
-
-    dataset = testDataSet.with3Sources().build();
-
-    // StackedAreChart Setup and start
-    stackedArea
-        .tooltipThreshold(400)
-        .width(containerWidth);
-
-    container.datum(dataset.data).call(stackedArea);
-}
-
-
 if (d3.select('.js-stacked-area-chart-tooltip-container').node()){
     // Show charts if container available
     createStackedAreaChartWithTooltip();
-    createStackedAreaChart();
 
     d3.select(window).on('resize', _.debounce(function(){
         d3.selectAll('.stacked-area').remove();
         createStackedAreaChartWithTooltip();
-        createStackedAreaChart();
     }, 200));
 }

@@ -17,24 +17,30 @@
     </style>
 </head>
 <body id="brush">
-    <section>
-        <p>This is a simple brush chart targeted to be used in conjunction with other charts.</p>
-        <article>
-            <h2>Simple Brush Chart</h2>
-            <div class="js-brush-chart-container"></div>
-            <p class="js-date-range date-range is-hidden">Selected from <span class="js-start-date"></span> to <span class="js-end-date"></span></p>
-            <strong>Example:</strong>
-            <pre>
-                brushChart
-                    .width(500)
-                    .height(300)
-                    .onBrush(function(brushExtent) {
-                        // Do something with the brushExtent
-                    });
+    <div class="container">
+        <div class="row">
+            <div class="span6">
+                <article>
+                    <h2>Simple Brush Chart</h2>
+                    <div class="js-brush-chart-container"></div>
+                    <p class="js-date-range date-range is-hidden">Selected from <span class="js-start-date"></span> to <span class="js-end-date"></span></p>
+                    <p>This is a simple brush chart targeted to be used in conjunction with other charts.</p>
+                </article>
+            </div>
+            <div class="span6 sidebar">
+                <h3>The code</h3>
+                <pre>
+brushChart
+    .width(500)
+    .height(300)
+    .onBrush(function(brushExtent) {
+        // Do something with the brushExtent
+    });
 
-                brushContainer.datum(dataset).call(brushChart);
-            </pre>
-        </article>
-    </section>
+brushContainer.datum(dataset).call(brushChart);
+                </pre>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -4,10 +4,36 @@ define(function(require){
     const d3 = require('d3');
 
     const exportChart = require('./helpers/exportChart');
+    const textHelper = require('./helpers/text');
 
     /**
      * @typedef D3Selection
-     * @type Array[]
+     * @type {Array[]}
+     */
+
+
+    /**
+     * @typedef DonutChartData
+     * @type {Object[]}
+     * @property {Number} quantity     Quantity of the group (required)
+     * @property {Number} percentage   Percentage of the total (required)
+     * @property {String} name         Name of the group (required)
+     * @property {Number} id           Identifier for the group required for legend feature (optional)
+     *
+     * @example
+     * [
+     *     {
+     *         quantity: 1,
+     *         percentage: 50,
+     *         name: 'glittering',
+     *         id: 1
+     *     },
+     *     {
+     *         quantity: 1,
+     *         percentage: 50,
+     *         name: 'luminous',
+     *         id: 2
+     *     }
      */
 
     /**
@@ -57,6 +83,10 @@ define(function(require){
             slices,
             svg,
 
+            quantityLabel = 'quantity',
+            nameLabel = 'name',
+            percentageLabel = 'percentage',
+
             // colors
             colorScale = d3.scale.category20c(),
             colorScheme = ['#00AF38', '#41C2C9', '#F6C664', '#F4693A', '#9A66D7'],
@@ -71,8 +101,8 @@ define(function(require){
             sortComparator = (a, b) => b.quantity - a.quantity,
 
             // extractors
-            getQuantity = d => parseInt(d.quantity, 10),
-            getSliceFill = d => colorScale(d.data.name),
+            getQuantity = ({quantity}) => quantity,
+            getSliceFill = ({data}) => colorScale(data.name),
 
             // events
             dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
@@ -82,13 +112,13 @@ define(function(require){
          *
          * @param {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
-         * @param {Object} _data The data to attach and generate the chart
+         * @param {DonutChartData} _data The data to attach and generate the chart
          */
         function exports(_selection) {
             _selection.each(function(_data) {
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
-                data = _data;
+                data = cleanData(_data);
 
                 buildLayout();
                 buildColorScale();
@@ -114,7 +144,8 @@ define(function(require){
          * @private
          */
         function buildContainerGroups() {
-            let container = svg.append('g')
+            let container = svg
+              .append('g')
                 .classed('container-group', true)
                 .attr({
                     transform: `translate(${width / 2}, ${height / 2})`
@@ -167,6 +198,21 @@ define(function(require){
         }
 
         /**
+         * Cleaning data adding the proper format
+         * @param  {array} data Data
+         * @private
+         */
+        function cleanData(data) {
+            return data.map((d) => {
+                d.quantity = +d[quantityLabel];
+                d.name = String(d[nameLabel]);
+                d.percentage = String(d[percentageLabel]);
+
+                return d;
+            });
+        }
+
+        /**
          * Draws the values on the donut slice inside the text element
          *
          * @param  {Object} obj Data object
@@ -194,7 +240,7 @@ define(function(require){
                     .data(layout(data));
 
                 slices.enter()
-                    .append('g')
+                  .append('g')
                     .each(storeAngle)
                     .each(reduceOuterRadius)
                     .classed('arc', true)
@@ -202,7 +248,7 @@ define(function(require){
                     .on('mouseout', handleMouseOut);
 
                 slices
-                    .append('path')
+                  .append('path')
                     .attr('fill', getSliceFill)
                     .on('mouseover', tweenGrowthFactory(externalRadius, 0))
                     .on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration))
@@ -317,58 +363,15 @@ define(function(require){
 
         /**
          * Utility function that wraps a text into the given width
-         * TODO: Candidate to refactoring
          *
-         * @param  {String} text         Text to write
+         * @param  {D3Selection} text         Text to write
          * @param  {Number} legendWidth Width of the container
          * @private
          */
         function wrapText(text, legendWidth) {
-            text.each(function() {
-                let text = d3.select(this),
-                    words = text.text().split(/\s+/).reverse(),
-                    word,
-                    line = [],
-                    lineNumber = 0,
-                    lineHeight = 1.2,
-                    smallLineHeight = lineHeight * 0.9,
-                    smallTextOffset = 15,
-                    y = text.attr('y'),
-                    dy = parseFloat(text.attr('dy')),
-                    fontSize = externalRadius / 4,
-                    smallFontSize = fontSize / 2.5,
-                    tspan = text.text(null).append('tspan')
-                        .attr('x', 0)
-                        .attr('y', y - 5)
-                        .attr('dy', dy + 'em')
-                        .classed('donut-value', true)
-                        .style('font-size', fontSize + 'px');
+            let fontSize = externalRadius / 5;
 
-                tspan.text(words.pop());
-                tspan = text.append('tspan')
-                    .classed('donut-label', true)
-                    .attr('x', 0)
-                    .attr('y', y + smallTextOffset)
-                    .attr('dy', ++lineNumber * smallLineHeight + dy + 'em')
-                    .style('font-size', smallFontSize + 'px');
-
-                while (word = words.pop()) {
-                    line.push(word);
-                    tspan.text(line.join(' '));
-                    if (tspan.node().getComputedTextLength() > legendWidth - 50) {
-                        line.pop();
-                        tspan.text(line.join(' '));
-                        line = [word];
-                        tspan = text.append('tspan')
-                            .classed('donut-label', true)
-                            .attr('x', 0)
-                            .attr('y', y+ smallTextOffset)
-                            .attr('dy', ++lineNumber * smallLineHeight + dy + 'em')
-                            .text(word)
-                            .style('font-size', smallFontSize + 'px');
-                    }
-                }
-            });
+            textHelper.wrapText.call(null, fontSize, legendWidth, text.node());
         }
 
         /**
