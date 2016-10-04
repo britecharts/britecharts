@@ -59,6 +59,8 @@ define(function(require){
             textSize = 16,
             textLineHeight = 1.35,
 
+            valueTextSize = 18,
+
             // Styles
             bodyFillColor = '#FFFFFF',
             borderStrokeColor = '#D2D6DF',
@@ -152,6 +154,46 @@ define(function(require){
         }
 
         /**
+         * Figures out the max length of the tooltip lines
+         * @param  {D3Selection[]} texts    List of svg elements of each line
+         * @return {Number}                 Max size of the lines
+         */
+        function getMaxLengthLine(...texts) {
+            let textSizes = texts.filter(x => !!x)
+                .map(x => x.node().getBBox().width);
+
+            return d3.max(textSizes);
+        }
+
+        /**
+         * Checks if the mouse is over the bounds of the parent chart
+         * @param  {Number}  chartWidth Parent's chart
+         * @param  {Number}  positionX  Mouse position
+         * @return {Boolean}            If the mouse position allows space for the tooltip
+         */
+        function hasEnoughRoom(chartWidth, positionX) {
+            return (chartWidth - margin.left - margin.right - width) - positionX < 0;
+        }
+
+        /**
+         * Hides the tooltip
+         * @return {void}
+         */
+        function hideTooltip() {
+            svg.style('display', 'none');
+        }
+
+        /**
+         * Shows the tooltip updating it's content
+         * @param  {Object} dataPoint Data point from the chart
+         * @return {void}
+         */
+        function showTooltip(dataPoint) {
+            updateContent(dataPoint);
+            svg.style('display', 'block');
+        }
+
+        /**
          * Draws the data entries inside the tooltip for a given topic
          * @param  {Object} topic Topic to extract data from
          * @return void
@@ -159,9 +201,10 @@ define(function(require){
         function updateContent(dataPoint = {}){
             let value = dataPoint[valueLabel] || '',
                 name = dataPoint[nameLabel] || '',
-                numLines = 0,
                 lineHeight = textSize * textLineHeight,
+                valueLineHeight = valueTextSize * textLineHeight,
                 temporalDY = '1em',
+                temporalHeight = 0,
                 tooltipValue,
                 tooltipName,
                 tooltipTitle;
@@ -181,7 +224,7 @@ define(function(require){
                     .style('font-size', textSize)
                     .text(title);
 
-                numLines++;
+                temporalHeight += lineHeight;
             }
 
             if (name) {
@@ -190,13 +233,13 @@ define(function(require){
                     .classed('mini-tooltip-name', true)
                     .attr({
                         'dy': temporalDY,
-                        'y': numLines ? (numLines * lineHeight) : 0
+                        'y': temporalHeight || 0
                     })
                     .style('fill', textFillColor)
                     .style('font-size', textSize)
                     .text(name);
 
-                numLines++;
+                temporalHeight += lineHeight;
             }
 
             if (value) {
@@ -205,43 +248,17 @@ define(function(require){
                     .classed('mini-tooltip-value', true)
                     .attr({
                         'dy': temporalDY,
-                        'y': numLines ? (numLines * lineHeight) : 0
+                        'y': temporalHeight || 0
                     })
                     .style('fill', textFillColor)
-                    .style('font-size', textSize)
+                    .style('font-size', valueTextSize)
                     .text(tooltipValueFormat(value));
 
-                numLines++;
+                temporalHeight += valueLineHeight;
             }
 
-            height = numLines * lineHeight;
+            height = temporalHeight;
             width = getMaxLengthLine(tooltipName, tooltipTitle, tooltipValue);
-        }
-
-        function getMaxLengthLine(...texts) {
-            let textSizes = texts.filter(x => !!x)
-                .map(x => x.node().getBBox().width);
-
-            return d3.max(textSizes);
-        }
-
-        function getMousePosition() {
-            let event = d3.event || {pageX: 0, pageY:0};
-
-            return {
-                y: event.pageY,
-                x: event.pageX
-            };
-        }
-
-        /**
-         * Checks if the mouse is over the bounds of the parent chart
-         * @param  {Number}  chartWidth Parent's chart
-         * @param  {Number}  positionX  Mouse position
-         * @return {Boolean}            If the mouse position allows space for the tooltip
-         */
-        function hasEnoughRoom(chartWidth, positionX) {
-            return (chartWidth - margin.left - margin.right - width) - positionX < 0;
         }
 
         /**
@@ -281,15 +298,6 @@ define(function(require){
         function updateTooltip(dataPoint, position, chartWidth) {
             updateContent(dataPoint);
             updatePositionAndSize(position, chartWidth);
-        }
-
-        function showTooltip(dataPoint) {
-            updateContent(dataPoint);
-            svg.style('display', 'block');
-        }
-
-        function hideTooltip() {
-            svg.style('display', 'none');
         }
 
         /**
