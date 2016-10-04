@@ -102,7 +102,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             beforeEach(() => {
                 this.callbackSpy = jasmine.createSpy('callback');
 
-                barChart.on('customHover', this.callbackSpy);
+                barChart.on('customMouseHover', this.callbackSpy);
             });
 
             it('should trigger a callback', () => {

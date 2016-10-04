@@ -181,7 +181,6 @@ define(function(require){
                 tooltipName,
                 tooltipTitle;
 
-
             tooltipTextContainer.selectAll('text')
                 .remove();
 
@@ -233,7 +232,7 @@ define(function(require){
             height = numLines * lineHeight;
             width = getMaxLengthLine(tooltipName, tooltipTitle, tooltipValue);
             console.log('width', width)
-            updatePositionAndSize()
+            updatePositionAndSize(getMousePosition())
         }
 
         function getMaxLengthLine(...texts) {
@@ -243,16 +242,23 @@ define(function(require){
             return d3.max(textSizes);
         }
 
+        function getMousePosition() {
+            let event = d3.event || {pageX: 0, pageY:0};
+
+            return {
+                y: event.pageY,
+                x: event.pageX
+            };
+        }
+
         /**
          * Updates size and position of tooltip depending on the side of the chart we are in
          * @param  {Object} dataPoint DataPoint of the tooltip
          * @return void
          */
-        function updatePositionAndSize(){
-            let newY = d3.event.pageY/2 - height,
-                newX = d3.event.pageX - width;
-console.log('newY', newY)
-console.log('newX', newX)
+        function updatePositionAndSize({y, x}){
+            let newY = y/2 - height,
+                newX = x - width;
 
             svg.transition()
                 .attr({
