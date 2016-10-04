@@ -46,15 +46,9 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
 
         xit('should resize the tooltip depending of number of topics', () =>  {
             tooltipChart.update({
-                date: '2015-08-05T07:00:00.000Z',
-                topics: [
-                    {
-                        name: 103,
-                        value: 0,
-                        topicName: 'San Francisco'
-                    }
-                ]
-            }, 10);
+                name: 103,
+                value: 0
+            }, [0, 0], 20);
 
             expect(
                 containerFixture.select('.tooltip-text-container')
@@ -62,20 +56,9 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
             ).toEqual('81.5');
 
             tooltipChart.update({
-                date: '2015-08-05T07:00:00.000Z',
-                topics: [
-                    {
-                        name: 103,
-                        value: 0,
-                        topicName: 'San Francisco'
-                    },
-                    {
-                        name: 60,
-                        value: 10,
-                        topicName: 'Chicago'
-                    }
-                ]
-            }, 10);
+                name: 103,
+                value: 0
+            }, [0, 0], 10);
 
             expect(
                 containerFixture.select('.tooltip-text-container')
@@ -106,7 +89,7 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
                 tooltipChart.update({
                     name: expected,
                     value: 10
-                });
+                }, [0, 0], 20);
 
                 actual = containerFixture.select('.britechart-mini-tooltip')
                         .selectAll('.mini-tooltip-name')
@@ -122,7 +105,7 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
                 tooltipChart.update({
                     name: 'radiating',
                     value: expected
-                });
+                }, [0, 0], 20);
 
                 actual = parseInt(containerFixture.select('.britechart-mini-tooltip')
                         .selectAll('.mini-tooltip-value')

@@ -10,7 +10,7 @@ define(function(require){
      *
      * @module Mini-tooltip
      * @version 0.0.1
-     * @tutorial mini-tooltip
+     * @tutorial bar
      * @requires d3
      *
      * @example
@@ -19,12 +19,10 @@ define(function(require){
      *
      * barChart
      *     .width(500)
-     *     .on('customHover', function() {
-     *          miniTooltip.show();
-     *     })
-     *     .on('customMouseOut', function() {
-     *          miniTooltip.hide();
-     *     });
+     *     .height(300)
+     *     .on('customMouseHover', miniTooltip.show)
+     *     .on('customMouseMove', miniTooltip.update)
+     *     .on('customMouseOut', miniTooltip.hide);
      *
      * d3.select('.css-selector')
      *     .datum(dataset)
@@ -32,7 +30,7 @@ define(function(require){
      *
      * d3.select('.metadata-group .mini-tooltip-container')
      *     .datum([])
-     *     .call(tooltip);
+     *     .call(miniTooltip);
      *
      */
     return function module() {
@@ -44,45 +42,31 @@ define(function(require){
                 left: 7
             },
             width = 50,
-            height = 45,
-
-            bodyNode = d3.select('body').node(),
-
-            // tooltip
-            tooltip,
-            tooltipOffset = {
-                y: 0,
-                x: 0
-            },
-            tooltipMaxTextLength = 100,
-            tooltipTextContainer,
-            tooltipDivider,
-            tooltipBody,
-
-            title = 'Long Example title',
-
-            ttTextY = 0,
-            textSize = 16,
-            textLineHeight = 1.35,
-
-            entryLineLimit = 3,
-
-            circleYOffset = 8,
+            height = 50,
 
             valueLabel = 'value',
             nameLabel = 'name',
 
-            colorMap,
+            // tooltip
+            tooltip,
+            tooltipTextContainer,
+            tooltipOffset = {
+                y: 0,
+                x: 20
+            },
 
+            title = 'Title',
+            textSize = 16,
+            textLineHeight = 1.35,
+
+            // Styles
             bodyFillColor = '#FFFFFF',
             borderStrokeColor = '#D2D6DF',
-
             titleFillColor = '#6D717A',
             textFillColor = '#282C35',
 
             // formats
-            tooltipDateFormat = d3.time.format('%b %d, %Y'),
-            tooltipValueFormat = d3.format(',2f'),
+            tooltipValueFormat = d3.format(',1f'),
 
             data,
             svg;
@@ -162,7 +146,8 @@ define(function(require){
                 .style({
                     'fill': bodyFillColor,
                     'stroke': borderStrokeColor,
-                    'stroke-width': 1
+                    'stroke-width': 1,
+                    'pointer-events': 'none'
                 });
         }
 
@@ -190,7 +175,7 @@ define(function(require){
                     .classed('mini-tooltip-title', true)
                     .attr({
                         'dy': temporalDY,
-                        'y': ttTextY
+                        'y': 0
                     })
                     .style('fill', titleFillColor)
                     .style('font-size', textSize)
@@ -224,15 +209,13 @@ define(function(require){
                     })
                     .style('fill', textFillColor)
                     .style('font-size', textSize)
-                    .text(value);
+                    .text(tooltipValueFormat(value));
 
                 numLines++;
             }
 
             height = numLines * lineHeight;
             width = getMaxLengthLine(tooltipName, tooltipTitle, tooltipValue);
-            console.log('width', width)
-            updatePositionAndSize(getMousePosition())
         }
 
         function getMaxLengthLine(...texts) {
@@ -252,21 +235,35 @@ define(function(require){
         }
 
         /**
+         * Checks if the mouse is over the bounds of the parent chart
+         * @param  {Number}  chartWidth Parent's chart
+         * @param  {Number}  positionX  Mouse position
+         * @return {Boolean}            If the mouse position allows space for the tooltip
+         */
+        function hasEnoughRoom(chartWidth, positionX) {
+            return (chartWidth - margin.left - margin.right - width) - positionX < 0;
+        }
+
+        /**
          * Updates size and position of tooltip depending on the side of the chart we are in
          * @param  {Object} dataPoint DataPoint of the tooltip
          * @return void
          */
-        function updatePositionAndSize({y, x}){
-            let newY = y/2 - height,
-                newX = x - width;
+        function updatePositionAndSize([x, y], chartWidth) {
+            if (hasEnoughRoom(chartWidth, x)) {
+                x = x - width - tooltipOffset.x;
+            } else {
+                x = x + tooltipOffset.x;
+            }
 
             svg.transition()
+                .duration(200)
+                .ease('ease-in')
                 .attr({
                     width: width + margin.left + margin.right,
                     height: height + margin.top + margin.bottom
                 })
-                .style('position', 'absolute')
-                .attr('transform', `translate(${newX},${newY})`);
+                .attr('transform', `translate(${x},${y})`);
 
             tooltip
                 .attr({
@@ -281,72 +278,13 @@ define(function(require){
          * @param  {Object} dataPoint Current datapoint to show info about
          * @return void
          */
-        function updateTooltip(dataPoint) {
+        function updateTooltip(dataPoint, position, chartWidth) {
             updateContent(dataPoint);
-        }
-
-        /**
-         * Wraps a text given the text, width, x position and textFormatter function
-         * @param  {D3Selection} text  Selection with the text to wrap inside
-         * @param  {Number} width Desired max width for that line
-         * @param  {Number} xpos  Initial x position of the text
-         *
-         * REF: http://bl.ocks.org/mbostock/7555321
-         * More discussions on https://github.com/mbostock/d3/issues/1642
-         */
-        function textWrap(text, width, xpos) {
-            xpos = xpos || 0;
-
-            text.each(function() {
-                var words,
-                    word,
-                    line,
-                    lineNumber,
-                    lineHeight,
-                    y,
-                    dy,
-                    tspan;
-
-                text = d3.select(this);
-
-                words = text.text().split(/\s+/).reverse();
-                line = [];
-                lineNumber = 0;
-                lineHeight = 1.2;
-                y = text.attr('y');
-                dy = parseFloat(text.attr('dy'));
-                tspan = text
-                    .text(null)
-                    .append('tspan')
-                    .attr({
-                        'x': xpos,
-                        'y': y,
-                        'dy': dy + 'em'
-                    });
-
-                while ((word = words.pop())) {
-                    line.push(word);
-                    tspan.text(line.join(' '));
-
-                    if (tspan.node().getComputedTextLength() > width) {
-                        line.pop();
-                        tspan.text(line.join(' '));
-
-                        if (lineNumber < entryLineLimit - 1) {
-                            line = [word];
-                            tspan = text.append('tspan')
-                                .attr('x', xpos)
-                                .attr('y', y)
-                                .attr('dy', ++lineNumber * lineHeight + dy + 'em')
-                                .text(word);
-                        }
-                    }
-                }
-            });
+            updatePositionAndSize(position, chartWidth);
         }
 
         function showTooltip(dataPoint) {
-            updateTooltip(dataPoint);
+            updateContent(dataPoint);
             svg.style('display', 'block');
         }
 
@@ -396,8 +334,8 @@ define(function(require){
          * @return {Module} Tooltip module to chain calls
          * @public
          */
-        exports.update = function(dataPoint) {
-            updateTooltip(dataPoint);
+        exports.update = function(dataPoint, position, chartWidth) {
+            updateTooltip(dataPoint, position, chartWidth);
 
             return this;
         };
