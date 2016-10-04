@@ -124,9 +124,9 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
                     value: expected
                 });
 
-                actual = containerFixture.select('.britechart-mini-tooltip')
+                actual = parseInt(containerFixture.select('.britechart-mini-tooltip')
                         .selectAll('.mini-tooltip-value')
-                        .text();
+                        .text(), 10);
 
                 expect(actual).toEqual(expected);
             });
