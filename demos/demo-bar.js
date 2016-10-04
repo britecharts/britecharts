@@ -43,8 +43,7 @@ function createBarChartWithTooltip() {
         .width(containerWidth)
         .height(300)
         .on('customMouseHover', tooltip.show)
-        .on('customMouseMove', tooltip.update)
-        .on('customMouseOut', tooltip.hide);
+        .on('customMouseMove', tooltip.update);
 
     barContainer.datum(dataset).call(barChart);
 
