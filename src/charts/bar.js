@@ -225,7 +225,9 @@ define(function(require) {
                     height: function(d) { return chartHeight - yScale(d.value); }
                 })
                 .on('mouseover', dispatch.customMouseHover)
-                .on('mousemove', dispatch.customMouseMove)
+                .on('mousemove', function(d) {
+                    dispatch.customMouseMove(d, d3.mouse(this), chartWidth);
+                })
                 .on('mouseout', dispatch.customMouseOut);
 
             // Update
