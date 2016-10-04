@@ -69,8 +69,8 @@ define(function(require){
 
             circleYOffset = 8,
 
-            valueLabel = 'frequency',
-            nameLabel = 'letter',
+            valueLabel = 'value',
+            nameLabel = 'name',
 
             colorMap,
 
