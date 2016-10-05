@@ -57,6 +57,7 @@ define(function(require){
 
             // tooltip
             tooltipBackground,
+            backgroundBorderRadius = 1,
             tooltipTextContainer,
             tooltipOffset = {
                 y: 0,
@@ -75,6 +76,7 @@ define(function(require){
             titleFillColor = '#666a73',
             nameTextFillColor = '#666a73',
             valueTextFillColor = '#45494E',
+            valueTextWeight = 200,
 
             // formats
             tooltipValueFormat = d3.format(',1f'),
@@ -154,8 +156,8 @@ define(function(require){
                 .attr({
                     'width': width,
                     'height': height,
-                    'rx': 3,
-                    'ry': 3,
+                    'rx': backgroundBorderRadius,
+                    'ry': backgroundBorderRadius,
                     'y': - margin.top,
                     'x': - margin.left
                 })
@@ -304,6 +306,7 @@ define(function(require){
                     })
                     .style('fill', valueTextFillColor)
                     .style('font-size', valueTextSize)
+                    .style('font-weight', valueTextWeight)
                     .text(tooltipValueFormat(value));
 
                 temporalHeight = valueLineHeight + temporalHeight;

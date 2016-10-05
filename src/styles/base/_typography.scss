@@ -1,7 +1,14 @@
 @font-face {
-    font-family: Benton;
+    font-family: 'Benton';
     src: url("/src/fonts/BentonSans-Regular.otf") format("opentype");
+    font-weight: 400;
+}
+@font-face {
+    font-family: 'Benton';
+    src: url("/src/fonts/BentonSans-Light.otf") format("opentype");
+    font-weight: 200;
 }
 body {
-    font-family: Benton;
+    font-family: 'Benton';
+    font-weight: 400;
 }
