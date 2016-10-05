@@ -21,7 +21,6 @@ coverage
 .sass-cache
 docs
 fonts
-dist
 
 # node-waf configuration
 .lock-wscript
