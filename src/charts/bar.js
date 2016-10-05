@@ -226,7 +226,7 @@ define(function(require) {
                 })
                 .on('mouseover', dispatch.customMouseHover)
                 .on('mousemove', function(d) {
-                    dispatch.customMouseMove(d, d3.mouse(this), chartWidth);
+                    dispatch.customMouseMove(d, d3.mouse(this), [chartWidth, chartHeight]);
                 })
                 .on('mouseout', dispatch.customMouseOut);
 

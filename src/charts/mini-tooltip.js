@@ -44,29 +44,34 @@ define(function(require){
             width = 50,
             height = 50,
 
+            // Optional Title
+            title = '',
+
+            // Data Format
             valueLabel = 'value',
             nameLabel = 'name',
 
+            // Animations
+            mouseChaseDuration = 200,
+            ease = 'ease-in',
+
             // tooltip
-            tooltip,
+            tooltipBackground,
             tooltipTextContainer,
             tooltipOffset = {
                 y: 0,
                 x: 20
             },
 
-            title = 'Title',
-
+            // Fonts
             textSize = 14,
             textLineHeight = 1.5,
-
             valueTextSize = 27,
             valueTextLineHeight = 1.18,
 
-            // Styles
+            // Colors
             bodyFillColor = '#FFFFFF',
             borderStrokeColor = '#D2D6DF',
-
             titleFillColor = '#666a73',
             nameTextFillColor = '#666a73',
             valueTextFillColor = '#45494E',
@@ -74,7 +79,8 @@ define(function(require){
             // formats
             tooltipValueFormat = d3.format(',1f'),
 
-            data,
+            chartWidth,
+            chartHeight,
             svg;
 
 
@@ -82,13 +88,15 @@ define(function(require){
          * This function creates the graph using the selection as container
          * @param {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
-         * @param {Object} _data The data to attach and generate the chart
+         * @param {Array} _data The data to attach and generate the chart (usually an empty array)
          */
         function exports(_selection) {
             _selection.each(function(_data){
-                data = _data;
+                chartWidth = width - margin.left - margin.right;
+                chartHeight = height - margin.top - margin.bottom;
 
                 buildSVG(this);
+                drawTooltip();
             });
         }
 
@@ -119,9 +127,11 @@ define(function(require){
                     .classed('britechart britechart-mini-tooltip', true);
 
                 buildContainerGroups();
-                drawTooltip();
             }
-            svg.transition().attr({
+            svg
+                .transition()
+                .ease(ease)
+                .attr({
                 width: width + margin.left + margin.right,
                 height: height + margin.top + margin.bottom
             });
@@ -138,12 +148,12 @@ define(function(require){
                 .append('g')
                 .classed('tooltip-text', true);
 
-            tooltip = tooltipTextContainer
+            tooltipBackground = tooltipTextContainer
               .append('rect')
-                .classed('tooltip-text-container', true)
+                .classed('tooltip-background', true)
                 .attr({
-                    'width': width + margin.left + margin.right,
-                    'height': height + margin.top + margin.bottom,
+                    'width': width,
+                    'height': height,
                     'rx': 3,
                     'ry': 3,
                     'y': - margin.top,
@@ -153,7 +163,8 @@ define(function(require){
                     'fill': bodyFillColor,
                     'stroke': borderStrokeColor,
                     'stroke-width': 1,
-                    'pointer-events': 'none'
+                    'pointer-events': 'none',
+                    'opacity': 0.9
                 });
         }
 
@@ -170,13 +181,50 @@ define(function(require){
         }
 
         /**
+         * Calculates the desired position for the tooltip
+         * @param  {Number} mouseX             Current horizontal mouse position
+         * @param  {Number} mouseY             Current vertical mouse position
+         * @param  {Number} parentChartWidth   Parent's chart width
+         * @param  {Number} parentChartHeight  Parent's chart height
+         * @return {Number[]}                  X and Y position
+         * @private
+         */
+        function getTooltipPosition([mouseX, mouseY], [parentChartWidth, parentChartHeight]) {
+            let tooltipX, tooltipY;
+
+            if (hasEnoughHorizontalRoom(parentChartWidth, mouseX)) {
+                tooltipX = mouseX + tooltipOffset.x;
+            } else {
+                tooltipX = mouseX - chartWidth - tooltipOffset.x - margin.right;
+            }
+
+            if (hasEnoughVerticalRoom(parentChartHeight, mouseY)) {
+                tooltipY = mouseY + tooltipOffset.y;
+            } else {
+                tooltipY = mouseY - chartHeight - tooltipOffset.y - margin.bottom;
+            }
+
+            return [tooltipX, tooltipY];
+        }
+
+        /**
          * Checks if the mouse is over the bounds of the parent chart
          * @param  {Number}  chartWidth Parent's chart
          * @param  {Number}  positionX  Mouse position
          * @return {Boolean}            If the mouse position allows space for the tooltip
          */
-        function hasEnoughRoom(chartWidth, positionX) {
-            return (chartWidth - margin.left - margin.right - width) - positionX < 0;
+        function hasEnoughHorizontalRoom(parentChartWidth, positionX) {
+            return (parentChartWidth - margin.left - margin.right - chartWidth) - positionX > 0;
+        }
+
+        /**
+         * Checks if the mouse is over the bounds of the parent chart
+         * @param  {Number}  chartWidth Parent's chart
+         * @param  {Number}  positionX  Mouse position
+         * @return {Boolean}            If the mouse position allows space for the tooltip
+         */
+        function hasEnoughVerticalRoom(parentChartHeight, positionY) {
+            return (parentChartHeight - margin.top - margin.bottom - chartHeight) - positionY > 0;
         }
 
         /**
@@ -207,7 +255,7 @@ define(function(require){
                 name = dataPoint[nameLabel] || '',
                 lineHeight = textSize * textLineHeight,
                 valueLineHeight = valueTextSize * valueTextLineHeight,
-                temporalDY = '1em',
+                defaultDy = '1em',
                 temporalHeight = 0,
                 tooltipValue,
                 tooltipName,
@@ -221,14 +269,14 @@ define(function(require){
                   .append('text')
                     .classed('mini-tooltip-title', true)
                     .attr({
-                        'dy': temporalDY,
+                        'dy': defaultDy,
                         'y': 0
                     })
                     .style('fill', titleFillColor)
                     .style('font-size', textSize)
                     .text(title);
 
-                temporalHeight += lineHeight;
+                temporalHeight = lineHeight + temporalHeight;
             }
 
             if (name) {
@@ -236,14 +284,14 @@ define(function(require){
                   .append('text')
                     .classed('mini-tooltip-name', true)
                     .attr({
-                        'dy': temporalDY,
+                        'dy': defaultDy,
                         'y': temporalHeight || 0
                     })
                     .style('fill', nameTextFillColor)
                     .style('font-size', textSize)
                     .text(name);
 
-                temporalHeight += lineHeight;
+                temporalHeight = lineHeight + temporalHeight;
             }
 
             if (value) {
@@ -251,18 +299,18 @@ define(function(require){
                   .append('text')
                     .classed('mini-tooltip-value', true)
                     .attr({
-                        'dy': temporalDY,
+                        'dy': defaultDy,
                         'y': temporalHeight || 0
                     })
                     .style('fill', valueTextFillColor)
                     .style('font-size', valueTextSize)
                     .text(tooltipValueFormat(value));
 
-                temporalHeight += valueLineHeight;
+                temporalHeight = valueLineHeight + temporalHeight;
             }
 
-            height = temporalHeight;
-            width = getMaxLengthLine(tooltipName, tooltipTitle, tooltipValue);
+            chartWidth = getMaxLengthLine(tooltipName, tooltipTitle, tooltipValue);
+            chartHeight = temporalHeight;
         }
 
         /**
@@ -270,27 +318,23 @@ define(function(require){
          * @param  {Object} dataPoint DataPoint of the tooltip
          * @return void
          */
-        function updatePositionAndSize([x, y], chartWidth) {
-            if (hasEnoughRoom(chartWidth, x)) {
-                x = x - width - tooltipOffset.x;
-            } else {
-                x = x + tooltipOffset.x;
-            }
+        function updatePositionAndSize(mousePosition, parentChartSize) {
+            let [tooltipX, tooltipY] = getTooltipPosition(mousePosition, parentChartSize);
+            let newSize = {
+                width: chartWidth + margin.left + margin.right,
+                height: chartHeight + margin.top + margin.bottom
+            };
 
             svg.transition()
-                .duration(200)
-                .ease('ease-in')
-                .attr({
-                    width: width + margin.left + margin.right,
-                    height: height + margin.top + margin.bottom
-                })
-                .attr('transform', `translate(${x},${y})`);
+                .duration(mouseChaseDuration)
+                .ease(ease)
+                .attr(newSize)
+                .attr('transform', `translate(${tooltipX},${tooltipY})`);
 
-            tooltip
-                .attr({
-                    width: width + margin.left + margin.right,
-                    height: height + margin.top + margin.bottom
-                });
+            tooltipBackground
+                .transition()
+                .ease(ease)
+                .attr(newSize);
         }
 
         /**
@@ -299,9 +343,9 @@ define(function(require){
          * @param  {Object} dataPoint Current datapoint to show info about
          * @return void
          */
-        function updateTooltip(dataPoint, position, chartWidth) {
+        function updateTooltip(dataPoint, position, chartSize) {
             updateContent(dataPoint);
-            updatePositionAndSize(position, chartWidth);
+            updatePositionAndSize(position, chartSize);
         }
 
         /**
@@ -346,8 +390,8 @@ define(function(require){
          * @return {Module} Tooltip module to chain calls
          * @public
          */
-        exports.update = function(dataPoint, position, chartWidth) {
-            updateTooltip(dataPoint, position, chartWidth);
+        exports.update = function(dataPoint, position, chartSize) {
+            updateTooltip(dataPoint, position, chartSize);
 
             return this;
         };
