@@ -36,10 +36,10 @@ define(function(require){
     return function module() {
 
         let margin = {
-                top: 7,
-                right: 7,
-                bottom: 7,
-                left: 7
+                top: 12,
+                right: 12,
+                bottom: 12,
+                left: 12
             },
             width = 50,
             height = 50,
@@ -56,16 +56,20 @@ define(function(require){
             },
 
             title = 'Title',
-            textSize = 16,
-            textLineHeight = 1.35,
 
-            valueTextSize = 18,
+            textSize = 14,
+            textLineHeight = 1.5,
+
+            valueTextSize = 27,
+            valueTextLineHeight = 1.18,
 
             // Styles
             bodyFillColor = '#FFFFFF',
             borderStrokeColor = '#D2D6DF',
-            titleFillColor = '#6D717A',
-            textFillColor = '#282C35',
+
+            titleFillColor = '#666a73',
+            nameTextFillColor = '#666a73',
+            valueTextFillColor = '#45494E',
 
             // formats
             tooltipValueFormat = d3.format(',1f'),
@@ -202,7 +206,7 @@ define(function(require){
             let value = dataPoint[valueLabel] || '',
                 name = dataPoint[nameLabel] || '',
                 lineHeight = textSize * textLineHeight,
-                valueLineHeight = valueTextSize * textLineHeight,
+                valueLineHeight = valueTextSize * valueTextLineHeight,
                 temporalDY = '1em',
                 temporalHeight = 0,
                 tooltipValue,
@@ -235,7 +239,7 @@ define(function(require){
                         'dy': temporalDY,
                         'y': temporalHeight || 0
                     })
-                    .style('fill', textFillColor)
+                    .style('fill', nameTextFillColor)
                     .style('font-size', textSize)
                     .text(name);
 
@@ -250,7 +254,7 @@ define(function(require){
                         'dy': temporalDY,
                         'y': temporalHeight || 0
                     })
-                    .style('fill', textFillColor)
+                    .style('fill', valueTextFillColor)
                     .style('font-size', valueTextSize)
                     .text(tooltipValueFormat(value));
 
@@ -350,5 +354,4 @@ define(function(require){
 
         return exports;
     };
-
 });
