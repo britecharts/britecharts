@@ -48,7 +48,7 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
             tooltipChart.update({
                 name: 103,
                 value: 0
-            }, [0, 0], 20);
+            }, [0, 0], [20, 20]);
 
             expect(
                 containerFixture.select('.tooltip-text-container')
@@ -58,7 +58,7 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
             tooltipChart.update({
                 name: 103,
                 value: 0
-            }, [0, 0], 10);
+            }, [0, 0], [10, 10]);
 
             expect(
                 containerFixture.select('.tooltip-text-container')
@@ -89,7 +89,7 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
                 tooltipChart.update({
                     name: expected,
                     value: 10
-                }, [0, 0], 20);
+                }, [0, 0],[20, 20]);
 
                 actual = containerFixture.select('.britechart-mini-tooltip')
                         .selectAll('.mini-tooltip-name')
@@ -105,7 +105,7 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
                 tooltipChart.update({
                     name: 'radiating',
                     value: expected
-                }, [0, 0], 20);
+                }, [0, 0],[20, 20]);
 
                 actual = parseInt(containerFixture.select('.britechart-mini-tooltip')
                         .selectAll('.mini-tooltip-value')
