@@ -10,9 +10,36 @@
         <div class="row">
             <div class="span6">
                 <article>
+                    <h2>Bar Chart with Tooltip</h2>
+                    <div class="js-bar-chart-tooltip-container"></div>
+                    <p>This is a bar chart with tooltip whose code it's used as a coding standard.</p>
+                </article>
+            </div>
+            <div class="span6 sidebar">
+                <h3>The code</h3>
+                <pre>
+barChart
+    .width(containerWidth)
+    .height(300)
+    .on('customMouseHover', tooltip.show)
+    .on('customMouseMove', tooltip.update);
+    .on('customMouseOut', tooltip.hide);
+
+barContainer.datum(dataset).call(barChart);
+
+tooltipContainer = d3.select('.bar-chart .metadata-group');
+tooltipContainer.datum([]).call(tooltip);
+                </pre>
+
+                <h3>Download</h3>
+                <p>You can also export this chart by pressing: <input class="js-download-button" type="button" value="Download" /></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span6">
+                <article>
                     <h2>Simple Bar Chart</h2>
                     <div class="js-bar-chart-container"></div>
-                    <p>This is a simple bar chart whose code it's used as a coding standard. We hope to improve it soon.</p>
                 </article>
             </div>
             <div class="span6 sidebar">
@@ -24,9 +51,6 @@ barChart
 
 barContainer.datum(dataset).call(barChart);
                 </pre>
-
-                <h3>Download</h3>
-                <p>You can also export this chart by pressing: <input id="button" type="button" value="Download" /></p>
             </div>
         </div>
     </div>

@@ -71,9 +71,9 @@ define(function(require) {
             maskGridLines,
             baseLine,
 
-            // Dispatcher object to broadcast the 'customHover' event
+            // Dispatcher object to broadcast the 'customMouseHover' and 'customMouseOut' events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
-            dispatch = d3.dispatch('customHover'),
+            dispatch = d3.dispatch('customMouseHover', 'customMouseOut', 'customMouseMove'),
 
             // extractors
             getName = ({name}) => name,
@@ -134,6 +134,8 @@ define(function(require) {
                 .append('g').classed('x-axis-group axis', true);
             container
                 .append('g').classed('y-axis-group axis', true);
+            container
+                .append('g').classed('metadata-group', true);
         }
 
         /**
@@ -222,7 +224,11 @@ define(function(require) {
                     y: function(d) { return yScale(d.value); },
                     height: function(d) { return chartHeight - yScale(d.value); }
                 })
-                .on('mouseover', dispatch.customHover);
+                .on('mouseover', dispatch.customMouseHover)
+                .on('mousemove', function(d) {
+                    dispatch.customMouseMove(d, d3.mouse(this), [chartWidth, chartHeight]);
+                })
+                .on('mouseout', dispatch.customMouseOut);
 
             // Update
             bars.transition()
