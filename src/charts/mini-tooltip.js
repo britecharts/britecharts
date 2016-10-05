@@ -386,12 +386,13 @@ define(function(require){
 
         /**
          * Updates the position and content of the tooltip
-         * @param  {Object} dataPoint    Datapoint to represent
-         * @return {Module} Tooltip module to chain calls
-         * @public
+         * @param  {Object} dataPoint       Datapoint of the hovered element
+         * @param  {Array} mousePosition    Mouse position relative to the parent chart [x, y]
+         * @param  {Array} chartSize        Parent chart size [x, y]
+         * @return {module}                 Current component
          */
-        exports.update = function(dataPoint, position, chartSize) {
-            updateTooltip(dataPoint, position, chartSize);
+        exports.update = function(dataPoint, mousePosition, chartSize) {
+            updateTooltip(dataPoint, mousePosition, chartSize);
 
             return this;
         };
