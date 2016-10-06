@@ -43,6 +43,6 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('bump-dist', function() {
-        grunt.exec(path.resolve(__dirname, './helpers/push_dist.sh');
+        grunt.exec(path.resolve(__dirname, './helpers/push_dist.sh'));
     });
 };
