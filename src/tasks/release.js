@@ -2,6 +2,7 @@ module.exports = function(grunt) {
     'use strict';
 
     var shell = require('shelljs');
+    var path = require('path');
 
     grunt.renameTask('release', 'bump-version');
     grunt.config.set('bump-version', {
@@ -43,6 +44,6 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('bump-dist', function() {
-        grunt.exec(path.resolve(__dirname, './helpers/push_dist.sh'));
+        shell.exec(path.resolve(__dirname, './helpers/push_dist.sh'));
     });
 };
