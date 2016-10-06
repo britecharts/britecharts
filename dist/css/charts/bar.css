@@ -1,0 +1,13 @@
+.bar-chart .bar {
+  fill: #8FDAD8;
+  stroke-width: 0;
+  shape-rendering: crispEdges; }
+
+.bar-chart .bar:hover {
+  fill: #39C2C9; }
+
+.bar-chart .axis path {
+  display: none; }
+
+.bar-chart .tick line {
+  display: none; }
