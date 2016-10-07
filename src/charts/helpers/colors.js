@@ -9,6 +9,19 @@ define(function(require) {
             '#998EE3'
         ];
 
+    // Grey Schema for Britecharts
+    const britechartsGreySchema = [
+            '#F8F8FA',
+            '#EFF2F5',
+            '#D2D6DF',
+            '#C3C6CF',
+            '#ADB0B6',
+            '#666A73',
+            '#45494E',
+            '#363A43',
+            '#282C35'
+        ];
+
     // Gradients
     // TODO: Add more
     const britechartGradients = {
@@ -115,6 +128,7 @@ define(function(require) {
 
     return {
         britechartsColorSchema,
+        britechartsGreySchema,
         britechartGradients,
         extendedOrangeColorSchema,
         extendedBlueColorSchema,
