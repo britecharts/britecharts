@@ -6,7 +6,8 @@ define(function(require) {
             '#3DC3C9',
             '#FBC670',
             '#F766B8',
-            '#998EE3'
+            '#998EE3',
+            '#824a9e'
         ];
 
     // Grey Schema for Britecharts
