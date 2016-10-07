@@ -2,8 +2,9 @@ define(function(require){
     'use strict';
 
     const d3 = require('d3');
-    const exportChart = require('./helpers/exportChart');
 
+    const exportChart = require('./helpers/exportChart');
+    const colorHelper = require('./helpers/colors');
 
     /**
      * @typedef SparklineChartData
@@ -58,12 +59,7 @@ define(function(require){
             xScale,
             yScale,
 
-            colorRange = [
-                '#4DC2F5',
-                '#051C48'
-            ],
-
-            ease = 'quad-out',
+            colorRange = colorHelper.britechartGradients.greenBlueGradient,
 
             svg,
             chartWidth, chartHeight,
@@ -72,6 +68,7 @@ define(function(require){
             hasArea = true,
             isAnimated = false,
             clipDuration = 3000,
+            ease = 'quad-out',
 
             line,
 
