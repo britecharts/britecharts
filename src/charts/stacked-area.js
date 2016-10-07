@@ -43,7 +43,9 @@ define(function(require){
             colors = colorHelper.britechartsColorSchema,
             colorOrder = colors
                 .reduce((acc, color, index) => {
-                    return {...acc, [color]: index}
+                    acc[color] = index;
+
+                    return acc;
                 }, {}),
             areaOpacity = 0.8,
             colorScale,
