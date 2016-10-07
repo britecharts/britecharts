@@ -7,8 +7,6 @@ var _ = require('underscore'),
     legend = require('./../src/charts/legend'),
     dataBuilder = require('./../test/fixtures/donutChartDataBuilder'),
 
-    briteChartsColors = ['#f6682f', '#f20cb6', '#ff0044', '#ffdb00', '#00cc52', '#00a8f2'],
-
     dataset = new dataBuilder.DonutDataBuilder()
         .withFivePlusOther()
         .build(),
@@ -28,7 +26,6 @@ function createDonutChart(dataset, legendChart) {
         .height(containerWidth)
         .externalRadius(containerWidth/2.5)
         .internalRadius(containerWidth/5)
-        .colorScheme(briteChartsColors)
         .on('customMouseOver', function(data) {
             legendChart.highlight(data.data.id);
         })
@@ -41,8 +38,6 @@ function createDonutChart(dataset, legendChart) {
 function getLegendChart(dataset) {
     var legendChart = legend(),
         legendContainer = d3.select('.js-legend-chart-container');
-
-    legendChart.colorScheme(briteChartsColors);
 
     legendContainer.datum(dataset).call(legendChart);
 

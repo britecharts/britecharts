@@ -4,6 +4,7 @@ define(function(require){
     const d3 = require('d3');
 
     const exportChart = require('./helpers/exportChart');
+    const colorHelper = require('./helpers/colors');
 
     /**
      * @typedef D3Selection
@@ -162,26 +163,8 @@ define(function(require){
                 bottom: 0,
                 right: 0
             },
-            colorRange = [
-                '#4DC2F5',
-                '#4DDB86',
-                '#E5C400',
-                '#FF4D7C',
-                '#9963D5',
-                '#051C48'
-            ],
-            colorOrder = {
-                '#4DC2F5': 0,
-                '#4DDB86': 1,
-                '#E5C400': 2,
-                '#FF4D7C': 3,
-                '#9963D5': 4,
-                '#051C48': 5
-            },
-            singleLineGradientColors = [
-                '#39C7EA',
-                '#4CDCBA'
-            ],
+            colorRange = colorHelper.britechartsColorSchema,
+            singleLineGradientColors = colorHelper.britechartGradients.greenBlueGradient,
             topicColorMap,
             ease = 'ease',
 

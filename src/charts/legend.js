@@ -3,6 +3,7 @@ define(function(require){
 
     const d3 = require('d3');
 
+    const colorHelper = require('./helpers/colors');
 
     /**
      * @typedef LegendChartData
@@ -84,8 +85,8 @@ define(function(require){
             isFadedClassName = 'is-faded',
 
             // colors
-            colorScale = d3.scale.category20c(),
-            colorScheme = ['#00AF38', '#41C2C9', '#F6C664', '#F4693A', '#9A66D7'],
+            colorScale,
+            colorScheme = colorHelper.britechartsColorSchema,
 
             getId = ({id}) => id,
             getName = ({name}) => name,
@@ -137,9 +138,7 @@ define(function(require){
          * @private
          */
         function buildColorScale() {
-            if (colorScheme) {
-                colorScale = d3.scale.ordinal().range(colorScheme);
-            }
+            colorScale = d3.scale.ordinal().range(colorScheme);
         }
 
         /**

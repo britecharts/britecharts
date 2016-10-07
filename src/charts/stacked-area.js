@@ -2,8 +2,10 @@ define(function(require){
     'use strict';
 
     const d3 = require('d3');
-    const exportChart = require('./helpers/exportChart');
     const _ = require('underscore');
+
+    const exportChart = require('./helpers/exportChart');
+    const colorHelper = require('./helpers/colors');
 
     /**
      * @typdef D3Layout
@@ -38,22 +40,11 @@ define(function(require){
             numVerticalTicks = 5,
             yTickTextYOffset = -8,
 
-            colors = [
-                '#051C48',
-                '#9963D5',
-                '#FF4D7C',
-                '#E5C400',
-                '#4DDB86',
-                '#4DC2F5'
-            ],
-            colorOrder = {
-                '#051C48': 0,
-                '#9963D5': 1,
-                '#FF4D7C': 2,
-                '#E5C400': 3,
-                '#4DDB86': 4,
-                '#4DC2F5': 5
-            },
+            colors = colorHelper.britechartsColorSchema,
+            colorOrder = colors
+                .reduce((acc, color, index) => {
+                    return {...acc, [color]: index}
+                }, {}),
             areaOpacity = 0.8,
             colorScale,
             categoryColorMap,
@@ -108,7 +99,6 @@ define(function(require){
 
             // events
             dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
-
 
        /**
          * This function creates the graph using the selection and data provided
