@@ -2,8 +2,10 @@ define(function(require){
     'use strict';
 
     const d3 = require('d3');
+
     const exportChart = require('./helpers/exportChart');
     const textHelper = require('./helpers/text');
+    const colorHelper = require('./helpers/colors');
 
 
     /**
@@ -84,7 +86,7 @@ define(function(require){
 
             // colors
             colorScale = d3.scale.category20c(),
-            colorScheme = ['#00AF38', '#41C2C9', '#F6C664', '#F4693A', '#9A66D7'],
+            colorScheme = colorHelper.britechartsColorSchema,
 
             // utils
             storeAngle = function(d) {
