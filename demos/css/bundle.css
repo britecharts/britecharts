@@ -1,16 +1,9 @@
 @font-face {
-  font-family: 'Benton';
-  src: url("/src/fonts/BentonSans-Regular.otf") format("opentype");
-  font-weight: 400; }
-
-@font-face {
-  font-family: 'Benton';
-  src: url("/src/fonts/BentonSans-Light.otf") format("opentype");
-  font-weight: 200; }
+  font-family: 'Heebo', sans-serif;
+  src: url("https://fonts.googleapis.com/css?family=Heebo:300") format("opentype"); }
 
 body {
-  font-family: 'Benton';
-  font-weight: 400; }
+  font-family: 'Heebo', sans-serif; }
 
 .horizontal-grid-line {
   fill: none;
