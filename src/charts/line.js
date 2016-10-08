@@ -270,19 +270,60 @@ define(function(require){
          * @private
          */
         function buildAxis(){
-            xAxis = d3.svg.axis()
+            // if (dataByDate.length <= 4) {
+
+            //    xAxis = d3.svg.axis()
+            //     .scale(xScale)
+            //     .orient('bottom')
+            //     .tickSize(10, 0).tickPadding(5)
+            //     .ticks(dataByDate.length <= 4 ? d3.time.days || )
+            //     .tickFormat(xTickDateFormat);
+
+            //    xMonthAxis = d3.svg.axis()
+            //       .scale(xScale)
+            //       .ticks(d3.time.months)
+            //       .tickSize(0, 0)
+            //       .orient('bottom')
+            //       .tickFormat(xTickMonthFormat);
+
+
+
+
+
+
+
+
+
+
+
+            //   // xAxis = d3.svg.axis()
+            //   //   .scale(xScale)
+            //   //   .orient('bottom')
+            //   //   .ticks(d3.time.hours, 8)
+            //   //   .tickSize(10, 0).tickPadding(5)
+            //   //   .tickFormat(d3.time.format('%I%p'));
+
+            //   //  xMonthAxis = d3.svg.axis()
+            //   //     .scale(xScale)
+            //   //     .ticks(d3.time.days)
+            //   //     .tickSize(0, 0)
+            //   //     .orient('bottom')
+            //   //     .tickFormat(d3.time.format('%b %e'));
+            // } else {
+              xAxis = d3.svg.axis()
                 .scale(xScale)
                 .orient('bottom')
                 .ticks(getMaxNumOfHorizontalTicks(width, dataByDate.length))
                 .tickSize(10, 0).tickPadding(5)
                 .tickFormat(xTickDateFormat);
 
-            xMonthAxis = d3.svg.axis()
-                .scale(xScale)
-                .ticks(d3.time.months)
-                .tickSize(0, 0)
-                .orient('bottom')
-                .tickFormat(xTickMonthFormat);
+              xMonthAxis = d3.svg.axis()
+                  .scale(xScale)
+                  .ticks(d3.time.months)
+                  .tickSize(0, 0)
+                  .orient('bottom')
+                  .tickFormat(xTickMonthFormat);
+
 
             yAxis = d3.svg.axis()
                 .scale(yScale)
@@ -353,8 +394,9 @@ define(function(require){
                 maxY = d3.max(data, ({Data}) => d3.max(Data, getValue));
 
             xScale = d3.time.scale()
-                .rangeRound([0, chartWidth])
-                .domain([minX, maxX]);
+                .domain([minX, maxX])
+                .range([0, chartWidth])
+                // .nice(3)
 
             yScale = d3.scale.linear()
                 .rangeRound([chartHeight, 0])
@@ -579,6 +621,9 @@ define(function(require){
          * @return {Number}       Number of ticks to render
          */
         function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
+          if (dataPointNumber <= 4) {
+            return d3.time.days
+          }
             let singleTickWidth = 20,
                 spacing = 40,
                 ticksForWidth = Math.ceil(width / (singleTickWidth + spacing));

@@ -22,7 +22,8 @@ function createLineChart() {
         lineChart1.exportChart();
     });
 
-    dataset = testDataSet.with5Topics().build();
+    // dataset = testDataSet.with5Topics().build();
+    dataset = testDataSet.withNDates(3).build();
 
     // LineChart Setup and start
     lineChart1
