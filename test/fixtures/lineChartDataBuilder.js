@@ -4,7 +4,8 @@ define(function(require) {
     var _ = require('underscore'),
 
         jsonFiveTopics = require('json!../json/lineDataFiveTopics.json'),
-        jsonOneSource = require('json!../json/lineDataOneSet.json');
+        jsonOneSource = require('json!../json/lineDataOneSet.json'),
+        jsonSevenDates = require('json!../json/lineDataForNDates.json');
 
 
     function SalesDataBuilder(config){
@@ -20,6 +21,18 @@ define(function(require) {
 
         this.withOneSource = function() {
             var attributes = _.extend({}, this.config, jsonOneSource);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withNDates = function(n) {
+            var data = jsonSevenDates;
+            if (n) {
+                data.data[0].Data = data.data[0].Data.slice(0, n);
+                data.dataByDate = data.dataByDate.slice(0, n);
+            }
+
+            var attributes = _.extend({}, this.config, data);
 
             return new this.Klass(attributes);
         };
