@@ -1,0 +1,49 @@
+.horizontal-grid-line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: #EFF2F5;
+  stroke-width: 2; }
+
+.extended-x-line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke: #D2D6DF;
+  stroke-width: 2; }
+
+.tick line {
+  fill: none;
+  stroke: #ADB0B6;
+  stroke-width: 1;
+  shape-rendering: crispEdges; }
+
+.tick text {
+  font-size: 0.8em;
+  fill: #ADB0B6;
+  text-anchor: middle;
+  padding: 10px; }
+
+.vertical-marker-container .vertical-marker {
+  stroke: #ff0044;
+  stroke-width: 1;
+  fill: none; }
+
+.vertical-marker-container .data-point-highlighter {
+  fill: #ffffff; }
+
+.tooltip-background {
+  fill: #ffffff;
+  stroke: #D2D6DF;
+  stroke-width: 1; }
+
+.britechart-legend .legend-line.is-faded .legend-entry-name,
+.britechart-legend .legend-line.is-faded .legend-entry-value,
+.britechart-legend .legend-line.is-faded .legend-circle {
+  opacity: 1;
+  transition: opacity .2s ease-out;
+  -moz-transition: opacity .2s ease-out;
+  -webkit-transition: opacity .2s ease-out; }
+
+.britechart-legend .legend-line.is-faded .legend-entry-name,
+.britechart-legend .legend-line.is-faded .legend-entry-value,
+.britechart-legend .legend-line.is-faded .legend-circle {
+  opacity: 0.2; }
