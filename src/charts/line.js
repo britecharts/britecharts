@@ -253,12 +253,16 @@ define(function(require){
          * @private
          */
         function buildAxis(){
+            // when dataset < 5, .ticks acts a little unexpected, so we pass it d3.time.days to fix
+            let tickValue = dataByDate.length < 5 ? d3.time.days :
+                    getMaxNumOfHorizontalTicks(width, dataByDate.length);
+
             xAxis = d3.svg.axis()
-                .scale(xScale)
-                .orient('bottom')
-                .ticks(getMaxNumOfHorizontalTicks(width, dataByDate.length))
-                .tickSize(10, 0).tickPadding(5)
-                .tickFormat(xTickDateFormat);
+              .scale(xScale)
+              .orient('bottom')
+              .ticks(tickValue)
+              .tickSize(10, 0).tickPadding(5)
+              .tickFormat(xTickDateFormat);
 
             xMonthAxis = d3.svg.axis()
                 .scale(xScale)
