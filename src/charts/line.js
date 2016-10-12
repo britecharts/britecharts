@@ -3,8 +3,9 @@ define(function(require){
 
     const d3 = require('d3');
 
-    const exportChart = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
+    const constants = require('./helpers/constants.js');
+    const exportChart = require('./helpers/exportChart');
 
     /**
      * @typedef D3Selection
@@ -313,7 +314,7 @@ define(function(require){
         function buildGradient() {
             svg.select('.metadata-group')
               .append('linearGradient')
-                .attr('id', 'line-area-gradient')
+                .attr('id', constants.lineGradientId)
                 .attr('x1', '0%')
                 .attr('y1', '0%')
                 .attr('x2', '100%')
@@ -448,7 +449,7 @@ define(function(require){
                 .attr('class', 'line')
                 .attr('d', ({Data}) => topicLine(Data))
                 .style('stroke', (d) => (
-                    data.length === 1 ? 'url(#line-area-gradient)' : getLineColor(d)
+                    data.length === 1 ? `url(#${constants.lineGradientId})` : getLineColor(d)
                 ));
 
             lines
