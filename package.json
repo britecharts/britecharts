@@ -10,6 +10,7 @@
     "styles": "grunt lint && grunt sass",
     "docs": "WEBPACK_ENV=demos webpack && npm run styles && grunt docs",
     "prod": "npm run _prod && npm run _prodUMD",
+    "untrack": "grunt untrack",
     "release": "npm run prod && grunt release",
     "test": "WEBPACK_ENV=test karma start",
     "_prod": "WEBPACK_ENV=prod webpack",
