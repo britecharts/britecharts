@@ -61,6 +61,10 @@ function createLineChartWithSingleLine() {
 
     dataset = testDataSet.withOneSource().build();
 
+    d3.select('#button2').on('click', function() {
+        lineChart2.exportChart();
+    });
+
     lineChart2
         .tooltipThreshold(600)
         .height(500)

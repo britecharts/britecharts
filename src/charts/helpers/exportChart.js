@@ -1,7 +1,9 @@
 define(function(require) {
-
     'use strict';
 
+    const bowser = require('bowser');
+
+    const constants = require('./constants.js');
     const serializeWithStyles = require('./serializeWithStyles.js');
 
     let encoder = window.btoa;
@@ -26,16 +28,13 @@ define(function(require) {
      * @param  {string} filename [download to be called <filename>.png]
      */
     function exportChart(d3svg, filename) {
-        let canvasWidth = this.width(),
-            canvasHeight = this.height();
+        let img = createImage(convertSvgToHtml(d3svg));
 
-        let html = convertSvgToHtml(d3svg);
-
-        let canvas = createCanvas(canvasWidth, canvasHeight);
-
-        let img = createImage(html);
-
-        img.onload = handleImageLoad.bind(img, canvas, filename);
+        img.onload = handleImageLoad.bind(
+                img,
+                createCanvas(this.width(), this.height()),
+                filename
+            );
     }
 
     /**
@@ -57,15 +56,16 @@ define(function(require) {
      * @return {string} string of passed d3
      */
     function convertSvgToHtml (d3svg) {
-        let serializer = serializeWithStyles.initializeSerializer();
-
-        if (!d3svg){ return; }
+        if (!d3svg) {
+            return;
+        }
 
         d3svg.attr({ version: 1.1, xmlns: 'http://www.w3.org/2000/svg'});
 
-        let serialized = serializer(d3svg.node());
+        let serializer = serializeWithStyles.initializeSerializer();
+        let html = formatHtmlByBrowser(serializer(d3svg.node()));
 
-        return serialized.replace('>',`>${config.styleBackgroundString}`);
+        return html.replace('>',`>${config.styleBackgroundString}`);
     }
 
     /**
@@ -93,6 +93,19 @@ define(function(require) {
         img.src = `${config.imageSourceBase}${encoder(svgHtml)}`;
         return img;
     };
+
+    /**
+     * Some browsers need special formatting, we handle that here
+     * @param  {string} html string of svg html
+     * @return {string} string of svg html
+     */
+    function formatHtmlByBrowser(html) {
+        if (bowser.name === 'Firefox') {
+            return html.replace(/url.*&quot;\)/, `url(&quot;#${constants.lineGradientId}&quot;);`);
+        }
+
+        return html;
+    }
 
     /**
      * Draws image on canvas
@@ -124,4 +137,3 @@ define(function(require) {
 
     return exportChart;
 });
-
