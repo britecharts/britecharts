@@ -80,6 +80,7 @@ define(function(require){
             borderStrokeColor = '#D2D6DF',
             titleFillColor = '#6D717A',
             textFillColor = '#282C35',
+            tooltipTextColor = '#000000',
 
             // formats
             tooltipDateFormat = d3.time.format('%b %d, %Y'),
@@ -222,26 +223,33 @@ define(function(require){
             ttTextX = 0;
         }
 
+        function getRightSideText(topic) {
+            let value = topic.value ? topic.value : topic.views;
+            let rightText;
+
+            if (topic.missingValue) {
+                rightText = '-';
+            } else {
+                rightText = value ? tooltipValueFormat(value) : 0;
+            }
+
+            return rightText;
+        }
+
         /**
          * Draws the data entries inside the tooltip for a given topic
          * @param  {Object} topic Topic to extract data from
          * @return void
          */
         function updateContent(topic){
-            var value = topic.value ? topic.value : topic.views,
-                name = topic.name,
+            let name = topic.name,
                 tooltipRight,
                 tooltipLeftText,
                 tooltipRightText,
                 elementText;
 
             tooltipLeftText = topic.topicName || name;
-
-            if (topic.missingValue) {
-                tooltipRightText = '-';
-            } else {
-                tooltipRightText = value ? tooltipValueFormat(value) : 0;
-            }
+            tooltipRightText = getRightSideText(topic);
 
             elementText = tooltipBody
                 .append('text')
@@ -251,7 +259,7 @@ define(function(require){
                     'x': ttTextX - 20,
                     'y': ttTextY
                 })
-                .style('fill', 'black')
+                .style('fill', tooltipTextColor)
                 .text(tooltipLeftText)
                 .call(textWrap, tooltipMaxTopicLength, -25);
 
@@ -263,7 +271,7 @@ define(function(require){
                     'x': ttTextX + 8,
                     'y': ttTextY
                 })
-                .style('fill', 'black')
+                .style('fill', tooltipTextColor)
                 .text(tooltipRightText);
 
             textSize = elementText.node().getBBox();
