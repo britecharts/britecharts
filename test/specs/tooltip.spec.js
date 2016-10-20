@@ -149,6 +149,72 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
             });
         });
 
+        describe('Number Formatting', function() {
+
+            it('should format big numbers', () =>  {
+                var expected = '10k',
+                    actual;
+
+                tooltipChart.update({
+                    date: '2015-08-05T07:00:00.000Z',
+                    topics: [
+                        {
+                            name: 103,
+                            value: 10000.004,
+                            topicName: 'San Francisco'
+                        }
+                    ]
+                }, topicColorMap, 0);
+
+                actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
+                            .text()
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should format medium numbers', () =>  {
+                var expected = '100',
+                    actual;
+
+                tooltipChart.update({
+                    date: '2015-08-05T07:00:00.000Z',
+                    topics: [
+                        {
+                            name: 103,
+                            value: 100.005,
+                            topicName: 'San Francisco'
+                        }
+                    ]
+                }, topicColorMap, 0);
+
+                actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
+                            .text()
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should format small numbers', () =>  {
+                var expected = '9.94',
+                    actual;
+
+                tooltipChart.update({
+                    date: '2015-08-05T07:00:00.000Z',
+                    topics: [
+                        {
+                            name: 103,
+                            value: 9.93987,
+                            topicName: 'San Francisco'
+                        }
+                    ]
+                }, topicColorMap, 0);
+
+                actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
+                            .text()
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
         describe('API', function() {
 
             it('should provide title getter and setter', () => {
