@@ -139,7 +139,7 @@ define(function(require) {
      */
     function getTitleWidth(title) {
         let div = document.createElement('div');
-        div.innerHTML = `<text id="britechart_title" y="40" font-family="'Heebo', sans-serif" style="display=none" font-size="20px">${title}</text>`;
+        div.innerHTML = `<text id="britechart_title" y="40" font-family="'Heebo', sans-serif" style="display=none" font-size="15px">${title}</text>`;
         let text = div.childNodes[0];
         document.body.appendChild(text);
         let titleWidth = document.getElementById('britechart_title').offsetWidth;
@@ -156,7 +156,9 @@ define(function(require) {
     function handleImageLoad(canvas, filename, e) {
         e.preventDefault();
         drawImageOnCanvas(this, canvas);
-        downloadCanvas(canvas, filename || config.defaultFilename);
+        // document.body.insertBefore(canvas, document.body.childNodes[0]);
+        document.body.appendChild(canvas);
+        // downloadCanvas(canvas, filename || config.defaultFilename);
     }
 
     /**
@@ -170,11 +172,12 @@ define(function(require) {
         if (!title || !svgWidth) {
             return html;
         }
+
         let titleWidth = getTitleWidth(title);
 
         return html.replace(/<g/,
             `svg">
-                <text x="${(svgWidth/ 2) - (titleWidth / 2)}" y="40" font-family="'Heebo', sans-serif" font-size="20px" fill="${colors[6]}">
+                <text x="${(svgWidth / 2) - (titleWidth / 2.2)}" y="40" font-family="'Heebo-thin', sans-serif" font-size="15px" fill="${colors[6]}">
                     ${title}
                 </text><g
             `);
