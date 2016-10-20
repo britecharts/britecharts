@@ -151,68 +151,138 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
 
         describe('Number Formatting', function() {
 
-            it('should format big numbers', () =>  {
-                var expected = '10k',
-                    actual;
+            describe('decimal values', function() {
 
-                tooltipChart.update({
-                    date: '2015-08-05T07:00:00.000Z',
-                    topics: [
-                        {
-                            name: 103,
-                            value: 10000.004,
-                            topicName: 'San Francisco'
-                        }
-                    ]
-                }, topicColorMap, 0);
+                it('should format big numbers', () =>  {
+                    var expected = '10k',
+                        actual;
 
-                actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
-                            .text()
+                    tooltipChart.update({
+                        date: '2015-08-05T07:00:00.000Z',
+                        topics: [
+                            {
+                                name: 103,
+                                value: 10000.004,
+                                topicName: 'San Francisco'
+                            }
+                        ]
+                    }, topicColorMap, 0);
 
-                expect(actual).toEqual(expected);
+                    actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
+                                .text()
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should format medium numbers', () =>  {
+                    var expected = '100',
+                        actual;
+
+                    tooltipChart.update({
+                        date: '2015-08-05T07:00:00.000Z',
+                        topics: [
+                            {
+                                name: 103,
+                                value: 100.005,
+                                topicName: 'San Francisco'
+                            }
+                        ]
+                    }, topicColorMap, 0);
+
+                    actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
+                                .text()
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should format small numbers', () =>  {
+                    var expected = '9.123',
+                        actual;
+
+                    tooltipChart.update({
+                        date: '2015-08-05T07:00:00.000Z',
+                        topics: [
+                            {
+                                name: 103,
+                                value: 9.1234,
+                                topicName: 'San Francisco'
+                            }
+                        ]
+                    }, topicColorMap, 0);
+
+                    actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
+                                .text()
+
+                    expect(actual).toEqual(expected);
+                });
             });
 
-            it('should format medium numbers', () =>  {
-                var expected = '100',
-                    actual;
+            describe('integer values', function() {
 
-                tooltipChart.update({
-                    date: '2015-08-05T07:00:00.000Z',
-                    topics: [
-                        {
-                            name: 103,
-                            value: 100.005,
-                            topicName: 'San Francisco'
-                        }
-                    ]
-                }, topicColorMap, 0);
+                it('should format big numbers', () =>  {
+                    var expected = '10k',
+                        actual;
 
-                actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
-                            .text()
+                    tooltipChart.update({
+                        date: '2015-08-05T07:00:00.000Z',
+                        topics: [
+                            {
+                                name: 103,
+                                value: 10000,
+                                topicName: 'San Francisco'
+                            }
+                        ]
+                    }, topicColorMap, 0);
 
-                expect(actual).toEqual(expected);
+                    actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
+                                .text()
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should not format medium numbers', () =>  {
+                    var expected = '100',
+                        actual;
+
+                    tooltipChart.update({
+                        date: '2015-08-05T07:00:00.000Z',
+                        topics: [
+                            {
+                                name: 103,
+                                value: 100,
+                                topicName: 'San Francisco'
+                            }
+                        ]
+                    }, topicColorMap, 0);
+
+                    actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
+                                .text()
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should not format small numbers', () =>  {
+                    var expected = '9',
+                        actual;
+
+                    tooltipChart.update({
+                        date: '2015-08-05T07:00:00.000Z',
+                        topics: [
+                            {
+                                name: 103,
+                                value: 9,
+                                topicName: 'San Francisco'
+                            }
+                        ]
+                    }, topicColorMap, 0);
+
+                    actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
+                                .text()
+
+                    expect(actual).toEqual(expected);
+                });
             });
 
-            it('should format small numbers', () =>  {
-                var expected = '9.94',
-                    actual;
-
-                tooltipChart.update({
-                    date: '2015-08-05T07:00:00.000Z',
-                    topics: [
-                        {
-                            name: 103,
-                            value: 9.93987,
-                            topicName: 'San Francisco'
-                        }
-                    ]
-                }, topicColorMap, 0);
-
-                actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
-                            .text()
-
-                expect(actual).toEqual(expected);
-            });
         });
 
         describe('API', function() {
