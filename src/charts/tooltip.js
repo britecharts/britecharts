@@ -88,9 +88,14 @@ define(function(require){
                 small: 10,
                 medium: 100
             },
-            valueFormats = {
+            integerValueFormats = {
+                small: d3.format(''),
+                medium: d3.format(''),
+                large: d3.format('.2s')
+            },
+            decimalValueFormats = {
                 small: d3.format('.3f'),
-                medium: d3.format('.2f'),
+                medium: d3.format('.1f'),
                 large: d3.format('.2s')
             },
 
@@ -222,39 +227,30 @@ define(function(require){
         }
 
         /**
-         * Resets the height of the tooltip and the pointer for the text
-         * position
+         * Formats a floating point value depending on its value range
+         * @param  {Number} value Decimal point value to format
+         * @return {Number}       Formatted value to show
          */
-        function resetSizeAndPositionPointers() {
-            tooltipHeight = 48;
-            ttTextY = 37;
-            ttTextX = 0;
-        }
-
-        function getValueText(topic) {
-            let value = topic.value ? topic.value : topic.views;
-            let valueText;
-
-            if (topic.missingValue) {
-                valueText = '-';
-            } else {
-                valueText = getFormattedValue(value);
-            }
-
-            return valueText;
-        }
-
-        /**
-         * Formats the value depending on the range of the number
-         * @param  {Number} value Value to format
-         * @return {Number}       Formatted value
-         */
-        function getFormattedValue(value) {
+        function formatDecimalValue(value) {
             let size = 'large';
 
-            if (!value) {
-                return 0;
+            if (value < valueRangeLimits.small) {
+                size = 'small';
+            } else if (value < valueRangeLimits.medium) {
+                size = 'medium';
             }
+
+            return decimalValueFormats[size](value);
+        }
+
+
+        /**
+         * Formats an integer value depending on its value range
+         * @param  {Number} value Decimal point value to format
+         * @return {Number}       Formatted value to show
+         */
+        function formatIntegerValue(value) {
+            let size = 'large';
 
             if (value < valueRangeLimits.small) {
                 size = 'small';
@@ -262,7 +258,63 @@ define(function(require){
                 size = 'medium';
             }
 
-            return valueFormats[size](value);
+            return integerValueFormats[size](value);
+        }
+
+        /**
+         * Formats the value depending on its characteristics
+         * @param  {Number} value Value to format
+         * @return {Number}       Formatted value
+         */
+        function getFormattedValue(value) {
+            if (!value) {
+                return 0;
+            }
+
+            if (isInteger(value)) {
+                value = formatIntegerValue(value);
+            } else {
+                value = formatDecimalValue(value);
+            }
+
+            return value;
+        }
+
+        /**
+         * Extracts the value from the data object
+         * @param  {Object} data Data value containing the info
+         * @return {String}      Value to show
+         */
+        function getValueText(data) {
+            let value = data.value ? data.value : data.views;
+            let valueText;
+
+            if (data.missingValue) {
+                valueText = '-';
+            } else {
+                valueText = getFormattedValue(value).toString();
+            }
+
+            return valueText;
+        }
+
+        /**
+         * Checks if a number is an integer of has decimal values
+         * @param  {Number}  value Value to check
+         * @return {Boolean}       If it is an iteger
+         */
+        function isInteger(value) {
+            return value % 1 === 0;
+        }
+
+        /**
+         * Resets the height of the tooltip and the pointer for the text
+         * position
+         */
+        function resetSizeAndPositionPointers() {
+            tooltipHeight = 48;
+            ttTextY = 37;
+            ttTextX = 0;
         }
 
         /**

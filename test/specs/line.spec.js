@@ -51,7 +51,7 @@ define([
                 it('should have a gradient stroke on the chart line', () => {
                     let stroke = containerFixture.select('.chart-group').selectAll('path').node().style.stroke;
 
-                    expect(stroke).toEqual('url("#line-area-gradient")')
+                    expect(stroke).toEqual('url("#lineGradientId")')
                 });
             });
         });
