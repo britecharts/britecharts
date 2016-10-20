@@ -84,7 +84,15 @@ define(function(require){
 
             // formats
             tooltipDateFormat = d3.time.format('%b %d, %Y'),
-            tooltipValueFormat = d3.format(',2f'),
+            valueRangeLimits = {
+                small: 10,
+                medium: 100
+            },
+            valueFormats = {
+                small: d3.format('.3f'),
+                medium: d3.format('.2f'),
+                large: d3.format('.2s')
+            },
 
             chartWidth, chartHeight,
             data,
@@ -223,17 +231,38 @@ define(function(require){
             ttTextX = 0;
         }
 
-        function getRightSideText(topic) {
+        function getValueText(topic) {
             let value = topic.value ? topic.value : topic.views;
-            let rightText;
+            let valueText;
 
             if (topic.missingValue) {
-                rightText = '-';
+                valueText = '-';
             } else {
-                rightText = value ? tooltipValueFormat(value) : 0;
+                valueText = getFormattedValue(value);
             }
 
-            return rightText;
+            return valueText;
+        }
+
+        /**
+         * Formats the value depending on the range of the number
+         * @param  {Number} value Value to format
+         * @return {Number}       Formatted value
+         */
+        function getFormattedValue(value) {
+            let size = 'large';
+
+            if (!value) {
+                return 0;
+            }
+
+            if (value < valueRangeLimits.small) {
+                size = 'small';
+            } if (value < valueRangeLimits.medium) {
+                size = 'medium';
+            }
+
+            return valueFormats[size](value);
         }
 
         /**
@@ -249,7 +278,7 @@ define(function(require){
                 elementText;
 
             tooltipLeftText = topic.topicName || name;
-            tooltipRightText = getRightSideText(topic);
+            tooltipRightText = getValueText(topic);
 
             elementText = tooltipBody
                 .append('text')
