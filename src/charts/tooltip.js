@@ -80,10 +80,24 @@ define(function(require){
             borderStrokeColor = '#D2D6DF',
             titleFillColor = '#6D717A',
             textFillColor = '#282C35',
+            tooltipTextColor = '#000000',
 
             // formats
             tooltipDateFormat = d3.time.format('%b %d, %Y'),
-            tooltipValueFormat = d3.format(',2f'),
+            valueRangeLimits = {
+                small: 10,
+                medium: 100
+            },
+            integerValueFormats = {
+                small: d3.format(''),
+                medium: d3.format(''),
+                large: d3.format('.2s')
+            },
+            decimalValueFormats = {
+                small: d3.format('.3f'),
+                medium: d3.format('.1f'),
+                large: d3.format('.2s')
+            },
 
             chartWidth, chartHeight,
             data,
@@ -213,6 +227,87 @@ define(function(require){
         }
 
         /**
+         * Formats a floating point value depending on its value range
+         * @param  {Number} value Decimal point value to format
+         * @return {Number}       Formatted value to show
+         */
+        function formatDecimalValue(value) {
+            let size = 'large';
+
+            if (value < valueRangeLimits.small) {
+                size = 'small';
+            } else if (value < valueRangeLimits.medium) {
+                size = 'medium';
+            }
+
+            return decimalValueFormats[size](value);
+        }
+
+
+        /**
+         * Formats an integer value depending on its value range
+         * @param  {Number} value Decimal point value to format
+         * @return {Number}       Formatted value to show
+         */
+        function formatIntegerValue(value) {
+            let size = 'large';
+
+            if (value < valueRangeLimits.small) {
+                size = 'small';
+            } if (value < valueRangeLimits.medium) {
+                size = 'medium';
+            }
+
+            return integerValueFormats[size](value);
+        }
+
+        /**
+         * Formats the value depending on its characteristics
+         * @param  {Number} value Value to format
+         * @return {Number}       Formatted value
+         */
+        function getFormattedValue(value) {
+            if (!value) {
+                return 0;
+            }
+
+            if (isInteger(value)) {
+                value = formatIntegerValue(value);
+            } else {
+                value = formatDecimalValue(value);
+            }
+
+            return value;
+        }
+
+        /**
+         * Extracts the value from the data object
+         * @param  {Object} data Data value containing the info
+         * @return {String}      Value to show
+         */
+        function getValueText(data) {
+            let value = data.value ? data.value : data.views;
+            let valueText;
+
+            if (data.missingValue) {
+                valueText = '-';
+            } else {
+                valueText = getFormattedValue(value).toString();
+            }
+
+            return valueText;
+        }
+
+        /**
+         * Checks if a number is an integer of has decimal values
+         * @param  {Number}  value Value to check
+         * @return {Boolean}       If it is an iteger
+         */
+        function isInteger(value) {
+            return value % 1 === 0;
+        }
+
+        /**
          * Resets the height of the tooltip and the pointer for the text
          * position
          */
@@ -228,20 +323,14 @@ define(function(require){
          * @return void
          */
         function updateContent(topic){
-            var value = topic.value ? topic.value : topic.views,
-                name = topic.name,
+            let name = topic.name,
                 tooltipRight,
                 tooltipLeftText,
                 tooltipRightText,
                 elementText;
 
             tooltipLeftText = topic.topicName || name;
-
-            if (topic.missingValue) {
-                tooltipRightText = '-';
-            } else {
-                tooltipRightText = value ? tooltipValueFormat(value) : 0;
-            }
+            tooltipRightText = getValueText(topic);
 
             elementText = tooltipBody
                 .append('text')
@@ -251,7 +340,7 @@ define(function(require){
                     'x': ttTextX - 20,
                     'y': ttTextY
                 })
-                .style('fill', 'black')
+                .style('fill', tooltipTextColor)
                 .text(tooltipLeftText)
                 .call(textWrap, tooltipMaxTopicLength, -25);
 
@@ -263,7 +352,7 @@ define(function(require){
                     'x': ttTextX + 8,
                     'y': ttTextY
                 })
-                .style('fill', 'black')
+                .style('fill', tooltipTextColor)
                 .text(tooltipRightText);
 
             textSize = elementText.node().getBBox();
