@@ -62,6 +62,7 @@ define(function(require) {
         html = formatHtmlByBrowser(html);
         html = prependTitle(html, title, parseInt(d3svg.attr('width')));
         html = addBackground(html);
+
         return html;
     }
 
@@ -156,9 +157,8 @@ define(function(require) {
     function handleImageLoad(canvas, filename, e) {
         e.preventDefault();
         drawImageOnCanvas(this, canvas);
-        // document.body.insertBefore(canvas, document.body.childNodes[0]);
-        document.body.appendChild(canvas);
-        // downloadCanvas(canvas, filename || config.defaultFilename);
+
+        downloadCanvas(canvas, filename || config.defaultFilename);
     }
 
     /**
@@ -175,12 +175,8 @@ define(function(require) {
 
         let titleWidth = getTitleWidth(title);
 
-        return html.replace(/<g/,
-            `svg">
-                <text x="${(svgWidth / 2) - (titleWidth / 2.2)}" y="40" font-family="'Heebo-thin', sans-serif" font-size="15px" fill="${colors[6]}">
-                    ${title}
-                </text><g
-            `);
+        html =  html.replace(/<g/,`<text x="${(svgWidth / 2) - (titleWidth / 2.2)}" y="40" font-family="'Heebo-thin', sans-serif" font-size="15px" fill="${colors[6]}"> ${title} </text><g `);
+        return html;
     }
 
     return exportChart;

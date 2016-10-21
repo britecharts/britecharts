@@ -812,7 +812,7 @@ define(function(require){
          * Chart exported to png and a download action is fired
          * @public
          */
-        exports.exportChart = function(filename, title='A Sales Report | Preview Test - Quantity | Daily') {
+        exports.exportChart = function(filename, title) {
             exportChart.call(exports, svg, filename, title);
         };
 
