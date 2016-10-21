@@ -324,8 +324,8 @@ define(function(require) {
          * Chart exported to png and a download action is fired
          * @public
          */
-        exports.exportChart = function(filename) {
-            exportChart.call(exports, svg, filename);
+        exports.exportChart = function(filename, title) {
+            exportChart.call(exports, svg, filename, title);
         };
 
         // Copies the method "on" from dispatch to exports, making it accesible
