@@ -390,13 +390,12 @@ define(function(require){
             return this;
         };
 
-
         /**
          * Chart exported to png and a download action is fired
          * @public
          */
-        exports.exportChart = function(filename) {
-            exportChart.call(exports, svg, filename);
+        exports.exportChart = function(filename, title) {
+            exportChart.call(exports, svg, filename, title);
         };
 
         return exports;
