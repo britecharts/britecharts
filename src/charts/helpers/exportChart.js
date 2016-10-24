@@ -31,7 +31,6 @@ define(function(require) {
      * @param  {string} filename [download to be called <filename>.png]
      */
     function exportChart(d3svg, filename, title) {
-        console.log('mounted')
         let img = createImage(convertSvgToHtml(d3svg, title));
 
         img.onload = handleImageLoad.bind(
