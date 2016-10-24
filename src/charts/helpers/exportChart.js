@@ -17,6 +17,9 @@ define(function(require) {
         defaultFilename: 'britechart.png',
         chartBackground: 'white',
         imageSourceBase: 'data:image/svg+xml;base64,',
+        titleFontSize: '15px',
+        titleFontFamily: '\'Heebo-thin\', sans-serif',
+        titleTopOffset: 40,
         get styleBackgroundString () {
             return `<style>svg{background:${this.chartBackground};}</style>`;
         }
@@ -28,6 +31,7 @@ define(function(require) {
      * @param  {string} filename [download to be called <filename>.png]
      */
     function exportChart(d3svg, filename, title) {
+        console.log('mounted')
         let img = createImage(convertSvgToHtml(d3svg, title));
 
         img.onload = handleImageLoad.bind(
@@ -140,10 +144,10 @@ define(function(require) {
      */
     function getTitleWidth(title) {
         let div = document.createElement('div');
-        div.innerHTML = `<text id="britechart_title" y="40" font-family="'Heebo', sans-serif" style="display=none" font-size="15px">${title}</text>`;
+        div.innerHTML = `<text id="temp_britechart_title" y="${config.titleTopOffset}" font-family="${config.titleFontFamily}" style="display=none" font-size="${config.titleFontSize}">${title}</text>`;
         let text = div.childNodes[0];
         document.body.appendChild(text);
-        let titleWidth = document.getElementById('britechart_title').offsetWidth;
+        let titleWidth = document.getElementById('temp_britechart_title').offsetWidth;
         text.remove();
         return titleWidth;
     }
@@ -175,7 +179,7 @@ define(function(require) {
 
         let titleWidth = getTitleWidth(title);
 
-        html =  html.replace(/<g/,`<text x="${(svgWidth / 2) - (titleWidth / 2.2)}" y="40" font-family="'Heebo-thin', sans-serif" font-size="15px" fill="${colors[6]}"> ${title} </text><g `);
+        html =  html.replace(/<g/,`<text x="${(svgWidth / 2) - (titleWidth / 2.2)}" y="${config.titleTopOffset}" font-family="${config.titleFontFamily}" font-size="${config.titleFontSize}" fill="${colors[6]}"> ${title} </text><g `);
         return html;
     }
 
