@@ -1,6 +1,12 @@
 @font-face {
     font-family: 'Heebo', sans-serif;
     src: url("https://fonts.googleapis.com/css?family=Heebo:300") format("opentype");
+    font-weight: 300;
+}
+@font-face {
+    font-family: 'Heebo-thin', sans-serif;
+    src: url("https://fonts.googleapis.com/css?family=Heebo:100") formant("opentype");
+    font-weight: 100;
 }
 
 body {

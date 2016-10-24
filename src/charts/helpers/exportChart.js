@@ -2,7 +2,7 @@ define(function(require) {
     'use strict';
 
     const bowser = require('bowser');
-
+    const {britechartsGreySchema : colors} = require('./colors.js');
     const constants = require('./constants.js');
     const serializeWithStyles = require('./serializeWithStyles.js');
 
@@ -17,6 +17,9 @@ define(function(require) {
         defaultFilename: 'britechart.png',
         chartBackground: 'white',
         imageSourceBase: 'data:image/svg+xml;base64,',
+        titleFontSize: '15px',
+        titleFontFamily: '\'Heebo-thin\', sans-serif',
+        titleTopOffset: 40,
         get styleBackgroundString () {
             return `<style>svg{background:${this.chartBackground};}</style>`;
         }
@@ -27,8 +30,8 @@ define(function(require) {
      * @param  {array} svgs (or an svg element) pass in both chart & legend as array or just chart as svg or in array
      * @param  {string} filename [download to be called <filename>.png]
      */
-    function exportChart(d3svg, filename) {
-        let img = createImage(convertSvgToHtml(d3svg));
+    function exportChart(d3svg, filename, title) {
+        let img = createImage(convertSvgToHtml(d3svg, title));
 
         img.onload = handleImageLoad.bind(
                 img,
@@ -38,15 +41,11 @@ define(function(require) {
     }
 
     /**
-     * Handles on load event fired by img.onload, this=img
-     * @param  {object} canvas TYPE: el <canvas>
-     * @param  {string} filename
-     * @param  {object} e
+     * adds background styles to raw html
+     * @param {string} html raw html
      */
-    function handleImageLoad(canvas, filename, e) {
-        e.preventDefault();
-        drawImageOnCanvas(this, canvas);
-        downloadCanvas(canvas, filename || config.defaultFilename);
+    function addBackground(html) {
+        return html.replace('>',`>${config.styleBackgroundString}`);
     }
 
     /**
@@ -55,17 +54,19 @@ define(function(require) {
      * @param  {object} d3svg TYPE d3 svg element
      * @return {string} string of passed d3
      */
-    function convertSvgToHtml (d3svg) {
+    function convertSvgToHtml (d3svg, title) {
         if (!d3svg) {
             return;
         }
-
         d3svg.attr({ version: 1.1, xmlns: 'http://www.w3.org/2000/svg'});
 
         let serializer = serializeWithStyles.initializeSerializer();
-        let html = formatHtmlByBrowser(serializer(d3svg.node()));
+        let html = serializer(d3svg.node());
+        html = formatHtmlByBrowser(html);
+        html = prependTitle(html, title, parseInt(d3svg.attr('width')));
+        html = addBackground(html);
 
-        return html.replace('>',`>${config.styleBackgroundString}`);
+        return html;
     }
 
     /**
@@ -95,19 +96,6 @@ define(function(require) {
     };
 
     /**
-     * Some browsers need special formatting, we handle that here
-     * @param  {string} html string of svg html
-     * @return {string} string of svg html
-     */
-    function formatHtmlByBrowser(html) {
-        if (bowser.name === 'Firefox') {
-            return html.replace(/url.*&quot;\)/, `url(&quot;#${constants.lineGradientId}&quot;);`);
-        }
-
-        return html;
-    }
-
-    /**
      * Draws image on canvas
      * @param  {object} image TYPE:el <img>, to be drawn
      * @param  {object} canvas TYPE: el <canvas>, to draw on
@@ -133,6 +121,65 @@ define(function(require) {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+    }
+
+    /**
+     * Some browsers need special formatting, we handle that here
+     * @param  {string} html string of svg html
+     * @return {string} string of svg html
+     */
+    function formatHtmlByBrowser(html) {
+        if (bowser.name === 'Firefox') {
+            return html.replace(/url.*&quot;\)/, `url(&quot;#${constants.lineGradientId}&quot;);`);
+        }
+
+        return html;
+    }
+
+    /**
+     * Mounts a text node to grab the assumed width
+     * @param  {string} title title to be mounted
+     * @return {string}      width of title assuming its mounted
+     */
+    function getTitleWidth(title) {
+        let div = document.createElement('div');
+        div.innerHTML = `<text id="temp_britechart_title" y="${config.titleTopOffset}" font-family="${config.titleFontFamily}" style="display=none" font-size="${config.titleFontSize}">${title}</text>`;
+        let text = div.childNodes[0];
+        document.body.appendChild(text);
+        let titleWidth = document.getElementById('temp_britechart_title').offsetWidth;
+        text.remove();
+        return titleWidth;
+    }
+
+    /**
+     * Handles on load event fired by img.onload, this=img
+     * @param  {object} canvas TYPE: el <canvas>
+     * @param  {string} filename
+     * @param  {object} e
+     */
+    function handleImageLoad(canvas, filename, e) {
+        e.preventDefault();
+        drawImageOnCanvas(this, canvas);
+
+        downloadCanvas(canvas, filename || config.defaultFilename);
+    }
+
+    /**
+     * if passed, append title to the raw html to appear on graph
+     * @param  {string} html     raw html string
+     * @param  {string} title    title of the graph
+     * @param  {number} svgWidth width of graph container
+     * @return {string}         raw html with title prepended
+     */
+    function prependTitle(html, title, svgWidth) {
+        if (!title || !svgWidth) {
+            return html;
+        }
+
+        let titleWidth = getTitleWidth(title);
+
+        html =  html.replace(/<g/,`<text x="${(svgWidth / 2) - (titleWidth / 2.2)}" y="${config.titleTopOffset}" font-family="${config.titleFontFamily}" font-size="${config.titleFontSize}" fill="${colors[6]}"> ${title} </text><g `);
+        return html;
     }
 
     return exportChart;

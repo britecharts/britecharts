@@ -713,8 +713,8 @@ define(function(require){
          * Chart exported to png and a download action is fired
          * @public
          */
-        exports.exportChart = function(filename) {
-            exportChart.call(exports, svg, filename);
+        exports.exportChart = function(filename, title) {
+            exportChart.call(exports, svg, filename, title);
         };
 
         // Rebind 'customHover' event to the "exports" function, so it's available "externally" under the typical "on" method:
