@@ -258,6 +258,9 @@ define(function(require){
             let tickValue = dataByDate.length < 5 ? d3.time.days :
                     getMaxNumOfHorizontalTicks(width, dataByDate.length);
 
+            let rangeDiff = yScale.domain()[1] - yScale.domain()[0];
+            let yTickNumber = rangeDiff < numVerticalTics - 1 ? rangeDiff : numVerticalTics;
+
             xAxis = d3.svg.axis()
               .scale(xScale)
               .orient('bottom')
@@ -275,7 +278,7 @@ define(function(require){
             yAxis = d3.svg.axis()
                 .scale(yScale)
                 .orient('left')
-                .ticks(numVerticalTics)
+                .ticks(yTickNumber)
                 .tickSize([0])
                 .tickPadding([4])
                 .tickFormat(yTickNumberFormat);
