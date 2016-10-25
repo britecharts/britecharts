@@ -5,10 +5,11 @@ define(function(require) {
 
         jsonFiveTopics = require('json!../json/lineDataFiveTopics.json'),
         jsonOneSource = require('json!../json/lineDataOneSet.json'),
-        jsonDataNDates = require('json!../json/lineDataForNDates.json');
+        jsonDataNDates = require('json!../json/lineDataForNDates.json'),
+        jsonSmallValueRange = require('json!../json/lineDataSmallValueRange');
 
 
-    function SalesDataBuilder(config){
+    function SalesDataBuilder(config) {
         this.Klass = SalesDataBuilder;
 
         this.config = _.defaults({}, config);
@@ -38,6 +39,12 @@ define(function(require) {
 
             return new this.Klass(attributes);
         };
+
+        this.withSmallValueRange = function() {
+            var attributes = _.extend({}, this.config, jsonSmallValueRange);
+
+            return new this.Klass(attributes);
+        }
 
         /**
          * Sets the path for fetching the data
