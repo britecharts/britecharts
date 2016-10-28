@@ -1,7 +1,7 @@
 define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
     'use strict';
 
-    describe('Reusable Tooltip Component', () => {
+    describe('Mini Tooltip Component', () => {
         let tooltipChart,
             containerFixture,
             dataset,

@@ -13,7 +13,7 @@ define([
     ) {
     'use strict';
 
-    describe('Reusable Line Chart Test Suite', () => {
+    describe('Line Chart', () => {
         let dataset, containerFixture, f, lineChart;
 
         function aTestDataSet() {
@@ -21,10 +21,10 @@ define([
         }
 
         function hasClass(element, className) {
-            return _.contains(element[0][0].classList, className);
+            return _.contains(element.node().classList, className);
         }
 
-        describe('A line chart with a single line', function() {
+        describe('with a single line', function() {
 
             beforeEach(() => {
                 dataset = aTestDataSet().withOneSource().build();
@@ -46,7 +46,7 @@ define([
                 f.clearCache();
             });
 
-            describe('Render', () => {
+            describe('on render', () => {
 
                 it('should have a gradient stroke on the chart line', () => {
                     let stroke = containerFixture.select('.chart-group').selectAll('path').node().style.stroke;
@@ -56,7 +56,7 @@ define([
             });
         });
 
-        describe('A line chart with multiple lines', function() {
+        describe('with multiple lines', function() {
 
             beforeEach(() => {
                 dataset = aTestDataSet().with5Topics().build();
@@ -104,11 +104,12 @@ define([
             it('should render a line for each data topic', () => {
                 let numLines = dataset.data.length;
 
-                expect(containerFixture.selectAll('.line')[0].length).toEqual(numLines);
+                expect(containerFixture.selectAll('.line').nodes().length).toEqual(numLines);
             });
 
             it('should not have a gradient line with a data set for more than one line', function() {
-                var stroke = containerFixture.select('.chart-group').selectAll('path')[0][0].style.stroke;
+                let stroke = containerFixture.select('.chart-group').selectAll('path').nodes()[0].style.stroke;
+
                 expect(stroke).not.toEqual('url("#line-area-gradient")');
             });
 
@@ -119,7 +120,7 @@ define([
                     container = containerFixture.selectAll('svg');
 
                 lineChart.on('customMouseOver', callback);
-                container[0][0].__onmouseover();
+                container.dispatch('mouseover');
 
                 expect(callback.calls.count()).toBe(1);
             });
@@ -129,7 +130,7 @@ define([
                     container = containerFixture.selectAll('svg');
 
                 lineChart.on('customMouseOut', callback);
-                container[0][0].__onmouseout();
+                container.dispatch('mouseout');
                 expect(callback.calls.count()).toBe(1);
             });
 
@@ -137,8 +138,9 @@ define([
             // it('should trigger an event on mouse move', () => {
             //     let callback = jasmine.createSpy('mouseMoveCallback'),
             //         container = containerFixture.selectAll('svg');
+            //
             //     lineChart.on('customMouseMove', callback);
-            //     container[0][0].__onmousemove();
+            //     container.dispatch('mousemove');
 
             //     expect(callback.calls.count()).toBe(1);
             // });
@@ -152,7 +154,7 @@ define([
                 let container = containerFixture.selectAll('svg');
 
                 expect(containerFixture.select('.overlay').style('display')).toBe('none');
-                container[0][0].__onmouseover();
+                container.dispatch('mouseover');
                 expect(containerFixture.select('.overlay').style('display')).toBe('block');
             });
 
@@ -166,7 +168,7 @@ define([
                 let container = containerFixture.selectAll('svg'),
                     verticalLine = d3.select('.hover-marker line');
 
-                container[0][0].__onmouseover();
+                container.dispatch('mouseover');
 
                 expect(hasClass(verticalLine, 'bc-is-active')).toBe(true);
             });
@@ -176,13 +178,15 @@ define([
                     verticalLine = d3.select('.hover-marker line');
 
                 expect(hasClass(verticalLine, 'bc-is-active')).toBe(false);
-                container[0][0].__onmouseover();
+                container.dispatch('mouseover');
                 expect(hasClass(verticalLine, 'bc-is-active')).toBe(true);
-                container[0][0].__onmouseout();
+                container.dispatch('mouseout');
                 expect(hasClass(verticalLine, 'bc-is-active')).toBe(false);
             });
+        });
 
-            // API
+        describe('API', function() {
+
             it('should provide margin getter and setter', () => {
                 let defaultMargin = lineChart.margin(),
                     testMargin = {top: 4, right: 4, bottom: 4, left: 4},
@@ -230,24 +234,12 @@ define([
                 expect(defaultHeight).not.toBe(testTooltipThreshold);
                 expect(newTooltipThreshold).toBe(testTooltipThreshold);
             });
+        });
 
-            it('should provide animation getters and setters', () => {
-                let defaultEase = lineChart.ease(),
-                    testEase = 'linear',
-                    newEase;
+        describe('Export chart functionality', () => {
 
-                lineChart.ease(testEase);
-                newEase = lineChart.ease();
-
-                expect(defaultEase).not.toBe(testEase);
-                expect(newEase).toBe(testEase);
-            });
-
-            describe('Export chart functionality', () => {
-
-                it('should have exportChart defined', () => {
-                    expect(lineChart.exportChart).toBeDefined();
-                });
+            it('should have exportChart defined', () => {
+                expect(lineChart.exportChart).toBeDefined();
             });
         });
     });

@@ -13,16 +13,16 @@ define([
     ) {
     'use strict';
 
-    describe('Reusable Stacked Area Chart', () => {
+    function aTestDataSet() {
+        return new dataBuilder.StackedAreaDataBuilder();
+    }
+
+    function hasClass(element, className) {
+        return _.contains(element.node().classList, className);
+    }
+
+    describe('Stacked Area Chart', () => {
         let dataset, containerFixture, f, stackedAreaChart;
-
-        function aTestDataSet() {
-            return new dataBuilder.StackedAreaDataBuilder();
-        }
-
-        function hasClass(element, className) {
-            return _.contains(element[0][0].classList, className);
-        }
 
         beforeEach(() => {
             dataset = aTestDataSet().withReportData().build();
@@ -63,15 +63,15 @@ define([
         });
 
         it('should render an area for each category', () => {
-            var numAreas = _.chain(dataset.data)
+            let expected = _.chain(dataset.data)
                 .pluck('name')
                 .unique()
                 .value()
-                .length;
+                .length,
+                actual = containerFixture.selectAll('.layer').nodes().length;
 
-            expect(containerFixture.selectAll('.layer')[0].length).toEqual(numAreas);
+            expect(actual).toEqual(expected);
         });
-
 
         // Overlay
         it('should render an overlay to trigger the hover effect', () => {
@@ -82,7 +82,7 @@ define([
             let container = containerFixture.selectAll('svg');
 
             expect(containerFixture.select('.overlay').style('display')).toBe('none');
-            container[0][0].__onmouseover();
+            container.dispatch('mouseover');
             expect(containerFixture.select('.overlay').style('display')).toBe('block');
         });
 
@@ -96,7 +96,7 @@ define([
             let container = containerFixture.selectAll('svg'),
                 verticalLine = d3.select('.vertical-marker-container .vertical-marker');
 
-            container[0][0].__onmouseover();
+            container.dispatch('mouseover');
 
             expect(hasClass(verticalLine, 'bc-is-active')).toBe(true);
         });
@@ -106,12 +106,11 @@ define([
                 verticalLine = d3.select('.vertical-marker-container .vertical-marker');
 
             expect(hasClass(verticalLine, 'bc-is-active')).toBe(false);
-            container[0][0].__onmouseover();
+            container.dispatch('mouseover');
             expect(hasClass(verticalLine, 'bc-is-active')).toBe(true);
-            container[0][0].__onmouseout();
+            container.dispatch('mouseout');
             expect(hasClass(verticalLine, 'bc-is-active')).toBe(false);
         });
-
 
         // Event Setting
         it('should trigger an event on hover', () => {
@@ -119,7 +118,7 @@ define([
                 container = containerFixture.selectAll('svg');
 
             stackedAreaChart.on('customMouseOver', callback);
-            container[0][0].__onmouseover();
+            container.dispatch('mouseover');
 
             expect(callback.calls.count()).toBe(1);
         });
@@ -129,79 +128,59 @@ define([
                 container = containerFixture.selectAll('svg');
 
             stackedAreaChart.on('customMouseOut', callback);
-            container[0][0].__onmouseout();
+            container.dispatch('mouseout');
             expect(callback.calls.count()).toBe(1);
         });
 
-        // it('should trigger an event on mouse move', () => {
-        //     let callback = jasmine.createSpy('mouseMoveCallback'),
-        //         container = containerFixture.selectAll('svg');
+        describe('API', function() {
 
-        //     stackedAreaChart.on('customMouseMove', callback);
-        //     container[0][0].__onmousemove();
-        //     expect(callback.calls.count()).toBe(1);
-        // });
+            it('should provide margin getter and setter', () => {
+                let defaultMargin = stackedAreaChart.margin(),
+                    testMargin = {top: 4, right: 4, bottom: 4, left: 4},
+                    newMargin;
 
+                stackedAreaChart.margin(testMargin);
+                newMargin = stackedAreaChart.margin();
 
-        // API
-        it('should provide margin getter and setter', () => {
-            let defaultMargin = stackedAreaChart.margin(),
-                testMargin = {top: 4, right: 4, bottom: 4, left: 4},
-                newMargin;
+                expect(defaultMargin).not.toBe(testMargin);
+                expect(newMargin).toBe(testMargin);
+            });
 
-            stackedAreaChart.margin(testMargin);
-            newMargin = stackedAreaChart.margin();
+            it('should provide width getter and setter', () => {
+                let defaultWidth = stackedAreaChart.width(),
+                    testWidth = 200,
+                    newWidth;
 
-            expect(defaultMargin).not.toBe(testMargin);
-            expect(newMargin).toBe(testMargin);
-        });
+                stackedAreaChart.width(testWidth);
+                newWidth = stackedAreaChart.width();
 
-        it('should provide width getter and setter', () => {
-            let defaultWidth = stackedAreaChart.width(),
-                testWidth = 200,
-                newWidth;
+                expect(defaultWidth).not.toBe(testWidth);
+                expect(newWidth).toBe(testWidth);
+            });
 
-            stackedAreaChart.width(testWidth);
-            newWidth = stackedAreaChart.width();
+            it('should provide height getter and setter', () => {
+                let defaultHeight = stackedAreaChart.height(),
+                    testHeight = 200,
+                    newHeight;
 
-            expect(defaultWidth).not.toBe(testWidth);
-            expect(newWidth).toBe(testWidth);
-        });
+                stackedAreaChart.height(testHeight);
+                newHeight = stackedAreaChart.height();
 
-        it('should provide height getter and setter', () => {
-            let defaultHeight = stackedAreaChart.height(),
-                testHeight = 200,
-                newHeight;
+                expect(defaultHeight).not.toBe(testHeight);
+                expect(newHeight).toBe(testHeight);
+            });
 
-            stackedAreaChart.height(testHeight);
-            newHeight = stackedAreaChart.height();
+            it('should provide a tooltip threshold getter and setter', () => {
+                let defaultHeight = stackedAreaChart.tooltipThreshold(),
+                    testTooltipThreshold = 600,
+                    newTooltipThreshold;
 
-            expect(defaultHeight).not.toBe(testHeight);
-            expect(newHeight).toBe(testHeight);
-        });
+                stackedAreaChart.tooltipThreshold(testTooltipThreshold);
+                newTooltipThreshold = stackedAreaChart.tooltipThreshold();
 
-        it('should provide animation getters and setters', () => {
-            let defaultEase = stackedAreaChart.ease(),
-                testEase = 'linear',
-                newEase;
-
-            stackedAreaChart.ease(testEase);
-            newEase = stackedAreaChart.ease();
-
-            expect(defaultEase).not.toBe(testEase);
-            expect(newEase).toBe(testEase);
-        });
-
-        it('should provide a tooltip threshold getter and setter', () => {
-            let defaultHeight = stackedAreaChart.tooltipThreshold(),
-                testTooltipThreshold = 600,
-                newTooltipThreshold;
-
-            stackedAreaChart.tooltipThreshold(testTooltipThreshold);
-            newTooltipThreshold = stackedAreaChart.tooltipThreshold();
-
-            expect(defaultHeight).not.toBe(testTooltipThreshold);
-            expect(newTooltipThreshold).toBe(testTooltipThreshold);
+                expect(defaultHeight).not.toBe(testTooltipThreshold);
+                expect(newTooltipThreshold).toBe(testTooltipThreshold);
+            });
         });
 
         describe('Export chart functionality', () => {

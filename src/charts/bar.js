@@ -50,7 +50,7 @@ define(function(require) {
         let margin = {top: 20, right: 20, bottom: 30, left: 40},
             width = 960,
             height = 500,
-            ease = 'ease',
+            ease = d3.easeQuadInOut,
             gap = 2,
             data,
             chartWidth, chartHeight,
@@ -71,9 +71,9 @@ define(function(require) {
             maskGridLines,
             baseLine,
 
-            // Dispatcher object to broadcast the 'customMouseHover' and 'customMouseOut' events
+            // Dispatcher object to broadcast the 'customMouseOver' and 'customMouseOut' events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
-            dispatch = d3.dispatch('customMouseHover', 'customMouseOut', 'customMouseMove'),
+            dispatcher = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove'),
 
             // extractors
             getName = ({name}) => name,
@@ -106,13 +106,9 @@ define(function(require) {
          * @private
          */
         function buildAxis(){
-            xAxis = d3.svg.axis()
-                .scale(xScale)
-                .orient('bottom');
+            xAxis = d3.axisBottom(xScale);
 
-            yAxis = d3.svg.axis()
-                .scale(yScale)
-                .orient('left')
+            yAxis = d3.axisLeft(yScale)
                 .ticks(numOfVerticalTicks, '%');
         }
 
@@ -143,13 +139,14 @@ define(function(require) {
          * @private
          */
         function buildScales(){
-            xScale = d3.scale.ordinal()
+            xScale = d3.scaleBand()
                 .domain(data.map(getName))
-                .rangeRoundBands([0, chartWidth], 0.1);
+                .rangeRound([0, chartWidth])
+                .padding(0.1);
 
-            yScale = d3.scale.linear()
+            yScale = d3.scaleLinear()
                 .domain([0, d3.max(data, getValue)])
-                .range([chartHeight, 0]);
+                .rangeRound([chartHeight, 0]);
         }
 
         /**
@@ -160,19 +157,15 @@ define(function(require) {
         function buildSVG(container){
             if (!svg) {
                 svg = d3.select(container)
-                    .append('svg')
+                  .append('svg')
                     .classed('britechart bar-chart', true);
 
                 buildContainerGroups();
             }
 
             svg
-                .transition()
-                .ease(ease)
-                .attr({
-                    width: width + margin.left + margin.right,
-                    height: height + margin.top + margin.bottom
-                });
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom);
         }
 
         /**
@@ -196,8 +189,6 @@ define(function(require) {
          */
         function drawAxis(){
             svg.select('.x-axis-group.axis')
-                .transition()
-                .ease(ease)
                 .attr('transform', `translate(0, ${chartHeight})`)
                 .call(xAxis);
 
@@ -210,39 +201,44 @@ define(function(require) {
          * @private
          */
         function drawBars(){
-            let gapSize = xScale.rangeBand() / 100 * gap,
-                barW = xScale.rangeBand() - gapSize,
-                bars = svg.select('.chart-group').selectAll('.bar').data(data);
+            let bars = svg.select('.chart-group').selectAll('.bar').data(data);
 
-            // Enter
+            // Enter + Update
             bars.enter()
-                .append('rect')
+              .append('rect')
                 .classed('bar', true)
-                .attr({
-                    width: barW,
-                    x: chartWidth, // Initially drawing the bars at the end of Y axis
-                    y: function(d) { return yScale(d.value); },
-                    height: function(d) { return chartHeight - yScale(d.value); }
+                .attr('x', chartWidth)
+                .attr('y', function(d) { return yScale(d.value); })
+                .attr('width', xScale.bandwidth())
+                .attr('height', function(d) {
+                    return chartHeight - yScale(d.value);
                 })
-                .on('mouseover', dispatch.customMouseHover)
+                .on('mouseover', function() {
+                    dispatcher.call('customMouseOver', this);
+                })
                 .on('mousemove', function(d) {
-                    dispatch.customMouseMove(d, d3.mouse(this), [chartWidth, chartHeight]);
+                    dispatcher.call('customMouseMove', this, d, d3.mouse(this), [chartWidth, chartHeight]);
                 })
-                .on('mouseout', dispatch.customMouseOut);
-
-            // Update
-            bars.transition()
-                .ease(ease)
-                .attr({
-                    width: barW,
-                    x: function(d) { return xScale(d.name) + gapSize/2; },
-                    y: function(d) { return yScale(d.value); },
-                    height: function(d) { return chartHeight - yScale(d.value); }
+                .on('mouseout', function() {
+                    dispatcher.call('customMouseOut', this);
+                })
+              .merge(bars)
+                .attr('x', function(d) {
+                    return xScale(d.name);
+                })
+                .attr('y', function(d) {
+                    return yScale(d.value);
+                })
+                .attr('width', xScale.bandwidth())
+                .attr('height', function(d) {
+                    return chartHeight - yScale(d.value);
                 });
 
             // Exit
             bars.exit()
-                .transition().style({ opacity: 0 }).remove();
+                .transition()
+                .style('opacity', 0)
+                .remove();
         }
 
         /**
@@ -254,29 +250,47 @@ define(function(require) {
                 .selectAll('line.horizontal-grid-line')
                 .data(yScale.ticks(4))
                 .enter()
-                    .append('line')
-                    .attr({
-                        class: 'horizontal-grid-line',
-                        x1: (xAxisPadding.left),
-                        x2: chartWidth,
-                        y1: (d) => yScale(d),
-                        y2: (d) => yScale(d)
-                    });
+                  .append('line')
+                    .attr('class', 'horizontal-grid-line')
+                    .attr('x1', (xAxisPadding.left))
+                    .attr('x2', chartWidth)
+                    .attr('y1', (d) => yScale(d))
+                    .attr('y2', (d) => yScale(d))
 
             //draw a horizontal line to extend x-axis till the edges
             baseLine = svg.select('.grid-lines-group')
                 .selectAll('line.extended-x-line')
                 .data([0])
                 .enter()
-                    .append('line')
-                    .attr({
-                        class: 'extended-x-line',
-                        x1: (xAxisPadding.left),
-                        x2: chartWidth,
-                        y1: height - margin.bottom - margin.top,
-                        y2: height - margin.bottom - margin.top
-                    });
+                  .append('line')
+                    .attr('class', 'extended-x-line')
+                    .attr('x1', (xAxisPadding.left))
+                    .attr('x2', chartWidth)
+                    .attr('y1', height - margin.bottom - margin.top)
+                    .attr('y2', height - margin.bottom - margin.top);
         }
+
+        /**
+         * Chart exported to png and a download action is fired
+         * @public
+         */
+        exports.exportChart = function(filename) {
+            exportChart.call(exports, svg, filename);
+        };
+
+        /**
+         * Gets or Sets the height of the chart
+         * @param  {number} _x Desired width for the graph
+         * @return { height | module} Current height or Bar Chart module to chain calls
+         * @public
+         */
+        exports.height = function(_x) {
+            if (!arguments.length) {
+                return height;
+            }
+            height = _x;
+            return this;
+        };
 
         /**
          * Gets or Sets the margin of the chart
@@ -307,17 +321,17 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the height of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { height | module} Current height or Bar Chart module to chain calls
+         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+         * We are going to expose this events:
+         * customMouseOver, customMouseMove and customMouseOut
+         *
+         * @return {module} Bar Chart
          * @public
          */
-        exports.height = function(_x) {
-            if (!arguments.length) {
-                return height;
-            }
-            height = _x;
-            return this;
+        exports.on = function() {
+            let value = dispatcher.on.apply(dispatcher, arguments);
+
+            return value === dispatcher ? exports : value;
         };
 
         /**
@@ -327,11 +341,6 @@ define(function(require) {
         exports.exportChart = function(filename, title) {
             exportChart.call(exports, svg, filename, title);
         };
-
-        // Copies the method "on" from dispatch to exports, making it accesible
-        // from outside
-        // Reference: https://github.com/mbostock/d3/wiki/Internals#rebind
-        d3.rebind(exports, dispatch, 'on');
 
         return exports;
     };

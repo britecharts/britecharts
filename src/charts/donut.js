@@ -64,7 +64,7 @@ define(function(require){
             },
             width = 300,
             height = 300,
-            ease = 'cubic-in-out',
+            ease = d3.easeCubicInOut,
             arcTransitionDuration = 750,
             pieDrawingTransitionDuration = 1200,
             pieHoverTransitionDuration = 150,
@@ -85,7 +85,7 @@ define(function(require){
             percentageLabel = 'percentage',
 
             // colors
-            colorScale = d3.scale.category20c(),
+            colorScale = d3.schemeCategory20c,
             colorScheme = colorHelper.britechartsColorSchema,
 
             // utils
@@ -102,7 +102,7 @@ define(function(require){
             getSliceFill = ({data}) => colorScale(data.name),
 
             // events
-            dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+            dispatcher = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
 
         /**
          * This function creates the graph using the selection as container
@@ -132,7 +132,7 @@ define(function(require){
          */
         function buildColorScale() {
             if (colorScheme) {
-                colorScale = d3.scale.ordinal().range(colorScheme);
+                colorScale = d3.scaleOrdinal().range(colorScheme);
             }
         }
 
@@ -144,9 +144,7 @@ define(function(require){
             let container = svg
               .append('g')
                 .classed('container-group', true)
-                .attr({
-                    transform: `translate(${width / 2}, ${height / 2})`
-                });
+                .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
             container.append('g').classed('chart-group', true);
             container.append('g').classed('legend-group', true);
@@ -157,7 +155,7 @@ define(function(require){
          * @private
          */
         function buildLayout() {
-            layout = d3.layout.pie()
+            layout = d3.pie()
                 .padAngle(paddingAngle)
                 .value(getQuantity)
                 .sort(sortComparator);
@@ -168,7 +166,7 @@ define(function(require){
          * @private
          */
         function buildShape() {
-            shape = d3.svg.arc()
+            shape = d3.arc()
                 .innerRadius(internalRadius)
                 .padRadius(externalRadius);
         }
@@ -180,16 +178,18 @@ define(function(require){
          * @private
          */
         function buildSVG(container) {
-            svg = d3.select(container)
-                .selectAll('svg')
-                .data([data]);
+            if (!svg) {
+                svg = d3.select(container)
+                  .append('svg')
+                    .classed('britechart donut-chart', true)
+                    .data([data]);  //TO REVIEW
 
-            svg.enter().append('svg')
-                .attr('class', 'britechart donut-chart');
+                buildContainerGroups();
+            }
 
-            buildContainerGroups();
-
-            svg.transition().ease(ease)
+            svg
+                .transition()
+                .ease(ease)
                 .attr('width', width + margin.left + margin.right)
                 .attr('height', height + margin.top + margin.bottom);
         }
@@ -242,14 +242,13 @@ define(function(require){
                     .each(reduceOuterRadius)
                     .classed('arc', true)
                     .on('mouseover', handleMouseOver)
-                    .on('mouseout', handleMouseOut);
-
-                slices
+                    .on('mouseout', handleMouseOut)
+                .merge(slices)
                   .append('path')
                     .attr('fill', getSliceFill)
                     .on('mouseover', tweenGrowthFactory(externalRadius, 0))
                     .on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration))
-                  .transition()
+                    .transition()
                     .ease(ease)
                     .duration(pieDrawingTransitionDuration)
                     .attrTween('d', tweenLoading);
@@ -264,7 +263,8 @@ define(function(require){
 
                 // Redraws the angles of the data
                 slices
-                    .transition().duration(arcTransitionDuration)
+                    .transition()
+                    .duration(arcTransitionDuration)
                     .attrTween('d', tweenArc);
             }
         }
@@ -280,13 +280,13 @@ define(function(require){
         function handleMouseOver(datum) {
             drawLegend(datum);
 
-            dispatch.customMouseOver(datum);
+            dispatcher.call('customMouseOver', this, datum);
         }
 
         function handleMouseOut() {
             cleanLegend();
 
-            dispatch.customMouseOut();
+            dispatcher.call('customMouseOut', this);
         }
 
         /**
@@ -368,7 +368,7 @@ define(function(require){
         function wrapText(text, legendWidth) {
             let fontSize = externalRadius / 5;
 
-            textHelper.wrapText.call(null, fontSize, legendWidth, text.node());
+            textHelper.wrapText.call(null, 0, fontSize, legendWidth, text.node());
         }
 
         /**
@@ -463,8 +463,19 @@ define(function(require){
             exportChart.call(exports, svg, filename, title);
         };
 
-        // Rebind 'customHover' event to the "exports" function, so it's available "externally" under the typical "on" method:
-        d3.rebind(exports, dispatch, 'on');
+        /**
+         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+         * We are going to expose this events:
+         * customMouseOver, customMouseMove and customMouseOut
+         *
+         * @return {module} Bar Chart
+         * @public
+         */
+        exports.on = function() {
+            let value = dispatcher.on.apply(dispatcher, arguments);
+
+            return value === dispatcher ? exports : value;
+        };
 
         return exports;
     };

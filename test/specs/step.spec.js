@@ -1,7 +1,7 @@
 define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, dataBuilder) {
     'use strict';
 
-    describe('Reusable Step Chart Test Suite', () => {
+    describe('Step Chart Test Suite', () => {
         let stepChart, dataset, containerFixture, f;
 
         function aTestDataSet() {
@@ -59,7 +59,8 @@ define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, 
             expect(containerFixture.selectAll('.step').size()).toEqual(numSteps);
         });
 
-        describe('setters and getters', function() {
+        describe('API', function() {
+
             it('should provide margin getter and setter', () => {
                 let defaultMargin = stepChart.margin(),
                     testMargin = {top: 4, right: 4, bottom: 4, left: 4},
@@ -166,14 +167,14 @@ define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, 
             });
 
             it('should trigger a callback', () => {
-                let steps = containerFixture.selectAll('.step');
+                let step = containerFixture.select('.step:nth-child(1)');
 
-                steps[0][0].__onmouseover();
+                step.dispatch('mouseover');
 
                 expect(this.callbackSpy).toHaveBeenCalled();
                 // TODO: Figure out why the callback has this shape
                 // arguments: data, index, ?
-                expect(this.callbackSpy).toHaveBeenCalledWith(dataset.data[0], 0, 0);
+                expect(this.callbackSpy).toHaveBeenCalledWith(dataset.data, 0);
             });
         });
 

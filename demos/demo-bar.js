@@ -42,7 +42,7 @@ function createBarChartWithTooltip() {
     barChart
         .width(containerWidth)
         .height(300)
-        .on('customMouseHover', tooltip.show)
+        .on('customMouseOver', tooltip.show)
         .on('customMouseMove', tooltip.update)
         .on('customMouseOut', tooltip.hide);
 

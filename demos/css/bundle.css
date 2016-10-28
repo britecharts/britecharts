@@ -25,15 +25,20 @@ body {
 
 .tick line {
   fill: none;
-  stroke: #ADB0B6;
+  stroke: #C3C6CF;
   stroke-width: 1;
   shape-rendering: crispEdges; }
 
 .tick text {
-  font-size: 0.8em;
+  font-size: 1.2em;
   fill: #ADB0B6;
   text-anchor: middle;
   padding: 10px; }
+
+.y-axis-label,
+.x-axis-label {
+  font-size: 1.2em;
+  fill: #ADB0B6; }
 
 .vertical-marker-container .vertical-marker {
   stroke: #ff0044;
@@ -81,6 +86,7 @@ body {
   stroke-linecap: round;
   stroke-linejoin: round; }
 
+.line-chart .x.axis path,
 .line-chart .y.axis path {
   display: none; }
 

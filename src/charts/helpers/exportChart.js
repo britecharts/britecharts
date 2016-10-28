@@ -58,7 +58,9 @@ define(function(require) {
         if (!d3svg) {
             return;
         }
-        d3svg.attr({ version: 1.1, xmlns: 'http://www.w3.org/2000/svg'});
+
+        d3svg.attr('version', 1.1)
+            .attr('xmlns', 'http://www.w3.org/2000/svg');
 
         let serializer = serializeWithStyles.initializeSerializer();
         let html = serializer(d3svg.node());
