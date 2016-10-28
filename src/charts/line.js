@@ -167,7 +167,9 @@ define(function(require){
             colorRange = colorHelper.britechartsColorSchema,
             singleLineGradientColors = colorHelper.britechartGradients.greenBlueGradient,
             topicColorMap,
-            ease = 'ease',
+
+            ease = d3.easeQuadInOut,
+            animationDuration = 1500,
 
             data,
             dataByDate,
@@ -188,12 +190,12 @@ define(function(require){
             getLineColor = ({topic}) => colorScale(topic),
 
             // formats
-            yTickNumberFormat = d3.format('s'),
-            xTickDateFormat = d3.time.format('%e'),
-            xTickMonthFormat = d3.time.format('%b'),
+            yTickNumberFormat = d3.format('.3'),
+            xTickDateFormat = d3.timeFormat('%e'),
+            xTickMonthFormat = d3.timeFormat('%b'),
 
             // events
-            dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+            dispatcher = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
 
         /**
          * This function creates the graph using the selection and data provided
@@ -257,30 +259,24 @@ define(function(require){
             // when dataset < 5, .ticks acts a little unexpected, so we pass it d3.time.days to fix
             let tickValue = dataByDate.length < 5 ? d3.time.days :
                     getMaxNumOfHorizontalTicks(width, dataByDate.length);
-
             let rangeDiff = yScale.domain()[1] - yScale.domain()[0];
             let yTickNumber = rangeDiff < numVerticalTics - 1 ? rangeDiff : numVerticalTics;
 
-            xAxis = d3.svg.axis()
-              .scale(xScale)
-              .orient('bottom')
-              .ticks(tickValue)
-              .tickSize(10, 0).tickPadding(5)
-              .tickFormat(xTickDateFormat);
+            xAxis = d3.axisBottom(xScale)
+                .ticks(tickValue)
+                .tickSize(10, 0)
+                .tickPadding(5)
+                .tickFormat(xTickDateFormat);
 
-            xMonthAxis = d3.svg.axis()
-                .scale(xScale)
-                .ticks(d3.time.months)
+            xMonthAxis = d3.axisBottom(xScale)
+                .ticks(d3.timeMonths)
                 .tickSize(0, 0)
-                .orient('bottom')
                 .tickFormat(xTickMonthFormat);
 
-            yAxis = d3.svg.axis()
-                .scale(yScale)
-                .orient('left')
+            yAxis = d3.axisLeft(yScale)
                 .ticks(yTickNumber)
                 .tickSize([0])
-                .tickPadding([4])
+                .tickPadding(5)
                 .tickFormat(yTickNumberFormat);
         }
 
@@ -343,16 +339,16 @@ define(function(require){
                 minY = d3.min(data, ({Data}) => d3.min(Data, getValue)),
                 maxY = d3.max(data, ({Data}) => d3.max(Data, getValue));
 
-            xScale = d3.time.scale()
+            xScale = d3.scaleTime()
                 .rangeRound([0, chartWidth])
                 .domain([minX, maxX]);
 
-            yScale = d3.scale.linear()
+            yScale = d3.scaleLinear()
                 .rangeRound([chartHeight, 0])
                 .domain([Math.abs(minY), Math.abs(maxY)])
                 .nice(3);
 
-            colorScale = d3.scale.ordinal()
+            colorScale = d3.scaleOrdinal()
                 .range(colorRange)
                 .domain(data.map(getTopic));
 
@@ -386,12 +382,8 @@ define(function(require){
             }
 
             svg
-                .transition()
-                .ease(ease)
-                .attr({
-                    width,
-                    height
-                });
+                .attr('width', width)
+                .attr('height', height);
         }
 
         /**
@@ -409,16 +401,12 @@ define(function(require){
          */
         function drawAxis(){
             svg.select('.x-axis-group .axis.x')
-                .transition()
-                .ease(ease)
                 .attr('transform', `translate(0, ${chartHeight})`)
                 .call(xAxis);
 
-            svg.select('.x-axis-group .month-axis')
-                .transition()
-                .ease(ease)
-                .attr('transform', `translate(0, ${(chartHeight + 28)})`)
-                .call(xMonthAxis);
+            // svg.select('.x-axis-group .month-axis')
+            //     .attr('transform', `translate(0, ${(chartHeight + 28)})`)
+            //     .call(xMonthAxis);
 
             svg.select('.y-axis-group.axis.y')
                 .transition()
@@ -437,15 +425,14 @@ define(function(require){
                 topicLine,
                 maskingRectangle;
 
-            topicLine = d3.svg.line()
+            topicLine = d3.line()
                 .x(({date}) => xScale(date))
                 .y(({value}) => yScale(value));
 
             lines = svg.select('.chart-group').selectAll('.line')
                 .data(data);
 
-            lines
-                .enter()
+            lines.enter()
               .append('g')
                 .attr('class', 'topic')
               .append('path')
@@ -468,10 +455,10 @@ define(function(require){
                 .attr('y', -18);
 
             maskingRectangle.transition()
-                .duration(2000)
-                .ease('cubic-out')
+                .duration(animationDuration)
+                .ease(ease)
                 .attr('x', width)
-                .each('end', () => maskingRectangle.remove());
+                .on('end', () => maskingRectangle.remove());
         }
 
         /**
@@ -484,13 +471,11 @@ define(function(require){
                 .data(yScale.ticks(5))
                 .enter()
                     .append('line')
-                    .attr({
-                        class: 'horizontal-grid-line',
-                        x1: (-xAxisPadding.left - 30),
-                        x2: chartWidth,
-                        y1: (d) => yScale(d),
-                        y2: (d) => yScale(d)
-                    });
+                    .attr('class', 'horizontal-grid-line')
+                    .attr('x1', (-xAxisPadding.left - 30))
+                    .attr('x2', chartWidth)
+                    .attr('y1', (d) => yScale(d))
+                    .attr('y2', (d) => yScale(d));
 
             //draw a horizontal line to extend x-axis till the edges
             baseLine = svg.select('.grid-lines-group')
@@ -498,13 +483,11 @@ define(function(require){
                 .data([0])
                 .enter()
               .append('line')
-                .attr({
-                    class: 'extended-x-line',
-                    x1: (-xAxisPadding.left - 30),
-                    x2: chartWidth,
-                    y1: height - margin.bottom - margin.top,
-                    y2: height - margin.bottom - margin.top
-                });
+                .attr('class', 'extended-x-line')
+                .attr('x1', (-xAxisPadding.left - 30))
+                .attr('x2', chartWidth)
+                .attr('y1', height - margin.bottom - margin.top)
+                .attr('y2', height - margin.bottom - margin.top);
         }
 
         /**
@@ -544,12 +527,10 @@ define(function(require){
                 .enter()
               .append('line')
                 .classed('vertical-marker', true)
-                .attr({
-                    x1: 0,
-                    y1: height - margin.top - margin.bottom,
-                    x2: 0,
-                    y2: 0
-                });
+                .attr('x1', 0)
+                .attr('y1', height - margin.top - margin.bottom)
+                .attr('x2', 0)
+                .attr('y2', 0);
         }
 
         /**
@@ -637,7 +618,7 @@ define(function(require){
                 // Add data points highlighting
                 highlightDataPoints(dataPoint);
                 // Emit event with xPosition for tooltip or similar feature
-                dispatch.customMouseMove(dataPoint, topicColorMap, dataPointXPosition);
+                dispatcher.call('customMouseMove', this, dataPoint, topicColorMap, dataPointXPosition);
             }
         }
 
@@ -651,7 +632,7 @@ define(function(require){
             verticalMarkerLine.classed('bc-is-active', false);
             verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
 
-            dispatch.customMouseOut(data);
+            dispatcher.call('customMouseOut', this, data);
         }
 
         /**
@@ -662,7 +643,7 @@ define(function(require){
             overlay.style('display', 'block');
             verticalMarkerLine.classed('bc-is-active', true);
 
-            dispatch.customMouseOver(data);
+            dispatcher.call('customMouseOver', this, data);
         }
 
         /**
@@ -687,14 +668,10 @@ define(function(require){
 
                 marker.append('circle')
                     .classed('data-point-highlighter', true)
-                    .attr({
-                        cx: circleSize,
-                        cy: 0,
-                        r: 5
-                    })
-                    .style({
-                        stroke: topicColorMap[name]
-                    });
+                    .attr('cx', circleSize)
+                    .attr('cy', 0)
+                    .attr('r', 5)
+                    .style('stroke', topicColorMap[name]);
 
                 marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(dataPoint.topics[index].value))} )` );
             });
@@ -731,20 +708,6 @@ define(function(require){
                 return aspectRatio;
             }
             aspectRatio = _x;
-            return this;
-        };
-
-        /**
-         * Gets or Sets the ease of the chart
-         * @param  {Number} _x Desired width for the graph
-         * @return { (Number | Module) } Current ease animation or Line Chart module to chain calls
-         * @public
-         */
-        exports.ease = function(_x) {
-            if (!arguments.length) {
-                return ease;
-            }
-            ease = _x;
             return this;
         };
 
@@ -819,8 +782,19 @@ define(function(require){
             exportChart.call(exports, svg, filename, title);
         };
 
-        // Rebind 'customHover' event to the "exports" function, so it's available "externally" under the typical "on" method:
-        d3.rebind(exports, dispatch, 'on');
+        /**
+         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+         * We are going to expose this events:
+         * customMouseHover, customMouseMove and customMouseOut
+         *
+         * @return {module} Bar Chart
+         * @public
+         */
+        exports.on = function() {
+            let value = dispatcher.on.apply(dispatcher, arguments);
+
+            return value === dispatcher ? exports : value;
+        };
 
         return exports;
     };

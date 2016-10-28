@@ -3,6 +3,8 @@ define(function(require) {
 
     const d3 = require('d3');
 
+    const colorHelper = require('./helpers/colors');
+
 
     /**
      * @typedef BrushChartData
@@ -52,7 +54,7 @@ define(function(require) {
             data,
             svg,
 
-            ease = 'quad-out',
+            ease = d3.easeQuadOut,
 
             dateLabel = 'date',
             valueLabel = 'value',
@@ -70,11 +72,9 @@ define(function(require) {
 
             brush,
             chartBrush,
+            handle,
 
             onBrush = null,
-
-            setBrushTransitionDuration = 500,
-            setBrushTransitionDelay = 1000,
 
             gradientColorSchema = {
                 left: '#39C7EA',
@@ -83,7 +83,7 @@ define(function(require) {
 
             // formats
             defaultTimeFormat = '%m/%d/%Y',
-            xTickMonthFormat = d3.time.format('%b'),
+            xTickMonthFormat = d3.timeFormat('%b'),
 
             // extractors
             getValue = ({value}) => value,
@@ -110,10 +110,11 @@ define(function(require) {
                 drawArea();
                 drawAxis();
                 drawBrush();
+                drawHandles();
 
                 // This last step is optional, just needed when
                 // a given selection would need to be shown
-                setBrush(0, 0.5);
+                setBrush(0.25, 0.5);
             });
         }
 
@@ -122,9 +123,7 @@ define(function(require) {
          * @private
          */
         function buildAxis(){
-            xAxis = d3.svg.axis()
-                .scale(xScale)
-                .orient('bottom')
+            xAxis = d3.axisBottom(xScale)
                 .tickFormat(xTickMonthFormat);
         }
 
@@ -133,9 +132,10 @@ define(function(require) {
          * @return {void}
          */
         function buildBrush() {
-            brush = d3.svg.brush()
-                .x(xScale)
-                .on('brush', handleBrush);
+            brush = d3.brushX()
+                .extent([[0, 0], [chartWidth, chartHeight]])
+                .on('brush', handleBrush)
+                .on('end', handleBrushEnded);
         }
 
         /**
@@ -191,11 +191,11 @@ define(function(require) {
          * @private
          */
         function buildScales(){
-            xScale = d3.time.scale()
+            xScale = d3.scaleTime()
                 .domain(d3.extent(data, getDate ))
                 .range([0, chartWidth]);
 
-            yScale = d3.scale.linear()
+            yScale = d3.scaleLinear()
                 .domain([0, d3.max(data, getValue)])
                 .range([chartHeight, 0]);
         }
@@ -217,10 +217,8 @@ define(function(require) {
             svg
                 .transition()
                 .ease(ease)
-                .attr({
-                    width: width,
-                    height: height
-                });
+                .attr('width', width)
+                .attr('height', height);
         }
 
         /**
@@ -229,7 +227,7 @@ define(function(require) {
          * @param  {BrushChartData} data Data
          */
         function cleanData(data) {
-            let parseDate = d3.time.format(defaultTimeFormat).parse;
+            let parseDate = d3.timeParse(defaultTimeFormat);
 
             return data.map(function (d) {
                 d.date = parseDate(d[dateLabel]);
@@ -268,11 +266,11 @@ define(function(require) {
          */
         function drawArea() {
             // Create and configure the area generator
-            let area = d3.svg.area()
+            let area = d3.area()
                 .x(({date}) => xScale(date))
                 .y0(chartHeight)
                 .y1(({value}) => yScale(value))
-                .interpolate('basis');
+                .curve(d3.curveBasis);
 
             // Create the area path
             svg.select('.chart-group')
@@ -297,17 +295,57 @@ define(function(require) {
         }
 
         /**
+         * Draws a handle for the Brush section
+         * @return {void}
+         */
+        function drawHandles() {
+            let handleFillColor = colorHelper.britechartsGreySchema[1];
+
+            // Styling
+            handle = chartBrush
+                        .selectAll('.handle.brush-rect')
+                        .style('fill', handleFillColor);
+        }
+
+        /**
          * When a brush event happens, we can extract info from the extension
          * of the brush.
          *
          * @return {void}
          */
         function handleBrush() {
-            let brushExtent = d3.event.target.extent();
+            let s = d3.event.selection,
+                dateExtent = s.map(xScale.invert);
 
             if (typeof onBrush === 'function') {
-                onBrush.call(null, brushExtent);
+                onBrush.call(null, dateExtent);
             }
+
+            // updateHandlers(dateExtent);
+        }
+
+        /**
+         * Processes the end brush event, snapping the boundaries to days
+         * as showed on the example on https://bl.ocks.org/mbostock/6232537
+         * @return {void}
+         * @private
+         */
+        function handleBrushEnded() {
+            if (!d3.event.sourceEvent) return; // Only transition after input.
+            if (!d3.event.selection) return; // Ignore empty selections.
+
+            let d0 = d3.event.selection.map(xScale.invert),
+                d1 = d0.map(d3.timeDay.round);
+
+            // If empty when rounded, use floor & ceil instead.
+            if (d1[0] >= d1[1]) {
+                d1[0] = d3.timeDay.floor(d0[0]);
+                d1[1] = d3.timeDay.offset(d1[0]);
+            }
+
+            d3.select(this)
+                .transition()
+                .call(d3.event.target.move, d1.map(xScale));
         }
 
         /**
@@ -316,19 +354,29 @@ define(function(require) {
          * @param {Number} b Percentage of data that the brush ends with
          */
         function setBrush(a, b) {
-            let x0 = xScale.invert(a * chartWidth),
-                x1 = xScale.invert(b * chartWidth);
+            let x0 = a * chartWidth,
+                x1 = b * chartWidth;
 
-            brush.extent([x0, x1]);
-
-            // now draw the brush to match our extent
-            brush(d3.select('.brush-group').transition().duration(setBrushTransitionDuration));
-
-            // now fire the brushstart, brushmove, and brushend events
-            // set transition the delay and duration to 0 to draw right away
-            brush.event(d3.select('.brush-group').transition().delay(setBrushTransitionDelay).duration(setBrushTransitionDuration));
+            brush
+                .move(chartBrush, [x0, x1]);
         }
 
+        /**
+         * Updates visibility and position of the brush handlers
+         * @param  {Number[]} dateExtent Date range
+         * @return {void}
+         */
+        function updateHandlers(dateExtent) {
+            if (dateExtent == null) {
+                handle.attr('display', 'none');
+            } else {
+                handle
+                    .attr('display', null)
+                    .attr('transform', function(d, i) {
+                        return `translate(${dateExtent[i]},${chartHeight / 2})`;
+                    });
+            }
+        }
 
         /**
          * Gets or Sets the height of the chart
@@ -383,6 +431,7 @@ define(function(require) {
             width = _x;
             return this;
         };
+
         return exports;
     };
 

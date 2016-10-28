@@ -5,7 +5,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
         return new dataBuilder.BarDataBuilder();
     }
 
-    describe('Reusable Bar Chart', () => {
+    describe('Bar Chart', () => {
         let barChart, dataset, containerFixture, f;
 
         beforeEach(() => {
@@ -99,21 +99,14 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
         describe('when hovering a bar', function() {
 
-            beforeEach(() => {
-                this.callbackSpy = jasmine.createSpy('callback');
-
-                barChart.on('customMouseHover', this.callbackSpy);
-            });
-
             it('should trigger a callback', () => {
-                let bars = containerFixture.selectAll('.bar');
+                let bar = containerFixture.selectAll('.bar:nth-child(1)');
+                let callbackSpy = jasmine.createSpy('callback');
 
-                bars[0][0].__onmouseover();
+                barChart.on('customMouseOver', callbackSpy);
+                bar.dispatch('mouseover');
 
-                expect(this.callbackSpy).toHaveBeenCalled();
-                // TODO: Figure out why the callback has this shape
-                // arguments: data, index, ?
-                expect(this.callbackSpy).toHaveBeenCalledWith(dataset[0], 0, 0);
+                expect(callbackSpy.calls.count()).toBe(1);
             });
         });
 

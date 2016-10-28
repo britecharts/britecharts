@@ -3,7 +3,6 @@ define(function(require){
 
     const d3 = require('d3');
 
-
     /**
      * Tooltip Component reusable API class that renders a
      * simple and configurable tooltip element for Britechart's
@@ -83,7 +82,7 @@ define(function(require){
             tooltipTextColor = '#000000',
 
             // formats
-            tooltipDateFormat = d3.time.format('%b %d, %Y'),
+            tooltipDateFormat = d3.timeFormat('%b %d, %Y'),
             valueRangeLimits = {
                 small: 10,
                 medium: 100
@@ -128,9 +127,7 @@ define(function(require){
         function buildContainerGroups() {
             var container = svg.append('g')
                 .classed('tooltip-container-group', true)
-                .attr({
-                    transform: `translate( ${margin.left}, ${margin.top})`
-                });
+                .attr('transform', `translate( ${margin.left}, ${margin.top})`);
 
             container.append('g').classed('tooltip-group', true);
         }
@@ -149,10 +146,10 @@ define(function(require){
                 buildContainerGroups();
                 drawTooltip();
             }
-            svg.transition().attr({
-                width: width + margin.left + margin.right,
-                height: height + margin.top + margin.bottom
-            });
+            svg.transition()
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom);
+
             // Hidden by default
             exports.hide();
         }
@@ -178,52 +175,38 @@ define(function(require){
             tooltip = tooltipTextContainer
                 .append('rect')
                 .classed('tooltip-text-container', true)
-                .attr({
-                    'x': -tooltipWidth / 4 + 8,
-                    'y': 0,
-                    'width': tooltipWidth,
-                    'height': tooltipHeight,
-                    'rx': 3,
-                    'ry': 3
-                })
-                .style({
-                    'fill': bodyFillColor,
-                    'stroke': borderStrokeColor,
-                    'stroke-width': 1
-                });
+                .attr('x', -tooltipWidth / 4 + 8)
+                .attr('y', 0)
+                .attr('width', tooltipWidth)
+                .attr('height', tooltipHeight)
+                .attr('rx', 3)
+                .attr('ry', 3)
+                .style('fill', bodyFillColor)
+                .style('stroke', borderStrokeColor)
+                .style('stroke-width', 1);
 
             tooltipTitle = tooltipTextContainer
                 .append('text')
                 .classed('tooltip-title', true)
-                .attr({
-                    'x': -tooltipWidth / 4 + 17,
-                    'dy': '.35em',
-                    'y': 16
-                })
-                .style({
-                    'fill': titleFillColor
-                });
+                .attr('x', -tooltipWidth / 4 + 17)
+                .attr('dy', '.35em')
+                .attr('y', 16)
+                .style('fill', titleFillColor);
 
             tooltipDivider = tooltipTextContainer
                 .append('line')
                 .classed('tooltip-divider', true)
-                .attr({
-                    'x1': -tooltipWidth / 4 + 15,
-                    'y1': 31,
-                    'x2': 265,
-                    'y2': 31
-                })
-                .style({
-                    'stroke': borderStrokeColor
-                });
+                .attr('x1', -tooltipWidth / 4 + 15)
+                .attr('y1', 31)
+                .attr('x2', 265)
+                .attr('y2', 31)
+                .style('stroke', borderStrokeColor);
 
             tooltipBody = tooltipTextContainer
                 .append('g')
                 .classed('tooltip-body', true)
-                .style({
-                    'transform': 'translateY(8px)',
-                    'fill': textFillColor
-                });
+                .style('transform', 'translateY(8px)')
+                .style('fill', textFillColor);
         }
 
         /**
@@ -335,11 +318,9 @@ define(function(require){
             elementText = tooltipBody
                 .append('text')
                 .classed('tooltip-left-text', true)
-                .attr({
-                    'dy': '1em',
-                    'x': ttTextX - 20,
-                    'y': ttTextY
-                })
+                .attr('dy', '1em')
+                .attr('x', ttTextX - 20)
+                .attr('y', ttTextY)
                 .style('fill', tooltipTextColor)
                 .text(tooltipLeftText)
                 .call(textWrap, tooltipMaxTopicLength, -25);
@@ -347,11 +328,9 @@ define(function(require){
             tooltipRight = tooltipBody
                 .append('text')
                 .classed('tooltip-right-text', true)
-                .attr({
-                    'dy': '1em',
-                    'x': ttTextX + 8,
-                    'y': ttTextY
-                })
+                .attr('dy', '1em')
+                .attr('x', ttTextX + 8)
+                .attr('y', ttTextY)
                 .style('fill', tooltipTextColor)
                 .text(tooltipRightText);
 
@@ -359,22 +338,16 @@ define(function(require){
             tooltipHeight += textSize.height + 5;
 
             // Not sure if necessary
-            tooltipRight.attr({
-                'x': tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4
-            });
+            tooltipRight.attr('x', tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4)
 
             tooltipBody
                 .append('circle')
                 .classed('tooltip-circle', true)
-                .attr({
-                    'cx': 23 - tooltipWidth / 4,
-                    'cy': (ttTextY + circleYOffset),
-                    'r': 5
-                })
-                .style({
-                    'fill': colorMap[name],
-                    'stroke-width': 1
-                });
+                .attr('cx', 23 - tooltipWidth / 4)
+                .attr('cy', (ttTextY + circleYOffset))
+                .attr('r', 5)
+                .style('fill', colorMap[name])
+                .style('stroke-width', 1);
 
             ttTextY += textSize.height + 7;
         }
@@ -387,10 +360,8 @@ define(function(require){
          */
         function updatePositionAndSize(dataPoint, xPosition){
             tooltip
-                .attr({
-                    'width': tooltipWidth,
-                    'height': tooltipHeight + 10
-                });
+                .attr('width', tooltipWidth)
+                .attr('height', tooltipHeight + 10);
 
             // show tooltip to the right
             if ((xPosition - tooltipWidth) < 0) {
@@ -404,9 +375,7 @@ define(function(require){
             }
 
             tooltipDivider
-                .attr({
-                    'x2': tooltipWidth - 60
-                });
+                .attr('x2', tooltipWidth - 60);
         }
 
         /**
@@ -471,11 +440,9 @@ define(function(require){
                 tspan = text
                     .text(null)
                     .append('tspan')
-                    .attr({
-                        'x': xpos,
-                        'y': y,
-                        'dy': dy + 'em'
-                    });
+                    .attr('x', xpos)
+                    .attr('y', y)
+                    .attr('dy', dy + 'em');
 
                 while ((word = words.pop())) {
                     line.push(word);

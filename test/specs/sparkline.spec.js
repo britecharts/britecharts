@@ -13,7 +13,7 @@ define([
     ) {
     'use strict';
 
-    describe('Reusable Sparkline Chart', () => {
+    describe('Sparkline Chart', () => {
         let dataset, containerFixture, f, sparklineChart;
 
         function aTestDataSet() {

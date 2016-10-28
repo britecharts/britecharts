@@ -24,11 +24,12 @@ define(function(require){
      */
 
     return function module() {
+
         let margin = {
-                left: 40,
-                right: 20,
                 top: 60,
-                bottom: 40
+                right: 20,
+                bottom: 60,
+                left: 80
             },
             width = 960,
             height = 500,
@@ -70,15 +71,24 @@ define(function(require){
             pointsColor           = '#c0c6cc',
             pointsBorderColor     = '#ffffff',
 
-            ease = 'quad-out',
+            ease = d3.easeQuadInOut,
             areaAnimationDuration = 1000,
 
             svg,
             chartWidth, chartHeight,
             data,
             dataByDate,
+            dataByDateFormatted,
+            dataByDateZeroed,
 
             tooltipThreshold = 480,
+
+            xAxisPadding = {
+                top: 0,
+                left: 15,
+                bottom: 0,
+                right: 0
+            },
 
             dateLabel = 'dateUTC',
             valueLabel = 'views',
@@ -92,15 +102,15 @@ define(function(require){
 
 
             // formats
-            utc = d3.time.format.utc('%Y-%m-%dT%H:%M:%SZ'),
-            parseUTC = utc.parse,
+            utc = d3.utcFormat('%Y-%m-%dT%H:%M:%SZ'),
+            parseUTC = d3.timeParse('%Y-%m-%dT%H:%M:%SZ'),
 
-            yTickFormat = d3.format('s'),
-            xTickFormat = d3.time.format('%e'),
-            xTickMonthFormat = d3.time.format('%b'),
+            yTickNumberFormat = d3.format('.3'),
+            xTickDateFormat = d3.timeFormat('%e'),
+            xTickMonthFormat = d3.timeFormat('%b'),
 
             // events
-            dispatch = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+            dispatcher = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
 
        /**
          * This function creates the graph using the selection and data provided
@@ -118,13 +128,13 @@ define(function(require){
                     .entries(
                          _(_data).sortBy('date')
                     );
+
                 buildLayers();
                 buildScales();
                 buildAxis();
                 buildSVG(this);
-                drawStackedAreas();
                 drawAxis();
-                drawDataReferencePoints();
+                drawStackedAreas();
 
                 if(shouldShowTooltip()){
                     drawHoverOverlay();
@@ -164,32 +174,24 @@ define(function(require){
          * @private
          */
         function buildAxis(){
-            xAxis = d3.svg.axis()
-                .scale(xScale)
+            xAxis = d3.axisBottom(xScale)
                 .ticks(getMaxNumOfHorizontalTicks(chartWidth, dataByDate.length))
-                .tickFormat(xTickFormat)
-                .tickSize(10, 0, 0)
-                .outerTickSize([50])
-                .tickPadding([10])
-                .orient('bottom');
+                .tickFormat(xTickDateFormat)
+                .tickSize(10, 0)
+                .tickPadding(5);
 
             //TODO: Review this axis with real data
-            xMonthAxis = d3.svg.axis()
-                .scale(xScale)
-                .ticks(d3.time.months)
+            xMonthAxis = d3.axisBottom(xScale)
+                .ticks(d3.timeMonths)
                 .tickFormat(xTickMonthFormat)
-                .tickSize(10, 0, 0)
-                .tickPadding([10])
-                .orient('bottom');
+                .tickSize(10, 0)
+                .tickPadding(5);
 
-            yAxis = d3.svg.axis()
-                .scale(yScale)
+            yAxis = d3.axisRight(yScale)
                 .ticks(numVerticalTicks)
-                .tickFormat(yTickFormat)
+                .tickFormat(yTickNumberFormat)
                 .tickSize(width, 0, 0)
-                .outerTickSize([50])
-                .tickPadding([4])
-                .orient('right');
+                .tickPadding(5);
         }
 
         /**
@@ -222,34 +224,60 @@ define(function(require){
          * @private
          */
         function buildLayers(){
-            let stack = d3.layout.stack()
-                    .offset('zero')
-                    .values(getValues)
-                    .x(getDate)
-                    .y(getValueLabel);
+            dataByDateFormatted = _.chain(dataByDate)
+                .map((d) => _.extend(d, d.values))
+                .map((d) => {
+                    _(d).each((entry) => {
+                        if(entry['name']) {
+                            d[entry['name']] = entry.value;
+                        }
+                    });
+                    d['date'] = new Date(d['key']);
 
-            let nest = d3.nest()
-                    .key(getName);
+                    return d;
+                })
+                .value();
 
-            layersInitial = stack(nest.entries(createEmptyInitialSet(data)));
-            layers = stack(nest.entries(data));
+            dataByDateZeroed = _.chain(JSON.parse(JSON.stringify(dataByDate)))
+                .map((d) => _.extend(d, d.values))
+                .map((d) => {
+                    _(d).each((entry) => {
+                        if(entry['name']) {
+                            d[entry['name']] = 0;
+                        }
+                    });
+                    d['date'] = new Date(d['key']);
+
+                    return d;
+                })
+                .value();
+
+            let keys = [...new Set(_(data).pluck('name'))];
+            let stack3 = d3.stack()
+                .keys(keys)
+                .order(d3.stackOrderNone)
+                .offset(d3.stackOffsetNone);
+
+            layersInitial = stack3(dataByDateZeroed);
+            layers = stack3(dataByDateFormatted);
         }
 
         /**
          * Creates the x, y and color scales of the chart
          * @private
          */
-        function buildScales(){
-            xScale = d3.time.scale()
+        function buildScales() {
+            xScale = d3.scaleTime()
                 .domain(d3.extent(data, ({date}) => date))
                 .range([0, chartWidth]);
 
-            yScale = d3.scale.linear()
-                .domain([0, d3.max(data, ({y0, y}) => (y0 + y) )])
+            yScale = d3.scaleLinear()
+                .domain([0, getMaxValueByDate()])
                 .range([chartHeight, 0])
                 .nice([numVerticalTicks + 1]);
 
-            colorScale = d3.scale.ordinal()
+
+            colorScale = d3.scaleOrdinal()
                   .range(colors)
                   .domain(data.map(getName));
 
@@ -260,17 +288,19 @@ define(function(require){
              */
 
             let range = colorScale.range();
-            categoryColorMap = colorScale.domain().reduce((memo, item, i) => {
-                memo[item] = range[i];
-                return memo;
-            }, {});
+            categoryColorMap = colorScale
+                .domain()
+                .reduce((memo, item, i) => {
+                    memo[item] = range[i];
+                    return memo;
+                }, {});
         }
 
         /**
          * @param  {HTMLElement} container DOM element that will work as the container of the graph
          * @private
          */
-        function buildSVG(container){
+        function buildSVG(container) {
             if (!svg) {
                 svg = d3.select(container)
                     .append('svg')
@@ -280,9 +310,8 @@ define(function(require){
             }
 
             svg
-                .transition()
-                .ease(ease)
-                .attr({width, height});
+                .attr('width', width)
+                .attr('height', height);
         }
 
         /**
@@ -298,17 +327,10 @@ define(function(require){
              */
             return data.map((d) => {
                 d.date = parseUTC(d[dateLabel]);
-                d[valueLabel] = +d[valueLabel];
+                d.value = +d[valueLabel];
+
                 return d;
             });
-        }
-
-        /**
-         * Removes all the datapoints highlighter circles added to the marker container
-         * @return void
-         */
-        function eraseDataPointHighlights() {
-            verticalMarkerContainer.selectAll('.circle-container').remove();
         }
 
         /**
@@ -316,15 +338,16 @@ define(function(require){
          * @param  {obj[]} data Array of objects with the original data
          * @return {obj[]}      Array of objects with the original data and 0 values
          */
-        function createEmptyInitialSet(data) {
+        function createEmptyDatasetFrom(data) {
             // Parsing and stringify is a way of duplicating an array of objects
             // spread could refactor this .map((value) => ({ ...value, [valueLabel]: 0}))
             return cleanData(
                 JSON.parse(JSON.stringify(data))
-                    .map(function(value){
-                        value[valueLabel] = 0;
-                        // value.date = parseUTC(value)
-                        return value;
+                    .map(function(d){
+                        d[valueLabel] = 0;
+                        d.value = 0;
+
+                        return d;
                     })
                 );
         }
@@ -339,32 +362,31 @@ define(function(require){
                 .attr('transform', `translate( 0, ${chartHeight} )`)
                 .call(xAxis);
 
-            svg.select('.x-axis-group .month-axis')
-                .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
-                .call(xMonthAxis);
+            // svg.select('.x-axis-group .month-axis')
+            //     .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
+            //     .call(xMonthAxis);
 
             svg.select('.y-axis-group.axis')
-                .attr('transform', `translate( ${-margin.left}, 0)`)
+                .attr('transform', `translate( ${-margin.left / 2}, 0)`)
                 .call(yAxis);
 
             // Moving the YAxis tick labels to the right side
             d3.selectAll('.y-axis-group .tick text')
-                .attr('transform', `translate( ${- width}, ${yTickTextYOffset})` );
+                .attr('transform', `translate( ${-width}, ${yTickTextYOffset})` );
         }
 
         /**
          * Creates SVG dot elements for each data entry and draws them
+         * @deprecated
          */
         function drawDataReferencePoints() {
             // Creates Dots on Data points
             var points = svg.select('.chart-group').selectAll('.dots')
                 .data(layers)
               .enter().append('g')
-                .attr({
-                    'class': 'dots',
-                    'd': ({values}) => area(values),
-                    'clip-path': 'url(#clip)'
-                });
+                .attr('class', 'dots')
+                .attr('d', ({values}) => area(values))
+                .attr('clip-path', 'url(#clip)')
 
             // Processes the points
             // TODO: Optimize this code
@@ -396,14 +418,12 @@ define(function(require){
         function drawHoverOverlay(){
             overlay = svg.select('.metadata-group')
                 .append('rect')
-                .attr({
-                    class: 'overlay',
-                    y1: 0,
-                    y2: chartHeight,
-                    height: chartHeight,
-                    width: chartWidth,
-                    fill: 'rgba(0,0,0,0)'
-                })
+                .attr('class', 'overlay')
+                .attr('y1', 0)
+                .attr('y2', chartHeight)
+                .attr('height', chartHeight)
+                .attr('width', chartWidth)
+                .attr('fill', 'rgba(0,0,0,0)')
                 .style('display', 'none');
         }
 
@@ -412,21 +432,23 @@ define(function(require){
          * @private
          */
         function drawStackedAreas(){
-            let areas =  svg.select('.chart-group').selectAll('.layer')
-                .data(layersInitial);
-
             // Creating Area function
-            area = d3.svg.area()
-                .interpolate('cardinal')
-                .x( ({date}) => xScale(date) )
-                .y0( ({y0}) => yScale(y0) )
-                .y1( ({y0, y}) => yScale(y0 + y) );
+            area = d3.area()
+                .curve(d3.curveCardinal)
+                .x( ({data}) => xScale(data.date) )
+                .y0( (d) => yScale(d[0]) )
+                .y1( (d) => yScale(d[1]) );
 
-            // Enter
-            areas.enter()
-                .append('path')
+            let series = svg.select('.chart-group').selectAll('.layer')
+                .data(layersInitial)
+                .enter()
+              .append('g')
+                .classed('layer-container', true);
+
+            series
+              .append('path')
                 .attr('class', 'layer')
-                .attr('d', ({values}) => area(values))
+                .attr('d', area)
                 .style('fill', ({key}) => categoryColorMap[key]);
 
             // Update
@@ -436,13 +458,15 @@ define(function(require){
                 .delay( (_, i) => areaAnimationDelays[i])
                 .duration(areaAnimationDuration)
                 .ease(ease)
-                .attr('d', ({values}) => area(values))
+                .attr('d', area)
                 .style('opacity', areaOpacity)
                 .style('fill', ({key}) => categoryColorMap[key]);
 
             // Exit
-            areas.exit()
-                .transition().style({ opacity: 0 }).remove();
+            series.exit()
+                .transition()
+                .style('opacity', 0)
+                .remove();
         }
 
         /**
@@ -463,14 +487,36 @@ define(function(require){
                     y2: 0
                 }])
                 .enter()
-                .append('line')
+              .append('line')
                 .classed('vertical-marker', true)
-                .attr({
-                    x1: 0,
-                    y1: chartHeight,
-                    x2: 0,
-                    y2: 0
-                });
+                .attr('x1', 0)
+                .attr('y1', chartHeight)
+                .attr('x2', 0)
+                .attr('y2', 0);
+        }
+
+        /**
+         * Removes all the datapoints highlighter circles added to the marker container
+         * @return void
+         */
+        function eraseDataPointHighlights() {
+            verticalMarkerContainer.selectAll('.circle-container').remove();
+        }
+
+        /**
+         * Computes the maximum sum of values for any date
+         *
+         * @return {Number} Max value
+         */
+        function getMaxValueByDate() {
+            let keys = [...new Set(_(data).pluck('name'))];
+            let maxValueByDate = d3.max(dataByDateFormatted, function(d){
+                let vals = keys.map((key) => d[key]);
+
+                return d3.sum(vals);
+            });
+
+            return maxValueByDate;
         }
 
         /**
@@ -498,6 +544,7 @@ define(function(require){
              */
             let dataByDateParsed = dataByDate.map((item) => {
                 item.key = new Date(item.key);
+
                 return item;
             });
 
@@ -523,7 +570,7 @@ define(function(require){
                 // Add data points highlighting
                 highlightDataPoints(dataPoint);
                 // Emit event with xPosition for tooltip or similar feature
-                dispatch.customMouseMove(dataPoint, categoryColorMap, dataPointXPosition);
+                dispatcher.call('customMouseMove', this, dataPoint, categoryColorMap, dataPointXPosition);
             }
         }
 
@@ -537,7 +584,7 @@ define(function(require){
             verticalMarker.classed('bc-is-active', false);
             verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
 
-            dispatch.customMouseOut(data);
+            dispatcher.call('customMouseOut', this, data);
         }
 
         /**
@@ -548,7 +595,7 @@ define(function(require){
             overlay.style('display', 'block');
             verticalMarker.classed('bc-is-active', true);
 
-            dispatch.customMouseOver(data);
+            dispatcher.call('customMouseOver', this, data);
         }
 
         /**
@@ -556,36 +603,32 @@ define(function(require){
          * @param  {obj} dataPoint Data point to extract info from
          * @private
          */
-        function highlightDataPoints(dataPoint) {
+        function highlightDataPoints({values}) {
             let accumulator = 0;
 
             eraseDataPointHighlights();
 
             // sorting the values based on the order of the colors,
             // so that the order always stays constant
-            dataPoint.values = dataPoint.values
-                                    .filter(v => !!v)
-                                    .sort((a, b) => colorOrder[a.el] > colorOrder[b.el]);
+            values = values
+                        .filter(v => !!v)
+                        .sort((a, b) => colorOrder[a.el] > colorOrder[b.el]);
 
-            dataPoint.values.forEach(({name}, index) => {
+            values.forEach(({name}, index) => {
                 let marker = verticalMarkerContainer
                                 .append('g')
                                 .classed('circle-container', true),
                     circleSize = 12;
 
-                accumulator = accumulator + dataPoint.values[index][valueLabel];
+                accumulator = accumulator + values[index][valueLabel];
 
                 marker.append('circle')
                     .classed('data-point-highlighter', true)
-                    .attr({
-                        'cx': circleSize,
-                        'cy': 0,
-                        'r': 5
-                    })
-                    .style({
-                        'stroke-width': 3,
-                        'stroke': categoryColorMap[name]
-                    });
+                    .attr('cx', circleSize)
+                    .attr('cy', 0)
+                    .attr('r', 5)
+                    .style('stroke-width', 3)
+                    .style('stroke', categoryColorMap[name]);
 
                 marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(accumulator))} )` );
             });
@@ -611,19 +654,6 @@ define(function(require){
         }
 
         // Accessors
-        /**
-         * Gets or Sets the ease of the chart
-         * @param  {Number} _x Desired width for the graph
-         * @return { ease | module} Current ease animation or Area Chart module to chain calls
-         * @public
-         */
-        exports.ease = function(_x) {
-            if (!arguments.length) {
-                return ease;
-            }
-            ease = _x;
-            return this;
-        };
 
         /**
          * Gets or Sets the height of the chart
@@ -717,8 +747,19 @@ define(function(require){
             exportChart.call(exports, svg, filename, title);
         };
 
-        // Rebind 'customHover' event to the "exports" function, so it's available "externally" under the typical "on" method:
-        d3.rebind(exports, dispatch, 'on');
+        /**
+         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+         * We are going to expose this events:
+         * customMouseOver, customMouseMove and customMouseOut
+         *
+         * @return {module} Bar Chart
+         * @public
+         */
+        exports.on = function() {
+            let value = dispatcher.on.apply(dispatcher, arguments);
+
+            return value === dispatcher ? exports : value;
+        };
 
         return exports;
     };

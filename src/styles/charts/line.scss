@@ -13,6 +13,7 @@ $line-width: 3;
     }
 
     // Axes
+    .x.axis path,
     .y.axis path {
         display: none;
     }

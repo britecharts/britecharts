@@ -53,7 +53,7 @@ define(function(require){
 
             // Animations
             mouseChaseDuration = 200,
-            ease = 'ease-in',
+            ease = d3.easeQuadInOut,
 
             // tooltip
             tooltipBackground,
@@ -79,7 +79,7 @@ define(function(require){
             valueTextWeight = 200,
 
             // formats
-            tooltipValueFormat = d3.format(',1f'),
+            tooltipValueFormat = d3.format('.2f'),
 
             chartWidth,
             chartHeight,
@@ -110,9 +110,7 @@ define(function(require){
         function buildContainerGroups() {
             let container = svg.append('g')
                 .classed('tooltip-container-group', true)
-                .attr({
-                    transform: `translate( ${margin.left}, ${margin.top})`
-                });
+                .attr('transform', `translate( ${margin.left}, ${margin.top})`);
 
             container.append('g').classed('tooltip-group', true);
         }
@@ -133,10 +131,9 @@ define(function(require){
             svg
                 .transition()
                 .ease(ease)
-                .attr({
-                width: width + margin.left + margin.right,
-                height: height + margin.top + margin.bottom
-            });
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+
             // Hidden by default
             exports.hide();
         }
@@ -153,21 +150,17 @@ define(function(require){
             tooltipBackground = tooltipTextContainer
               .append('rect')
                 .classed('tooltip-background', true)
-                .attr({
-                    'width': width,
-                    'height': height,
-                    'rx': backgroundBorderRadius,
-                    'ry': backgroundBorderRadius,
-                    'y': - margin.top,
-                    'x': - margin.left
-                })
-                .style({
-                    'fill': bodyFillColor,
-                    'stroke': borderStrokeColor,
-                    'stroke-width': 1,
-                    'pointer-events': 'none',
-                    'opacity': 0.9
-                });
+                .attr('width', width)
+                .attr('height', height)
+                .attr('rx', backgroundBorderRadius)
+                .attr('ry', backgroundBorderRadius)
+                .attr('y', - margin.top)
+                .attr('x', - margin.left)
+                .style('fill', bodyFillColor)
+                .style('stroke', borderStrokeColor)
+                .style('stroke-width', 1)
+                .style('pointer-events', 'none')
+                .style('opacity', 0.9);
         }
 
         /**
@@ -270,10 +263,8 @@ define(function(require){
                 tooltipTitle = tooltipTextContainer
                   .append('text')
                     .classed('mini-tooltip-title', true)
-                    .attr({
-                        'dy': defaultDy,
-                        'y': 0
-                    })
+                    .attr('dy', defaultDy)
+                    .attr('y', 0)
                     .style('fill', titleFillColor)
                     .style('font-size', textSize)
                     .text(title);
@@ -285,10 +276,8 @@ define(function(require){
                 tooltipName = tooltipTextContainer
                   .append('text')
                     .classed('mini-tooltip-name', true)
-                    .attr({
-                        'dy': defaultDy,
-                        'y': temporalHeight || 0
-                    })
+                    .attr('dy', defaultDy)
+                    .attr('y', temporalHeight || 0)
                     .style('fill', nameTextFillColor)
                     .style('font-size', textSize)
                     .text(name);
@@ -300,10 +289,8 @@ define(function(require){
                 tooltipValue = tooltipTextContainer
                   .append('text')
                     .classed('mini-tooltip-value', true)
-                    .attr({
-                        'dy': defaultDy,
-                        'y': temporalHeight || 0
-                    })
+                    .attr('dy', defaultDy)
+                    .attr('y', temporalHeight || 0)
                     .style('fill', valueTextFillColor)
                     .style('font-size', valueTextSize)
                     .style('font-weight', valueTextWeight)
@@ -323,21 +310,18 @@ define(function(require){
          */
         function updatePositionAndSize(mousePosition, parentChartSize) {
             let [tooltipX, tooltipY] = getTooltipPosition(mousePosition, parentChartSize);
-            let newSize = {
-                width: chartWidth + margin.left + margin.right,
-                height: chartHeight + margin.top + margin.bottom
-            };
 
             svg.transition()
                 .duration(mouseChaseDuration)
                 .ease(ease)
-                .attr(newSize)
+                .attr('height', chartHeight + margin.top + margin.bottom)
+                .attr('width', chartWidth + margin.left + margin.right)
                 .attr('transform', `translate(${tooltipX},${tooltipY})`);
 
             tooltipBackground
                 .transition()
-                .ease(ease)
-                .attr(newSize);
+                .attr('height', chartHeight + margin.top + margin.bottom)
+                .attr('width', chartWidth + margin.left + margin.right);
         }
 
         /**

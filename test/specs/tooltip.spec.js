@@ -1,7 +1,7 @@
 define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
     'use strict';
 
-    describe('Reusable Tooltip Component', () => {
+    describe('Tooltip Component', () => {
         let topicColorMap = {
                 0: '#9963D5',
                 60: '#E5C400',
@@ -282,7 +282,6 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                     expect(actual).toEqual(expected);
                 });
             });
-
         });
 
         describe('API', function() {

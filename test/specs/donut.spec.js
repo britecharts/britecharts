@@ -5,7 +5,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
         return new dataBuilder.DonutDataBuilder();
     }
 
-    describe('Reusable Donut Chart', () => {
+    describe('Donut Chart', () => {
         let donutChart, dataset, containerFixture, f;
 
         beforeEach(() => {
@@ -136,7 +136,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     firstSlice = containerFixture.select('.chart-group .arc');
 
                 donutChart.on('customMouseOver', callback);
-                firstSlice[0][0].__onmouseover();
+                firstSlice.dispatch('mouseover');
                 expect(callback.calls.count()).toBe(1);
             });
 
@@ -145,7 +145,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     firstSlice = containerFixture.select('.chart-group .arc');
 
                 donutChart.on('customMouseOut', callback);
-                firstSlice[0][0].__onmouseout();
+                firstSlice.dispatch('mouseout');
                 expect(callback.calls.count()).toBe(1);
             });
         });
