@@ -26,7 +26,7 @@ function createStepChart() {
         .xAxisLabel('Fruit Type')
         .xAxisLabelOffset(45)
         .yAxisLabel('Quantity')
-        .yAxisLabelOffset(-55)
+        .yAxisLabelOffset(-35)
         .margin({
             top: 20,
             right: 20,
@@ -34,7 +34,8 @@ function createStepChart() {
             left: 80
         })
         .on('customHover', function(d, i){
-            console.log('Step data is ', d);
+            console.log('Step key is ', d.key);
+            console.log('Step value is ', d.value);
             console.log('Step index is ', i);
         });
 

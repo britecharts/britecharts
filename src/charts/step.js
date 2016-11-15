@@ -51,7 +51,7 @@ define(function(require) {
         let margin = {top: 20, right: 20, bottom: 30, left: 40},
             width = 960,
             height = 500,
-            ease = 'ease',
+            ease = d3.easeQuadInOut,
             data,
             chartWidth, chartHeight,
             xScale, yScale,
@@ -59,13 +59,14 @@ define(function(require) {
             xAxis, xAxisLabel,
             yAxis, yAxisLabel,
             xAxisLabelOffset = 45,
-            yAxisLabelOffset = -40,
+            yAxisLabelOffset = -20,
             xAxisPadding = {
                 top: 0,
                 left: 0,
                 bottom: 0,
                 right: 0
             },
+            yTickPadding = 8,
             svg,
 
             valueLabel = 'value',
@@ -76,10 +77,10 @@ define(function(require) {
 
             // Dispatcher object to broadcast the 'customHover' event
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
-            dispatch = d3.dispatch('customHover'),
+            dispatcher = d3.dispatch('customHover'),
 
             // Formats
-            yAxisTickFormat = d3.format('.1f'),
+            yAxisTickFormat = d3.format('.3'),
 
             // extractors
             getKey = ({key}) => key,
@@ -113,14 +114,11 @@ define(function(require) {
          * @private
          */
         function buildAxis(){
-            xAxis = d3.svg.axis()
-                .scale(xScale)
-                .orient('bottom');
+            xAxis = d3.axisBottom(xScale);
 
-            yAxis = d3.svg.axis()
-                .scale(yScale)
-                .orient('left')
+            yAxis = d3.axisLeft(yScale)
                 .ticks(numOfVerticalTicks)
+                .tickPadding(yTickPadding)
                 .tickFormat(yAxisTickFormat);
         }
 
@@ -130,20 +128,27 @@ define(function(require) {
          * @private
          */
         function buildContainerGroups(){
-            let container = svg.append('g')
+            let container = svg
+              .append('g')
                 .classed('container-group', true)
                 .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
             container
-                .append('g').classed('grid-lines-group', true);
+              .append('g')
+                .classed('grid-lines-group', true);
             container
-                .append('g').classed('chart-group', true);
+              .append('g')
+                .classed('chart-group', true);
             container
-                .append('g').classed('x-axis-group axis', true)
-                .append('g').classed('x-axis-label', true);
+              .append('g')
+                .classed('x-axis-group axis', true)
+              .append('g')
+                .classed('x-axis-label', true);
             container
-                .append('g').classed('y-axis-group axis', true)
-                .append('g').classed('y-axis-label', true);
+              .append('g')
+                .classed('y-axis-group axis', true)
+              .append('g')
+                .classed('y-axis-label', true);
         }
 
         /**
@@ -151,13 +156,14 @@ define(function(require) {
          * @private
          */
         function buildScales(){
-            xScale = d3.scale.ordinal()
+            xScale = d3.scaleBand()
                 .domain(data.map(getKey))
-                .rangeRoundBands([0, chartWidth]);
+                .rangeRound([0, chartWidth])
+                .paddingInner(0);
 
-            yScale = d3.scale.linear()
+            yScale = d3.scaleLinear()
                 .domain([0, d3.max(data, getValue)])
-                .range([chartHeight, 0]);
+                .rangeRound([chartHeight, 0]);
         }
 
         /**
@@ -168,7 +174,7 @@ define(function(require) {
         function buildSVG(container){
             if (!svg) {
                 svg = d3.select(container)
-                    .append('svg')
+                  .append('svg')
                     .classed('britechart step-chart', true);
 
                 buildContainerGroups();
@@ -177,10 +183,8 @@ define(function(require) {
             svg
                 .transition()
                 .ease(ease)
-                .attr({
-                    width: width + margin.left + margin.right,
-                    height: height + margin.top + margin.bottom
-                });
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom);
         }
 
         /**
@@ -209,12 +213,10 @@ define(function(require) {
 
             if (xAxisLabel) {
                 svg.select('.x-axis-label')
-                    .append('text')
-                    .attr({
-                        'text-anchor': 'middle',
-                        'x': chartWidth/2,
-                        'y': xAxisLabelOffset
-                    })
+                  .append('text')
+                    .attr('text-anchor', 'middle')
+                    .attr('x', chartWidth / 2)
+                    .attr('y', xAxisLabelOffset)
                     .text(xAxisLabel);
             }
 
@@ -223,13 +225,11 @@ define(function(require) {
 
             if (yAxisLabel) {
                 svg.select('.y-axis-label')
-                    .append('text')
-                    .attr({
-                        'x': chartHeight/-2,
-                        'y': yAxisLabelOffset,
-                        'text-anchor': 'middle',
-                        'transform': 'rotate(270 0 0)'
-                    })
+                  .append('text')
+                    .attr('x', -chartHeight / 2)
+                    .attr('y', yAxisLabelOffset)
+                    .attr('text-anchor', 'middle')
+                    .attr('transform', 'rotate(270 0 0)')
                     .text(yAxisLabel);
             }
         }
@@ -239,34 +239,36 @@ define(function(require) {
          * @private
          */
         function drawSteps(){
-            let stepW = xScale.rangeBand(),
-                steps = svg.select('.chart-group').selectAll('.step').data(data);
+            let steps = svg.select('.chart-group').selectAll('.step').data(data);
 
             // Enter
             steps.enter()
-                .append('rect')
+              .append('rect')
                 .classed('step', true)
-                .attr({
-                    width: stepW,
-                    x: chartWidth, // Initially drawing the steps at the end of Y axis
-                    y: ({value}) => yScale(value),
-                    height: function(d) { return chartHeight - yScale(d.value); }
+                .attr('x', chartWidth) // Initially drawing the steps at the end of Y axis
+                .attr('y', ({value}) => yScale(value))
+                .attr('width', xScale.bandwidth())
+                .attr('height', (d) => (chartHeight - yScale(d.value)))
+                .on('mouseover', function(d, i) {
+                    dispatcher.call('customHover', this, d, i);
                 })
-                .on('mouseover', dispatch.customHover);
-
-            // Update
-            steps.transition()
+              .merge(steps)
+                .transition()
                 .ease(ease)
-                .attr({
-                    width: stepW,
-                    x: ({key}) => xScale(key),
-                    y: function(d) { return yScale(d.value); },
-                    height: function(d) { return chartHeight - yScale(d.value); }
+                .attr('x', ({key}) => xScale(key))
+                .attr('y', function(d) {
+                    return yScale(d.value);
+                })
+                .attr('width', xScale.bandwidth())
+                .attr('height', function(d) {
+                    return chartHeight - yScale(d.value);
                 });
 
             // Exit
             steps.exit()
-                .transition().style({ opacity: 0 }).remove();
+                .transition()
+                .style('opacity', 0)
+                .remove();
         }
 
         /**
@@ -278,29 +280,33 @@ define(function(require) {
                 .selectAll('line.horizontal-grid-line')
                 .data(yScale.ticks(numOfVerticalTicks))
                 .enter()
-                    .append('line')
-                    .attr({
-                        class: 'horizontal-grid-line',
-                        x1: (xAxisPadding.left),
-                        x2: chartWidth,
-                        y1: (d) => yScale(d),
-                        y2: (d) => yScale(d)
-                    });
+                  .append('line')
+                    .attr('class', 'horizontal-grid-line')
+                    .attr('x1', (xAxisPadding.left))
+                    .attr('x2', chartWidth)
+                    .attr('y1', (d) => yScale(d))
+                    .attr('y2', (d) => yScale(d));
 
             //draw a horizontal line to extend x-axis till the edges
             baseLine = svg.select('.grid-lines-group')
                 .selectAll('line.extended-x-line')
                 .data([0])
                 .enter()
-                    .append('line')
-                    .attr({
-                        class: 'extended-x-line',
-                        x1: (xAxisPadding.left),
-                        x2: chartWidth,
-                        y1: height - margin.bottom - margin.top,
-                        y2: height - margin.bottom - margin.top
-                    });
+                  .append('line')
+                    .attr('class', 'extended-x-line')
+                    .attr('x1', (xAxisPadding.left))
+                    .attr('x2', chartWidth)
+                    .attr('y1', height - margin.bottom - margin.top)
+                    .attr('y2', height - margin.bottom - margin.top);
         }
+
+        /**
+         * Chart exported to png and a download action is fired
+         * @public
+         */
+        exports.exportChart = function(filename) {
+            exportChart.call(exports, svg, filename);
+        };
 
         /**
          * Gets or Sets the margin of the chart
@@ -415,17 +421,26 @@ define(function(require) {
         };
 
         /**
+         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+         * We are going to expose this events:
+         * customMouseOver, customMouseMove and customMouseOut
+         *
+         * @return {module} Bar Chart
+         * @public
+         */
+        exports.on = function() {
+            let value = dispatcher.on.apply(dispatcher, arguments);
+
+            return value === dispatcher ? exports : value;
+        };
+
+        /**
          * Chart exported to png and a download action is fired
          * @public
          */
         exports.exportChart = function(filename, title) {
             exportChart.call(exports, svg, filename, title);
         };
-
-        // Copies the method "on" from dispatch to exports, making it accesible
-        // from outside
-        // Reference: https://github.com/mbostock/d3/wiki/Internals#rebind
-        d3.rebind(exports, dispatch, 'on');
 
         return exports;
     };

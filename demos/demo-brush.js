@@ -20,7 +20,7 @@ function createBrushChart() {
         .width(containerWidth)
         .height(200)
         .onBrush(function(brushExtent) {
-            var format = d3.time.format('%m/%d/%Y');
+            var format = d3.timeFormat('%m/%d/%Y');
 
             d3.select('.js-start-date').text(format(brushExtent[0]));
             d3.select('.js-end-date').text(format(brushExtent[1]));
