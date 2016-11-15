@@ -5,7 +5,7 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
         return new dataBuilder.DonutDataBuilder();
     }
 
-    describe('Reusable Legend Component', () =>{
+    describe('Legend Component', () =>{
         let legendChart, dataset, containerFixture, f;
 
         beforeEach(() =>{
@@ -53,7 +53,7 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
             let lines = containerFixture
                     .select('.britechart-legend')
                     .selectAll('.legend-line'),
-                elements = lines[0];
+                elements = lines.nodes();
 
             lines.each(function(d, index) {
                 expect(
@@ -168,7 +168,7 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                 let lines = containerFixture
                         .select('.britechart-legend')
                         .selectAll('.legend-line'),
-                    elements = lines[0];
+                    elements = lines.nodes();
 
                 legendChart.highlight(dataset[0].id);
 
@@ -183,7 +183,7 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                 let lines = containerFixture
                         .select('.britechart-legend')
                         .selectAll('.legend-line'),
-                    elements = lines[0];
+                    elements = lines.nodes();
 
                 legendChart.highlight(dataset[0].id);
                 legendChart.clearHighlight();

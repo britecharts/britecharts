@@ -122,14 +122,13 @@ define(function(require){
          * @private
          */
         function buildContainerGroups() {
-            let container = svg.append('g')
+            let container = svg
+              .append('g')
                 .classed('legend-container-group', true)
-                .attr({
-                    transform: `translate(${margin.left},${margin.top})`
-                });
+                .attr('transform', `translate(${margin.left},${margin.top})`);
 
             container
-                .append('g')
+              .append('g')
                 .classed('legend-group', true);
         }
 
@@ -138,7 +137,7 @@ define(function(require){
          * @private
          */
         function buildColorScale() {
-            colorScale = d3.scale.ordinal().range(colorScheme);
+            colorScale = d3.scaleOrdinal().range(colorScheme);
         }
 
         /**
@@ -149,22 +148,25 @@ define(function(require){
         function buildSVG(container) {
             if (!svg) {
                 svg = d3.select(container)
-                    .append('svg')
+                  .append('svg')
                     .classed('britechart britechart-legend', true);
 
                 buildContainerGroups();
             }
-            svg.transition().attr({
-                width: width + margin.left + margin.right,
-                height: height + margin.top + margin.bottom
-            });
+
+            svg
+                .transition()
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom);
         }
 
         /**
          * Removes the faded class from all the entry lines
          */
         function cleanFadedLines() {
-            entries.classed(isFadedClassName, false);
+            svg.select('.legend-group')
+                .selectAll('g.legend-line')
+                .classed(isFadedClassName, false);
         }
 
         /**
@@ -178,7 +180,7 @@ define(function(require){
 
             // Enter
             entries.enter()
-                .append('g')
+              .append('g')
                 .classed('legend-line', true)
                 .attr('data-item', getId)
                 .attr('transform', function(d, i) {
@@ -187,52 +189,45 @@ define(function(require){
                         verticalOffset = i * lineHeightBis;
 
                     return `translate(${horizontalOffset},${verticalOffset})`;
-                });
-
-            entries
-                .append('circle')
-                .classed('legend-circle', true)
-                .attr({
-                    'cx': 0,
-                    'cy': circleYOffset,
-                    'r': circleRadius
                 })
-                .style({
-                    'fill': function({quantity}) {
+                .merge(entries)
+              .append('circle')
+                .classed('legend-circle', true)
+                .attr('cx', 0)
+                .attr('cy', circleYOffset)
+                .attr('r', circleRadius)
+                .style('fill', function({quantity}) {
                         return colorScale(quantity);
-                    },
-                    'stroke-width': 1
-                });
+                    })
+                .style('stroke-width', 1);
 
-            entries
-                .append('text')
+            svg.select('.legend-group')
+                .selectAll('g.legend-line')
+              .append('text')
                 .classed('legend-entry-name', true)
                 .text(getName)
-                .attr({
-                    x: (2 * circleRadius) + lineMargin
-                })
-                .style({
-                    'font-size': `${textSize}px`,
-                    'letter-spacing': `${textLetterSpacing}px`
-                });
+                .attr('x', (2 * circleRadius) + lineMargin)
+                .style('font-size', `${textSize}px`)
+                .style('letter-spacing', `${textLetterSpacing}px`);
 
-            entries
-                .append('text')
+            svg.select('.legend-group')
+                .selectAll('g.legend-line')
+              .append('text')
                 .classed('legend-entry-value', true)
                 .text(getFormattedQuantity)
-                .attr({
-                    x: chartWidth - valueReservedSpace
-                })
-                .style({
-                    'font-size': `${textSize}px`,
-                    'letter-spacing': `${numberLetterSpacing}px`,
-                    'text-anchor': 'end',
-                    'startOffset': '100%'
-                });
+                .attr('x', chartWidth - valueReservedSpace)
+                .style('font-size', `${textSize}px`)
+                .style('letter-spacing', `${numberLetterSpacing}px`)
+                .style('text-anchor', 'end')
+                .style('startOffset', '100%');
 
             // Exit
-            entries.exit()
-                .transition().style({ opacity: 0 }).remove();
+            svg.select('.legend-group')
+                .selectAll('g.legend-line')
+                .exit()
+                .transition()
+                .style('opacity', 0)
+                .remove();
         }
 
         /**
@@ -240,7 +235,10 @@ define(function(require){
          * @param  {number} exceptionItemId Id of the line that needs to stay the same
          */
         function fadeLinesBut(exceptionItemId) {
-            entries.classed(isFadedClassName, true);
+            svg.select('.legend-group')
+                .selectAll('g.legend-line')
+                .classed(isFadedClassName, true);
+
             d3.select(`[data-item="${exceptionItemId}"]`)
                 .classed(isFadedClassName, false);
         }
@@ -263,6 +261,7 @@ define(function(require){
                 return colorScheme;
             }
             colorScheme = _x;
+
             return this;
         };
 
@@ -277,6 +276,7 @@ define(function(require){
                 return height;
             }
             height = _x;
+
             return this;
         };
 
@@ -300,6 +300,7 @@ define(function(require){
                 return margin;
             }
             margin = _x;
+
             return this;
         };
 
@@ -314,6 +315,7 @@ define(function(require){
                 return width;
             }
             width = _x;
+
             return this;
         };
 

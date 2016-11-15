@@ -1,7 +1,7 @@
 define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart, dataBuilder) {
     'use strict';
 
-    describe('Reusable Brush Chart', () => {
+    describe('Brush Chart', () => {
         let brushChart, dataset, containerFixture, f;
 
         function aTestDataSet() {
@@ -51,8 +51,10 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
         });
 
         it('should render the brush elements', function() {
-            expect(containerFixture.selectAll('.background.brush-rect').empty()).toEqual(false);
-            expect(containerFixture.selectAll('.extent.brush-rect').empty()).toEqual(false);
+            expect(containerFixture.selectAll('.overlay.brush-rect').empty()).toEqual(false);
+            expect(containerFixture.selectAll('.selection.brush-rect').empty()).toEqual(false);
+            expect(containerFixture.selectAll('.handle.handle--e.brush-rect').empty()).toEqual(false);
+            expect(containerFixture.selectAll('.handle.handle--w.brush-rect').empty()).toEqual(false);
         });
 
         describe('the API', function() {

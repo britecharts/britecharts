@@ -1,5 +1,7 @@
 define(function(require) {
 
+    const d3 = require('d3');
+
     const wrapConfig = {
         lineHeight: 1.2,
         smallTextOffset: 10,
@@ -19,7 +21,7 @@ define(function(require) {
      * More discussions on https://github.com/mbostock/d3/issues/1642
      * @return {void}
      */
-    const wrapText = function(fontSize, availableWidth, node, data, i) {
+    const wrapText = function(xOffset, fontSize, availableWidth, node, data, i) {
         let text = d3.select(node),
             words = text.text().split(/\s+/).reverse(),
             word,
@@ -30,7 +32,7 @@ define(function(require) {
             dy = parseFloat(text.attr('dy')),
             smallFontSize = fontSize * wrapConfig.smallTextRatio,
             tspan = text.text(null).append('tspan')
-                .attr('x', 0)
+                .attr('x', xOffset)
                 .attr('y', y - 5)
                 .attr('dy', dy + 'em')
                 .classed(wrapConfig.valueClassName, true)
@@ -39,7 +41,7 @@ define(function(require) {
         tspan.text(words.pop());
         tspan = text.append('tspan')
             .classed(wrapConfig.labelClassName, true)
-            .attr('x', 0)
+            .attr('x', xOffset)
             .attr('y', y + wrapConfig.smallTextOffset)
             .attr('dy', ++lineNumber * smallLineHeight + dy + 'em')
             .style('font-size', smallFontSize + 'px');
@@ -53,7 +55,7 @@ define(function(require) {
                 line = [word];
                 tspan = text.append('tspan')
                     .classed(wrapConfig.labelClassName, true)
-                    .attr('x', 0)
+                    .attr('x', xOffset)
                     .attr('y', y+ wrapConfig.smallTextOffset)
                     .attr('dy', ++lineNumber * smallLineHeight + dy + 'em')
                     .text(word)

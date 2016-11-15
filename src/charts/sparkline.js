@@ -68,7 +68,7 @@ define(function(require){
             hasArea = true,
             isAnimated = false,
             clipDuration = 3000,
-            ease = 'quad-out',
+            ease = d3.easeQuadInOut,
 
             line,
 
@@ -126,11 +126,11 @@ define(function(require){
          * @private
          */
         function buildScales(){
-            xScale = d3.scale.linear()
+            xScale = d3.scaleLinear()
                 .domain(d3.extent(data, getDate))
                 .range([0, chartWidth]);
 
-            yScale = d3.scale.linear()
+            yScale = d3.scaleLinear()
                 .domain(d3.extent(data, getValue))
                 .range([chartHeight, 0]);
         }
@@ -152,10 +152,8 @@ define(function(require){
             svg
                 .transition()
                 .ease(ease)
-                .attr({
-                    width: width,
-                    height: height
-                });
+                .attr('width', width)
+                .attr('height', height);
         }
 
         /**
@@ -240,11 +238,11 @@ define(function(require){
          * @private
          */
         function drawArea(){
-            let area = d3.svg.area()
+            let area = d3.area()
                 .x(({date}) => xScale(date))
                 .y0(() => yScale(0))
                 .y1(({value}) => yScale(value))
-                .interpolate('basis');
+                .curve(d3.curveBasis);
 
             svg.select('.chart-group')
               .append('path')
@@ -259,8 +257,8 @@ define(function(require){
          * @private
          */
         function drawLine(){
-            line = d3.svg.line()
-                .interpolate('basis')
+            line = d3.line()
+                .curve(d3.curveBasis)
                 .x(({date}) => xScale(date))
                 .y(({value}) => yScale(value));
 
