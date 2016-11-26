@@ -5,10 +5,11 @@ var _ = require('underscore'),
 
     line = require('./../src/charts/line'),
     tooltip = require('./../src/charts/tooltip'),
-    dataBuilder = require('./../test/fixtures/lineChartDataBuilder');
+    dataBuilder = require('./../test/fixtures/lineChartDataBuilder'),
+    colorSelectorHelper = require('./helpers/colorSelector');
 
 
-function createLineChart() {
+function createLineChart(optionalColorSchema) {
     var lineChart1 = line(),
         chartTooltip = tooltip(),
         testDataSet = new dataBuilder.SalesDataBuilder(),
@@ -38,6 +39,11 @@ function createLineChart() {
         .on('customMouseOut', function() {
             chartTooltip.hide();
         });
+
+    if (optionalColorSchema) {
+        lineChart1.colorSchema(optionalColorSchema);
+    }
+
     container.datum(dataset).call(lineChart1);
 
     // Tooltip Setup and start
@@ -120,4 +126,7 @@ if (d3.select('.js-line-chart-container').node()) {
         createLineChartWithSingleLine();
         createLineChartWithFixedHeight();
     }, 200));
+
+    // Color schema selector
+    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.line-chart', createLineChart);
 }

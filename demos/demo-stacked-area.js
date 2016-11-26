@@ -3,12 +3,14 @@
 var _ = require('underscore'),
     d3 = require('d3'),
 
+    colors = require('./../src/charts/helpers/colors'),
+
     stackedAreaChart = require('./../src/charts/stacked-area'),
     tooltip = require('./../src/charts/tooltip'),
-    stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder');
+    stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder'),
+    colorSelectorHelper = require('./helpers/colorSelector');
 
-
-function createStackedAreaChartWithTooltip() {
+function createStackedAreaChartWithTooltip(optionalColorSchema) {
     var stackedArea = stackedAreaChart(),
         chartTooltip = tooltip(),
         testDataSet = new stackedDataBuilder.StackedAreaDataBuilder(),
@@ -35,6 +37,11 @@ function createStackedAreaChartWithTooltip() {
         .on('customMouseOut', function() {
             chartTooltip.hide();
         });
+
+    if (optionalColorSchema) {
+        stackedArea.colorSchema(optionalColorSchema);
+    }
+
     container.datum(dataset.data).call(stackedArea);
 
     // Tooltip Setup and start
@@ -52,12 +59,19 @@ function createStackedAreaChartWithTooltip() {
     });
 }
 
+
 if (d3.select('.js-stacked-area-chart-tooltip-container').node()){
-    // Show charts if container available
+    // Chart creation
     createStackedAreaChartWithTooltip();
 
-    d3.select(window).on('resize', _.debounce(function(){
-        d3.selectAll('.stacked-area').remove();
-        createStackedAreaChartWithTooltip();
-    }, 200));
+    // For getting a responsive behavior on our chart,
+    // we'll need to listen to the window resize event
+    d3.select(window)
+        .on('resize', _.debounce(function(){
+            d3.selectAll('.stacked-area').remove();
+            createStackedAreaChartWithTooltip();
+        }, 200));
+
+    // Color schema selector
+    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.stacked-area', createStackedAreaChartWithTooltip);
 }

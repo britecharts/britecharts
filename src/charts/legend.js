@@ -86,7 +86,7 @@ define(function(require){
 
             // colors
             colorScale,
-            colorScheme = colorHelper.britechartsColorSchema,
+            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
 
             getId = ({id}) => id,
             getName = ({name}) => name,
@@ -133,11 +133,11 @@ define(function(require){
         }
 
         /**
-         * Builds color scale for chart, if any colorScheme was defined
+         * Builds color scale for chart, if any colorSchema was defined
          * @private
          */
         function buildColorScale() {
-            colorScale = d3.scaleOrdinal().range(colorScheme);
+            colorScale = d3.scaleOrdinal().range(colorSchema);
         }
 
         /**
@@ -251,16 +251,16 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the colorScheme of the chart
+         * Gets or Sets the colorSchema of the chart
          * @param  {Array} _x Color scheme array to get/set
-         * @return { (Number | Module) } Current colorScheme or Donut Chart module to chain calls
+         * @return { (Number | Module) } Current colorSchema or Donut Chart module to chain calls
          * @public
          */
-        exports.colorScheme = function(_x) {
+        exports.colorSchema = function(_x) {
             if (!arguments.length) {
-                return colorScheme;
+                return colorSchema;
             }
-            colorScheme = _x;
+            colorSchema = _x;
 
             return this;
         };
