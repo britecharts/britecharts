@@ -24,6 +24,17 @@
                 </article>
             </div>
             <div class="span6 sidebar">
+                <h3>Legend</h3>
+                <div class="js-legend-chart-container legend-chart-container"></div>
+
+                <h3>Colors</h3>
+                <p>You can also check other color schemas:</p>
+                <p class="js-color-selector-container"></p>
+                </p>
+
+                <h3>Download</h3>
+                <p>You can also export this chart by pressing: <input id="button" type="button" value="Download" /></p>
+
                 <h3>The code</h3>
                 <pre>
 donutChart
@@ -43,12 +54,6 @@ donutContainer.datum(dataset).call(donutChart);
 
 legendContainer.datum(dataset).call(legendChart);
                 </pre>
-
-                <h3>Legend</h3>
-                <div class="js-legend-chart-container legend-chart-container"></div>
-
-                <h3>Download</h3>
-                <p>You can also export this chart by pressing: <input id="button" type="button" value="Download" /></p>
             </div>
         </div>
     </div>

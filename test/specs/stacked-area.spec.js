@@ -181,6 +181,18 @@ define([
                 expect(defaultHeight).not.toBe(testTooltipThreshold);
                 expect(newTooltipThreshold).toBe(testTooltipThreshold);
             });
+
+            it('should provide a colorSchema getter and setter', () => {
+                let defaultSchema = stackedAreaChart.colorSchema(),
+                    testSchema = ['#ffffff', '#fafefc', '#000000'],
+                    newSchema;
+
+                stackedAreaChart.colorSchema(testSchema);
+                newSchema = stackedAreaChart.colorSchema();
+
+                expect(defaultSchema).not.toBe(testSchema);
+                expect(newSchema).toBe(testSchema);
+            });
         });
 
         describe('Export chart functionality', () => {

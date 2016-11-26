@@ -59,7 +59,8 @@ define(function(require){
             xScale,
             yScale,
 
-            colorRange = colorHelper.britechartGradients.greenBlueGradient,
+            areaGradient = ['#F5FDFF', '#F6FEFC'],
+            lineGradient = colorHelper.colorGradients.greenBlueGradient,
 
             svg,
             chartWidth, chartHeight,
@@ -186,8 +187,8 @@ define(function(require){
                 .attr('y2', 0)
               .selectAll('stop')
                 .data([
-                    {offset: '0%', color: '#F5FDFF'},
-                    {offset: '100%', color: '#F6FEFC'}
+                    {offset: '0%', color: areaGradient[0]},
+                    {offset: '100%', color: areaGradient[1]}
                 ])
               .enter().append('stop')
                 .attr('offset', ({offset}) => offset)
@@ -202,8 +203,8 @@ define(function(require){
                 .attr('y2', 0)
               .selectAll('stop')
                 .data([
-                    {offset: '0%', color: '#39C7EA'},
-                    {offset: '100%', color: '#4CDCBA'}
+                    {offset: '0%', color: lineGradient[0]},
+                    {offset: '100%', color: lineGradient[1]}
                 ])
               .enter().append('stop')
                 .attr('offset', ({offset}) => offset)
@@ -310,6 +311,34 @@ define(function(require){
             }
             clipDuration = _x;
 
+            return this;
+        };
+
+        /**
+         * Gets or Sets the areaGradient of the chart
+         * @param  {String[]} _x Desired areaGradient for the graph
+         * @return { areaGradient | module} Current areaGradient or Chart module to chain calls
+         * @public
+         */
+        exports.areaGradient = function(_x) {
+            if (!arguments.length) {
+                return areaGradient;
+            }
+            areaGradient = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the lineGradient of the chart
+         * @param  {String[]} _x Desired lineGradient for the graph
+         * @return { lineGradient | module} Current lineGradient or Chart module to chain calls
+         * @public
+         */
+        exports.lineGradient = function(_x) {
+            if (!arguments.length) {
+                return lineGradient;
+            }
+            lineGradient = _x;
             return this;
         };
 

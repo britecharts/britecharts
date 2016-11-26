@@ -68,18 +68,6 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 expect(actual).toBe(expected);
             });
 
-            it('should provide colorScheme getter and setter', () =>{
-                let previous = donutChart.colorScheme(),
-                    expected = ['red', 'gray', 'black'],
-                    actual;
-
-                donutChart.colorScheme(expected);
-                actual = donutChart.colorScheme();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
             it('should provide externalRadius getter and setter', () =>{
                 let previous = donutChart.externalRadius(),
                     expected = 32,
@@ -126,6 +114,18 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
+            });
+
+            it('should provide a colorSchema getter and setter', () => {
+                let defaultSchema = donutChart.colorSchema(),
+                    testSchema = ['#ffffff', '#fafefc', '#000000'],
+                    newSchema;
+
+                donutChart.colorSchema(testSchema);
+                newSchema = donutChart.colorSchema();
+
+                expect(defaultSchema).not.toBe(testSchema);
+                expect(newSchema).toBe(testSchema);
             });
         });
 
