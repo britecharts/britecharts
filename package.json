@@ -43,8 +43,8 @@
   "devDependencies": {
     "babel-core": "^6.18.2",
     "babel-eslint": "^7.1.1",
-    "babel-istanbul": "^0.6.0",
-    "babel-istanbul-loader": "0.0.3",
+    "babel-istanbul": "^0.11.0",
+    "babel-istanbul-loader": "^0.1.0",
     "babel-loader": "^6.2.8",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-0": "^6.5.0",
@@ -58,7 +58,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-jsdoc": "^2.1.0",
     "grunt-karma": "^2.0.0",
-    "grunt-release": "~0.9.0",
+    "grunt-release": "git://github.com/beevelop/grunt-release",
     "grunt-reload": "^0.2.0",
     "grunt-sass": "^1.2.1",
     "grunt-sass-lint": "^0.2.0",
@@ -80,10 +80,10 @@
     "load-grunt-tasks": "^3.5.2",
     "reggie": "~0.2.1",
     "requirejs-plugins": "^1.0.2",
-    "shelljs": "~0.3.0",
+    "shelljs": "^0.7.5",
     "text": "requirejs/text",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2",
-    "webpack-livereload-plugin": "^0.7.0"
+    "webpack-livereload-plugin": "^0.9.0"
   }
 }
