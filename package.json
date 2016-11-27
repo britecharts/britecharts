@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
-    "babel-eslint": "^5.0.0",
+    "babel-eslint": "^7.1.1",
     "babel-istanbul": "^0.6.0",
     "babel-istanbul-loader": "0.0.3",
     "babel-loader": "^6.2.8",
@@ -67,7 +67,7 @@
     "ink-docstrap": "~0.4.12",
     "jasmine-core": "^2.4.1",
     "jasmine-jquery": "^2.0.6",
-    "jquery": "^2.1.4",
+    "jquery": "^3.1.1",
     "jsdoc": "^3.4.3",
     "json-loader": "^0.5.4",
     "karma": "^0.13.21",
