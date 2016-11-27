@@ -81,7 +81,6 @@
     "reggie": "~0.2.1",
     "requirejs-plugins": "^1.0.2",
     "shelljs": "~0.3.0",
-    "sinon": "^1.17.6",
     "text": "requirejs/text",
     "webpack": "^1.13.3",
     "webpack-dev-server": "^1.16.2",
