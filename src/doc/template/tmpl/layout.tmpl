@@ -9,23 +9,18 @@
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-    <link href="https://fonts.googleapis.com/css?family=Heebo:300,500|Slabo+13px|Anonymous+Pro" rel="stylesheet">
 
 	<link type="text/css" rel="stylesheet" href="styles/sunlight.<?js= this.navOptions.syntaxTheme ?>.css">
 
 	<link type="text/css" rel="stylesheet" href="styles/site.<?js= this.navOptions.theme ?>.css">
-    <!-- <link type="text/css" rel="stylesheet" href="styles/custom.css"> -->
+    <link type="text/css" rel="stylesheet" href="styles/custom.css">
 </head>
 
 <body>
 
-<div class="navbar navbar-default navbar-fixed-top <?js= this.navOptions.inverseNav ? 'navbar-inverse' : '' ?>">
+<div class="navbar navbar-light navbar-fixed-top <?js= this.navOptions.inverseNav ? 'navbar-inverse' : '' ?>">
 <div class="container">
-	<div class="navbar-headerdfsasd">
-
-        <div class="row">
-        <div class="col-sm-9 col-md-9">
-
+	<div class="navbar-header">
 		<a class="navbar-brand" href="<?js= this.nav.index.link ?>"><?js if(this.navOptions.logoFile) { ?><img class="branding-logo" src="<?js= this.navOptions.logoFile ?>"
 		alt="<?js } ?><?js= this.nav.index.title ?>"/></a>
 		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
@@ -33,22 +28,20 @@
 			<span class="icon-bar"></span>
 			<span class="icon-bar"></span>
         </button>
-    	<div class="navbar-collapse collapse" id="topNavigation">
-    		<ul class="nav navbar-nav">
-    			<?js this.nav.topLevelNav.forEach(function(entry){ ?>
-    			<li class="dropdown">
-    				<a href="<?js= entry.link ?>" class="dropdown-toggle" data-toggle="dropdown"><?js= entry.title ?><b class="caret"></b></a>
-    				<ul class="dropdown-menu <?js= that.navOptions.navType ==='inline' ? 'inline' : '' ?>">
-    					<?js entry.members.forEach(function(member){ ?><li><?js= member ?></li><?js	}); ?>
-    				</ul>
-    			</li>
-    			<?js }); ?>
-    		</ul>
-        </div>
-
-        </div>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			<?js this.nav.topLevelNav.forEach(function(entry){ ?>
+			<li class="dropdown">
+				<a href="<?js= entry.link ?>" class="dropdown-toggle" data-toggle="dropdown"><?js= entry.title ?><b class="caret"></b></a>
+				<ul class="dropdown-menu <?js= that.navOptions.navType ==='inline' ? 'inline' : '' ?>">
+					<?js entry.members.forEach(function(member){ ?><li><?js= member ?></li><?js	}); ?>
+				</ul>
+			</li>
+			<?js }); ?>
+		</ul>
         <?js if (this.navOptions.search) { ?>
-            <div class="col-sm-3 col-md-3">
+            <div class="col-sm-4 col-md-5">
                 <form class="navbar-form" role="search">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
@@ -59,9 +52,8 @@
                 </form>
             </div>
         <?js } ?>
+	</div>
 
-        </div>
-    </div>
 </div>
 </div>
 
@@ -130,6 +122,8 @@
 <?js if (this.navOptions.search) { ?>
     <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
 <?js } ?>
+<script src="/demos/build/bundle.js"></script>
+
 
 <script>
 $( function () {
@@ -149,7 +143,7 @@ $( function () {
 			exampleText = exampleText.replace( lang[0], "" );
 			example.html( exampleText );
 			lang = lang[1];
-		} else {
+		} else if (example && example.parent().length) {
 			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
 			lang = langClassMatch ? langClassMatch[1] : "javascript";
 		}
