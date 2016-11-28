@@ -6,14 +6,16 @@ var _ = require('underscore'),
     donut = require('./../src/charts/donut'),
     legend = require('./../src/charts/legend'),
     dataBuilder = require('./../test/fixtures/donutChartDataBuilder'),
+    colorSelectorHelper = require('./helpers/colorSelector'),
 
     dataset = new dataBuilder.DonutDataBuilder()
         .withFivePlusOther()
         .build(),
     legendChart;
 
-function createDonutChart(dataset, legendChart) {
-    var donutChart = donut(),
+function createDonutChart(dataset, optionalColorSchema) {
+    var legendChart = getLegendChart(dataset, optionalColorSchema),
+        donutChart = donut(),
         donutContainer = d3.select('.js-donut-chart-container'),
         containerWidth = donutContainer.node().getBoundingClientRect().width;
 
@@ -33,11 +35,21 @@ function createDonutChart(dataset, legendChart) {
             legendChart.clearHighlight();
         });
 
+    if (optionalColorSchema) {
+        donutChart.colorSchema(optionalColorSchema);
+    }
+
     donutContainer.datum(dataset).call(donutChart);
 }
-function getLegendChart(dataset) {
+function getLegendChart(dataset, optionalColorSchema) {
     var legendChart = legend(),
         legendContainer = d3.select('.js-legend-chart-container');
+
+    d3.select('.js-legend-chart-container .britechart-legend').remove();
+
+    if (optionalColorSchema) {
+        legendChart.colorSchema(optionalColorSchema);
+    }
 
     legendContainer.datum(dataset).call(legendChart);
 
@@ -59,15 +71,16 @@ function createSmallDonutChart() {
 
 // Show charts if container available
 if (d3.select('.js-donut-chart-container').node()) {
-    legendChart = getLegendChart(dataset);
-
-    createDonutChart(dataset, legendChart);
+    createDonutChart(dataset);
     createSmallDonutChart();
 
     d3.select(window).on('resize', _.debounce(function(){
         d3.selectAll('.donut-chart').remove();
 
-        createDonutChart(dataset, legendChart);
+        createDonutChart(dataset);
         createSmallDonutChart();
     }, 200));
+
+    // Color schema selector
+    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.donut-chart', createDonutChart.bind(null, dataset));
 }

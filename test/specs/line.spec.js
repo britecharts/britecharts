@@ -234,6 +234,18 @@ define([
                 expect(defaultHeight).not.toBe(testTooltipThreshold);
                 expect(newTooltipThreshold).toBe(testTooltipThreshold);
             });
+
+            it('should provide a colorSchema getter and setter', () => {
+                let defaultSchema = lineChart.colorSchema(),
+                    testSchema = ['#ffffff', '#fafefc', '#000000'],
+                    newSchema;
+
+                lineChart.colorSchema(testSchema);
+                newSchema = lineChart.colorSchema();
+
+                expect(defaultSchema).not.toBe(testSchema);
+                expect(newSchema).toBe(testSchema);
+            });
         });
 
         describe('Export chart functionality', () => {

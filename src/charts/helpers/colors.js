@@ -1,5 +1,13 @@
 define(function(require) {
 
+    // Color Gradients
+    const britechartGradients = {
+            greenBlueGradient: ['#39C7EA', '#4CDCBA'],
+            orangePinkGradient: ['#FBC670', '#F766B8'],
+            bluePurpleGradient: ['#3DC3C9', '#824a9e']
+        };
+
+    // Color Schemas
     // Standard Color Schema for Britecharts
     const britechartsColorSchema = [
             '#6CEDC8',
@@ -22,12 +30,6 @@ define(function(require) {
             '#363A43',
             '#282C35'
         ];
-
-    // Gradients
-    // TODO: Add more
-    const britechartGradients = {
-            greenBlueGradient: ['#39C7EA', '#4CDCBA']
-        };
 
     // Extended Orange Palette
     const extendedOrangeColorSchema = [
@@ -126,18 +128,36 @@ define(function(require) {
             '#9c1e19'
         ];
 
-
     return {
-        britechartsColorSchema,
-        britechartsGreySchema,
-        britechartGradients,
-        extendedOrangeColorSchema,
-        extendedBlueColorSchema,
-        extendedLightBlueColorSchema,
-        extendedGreenColorSchema,
-        extendedYellowColorSchema,
-        extendedPinkColorSchema,
-        extendedPurpleColorSchema,
-        extendedRedColorSchema
+        colorSchemas: {
+            britechartsColorSchema,
+            britechartsGreySchema,
+            extendedOrangeColorSchema,
+            extendedBlueColorSchema,
+            extendedLightBlueColorSchema,
+            extendedGreenColorSchema,
+            extendedYellowColorSchema,
+            extendedPinkColorSchema,
+            extendedPurpleColorSchema,
+            extendedRedColorSchema
+        },
+        colorSchemasHuman: {
+            'britechartsColorSchema': 'Britecharts Default',
+            'britechartsGreySchema': 'Britecharts Grey',
+            'extendedOrangeColorSchema': 'Orange',
+            'extendedBlueColorSchema': 'Blue',
+            'extendedLightBlueColorSchema': 'Light Blue',
+            'extendedGreenColorSchema': 'Green',
+            'extendedYellowColorSchema': 'Yellow',
+            'extendedPinkColorSchema': 'Pink',
+            'extendedPurpleColorSchema': 'Purple',
+            'extendedRedColorSchema': 'Red'
+        },
+        colorGradients: britechartGradients,
+        colorGradientsHuman: {
+            greenBlueGradient: 'Green To Blue',
+            orangePinkGradient: 'Orange to Pink',
+            bluePurpleGradient: 'Blue to Purple'
+        }
     };
 });

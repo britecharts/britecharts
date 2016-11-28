@@ -41,8 +41,9 @@ define(function(require){
             numVerticalTicks = 5,
             yTickTextYOffset = -8,
 
-            colors = colorHelper.britechartsColorSchema,
-            colorOrder = colors
+            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+
+            colorOrder = colorSchema
                 .reduce((acc, color, index) => {
                     acc[color] = index;
 
@@ -278,7 +279,7 @@ define(function(require){
 
 
             colorScale = d3.scaleOrdinal()
-                  .range(colors)
+                  .range(colorSchema)
                   .domain(data.map(getName));
 
             // TODO add spread and rest operators to britecharts
@@ -736,6 +737,20 @@ define(function(require){
                 return dateLabel;
             }
             dateLabel = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the colorSchema of the chart
+         * @param  {String[]} _x Desired colorSchema for the graph
+         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
+         * @public
+         */
+        exports.colorSchema = function(_x) {
+            if (!arguments.length) {
+                return colorSchema;
+            }
+            colorSchema = _x;
             return this;
         };
 

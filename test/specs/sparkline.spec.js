@@ -165,6 +165,30 @@ define([
                 expect(defaultAnimationDuration).not.toBe(testAnimationDuration);
                 expect(newAnimationDuration).toBe(testAnimationDuration);
             });
+
+            it('should provide a lineGradient getter and setter', () => {
+                let defaultGradient = sparklineChart.lineGradient(),
+                    testGradient = ['#ffffff', '#fafefc'],
+                    newGradient;
+
+                sparklineChart.lineGradient(testGradient);
+                newGradient = sparklineChart.lineGradient();
+
+                expect(defaultGradient).not.toBe(testGradient);
+                expect(newGradient).toBe(testGradient);
+            });
+
+            it('should provide an areaGradient getter and setter', () => {
+                let defaultGradient = sparklineChart.areaGradient(),
+                    testGradient = ['#ffffff', '#fafefc'],
+                    newGradient;
+
+                sparklineChart.areaGradient(testGradient);
+                newGradient = sparklineChart.areaGradient();
+
+                expect(defaultGradient).not.toBe(testGradient);
+                expect(newGradient).toBe(testGradient);
+            });
         });
 
         describe('Export chart functionality', () => {
