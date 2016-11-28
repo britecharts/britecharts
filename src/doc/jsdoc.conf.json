@@ -13,13 +13,20 @@
     },
     "plugins": [],
     "templates": {
-        "theme": "flatly",
-        "cleverLinks": false,
-        "monospaceLinks": false,
-        "default": {
-            "outputSourceFiles": true
-        },
+        "logoFile": "/src/doc/template/static/img/logo.svg",
+        "systemName": "Britecharts",
+        "footer": "",
         "copyright": "Eventbrite Copyright",
-        "systemName": "Britecharts"
+        "includeDate": false,
+        "navType": "inline",
+        "theme": "flatly",
+        "linenums": false,
+        "collapseSymbols": false,
+        "inverseNav": false,
+        "cleverLinks": false,
+        "outputSourceFiles": true,
+        "syntaxTheme": "default",
+        "monospaceLinks": false,
+        "search": true
     }
 }
