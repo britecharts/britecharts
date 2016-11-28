@@ -8,6 +8,7 @@ body {
     color: #282C35;
     line-height: 1.5rem;
     padding-bottom: 6rem;
+    padding-top: 60px;
 }
 
 ul li {
@@ -97,12 +98,6 @@ code {
 }
 
 /* Spacing */
-@media (min-width: 979px) {
-    body {
-        padding-top: 56px;
-    }
-}
-
 #main {
     margin-top: 0;
 }
@@ -185,3 +180,16 @@ code {
 .sunlight-menu a:after {
     background-color: transparent;
 }
+
+
+/*From HTML*/
+body {
+    padding-top: 60px;
+}
+/*.page-title {
+    display: none;
+}
+.sidebar {
+    padding-top: 20px;
+}
+*/

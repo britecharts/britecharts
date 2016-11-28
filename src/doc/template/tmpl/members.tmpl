@@ -2,8 +2,9 @@
 var data = obj;
 var self = this;
 ?>
+<hr>
 <dt class="name" id="<?js= id ?>">
-    <h4><?js= data.attribs + name + (data.signature ? data.signature : '') ?></h4>
+    <h4 id="<?js= id ?>"><?js= data.attribs + name + (data.signature ? data.signature : '') ?></h4>
 
     <?js if (data.summary) { ?>
     <p class="summary"><?js= summary ?></p>

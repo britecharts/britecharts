@@ -13,6 +13,7 @@
     },
     "plugins": [],
     "templates": {
+        "logoFile": "/src/doc/template/static/img/logo.svg",
         "systemName": "Britecharts",
         "footer": "",
         "copyright": "Eventbrite Copyright",
