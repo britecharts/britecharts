@@ -164,8 +164,8 @@ define(function(require){
                 bottom: 0,
                 right: 0
             },
-            colorRange = colorHelper.britechartsColorSchema,
-            singleLineGradientColors = colorHelper.britechartGradients.greenBlueGradient,
+            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+            singleLineGradientColors = colorHelper.colorGradients.greenBlueGradient,
             topicColorMap,
 
             ease = d3.easeQuadInOut,
@@ -349,7 +349,7 @@ define(function(require){
                 .nice(3);
 
             colorScale = d3.scaleOrdinal()
-                .range(colorRange)
+                .range(colorSchema)
                 .domain(data.map(getTopic));
 
 
@@ -708,6 +708,20 @@ define(function(require){
                 return aspectRatio;
             }
             aspectRatio = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the colorSchema of the chart
+         * @param  {String[]} _x Desired colorSchema for the graph
+         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
+         * @public
+         */
+        exports.colorSchema = function(_x) {
+            if (!arguments.length) {
+                return colorSchema;
+            }
+            colorSchema = _x;
             return this;
         };
 

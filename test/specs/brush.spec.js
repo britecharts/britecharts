@@ -95,6 +95,18 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
                 expect(newHeight).toBe(testHeight);
             });
 
+            it('should provide a gradient getter and setter', () => {
+                let defaultGradient = brushChart.gradient(),
+                    testGradient = ['#ffffff', '#fafefc'],
+                    newGradient;
+
+                brushChart.gradient(testGradient);
+                newGradient = brushChart.gradient();
+
+                expect(defaultGradient).not.toBe(testGradient);
+                expect(newGradient).toBe(testGradient);
+            });
+
             it('should provide onBrush getter and setter', function() {
                 var defaultCallback = brushChart.onBrush(),
                     testCallback = function() {},

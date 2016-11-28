@@ -76,10 +76,7 @@ define(function(require) {
 
             onBrush = null,
 
-            gradientColorSchema = {
-                left: '#39C7EA',
-                right: '#4CDCBA'
-            },
+            gradient = colorHelper.colorGradients.greenBlueGradient,
 
             // formats
             defaultTimeFormat = '%m/%d/%Y',
@@ -178,8 +175,8 @@ define(function(require) {
                 .attr('y2', 0)
               .selectAll('stop')
                 .data([
-                    {offset: '0%', color: gradientColorSchema.left},
-                    {offset: '100%', color: gradientColorSchema.right}
+                    {offset: '0%', color: gradient[0]},
+                    {offset: '100%', color: gradient[1]}
                 ])
               .enter().append('stop')
                 .attr('offset', ({offset}) => offset)
@@ -299,7 +296,7 @@ define(function(require) {
          * @return {void}
          */
         function drawHandles() {
-            let handleFillColor = colorHelper.britechartsGreySchema[1];
+            let handleFillColor = colorHelper.colorSchemasHuman.britechartsGreySchema[1];
 
             // Styling
             handle = chartBrush
@@ -377,6 +374,20 @@ define(function(require) {
                     });
             }
         }
+
+        /**
+         * Gets or Sets the gradient of the chart
+         * @param  {String[]} _x Desired gradient for the graph
+         * @return { gradient | module} Current gradient or Chart module to chain calls
+         * @public
+         */
+        exports.gradient = function(_x) {
+            if (!arguments.length) {
+                return gradient;
+            }
+            gradient = _x;
+            return this;
+        };
 
         /**
          * Gets or Sets the height of the chart

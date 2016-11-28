@@ -152,13 +152,13 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                 expect(actual).toBe(expected);
             });
 
-            it('should provide colorScheme getter and setter', () =>{
-                let previous = legendChart.colorScheme(),
+            it('should provide colorSchema getter and setter', () =>{
+                let previous = legendChart.colorSchema(),
                     expected = ['pink', 'red', 'magenta'],
                     actual;
 
-                legendChart.colorScheme(expected);
-                actual = legendChart.colorScheme();
+                legendChart.colorSchema(expected);
+                actual = legendChart.colorSchema();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
