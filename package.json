@@ -23,7 +23,12 @@
   "keywords": [
     "d3",
     "chart",
-    "graph"
+    "library",
+    "graph",
+    "reusable",
+    "es6",
+    "es2015",
+    "tests"
   ],
   "publishConfig": {
     "registry": "http://packages:8889"
