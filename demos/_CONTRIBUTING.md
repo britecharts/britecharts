@@ -1,7 +1,39 @@
 ## Pull Requests
 
 ####Disclaimer
-While it is true that Britecharts is currently live in Eventbrite production, this project is not being monitored closely for open source contributions. Please have patience and we will get to any issues and pull requests as soon as we can.
+> While it is true that Britecharts is currently live in Eventbrite production, this project is not being monitored closely for open source contributions. Please have patience and we will get to any issues and pull requests as soon as we can.
+
+### Chart Documentation
+
+In order to generate and see the documentation for this charts and the project in general you would need to:
+
+ + Download and install [node][12] (note we need npm version 2.X)
+ + Install the grunt task runner (if you don't have it yet) with:
+
+    `npm install -g grunt-cli`
+
+ + Clone the repository with:
+
+    `git clone git@github.com:eventbrite/britecharts.git`
+
+ + Change directory into the repository root and install its dependencies:
+
+    `npm install`
+
+ + In the root or the repository folder, run:
+
+    `npm run demos:watch`
+
+ + In another terminal, run:
+
+    `npm run demos:serve`
+
+ + In a third terminal window, run:
+
+    `npm run docs`
+
+
+This process will generate the docs with its current contents and open the interface where you will be able to navigate the API of each chart. You can also see some use examples under the "Tutorials" dropdown section.
 
 
 #### Getting setup to contribute
@@ -13,7 +45,6 @@ While it is true that Britecharts is currently live in Eventbrite production, th
 3- Navigate to the repository folder and install dependencies with: `npm install`
 
 #### Cutting feature branches
-
 
 1- in local master, set upstream to https://github.com/eventbrite/britecharts.git
 `git remote add upstream https://github.com/eventbrite/britecharts.git`
