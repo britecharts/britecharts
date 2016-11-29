@@ -16,7 +16,7 @@ define(function(require){
      * Stacked Area Chart reusable API module that allows us
      * rendering a multi area and configurable chart.
      *
-     * @module Stacked Area
+     * @module Stacked-area
      * @version 0.0.1
      * @tutorial stacked-area
      * @requires d3
