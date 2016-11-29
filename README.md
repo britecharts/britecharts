@@ -15,7 +15,7 @@ The main characteristics of this library are:
 
 ## Usage
 
-The typical use of Britecharts involves creating a chart, configuring it using its API, and render it on a container which has been previously applied some data. The code will look like this:
+The typical use of Britecharts involves creating a chart using it's simple API, and rendering it on a container which has previously been applied some data. The code will look like this:
 
     barChart
         .width(500)
@@ -54,7 +54,7 @@ This project is in active development. Check the [issues page][16] for more info
 
 ## Acknowledgments
 
-Britecharts was inspired by two books, [Developing a D3.js Edge][19] and [Mastering D3.js][20]. It also leveraged the great amount of examples and articles of the [D3.js][1] community overall.
+Britecharts was inspired by two books, [Developing a D3.js Edge][19] and [Mastering D3.js][20]. It also leveraged a great number of examples and articles from the [D3.js][1] community overall.
 
 ## License
 
@@ -76,7 +76,7 @@ Read more in the [license document][15]
 
 
 [1]: http://d3js.org/
-[2]: https://webpack.github.io/ 
+[2]: https://webpack.github.io/
 [3]: http://bost.ocks.org/mike/chart/
 [4]: /docs/tutorial-bar.html
 [5]: /docs/tutorial-line.html

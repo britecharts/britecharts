@@ -5,9 +5,9 @@
 
 ### Chart Documentation
 
-In order to generate and see the documentation for this charts and the project in general you would need to:
+In order to generate and see the documentation for the library you would need to:
 
- + Download and install [node][12] (note we need npm version 2.X)
+ + Download and install [node][node] (note we need npm version 2.X)
  + Install the grunt task runner (if you don't have it yet) with:
 
     `npm install -g grunt-cli`
