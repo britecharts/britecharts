@@ -2,7 +2,7 @@ define(function(require) {
     'use strict';
 
     const bowser = require('bowser');
-    const {britechartsGreySchema : colors} = require('./colors.js');
+    const {colorSchemas} = require('./colors.js');
     const constants = require('./constants.js');
     const serializeWithStyles = require('./serializeWithStyles.js');
 
@@ -19,7 +19,7 @@ define(function(require) {
         imageSourceBase: 'data:image/svg+xml;base64,',
         titleFontSize: '15px',
         titleFontFamily: '\'Heebo-thin\', sans-serif',
-        titleTopOffset: 40,
+        titleTopOffset: 30,
         get styleBackgroundString () {
             return `<style>svg{background:${this.chartBackground};}</style>`;
         }
@@ -31,7 +31,7 @@ define(function(require) {
      * @param  {string} filename [download to be called <filename>.png]
      */
     function exportChart(d3svg, filename, title) {
-        let img = createImage(convertSvgToHtml(d3svg, title));
+        let img = createImage(convertSvgToHtml.call(this, d3svg, title));
 
         img.onload = handleImageLoad.bind(
                 img,
@@ -65,7 +65,7 @@ define(function(require) {
         let serializer = serializeWithStyles.initializeSerializer();
         let html = serializer(d3svg.node());
         html = formatHtmlByBrowser(html);
-        html = prependTitle(html, title, parseInt(d3svg.attr('width')));
+        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width')));
         html = addBackground(html);
 
         return html;
@@ -139,21 +139,6 @@ define(function(require) {
     }
 
     /**
-     * Mounts a text node to grab the assumed width
-     * @param  {string} title title to be mounted
-     * @return {string}      width of title assuming its mounted
-     */
-    function getTitleWidth(title) {
-        let div = document.createElement('div');
-        div.innerHTML = `<text id="temp_britechart_title" y="${config.titleTopOffset}" font-family="${config.titleFontFamily}" style="display=none" font-size="${config.titleFontSize}">${title}</text>`;
-        let text = div.childNodes[0];
-        document.body.appendChild(text);
-        let titleWidth = document.getElementById('temp_britechart_title').offsetWidth;
-        text.remove();
-        return titleWidth;
-    }
-
-    /**
      * Handles on load event fired by img.onload, this=img
      * @param  {object} canvas TYPE: el <canvas>
      * @param  {string} filename
@@ -177,10 +162,9 @@ define(function(require) {
         if (!title || !svgWidth) {
             return html;
         }
+        let {britechartsGreySchema} = colorSchemas;
 
-        let titleWidth = getTitleWidth(title);
-
-        html =  html.replace(/<g/,`<text x="${(svgWidth / 2) - (titleWidth / 2.2)}" y="${config.titleTopOffset}" font-family="${config.titleFontFamily}" font-size="${config.titleFontSize}" fill="${colors[6]}"> ${title} </text><g `);
+        html =  html.replace(/<g/,`<text x="${this.margin().left}" y="${config.titleTopOffset}" font-family="${config.titleFontFamily}" font-size="${config.titleFontSize}" fill="${britechartsGreySchema[6]}"> ${title} </text><g `);
         return html;
     }
 
