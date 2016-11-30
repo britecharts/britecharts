@@ -15,7 +15,7 @@ function createStepChart() {
         dataset;
 
     d3.select('#button').on('click', function() {
-        stepChart.exportChart();
+        stepChart.exportChart('stepchart.png', 'Britecharts Step Chart');
     });
 
     dataset = testDataSet.withSmallData().build();

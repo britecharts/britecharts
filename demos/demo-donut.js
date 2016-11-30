@@ -40,7 +40,12 @@ function createDonutChart(dataset, optionalColorSchema) {
     }
 
     donutContainer.datum(dataset).call(donutChart);
+
+    d3.select('#button').on('click', function() {
+        donutChart.exportChart('donut.png', 'Britecharts Donut Chart');
+    });
 }
+
 function getLegendChart(dataset, optionalColorSchema) {
     var legendChart = legend(),
         legendContainer = d3.select('.js-legend-chart-container');

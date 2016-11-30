@@ -53,9 +53,8 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
     tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
     tooltipContainer.datum([]).call(chartTooltip);
 
-    d3.select('#button').on('click',
-        function(){
-            stackedArea.exportChart();
+    d3.select('#button').on('click', function() {
+            stackedArea.exportChart('stacked-area.png', 'Britecharts Stacked Area');
     });
 }
 
