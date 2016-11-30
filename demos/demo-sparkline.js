@@ -15,7 +15,7 @@ function createSparklineChart() {
         dataset;
 
     d3.select('#button').on('click', function() {
-        sparkline.exportChart();
+        sparkline.exportChart('sparkline.png', 'Britechart Sparkline Chart');
     });
 
     dataset = testDataSet.with1Source().build();

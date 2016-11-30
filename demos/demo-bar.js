@@ -34,7 +34,7 @@ function createBarChartWithTooltip() {
         dataset;
 
     d3.select('.js-download-button').on('click', function() {
-        barChart.exportChart();
+        barChart.exportChart('barchart.png', 'Britecharts Bar Chart');
     });
 
     dataset = testDataSet.withLettersFrequency().build();

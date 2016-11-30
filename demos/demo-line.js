@@ -20,7 +20,7 @@ function createLineChart(optionalColorSchema) {
 
 
     d3.select('#button').on('click', function() {
-        lineChart1.exportChart();
+        lineChart1.exportChart('linechart.png', 'Britecharts Line Chart');
     });
 
     dataset = testDataSet.with5Topics().build();
@@ -68,7 +68,7 @@ function createLineChartWithSingleLine() {
     dataset = testDataSet.withOneSource().build();
 
     d3.select('#button2').on('click', function() {
-        lineChart2.exportChart();
+        lineChart2.exportChart('linechart.png', 'Britecharts Line Chart');
     });
 
     lineChart2
