@@ -1,7 +1,9 @@
 define(function(require) {
 
     var d3 = require('d3'),
-        colors = require('./../../src/charts/helpers/colors');
+        colors = require('./../../src/charts/helpers/colors'),
+
+        selectClass = 'form-control';
 
     /**
      * Creates a color schema selector
@@ -14,7 +16,8 @@ define(function(require) {
         var colorKeys = Object.keys(colors.colorSchemas);
 
         // Create Select
-        var sel = document.createElement("select");
+        var sel = document.createElement("select")
+            sel.className += ' ' + selectClass;
 
         // And fill with options
         colorKeys.forEach(function(key, i) {
