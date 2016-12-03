@@ -3,6 +3,7 @@ define(function(require) {
 
     var _ = require('underscore'),
 
+        jsonColors = require('json!../json/barColors.json'),
         jsonLetters = require('json!../json/barDataLetters.json');
 
 
@@ -13,6 +14,12 @@ define(function(require) {
 
         this.withLettersFrequency = function(){
             var attributes = _.extend({}, this.config, jsonLetters);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withColors = function(){
+            var attributes = _.extend({}, this.config, jsonColors);
 
             return new this.Klass(attributes);
         };
