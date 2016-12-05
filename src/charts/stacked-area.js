@@ -103,7 +103,6 @@ define(function(require){
 
 
             // formats
-            utc = d3.utcFormat('%Y-%m-%dT%H:%M:%SZ'),
             parseUTC = d3.timeParse('%Y-%m-%dT%H:%M:%SZ'),
 
             yTickNumberFormat = d3.format('.3'),
@@ -335,25 +334,6 @@ define(function(require){
         }
 
         /**
-         * Creates a copy of the data with values set to 0
-         * @param  {obj[]} data Array of objects with the original data
-         * @return {obj[]}      Array of objects with the original data and 0 values
-         */
-        function createEmptyDatasetFrom(data) {
-            // Parsing and stringify is a way of duplicating an array of objects
-            // spread could refactor this .map((value) => ({ ...value, [valueLabel]: 0}))
-            return cleanData(
-                JSON.parse(JSON.stringify(data))
-                    .map(function(d){
-                        d[valueLabel] = 0;
-                        d.value = 0;
-
-                        return d;
-                    })
-                );
-        }
-
-        /**
          * Draws the x and y axis on the svg object within their
          * respective groups
          * @private
@@ -378,7 +358,7 @@ define(function(require){
 
         /**
          * Creates SVG dot elements for each data entry and draws them
-         * @deprecated
+         * TODO: Plug
          */
         function drawDataReferencePoints() {
             // Creates Dots on Data points

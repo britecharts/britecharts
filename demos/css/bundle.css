@@ -11,12 +11,14 @@
 body {
   font-family: 'Heebo', sans-serif; }
 
+.vertical-grid-line,
 .horizontal-grid-line {
   fill: none;
   shape-rendering: crispEdges;
   stroke: #EFF2F5;
   stroke-width: 2; }
 
+.extended-y-line,
 .extended-x-line {
   fill: none;
   shape-rendering: crispEdges;
@@ -32,7 +34,6 @@ body {
 .tick text {
   font-size: 1.2em;
   fill: #ADB0B6;
-  text-anchor: middle;
   padding: 10px; }
 
 .y-axis-label,

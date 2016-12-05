@@ -95,6 +95,18 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide horizontal direction getter and setter', () => {
+                let previous = barChart.horizontal(),
+                    expected = true,
+                    actual;
+
+                barChart.horizontal(expected);
+                actual = barChart.horizontal();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
         });
 
         describe('when hovering a bar', function() {
