@@ -50,12 +50,11 @@ define(function(require) {
         let margin = {top: 20, right: 20, bottom: 30, left: 40},
             width = 960,
             height = 500,
-            ease = d3.easeQuadInOut,
-            gap = 2,
             data,
             chartWidth, chartHeight,
             xScale, yScale,
             numOfVerticalTicks = 5,
+            numOfHorizontalTicks = 5,
             xAxis, yAxis,
             xAxisPadding = {
                 top: 0,
@@ -63,6 +62,7 @@ define(function(require) {
                 bottom: 0,
                 right: 0
             },
+            horizontal = false,
             svg,
 
             valueLabel = 'value',
@@ -106,10 +106,18 @@ define(function(require) {
          * @private
          */
         function buildAxis(){
-            xAxis = d3.axisBottom(xScale);
+            if (!horizontal) {
+                xAxis = d3.axisBottom(xScale);
 
-            yAxis = d3.axisLeft(yScale)
-                .ticks(numOfVerticalTicks, '%');
+                yAxis = d3.axisLeft(yScale)
+                    .ticks(numOfVerticalTicks, '%');
+            } else {
+                xAxis = d3.axisBottom(xScale)
+                    .ticks(numOfHorizontalTicks, '%')
+                    .tickSizeInner([-chartHeight]);
+
+                yAxis = d3.axisLeft(yScale);
+            }
         }
 
         /**
@@ -139,14 +147,25 @@ define(function(require) {
          * @private
          */
         function buildScales(){
-            xScale = d3.scaleBand()
-                .domain(data.map(getName))
-                .rangeRound([0, chartWidth])
-                .padding(0.1);
+            if (!horizontal) {
+                xScale = d3.scaleBand()
+                    .domain(data.map(getName))
+                    .rangeRound([0, chartWidth])
+                    .padding(0.1);
 
-            yScale = d3.scaleLinear()
-                .domain([0, d3.max(data, getValue)])
-                .rangeRound([chartHeight, 0]);
+                yScale = d3.scaleLinear()
+                    .domain([0, d3.max(data, getValue)])
+                    .rangeRound([chartHeight, 0]);
+            } else {
+                xScale = d3.scaleLinear()
+                    .domain([0, d3.max(data, getValue)])
+                    .rangeRound([0, chartWidth]);
+
+                yScale = d3.scaleBand()
+                    .domain(data.map(getName))
+                    .rangeRound([chartHeight, 0])
+                    .padding(0.1);
+            }
         }
 
         /**
@@ -197,22 +216,19 @@ define(function(require) {
         }
 
         /**
-         * Draws the bar elements within the chart group
-         * @private
+         * Draws the bars along the x axis
+         * @param  {D3Selection} bars Selection of bars
+         * @return {void}
          */
-        function drawBars(){
-            let bars = svg.select('.chart-group').selectAll('.bar').data(data);
-
+        function drawHorizontalBars(bars) {
             // Enter + Update
             bars.enter()
               .append('rect')
                 .classed('bar', true)
-                .attr('x', chartWidth)
-                .attr('y', function(d) { return yScale(d.value); })
-                .attr('width', xScale.bandwidth())
-                .attr('height', function(d) {
-                    return chartHeight - yScale(d.value);
-                })
+                .attr('y', chartHeight)
+                .attr('x', 0)
+                .attr('height', yScale.bandwidth())
+                .attr('width', ({value}) => xScale(value))
                 .on('mouseover', function() {
                     dispatcher.call('customMouseOver', this);
                 })
@@ -223,16 +239,54 @@ define(function(require) {
                     dispatcher.call('customMouseOut', this);
                 })
               .merge(bars)
-                .attr('x', function(d) {
-                    return xScale(d.name);
-                })
-                .attr('y', function(d) {
-                    return yScale(d.value);
-                })
+                .attr('x', 0)
+                .attr('y', ({name}) => yScale(name))
+                .attr('height', yScale.bandwidth())
+                .attr('width', ({value}) => xScale(value));
+        }
+
+        /**
+         * Draws the bars along the y axis
+         * @param  {D3Selection} bars Selection of bars
+         * @return {void}
+         */
+        function drawVerticalBars(bars) {
+            // Enter + Update
+            bars.enter()
+              .append('rect')
+                .classed('bar', true)
+                .attr('x', chartWidth)
+                .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
-                .attr('height', function(d) {
-                    return chartHeight - yScale(d.value);
-                });
+                .attr('height', ({value}) => chartHeight - yScale(value))
+                .on('mouseover', function() {
+                    dispatcher.call('customMouseOver', this);
+                })
+                .on('mousemove', function(d) {
+                    dispatcher.call('customMouseMove', this, d, d3.mouse(this), [chartWidth, chartHeight]);
+                })
+                .on('mouseout', function() {
+                    dispatcher.call('customMouseOut', this);
+                })
+              .merge(bars)
+                .attr('x', ({name}) => xScale(name))
+                .attr('y', ({value}) => yScale(value))
+                .attr('width', xScale.bandwidth())
+                .attr('height', ({value}) => chartHeight - yScale(value));
+        }
+
+        /**
+         * Draws the bar elements within the chart group
+         * @private
+         */
+        function drawBars(){
+            let bars = svg.select('.chart-group').selectAll('.bar').data(data);
+
+            if (!horizontal) {
+                drawVerticalBars(bars);
+            } else {
+                drawHorizontalBars(bars)
+            }
 
             // Exit
             bars.exit()
@@ -246,6 +300,47 @@ define(function(require) {
          * @return void
          */
         function drawGridLines(){
+            if (!horizontal) {
+                drawVerticalGridLines();
+            } else {
+                drawHorizontalGridLines();
+            }
+        }
+
+        /**
+         * Draws the grid lines for an horizontal bar chart
+         * @return {void}
+         */
+        function drawHorizontalGridLines() {
+            maskGridLines = svg.select('.grid-lines-group')
+                .selectAll('line.vertical-grid-line')
+                .data(xScale.ticks(4))
+                .enter()
+                  .append('line')
+                    .attr('class', 'vertical-grid-line')
+                    .attr('y1', (xAxisPadding.left))
+                    .attr('y2', chartHeight)
+                    .attr('x1', (d) => xScale(d))
+                    .attr('x2', (d) => xScale(d))
+
+            //draw a horizontal line to extend y-axis till the edges
+            baseLine = svg.select('.grid-lines-group')
+                .selectAll('line.extended-y-line')
+                .data([0])
+                .enter()
+                  .append('line')
+                    .attr('class', 'extended-y-line')
+                    .attr('y1', (xAxisPadding.left))
+                    .attr('y2', chartHeight)
+                    .attr('x1', 0)
+                    .attr('x2', 0);
+        }
+
+        /**
+         * Draws the grid lines for a vertical bar chart
+         * @return {void}
+         */
+        function drawVerticalGridLines() {
             maskGridLines = svg.select('.grid-lines-group')
                 .selectAll('line.horizontal-grid-line')
                 .data(yScale.ticks(4))
@@ -317,6 +412,20 @@ define(function(require) {
                 return width;
             }
             width = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the horizontal direction of the chart
+         * @param  {number} _x Desired horizontal direction for the graph
+         * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
+         * @public
+         */
+        exports.horizontal = function(_x) {
+            if (!arguments.length) {
+                return horizontal;
+            }
+            horizontal = _x;
             return this;
         };
 

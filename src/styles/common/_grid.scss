@@ -1,3 +1,4 @@
+.vertical-grid-line,
 .horizontal-grid-line {
     fill: none;
     shape-rendering: crispEdges;
@@ -5,6 +6,7 @@
     stroke-width: 2;
 }
 
+.extended-y-line,
 .extended-x-line {
     fill: none;
     shape-rendering: crispEdges;
