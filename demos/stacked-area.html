@@ -8,21 +8,11 @@
 <body id="stacked-area">
     <div class="container">
         <div class="row">
-            <div class="span8">
-                <h3>Stacked Area Chart with Tooltip</h3>
+            <div class="col-md-8">
+                <h2 class="tutorial__heading">Stacked Area Chart with Tooltip</<h2></h2>>
                 <div class="britechart js-stacked-area-chart-tooltip-container"></div>
-                <p>The code for this example can be found in /demos/demo-stacked-area.js:</p>
-            </div>
-            <div class="span4 sidebar">
-                <h3>Colors</h3>
-                <p>You can also check other color schemas:</p>
-                <p class="js-color-selector-container"></p>
-                </p>
-
-                <h3>Download</h3>
-                <p>You can also export this chart by pressing: <input id="button" type="button" value="download" /></p>
-
                 <h3>Example</h3>
+                <p>The code for this example can be found in /demos/demo-stacked-area.js:</p>
                 <pre>
 // StackedAreChart Setup and start
 stackedArea
@@ -48,6 +38,15 @@ chartTooltip
 tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
 tooltipContainer.datum([]).call(chartTooltip);
                 </pre>
+            </div>
+            <div class="col-md-4 sidebar">
+                <h3>Colors</h3>
+                <label class="control-label">You can also check other color schemas:</label>
+                <div class="js-color-selector-container"></div>
+                </p>
+
+                <h3>Download</h3>
+                <p>You can also export this chart by pressing: <input id="button" class="btn" type="button" value="download" /></p>
             </div>
             <article>
             </article>

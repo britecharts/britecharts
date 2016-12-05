@@ -36,16 +36,6 @@ h1 {
     font-size: 42px;
 }
 
-h2 {
-    font-size: 32px;
-    margin-top: 44px;
-}
-
-h3 {
-    font-size: 24px;
-    margin-top: 36px;
-}
-
 h4 {
     font-size: 16px;
     font-weight: 400;
@@ -264,4 +254,14 @@ button.list-group-item:focus {
 }
 .jsdoc-message {
     display: none;
+}
+
+/* Demos */
+.tutorial-section {}
+.tutorial-section__heading {
+    display: none;
+}
+
+.sidebar {
+    margin-top: 50px;
 }

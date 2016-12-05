@@ -1,259 +1,248 @@
 <!DOCTYPE html>
 <?js var that = this; ?>
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width">
-	<title><?js= this.navOptions.systemName ?> <?js= title ?></title>
+    <head>
+    	<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width">
+    	<title><?js= this.navOptions.systemName ?> <?js= title ?></title>
 
-	<!--[if lt IE 9]>
-	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
+    	<!--[if lt IE 9]>
+    	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    	<![endif]-->
 
-	<link type="text/css" rel="stylesheet" href="styles/sunlight.<?js= this.navOptions.syntaxTheme ?>.css">
+    	<link type="text/css" rel="stylesheet" href="styles/sunlight.<?js= this.navOptions.syntaxTheme ?>.css">
 
-	<link type="text/css" rel="stylesheet" href="styles/site.<?js= this.navOptions.theme ?>.css">
-    <link type="text/css" rel="stylesheet" href="styles/custom.css">
-</head>
-
-<body>
-
-<div class="navbar navbar-light navbar-fixed-top <?js= this.navOptions.inverseNav ? 'navbar-inverse' : '' ?>">
-<div class="container">
-	<div class="navbar-header">
-		<a class="navbar-brand" href="<?js= this.nav.index.link ?>"><?js if(this.navOptions.logoFile) { ?><img class="branding-logo" src="<?js= this.navOptions.logoFile ?>"
-		alt="<?js } ?><?js= this.nav.index.title ?>"/></a>
-		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-        </button>
-	</div>
-	<div class="navbar-collapse collapse" id="topNavigation">
-		<ul class="nav navbar-nav">
-			<?js this.nav.topLevelNav.forEach(function(entry){ ?>
-			<li class="dropdown">
-				<a href="<?js= entry.link ?>" class="dropdown-toggle" data-toggle="dropdown"><?js= entry.title ?><b class="caret"></b></a>
-				<ul class="dropdown-menu <?js= that.navOptions.navType ==='inline' ? 'inline' : '' ?>">
-					<?js entry.members.forEach(function(member){ ?><li><?js= member ?></li><?js	}); ?>
-				</ul>
-			</li>
-			<?js }); ?>
-		</ul>
-        <?js if (this.navOptions.search) { ?>
-            <div class="col-sm-4 col-md-5">
-                <form class="navbar-form" role="search">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+    	<link type="text/css" rel="stylesheet" href="styles/site.<?js= this.navOptions.theme ?>.css">
+        <link type="text/css" rel="stylesheet" href="styles/custom.css">
+    </head>
+    <body>
+        <div class="navbar navbar-light navbar-fixed-top <?js= this.navOptions.inverseNav ? 'navbar-inverse' : '' ?>">
+            <div class="container">
+            	<div class="navbar-header">
+            		<a class="navbar-brand" href="<?js= this.nav.index.link ?>"><?js if(this.navOptions.logoFile) { ?><img class="branding-logo" src="<?js= this.navOptions.logoFile ?>"
+            		alt="<?js } ?><?js= this.nav.index.title ?>"/></a>
+            		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+                    </button>
+            	</div>
+            	<div class="navbar-collapse collapse" id="topNavigation">
+            		<ul class="nav navbar-nav">
+            			<?js this.nav.topLevelNav.forEach(function(entry){ ?>
+            			<li class="dropdown">
+            				<a href="<?js= entry.link ?>" class="dropdown-toggle" data-toggle="dropdown"><?js= entry.title ?><b class="caret"></b></a>
+            				<ul class="dropdown-menu <?js= that.navOptions.navType ==='inline' ? 'inline' : '' ?>">
+            					<?js entry.members.forEach(function(member){ ?><li><?js= member ?></li><?js	}); ?>
+            				</ul>
+            			</li>
+            			<?js }); ?>
+            		</ul>
+                    <?js if (this.navOptions.search) { ?>
+                        <div class="col-sm-4 col-md-5">
+                            <form class="navbar-form" role="search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                    </div>
-                </form>
+                    <?js } ?>
+            	</div>
+            </div>
+        </div>
+
+        <main class="container" id="toc-content">
+            <div class="row">
+            	<?js if(docs && docs[0].kind !== "source"){ ?>
+            	<div class="col-md-8 is-source">
+            	<?js } else { ?>
+            	<div class="col-md-12">
+            	<?js } ?>
+            		<div id="main">
+            			<?js= content ?>
+            		</div>
+            	</div>
+            	<div class="clearfix"></div>
+            	<?js if(docs && docs[0].kind !== "source"){ ?>
+            		<div class="col-md-3">
+            			<div id="toc" class="col-md-3 hidden-xs hidden-sm"></div>
+            		</div>
+            	<?js } ?>
+            </div>
+        </main>
+
+        <?js if (this.navOptions.search) { ?>
+            <div class="modal fade" id="searchResults">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Search results</h4>
+                  </div>
+                  <div class="modal-body"></div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div><!-- /.modal-content -->
+              </div><!-- /.modal-dialog -->
             </div>
         <?js } ?>
-	</div>
 
-</div>
-</div>
+        <footer>
+            <?js if (that.navOptions.footer.length > 0){ ?>
+            	<?js= that.navOptions.footer ?>
+            <?js } ?>
+            <?js if (that.navOptions.copyright.length > 0){ ?>
+            	<span class="copyright">
+            	<?js= that.navOptions.copyright ?>
+            	</span>
+            <?js } ?>
+            <span class="jsdoc-message">
+            	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc <?js= env.version.number ?></a>
+            	<?js if (that.navOptions.includeDate) { ?>
+            		on <?js= (that.moment().format(that.navOptions.dateFormat)) ?>
+            	<?js } ?>
+            	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+            </span>
+        </footer>
 
-
-<div class="container" id="toc-content">
-<div class="row">
-
-	<?js if(docs && docs[0].kind !== "source"){ ?>
-	<div class="col-md-8">
-	<?js } else { ?>
-	<div class="col-md-12">
-	<?js } ?>
-		<div id="main">
-			<?js= content ?>
-		</div>
-	</div>
-
-	<div class="clearfix"></div>
-
-	<?js if(docs && docs[0].kind !== "source"){ ?>
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
-	<?js } ?>
-
-</div>
-</div>
-
-<?js if (this.navOptions.search) { ?>
-    <div class="modal fade" id="searchResults">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Search results</h4>
-          </div>
-          <div class="modal-body"></div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div>
-<?js } ?>
-
-<footer>
-<?js if (that.navOptions.footer.length > 0){ ?>
-	<?js= that.navOptions.footer ?>
-<?js } ?>
-<?js if (that.navOptions.copyright.length > 0){ ?>
-	<span class="copyright">
-	<?js= that.navOptions.copyright ?>
-	</span>
-<?js } ?>
-<span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc <?js= env.version.number ?></a>
-	<?js if (that.navOptions.includeDate) { ?>
-		on <?js= (that.moment().format(that.navOptions.dateFormat)) ?>
-	<?js } ?>
-	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
-</span>
-</footer>
-
-<script src="scripts/docstrap.lib.js"></script>
-<script src="scripts/toc.js"></script>
-<?js if (this.navOptions.search) { ?>
-    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
-<?js } ?>
-<script src="/demos/build/bundle.js"></script>
+        <script src="scripts/docstrap.lib.js"></script>
+        <script src="scripts/toc.js"></script>
+        <?js if (this.navOptions.search) { ?>
+            <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+        <?js } ?>
+        <script src="/demos/build/bundle.js"></script>
 
 
-<script>
-$( function () {
-	$( "[id*='$']" ).each( function () {
-		var $this = $( this );
+        <script>
+        $( function () {
+        	$( "[id*='$']" ).each( function () {
+        		var $this = $( this );
 
-		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
-	} );
+        		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+        	} );
 
-	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
-		var $this = $( this );
+        	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+        		var $this = $( this );
 
-		var example = $this.find( "code" );
-		exampleText = example.html();
-		var lang = /{@lang (.*?)}/.exec( exampleText );
-		if ( lang && lang[1] ) {
-			exampleText = exampleText.replace( lang[0], "" );
-			example.html( exampleText );
-			lang = lang[1];
-		} else if (example && example.parent().length) {
-			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
-			lang = langClassMatch ? langClassMatch[1] : "javascript";
-		}
+        		var example = $this.find( "code" );
+        		exampleText = example.html();
+        		var lang = /{@lang (.*?)}/.exec( exampleText );
+        		if ( lang && lang[1] ) {
+        			exampleText = exampleText.replace( lang[0], "" );
+        			example.html( exampleText );
+        			lang = lang[1];
+        		} else if (example && example.parent().length) {
+        			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+        			lang = langClassMatch ? langClassMatch[1] : "javascript";
+        		}
 
-		if ( lang ) {
+        		if ( lang ) {
 
-			$this
-			.addClass( "sunlight-highlight-" + lang )
-			.addClass( "linenums" )
-			.html( example.html() );
+        			$this
+        			.addClass( "sunlight-highlight-" + lang )
+        			.addClass( "linenums" )
+        			.html( example.html() );
 
-		}
-	} );
+        		}
+        	} );
 
-	Sunlight.highlightAll( {
-		lineNumbers : <?js= this.navOptions.linenums || false ?>,
-		showMenu : true,
-		enableDoclinks : true
-	} );
+        	Sunlight.highlightAll( {
+        		lineNumbers : <?js= this.navOptions.linenums || false ?>,
+        		showMenu : true,
+        		enableDoclinks : true
+        	} );
 
-	$.catchAnchorLinks( {
-        navbarOffset: 10
-	} );
-	$( "#toc" ).toc( {
-		anchorName  : function ( i, heading, prefix ) {
-			return $( heading ).attr( "id" ) || ( prefix + i );
-		},
-		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
-		showAndHide : false,
-		smoothScrolling: true
-	} );
+        	$.catchAnchorLinks( {
+                navbarOffset: 10
+        	} );
+        	$( "#toc" ).toc( {
+        		anchorName  : function ( i, heading, prefix ) {
+        			return $( heading ).attr( "id" ) || ( prefix + i );
+        		},
+        		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+        		showAndHide : false,
+        		smoothScrolling: true
+        	} );
 
-	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
-	$( '.dropdown-toggle' ).dropdown();
+        	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+        	$( '.dropdown-toggle' ).dropdown();
 
-    $( "table" ).each( function () {
-      var $this = $( this );
-      $this.addClass('table');
-    } );
-
-} );
-</script>
-
+            $( "table" ).each( function () {
+              var $this = $( this );
+              $this.addClass('table');
+            } );
+        } );
+        </script>
 
 
-<!--Navigation and Symbol Display-->
-<?js if (this.navOptions.collapseSymbols) { ?>
-<script>
-	$( function () {
-		$( '#main' ).localScroll( {
-			offset : { top : 60 } //offset by the height of your header (give or take a few px, see what works for you)
-		} );
-		$( "dt.name" ).each( function () {
-			var $this = $( this ).find("h4");
-			var icon = $( "<i/>" ).addClass( "icon-plus-sign" ).addClass( "pull-right" ).addClass( "icon-white" );
-			var dt = $(this);
-			var children = dt.next( "dd" );
+        <!--Navigation and Symbol Display-->
+        <?js if (this.navOptions.collapseSymbols) { ?>
+        <script>
+        	$( function () {
+        		$( '#main' ).localScroll( {
+        			offset : { top : 60 } //offset by the height of your header (give or take a few px, see what works for you)
+        		} );
+        		$( "dt.name" ).each( function () {
+        			var $this = $( this ).find("h4");
+        			var icon = $( "<i/>" ).addClass( "icon-plus-sign" ).addClass( "pull-right" ).addClass( "icon-white" );
+        			var dt = $(this);
+        			var children = dt.next( "dd" );
 
-			dt.prepend( icon ).css( {cursor : "pointer"} );
-			dt.addClass( "member-collapsed" ).addClass( "member" );
+        			dt.prepend( icon ).css( {cursor : "pointer"} );
+        			dt.addClass( "member-collapsed" ).addClass( "member" );
 
 
-			children.hide();
+        			children.hide();
 
-			dt.children().on( "click", function () {
-				children = dt.next( "dd" );
-				children.slideToggle( "fast", function () {
+        			dt.children().on( "click", function () {
+        				children = dt.next( "dd" );
+        				children.slideToggle( "fast", function () {
 
-					if ( children.is( ":visible" ) ) {
-						icon.addClass( "icon-minus-sign" ).removeClass( "icon-plus-sign" ).removeClass( "icon-white" );
-						dt.addClass( "member-open" ).animate( "member-collapsed" );
-					} else {
-						icon.addClass( "icon-plus-sign" ).removeClass( "icon-minus-sign" ).addClass( "icon-white" );
-						dt.addClass( "member-collapsed" ).removeClass( "member-open" );
-					}
-				} );
-			} );
+        					if ( children.is( ":visible" ) ) {
+        						icon.addClass( "icon-minus-sign" ).removeClass( "icon-plus-sign" ).removeClass( "icon-white" );
+        						dt.addClass( "member-open" ).animate( "member-collapsed" );
+        					} else {
+        						icon.addClass( "icon-plus-sign" ).removeClass( "icon-minus-sign" ).addClass( "icon-white" );
+        						dt.addClass( "member-collapsed" ).removeClass( "member-open" );
+        					}
+        				} );
+        			} );
 
-		} );
-	} );
-</script>
-<?js } ?>
+        		} );
+        	} );
+        </script>
+        <?js } ?>
 
-<!--Google Analytics-->
-<?js if (this.navOptions.analytics && this.navOptions.analytics.ua && this.navOptions.analytics.domain) { ?>
-<script>
-	(function ( i, s, o, g, r, a, m ) {
-		i['GoogleAnalyticsObject'] = r;
-		i[r] = i[r] || function () {
-			(i[r].q = i[r].q || []).push( arguments )
-		}, i[r].l = 1 * new Date();
-		a = s.createElement( o ),
-			m = s.getElementsByTagName( o )[0];
-		a.async = 1;
-		a.src = g;
-		m.parentNode.insertBefore( a, m )
-	})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
+        <!--Google Analytics-->
+        <?js if (this.navOptions.analytics && this.navOptions.analytics.ua && this.navOptions.analytics.domain) { ?>
+        <script>
+        	(function ( i, s, o, g, r, a, m ) {
+        		i['GoogleAnalyticsObject'] = r;
+        		i[r] = i[r] || function () {
+        			(i[r].q = i[r].q || []).push( arguments )
+        		}, i[r].l = 1 * new Date();
+        		a = s.createElement( o ),
+        			m = s.getElementsByTagName( o )[0];
+        		a.async = 1;
+        		a.src = g;
+        		m.parentNode.insertBefore( a, m )
+        	})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
 
-	ga( 'create', '<?js= this.navOptions.analytics.ua ?>', '<?js= this.navOptions.analytics.domain ?>' );
-	ga( 'send', 'pageview' );
-</script>
-<?js } ?>
+        	ga( 'create', '<?js= this.navOptions.analytics.ua ?>', '<?js= this.navOptions.analytics.domain ?>' );
+        	ga( 'send', 'pageview' );
+        </script>
+        <?js } ?>
 
-<?js if (this.navOptions.search) { ?>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            SearcherDisplay.init();
-        });
-    </script>
-<?js } ?>
-
-</body>
+        <?js if (this.navOptions.search) { ?>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    SearcherDisplay.init();
+                });
+            </script>
+        <?js } ?>
+    </body>
 </html>
