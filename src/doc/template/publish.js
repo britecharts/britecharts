@@ -67,7 +67,7 @@ var navigationMaster = {
     members: []
   },
   module: {
-    title: "Modules",
+    title: "API",
     link: helper.getUniqueFilename("modules.list"),
     members: []
   },
@@ -76,7 +76,6 @@ var navigationMaster = {
     link: helper.getUniqueFilename('classes.list'),
     members: []
   },
-
   mixin: {
     title: "Mixins",
     link: helper.getUniqueFilename("mixins.list"),
@@ -93,7 +92,7 @@ var navigationMaster = {
     members: []
   },
   tutorial: {
-    title: "Tutorials",
+    title: "Demos",
     link: helper.getUniqueFilename("tutorials.list"),
     members: []
   },
@@ -804,7 +803,7 @@ exports.publish = function(taffyData, opts, tutorials) {
         longname: longname
       });
       if (myModules.length) {
-        generate('module', 'Module: ' + myModules[0].name, myModules, helper.longnameToUrl[longname]);
+        generate('module', 'API: ' + myModules[0].name, myModules, helper.longnameToUrl[longname]);
       }
 
       var myNamespaces = helper.find(namespaces, {

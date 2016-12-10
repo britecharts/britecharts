@@ -11,72 +11,78 @@ var _ = require('underscore'),
 function createBarChart() {
     var barChart = bar(),
         testDataSet = new dataBuilder.BarDataBuilder(),
-        containerWidth = d3.select('.js-bar-chart-container').node().getBoundingClientRect().width,
         barContainer = d3.select('.js-bar-chart-container'),
+        containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
         dataset;
 
-    dataset = testDataSet.withLettersFrequency().build();
+    if (containerWidth) {
+        dataset = testDataSet.withLettersFrequency().build();
 
-    barChart
-        .width(containerWidth)
-        .height(300);
+        barChart
+            .width(containerWidth)
+            .height(300);
 
-    barContainer.datum(dataset).call(barChart);
+        barContainer.datum(dataset).call(barChart);
+    }
 }
 
 function createHorizontalBarChart() {
     var barChart = bar(),
         testDataSet = new dataBuilder.BarDataBuilder(),
-        containerWidth = d3.select('.js-horizontal-bar-chart-container').node().getBoundingClientRect().width,
         barContainer = d3.select('.js-horizontal-bar-chart-container'),
+        containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
         dataset;
 
-    dataset = testDataSet.withColors().build();
+    if (containerWidth) {
+        dataset = testDataSet.withColors().build();
 
-    barChart
-        .margin({
-            left: 80,
-            right: 20,
-            top: 30,
-            bottom: 30
-        })
-        .horizontal(true)
-        .width(containerWidth)
-        .height(300);
+        barChart
+            .margin({
+                left: 80,
+                right: 20,
+                top: 20,
+                bottom: 0
+            })
+            .horizontal(true)
+            .width(containerWidth)
+            .height(300);
 
-    barContainer.datum(dataset).call(barChart);
+        barContainer.datum(dataset).call(barChart);
+    }
 }
 
 function createBarChartWithTooltip() {
     var barChart = bar(),
         tooltip = miniTooltip(),
         testDataSet = new dataBuilder.BarDataBuilder(),
-        containerWidth = d3.select('.js-bar-chart-tooltip-container').node().getBoundingClientRect().width,
         barContainer = d3.select('.js-bar-chart-tooltip-container'),
+        containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
 
-    d3.select('.js-download-button').on('click', function() {
-        barChart.exportChart('barchart.png', 'Britecharts Bar Chart');
-    });
+    if (containerWidth) {
+        d3.select('.js-download-button').on('click', function() {
+            barChart.exportChart('barchart.png', 'Britecharts Bar Chart');
+        });
 
-    dataset = testDataSet.withLettersFrequency().build();
+        dataset = testDataSet.withLettersFrequency().build();
 
-    barChart
-        .width(containerWidth)
-        .height(300)
-        .on('customMouseOver', tooltip.show)
-        .on('customMouseMove', tooltip.update)
-        .on('customMouseOut', tooltip.hide);
+        barChart
+            .width(containerWidth)
+            .height(300)
+            .on('customMouseOver', tooltip.show)
+            .on('customMouseMove', tooltip.update)
+            .on('customMouseOut', tooltip.hide);
 
-    barContainer.datum(dataset).call(barChart);
+        barContainer.datum(dataset).call(barChart);
 
-    tooltipContainer = d3.select('.bar-chart .metadata-group');
-    tooltipContainer.datum([]).call(tooltip);
+        tooltipContainer = d3.select('.bar-chart .metadata-group');
+        tooltipContainer.datum([]).call(tooltip);
+    }
 }
 
 // Show charts if container available
-if (d3.select('.js-bar-chart-container').node()){
+if (d3.select('.js-bar-chart-tooltip-container').node()){
     createBarChart();
     createHorizontalBarChart();
     createBarChartWithTooltip();

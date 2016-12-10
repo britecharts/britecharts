@@ -26,10 +26,10 @@ define(function(require){
     return function module() {
 
         let margin = {
-                top: 60,
-                right: 20,
-                bottom: 60,
-                left: 80
+                top: 70,
+                right: 30,
+                bottom: 50,
+                left: 70
             },
             width = 960,
             height = 500,
@@ -40,6 +40,7 @@ define(function(require){
             monthAxisPadding = 30,
             numVerticalTicks = 5,
             yTickTextYOffset = -8,
+            yTickTextXOffset = 40,
 
             colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
 
@@ -190,7 +191,7 @@ define(function(require){
             yAxis = d3.axisRight(yScale)
                 .ticks(numVerticalTicks)
                 .tickFormat(yTickNumberFormat)
-                .tickSize(width, 0, 0)
+                .tickSize(chartWidth + yTickTextXOffset, 0, 0)
                 .tickPadding(5);
         }
 
@@ -348,12 +349,12 @@ define(function(require){
             //     .call(xMonthAxis);
 
             svg.select('.y-axis-group.axis')
-                .attr('transform', `translate( ${-margin.left / 2}, 0)`)
+                .attr('transform', `translate( ${-yTickTextXOffset}, 0)`)
                 .call(yAxis);
 
             // Moving the YAxis tick labels to the right side
             d3.selectAll('.y-axis-group .tick text')
-                .attr('transform', `translate( ${-width}, ${yTickTextYOffset})` );
+                .attr('transform', `translate( ${-chartWidth - yTickTextXOffset}, ${yTickTextYOffset})` );
         }
 
         /**

@@ -10,36 +10,38 @@ var _ = require('underscore'),
 function createStepChart() {
     var stepChart = step(),
         testDataSet = new dataBuilder.StepDataBuilder(),
-        containerWidth = d3.select('.js-step-chart-container').node().getBoundingClientRect().width,
         stepContainer = d3.select('.js-step-chart-container'),
+        containerWidth = stepContainer.node() ? stepContainer.node().getBoundingClientRect().width : false,
         dataset;
 
-    d3.select('#button').on('click', function() {
-        stepChart.exportChart('stepchart.png', 'Britecharts Step Chart');
-    });
-
-    dataset = testDataSet.withSmallData().build();
-
-    stepChart
-        .width(containerWidth)
-        .height(300)
-        .xAxisLabel('Fruit Type')
-        .xAxisLabelOffset(45)
-        .yAxisLabel('Quantity')
-        .yAxisLabelOffset(-35)
-        .margin({
-            top: 20,
-            right: 20,
-            bottom: 30,
-            left: 80
-        })
-        .on('customHover', function(d, i){
-            console.log('Step key is ', d.key);
-            console.log('Step value is ', d.value);
-            console.log('Step index is ', i);
+    if (containerWidth) {
+        d3.select('#button').on('click', function() {
+            stepChart.exportChart('stepchart.png', 'Britecharts Step Chart');
         });
 
-    stepContainer.datum(dataset.data).call(stepChart);
+        dataset = testDataSet.withSmallData().build();
+
+        stepChart
+            .width(containerWidth)
+            .height(300)
+            .xAxisLabel('Fruit Type')
+            .xAxisLabelOffset(45)
+            .yAxisLabel('Quantity')
+            .yAxisLabelOffset(-50)
+            .margin({
+                top: 20,
+                right: 20,
+                bottom: 20,
+                left: 80
+            })
+            .on('customHover', function(d, i){
+                console.log('Step key is ', d.key);
+                console.log('Step value is ', d.value);
+                console.log('Step index is ', i);
+            });
+
+        stepContainer.datum(dataset.data).call(stepChart);
+    }
 }
 
 // Show charts if container available

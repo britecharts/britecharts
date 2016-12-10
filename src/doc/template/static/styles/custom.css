@@ -265,3 +265,14 @@ button.list-group-item:focus {
 .sidebar {
     margin-top: 50px;
 }
+
+
+/* Charts */
+/* TODO: Review with Sun */
+.card--chart {
+  border-width: 1px;
+  border-style: solid;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  border-color: lightgray;
+}

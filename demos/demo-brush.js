@@ -10,25 +10,27 @@ var _ = require('underscore'),
 function createBrushChart() {
     var brushChart = brush(),
         testDataSet = new dataBuilder.BrushDataBuilder(),
-        containerWidth = d3.select('.js-brush-chart-container').node().getBoundingClientRect().width,
         brushContainer = d3.select('.js-brush-chart-container'),
+        containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
         dataset;
 
-    dataset = testDataSet.withSimpleData().build();
+    if (containerWidth) {
+        dataset = testDataSet.withSimpleData().build();
 
-    brushChart
-        .width(containerWidth)
-        .height(200)
-        .onBrush(function(brushExtent) {
-            var format = d3.timeFormat('%m/%d/%Y');
+        brushChart
+            .width(containerWidth)
+            .height(200)
+            .onBrush(function(brushExtent) {
+                var format = d3.timeFormat('%m/%d/%Y');
 
-            d3.select('.js-start-date').text(format(brushExtent[0]));
-            d3.select('.js-end-date').text(format(brushExtent[1]));
+                d3.select('.js-start-date').text(format(brushExtent[0]));
+                d3.select('.js-end-date').text(format(brushExtent[1]));
 
-            d3.select('.js-date-range').classed('is-hidden', false);
-        });
+                d3.select('.js-date-range').classed('is-hidden', false);
+            });
 
-    brushContainer.datum(dataset).call(brushChart);
+        brushContainer.datum(dataset).call(brushChart);
+    }
 }
 
 // Show charts if container available
