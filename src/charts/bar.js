@@ -47,7 +47,12 @@ define(function(require) {
      */
     return function module() {
 
-        let margin = {top: 20, right: 20, bottom: 30, left: 40},
+        let margin = {
+                top: 20,
+                right: 20,
+                bottom: 0,
+                left: 40
+            },
             width = 960,
             height = 500,
             data,
