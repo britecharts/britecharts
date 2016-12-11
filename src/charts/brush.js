@@ -51,7 +51,7 @@ define(function(require) {
         let margin = {
                 top: 20,
                 right: 20,
-                bottom: 20,
+                bottom: 30,
                 left: 20
             },
             width = 960,

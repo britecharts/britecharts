@@ -42,6 +42,7 @@ define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, 
             expect(containerFixture.select('g.y-axis-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.y-axis-label').empty()).toBeFalsy();
             expect(containerFixture.select('g.grid-lines-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
         });
 
         it('should render grid lines', () => {
@@ -158,23 +159,16 @@ define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, 
             });
         });
 
-        describe('on hovering a step', function() {
-
-            beforeEach(() => {
-                this.callbackSpy = jasmine.createSpy('callback');
-
-                stepChart.on('customHover', this.callbackSpy);
-            });
+        describe('when hovering a step', function() {
 
             it('should trigger a callback', () => {
                 let step = containerFixture.select('.step:nth-child(1)');
+                let callbackSpy = jasmine.createSpy('callback');
 
+                stepChart.on('customMouseOver', callbackSpy);
                 step.dispatch('mouseover');
 
-                expect(this.callbackSpy).toHaveBeenCalled();
-                // TODO: Figure out why the callback has this shape
-                // arguments: data, index, ?
-                expect(this.callbackSpy).toHaveBeenCalledWith(dataset.data, 0);
+                expect(callbackSpy.calls.count()).toBe(1);
             });
         });
 

@@ -1,7 +1,8 @@
 'use strict';
 
-var _ = require('underscore'),
-    d3 = require('d3'),
+var d3 = require('d3'),
+
+    PubSub = require('pubsub-js'),
 
     colors = require('./../src/charts/helpers/colors'),
 
@@ -28,7 +29,7 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
 
         // StackedAreChart Setup and start
         stackedArea
-            .tooltipThreshold(400)
+            .tooltipThreshold(600)
             .width(containerWidth)
             .on('customMouseOver', function() {
                 chartTooltip.show();
@@ -67,11 +68,14 @@ if (d3.select('.js-stacked-area-chart-tooltip-container').node()){
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
-    d3.select(window)
-        .on('resize', _.debounce(function(){
-            d3.selectAll('.stacked-area').remove();
-            createStackedAreaChartWithTooltip();
-        }, 200));
+    var redrawCharts = function(){
+        d3.selectAll('.stacked-area').remove();
+
+        createStackedAreaChartWithTooltip();
+    };
+
+    // Redraw charts on window resize
+    PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
     colorSelectorHelper.createColorSelector('.js-color-selector-container', '.stacked-area', createStackedAreaChartWithTooltip);

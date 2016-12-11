@@ -1,7 +1,8 @@
 'use strict';
 
-var _ = require('underscore'),
-    d3 = require('d3'),
+var d3 = require('d3'),
+
+    PubSub = require('pubsub-js'),
 
     donut = require('./../src/charts/donut'),
     legend = require('./../src/charts/legend'),
@@ -91,12 +92,15 @@ if (d3.select('.js-donut-chart-container').node()) {
     createDonutChart(dataset);
     createSmallDonutChart();
 
-    d3.select(window).on('resize', _.debounce(function(){
+    var redrawCharts = function(){
         d3.selectAll('.donut-chart').remove();
 
         createDonutChart(dataset);
         createSmallDonutChart();
-    }, 200));
+    };
+
+    // Redraw charts on window resize
+    PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
     colorSelectorHelper.createColorSelector('.js-color-selector-container', '.donut-chart', createDonutChart.bind(null, dataset));
