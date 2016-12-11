@@ -41,8 +41,8 @@ define(function(require){
                 bottom: 12,
                 left: 12
             },
-            width = 50,
-            height = 50,
+            width = 100,
+            height = 100,
 
             // Optional Title
             title = '',
@@ -52,7 +52,7 @@ define(function(require){
             nameLabel = 'name',
 
             // Animations
-            mouseChaseDuration = 200,
+            mouseChaseDuration = 100,
             ease = d3.easeQuadInOut,
 
             // tooltip
@@ -343,6 +343,20 @@ define(function(require){
         exports.hide = function() {
             hideTooltip();
 
+            return this;
+        };
+
+        /**
+         * Gets or Sets data's nameLabel
+         * @param  {text} _x Desired nameLabel
+         * @return { text | module} nameLabel or Step Chart module to chain calls
+         * @public
+         */
+        exports.nameLabel = function(_x) {
+            if (!arguments.length) {
+                return nameLabel;
+            }
+            nameLabel = _x;
             return this;
         };
 

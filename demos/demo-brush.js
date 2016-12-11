@@ -1,7 +1,8 @@
 'use strict';
 
-var _ = require('underscore'),
-    d3 = require('d3'),
+var d3 = require('d3'),
+
+    PubSub = require('pubsub-js'),
 
     brush = require('./../src/charts/brush'),
     dataBuilder = require('./../test/fixtures/brushChartDataBuilder');
@@ -37,8 +38,12 @@ function createBrushChart() {
 if (d3.select('.js-brush-chart-container').node()){
     createBrushChart();
 
-    d3.select(window).on('resize', _.debounce(function(){
+    var redrawCharts = function(){
         d3.select('.brush-chart').remove();
+
         createBrushChart();
-    }, 200));
+    };
+
+    // Redraw charts on window resize
+    PubSub.subscribe('resize', redrawCharts);
 }

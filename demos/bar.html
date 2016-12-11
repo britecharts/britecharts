@@ -38,14 +38,15 @@ tooltipContainer.datum([]).call(tooltip);
         <div class="row">
             <div class="col-md-6">
                 <article>
-                    <h2 class="tutorial__heading">Simple Bar Chart</h2>
-                    <div class="js-bar-chart-container card--chart"></div>
+                    <h2 class="tutorial__heading">Horizontal Bar Chart</h2>
+                    <div class="js-horizontal-bar-chart-container card--chart"></div>
                 </article>
             </div>
             <div class="col-md-6 sidebar">
                 <h3>The code</h3>
                 <pre>
 barChart
+    .horizontal(true)
     .width(containerWidth)
     .height(300);
 
@@ -56,15 +57,14 @@ barContainer.datum(dataset).call(barChart);
         <div class="row">
             <div class="col-md-6">
                 <article>
-                    <h2 class="tutorial__heading">Horizontal Bar Chart</h2>
-                    <div class="js-horizontal-bar-chart-container card--chart"></div>
+                    <h2 class="tutorial__heading">Simple Bar Chart</h2>
+                    <div class="js-bar-chart-container card--chart"></div>
                 </article>
             </div>
             <div class="col-md-6 sidebar">
                 <h3>The code</h3>
                 <pre>
 barChart
-    .horizontal(true)
     .width(containerWidth)
     .height(300);
 

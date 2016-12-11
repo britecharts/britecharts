@@ -1,7 +1,8 @@
 'use strict';
 
-var _ = require('underscore'),
-    d3 = require('d3'),
+var d3 = require('d3'),
+
+    PubSub = require('pubsub-js'),
 
     line = require('./../src/charts/line'),
     tooltip = require('./../src/charts/tooltip'),
@@ -144,13 +145,19 @@ if (d3.select('.js-line-chart-container').node()) {
     createLineChartWithSingleLine();
     createLineChartWithFixedHeight();
 
-    d3.select(window).on('resize', _.debounce(function(){
+    var redrawCharts = function(){
         d3.selectAll('.line-chart').remove();
+
         createLineChart();
         createLineChartWithSingleLine();
         createLineChartWithFixedHeight();
-    }, 200));
+    };
+
+    // Redraw charts on window resize
+    PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
     colorSelectorHelper.createColorSelector('.js-color-selector-container', '.line-chart', createLineChart);
 }
+
+

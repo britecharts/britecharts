@@ -1,17 +1,22 @@
 'use strict';
 
-var _ = require('underscore'),
-    d3 = require('d3'),
+var d3 = require('d3'),
+
+    PubSub = require('pubsub-js'),
 
     step = require('./../src/charts/step'),
+    miniTooltip = require('./../src/charts/mini-tooltip'),
+
     dataBuilder = require('./../test/fixtures/stepChartDataBuilder');
 
 
 function createStepChart() {
     var stepChart = step(),
+        tooltip = miniTooltip(),
         testDataSet = new dataBuilder.StepDataBuilder(),
         stepContainer = d3.select('.js-step-chart-container'),
         containerWidth = stepContainer.node() ? stepContainer.node().getBoundingClientRect().width : false,
+        tooltipContainer,
         dataset;
 
     if (containerWidth) {
@@ -29,18 +34,22 @@ function createStepChart() {
             .yAxisLabel('Quantity')
             .yAxisLabelOffset(-50)
             .margin({
-                top: 20,
-                right: 20,
-                bottom: 20,
+                top: 40,
+                right: 40,
+                bottom: 10,
                 left: 80
             })
-            .on('customHover', function(d, i){
-                console.log('Step key is ', d.key);
-                console.log('Step value is ', d.value);
-                console.log('Step index is ', i);
-            });
+            .on('customMouseOver', tooltip.show)
+            .on('customMouseMove', tooltip.update)
+            .on('customMouseOut', tooltip.hide);
+
 
         stepContainer.datum(dataset.data).call(stepChart);
+
+        tooltip.nameLabel('key');
+
+        tooltipContainer = d3.select('.js-step-chart-container .step-chart .metadata-group');
+        tooltipContainer.datum([]).call(tooltip);
     }
 }
 
@@ -48,8 +57,14 @@ function createStepChart() {
 if (d3.select('.js-step-chart-container').node()){
     createStepChart();
 
-    d3.select(window).on('resize', _.debounce(function(){
+    // For getting a responsive behavior on our chart,
+    // we'll need to listen to the window resize event
+    var redrawCharts = function(){
         d3.select('.step-chart').remove();
+
         createStepChart();
-    }, 200));
+    };
+
+    // Redraw charts on window resize
+    PubSub.subscribe('resize', redrawCharts);
 }
