@@ -25,37 +25,37 @@
         },
         {
           "date": "3-Jan-16",
-          "value": 17,
+          "value": 19,
           "fullDate": "2016-01-03T00:00:00-08:00"
         },
         {
           "date": "4-Jan-16",
-          "value": 18,
+          "value": 20,
           "fullDate": "2016-01-04T00:00:00-08:00"
         },
         {
           "date": "5-Jan-16",
-          "value": 18,
+          "value": 21,
           "fullDate": "2016-01-05T00:00:00-08:00"
         },
         {
           "date": "6-Jan-16",
-          "value": 18,
+          "value": 22,
           "fullDate": "2016-01-06T00:00:00-08:00"
         },
         {
           "date": "7-Jan-16",
-          "value": 18,
+          "value": 21,
           "fullDate": "2016-01-07T00:00:00-08:00"
         },
         {
           "date": "8-Jan-16",
-          "value": 21,
+          "value": 20,
           "fullDate": "2016-01-08T00:00:00-08:00"
         },
         {
           "date": "9-Jan-16",
-          "value": 18,
+          "value": 19,
           "fullDate": "2016-01-09T00:00:00-08:00"
         },
         {
@@ -70,27 +70,27 @@
         },
         {
           "date": "12-Jan-16",
-          "value": 18,
+          "value": 17,
           "fullDate": "2016-01-12T00:00:00-08:00"
         },
         {
           "date": "13-Jan-16",
-          "value": 18,
+          "value": 16,
           "fullDate": "2016-01-13T00:00:00-08:00"
         },
         {
           "date": "14-Jan-16",
-          "value": 18,
+          "value": 15,
           "fullDate": "2016-01-14T00:00:00-08:00"
         },
         {
           "date": "15-Jan-16",
-          "value": 18,
+          "value": 16,
           "fullDate": "2016-01-15T00:00:00-08:00"
         },
         {
           "date": "16-Jan-16",
-          "value": 18,
+          "value": 17,
           "fullDate": "2016-01-16T00:00:00-08:00"
         },
         {
@@ -110,37 +110,37 @@
         },
         {
           "date": "20-Jan-16",
-          "value": 18,
+          "value": 21,
           "fullDate": "2016-01-20T00:00:00-08:00"
         },
         {
           "date": "21-Jan-16",
-          "value": 18,
+          "value": 22,
           "fullDate": "2016-01-21T00:00:00-08:00"
         },
         {
           "date": "22-Jan-16",
-          "value": 18,
+          "value": 23,
           "fullDate": "2016-01-22T00:00:00-08:00"
         },
         {
           "date": "23-Jan-16",
-          "value": 18,
+          "value": 24,
           "fullDate": "2016-01-23T00:00:00-08:00"
         },
         {
           "date": "24-Jan-16",
-          "value": 18,
+          "value": 25,
           "fullDate": "2016-01-24T00:00:00-08:00"
         },
         {
           "date": "25-Jan-16",
-          "value": 18,
+          "value": 26,
           "fullDate": "2016-01-25T00:00:00-08:00"
         },
         {
           "date": "26-Jan-16",
-          "value": 18,
+          "value": 26,
           "fullDate": "2016-01-26T00:00:00-08:00"
         },
         {
@@ -430,27 +430,27 @@
         },
         {
           "date": "24-Mar-16",
-          "value": 18,
+          "value": 10,
           "fullDate": "2016-03-24T00:00:00-07:00"
         },
         {
           "date": "25-Mar-16",
-          "value": 18,
+          "value": 11,
           "fullDate": "2016-03-25T00:00:00-07:00"
         },
         {
           "date": "26-Mar-16",
-          "value": 18,
+          "value": 12,
           "fullDate": "2016-03-26T00:00:00-07:00"
         },
         {
           "date": "27-Mar-16",
-          "value": 18,
+          "value": 13,
           "fullDate": "2016-03-27T00:00:00-07:00"
         },
         {
           "date": "28-Mar-16",
-          "value": 30,
+          "value": 14,
           "fullDate": "2016-03-28T00:00:00-07:00"
         }
       ],
@@ -503,7 +503,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 17,
+          "value": 19,
           "topicName": "Sales"
         }
       ]
@@ -513,7 +513,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 20,
           "topicName": "Sales"
         }
       ]
@@ -523,7 +523,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 21,
           "topicName": "Sales"
         }
       ]
@@ -533,7 +533,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 22,
           "topicName": "Sales"
         }
       ]
@@ -543,7 +543,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 21,
           "topicName": "Sales"
         }
       ]
@@ -553,7 +553,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 21,
+          "value": 20,
           "topicName": "Sales"
         }
       ]
@@ -563,7 +563,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 19,
           "topicName": "Sales"
         }
       ]
@@ -593,7 +593,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 17,
           "topicName": "Sales"
         }
       ]
@@ -603,7 +603,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 16,
           "topicName": "Sales"
         }
       ]
@@ -613,7 +613,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 15,
           "topicName": "Sales"
         }
       ]
@@ -623,7 +623,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 16,
           "topicName": "Sales"
         }
       ]
@@ -633,7 +633,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 17,
           "topicName": "Sales"
         }
       ]
@@ -673,7 +673,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 21,
           "topicName": "Sales"
         }
       ]
@@ -683,7 +683,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 22,
           "topicName": "Sales"
         }
       ]
@@ -693,7 +693,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 23,
           "topicName": "Sales"
         }
       ]
@@ -703,7 +703,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 24,
           "topicName": "Sales"
         }
       ]
@@ -713,7 +713,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 25,
           "topicName": "Sales"
         }
       ]
@@ -723,7 +723,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 26,
           "topicName": "Sales"
         }
       ]
@@ -733,7 +733,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 26,
           "topicName": "Sales"
         }
       ]
@@ -1313,7 +1313,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 10,
           "topicName": "Sales"
         }
       ]
@@ -1323,7 +1323,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 11,
           "topicName": "Sales"
         }
       ]
@@ -1333,7 +1333,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 12,
           "topicName": "Sales"
         }
       ]
@@ -1343,7 +1343,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 18,
+          "value": 13,
           "topicName": "Sales"
         }
       ]
@@ -1353,7 +1353,7 @@
       "topics": [
         {
           "name": -1,
-          "value": 30,
+          "value": 14,
           "topicName": "Sales"
         }
       ]

@@ -62,10 +62,10 @@ define(function(require){
     return function module() {
 
         let margin = {
-                top: 20,
-                right: 10,
-                bottom: 10,
-                left: 10
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0
             },
             width = 320,
             height = 180,
@@ -185,8 +185,8 @@ define(function(require){
                 .attr('data-item', getId)
                 .attr('transform', function(d, i) {
                     let horizontalOffset = 2 * circleRadius + 10,
-                        lineHeightBis = chartHeight/data.length,
-                        verticalOffset = i * lineHeightBis;
+                        lineHeight = chartHeight/ (data.length + 1),
+                        verticalOffset = (i + 1) * lineHeight;
 
                     return `translate(${horizontalOffset},${verticalOffset})`;
                 })

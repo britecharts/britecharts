@@ -146,9 +146,9 @@ define(function(require){
 
         let margin = {
                 top: 60,
-                right: 20,
-                bottom: 60,
-                left: 80
+                right: 30,
+                bottom: 40,
+                left: 70
             },
             width = 960,
             height = 500,

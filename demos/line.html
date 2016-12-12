@@ -11,9 +11,10 @@
             <div class="col-md-8">
                 <article>
                     <h2>Line Chart with fixed Aspect Ratio</h2>
-                    <div class="britechart js-line-chart-container"></div>
-                    <p>The code for this example can be found in /demos/demo-line.js and it calls the line chart with a <strong>fixed aspect ratio</strong>:</p>
-
+                    <div class="britechart js-line-chart-container card--chart"></div>
+                </article>
+            </div>
+            <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre>
 lineChart
@@ -23,29 +24,24 @@ lineChart
 
 container.datum(dataset).call(lineChart);
                 </pre>
-                </article>
-            </div>
-            <div class="col-md-4 sidebar">
-                <h3>Colors</h3>
+                <h4>Colors</h4>
                 <label class="control-label">You can also check other color schemas:</label>
-                <div class="js-color-selector-container"></div>
-                </p>
-
-                <h3>Download</h3>
-                <p>You can also export this chart by pressing: <input id="button" class="btn" type="button" value="Download" /></p>
+                <div class="js-color-selector-container card--chart"></div>
+                <h4>Download</h4>
+                <p>You can also export this chart by pressing <input id="button" class="btn" type="button" value="Download" /></p>
             </div>
         </div>
 
         <div class="row">
-            <div class="span8">
+            <div class="col-md-8">
                 <article>
                     <h2>Line Chart with a single data source</h2>
-                    <div class="britechart js-single-line-chart-container"></div>
+                    <div class="britechart js-single-line-chart-container card--chart"></div>
                     <p>This is the same chart as above, but when there is a single data source we apply a gradient to the line to give it a little flair.</p>
                     <p>This chart has a fixed height like the one below.</p>
                 </article>
             </div>
-            <div class="span4 sidebar">
+            <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre>
 lineChart
@@ -61,14 +57,14 @@ container.datum(dataset).call(lineChart);
         </div>
 
         <div class="row">
-            <div class="span8">
+            <div class="col-md-8">
                 <article>
                     <h2>Line Chart with Fixed Height</h2>
-                    <div class="britechart js-fixed-line-chart-container"></div>
+                    <div class="britechart js-fixed-line-chart-container card--chart"></div>
                     <p>In this case, we have set a <strong>fixed height</strong> on the chart, as we are currently doing on the Sales report:</p>
                 </article>
             </div>
-            <div class="span4 sidebar">
+            <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre>
 lineChart

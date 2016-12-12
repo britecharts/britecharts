@@ -12,12 +12,10 @@
 col-md-6">
                 <article>
                     <h2 class="tutorial__heading">Bar Chart with Tooltip</h2>
-                    <div class="js-bar-chart-tooltip-container"></div>
-                    <p>This is a bar chart with tooltip whose code it's used as a coding standard.</p>
+                    <div class="js-bar-chart-tooltip-container card--chart"></div>
                 </article>
             </div>
-            <div class="
-col-md-6 sidebar">
+            <div class="col-md-6 sidebar">
                 <h3>The code</h3>
                 <pre>
 barChart
@@ -33,24 +31,23 @@ tooltipContainer = d3.select('.bar-chart .metadata-group');
 tooltipContainer.datum([]).call(tooltip);
                 </pre>
 
-                <h3>Download</h3>
-                <p>You can also export this chart by pressing: <input class="js-download-button btn" type="button" value="Download" /></p>
+                <h4>Download</h4>
+                <p>You can also export this chart by pressing <input class="js-download-button btn" type="button" value="Download" /></p>
             </div>
         </div>
         <div class="row">
-            <div class="
-col-md-6">
+            <div class="col-md-6">
                 <article>
-                    <h2>Simple Bar Chart</h2>
-                    <div class="js-bar-chart-container"></div>
+                    <h2 class="tutorial__heading">Horizontal Bar Chart</h2>
+                    <div class="js-horizontal-bar-chart-container card--chart"></div>
                 </article>
             </div>
-            <div class="
-col-md-6 sidebar">
+            <div class="col-md-6 sidebar">
                 <h3>The code</h3>
                 <pre>
 barChart
-    .width(500)
+    .horizontal(true)
+    .width(containerWidth)
     .height(300);
 
 barContainer.datum(dataset).call(barChart);
@@ -58,17 +55,16 @@ barContainer.datum(dataset).call(barChart);
             </div>
         </div>
         <div class="row">
-            <div class="span6">
+            <div class="col-md-6">
                 <article>
-                    <h2>Horizontal Bar Chart</h2>
-                    <div class="js-horizontal-bar-chart-container"></div>
+                    <h2 class="tutorial__heading">Simple Bar Chart</h2>
+                    <div class="js-bar-chart-container card--chart"></div>
                 </article>
             </div>
-            <div class="span6 sidebar">
+            <div class="col-md-6 sidebar">
                 <h3>The code</h3>
                 <pre>
 barChart
-    .horizontal(true)
     .width(containerWidth)
     .height(300);
 

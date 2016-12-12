@@ -128,6 +128,18 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
                 expect(current).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide nameLabel getter and setter', () => {
+                let defaultNameLabel = 'key',
+                    testNameLabel = 'label',
+                    newNameLabel;
+
+                tooltipChart.nameLabel(testNameLabel);
+                newNameLabel = tooltipChart.nameLabel();
+
+                expect(defaultNameLabel).not.toBe(newNameLabel);
+                expect(newNameLabel).toBe(testNameLabel);
+            });
         });
     });
 });

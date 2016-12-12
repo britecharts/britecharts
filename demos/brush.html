@@ -19,21 +19,19 @@
 <body id="brush">
     <div class="container">
         <div class="row">
-            <div class="
-col-md-6">
+            <div class="col-md-6">
                 <article>
                     <h2 class="tutorial__heading">Simple Brush Chart</h2>
-                    <div class="js-brush-chart-container"></div>
+                    <div class="js-brush-chart-container card--chart"></div>
                     <p class="js-date-range date-range is-hidden">Selected from <span class="js-start-date"></span> to <span class="js-end-date"></span></p>
-                    <p>This is a simple brush chart targeted to be used in conjunction with other charts.</p>
+                    <p>Brush chart to use with other charts as a time range selector.</p>
                 </article>
             </div>
-            <div class="
-col-md-6 sidebar">
+            <div class="col-md-6 sidebar">
                 <h3>The code</h3>
                 <pre>
 brushChart
-    .width(500)
+    .width(containerWidth)
     .height(300)
     .onBrush(function(brushExtent) {
         // Do something with the brushExtent
