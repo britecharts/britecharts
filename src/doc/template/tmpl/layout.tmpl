@@ -2,16 +2,56 @@
 <?js var that = this; ?>
 <html lang="en">
     <head>
-    	<meta charset="utf-8">
-    	<meta name="viewport" content="width=device-width">
-    	<title><?js= this.navOptions.systemName ?> <?js= title ?></title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    	<!--[if lt IE 9]>
-    	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    	<![endif]-->
+        <title><?js= ((env.conf.templates.meta && env.conf.templates.meta.title) || title) ?></title>
+
+        <?js if (env.conf.templates.meta) { ?>
+            <?js if (env.conf.templates.meta.description) { ?><meta name="description" content="<?js= env.conf.templates.meta.description ?>" /><?js } ?>
+            <?js if (env.conf.templates.meta.keyword) { ?>
+                <meta name="keywords" content="<?js= env.conf.templates.meta.keyword ?>" />
+                <meta name="keyword" content="<?js= env.conf.templates.meta.keyword ?>" />
+            <?js } ?>
+        <?js } ?>
+
+        <!-- Disable tap highlight on IE -->
+        <meta name="msapplication-tap-highlight" content="no">
+
+        <!-- Web Application Manifest -->
+        <link rel="manifest" href="manifest.json">
+
+        <!-- Add to homescreen for Chrome on Android -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="application-name" content="Britecharts">
+        <link rel="icon" sizes="192x192" href="img/icons/chrome-touch-icon-192x192.png">
+
+        <!-- Add to homescreen for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#009FA1">
+        <meta name="apple-mobile-web-app-title" content="Britecharts">
+        <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
+
+        <!-- Tile icon for Win8 (144x144 + tile color) -->
+        <meta name="msapplication-TileImage" content="img/icons/ms-touch-icon-144x144-precomposed.png">
+        <meta name="msapplication-TileColor" content="#009FA1">
+
+        <!-- Color the status bar on mobile devices -->
+        <meta name="theme-color" content="#009FA1">
+
+        <?js if (env.conf.templates.openGraph) { ?>
+            <meta property="og:title" content="<?js= env.conf.templates.openGraph.title ?>"/>
+            <meta property="og:type" content="<?js= env.conf.templates.openGraph.type ?>"/>
+            <meta property="og:image" content="<?js= env.conf.templates.openGraph.image ?>"/>
+            <?js if (env.conf.templates.openGraph.site_name) { ?><meta property="og:site_name" content="<?js= env.conf.templates.openGraph.site_name ?>"/><?js } ?>
+            <meta property="og:url" content="<?js= env.conf.templates.openGraph.url ?>"/>
+        <?js } ?>
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 
     	<link type="text/css" rel="stylesheet" href="styles/sunlight.<?js= this.navOptions.syntaxTheme ?>.css">
-
     	<link type="text/css" rel="stylesheet" href="styles/site.<?js= this.navOptions.theme ?>.css">
         <link type="text/css" rel="stylesheet" href="styles/custom.css">
     </head>

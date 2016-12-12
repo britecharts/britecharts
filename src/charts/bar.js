@@ -47,7 +47,12 @@ define(function(require) {
      */
     return function module() {
 
-        let margin = {top: 20, right: 20, bottom: 30, left: 40},
+        let margin = {
+                top: 20,
+                right: 20,
+                bottom: 10,
+                left: 40
+            },
             width = 960,
             height = 500,
             data,
@@ -71,7 +76,7 @@ define(function(require) {
             maskGridLines,
             baseLine,
 
-            // Dispatcher object to broadcast the 'customMouseOver' and 'customMouseOut' events
+            // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
             dispatcher = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove'),
 

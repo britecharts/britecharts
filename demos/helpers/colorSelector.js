@@ -14,6 +14,9 @@ define(function(require) {
      */
     function createColorSelector(selectContainerSelector, chartSelector, callback) {
         var colorKeys = Object.keys(colors.colorSchemas);
+        var containerSelector = document.querySelector(selectContainerSelector);
+
+        if (!containerSelector) { return; }
 
         // Create Select
         var sel = document.createElement("select")
@@ -29,7 +32,7 @@ define(function(require) {
             });
 
         // Add it to the DOM
-        document.querySelector(selectContainerSelector).append(sel);
+        containerSelector.append(sel);
 
         // Listen for changes
         d3.select(sel)

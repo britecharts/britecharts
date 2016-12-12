@@ -1,3 +1,4 @@
+require('./helpers/resizeHelper');
 require('./demo-stacked-area');
 require('./demo-bar');
 require('./demo-donut');

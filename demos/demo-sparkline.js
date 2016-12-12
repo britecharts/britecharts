@@ -1,7 +1,8 @@
 'use strict';
 
-var _ = require('underscore'),
-    d3 = require('d3'),
+var d3 = require('d3'),
+
+    PubSub = require('pubsub-js'),
 
     sparklineChart = require('./../src/charts/sparkline'),
     sparklineDataBuilder = require('./../test/fixtures/sparklineDataBuilder');
@@ -35,8 +36,12 @@ function createSparklineChart() {
 if (d3.select('.js-sparkline-chart-container').node()){
     createSparklineChart();
 
-    d3.select(window).on('resize', _.debounce(function(){
+    var redrawCharts = function(){
         d3.selectAll('.sparkline').remove();
+
         createSparklineChart();
-    }, 200));
+    };
+
+    // Redraw charts on window resize
+    PubSub.subscribe('resize', redrawCharts);
 }

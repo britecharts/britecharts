@@ -8,15 +8,13 @@
 <body id="step">
     <div class="container">
         <div class="row">
-            <div class="span8">
+            <div class="col-md-8">
                 <article>
                     <h2 class="tutorial__heading">Step Chart</h2>
-                    <div class="js-step-chart-container"></div>
-                    <p>This is a simple step chart.</p>
-                    <p>The code for this example can be found in /demos/demo-step.js and it calls the step chart.</p>
+                    <div class="js-step-chart-container card--chart"></div>
                 </article>
             </div>
-            <div class="span4 sidebar">
+            <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre>
 // StepChart without Axis Labels:
@@ -43,9 +41,8 @@ stepChart
     });
 stepContainer.datum(dataset).call(stepChart);
                 </pre>
-
-                <h3>Download</h3>
-                <p>You can also export this chart by pressing: <input id="button" type="button" value="download" class="btn" /></p>
+                <h4>Download</h4>
+                <p>You can also export this chart by pressing <input id="button" type="button" value="Download" class="btn" /></p>
             </div>
         </div>
     </div>
