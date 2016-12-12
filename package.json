@@ -1,8 +1,16 @@
 {
   "name": "britecharts",
   "version": "1.1.11",
-  "description": "Eventbrite's Charting Library",
+  "description": "Eventbrite's D3.js based Modular Charting Library",
   "main": "README.md",
+  "contributors": [{
+    "name": "Marcos Iglesias",
+    "email": "me@marcosiglesias.com"
+  },{
+    "name": "Ryan Wholey",
+    "email": "rjwholey@gmail.com"
+  }
+  ],
   "scripts": {
     "demos:compile": "WEBPACK_ENV=demos webpack --progress --colors",
     "demos:watch": "WEBPACK_ENV=demos webpack --watch --progress --colors",
