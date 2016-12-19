@@ -1,11 +1,21 @@
 define(function(require){
     'use strict';
 
-    const d3 = require('d3');
+    const d3Array = require('d3-array');
+    const d3Axis = require('d3-axis');
+    const d3Dispatch = require('d3-dispatch');
+    const d3Ease = require('d3-ease');
+    const d3Format = require('d3-format');
+    const d3Scale = require('d3-scale');
+    const d3Shape = require('d3-shape');
+    const d3Selection = require('d3-selection');
+    const d3Time = require('d3-time');
+    const d3TimeFormat = require('d3-time-format');
 
     const colorHelper = require('./helpers/colors');
-    const constants = require('./helpers/constants.js');
     const exportChart = require('./helpers/exportChart');
+
+    const {lineGradientId} = require('./helpers/constants.js');
 
     /**
      * @typedef D3Selection
@@ -120,24 +130,23 @@ define(function(require){
       * }
       */
 
-
     /**
      * Line Chart reusable API module that allows us
      * rendering a multi line and configurable chart.
      *
      * @module Line
-     * @version 0.0.1
+     * @version 0.1.0
      * @tutorial line
-     * @requires d3
+     * @requires d3-array, d3-axis, d3-brush, d3-ease, d3-format, d3-scale, d3-shape, d3-selection, d3-time, d3-time-format
      *
      * @example
-     * var lineChart = line();
+     * let lineChart = line();
      *
      * lineChart
      *     .aspectRatio(0.5)
      *     .width(500);
      *
-     * d3.select('.css-selector')
+     * d3Selection.select('.css-selector')
      *     .datum(dataset)
      *     .call(lineChart);
      *
@@ -164,11 +173,15 @@ define(function(require){
                 bottom: 0,
                 right: 0
             },
+            tickPadding = 5,
             colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
             singleLineGradientColors = colorHelper.colorGradients.greenBlueGradient,
             topicColorMap,
 
-            ease = d3.easeQuadInOut,
+            singleTickWidth = 20,
+            horizontalTickSpacing = 40,
+
+            ease = d3Ease.easeQuadInOut,
             animationDuration = 1500,
 
             data,
@@ -190,12 +203,12 @@ define(function(require){
             getLineColor = ({topic}) => colorScale(topic),
 
             // formats
-            yTickNumberFormat = d3.format('.3'),
-            xTickDateFormat = d3.timeFormat('%e'),
-            xTickMonthFormat = d3.timeFormat('%b'),
+            yTickNumberFormat = d3Format.format('.3'),
+            xTickDateFormat = d3TimeFormat.timeFormat('%e'),
+            xTickMonthFormat = d3TimeFormat.timeFormat('%b'),
 
             // events
-            dispatcher = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
 
         /**
          * This function creates the graph using the selection and data provided
@@ -256,27 +269,27 @@ define(function(require){
          * @private
          */
         function buildAxis(){
-            // when dataset < 5, .ticks acts a little unexpected, so we pass it d3.time.days to fix
-            let tickValue = dataByDate.length < 5 ? d3.time.days :
+            // when dataset < 5, .ticks acts a little unexpected, so we pass it d3Time.time.days to fix
+            let tickValue = dataByDate.length < 5 ? d3Time.time.days :
                     getMaxNumOfHorizontalTicks(width, dataByDate.length);
             let rangeDiff = yScale.domain()[1] - yScale.domain()[0];
             let yTickNumber = rangeDiff < numVerticalTics - 1 ? rangeDiff : numVerticalTics;
 
-            xAxis = d3.axisBottom(xScale)
+            xAxis = d3Axis.axisBottom(xScale)
                 .ticks(tickValue)
                 .tickSize(10, 0)
-                .tickPadding(5)
+                .tickPadding(tickPadding)
                 .tickFormat(xTickDateFormat);
 
-            xMonthAxis = d3.axisBottom(xScale)
-                .ticks(d3.timeMonths)
+            xMonthAxis = d3Axis.axisBottom(xScale)
+                .ticks(d3Time.timeMonths)
                 .tickSize(0, 0)
                 .tickFormat(xTickMonthFormat);
 
-            yAxis = d3.axisLeft(yScale)
+            yAxis = d3Axis.axisLeft(yScale)
                 .ticks(yTickNumber)
                 .tickSize([0])
-                .tickPadding(5)
+                .tickPadding(tickPadding)
                 .tickFormat(yTickNumberFormat);
         }
 
@@ -313,7 +326,7 @@ define(function(require){
         function buildGradient() {
             svg.select('.metadata-group')
               .append('linearGradient')
-                .attr('id', constants.lineGradientId)
+                .attr('id', lineGradientId)
                 .attr('x1', '0%')
                 .attr('y1', '0%')
                 .attr('x2', '100%')
@@ -334,21 +347,21 @@ define(function(require){
          * @private
          */
         function buildScales(){
-            let minX = d3.min(data, ({Data}) => d3.min(Data, getDate)),
-                maxX = d3.max(data, ({Data}) => d3.max(Data, getDate)),
-                minY = d3.min(data, ({Data}) => d3.min(Data, getValue)),
-                maxY = d3.max(data, ({Data}) => d3.max(Data, getValue));
+            let minX = d3Array.min(data, ({Data}) => d3Array.min(Data, getDate)),
+                maxX = d3Array.max(data, ({Data}) => d3Array.max(Data, getDate)),
+                minY = d3Array.min(data, ({Data}) => d3Array.min(Data, getValue)),
+                maxY = d3Array.max(data, ({Data}) => d3Array.max(Data, getValue));
 
-            xScale = d3.scaleTime()
+            xScale = d3Scale.scaleTime()
                 .rangeRound([0, chartWidth])
                 .domain([minX, maxX]);
 
-            yScale = d3.scaleLinear()
+            yScale = d3Scale.scaleLinear()
                 .rangeRound([chartHeight, 0])
                 .domain([Math.abs(minY), Math.abs(maxY)])
                 .nice(3);
 
-            colorScale = d3.scaleOrdinal()
+            colorScale = d3Scale.scaleOrdinal()
                 .range(colorSchema)
                 .domain(data.map(getTopic));
 
@@ -374,7 +387,7 @@ define(function(require){
          */
         function buildSVG(container){
             if (!svg) {
-                svg = d3.select(container)
+                svg = d3Selection.select(container)
                   .append('svg')
                     .classed('britechart line-chart', true);
 
@@ -425,7 +438,7 @@ define(function(require){
                 topicLine,
                 maskingRectangle;
 
-            topicLine = d3.line()
+            topicLine = d3Shape.line()
                 .x(({date}) => xScale(date))
                 .y(({value}) => yScale(value));
 
@@ -439,7 +452,7 @@ define(function(require){
                 .attr('class', 'line')
                 .attr('d', ({Data}) => topicLine(Data))
                 .style('stroke', (d) => (
-                    data.length === 1 ? `url(#${constants.lineGradientId})` : getLineColor(d)
+                    data.length === 1 ? `url(#${lineGradientId})` : getLineColor(d)
                 ));
 
             lines
@@ -449,10 +462,10 @@ define(function(require){
             // We use a white rectangle to simulate the line drawing animation
             maskingRectangle = svg.append('rect')
                 .attr('class', 'masking-rectangle')
-                .attr('width', width - 30)
-                .attr('height', height + 20)
-                .attr('x', 60)
-                .attr('y', -18);
+                .attr('width', width)
+                .attr('height', height)
+                .attr('x', 0)
+                .attr('y', 0);
 
             maskingRectangle.transition()
                 .duration(animationDuration)
@@ -551,9 +564,7 @@ define(function(require){
          * @return {Number}       Number of ticks to render
          */
         function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
-            let singleTickWidth = 20,
-                spacing = 40,
-                ticksForWidth = Math.ceil(width / (singleTickWidth + spacing));
+            let ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
 
             return Math.min(dataPointNumber, ticksForWidth);
         }
@@ -564,7 +575,7 @@ define(function(require){
          * @return {Number}       Position on the x axis of the mouse
          */
         function getMouseXPosition(event) {
-            return d3.mouse(event)[0];
+            return d3Selection.mouse(event)[0];
         }
 
         /**
@@ -583,7 +594,7 @@ define(function(require){
          */
         function getNearestDataPoint(mouseX) {
             let invertedX = xScale.invert(mouseX),
-                bisectDate = d3.bisector(getDate).left,
+                bisectDate = d3Array.bisector(getDate).left,
                 dataEntryIndex, dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition,
                 nearestDataPoint;
 

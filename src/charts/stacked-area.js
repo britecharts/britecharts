@@ -1,9 +1,19 @@
 define(function(require){
     'use strict';
 
-    const d3 = require('d3');
-    const _ = require('underscore');
+    const d3Array = require('d3-array');
+    const d3Axis = require('d3-axis');
+    const d3Collection = require('d3-collection');
+    const d3Dispatch = require('d3-dispatch');
+    const d3Ease = require('d3-ease');
+    const d3Format = require('d3-format');
+    const d3Scale = require('d3-scale');
+    const d3Shape = require('d3-shape');
+    const d3Selection = require('d3-selection');
+    const d3Time = require('d3-time');
+    const d3TimeFormat = require('d3-time-format');
 
+    const _ = require('underscore');
     const exportChart = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
 
@@ -17,9 +27,19 @@ define(function(require){
      * rendering a multi area and configurable chart.
      *
      * @module Stacked-area
-     * @version 0.0.1
+     * @version 0.1.0
      * @tutorial stacked-area
-     * @requires d3
+     * @requires d3-array, d3-axis, d3-collection, d3-ease, d3-scale, d3-shape, d3-selection, d3-time, d3-time-format
+     *
+     * @example
+     * let stackedArea = stackedArea();
+     *
+     * stackedArea
+     *     .width(containerWidth);
+     *
+     * d3Selection.select('.css-selector')
+     *     .datum(dataset.data)
+     *     .call(stackedArea);
      *
      */
 
@@ -41,6 +61,7 @@ define(function(require){
             numVerticalTicks = 5,
             yTickTextYOffset = -8,
             yTickTextXOffset = 40,
+            tickPadding = 5,
 
             colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
 
@@ -61,7 +82,7 @@ define(function(require){
             // Area Animation
             maxAreaNumber = 8,
             areaAnimationDelayStep = 20,
-            areaAnimationDelays = d3.range(areaAnimationDelayStep, maxAreaNumber* areaAnimationDelayStep, areaAnimationDelayStep),
+            areaAnimationDelays = d3Array.range(areaAnimationDelayStep, maxAreaNumber* areaAnimationDelayStep, areaAnimationDelayStep),
 
             overlay,
 
@@ -73,7 +94,7 @@ define(function(require){
             pointsColor           = '#c0c6cc',
             pointsBorderColor     = '#ffffff',
 
-            ease = d3.easeQuadInOut,
+            ease = d3Ease.easeQuadInOut,
             areaAnimationDuration = 1000,
 
             svg,
@@ -104,14 +125,14 @@ define(function(require){
 
 
             // formats
-            parseUTC = d3.timeParse('%Y-%m-%dT%H:%M:%SZ'),
+            parseUTC = d3TimeFormat.timeParse('%Y-%m-%dT%H:%M:%SZ'),
 
-            yTickNumberFormat = d3.format('.3'),
-            xTickDateFormat = d3.timeFormat('%e'),
-            xTickMonthFormat = d3.timeFormat('%b'),
+            yTickNumberFormat = d3Format.format('.3'),
+            xTickDateFormat = d3TimeFormat.timeFormat('%e'),
+            xTickMonthFormat = d3TimeFormat.timeFormat('%b'),
 
             // events
-            dispatcher = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
 
        /**
          * This function creates the graph using the selection and data provided
@@ -124,7 +145,7 @@ define(function(require){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
-                dataByDate = d3.nest()
+                dataByDate = d3Collection.nest()
                     .key( getDate )
                     .entries(
                          _(_data).sortBy('date')
@@ -175,24 +196,24 @@ define(function(require){
          * @private
          */
         function buildAxis(){
-            xAxis = d3.axisBottom(xScale)
+            xAxis = d3Axis.axisBottom(xScale)
                 .ticks(getMaxNumOfHorizontalTicks(chartWidth, dataByDate.length))
                 .tickFormat(xTickDateFormat)
                 .tickSize(10, 0)
-                .tickPadding(5);
+                .tickPadding(tickPadding);
 
             //TODO: Review this axis with real data
-            xMonthAxis = d3.axisBottom(xScale)
-                .ticks(d3.timeMonths)
+            xMonthAxis = d3Axis.axisBottom(xScale)
+                .ticks(d3Time.timeMonths)
                 .tickFormat(xTickMonthFormat)
                 .tickSize(10, 0)
-                .tickPadding(5);
+                .tickPadding(tickPadding);
 
-            yAxis = d3.axisRight(yScale)
+            yAxis = d3Axis.axisRight(yScale)
                 .ticks(numVerticalTicks)
                 .tickFormat(yTickNumberFormat)
                 .tickSize(chartWidth + yTickTextXOffset, 0, 0)
-                .tickPadding(5);
+                .tickPadding(tickPadding);
         }
 
         /**
@@ -254,10 +275,10 @@ define(function(require){
                 .value();
 
             let keys = [...new Set(_(data).pluck('name'))];
-            let stack3 = d3.stack()
+            let stack3 = d3Shape.stack()
                 .keys(keys)
-                .order(d3.stackOrderNone)
-                .offset(d3.stackOffsetNone);
+                .order(d3Shape.stackOrderNone)
+                .offset(d3Shape.stackOffsetNone);
 
             layersInitial = stack3(dataByDateZeroed);
             layers = stack3(dataByDateFormatted);
@@ -268,17 +289,17 @@ define(function(require){
          * @private
          */
         function buildScales() {
-            xScale = d3.scaleTime()
-                .domain(d3.extent(data, ({date}) => date))
+            xScale = d3Scale.scaleTime()
+                .domain(d3Array.extent(data, ({date}) => date))
                 .range([0, chartWidth]);
 
-            yScale = d3.scaleLinear()
+            yScale = d3Scale.scaleLinear()
                 .domain([0, getMaxValueByDate()])
                 .range([chartHeight, 0])
                 .nice([numVerticalTicks + 1]);
 
 
-            colorScale = d3.scaleOrdinal()
+            colorScale = d3Scale.scaleOrdinal()
                   .range(colorSchema)
                   .domain(data.map(getName));
 
@@ -303,7 +324,7 @@ define(function(require){
          */
         function buildSVG(container) {
             if (!svg) {
-                svg = d3.select(container)
+                svg = d3Selection.select(container)
                     .append('svg')
                     .classed('britechart stacked-area', true);
 
@@ -353,7 +374,7 @@ define(function(require){
                 .call(yAxis);
 
             // Moving the YAxis tick labels to the right side
-            d3.selectAll('.y-axis-group .tick text')
+            d3Selection.selectAll('.y-axis-group .tick text')
                 .attr('transform', `translate( ${-chartWidth - yTickTextXOffset}, ${yTickTextYOffset})` );
         }
 
@@ -415,8 +436,8 @@ define(function(require){
          */
         function drawStackedAreas(){
             // Creating Area function
-            area = d3.area()
-                .curve(d3.curveCardinal)
+            area = d3Shape.area()
+                .curve(d3Shape.curveCardinal)
                 .x( ({data}) => xScale(data.date) )
                 .y0( (d) => yScale(d[0]) )
                 .y1( (d) => yScale(d[1]) );
@@ -492,10 +513,10 @@ define(function(require){
          */
         function getMaxValueByDate() {
             let keys = [...new Set(_(data).pluck('name'))];
-            let maxValueByDate = d3.max(dataByDateFormatted, function(d){
+            let maxValueByDate = d3Array.max(dataByDateFormatted, function(d){
                 let vals = keys.map((key) => d[key]);
 
-                return d3.sum(vals);
+                return d3Array.sum(vals);
             });
 
             return maxValueByDate;
@@ -508,7 +529,7 @@ define(function(require){
          * @private
          */
         function getMouseXPosition(event) {
-            return d3.mouse(event)[0];
+            return d3Selection.mouse(event)[0];
         }
 
         /**

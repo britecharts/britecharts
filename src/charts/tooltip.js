@@ -1,7 +1,11 @@
 define(function(require){
     'use strict';
 
-    const d3 = require('d3');
+    const d3Format = require('d3-format');
+    const d3Selection = require('d3-selection');
+    const d3Transition = require('d3-transition');
+    const d3TimeFormat = require('d3-time-format');
+
 
     /**
      * Tooltip Component reusable API class that renders a
@@ -9,9 +13,9 @@ define(function(require){
      * line chart or stacked area chart.
      *
      * @module Tooltip
-     * @version 0.0.1
+     * @version 0.1.0
      * @tutorial tooltip
-     * @requires d3
+     * @requires d3-array, d3-axis, d3-dispatch, d3-format, d3-scale, d3-selection, d3-transition
      *
      * @example
      * var lineChart = line(),
@@ -32,11 +36,11 @@ define(function(require){
      *          tooltip.hide();
      *     });
      *
-     * d3.select('.css-selector')
+     * d3Selection.select('.css-selector')
      *     .datum(dataset)
      *     .call(lineChart);
      *
-     * d3.select('.metadata-group .hover-marker')
+     * d3Selection.select('.metadata-group .hover-marker')
      *     .datum([])
      *     .call(tooltip);
      *
@@ -82,20 +86,20 @@ define(function(require){
             tooltipTextColor = '#000000',
 
             // formats
-            tooltipDateFormat = d3.timeFormat('%b %d, %Y'),
+            tooltipDateFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
             valueRangeLimits = {
                 small: 10,
                 medium: 100
             },
             integerValueFormats = {
-                small: d3.format(''),
-                medium: d3.format(''),
-                large: d3.format('.2s')
+                small: d3Format.format(''),
+                medium: d3Format.format(''),
+                large: d3Format.format('.2s')
             },
             decimalValueFormats = {
-                small: d3.format('.3f'),
-                medium: d3.format('.1f'),
-                large: d3.format('.2s')
+                small: d3Format.format('.3f'),
+                medium: d3Format.format('.1f'),
+                large: d3Format.format('.2s')
             },
 
             chartWidth, chartHeight,
@@ -139,7 +143,7 @@ define(function(require){
          */
         function buildSVG(container) {
             if (!svg) {
-                svg = d3.select(container)
+                svg = d3Selection.select(container)
                     .append('g')
                     .classed('britechart britechart-tooltip', true);
 
@@ -429,7 +433,7 @@ define(function(require){
                     dy,
                     tspan;
 
-                text = d3.select(this);
+                text = d3Selection.select(this);
 
                 words = text.text().split(/\s+/).reverse();
                 line = [];

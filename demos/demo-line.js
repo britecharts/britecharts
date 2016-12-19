@@ -1,6 +1,6 @@
 'use strict';
 
-var d3 = require('d3'),
+var d3Selection = require('d3-selection'),
 
     PubSub = require('pubsub-js'),
 
@@ -14,13 +14,13 @@ function createLineChart(optionalColorSchema) {
     var lineChart1 = line(),
         chartTooltip = tooltip(),
         testDataSet = new dataBuilder.SalesDataBuilder(),
-        container = d3.select('.js-line-chart-container'),
+        container = d3Selection.select('.js-line-chart-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
 
     if (containerWidth) {
-        d3.select('#button').on('click', function() {
+        d3Selection.select('#button').on('click', function() {
             lineChart1.exportChart('linechart.png', 'Britecharts Line Chart');
         });
 
@@ -53,7 +53,7 @@ function createLineChart(optionalColorSchema) {
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = d3.select('.js-line-chart-container .metadata-group .hover-marker');
+        tooltipContainer = d3Selection.select('.js-line-chart-container .metadata-group .hover-marker');
         tooltipContainer.datum([]).call(chartTooltip);
     }
 }
@@ -62,7 +62,7 @@ function createLineChartWithSingleLine() {
     var lineChart2 = line(),
         chartTooltip = tooltip(),
         testDataSet = new dataBuilder.SalesDataBuilder(),
-        container = d3.select('.js-single-line-chart-container'),
+        container = d3Selection.select('.js-single-line-chart-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
@@ -70,7 +70,7 @@ function createLineChartWithSingleLine() {
     if (containerWidth) {
         dataset = testDataSet.withOneSource().build();
 
-        d3.select('#button2').on('click', function() {
+        d3Selection.select('#button2').on('click', function() {
             lineChart2.exportChart('linechart.png', 'Britecharts Line Chart');
         });
 
@@ -96,7 +96,7 @@ function createLineChartWithSingleLine() {
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = d3.select('.js-single-line-chart-container .metadata-group .hover-marker');
+        tooltipContainer = d3Selection.select('.js-single-line-chart-container .metadata-group .hover-marker');
         tooltipContainer.datum([]).call(chartTooltip);
     }
 }
@@ -105,7 +105,7 @@ function createLineChartWithFixedHeight() {
     var lineChart3 = line(),
         chartTooltip = tooltip(),
         testDataSet = new dataBuilder.SalesDataBuilder(),
-        container = d3.select('.js-fixed-line-chart-container'),
+        container = d3Selection.select('.js-fixed-line-chart-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
@@ -134,19 +134,19 @@ function createLineChartWithFixedHeight() {
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = d3.select('.js-fixed-line-chart-container .metadata-group .hover-marker');
+        tooltipContainer = d3Selection.select('.js-fixed-line-chart-container .metadata-group .hover-marker');
         tooltipContainer.datum([]).call(chartTooltip);
     }
 }
 
 // Show charts if container available
-if (d3.select('.js-line-chart-container').node()) {
+if (d3Selection.select('.js-line-chart-container').node()) {
     createLineChart();
     createLineChartWithSingleLine();
     createLineChartWithFixedHeight();
 
     var redrawCharts = function(){
-        d3.selectAll('.line-chart').remove();
+        d3Selection.selectAll('.line-chart').remove();
 
         createLineChart();
         createLineChartWithSingleLine();
