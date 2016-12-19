@@ -1,6 +1,6 @@
 # Britecharts
 
-> ####Britecharts is a client-side **reusable Charting Library** based on [D3.js v4][1] that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.
+> Britecharts is a client-side **reusable Charting Library** based on [D3.js v4][1] that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.
 
 Britecharts components have been written in ES2015 with a Test Driven methodology so they are **fully tested**, and we are commited to keep them that way.
 

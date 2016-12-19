@@ -1,7 +1,15 @@
 define(function(require) {
     'use strict';
 
-    const d3 = require('d3');
+    const d3Array = require('d3-array');
+    const d3Axis = require('d3-axis');
+    const d3Brush = require('d3-brush');
+    const d3Ease = require('d3-ease');
+    const d3Scale = require('d3-scale');
+    const d3Shape = require('d3-shape');
+    const d3Selection = require('d3-selection');
+    const d3Time = require('d3-time');
+    const d3TimeFormat = require('d3-time-format');
 
     const colorHelper = require('./helpers/colors');
 
@@ -30,9 +38,9 @@ define(function(require) {
      * simple and configurable brush chart.
      *
      * @module Brush
-     * @version 0.0.1
+     * @version 0.1.0
      * @tutorial brush
-     * @requires d3
+     * @requires d3-array, d3-axis, d3-brush, d3-ease, d3-scale, d3-shape, d3-selection, d3-time, d3-time-format
      *
      * @example
      * let brushChart = brush();
@@ -41,11 +49,12 @@ define(function(require) {
      *     .height(500)
      *     .width(800);
      *
-     * d3.select('.css-selector')
+     * d3Selection.select('.css-selector')
      *     .datum(dataset)
      *     .call(brushChart);
      *
      */
+
     return function module() {
 
         let margin = {
@@ -59,7 +68,7 @@ define(function(require) {
             data,
             svg,
 
-            ease = d3.easeQuadOut,
+            ease = d3Ease.easeQuadOut,
 
             dateLabel = 'date',
             valueLabel = 'value',
@@ -78,7 +87,7 @@ define(function(require) {
 
             // formats
             defaultTimeFormat = '%m/%d/%Y',
-            xTickMonthFormat = d3.timeFormat('%b'),
+            xTickMonthFormat = d3TimeFormat.timeFormat('%b'),
 
             // extractors
             getValue = ({value}) => value,
@@ -118,7 +127,7 @@ define(function(require) {
          * @private
          */
         function buildAxis(){
-            xAxis = d3.axisBottom(xScale)
+            xAxis = d3Axis.axisBottom(xScale)
                 .tickFormat(xTickMonthFormat);
         }
 
@@ -127,7 +136,7 @@ define(function(require) {
          * @return {void}
          */
         function buildBrush() {
-            brush = d3.brushX()
+            brush = d3Brush.brushX()
                 .extent([[0, 0], [chartWidth, chartHeight]])
                 .on('brush', handleBrush)
                 .on('end', handleBrushEnded);
@@ -186,12 +195,12 @@ define(function(require) {
          * @private
          */
         function buildScales(){
-            xScale = d3.scaleTime()
-                .domain(d3.extent(data, getDate ))
+            xScale = d3Scale.scaleTime()
+                .domain(d3Array.extent(data, getDate ))
                 .range([0, chartWidth]);
 
-            yScale = d3.scaleLinear()
-                .domain([0, d3.max(data, getValue)])
+            yScale = d3Scale.scaleLinear()
+                .domain([0, d3Array.max(data, getValue)])
                 .range([chartHeight, 0]);
         }
 
@@ -202,7 +211,7 @@ define(function(require) {
          */
         function buildSVG(container){
             if (!svg) {
-                svg = d3.select(container)
+                svg = d3Selection.select(container)
                     .append('svg')
                     .classed('britechart brush-chart', true);
 
@@ -222,7 +231,7 @@ define(function(require) {
          * @param  {BrushChartData} data Data
          */
         function cleanData(data) {
-            let parseDate = d3.timeParse(defaultTimeFormat);
+            let parseDate = d3TimeFormat.timeParse(defaultTimeFormat);
 
             return data.map(function (d) {
                 d.date = parseDate(d[dateLabel]);
@@ -261,11 +270,11 @@ define(function(require) {
          */
         function drawArea() {
             // Create and configure the area generator
-            let area = d3.area()
+            let area = d3Shape.area()
                 .x(({date}) => xScale(date))
                 .y0(chartHeight)
                 .y1(({value}) => yScale(value))
-                .curve(d3.curveBasis);
+                .curve(d3Shape.curveBasis);
 
             // Create the area path
             svg.select('.chart-group')
@@ -309,7 +318,7 @@ define(function(require) {
          * @return {void}
          */
         function handleBrush() {
-            let s = d3.event.selection,
+            let s = d3Selection.event.selection,
                 dateExtent = s.map(xScale.invert);
 
             if (typeof onBrush === 'function') {
@@ -326,21 +335,21 @@ define(function(require) {
          * @private
          */
         function handleBrushEnded() {
-            if (!d3.event.sourceEvent) return; // Only transition after input.
-            if (!d3.event.selection) return; // Ignore empty selections.
+            if (!d3Selection.event.sourceEvent) return; // Only transition after input.
+            if (!d3Selection.event.selection) return; // Ignore empty selections.
 
-            let d0 = d3.event.selection.map(xScale.invert),
-                d1 = d0.map(d3.timeDay.round);
+            let d0 = d3Selection.event.selection.map(xScale.invert),
+                d1 = d0.map(d3Time.timeDay.round);
 
             // If empty when rounded, use floor & ceil instead.
             if (d1[0] >= d1[1]) {
-                d1[0] = d3.timeDay.floor(d0[0]);
-                d1[1] = d3.timeDay.offset(d1[0]);
+                d1[0] = d3Time.timeDay.floor(d0[0]);
+                d1[1] = d3Time.timeDay.offset(d1[0]);
             }
 
-            d3.select(this)
+            d3Selection.select(this)
                 .transition()
-                .call(d3.event.target.move, d1.map(xScale));
+                .call(d3Selection.event.target.move, d1.map(xScale));
         }
 
         /**

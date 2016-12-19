@@ -1,6 +1,7 @@
 'use strict';
 
-var d3 = require('d3'),
+var d3Selection = require('d3-selection'),
+    d3TimeFormat = require('d3-time-format'),
 
     PubSub = require('pubsub-js'),
 
@@ -11,7 +12,7 @@ var d3 = require('d3'),
 function createBrushChart() {
     var brushChart = brush(),
         testDataSet = new dataBuilder.BrushDataBuilder(),
-        brushContainer = d3.select('.js-brush-chart-container'),
+        brushContainer = d3Selection.select('.js-brush-chart-container'),
         containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
         dataset;
 
@@ -22,12 +23,12 @@ function createBrushChart() {
             .width(containerWidth)
             .height(200)
             .onBrush(function(brushExtent) {
-                var format = d3.timeFormat('%m/%d/%Y');
+                var format = d3TimeFormat.timeFormat('%m/%d/%Y');
 
-                d3.select('.js-start-date').text(format(brushExtent[0]));
-                d3.select('.js-end-date').text(format(brushExtent[1]));
+                d3Selection.select('.js-start-date').text(format(brushExtent[0]));
+                d3Selection.select('.js-end-date').text(format(brushExtent[1]));
 
-                d3.select('.js-date-range').classed('is-hidden', false);
+                d3Selection.select('.js-date-range').classed('is-hidden', false);
             });
 
         brushContainer.datum(dataset).call(brushChart);
@@ -35,11 +36,11 @@ function createBrushChart() {
 }
 
 // Show charts if container available
-if (d3.select('.js-brush-chart-container').node()){
+if (d3Selection.select('.js-brush-chart-container').node()){
     createBrushChart();
 
     var redrawCharts = function(){
-        d3.select('.brush-chart').remove();
+        d3Selection.select('.brush-chart').remove();
 
         createBrushChart();
     };

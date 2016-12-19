@@ -1,6 +1,6 @@
 define(function(require) {
 
-    var d3 = require('d3'),
+    var d3Selection = require('d3-selection'),
         colors = require('./../../src/charts/helpers/colors'),
 
         selectClass = 'form-control';
@@ -35,12 +35,12 @@ define(function(require) {
         containerSelector.append(sel);
 
         // Listen for changes
-        d3.select(sel)
+        d3Selection.select(sel)
             .on('change', function() {
                 // Get new color schema
                 var newSchema = colors.colorSchemas[this.value];
 
-                d3.select(chartSelector).remove();
+                d3Selection.select(chartSelector).remove();
 
                 // Draw
                 if (callback) {
