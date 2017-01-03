@@ -1,6 +1,6 @@
 'use strict';
 
-var d3 = require('d3'),
+var d3Selection = require('d3-selection'),
 
     PubSub = require('pubsub-js'),
 
@@ -18,11 +18,11 @@ var d3 = require('d3'),
 function createDonutChart(dataset, optionalColorSchema) {
     var legendChart = getLegendChart(dataset, optionalColorSchema),
         donutChart = donut(),
-        donutContainer = d3.select('.js-donut-chart-container'),
+        donutContainer = d3Selection.select('.js-donut-chart-container'),
         containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false;
 
     if (containerWidth) {
-        d3.select('#button').on('click', function() {
+        d3Selection.select('#button').on('click', function() {
             donutChart.exportChart();
         });
 
@@ -44,7 +44,7 @@ function createDonutChart(dataset, optionalColorSchema) {
 
         donutContainer.datum(dataset).call(donutChart);
 
-        d3.select('#button').on('click', function() {
+        d3Selection.select('#button').on('click', function() {
             donutChart.exportChart('donut.png', 'Britecharts Donut Chart');
         });
     }
@@ -52,11 +52,11 @@ function createDonutChart(dataset, optionalColorSchema) {
 
 function getLegendChart(dataset, optionalColorSchema) {
     var legendChart = legend(),
-        legendContainer = d3.select('.js-legend-chart-container'),
+        legendContainer = d3Selection.select('.js-legend-chart-container'),
         containerWidth = legendContainer.node() ? legendContainer.node().getBoundingClientRect().width : false;
 
     if (containerWidth) {
-        d3.select('.js-legend-chart-container .britechart-legend').remove();
+        d3Selection.select('.js-legend-chart-container .britechart-legend').remove();
 
         legendChart
             .width(containerWidth/2)
@@ -74,7 +74,7 @@ function getLegendChart(dataset, optionalColorSchema) {
 
 function createSmallDonutChart() {
     var donutChart = donut(),
-        donutContainer = d3.select('.js-small-donut-chart-container'),
+        donutContainer = d3Selection.select('.js-small-donut-chart-container'),
         containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false;
 
     if (containerWidth) {
@@ -88,12 +88,12 @@ function createSmallDonutChart() {
 }
 
 // Show charts if container available
-if (d3.select('.js-donut-chart-container').node()) {
+if (d3Selection.select('.js-donut-chart-container').node()) {
     createDonutChart(dataset);
     createSmallDonutChart();
 
     var redrawCharts = function(){
-        d3.selectAll('.donut-chart').remove();
+        d3Selection.selectAll('.donut-chart').remove();
 
         createDonutChart(dataset);
         createSmallDonutChart();

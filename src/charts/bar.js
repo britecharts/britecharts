@@ -1,7 +1,13 @@
 define(function(require) {
     'use strict';
 
-    const d3 = require('d3');
+    const d3Array = require('d3-array');
+    const d3Axis = require('d3-axis');
+    const d3Dispatch = require('d3-dispatch');
+    const d3Scale = require('d3-scale');
+    const d3Selection = require('d3-selection');
+    const d3Transition = require('d3-transition');
+
     const exportChart = require('./helpers/exportChart');
 
 
@@ -29,9 +35,9 @@ define(function(require) {
      * simple and configurable bar chart.
      *
      * @module Bar
-     * @version 0.1.0
+     * @version 0.1.1
      * @tutorial bar
-     * @requires d3
+     * @requires d3-array, d3-axis, d3-dispatch, d3-scale, d3-selection
      *
      * @example
      * var barChart = bar();
@@ -40,7 +46,7 @@ define(function(require) {
      *     .height(500)
      *     .width(800);
      *
-     * d3.select('.css-selector')
+     * d3Selection.select('.css-selector')
      *     .datum(dataset)
      *     .call(barChart);
      *
@@ -78,7 +84,7 @@ define(function(require) {
 
             // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
-            dispatcher = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove'),
+            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove'),
 
             // extractors
             getName = ({name}) => name,
@@ -112,16 +118,16 @@ define(function(require) {
          */
         function buildAxis(){
             if (!horizontal) {
-                xAxis = d3.axisBottom(xScale);
+                xAxis = d3Axis.axisBottom(xScale);
 
-                yAxis = d3.axisLeft(yScale)
+                yAxis = d3Axis.axisLeft(yScale)
                     .ticks(numOfVerticalTicks, '%');
             } else {
-                xAxis = d3.axisBottom(xScale)
+                xAxis = d3Axis.axisBottom(xScale)
                     .ticks(numOfHorizontalTicks, '%')
                     .tickSizeInner([-chartHeight]);
 
-                yAxis = d3.axisLeft(yScale);
+                yAxis = d3Axis.axisLeft(yScale);
             }
         }
 
@@ -153,20 +159,20 @@ define(function(require) {
          */
         function buildScales(){
             if (!horizontal) {
-                xScale = d3.scaleBand()
+                xScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([0, chartWidth])
                     .padding(0.1);
 
-                yScale = d3.scaleLinear()
-                    .domain([0, d3.max(data, getValue)])
+                yScale = d3Scale.scaleLinear()
+                    .domain([0, d3Array.max(data, getValue)])
                     .rangeRound([chartHeight, 0]);
             } else {
-                xScale = d3.scaleLinear()
-                    .domain([0, d3.max(data, getValue)])
+                xScale = d3Scale.scaleLinear()
+                    .domain([0, d3Array.max(data, getValue)])
                     .rangeRound([0, chartWidth]);
 
-                yScale = d3.scaleBand()
+                yScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([chartHeight, 0])
                     .padding(0.1);
@@ -180,7 +186,7 @@ define(function(require) {
          */
         function buildSVG(container){
             if (!svg) {
-                svg = d3.select(container)
+                svg = d3Selection.select(container)
                   .append('svg')
                     .classed('britechart bar-chart', true);
 
@@ -238,7 +244,7 @@ define(function(require) {
                     dispatcher.call('customMouseOver', this);
                 })
                 .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, d, d3.mouse(this), [chartWidth, chartHeight]);
+                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
                 .on('mouseout', function() {
                     dispatcher.call('customMouseOut', this);
@@ -268,7 +274,7 @@ define(function(require) {
                     dispatcher.call('customMouseOver', this);
                 })
                 .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, d, d3.mouse(this), [chartWidth, chartHeight]);
+                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
                 .on('mouseout', function() {
                     dispatcher.call('customMouseOut', this);

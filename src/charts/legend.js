@@ -3,6 +3,10 @@ define(function(require){
 
     const d3 = require('d3');
 
+    const d3Format = require('d3-format');
+    const d3Scale = require('d3-scale');
+    const d3Selection = require('d3-selection');
+
     const colorHelper = require('./helpers/colors');
 
     /**
@@ -45,11 +49,11 @@ define(function(require){
      *         legendBox.clearHighlight();
      *     });
      *
-     * d3.select('.css-selector')
+     * d3Selection.select('.css-selector')
      *     .datum(dataset)
      *     .call(donutChart);
      *
-     * d3.select('.other-css-selector')
+     * d3Selection.select('.other-css-selector')
      *     .datum(dataset)
      *     .call(legendBox);
      *
@@ -57,7 +61,7 @@ define(function(require){
      * @tutorial legend
      * @exports charts/legend
      * @requires d3
-     * @version 0.0.1
+     * @version 0.1.0
      */
     return function module() {
 
@@ -80,7 +84,7 @@ define(function(require){
 
             valueReservedSpace = 40,
             numberLetterSpacing = 0.8,
-            numberFormat = d3.format('s'),
+            numberFormat = d3Format.format('s'),
 
             isFadedClassName = 'is-faded',
 
@@ -137,7 +141,7 @@ define(function(require){
          * @private
          */
         function buildColorScale() {
-            colorScale = d3.scaleOrdinal().range(colorSchema);
+            colorScale = d3Scale.scaleOrdinal().range(colorSchema);
         }
 
         /**
@@ -147,7 +151,7 @@ define(function(require){
          */
         function buildSVG(container) {
             if (!svg) {
-                svg = d3.select(container)
+                svg = d3Selection.select(container)
                   .append('svg')
                     .classed('britechart britechart-legend', true);
 
@@ -239,7 +243,7 @@ define(function(require){
                 .selectAll('g.legend-line')
                 .classed(isFadedClassName, true);
 
-            d3.select(`[data-item="${exceptionItemId}"]`)
+            d3Selection.select(`[data-item="${exceptionItemId}"]`)
                 .classed(isFadedClassName, false);
         }
 
