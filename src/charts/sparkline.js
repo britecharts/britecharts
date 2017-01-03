@@ -1,7 +1,11 @@
 define(function(require){
     'use strict';
 
-    const d3 = require('d3');
+    const d3Array = require('d3-array');
+    const d3Ease = require('d3-ease');
+    const d3Scale = require('d3-scale');
+    const d3Shape = require('d3-shape');
+    const d3Selection = require('d3-selection');
 
     const exportChart = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
@@ -40,7 +44,7 @@ define(function(require){
      *     .width(200)
      *     .height(100);
      *
-     * d3.select('.css-selector')
+     * d3Selection.select('.css-selector')
      *     .datum(dataset)
      *     .call(sparkLineChart);
      *
@@ -69,7 +73,7 @@ define(function(require){
             hasArea = true,
             isAnimated = false,
             clipDuration = 3000,
-            ease = d3.easeQuadInOut,
+            ease = d3Ease.easeQuadInOut,
 
             line,
 
@@ -127,12 +131,12 @@ define(function(require){
          * @private
          */
         function buildScales(){
-            xScale = d3.scaleLinear()
-                .domain(d3.extent(data, getDate))
+            xScale = d3Scale.scaleLinear()
+                .domain(d3Array.extent(data, getDate))
                 .range([0, chartWidth]);
 
-            yScale = d3.scaleLinear()
-                .domain(d3.extent(data, getValue))
+            yScale = d3Scale.scaleLinear()
+                .domain(d3Array.extent(data, getValue))
                 .range([chartHeight, 0]);
         }
 
@@ -143,7 +147,7 @@ define(function(require){
          */
         function buildSVG(container){
             if (!svg) {
-                svg = d3.select(container)
+                svg = d3Selection.select(container)
                     .append('svg')
                     .classed('britechart sparkline', true);
 
@@ -226,7 +230,7 @@ define(function(require){
                     .attr('width', 0)
                     .attr('height', height);
 
-                d3.select('#maskingClip rect')
+                d3Selection.select('#maskingClip rect')
                     .transition()
                     .ease(ease)
                     .duration(clipDuration)
@@ -239,11 +243,11 @@ define(function(require){
          * @private
          */
         function drawArea(){
-            let area = d3.area()
+            let area = d3Shape.area()
                 .x(({date}) => xScale(date))
                 .y0(() => yScale(0))
                 .y1(({value}) => yScale(value))
-                .curve(d3.curveBasis);
+                .curve(d3Shape.curveBasis);
 
             svg.select('.chart-group')
               .append('path')
@@ -258,8 +262,8 @@ define(function(require){
          * @private
          */
         function drawLine(){
-            line = d3.line()
-                .curve(d3.curveBasis)
+            line = d3Shape.line()
+                .curve(d3Shape.curveBasis)
                 .x(({date}) => xScale(date))
                 .y(({value}) => yScale(value));
 

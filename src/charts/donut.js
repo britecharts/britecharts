@@ -1,7 +1,12 @@
 define(function(require){
     'use strict';
 
-    const d3 = require('d3');
+    const d3Dispatch = require('d3-dispatch');
+    const d3Ease = require('d3-ease');
+    const d3Interpolate = require('d3-interpolate');
+    const d3Scale = require('d3-scale');
+    const d3Shape = require('d3-shape');
+    const d3Selection = require('d3-selection');
 
     const exportChart = require('./helpers/exportChart');
     const textHelper = require('./helpers/text');
@@ -38,9 +43,9 @@ define(function(require){
      * simple and configurable donut chart.
      *
      * @module Donut
-     * @version 0.0.1
+     * @version 0.1.0
      * @tutorial donut
-     * @requires d3
+     * @requires d3-dispatch, d3-ease, d3-interpolate, d3-scale, d3-shape, d3-selection
      *
      * @example
      * var donutChart = donut();
@@ -49,7 +54,7 @@ define(function(require){
      *     .externalRadius(500)
      *     .internalRadius(200);
      *
-     * d3.select('.css-selector')
+     * d3Selection.select('.css-selector')
      *     .datum(dataset)
      *     .call(donutChart);
      *
@@ -64,7 +69,7 @@ define(function(require){
             },
             width = 300,
             height = 300,
-            ease = d3.easeCubicInOut,
+            ease = d3Ease.easeCubicInOut,
             arcTransitionDuration = 750,
             pieDrawingTransitionDuration = 1200,
             pieHoverTransitionDuration = 150,
@@ -85,7 +90,7 @@ define(function(require){
             percentageLabel = 'percentage',
 
             // colors
-            colorScale = d3.schemeCategory20c,
+            colorScale = d3Scale.schemeCategory20c,
             colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
 
             // utils
@@ -102,7 +107,7 @@ define(function(require){
             getSliceFill = ({data}) => colorScale(data.name),
 
             // events
-            dispatcher = d3.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
 
         /**
          * This function creates the graph using the selection as container
@@ -132,7 +137,7 @@ define(function(require){
          */
         function buildColorScale() {
             if (colorSchema) {
-                colorScale = d3.scaleOrdinal().range(colorSchema);
+                colorScale = d3Scale.scaleOrdinal().range(colorSchema);
             }
         }
 
@@ -155,7 +160,7 @@ define(function(require){
          * @private
          */
         function buildLayout() {
-            layout = d3.pie()
+            layout = d3Shape.pie()
                 .padAngle(paddingAngle)
                 .value(getQuantity)
                 .sort(sortComparator);
@@ -166,7 +171,7 @@ define(function(require){
          * @private
          */
         function buildShape() {
-            shape = d3.arc()
+            shape = d3Shape.arc()
                 .innerRadius(internalRadius)
                 .padRadius(externalRadius);
         }
@@ -179,7 +184,7 @@ define(function(require){
          */
         function buildSVG(container) {
             if (!svg) {
-                svg = d3.select(container)
+                svg = d3Selection.select(container)
                   .append('svg')
                     .classed('britechart donut-chart', true)
                     .data([data]);  //TO REVIEW
@@ -307,7 +312,7 @@ define(function(require){
          * @private
          */
         function tweenArc(a) {
-            let i = d3.interpolate(this._current, a);
+            let i = d3Interpolate.interpolate(this._current, a);
 
             this._current = i(0);
 
@@ -326,11 +331,11 @@ define(function(require){
          */
         function tweenGrowthFactory(outerRadius, delay) {
             return function() {
-                d3.select(this)
+                d3Selection.select(this)
                     .transition()
                     .delay(delay)
                     .attrTween('d', function(d) {
-                        let i = d3.interpolate(d.outerRadius, outerRadius);
+                        let i = d3Interpolate.interpolate(d.outerRadius, outerRadius);
 
                         return (t) => {
                             d.outerRadius = i(t);
@@ -353,7 +358,7 @@ define(function(require){
             let i;
 
             b.innerRadius = 0;
-            i = d3.interpolate({ startAngle: 0, endAngle: 0}, b);
+            i = d3Interpolate.interpolate({ startAngle: 0, endAngle: 0}, b);
 
             return function(t) { return shape(i(t)); };
         }
