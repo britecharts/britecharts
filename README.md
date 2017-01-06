@@ -58,7 +58,7 @@ Britecharts was inspired by two books, [Developing a D3.js Edge][19] and [Master
 
 ## License
 
-Copyright 2016 Eventbrite
+Copyright 2017 Eventbrite
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
