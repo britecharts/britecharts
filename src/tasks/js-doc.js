@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 
     // Open docs
     grunt.registerTask('openDocs', 'Open docs page on browser', function() {
-        var cmd = 'open http://localhost:8080/docs/';
+        var cmd = 'open http://localhost:8001/docs/';
 
         shell.exec(cmd);
     });
