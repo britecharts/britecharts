@@ -1,148 +1,167 @@
 @font-face {
-  font-family: 'Heebo', sans-serif;
-  src: url("https://fonts.googleapis.com/css?family=Heebo:300") format("opentype");
-  font-weight: 300; }
-
-@font-face {
-  font-family: 'Heebo-thin', sans-serif;
-  src: url("https://fonts.googleapis.com/css?family=Heebo:100") formant("opentype");
-  font-weight: 100; }
-
+  font-family: 'Karla', sans-serif;
+  src: url("https://fonts.googleapis.com/css?family=Karla") format("opentype");
+  font-weight: 300;
+}
 body {
-  font-family: 'Heebo', sans-serif; }
+  font-family: 'Karla', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
 
 .vertical-grid-line,
 .horizontal-grid-line {
   fill: none;
   shape-rendering: crispEdges;
   stroke: #EFF2F5;
-  stroke-width: 2; }
+  stroke-width: 1;
+  stroke-dasharray: 4,4;
+}
 
 .extended-y-line,
 .extended-x-line {
   fill: none;
   shape-rendering: crispEdges;
   stroke: #D2D6DF;
-  stroke-width: 2; }
+  stroke-width: 1;
+}
 
 .tick line {
   fill: none;
-  stroke: #C3C6CF;
+  stroke: #ADB0B6;
   stroke-width: 1;
-  shape-rendering: crispEdges; }
-
+  shape-rendering: crispEdges;
+}
 .tick text {
-  font-size: 1.2em;
-  fill: #ADB0B6;
-  padding: 10px; }
+  font-size: 1rem;
+  fill: #666A73;
+  padding: 12px;
+}
 
 .y-axis-label,
 .x-axis-label {
-  font-size: 1.2em;
-  fill: #ADB0B6; }
+  font-size: 1rem;
+  fill: #ADB0B6;
+}
 
 .vertical-marker-container .vertical-marker {
-  stroke: #ff0044;
+  stroke: #D2D6DF;
   stroke-width: 1;
-  fill: none; }
-
+  fill: none;
+}
 .vertical-marker-container .data-point-highlighter {
-  fill: #ffffff; }
+  fill: #ffffff;
+  stroke-width: 2;
+}
 
 .tooltip-background {
-  fill: #ffffff;
+  fill: rgba(255, 255, 255, 0.97);
   stroke: #D2D6DF;
-  stroke-width: 1; }
+  stroke-width: 1;
+  border-radius: 2px;
+}
 
 .britechart-legend .legend-line.is-faded .legend-entry-name,
 .britechart-legend .legend-line.is-faded .legend-entry-value,
 .britechart-legend .legend-line.is-faded .legend-circle {
-  opacity: 1;
+  opacity: 0.97;
   transition: opacity .2s ease-out;
   -moz-transition: opacity .2s ease-out;
-  -webkit-transition: opacity .2s ease-out; }
-
+  -webkit-transition: opacity .2s ease-out;
+}
 .britechart-legend .legend-line.is-faded .legend-entry-name,
 .britechart-legend .legend-line.is-faded .legend-entry-value,
 .britechart-legend .legend-line.is-faded .legend-circle {
-  opacity: 0.2; }
+  opacity: 0.2;
+}
 
 .bar-chart .bar {
-  fill: #8FDAD8;
+  fill: #7bdcc0;
   stroke-width: 0;
-  shape-rendering: crispEdges; }
-
+  shape-rendering: crispEdges;
+}
 .bar-chart .bar:hover {
-  fill: #39C2C9; }
-
+  fill: #59c3a3;
+}
 .bar-chart .axis path {
-  display: none; }
-
+  display: none;
+}
 .bar-chart .tick line {
-  display: none; }
+  display: none;
+}
 
 .line-chart .topic .line {
   fill: none;
-  stroke-width: 3;
+  stroke-width: 2;
   stroke-linecap: round;
-  stroke-linejoin: round; }
-
+  stroke-linejoin: round;
+}
 .line-chart .x.axis path,
 .line-chart .y.axis path {
-  display: none; }
-
+  display: none;
+}
 .line-chart .month-axis path {
-  display: none; }
-
+  display: none;
+}
 .line-chart .masking-rectangle {
-  fill: #ffffff; }
+  fill: #ffffff;
+}
 
 .sparkline {
   stroke: #ADB0B6;
   stroke-width: 1;
   fill: none;
   stroke-linecap: round;
-  stroke-linejoin: round; }
-  .sparkline .line {
-    stroke: url(#sparkline-line-gradient);
-    stroke-width: 4; }
-  .sparkline .sparkline-circle {
-    fill: #ff0044;
-    stroke-width: 0;
-    display: none; }
-  .sparkline .sparkline-area {
-    fill: url(#sparkline-area-gradient);
-    stroke: none; }
+  stroke-linejoin: round;
+}
+.sparkline .line {
+  stroke: url(#sparkline-line-gradient);
+  stroke-width: 4;
+}
+.sparkline .sparkline-circle {
+  fill: #ff584c;
+  stroke-width: 0;
+  display: none;
+}
+.sparkline .sparkline-area {
+  fill: url(#sparkline-area-gradient);
+  stroke: none;
+}
 
 .stacked-area .dot {
-  display: none; }
-
+  display: none;
+}
 .stacked-area .y-axis-group path {
-  display: none; }
-
+  display: none;
+}
 .stacked-area .x-axis-group path {
-  display: none; }
+  display: none;
+}
 
 .step-chart .step {
   fill: #8FDAD8;
   stroke-width: 0;
-  shape-rendering: crispEdges; }
-  .step-chart .step:hover {
-    fill: #39C2C9; }
-
+  shape-rendering: crispEdges;
+}
+.step-chart .step:hover {
+  fill: #39C2C9;
+}
 .step-chart .axis path {
-  display: none; }
-
+  display: none;
+}
 .step-chart .tick line {
-  display: none; }
+  display: none;
+}
 
 .brush-chart .brush-area {
-  fill: url("#brush-area-gradient"); }
-
+  fill: url("#brush-area-gradient");
+}
 .brush-chart .extent.brush-rect {
   stroke: #fff;
   stroke-width: 3;
-  fill: rgba(69, 73, 78, 0.05); }
-
+  fill: rgba(69, 73, 78, 0.05);
+}
 .brush-chart .axis path {
-  display: none; }
+  display: none;
+}
+
+/*# sourceMappingURL=bundle.css.map */

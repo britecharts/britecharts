@@ -74,7 +74,7 @@ define(function(require){
             width = 320,
             height = 180,
 
-            lineMargin = 10,
+            lineMargin = 12,
 
             circleRadius = 8,
             circleYOffset = -5,

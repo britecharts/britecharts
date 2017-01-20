@@ -1,7 +1,7 @@
 @import "../helpers/_variables.scss";
 
-$bar-color: #8FDAD8;
-$bar-color-hover: #39C2C9;
+$bar-color: desaturate( $bc-green, 20% );
+$bar-color-hover: $bc-e-green-600;
 $bar-stroke-width: 0;
 
 .bar-chart {
