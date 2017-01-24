@@ -17,6 +17,8 @@ define(function(require){
     const exportChart = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
 
+    const ONE_AND_A_HALF_YEARS = 47304000000;
+
     /**
      * @typdef D3Layout
      * @type function
@@ -48,7 +50,7 @@ define(function(require){
         let margin = {
                 top: 70,
                 right: 30,
-                bottom: 50,
+                bottom: 60,
                 left: 70
             },
             width = 960,
@@ -96,6 +98,8 @@ define(function(require){
 
             ease = d3Ease.easeQuadInOut,
             areaAnimationDuration = 1000,
+
+            defaultNumMonths = 10,
 
             svg,
             chartWidth, chartHeight,
@@ -195,7 +199,10 @@ define(function(require){
          * Creates the d3 x and y axis, setting orientations
          * @private
          */
-        function buildAxis(){
+        function buildAxis() {
+            let dataTimeSpan = xScale.domain()[1] - xScale.domain()[0];
+            let xMonthTicks = dataTimeSpan > ONE_AND_A_HALF_YEARS ? defaultNumMonths : d3Time.timeMonth;
+
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(getMaxNumOfHorizontalTicks(chartWidth, dataByDate.length))
                 .tickFormat(xTickDateFormat)
@@ -204,9 +211,9 @@ define(function(require){
 
             //TODO: Review this axis with real data
             xMonthAxis = d3Axis.axisBottom(xScale)
-                .ticks(d3Time.timeMonths)
-                .tickFormat(xTickMonthFormat)
+                .ticks(xMonthTicks)
                 .tickSize(10, 0)
+                .tickFormat(xTickMonthFormat)
                 .tickPadding(tickPadding);
 
             yAxis = d3Axis.axisRight(yScale)
@@ -365,9 +372,9 @@ define(function(require){
                 .attr('transform', `translate( 0, ${chartHeight} )`)
                 .call(xAxis);
 
-            // svg.select('.x-axis-group .month-axis')
-            //     .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
-            //     .call(xMonthAxis);
+            svg.select('.x-axis-group .month-axis')
+                .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
+                .call(xMonthAxis);
 
             svg.select('.y-axis-group.axis')
                 .attr('transform', `translate( ${-yTickTextXOffset}, 0)`)
