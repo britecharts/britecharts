@@ -7,6 +7,7 @@ define(function(require) {
         jsonOneSource = require('json!../json/lineDataOneSet.json'),
         jsonDataNDates = require('json!../json/lineDataForNDates.json'),
         jsonMultiMonthValueRange = require('json!../json/multiMonthLineData'),
+        jsonHourDateRange = require('json!../json/lineDataOneSetHourly.json'),
         jsonSmallValueRange = require('json!../json/lineDataSmallValueRange');
 
 
@@ -49,6 +50,12 @@ define(function(require) {
 
         this.withMultiMonthValueRange = function() {
             var attributes = _.extend({}, this.config, jsonMultiMonthValueRange);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withHourDateRange = function() {
+            var attributes = _.extend({}, this.config, jsonHourDateRange);
 
             return new this.Klass(attributes);
         };

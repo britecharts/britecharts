@@ -68,7 +68,7 @@ function createLineChartWithSingleLine() {
         dataset;
 
     if (containerWidth) {
-        dataset = testDataSet.withOneSource().build();
+        dataset = testDataSet.withHourDateRange().build();
 
         d3Selection.select('#button2').on('click', function() {
             lineChart2.exportChart('linechart.png', 'Britecharts Line Chart');
