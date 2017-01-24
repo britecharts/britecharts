@@ -18,6 +18,7 @@ define(function(require){
     const {lineGradientId} = require('./helpers/constants.js');
 
     const ONE_AND_A_HALF_YEARS = 47304000000;
+    const ONE_DAY = 86400001;
 
     /**
      * @typedef D3Selection
@@ -207,6 +208,7 @@ define(function(require){
 
             // formats
             yTickNumberFormat = d3Format.format('.3'),
+            xTickHourFormat = d3TimeFormat.timeFormat('%H %p'),
             xTickDateFormat = d3TimeFormat.timeFormat('%e'),
             xTickMonthFormat = d3TimeFormat.timeFormat('%b'),
 
@@ -280,16 +282,24 @@ define(function(require){
             let dataTimeSpan = xScale.domain()[1] - xScale.domain()[0];
             let xMonthTicks = dataTimeSpan > ONE_AND_A_HALF_YEARS ? defaultNumMonths : d3Time.timeMonth;
 
+            let xMainFormat = xTickDateFormat;
+            let xSecondaryFormat = xTickMonthFormat;
+
+            if (dataTimeSpan < ONE_DAY) {
+                xMainFormat = xTickHourFormat;
+                xSecondaryFormat = xTickDateFormat;
+            }
+
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(tickValue)
                 .tickSize(10, 0)
                 .tickPadding(tickPadding)
-                .tickFormat(xTickDateFormat);
+                .tickFormat(xMainFormat);
 
             xMonthAxis = d3Axis.axisBottom(xScale)
                 .ticks(xMonthTicks)
                 .tickSize(0, 0)
-                .tickFormat(xTickMonthFormat);
+                .tickFormat(xSecondaryFormat);
 
             yAxis = d3Axis.axisLeft(yScale)
                 .ticks(yTickNumber)
