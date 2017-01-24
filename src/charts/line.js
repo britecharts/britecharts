@@ -17,6 +17,8 @@ define(function(require){
 
     const {lineGradientId} = require('./helpers/constants.js');
 
+    const ONE_AND_A_HALF_YEARS = 47304000000;
+
     /**
      * @typedef D3Selection
      * @type {Array[]}
@@ -188,6 +190,7 @@ define(function(require){
             dataByDate,
 
             numVerticalTics = 5,
+            defaultNumMonths = 10,
 
             overlay,
             overlayColor = 'rgba(0, 0, 0, 0)',
@@ -270,10 +273,12 @@ define(function(require){
          */
         function buildAxis(){
             // when dataset < 5, .ticks acts a little unexpected, so we pass it d3Time.time.days to fix
-            let tickValue = dataByDate.length < 5 ? d3Time.time.days :
+            let tickValue = dataByDate.length < 5 ? d3Time.timeDay :
                     getMaxNumOfHorizontalTicks(width, dataByDate.length);
             let rangeDiff = yScale.domain()[1] - yScale.domain()[0];
             let yTickNumber = rangeDiff < numVerticalTics - 1 ? rangeDiff : numVerticalTics;
+            let dataTimeSpan = xScale.domain()[1] - xScale.domain()[0];
+            let xMonthTicks = dataTimeSpan > ONE_AND_A_HALF_YEARS ? defaultNumMonths : d3Time.timeMonth;
 
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(tickValue)
@@ -282,7 +287,7 @@ define(function(require){
                 .tickFormat(xTickDateFormat);
 
             xMonthAxis = d3Axis.axisBottom(xScale)
-                .ticks(d3Time.timeMonths)
+                .ticks(xMonthTicks)
                 .tickSize(0, 0)
                 .tickFormat(xTickMonthFormat);
 
@@ -417,9 +422,9 @@ define(function(require){
                 .attr('transform', `translate(0, ${chartHeight})`)
                 .call(xAxis);
 
-            // svg.select('.x-axis-group .month-axis')
-            //     .attr('transform', `translate(0, ${(chartHeight + 28)})`)
-            //     .call(xMonthAxis);
+            svg.select('.x-axis-group .month-axis')
+                .attr('transform', `translate(0, ${(chartHeight + 28)})`)
+                .call(xMonthAxis);
 
             svg.select('.y-axis-group.axis.y')
                 .transition()
