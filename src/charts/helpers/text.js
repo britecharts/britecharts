@@ -6,7 +6,7 @@ define(function(require) {
         lineHeight: 1.2,
         smallTextOffset: 10,
         smallTextLineHeightRatio: 0.9,
-        smallTextRatio: 0.4,
+        smallTextRatio: 0.6,
         valueClassName: 'value',
         labelClassName: 'label'
     };

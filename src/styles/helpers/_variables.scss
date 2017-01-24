@@ -18,25 +18,17 @@ $grey-900: #282C35;
 // Colors
 // Eventbrite Brand Colors
 // Eventbrite Orange
-$brand-color-orange: #f6682f;
-// Lilly Pilly
-$brand-color-pink: #f20cb6;
-// Pomegranate
-$brand-color-red: #ff0044;
-// Meyer Lemon
-$brand-color-yellow: #ffdb00;
-// Coriander
-$brand-color-green: #00cc52;
-// Blueberry
-$brand-color-light-blue: #00a8f2;
+// $brand-color-orange: #f6682f;
+// // Lilly Pilly
+// $brand-color-pink: #f20cb6;
 
+// // Meyer Lemon
+// $brand-color-yellow: #ffdb00;
+// // Coriander
+// $brand-color-green: #00cc52;
+// // Blueberry
+// $brand-color-light-blue: #00a8f2;
 
-// Main chart color palette
-$bc-green: #6CEDC8;
-$bc-blue: #3DC3C9;
-$bc-yellow: #FBC670;
-$bc-pink: #F766B8;
-$bc-purple: #998EE3;
 
 // Extended Palette (britecharts-extended-)
 // Orange
@@ -126,3 +118,15 @@ $bc-e-red-600: #f04b42;
 $bc-e-red-700: #D33732;
 $bc-e-red-800: #be2e29;
 $bc-e-red-900: #9c1e19;
+
+
+// Main chart color palette
+$bc-green: $bc-e-green-500;
+$bc-blue: $bc-e-light-blue-500;
+$bc-orange: $bc-e-orange-300;
+$bc-yellow: $bc-e-yellow-500;
+$bc-pink: $bc-e-pink-300;
+$bc-purple: $bc-e-purple-300;
+
+// UI palette
+$brand-color-red: $bc-e-red-500;

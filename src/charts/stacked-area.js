@@ -630,7 +630,7 @@ define(function(require){
                     .attr('cx', circleSize)
                     .attr('cy', 0)
                     .attr('r', 5)
-                    .style('stroke-width', 3)
+                    .style('stroke-width', 2)
                     .style('stroke', categoryColorMap[name]);
 
                 marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(accumulator))} )` );
