@@ -6,6 +6,7 @@ define(function(require) {
         jsonFiveTopics = require('json!../json/lineDataFiveTopics.json'),
         jsonOneSource = require('json!../json/lineDataOneSet.json'),
         jsonDataNDates = require('json!../json/lineDataForNDates.json'),
+        jsonMultiMonthValueRange = require('json!../json/multiMonthLineData'),
         jsonSmallValueRange = require('json!../json/lineDataSmallValueRange');
 
 
@@ -44,7 +45,13 @@ define(function(require) {
             var attributes = _.extend({}, this.config, jsonSmallValueRange);
 
             return new this.Klass(attributes);
-        }
+        };
+
+        this.withMultiMonthValueRange = function() {
+            var attributes = _.extend({}, this.config, jsonMultiMonthValueRange);
+
+            return new this.Klass(attributes);
+        };
 
         /**
          * Sets the path for fetching the data
