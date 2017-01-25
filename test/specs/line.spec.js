@@ -13,16 +13,16 @@ define([
     ) {
     'use strict';
 
+    function aTestDataSet() {
+        return new dataBuilder.SalesDataBuilder();
+    }
+
+    function hasClass(element, className) {
+        return _.contains(element.node().classList, className);
+    }
+
     describe('Line Chart', () => {
         let dataset, containerFixture, f, lineChart;
-
-        function aTestDataSet() {
-            return new dataBuilder.SalesDataBuilder();
-        }
-
-        function hasClass(element, className) {
-            return _.contains(element.node().classList, className);
-        }
 
         describe('with a single line', function() {
 
@@ -113,7 +113,6 @@ define([
                 expect(stroke).not.toEqual('url("#line-area-gradient")');
             });
 
-
             // Event Setting
             it('should trigger an event on hover', () => {
                 let callback = jasmine.createSpy('hoverCallback'),
@@ -182,6 +181,42 @@ define([
                 expect(hasClass(verticalLine, 'bc-is-active')).toBe(true);
                 container.dispatch('mouseout');
                 expect(hasClass(verticalLine, 'bc-is-active')).toBe(false);
+            });
+        });
+
+        describe('when different date ranges', function() {
+
+            beforeEach(() => {
+                dataset = aTestDataSet().withHourDateRange().build();
+                lineChart = chart();
+
+                // DOM Fixture Setup
+                f = jasmine.getFixtures();
+                f.fixturesPath = 'base/test/fixtures/';
+                f.load('testContainer.html');
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(dataset).call(lineChart);
+            });
+
+            afterEach(() => {
+                containerFixture.remove();
+                f = jasmine.getFixtures();
+                f.cleanUp();
+                f.clearCache();
+            });
+
+            describe('on render', () => {
+
+                it('should have an x axis with hour format', () => {
+                    let container = containerFixture.selectAll('svg'),
+                        xAxis = d3.select('.x-axis-group'),
+                        xAxisLabels = xAxis.selectAll('.tick text'),
+                        actual = xAxisLabels.text(),
+                        expected = '00 AM';
+
+                    expect(actual).toEqual(expected)
+                });
             });
         });
 

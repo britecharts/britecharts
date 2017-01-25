@@ -18,6 +18,7 @@ define(function(require){
     const colorHelper = require('./helpers/colors');
 
     const ONE_AND_A_HALF_YEARS = 47304000000;
+    const ONE_DAY = 86400001;
 
     /**
      * @typdef D3Layout
@@ -132,6 +133,7 @@ define(function(require){
             parseUTC = d3TimeFormat.timeParse('%Y-%m-%dT%H:%M:%SZ'),
 
             yTickNumberFormat = d3Format.format('.3'),
+            xTickHourFormat = d3TimeFormat.timeFormat('%H %p'),
             xTickDateFormat = d3TimeFormat.timeFormat('%e'),
             xTickMonthFormat = d3TimeFormat.timeFormat('%b'),
 
@@ -203,18 +205,26 @@ define(function(require){
             let dataTimeSpan = xScale.domain()[1] - xScale.domain()[0];
             let xMonthTicks = dataTimeSpan > ONE_AND_A_HALF_YEARS ? defaultNumMonths : d3Time.timeMonth;
 
+            let xMainFormat = xTickDateFormat;
+            let xSecondaryFormat = xTickMonthFormat;
+
+            if (dataTimeSpan < ONE_DAY) {
+                xMainFormat = xTickHourFormat;
+                xSecondaryFormat = xTickDateFormat;
+            }
+
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(getMaxNumOfHorizontalTicks(chartWidth, dataByDate.length))
-                .tickFormat(xTickDateFormat)
                 .tickSize(10, 0)
-                .tickPadding(tickPadding);
+                .tickPadding(tickPadding)
+                .tickFormat(xMainFormat);
 
             //TODO: Review this axis with real data
             xMonthAxis = d3Axis.axisBottom(xScale)
                 .ticks(xMonthTicks)
                 .tickSize(10, 0)
-                .tickFormat(xTickMonthFormat)
-                .tickPadding(tickPadding);
+                .tickPadding(tickPadding)
+                .tickFormat(xSecondaryFormat);
 
             yAxis = d3Axis.axisRight(yScale)
                 .ticks(numVerticalTicks)
