@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Britecharts - D3.js based charting library of reusable components</title>
+
+        
+            <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+            
+                <meta name="keywords" content="Britecharts, D3.js" />
+            
+        
+
+        <!-- Disable tap highlight on IE -->
+        <meta name="msapplication-tap-highlight" content="no">
+
+        <!-- Web Application Manifest -->
+        <link rel="manifest" href="manifest.json">
+
+        <!-- Add to homescreen for Chrome on Android -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="application-name" content="Britecharts">
+        <link rel="icon" sizes="192x192" href="img/icons/chrome-touch-icon-192x192.png">
+
+        <!-- Add to homescreen for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#009FA1">
+        <meta name="apple-mobile-web-app-title" content="Britecharts">
+        <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
+
+        <!-- Tile icon for Win8 (144x144 + tile color) -->
+        <meta name="msapplication-TileImage" content="img/icons/ms-touch-icon-144x144-precomposed.png">
+        <meta name="msapplication-TileColor" content="#009FA1">
+
+        <!-- Color the status bar on mobile devices -->
+        <meta name="theme-color" content="#009FA1">
+
+        
+            <meta property="og:title" content="Britecharts - D3.js based charting library of reusable components"/>
+            <meta property="og:type" content="website"/>
+            <meta property="og:image" content="/src/doc/template/static/img/logo.svg"/>
+            <meta property="og:site_name" content="Britecharts"/>
+            <meta property="og:url" content=""/>
+        
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+    	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+        <link type="text/css" rel="stylesheet" href="styles/custom.css">
+        <link type="text/css" rel="stylesheet" href="styles/demos.css">
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top navbar-default">
+            <div class="container">
+            	<div class="navbar-header">
+            		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="/src/doc/template/static/img/logo.svg"
+            		alt="Britecharts"/></a>
+            		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+                    </button>
+            	</div>
+            	<div class="navbar-collapse collapse" id="topNavigation">
+            		<ul class="nav navbar-nav">
+            			
+            			<li class="dropdown">
+            				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">API<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					<li><a href="module-Bar.html">Bar</a></li><li><a href="module-Brush.html">Brush</a></li><li><a href="module-Donut.html">Donut</a></li><li><a href="module-Legend.html">Legend</a></li><li><a href="module-Line.html">Line</a></li><li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li><li><a href="module-Sparkline.html">Sparkline</a></li><li><a href="module-Stacked-area.html">Stacked-area</a></li><li><a href="module-Step.html">Step</a></li><li><a href="module-Tooltip.html">Tooltip</a></li>
+            				</ul>
+            			</li>
+            			
+            			<li class="dropdown">
+            				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Demos<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					<li><a href="tutorial--_CONTRIBUTING.html">_CONTRIBUTING</a></li><li><a href="tutorial--_GETTINGSTARTED.html">_GETTINGSTARTED</a></li><li><a href="tutorial-bar.html">bar</a></li><li><a href="tutorial-brush.html">brush</a></li><li><a href="tutorial-donut.html">donut</a></li><li><a href="tutorial-kitchen-shrink.html">kitchen-shrink</a></li><li><a href="tutorial-line.html">line</a></li><li><a href="tutorial-sparkline.html">sparkline</a></li><li><a href="tutorial-stacked-area.html">stacked-area</a></li><li><a href="tutorial-step.html">step</a></li>
+            				</ul>
+            			</li>
+            			
+            			<li class="dropdown">
+            				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					<li><a href="global.html">Global</a></li>
+            				</ul>
+            			</li>
+            			
+            		</ul>
+                    
+                        <div class="col-sm-4 col-md-5">
+                            <form class="navbar-form" role="search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    
+            	</div>
+            </div>
+        </div>
+
+        <main class="container" id="toc-content">
+            <div class="row">
+            	
+            	<div class="col-md-12">
+            	
+            		<div id="main">
+            			<section class="tutorial-section">
+    <header>
+        
+        <h2 class="tutorial-section__heading">_GETTINGSTARTED</h2>
+    </header>
+    <article>
+        <h2>Getting Started with Britecharts</h2><p>In this document, we show you the 3 main use cases you as developer will find when working with Britecharts:</p>
+<h3>Using Britecharts in your project</h3><p>In order to use a Britecharts chart in your project you would need to:</p>
+<ul>
+<li>Add Britecharts as a dependency in your package.json (not needed in core).<pre class="prettyprint source"><code>  &quot;britecharts&quot;: &quot;http://packages:8889/package/britecharts/1.0.13&quot;</code></pre></li>
+<li>Require the proper chart as a requirejs module, for example, in core we do:<pre class="prettyprint source"><code>  LineChart = require('britecharts/umd/line.min')</code></pre></li>
+<li>Require D3 as a dependency too.<pre class="prettyprint source"><code>  d3 = require('d3')</code></pre></li>
+<li><p>Call the chart with a container and data attached to the container.</p>
+<pre class="prettyprint source"><code>  var container = d3.select(config.containerSelector),
+      lineChart = new LineChart();
+
+  if (container.node()) {
+      lineChart
+          .tooltipThreshold(config.tooltipShouldShowThreshold)
+          .margin(config.chartMargin)
+          .height(config.chartHeight)
+          .width(config.chartWidth);
+  }
+  // This line mixes together container, data and chart
+  container.datum(data).call(lineChart);</code></pre><p>And that would generate your britechart!</p>
+</li>
+</ul>
+<p>You will probably want to set up a listener for the resize event to re-render the chart.</p>
+<h3>Modifying a chart</h3><p>We have created this charts with Tests First, and we encourage you to do the same. However, you can also write tests later.</p>
+<p>For a TDD workflow, the process would look like this:</p>
+<ul>
+<li>Create a new branch for your modification</li>
+<li>Find the test of the chart you want to modify in <code>/test/specs/*.spec.js</code></li>
+<li>Write a failing test for the API accessor or the feature you want to add</li>
+<li>Check that it fails</li>
+<li>Write the code that would make that test pass</li>
+<li>Make the test pass</li>
+<li>Update the comments so that the proper documentation gets generated when running<pre class="prettyprint source"><code>npm run docs</code></pre></li>
+<li>Check the demos to see the code in action (you can also add a new demo there if necessary)</li>
+<li>Create a pull request and ask people of the team to review it</li>
+<li>Once you have a shipit, merge it!</li>
+<li>If you are using it on core, you will need to release a new version of Britecharts:<pre class="prettyprint source"><code>npm run release</code></pre></li>
+<li>Update the new version number on <code>npm.json</code> and <code>npm-shinkwrap.json</code></li>
+<li>Build your core-frontend container and reload your environment</li>
+</ul>
+<h3>Creating a new chart</h3><p>Adding a new chart is a bunch of work, but we hope the current code and documentation will help you in the process.</p>
+<ul>
+<li>Create a new branch for your new chart</li>
+<li>Create a file for the tests and the chart (on <code>src/charts</code> and <code>test/specs</code>)</li>
+<li>Create a file for the demo too, and it's corresponding html (find them on <code>demos/</code>)</li>
+<li>Using the bar chart tests as a jumpstart, add one test and make it fail</li>
+<li>Write the code that makes that test pass and keep on adding tests</li>
+<li>Once you think you are close to have something working, start adding JSDoc comments to your code</li>
+<li>Generate your docs with:<pre class="prettyprint source"><code>  npm run docs</code></pre></li>
+<li>Create a pull request with your branch and ping one of the core authors to get it reviewed</li>
+<li>Once you have a shipit, merge it</li>
+<li>If you are using it on core, you will need to release a new version of Britecharts:<pre class="prettyprint source"><code>  npm run release</code></pre></li>
+<li>Update the new version number on <code>npm.json</code> and <code>npm-shinkwrap.json</code></li>
+<li>Build your core-frontend container and reload your environment</li>
+</ul>
+    </article>
+</section>
+
+            		</div>
+            	</div>
+            	<div class="clearfix"></div>
+            	
+            </div>
+        </main>
+
+        
+            <div class="modal fade" id="searchResults">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Search results</h4>
+                  </div>
+                  <div class="modal-body"></div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+
+        <footer>
+            
+            
+            	<span class="copyright">
+            	Eventbrite Copyright
+            	</span>
+            
+            <span class="jsdoc-message">
+            	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+            	
+            	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+            </span>
+        </footer>
+
+        <script src="scripts/docstrap.lib.js"></script>
+        <script src="scripts/toc.js"></script>
+        
+            <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+        
+        <script src="/demos/build/bundle.js"></script>
+
+
+        <script>
+        $( function () {
+        	$( "[id*='$']" ).each( function () {
+        		var $this = $( this );
+
+        		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+        	} );
+
+        	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+        		var $this = $( this );
+
+        		var example = $this.find( "code" );
+        		exampleText = example.html();
+        		var lang = /{@lang (.*?)}/.exec( exampleText );
+        		if ( lang && lang[1] ) {
+        			exampleText = exampleText.replace( lang[0], "" );
+        			example.html( exampleText );
+        			lang = lang[1];
+        		} else if (example && example.parent().length) {
+        			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+        			lang = langClassMatch ? langClassMatch[1] : "javascript";
+        		}
+
+        		if ( lang ) {
+
+        			$this
+        			.addClass( "sunlight-highlight-" + lang )
+        			.addClass( "linenums" )
+        			.html( example.html() );
+
+        		}
+        	} );
+
+        	Sunlight.highlightAll( {
+        		lineNumbers : false,
+        		showMenu : true,
+        		enableDoclinks : true
+        	} );
+
+        	$.catchAnchorLinks( {
+                navbarOffset: 10
+        	} );
+        	$( "#toc" ).toc( {
+        		anchorName  : function ( i, heading, prefix ) {
+        			return $( heading ).attr( "id" ) || ( prefix + i );
+        		},
+        		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+        		showAndHide : false,
+        		smoothScrolling: true
+        	} );
+
+        	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+        	$( '.dropdown-toggle' ).dropdown();
+
+            $( "table" ).each( function () {
+              var $this = $( this );
+              $this.addClass('table');
+            } );
+        } );
+        </script>
+
+
+        <!--Navigation and Symbol Display-->
+        
+
+        <!--Google Analytics-->
+        
+        <script>
+        	(function ( i, s, o, g, r, a, m ) {
+        		i['GoogleAnalyticsObject'] = r;
+        		i[r] = i[r] || function () {
+        			(i[r].q = i[r].q || []).push( arguments )
+        		}, i[r].l = 1 * new Date();
+        		a = s.createElement( o ),
+        			m = s.getElementsByTagName( o )[0];
+        		a.async = 1;
+        		a.src = g;
+        		m.parentNode.insertBefore( a, m )
+        	})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
+
+        	ga( 'create', 'UA-XXXXX-XXX', 'XXXX' );
+        	ga( 'send', 'pageview' );
+        </script>
+        
+
+        
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    SearcherDisplay.init();
+                });
+            </script>
+        
+    </body>
+</html>

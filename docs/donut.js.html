@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Britecharts - D3.js based charting library of reusable components</title>
+
+        
+            <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+            
+                <meta name="keywords" content="Britecharts, D3.js" />
+            
+        
+
+        <!-- Disable tap highlight on IE -->
+        <meta name="msapplication-tap-highlight" content="no">
+
+        <!-- Web Application Manifest -->
+        <link rel="manifest" href="manifest.json">
+
+        <!-- Add to homescreen for Chrome on Android -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="application-name" content="Britecharts">
+        <link rel="icon" sizes="192x192" href="img/icons/chrome-touch-icon-192x192.png">
+
+        <!-- Add to homescreen for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#009FA1">
+        <meta name="apple-mobile-web-app-title" content="Britecharts">
+        <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
+
+        <!-- Tile icon for Win8 (144x144 + tile color) -->
+        <meta name="msapplication-TileImage" content="img/icons/ms-touch-icon-144x144-precomposed.png">
+        <meta name="msapplication-TileColor" content="#009FA1">
+
+        <!-- Color the status bar on mobile devices -->
+        <meta name="theme-color" content="#009FA1">
+
+        
+            <meta property="og:title" content="Britecharts - D3.js based charting library of reusable components"/>
+            <meta property="og:type" content="website"/>
+            <meta property="og:image" content="/src/doc/template/static/img/logo.svg"/>
+            <meta property="og:site_name" content="Britecharts"/>
+            <meta property="og:url" content=""/>
+        
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+    	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+        <link type="text/css" rel="stylesheet" href="styles/custom.css">
+        <link type="text/css" rel="stylesheet" href="styles/demos.css">
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top navbar-default">
+            <div class="container">
+            	<div class="navbar-header">
+            		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="/src/doc/template/static/img/logo.svg"
+            		alt="Britecharts"/></a>
+            		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+                    </button>
+            	</div>
+            	<div class="navbar-collapse collapse" id="topNavigation">
+            		<ul class="nav navbar-nav">
+            			
+            			<li class="dropdown">
+            				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">API<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					<li><a href="module-Bar.html">Bar</a></li><li><a href="module-Brush.html">Brush</a></li><li><a href="module-Donut.html">Donut</a></li><li><a href="module-Legend.html">Legend</a></li><li><a href="module-Line.html">Line</a></li><li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li><li><a href="module-Sparkline.html">Sparkline</a></li><li><a href="module-Stacked-area.html">Stacked-area</a></li><li><a href="module-Step.html">Step</a></li><li><a href="module-Tooltip.html">Tooltip</a></li>
+            				</ul>
+            			</li>
+            			
+            			<li class="dropdown">
+            				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Demos<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					<li><a href="tutorial--_CONTRIBUTING.html">_CONTRIBUTING</a></li><li><a href="tutorial--_GETTINGSTARTED.html">_GETTINGSTARTED</a></li><li><a href="tutorial-bar.html">bar</a></li><li><a href="tutorial-brush.html">brush</a></li><li><a href="tutorial-donut.html">donut</a></li><li><a href="tutorial-kitchen-shrink.html">kitchen-shrink</a></li><li><a href="tutorial-line.html">line</a></li><li><a href="tutorial-sparkline.html">sparkline</a></li><li><a href="tutorial-stacked-area.html">stacked-area</a></li><li><a href="tutorial-step.html">step</a></li>
+            				</ul>
+            			</li>
+            			
+            			<li class="dropdown">
+            				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					<li><a href="global.html">Global</a></li>
+            				</ul>
+            			</li>
+            			
+            		</ul>
+                    
+                        <div class="col-sm-4 col-md-5">
+                            <form class="navbar-form" role="search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    
+            	</div>
+            </div>
+        </div>
+
+        <main class="container" id="toc-content">
+            <div class="row">
+            	
+            	<div class="col-md-12">
+            	
+            		<div id="main">
+            			
+
+		<h1 class="page-title">Source: donut.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript ">define(function(require){
+    'use strict';
+
+    const d3Dispatch = require('d3-dispatch');
+    const d3Ease = require('d3-ease');
+    const d3Interpolate = require('d3-interpolate');
+    const d3Scale = require('d3-scale');
+    const d3Shape = require('d3-shape');
+    const d3Selection = require('d3-selection');
+
+    const exportChart = require('./helpers/exportChart');
+    const textHelper = require('./helpers/text');
+    const colorHelper = require('./helpers/colors');
+
+
+    /**
+     * @typedef DonutChartData
+     * @type {Object[]}
+     * @property {Number} quantity     Quantity of the group (required)
+     * @property {Number} percentage   Percentage of the total (required)
+     * @property {String} name         Name of the group (required)
+     * @property {Number} id           Identifier for the group required for legend feature (optional)
+     *
+     * @example
+     * [
+     *     {
+     *         quantity: 1,
+     *         percentage: 50,
+     *         name: 'glittering',
+     *         id: 1
+     *     },
+     *     {
+     *         quantity: 1,
+     *         percentage: 50,
+     *         name: 'luminous',
+     *         id: 2
+     *     }
+     * ]
+     */
+
+    /**
+     * Reusable Donut Chart API class that renders a
+     * simple and configurable donut chart.
+     *
+     * @module Donut
+     * @version 0.1.0
+     * @tutorial donut
+     * @requires d3-dispatch, d3-ease, d3-interpolate, d3-scale, d3-shape, d3-selection
+     *
+     * @example
+     * var donutChart = donut();
+     *
+     * donutChart
+     *     .externalRadius(500)
+     *     .internalRadius(200);
+     *
+     * d3Selection.select('.css-selector')
+     *     .datum(dataset)
+     *     .call(donutChart);
+     *
+     */
+    return function module() {
+
+        let margin = {
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0
+            },
+            width = 300,
+            height = 300,
+            ease = d3Ease.easeCubicInOut,
+            arcTransitionDuration = 750,
+            pieDrawingTransitionDuration = 1200,
+            pieHoverTransitionDuration = 150,
+            radiusHoverOffset = 12,
+            paddingAngle = 0.016,
+            data,
+            chartWidth, chartHeight,
+            externalRadius = 140,
+            internalRadius = 45.5,
+            legendWidth = externalRadius + internalRadius,
+            layout,
+            shape,
+            slices,
+            svg,
+
+            quantityLabel = 'quantity',
+            nameLabel = 'name',
+            percentageLabel = 'percentage',
+
+            // colors
+            colorScale = d3Scale.schemeCategory20c,
+            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+
+            // utils
+            storeAngle = function(d) {
+                this._current = d;
+            },
+            reduceOuterRadius = d => {
+                d.outerRadius = externalRadius - radiusHoverOffset;
+            },
+            sortComparator = (a, b) => b.quantity - a.quantity,
+
+            // extractors
+            getQuantity = ({quantity}) => quantity,
+            getSliceFill = ({data}) => colorScale(data.name),
+
+            // events
+            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+
+        /**
+         * This function creates the graph using the selection as container
+         *
+         * @param {D3Selection} _selection A d3 selection that represents
+         *                                  the container(s) where the chart(s) will be rendered
+         * @param {DonutChartData} _data The data to attach and generate the chart
+         */
+        function exports(_selection) {
+            _selection.each(function(_data) {
+                chartWidth = width - margin.left - margin.right;
+                chartHeight = height - margin.top - margin.bottom;
+                data = cleanData(_data);
+
+                buildLayout();
+                buildColorScale();
+                buildShape();
+                buildSVG(this);
+                drawSlices();
+                initTooltip();
+            });
+        }
+
+        /**
+         * Builds color scale for chart, if any colorSchema was defined
+         * @private
+         */
+        function buildColorScale() {
+            if (colorSchema) {
+                colorScale = d3Scale.scaleOrdinal().range(colorSchema);
+            }
+        }
+
+        /**
+         * Builds containers for the chart, the legend and a wrapper for all of them
+         * @private
+         */
+        function buildContainerGroups() {
+            let container = svg
+              .append('g')
+                .classed('container-group', true)
+                .attr('transform', `translate(${width / 2}, ${height / 2})`);
+
+            container.append('g').classed('chart-group', true);
+            container.append('g').classed('legend-group', true);
+        }
+
+        /**
+         * Builds the pie layout that will produce data ready to draw
+         * @private
+         */
+        function buildLayout() {
+            layout = d3Shape.pie()
+                .padAngle(paddingAngle)
+                .value(getQuantity)
+                .sort(sortComparator);
+        }
+
+        /**
+         * Builds the shape function
+         * @private
+         */
+        function buildShape() {
+            shape = d3Shape.arc()
+                .innerRadius(internalRadius)
+                .padRadius(externalRadius);
+        }
+
+        /**
+         * Builds the SVG element that will contain the chart
+         *
+         * @param  {HTMLElement} container DOM element that will work as the container of the graph
+         * @private
+         */
+        function buildSVG(container) {
+            if (!svg) {
+                svg = d3Selection.select(container)
+                  .append('svg')
+                    .classed('britechart donut-chart', true)
+                    .data([data]);  //TO REVIEW
+
+                buildContainerGroups();
+            }
+
+            svg
+                .transition()
+                .ease(ease)
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom);
+        }
+
+        /**
+         * Cleaning data adding the proper format
+         * @param  {DonutChartData} data Data
+         * @private
+         */
+        function cleanData(data) {
+            return data.map((d) => {
+                d.quantity = +d[quantityLabel];
+                d.name = String(d[nameLabel]);
+                d.percentage = String(d[percentageLabel]);
+
+                return d;
+            });
+        }
+
+        /**
+         * Draws the values on the donut slice inside the text element
+         *
+         * @param  {Object} obj Data object
+         * @private
+         */
+        function drawLegend(obj) {
+            if (obj.data) {
+                svg.select('.donut-text')
+                    .text(() => `${obj.data.percentage}% ${ obj.data.name}`)
+                    .attr('dy', '.2em')
+                    .attr('text-anchor', 'middle');
+
+                svg.select('.donut-text').call(wrapText, legendWidth);
+            }
+        }
+
+        /**
+         * Draws the slices of the donut
+         * @private
+         */
+        function drawSlices() {
+            if (!slices) {
+                slices = svg.select('.chart-group')
+                    .selectAll('g.arc')
+                    .data(layout(data));
+
+                slices.enter()
+                  .append('g')
+                    .each(storeAngle)
+                    .each(reduceOuterRadius)
+                    .classed('arc', true)
+                    .on('mouseover', handleMouseOver)
+                    .on('mouseout', handleMouseOut)
+                .merge(slices)
+                  .append('path')
+                    .attr('fill', getSliceFill)
+                    .on('mouseover', tweenGrowthFactory(externalRadius, 0))
+                    .on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration))
+                    .transition()
+                    .ease(ease)
+                    .duration(pieDrawingTransitionDuration)
+                    .attrTween('d', tweenLoading);
+
+            } else {
+                slices = svg.select('.chart-group')
+                    .selectAll('path')
+                    .data(layout(data));
+
+                slices
+                    .attr('d', shape);
+
+                // Redraws the angles of the data
+                slices
+                    .transition()
+                    .duration(arcTransitionDuration)
+                    .attrTween('d', tweenArc);
+            }
+        }
+
+        /**
+         * Cleans any value that could be on the legend text element
+         * @private
+         */
+        function cleanLegend() {
+            svg.select('.donut-text').text('');
+        }
+
+        function handleMouseOver(datum) {
+            drawLegend(datum);
+
+            dispatcher.call('customMouseOver', this, datum);
+        }
+
+        function handleMouseOut() {
+            cleanLegend();
+
+            dispatcher.call('customMouseOut', this);
+        }
+
+        /**
+         * Creates the text element that will hold the legend of the chart
+         */
+        function initTooltip() {
+            svg.select('.legend-group')
+                .append('text')
+                .attr('class', 'donut-text');
+        }
+
+        /**
+         * Stores current angles and interpolates with new angles
+         * Check out {@link http://bl.ocks.org/mbostock/1346410| this example}
+         *
+         * @param  {Object}     a   New data for slice
+         * @return {Function}       Tweening function for the donut shape
+         * @private
+         */
+        function tweenArc(a) {
+            let i = d3Interpolate.interpolate(this._current, a);
+
+            this._current = i(0);
+
+            return function(t) {
+                return shape(i(t));
+            };
+        }
+
+        /**
+         * Generates animations with tweens depending on the attributes given
+         *
+         * @param  {Number} outerRadius Final outer radius value
+         * @param  {Number} delay       Delay of animation
+         * @return {Function}           Function that when called will tween the element
+         * @private
+         */
+        function tweenGrowthFactory(outerRadius, delay) {
+            return function() {
+                d3Selection.select(this)
+                    .transition()
+                    .delay(delay)
+                    .attrTween('d', function(d) {
+                        let i = d3Interpolate.interpolate(d.outerRadius, outerRadius);
+
+                        return (t) => {
+                            d.outerRadius = i(t);
+
+                            return shape(d);
+                        };
+                    });
+            };
+        }
+
+        /**
+         * Animation for chart loading
+         * Check out {@link http://bl.ocks.org/mbostock/4341574| this example}
+         *
+         * @param  {Object} b Data point
+         * @return {Function}   Tween function
+         * @private
+         */
+        function tweenLoading(b) {
+            let i;
+
+            b.innerRadius = 0;
+            i = d3Interpolate.interpolate({ startAngle: 0, endAngle: 0}, b);
+
+            return function(t) { return shape(i(t)); };
+        }
+
+        /**
+         * Utility function that wraps a text into the given width
+         *
+         * @param  {D3Selection} text         Text to write
+         * @param  {Number} legendWidth Width of the container
+         * @private
+         */
+        function wrapText(text, legendWidth) {
+            let fontSize = externalRadius / 5;
+
+            textHelper.wrapText.call(null, 0, fontSize, legendWidth, text.node());
+        }
+
+        /**
+         * Gets or Sets the colorSchema of the chart
+         * @param  {String[]} _x Desired colorSchema for the graph
+         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
+         * @public
+         */
+        exports.colorSchema = function(_x) {
+            if (!arguments.length) {
+                return colorSchema;
+            }
+            colorSchema = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the externalRadius of the chart
+         * @param  {Number} _x ExternalRadius number to get/set
+         * @return { (Number | Module) } Current externalRadius or Donut Chart module to chain calls
+         * @public
+         */
+        exports.externalRadius = function(_x) {
+            if (!arguments.length) {
+                return externalRadius;
+            }
+            externalRadius = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the height of the chart
+         * @param  {Number} _x Desired width for the graph
+         * @return { (Number | Module) } Current height or Donut Chart module to chain calls
+         * @public
+         */
+        exports.height = function(_x) {
+            if (!arguments.length) {
+                return height;
+            }
+            height = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the internalRadius of the chart
+         * @param  {Number} _x InternalRadius number to get/set
+         * @return { (Number | Module) } Current internalRadius or Donut Chart module to chain calls
+         * @public
+         */
+        exports.internalRadius = function(_x) {
+            if (!arguments.length) {
+                return internalRadius;
+            }
+            internalRadius = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the margin of the chart
+         * @param  {Object} _x Margin object to get/set
+         * @return { (Number | Module) } Current margin or Donut Chart module to chain calls
+         * @public
+         */
+        exports.margin = function(_x) {
+            if (!arguments.length) {
+                return margin;
+            }
+            margin = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the width of the chart
+         * @param  {Number} _x Desired width for the graph
+         * @return { (Number | Module) } Current width or Donut Chart module to chain calls
+         * @public
+         */
+        exports.width = function(_x) {
+            if (!arguments.length) {
+                return width;
+            }
+            width = _x;
+            return this;
+        };
+
+        /**
+         * Chart exported to png and a download action is fired
+         * @public
+         */
+        exports.exportChart = function(filename, title) {
+            exportChart.call(exports, svg, filename, title);
+        };
+
+        /**
+         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+         * We are going to expose this events:
+         * customMouseOver, customMouseMove and customMouseOut
+         *
+         * @return {module} Bar Chart
+         * @public
+         */
+        exports.on = function() {
+            let value = dispatcher.on.apply(dispatcher, arguments);
+
+            return value === dispatcher ? exports : value;
+        };
+
+        return exports;
+    };
+});
+</pre>
+    </article>
+</section>
+
+
+
+
+
+            		</div>
+            	</div>
+            	<div class="clearfix"></div>
+            	
+            </div>
+        </main>
+
+        
+            <div class="modal fade" id="searchResults">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Search results</h4>
+                  </div>
+                  <div class="modal-body"></div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+
+        <footer>
+            
+            
+            	<span class="copyright">
+            	Eventbrite Copyright
+            	</span>
+            
+            <span class="jsdoc-message">
+            	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+            	
+            	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+            </span>
+        </footer>
+
+        <script src="scripts/docstrap.lib.js"></script>
+        <script src="scripts/toc.js"></script>
+        
+            <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+        
+        <script src="/demos/build/bundle.js"></script>
+
+
+        <script>
+        $( function () {
+        	$( "[id*='$']" ).each( function () {
+        		var $this = $( this );
+
+        		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+        	} );
+
+        	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+        		var $this = $( this );
+
+        		var example = $this.find( "code" );
+        		exampleText = example.html();
+        		var lang = /{@lang (.*?)}/.exec( exampleText );
+        		if ( lang && lang[1] ) {
+        			exampleText = exampleText.replace( lang[0], "" );
+        			example.html( exampleText );
+        			lang = lang[1];
+        		} else if (example && example.parent().length) {
+        			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+        			lang = langClassMatch ? langClassMatch[1] : "javascript";
+        		}
+
+        		if ( lang ) {
+
+        			$this
+        			.addClass( "sunlight-highlight-" + lang )
+        			.addClass( "linenums" )
+        			.html( example.html() );
+
+        		}
+        	} );
+
+        	Sunlight.highlightAll( {
+        		lineNumbers : false,
+        		showMenu : true,
+        		enableDoclinks : true
+        	} );
+
+        	$.catchAnchorLinks( {
+                navbarOffset: 10
+        	} );
+        	$( "#toc" ).toc( {
+        		anchorName  : function ( i, heading, prefix ) {
+        			return $( heading ).attr( "id" ) || ( prefix + i );
+        		},
+        		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+        		showAndHide : false,
+        		smoothScrolling: true
+        	} );
+
+        	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+        	$( '.dropdown-toggle' ).dropdown();
+
+            $( "table" ).each( function () {
+              var $this = $( this );
+              $this.addClass('table');
+            } );
+        } );
+        </script>
+
+
+        <!--Navigation and Symbol Display-->
+        
+
+        <!--Google Analytics-->
+        
+        <script>
+        	(function ( i, s, o, g, r, a, m ) {
+        		i['GoogleAnalyticsObject'] = r;
+        		i[r] = i[r] || function () {
+        			(i[r].q = i[r].q || []).push( arguments )
+        		}, i[r].l = 1 * new Date();
+        		a = s.createElement( o ),
+        			m = s.getElementsByTagName( o )[0];
+        		a.async = 1;
+        		a.src = g;
+        		m.parentNode.insertBefore( a, m )
+        	})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
+
+        	ga( 'create', 'UA-XXXXX-XXX', 'XXXX' );
+        	ga( 'send', 'pageview' );
+        </script>
+        
+
+        
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    SearcherDisplay.init();
+                });
+            </script>
+        
+    </body>
+</html>
