@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Britecharts - D3.js based charting library of reusable components</title>
+
+        
+            <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+            
+                <meta name="keywords" content="Britecharts, D3.js" />
+                <meta name="keyword" content="Britecharts, D3.js" />
+            
+        
+
+        <!-- Disable tap highlight on IE -->
+        <meta name="msapplication-tap-highlight" content="no">
+
+        <!-- Web Application Manifest -->
+        <link rel="manifest" href="manifest.json">
+
+        <!-- Add to homescreen for Chrome on Android -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="application-name" content="Britecharts">
+        <link rel="icon" sizes="192x192" href="img/icons/chrome-touch-icon-192x192.png">
+
+        <!-- Add to homescreen for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#009FA1">
+        <meta name="apple-mobile-web-app-title" content="Britecharts">
+        <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
+
+        <!-- Tile icon for Win8 (144x144 + tile color) -->
+        <meta name="msapplication-TileImage" content="img/icons/ms-touch-icon-144x144-precomposed.png">
+        <meta name="msapplication-TileColor" content="#009FA1">
+
+        <!-- Color the status bar on mobile devices -->
+        <meta name="theme-color" content="#009FA1">
+
+        
+            <meta property="og:title" content="TestOpenGraph"/>
+            <meta property="og:type" content="website"/>
+            <meta property="og:image" content=""/>
+            
+            <meta property="og:url" content=""/>
+        
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+    	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+        <link type="text/css" rel="stylesheet" href="styles/custom.css">
+        <link type="text/css" rel="stylesheet" href="styles/demos.css">
+    </head>
+    <body>
+        <div class="navbar navbar-light navbar-fixed-top ">
+            <div class="container">
+            	<div class="navbar-header">
+            		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="/src/doc/template/static/img/logo.svg"
+            		alt="Britecharts"/></a>
+            		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+                    </button>
+            	</div>
+            	<div class="navbar-collapse collapse" id="topNavigation">
+            		<ul class="nav navbar-nav">
+            			
+            			<li class="dropdown">
+            				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">API<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					<li><a href="module-Bar.html">Bar</a></li><li><a href="module-Brush.html">Brush</a></li><li><a href="module-Donut.html">Donut</a></li><li><a href="module-Legend.html">Legend</a></li><li><a href="module-Line.html">Line</a></li><li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li><li><a href="module-Sparkline.html">Sparkline</a></li><li><a href="module-Stacked-area.html">Stacked-area</a></li><li><a href="module-Step.html">Step</a></li><li><a href="module-Tooltip.html">Tooltip</a></li>
+            				</ul>
+            			</li>
+            			
+            			<li class="dropdown">
+            				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Demos<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					<li><a href="tutorial--_CONTRIBUTING.html">_CONTRIBUTING</a></li><li><a href="tutorial--_GETTINGSTARTED.html">_GETTINGSTARTED</a></li><li><a href="tutorial-bar.html">bar</a></li><li><a href="tutorial-brush.html">brush</a></li><li><a href="tutorial-donut.html">donut</a></li><li><a href="tutorial-kitchen-shrink.html">kitchen-shrink</a></li><li><a href="tutorial-line.html">line</a></li><li><a href="tutorial-sparkline.html">sparkline</a></li><li><a href="tutorial-stacked-area.html">stacked-area</a></li><li><a href="tutorial-step.html">step</a></li>
+            				</ul>
+            			</li>
+            			
+            			<li class="dropdown">
+            				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					<li><a href="global.html">Global</a></li>
+            				</ul>
+            			</li>
+            			
+            		</ul>
+                    
+                        <div class="col-sm-4 col-md-5">
+                            <form class="navbar-form" role="search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    
+            	</div>
+            </div>
+        </div>
+
+        <main class="container" id="toc-content">
+            <div class="row">
+            	
+            	<div class="col-md-12">
+            	
+            		<div id="main">
+            			<section class="tutorial-section">
+    <header>
+        
+        <h2 class="tutorial-section__heading">_CONTRIBUTING</h2>
+    </header>
+    <article>
+        <h2>Pull Requests</h2><p>####Disclaimer</p>
+<blockquote>
+<p>While it is true that Britecharts is currently live in Eventbrite production, this project is not being monitored closely for open source contributions. Please have patience and we will get to any issues and pull requests as soon as we can.</p>
+</blockquote>
+<h3>Chart Documentation</h3><p>In order to generate and see the documentation for the library you would need to:</p>
+<ul>
+<li>Download and install <a href="http://nodejs.org">node</a> (note we need npm version 2.X)</li>
+<li><p>Install the grunt task runner (if you don't have it yet) with:</p>
+<p> <code>npm install -g grunt-cli</code></p>
+</li>
+<li><p>Clone the repository with:</p>
+<p> <code>git clone git@github.com:eventbrite/britecharts.git</code></p>
+</li>
+<li><p>Change directory into the repository root and install its dependencies:</p>
+<p> <code>npm install</code></p>
+</li>
+<li><p>In the root or the repository folder, run:</p>
+<p> <code>npm run demos:watch</code></p>
+</li>
+<li><p>In another terminal, run:</p>
+<p> <code>npm run demos:serve</code></p>
+</li>
+<li><p>In a third terminal window, run:</p>
+<p> <code>npm run docs</code></p>
+</li>
+</ul>
+<p>This process will generate the docs with its current contents and open the interface where you will be able to navigate the API of each chart. You can also see some use examples under the &quot;Tutorials&quot; dropdown section.</p>
+<h4>Getting setup to contribute</h4><p>1- Fork repository by clicking the fork button on github</p>
+<p>2- Clone repository with <code>git clone https://github.com/&lt;your handle&gt;/britecharts.git</code></p>
+<p>3- Navigate to the repository folder and install dependencies with: <code>npm install</code></p>
+<h4>Cutting feature branches</h4><p>1- in local master, set upstream to https://github.com/eventbrite/britecharts.git
+<code>git remote add upstream https://github.com/eventbrite/britecharts.git</code></p>
+<p>2- pull the most recent changes<code>git pull upstream master</code></p>
+<p>3- branch name should be prefixed with either <code>fix-</code>or <code>feat-</code> depending on pr content. Create a new branch <code>git co -b [fix|feat]-&lt;your branch name&gt;</code></p>
+<h4>Making pull requests</h4><p>1- when you're finished coding, <code>git checkout master</code></p>
+<p>2- <code>git pull upstream master</code> (note that your local master should always reflect upstream master)</p>
+<p>3- <code>git checkout &lt;your branch&gt;</code></p>
+<p>4- <code>git rebase master</code> &amp; reconcile all conflicts</p>
+<p>5- <code>git push origin &lt;your branch&gt;</code></p>
+<p>6- make your pr with a link to the original issue filed (if you see &quot;unable to merge&quot;, please pull from your upstream and rebase again)</p>
+<p>7- be patient :)</p>
+<hr>
+<h2>Reporting an Issue/Feature Requests</h2><p>Please use the <a href="https://github.com/eventbrite/britecharts/issues">issues</a> section of the Britecharts github profile to submit any bugs found. Please be descriptive and feel free to add pictures or links to docs to make your point as clear as possible.</p>
+<hr>
+<h2>Standards</h2><p>We have followed a couple of standards outside of the regular Eventbrite workflow in this project: <a href="http://usejsdoc.org">JSDoc</a> comments and Test Driven Development.</p>
+<h3>Test Driven Development</h3><p>D3 charts are complex systems. As other Software Development projects, they start simple and become really bloated at the end of the process. To overcome this, we have followed a component approach that allows us to create easily testable units.</p>
+<p>We have chosen <a href="http://karma-runner.github.io/0.13/index.html">Karma</a> as our test runner, and <a href="http://jasmine.github.io/">Jasmine</a> as our unit-testing library.</p>
+<p>To install Karma and start running test you would need to follow this steps:</p>
+<p>1- Fork repository by clicking the fork button on github</p>
+<p>2- Clone repository with:</p>
+<pre class="prettyprint source"><code>git clone https://github.com/&lt;your handle>/britecharts.git</code></pre><p>3- Get into the repository folder and install dependencies with:</p>
+<pre class="prettyprint source"><code>npm install</code></pre><p>4- Run the tests with:</p>
+<pre class="prettyprint source"><code>npm run test</code></pre><p>This process will watch the test and spec files, re-running the tests when those change.</p>
+<h3>JSDoc</h3><p>JSDoc is an API documentation generator. It allows us to follow a methodology when commenting our code, so that later we can automatically generate documentation from these comments. Check it's <a href="http://usejsdoc.org/about-getting-started.html">getting started guide</a> to know more about it.</p>
+<p>We are also using <a href="http://gruntjs.com/">Grunt</a> and a <a href="https://github.com/krampstudio/grunt-jsdoc">grunt task</a> to generate the documentation.</p>
+<hr>
+<h2>The Workflow</h2><h3>ES6 transpiling</h3><p>Britecharts modules are written in ES6, so we would need to create an ES5-compatible version of the charts before releasing a new version.</p>
+<p>In order to work with the development version of the charts, we just need to run:</p>
+<pre class="prettyprint source"><code>npm run dev</code></pre><p>However, if you want to use the production version of the charts, you should run:</p>
+<pre class="prettyprint source"><code>npm run build:all</code></pre><h3>NPM Tasks</h3><p>The build sequence consists of a small set of <a href="http://nodejs.org">Node</a> tasks. While you'll probably only need <code>npm run test</code> and <code>npm run prod</code> most of the time, the other tasks can be called independently or combined in order to see the docs.</p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>npm run prod</code></td>
+<td>Build everything and generate the distribution version of the charts.</td>
+</tr>
+<tr>
+<td><code>npm run release</code></td>
+<td>Create a new release of the library.</td>
+</tr>
+<tr>
+<td><code>npm run test</code></td>
+<td>Start the Karma runner that will test the project and keep watching for changes.</td>
+</tr>
+<tr>
+<td><code>npm run demos:compile</code></td>
+<td>Compiles our demo files.</td>
+</tr>
+<tr>
+<td><code>npm run demos:watch</code></td>
+<td>Watches for changes in our demo files.</td>
+</tr>
+<tr>
+<td><code>npm run demos:serve</code></td>
+<td>Serves the demos for our tutorials.</td>
+</tr>
+<tr>
+<td><code>npm run docs</code></td>
+<td>Compiles the docs with JSDoc and opens a browser showing them.</td>
+</tr>
+</tbody>
+</table>
+<p>**Note that for running <code>npm run docs</code>, you will need to first have <code>npm run demos:watch</code> and <code>npm run demos:serve</code> in two different terminal windows.</p>
+<h2>Project Structure</h2><p>The default directory structure looks something like this:</p>
+<pre class="prettyprint source"><code>britecharts
+├── demos
+├── dist
+├── docs
+├── src
+│   ├── charts
+│   ├── doc
+│   ├── fonts
+│   └── tasks
+└── test
+    ├── fixtures
+    ├── json
+    ├── specs
+    └── tools</code></pre><table>
+<thead>
+<tr>
+<th>Folder</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>demos</strong></td>
+<td>Where we keep demo files for each of our charts and some extra docs</td>
+</tr>
+<tr>
+<td><strong>dist</strong></td>
+<td>Where the production ready versions of our charts will be placed</td>
+</tr>
+<tr>
+<td><strong>docs</strong></td>
+<td>Where the generated documentation website lives</td>
+</tr>
+<tr>
+<td><strong>src</strong></td>
+<td>Where we will place the code we create</td>
+</tr>
+<tr>
+<td><strong>src/charts</strong></td>
+<td>Where our charts live</td>
+</tr>
+<tr>
+<td><strong>src/doc</strong></td>
+<td>Where the templates and configuration for our docs are</td>
+</tr>
+<tr>
+<td><strong>src/fonts</strong></td>
+<td>Our fonts</td>
+</tr>
+<tr>
+<td><strong>src/tasks</strong></td>
+<td>Some of our grunt tasks configuration</td>
+</tr>
+<tr>
+<td><strong>test</strong></td>
+<td>Where our test related files live</td>
+</tr>
+<tr>
+<td><strong>test/fixtures</strong></td>
+<td>Tools for generate data for our charts demos and tests</td>
+</tr>
+<tr>
+<td><strong>test/json</strong></td>
+<td>Raw data for our charts</td>
+</tr>
+<tr>
+<td><strong>test/specs</strong></td>
+<td>Our tests for the charts</td>
+</tr>
+<tr>
+<td><strong>test/tools</strong></td>
+<td>Miscelaneous tools</td>
+</tr>
+</tbody>
+</table>
+    </article>
+</section>
+
+            		</div>
+            	</div>
+            	<div class="clearfix"></div>
+            	
+            </div>
+        </main>
+
+        
+            <div class="modal fade" id="searchResults">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Search results</h4>
+                  </div>
+                  <div class="modal-body"></div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div><!-- /.modal-content -->
+              </div><!-- /.modal-dialog -->
+            </div>
+        
+
+        <footer>
+            
+            
+            	<span class="copyright">
+            	Eventbrite Copyright
+            	</span>
+            
+            <span class="jsdoc-message">
+            	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+            	
+            	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+            </span>
+        </footer>
+
+        <script src="scripts/docstrap.lib.js"></script>
+        <script src="scripts/toc.js"></script>
+        
+            <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+        
+        <script src="/demos/build/bundle.js"></script>
+
+
+        <script>
+        $( function () {
+        	$( "[id*='$']" ).each( function () {
+        		var $this = $( this );
+
+        		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+        	} );
+
+        	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+        		var $this = $( this );
+
+        		var example = $this.find( "code" );
+        		exampleText = example.html();
+        		var lang = /{@lang (.*?)}/.exec( exampleText );
+        		if ( lang && lang[1] ) {
+        			exampleText = exampleText.replace( lang[0], "" );
+        			example.html( exampleText );
+        			lang = lang[1];
+        		} else if (example && example.parent().length) {
+        			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+        			lang = langClassMatch ? langClassMatch[1] : "javascript";
+        		}
+
+        		if ( lang ) {
+
+        			$this
+        			.addClass( "sunlight-highlight-" + lang )
+        			.addClass( "linenums" )
+        			.html( example.html() );
+
+        		}
+        	} );
+
+        	Sunlight.highlightAll( {
+        		lineNumbers : false,
+        		showMenu : true,
+        		enableDoclinks : true
+        	} );
+
+        	$.catchAnchorLinks( {
+                navbarOffset: 10
+        	} );
+        	$( "#toc" ).toc( {
+        		anchorName  : function ( i, heading, prefix ) {
+        			return $( heading ).attr( "id" ) || ( prefix + i );
+        		},
+        		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+        		showAndHide : false,
+        		smoothScrolling: true
+        	} );
+
+        	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+        	$( '.dropdown-toggle' ).dropdown();
+
+            $( "table" ).each( function () {
+              var $this = $( this );
+              $this.addClass('table');
+            } );
+        } );
+        </script>
+
+
+        <!--Navigation and Symbol Display-->
+        
+
+        <!--Google Analytics-->
+        
+
+        
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    SearcherDisplay.init();
+                });
+            </script>
+        
+    </body>
+</html>
