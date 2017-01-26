@@ -35,7 +35,6 @@ define(function(require) {
      * simple and configurable bar chart.
      *
      * @module Bar
-     * @version 0.1.1
      * @tutorial bar
      * @requires d3-array, d3-axis, d3-dispatch, d3-scale, d3-selection
      *

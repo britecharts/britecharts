@@ -38,7 +38,6 @@ define(function(require) {
      * simple and configurable brush chart.
      *
      * @module Brush
-     * @version 0.1.0
      * @tutorial brush
      * @requires d3-array, d3-axis, d3-brush, d3-ease, d3-scale, d3-shape, d3-selection, d3-time, d3-time-format
      *
