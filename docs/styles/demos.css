@@ -1,0 +1,288 @@
+/* Typesetting */
+/*@import url("https://fonts.googleapis.com/css?family=Heebo:300,500|Slabo+13px|Anonymous+Pro");*/
+
+/* Colors
+Blue: #009FA1;
+Alt Blue: 00817D;
+Light: eff2f5;
+*/
+
+/*html {
+    font-family: 'Heebo', sans-serif;
+}
+body {
+    font-weight: 300;
+    font-size: 16px;
+    text-rendering: optimizeLegibility;
+    color: #282C35;
+    padding-top: 20px;
+}
+strong {
+    font-weight: 400;
+}
+p {
+    margin-top: 1.2rem;
+    margin-bottom: 1.2rem !important;
+}*/
+
+/*Headings
+h1, h2, h3, h4 {
+    font-family: 'Slabo 13px', sans-serif;
+    font-weight: 400;
+}
+
+h1 {
+    font-size: 42px;
+}
+
+h4 {
+    font-size: 16px;
+    font-weight: 400;
+    font-family: 'Heebo', helvetica, Arial, sans-serif;
+    padding-top: 16px;
+}
+
+.page-title {
+    color: #00817D;
+}*/
+
+/* Links */
+/*a {
+    color: #009FA1;
+    transition: all 0.2s ease;
+}
+
+a:hover {
+    color: #00817D;
+}
+*/
+
+/* Code */
+pre {
+    font-family: 'Anonymous Pro', Consolas, Monaco, "Courier New", monospace !important;
+    background-color: #F7FAFC !important;
+    color: black;
+}
+
+.sunlight-code-container {
+    font-family: 'Anonymous Pro', Consolas, Monaco, "Courier New", monospace !important;
+    background-color: #F7FAFC !important;
+    border: 1px solid #eff2f5 !important;
+    padding: 12px;
+}
+
+.sunlight-menu {
+    display: none;
+}
+.sunlight-menu a:after {
+    background-color: transparent;
+}
+
+/* Navigation Bar */
+/*
+.navbar-light {
+  background-color: white;
+  border-color: transparent;
+
+  box-shadow: 2px 1px 2px #BBB;
+}
+.navbar-light .navbar-brand {
+  color: #fff;
+}
+.navbar-light .navbar-brand:hover,
+.navbar-light .navbar-brand:focus {
+  color: #282C35;
+  background-color: transparent;
+}
+.navbar-light .navbar-text {
+  color: #fff;
+}
+.navbar-light .navbar-nav > li > a {
+  color: #009FA1;
+}
+.navbar-light .navbar-nav > li > a:hover,
+.navbar-light .navbar-nav > li > a:focus {
+  color: #00817D;
+  background-color: transparent;
+}
+.navbar-light .navbar-nav > .active > a,
+.navbar-light .navbar-nav > .active > a:hover,
+.navbar-light .navbar-nav > .active > a:focus {
+  color: #00817D;
+  background-color: #eff2f5;
+}
+.navbar-light .navbar-nav > .disabled > a,
+.navbar-light .navbar-nav > .disabled > a:hover,
+.navbar-light .navbar-nav > .disabled > a:focus {
+  color: #bbb;
+  background-color: transparent;
+}
+.navbar-light .navbar-toggle {
+  border-color: #00817D;
+}
+.navbar-light .navbar-toggle:hover,
+.navbar-light .navbar-toggle:focus {
+  background-color: #00817D;
+}
+.navbar-light .navbar-toggle .icon-bar {
+  background-color: #009FA1;
+}
+.navbar-light .navbar-collapse,
+.navbar-light .navbar-form {
+  border-color: #bbb;
+}
+.navbar-light .navbar-nav > .open > a,
+.navbar-light .navbar-nav > .open > a:hover,
+.navbar-light .navbar-nav > .open > a:focus {
+  background-color: #009FA1;
+  color: #fff;
+}
+@media (max-width: 767px) {
+  .navbar-light .navbar-nav .open .dropdown-menu > .dropdown-header {
+    border-color: transparent;
+  }
+  .navbar-light .navbar-nav .open .dropdown-menu .divider {
+    background-color: transparent;
+  }
+  .navbar-light .navbar-nav .open .dropdown-menu > li > a {
+    color: #009FA1;
+  }
+  .navbar-light .navbar-nav .open .dropdown-menu > li > a:hover,
+  .navbar-light .navbar-nav .open .dropdown-menu > li > a:focus {
+    color: #00817D;
+    background-color: transparent;
+  }
+  .navbar-light .navbar-nav .open .dropdown-menu > .active > a,
+  .navbar-light .navbar-nav .open .dropdown-menu > .active > a:hover,
+  .navbar-light .navbar-nav .open .dropdown-menu > .active > a:focus {
+    color: #fff;
+    background-color: #00817D;
+  }
+  .navbar-light .navbar-nav .open .dropdown-menu > .disabled > a,
+  .navbar-light .navbar-nav .open .dropdown-menu > .disabled > a:hover,
+  .navbar-light .navbar-nav .open .dropdown-menu > .disabled > a:focus {
+    color: #bbb;
+    background-color: transparent;
+  }
+}
+.navbar-light .navbar-link {
+  color: #009FA1;
+}
+.navbar-light .navbar-link:hover {
+  color: #00817D;
+}
+.navbar-light .btn-link {
+  color: #009FA1;
+}
+.navbar-light .btn-link:hover,
+.navbar-light .btn-link:focus {
+  color: #00817D;
+}
+.navbar-light .btn-link[disabled]:hover,
+fieldset[disabled] .navbar-light .btn-link:hover,
+.navbar-light .btn-link[disabled]:focus,
+fieldset[disabled] .navbar-light .btn-link:focus {
+  color: #bbb;
+}*/
+
+/* Dropdown */
+/*.dropdown-menu > li > a {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #282C35;
+  white-space: nowrap;
+}
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  text-decoration: none;
+  color: #fff;
+  background-color: #009FA1;
+}
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus {
+  color: #fff;
+  text-decoration: none;
+  outline: 0;
+  background-color: #00817D;
+}*/
+
+/* Sidebar list */
+/*a.list-group-item,
+button.list-group-item {
+  color: #282C35;
+}
+a.list-group-item .list-group-item-heading,
+button.list-group-item .list-group-item-heading {
+  color: #282C35;
+}
+a.list-group-item:hover,
+button.list-group-item:hover,
+a.list-group-item:focus,
+button.list-group-item:focus {
+  text-decoration: none;
+  color: #282C35;
+  background-color: #eff2f5;
+}
+.list-group-item.active,
+.list-group-item.active:hover,
+.list-group-item.active:focus {
+  z-index: 2;
+  color: #fff;
+  background-color: #009FA1;
+  border-color: #009FA1;
+}
+.list-group-item.active .list-group-item-text,
+.list-group-item.active:hover .list-group-item-text,
+.list-group-item.active:focus .list-group-item-text {
+  color: #00817D;
+}
+*/
+
+/* Copyright */
+.copyright {
+  font-size: 80%;
+  text-align: center;
+  /*color: #00817D;*/
+  width: 100%;
+  display: block;
+}
+.jsdoc-message {
+    display: none;
+}
+
+/* Demos */
+.tutorial-section {
+  padding-top: 60px;
+}
+.tutorial-section__heading {
+    display: none;
+}
+
+.sidebar {
+    margin-top: 50px;
+}
+
+
+/* Charts */
+/* TODO: Review with Sun */
+.card--chart {
+  overflow: hidden;
+
+  border-width: 1px;
+  border-style: solid;
+  margin-bottom: 20px;
+  border-color: #C3C6CF;
+  background-color: white;
+
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Navbar */
+.navbar {
+  background-color: white;
+}
