@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<?js var that = this; ?>
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title><?js= ((env.conf.templates.meta && env.conf.templates.meta.title) || title) ?></title>
+        <title>Britecharts - D3.js based charting library of reusable components</title>
 
-        <?js if (env.conf.templates.meta) { ?>
-            <?js if (env.conf.templates.meta.description) { ?><meta name="description" content="<?js= env.conf.templates.meta.description ?>" /><?js } ?>
-            <?js if (env.conf.templates.meta.keyword) { ?>
-                <meta name="keywords" content="<?js= env.conf.templates.meta.keyword ?>" />
-            <?js } ?>
-        <?js } ?>
+        
+            <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+            
+                <meta name="keywords" content="Britecharts, D3.js" />
+            
+        
 
         <!-- Disable tap highlight on IE -->
         <meta name="msapplication-tap-highlight" content="no">
@@ -39,27 +39,27 @@
         <!-- Color the status bar on mobile devices -->
         <meta name="theme-color" content="#009FA1">
 
-        <?js if (env.conf.templates.openGraph) { ?>
-            <meta property="og:title" content="<?js= env.conf.templates.openGraph.title ?>"/>
-            <meta property="og:type" content="<?js= env.conf.templates.openGraph.type ?>"/>
-            <meta property="og:image" content="<?js= env.conf.templates.openGraph.image ?>"/>
-            <?js if (env.conf.templates.openGraph.site_name) { ?><meta property="og:site_name" content="<?js= env.conf.templates.openGraph.site_name ?>"/><?js } ?>
-            <meta property="og:url" content="<?js= env.conf.templates.openGraph.url ?>"/>
-        <?js } ?>
+        
+            <meta property="og:title" content="Britecharts - D3.js based charting library of reusable components"/>
+            <meta property="og:type" content="website"/>
+            <meta property="og:image" content="/src/doc/template/static/img/logo.svg"/>
+            <meta property="og:site_name" content="Britecharts"/>
+            <meta property="og:url" content=""/>
+        
         <!--[if lt IE 9]>
             <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 
-    	<link type="text/css" rel="stylesheet" href="styles/sunlight.<?js= this.navOptions.syntaxTheme ?>.css">
+    	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
         <link type="text/css" rel="stylesheet" href="styles/custom.css">
         <link type="text/css" rel="stylesheet" href="styles/demos.css">
     </head>
     <body>
-        <div class="navbar navbar-fixed-top <?js= this.navOptions.inverseNav ? 'navbar-inverse' : 'navbar-default' ?>">
+        <div class="navbar navbar-fixed-top navbar-default">
             <div class="container">
             	<div class="navbar-header">
-            		<a class="navbar-brand" href="<?js= this.nav.index.link ?>"><?js if(this.navOptions.logoFile) { ?><img class="branding-logo" src="<?js= this.navOptions.logoFile ?>"
-            		alt="<?js } ?><?js= this.nav.index.title ?>"/></a>
+            		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="/src/doc/template/static/img/logo.svg"
+            		alt="Britecharts"/></a>
             		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
             			<span class="icon-bar"></span>
             			<span class="icon-bar"></span>
@@ -68,16 +68,30 @@
             	</div>
             	<div class="navbar-collapse collapse" id="topNavigation">
             		<ul class="nav navbar-nav">
-            			<?js this.nav.topLevelNav.forEach(function(entry){ ?>
+            			
             			<li class="dropdown">
-            				<a href="<?js= entry.link ?>" class="dropdown-toggle" data-toggle="dropdown"><?js= entry.title ?><b class="caret"></b></a>
-            				<ul class="dropdown-menu <?js= that.navOptions.navType ==='inline' ? 'inline' : '' ?>">
-            					<?js entry.members.forEach(function(member){ ?><li><?js= member ?></li><?js	}); ?>
+            				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">API<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					<li><a href="module-Bar.html">Bar</a></li><li><a href="module-Brush.html">Brush</a></li><li><a href="module-Donut.html">Donut</a></li><li><a href="module-Legend.html">Legend</a></li><li><a href="module-Line.html">Line</a></li><li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li><li><a href="module-Sparkline.html">Sparkline</a></li><li><a href="module-Stacked-area.html">Stacked-area</a></li><li><a href="module-Step.html">Step</a></li><li><a href="module-Tooltip.html">Tooltip</a></li>
             				</ul>
             			</li>
-            			<?js }); ?>
+            			
+            			<li class="dropdown">
+            				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Demos<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					<li><a href="tutorial--_CONTRIBUTING.html">_CONTRIBUTING</a></li><li><a href="tutorial--_GETTINGSTARTED.html">_GETTINGSTARTED</a></li><li><a href="tutorial-bar.html">bar</a></li><li><a href="tutorial-brush.html">brush</a></li><li><a href="tutorial-donut.html">donut</a></li><li><a href="tutorial-kitchen-shrink.html">kitchen-shrink</a></li><li><a href="tutorial-line.html">line</a></li><li><a href="tutorial-sparkline.html">sparkline</a></li><li><a href="tutorial-stacked-area.html">stacked-area</a></li><li><a href="tutorial-step.html">step</a></li>
+            				</ul>
+            			</li>
+            			
+            			<li class="dropdown">
+            				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					<li><a href="global.html">Global</a></li>
+            				</ul>
+            			</li>
+            			
             		</ul>
-                    <?js if (this.navOptions.search) { ?>
+                    
                         <div class="col-sm-4 col-md-5">
                             <form class="navbar-form" role="search">
                                 <div class="input-group">
@@ -88,32 +102,117 @@
                                 </div>
                             </form>
                         </div>
-                    <?js } ?>
+                    
             	</div>
             </div>
         </div>
 
         <main class="container" id="toc-content">
             <div class="row">
-            	<?js if(docs && docs[0].kind !== "source"){ ?>
+            	
             	<div class="col-md-8 is-source">
-            	<?js } else { ?>
-            	<div class="col-md-12">
-            	<?js } ?>
+            	
             		<div id="main">
-            			<?js= content ?>
+            			
+
+	<h1 class="page-title">API</h1>
+<section>
+
+<header>
+    
+        <h2>
+        
+        </h2>
+        
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
             		</div>
             	</div>
             	<div class="clearfix"></div>
-            	<?js if(docs && docs[0].kind !== "source"){ ?>
+            	
             		<div class="col-md-3">
             			<div id="toc" class="col-md-3 hidden-xs hidden-sm"></div>
             		</div>
-            	<?js } ?>
+            	
             </div>
         </main>
 
-        <?js if (this.navOptions.search) { ?>
+        
             <div class="modal fade" id="searchResults">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -128,31 +227,27 @@
                 </div>
               </div>
             </div>
-        <?js } ?>
+        
 
         <footer>
-            <?js if (that.navOptions.footer.length > 0){ ?>
-            	<?js= that.navOptions.footer ?>
-            <?js } ?>
-            <?js if (that.navOptions.copyright.length > 0){ ?>
+            
+            
             	<span class="copyright">
-            	<?js= that.navOptions.copyright ?>
+            	Eventbrite Copyright
             	</span>
-            <?js } ?>
+            
             <span class="jsdoc-message">
-            	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc <?js= env.version.number ?></a>
-            	<?js if (that.navOptions.includeDate) { ?>
-            		on <?js= (that.moment().format(that.navOptions.dateFormat)) ?>
-            	<?js } ?>
+            	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+            	
             	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
             </span>
         </footer>
 
         <script src="scripts/docstrap.lib.js"></script>
         <script src="scripts/toc.js"></script>
-        <?js if (this.navOptions.search) { ?>
+        
             <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
-        <?js } ?>
+        
         <script src="/demos/build/bundle.js"></script>
 
 
@@ -190,7 +285,7 @@
         	} );
 
         	Sunlight.highlightAll( {
-        		lineNumbers : <?js= this.navOptions.linenums || false ?>,
+        		lineNumbers : false,
         		showMenu : true,
         		enableDoclinks : true
         	} );
@@ -219,45 +314,10 @@
 
 
         <!--Navigation and Symbol Display-->
-        <?js if (this.navOptions.collapseSymbols) { ?>
-        <script>
-        	$( function () {
-        		$( '#main' ).localScroll( {
-        			offset : { top : 60 } //offset by the height of your header (give or take a few px, see what works for you)
-        		} );
-        		$( "dt.name" ).each( function () {
-        			var $this = $( this ).find("h4");
-        			var icon = $( "<i/>" ).addClass( "icon-plus-sign" ).addClass( "pull-right" ).addClass( "icon-white" );
-        			var dt = $(this);
-        			var children = dt.next( "dd" );
-
-        			dt.prepend( icon ).css( {cursor : "pointer"} );
-        			dt.addClass( "member-collapsed" ).addClass( "member" );
-
-
-        			children.hide();
-
-        			dt.children().on( "click", function () {
-        				children = dt.next( "dd" );
-        				children.slideToggle( "fast", function () {
-
-        					if ( children.is( ":visible" ) ) {
-        						icon.addClass( "icon-minus-sign" ).removeClass( "icon-plus-sign" ).removeClass( "icon-white" );
-        						dt.addClass( "member-open" ).animate( "member-collapsed" );
-        					} else {
-        						icon.addClass( "icon-plus-sign" ).removeClass( "icon-minus-sign" ).addClass( "icon-white" );
-        						dt.addClass( "member-collapsed" ).removeClass( "member-open" );
-        					}
-        				} );
-        			} );
-
-        		} );
-        	} );
-        </script>
-        <?js } ?>
+        
 
         <!--Google Analytics-->
-        <?js if (this.navOptions.analytics && this.navOptions.analytics.ua && this.navOptions.analytics.domain) { ?>
+        
         <script>
         	(function ( i, s, o, g, r, a, m ) {
         		i['GoogleAnalyticsObject'] = r;
@@ -271,17 +331,17 @@
         		m.parentNode.insertBefore( a, m )
         	})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
 
-        	ga( 'create', '<?js= this.navOptions.analytics.ua ?>', '<?js= this.navOptions.analytics.domain ?>' );
+        	ga( 'create', 'UA-XXXXX-XXX', 'XXXX' );
         	ga( 'send', 'pageview' );
         </script>
-        <?js } ?>
+        
 
-        <?js if (this.navOptions.search) { ?>
+        
             <script type="text/javascript">
                 $(document).ready(function() {
                     SearcherDisplay.init();
                 });
             </script>
-        <?js } ?>
+        
     </body>
 </html>
