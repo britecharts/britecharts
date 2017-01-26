@@ -13,7 +13,6 @@ define(function(require){
      * line chart or stacked area chart.
      *
      * @module Tooltip
-     * @version 0.1.0
      * @tutorial tooltip
      * @requires d3-array, d3-axis, d3-dispatch, d3-format, d3-scale, d3-selection, d3-transition
      *

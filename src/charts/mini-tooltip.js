@@ -14,7 +14,6 @@ define(function(require){
      * bar and step chart.
      *
      * @module Mini-tooltip
-     * @version 0.1.0
      * @tutorial bar
      * @requires d3
      *

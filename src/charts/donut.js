@@ -43,7 +43,6 @@ define(function(require){
      * simple and configurable donut chart.
      *
      * @module Donut
-     * @version 0.1.0
      * @tutorial donut
      * @requires d3-dispatch, d3-ease, d3-interpolate, d3-scale, d3-shape, d3-selection
      *

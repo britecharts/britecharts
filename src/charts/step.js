@@ -38,7 +38,6 @@ define(function(require) {
      * simple and configurable step chart.
      *
      * @module Step
-     * @version 0.1.0
      * @tutorial step
      * @requires d3-array, d3-axis, d3-dispatch, d3-format, d3-scale, d3-selection, d3-transition
      *
