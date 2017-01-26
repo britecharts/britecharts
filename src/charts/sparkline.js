@@ -33,7 +33,6 @@ define(function(require){
      * rendering a sparkline configurable chart.
      *
      * @module Sparkline
-     * @version 0.0.1
      * @tutorial sparkline
      * @requires d3
      *

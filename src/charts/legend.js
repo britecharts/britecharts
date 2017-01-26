@@ -61,7 +61,6 @@ define(function(require){
      * @tutorial legend
      * @exports charts/legend
      * @requires d3
-     * @version 0.1.0
      */
     return function module() {
 
