@@ -19,7 +19,6 @@ coverage
 # Builds
 .grunt
 .sass-cache
-fonts
 dist
 
 # node-waf configuration
