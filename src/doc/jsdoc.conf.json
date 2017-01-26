@@ -29,12 +29,15 @@
         "monospaceLinks": false,
         "search": true,
 
-        "googleAnalytics": "",
+        "analytics":{
+            "ua":"UA-XXXXX-XXX",
+            "domain":"XXXX"
+        },
         "openGraph": {
-            "title": "TestOpenGraph",
+            "title": "Britecharts - D3.js based charting library of reusable components",
             "type": "website",
-            "image": "",
-            "site_name": "",
+            "image": "/src/doc/template/static/img/logo.svg",
+            "site_name": "Britecharts",
             "url": ""
         },
         "meta": {

@@ -12,7 +12,6 @@
             <?js if (env.conf.templates.meta.description) { ?><meta name="description" content="<?js= env.conf.templates.meta.description ?>" /><?js } ?>
             <?js if (env.conf.templates.meta.keyword) { ?>
                 <meta name="keywords" content="<?js= env.conf.templates.meta.keyword ?>" />
-                <meta name="keyword" content="<?js= env.conf.templates.meta.keyword ?>" />
             <?js } ?>
         <?js } ?>
 
@@ -56,7 +55,7 @@
         <link type="text/css" rel="stylesheet" href="styles/demos.css">
     </head>
     <body>
-        <div class="navbar navbar-light navbar-fixed-top <?js= this.navOptions.inverseNav ? 'navbar-inverse' : '' ?>">
+        <div class="navbar navbar-fixed-top <?js= this.navOptions.inverseNav ? 'navbar-inverse' : 'navbar-default' ?>">
             <div class="container">
             	<div class="navbar-header">
             		<a class="navbar-brand" href="<?js= this.nav.index.link ?>"><?js if(this.navOptions.logoFile) { ?><img class="branding-logo" src="<?js= this.navOptions.logoFile ?>"
@@ -126,8 +125,8 @@
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                   </div>
-                </div><!-- /.modal-content -->
-              </div><!-- /.modal-dialog -->
+                </div>
+              </div>
             </div>
         <?js } ?>
 

@@ -12,7 +12,6 @@
             <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
             
                 <meta name="keywords" content="Britecharts, D3.js" />
-                <meta name="keyword" content="Britecharts, D3.js" />
             
         
 
@@ -41,10 +40,10 @@
         <meta name="theme-color" content="#009FA1">
 
         
-            <meta property="og:title" content="TestOpenGraph"/>
+            <meta property="og:title" content="Britecharts - D3.js based charting library of reusable components"/>
             <meta property="og:type" content="website"/>
-            <meta property="og:image" content=""/>
-            
+            <meta property="og:image" content="/src/doc/template/static/img/logo.svg"/>
+            <meta property="og:site_name" content="Britecharts"/>
             <meta property="og:url" content=""/>
         
         <!--[if lt IE 9]>
@@ -56,7 +55,7 @@
         <link type="text/css" rel="stylesheet" href="styles/demos.css">
     </head>
     <body>
-        <div class="navbar navbar-light navbar-fixed-top ">
+        <div class="navbar navbar-fixed-top navbar-default">
             <div class="container">
             	<div class="navbar-header">
             		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="/src/doc/template/static/img/logo.svg"
@@ -317,8 +316,8 @@
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                   </div>
-                </div><!-- /.modal-content -->
-              </div><!-- /.modal-dialog -->
+                </div>
+              </div>
             </div>
         
 
@@ -410,6 +409,23 @@
         
 
         <!--Google Analytics-->
+        
+        <script>
+        	(function ( i, s, o, g, r, a, m ) {
+        		i['GoogleAnalyticsObject'] = r;
+        		i[r] = i[r] || function () {
+        			(i[r].q = i[r].q || []).push( arguments )
+        		}, i[r].l = 1 * new Date();
+        		a = s.createElement( o ),
+        			m = s.getElementsByTagName( o )[0];
+        		a.async = 1;
+        		a.src = g;
+        		m.parentNode.insertBefore( a, m )
+        	})( window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga' );
+
+        	ga( 'create', 'UA-XXXXX-XXX', 'XXXX' );
+        	ga( 'send', 'pageview' );
+        </script>
         
 
         
