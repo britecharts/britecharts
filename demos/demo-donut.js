@@ -59,7 +59,7 @@ function getLegendChart(dataset, optionalColorSchema) {
         d3Selection.select('.js-legend-chart-container .britechart-legend').remove();
 
         legendChart
-            .width(containerWidth/2)
+            .width(containerWidth*0.8)
             .height(200)
 
         if (optionalColorSchema) {
