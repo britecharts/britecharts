@@ -2,7 +2,7 @@
 
 > Britecharts is a client-side **reusable Charting Library** based on [D3.js v4][1] that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.
 
-Britecharts components have been written in ES2015 with a Test Driven methodology so they are **fully tested**, and we are commited to keep them that way.
+Britecharts [components][32] have been written in ES2015 with a Test Driven methodology so they are **fully tested**, and we are commited to keep them that way.
 
 ## Key Features
 
@@ -48,8 +48,7 @@ They also provide some minimal CSS styling, that can be loaded independently or 
 This project is in active development. Check the [issues page][16] for more info in what's coming.
 
 ## See Also
-- Documentation
-- Demo projects
+- [Documentation][31]
 - [Release Notes][13]
 
 ## Acknowledgments
@@ -78,30 +77,32 @@ Read more in the [license document][15]
 [1]: http://d3js.org/
 [2]: https://webpack.github.io/
 [3]: http://bost.ocks.org/mike/chart/
-[4]: /docs/tutorial-bar.html
-[5]: /docs/tutorial-line.html
-[6]: /docs/tutorial-donut.html
-[7]: /docs/tutorial-sparkline.html
-[8]: /docs/tutorial-stacked-area.html
-[9]: /docs/tutorial-stacked-area.html
-[10]: /docs/tutorial-donut.html
-[11]: /docs/tutorial-step.html
+[4]: tutorial-bar.html
+[5]: tutorial-line.html
+[6]: tutorial-donut.html
+[7]: tutorial-sparkline.html
+[8]: tutorial-stacked-area.html
+[9]: tutorial-stacked-area.html
+[10]: tutorial-donut.html
+[11]: tutorial-step.html
 [12]: https://nodejs.org/en/download/
 [13]: https://github.com/eventbrite/britecharts/releases
 [14]: http://www.apache.org/licenses/LICENSE-2.0
 [15]: ../LICENSE.md
 [16]: https://github.com/eventbrite/britecharts/issues
 [17]: https://github.com/babel/babel
-[18]: /docs/tutorial-brush.html
+[18]: tutorial-brush.html
 [19]: https://bleedingedgepress.com/our-books/developing-a-d3-js-edge/
 [20]: https://www.packtpub.com/web-development/mastering-d3js
-[21]: /docs/module-Donut.html
-[22]: /docs/module-Bar.html
-[23]: /docs/module-Brush.html
-[24]: /docs/module-Legend.html
-[25]: /docs/module-Line.html
-[26]: /docs/module-Mini-tooltip.html
-[27]: /docs/module-Tooltip.html
-[28]: /docs/module-Step.html
-[29]: /docs/module-Sparkline.html
-[30]: /docs/module-Stacked-area.html
+[21]: module-Donut.html
+[22]: module-Bar.html
+[23]: module-Brush.html
+[24]: module-Legend.html
+[25]: module-Line.html
+[26]: module-Mini-tooltip.html
+[27]: module-Tooltip.html
+[28]: module-Step.html
+[29]: module-Sparkline.html
+[30]: module-Stacked-area.html
+[31]: http://eventbrite.github.io/britecharts/
+[32]: http://eventbrite.github.io/britecharts/tutorial-kitchen-shrink.html
