@@ -133,10 +133,8 @@ define(function(require){
                 buildContainerGroups();
             }
             svg
-                .transition()
-                .ease(ease)
                 .attr('width', width + margin.left + margin.right)
-                .attr('height', height + margin.top + margin.bottom)
+                .attr('height', height + margin.top + margin.bottom);
 
             // Hidden by default
             exports.hide();
@@ -323,7 +321,6 @@ define(function(require){
                 .attr('transform', `translate(${tooltipX},${tooltipY})`);
 
             tooltipBackground
-                .transition()
                 .attr('height', chartHeight + margin.top + margin.bottom)
                 .attr('width', chartWidth + margin.left + margin.right);
         }

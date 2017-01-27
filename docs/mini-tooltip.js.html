@@ -136,7 +136,6 @@
      * bar and step chart.
      *
      * @module Mini-tooltip
-     * @version 0.1.0
      * @tutorial bar
      * @requires d3
      *
@@ -256,10 +255,8 @@
                 buildContainerGroups();
             }
             svg
-                .transition()
-                .ease(ease)
                 .attr('width', width + margin.left + margin.right)
-                .attr('height', height + margin.top + margin.bottom)
+                .attr('height', height + margin.top + margin.bottom);
 
             // Hidden by default
             exports.hide();
@@ -446,7 +443,6 @@
                 .attr('transform', `translate(${tooltipX},${tooltipY})`);
 
             tooltipBackground
-                .transition()
                 .attr('height', chartHeight + margin.top + margin.bottom)
                 .attr('width', chartWidth + margin.left + margin.right);
         }

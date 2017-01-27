@@ -10,12 +10,12 @@ define(function(require) {
     // Color Schemas
     // Standard Color Schema for Britecharts
     const britechartsColorSchema = [
-            '#6aedc7',
             '#39c2c9',
-            '#ffa71a',
             '#ffce00',
+            '#ffa71a',
             '#f866b9',
-            '#998ce3'
+            '#998ce3',
+            '#6aedc7'
         ];
 
     // Grey Schema for Britecharts
@@ -33,7 +33,6 @@ define(function(require) {
 
     // Extended Orange Palette
     const extendedOrangeColorSchema = [
-            '#f9e9c5',
             '#fcc870',
             '#ffa71a',
             '#fb8825',
@@ -41,7 +40,8 @@ define(function(require) {
             '#db5a2c',
             '#bf4c28',
             '#a43b1c',
-            '#892a10'
+            '#892a10',
+            '#f9e9c5'
         ];
     // Extended Blue Palette
     const extendedBlueColorSchema = [
