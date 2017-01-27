@@ -13,7 +13,7 @@
     },
     "plugins": [],
     "templates": {
-        "logoFile": "/src/doc/template/static/img/logo.svg",
+        "logoFile": "img/logo.svg",
         "systemName": "Britecharts",
         "footer": "",
         "copyright": "Eventbrite Copyright",
@@ -36,7 +36,7 @@
         "openGraph": {
             "title": "Britecharts - D3.js based charting library of reusable components",
             "type": "website",
-            "image": "/src/doc/template/static/img/logo.svg",
+            "image": "img/logo.svg",
             "site_name": "Britecharts",
             "url": ""
         },
