@@ -21,8 +21,8 @@ pre {
 /* TOC Sidebar */
 #toc {
     position: fixed;
-    top: 62px;
-    right: 0;
+    top: 76px;
+    right: 10px;
     max-height: 82%;
     max-height: calc(100% - 72px);
     overflow: auto;
@@ -43,9 +43,6 @@ pre {
 
 
 /* Demos */
-.tutorial-section {
-    padding-top: 60px;
-}
 .tutorial-section__heading {
     display: none;
 }
@@ -54,14 +51,21 @@ pre {
 }
 
 /* Charts */
-/* TODO: Review with Sun */
 .card--chart {
     overflow: hidden;
     border-width: 1px;
-    border-style: solid;
     margin-bottom: 20px;
-    border-color: #C3C6CF;
     background-color: white;
     margin: 0 auto;
     text-align: center;
 }
+
+
+
+/* To Order */
+
+#main {
+    padding-top: 80px;
+}
+
+.readme-section h1 { display: none; }
