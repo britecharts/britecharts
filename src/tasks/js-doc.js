@@ -24,8 +24,18 @@ module.exports = function(grunt) {
         shell.exec(cmd);
     });
 
+    // Move demos code
+    grunt.registerTask('moveDemos', 'Move demos code into /docs', function() {
+        var copyJSCommand = 'cp -r demos/build/* docs/scripts/.';
+        var copyStylesCommand = 'cp -r demos/css/* docs/styles/.';
+
+        shell.exec(copyJSCommand);
+        shell.exec(copyStylesCommand);
+    });
+
     grunt.registerTask('docs', 'Generates docs and triggers server to view them', [
         'jsdoc:dist',
+        'moveDemos',
         'openDocs'
     ]);
 };

@@ -10,6 +10,9 @@ pre {
     border: 1px solid #eff2f5 !important;
     padding: 12px;
 }
+.sunlight-code-container pre {
+    border: none;
+}
 .sunlight-menu {
     display: none;
 }
