@@ -105,4 +105,4 @@ Read more in the [license document][15]
 [29]: module-Sparkline.html
 [30]: module-Stacked-area.html
 [31]: http://eventbrite.github.io/britecharts/
-[32]: http://eventbrite.github.io/britecharts/tutorial-kitchen-shrink.html
+[32]: http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
