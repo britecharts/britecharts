@@ -33,6 +33,13 @@ pre {
 }
 
 
+.footer {
+    bottom: 0;
+    position: sticky;
+    background-color: white;
+    padding: 10px;
+}
+
 /* Copyright */
 .copyright {
     font-size: 80%;
