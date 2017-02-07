@@ -221,8 +221,7 @@ define(function(require){
             //TODO: Review this axis with real data
             xMonthAxis = d3Axis.axisBottom(xScale)
                 .ticks(xMonthTicks)
-                .tickSize(10, 0)
-                .tickPadding(tickPadding)
+                .tickSize(0, 0)
                 .tickFormat(xSecondaryFormat);
 
             yAxis = d3Axis.axisRight(yScale)
