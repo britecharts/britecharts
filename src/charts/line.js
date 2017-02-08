@@ -15,10 +15,11 @@ define(function(require){
     const colorHelper = require('./helpers/colors');
     const exportChart = require('./helpers/exportChart');
 
-    const {lineGradientId} = require('./helpers/constants.js');
-
-    const ONE_AND_A_HALF_YEARS = 47304000000;
-    const ONE_DAY = 86400001;
+    const {
+      axisTimeCombinations,
+      lineGradientId,
+      timeBenchmarks
+    } = require('./helpers/constants.js');
 
     /**
      * @typedef D3Selection
@@ -153,7 +154,7 @@ define(function(require){
      *     .call(lineChart);
      *
      */
-    return function line(){
+    return function line() {
 
         let margin = {
                 top: 60,
@@ -179,6 +180,9 @@ define(function(require){
             colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
             singleLineGradientColors = colorHelper.colorGradients.greenBlueGradient,
             topicColorMap,
+
+            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
+            forceAxisSettings = null,
 
             singleTickWidth = 20,
             horizontalTickSpacing = 40,
@@ -210,9 +214,16 @@ define(function(require){
             xTickHourFormat = d3TimeFormat.timeFormat('%H %p'),
             xTickDateFormat = d3TimeFormat.timeFormat('%e'),
             xTickMonthFormat = d3TimeFormat.timeFormat('%b'),
+            xTickYearFormat = d3TimeFormat.timeFormat('%Y'),
 
             // events
             dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+
+        const formatMap = {
+            hour: xTickHourFormat,
+            day: xTickDateFormat,
+            month: xTickMonthFormat
+        };
 
         /**
          * This function creates the graph using the selection and data provided
@@ -221,7 +232,7 @@ define(function(require){
          *                                  the container(s) where the chart(s) will be rendered
          * @param {LineChartData} _data The data to attach and generate the chart
          */
-        function exports(_selection){
+        function exports(_selection) {
             _selection.each(function(_data) {
                 ({
                     data,
@@ -239,7 +250,7 @@ define(function(require){
                 buildGradient();
                 drawLines();
 
-                if (shouldShowTooltip()){
+                if (shouldShowTooltip()) {
                     drawVerticalMarker();
                     drawHoverOverlay();
                     addMouseEvents();
@@ -251,7 +262,7 @@ define(function(require){
          * Adds events to the container group if the environment is not mobile
          * Adding: mouseover, mouseout and mousemove
          */
-        function addMouseEvents(){
+        function addMouseEvents() {
             svg
                 .on('mouseover', handleMouseOver)
                 .on('mouseout', handleMouseOut)
@@ -263,42 +274,74 @@ define(function(require){
          * @param  {D3Selection} selection Y axis group
          * @return void
          */
-        function adjustYTickLabels(selection){
+        function adjustYTickLabels(selection) {
             selection.selectAll('.tick text')
                 .attr('transform', 'translate(0, -7)');
+        }
+
+        /**
+         * Returns tick object to be used when building the x axis
+         * @return {object} tick settings for major and minr axis
+         */
+        function getXAxisSettings() {
+            let settings = forceAxisSettings || defaultAxisSettings;
+            let minorTickValue, majorTickValue;
+            let dateTimeSpan = xScale.domain()[1] - xScale.domain()[0];
+            let {
+              ONE_AND_A_HALF_YEARS,
+              ONE_DAY
+            } = timeBenchmarks;
+
+            // might want to add minute-hour
+            if (dateTimeSpan < ONE_DAY) {
+                settings = axisTimeCombinations.HOUR_DAY;
+                majorTickValue = d3Time.timeDay.every(1);
+            } else if (dateTimeSpan < ONE_AND_A_HALF_YEARS) {
+                settings = axisTimeCombinations.DAY_MONTH;
+                majorTickValue = d3Time.timeMonth.every(1);
+            } else {
+                settings = axisTimeCombinations.MONTH_YEAR;
+                minorTickValue = 10;
+                majorTickValue = d3Time.timeYear.every(1);
+            }
+            let [minor, major] = settings.split('-');
+
+            minorTickValue = dataByDate.length < 5 ? d3Time.timeDay :
+                    getMaxNumOfHorizontalTicks(width, dataByDate.length);
+
+            return {
+                minor: {
+                  format: formatMap[minor],
+                  tick: minorTickValue,
+                },
+                major: {
+                  format: formatMap[major],
+                  tick: majorTickValue,
+                }
+            };
         }
 
         /**
          * Creates the d3 x and y axis, setting orientations
          * @private
          */
-        function buildAxis(){
-            // when dataset < 5, .ticks acts a little unexpected, so we pass it d3Time.time.days to fix
-            let tickValue = dataByDate.length < 5 ? d3Time.timeDay :
-                    getMaxNumOfHorizontalTicks(width, dataByDate.length);
+        function buildAxis() {
+
             let rangeDiff = yScale.domain()[1] - yScale.domain()[0];
             let yTickNumber = rangeDiff < numVerticalTics - 1 ? rangeDiff : numVerticalTics;
-            let dataTimeSpan = xScale.domain()[1] - xScale.domain()[0];
-            let xMonthTicks = dataTimeSpan > ONE_AND_A_HALF_YEARS ? defaultNumMonths : d3Time.timeMonth;
 
-            let xMainFormat = xTickDateFormat;
-            let xSecondaryFormat = xTickMonthFormat;
-
-            if (dataTimeSpan < ONE_DAY) {
-                xMainFormat = xTickHourFormat;
-                xSecondaryFormat = xTickDateFormat;
-            }
+            let {minor, major} = getXAxisSettings();
 
             xAxis = d3Axis.axisBottom(xScale)
-                .ticks(tickValue)
+                .ticks(minor.tick)
                 .tickSize(10, 0)
                 .tickPadding(tickPadding)
-                .tickFormat(xMainFormat);
+                .tickFormat(minor.format);
 
             xMonthAxis = d3Axis.axisBottom(xScale)
-                .ticks(xMonthTicks)
+                .ticks(major.tick)
                 .tickSize(0, 0)
-                .tickFormat(xSecondaryFormat);
+                .tickFormat(major.format);
 
             yAxis = d3Axis.axisLeft(yScale)
                 .ticks(yTickNumber)
@@ -834,6 +877,27 @@ define(function(require){
 
             return value === dispatcher ? exports : value;
         };
+
+        /**
+         * Exposes the ability to force the chart to show a certain x axis grouping
+         * @param  {[type]} _x [description]
+         * @return {[type]}    [description]
+         */
+        exports.forceAxisFormat = function(_x) {
+            if (!arguments.length) {
+              return forceAxisSettings || defaultAxisSettings;
+            }
+            forceAxisSettings = _x;
+            return this;
+        };
+
+        /**
+         * constants to be used to force the x axis to respect a certain granularity
+         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
+         * @example line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
+         * @type {string} constants
+         */
+        exports.axisTimeCombinations = axisTimeCombinations;
 
         return exports;
     };

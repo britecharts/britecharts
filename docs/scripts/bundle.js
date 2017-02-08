@@ -35,6 +35,17 @@
 /******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
+/******/ 	// webpack-livereload-plugin
+/******/ 	(function() {
+/******/ 	  if (typeof window === "undefined") { return };
+/******/ 	  var id = "webpack-livereload-plugin-script";
+/******/ 	  if (document.getElementById(id)) { return; }
+/******/ 	  var el = document.createElement("script");
+/******/ 	  el.id = id;
+/******/ 	  el.async = true;
+/******/ 	  el.src = "http://localhost:35729/livereload.js";
+/******/ 	  document.getElementsByTagName("head")[0].appendChild(el);
+/******/ 	}());
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -11066,7 +11077,21 @@
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	    var axisTimeCombinations = {
+	        MINUTE_HOUR: 'minute-hour',
+	        HOUR_DAY: 'hour-day',
+	        DAY_MONTH: 'day-month',
+	        MONTH_YEAR: 'month-year'
+	    };
+	
+	    var timeBenchmarks = {
+	        ONE_AND_A_HALF_YEARS: 47304000000,
+	        ONE_DAY: 86400001
+	    };
+	
 	    return {
+	        axisTimeCombinations: axisTimeCombinations,
+	        timeBenchmarks: timeBenchmarks,
 	        lineGradientId: 'lineGradientId'
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -17877,14 +17902,14 @@
 /* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org Version 4.4.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org Version 4.5.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
 		(factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
-	var version = "4.4.4";
+	var version = "4.5.0";
 	
 	var ascending = function(a, b) {
 	  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -27271,6 +27296,19 @@
 	  return cluster;
 	};
 	
+	function count(node) {
+	  var sum = 0,
+	      children = node.children,
+	      i = children && children.length;
+	  if (!i) sum = 1;
+	  else while (--i >= 0) sum += children[i].value;
+	  node.value = sum;
+	}
+	
+	var node_count = function() {
+	  return this.eachAfter(count);
+	};
+	
 	var node_each = function(callback) {
 	  var node = this, current, next = [node], children, i, n;
 	  do {
@@ -27449,6 +27487,7 @@
 	
 	Node.prototype = hierarchy.prototype = {
 	  constructor: Node,
+	  count: node_count,
 	  each: node_each,
 	  eachAfter: node_eachAfter,
 	  eachBefore: node_eachBefore,
@@ -27609,7 +27648,13 @@
 	  var dx = b.x - a.x,
 	      dy = b.y - a.y,
 	      dr = a.r + b.r;
-	  return dr * dr > dx * dx + dy * dy;
+	  return dr * dr - 1e-6 > dx * dx + dy * dy;
+	}
+	
+	function distance1(a, b) {
+	  var l = a._.r;
+	  while (a !== b) l += 2 * (a = a.next)._.r;
+	  return l - b._.r;
 	}
 	
 	function distance2(circle, x, y) {
@@ -27659,35 +27704,27 @@
 	  pack: for (i = 3; i < n; ++i) {
 	    place(a._, b._, c = circles[i]), c = new Node$1(c);
 	
-	    // If there are only three elements in the front-chain…
-	    if ((k = a.previous) === (j = b.next)) {
-	      // If the new circle intersects the third circle,
-	      // rotate the front chain to try the next position.
-	      if (intersects(j._, c._)) {
-	        a = b, b = j, --i;
-	        continue pack;
-	      }
-	    }
-	
 	    // Find the closest intersecting circle on the front-chain, if any.
-	    else {
-	      sj = j._.r, sk = k._.r;
-	      do {
-	        if (sj <= sk) {
-	          if (intersects(j._, c._)) {
-	            b = j, a.next = b, b.previous = a, --i;
-	            continue pack;
-	          }
-	          j = j.next, sj += j._.r;
-	        } else {
-	          if (intersects(k._, c._)) {
-	            a = k, a.next = b, b.previous = a, --i;
-	            continue pack;
-	          }
-	          k = k.previous, sk += k._.r;
+	    // “Closeness” is determined by linear distance along the front-chain.
+	    // “Ahead” or “behind” is likewise determined by linear distance.
+	    j = b.next, k = a.previous, sj = b._.r, sk = a._.r;
+	    do {
+	      if (sj <= sk) {
+	        if (intersects(j._, c._)) {
+	          if (sj + a._.r + b._.r > distance1(j, b)) a = j; else b = j;
+	          a.next = b, b.previous = a, --i;
+	          continue pack;
 	        }
-	      } while (j !== k.next);
-	    }
+	        sj += j._.r, j = j.next;
+	      } else {
+	        if (intersects(k._, c._)) {
+	          if (distance1(a, k) > sk + a._.r + b._.r) a = k; else b = k;
+	          a.next = b, b.previous = a, --i;
+	          continue pack;
+	        }
+	        sk += k._.r, k = k.previous;
+	      }
+	    } while (j !== k.next);
 	
 	    // Success! Insert the new circle c between a and b.
 	    c.previous = a, c.next = b, a.next = b.previous = b = c;
@@ -34800,6 +34837,8 @@
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
@@ -34818,10 +34857,9 @@
 	    var exportChart = __webpack_require__(22);
 	
 	    var _require = __webpack_require__(25),
-	        lineGradientId = _require.lineGradientId;
-	
-	    var ONE_AND_A_HALF_YEARS = 47304000000;
-	    var ONE_DAY = 86400001;
+	        axisTimeCombinations = _require.axisTimeCombinations,
+	        lineGradientId = _require.lineGradientId,
+	        timeBenchmarks = _require.timeBenchmarks;
 	
 	    /**
 	     * @typedef D3Selection
@@ -34955,6 +34993,8 @@
 	     *     .call(lineChart);
 	     *
 	     */
+	
+	
 	    return function line() {
 	
 	        var margin = {
@@ -34986,6 +35026,8 @@
 	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
 	            singleLineGradientColors = colorHelper.colorGradients.greenBlueGradient,
 	            topicColorMap = void 0,
+	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
+	            forceAxisSettings = null,
 	            singleTickWidth = 20,
 	            horizontalTickSpacing = 40,
 	            ease = d3Ease.easeQuadInOut,
@@ -35026,10 +35068,17 @@
 	            xTickHourFormat = d3TimeFormat.timeFormat('%H %p'),
 	            xTickDateFormat = d3TimeFormat.timeFormat('%e'),
 	            xTickMonthFormat = d3TimeFormat.timeFormat('%b'),
+	            xTickYearFormat = d3TimeFormat.timeFormat('%Y'),
 	
 	
 	        // events
 	        dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+	
+	        var formatMap = {
+	            hour: xTickHourFormat,
+	            day: xTickDateFormat,
+	            month: xTickMonthFormat
+	        };
 	
 	        /**
 	         * This function creates the graph using the selection and data provided
@@ -35081,28 +35130,66 @@
 	        }
 	
 	        /**
+	         * Returns tick object to be used when building the x axis
+	         * @return {object} tick settings for major and minr axis
+	         */
+	        function getXAxisSettings() {
+	            var settings = forceAxisSettings || defaultAxisSettings;
+	            var minorTickValue = void 0,
+	                majorTickValue = void 0;
+	            var dateTimeSpan = xScale.domain()[1] - xScale.domain()[0];
+	            var ONE_AND_A_HALF_YEARS = timeBenchmarks.ONE_AND_A_HALF_YEARS,
+	                ONE_DAY = timeBenchmarks.ONE_DAY;
+	
+	            // might want to add minute-hour
+	
+	            if (dateTimeSpan < ONE_DAY) {
+	                settings = axisTimeCombinations.HOUR_DAY;
+	                majorTickValue = d3Time.timeDay.every(1);
+	            } else if (dateTimeSpan < ONE_AND_A_HALF_YEARS) {
+	                settings = axisTimeCombinations.DAY_MONTH;
+	                majorTickValue = d3Time.timeMonth.every(1);
+	            } else {
+	                settings = axisTimeCombinations.MONTH_YEAR;
+	                minorTickValue = 10;
+	                majorTickValue = d3Time.timeYear.every(1);
+	            }
+	
+	            var _settings$split = settings.split('-'),
+	                _settings$split2 = _slicedToArray(_settings$split, 2),
+	                minor = _settings$split2[0],
+	                major = _settings$split2[1];
+	
+	            minorTickValue = dataByDate.length < 5 ? d3Time.timeDay : getMaxNumOfHorizontalTicks(width, dataByDate.length);
+	
+	            return {
+	                minor: {
+	                    format: formatMap[minor],
+	                    tick: minorTickValue
+	                },
+	                major: {
+	                    format: formatMap[major],
+	                    tick: majorTickValue
+	                }
+	            };
+	        }
+	
+	        /**
 	         * Creates the d3 x and y axis, setting orientations
 	         * @private
 	         */
 	        function buildAxis() {
-	            // when dataset < 5, .ticks acts a little unexpected, so we pass it d3Time.time.days to fix
-	            var tickValue = dataByDate.length < 5 ? d3Time.timeDay : getMaxNumOfHorizontalTicks(width, dataByDate.length);
+	
 	            var rangeDiff = yScale.domain()[1] - yScale.domain()[0];
 	            var yTickNumber = rangeDiff < numVerticalTics - 1 ? rangeDiff : numVerticalTics;
-	            var dataTimeSpan = xScale.domain()[1] - xScale.domain()[0];
-	            var xMonthTicks = dataTimeSpan > ONE_AND_A_HALF_YEARS ? defaultNumMonths : d3Time.timeMonth;
 	
-	            var xMainFormat = xTickDateFormat;
-	            var xSecondaryFormat = xTickMonthFormat;
+	            var _getXAxisSettings = getXAxisSettings(),
+	                minor = _getXAxisSettings.minor,
+	                major = _getXAxisSettings.major;
 	
-	            if (dataTimeSpan < ONE_DAY) {
-	                xMainFormat = xTickHourFormat;
-	                xSecondaryFormat = xTickDateFormat;
-	            }
+	            xAxis = d3Axis.axisBottom(xScale).ticks(minor.tick).tickSize(10, 0).tickPadding(tickPadding).tickFormat(minor.format);
 	
-	            xAxis = d3Axis.axisBottom(xScale).ticks(tickValue).tickSize(10, 0).tickPadding(tickPadding).tickFormat(xMainFormat);
-	
-	            xMonthAxis = d3Axis.axisBottom(xScale).ticks(xMonthTicks).tickSize(0, 0).tickFormat(xSecondaryFormat);
+	            xMonthAxis = d3Axis.axisBottom(xScale).ticks(major.tick).tickSize(0, 0).tickFormat(major.format);
 	
 	            yAxis = d3Axis.axisLeft(yScale).ticks(yTickNumber).tickSize([0]).tickPadding(tickPadding).tickFormat(yTickNumberFormat);
 	        }
@@ -35566,6 +35653,27 @@
 	
 	            return value === dispatcher ? exports : value;
 	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x axis grouping
+	         * @param  {[type]} _x [description]
+	         * @return {[type]}    [description]
+	         */
+	        exports.forceAxisFormat = function (_x) {
+	            if (!arguments.length) {
+	                return forceAxisSettings || defaultAxisSettings;
+	            }
+	            forceAxisSettings = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * constants to be used to force the x axis to respect a certain granularity
+	         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
+	         * @example line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
+	         * @type {string} constants
+	         */
+	        exports.axisTimeCombinations = axisTimeCombinations;
 	
 	        return exports;
 	    };
