@@ -30,8 +30,8 @@
         "search": true,
 
         "analytics":{
-            "ua":"UA-XXXXX-XXX",
-            "domain":"XXXX"
+            "ua":"UA-141520-30",
+            "domain":"auto"
         },
         "openGraph": {
             "title": "Britecharts - D3.js based charting library of reusable components",
