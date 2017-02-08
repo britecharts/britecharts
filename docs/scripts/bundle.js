@@ -35669,10 +35669,9 @@
 	
 	        /**
 	         * constants to be used to force the x axis to respect a certain granularity
+	         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
+	         * @example line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
 	         * @type {string} constants
-	         *
-	         * @example
-	         * line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
 	         */
 	        exports.axisTimeCombinations = axisTimeCombinations;
 	
