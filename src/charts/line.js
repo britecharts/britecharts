@@ -40,12 +40,12 @@ define(function(require){
       *     Data: [
       *         {
       *             date: '',
-      *             fullDate: '',
+      *             fullDate: '2017-01-16T16:00:00-08:00',
       *             value: 1
       *         },
       *         {
       *             date: '',
-      *             fullDate: '',
+      *             fullDate: '2017-01-16T17:00:00-08:00',
       *             value: 2
       *         }
       *     ],
@@ -62,7 +62,7 @@ define(function(require){
       *
       * @example
       * {
-      *     date: '2015-06-27T07:00:00.000Z'
+      *     date: '2017-01-16T16:00:00-08:00'
       *     topics: [
       *         {
       *             name: 123,
@@ -92,12 +92,12 @@ define(function(require){
       *             Data: [
       *                 {
       *                     date: '',
-      *                     fullDate: '',
+      *                     fullDate: '2017-01-16T16:00:00-08:00',
       *                     value: 1
       *                 },
       *                 {
       *                     date: '',
-      *                     fullDate: '',
+      *                     fullDate: '2017-01-16T17:00:00-08:00',
       *                     value: 2
       *                 }
       *             ],
@@ -115,7 +115,7 @@ define(function(require){
       *     ],
       *     dataByDate: [
       *         {
-      *             date: '2015-06-27T07:00:00.000Z'
+      *             date: '2017-01-16T16:00:00-08:00',
       *             topics: [
       *                 {
       *                     name: 123,
@@ -237,7 +237,7 @@ define(function(require){
                 ({
                     data,
                     dataByDate
-                } = _data);
+                } = cleanData(_data));
 
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
@@ -326,7 +326,6 @@ define(function(require){
          * @private
          */
         function buildAxis() {
-
             let rangeDiff = yScale.domain()[1] - yScale.domain()[0];
             let yTickNumber = rangeDiff < numVerticalTics - 1 ? rangeDiff : numVerticalTics;
 
@@ -454,6 +453,24 @@ define(function(require){
             svg
                 .attr('width', width)
                 .attr('height', height);
+        }
+
+        /**
+         * Parses dates and values into JS Date objects and numbers
+         * @param  {obj} data           Raw data
+         * @param  {obj} dataByDate     Raw data ordered by date
+         * @return {obj}            Parsed data with dates
+         */
+        function cleanData({data, dataByDate}) {
+            data.forEach(function(kv) {
+                kv.Data.forEach(function(d) {
+                    d.date = new Date(d.fullDate);
+                });
+            });
+
+            dataByDate.forEach((entry) => entry.date = new Date(entry.date));
+
+            return { data, dataByDate};
         }
 
         /**
@@ -636,32 +653,20 @@ define(function(require){
         }
 
         /**
-         * Formats the date in ISOString
-         * @param  {String} date Date as given in data entries
-         * @return {String}      Date in ISO format in a neutral timezone
-         */
-        function getFormattedDateFromData(date) {
-            return date.toISOString().split('T')[0] + 'T00:00:00Z';
-        }
-
-        /**
          * Finds out the data entry that is closer to the given position on pixels
          * @param  {Number} mouseX X position of the mouse
          * @return {Object}        Data entry that is closer to that x axis position
          */
         function getNearestDataPoint(mouseX) {
-            let invertedX = xScale.invert(mouseX),
-                bisectDate = d3Array.bisector(getDate).left,
-                dataEntryIndex, dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition,
-                nearestDataPoint;
-
-            dateOnCursorXPosition = getFormattedDateFromData(invertedX);
-            dataEntryIndex = bisectDate(dataByDate, dateOnCursorXPosition, 1);
-            dataEntryForXPosition = dataByDate[dataEntryIndex];
-            previousDataEntryForXPosition = dataByDate[dataEntryIndex - 1];
+            let dateFromInvertedX = xScale.invert(mouseX);
+            let bisectDate = d3Array.bisector(getDate).left;
+            let dataEntryIndex = bisectDate(dataByDate, dateFromInvertedX, 1);
+            let dataEntryForXPosition = dataByDate[dataEntryIndex];
+            let previousDataEntryForXPosition = dataByDate[dataEntryIndex - 1];
+            let nearestDataPoint;
 
             if (previousDataEntryForXPosition && dataEntryForXPosition) {
-                nearestDataPoint = findOutNearestDate(dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition);
+                nearestDataPoint = findOutNearestDate(dateFromInvertedX, dataEntryForXPosition, previousDataEntryForXPosition);
             } else {
                 nearestDataPoint = dataEntryForXPosition;
             }
@@ -880,8 +885,8 @@ define(function(require){
 
         /**
          * Exposes the ability to force the chart to show a certain x axis grouping
-         * @param  {[type]} _x [description]
-         * @return {[type]}    [description]
+         * @param  {String} _x Desired format
+         * @return { (String|Module) }    Current format or module to chain calls
          */
         exports.forceAxisFormat = function(_x) {
             if (!arguments.length) {
@@ -895,7 +900,6 @@ define(function(require){
          * constants to be used to force the x axis to respect a certain granularity
          * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
          * @example line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
-         * @type {string} constants
          */
         exports.axisTimeCombinations = axisTimeCombinations;
 

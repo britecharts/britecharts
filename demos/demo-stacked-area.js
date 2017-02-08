@@ -49,6 +49,7 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
 
         // Tooltip Setup and start
         chartTooltip
+            .topicLabel('values')
             .title('Testing tooltip');
 
         // Note that if the viewport width is less than the tooltipThreshold value,

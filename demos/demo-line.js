@@ -24,7 +24,7 @@ function createLineChart(optionalColorSchema) {
             lineChart1.exportChart('linechart.png', 'Britecharts Line Chart');
         });
 
-        dataset = testDataSet.with5Topics().build();
+        dataset = testDataSet.withHourDateRange().build();
 
         // LineChart Setup and start
         lineChart1
@@ -49,6 +49,7 @@ function createLineChart(optionalColorSchema) {
 
         // Tooltip Setup and start
         chartTooltip
+            .forceDateRange(chartTooltip.axisTimeCombinations.HOUR_DAY)
             .title('Quantity Sold');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
