@@ -1,26 +1,10 @@
-/* Code */
-pre {
-    font-family: 'Anonymous Pro', Consolas, Monaco, "Courier New", monospace !important;
-    background-color: #F7FAFC !important;
-    color: black;
+/* Layout */
+.sidebar {
+    margin-top: 50px;
 }
-.sunlight-code-container {
-    font-family: 'Anonymous Pro', Consolas, Monaco, "Courier New", monospace !important;
-    background-color: #F7FAFC !important;
-    border: 1px solid #eff2f5 !important;
-    padding: 12px;
+#main {
+    padding-top: 80px;
 }
-.sunlight-code-container pre {
-    border: none;
-}
-.sunlight-menu {
-    display: none;
-}
-.sunlight-menu a:after {
-    background-color: transparent;
-}
-
-
 /* TOC Sidebar */
 #toc {
     position: fixed;
@@ -32,14 +16,13 @@ pre {
     padding: 5px;
 }
 
-
+/* Footer */
 .footer {
     bottom: 0;
     position: sticky;
     background-color: white;
     padding: 10px;
 }
-
 /* Copyright */
 .copyright {
     font-size: 80%;
@@ -56,8 +39,9 @@ pre {
 .tutorial-section__heading {
     display: none;
 }
-.sidebar {
-    margin-top: 50px;
+
+.readme-section h1 {
+    display: none;
 }
 
 /* Charts */
@@ -71,11 +55,3 @@ pre {
 }
 
 
-
-/* To Order */
-
-#main {
-    padding-top: 80px;
-}
-
-.readme-section h1 { display: none; }
