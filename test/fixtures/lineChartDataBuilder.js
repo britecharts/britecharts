@@ -74,22 +74,8 @@ define(function(require) {
         };
 
         this.build = function() {
-            return dataCleaning(this.config);
+            return this.config;
         };
-    }
-
-    function dataCleaning(chartData) {
-        var _data = _.compact(chartData.data),
-            dataByDate = chartData.dataByDate;
-
-        _data.forEach(function(kv) {
-            kv.Data.forEach(function(d) {
-                d.date = new Date(d.fullDate);
-                d.date.setHours(0, 0, 0);
-            });
-        });
-
-        return { data: _data, dataByDate: dataByDate};
     }
 
     return {

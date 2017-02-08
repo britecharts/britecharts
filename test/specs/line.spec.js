@@ -213,7 +213,7 @@ define([
                         xAxis = d3.select('.x-axis-group'),
                         xAxisLabels = xAxis.selectAll('.tick text'),
                         actual = xAxisLabels.text(),
-                        expected = '00 AM';
+                        expected = '16 PM';
 
                     expect(actual).toEqual(expected)
                 });
@@ -280,6 +280,29 @@ define([
 
                 expect(defaultSchema).not.toBe(testSchema);
                 expect(newSchema).toBe(testSchema);
+            });
+
+            it('should provide a forceAxisFormat getter and setter', () => {
+                let defaultSchema = lineChart.forceAxisFormat(),
+                    testFormat = lineChart.axisTimeCombinations.HOUR_DAY,
+                    newSchema;
+
+                lineChart.forceAxisFormat(testFormat);
+                newSchema = lineChart.forceAxisFormat();
+
+                expect(defaultSchema).not.toBe(testFormat);
+                expect(newSchema).toBe(testFormat);
+            });
+
+            it('should provide an axisTimeCombinations accessor', () => {
+                let axisTimeCombinations = lineChart.axisTimeCombinations;
+
+                expect(axisTimeCombinations).toEqual({
+                    MINUTE_HOUR: 'minute-hour',
+                    HOUR_DAY: 'hour-day',
+                    DAY_MONTH: 'day-month',
+                    MONTH_YEAR: 'month-year'
+                });
             });
         });
 
