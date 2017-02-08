@@ -35654,17 +35654,25 @@
 	            return value === dispatcher ? exports : value;
 	        };
 	
-	        exports.axisFormatCombination = function (_x) {
+	        /**
+	         * Exposes the ability to force the chart to show a certain x axis grouping
+	         * @param  {[type]} _x [description]
+	         * @return {[type]}    [description]
+	         */
+	        exports.forceAxisFormat = function (_x) {
 	            if (!arguments.length) {
-	                return axisSettings;
+	                return forceAxisSettings || defaultAxisSettings;
 	            }
-	            axisSettings = _x;
+	            forceAxisSettings = _x;
 	            return this;
 	        };
 	
 	        /**
 	         * constants to be used to force the x axis to respect a certain granularity
 	         * @type {string} constants
+	         *
+	         * @example
+	         * line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
 	         */
 	        exports.axisTimeCombinations = axisTimeCombinations;
 	
