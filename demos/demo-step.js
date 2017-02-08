@@ -29,7 +29,7 @@ function createStepChart() {
         stepChart
             .width(containerWidth)
             .height(300)
-            .xAxisLabel('Fruit Type')
+            .xAxisLabel('Meal Type')
             .xAxisLabelOffset(45)
             .yAxisLabel('Quantity')
             .yAxisLabelOffset(-50)
