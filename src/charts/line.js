@@ -279,6 +279,10 @@ define(function(require){
                 .attr('transform', 'translate(0, -7)');
         }
 
+        /**
+         * Returns tick object to be used when building the x axis
+         * @return {object} tick settings for major and minr axis
+         */
         function getXAxisSettings() {
             let settings = forceAxisSettings || defaultAxisSettings;
             let minorTickValue, majorTickValue;

@@ -35,6 +35,17 @@
 /******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
+/******/ 	// webpack-livereload-plugin
+/******/ 	(function() {
+/******/ 	  if (typeof window === "undefined") { return };
+/******/ 	  var id = "webpack-livereload-plugin-script";
+/******/ 	  if (document.getElementById(id)) { return; }
+/******/ 	  var el = document.createElement("script");
+/******/ 	  el.id = id;
+/******/ 	  el.async = true;
+/******/ 	  el.src = "http://localhost:35729/livereload.js";
+/******/ 	  document.getElementsByTagName("head")[0].appendChild(el);
+/******/ 	}());
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -35118,6 +35129,10 @@
 	            selection.selectAll('.tick text').attr('transform', 'translate(0, -7)');
 	        }
 	
+	        /**
+	         * Returns tick object to be used when building the x axis
+	         * @return {object} tick settings for major and minr axis
+	         */
 	        function getXAxisSettings() {
 	            var settings = forceAxisSettings || defaultAxisSettings;
 	            var minorTickValue = void 0,
