@@ -9,16 +9,16 @@
  */
 (function(window, document, undefined){
 
-	var 
+	var
 		//http://webreflection.blogspot.com/2009/01/32-bytes-to-know-if-your-browser-is-ie.html
 		//we have to sniff this because IE requires \r
-		isIe = !+"\v1", 
+		isIe = !+"\v1",
 		EOL = isIe ? "\r" : "\n",
 		EMPTY = function() { return null; },
 		HIGHLIGHTED_NODE_COUNT = 0,
 		DEFAULT_LANGUAGE = "plaintext",
 		DEFAULT_CLASS_PREFIX = "sunlight-",
-		
+
 		//global sunlight variables
 		defaultAnalyzer,
 		getComputedStyle,
@@ -52,13 +52,13 @@
 		}
 
 		return {
-			handleToken: function(context) { 
-				return defaultHandleToken(context.tokens[context.index].name)(context); 
+			handleToken: function(context) {
+				return defaultHandleToken(context.tokens[context.index].name)(context);
 			},
 
 			//just append default content as a text node
-			handle_default: function(context) { 
-				return context.addNode(context.createTextNode(context.tokens[context.index])); 
+			handle_default: function(context) {
+				return context.addNode(context.createTextNode(context.tokens[context.index]));
 			},
 
 			//this handles the named ident mayhem
@@ -99,7 +99,7 @@
 		contextItems: {},
 		embeddedLanguages: {}
 	};
-	
+
 	//adapted from http://blargh.tommymontgomery.com/2010/04/get-computed-style-in-javascript/
 	getComputedStyle = (function() {
 		var func = null;
@@ -115,7 +115,7 @@
 			return func(element, null)[style];
 		}
 	}());
-	
+
 	//-----------
 	//FUNCTIONS
 	//-----------
@@ -242,14 +242,14 @@
 		F.prototype = o;
 		return new F();
 	}
-	
+
 	function appendAll(parent, children) {
 		var i;
 		for (i = 0; i < children.length; i++) {
 			parent.appendChild(children[i]);
 		}
 	}
-	
+
 	//gets the last character in a string or the last element in an array
 	function last(thing) {
 		return thing.charAt ? thing.charAt(thing.length - 1) : thing[thing.length - 1];
@@ -261,7 +261,7 @@
 		if (arr.indexOf && !caseInsensitive) {
 			return arr.indexOf(value) >= 0;
 		}
-		
+
 		for (i = 0; i < arr.length; i++) {
 			if (arr[i] === value) {
 				return true;
@@ -288,7 +288,7 @@
 
 		return defaultObject;
 	}
-	
+
 	function clone(object) {
 		return merge({}, object);
 	}
@@ -305,7 +305,7 @@
 				j,
 				expected,
 				actual;
-				
+
 			if (direction === 1) {
 				tokenRequirements.reverse();
 			}
@@ -392,7 +392,7 @@
 			peek,
 			line = context.reader.getLine(),
 			column = context.reader.getColumn();
-			
+
 		wordMap = wordMap || [];
 		if (context.language.caseInsensitive) {
 			current = current.toUpperCase();
@@ -422,16 +422,16 @@
 
 	//gets the next token in the specified direction while matcher matches the current token
 	function getNextWhile(tokens, index, direction, matcher) {
-		var count = 1, 
+		var count = 1,
 			token;
-		
+
 		direction = direction || 1;
 		while (token = tokens[index + (direction * count++)]) {
 			if (!matcher(token)) {
 				return token;
 			}
 		}
-		
+
 		return undefined;
 	}
 
@@ -442,7 +442,7 @@
 			i,
 			word,
 			firstChar;
-		
+
 		for (i = 0; i < wordMap.length; i++) {
 			word = caseInsensitive ? wordMap[i].toUpperCase() : wordMap[i];
 			firstChar = word.charAt(0);
@@ -457,9 +457,9 @@
 	}
 
 	function defaultNumberParser(context) {
-		var current = context.reader.current(), 
-			number, 
-			line = context.reader.getLine(), 
+		var current = context.reader.current(),
+			number,
+			line = context.reader.getLine(),
 			column = context.reader.getColumn(),
 			allowDecimal = true,
 			peek;
@@ -492,7 +492,7 @@
 					allowDecimal = false;
 					continue;
 				}
-				
+
 				break;
 			}
 
@@ -505,12 +505,12 @@
 	function fireEvent(eventName, highlighter, eventContext) {
 		var delegates = events[eventName] || [],
 			i;
-		
+
 		for (i = 0; i < delegates.length; i++) {
 			delegates[i].call(highlighter, eventContext);
 		}
 	}
-	
+
 	function Highlighter(options) {
 		this.options = merge(clone(globalOptions), options);
 	}
@@ -660,7 +660,7 @@
 					|| parseDefault(context);
 			}
 		}());
-		
+
 		function getScopeReaderFunction(scope, tokenName) {
 			var escapeSequences = scope[2] || [],
 				closerLength = scope[1].length,
@@ -672,7 +672,7 @@
 			return function(context, continuation, buffer, line, column, processCurrent) {
 				var foundCloser = false;
 				buffer = buffer || "";
-					
+
 				processCurrent = processCurrent ? 1 : 0;
 
 				function process(processCurrent) {
@@ -680,7 +680,7 @@
 					var peekValue,
 						current = context.reader.current(),
 						i;
-					
+
 					for (i = 0; i < escapeSequences.length; i++) {
 						peekValue = (processCurrent ? current : "") + context.reader.peek(escapeSequences[i].length - processCurrent);
 						if (peekValue === escapeSequences[i]) {
@@ -719,20 +719,20 @@
 				return context.createToken(tokenName, buffer, line, column);
 			};
 		}
-		
+
 		//called before processing the current
 		function switchToEmbeddedLanguageIfNecessary(context) {
 			var i,
 				embeddedLanguage;
-			
+
 			for (i = 0; i < context.language.embeddedLanguages.length; i++) {
 				if (!languages[context.language.embeddedLanguages[i].language]) {
 					//unregistered language
 					continue;
 				}
-				
+
 				embeddedLanguage = clone(context.language.embeddedLanguages[i]);
-				
+
 				if (embeddedLanguage.switchTo(context)) {
 					embeddedLanguage.oldItems = clone(context.items);
 					context.embeddedLanguageStack.push(embeddedLanguage);
@@ -742,28 +742,28 @@
 				}
 			}
 		}
-		
+
 		//called after processing the current
 		function switchBackFromEmbeddedLanguageIfNecessary(context) {
 			var current = last(context.embeddedLanguageStack),
 				lang;
-			
+
 			if (current && current.switchBack(context)) {
 				context.language = languages[current.parentLanguage];
 				lang = context.embeddedLanguageStack.pop();
-				
+
 				//restore old items
 				context.items = clone(lang.oldItems);
 				lang.oldItems = {};
 			}
 		}
-		
+
 		function tokenize(unhighlightedCode, language, partialContext, options) {
 			var tokens = [],
 				context,
 				continuation,
 				token;
-				
+
 			fireEvent("beforeTokenize", this, { code: unhighlightedCode, language: language });
 			context = {
 				reader: createCodeReader(unhighlightedCode),
@@ -774,7 +774,7 @@
 				count: function() { return tokens.length; },
 				options: options,
 				embeddedLanguageStack: [],
-				
+
 				defaultData: {
 					text: "",
 					line: 1,
@@ -843,23 +843,23 @@
 						nbsp = String.fromCharCode(0xA0);
 						tab = new Array(options.tabWidth + 1).join(nbsp);
 					}
-					
+
 					return function(token) {
 						var value = token.value.split(" ").join(nbsp),
 							tabIndex,
 							lastNewlineColumn,
 							actualColumn,
 							tabLength;
-						
+
 						//tabstop madness: replace \t with the appropriate number of characters, depending on the tabWidth option and its relative position in the line
 						while ((tabIndex = value.indexOf("\t")) >= 0) {
 							lastNewlineColumn = value.lastIndexOf(EOL, tabIndex);
 							actualColumn = lastNewlineColumn === -1 ? tabIndex : tabIndex - lastNewlineColumn - 1;
 							tabLength = options.tabWidth - (actualColumn % options.tabWidth); //actual length of the TAB character
-							
+
 							value = value.substring(0, tabIndex) + tab.substring(options.tabWidth - tabLength) + value.substring(tabIndex + 1);
 						}
-						
+
 						return value;
 					};
 				}();
@@ -884,7 +884,7 @@
 		function highlightText(unhighlightedCode, languageId, partialContext) {
 			var language = languages[languageId],
 				analyzerContext;
-			
+
 			partialContext = partialContext || { };
 			if (language === undefined) {
 				//use default language if one wasn't specified or hasn't been registered
@@ -892,26 +892,26 @@
 			}
 
 			fireEvent("beforeHighlight", this, { code: unhighlightedCode, language: language, previousContext: partialContext });
-			
+
 			analyzerContext = createAnalyzerContext(
 				tokenize.call(this, unhighlightedCode, language, partialContext, this.options),
 				partialContext,
 				this.options
 			);
-			
+
 			analyze.call(this, analyzerContext, partialContext.index ? partialContext.index + 1 : 0);
-			
+
 			fireEvent("afterHighlight", this, { analyzerContext: analyzerContext });
 
 			return analyzerContext;
 		}
-		
+
 		function createContainer(ctx) {
 			var container = document.createElement("span");
 			container.className = ctx.options.classPrefix + ctx.language.name;
 			return container;
 		}
-		
+
 		function analyze(analyzerContext, startIndex) {
 			var nodes,
 				lastIndex,
@@ -921,26 +921,26 @@
 				func,
 				language,
 				analyzer;
-			
+
 			fireEvent("beforeAnalyze", this, { analyzerContext: analyzerContext });
-			
+
 			if (analyzerContext.tokens.length > 0) {
 				analyzerContext.language = languages[analyzerContext.tokens[0].language] || languages[DEFAULT_LANGUAGE];;
 				nodes = [];
 				lastIndex = 0;
 				container = createContainer(analyzerContext);
-				
+
 				for (i = startIndex; i < analyzerContext.tokens.length; i++) {
 					language = languages[analyzerContext.tokens[i].language] || languages[DEFAULT_LANGUAGE];
 					if (language.name !== analyzerContext.language.name) {
 						appendAll(container, analyzerContext.getNodes());
 						analyzerContext.resetNodes();
-						
+
 						nodes.push(container);
 						analyzerContext.language = language;
 						container = createContainer(analyzerContext);
 					}
-					
+
 					analyzerContext.index = i;
 					tokenName = analyzerContext.tokens[i].name;
 					func = "handle_" + tokenName;
@@ -948,7 +948,7 @@
 					analyzer = analyzerContext.getAnalyzer.call(analyzerContext) || analyzerContext.language.analyzer;
 					analyzer[func] ? analyzer[func](analyzerContext) : analyzer.handleToken(analyzerContext);
 				}
-				
+
 				//append the last nodes, and add the final nodes to the context
 				appendAll(container, analyzerContext.getNodes());
 				nodes.push(container);
@@ -957,7 +957,7 @@
 					analyzerContext.addNode(nodes[i]);
 				}
 			}
-			
+
 			fireEvent("afterAnalyze", this, { analyzerContext: analyzerContext });
 		}
 
@@ -965,16 +965,16 @@
 			//matches the language of the node to highlight
 			matchSunlightNode: function() {
 				var regex;
-				
+
 				return function(node) {
 					if (!regex) {
 						regex = new RegExp("(?:\\s|^)" + this.options.classPrefix + "highlight-(\\S+)(?:\\s|$)");
 					}
-					
+
 					return regex.exec(node.className);
 				};
 			}(),
-			
+
 			//determines if the node has already been highlighted
 			isAlreadyHighlighted: function() {
 				var regex;
@@ -982,11 +982,11 @@
 					if (!regex) {
 						regex = new RegExp("(?:\\s|^)" + this.options.classPrefix + "highlighted(?:\\s|$)");
 					}
-					
+
 					return regex.test(node.className);
 				};
 			}(),
-			
+
 			//highlights a block of text
 			highlight: function(code, languageId) { return highlightText.call(this, code, languageId); },
 
@@ -1001,7 +1001,7 @@
 					partialContext,
 					container,
 					codeContainer;
-				
+
 				if (this.isAlreadyHighlighted(node) || (match = this.matchSunlightNode(node)) === null) {
 					return;
 				}
@@ -1029,12 +1029,12 @@
 
 				//indicate that this node has been highlighted
 				node.className += " " + this.options.classPrefix + "highlighted";
-				
+
 				//if the node is block level, we put it in a container, otherwise we just leave it alone
 				if (getComputedStyle(node, "display") === "block") {
 					container = document.createElement("div");
 					container.className = this.options.classPrefix + "container";
-					
+
 					codeContainer = document.createElement("div");
 					codeContainer.className = this.options.classPrefix + "code-container";
 
@@ -1043,22 +1043,22 @@
 						codeContainer.style.overflowY = "auto";
 						codeContainer.style.maxHeight = this.options.maxHeight + (/^\d+$/.test(this.options.maxHeight) ? "px" : "");
 					}
-					
+
 					container.appendChild(codeContainer);
-					
+
 					node.parentNode.insertBefore(codeContainer, node);
 					node.parentNode.removeChild(node);
 					codeContainer.appendChild(node);
-					
+
 					codeContainer.parentNode.insertBefore(container, codeContainer);
 					codeContainer.parentNode.removeChild(codeContainer);
 					container.appendChild(codeContainer);
 				}
-				
-				fireEvent("afterHighlightNode", this, { 
+
+				fireEvent("afterHighlightNode", this, {
 					container: container,
 					codeContainer: codeContainer,
-					node: node, 
+					node: node,
 					count: currentNodeCount
 				});
 			}
@@ -1076,7 +1076,7 @@
 			var highlighter = new Highlighter(options),
 				tags = document.getElementsByTagName("*"),
 				i;
-			
+
 			for (i = 0; i < tags.length; i++) {
 				highlighter.highlightNode(tags[i]);
 			}
@@ -1086,7 +1086,7 @@
 			var tokenName,
 				embeddedLanguages,
 				languageName;
-			
+
 			if (!languageId) {
 				throw "Languages must be registered with an identifier, e.g. \"php\" for PHP";
 			}
@@ -1104,7 +1104,7 @@
 					languageData.caseInsensitive
 				);
 			}
-			
+
 			//convert the embedded language object to an easier-to-use array
 			embeddedLanguages = [];
 			for (languageName in languageData.embeddedLanguages) {
@@ -1115,19 +1115,19 @@
 					switchBack: languageData.embeddedLanguages[languageName].switchBack
 				});
 			}
-			
+
 			languageData.embeddedLanguages = embeddedLanguages;
 
 			languages[languageData.name] = languageData;
 		},
-		
+
 		isRegistered: function(languageId) { return languages[languageId] !== undefined; },
-		
+
 		bind: function(event, callback) {
 			if (!events[event]) {
 				throw "Unknown event \"" + event + "\"";
 			}
-			
+
 			events[event].push(callback);
 		},
 
