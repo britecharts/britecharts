@@ -34785,7 +34785,7 @@
 	            lineChart1.exportChart('linechart.png', 'Britecharts Line Chart');
 	        });
 	
-	        dataset = testDataSet.withHourDateRange().build();
+	        dataset = testDataSet.with5Topics().build();
 	
 	        // LineChart Setup and start
 	        lineChart1.aspectRatio(0.5).tooltipThreshold(600).width(containerWidth).on('customMouseOver', function () {
@@ -34803,7 +34803,10 @@
 	        container.datum(dataset).call(lineChart1);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.forceDateRange(chartTooltip.axisTimeCombinations.HOUR_DAY).title('Quantity Sold');
+	        chartTooltip
+	        // In order to change the date range on the tooltip title, uncomment this line
+	        // .forceDateRange(chartTooltip.axisTimeCombinations.HOUR_DAY)
+	        .title('Quantity Sold');
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
