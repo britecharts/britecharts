@@ -35,17 +35,6 @@
 /******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/ 	// webpack-livereload-plugin
-/******/ 	(function() {
-/******/ 	  if (typeof window === "undefined") { return };
-/******/ 	  var id = "webpack-livereload-plugin-script";
-/******/ 	  if (document.getElementById(id)) { return; }
-/******/ 	  var el = document.createElement("script");
-/******/ 	  el.id = id;
-/******/ 	  el.async = true;
-/******/ 	  el.src = "http://localhost:35729/livereload.js";
-/******/ 	  document.getElementsByTagName("head")[0].appendChild(el);
-/******/ 	}());
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -2922,7 +2911,7 @@
 	        container.datum(dataset.data).call(stackedArea);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.title('Testing tooltip');
+	        chartTooltip.topicLabel('values').title('Testing tooltip');
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -11394,6 +11383,9 @@
 	    var d3Transition = __webpack_require__(30);
 	    var d3TimeFormat = __webpack_require__(19);
 	
+	    var _require = __webpack_require__(25),
+	        axisTimeCombinations = _require.axisTimeCombinations;
+	
 	    /**
 	     * Tooltip Component reusable API class that renders a
 	     * simple and configurable tooltip element for Britechart's
@@ -11431,6 +11423,8 @@
 	     *     .call(tooltip);
 	     *
 	     */
+	
+	
 	    return function module() {
 	
 	        var margin = {
@@ -11468,10 +11462,16 @@
 	            titleFillColor = '#6D717A',
 	            textFillColor = '#282C35',
 	            tooltipTextColor = '#000000',
+	            dateLabel = 'date',
+	            valueLabel = 'value',
+	            topicLabel = 'topics',
+	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
+	            forceAxisSettings = null,
 	
 	
 	        // formats
-	        tooltipDateFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
+	        monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
+	            monthDayHourFormat = d3TimeFormat.timeFormat('%b %d, %H %p'),
 	            valueRangeLimits = {
 	            small: 10,
 	            medium: 100
@@ -11620,7 +11620,7 @@
 	         * @return {String}      Value to show
 	         */
 	        function getValueText(data) {
-	            var value = data.value ? data.value : data.views;
+	            var value = data[valueLabel];
 	            var valueText = void 0;
 	
 	            if (data.missingValue) {
@@ -11708,10 +11708,27 @@
 	         * @return void
 	         */
 	        function updateTitle(dataPoint) {
-	            var date = dataPoint.date ? new Date(dataPoint.date) : new Date(dataPoint.key),
-	                tooltipTitleText = title + ' - ' + tooltipDateFormat(date);
+	            var date = new Date(dataPoint[dateLabel]),
+	                tooltipTitleText = title + ' - ' + formatDate(date);
 	
 	            tooltipTitle.text(tooltipTitleText);
+	        }
+	
+	        /**
+	         * Figures out which date format to use when showing the date of the current data entry
+	         * @return {Function} The proper date formatting function
+	         */
+	        function formatDate(date) {
+	            var settings = forceAxisSettings || defaultAxisSettings;
+	            var format = null;
+	
+	            if (settings === axisTimeCombinations.DAY_MONTH || settings === axisTimeCombinations.MONTH_YEAR) {
+	                format = monthDayYearFormat;
+	            } else if (settings === axisTimeCombinations.HOUR_DAY || settings === axisTimeCombinations.MINUTE_HOUR) {
+	                format = monthDayHourFormat;
+	            }
+	
+	            return format(date);
 	        }
 	
 	        /**
@@ -11722,7 +11739,7 @@
 	         * @return void
 	         */
 	        function updateTooltip(dataPoint, xPosition) {
-	            var topics = dataPoint.topics ? dataPoint.topics : dataPoint.values;
+	            var topics = dataPoint[topicLabel];
 	
 	            cleanContent();
 	            resetSizeAndPositionPointers();
@@ -11774,6 +11791,51 @@
 	        }
 	
 	        /**
+	         * Gets or Sets the dateLabel of the data
+	         * @param  {Number} _x Desired dateLabel
+	         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.dateLabel = function (_x) {
+	            if (!arguments.length) {
+	                return dateLabel;
+	            }
+	            dateLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the valueLabel of the data
+	         * @param  {Number} _x Desired valueLabel
+	         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.valueLabel = function (_x) {
+	            if (!arguments.length) {
+	                return valueLabel;
+	            }
+	            valueLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the topicLabel of the data
+	         * @param  {Number} _x Desired topicLabel
+	         * @return { topicLabel | module} Current topicLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.topicLabel = function (_x) {
+	            if (!arguments.length) {
+	                return topicLabel;
+	            }
+	            topicLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
 	         * Hides the tooltip
 	         * @return {Module} Tooltip module to chain calls
 	         * @public
@@ -11823,6 +11885,26 @@
 	
 	            return this;
 	        };
+	
+	        /**
+	         * Exposes the ability to force the tooltip to use a certain date format
+	         * @param  {String} _x Desired format
+	         * @return { (String|Module) }    Current format or module to chain calls
+	         */
+	        exports.forceDateRange = function (_x) {
+	            if (!arguments.length) {
+	                return forceAxisSettings || defaultAxisSettings;
+	            }
+	            forceAxisSettings = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * constants to be used to force the x axis to respect a certain granularity
+	         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
+	         * @example tooltip.forceDateRange(tooltip.axisTimeCombinations.HOUR_DAY)
+	         */
+	        exports.axisTimeCombinations = axisTimeCombinations;
 	
 	        return exports;
 	    };
@@ -17902,14 +17984,14 @@
 /* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org Version 4.5.0. Copyright 2017 Mike Bostock.
+	// https://d3js.org Version 4.4.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
 		(factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
-	var version = "4.5.0";
+	var version = "4.4.4";
 	
 	var ascending = function(a, b) {
 	  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -27296,19 +27378,6 @@
 	  return cluster;
 	};
 	
-	function count(node) {
-	  var sum = 0,
-	      children = node.children,
-	      i = children && children.length;
-	  if (!i) sum = 1;
-	  else while (--i >= 0) sum += children[i].value;
-	  node.value = sum;
-	}
-	
-	var node_count = function() {
-	  return this.eachAfter(count);
-	};
-	
 	var node_each = function(callback) {
 	  var node = this, current, next = [node], children, i, n;
 	  do {
@@ -27487,7 +27556,6 @@
 	
 	Node.prototype = hierarchy.prototype = {
 	  constructor: Node,
-	  count: node_count,
 	  each: node_each,
 	  eachAfter: node_eachAfter,
 	  eachBefore: node_eachBefore,
@@ -27648,13 +27716,7 @@
 	  var dx = b.x - a.x,
 	      dy = b.y - a.y,
 	      dr = a.r + b.r;
-	  return dr * dr - 1e-6 > dx * dx + dy * dy;
-	}
-	
-	function distance1(a, b) {
-	  var l = a._.r;
-	  while (a !== b) l += 2 * (a = a.next)._.r;
-	  return l - b._.r;
+	  return dr * dr > dx * dx + dy * dy;
 	}
 	
 	function distance2(circle, x, y) {
@@ -27704,27 +27766,35 @@
 	  pack: for (i = 3; i < n; ++i) {
 	    place(a._, b._, c = circles[i]), c = new Node$1(c);
 	
-	    // Find the closest intersecting circle on the front-chain, if any.
-	    // “Closeness” is determined by linear distance along the front-chain.
-	    // “Ahead” or “behind” is likewise determined by linear distance.
-	    j = b.next, k = a.previous, sj = b._.r, sk = a._.r;
-	    do {
-	      if (sj <= sk) {
-	        if (intersects(j._, c._)) {
-	          if (sj + a._.r + b._.r > distance1(j, b)) a = j; else b = j;
-	          a.next = b, b.previous = a, --i;
-	          continue pack;
-	        }
-	        sj += j._.r, j = j.next;
-	      } else {
-	        if (intersects(k._, c._)) {
-	          if (distance1(a, k) > sk + a._.r + b._.r) a = k; else b = k;
-	          a.next = b, b.previous = a, --i;
-	          continue pack;
-	        }
-	        sk += k._.r, k = k.previous;
+	    // If there are only three elements in the front-chain…
+	    if ((k = a.previous) === (j = b.next)) {
+	      // If the new circle intersects the third circle,
+	      // rotate the front chain to try the next position.
+	      if (intersects(j._, c._)) {
+	        a = b, b = j, --i;
+	        continue pack;
 	      }
-	    } while (j !== k.next);
+	    }
+	
+	    // Find the closest intersecting circle on the front-chain, if any.
+	    else {
+	      sj = j._.r, sk = k._.r;
+	      do {
+	        if (sj <= sk) {
+	          if (intersects(j._, c._)) {
+	            b = j, a.next = b, b.previous = a, --i;
+	            continue pack;
+	          }
+	          j = j.next, sj += j._.r;
+	        } else {
+	          if (intersects(k._, c._)) {
+	            a = k, a.next = b, b.previous = a, --i;
+	            continue pack;
+	          }
+	          k = k.previous, sk += k._.r;
+	        }
+	      } while (j !== k.next);
+	    }
 	
 	    // Success! Insert the new circle c between a and b.
 	    c.previous = a, c.next = b, a.next = b.previous = b = c;
@@ -34733,7 +34803,10 @@
 	        container.datum(dataset).call(lineChart1);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.title('Quantity Sold');
+	        chartTooltip
+	        // In order to change the date range on the tooltip title, uncomment this line
+	        // .forceDateRange(chartTooltip.axisTimeCombinations.HOUR_DAY)
+	        .title('Quantity Sold');
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -34880,12 +34953,12 @@
 	     *     Data: [
 	     *         {
 	     *             date: '',
-	     *             fullDate: '',
+	     *             fullDate: '2017-01-16T16:00:00-08:00',
 	     *             value: 1
 	     *         },
 	     *         {
 	     *             date: '',
-	     *             fullDate: '',
+	     *             fullDate: '2017-01-16T17:00:00-08:00',
 	     *             value: 2
 	     *         }
 	     *     ],
@@ -34902,7 +34975,7 @@
 	     *
 	     * @example
 	     * {
-	     *     date: '2015-06-27T07:00:00.000Z'
+	     *     date: '2017-01-16T16:00:00-08:00'
 	     *     topics: [
 	     *         {
 	     *             name: 123,
@@ -34931,12 +35004,12 @@
 	     *             Data: [
 	     *                 {
 	     *                     date: '',
-	     *                     fullDate: '',
+	     *                     fullDate: '2017-01-16T16:00:00-08:00',
 	     *                     value: 1
 	     *                 },
 	     *                 {
 	     *                     date: '',
-	     *                     fullDate: '',
+	     *                     fullDate: '2017-01-16T17:00:00-08:00',
 	     *                     value: 2
 	     *                 }
 	     *             ],
@@ -34954,7 +35027,7 @@
 	     *     ],
 	     *     dataByDate: [
 	     *         {
-	     *             date: '2015-06-27T07:00:00.000Z'
+	     *             date: '2017-01-16T16:00:00-08:00',
 	     *             topics: [
 	     *                 {
 	     *                     name: 123,
@@ -35089,8 +35162,10 @@
 	         */
 	        function exports(_selection) {
 	            _selection.each(function (_data) {
-	                data = _data.data;
-	                dataByDate = _data.dataByDate;
+	                var _cleanData = cleanData(_data);
+	
+	                data = _cleanData.data;
+	                dataByDate = _cleanData.dataByDate;
 	
 	
 	                chartWidth = width - margin.left - margin.right;
@@ -35179,7 +35254,6 @@
 	         * @private
 	         */
 	        function buildAxis() {
-	
 	            var rangeDiff = yScale.domain()[1] - yScale.domain()[0];
 	            var yTickNumber = rangeDiff < numVerticalTics - 1 ? rangeDiff : numVerticalTics;
 	
@@ -35283,6 +35357,29 @@
 	        }
 	
 	        /**
+	         * Parses dates and values into JS Date objects and numbers
+	         * @param  {obj} data           Raw data
+	         * @param  {obj} dataByDate     Raw data ordered by date
+	         * @return {obj}            Parsed data with dates
+	         */
+	        function cleanData(_ref11) {
+	            var data = _ref11.data,
+	                dataByDate = _ref11.dataByDate;
+	
+	            data.forEach(function (kv) {
+	                kv.Data.forEach(function (d) {
+	                    d.date = new Date(d.fullDate);
+	                });
+	            });
+	
+	            dataByDate.forEach(function (entry) {
+	                return entry.date = new Date(entry.date);
+	            });
+	
+	            return { data: data, dataByDate: dataByDate };
+	        }
+	
+	        /**
 	         * Removes all the datapoints highlighter circles added to the marker container
 	         * @return void
 	         */
@@ -35312,18 +35409,18 @@
 	                topicLine = void 0,
 	                maskingRectangle = void 0;
 	
-	            topicLine = d3Shape.line().x(function (_ref11) {
-	                var date = _ref11.date;
+	            topicLine = d3Shape.line().x(function (_ref12) {
+	                var date = _ref12.date;
 	                return xScale(date);
-	            }).y(function (_ref12) {
-	                var value = _ref12.value;
+	            }).y(function (_ref13) {
+	                var value = _ref13.value;
 	                return yScale(value);
 	            });
 	
 	            lines = svg.select('.chart-group').selectAll('.line').data(data);
 	
-	            lines.enter().append('g').attr('class', 'topic').append('path').attr('class', 'line').attr('d', function (_ref13) {
-	                var Data = _ref13.Data;
+	            lines.enter().append('g').attr('class', 'topic').append('path').attr('class', 'line').attr('d', function (_ref14) {
+	                var Data = _ref14.Data;
 	                return topicLine(Data);
 	            }).style('stroke', function (d) {
 	                return data.length === 1 ? 'url(#' + lineGradientId + ')' : getLineColor(d);
@@ -35411,35 +35508,20 @@
 	        }
 	
 	        /**
-	         * Formats the date in ISOString
-	         * @param  {String} date Date as given in data entries
-	         * @return {String}      Date in ISO format in a neutral timezone
-	         */
-	        function getFormattedDateFromData(date) {
-	            return date.toISOString().split('T')[0] + 'T00:00:00Z';
-	        }
-	
-	        /**
 	         * Finds out the data entry that is closer to the given position on pixels
 	         * @param  {Number} mouseX X position of the mouse
 	         * @return {Object}        Data entry that is closer to that x axis position
 	         */
 	        function getNearestDataPoint(mouseX) {
-	            var invertedX = xScale.invert(mouseX),
-	                bisectDate = d3Array.bisector(getDate).left,
-	                dataEntryIndex = void 0,
-	                dateOnCursorXPosition = void 0,
-	                dataEntryForXPosition = void 0,
-	                previousDataEntryForXPosition = void 0,
-	                nearestDataPoint = void 0;
-	
-	            dateOnCursorXPosition = getFormattedDateFromData(invertedX);
-	            dataEntryIndex = bisectDate(dataByDate, dateOnCursorXPosition, 1);
-	            dataEntryForXPosition = dataByDate[dataEntryIndex];
-	            previousDataEntryForXPosition = dataByDate[dataEntryIndex - 1];
+	            var dateFromInvertedX = xScale.invert(mouseX);
+	            var bisectDate = d3Array.bisector(getDate).left;
+	            var dataEntryIndex = bisectDate(dataByDate, dateFromInvertedX, 1);
+	            var dataEntryForXPosition = dataByDate[dataEntryIndex];
+	            var previousDataEntryForXPosition = dataByDate[dataEntryIndex - 1];
+	            var nearestDataPoint = void 0;
 	
 	            if (previousDataEntryForXPosition && dataEntryForXPosition) {
-	                nearestDataPoint = findOutNearestDate(dateOnCursorXPosition, dataEntryForXPosition, previousDataEntryForXPosition);
+	                nearestDataPoint = findOutNearestDate(dateFromInvertedX, dataEntryForXPosition, previousDataEntryForXPosition);
 	            } else {
 	                nearestDataPoint = dataEntryForXPosition;
 	            }
@@ -35509,8 +35591,8 @@
 	                return topicColorMap[a.name] > topicColorMap[b.name];
 	            });
 	
-	            dataPoint.topics.forEach(function (_ref14, index) {
-	                var name = _ref14.name;
+	            dataPoint.topics.forEach(function (_ref15, index) {
+	                var name = _ref15.name;
 	
 	                var marker = verticalMarkerContainer.append('g').classed('circle-container', true),
 	                    circleSize = 12;
@@ -35656,8 +35738,8 @@
 	
 	        /**
 	         * Exposes the ability to force the chart to show a certain x axis grouping
-	         * @param  {[type]} _x [description]
-	         * @return {[type]}    [description]
+	         * @param  {String} _x Desired format
+	         * @return { (String|Module) }    Current format or module to chain calls
 	         */
 	        exports.forceAxisFormat = function (_x) {
 	            if (!arguments.length) {
@@ -35671,7 +35753,6 @@
 	         * constants to be used to force the x axis to respect a certain granularity
 	         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
 	         * @example line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
-	         * @type {string} constants
 	         */
 	        exports.axisTimeCombinations = axisTimeCombinations;
 	
@@ -35759,22 +35840,8 @@
 	        };
 	
 	        this.build = function () {
-	            return dataCleaning(this.config);
+	            return this.config;
 	        };
-	    }
-	
-	    function dataCleaning(chartData) {
-	        var _data = _.compact(chartData.data),
-	            dataByDate = chartData.dataByDate;
-	
-	        _data.forEach(function (kv) {
-	            kv.Data.forEach(function (d) {
-	                d.date = new Date(d.fullDate);
-	                d.date.setHours(0, 0, 0);
-	            });
-	        });
-	
-	        return { data: _data, dataByDate: dataByDate };
 	    }
 	
 	    return {
@@ -51604,365 +51671,365 @@
 				"topicName": "Quantity",
 				"Data": [
 					{
+						"date": "16-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-16T16:00:00-08:00"
+					},
+					{
+						"date": "16-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-16T17:00:00-08:00"
+					},
+					{
+						"date": "16-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-16T18:00:00-08:00"
+					},
+					{
+						"date": "16-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-16T19:00:00-08:00"
+					},
+					{
+						"date": "16-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-16T20:00:00-08:00"
+					},
+					{
+						"date": "16-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-16T21:00:00-08:00"
+					},
+					{
+						"date": "16-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-16T22:00:00-08:00"
+					},
+					{
+						"date": "16-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-16T23:00:00-08:00"
+					},
+					{
+						"date": "17-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-17T00:00:00-08:00"
+					},
+					{
+						"date": "17-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-17T01:00:00-08:00"
+					},
+					{
+						"date": "17-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-17T02:00:00-08:00"
+					},
+					{
+						"date": "17-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-17T03:00:00-08:00"
+					},
+					{
+						"date": "17-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-17T04:00:00-08:00"
+					},
+					{
+						"date": "17-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-17T05:00:00-08:00"
+					},
+					{
+						"date": "17-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-17T06:00:00-08:00"
+					},
+					{
+						"date": "17-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-17T07:00:00-08:00"
+					},
+					{
+						"date": "17-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-17T09:00:00-08:00"
+					},
+					{
+						"date": "17-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-17T10:00:00-08:00"
+					},
+					{
+						"date": "17-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-17T11:00:00-08:00"
+					},
+					{
+						"date": "17-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-17T12:00:00-08:00"
+					},
+					{
+						"date": "17-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-17T13:00:00-08:00"
+					},
+					{
+						"date": "17-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-17T14:00:00-08:00"
+					},
+					{
+						"date": "17-Jan-17",
+						"value": 0,
+						"fullDate": "2017-01-17T15:00:00-08:00"
+					},
+					{
 						"date": "17-Jan-17",
 						"value": 1,
-						"fullDate": "2017-01-17T00:00:00-08:00"
-					},
-					{
-						"date": "17-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-17T00:00:00-08:00"
-					},
-					{
-						"date": "17-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-17T00:00:00-08:00"
-					},
-					{
-						"date": "17-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-17T00:00:00-08:00"
-					},
-					{
-						"date": "17-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-17T00:00:00-08:00"
-					},
-					{
-						"date": "17-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-17T00:00:00-08:00"
-					},
-					{
-						"date": "17-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-17T00:00:00-08:00"
-					},
-					{
-						"date": "17-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-17T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-17",
-						"value": 0,
-						"fullDate": "2017-01-18T00:00:00-08:00"
+						"fullDate": "2017-01-17T16:00:00-08:00"
 					}
 				]
 			}
 		],
 		"dataByDate": [
 			{
-				"date": "2017-01-17T08:00:00.000Z",
+				"date": "2017-01-16T16:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-16T17:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-16T18:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-16T19:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-16T20:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-16T21:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-16T22:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-16T23:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T00:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T01:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T02:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T03:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T04:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T05:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T06:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T07:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T09:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T10:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T11:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T12:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T13:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T14:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T15:00:00-08:00",
+				"topics": [
+					{
+						"name": -1,
+						"value": 0,
+						"topicName": "Quantity"
+					}
+				]
+			},
+			{
+				"date": "2017-01-17T16:00:00-08:00",
 				"topics": [
 					{
 						"name": -1,
 						"value": 1,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-17T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-17T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-17T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-17T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-17T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-17T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-17T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
-						"topicName": "Quantity"
-					}
-				]
-			},
-			{
-				"date": "2017-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 0,
 						"topicName": "Quantity"
 					}
 				]

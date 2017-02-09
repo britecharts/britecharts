@@ -49,6 +49,8 @@ function createLineChart(optionalColorSchema) {
 
         // Tooltip Setup and start
         chartTooltip
+            // In order to change the date range on the tooltip title, uncomment this line
+            // .forceDateRange(chartTooltip.axisTimeCombinations.HOUR_DAY)
             .title('Quantity Sold');
 
         // Note that if the viewport width is less than the tooltipThreshold value,

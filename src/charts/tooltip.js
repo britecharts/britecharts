@@ -6,6 +6,10 @@ define(function(require){
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
 
+    const {
+      axisTimeCombinations
+    } = require('./helpers/constants.js');
+
 
     /**
      * Tooltip Component reusable API class that renders a
@@ -84,8 +88,16 @@ define(function(require){
             textFillColor = '#282C35',
             tooltipTextColor = '#000000',
 
+            dateLabel = 'date',
+            valueLabel = 'value',
+            topicLabel = 'topics',
+
+            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
+            forceAxisSettings = null,
+
             // formats
-            tooltipDateFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
+            monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
+            monthDayHourFormat = d3TimeFormat.timeFormat('%b %d, %H %p'),
             valueRangeLimits = {
                 small: 10,
                 medium: 100
@@ -272,7 +284,7 @@ define(function(require){
          * @return {String}      Value to show
          */
         function getValueText(data) {
-            let value = data.value ? data.value : data.views;
+            let value = data[valueLabel];
             let valueText;
 
             if (data.missingValue) {
@@ -387,10 +399,27 @@ define(function(require){
          * @return void
          */
         function updateTitle(dataPoint) {
-            var date = dataPoint.date ? new Date(dataPoint.date) : new Date(dataPoint.key),
-                tooltipTitleText = title + ' - ' + tooltipDateFormat(date);
+            var date = new Date(dataPoint[dateLabel]),
+                tooltipTitleText = title + ' - ' + formatDate(date);
 
             tooltipTitle.text(tooltipTitleText);
+        }
+
+        /**
+         * Figures out which date format to use when showing the date of the current data entry
+         * @return {Function} The proper date formatting function
+         */
+        function formatDate(date) {
+            let settings = forceAxisSettings || defaultAxisSettings;
+            let format = null;
+
+            if (settings === axisTimeCombinations.DAY_MONTH || settings === axisTimeCombinations.MONTH_YEAR) {
+                format = monthDayYearFormat;
+            } else if (settings === axisTimeCombinations.HOUR_DAY || settings === axisTimeCombinations.MINUTE_HOUR) {
+                format = monthDayHourFormat;
+            }
+
+            return format(date);
         }
 
         /**
@@ -401,7 +430,7 @@ define(function(require){
          * @return void
          */
         function updateTooltip(dataPoint, xPosition) {
-            var topics = dataPoint.topics ? dataPoint.topics : dataPoint.values;
+            var topics = dataPoint[topicLabel];
 
             cleanContent();
             resetSizeAndPositionPointers();
@@ -469,6 +498,51 @@ define(function(require){
         }
 
         /**
+         * Gets or Sets the dateLabel of the data
+         * @param  {Number} _x Desired dateLabel
+         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+         * @public
+         */
+        exports.dateLabel = function(_x) {
+            if (!arguments.length) {
+                return dateLabel;
+            }
+            dateLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the valueLabel of the data
+         * @param  {Number} _x Desired valueLabel
+         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+         * @public
+         */
+        exports.valueLabel = function(_x) {
+            if (!arguments.length) {
+                return valueLabel;
+            }
+            valueLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the topicLabel of the data
+         * @param  {Number} _x Desired topicLabel
+         * @return { topicLabel | module} Current topicLabel or Chart module to chain calls
+         * @public
+         */
+        exports.topicLabel = function(_x) {
+            if (!arguments.length) {
+                return topicLabel;
+            }
+            topicLabel = _x;
+
+            return this;
+        };
+
+        /**
          * Hides the tooltip
          * @return {Module} Tooltip module to chain calls
          * @public
@@ -519,8 +593,27 @@ define(function(require){
             return this;
         };
 
+        /**
+         * Exposes the ability to force the tooltip to use a certain date format
+         * @param  {String} _x Desired format
+         * @return { (String|Module) }    Current format or module to chain calls
+         */
+        exports.forceDateRange = function(_x) {
+            if (!arguments.length) {
+              return forceAxisSettings || defaultAxisSettings;
+            }
+            forceAxisSettings = _x;
+            return this;
+        };
+
+        /**
+         * constants to be used to force the x axis to respect a certain granularity
+         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
+         * @example tooltip.forceDateRange(tooltip.axisTimeCombinations.HOUR_DAY)
+         */
+        exports.axisTimeCombinations = axisTimeCombinations;
+
+
         return exports;
-
     };
-
 });
