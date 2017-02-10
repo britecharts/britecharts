@@ -2876,7 +2876,7 @@
 	    PubSub = __webpack_require__(5),
 	    colors = __webpack_require__(7),
 	    stackedAreaChart = __webpack_require__(8),
-	    tooltip = __webpack_require__(29),
+	    tooltip = __webpack_require__(31),
 	    stackedDataBuilder = __webpack_require__(32),
 	    colorSelectorHelper = __webpack_require__(37);
 	
@@ -3038,9 +3038,10 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Time = __webpack_require__(18);
 	    var d3TimeFormat = __webpack_require__(19);
+	    var d3Transition = __webpack_require__(22);
 	
 	    var _ = __webpack_require__(3);
-	    var exportChart = __webpack_require__(22);
+	    var exportChart = __webpack_require__(24);
 	    var colorHelper = __webpack_require__(7);
 	
 	    var ONE_AND_A_HALF_YEARS = 47304000000;
@@ -10289,1634 +10290,9 @@
 /* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-	    'use strict';
-	
-	    var bowser = __webpack_require__(23);
-	
-	    var _require = __webpack_require__(7),
-	        colorSchemas = _require.colorSchemas;
-	
-	    var constants = __webpack_require__(25);
-	    var serializeWithStyles = __webpack_require__(26);
-	
-	    var encoder = window.btoa;
-	
-	    if (!encoder) {
-	        encoder = __webpack_require__(27).encode;
-	    }
-	
-	    var config = {
-	        styleClass: 'britechartStyle',
-	        defaultFilename: 'britechart.png',
-	        chartBackground: 'white',
-	        imageSourceBase: 'data:image/svg+xml;base64,',
-	        titleFontSize: '15px',
-	        titleFontFamily: '\'Heebo-thin\', sans-serif',
-	        titleTopOffset: 30,
-	        get styleBackgroundString() {
-	            return '<style>svg{background:' + this.chartBackground + ';}</style>';
-	        }
-	    };
-	
-	    /**
-	     * Main function to be used as a method by chart instances to export charts to png
-	     * @param  {array} svgs (or an svg element) pass in both chart & legend as array or just chart as svg or in array
-	     * @param  {string} filename [download to be called <filename>.png]
-	     */
-	    function exportChart(d3svg, filename, title) {
-	        var img = createImage(convertSvgToHtml.call(this, d3svg, title));
-	
-	        img.onload = handleImageLoad.bind(img, createCanvas(this.width(), this.height()), filename);
-	    }
-	
-	    /**
-	     * adds background styles to raw html
-	     * @param {string} html raw html
-	     */
-	    function addBackground(html) {
-	        return html.replace('>', '>' + config.styleBackgroundString);
-	    }
-	
-	    /**
-	     * takes d3 svg el, adds proper svg tags, adds inline styles
-	     * from stylesheets, adds white background and returns string
-	     * @param  {object} d3svg TYPE d3 svg element
-	     * @return {string} string of passed d3
-	     */
-	    function convertSvgToHtml(d3svg, title) {
-	        if (!d3svg) {
-	            return;
-	        }
-	
-	        d3svg.attr('version', 1.1).attr('xmlns', 'http://www.w3.org/2000/svg');
-	
-	        var serializer = serializeWithStyles.initializeSerializer();
-	        var html = serializer(d3svg.node());
-	        html = formatHtmlByBrowser(html);
-	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width')));
-	        html = addBackground(html);
-	
-	        return html;
-	    }
-	
-	    /**
-	     * Create Canvas
-	     * @param  {number} width
-	     * @param  {number} height
-	     * @return {object} TYPE canvas element
-	     */
-	    function createCanvas(width, height) {
-	        var canvas = document.createElement('canvas');
-	
-	        canvas.height = height;
-	        canvas.width = width;
-	        return canvas;
-	    }
-	
-	    /**
-	     * Create Image
-	     * @param  {string} svgHtml string representation of svg el
-	     * @return {object}  TYPE element <img>, src points at svg
-	     */
-	    function createImage(svgHtml) {
-	        var img = new Image();
-	
-	        img.src = '' + config.imageSourceBase + encoder(svgHtml);
-	        return img;
-	    };
-	
-	    /**
-	     * Draws image on canvas
-	     * @param  {object} image TYPE:el <img>, to be drawn
-	     * @param  {object} canvas TYPE: el <canvas>, to draw on
-	     */
-	    function drawImageOnCanvas(image, canvas) {
-	        canvas.getContext('2d').drawImage(image, 0, 0);
-	    }
-	
-	    /**
-	     * Triggers browser to download image, convert canvas to url,
-	     * we need to append the link el to the dom before clicking it for Firefox to register
-	     * point <a> at it and trigger click
-	     * @param  {object} canvas TYPE: el <canvas>
-	     * @param  {string} filename
-	     * @param  {string} extensionType
-	     */
-	    function downloadCanvas(canvas) {
-	        var filename = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'britechart.png';
-	        var extensionType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'image/png';
-	
-	        var url = canvas.toDataURL(extensionType);
-	        var link = document.createElement('a');
-	
-	        link.href = url;
-	        link.download = filename;
-	        document.body.appendChild(link);
-	        link.click();
-	        document.body.removeChild(link);
-	    }
-	
-	    /**
-	     * Some browsers need special formatting, we handle that here
-	     * @param  {string} html string of svg html
-	     * @return {string} string of svg html
-	     */
-	    function formatHtmlByBrowser(html) {
-	        if (bowser.name === 'Firefox') {
-	            return html.replace(/url.*&quot;\)/, 'url(&quot;#' + constants.lineGradientId + '&quot;);');
-	        }
-	
-	        return html;
-	    }
-	
-	    /**
-	     * Handles on load event fired by img.onload, this=img
-	     * @param  {object} canvas TYPE: el <canvas>
-	     * @param  {string} filename
-	     * @param  {object} e
-	     */
-	    function handleImageLoad(canvas, filename, e) {
-	        e.preventDefault();
-	        drawImageOnCanvas(this, canvas);
-	
-	        downloadCanvas(canvas, filename || config.defaultFilename);
-	    }
-	
-	    /**
-	     * if passed, append title to the raw html to appear on graph
-	     * @param  {string} html     raw html string
-	     * @param  {string} title    title of the graph
-	     * @param  {number} svgWidth width of graph container
-	     * @return {string}         raw html with title prepended
-	     */
-	    function prependTitle(html, title, svgWidth) {
-	        if (!title || !svgWidth) {
-	            return html;
-	        }
-	        var britechartsGreySchema = colorSchemas.britechartsGreySchema;
-	
-	
-	        html = html.replace(/<g/, '<text x="' + this.margin().left + '" y="' + config.titleTopOffset + '" font-family="' + config.titleFontFamily + '" font-size="' + config.titleFontSize + '" fill="' + britechartsGreySchema[6] + '"> ' + title + ' </text><g ');
-	        return html;
-	    }
-	
-	    return exportChart;
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ },
-/* 23 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*!
-	 * Bowser - a browser detector
-	 * https://github.com/ded/bowser
-	 * MIT License | (c) Dustin Diaz 2015
-	 */
-	
-	!function (root, name, definition) {
-	  if (typeof module != 'undefined' && module.exports) module.exports = definition()
-	  else if (true) __webpack_require__(24)(name, definition)
-	  else root[name] = definition()
-	}(this, 'bowser', function () {
-	  /**
-	    * See useragents.js for examples of navigator.userAgent
-	    */
-	
-	  var t = true
-	
-	  function detect(ua) {
-	
-	    function getFirstMatch(regex) {
-	      var match = ua.match(regex);
-	      return (match && match.length > 1 && match[1]) || '';
-	    }
-	
-	    function getSecondMatch(regex) {
-	      var match = ua.match(regex);
-	      return (match && match.length > 1 && match[2]) || '';
-	    }
-	
-	    var iosdevice = getFirstMatch(/(ipod|iphone|ipad)/i).toLowerCase()
-	      , likeAndroid = /like android/i.test(ua)
-	      , android = !likeAndroid && /android/i.test(ua)
-	      , nexusMobile = /nexus\s*[0-6]\s*/i.test(ua)
-	      , nexusTablet = !nexusMobile && /nexus\s*[0-9]+/i.test(ua)
-	      , chromeos = /CrOS/.test(ua)
-	      , silk = /silk/i.test(ua)
-	      , sailfish = /sailfish/i.test(ua)
-	      , tizen = /tizen/i.test(ua)
-	      , webos = /(web|hpw)os/i.test(ua)
-	      , windowsphone = /windows phone/i.test(ua)
-	      , samsungBrowser = /SamsungBrowser/i.test(ua)
-	      , windows = !windowsphone && /windows/i.test(ua)
-	      , mac = !iosdevice && !silk && /macintosh/i.test(ua)
-	      , linux = !android && !sailfish && !tizen && !webos && /linux/i.test(ua)
-	      , edgeVersion = getFirstMatch(/edge\/(\d+(\.\d+)?)/i)
-	      , versionIdentifier = getFirstMatch(/version\/(\d+(\.\d+)?)/i)
-	      , tablet = /tablet/i.test(ua)
-	      , mobile = !tablet && /[^-]mobi/i.test(ua)
-	      , xbox = /xbox/i.test(ua)
-	      , result
-	
-	    if (/opera/i.test(ua)) {
-	      //  an old Opera
-	      result = {
-	        name: 'Opera'
-	      , opera: t
-	      , version: versionIdentifier || getFirstMatch(/(?:opera|opr|opios)[\s\/](\d+(\.\d+)?)/i)
-	      }
-	    } else if (/opr|opios/i.test(ua)) {
-	      // a new Opera
-	      result = {
-	        name: 'Opera'
-	        , opera: t
-	        , version: getFirstMatch(/(?:opr|opios)[\s\/](\d+(\.\d+)?)/i) || versionIdentifier
-	      }
-	    }
-	    else if (/SamsungBrowser/i.test(ua)) {
-	      result = {
-	        name: 'Samsung Internet for Android'
-	        , samsungBrowser: t
-	        , version: versionIdentifier || getFirstMatch(/(?:SamsungBrowser)[\s\/](\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/coast/i.test(ua)) {
-	      result = {
-	        name: 'Opera Coast'
-	        , coast: t
-	        , version: versionIdentifier || getFirstMatch(/(?:coast)[\s\/](\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/yabrowser/i.test(ua)) {
-	      result = {
-	        name: 'Yandex Browser'
-	      , yandexbrowser: t
-	      , version: versionIdentifier || getFirstMatch(/(?:yabrowser)[\s\/](\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/ucbrowser/i.test(ua)) {
-	      result = {
-	          name: 'UC Browser'
-	        , ucbrowser: t
-	        , version: getFirstMatch(/(?:ucbrowser)[\s\/](\d+(?:\.\d+)+)/i)
-	      }
-	    }
-	    else if (/mxios/i.test(ua)) {
-	      result = {
-	        name: 'Maxthon'
-	        , maxthon: t
-	        , version: getFirstMatch(/(?:mxios)[\s\/](\d+(?:\.\d+)+)/i)
-	      }
-	    }
-	    else if (/epiphany/i.test(ua)) {
-	      result = {
-	        name: 'Epiphany'
-	        , epiphany: t
-	        , version: getFirstMatch(/(?:epiphany)[\s\/](\d+(?:\.\d+)+)/i)
-	      }
-	    }
-	    else if (/puffin/i.test(ua)) {
-	      result = {
-	        name: 'Puffin'
-	        , puffin: t
-	        , version: getFirstMatch(/(?:puffin)[\s\/](\d+(?:\.\d+)?)/i)
-	      }
-	    }
-	    else if (/sleipnir/i.test(ua)) {
-	      result = {
-	        name: 'Sleipnir'
-	        , sleipnir: t
-	        , version: getFirstMatch(/(?:sleipnir)[\s\/](\d+(?:\.\d+)+)/i)
-	      }
-	    }
-	    else if (/k-meleon/i.test(ua)) {
-	      result = {
-	        name: 'K-Meleon'
-	        , kMeleon: t
-	        , version: getFirstMatch(/(?:k-meleon)[\s\/](\d+(?:\.\d+)+)/i)
-	      }
-	    }
-	    else if (windowsphone) {
-	      result = {
-	        name: 'Windows Phone'
-	      , windowsphone: t
-	      }
-	      if (edgeVersion) {
-	        result.msedge = t
-	        result.version = edgeVersion
-	      }
-	      else {
-	        result.msie = t
-	        result.version = getFirstMatch(/iemobile\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/msie|trident/i.test(ua)) {
-	      result = {
-	        name: 'Internet Explorer'
-	      , msie: t
-	      , version: getFirstMatch(/(?:msie |rv:)(\d+(\.\d+)?)/i)
-	      }
-	    } else if (chromeos) {
-	      result = {
-	        name: 'Chrome'
-	      , chromeos: t
-	      , chromeBook: t
-	      , chrome: t
-	      , version: getFirstMatch(/(?:chrome|crios|crmo)\/(\d+(\.\d+)?)/i)
-	      }
-	    } else if (/chrome.+? edge/i.test(ua)) {
-	      result = {
-	        name: 'Microsoft Edge'
-	      , msedge: t
-	      , version: edgeVersion
-	      }
-	    }
-	    else if (/vivaldi/i.test(ua)) {
-	      result = {
-	        name: 'Vivaldi'
-	        , vivaldi: t
-	        , version: getFirstMatch(/vivaldi\/(\d+(\.\d+)?)/i) || versionIdentifier
-	      }
-	    }
-	    else if (sailfish) {
-	      result = {
-	        name: 'Sailfish'
-	      , sailfish: t
-	      , version: getFirstMatch(/sailfish\s?browser\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/seamonkey\//i.test(ua)) {
-	      result = {
-	        name: 'SeaMonkey'
-	      , seamonkey: t
-	      , version: getFirstMatch(/seamonkey\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/firefox|iceweasel|fxios/i.test(ua)) {
-	      result = {
-	        name: 'Firefox'
-	      , firefox: t
-	      , version: getFirstMatch(/(?:firefox|iceweasel|fxios)[ \/](\d+(\.\d+)?)/i)
-	      }
-	      if (/\((mobile|tablet);[^\)]*rv:[\d\.]+\)/i.test(ua)) {
-	        result.firefoxos = t
-	      }
-	    }
-	    else if (silk) {
-	      result =  {
-	        name: 'Amazon Silk'
-	      , silk: t
-	      , version : getFirstMatch(/silk\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/phantom/i.test(ua)) {
-	      result = {
-	        name: 'PhantomJS'
-	      , phantom: t
-	      , version: getFirstMatch(/phantomjs\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/slimerjs/i.test(ua)) {
-	      result = {
-	        name: 'SlimerJS'
-	        , slimer: t
-	        , version: getFirstMatch(/slimerjs\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/blackberry|\bbb\d+/i.test(ua) || /rim\stablet/i.test(ua)) {
-	      result = {
-	        name: 'BlackBerry'
-	      , blackberry: t
-	      , version: versionIdentifier || getFirstMatch(/blackberry[\d]+\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (webos) {
-	      result = {
-	        name: 'WebOS'
-	      , webos: t
-	      , version: versionIdentifier || getFirstMatch(/w(?:eb)?osbrowser\/(\d+(\.\d+)?)/i)
-	      };
-	      /touchpad\//i.test(ua) && (result.touchpad = t)
-	    }
-	    else if (/bada/i.test(ua)) {
-	      result = {
-	        name: 'Bada'
-	      , bada: t
-	      , version: getFirstMatch(/dolfin\/(\d+(\.\d+)?)/i)
-	      };
-	    }
-	    else if (tizen) {
-	      result = {
-	        name: 'Tizen'
-	      , tizen: t
-	      , version: getFirstMatch(/(?:tizen\s?)?browser\/(\d+(\.\d+)?)/i) || versionIdentifier
-	      };
-	    }
-	    else if (/qupzilla/i.test(ua)) {
-	      result = {
-	        name: 'QupZilla'
-	        , qupzilla: t
-	        , version: getFirstMatch(/(?:qupzilla)[\s\/](\d+(?:\.\d+)+)/i) || versionIdentifier
-	      }
-	    }
-	    else if (/chromium/i.test(ua)) {
-	      result = {
-	        name: 'Chromium'
-	        , chromium: t
-	        , version: getFirstMatch(/(?:chromium)[\s\/](\d+(?:\.\d+)?)/i) || versionIdentifier
-	      }
-	    }
-	    else if (/chrome|crios|crmo/i.test(ua)) {
-	      result = {
-	        name: 'Chrome'
-	        , chrome: t
-	        , version: getFirstMatch(/(?:chrome|crios|crmo)\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (android) {
-	      result = {
-	        name: 'Android'
-	        , version: versionIdentifier
-	      }
-	    }
-	    else if (/safari|applewebkit/i.test(ua)) {
-	      result = {
-	        name: 'Safari'
-	      , safari: t
-	      }
-	      if (versionIdentifier) {
-	        result.version = versionIdentifier
-	      }
-	    }
-	    else if (iosdevice) {
-	      result = {
-	        name : iosdevice == 'iphone' ? 'iPhone' : iosdevice == 'ipad' ? 'iPad' : 'iPod'
-	      }
-	      // WTF: version is not part of user agent in web apps
-	      if (versionIdentifier) {
-	        result.version = versionIdentifier
-	      }
-	    }
-	    else if(/googlebot/i.test(ua)) {
-	      result = {
-	        name: 'Googlebot'
-	      , googlebot: t
-	      , version: getFirstMatch(/googlebot\/(\d+(\.\d+))/i) || versionIdentifier
-	      }
-	    }
-	    else {
-	      result = {
-	        name: getFirstMatch(/^(.*)\/(.*) /),
-	        version: getSecondMatch(/^(.*)\/(.*) /)
-	     };
-	   }
-	
-	    // set webkit or gecko flag for browsers based on these engines
-	    if (!result.msedge && /(apple)?webkit/i.test(ua)) {
-	      if (/(apple)?webkit\/537\.36/i.test(ua)) {
-	        result.name = result.name || "Blink"
-	        result.blink = t
-	      } else {
-	        result.name = result.name || "Webkit"
-	        result.webkit = t
-	      }
-	      if (!result.version && versionIdentifier) {
-	        result.version = versionIdentifier
-	      }
-	    } else if (!result.opera && /gecko\//i.test(ua)) {
-	      result.name = result.name || "Gecko"
-	      result.gecko = t
-	      result.version = result.version || getFirstMatch(/gecko\/(\d+(\.\d+)?)/i)
-	    }
-	
-	    // set OS flags for platforms that have multiple browsers
-	    if (!result.windowsphone && !result.msedge && (android || result.silk)) {
-	      result.android = t
-	    } else if (!result.windowsphone && !result.msedge && iosdevice) {
-	      result[iosdevice] = t
-	      result.ios = t
-	    } else if (mac) {
-	      result.mac = t
-	    } else if (xbox) {
-	      result.xbox = t
-	    } else if (windows) {
-	      result.windows = t
-	    } else if (linux) {
-	      result.linux = t
-	    }
-	
-	    // OS version extraction
-	    var osVersion = '';
-	    if (result.windowsphone) {
-	      osVersion = getFirstMatch(/windows phone (?:os)?\s?(\d+(\.\d+)*)/i);
-	    } else if (iosdevice) {
-	      osVersion = getFirstMatch(/os (\d+([_\s]\d+)*) like mac os x/i);
-	      osVersion = osVersion.replace(/[_\s]/g, '.');
-	    } else if (android) {
-	      osVersion = getFirstMatch(/android[ \/-](\d+(\.\d+)*)/i);
-	    } else if (result.webos) {
-	      osVersion = getFirstMatch(/(?:web|hpw)os\/(\d+(\.\d+)*)/i);
-	    } else if (result.blackberry) {
-	      osVersion = getFirstMatch(/rim\stablet\sos\s(\d+(\.\d+)*)/i);
-	    } else if (result.bada) {
-	      osVersion = getFirstMatch(/bada\/(\d+(\.\d+)*)/i);
-	    } else if (result.tizen) {
-	      osVersion = getFirstMatch(/tizen[\/\s](\d+(\.\d+)*)/i);
-	    }
-	    if (osVersion) {
-	      result.osversion = osVersion;
-	    }
-	
-	    // device type extraction
-	    var osMajorVersion = osVersion.split('.')[0];
-	    if (
-	         tablet
-	      || nexusTablet
-	      || iosdevice == 'ipad'
-	      || (android && (osMajorVersion == 3 || (osMajorVersion >= 4 && !mobile)))
-	      || result.silk
-	    ) {
-	      result.tablet = t
-	    } else if (
-	         mobile
-	      || iosdevice == 'iphone'
-	      || iosdevice == 'ipod'
-	      || android
-	      || nexusMobile
-	      || result.blackberry
-	      || result.webos
-	      || result.bada
-	    ) {
-	      result.mobile = t
-	    }
-	
-	    // Graded Browser Support
-	    // http://developer.yahoo.com/yui/articles/gbs
-	    if (result.msedge ||
-	        (result.msie && result.version >= 10) ||
-	        (result.yandexbrowser && result.version >= 15) ||
-			    (result.vivaldi && result.version >= 1.0) ||
-	        (result.chrome && result.version >= 20) ||
-	        (result.samsungBrowser && result.version >= 4) ||
-	        (result.firefox && result.version >= 20.0) ||
-	        (result.safari && result.version >= 6) ||
-	        (result.opera && result.version >= 10.0) ||
-	        (result.ios && result.osversion && result.osversion.split(".")[0] >= 6) ||
-	        (result.blackberry && result.version >= 10.1)
-	        || (result.chromium && result.version >= 20)
-	        ) {
-	      result.a = t;
-	    }
-	    else if ((result.msie && result.version < 10) ||
-	        (result.chrome && result.version < 20) ||
-	        (result.firefox && result.version < 20.0) ||
-	        (result.safari && result.version < 6) ||
-	        (result.opera && result.version < 10.0) ||
-	        (result.ios && result.osversion && result.osversion.split(".")[0] < 6)
-	        || (result.chromium && result.version < 20)
-	        ) {
-	      result.c = t
-	    } else result.x = t
-	
-	    return result
-	  }
-	
-	  var bowser = detect(typeof navigator !== 'undefined' ? navigator.userAgent || '' : '')
-	
-	  bowser.test = function (browserList) {
-	    for (var i = 0; i < browserList.length; ++i) {
-	      var browserItem = browserList[i];
-	      if (typeof browserItem=== 'string') {
-	        if (browserItem in bowser) {
-	          return true;
-	        }
-	      }
-	    }
-	    return false;
-	  }
-	
-	  /**
-	   * Get version precisions count
-	   *
-	   * @example
-	   *   getVersionPrecision("1.10.3") // 3
-	   *
-	   * @param  {string} version
-	   * @return {number}
-	   */
-	  function getVersionPrecision(version) {
-	    return version.split(".").length;
-	  }
-	
-	  /**
-	   * Array::map polyfill
-	   *
-	   * @param  {Array} arr
-	   * @param  {Function} iterator
-	   * @return {Array}
-	   */
-	  function map(arr, iterator) {
-	    var result = [], i;
-	    if (Array.prototype.map) {
-	      return Array.prototype.map.call(arr, iterator);
-	    }
-	    for (i = 0; i < arr.length; i++) {
-	      result.push(iterator(arr[i]));
-	    }
-	    return result;
-	  }
-	
-	  /**
-	   * Calculate browser version weight
-	   *
-	   * @example
-	   *   compareVersions(['1.10.2.1',  '1.8.2.1.90'])    // 1
-	   *   compareVersions(['1.010.2.1', '1.09.2.1.90']);  // 1
-	   *   compareVersions(['1.10.2.1',  '1.10.2.1']);     // 0
-	   *   compareVersions(['1.10.2.1',  '1.0800.2']);     // -1
-	   *
-	   * @param  {Array<String>} versions versions to compare
-	   * @return {Number} comparison result
-	   */
-	  function compareVersions(versions) {
-	    // 1) get common precision for both versions, for example for "10.0" and "9" it should be 2
-	    var precision = Math.max(getVersionPrecision(versions[0]), getVersionPrecision(versions[1]));
-	    var chunks = map(versions, function (version) {
-	      var delta = precision - getVersionPrecision(version);
-	
-	      // 2) "9" -> "9.0" (for precision = 2)
-	      version = version + new Array(delta + 1).join(".0");
-	
-	      // 3) "9.0" -> ["000000000"", "000000009"]
-	      return map(version.split("."), function (chunk) {
-	        return new Array(20 - chunk.length).join("0") + chunk;
-	      }).reverse();
-	    });
-	
-	    // iterate in reverse order by reversed chunks array
-	    while (--precision >= 0) {
-	      // 4) compare: "000000009" > "000000010" = false (but "9" > "10" = true)
-	      if (chunks[0][precision] > chunks[1][precision]) {
-	        return 1;
-	      }
-	      else if (chunks[0][precision] === chunks[1][precision]) {
-	        if (precision === 0) {
-	          // all version chunks are same
-	          return 0;
-	        }
-	      }
-	      else {
-	        return -1;
-	      }
-	    }
-	  }
-	
-	  /**
-	   * Check if browser is unsupported
-	   *
-	   * @example
-	   *   bowser.isUnsupportedBrowser({
-	   *     msie: "10",
-	   *     firefox: "23",
-	   *     chrome: "29",
-	   *     safari: "5.1",
-	   *     opera: "16",
-	   *     phantom: "534"
-	   *   });
-	   *
-	   * @param  {Object}  minVersions map of minimal version to browser
-	   * @param  {Boolean} [strictMode = false] flag to return false if browser wasn't found in map
-	   * @param  {String}  [ua] user agent string
-	   * @return {Boolean}
-	   */
-	  function isUnsupportedBrowser(minVersions, strictMode, ua) {
-	    var _bowser = bowser;
-	
-	    // make strictMode param optional with ua param usage
-	    if (typeof strictMode === 'string') {
-	      ua = strictMode;
-	      strictMode = void(0);
-	    }
-	
-	    if (strictMode === void(0)) {
-	      strictMode = false;
-	    }
-	    if (ua) {
-	      _bowser = detect(ua);
-	    }
-	
-	    var version = "" + _bowser.version;
-	    for (var browser in minVersions) {
-	      if (minVersions.hasOwnProperty(browser)) {
-	        if (_bowser[browser]) {
-	          if (typeof minVersions[browser] !== 'string') {
-	            throw new Error('Browser version in the minVersion map should be a string: ' + browser + ': ' + String(minVersions));
-	          }
-	
-	          // browser version and min supported version.
-	          return compareVersions([version, minVersions[browser]]) < 0;
-	        }
-	      }
-	    }
-	
-	    return strictMode; // not found
-	  }
-	
-	  /**
-	   * Check if browser is supported
-	   *
-	   * @param  {Object} minVersions map of minimal version to browser
-	   * @param  {Boolean} [strictMode = false] flag to return false if browser wasn't found in map
-	   * @param  {String}  [ua] user agent string
-	   * @return {Boolean}
-	   */
-	  function check(minVersions, strictMode, ua) {
-	    return !isUnsupportedBrowser(minVersions, strictMode, ua);
-	  }
-	
-	  bowser.isUnsupportedBrowser = isUnsupportedBrowser;
-	  bowser.compareVersions = compareVersions;
-	  bowser.check = check;
-	
-	  /*
-	   * Set our detect method to the main bowser object so we can
-	   * reuse it to test other user agents.
-	   * This is needed to implement future tests.
-	   */
-	  bowser._detect = detect;
-	
-	  return bowser
-	});
-
-
-/***/ },
-/* 24 */
-/***/ function(module, exports) {
-
-	module.exports = function() { throw new Error("define cannot be used indirect"); };
-
-
-/***/ },
-/* 25 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-	    var axisTimeCombinations = {
-	        MINUTE_HOUR: 'minute-hour',
-	        HOUR_DAY: 'hour-day',
-	        DAY_MONTH: 'day-month',
-	        MONTH_YEAR: 'month-year'
-	    };
-	
-	    var timeBenchmarks = {
-	        ONE_AND_A_HALF_YEARS: 47304000000,
-	        ONE_DAY: 86400001
-	    };
-	
-	    return {
-	        axisTimeCombinations: axisTimeCombinations,
-	        timeBenchmarks: timeBenchmarks,
-	        lineGradientId: 'lineGradientId'
-	    };
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ },
-/* 26 */
-/***/ function(module, exports) {
-
-	'use strict';
-	
-	module.exports = function () {
-	
-	    'use strict';
-	
-	    return {
-	
-	        /**
-	         * returns serializer function, only run it when you know you want to serialize your chart
-	         * @return {func} serializer to add styles in line to dom string
-	         */
-	        initializeSerializer: function initializeSerializer() {
-	
-	            // Mapping between tag names and css default values lookup tables. This allows to exclude default values in the result.
-	            var defaultStylesByTagName = {};
-	
-	            // Styles inherited from style sheets will not be rendered for elements with these tag names
-	            var noStyleTags = { 'BASE': true, 'HEAD': true, 'HTML': true, 'META': true, 'NOFRAME': true, 'NOSCRIPT': true, 'PARAM': true, 'SCRIPT': true, 'STYLE': true, 'TITLE': true };
-	
-	            // This list determines which css default values lookup tables are precomputed at load time
-	            // Lookup tables for other tag names will be automatically built at runtime if needed
-	            var tagNames = ['A', 'ABBR', 'ADDRESS', 'AREA', 'ARTICLE', 'ASIDE', 'AUDIO', 'B', 'BASE', 'BDI', 'BDO', 'BLOCKQUOTE', 'BODY', 'BR', 'BUTTON', 'CANVAS', 'CAPTION', 'CENTER', 'CITE', 'CODE', 'COL', 'COLGROUP', 'COMMAND', 'DATALIST', 'DD', 'DEL', 'DETAILS', 'DFN', 'DIV', 'DL', 'DT', 'EM', 'EMBED', 'FIELDSET', 'FIGCAPTION', 'FIGURE', 'FONT', 'FOOTER', 'FORM', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'HEAD', 'HEADER', 'HGROUP', 'HR', 'HTML', 'I', 'IFRAME', 'IMG', 'INPUT', 'INS', 'KBD', 'LABEL', 'LEGEND', 'LI', 'LINK', 'MAP', 'MARK', 'MATH', 'MENU', 'META', 'METER', 'NAV', 'NOBR', 'NOSCRIPT', 'OBJECT', 'OL', 'OPTION', 'OPTGROUP', 'OUTPUT', 'P', 'PARAM', 'PRE', 'PROGRESS', 'Q', 'RP', 'RT', 'RUBY', 'S', 'SAMP', 'SCRIPT', 'SECTION', 'SELECT', 'SMALL', 'SOURCE', 'SPAN', 'STRONG', 'STYLE', 'SUB', 'SUMMARY', 'SUP', 'SVG', 'TABLE', 'TBODY', 'TD', 'TEXTAREA', 'TFOOT', 'TH', 'THEAD', 'TIME', 'TITLE', 'TR', 'TRACK', 'U', 'UL', 'VAR', 'VIDEO', 'WBR'];
-	
-	            // Precompute the lookup tables.
-	            [].forEach.call(tagNames, function (name) {
-	                if (!noStyleTags[name]) {
-	                    defaultStylesByTagName[name] = computeDefaultStyleByTagName(name);
-	                }
-	            });
-	
-	            function computeDefaultStyleByTagName(tagName) {
-	                var defaultStyle = {},
-	                    element = document.body.appendChild(document.createElement(tagName)),
-	                    computedStyle = window.getComputedStyle(element);
-	
-	                [].forEach.call(computedStyle, function (style) {
-	                    defaultStyle[style] = computedStyle[style];
-	                });
-	                document.body.removeChild(element);
-	                return defaultStyle;
-	            }
-	
-	            function getDefaultStyleByTagName(tagName) {
-	                tagName = tagName.toUpperCase();
-	                if (!defaultStylesByTagName[tagName]) {
-	                    defaultStylesByTagName[tagName] = computeDefaultStyleByTagName(tagName);
-	                }
-	                return defaultStylesByTagName[tagName];
-	            };
-	
-	            function serializeWithStyles(elem) {
-	
-	                var cssTexts = [],
-	                    elements = void 0,
-	                    computedStyle = void 0,
-	                    defaultStyle = void 0,
-	                    result = void 0;
-	
-	                if (!elem || elem.nodeType !== Node.ELEMENT_NODE) {
-	                    console.error('Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE');
-	                    return;
-	                }
-	
-	                cssTexts = [];
-	                elements = elem.querySelectorAll('*');
-	
-	                [].forEach.call(elements, function (el, i) {
-	                    if (!noStyleTags[el.tagName]) {
-	                        computedStyle = window.getComputedStyle(el);
-	                        defaultStyle = getDefaultStyleByTagName(el.tagName);
-	                        cssTexts[i] = el.style.cssText;
-	                        [].forEach.call(computedStyle, function (cssPropName) {
-	                            if (computedStyle[cssPropName] !== defaultStyle[cssPropName]) {
-	                                el.style[cssPropName] = computedStyle[cssPropName];
-	                            }
-	                        });
-	                    }
-	                });
-	
-	                result = elem.outerHTML;
-	                elements = [].map.call(elements, function (el, i) {
-	                    el.style.cssText = cssTexts[i];
-	                    return el;
-	                });
-	
-	                return result;
-	            };
-	
-	            return serializeWithStyles;
-	        }
-	    };
-	}();
-
-/***/ },
-/* 27 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! http://mths.be/base64 v0.1.0 by @mathias | MIT license */
-	;(function(root) {
-	
-		// Detect free variables `exports`.
-		var freeExports = typeof exports == 'object' && exports;
-	
-		// Detect free variable `module`.
-		var freeModule = typeof module == 'object' && module &&
-			module.exports == freeExports && module;
-	
-		// Detect free variable `global`, from Node.js or Browserified code, and use
-		// it as `root`.
-		var freeGlobal = typeof global == 'object' && global;
-		if (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal) {
-			root = freeGlobal;
-		}
-	
-		/*--------------------------------------------------------------------------*/
-	
-		var InvalidCharacterError = function(message) {
-			this.message = message;
-		};
-		InvalidCharacterError.prototype = new Error;
-		InvalidCharacterError.prototype.name = 'InvalidCharacterError';
-	
-		var error = function(message) {
-			// Note: the error messages used throughout this file match those used by
-			// the native `atob`/`btoa` implementation in Chromium.
-			throw new InvalidCharacterError(message);
-		};
-	
-		var TABLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-		// http://whatwg.org/html/common-microsyntaxes.html#space-character
-		var REGEX_SPACE_CHARACTERS = /[\t\n\f\r ]/g;
-	
-		// `decode` is designed to be fully compatible with `atob` as described in the
-		// HTML Standard. http://whatwg.org/html/webappapis.html#dom-windowbase64-atob
-		// The optimized base64-decoding algorithm used is based on @atk’s excellent
-		// implementation. https://gist.github.com/atk/1020396
-		var decode = function(input) {
-			input = String(input)
-				.replace(REGEX_SPACE_CHARACTERS, '');
-			var length = input.length;
-			if (length % 4 == 0) {
-				input = input.replace(/==?$/, '');
-				length = input.length;
-			}
-			if (
-				length % 4 == 1 ||
-				// http://whatwg.org/C#alphanumeric-ascii-characters
-				/[^+a-zA-Z0-9/]/.test(input)
-			) {
-				error(
-					'Invalid character: the string to be decoded is not correctly encoded.'
-				);
-			}
-			var bitCounter = 0;
-			var bitStorage;
-			var buffer;
-			var output = '';
-			var position = -1;
-			while (++position < length) {
-				buffer = TABLE.indexOf(input.charAt(position));
-				bitStorage = bitCounter % 4 ? bitStorage * 64 + buffer : buffer;
-				// Unless this is the first of a group of 4 characters…
-				if (bitCounter++ % 4) {
-					// …convert the first 8 bits to a single ASCII character.
-					output += String.fromCharCode(
-						0xFF & bitStorage >> (-2 * bitCounter & 6)
-					);
-				}
-			}
-			return output;
-		};
-	
-		// `encode` is designed to be fully compatible with `btoa` as described in the
-		// HTML Standard: http://whatwg.org/html/webappapis.html#dom-windowbase64-btoa
-		var encode = function(input) {
-			input = String(input);
-			if (/[^\0-\xFF]/.test(input)) {
-				// Note: no need to special-case astral symbols here, as surrogates are
-				// matched, and the input is supposed to only contain ASCII anyway.
-				error(
-					'The string to be encoded contains characters outside of the ' +
-					'Latin1 range.'
-				);
-			}
-			var padding = input.length % 3;
-			var output = '';
-			var position = -1;
-			var a;
-			var b;
-			var c;
-			var d;
-			var buffer;
-			// Make sure any padding is handled outside of the loop.
-			var length = input.length - padding;
-	
-			while (++position < length) {
-				// Read three bytes, i.e. 24 bits.
-				a = input.charCodeAt(position) << 16;
-				b = input.charCodeAt(++position) << 8;
-				c = input.charCodeAt(++position);
-				buffer = a + b + c;
-				// Turn the 24 bits into four chunks of 6 bits each, and append the
-				// matching character for each of them to the output.
-				output += (
-					TABLE.charAt(buffer >> 18 & 0x3F) +
-					TABLE.charAt(buffer >> 12 & 0x3F) +
-					TABLE.charAt(buffer >> 6 & 0x3F) +
-					TABLE.charAt(buffer & 0x3F)
-				);
-			}
-	
-			if (padding == 2) {
-				a = input.charCodeAt(position) << 8;
-				b = input.charCodeAt(++position);
-				buffer = a + b;
-				output += (
-					TABLE.charAt(buffer >> 10) +
-					TABLE.charAt((buffer >> 4) & 0x3F) +
-					TABLE.charAt((buffer << 2) & 0x3F) +
-					'='
-				);
-			} else if (padding == 1) {
-				buffer = input.charCodeAt(position);
-				output += (
-					TABLE.charAt(buffer >> 2) +
-					TABLE.charAt((buffer << 4) & 0x3F) +
-					'=='
-				);
-			}
-	
-			return output;
-		};
-	
-		var base64 = {
-			'encode': encode,
-			'decode': decode,
-			'version': '0.1.0'
-		};
-	
-		// Some AMD build optimizers, like r.js, check for specific condition patterns
-		// like the following:
-		if (
-			true
-		) {
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
-				return base64;
-			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		}	else if (freeExports && !freeExports.nodeType) {
-			if (freeModule) { // in Node.js or RingoJS v0.8.0+
-				freeModule.exports = base64;
-			} else { // in Narwhal or RingoJS v0.7.0-
-				for (var key in base64) {
-					base64.hasOwnProperty(key) && (freeExports[key] = base64[key]);
-				}
-			}
-		} else { // in Rhino or a web browser
-			root.base64 = base64;
-		}
-	
-	}(this));
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)(module), (function() { return this; }())))
-
-/***/ },
-/* 28 */
-/***/ function(module, exports) {
-
-	module.exports = function(module) {
-		if(!module.webpackPolyfill) {
-			module.deprecate = function() {};
-			module.paths = [];
-			// module.parent = undefined by default
-			module.children = [];
-			module.webpackPolyfill = 1;
-		}
-		return module;
-	}
-
-
-/***/ },
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-	    'use strict';
-	
-	    var d3Format = __webpack_require__(14);
-	    var d3Selection = __webpack_require__(4);
-	    var d3Transition = __webpack_require__(30);
-	    var d3TimeFormat = __webpack_require__(19);
-	
-	    var _require = __webpack_require__(25),
-	        axisTimeCombinations = _require.axisTimeCombinations;
-	
-	    /**
-	     * Tooltip Component reusable API class that renders a
-	     * simple and configurable tooltip element for Britechart's
-	     * line chart or stacked area chart.
-	     *
-	     * @module Tooltip
-	     * @tutorial tooltip
-	     * @requires d3-array, d3-axis, d3-dispatch, d3-format, d3-scale, d3-selection, d3-transition
-	     *
-	     * @example
-	     * var lineChart = line(),
-	     *     tooltip = tooltip();
-	     *
-	     * tooltip
-	     *     .title('Tooltip title');
-	     *
-	     * lineChart
-	     *     .width(500)
-	     *     .on('customMouseOver', function() {
-	     *          tooltip.show();
-	     *     })
-	     *     .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-	     *          tooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-	     *     })
-	     *     .on('customMouseOut', function() {
-	     *          tooltip.hide();
-	     *     });
-	     *
-	     * d3Selection.select('.css-selector')
-	     *     .datum(dataset)
-	     *     .call(lineChart);
-	     *
-	     * d3Selection.select('.metadata-group .hover-marker')
-	     *     .datum([])
-	     *     .call(tooltip);
-	     *
-	     */
-	
-	
-	    return function module() {
-	
-	        var margin = {
-	            top: 2,
-	            right: 2,
-	            bottom: 2,
-	            left: 2
-	        },
-	            width = 250,
-	            height = 45,
-	            title = 'Tooltip title',
-	
-	
-	        // tooltip
-	        tooltip = void 0,
-	            tooltipOffset = {
-	            y: -55,
-	            x: 0
-	        },
-	            tooltipMaxTopicLength = 170,
-	            tooltipTextContainer = void 0,
-	            tooltipDivider = void 0,
-	            tooltipBody = void 0,
-	            tooltipTitle = void 0,
-	            tooltipWidth = 250,
-	            tooltipHeight = 48,
-	            ttTextX = 0,
-	            ttTextY = 37,
-	            textSize = void 0,
-	            entryLineLimit = 3,
-	            circleYOffset = 8,
-	            colorMap = void 0,
-	            bodyFillColor = '#FFFFFF',
-	            borderStrokeColor = '#D2D6DF',
-	            titleFillColor = '#6D717A',
-	            textFillColor = '#282C35',
-	            tooltipTextColor = '#000000',
-	            dateLabel = 'date',
-	            valueLabel = 'value',
-	            topicLabel = 'topics',
-	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
-	            forceAxisSettings = null,
-	
-	
-	        // formats
-	        monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
-	            monthDayHourFormat = d3TimeFormat.timeFormat('%b %d, %H %p'),
-	            valueRangeLimits = {
-	            small: 10,
-	            medium: 100
-	        },
-	            integerValueFormats = {
-	            small: d3Format.format(''),
-	            medium: d3Format.format(''),
-	            large: d3Format.format('.2s')
-	        },
-	            decimalValueFormats = {
-	            small: d3Format.format('.3f'),
-	            medium: d3Format.format('.1f'),
-	            large: d3Format.format('.2s')
-	        },
-	            chartWidth = void 0,
-	            chartHeight = void 0,
-	            data = void 0,
-	            svg = void 0;
-	
-	        /**
-	         * This function creates the graph using the selection as container
-	         * @param {D3Selection} _selection A d3 selection that represents
-	         *                                  the container(s) where the chart(s) will be rendered
-	         * @param {Object} _data The data to attach and generate the chart
-	         */
-	        function exports(_selection) {
-	            _selection.each(function (_data) {
-	                chartWidth = width - margin.left - margin.right;
-	                chartHeight = height - margin.top - margin.bottom;
-	                data = _data;
-	
-	                buildSVG(this);
-	            });
-	        }
-	
-	        /**
-	         * Builds containers for the tooltip
-	         * Also applies the Margin convention
-	         * @private
-	         */
-	        function buildContainerGroups() {
-	            var container = svg.append('g').classed('tooltip-container-group', true).attr('transform', 'translate( ' + margin.left + ', ' + margin.top + ')');
-	
-	            container.append('g').classed('tooltip-group', true);
-	        }
-	
-	        /**
-	         * Builds the SVG element that will contain the chart
-	         * @param  {HTMLElement} container DOM element that will work as the container of the graph
-	         * @private
-	         */
-	        function buildSVG(container) {
-	            if (!svg) {
-	                svg = d3Selection.select(container).append('g').classed('britechart britechart-tooltip', true);
-	
-	                buildContainerGroups();
-	                drawTooltip();
-	            }
-	            svg.transition().attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
-	
-	            // Hidden by default
-	            exports.hide();
-	        }
-	
-	        /**
-	         * Resets the tooltipBody content
-	         * @return void
-	         */
-	        function cleanContent() {
-	            tooltipBody.selectAll('text').remove();
-	            tooltipBody.selectAll('circle').remove();
-	        }
-	
-	        /**
-	         * Draws the different elements of the Tooltip box
-	         * @return void
-	         */
-	        function drawTooltip() {
-	            tooltipTextContainer = svg.selectAll('.tooltip-group').append('g').classed('tooltip-text', true);
-	
-	            tooltip = tooltipTextContainer.append('rect').classed('tooltip-text-container', true).attr('x', -tooltipWidth / 4 + 8).attr('y', 0).attr('width', tooltipWidth).attr('height', tooltipHeight).attr('rx', 3).attr('ry', 3).style('fill', bodyFillColor).style('stroke', borderStrokeColor).style('stroke-width', 1);
-	
-	            tooltipTitle = tooltipTextContainer.append('text').classed('tooltip-title', true).attr('x', -tooltipWidth / 4 + 17).attr('dy', '.35em').attr('y', 16).style('fill', titleFillColor);
-	
-	            tooltipDivider = tooltipTextContainer.append('line').classed('tooltip-divider', true).attr('x1', -tooltipWidth / 4 + 15).attr('y1', 31).attr('x2', 265).attr('y2', 31).style('stroke', borderStrokeColor);
-	
-	            tooltipBody = tooltipTextContainer.append('g').classed('tooltip-body', true).style('transform', 'translateY(8px)').style('fill', textFillColor);
-	        }
-	
-	        /**
-	         * Formats a floating point value depending on its value range
-	         * @param  {Number} value Decimal point value to format
-	         * @return {Number}       Formatted value to show
-	         */
-	        function formatDecimalValue(value) {
-	            var size = 'large';
-	
-	            if (value < valueRangeLimits.small) {
-	                size = 'small';
-	            } else if (value < valueRangeLimits.medium) {
-	                size = 'medium';
-	            }
-	
-	            return decimalValueFormats[size](value);
-	        }
-	
-	        /**
-	         * Formats an integer value depending on its value range
-	         * @param  {Number} value Decimal point value to format
-	         * @return {Number}       Formatted value to show
-	         */
-	        function formatIntegerValue(value) {
-	            var size = 'large';
-	
-	            if (value < valueRangeLimits.small) {
-	                size = 'small';
-	            }if (value < valueRangeLimits.medium) {
-	                size = 'medium';
-	            }
-	
-	            return integerValueFormats[size](value);
-	        }
-	
-	        /**
-	         * Formats the value depending on its characteristics
-	         * @param  {Number} value Value to format
-	         * @return {Number}       Formatted value
-	         */
-	        function getFormattedValue(value) {
-	            if (!value) {
-	                return 0;
-	            }
-	
-	            if (isInteger(value)) {
-	                value = formatIntegerValue(value);
-	            } else {
-	                value = formatDecimalValue(value);
-	            }
-	
-	            return value;
-	        }
-	
-	        /**
-	         * Extracts the value from the data object
-	         * @param  {Object} data Data value containing the info
-	         * @return {String}      Value to show
-	         */
-	        function getValueText(data) {
-	            var value = data[valueLabel];
-	            var valueText = void 0;
-	
-	            if (data.missingValue) {
-	                valueText = '-';
-	            } else {
-	                valueText = getFormattedValue(value).toString();
-	            }
-	
-	            return valueText;
-	        }
-	
-	        /**
-	         * Checks if a number is an integer of has decimal values
-	         * @param  {Number}  value Value to check
-	         * @return {Boolean}       If it is an iteger
-	         */
-	        function isInteger(value) {
-	            return value % 1 === 0;
-	        }
-	
-	        /**
-	         * Resets the height of the tooltip and the pointer for the text
-	         * position
-	         */
-	        function resetSizeAndPositionPointers() {
-	            tooltipHeight = 48;
-	            ttTextY = 37;
-	            ttTextX = 0;
-	        }
-	
-	        /**
-	         * Draws the data entries inside the tooltip for a given topic
-	         * @param  {Object} topic Topic to extract data from
-	         * @return void
-	         */
-	        function updateContent(topic) {
-	            var name = topic.name,
-	                tooltipRight = void 0,
-	                tooltipLeftText = void 0,
-	                tooltipRightText = void 0,
-	                elementText = void 0;
-	
-	            tooltipLeftText = topic.topicName || name;
-	            tooltipRightText = getValueText(topic);
-	
-	            elementText = tooltipBody.append('text').classed('tooltip-left-text', true).attr('dy', '1em').attr('x', ttTextX - 20).attr('y', ttTextY).style('fill', tooltipTextColor).text(tooltipLeftText).call(textWrap, tooltipMaxTopicLength, -25);
-	
-	            tooltipRight = tooltipBody.append('text').classed('tooltip-right-text', true).attr('dy', '1em').attr('x', ttTextX + 8).attr('y', ttTextY).style('fill', tooltipTextColor).text(tooltipRightText);
-	
-	            textSize = elementText.node().getBBox();
-	            tooltipHeight += textSize.height + 5;
-	
-	            // Not sure if necessary
-	            tooltipRight.attr('x', tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4);
-	
-	            tooltipBody.append('circle').classed('tooltip-circle', true).attr('cx', 23 - tooltipWidth / 4).attr('cy', ttTextY + circleYOffset).attr('r', 5).style('fill', colorMap[name]).style('stroke-width', 1);
-	
-	            ttTextY += textSize.height + 7;
-	        }
-	
-	        /**
-	         * Updates size and position of tooltip depending on the side of the chart we are in
-	         * @param  {Object} dataPoint DataPoint of the tooltip
-	         * @param  {Number} xPosition DataPoint's x position in the chart
-	         * @return void
-	         */
-	        function updatePositionAndSize(dataPoint, xPosition) {
-	            tooltip.attr('width', tooltipWidth).attr('height', tooltipHeight + 10);
-	
-	            // show tooltip to the right
-	            if (xPosition - tooltipWidth < 0) {
-	                // Tooltip on the right
-	                tooltipTextContainer.attr('transform', 'translate(' + (tooltipWidth - 185) + ',' + tooltipOffset.y + ')');
-	            } else {
-	                // Tooltip on the left
-	                tooltipTextContainer.attr('transform', 'translate(' + -205 + ',' + tooltipOffset.y + ')');
-	            }
-	
-	            tooltipDivider.attr('x2', tooltipWidth - 60);
-	        }
-	
-	        /**
-	         * Updates value of tooltipTitle with the data meaning and the date
-	         * @param  {Object} dataPoint Point of data to use as source
-	         * @return void
-	         */
-	        function updateTitle(dataPoint) {
-	            var date = new Date(dataPoint[dateLabel]),
-	                tooltipTitleText = title + ' - ' + formatDate(date);
-	
-	            tooltipTitle.text(tooltipTitleText);
-	        }
-	
-	        /**
-	         * Figures out which date format to use when showing the date of the current data entry
-	         * @return {Function} The proper date formatting function
-	         */
-	        function formatDate(date) {
-	            var settings = forceAxisSettings || defaultAxisSettings;
-	            var format = null;
-	
-	            if (settings === axisTimeCombinations.DAY_MONTH || settings === axisTimeCombinations.MONTH_YEAR) {
-	                format = monthDayYearFormat;
-	            } else if (settings === axisTimeCombinations.HOUR_DAY || settings === axisTimeCombinations.MINUTE_HOUR) {
-	                format = monthDayHourFormat;
-	            }
-	
-	            return format(date);
-	        }
-	
-	        /**
-	         * Updates tooltip title, content, size and position
-	         *
-	         * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
-	         * @param  {Number} xPosition           Position of the mouse on the X axis
-	         * @return void
-	         */
-	        function updateTooltip(dataPoint, xPosition) {
-	            var topics = dataPoint[topicLabel];
-	
-	            cleanContent();
-	            resetSizeAndPositionPointers();
-	            updateTitle(dataPoint);
-	            topics.forEach(updateContent);
-	            updatePositionAndSize(dataPoint, xPosition);
-	        }
-	
-	        /**
-	         * Wraps a text given the text, width, x position and textFormatter function
-	         * @param  {D3Selection} text  Selection with the text to wrap inside
-	         * @param  {Number} width Desired max width for that line
-	         * @param  {Number} xpos  Initial x position of the text
-	         *
-	         * REF: http://bl.ocks.org/mbostock/7555321
-	         * More discussions on https://github.com/mbostock/d3/issues/1642
-	         */
-	        function textWrap(text, width, xpos) {
-	            xpos = xpos || 0;
-	
-	            text.each(function () {
-	                var words, word, line, lineNumber, lineHeight, y, dy, tspan;
-	
-	                text = d3Selection.select(this);
-	
-	                words = text.text().split(/\s+/).reverse();
-	                line = [];
-	                lineNumber = 0;
-	                lineHeight = 1.2;
-	                y = text.attr('y');
-	                dy = parseFloat(text.attr('dy'));
-	                tspan = text.text(null).append('tspan').attr('x', xpos).attr('y', y).attr('dy', dy + 'em');
-	
-	                while (word = words.pop()) {
-	                    line.push(word);
-	                    tspan.text(line.join(' '));
-	
-	                    if (tspan.node().getComputedTextLength() > width) {
-	                        line.pop();
-	                        tspan.text(line.join(' '));
-	
-	                        if (lineNumber < entryLineLimit - 1) {
-	                            line = [word];
-	                            tspan = text.append('tspan').attr('x', xpos).attr('y', y).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);
-	                        }
-	                    }
-	                }
-	            });
-	        }
-	
-	        /**
-	         * Gets or Sets the dateLabel of the data
-	         * @param  {Number} _x Desired dateLabel
-	         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
-	         * @public
-	         */
-	        exports.dateLabel = function (_x) {
-	            if (!arguments.length) {
-	                return dateLabel;
-	            }
-	            dateLabel = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the valueLabel of the data
-	         * @param  {Number} _x Desired valueLabel
-	         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
-	         * @public
-	         */
-	        exports.valueLabel = function (_x) {
-	            if (!arguments.length) {
-	                return valueLabel;
-	            }
-	            valueLabel = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the topicLabel of the data
-	         * @param  {Number} _x Desired topicLabel
-	         * @return { topicLabel | module} Current topicLabel or Chart module to chain calls
-	         * @public
-	         */
-	        exports.topicLabel = function (_x) {
-	            if (!arguments.length) {
-	                return topicLabel;
-	            }
-	            topicLabel = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Hides the tooltip
-	         * @return {Module} Tooltip module to chain calls
-	         * @public
-	         */
-	        exports.hide = function () {
-	            svg.style('display', 'none');
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Shows the tooltip
-	         * @return {Module} Tooltip module to chain calls
-	         * @public
-	         */
-	        exports.show = function () {
-	            svg.style('display', 'block');
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the title of the tooltip
-	         * @param  {string} _x Desired title
-	         * @return { string | module} Current title or module to chain calls
-	         * @public
-	         */
-	        exports.title = function (_x) {
-	            if (!arguments.length) {
-	                return title;
-	            }
-	            title = _x;
-	            return this;
-	        };
-	
-	        /**
-	         * Updates the position and content of the tooltip
-	         * @param  {Object} dataPoint    Datapoint to represent
-	         * @param  {Object} colorMapping Color scheme of the topics
-	         * @param  {Number} position     X-scale position in pixels
-	         * @return {Module} Tooltip module to chain calls
-	         * @public
-	         */
-	        exports.update = function (dataPoint, colorMapping, position) {
-	            colorMap = colorMapping;
-	            updateTooltip(dataPoint, position);
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the ability to force the tooltip to use a certain date format
-	         * @param  {String} _x Desired format
-	         * @return { (String|Module) }    Current format or module to chain calls
-	         */
-	        exports.forceDateRange = function (_x) {
-	            if (!arguments.length) {
-	                return forceAxisSettings || defaultAxisSettings;
-	            }
-	            forceAxisSettings = _x;
-	            return this;
-	        };
-	
-	        /**
-	         * constants to be used to force the x axis to respect a certain granularity
-	         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
-	         * @example tooltip.forceDateRange(tooltip.axisTimeCombinations.HOUR_DAY)
-	         */
-	        exports.axisTimeCombinations = axisTimeCombinations;
-	
-	        return exports;
-	    };
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ },
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// https://d3js.org/d3-transition/ Version 1.0.3. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-	   true ? factory(exports, __webpack_require__(4), __webpack_require__(12), __webpack_require__(31), __webpack_require__(16), __webpack_require__(17), __webpack_require__(13)) :
+	   true ? factory(exports, __webpack_require__(4), __webpack_require__(12), __webpack_require__(23), __webpack_require__(16), __webpack_require__(17), __webpack_require__(13)) :
 	  typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-timer', 'd3-interpolate', 'd3-color', 'd3-ease'], factory) :
 	  (factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3,global.d3));
 	}(this, (function (exports,d3Selection,d3Dispatch,d3Timer,d3Interpolate,d3Color,d3Ease) { 'use strict';
@@ -12706,7 +11082,7 @@
 
 
 /***/ },
-/* 31 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-timer/ Version 1.0.4. Copyright 2017 Mike Bostock.
@@ -12859,6 +11235,1631 @@
 	
 	})));
 
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	    'use strict';
+	
+	    var bowser = __webpack_require__(25);
+	
+	    var _require = __webpack_require__(7),
+	        colorSchemas = _require.colorSchemas;
+	
+	    var constants = __webpack_require__(27);
+	    var serializeWithStyles = __webpack_require__(28);
+	
+	    var encoder = window.btoa;
+	
+	    if (!encoder) {
+	        encoder = __webpack_require__(29).encode;
+	    }
+	
+	    var config = {
+	        styleClass: 'britechartStyle',
+	        defaultFilename: 'britechart.png',
+	        chartBackground: 'white',
+	        imageSourceBase: 'data:image/svg+xml;base64,',
+	        titleFontSize: '15px',
+	        titleFontFamily: '\'Heebo-thin\', sans-serif',
+	        titleTopOffset: 30,
+	        get styleBackgroundString() {
+	            return '<style>svg{background:' + this.chartBackground + ';}</style>';
+	        }
+	    };
+	
+	    /**
+	     * Main function to be used as a method by chart instances to export charts to png
+	     * @param  {array} svgs (or an svg element) pass in both chart & legend as array or just chart as svg or in array
+	     * @param  {string} filename [download to be called <filename>.png]
+	     */
+	    function exportChart(d3svg, filename, title) {
+	        var img = createImage(convertSvgToHtml.call(this, d3svg, title));
+	
+	        img.onload = handleImageLoad.bind(img, createCanvas(this.width(), this.height()), filename);
+	    }
+	
+	    /**
+	     * adds background styles to raw html
+	     * @param {string} html raw html
+	     */
+	    function addBackground(html) {
+	        return html.replace('>', '>' + config.styleBackgroundString);
+	    }
+	
+	    /**
+	     * takes d3 svg el, adds proper svg tags, adds inline styles
+	     * from stylesheets, adds white background and returns string
+	     * @param  {object} d3svg TYPE d3 svg element
+	     * @return {string} string of passed d3
+	     */
+	    function convertSvgToHtml(d3svg, title) {
+	        if (!d3svg) {
+	            return;
+	        }
+	
+	        d3svg.attr('version', 1.1).attr('xmlns', 'http://www.w3.org/2000/svg');
+	
+	        var serializer = serializeWithStyles.initializeSerializer();
+	        var html = serializer(d3svg.node());
+	        html = formatHtmlByBrowser(html);
+	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width')));
+	        html = addBackground(html);
+	
+	        return html;
+	    }
+	
+	    /**
+	     * Create Canvas
+	     * @param  {number} width
+	     * @param  {number} height
+	     * @return {object} TYPE canvas element
+	     */
+	    function createCanvas(width, height) {
+	        var canvas = document.createElement('canvas');
+	
+	        canvas.height = height;
+	        canvas.width = width;
+	        return canvas;
+	    }
+	
+	    /**
+	     * Create Image
+	     * @param  {string} svgHtml string representation of svg el
+	     * @return {object}  TYPE element <img>, src points at svg
+	     */
+	    function createImage(svgHtml) {
+	        var img = new Image();
+	
+	        img.src = '' + config.imageSourceBase + encoder(svgHtml);
+	        return img;
+	    };
+	
+	    /**
+	     * Draws image on canvas
+	     * @param  {object} image TYPE:el <img>, to be drawn
+	     * @param  {object} canvas TYPE: el <canvas>, to draw on
+	     */
+	    function drawImageOnCanvas(image, canvas) {
+	        canvas.getContext('2d').drawImage(image, 0, 0);
+	    }
+	
+	    /**
+	     * Triggers browser to download image, convert canvas to url,
+	     * we need to append the link el to the dom before clicking it for Firefox to register
+	     * point <a> at it and trigger click
+	     * @param  {object} canvas TYPE: el <canvas>
+	     * @param  {string} filename
+	     * @param  {string} extensionType
+	     */
+	    function downloadCanvas(canvas) {
+	        var filename = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'britechart.png';
+	        var extensionType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'image/png';
+	
+	        var url = canvas.toDataURL(extensionType);
+	        var link = document.createElement('a');
+	
+	        link.href = url;
+	        link.download = filename;
+	        document.body.appendChild(link);
+	        link.click();
+	        document.body.removeChild(link);
+	    }
+	
+	    /**
+	     * Some browsers need special formatting, we handle that here
+	     * @param  {string} html string of svg html
+	     * @return {string} string of svg html
+	     */
+	    function formatHtmlByBrowser(html) {
+	        if (bowser.name === 'Firefox') {
+	            return html.replace(/url.*&quot;\)/, 'url(&quot;#' + constants.lineGradientId + '&quot;);');
+	        }
+	
+	        return html;
+	    }
+	
+	    /**
+	     * Handles on load event fired by img.onload, this=img
+	     * @param  {object} canvas TYPE: el <canvas>
+	     * @param  {string} filename
+	     * @param  {object} e
+	     */
+	    function handleImageLoad(canvas, filename, e) {
+	        e.preventDefault();
+	        drawImageOnCanvas(this, canvas);
+	
+	        downloadCanvas(canvas, filename || config.defaultFilename);
+	    }
+	
+	    /**
+	     * if passed, append title to the raw html to appear on graph
+	     * @param  {string} html     raw html string
+	     * @param  {string} title    title of the graph
+	     * @param  {number} svgWidth width of graph container
+	     * @return {string}         raw html with title prepended
+	     */
+	    function prependTitle(html, title, svgWidth) {
+	        if (!title || !svgWidth) {
+	            return html;
+	        }
+	        var britechartsGreySchema = colorSchemas.britechartsGreySchema;
+	
+	
+	        html = html.replace(/<g/, '<text x="' + this.margin().left + '" y="' + config.titleTopOffset + '" font-family="' + config.titleFontFamily + '" font-size="' + config.titleFontSize + '" fill="' + britechartsGreySchema[6] + '"> ' + title + ' </text><g ');
+	        return html;
+	    }
+	
+	    return exportChart;
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*!
+	 * Bowser - a browser detector
+	 * https://github.com/ded/bowser
+	 * MIT License | (c) Dustin Diaz 2015
+	 */
+	
+	!function (root, name, definition) {
+	  if (typeof module != 'undefined' && module.exports) module.exports = definition()
+	  else if (true) __webpack_require__(26)(name, definition)
+	  else root[name] = definition()
+	}(this, 'bowser', function () {
+	  /**
+	    * See useragents.js for examples of navigator.userAgent
+	    */
+	
+	  var t = true
+	
+	  function detect(ua) {
+	
+	    function getFirstMatch(regex) {
+	      var match = ua.match(regex);
+	      return (match && match.length > 1 && match[1]) || '';
+	    }
+	
+	    function getSecondMatch(regex) {
+	      var match = ua.match(regex);
+	      return (match && match.length > 1 && match[2]) || '';
+	    }
+	
+	    var iosdevice = getFirstMatch(/(ipod|iphone|ipad)/i).toLowerCase()
+	      , likeAndroid = /like android/i.test(ua)
+	      , android = !likeAndroid && /android/i.test(ua)
+	      , nexusMobile = /nexus\s*[0-6]\s*/i.test(ua)
+	      , nexusTablet = !nexusMobile && /nexus\s*[0-9]+/i.test(ua)
+	      , chromeos = /CrOS/.test(ua)
+	      , silk = /silk/i.test(ua)
+	      , sailfish = /sailfish/i.test(ua)
+	      , tizen = /tizen/i.test(ua)
+	      , webos = /(web|hpw)os/i.test(ua)
+	      , windowsphone = /windows phone/i.test(ua)
+	      , samsungBrowser = /SamsungBrowser/i.test(ua)
+	      , windows = !windowsphone && /windows/i.test(ua)
+	      , mac = !iosdevice && !silk && /macintosh/i.test(ua)
+	      , linux = !android && !sailfish && !tizen && !webos && /linux/i.test(ua)
+	      , edgeVersion = getFirstMatch(/edge\/(\d+(\.\d+)?)/i)
+	      , versionIdentifier = getFirstMatch(/version\/(\d+(\.\d+)?)/i)
+	      , tablet = /tablet/i.test(ua)
+	      , mobile = !tablet && /[^-]mobi/i.test(ua)
+	      , xbox = /xbox/i.test(ua)
+	      , result
+	
+	    if (/opera/i.test(ua)) {
+	      //  an old Opera
+	      result = {
+	        name: 'Opera'
+	      , opera: t
+	      , version: versionIdentifier || getFirstMatch(/(?:opera|opr|opios)[\s\/](\d+(\.\d+)?)/i)
+	      }
+	    } else if (/opr|opios/i.test(ua)) {
+	      // a new Opera
+	      result = {
+	        name: 'Opera'
+	        , opera: t
+	        , version: getFirstMatch(/(?:opr|opios)[\s\/](\d+(\.\d+)?)/i) || versionIdentifier
+	      }
+	    }
+	    else if (/SamsungBrowser/i.test(ua)) {
+	      result = {
+	        name: 'Samsung Internet for Android'
+	        , samsungBrowser: t
+	        , version: versionIdentifier || getFirstMatch(/(?:SamsungBrowser)[\s\/](\d+(\.\d+)?)/i)
+	      }
+	    }
+	    else if (/coast/i.test(ua)) {
+	      result = {
+	        name: 'Opera Coast'
+	        , coast: t
+	        , version: versionIdentifier || getFirstMatch(/(?:coast)[\s\/](\d+(\.\d+)?)/i)
+	      }
+	    }
+	    else if (/yabrowser/i.test(ua)) {
+	      result = {
+	        name: 'Yandex Browser'
+	      , yandexbrowser: t
+	      , version: versionIdentifier || getFirstMatch(/(?:yabrowser)[\s\/](\d+(\.\d+)?)/i)
+	      }
+	    }
+	    else if (/ucbrowser/i.test(ua)) {
+	      result = {
+	          name: 'UC Browser'
+	        , ucbrowser: t
+	        , version: getFirstMatch(/(?:ucbrowser)[\s\/](\d+(?:\.\d+)+)/i)
+	      }
+	    }
+	    else if (/mxios/i.test(ua)) {
+	      result = {
+	        name: 'Maxthon'
+	        , maxthon: t
+	        , version: getFirstMatch(/(?:mxios)[\s\/](\d+(?:\.\d+)+)/i)
+	      }
+	    }
+	    else if (/epiphany/i.test(ua)) {
+	      result = {
+	        name: 'Epiphany'
+	        , epiphany: t
+	        , version: getFirstMatch(/(?:epiphany)[\s\/](\d+(?:\.\d+)+)/i)
+	      }
+	    }
+	    else if (/puffin/i.test(ua)) {
+	      result = {
+	        name: 'Puffin'
+	        , puffin: t
+	        , version: getFirstMatch(/(?:puffin)[\s\/](\d+(?:\.\d+)?)/i)
+	      }
+	    }
+	    else if (/sleipnir/i.test(ua)) {
+	      result = {
+	        name: 'Sleipnir'
+	        , sleipnir: t
+	        , version: getFirstMatch(/(?:sleipnir)[\s\/](\d+(?:\.\d+)+)/i)
+	      }
+	    }
+	    else if (/k-meleon/i.test(ua)) {
+	      result = {
+	        name: 'K-Meleon'
+	        , kMeleon: t
+	        , version: getFirstMatch(/(?:k-meleon)[\s\/](\d+(?:\.\d+)+)/i)
+	      }
+	    }
+	    else if (windowsphone) {
+	      result = {
+	        name: 'Windows Phone'
+	      , windowsphone: t
+	      }
+	      if (edgeVersion) {
+	        result.msedge = t
+	        result.version = edgeVersion
+	      }
+	      else {
+	        result.msie = t
+	        result.version = getFirstMatch(/iemobile\/(\d+(\.\d+)?)/i)
+	      }
+	    }
+	    else if (/msie|trident/i.test(ua)) {
+	      result = {
+	        name: 'Internet Explorer'
+	      , msie: t
+	      , version: getFirstMatch(/(?:msie |rv:)(\d+(\.\d+)?)/i)
+	      }
+	    } else if (chromeos) {
+	      result = {
+	        name: 'Chrome'
+	      , chromeos: t
+	      , chromeBook: t
+	      , chrome: t
+	      , version: getFirstMatch(/(?:chrome|crios|crmo)\/(\d+(\.\d+)?)/i)
+	      }
+	    } else if (/chrome.+? edge/i.test(ua)) {
+	      result = {
+	        name: 'Microsoft Edge'
+	      , msedge: t
+	      , version: edgeVersion
+	      }
+	    }
+	    else if (/vivaldi/i.test(ua)) {
+	      result = {
+	        name: 'Vivaldi'
+	        , vivaldi: t
+	        , version: getFirstMatch(/vivaldi\/(\d+(\.\d+)?)/i) || versionIdentifier
+	      }
+	    }
+	    else if (sailfish) {
+	      result = {
+	        name: 'Sailfish'
+	      , sailfish: t
+	      , version: getFirstMatch(/sailfish\s?browser\/(\d+(\.\d+)?)/i)
+	      }
+	    }
+	    else if (/seamonkey\//i.test(ua)) {
+	      result = {
+	        name: 'SeaMonkey'
+	      , seamonkey: t
+	      , version: getFirstMatch(/seamonkey\/(\d+(\.\d+)?)/i)
+	      }
+	    }
+	    else if (/firefox|iceweasel|fxios/i.test(ua)) {
+	      result = {
+	        name: 'Firefox'
+	      , firefox: t
+	      , version: getFirstMatch(/(?:firefox|iceweasel|fxios)[ \/](\d+(\.\d+)?)/i)
+	      }
+	      if (/\((mobile|tablet);[^\)]*rv:[\d\.]+\)/i.test(ua)) {
+	        result.firefoxos = t
+	      }
+	    }
+	    else if (silk) {
+	      result =  {
+	        name: 'Amazon Silk'
+	      , silk: t
+	      , version : getFirstMatch(/silk\/(\d+(\.\d+)?)/i)
+	      }
+	    }
+	    else if (/phantom/i.test(ua)) {
+	      result = {
+	        name: 'PhantomJS'
+	      , phantom: t
+	      , version: getFirstMatch(/phantomjs\/(\d+(\.\d+)?)/i)
+	      }
+	    }
+	    else if (/slimerjs/i.test(ua)) {
+	      result = {
+	        name: 'SlimerJS'
+	        , slimer: t
+	        , version: getFirstMatch(/slimerjs\/(\d+(\.\d+)?)/i)
+	      }
+	    }
+	    else if (/blackberry|\bbb\d+/i.test(ua) || /rim\stablet/i.test(ua)) {
+	      result = {
+	        name: 'BlackBerry'
+	      , blackberry: t
+	      , version: versionIdentifier || getFirstMatch(/blackberry[\d]+\/(\d+(\.\d+)?)/i)
+	      }
+	    }
+	    else if (webos) {
+	      result = {
+	        name: 'WebOS'
+	      , webos: t
+	      , version: versionIdentifier || getFirstMatch(/w(?:eb)?osbrowser\/(\d+(\.\d+)?)/i)
+	      };
+	      /touchpad\//i.test(ua) && (result.touchpad = t)
+	    }
+	    else if (/bada/i.test(ua)) {
+	      result = {
+	        name: 'Bada'
+	      , bada: t
+	      , version: getFirstMatch(/dolfin\/(\d+(\.\d+)?)/i)
+	      };
+	    }
+	    else if (tizen) {
+	      result = {
+	        name: 'Tizen'
+	      , tizen: t
+	      , version: getFirstMatch(/(?:tizen\s?)?browser\/(\d+(\.\d+)?)/i) || versionIdentifier
+	      };
+	    }
+	    else if (/qupzilla/i.test(ua)) {
+	      result = {
+	        name: 'QupZilla'
+	        , qupzilla: t
+	        , version: getFirstMatch(/(?:qupzilla)[\s\/](\d+(?:\.\d+)+)/i) || versionIdentifier
+	      }
+	    }
+	    else if (/chromium/i.test(ua)) {
+	      result = {
+	        name: 'Chromium'
+	        , chromium: t
+	        , version: getFirstMatch(/(?:chromium)[\s\/](\d+(?:\.\d+)?)/i) || versionIdentifier
+	      }
+	    }
+	    else if (/chrome|crios|crmo/i.test(ua)) {
+	      result = {
+	        name: 'Chrome'
+	        , chrome: t
+	        , version: getFirstMatch(/(?:chrome|crios|crmo)\/(\d+(\.\d+)?)/i)
+	      }
+	    }
+	    else if (android) {
+	      result = {
+	        name: 'Android'
+	        , version: versionIdentifier
+	      }
+	    }
+	    else if (/safari|applewebkit/i.test(ua)) {
+	      result = {
+	        name: 'Safari'
+	      , safari: t
+	      }
+	      if (versionIdentifier) {
+	        result.version = versionIdentifier
+	      }
+	    }
+	    else if (iosdevice) {
+	      result = {
+	        name : iosdevice == 'iphone' ? 'iPhone' : iosdevice == 'ipad' ? 'iPad' : 'iPod'
+	      }
+	      // WTF: version is not part of user agent in web apps
+	      if (versionIdentifier) {
+	        result.version = versionIdentifier
+	      }
+	    }
+	    else if(/googlebot/i.test(ua)) {
+	      result = {
+	        name: 'Googlebot'
+	      , googlebot: t
+	      , version: getFirstMatch(/googlebot\/(\d+(\.\d+))/i) || versionIdentifier
+	      }
+	    }
+	    else {
+	      result = {
+	        name: getFirstMatch(/^(.*)\/(.*) /),
+	        version: getSecondMatch(/^(.*)\/(.*) /)
+	     };
+	   }
+	
+	    // set webkit or gecko flag for browsers based on these engines
+	    if (!result.msedge && /(apple)?webkit/i.test(ua)) {
+	      if (/(apple)?webkit\/537\.36/i.test(ua)) {
+	        result.name = result.name || "Blink"
+	        result.blink = t
+	      } else {
+	        result.name = result.name || "Webkit"
+	        result.webkit = t
+	      }
+	      if (!result.version && versionIdentifier) {
+	        result.version = versionIdentifier
+	      }
+	    } else if (!result.opera && /gecko\//i.test(ua)) {
+	      result.name = result.name || "Gecko"
+	      result.gecko = t
+	      result.version = result.version || getFirstMatch(/gecko\/(\d+(\.\d+)?)/i)
+	    }
+	
+	    // set OS flags for platforms that have multiple browsers
+	    if (!result.windowsphone && !result.msedge && (android || result.silk)) {
+	      result.android = t
+	    } else if (!result.windowsphone && !result.msedge && iosdevice) {
+	      result[iosdevice] = t
+	      result.ios = t
+	    } else if (mac) {
+	      result.mac = t
+	    } else if (xbox) {
+	      result.xbox = t
+	    } else if (windows) {
+	      result.windows = t
+	    } else if (linux) {
+	      result.linux = t
+	    }
+	
+	    // OS version extraction
+	    var osVersion = '';
+	    if (result.windowsphone) {
+	      osVersion = getFirstMatch(/windows phone (?:os)?\s?(\d+(\.\d+)*)/i);
+	    } else if (iosdevice) {
+	      osVersion = getFirstMatch(/os (\d+([_\s]\d+)*) like mac os x/i);
+	      osVersion = osVersion.replace(/[_\s]/g, '.');
+	    } else if (android) {
+	      osVersion = getFirstMatch(/android[ \/-](\d+(\.\d+)*)/i);
+	    } else if (result.webos) {
+	      osVersion = getFirstMatch(/(?:web|hpw)os\/(\d+(\.\d+)*)/i);
+	    } else if (result.blackberry) {
+	      osVersion = getFirstMatch(/rim\stablet\sos\s(\d+(\.\d+)*)/i);
+	    } else if (result.bada) {
+	      osVersion = getFirstMatch(/bada\/(\d+(\.\d+)*)/i);
+	    } else if (result.tizen) {
+	      osVersion = getFirstMatch(/tizen[\/\s](\d+(\.\d+)*)/i);
+	    }
+	    if (osVersion) {
+	      result.osversion = osVersion;
+	    }
+	
+	    // device type extraction
+	    var osMajorVersion = osVersion.split('.')[0];
+	    if (
+	         tablet
+	      || nexusTablet
+	      || iosdevice == 'ipad'
+	      || (android && (osMajorVersion == 3 || (osMajorVersion >= 4 && !mobile)))
+	      || result.silk
+	    ) {
+	      result.tablet = t
+	    } else if (
+	         mobile
+	      || iosdevice == 'iphone'
+	      || iosdevice == 'ipod'
+	      || android
+	      || nexusMobile
+	      || result.blackberry
+	      || result.webos
+	      || result.bada
+	    ) {
+	      result.mobile = t
+	    }
+	
+	    // Graded Browser Support
+	    // http://developer.yahoo.com/yui/articles/gbs
+	    if (result.msedge ||
+	        (result.msie && result.version >= 10) ||
+	        (result.yandexbrowser && result.version >= 15) ||
+			    (result.vivaldi && result.version >= 1.0) ||
+	        (result.chrome && result.version >= 20) ||
+	        (result.samsungBrowser && result.version >= 4) ||
+	        (result.firefox && result.version >= 20.0) ||
+	        (result.safari && result.version >= 6) ||
+	        (result.opera && result.version >= 10.0) ||
+	        (result.ios && result.osversion && result.osversion.split(".")[0] >= 6) ||
+	        (result.blackberry && result.version >= 10.1)
+	        || (result.chromium && result.version >= 20)
+	        ) {
+	      result.a = t;
+	    }
+	    else if ((result.msie && result.version < 10) ||
+	        (result.chrome && result.version < 20) ||
+	        (result.firefox && result.version < 20.0) ||
+	        (result.safari && result.version < 6) ||
+	        (result.opera && result.version < 10.0) ||
+	        (result.ios && result.osversion && result.osversion.split(".")[0] < 6)
+	        || (result.chromium && result.version < 20)
+	        ) {
+	      result.c = t
+	    } else result.x = t
+	
+	    return result
+	  }
+	
+	  var bowser = detect(typeof navigator !== 'undefined' ? navigator.userAgent || '' : '')
+	
+	  bowser.test = function (browserList) {
+	    for (var i = 0; i < browserList.length; ++i) {
+	      var browserItem = browserList[i];
+	      if (typeof browserItem=== 'string') {
+	        if (browserItem in bowser) {
+	          return true;
+	        }
+	      }
+	    }
+	    return false;
+	  }
+	
+	  /**
+	   * Get version precisions count
+	   *
+	   * @example
+	   *   getVersionPrecision("1.10.3") // 3
+	   *
+	   * @param  {string} version
+	   * @return {number}
+	   */
+	  function getVersionPrecision(version) {
+	    return version.split(".").length;
+	  }
+	
+	  /**
+	   * Array::map polyfill
+	   *
+	   * @param  {Array} arr
+	   * @param  {Function} iterator
+	   * @return {Array}
+	   */
+	  function map(arr, iterator) {
+	    var result = [], i;
+	    if (Array.prototype.map) {
+	      return Array.prototype.map.call(arr, iterator);
+	    }
+	    for (i = 0; i < arr.length; i++) {
+	      result.push(iterator(arr[i]));
+	    }
+	    return result;
+	  }
+	
+	  /**
+	   * Calculate browser version weight
+	   *
+	   * @example
+	   *   compareVersions(['1.10.2.1',  '1.8.2.1.90'])    // 1
+	   *   compareVersions(['1.010.2.1', '1.09.2.1.90']);  // 1
+	   *   compareVersions(['1.10.2.1',  '1.10.2.1']);     // 0
+	   *   compareVersions(['1.10.2.1',  '1.0800.2']);     // -1
+	   *
+	   * @param  {Array<String>} versions versions to compare
+	   * @return {Number} comparison result
+	   */
+	  function compareVersions(versions) {
+	    // 1) get common precision for both versions, for example for "10.0" and "9" it should be 2
+	    var precision = Math.max(getVersionPrecision(versions[0]), getVersionPrecision(versions[1]));
+	    var chunks = map(versions, function (version) {
+	      var delta = precision - getVersionPrecision(version);
+	
+	      // 2) "9" -> "9.0" (for precision = 2)
+	      version = version + new Array(delta + 1).join(".0");
+	
+	      // 3) "9.0" -> ["000000000"", "000000009"]
+	      return map(version.split("."), function (chunk) {
+	        return new Array(20 - chunk.length).join("0") + chunk;
+	      }).reverse();
+	    });
+	
+	    // iterate in reverse order by reversed chunks array
+	    while (--precision >= 0) {
+	      // 4) compare: "000000009" > "000000010" = false (but "9" > "10" = true)
+	      if (chunks[0][precision] > chunks[1][precision]) {
+	        return 1;
+	      }
+	      else if (chunks[0][precision] === chunks[1][precision]) {
+	        if (precision === 0) {
+	          // all version chunks are same
+	          return 0;
+	        }
+	      }
+	      else {
+	        return -1;
+	      }
+	    }
+	  }
+	
+	  /**
+	   * Check if browser is unsupported
+	   *
+	   * @example
+	   *   bowser.isUnsupportedBrowser({
+	   *     msie: "10",
+	   *     firefox: "23",
+	   *     chrome: "29",
+	   *     safari: "5.1",
+	   *     opera: "16",
+	   *     phantom: "534"
+	   *   });
+	   *
+	   * @param  {Object}  minVersions map of minimal version to browser
+	   * @param  {Boolean} [strictMode = false] flag to return false if browser wasn't found in map
+	   * @param  {String}  [ua] user agent string
+	   * @return {Boolean}
+	   */
+	  function isUnsupportedBrowser(minVersions, strictMode, ua) {
+	    var _bowser = bowser;
+	
+	    // make strictMode param optional with ua param usage
+	    if (typeof strictMode === 'string') {
+	      ua = strictMode;
+	      strictMode = void(0);
+	    }
+	
+	    if (strictMode === void(0)) {
+	      strictMode = false;
+	    }
+	    if (ua) {
+	      _bowser = detect(ua);
+	    }
+	
+	    var version = "" + _bowser.version;
+	    for (var browser in minVersions) {
+	      if (minVersions.hasOwnProperty(browser)) {
+	        if (_bowser[browser]) {
+	          if (typeof minVersions[browser] !== 'string') {
+	            throw new Error('Browser version in the minVersion map should be a string: ' + browser + ': ' + String(minVersions));
+	          }
+	
+	          // browser version and min supported version.
+	          return compareVersions([version, minVersions[browser]]) < 0;
+	        }
+	      }
+	    }
+	
+	    return strictMode; // not found
+	  }
+	
+	  /**
+	   * Check if browser is supported
+	   *
+	   * @param  {Object} minVersions map of minimal version to browser
+	   * @param  {Boolean} [strictMode = false] flag to return false if browser wasn't found in map
+	   * @param  {String}  [ua] user agent string
+	   * @return {Boolean}
+	   */
+	  function check(minVersions, strictMode, ua) {
+	    return !isUnsupportedBrowser(minVersions, strictMode, ua);
+	  }
+	
+	  bowser.isUnsupportedBrowser = isUnsupportedBrowser;
+	  bowser.compareVersions = compareVersions;
+	  bowser.check = check;
+	
+	  /*
+	   * Set our detect method to the main bowser object so we can
+	   * reuse it to test other user agents.
+	   * This is needed to implement future tests.
+	   */
+	  bowser._detect = detect;
+	
+	  return bowser
+	});
+
+
+/***/ },
+/* 26 */
+/***/ function(module, exports) {
+
+	module.exports = function() { throw new Error("define cannot be used indirect"); };
+
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	    var axisTimeCombinations = {
+	        MINUTE_HOUR: 'minute-hour',
+	        HOUR_DAY: 'hour-day',
+	        DAY_MONTH: 'day-month',
+	        MONTH_YEAR: 'month-year'
+	    };
+	
+	    var timeBenchmarks = {
+	        ONE_AND_A_HALF_YEARS: 47304000000,
+	        ONE_DAY: 86400001
+	    };
+	
+	    return {
+	        axisTimeCombinations: axisTimeCombinations,
+	        timeBenchmarks: timeBenchmarks,
+	        lineGradientId: 'lineGradientId'
+	    };
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+/***/ },
+/* 28 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	module.exports = function () {
+	
+	    'use strict';
+	
+	    return {
+	
+	        /**
+	         * returns serializer function, only run it when you know you want to serialize your chart
+	         * @return {func} serializer to add styles in line to dom string
+	         */
+	        initializeSerializer: function initializeSerializer() {
+	
+	            // Mapping between tag names and css default values lookup tables. This allows to exclude default values in the result.
+	            var defaultStylesByTagName = {};
+	
+	            // Styles inherited from style sheets will not be rendered for elements with these tag names
+	            var noStyleTags = { 'BASE': true, 'HEAD': true, 'HTML': true, 'META': true, 'NOFRAME': true, 'NOSCRIPT': true, 'PARAM': true, 'SCRIPT': true, 'STYLE': true, 'TITLE': true };
+	
+	            // This list determines which css default values lookup tables are precomputed at load time
+	            // Lookup tables for other tag names will be automatically built at runtime if needed
+	            var tagNames = ['A', 'ABBR', 'ADDRESS', 'AREA', 'ARTICLE', 'ASIDE', 'AUDIO', 'B', 'BASE', 'BDI', 'BDO', 'BLOCKQUOTE', 'BODY', 'BR', 'BUTTON', 'CANVAS', 'CAPTION', 'CENTER', 'CITE', 'CODE', 'COL', 'COLGROUP', 'COMMAND', 'DATALIST', 'DD', 'DEL', 'DETAILS', 'DFN', 'DIV', 'DL', 'DT', 'EM', 'EMBED', 'FIELDSET', 'FIGCAPTION', 'FIGURE', 'FONT', 'FOOTER', 'FORM', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'HEAD', 'HEADER', 'HGROUP', 'HR', 'HTML', 'I', 'IFRAME', 'IMG', 'INPUT', 'INS', 'KBD', 'LABEL', 'LEGEND', 'LI', 'LINK', 'MAP', 'MARK', 'MATH', 'MENU', 'META', 'METER', 'NAV', 'NOBR', 'NOSCRIPT', 'OBJECT', 'OL', 'OPTION', 'OPTGROUP', 'OUTPUT', 'P', 'PARAM', 'PRE', 'PROGRESS', 'Q', 'RP', 'RT', 'RUBY', 'S', 'SAMP', 'SCRIPT', 'SECTION', 'SELECT', 'SMALL', 'SOURCE', 'SPAN', 'STRONG', 'STYLE', 'SUB', 'SUMMARY', 'SUP', 'SVG', 'TABLE', 'TBODY', 'TD', 'TEXTAREA', 'TFOOT', 'TH', 'THEAD', 'TIME', 'TITLE', 'TR', 'TRACK', 'U', 'UL', 'VAR', 'VIDEO', 'WBR'];
+	
+	            // Precompute the lookup tables.
+	            [].forEach.call(tagNames, function (name) {
+	                if (!noStyleTags[name]) {
+	                    defaultStylesByTagName[name] = computeDefaultStyleByTagName(name);
+	                }
+	            });
+	
+	            function computeDefaultStyleByTagName(tagName) {
+	                var defaultStyle = {},
+	                    element = document.body.appendChild(document.createElement(tagName)),
+	                    computedStyle = window.getComputedStyle(element);
+	
+	                [].forEach.call(computedStyle, function (style) {
+	                    defaultStyle[style] = computedStyle[style];
+	                });
+	                document.body.removeChild(element);
+	                return defaultStyle;
+	            }
+	
+	            function getDefaultStyleByTagName(tagName) {
+	                tagName = tagName.toUpperCase();
+	                if (!defaultStylesByTagName[tagName]) {
+	                    defaultStylesByTagName[tagName] = computeDefaultStyleByTagName(tagName);
+	                }
+	                return defaultStylesByTagName[tagName];
+	            };
+	
+	            function serializeWithStyles(elem) {
+	
+	                var cssTexts = [],
+	                    elements = void 0,
+	                    computedStyle = void 0,
+	                    defaultStyle = void 0,
+	                    result = void 0;
+	
+	                if (!elem || elem.nodeType !== Node.ELEMENT_NODE) {
+	                    console.error('Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE');
+	                    return;
+	                }
+	
+	                cssTexts = [];
+	                elements = elem.querySelectorAll('*');
+	
+	                [].forEach.call(elements, function (el, i) {
+	                    if (!noStyleTags[el.tagName]) {
+	                        computedStyle = window.getComputedStyle(el);
+	                        defaultStyle = getDefaultStyleByTagName(el.tagName);
+	                        cssTexts[i] = el.style.cssText;
+	                        [].forEach.call(computedStyle, function (cssPropName) {
+	                            if (computedStyle[cssPropName] !== defaultStyle[cssPropName]) {
+	                                el.style[cssPropName] = computedStyle[cssPropName];
+	                            }
+	                        });
+	                    }
+	                });
+	
+	                result = elem.outerHTML;
+	                elements = [].map.call(elements, function (el, i) {
+	                    el.style.cssText = cssTexts[i];
+	                    return el;
+	                });
+	
+	                return result;
+	            };
+	
+	            return serializeWithStyles;
+	        }
+	    };
+	}();
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! http://mths.be/base64 v0.1.0 by @mathias | MIT license */
+	;(function(root) {
+	
+		// Detect free variables `exports`.
+		var freeExports = typeof exports == 'object' && exports;
+	
+		// Detect free variable `module`.
+		var freeModule = typeof module == 'object' && module &&
+			module.exports == freeExports && module;
+	
+		// Detect free variable `global`, from Node.js or Browserified code, and use
+		// it as `root`.
+		var freeGlobal = typeof global == 'object' && global;
+		if (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal) {
+			root = freeGlobal;
+		}
+	
+		/*--------------------------------------------------------------------------*/
+	
+		var InvalidCharacterError = function(message) {
+			this.message = message;
+		};
+		InvalidCharacterError.prototype = new Error;
+		InvalidCharacterError.prototype.name = 'InvalidCharacterError';
+	
+		var error = function(message) {
+			// Note: the error messages used throughout this file match those used by
+			// the native `atob`/`btoa` implementation in Chromium.
+			throw new InvalidCharacterError(message);
+		};
+	
+		var TABLE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+		// http://whatwg.org/html/common-microsyntaxes.html#space-character
+		var REGEX_SPACE_CHARACTERS = /[\t\n\f\r ]/g;
+	
+		// `decode` is designed to be fully compatible with `atob` as described in the
+		// HTML Standard. http://whatwg.org/html/webappapis.html#dom-windowbase64-atob
+		// The optimized base64-decoding algorithm used is based on @atk’s excellent
+		// implementation. https://gist.github.com/atk/1020396
+		var decode = function(input) {
+			input = String(input)
+				.replace(REGEX_SPACE_CHARACTERS, '');
+			var length = input.length;
+			if (length % 4 == 0) {
+				input = input.replace(/==?$/, '');
+				length = input.length;
+			}
+			if (
+				length % 4 == 1 ||
+				// http://whatwg.org/C#alphanumeric-ascii-characters
+				/[^+a-zA-Z0-9/]/.test(input)
+			) {
+				error(
+					'Invalid character: the string to be decoded is not correctly encoded.'
+				);
+			}
+			var bitCounter = 0;
+			var bitStorage;
+			var buffer;
+			var output = '';
+			var position = -1;
+			while (++position < length) {
+				buffer = TABLE.indexOf(input.charAt(position));
+				bitStorage = bitCounter % 4 ? bitStorage * 64 + buffer : buffer;
+				// Unless this is the first of a group of 4 characters…
+				if (bitCounter++ % 4) {
+					// …convert the first 8 bits to a single ASCII character.
+					output += String.fromCharCode(
+						0xFF & bitStorage >> (-2 * bitCounter & 6)
+					);
+				}
+			}
+			return output;
+		};
+	
+		// `encode` is designed to be fully compatible with `btoa` as described in the
+		// HTML Standard: http://whatwg.org/html/webappapis.html#dom-windowbase64-btoa
+		var encode = function(input) {
+			input = String(input);
+			if (/[^\0-\xFF]/.test(input)) {
+				// Note: no need to special-case astral symbols here, as surrogates are
+				// matched, and the input is supposed to only contain ASCII anyway.
+				error(
+					'The string to be encoded contains characters outside of the ' +
+					'Latin1 range.'
+				);
+			}
+			var padding = input.length % 3;
+			var output = '';
+			var position = -1;
+			var a;
+			var b;
+			var c;
+			var d;
+			var buffer;
+			// Make sure any padding is handled outside of the loop.
+			var length = input.length - padding;
+	
+			while (++position < length) {
+				// Read three bytes, i.e. 24 bits.
+				a = input.charCodeAt(position) << 16;
+				b = input.charCodeAt(++position) << 8;
+				c = input.charCodeAt(++position);
+				buffer = a + b + c;
+				// Turn the 24 bits into four chunks of 6 bits each, and append the
+				// matching character for each of them to the output.
+				output += (
+					TABLE.charAt(buffer >> 18 & 0x3F) +
+					TABLE.charAt(buffer >> 12 & 0x3F) +
+					TABLE.charAt(buffer >> 6 & 0x3F) +
+					TABLE.charAt(buffer & 0x3F)
+				);
+			}
+	
+			if (padding == 2) {
+				a = input.charCodeAt(position) << 8;
+				b = input.charCodeAt(++position);
+				buffer = a + b;
+				output += (
+					TABLE.charAt(buffer >> 10) +
+					TABLE.charAt((buffer >> 4) & 0x3F) +
+					TABLE.charAt((buffer << 2) & 0x3F) +
+					'='
+				);
+			} else if (padding == 1) {
+				buffer = input.charCodeAt(position);
+				output += (
+					TABLE.charAt(buffer >> 2) +
+					TABLE.charAt((buffer << 4) & 0x3F) +
+					'=='
+				);
+			}
+	
+			return output;
+		};
+	
+		var base64 = {
+			'encode': encode,
+			'decode': decode,
+			'version': '0.1.0'
+		};
+	
+		// Some AMD build optimizers, like r.js, check for specific condition patterns
+		// like the following:
+		if (
+			true
+		) {
+			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
+				return base64;
+			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		}	else if (freeExports && !freeExports.nodeType) {
+			if (freeModule) { // in Node.js or RingoJS v0.8.0+
+				freeModule.exports = base64;
+			} else { // in Narwhal or RingoJS v0.7.0-
+				for (var key in base64) {
+					base64.hasOwnProperty(key) && (freeExports[key] = base64[key]);
+				}
+			}
+		} else { // in Rhino or a web browser
+			root.base64 = base64;
+		}
+	
+	}(this));
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)(module), (function() { return this; }())))
+
+/***/ },
+/* 30 */
+/***/ function(module, exports) {
+
+	module.exports = function(module) {
+		if(!module.webpackPolyfill) {
+			module.deprecate = function() {};
+			module.paths = [];
+			// module.parent = undefined by default
+			module.children = [];
+			module.webpackPolyfill = 1;
+		}
+		return module;
+	}
+
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	    'use strict';
+	
+	    var d3Format = __webpack_require__(14);
+	    var d3Selection = __webpack_require__(4);
+	    var d3Transition = __webpack_require__(22);
+	    var d3TimeFormat = __webpack_require__(19);
+	
+	    var _require = __webpack_require__(27),
+	        axisTimeCombinations = _require.axisTimeCombinations;
+	
+	    /**
+	     * Tooltip Component reusable API class that renders a
+	     * simple and configurable tooltip element for Britechart's
+	     * line chart or stacked area chart.
+	     *
+	     * @module Tooltip
+	     * @tutorial tooltip
+	     * @requires d3-array, d3-axis, d3-dispatch, d3-format, d3-scale, d3-selection, d3-transition
+	     *
+	     * @example
+	     * var lineChart = line(),
+	     *     tooltip = tooltip();
+	     *
+	     * tooltip
+	     *     .title('Tooltip title');
+	     *
+	     * lineChart
+	     *     .width(500)
+	     *     .on('customMouseOver', function() {
+	     *          tooltip.show();
+	     *     })
+	     *     .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
+	     *          tooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+	     *     })
+	     *     .on('customMouseOut', function() {
+	     *          tooltip.hide();
+	     *     });
+	     *
+	     * d3Selection.select('.css-selector')
+	     *     .datum(dataset)
+	     *     .call(lineChart);
+	     *
+	     * d3Selection.select('.metadata-group .hover-marker')
+	     *     .datum([])
+	     *     .call(tooltip);
+	     *
+	     */
+	
+	
+	    return function module() {
+	
+	        var margin = {
+	            top: 2,
+	            right: 2,
+	            bottom: 2,
+	            left: 2
+	        },
+	            width = 250,
+	            height = 45,
+	            title = 'Tooltip title',
+	
+	
+	        // tooltip
+	        tooltip = void 0,
+	            tooltipOffset = {
+	            y: -55,
+	            x: 0
+	        },
+	            tooltipMaxTopicLength = 170,
+	            tooltipTextContainer = void 0,
+	            tooltipDivider = void 0,
+	            tooltipBody = void 0,
+	            tooltipTitle = void 0,
+	            tooltipWidth = 250,
+	            tooltipHeight = 48,
+	            ttTextX = 0,
+	            ttTextY = 37,
+	            textSize = void 0,
+	            entryLineLimit = 3,
+	            circleYOffset = 8,
+	            colorMap = void 0,
+	            bodyFillColor = '#FFFFFF',
+	            borderStrokeColor = '#D2D6DF',
+	            titleFillColor = '#6D717A',
+	            textFillColor = '#282C35',
+	            tooltipTextColor = '#000000',
+	            dateLabel = 'date',
+	            valueLabel = 'value',
+	            topicLabel = 'topics',
+	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
+	            forceAxisSettings = null,
+	
+	
+	        // formats
+	        monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
+	            monthDayHourFormat = d3TimeFormat.timeFormat('%b %d, %H %p'),
+	            valueRangeLimits = {
+	            small: 10,
+	            medium: 100
+	        },
+	            integerValueFormats = {
+	            small: d3Format.format(''),
+	            medium: d3Format.format(''),
+	            large: d3Format.format('.2s')
+	        },
+	            decimalValueFormats = {
+	            small: d3Format.format('.3f'),
+	            medium: d3Format.format('.1f'),
+	            large: d3Format.format('.2s')
+	        },
+	            chartWidth = void 0,
+	            chartHeight = void 0,
+	            data = void 0,
+	            svg = void 0;
+	
+	        /**
+	         * This function creates the graph using the selection as container
+	         * @param {D3Selection} _selection A d3 selection that represents
+	         *                                  the container(s) where the chart(s) will be rendered
+	         * @param {Object} _data The data to attach and generate the chart
+	         */
+	        function exports(_selection) {
+	            _selection.each(function (_data) {
+	                chartWidth = width - margin.left - margin.right;
+	                chartHeight = height - margin.top - margin.bottom;
+	                data = _data;
+	
+	                buildSVG(this);
+	            });
+	        }
+	
+	        /**
+	         * Builds containers for the tooltip
+	         * Also applies the Margin convention
+	         * @private
+	         */
+	        function buildContainerGroups() {
+	            var container = svg.append('g').classed('tooltip-container-group', true).attr('transform', 'translate( ' + margin.left + ', ' + margin.top + ')');
+	
+	            container.append('g').classed('tooltip-group', true);
+	        }
+	
+	        /**
+	         * Builds the SVG element that will contain the chart
+	         * @param  {HTMLElement} container DOM element that will work as the container of the graph
+	         * @private
+	         */
+	        function buildSVG(container) {
+	            if (!svg) {
+	                svg = d3Selection.select(container).append('g').classed('britechart britechart-tooltip', true);
+	
+	                buildContainerGroups();
+	                drawTooltip();
+	            }
+	            svg.transition().attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+	
+	            // Hidden by default
+	            exports.hide();
+	        }
+	
+	        /**
+	         * Resets the tooltipBody content
+	         * @return void
+	         */
+	        function cleanContent() {
+	            tooltipBody.selectAll('text').remove();
+	            tooltipBody.selectAll('circle').remove();
+	        }
+	
+	        /**
+	         * Draws the different elements of the Tooltip box
+	         * @return void
+	         */
+	        function drawTooltip() {
+	            tooltipTextContainer = svg.selectAll('.tooltip-group').append('g').classed('tooltip-text', true);
+	
+	            tooltip = tooltipTextContainer.append('rect').classed('tooltip-text-container', true).attr('x', -tooltipWidth / 4 + 8).attr('y', 0).attr('width', tooltipWidth).attr('height', tooltipHeight).attr('rx', 3).attr('ry', 3).style('fill', bodyFillColor).style('stroke', borderStrokeColor).style('stroke-width', 1);
+	
+	            tooltipTitle = tooltipTextContainer.append('text').classed('tooltip-title', true).attr('x', -tooltipWidth / 4 + 17).attr('dy', '.35em').attr('y', 16).style('fill', titleFillColor);
+	
+	            tooltipDivider = tooltipTextContainer.append('line').classed('tooltip-divider', true).attr('x1', -tooltipWidth / 4 + 15).attr('y1', 31).attr('x2', 265).attr('y2', 31).style('stroke', borderStrokeColor);
+	
+	            tooltipBody = tooltipTextContainer.append('g').classed('tooltip-body', true).style('transform', 'translateY(8px)').style('fill', textFillColor);
+	        }
+	
+	        /**
+	         * Formats a floating point value depending on its value range
+	         * @param  {Number} value Decimal point value to format
+	         * @return {Number}       Formatted value to show
+	         */
+	        function formatDecimalValue(value) {
+	            var size = 'large';
+	
+	            if (value < valueRangeLimits.small) {
+	                size = 'small';
+	            } else if (value < valueRangeLimits.medium) {
+	                size = 'medium';
+	            }
+	
+	            return decimalValueFormats[size](value);
+	        }
+	
+	        /**
+	         * Formats an integer value depending on its value range
+	         * @param  {Number} value Decimal point value to format
+	         * @return {Number}       Formatted value to show
+	         */
+	        function formatIntegerValue(value) {
+	            var size = 'large';
+	
+	            if (value < valueRangeLimits.small) {
+	                size = 'small';
+	            }if (value < valueRangeLimits.medium) {
+	                size = 'medium';
+	            }
+	
+	            return integerValueFormats[size](value);
+	        }
+	
+	        /**
+	         * Formats the value depending on its characteristics
+	         * @param  {Number} value Value to format
+	         * @return {Number}       Formatted value
+	         */
+	        function getFormattedValue(value) {
+	            if (!value) {
+	                return 0;
+	            }
+	
+	            if (isInteger(value)) {
+	                value = formatIntegerValue(value);
+	            } else {
+	                value = formatDecimalValue(value);
+	            }
+	
+	            return value;
+	        }
+	
+	        /**
+	         * Extracts the value from the data object
+	         * @param  {Object} data Data value containing the info
+	         * @return {String}      Value to show
+	         */
+	        function getValueText(data) {
+	            var value = data[valueLabel];
+	            var valueText = void 0;
+	
+	            if (data.missingValue) {
+	                valueText = '-';
+	            } else {
+	                valueText = getFormattedValue(value).toString();
+	            }
+	
+	            return valueText;
+	        }
+	
+	        /**
+	         * Checks if a number is an integer of has decimal values
+	         * @param  {Number}  value Value to check
+	         * @return {Boolean}       If it is an iteger
+	         */
+	        function isInteger(value) {
+	            return value % 1 === 0;
+	        }
+	
+	        /**
+	         * Resets the height of the tooltip and the pointer for the text
+	         * position
+	         */
+	        function resetSizeAndPositionPointers() {
+	            tooltipHeight = 48;
+	            ttTextY = 37;
+	            ttTextX = 0;
+	        }
+	
+	        /**
+	         * Draws the data entries inside the tooltip for a given topic
+	         * @param  {Object} topic Topic to extract data from
+	         * @return void
+	         */
+	        function updateContent(topic) {
+	            var name = topic.name,
+	                tooltipRight = void 0,
+	                tooltipLeftText = void 0,
+	                tooltipRightText = void 0,
+	                elementText = void 0;
+	
+	            tooltipLeftText = topic.topicName || name;
+	            tooltipRightText = getValueText(topic);
+	
+	            elementText = tooltipBody.append('text').classed('tooltip-left-text', true).attr('dy', '1em').attr('x', ttTextX - 20).attr('y', ttTextY).style('fill', tooltipTextColor).text(tooltipLeftText).call(textWrap, tooltipMaxTopicLength, -25);
+	
+	            tooltipRight = tooltipBody.append('text').classed('tooltip-right-text', true).attr('dy', '1em').attr('x', ttTextX + 8).attr('y', ttTextY).style('fill', tooltipTextColor).text(tooltipRightText);
+	
+	            textSize = elementText.node().getBBox();
+	            tooltipHeight += textSize.height + 5;
+	
+	            // Not sure if necessary
+	            tooltipRight.attr('x', tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4);
+	
+	            tooltipBody.append('circle').classed('tooltip-circle', true).attr('cx', 23 - tooltipWidth / 4).attr('cy', ttTextY + circleYOffset).attr('r', 5).style('fill', colorMap[name]).style('stroke-width', 1);
+	
+	            ttTextY += textSize.height + 7;
+	        }
+	
+	        /**
+	         * Updates size and position of tooltip depending on the side of the chart we are in
+	         * @param  {Object} dataPoint DataPoint of the tooltip
+	         * @param  {Number} xPosition DataPoint's x position in the chart
+	         * @return void
+	         */
+	        function updatePositionAndSize(dataPoint, xPosition) {
+	            tooltip.attr('width', tooltipWidth).attr('height', tooltipHeight + 10);
+	
+	            // show tooltip to the right
+	            if (xPosition - tooltipWidth < 0) {
+	                // Tooltip on the right
+	                tooltipTextContainer.attr('transform', 'translate(' + (tooltipWidth - 185) + ',' + tooltipOffset.y + ')');
+	            } else {
+	                // Tooltip on the left
+	                tooltipTextContainer.attr('transform', 'translate(' + -205 + ',' + tooltipOffset.y + ')');
+	            }
+	
+	            tooltipDivider.attr('x2', tooltipWidth - 60);
+	        }
+	
+	        /**
+	         * Updates value of tooltipTitle with the data meaning and the date
+	         * @param  {Object} dataPoint Point of data to use as source
+	         * @return void
+	         */
+	        function updateTitle(dataPoint) {
+	            var date = new Date(dataPoint[dateLabel]),
+	                tooltipTitleText = title + ' - ' + formatDate(date);
+	
+	            tooltipTitle.text(tooltipTitleText);
+	        }
+	
+	        /**
+	         * Figures out which date format to use when showing the date of the current data entry
+	         * @return {Function} The proper date formatting function
+	         */
+	        function formatDate(date) {
+	            var settings = forceAxisSettings || defaultAxisSettings;
+	            var format = null;
+	
+	            if (settings === axisTimeCombinations.DAY_MONTH || settings === axisTimeCombinations.MONTH_YEAR) {
+	                format = monthDayYearFormat;
+	            } else if (settings === axisTimeCombinations.HOUR_DAY || settings === axisTimeCombinations.MINUTE_HOUR) {
+	                format = monthDayHourFormat;
+	            }
+	
+	            return format(date);
+	        }
+	
+	        /**
+	         * Updates tooltip title, content, size and position
+	         *
+	         * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
+	         * @param  {Number} xPosition           Position of the mouse on the X axis
+	         * @return void
+	         */
+	        function updateTooltip(dataPoint, xPosition) {
+	            var topics = dataPoint[topicLabel];
+	
+	            cleanContent();
+	            resetSizeAndPositionPointers();
+	            updateTitle(dataPoint);
+	            topics.forEach(updateContent);
+	            updatePositionAndSize(dataPoint, xPosition);
+	        }
+	
+	        /**
+	         * Wraps a text given the text, width, x position and textFormatter function
+	         * @param  {D3Selection} text  Selection with the text to wrap inside
+	         * @param  {Number} width Desired max width for that line
+	         * @param  {Number} xpos  Initial x position of the text
+	         *
+	         * REF: http://bl.ocks.org/mbostock/7555321
+	         * More discussions on https://github.com/mbostock/d3/issues/1642
+	         */
+	        function textWrap(text, width, xpos) {
+	            xpos = xpos || 0;
+	
+	            text.each(function () {
+	                var words, word, line, lineNumber, lineHeight, y, dy, tspan;
+	
+	                text = d3Selection.select(this);
+	
+	                words = text.text().split(/\s+/).reverse();
+	                line = [];
+	                lineNumber = 0;
+	                lineHeight = 1.2;
+	                y = text.attr('y');
+	                dy = parseFloat(text.attr('dy'));
+	                tspan = text.text(null).append('tspan').attr('x', xpos).attr('y', y).attr('dy', dy + 'em');
+	
+	                while (word = words.pop()) {
+	                    line.push(word);
+	                    tspan.text(line.join(' '));
+	
+	                    if (tspan.node().getComputedTextLength() > width) {
+	                        line.pop();
+	                        tspan.text(line.join(' '));
+	
+	                        if (lineNumber < entryLineLimit - 1) {
+	                            line = [word];
+	                            tspan = text.append('tspan').attr('x', xpos).attr('y', y).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);
+	                        }
+	                    }
+	                }
+	            });
+	        }
+	
+	        /**
+	         * Gets or Sets the dateLabel of the data
+	         * @param  {Number} _x Desired dateLabel
+	         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.dateLabel = function (_x) {
+	            if (!arguments.length) {
+	                return dateLabel;
+	            }
+	            dateLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the valueLabel of the data
+	         * @param  {Number} _x Desired valueLabel
+	         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.valueLabel = function (_x) {
+	            if (!arguments.length) {
+	                return valueLabel;
+	            }
+	            valueLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the topicLabel of the data
+	         * @param  {Number} _x Desired topicLabel
+	         * @return { topicLabel | module} Current topicLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.topicLabel = function (_x) {
+	            if (!arguments.length) {
+	                return topicLabel;
+	            }
+	            topicLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Hides the tooltip
+	         * @return {Module} Tooltip module to chain calls
+	         * @public
+	         */
+	        exports.hide = function () {
+	            svg.style('display', 'none');
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Shows the tooltip
+	         * @return {Module} Tooltip module to chain calls
+	         * @public
+	         */
+	        exports.show = function () {
+	            svg.style('display', 'block');
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the title of the tooltip
+	         * @param  {string} _x Desired title
+	         * @return { string | module} Current title or module to chain calls
+	         * @public
+	         */
+	        exports.title = function (_x) {
+	            if (!arguments.length) {
+	                return title;
+	            }
+	            title = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Updates the position and content of the tooltip
+	         * @param  {Object} dataPoint    Datapoint to represent
+	         * @param  {Object} colorMapping Color scheme of the topics
+	         * @param  {Number} position     X-scale position in pixels
+	         * @return {Module} Tooltip module to chain calls
+	         * @public
+	         */
+	        exports.update = function (dataPoint, colorMapping, position) {
+	            colorMap = colorMapping;
+	            updateTooltip(dataPoint, position);
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the tooltip to use a certain date format
+	         * @param  {String} _x Desired format
+	         * @return { (String|Module) }    Current format or module to chain calls
+	         */
+	        exports.forceDateRange = function (_x) {
+	            if (!arguments.length) {
+	                return forceAxisSettings || defaultAxisSettings;
+	            }
+	            forceAxisSettings = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * constants to be used to force the x axis to respect a certain granularity
+	         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
+	         * @example tooltip.forceDateRange(tooltip.axisTimeCombinations.HOUR_DAY)
+	         */
+	        exports.axisTimeCombinations = axisTimeCombinations;
+	
+	        return exports;
+	    };
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
 /* 32 */
@@ -16374,9 +16375,9 @@
 	    var d3Dispatch = __webpack_require__(12);
 	    var d3Scale = __webpack_require__(15);
 	    var d3Selection = __webpack_require__(4);
-	    var d3Transition = __webpack_require__(30);
+	    var d3Transition = __webpack_require__(22);
 	
-	    var exportChart = __webpack_require__(22);
+	    var exportChart = __webpack_require__(24);
 	
 	    /**
 	     * @typedef BarChartData
@@ -16793,7 +16794,7 @@
 	    var d3Ease = __webpack_require__(13);
 	    var d3Format = __webpack_require__(14);
 	    var d3Selection = __webpack_require__(4);
-	    var d3Transition = __webpack_require__(30);
+	    var d3Transition = __webpack_require__(22);
 	
 	    /**
 	     * Mini Tooltip Component reusable API class that renders a
@@ -17473,8 +17474,9 @@
 	    var d3Scale = __webpack_require__(15);
 	    var d3Shape = __webpack_require__(20);
 	    var d3Selection = __webpack_require__(4);
+	    var d3Transition = __webpack_require__(22);
 	
-	    var exportChart = __webpack_require__(22);
+	    var exportChart = __webpack_require__(24);
 	    var textHelper = __webpack_require__(46);
 	    var colorHelper = __webpack_require__(7);
 	
@@ -34393,6 +34395,7 @@
 	    var d3Format = __webpack_require__(14);
 	    var d3Scale = __webpack_require__(15);
 	    var d3Selection = __webpack_require__(4);
+	    var d3Transition = __webpack_require__(22);
 	
 	    var colorHelper = __webpack_require__(7);
 	
@@ -34767,7 +34770,7 @@
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
 	    line = __webpack_require__(52),
-	    tooltip = __webpack_require__(29),
+	    tooltip = __webpack_require__(31),
 	    dataBuilder = __webpack_require__(53),
 	    colorSelectorHelper = __webpack_require__(37);
 	
@@ -34925,11 +34928,12 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Time = __webpack_require__(18);
 	    var d3TimeFormat = __webpack_require__(19);
+	    var d3Transition = __webpack_require__(22);
 	
 	    var colorHelper = __webpack_require__(7);
-	    var exportChart = __webpack_require__(22);
+	    var exportChart = __webpack_require__(24);
 	
-	    var _require = __webpack_require__(25),
+	    var _require = __webpack_require__(27),
 	        axisTimeCombinations = _require.axisTimeCombinations,
 	        lineGradientId = _require.lineGradientId,
 	        timeBenchmarks = _require.timeBenchmarks;
@@ -52206,8 +52210,9 @@
 	    var d3Scale = __webpack_require__(15);
 	    var d3Shape = __webpack_require__(20);
 	    var d3Selection = __webpack_require__(4);
+	    var d3Transition = __webpack_require__(22);
 	
-	    var exportChart = __webpack_require__(22);
+	    var exportChart = __webpack_require__(24);
 	    var colorHelper = __webpack_require__(7);
 	
 	    /**
@@ -52744,9 +52749,9 @@
 	    var d3Format = __webpack_require__(14);
 	    var d3Scale = __webpack_require__(15);
 	    var d3Selection = __webpack_require__(4);
-	    var d3Transition = __webpack_require__(30);
+	    var d3Transition = __webpack_require__(22);
 	
-	    var exportChart = __webpack_require__(22);
+	    var exportChart = __webpack_require__(24);
 	
 	    /**
 	     * @typedef StepChartData
@@ -53276,6 +53281,7 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Time = __webpack_require__(18);
 	    var d3TimeFormat = __webpack_require__(19);
+	    var d3Transition = __webpack_require__(22);
 	
 	    var colorHelper = __webpack_require__(7);
 	
@@ -53679,7 +53685,7 @@
 
 	// https://d3js.org/d3-brush/ Version 1.0.3. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-	   true ? factory(exports, __webpack_require__(12), __webpack_require__(71), __webpack_require__(16), __webpack_require__(4), __webpack_require__(30)) :
+	   true ? factory(exports, __webpack_require__(12), __webpack_require__(71), __webpack_require__(16), __webpack_require__(4), __webpack_require__(22)) :
 	  typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-selection', 'd3-transition'], factory) :
 	  (factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3));
 	}(this, (function (exports,d3Dispatch,d3Drag,d3Interpolate,d3Selection,d3Transition) { 'use strict';
