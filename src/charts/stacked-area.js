@@ -21,6 +21,9 @@ define(function(require){
     const ONE_AND_A_HALF_YEARS = 47304000000;
     const ONE_DAY = 86400001;
 
+    const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
+
+
     /**
      * @typdef D3Layout
      * @type function
@@ -290,7 +293,7 @@ define(function(require){
                 })
                 .value();
 
-            let keys = [...new Set(_(data).pluck('name'))];
+            let keys = uniq(_(data).pluck('name'));
             let stack3 = d3Shape.stack()
                 .keys(keys)
                 .order(d3Shape.stackOrderNone)
@@ -528,7 +531,7 @@ define(function(require){
          * @return {Number} Max value
          */
         function getMaxValueByDate() {
-            let keys = [...new Set(_(data).pluck('name'))];
+            let keys = uniq(_(data).pluck('name'));
             let maxValueByDate = d3Array.max(dataByDateFormatted, function(d){
                 let vals = keys.map((key) => d[key]);
 
