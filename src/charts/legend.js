@@ -6,6 +6,7 @@ define(function(require){
     const d3Format = require('d3-format');
     const d3Scale = require('d3-scale');
     const d3Selection = require('d3-selection');
+    const d3Transition = require('d3-transition');
 
     const colorHelper = require('./helpers/colors');
 
