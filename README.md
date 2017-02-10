@@ -48,8 +48,11 @@ They also provide some minimal CSS styling, that can be loaded independently or 
 This project is in active development. Check the [issues page][16] for more info in what's coming.
 
 ## See Also
+- [Getting Started Guide][34]
 - [Documentation][31]
 - [Release Notes][13]
+- [Contributing Guide][35]
+- [Github Repo][33]
 
 ## Acknowledgments
 
@@ -106,3 +109,6 @@ Read more in the [license document][15]
 [30]: module-Stacked-area.html
 [31]: http://eventbrite.github.io/britecharts/
 [32]: http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
+[33]: https://github.com/eventbrite/britecharts
+[34]: http://eventbrite.github.io/britecharts/tutorial--_GETTINGSTARTED.html
+[35]: http://eventbrite.github.io/britecharts/tutorial--_CONTRIBUTING.html

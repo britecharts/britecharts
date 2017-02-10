@@ -1,7 +1,7 @@
 {
   "name": "britecharts",
   "version": "1.1.14",
-  "description": "Eventbrite's D3.js based Modular Charting Library",
+  "description": "D3.js based Modular Charting Library by Eventbrite",
   "main": "README.md",
   "contributors": [
     {
@@ -11,6 +11,10 @@
     {
       "name": "Ryan Wholey",
       "email": "rjwholey@gmail.com"
+    },
+    {
+      "name": "Sun Dai",
+      "email": "sundaisf@gmail.com"
     }
   ],
   "scripts": {
@@ -40,7 +44,7 @@
     "reusable",
     "es6",
     "es2015",
-    "tests"
+    "visualization"
   ],
   "publishConfig": {
     "registry": "http://packages:8889"
@@ -50,7 +54,7 @@
   "bugs": {
     "url": "https://github.com/eventbrite/britecharts/issues"
   },
-  "homepage": "https://github.com/eventbrite/britecharts",
+  "homepage": "http://eventbrite.github.io/britecharts/",
   "dependencies": {
     "base-64": "^0.1.0",
     "bowser": "^1.5.0",
