@@ -10,6 +10,7 @@ define(function(require) {
     const d3Selection = require('d3-selection');
     const d3Time = require('d3-time');
     const d3TimeFormat = require('d3-time-format');
+    const d3Transition = require('d3-transition');
 
     const colorHelper = require('./helpers/colors');
 
