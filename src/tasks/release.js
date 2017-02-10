@@ -7,7 +7,10 @@ module.exports = function(grunt) {
     grunt.renameTask('release', 'bump-version');
     grunt.config.set('bump-version', {
         'options': {
+            additionalFiles: ['bower.json'],
             commitMessage: 'Bumped Project to <%= version %>',
+            changelog: true, //default: false
+            changelogText: '<%= version %>\n',
             bump: true,
             file: 'package.json',
             add: true,
@@ -15,7 +18,8 @@ module.exports = function(grunt) {
             tag: true,
             push: true,
             pushTags: true,
-            npm: false
+            npm: true,
+            npmtag: true
         }
     });
 
