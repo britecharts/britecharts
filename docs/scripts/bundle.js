@@ -3022,8 +3022,6 @@
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
@@ -3046,6 +3044,12 @@
 	
 	    var ONE_AND_A_HALF_YEARS = 47304000000;
 	    var ONE_DAY = 86400001;
+	
+	    var uniq = function uniq(arrArg) {
+	        return arrArg.filter(function (elem, pos, arr) {
+	            return arr.indexOf(elem) == pos;
+	        });
+	    };
 	
 	    /**
 	     * @typdef D3Layout
@@ -3293,7 +3297,7 @@
 	                return d;
 	            }).value();
 	
-	            var keys = [].concat(_toConsumableArray(new Set(_(data).pluck('name'))));
+	            var keys = uniq(_(data).pluck('name'));
 	            var stack3 = d3Shape.stack().keys(keys).order(d3Shape.stackOrderNone).offset(d3Shape.stackOffsetNone);
 	
 	            layersInitial = stack3(dataByDateZeroed);
@@ -3485,7 +3489,7 @@
 	         * @return {Number} Max value
 	         */
 	        function getMaxValueByDate() {
-	            var keys = [].concat(_toConsumableArray(new Set(_(data).pluck('name'))));
+	            var keys = uniq(_(data).pluck('name'));
 	            var maxValueByDate = d3Array.max(dataByDateFormatted, function (d) {
 	                var vals = keys.map(function (key) {
 	                    return d[key];
