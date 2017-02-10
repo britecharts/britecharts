@@ -20,9 +20,6 @@ coverage
 # Builds
 .grunt
 .sass-cache
-docs
-fonts
-styleguide_fonts
 
 # node-waf configuration
 .lock-wscript
