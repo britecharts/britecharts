@@ -16,5 +16,6 @@
     "es2015",
     "visualization"
   ],
-  "homepage": "http://eventbrite.github.io/britecharts/"
+  "homepage": "http://eventbrite.github.io/britecharts/",
+  "version": "1.1.16"
 }
