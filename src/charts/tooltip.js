@@ -97,7 +97,7 @@ define(function(require){
 
             // formats
             monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
-            monthDayHourFormat = d3TimeFormat.timeFormat('%b %d, %H %p'),
+            monthDayHourFormat = d3TimeFormat.timeFormat('%b %d, %I %p'),
             valueRangeLimits = {
                 small: 10,
                 medium: 100
