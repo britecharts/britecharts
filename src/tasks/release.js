@@ -18,8 +18,8 @@ module.exports = function(grunt) {
             tag: true,
             push: true,
             pushTags: true,
-            npm: true,
-            npmtag: true
+            npm: false,
+            npmtag: false
         }
     });
 
