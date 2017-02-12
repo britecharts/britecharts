@@ -119,7 +119,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                             containerFixture.select('.britechart-tooltip')
                                 .selectAll('.tooltip-title')
                                 .text()
-                        ).toBe('Tooltip title - Aug 05, 00 AM');
+                        ).toBe('Tooltip title - Aug 05, 12 AM');
                     });
                 });
             });

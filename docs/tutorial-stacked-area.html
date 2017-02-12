@@ -168,6 +168,43 @@ tooltipContainer.datum([]).call(chartTooltip);
             </div>
         </div>
     </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h2 class="tutorial__heading">Stacked Area Chart with fixed Aspect Ratio</h2>
+                <div class="britechart js-stacked-area-chart-fixed-container card--chart"></div>
+            </div>
+            <div class="col-md-4 sidebar">
+                <h3>The code</h3>
+                <pre><code class="language-javascript">
+// StackedAreChart Setup and start
+stackedArea
+    .tooltipThreshold(400)
+    .width(containerWidth)
+    .aspectRatio(0.6)
+    .on('customMouseOver', function() {
+        chartTooltip.show();
+    })
+    .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
+        chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+    })
+    .on('customMouseOut', function() {
+        chartTooltip.hide();
+    });
+container.datum(dataset.data).call(stackedArea);
+
+// Tooltip Setup and start
+chartTooltip
+    .title('Testing tooltip');
+
+// Note that if the viewport width is less than the tooltipThreshold value,
+// this container won't exist, and the tooltip won't show up
+tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
+tooltipContainer.datum([]).call(chartTooltip);
+                </code></pre>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 
