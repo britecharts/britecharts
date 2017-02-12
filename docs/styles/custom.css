@@ -1408,7 +1408,7 @@ html {
 }
 
 body {
-  font-family: "Karla", Helvetica, Arial, sans-serif;
+  font-family: "Benton Regular", "Karla", Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.44;
   color: #45494e;
@@ -1506,7 +1506,7 @@ hr {
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: "Radley", sans-serif;
+  font-family: "Benton Light", "Radley", sans-serif;
   font-weight: 400;
   line-height: 1.2;
   color: inherit;
@@ -6586,7 +6586,7 @@ button.close {
   position: absolute;
   z-index: 1070;
   display: block;
-  font-family: "Karla", Helvetica, Arial, sans-serif;
+  font-family: "Benton Regular", "Karla", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
@@ -6708,7 +6708,7 @@ button.close {
   display: none;
   max-width: 276px;
   padding: 1px;
-  font-family: "Karla", Helvetica, Arial, sans-serif;
+  font-family: "Benton Regular", "Karla", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
