@@ -2892,8 +2892,9 @@
 	    if (containerWidth) {
 	        // dataset = testDataSet.withReportData().build();
 	        // dataset = testDataSet.with3Sources().build();
-	        // dataset = testDataSet.with6Sources().build();
-	        dataset = testDataSet.withLargeData().build();
+	        dataset = testDataSet.with6Sources().build();
+	        // dataset = testDataSet.withLargeData().build();
+	        // dataset = testDataSet.withGeneratedData().build();
 	
 	        // StackedAreChart Setup and start
 	        stackedArea.tooltipThreshold(600).width(containerWidth).on('customMouseOver', function () {
@@ -2915,7 +2916,7 @@
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
-	        tooltipContainer = d3Selection.select('.metadata-group .vertical-marker-container');
+	        tooltipContainer = d3Selection.select('.js-stacked-area-chart-tooltip-container .metadata-group .vertical-marker-container');
 	        tooltipContainer.datum([]).call(chartTooltip);
 	
 	        d3Selection.select('#button').on('click', function () {
@@ -2924,9 +2925,50 @@
 	    }
 	}
 	
+	function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
+	    var stackedArea = stackedAreaChart(),
+	        chartTooltip = tooltip(),
+	        testDataSet = new stackedDataBuilder.StackedAreaDataBuilder(),
+	        container = d3Selection.select('.js-stacked-area-chart-fixed-container'),
+	        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
+	        tooltipContainer,
+	        dataset;
+	
+	    if (containerWidth) {
+	        // dataset = testDataSet.withReportData().build();
+	        dataset = testDataSet.with3Sources().build();
+	        // dataset = testDataSet.with6Sources().build();
+	        // dataset = testDataSet.withLargeData().build();
+	
+	        // StackedAreChart Setup and start
+	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).width(containerWidth).on('customMouseOver', function () {
+	            chartTooltip.show();
+	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
+	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+	        }).on('customMouseOut', function () {
+	            chartTooltip.hide();
+	        });
+	
+	        if (optionalColorSchema) {
+	            stackedArea.colorSchema(optionalColorSchema);
+	        }
+	
+	        container.datum(dataset.data).call(stackedArea);
+	
+	        // Tooltip Setup and start
+	        chartTooltip.topicLabel('values').title('Testing tooltip');
+	
+	        // Note that if the viewport width is less than the tooltipThreshold value,
+	        // this container won't exist, and the tooltip won't show up
+	        tooltipContainer = d3Selection.select('.js-stacked-area-chart-fixed-container .metadata-group .vertical-marker-container');
+	        tooltipContainer.datum([]).call(chartTooltip);
+	    }
+	}
+	
 	if (d3Selection.select('.js-stacked-area-chart-tooltip-container').node()) {
 	    // Chart creation
 	    createStackedAreaChartWithTooltip();
+	    createStackedAreaChartWithFixedAspectRatio();
 	
 	    // For getting a responsive behavior on our chart,
 	    // we'll need to listen to the window resize event
@@ -2934,6 +2976,7 @@
 	        d3Selection.selectAll('.stacked-area').remove();
 	
 	        createStackedAreaChartWithTooltip();
+	        createStackedAreaChartWithFixedAspectRatio();
 	    };
 	
 	    // Redraw charts on window resize
@@ -3057,6 +3100,25 @@
 	     */
 	
 	    /**
+	     * @typedef areaChartData
+	     * @type {Object}
+	     * @property {Object[]} Data       All data entries for a given topic (required)
+	     * @property {Number} topic        Topic identifier (required)
+	     * @property {String} topicName    Topic name (required)
+	     *
+	     * @example
+	     * {
+	     *     'data': [
+	     *         {
+	     *             "name": "Direct",
+	     *             "views": 0,
+	     *             "dateUTC": "2011-01-05T00:00:00Z"
+	     *         }
+	     *     ]
+	     * }
+	     */
+	
+	    /**
 	     * Stacked Area Chart reusable API module that allows us
 	     * rendering a multi area and configurable chart.
 	     *
@@ -3091,6 +3153,7 @@
 	            xMonthAxis = void 0,
 	            yScale = void 0,
 	            yAxis = void 0,
+	            aspectRatio = null,
 	            monthAxisPadding = 30,
 	            numVerticalTicks = 5,
 	            yTickTextYOffset = -8,
@@ -3179,7 +3242,7 @@
 	          * This function creates the graph using the selection and data provided
 	          * @param {D3Selection} _selection A d3 selection that represents
 	          * the container(s) where the chart(s) will be rendered
-	          * @param {Object} _data The data to attach and generate the chart
+	          * @param {areaChartData} _data The data to attach and generate the chart
 	          */
 	        function exports(_selection) {
 	            _selection.each(function (_data) {
@@ -3498,7 +3561,7 @@
 	                return d3Array.sum(vals);
 	            });
 	
-	            return maxValueByDate;
+	            return maxValueByDate * 1.3;
 	        }
 	
 	        /**
@@ -3639,6 +3702,20 @@
 	        // Accessors
 	
 	        /**
+	         * Gets or Sets the aspect ratio of the chart
+	         * @param  {Number} _x Desired aspect ratio for the graph
+	         * @return { (Number | Module) } Current aspect ratio or Area Chart module to chain calls
+	         * @public
+	         */
+	        exports.aspectRatio = function (_x) {
+	            if (!arguments.length) {
+	                return aspectRatio;
+	            }
+	            aspectRatio = _x;
+	            return this;
+	        };
+	
+	        /**
 	         * Gets or Sets the height of the chart
 	         * @param  {Number} _x Desired width for the graph
 	         * @return { height | module} Current height or Area Chart module to chain calls
@@ -3647,6 +3724,9 @@
 	        exports.height = function (_x) {
 	            if (!arguments.length) {
 	                return height;
+	            }
+	            if (aspectRatio) {
+	                width = Math.ceil(_x / aspectRatio);
 	            }
 	            height = _x;
 	            return this;
@@ -3689,6 +3769,9 @@
 	        exports.width = function (_x) {
 	            if (!arguments.length) {
 	                return width;
+	            }
+	            if (aspectRatio) {
+	                height = Math.ceil(_x * aspectRatio);
 	            }
 	            width = _x;
 	            return this;

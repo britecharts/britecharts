@@ -30,6 +30,25 @@ define(function(require){
      */
 
     /**
+     * @typedef areaChartData
+     * @type {Object}
+     * @property {Object[]} Data       All data entries for a given topic (required)
+     * @property {Number} topic        Topic identifier (required)
+     * @property {String} topicName    Topic name (required)
+     *
+     * @example
+     * {
+     *     'data': [
+     *         {
+     *             "name": "Direct",
+     *             "views": 0,
+     *             "dateUTC": "2011-01-05T00:00:00Z"
+     *         }
+     *     ]
+     * }
+     */
+
+    /**
      * Stacked Area Chart reusable API module that allows us
      * rendering a multi area and configurable chart.
      *
@@ -62,6 +81,8 @@ define(function(require){
 
             xScale, xAxis, xMonthAxis,
             yScale, yAxis,
+
+            aspectRatio = null,
 
             monthAxisPadding = 30,
             numVerticalTicks = 5,
@@ -147,7 +168,7 @@ define(function(require){
          * This function creates the graph using the selection and data provided
          * @param {D3Selection} _selection A d3 selection that represents
          * the container(s) where the chart(s) will be rendered
-         * @param {Object} _data The data to attach and generate the chart
+         * @param {areaChartData} _data The data to attach and generate the chart
          */
         function exports(_selection) {
             _selection.each(function(_data){
@@ -678,6 +699,20 @@ define(function(require){
         // Accessors
 
         /**
+         * Gets or Sets the aspect ratio of the chart
+         * @param  {Number} _x Desired aspect ratio for the graph
+         * @return { (Number | Module) } Current aspect ratio or Area Chart module to chain calls
+         * @public
+         */
+        exports.aspectRatio = function(_x) {
+            if (!arguments.length) {
+                return aspectRatio;
+            }
+            aspectRatio = _x;
+            return this;
+        };
+
+        /**
          * Gets or Sets the height of the chart
          * @param  {Number} _x Desired width for the graph
          * @return { height | module} Current height or Area Chart module to chain calls
@@ -686,6 +721,9 @@ define(function(require){
         exports.height = function(_x) {
             if (!arguments.length) {
                 return height;
+            }
+            if (aspectRatio) {
+                width = Math.ceil(_x / aspectRatio);
             }
             height = _x;
             return this;
@@ -728,6 +766,9 @@ define(function(require){
         exports.width = function(_x) {
             if (!arguments.length) {
                 return width;
+            }
+            if (aspectRatio) {
+                height = Math.ceil(_x * aspectRatio);
             }
             width = _x;
             return this;
