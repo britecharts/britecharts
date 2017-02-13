@@ -270,6 +270,18 @@ define([
                 expect(newTooltipThreshold).toBe(testTooltipThreshold);
             });
 
+            it('should provide an aspect ratio getter and setter', () => {
+                let defaultAspectRatio = lineChart.aspectRatio(),
+                    testAspectRatio = 600,
+                    newAspectRatio;
+
+                lineChart.aspectRatio(testAspectRatio);
+                newAspectRatio = lineChart.aspectRatio();
+
+                expect(defaultAspectRatio).not.toBe(testAspectRatio);
+                expect(newAspectRatio).toBe(testAspectRatio);
+            });
+
             it('should provide a colorSchema getter and setter', () => {
                 let defaultSchema = lineChart.colorSchema(),
                     testSchema = ['#ffffff', '#fafefc', '#000000'],
@@ -302,6 +314,36 @@ define([
                     HOUR_DAY: 'hour-day',
                     DAY_MONTH: 'day-month',
                     MONTH_YEAR: 'month-year'
+                });
+            });
+        });
+
+        describe('Aspect Ratio', function() {
+
+            describe('when an aspect ratio is set', function() {
+
+                it('should modify the height depending on the width', () => {
+                    let testAspectRatio = 0.5,
+                        testWidth = 400,
+                        newHeight;
+
+                    lineChart.aspectRatio(testAspectRatio);
+                    lineChart.width(testWidth);
+                    newHeight = lineChart.height();
+
+                    expect(newHeight).toBe(Math.ceil(testWidth*testAspectRatio));
+                });
+
+                it('should modify the width depending on the height', () => {
+                    let testAspectRatio = 0.5,
+                        testHeight = 400,
+                        newWidth;
+
+                    lineChart.aspectRatio(testAspectRatio);
+                    lineChart.height(testHeight);
+                    newWidth = lineChart.width();
+
+                    expect(newWidth).toBe(Math.ceil(testHeight/testAspectRatio));
                 });
             });
         });

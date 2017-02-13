@@ -37,7 +37,6 @@ define(function(require) {
             return new this.Klass(attributes);
         }
 
-
         this.build = function() {
             return this.config;
         };

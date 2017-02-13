@@ -193,6 +193,48 @@ define([
                 expect(defaultSchema).not.toBe(testSchema);
                 expect(newSchema).toBe(testSchema);
             });
+
+            it('should provide an aspect ratio getter and setter', () => {
+                let defaultAspectRatio = stackedAreaChart.aspectRatio(),
+                    testAspectRatio = 600,
+                    newAspectRatio;
+
+                stackedAreaChart.aspectRatio(testAspectRatio);
+                newAspectRatio = stackedAreaChart.aspectRatio();
+
+                expect(defaultAspectRatio).not.toBe(testAspectRatio);
+                expect(newAspectRatio).toBe(testAspectRatio);
+            });
+        });
+
+        describe('Aspect Ratio', function() {
+
+            describe('when an aspect ratio is set', function() {
+
+                it('should modify the height depending on the width', () => {
+                    let testAspectRatio = 0.5,
+                        testWidth = 400,
+                        newHeight;
+
+                    stackedAreaChart.aspectRatio(testAspectRatio);
+                    stackedAreaChart.width(testWidth);
+                    newHeight = stackedAreaChart.height();
+
+                    expect(newHeight).toBe(Math.ceil(testWidth*testAspectRatio));
+                });
+
+                it('should modify the width depending on the height', () => {
+                    let testAspectRatio = 0.5,
+                        testHeight = 400,
+                        newWidth;
+
+                    stackedAreaChart.aspectRatio(testAspectRatio);
+                    stackedAreaChart.height(testHeight);
+                    newWidth = stackedAreaChart.width();
+
+                    expect(newWidth).toBe(Math.ceil(testHeight/testAspectRatio));
+                });
+            });
         });
 
         describe('Export chart functionality', () => {
