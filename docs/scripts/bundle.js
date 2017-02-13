@@ -53480,11 +53480,6 @@
 	                drawAxis();
 	                drawBrush();
 	                drawHandles();
-	
-	                // This last step is optional, just needed when
-	                // a given selection would need to be shown
-	                // setBrushByDates(data[0].date, data[data.length - 1].date);
-	                // setBrushByPercentages(0.25, 0.5);
 	            });
 	        }
 	
@@ -53677,6 +53672,8 @@
 	         * Sets a new brush extent within the passed percentage positions
 	         * @param {Number} a Percentage of data that the brush start with
 	         * @param {Number} b Percentage of data that the brush ends with
+	         * @example
+	         *     setBrushByPercentages(0.25, 0.5)
 	         */
 	        function setBrushByPercentages(a, b) {
 	            var x0 = a * chartWidth,
