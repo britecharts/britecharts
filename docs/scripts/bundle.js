@@ -53333,6 +53333,8 @@
 	        });
 	
 	        brushContainer.datum(dataset).call(brushChart);
+	
+	        brushChart.dateRange(["9/15/2015", "1/25/2016"]);
 	    }
 	}
 	
@@ -53355,6 +53357,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
@@ -53427,6 +53431,7 @@
 	            ease = d3Ease.easeQuadOut,
 	            dateLabel = 'date',
 	            valueLabel = 'value',
+	            dateRange = [null, null],
 	            chartWidth = void 0,
 	            chartHeight = void 0,
 	            xScale = void 0,
@@ -53475,10 +53480,6 @@
 	                drawAxis();
 	                drawBrush();
 	                drawHandles();
-	
-	                // This last step is optional, just needed when
-	                // a given selection would need to be shown
-	                setBrush(0.25, 0.5);
 	            });
 	        }
 	
@@ -53671,10 +53672,24 @@
 	         * Sets a new brush extent within the passed percentage positions
 	         * @param {Number} a Percentage of data that the brush start with
 	         * @param {Number} b Percentage of data that the brush ends with
+	         * @example
+	         *     setBrushByPercentages(0.25, 0.5)
 	         */
-	        function setBrush(a, b) {
+	        function setBrushByPercentages(a, b) {
 	            var x0 = a * chartWidth,
 	                x1 = b * chartWidth;
+	
+	            brush.move(chartBrush, [x0, x1]);
+	        }
+	
+	        /**
+	         * Sets a new brush extent within the passed dates
+	         * @param {String | Date} dateA Initial Date
+	         * @param {String | Date} dateB End Date
+	         */
+	        function setBrushByDates(dateA, dateB) {
+	            var x0 = xScale(new Date(dateA)),
+	                x1 = xScale(new Date(dateB));
 	
 	            brush.move(chartBrush, [x0, x1]);
 	        }
@@ -53693,6 +53708,27 @@
 	                });
 	            }
 	        }
+	
+	        // API
+	
+	        /**
+	         * Gets or Sets the dateRange for the selected part of the brush
+	         * @param  {String[]} _x Desired dateRange for the graph
+	         * @return { dateRange | module} Current dateRange or Chart module to chain calls
+	         * @public
+	         */
+	        exports.dateRange = function (_x) {
+	            if (!arguments.length) {
+	                return dateRange;
+	            }
+	            dateRange = _x;
+	
+	            if (Array.isArray(dateRange)) {
+	                setBrushByDates.apply(undefined, _toConsumableArray(dateRange));
+	            }
+	
+	            return this;
+	        };
 	
 	        /**
 	         * Gets or Sets the gradient of the chart
