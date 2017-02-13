@@ -118,6 +118,18 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
                 expect(defaultCallback).not.toBe(testCallback);
                 expect(newCallback).toBe(testCallback);
             });
+
+            it('should provide a bush date range getter and setter', () => {
+                let defaultDateRange = brushChart.dateRange(),
+                    testDateRange = ["9/15/2015", "1/25/2016"],
+                    newDateRange;
+
+                brushChart.dateRange(testDateRange);
+                newDateRange = brushChart.dateRange();
+
+                expect(defaultDateRange).not.toBe(testDateRange);
+                expect(newDateRange).toBe(testDateRange);
+            });
         });
     });
 });
