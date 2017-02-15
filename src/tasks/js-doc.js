@@ -33,9 +33,19 @@ module.exports = function(grunt) {
         shell.exec(copyStylesCommand);
     });
 
+    // Move fonts and more
+    grunt.registerTask('moveFonts', 'Move demos code into /docs', function() {
+        var copyFontsCommand = 'cp -r src/doc/template/static/fonts/* docs/fonts/.';
+        var copyManifestCommand = 'cp -r src/doc/template/manifest.json docs/.';
+
+        shell.exec(copyFontsCommand);
+        shell.exec(copyManifestCommand);
+    });
+
     grunt.registerTask('docs', 'Generates docs and triggers server to view them', [
         'jsdoc:dist',
         'moveDemos',
+        'moveFonts',
         'openDocs'
     ]);
 };
