@@ -5,7 +5,7 @@ define(function(require) {
 
         jsonThreeSources = require('json!../json/areaDataThreeSources.json'),
         jsonSixSources = require('json!../json/areaDataSixSources.json'),
-        jsonReportService = require('json!../json/stackedAreaReportService.json'),
+        jsonReportService = require('json!../json/areaDataReportService.json'),
         jsonLargeService = require('json!../json/areaDataLArge.json');
 
 

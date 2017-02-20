@@ -26,7 +26,9 @@ define([
 
         beforeEach(() => {
             dataset = aTestDataSet().withReportData().build();
-            stackedAreaChart = stackedArea();
+            stackedAreaChart = stackedArea()
+                                .valueLabel('views')
+                                .dateLabel('dateUTC');
 
             // DOM Fixture Setup
             f = jasmine.getFixtures();
@@ -204,6 +206,42 @@ define([
 
                 expect(defaultAspectRatio).not.toBe(testAspectRatio);
                 expect(newAspectRatio).toBe(testAspectRatio);
+            });
+
+            it('should provide valueLabel getter and setter', () => {
+                let defaultValueLabel = stackedAreaChart.valueLabel(),
+                    testValueLabel = 'quantity',
+                    newValueLabel;
+
+                stackedAreaChart.valueLabel(testValueLabel);
+                newValueLabel = stackedAreaChart.valueLabel();
+
+                expect(defaultValueLabel).not.toBe(testValueLabel);
+                expect(newValueLabel).toBe(testValueLabel);
+            });
+
+            it('should provide keyLabel getter and setter', () => {
+                let defaultTopicLabel = stackedAreaChart.keyLabel(),
+                    testTopicLabel = 'val',
+                    newTopicLabel;
+
+                stackedAreaChart.keyLabel(testTopicLabel);
+                newTopicLabel = stackedAreaChart.keyLabel();
+
+                expect(defaultTopicLabel).not.toBe(testTopicLabel);
+                expect(newTopicLabel).toBe(testTopicLabel);
+            });
+
+            it('should provide dateLabel getter and setter', () => {
+                let defaultDateLabel = stackedAreaChart.dateLabel(),
+                    testDateLabel = 'dateFull',
+                    newDateLabel;
+
+                stackedAreaChart.dateLabel(testDateLabel);
+                newDateLabel = stackedAreaChart.dateLabel();
+
+                expect(defaultDateLabel).not.toBe(testDateLabel);
+                expect(newDateLabel).toBe(testDateLabel);
             });
         });
 

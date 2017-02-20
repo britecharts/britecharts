@@ -3,9 +3,9 @@ define(function(require) {
 
     var _ = require('underscore'),
 
+        jsonAllDatas = require('json!../json/lineDataAllDatas.json'),
         jsonFiveTopics = require('json!../json/lineDataFiveTopics.json'),
         jsonOneSource = require('json!../json/lineDataOneSet.json'),
-        jsonDataNDates = require('json!../json/lineDataForNDates.json'),
         jsonMultiMonthValueRange = require('json!../json/multiMonthLineData'),
         jsonHourDateRange = require('json!../json/lineDataOneSetHourly.json'),
         jsonSmallValueRange = require('json!../json/lineDataSmallValueRange');
@@ -28,20 +28,6 @@ define(function(require) {
             return new this.Klass(attributes);
         };
 
-        this.withNDates = function(n) {
-            var data = jsonDataNDates,
-                attributes;
-
-            if (n) {
-                data.data[0].Data = data.data[0].Data.slice(0, n);
-                data.dataByDate = data.dataByDate.slice(0, n);
-            }
-
-            attributes = _.extend({}, this.config, data);
-
-            return new this.Klass(attributes);
-        };
-
         this.withSmallValueRange = function() {
             var attributes = _.extend({}, this.config, jsonSmallValueRange);
 
@@ -56,6 +42,12 @@ define(function(require) {
 
         this.withHourDateRange = function() {
             var attributes = _.extend({}, this.config, jsonHourDateRange);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withAllDatas = function() {
+            var attributes = _.extend({}, this.config, jsonAllDatas);
 
             return new this.Klass(attributes);
         };

@@ -334,7 +334,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                 expect(newValueLabel).toBe(testValueLabel);
             });
 
-            it('should provide valueLabel getter and setter', () => {
+            it('should provide topicLabel getter and setter', () => {
                 let defaultTopicLabel = tooltipChart.topicLabel(),
                     testTopicLabel = 'valueSet',
                     newTopicLabel;
@@ -351,8 +351,8 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                     testDateLabel = 'dateUTC',
                     newDateLabel;
 
-                tooltipChart.valueLabel(testDateLabel);
-                newDateLabel = tooltipChart.valueLabel();
+                tooltipChart.dateLabel(testDateLabel);
+                newDateLabel = tooltipChart.dateLabel();
 
                 expect(defaultDateLabel).not.toBe(testDateLabel);
                 expect(newDateLabel).toBe(testDateLabel);

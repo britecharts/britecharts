@@ -249,7 +249,7 @@
 
         <tr>
             
-                <td class="name"><code>Data</code></td>
+                <td class="name"><code>data</code></td>
             
 
             <td class="type">
@@ -266,38 +266,14 @@
 
             
 
-            <td class="description last">All data entries for a given topic (required)</td>
+            <td class="description last">All data entries</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>topic</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Topic identifier (required)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>topicName</code></td>
+                <td class="name"><code>date</code></td>
             
 
             <td class="type">
@@ -314,7 +290,55 @@
 
             
 
-            <td class="description last">Topic name (required)</td>
+            <td class="description last">Date of the entry</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Name of the entry</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Value of the entry</td>
         </tr>
 
     
@@ -375,9 +399,9 @@
     <pre class=""><code class="language-javascript">{
     &#x27;data&#x27;: [
         {
+            &quot;date&quot;: &quot;2011-01-05T00:00:00Z&quot;,
             &quot;name&quot;: &quot;Direct&quot;,
-            &quot;views&quot;: 0,
-            &quot;dateUTC&quot;: &quot;2011-01-05T00:00:00Z&quot;
+            &quot;value&quot;: 0
         }
     ]
 }</code></pre>
@@ -1342,13 +1366,13 @@
 
         <tr>
             
-                <td class="name"><code>data</code></td>
+                <td class="name"><code>dataByTopic</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;<a href="global.html#lineChartPointByTopic">lineChartPointByTopic</a>></span>
+<span class="param-type">Array.&lt;<a href="global.html#lineChartDataByTopic">lineChartDataByTopic</a>></span>
 
 
 
@@ -1363,30 +1387,6 @@
         </tr>
 
     
-
-        <tr>
-            
-                <td class="name"><code>dataByDate</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;<a href="global.html#lineChartPointByDate">lineChartPointByDate</a>></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Data values to chart ordered by date (required)</td>
-        </tr>
-
-    
     </tbody>
 </table>
 </dl>
@@ -1442,221 +1442,28 @@
         <h5>Example</h5>
         
     <pre class=""><code class="language-javascript">{
-    data: [
+    dataByTopic: [
         {
-            Data: [
-                {
-                    date: &#x27;&#x27;,
-                    fullDate: &#x27;2017-01-16T16:00:00-08:00&#x27;,
-                    value: 1
-                },
-                {
-                    date: &#x27;&#x27;,
-                    fullDate: &#x27;2017-01-16T17:00:00-08:00&#x27;,
-                    value: 2
-                }
-            ],
+            topicName: &#x27;San Francisco&#x27;,
             topic: 123,
-            topicName: &#x27;San Francisco&#x27;
-        },
-        {
-            Data: [
-                {...},
-                {...}
-            ],
-            topic: 345,
-            topicName: &#x27;Other&#x27;
-        }
-    ],
-    dataByDate: [
-        {
-            date: &#x27;2017-01-16T16:00:00-08:00&#x27;,
-            topics: [
+            dates: [
                 {
-                    name: 123,
-                    topicName: &#x27;San Francisco&#x27;,
+                    date: &#x27;2017-01-16T16:00:00-08:00&#x27;,
                     value: 1
                 },
                 {
-                    name: 345,
-                    topicName: &#x27;Other&#x27;,
+                    date: &#x27;2017-01-16T17:00:00-08:00&#x27;,
                     value: 2
                 }
             ]
         },
-        {...}
-    ]
-}</code></pre>
-
-
-    
-</dd>
-
-            
-                
-<hr>
-<dt class="name" id="lineChartPointByDate">
-    <h4 id="lineChartPointByDate">lineChartPointByDate</h4>
-
-    
-</dt>
-<dd>
-    
-
-    
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
-<span class="param-type">Object</span>
-
-
-
-            </li>
-        </ul>
-    
-
-    
-<dl class="details">
-    
-
-    <h5 class="subsection-title">Properties:</h5>
-
-    <dl>
-
-<table class="props table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>date</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Date</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Date value (required)</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>topics</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;Object></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Data entries for that day (required)</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-</dl>
-
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="line.js.html">line.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-        <h5>Example</h5>
-        
-    <pre class=""><code class="language-javascript">{
-    date: &#x27;2017-01-16T16:00:00-08:00&#x27;
-    topics: [
         {
-            name: 123,
-            topicName: &#x27;San Francisco&#x27;,
-            value: 1
-        },
-        {
-            name: 345,
             topicName: &#x27;Other&#x27;,
-            value: 2
+            topic: 345,
+            dates: [
+                {...},
+                {...}
+            ]
         }
     ]
 }</code></pre>
@@ -1668,8 +1475,8 @@
             
                 
 <hr>
-<dt class="name" id="lineChartPointByTopic">
-    <h4 id="lineChartPointByTopic">lineChartPointByTopic</h4>
+<dt class="name" id="lineChartDataByTopic">
+    <h4 id="lineChartDataByTopic">lineChartDataByTopic</h4>
 
     
 </dt>
@@ -1719,13 +1526,13 @@
 
         <tr>
             
-                <td class="name"><code>Data</code></td>
+                <td class="name"><code>topicName</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;Object></span>
+<span class="param-type">String</span>
 
 
 
@@ -1736,7 +1543,7 @@
 
             
 
-            <td class="description last">All data entries for a given topic (required)</td>
+            <td class="description last">Topic name (required)</td>
         </tr>
 
     
@@ -1767,13 +1574,13 @@
 
         <tr>
             
-                <td class="name"><code>topicName</code></td>
+                <td class="name"><code>dates</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Array.&lt;Object></span>
 
 
 
@@ -1784,7 +1591,7 @@
 
             
 
-            <td class="description last">Topic name (required)</td>
+            <td class="description last">All date entries with values for that topic (required)</td>
         </tr>
 
     
@@ -1843,20 +1650,18 @@
         <h5>Example</h5>
         
     <pre class=""><code class="language-javascript">{
-    Data: [
+    topicName: &#x27;San Francisco&#x27;,
+    topic: 123,
+    dates: [
         {
-            date: &#x27;&#x27;,
-            fullDate: &#x27;2017-01-16T16:00:00-08:00&#x27;,
+            date: &#x27;2017-01-16T16:00:00-08:00&#x27;,
             value: 1
         },
         {
-            date: &#x27;&#x27;,
-            fullDate: &#x27;2017-01-16T17:00:00-08:00&#x27;,
+            date: &#x27;2017-01-16T17:00:00-08:00&#x27;,
             value: 2
         }
-    ],
-    topic: 123,
-    topicName: &#x27;San Francisco&#x27;
+    ]
 }</code></pre>
 
 
