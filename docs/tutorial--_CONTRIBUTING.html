@@ -120,11 +120,14 @@
         <h2 class="tutorial-section__heading">_CONTRIBUTING</h2>
     </header>
     <article>
-        <h2>Pull Requests</h2><p>####Disclaimer</p>
-<blockquote>
-<p>While it is true that Britecharts is currently live in Eventbrite production, this project is not being monitored closely for open source contributions. Please have patience and we will get to any issues and pull requests as soon as we can.</p>
-</blockquote>
-<h3>Chart Documentation</h3><p>In order to generate and see the documentation for the library you would need to:</p>
+        <h1>Contributing Guide</h1><h2>Setup</h2><h3>Getting setup to contribute</h3><p>1- Fork repository by clicking the fork button on github</p>
+<p>2- Clone repository with <code>git clone https://github.com/&lt;your handle&gt;/britecharts.git</code></p>
+<p>3- Navigate to the repository folder and install dependencies with: <code>npm install</code></p>
+<h3>Cutting feature branches</h3><p>1- in local master, set upstream to https://github.com/eventbrite/britecharts.git
+<code>git remote add upstream https://github.com/eventbrite/britecharts.git</code></p>
+<p>2- pull the most recent changes<code>git pull --rebase upstream master</code></p>
+<p>3- branch name should be prefixed with either <code>fix-</code>or <code>feat-</code> depending on pr content. Create a new branch <code>git co -b [fix|feat]-&lt;your branch name&gt;</code></p>
+<h3>Running the Documentation and Demos</h3><p>In order to generate the demos and see the documentation for the library you would need to:</p>
 <ul>
 <li>Download and install <a href="http://nodejs.org">node</a> (note we need npm version 2.X)</li>
 <li><p>Install the grunt task runner (if you don't have it yet) with:</p>
@@ -146,15 +149,39 @@
 <p> <code>npm run docs</code></p>
 </li>
 </ul>
-<p>This process will generate the docs with its current contents and open the interface where you will be able to navigate the API of each chart. You can also see some use examples under the &quot;Tutorials&quot; dropdown section.</p>
-<h4>Getting setup to contribute</h4><p>1- Fork repository by clicking the fork button on github</p>
-<p>2- Clone repository with <code>git clone https://github.com/&lt;your handle&gt;/britecharts.git</code></p>
-<p>3- Navigate to the repository folder and install dependencies with: <code>npm install</code></p>
-<h4>Cutting feature branches</h4><p>1- in local master, set upstream to https://github.com/eventbrite/britecharts.git
-<code>git remote add upstream https://github.com/eventbrite/britecharts.git</code></p>
-<p>2- pull the most recent changes<code>git pull upstream master</code></p>
-<p>3- branch name should be prefixed with either <code>fix-</code>or <code>feat-</code> depending on pr content. Create a new branch <code>git co -b [fix|feat]-&lt;your branch name&gt;</code></p>
-<h4>Making pull requests</h4><p>1- when you're finished coding, <code>git checkout master</code></p>
+<p>This process will generate the docs with its current contents and open the interface where you will be able to navigate the API of each chart. You can also see some use examples under the &quot;Tutorials&quot; dropdown section. Use this demos as your testing platform when modifying the charts.</p>
+<h2>Modifying a chart</h2><p>We have created this charts with Tests First, and we encourage you to do the same. However, you can also write tests later.</p>
+<p>For a TDD workflow, the process would look like this:</p>
+<ul>
+<li>Create a new branch for your modification</li>
+<li>Find the test of the chart you want to modify in <code>/test/specs/*.spec.js</code></li>
+<li>Write a failing test for the API accessor or the feature you want to add</li>
+<li>On a new terminal, run <code>npm run test</code></li>
+<li>Check that the test fails</li>
+<li>Write the code that would make that test pass</li>
+<li>Make the test pass</li>
+<li>Refactor until you get a nice and clean code</li>
+<li>Add/update the comments so that the proper documentation gets generated when you run<pre class="prettyprint source"><code>npm run docs</code></pre></li>
+<li>Check the demos to see the code in action (you can also add a new demo there if necessary)</li>
+<li>Create a pull request and ask people of the team to review it</li>
+<li>Once you have a shipit, merge it!</li>
+</ul>
+<h2>Creating a new chart</h2><p>Adding a new chart is a bunch of work, but we hope the current code and documentation will help you in the process.</p>
+<ul>
+<li>Create a new branch for your new chart</li>
+<li>Create a file for the tests and the chart (on <code>src/charts</code> and <code>test/specs</code>)</li>
+<li>Create a file for the demo too, and it's corresponding html (find them on <code>demos/</code>)</li>
+<li>On a new terminal, run <code>npm run test</code></li>
+<li>Using the bar chart tests as a jumpstart, add one test and make it fail</li>
+<li>Write the code that makes that test pass and keep on adding tests</li>
+<li>Once you think you are close to have something working, start adding JSDoc comments to your code</li>
+<li>Generate your docs with:<pre class="prettyprint source"><code>  npm run docs</code></pre></li>
+<li>Create a pull request with your branch and ping one of the core authors to get it reviewed</li>
+<li>Once you have a shipit, merge it</li>
+</ul>
+<h2>Pull Requests</h2><p>####Disclaimer
+-&gt; While it is true that Britecharts is currently live in Eventbrite production, this project is not being monitored closely for open source contributions. Please have patience and we will get to any issues and pull requests as soon as we can.</p>
+<h3>Making pull requests</h3><p>1- when you're finished coding, <code>git checkout master</code></p>
 <p>2- <code>git pull upstream master</code> (note that your local master should always reflect upstream master)</p>
 <p>3- <code>git checkout &lt;your branch&gt;</code></p>
 <p>4- <code>git rebase master</code> &amp; reconcile all conflicts</p>

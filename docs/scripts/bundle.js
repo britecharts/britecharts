@@ -2897,7 +2897,7 @@
 	        // dataset = testDataSet.withGeneratedData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).width(containerWidth).on('customMouseOver', function () {
+	        stackedArea.tooltipThreshold(600).width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -2941,7 +2941,7 @@
 	        // dataset = testDataSet.withLargeData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).width(containerWidth).on('customMouseOver', function () {
+	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -3082,8 +3082,8 @@
 	    var d3Transition = __webpack_require__(22);
 	
 	    var _ = __webpack_require__(3);
-	    var exportChart = __webpack_require__(24);
 	    var colorHelper = __webpack_require__(7);
+	    var exportChart = __webpack_require__(24);
 	
 	    var ONE_AND_A_HALF_YEARS = 47304000000;
 	    var ONE_DAY = 86400001;
@@ -3102,17 +3102,18 @@
 	    /**
 	     * @typedef areaChartData
 	     * @type {Object}
-	     * @property {Object[]} Data       All data entries for a given topic (required)
-	     * @property {Number} topic        Topic identifier (required)
-	     * @property {String} topicName    Topic name (required)
+	     * @property {Object[]} data       All data entries
+	     * @property {String} date         Date of the entry
+	     * @property {String} name         Name of the entry
+	     * @property {Number} value        Value of the entry
 	     *
 	     * @example
 	     * {
 	     *     'data': [
 	     *         {
+	     *             "date": "2011-01-05T00:00:00Z",
 	     *             "name": "Direct",
-	     *             "views": 0,
-	     *             "dateUTC": "2011-01-05T00:00:00Z"
+	     *             "value": 0
 	     *         }
 	     *     ]
 	     * }
@@ -3201,8 +3202,9 @@
 	            bottom: 0,
 	            right: 0
 	        },
-	            dateLabel = 'dateUTC',
-	            valueLabel = 'views',
+	            dateLabel = 'date',
+	            valueLabel = 'value',
+	            keyLabel = 'name',
 	
 	
 	        // getters
@@ -3249,7 +3251,7 @@
 	                chartWidth = width - margin.left - margin.right;
 	                chartHeight = height - margin.top - margin.bottom;
 	                data = cleanData(_data);
-	                dataByDate = d3Collection.nest().key(getDate).entries(_(_data).sortBy('date'));
+	                dataByDate = getDataByDate(data);
 	
 	                buildLayers();
 	                buildScales();
@@ -3272,20 +3274,6 @@
 	         */
 	        function addMouseEvents() {
 	            svg.on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).on('mousemove', handleMouseMove);
-	        }
-	
-	        /**
-	         * Calculates the maximum number of ticks for the x axis
-	         * @param  {Number} width Chart width
-	         * @param  {Number} dataPointNumber  Number of entries on the data
-	         * @return {Number}       Number of ticks to render
-	         */
-	        function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
-	            var singleTickWidth = 30,
-	                spacing = 30,
-	                ticksForWidth = Math.ceil(width / (singleTickWidth + spacing));
-	
-	            return Math.min(dataPointNumber, ticksForWidth);
 	        }
 	
 	        /**
@@ -3547,6 +3535,30 @@
 	        }
 	
 	        /**
+	         * Calculates the maximum number of ticks for the x axis
+	         * @param  {Number} width Chart width
+	         * @param  {Number} dataPointNumber  Number of entries on the data
+	         * @return {Number}       Number of ticks to render
+	         */
+	        function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
+	            var singleTickWidth = 30,
+	                spacing = 30,
+	                ticksForWidth = Math.ceil(width / (singleTickWidth + spacing));
+	
+	            return Math.min(dataPointNumber, ticksForWidth);
+	        }
+	
+	        /**
+	         * Orders the data by date for consumption on the chart tooltip
+	         * @param  {areaChartData} data    Chart data
+	         * @return {Object[]}               Chart data ordered by date
+	         * @private
+	         */
+	        function getDataByDate(data) {
+	            return d3Collection.nest().key(getDate).sortKeys(d3Array.ascending).entries(data);
+	        }
+	
+	        /**
 	         * Computes the maximum sum of values for any date
 	         *
 	         * @return {Number} Max value
@@ -3716,6 +3728,34 @@
 	        };
 	
 	        /**
+	         * Gets or Sets the colorSchema of the chart
+	         * @param  {String[]} _x Desired colorSchema for the graph
+	         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
+	         * @public
+	         */
+	        exports.colorSchema = function (_x) {
+	            if (!arguments.length) {
+	                return colorSchema;
+	            }
+	            colorSchema = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the dateLabel of the chart
+	         * @param  {Number} _x Desired dateLabel for the graph
+	         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.dateLabel = function (_x) {
+	            if (!arguments.length) {
+	                return dateLabel;
+	            }
+	            dateLabel = _x;
+	            return this;
+	        };
+	
+	        /**
 	         * Gets or Sets the height of the chart
 	         * @param  {Number} _x Desired width for the graph
 	         * @return { height | module} Current height or Area Chart module to chain calls
@@ -3729,6 +3769,20 @@
 	                width = Math.ceil(_x / aspectRatio);
 	            }
 	            height = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the keyLabel of the chart
+	         * @param  {Number} _x Desired keyLabel for the graph
+	         * @return { keyLabel | module} Current keyLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.keyLabel = function (_x) {
+	            if (!arguments.length) {
+	                return keyLabel;
+	            }
+	            keyLabel = _x;
 	            return this;
 	        };
 	
@@ -3761,23 +3815,6 @@
 	        };
 	
 	        /**
-	         * Gets or Sets the width of the chart
-	         * @param  {Number} _x Desired width for the graph
-	         * @return { width | module} Current width or Area Chart module to chain calls
-	         * @public
-	         */
-	        exports.width = function (_x) {
-	            if (!arguments.length) {
-	                return width;
-	            }
-	            if (aspectRatio) {
-	                height = Math.ceil(_x * aspectRatio);
-	            }
-	            width = _x;
-	            return this;
-	        };
-	
-	        /**
 	         * Gets or Sets the valueLabel of the chart
 	         * @param  {Number} _x Desired valueLabel for the graph
 	         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
@@ -3792,30 +3829,19 @@
 	        };
 	
 	        /**
-	         * Gets or Sets the dateLabel of the chart
-	         * @param  {Number} _x Desired dateLabel for the graph
-	         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+	         * Gets or Sets the width of the chart
+	         * @param  {Number} _x Desired width for the graph
+	         * @return { width | module} Current width or Area Chart module to chain calls
 	         * @public
 	         */
-	        exports.dateLabel = function (_x) {
+	        exports.width = function (_x) {
 	            if (!arguments.length) {
-	                return dateLabel;
+	                return width;
 	            }
-	            dateLabel = _x;
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the colorSchema of the chart
-	         * @param  {String[]} _x Desired colorSchema for the graph
-	         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
-	         * @public
-	         */
-	        exports.colorSchema = function (_x) {
-	            if (!arguments.length) {
-	                return colorSchema;
+	            if (aspectRatio) {
+	                height = Math.ceil(_x * aspectRatio);
 	            }
-	            colorSchema = _x;
+	            width = _x;
 	            return this;
 	        };
 	
@@ -35007,6 +35033,7 @@
 	
 	    var d3Array = __webpack_require__(9);
 	    var d3Axis = __webpack_require__(10);
+	    var d3Collection = __webpack_require__(11);
 	    var d3Dispatch = __webpack_require__(12);
 	    var d3Ease = __webpack_require__(13);
 	    var d3Format = __webpack_require__(14);
@@ -35017,6 +35044,7 @@
 	    var d3TimeFormat = __webpack_require__(19);
 	    var d3Transition = __webpack_require__(22);
 	
+	    var _ = __webpack_require__(3);
 	    var colorHelper = __webpack_require__(7);
 	    var exportChart = __webpack_require__(24);
 	
@@ -35033,49 +35061,23 @@
 	     */
 	
 	    /**
-	     * @typedef lineChartPointByTopic
+	     * @typedef lineChartDataByTopic
 	     * @type {Object}
-	     * @property {Object[]} Data       All data entries for a given topic (required)
-	     * @property {Number} topic        Topic identifier (required)
 	     * @property {String} topicName    Topic name (required)
+	     * @property {Number} topic        Topic identifier (required)
+	     * @property {Object[]} dates      All date entries with values for that topic (required)
 	     *
 	     * @example
 	     * {
-	     *     Data: [
-	     *         {
-	     *             date: '',
-	     *             fullDate: '2017-01-16T16:00:00-08:00',
-	     *             value: 1
-	     *         },
-	     *         {
-	     *             date: '',
-	     *             fullDate: '2017-01-16T17:00:00-08:00',
-	     *             value: 2
-	     *         }
-	     *     ],
+	     *     topicName: 'San Francisco',
 	     *     topic: 123,
-	     *     topicName: 'San Francisco'
-	     * }
-	     */
-	
-	    /**
-	     * @typedef lineChartPointByDate
-	     * @type {Object}
-	     * @property {Date} date               Date value (required)
-	     * @property {Object[]} topics         Data entries for that day (required)
-	     *
-	     * @example
-	     * {
-	     *     date: '2017-01-16T16:00:00-08:00'
-	     *     topics: [
+	     *     dates: [
 	     *         {
-	     *             name: 123,
-	     *             topicName: 'San Francisco',
+	     *             date: '2017-01-16T16:00:00-08:00',
 	     *             value: 1
 	     *         },
 	     *         {
-	     *             name: 345,
-	     *             topicName: 'Other',
+	     *             date: '2017-01-16T17:00:00-08:00',
 	     *             value: 2
 	     *         }
 	     *     ]
@@ -35085,54 +35087,33 @@
 	    /**
 	     * @typedef LineChartData
 	     * @type {Object[]}
-	     * @property {lineChartPointByTopic[]} data                   Data values to chart (required)
-	     * @property {lineChartPointByDate[]} dataByDate    Data values to chart ordered by date (required)
+	     * @property {lineChartDataByTopic[]} dataByTopic  Data values to chart (required)
 	     *
 	     * @example
 	     * {
-	     *     data: [
+	     *     dataByTopic: [
 	     *         {
-	     *             Data: [
-	     *                 {
-	     *                     date: '',
-	     *                     fullDate: '2017-01-16T16:00:00-08:00',
-	     *                     value: 1
-	     *                 },
-	     *                 {
-	     *                     date: '',
-	     *                     fullDate: '2017-01-16T17:00:00-08:00',
-	     *                     value: 2
-	     *                 }
-	     *             ],
+	     *             topicName: 'San Francisco',
 	     *             topic: 123,
-	     *             topicName: 'San Francisco'
-	     *         },
-	     *         {
-	     *             Data: [
-	     *                 {...},
-	     *                 {...}
-	     *             ],
-	     *             topic: 345,
-	     *             topicName: 'Other'
-	     *         }
-	     *     ],
-	     *     dataByDate: [
-	     *         {
-	     *             date: '2017-01-16T16:00:00-08:00',
-	     *             topics: [
+	     *             dates: [
 	     *                 {
-	     *                     name: 123,
-	     *                     topicName: 'San Francisco',
+	     *                     date: '2017-01-16T16:00:00-08:00',
 	     *                     value: 1
 	     *                 },
 	     *                 {
-	     *                     name: 345,
-	     *                     topicName: 'Other',
+	     *                     date: '2017-01-16T17:00:00-08:00',
 	     *                     value: 2
 	     *                 }
 	     *             ]
 	     *         },
-	     *         {...}
+	     *         {
+	     *             topicName: 'Other',
+	     *             topic: 345,
+	     *             dates: [
+	     *                 {...},
+	     *                 {...}
+	     *             ]
+	     *         }
 	     *     ]
 	     * }
 	     */
@@ -35196,8 +35177,12 @@
 	            horizontalTickSpacing = 40,
 	            ease = d3Ease.easeQuadInOut,
 	            animationDuration = 1500,
-	            data = void 0,
+	            dataByTopic = void 0,
 	            dataByDate = void 0,
+	            dateLabel = 'date',
+	            valueLabel = 'value',
+	            topicLabel = 'topic',
+	            topicNameLabel = 'topicName',
 	            numVerticalTics = 5,
 	            defaultNumMonths = 10,
 	            overlay = void 0,
@@ -35255,7 +35240,7 @@
 	            _selection.each(function (_data) {
 	                var _cleanData = cleanData(_data);
 	
-	                data = _cleanData.data;
+	                dataByTopic = _cleanData.dataByTopic;
 	                dataByDate = _cleanData.dataByDate;
 	
 	
@@ -35395,28 +35380,28 @@
 	         * @private
 	         */
 	        function buildScales() {
-	            var minX = d3Array.min(data, function (_ref7) {
-	                var Data = _ref7.Data;
-	                return d3Array.min(Data, getDate);
+	            var minX = d3Array.min(dataByTopic, function (_ref7) {
+	                var dates = _ref7.dates;
+	                return d3Array.min(dates, getDate);
 	            }),
-	                maxX = d3Array.max(data, function (_ref8) {
-	                var Data = _ref8.Data;
-	                return d3Array.max(Data, getDate);
+	                maxX = d3Array.max(dataByTopic, function (_ref8) {
+	                var dates = _ref8.dates;
+	                return d3Array.max(dates, getDate);
 	            }),
-	                minY = d3Array.min(data, function (_ref9) {
-	                var Data = _ref9.Data;
-	                return d3Array.min(Data, getValue);
+	                minY = d3Array.min(dataByTopic, function (_ref9) {
+	                var dates = _ref9.dates;
+	                return d3Array.min(dates, getValue);
 	            }),
-	                maxY = d3Array.max(data, function (_ref10) {
-	                var Data = _ref10.Data;
-	                return d3Array.max(Data, getValue);
+	                maxY = d3Array.max(dataByTopic, function (_ref10) {
+	                var dates = _ref10.dates;
+	                return d3Array.max(dates, getValue);
 	            });
 	
 	            xScale = d3Scale.scaleTime().rangeRound([0, chartWidth]).domain([minX, maxX]);
 	
 	            yScale = d3Scale.scaleLinear().rangeRound([chartHeight, 0]).domain([Math.abs(minY), Math.abs(maxY)]).nice(3);
 	
-	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(data.map(getTopic));
+	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(dataByTopic.map(getTopic));
 	
 	            // TODO add spread and rest operators to britecharts
 	            /*
@@ -35449,25 +35434,55 @@
 	
 	        /**
 	         * Parses dates and values into JS Date objects and numbers
-	         * @param  {obj} data           Raw data
-	         * @param  {obj} dataByDate     Raw data ordered by date
-	         * @return {obj}            Parsed data with dates
+	         * @param  {obj} dataByTopic    Raw data grouped by topic
+	         * @return {obj}                Parsed data with dataByTopic and dataByDate
 	         */
 	        function cleanData(_ref11) {
-	            var data = _ref11.data,
+	            var dataByTopic = _ref11.dataByTopic,
 	                dataByDate = _ref11.dataByDate;
 	
-	            data.forEach(function (kv) {
-	                kv.Data.forEach(function (d) {
-	                    d.date = new Date(d.fullDate);
-	                });
-	            });
 	
-	            dataByDate.forEach(function (entry) {
-	                return entry.date = new Date(entry.date);
-	            });
+	            if (dataByTopic) {
+	                (function () {
+	                    var flatData = [];
 	
-	            return { data: data, dataByDate: dataByDate };
+	                    dataByTopic.forEach(function (topic) {
+	                        topic.dates.forEach(function (date) {
+	                            flatData.push({
+	                                topicName: topic[topicNameLabel],
+	                                name: topic[topicLabel],
+	                                date: date[dateLabel],
+	                                value: date[valueLabel]
+	                            });
+	                        });
+	                    });
+	
+	                    // Nest data by date and format
+	                    dataByDate = d3Collection.nest().key(getDate).entries(flatData).map(function (d) {
+	                        return {
+	                            date: new Date(d.key),
+	                            topics: d.values
+	                        };
+	                    });
+	
+	                    // Normalize dates in keys
+	                    dataByDate = dataByDate.map(function (d) {
+	                        d.date = new Date(d.date);
+	
+	                        return d;
+	                    });
+	
+	                    // Normalize dataByTopic
+	                    dataByTopic.forEach(function (kv) {
+	                        kv.dates.forEach(function (d) {
+	                            d.date = new Date(d[dateLabel]);
+	                            d.value = +d[valueLabel];
+	                        });
+	                    });
+	                })();
+	            }
+	
+	            return { dataByTopic: dataByTopic, dataByDate: dataByDate };
 	        }
 	
 	        /**
@@ -35508,13 +35523,13 @@
 	                return yScale(value);
 	            });
 	
-	            lines = svg.select('.chart-group').selectAll('.line').data(data);
+	            lines = svg.select('.chart-group').selectAll('.line').data(dataByTopic);
 	
 	            lines.enter().append('g').attr('class', 'topic').append('path').attr('class', 'line').attr('d', function (_ref14) {
-	                var Data = _ref14.Data;
-	                return topicLine(Data);
+	                var dates = _ref14.dates;
+	                return topicLine(dates);
 	            }).style('stroke', function (d) {
-	                return data.length === 1 ? 'url(#' + lineGradientId + ')' : getLineColor(d);
+	                return dataByTopic.length === 1 ? 'url(#' + lineGradientId + ')' : getLineColor(d);
 	            });
 	
 	            lines.exit().remove();
@@ -35743,6 +35758,20 @@
 	        };
 	
 	        /**
+	         * Gets or Sets the dateLabel of the chart
+	         * @param  {Number} _x Desired dateLabel for the graph
+	         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.dateLabel = function (_x) {
+	            if (!arguments.length) {
+	                return dateLabel;
+	            }
+	            dateLabel = _x;
+	            return this;
+	        };
+	
+	        /**
 	         * Gets or Sets the height of the chart
 	         * @param  {Number} _x Desired width for the graph
 	         * @return { (Number | Module) } Current height or Line Chart module to chain calls
@@ -35785,6 +35814,34 @@
 	                return tooltipThreshold;
 	            }
 	            tooltipThreshold = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the topicLabel of the chart
+	         * @param  {Number} _x Desired topicLabel for the graph
+	         * @return { topicLabel | module} Current topicLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.topicLabel = function (_x) {
+	            if (!arguments.length) {
+	                return topicLabel;
+	            }
+	            topicLabel = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the valueLabel of the chart
+	         * @param  {Number} _x Desired valueLabel for the graph
+	         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.valueLabel = function (_x) {
+	            if (!arguments.length) {
+	                return valueLabel;
+	            }
+	            valueLabel = _x;
 	            return this;
 	        };
 	
@@ -35861,9 +35918,9 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonFiveTopics = __webpack_require__(54),
-	        jsonOneSource = __webpack_require__(55),
-	        jsonDataNDates = __webpack_require__(56),
+	        jsonAllDatas = __webpack_require__(54),
+	        jsonFiveTopics = __webpack_require__(55),
+	        jsonOneSource = __webpack_require__(56),
 	        jsonMultiMonthValueRange = __webpack_require__(57),
 	        jsonHourDateRange = __webpack_require__(58),
 	        jsonSmallValueRange = __webpack_require__(59);
@@ -35885,20 +35942,6 @@
 	            return new this.Klass(attributes);
 	        };
 	
-	        this.withNDates = function (n) {
-	            var data = jsonDataNDates,
-	                attributes;
-	
-	            if (n) {
-	                data.data[0].Data = data.data[0].Data.slice(0, n);
-	                data.dataByDate = data.dataByDate.slice(0, n);
-	            }
-	
-	            attributes = _.extend({}, this.config, data);
-	
-	            return new this.Klass(attributes);
-	        };
-	
 	        this.withSmallValueRange = function () {
 	            var attributes = _.extend({}, this.config, jsonSmallValueRange);
 	
@@ -35913,6 +35956,12 @@
 	
 	        this.withHourDateRange = function () {
 	            var attributes = _.extend({}, this.config, jsonHourDateRange);
+	
+	            return new this.Klass(attributes);
+	        };
+	
+	        this.withAllDatas = function () {
+	            var attributes = _.extend({}, this.config, jsonAllDatas);
 	
 	            return new this.Klass(attributes);
 	        };
@@ -35947,8 +35996,415 @@
 	module.exports = {
 		"data": [
 			{
+				"topicName": "Sales",
+				"topic": -1,
+				"value": 15,
+				"date": "2015-12-30T00:00:00-08:00"
+			},
+			{
+				"topicName": "Sales",
+				"topic": -1,
+				"value": 16,
+				"date": "2015-12-31T00:00:00-08:00"
+			},
+			{
+				"topicName": "Sales",
+				"topic": -1,
+				"value": 15,
+				"date": "2016-01-01T00:00:00-08:00"
+			},
+			{
+				"topicName": "Sales",
+				"topic": -1,
+				"value": 18,
+				"date": "2016-01-02T00:00:00-08:00"
+			},
+			{
+				"topicName": "Sales",
+				"topic": -1,
+				"value": 16,
+				"date": "2016-01-03T00:00:00-08:00"
+			}
+		],
+		"dataByTopic": [
+			{
+				"topic": -1,
+				"topicName": "Sales",
+				"dates": [
+					{
+						"value": 15,
+						"date": "2015-12-30T00:00:00-08:00"
+					},
+					{
+						"value": 16,
+						"date": "2015-12-31T00:00:00-08:00"
+					},
+					{
+						"value": 15,
+						"date": "2016-01-01T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-02T00:00:00-08:00"
+					},
+					{
+						"value": 16,
+						"date": "2016-01-03T00:00:00-08:00"
+					},
+					{
+						"value": 16,
+						"date": "2016-01-04T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-05T00:00:00-08:00"
+					},
+					{
+						"value": 15,
+						"date": "2016-01-06T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-07T00:00:00-08:00"
+					},
+					{
+						"value": 21,
+						"date": "2016-01-08T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-09T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-10T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-11T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-12T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-13T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-14T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-15T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-16T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-17T00:00:00-08:00"
+					},
+					{
+						"value": 20,
+						"date": "2016-01-18T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-19T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-20T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-21T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-22T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-23T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-24T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-25T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-26T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-27T00:00:00-08:00"
+					},
+					{
+						"value": 21,
+						"date": "2016-01-28T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-29T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-30T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-01-31T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-01T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-02T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-03T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-04T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-05T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-06T00:00:00-08:00"
+					},
+					{
+						"value": 20,
+						"date": "2016-02-07T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-08T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-09T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-10T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-11T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-12T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-13T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-14T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-15T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-16T00:00:00-08:00"
+					},
+					{
+						"value": 21,
+						"date": "2016-02-17T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-18T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-19T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-20T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-21T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-22T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-23T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-24T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-25T00:00:00-08:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-02-26T00:00:00-08:00"
+					},
+					{
+						"value": 20,
+						"date": "2016-02-27T00:00:00-08:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-02-28T00:00:00-08:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-02-29T00:00:00-08:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-01T00:00:00-08:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-02T00:00:00-08:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-03T00:00:00-08:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-04T00:00:00-08:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-05T00:00:00-08:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-06T00:00:00-08:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-07T00:00:00-08:00"
+					},
+					{
+						"value": 20,
+						"date": "2016-03-08T00:00:00-08:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-09T00:00:00-08:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-10T00:00:00-08:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-11T00:00:00-08:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-12T00:00:00-08:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-13T00:00:00-08:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-14T00:00:00-07:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-15T00:00:00-07:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-16T00:00:00-07:00"
+					},
+					{
+						"value": 17,
+						"date": "2016-03-17T00:00:00-07:00"
+					},
+					{
+						"value": 20,
+						"date": "2016-03-18T00:00:00-07:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-03-19T00:00:00-07:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-03-20T00:00:00-07:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-03-21T00:00:00-07:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-03-22T00:00:00-07:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-03-23T00:00:00-07:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-03-24T00:00:00-07:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-03-25T00:00:00-07:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-03-26T00:00:00-07:00"
+					},
+					{
+						"value": 18,
+						"date": "2016-03-27T00:00:00-07:00"
+					},
+					{
+						"value": 30,
+						"date": "2016-03-28T00:00:00-07:00"
+					}
+				]
+			}
+		]
+	};
+
+/***/ },
+/* 55 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"dataByTopic": [
+			{
 				"topic": 103,
-				"Data": [
+				"dates": [
 					{
 						"date": "27-Jun-15",
 						"value": 1,
@@ -36139,7 +36595,7 @@
 			},
 			{
 				"topic": 149,
-				"Data": [
+				"dates": [
 					{
 						"date": "27-Jun-15",
 						"value": 0,
@@ -36330,7 +36786,7 @@
 			},
 			{
 				"topic": 60,
-				"Data": [
+				"dates": [
 					{
 						"date": "27-Jun-15",
 						"value": 0,
@@ -36521,7 +36977,7 @@
 			},
 			{
 				"topic": 81,
-				"Data": [
+				"dates": [
 					{
 						"date": "27-Jun-15",
 						"value": 0,
@@ -36713,7 +37169,7 @@
 			{
 				"topic": 0,
 				"topicName": "Other",
-				"Data": [
+				"dates": [
 					{
 						"date": "27-Jun-15",
 						"value": 3,
@@ -38017,1381 +38473,14 @@
 	};
 
 /***/ },
-/* 55 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"data": [
-			{
-				"topic": -1,
-				"Data": [
-					{
-						"date": "30-Dec-15",
-						"value": 15,
-						"fullDate": "2015-12-30T00:00:00-08:00"
-					},
-					{
-						"date": "31-Dec-15",
-						"value": 16,
-						"fullDate": "2015-12-31T00:00:00-08:00"
-					},
-					{
-						"date": "1-Jan-16",
-						"value": 17,
-						"fullDate": "2016-01-01T00:00:00-08:00"
-					},
-					{
-						"date": "2-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-02T00:00:00-08:00"
-					},
-					{
-						"date": "3-Jan-16",
-						"value": 19,
-						"fullDate": "2016-01-03T00:00:00-08:00"
-					},
-					{
-						"date": "4-Jan-16",
-						"value": 20,
-						"fullDate": "2016-01-04T00:00:00-08:00"
-					},
-					{
-						"date": "5-Jan-16",
-						"value": 21,
-						"fullDate": "2016-01-05T00:00:00-08:00"
-					},
-					{
-						"date": "6-Jan-16",
-						"value": 22,
-						"fullDate": "2016-01-06T00:00:00-08:00"
-					},
-					{
-						"date": "7-Jan-16",
-						"value": 21,
-						"fullDate": "2016-01-07T00:00:00-08:00"
-					},
-					{
-						"date": "8-Jan-16",
-						"value": 20,
-						"fullDate": "2016-01-08T00:00:00-08:00"
-					},
-					{
-						"date": "9-Jan-16",
-						"value": 19,
-						"fullDate": "2016-01-09T00:00:00-08:00"
-					},
-					{
-						"date": "10-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-10T00:00:00-08:00"
-					},
-					{
-						"date": "11-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-11T00:00:00-08:00"
-					},
-					{
-						"date": "12-Jan-16",
-						"value": 17,
-						"fullDate": "2016-01-12T00:00:00-08:00"
-					},
-					{
-						"date": "13-Jan-16",
-						"value": 16,
-						"fullDate": "2016-01-13T00:00:00-08:00"
-					},
-					{
-						"date": "14-Jan-16",
-						"value": 15,
-						"fullDate": "2016-01-14T00:00:00-08:00"
-					},
-					{
-						"date": "15-Jan-16",
-						"value": 16,
-						"fullDate": "2016-01-15T00:00:00-08:00"
-					},
-					{
-						"date": "16-Jan-16",
-						"value": 17,
-						"fullDate": "2016-01-16T00:00:00-08:00"
-					},
-					{
-						"date": "17-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-17T00:00:00-08:00"
-					},
-					{
-						"date": "18-Jan-16",
-						"value": 20,
-						"fullDate": "2016-01-18T00:00:00-08:00"
-					},
-					{
-						"date": "19-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-19T00:00:00-08:00"
-					},
-					{
-						"date": "20-Jan-16",
-						"value": 21,
-						"fullDate": "2016-01-20T00:00:00-08:00"
-					},
-					{
-						"date": "21-Jan-16",
-						"value": 22,
-						"fullDate": "2016-01-21T00:00:00-08:00"
-					},
-					{
-						"date": "22-Jan-16",
-						"value": 23,
-						"fullDate": "2016-01-22T00:00:00-08:00"
-					},
-					{
-						"date": "23-Jan-16",
-						"value": 24,
-						"fullDate": "2016-01-23T00:00:00-08:00"
-					},
-					{
-						"date": "24-Jan-16",
-						"value": 25,
-						"fullDate": "2016-01-24T00:00:00-08:00"
-					},
-					{
-						"date": "25-Jan-16",
-						"value": 26,
-						"fullDate": "2016-01-25T00:00:00-08:00"
-					},
-					{
-						"date": "26-Jan-16",
-						"value": 26,
-						"fullDate": "2016-01-26T00:00:00-08:00"
-					},
-					{
-						"date": "27-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-27T00:00:00-08:00"
-					},
-					{
-						"date": "28-Jan-16",
-						"value": 21,
-						"fullDate": "2016-01-28T00:00:00-08:00"
-					},
-					{
-						"date": "29-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-29T00:00:00-08:00"
-					},
-					{
-						"date": "30-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-30T00:00:00-08:00"
-					},
-					{
-						"date": "31-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-31T00:00:00-08:00"
-					},
-					{
-						"date": "1-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-01T00:00:00-08:00"
-					},
-					{
-						"date": "2-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-02T00:00:00-08:00"
-					},
-					{
-						"date": "3-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-03T00:00:00-08:00"
-					},
-					{
-						"date": "4-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-04T00:00:00-08:00"
-					},
-					{
-						"date": "5-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-05T00:00:00-08:00"
-					},
-					{
-						"date": "6-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-06T00:00:00-08:00"
-					},
-					{
-						"date": "7-Feb-16",
-						"value": 20,
-						"fullDate": "2016-02-07T00:00:00-08:00"
-					},
-					{
-						"date": "8-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-08T00:00:00-08:00"
-					},
-					{
-						"date": "9-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-09T00:00:00-08:00"
-					},
-					{
-						"date": "10-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-10T00:00:00-08:00"
-					},
-					{
-						"date": "11-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-11T00:00:00-08:00"
-					},
-					{
-						"date": "12-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-12T00:00:00-08:00"
-					},
-					{
-						"date": "13-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-13T00:00:00-08:00"
-					},
-					{
-						"date": "14-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-14T00:00:00-08:00"
-					},
-					{
-						"date": "15-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-15T00:00:00-08:00"
-					},
-					{
-						"date": "16-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-16T00:00:00-08:00"
-					},
-					{
-						"date": "17-Feb-16",
-						"value": 21,
-						"fullDate": "2016-02-17T00:00:00-08:00"
-					},
-					{
-						"date": "18-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-18T00:00:00-08:00"
-					},
-					{
-						"date": "19-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-19T00:00:00-08:00"
-					},
-					{
-						"date": "20-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-20T00:00:00-08:00"
-					},
-					{
-						"date": "21-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-21T00:00:00-08:00"
-					},
-					{
-						"date": "22-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-22T00:00:00-08:00"
-					},
-					{
-						"date": "23-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-23T00:00:00-08:00"
-					},
-					{
-						"date": "24-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-24T00:00:00-08:00"
-					},
-					{
-						"date": "25-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-25T00:00:00-08:00"
-					},
-					{
-						"date": "26-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-26T00:00:00-08:00"
-					},
-					{
-						"date": "27-Feb-16",
-						"value": 20,
-						"fullDate": "2016-02-27T00:00:00-08:00"
-					},
-					{
-						"date": "28-Feb-16",
-						"value": 17,
-						"fullDate": "2016-02-28T00:00:00-08:00"
-					},
-					{
-						"date": "29-Feb-16",
-						"value": 17,
-						"fullDate": "2016-02-29T00:00:00-08:00"
-					},
-					{
-						"date": "1-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-01T00:00:00-08:00"
-					},
-					{
-						"date": "2-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-02T00:00:00-08:00"
-					},
-					{
-						"date": "3-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-03T00:00:00-08:00"
-					},
-					{
-						"date": "4-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-04T00:00:00-08:00"
-					},
-					{
-						"date": "5-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-05T00:00:00-08:00"
-					},
-					{
-						"date": "6-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-06T00:00:00-08:00"
-					},
-					{
-						"date": "7-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-07T00:00:00-08:00"
-					},
-					{
-						"date": "8-Mar-16",
-						"value": 20,
-						"fullDate": "2016-03-08T00:00:00-08:00"
-					},
-					{
-						"date": "9-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-09T00:00:00-08:00"
-					},
-					{
-						"date": "10-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-10T00:00:00-08:00"
-					},
-					{
-						"date": "11-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-11T00:00:00-08:00"
-					},
-					{
-						"date": "12-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-12T00:00:00-08:00"
-					},
-					{
-						"date": "13-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-13T00:00:00-08:00"
-					},
-					{
-						"date": "14-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-14T00:00:00-07:00"
-					},
-					{
-						"date": "15-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-15T00:00:00-07:00"
-					},
-					{
-						"date": "16-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-16T00:00:00-07:00"
-					},
-					{
-						"date": "17-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-17T00:00:00-07:00"
-					},
-					{
-						"date": "18-Mar-16",
-						"value": 20,
-						"fullDate": "2016-03-18T00:00:00-07:00"
-					},
-					{
-						"date": "19-Mar-16",
-						"value": 18,
-						"fullDate": "2016-03-19T00:00:00-07:00"
-					},
-					{
-						"date": "20-Mar-16",
-						"value": 18,
-						"fullDate": "2016-03-20T00:00:00-07:00"
-					},
-					{
-						"date": "21-Mar-16",
-						"value": 18,
-						"fullDate": "2016-03-21T00:00:00-07:00"
-					},
-					{
-						"date": "22-Mar-16",
-						"value": 18,
-						"fullDate": "2016-03-22T00:00:00-07:00"
-					},
-					{
-						"date": "23-Mar-16",
-						"value": 18,
-						"fullDate": "2016-03-23T00:00:00-07:00"
-					},
-					{
-						"date": "24-Mar-16",
-						"value": 10,
-						"fullDate": "2016-03-24T00:00:00-07:00"
-					},
-					{
-						"date": "25-Mar-16",
-						"value": 11,
-						"fullDate": "2016-03-25T00:00:00-07:00"
-					},
-					{
-						"date": "26-Mar-16",
-						"value": 12,
-						"fullDate": "2016-03-26T00:00:00-07:00"
-					},
-					{
-						"date": "27-Mar-16",
-						"value": 13,
-						"fullDate": "2016-03-27T00:00:00-07:00"
-					},
-					{
-						"date": "28-Mar-16",
-						"value": 14,
-						"fullDate": "2016-03-28T00:00:00-07:00"
-					}
-				],
-				"topicName": "Sales"
-			}
-		],
-		"dataByDate": [
-			{
-				"date": "2015-12-30T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 15,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2015-12-31T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 16,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-01T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-02T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-03T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 19,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-04T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 20,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-05T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 21,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-06T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 22,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-07T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 21,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-08T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 20,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-09T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 19,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-10T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-11T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-12T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-13T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 16,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-14T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 15,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-15T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 16,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-16T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-17T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 20,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-19T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-20T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 21,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-21T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 22,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-22T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 23,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-23T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 24,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-24T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 25,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-25T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 26,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-26T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 26,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-27T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-28T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 21,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-29T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-30T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-31T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-01T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-02T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-03T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-04T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-05T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-06T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-07T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 20,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-08T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-09T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-10T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-11T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-12T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-13T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-14T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-15T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-16T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-17T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 21,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-19T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-20T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-21T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-22T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-23T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-24T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-25T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-26T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-27T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 20,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-28T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-29T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-01T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-02T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-03T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-04T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-05T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-06T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-07T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-08T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 20,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-09T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-10T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-11T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-12T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-13T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-14T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-15T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-16T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-17T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-18T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 20,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-19T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-20T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-21T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-22T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-23T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-24T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 10,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-25T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 11,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-26T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 12,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-27T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 13,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-28T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 14,
-						"topicName": "Sales"
-					}
-				]
-			}
-		]
-	};
-
-/***/ },
 /* 56 */
 /***/ function(module, exports) {
 
 	module.exports = {
-		"data": [
+		"dataByTopic": [
 			{
 				"topic": -1,
-				"Data": [
+				"dates": [
 					{
 						"date": "30-Dec-15",
 						"value": 15,
@@ -39404,7 +38493,7 @@
 					},
 					{
 						"date": "1-Jan-16",
-						"value": 15,
+						"value": 17,
 						"fullDate": "2016-01-01T00:00:00-08:00"
 					},
 					{
@@ -39414,37 +38503,37 @@
 					},
 					{
 						"date": "3-Jan-16",
-						"value": 16,
+						"value": 19,
 						"fullDate": "2016-01-03T00:00:00-08:00"
 					},
 					{
 						"date": "4-Jan-16",
-						"value": 16,
+						"value": 20,
 						"fullDate": "2016-01-04T00:00:00-08:00"
 					},
 					{
 						"date": "5-Jan-16",
-						"value": 18,
+						"value": 21,
 						"fullDate": "2016-01-05T00:00:00-08:00"
 					},
 					{
 						"date": "6-Jan-16",
-						"value": 15,
+						"value": 22,
 						"fullDate": "2016-01-06T00:00:00-08:00"
 					},
 					{
 						"date": "7-Jan-16",
-						"value": 18,
+						"value": 21,
 						"fullDate": "2016-01-07T00:00:00-08:00"
 					},
 					{
 						"date": "8-Jan-16",
-						"value": 21,
+						"value": 20,
 						"fullDate": "2016-01-08T00:00:00-08:00"
 					},
 					{
 						"date": "9-Jan-16",
-						"value": 18,
+						"value": 19,
 						"fullDate": "2016-01-09T00:00:00-08:00"
 					},
 					{
@@ -39459,27 +38548,27 @@
 					},
 					{
 						"date": "12-Jan-16",
-						"value": 18,
+						"value": 17,
 						"fullDate": "2016-01-12T00:00:00-08:00"
 					},
 					{
 						"date": "13-Jan-16",
-						"value": 18,
+						"value": 16,
 						"fullDate": "2016-01-13T00:00:00-08:00"
 					},
 					{
 						"date": "14-Jan-16",
-						"value": 18,
+						"value": 15,
 						"fullDate": "2016-01-14T00:00:00-08:00"
 					},
 					{
 						"date": "15-Jan-16",
-						"value": 18,
+						"value": 16,
 						"fullDate": "2016-01-15T00:00:00-08:00"
 					},
 					{
 						"date": "16-Jan-16",
-						"value": 18,
+						"value": 17,
 						"fullDate": "2016-01-16T00:00:00-08:00"
 					},
 					{
@@ -39499,37 +38588,37 @@
 					},
 					{
 						"date": "20-Jan-16",
-						"value": 18,
+						"value": 21,
 						"fullDate": "2016-01-20T00:00:00-08:00"
 					},
 					{
 						"date": "21-Jan-16",
-						"value": 18,
+						"value": 22,
 						"fullDate": "2016-01-21T00:00:00-08:00"
 					},
 					{
 						"date": "22-Jan-16",
-						"value": 18,
+						"value": 23,
 						"fullDate": "2016-01-22T00:00:00-08:00"
 					},
 					{
 						"date": "23-Jan-16",
-						"value": 18,
+						"value": 24,
 						"fullDate": "2016-01-23T00:00:00-08:00"
 					},
 					{
 						"date": "24-Jan-16",
-						"value": 18,
+						"value": 25,
 						"fullDate": "2016-01-24T00:00:00-08:00"
 					},
 					{
 						"date": "25-Jan-16",
-						"value": 18,
+						"value": 26,
 						"fullDate": "2016-01-25T00:00:00-08:00"
 					},
 					{
 						"date": "26-Jan-16",
-						"value": 18,
+						"value": 26,
 						"fullDate": "2016-01-26T00:00:00-08:00"
 					},
 					{
@@ -39819,27 +38908,27 @@
 					},
 					{
 						"date": "24-Mar-16",
-						"value": 18,
+						"value": 10,
 						"fullDate": "2016-03-24T00:00:00-07:00"
 					},
 					{
 						"date": "25-Mar-16",
-						"value": 18,
+						"value": 11,
 						"fullDate": "2016-03-25T00:00:00-07:00"
 					},
 					{
 						"date": "26-Mar-16",
-						"value": 18,
+						"value": 12,
 						"fullDate": "2016-03-26T00:00:00-07:00"
 					},
 					{
 						"date": "27-Mar-16",
-						"value": 18,
+						"value": 13,
 						"fullDate": "2016-03-27T00:00:00-07:00"
 					},
 					{
 						"date": "28-Mar-16",
-						"value": 30,
+						"value": 14,
 						"fullDate": "2016-03-28T00:00:00-07:00"
 					}
 				],
@@ -39872,7 +38961,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 15,
+						"value": 17,
 						"topicName": "Sales"
 					}
 				]
@@ -39892,7 +38981,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 16,
+						"value": 19,
 						"topicName": "Sales"
 					}
 				]
@@ -39902,7 +38991,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 16,
+						"value": 20,
 						"topicName": "Sales"
 					}
 				]
@@ -39912,7 +39001,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 21,
 						"topicName": "Sales"
 					}
 				]
@@ -39922,7 +39011,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 15,
+						"value": 22,
 						"topicName": "Sales"
 					}
 				]
@@ -39932,7 +39021,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 21,
 						"topicName": "Sales"
 					}
 				]
@@ -39942,7 +39031,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 21,
+						"value": 20,
 						"topicName": "Sales"
 					}
 				]
@@ -39952,7 +39041,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 19,
 						"topicName": "Sales"
 					}
 				]
@@ -39982,7 +39071,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 17,
 						"topicName": "Sales"
 					}
 				]
@@ -39992,7 +39081,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 16,
 						"topicName": "Sales"
 					}
 				]
@@ -40002,7 +39091,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 15,
 						"topicName": "Sales"
 					}
 				]
@@ -40012,7 +39101,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 16,
 						"topicName": "Sales"
 					}
 				]
@@ -40022,7 +39111,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 17,
 						"topicName": "Sales"
 					}
 				]
@@ -40062,7 +39151,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 21,
 						"topicName": "Sales"
 					}
 				]
@@ -40072,7 +39161,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 22,
 						"topicName": "Sales"
 					}
 				]
@@ -40082,7 +39171,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 23,
 						"topicName": "Sales"
 					}
 				]
@@ -40092,7 +39181,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 24,
 						"topicName": "Sales"
 					}
 				]
@@ -40102,7 +39191,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 25,
 						"topicName": "Sales"
 					}
 				]
@@ -40112,7 +39201,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 26,
 						"topicName": "Sales"
 					}
 				]
@@ -40122,7 +39211,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 26,
 						"topicName": "Sales"
 					}
 				]
@@ -40702,7 +39791,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 10,
 						"topicName": "Sales"
 					}
 				]
@@ -40712,7 +39801,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 11,
 						"topicName": "Sales"
 					}
 				]
@@ -40722,7 +39811,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 12,
 						"topicName": "Sales"
 					}
 				]
@@ -40732,7 +39821,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 18,
+						"value": 13,
 						"topicName": "Sales"
 					}
 				]
@@ -40742,7 +39831,7 @@
 				"topics": [
 					{
 						"name": -1,
-						"value": 30,
+						"value": 14,
 						"topicName": "Sales"
 					}
 				]
@@ -40755,11 +39844,11 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-		"data": [
+		"dataByTopic": [
 			{
 				"topic": -1,
 				"topicName": "Quantity",
-				"Data": [
+				"dates": [
 					{
 						"date": 1422000000000,
 						"value": 0,
@@ -51744,11 +50833,7 @@
 					}
 				]
 			}
-		],
-		"readableDataType": {
-			"name": "Quantity Sold",
-			"type": "number"
-		}
+		]
 	};
 
 /***/ },
@@ -51756,11 +50841,11 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-		"data": [
+		"dataByTopic": [
 			{
 				"topic": -1,
 				"topicName": "Quantity",
-				"Data": [
+				"dates": [
 					{
 						"date": "16-Jan-17",
 						"value": 0,
@@ -52125,11 +51210,7 @@
 					}
 				]
 			}
-		],
-		"readableDataType": {
-			"name": "Quantity Sold",
-			"type": "number"
-		}
+		]
 	};
 
 /***/ },
@@ -52137,10 +51218,10 @@
 /***/ function(module, exports) {
 
 	module.exports = {
-		"data": [
+		"dataByTopic": [
 			{
 				"topic": -1,
-				"Data": [
+				"dates": [
 					{
 						"date": "30-Dec-15",
 						"value": 0,
