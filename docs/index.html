@@ -147,7 +147,7 @@
 <li>Reusability</li>
 <li>Composability</li>
 <li>Fully tested</li>
-<li>ES6 source (transpiled to ES5 with <a href="https://github.com/babel/babel">Babel</a>)</li>
+<li>ES2015 source code (transpiled with <a href="https://github.com/babel/babel">Babel</a>)</li>
 </ul>
 <h2>Usage</h2><p>The typical use of Britecharts involves creating a chart using it's simple API, and rendering it on a container which has previously been applied some data. The code will look like this:</p>
 <pre class="prettyprint source"><code>barChart
@@ -167,9 +167,9 @@ barContainer.datum(dataset).call(barChart);</code></pre><h2>API</h2><p>All the c
 <li>Legend Chart: <a href="module-Legend.html">API</a> - <a href="tutorial-donut.html">Demo</a></li>
 <li>Step Chart: <a href="module-Step.html">API</a> - <a href="tutorial-step.html">Demo</a></li>
 </ul>
-<h2>Installation</h2><p>Britecharts components are distributed in <strong>UMD modules</strong>, each one exposing a D3.js component written with the <a href="http://bost.ocks.org/mike/chart/">Reusable API pattern</a>. In order to use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules.</p>
+<h2>Installation</h2><p>Britecharts components are distributed in <strong>UMD modules</strong>, each one exposing a D3.js component written with the <a href="http://bost.ocks.org/mike/chart/">Reusable API pattern</a>. In order to use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules. You would also need to load the <a href="https://github.com/d3/d3-selection">D3.js selection</a> library in order to select the chart container.</p>
 <p>They also provide some minimal CSS styling, that can be loaded independently or as a bundle.</p>
-<h2>Roadmap</h2><p>This project is in active development, if you are interested on helping you can check out <a href="http://eventbrite.github.io/britecharts/tutorial--_CONTRIBUTING.html">contributing</a> document. Check the <a href="https://github.com/eventbrite/britecharts/issues">issues page</a> for more info in what's coming and to give your feedback and to vote for your favorite proposals.</p>
+<h2>Roadmap</h2><p>This project is in active development, if you are interested on helping you can check the <a href="http://eventbrite.github.io/britecharts/tutorial--_CONTRIBUTING.html">contributing</a> document. Review the <a href="https://github.com/eventbrite/britecharts/issues">issues page</a> for more info in what's coming and to give your feedback and to vote for your favorite proposals.</p>
 <h2>See Also</h2><ul>
 <li><a href="http://eventbrite.github.io/britecharts/tutorial--_GETTINGSTARTED.html">Getting Started Guide</a></li>
 <li><a href="http://eventbrite.github.io/britecharts/">Documentation</a></li>

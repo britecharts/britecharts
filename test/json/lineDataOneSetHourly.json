@@ -1,9 +1,9 @@
 {
-    "data": [
+    "dataByTopic": [
         {
             "topic": -1,
             "topicName": "Quantity",
-            "Data": [
+            "dates": [
                 {
                     "date": "16-Jan-17",
                     "value": 0,
@@ -368,9 +368,5 @@
                 }
             ]
         }
-    ],
-    "readableDataType": {
-        "name": "Quantity Sold",
-        "type": "number"
-    }
+    ]
 }

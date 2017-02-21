@@ -15,8 +15,8 @@ define(function(require){
     const d3Transition = require('d3-transition');
 
     const _ = require('underscore');
-    const exportChart = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
+    const exportChart = require('./helpers/exportChart');
 
     const ONE_AND_A_HALF_YEARS = 47304000000;
     const ONE_DAY = 86400001;
@@ -32,17 +32,18 @@ define(function(require){
     /**
      * @typedef areaChartData
      * @type {Object}
-     * @property {Object[]} Data       All data entries for a given topic (required)
-     * @property {Number} topic        Topic identifier (required)
-     * @property {String} topicName    Topic name (required)
+     * @property {Object[]} data       All data entries
+     * @property {String} date         Date of the entry
+     * @property {String} name         Name of the entry
+     * @property {Number} value        Value of the entry
      *
      * @example
      * {
      *     'data': [
      *         {
+     *             "date": "2011-01-05T00:00:00Z",
      *             "name": "Direct",
-     *             "views": 0,
-     *             "dateUTC": "2011-01-05T00:00:00Z"
+     *             "value": 0
      *         }
      *     ]
      * }
@@ -142,8 +143,9 @@ define(function(require){
                 right: 0
             },
 
-            dateLabel = 'dateUTC',
-            valueLabel = 'views',
+            dateLabel = 'date',
+            valueLabel = 'value',
+            keyLabel = 'name',
 
             // getters
             getValueLabel = d => d[valueLabel],
@@ -175,11 +177,7 @@ define(function(require){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
-                dataByDate = d3Collection.nest()
-                    .key( getDate )
-                    .entries(
-                         _(_data).sortBy('date')
-                    );
+                dataByDate = getDataByDate(data);
 
                 buildLayers();
                 buildScales();
@@ -205,20 +203,6 @@ define(function(require){
                 .on('mouseover', handleMouseOver)
                 .on('mouseout', handleMouseOut)
                 .on('mousemove', handleMouseMove);
-        }
-
-        /**
-         * Calculates the maximum number of ticks for the x axis
-         * @param  {Number} width Chart width
-         * @param  {Number} dataPointNumber  Number of entries on the data
-         * @return {Number}       Number of ticks to render
-         */
-        function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
-            let singleTickWidth = 30,
-                spacing = 30,
-                ticksForWidth = Math.ceil(width / (singleTickWidth + spacing));
-
-            return Math.min(dataPointNumber, ticksForWidth);
         }
 
         /**
@@ -547,6 +531,32 @@ define(function(require){
         }
 
         /**
+         * Calculates the maximum number of ticks for the x axis
+         * @param  {Number} width Chart width
+         * @param  {Number} dataPointNumber  Number of entries on the data
+         * @return {Number}       Number of ticks to render
+         */
+        function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
+            let singleTickWidth = 30,
+                spacing = 30,
+                ticksForWidth = Math.ceil(width / (singleTickWidth + spacing));
+
+            return Math.min(dataPointNumber, ticksForWidth);
+        }
+
+        /**
+         * Orders the data by date for consumption on the chart tooltip
+         * @param  {areaChartData} data    Chart data
+         * @return {Object[]}               Chart data ordered by date
+         * @private
+         */
+        function getDataByDate(data) {
+            return d3Collection.nest()
+                                .key(getDate).sortKeys(d3Array.ascending)
+                                .entries(data);
+        }
+
+        /**
          * Computes the maximum sum of values for any date
          *
          * @return {Number} Max value
@@ -713,6 +723,34 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the colorSchema of the chart
+         * @param  {String[]} _x Desired colorSchema for the graph
+         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
+         * @public
+         */
+        exports.colorSchema = function(_x) {
+            if (!arguments.length) {
+                return colorSchema;
+            }
+            colorSchema = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the dateLabel of the chart
+         * @param  {Number} _x Desired dateLabel for the graph
+         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+         * @public
+         */
+        exports.dateLabel = function(_x) {
+            if (!arguments.length) {
+                return dateLabel;
+            }
+            dateLabel = _x;
+            return this;
+        };
+
+        /**
          * Gets or Sets the height of the chart
          * @param  {Number} _x Desired width for the graph
          * @return { height | module} Current height or Area Chart module to chain calls
@@ -726,6 +764,20 @@ define(function(require){
                 width = Math.ceil(_x / aspectRatio);
             }
             height = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the keyLabel of the chart
+         * @param  {Number} _x Desired keyLabel for the graph
+         * @return { keyLabel | module} Current keyLabel or Chart module to chain calls
+         * @public
+         */
+        exports.keyLabel = function(_x) {
+            if (!arguments.length) {
+                return keyLabel;
+            }
+            keyLabel = _x;
             return this;
         };
 
@@ -758,23 +810,6 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the width of the chart
-         * @param  {Number} _x Desired width for the graph
-         * @return { width | module} Current width or Area Chart module to chain calls
-         * @public
-         */
-        exports.width = function(_x) {
-            if (!arguments.length) {
-                return width;
-            }
-            if (aspectRatio) {
-                height = Math.ceil(_x * aspectRatio);
-            }
-            width = _x;
-            return this;
-        };
-
-        /**
          * Gets or Sets the valueLabel of the chart
          * @param  {Number} _x Desired valueLabel for the graph
          * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
@@ -789,30 +824,19 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the dateLabel of the chart
-         * @param  {Number} _x Desired dateLabel for the graph
-         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+         * Gets or Sets the width of the chart
+         * @param  {Number} _x Desired width for the graph
+         * @return { width | module} Current width or Area Chart module to chain calls
          * @public
          */
-        exports.dateLabel = function(_x) {
+        exports.width = function(_x) {
             if (!arguments.length) {
-                return dateLabel;
+                return width;
             }
-            dateLabel = _x;
-            return this;
-        };
-
-        /**
-         * Gets or Sets the colorSchema of the chart
-         * @param  {String[]} _x Desired colorSchema for the graph
-         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
-         * @public
-         */
-        exports.colorSchema = function(_x) {
-            if (!arguments.length) {
-                return colorSchema;
+            if (aspectRatio) {
+                height = Math.ceil(_x * aspectRatio);
             }
-            colorSchema = _x;
+            width = _x;
             return this;
         };
 

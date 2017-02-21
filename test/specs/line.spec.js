@@ -102,7 +102,7 @@ define([
             });
 
             it('should render a line for each data topic', () => {
-                let numLines = dataset.data.length;
+                let numLines = dataset.dataByTopic.length;
 
                 expect(containerFixture.selectAll('.line').nodes().length).toEqual(numLines);
             });
@@ -213,7 +213,7 @@ define([
                         xAxis = d3.select('.x-axis-group'),
                         xAxisLabels = xAxis.selectAll('.tick text'),
                         actual = xAxisLabels.text(),
-                        expected = '16 PM';
+                        expected = '00 AM';
 
                     expect(actual).toEqual(expected)
                 });
@@ -281,6 +281,44 @@ define([
                 expect(defaultAspectRatio).not.toBe(testAspectRatio);
                 expect(newAspectRatio).toBe(testAspectRatio);
             });
+
+            it('should provide valueLabel getter and setter', () => {
+                let defaultValueLabel = lineChart.valueLabel(),
+                    testValueLabel = 'quantity',
+                    newValueLabel;
+
+                lineChart.valueLabel(testValueLabel);
+                newValueLabel = lineChart.valueLabel();
+
+                expect(defaultValueLabel).not.toBe(testValueLabel);
+                expect(newValueLabel).toBe(testValueLabel);
+            });
+
+            it('should provide dateLabel getter and setter', () => {
+                let defaultDateLabel = lineChart.dateLabel(),
+                    testDateLabel = 'dateUTC',
+                    newDateLabel;
+
+                lineChart.dateLabel(testDateLabel);
+                newDateLabel = lineChart.dateLabel();
+
+                expect(defaultDateLabel).not.toBe(testDateLabel);
+                expect(newDateLabel).toBe(testDateLabel);
+            });
+
+            it('should provide topicLabel getter and setter', () => {
+                let defaultTopicLabel = lineChart.topicLabel(),
+                    testTopicLabel = 'valueSet',
+                    newTopicLabel;
+
+                lineChart.topicLabel(testTopicLabel);
+                newTopicLabel = lineChart.topicLabel();
+
+                expect(defaultTopicLabel).not.toBe(testTopicLabel);
+                expect(newTopicLabel).toBe(testTopicLabel);
+            });
+
+
 
             it('should provide a colorSchema getter and setter', () => {
                 let defaultSchema = lineChart.colorSchema(),
