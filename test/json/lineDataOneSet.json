@@ -1,8 +1,8 @@
 {
-  "data": [
+  "dataByTopic": [
     {
       "topic": -1,
-      "Data": [
+      "dates": [
         {
           "date": "30-Dec-15",
           "value": 15,
