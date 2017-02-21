@@ -2,6 +2,8 @@
 
 > Britecharts is a client-side **reusable Charting Library** based on [D3.js v4][1] that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.
 
+[![Britecharts Logo][36]][31]
+
 Britecharts [components][32] have been written in ES2015 with a Test Driven methodology so they are **fully tested**, and we are commited to keep them that way.
 
 ## Key Features
@@ -11,7 +13,7 @@ The main characteristics of this library are:
 - Reusability
 - Composability
 - Fully tested
-- ES6 source (transpiled to ES5 with [Babel][17])
+- ES2015 source code (transpiled with [Babel][17])
 
 ## Usage
 
@@ -38,14 +40,14 @@ All the components expose some basic API methods like width, height and margin. 
  - Legend Chart: [API][24] - [Demo][6]
  - Step Chart: [API][28] - [Demo][11]
 
-## Install
+## Installation
 
-Britecharts components are distributed in **UMD modules**, each one exposing a D3.js component written with the [Reusable API pattern][3]. In order to use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules.
+Britecharts components are distributed in **UMD modules**, each one exposing a D3.js component written with the [Reusable API pattern][3]. In order to use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules. You would also need to load the [D3.js selection][37] library in order to select the chart container.
 
 They also provide some minimal CSS styling, that can be loaded independently or as a bundle.
 
 ## Roadmap
-This project is in active development. Check the [issues page][16] for more info in what's coming.
+This project is in active development, if you are interested on helping you can check the [contributing][35] document. Review the [issues page][16] for more info in what's coming and to give your feedback and to vote for your favorite proposals.
 
 ## See Also
 - [Getting Started Guide][34]
@@ -112,3 +114,5 @@ Read more in the [license document][15]
 [33]: https://github.com/eventbrite/britecharts
 [34]: http://eventbrite.github.io/britecharts/tutorial--_GETTINGSTARTED.html
 [35]: http://eventbrite.github.io/britecharts/tutorial--_CONTRIBUTING.html
+[36]: http://github.com/eventbrite/britecharts/src/doc/template/static/img/logo-stripes.png
+[37]: https://github.com/d3/d3-selection
