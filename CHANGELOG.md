@@ -1,8 +1,16 @@
-1.1.17
-----------
-Failed bump
+1.2.0 - Minor Release
+---------------------
+Changes:
+* Changed data input of Line Chart
+* Added value, key and topic label accessors to line and stacked are charts
+* Updated docs
+* Added ratio setting to Stacked Area Chart
 
-1.1.16
+1.1.17, 1.1.18
+--------------
+Failed bumps
+
+1.1.16 - Patch
 ----------
 bugs:
 
@@ -18,7 +26,7 @@ docs:
 ----------
 Failed bump
 
-1.1.14
+1.1.14 - Patch
 ----------
 Fixed d3Transition dependency
 

@@ -1,6 +1,6 @@
 {
   "name": "britecharts",
-  "version": "1.1.17",
+  "version": "1.2.0",
   "description": "D3.js based Modular Charting Library by Eventbrite",
   "main": "README.md",
   "contributors": [
@@ -25,7 +25,9 @@
     "docs": "WEBPACK_ENV=demos webpack && npm run styles && grunt docs",
     "prod": "npm run _prod && npm run _prodUMD",
     "untrack": "grunt untrack",
-    "release": "npm run prod && grunt release",
+    "release": "npm run prod && grunt release:patch",
+    "release:minor": "npm run prod && grunt release:minor",
+    "release:major": "npm run prod && grunt release:major",
     "test": "WEBPACK_ENV=test karma start",
     "_prod": "WEBPACK_ENV=prod webpack",
     "_prodUMD": "WEBPACK_ENV=prodUMD webpack",
