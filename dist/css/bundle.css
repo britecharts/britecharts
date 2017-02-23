@@ -1,13 +1,10 @@
 @font-face {
-  font-family: "Benton Light";
-  src: url("/docs/fonts/benton/light/Benton_Sans-Light.eot?") format("eot"), url("/docs/fonts/benton/light/Benton_Sans-Light.woff") format("woff"), url("/docs/fonts/benton/light/Benton_Sans-Light.ttf") format("truetype"), url("/docs/fonts/benton/light/Benton_Sans-Light.svg#BentonLight") format("svg"); }
+  font-family: 'Karla', sans-serif;
+  src: url("https://fonts.googleapis.com/css?family=Karla") format("opentype");
+  font-weight: 300; }
 
-@font-face {
-  font-family: "Benton Regular";
-  src: url("/docs/fonts/benton/regular/Benton_Sans-Regular.eot?") format("eot"), url("/docs/fonts/benton/regular/Benton_Sans-Regular.woff") format("woff"), url("/docs/fonts/benton/regular/Benton_Sans-Regular.ttf") format("truetype"), url("/docs/fonts/benton/regular/Benton_Sans-Regular.svg#BentonRegular") format("svg"); }
-
-body {
-  font-family: 'Benton Regular', sans-serif;
+.britechart {
+  font-family: 'Karla', sans-serif;
   -webkit-font-smoothing: antialiased; }
 
 .vertical-grid-line,
