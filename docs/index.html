@@ -17,6 +17,7 @@
 
         <!-- Disable tap highlight on IE -->
         <meta name="msapplication-tap-highlight" content="no">
+        <meta name="msapplication-config" content="img/icons/browserconfig.xml">
 
         <!-- Web Application Manifest -->
         <link rel="manifest" href="manifest.json">
@@ -30,14 +31,18 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="#009FA1">
         <meta name="apple-mobile-web-app-title" content="Britecharts">
-        <link rel="apple-touch-icon" href="img/icons/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png">
 
-        <!-- Tile icon for Win8 (144x144 + tile color) -->
-        <meta name="msapplication-TileImage" content="img/icons/ms-touch-icon-144x144-precomposed.png">
-        <meta name="msapplication-TileColor" content="#009FA1">
+        <!-- MacOS -->
+        <link rel="mask-icon" href="img/icons/safari-pinned-tab.svg" color="#5bbad5">
 
         <!-- Color the status bar on mobile devices -->
-        <meta name="theme-color" content="#009FA1">
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="img/icons/favicon.ico">
+        <link rel="icon" type="image/png" href="img/icons/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="img/icons/favicon-16x16.png" sizes="16x16">
 
         
             <meta property="og:title" content="Britecharts - D3.js based charting library of reusable components"/>
@@ -137,10 +142,10 @@
 
 
     <section class="readme-section">
-        <article><h1>Britecharts</h1><blockquote>
+        <article><h1>Britecharts</h1><p><a href="http://eventbrite.github.io/britecharts/"><img src="img/logo-stripes-small.png" alt="Britecharts Logo"></a></p>
+<blockquote>
 <p>Britecharts is a client-side <strong>reusable Charting Library</strong> based on <a href="http://d3js.org/">D3.js v4</a> that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.</p>
 </blockquote>
-<p><a href="http://eventbrite.github.io/britecharts/"><img src="http://github.com/eventbrite/britecharts/src/doc/template/static/img/logo-stripes.png" alt="Britecharts Logo"></a></p>
 <p>Britecharts <a href="http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html">components</a> have been written in ES2015 with a Test Driven methodology so they are <strong>fully tested</strong>, and we are commited to keep them that way.</p>
 <h2>Key Features</h2><p>The main characteristics of this library are:</p>
 <ul>
