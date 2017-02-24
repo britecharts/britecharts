@@ -65,6 +65,7 @@ define(function(require) {
             xScale, yScale,
             numOfVerticalTicks = 5,
             numOfHorizontalTicks = 5,
+            percentageAxisToMaxRatio = 1,
             xAxis, yAxis,
             xAxisPadding = {
                 top: 0,
@@ -156,7 +157,9 @@ define(function(require) {
          * Creates the x and y scales of the graph
          * @private
          */
-        function buildScales(){
+        function buildScales() {
+            let percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue), 1)
+
             if (!horizontal) {
                 xScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
@@ -164,11 +167,11 @@ define(function(require) {
                     .padding(0.1);
 
                 yScale = d3Scale.scaleLinear()
-                    .domain([0, d3Array.max(data, getValue)])
+                    .domain([0, percentageAxis])
                     .rangeRound([chartHeight, 0]);
             } else {
                 xScale = d3Scale.scaleLinear()
-                    .domain([0, d3Array.max(data, getValue)])
+                    .domain([0, percentageAxis])
                     .rangeRound([0, chartWidth]);
 
                 yScale = d3Scale.scaleBand()
@@ -460,6 +463,21 @@ define(function(require) {
         exports.exportChart = function(filename, title) {
             exportChart.call(exports, svg, filename, title);
         };
+
+        /**
+         * Configurable extension of the x axis
+         * if your max point was 50% you might want to show x axis to 60%, pass 1.2
+         * @param  {number} _x ratio to max data point to add to the x axis
+         * @return { ratio | module} Current ratio or Bar Chart module to chain calls
+         * @public
+         */
+        exports.percentageAxisToMaxRatio = function(_x) {
+            if (!arguments.length) {
+                return percentageAxisToMaxRatio;
+            }
+            percentageAxisToMaxRatio = _x;
+            return this;
+        }
 
         return exports;
     };

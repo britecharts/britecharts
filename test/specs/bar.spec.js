@@ -96,6 +96,18 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
+            it('should provide a percentage ratio getter and setter', () => {
+                let defaultRatio = barChart.percentageAxisToMaxRatio(),
+                    testRatio = 1.5,
+                    newAspectRatio;
+
+                lineChart.percentageAxisToMaxRatio(testRatio);
+                newAspectRatio = lineChart.percentageAxisToMaxRatio();
+
+                expect(defaultAspectRatio).not.toBe(testAspectRatio);
+                expect(newAspectRatio).toBe(testAspectRatio);
+            });
+
             it('should provide horizontal direction getter and setter', () => {
                 let previous = barChart.horizontal(),
                     expected = true,
