@@ -2,15 +2,15 @@
     "data": [
         {
             "name": "Radiating",
-            "value": 0.08167
+            "value": 0.10789
         },
         {
             "name": "Reflecting",
-            "value": 0.0492
+            "value": 0.14092
         },
         {
             "name": "Shining",
-            "value": 0.02782
+            "value": 0.20782
         },
         {
             "name": "Sunshine",
@@ -18,11 +18,11 @@
         },
         {
             "name": "Vivid",
-            "value": 0.02702
+            "value": 0.12702
         },
         {
             "name": "Brilliant",
-            "value": 0.02288
+            "value": 0.37382
         }
     ]
 }
