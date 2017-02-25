@@ -1,3 +1,11 @@
+/* Navigation */
+.navbar-brand {
+    padding: 18px 15px;
+}
+.navbar-brand img {
+    height: 30px;
+}
+
 /* Layout */
 .sidebar {
     margin-top: 50px;
