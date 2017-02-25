@@ -16422,7 +16422,7 @@
 	            right: 20,
 	            top: 20,
 	            bottom: 5
-	        }).horizontal(true).width(containerWidth).height(300).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
+	        }).horizontal(true).enablePercentageLabels(true).width(containerWidth).height(300).percentageAxisToMaxRatio(1.3).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
 	
 	        barContainer.datum(dataset).call(barChart);
 	
@@ -16486,6 +16486,7 @@
 	    var d3Array = __webpack_require__(9);
 	    var d3Axis = __webpack_require__(10);
 	    var d3Dispatch = __webpack_require__(12);
+	    var d3Format = __webpack_require__(14);
 	    var d3Scale = __webpack_require__(15);
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
@@ -16549,6 +16550,11 @@
 	            numOfVerticalTicks = 5,
 	            numOfHorizontalTicks = 5,
 	            percentageAxisToMaxRatio = 1,
+	            enablePercentageLabels = false,
+	            percentageLabelMargin = 7,
+	            percentageLabelSize = 14,
+	            horizontalLabelFormat = '.0%',
+	            verticalLabelFormat = '.0f',
 	            xAxis = void 0,
 	            yAxis = void 0,
 	            xAxisPadding = {
@@ -16578,6 +16584,30 @@
 	            getValue = function getValue(_ref2) {
 	            var value = _ref2.value;
 	            return value;
+	        },
+	            _percentageLabelHorizontalX = function _percentageLabelHorizontalX(_ref3) {
+	            var value = _ref3.value;
+	            return xScale(value) + percentageLabelMargin;
+	        },
+	            _percentageLabelHorizontalY = function _percentageLabelHorizontalY(_ref4) {
+	            var name = _ref4.name;
+	            return yScale(name) + yScale.bandwidth() / 2 + percentageLabelSize * (3 / 8);
+	        },
+	            _percentageLabelVerticalX = function _percentageLabelVerticalX(_ref5) {
+	            var name = _ref5.name;
+	            return xScale(name);
+	        },
+	            _percentageLabelVerticalY = function _percentageLabelVerticalY(_ref6) {
+	            var value = _ref6.value;
+	            return yScale(value) - percentageLabelMargin;
+	        },
+	            _percentageLabelHorizontalFormatValue = function _percentageLabelHorizontalFormatValue(_ref7) {
+	            var value = _ref7.value;
+	            return d3Format.format(horizontalLabelFormat)(value);
+	        },
+	            _percentageLabelVerticalFormatValue = function _percentageLabelVerticalFormatValue(_ref8) {
+	            var value = _ref8.value;
+	            return d3Format.format(verticalLabelFormat)(parseFloat(value) * 100);
 	        };
 	
 	        /**
@@ -16598,6 +16628,9 @@
 	                drawGridLines();
 	                drawBars();
 	                drawAxis();
+	                if (enablePercentageLabels) {
+	                    drawPercentageLabels();
+	                }
 	            });
 	        }
 	
@@ -16697,8 +16730,8 @@
 	         */
 	        function drawHorizontalBars(bars) {
 	            // Enter + Update
-	            bars.enter().append('rect').classed('bar', true).attr('y', chartHeight).attr('x', 0).attr('height', yScale.bandwidth()).attr('width', function (_ref3) {
-	                var value = _ref3.value;
+	            bars.enter().append('rect').classed('bar', true).attr('y', chartHeight).attr('x', 0).attr('height', yScale.bandwidth()).attr('width', function (_ref9) {
+	                var value = _ref9.value;
 	                return xScale(value);
 	            }).on('mouseover', function () {
 	                dispatcher.call('customMouseOver', this);
@@ -16706,11 +16739,11 @@
 	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
 	            }).on('mouseout', function () {
 	                dispatcher.call('customMouseOut', this);
-	            }).merge(bars).attr('x', 0).attr('y', function (_ref4) {
-	                var name = _ref4.name;
+	            }).merge(bars).attr('x', 0).attr('y', function (_ref10) {
+	                var name = _ref10.name;
 	                return yScale(name);
-	            }).attr('height', yScale.bandwidth()).attr('width', function (_ref5) {
-	                var value = _ref5.value;
+	            }).attr('height', yScale.bandwidth()).attr('width', function (_ref11) {
+	                var value = _ref11.value;
 	                return xScale(value);
 	            });
 	        }
@@ -16722,11 +16755,11 @@
 	         */
 	        function drawVerticalBars(bars) {
 	            // Enter + Update
-	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref6) {
-	                var value = _ref6.value;
+	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref12) {
+	                var value = _ref12.value;
 	                return yScale(value);
-	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref7) {
-	                var value = _ref7.value;
+	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref13) {
+	                var value = _ref13.value;
 	                return chartHeight - yScale(value);
 	            }).on('mouseover', function () {
 	                dispatcher.call('customMouseOver', this);
@@ -16734,16 +16767,31 @@
 	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
 	            }).on('mouseout', function () {
 	                dispatcher.call('customMouseOut', this);
-	            }).merge(bars).attr('x', function (_ref8) {
-	                var name = _ref8.name;
+	            }).merge(bars).attr('x', function (_ref14) {
+	                var name = _ref14.name;
 	                return xScale(name);
-	            }).attr('y', function (_ref9) {
-	                var value = _ref9.value;
+	            }).attr('y', function (_ref15) {
+	                var value = _ref15.value;
 	                return yScale(value);
-	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref10) {
-	                var value = _ref10.value;
+	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref16) {
+	                var value = _ref16.value;
 	                return chartHeight - yScale(value);
 	            });
+	        }
+	
+	        /**
+	         * Draws percentage labels at the end of each bar
+	         * @private
+	         * @return {void}
+	         */
+	        function drawPercentageLabels() {
+	            var labelXPosition = horizontal ? _percentageLabelHorizontalX : _percentageLabelVerticalX;
+	            var labelYPosition = horizontal ? _percentageLabelHorizontalY : _percentageLabelVerticalY;
+	            var text = horizontal ? _percentageLabelHorizontalFormatValue : _percentageLabelVerticalFormatValue;
+	
+	            var percentageLabels = svg.select('.metadata-group').append('g').classed('percentage-label-group', true).selectAll('text').data(data.reverse()).enter().append('text');
+	
+	            percentageLabels.classed('percentage-label', true).attr('x', labelXPosition).attr('y', labelYPosition).text(text).attr('font-size', percentageLabelSize + 'px');
 	        }
 	
 	        /**
@@ -16903,6 +16951,32 @@
 	                return percentageAxisToMaxRatio;
 	            }
 	            percentageAxisToMaxRatio = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Default 10px. Offset between end of bar and start of the percentage bars
+	         * @param  {number} _x percentage margin offset from end of bar
+	         * @return {number | module}    Currnet offset or Bar Chart module to chain calls
+	         */
+	        exports.percentageLabelMargin = function (_x) {
+	            if (!arguments.length) {
+	                return percentageLabelMargin;
+	            }
+	            percentageLabelMargin = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Default false. If true, adds percentage labels at the end of the bars
+	         * @param  {Boolean} _x
+	         * @return {Boolean | module}    Current value of enablePercentageLables or Bar Chart module to chain calls
+	         */
+	        exports.enablePercentageLabels = function (_x) {
+	            if (!arguments.length) {
+	                return enablePercentageLabels;
+	            }
+	            enablePercentageLabels = _x;
 	            return this;
 	        };
 	
@@ -17358,15 +17432,15 @@
 		"data": [
 			{
 				"name": "Radiating",
-				"value": 0.10789
+				"value": 0.08167
 			},
 			{
 				"name": "Reflecting",
-				"value": 0.14092
+				"value": 0.0492
 			},
 			{
 				"name": "Shining",
-				"value": 0.20782
+				"value": 0.02782
 			},
 			{
 				"name": "Sunshine",
@@ -17374,11 +17448,11 @@
 			},
 			{
 				"name": "Vivid",
-				"value": 0.12702
+				"value": 0.02702
 			},
 			{
 				"name": "Brilliant",
-				"value": 0.37382
+				"value": 0.02288
 			}
 		]
 	};
@@ -18117,14 +18191,14 @@
 /* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org Version 4.4.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org Version 4.6.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
 		(factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
-	var version = "4.4.4";
+	var version = "4.6.0";
 	
 	var ascending = function(a, b) {
 	  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -24993,8 +25067,10 @@
 	      }
 	    }
 	  } else {
-	    boundsPoint(lambda, phi);
+	    ranges.push(range = [lambda0$1 = lambda, lambda1 = lambda]);
 	  }
+	  if (phi < phi0) phi0 = phi;
+	  if (phi > phi1) phi1 = phi;
 	  p0 = p, lambda2 = lambda;
 	}
 	
@@ -25194,7 +25270,7 @@
 	      cz = x0 * y - y0 * x,
 	      m = sqrt(cx * cx + cy * cy + cz * cz),
 	      u = x0 * x + y0 * y + z0 * z,
-	      v = m && -acos(u) / m, // area weight
+	      v = m && -asin(m) / m, // area weight
 	      w = atan2(m, u); // line weight
 	  X2 += v * cx;
 	  Y2 += v * cy;
@@ -26172,6 +26248,46 @@
 	  result: noop$1
 	};
 	
+	var lengthSum$1 = adder();
+	var lengthRing;
+	var x00$2;
+	var y00$2;
+	var x0$4;
+	var y0$4;
+	
+	var lengthStream$1 = {
+	  point: noop$1,
+	  lineStart: function() {
+	    lengthStream$1.point = lengthPointFirst$1;
+	  },
+	  lineEnd: function() {
+	    if (lengthRing) lengthPoint$1(x00$2, y00$2);
+	    lengthStream$1.point = noop$1;
+	  },
+	  polygonStart: function() {
+	    lengthRing = true;
+	  },
+	  polygonEnd: function() {
+	    lengthRing = null;
+	  },
+	  result: function() {
+	    var length = +lengthSum$1;
+	    lengthSum$1.reset();
+	    return length;
+	  }
+	};
+	
+	function lengthPointFirst$1(x, y) {
+	  lengthStream$1.point = lengthPoint$1;
+	  x00$2 = x0$4 = x, y00$2 = y0$4 = y;
+	}
+	
+	function lengthPoint$1(x, y) {
+	  x0$4 -= x, y0$4 -= y;
+	  lengthSum$1.add(sqrt(x0$4 * x0$4 + y0$4 * y0$4));
+	  x0$4 = x, y0$4 = y;
+	}
+	
 	function PathString() {
 	  this._string = [];
 	}
@@ -26243,6 +26359,11 @@
 	  path.area = function(object) {
 	    geoStream(object, projectionStream(areaStream$1));
 	    return areaStream$1.result();
+	  };
+	
+	  path.measure = function(object) {
+	    geoStream(object, projectionStream(lengthStream$1));
+	    return lengthStream$1.result();
 	  };
 	
 	  path.bounds = function(object) {
@@ -27511,6 +27632,19 @@
 	  return cluster;
 	};
 	
+	function count(node) {
+	  var sum = 0,
+	      children = node.children,
+	      i = children && children.length;
+	  if (!i) sum = 1;
+	  else while (--i >= 0) sum += children[i].value;
+	  node.value = sum;
+	}
+	
+	var node_count = function() {
+	  return this.eachAfter(count);
+	};
+	
 	var node_each = function(callback) {
 	  var node = this, current, next = [node], children, i, n;
 	  do {
@@ -27689,6 +27823,7 @@
 	
 	Node.prototype = hierarchy.prototype = {
 	  constructor: Node,
+	  count: node_count,
 	  each: node_each,
 	  eachAfter: node_eachAfter,
 	  eachBefore: node_eachBefore,
@@ -27849,12 +27984,21 @@
 	  var dx = b.x - a.x,
 	      dy = b.y - a.y,
 	      dr = a.r + b.r;
-	  return dr * dr > dx * dx + dy * dy;
+	  return dr * dr - 1e-6 > dx * dx + dy * dy;
 	}
 	
-	function distance2(circle, x, y) {
-	  var dx = circle.x - x,
-	      dy = circle.y - y;
+	function distance1(a, b) {
+	  var l = a._.r;
+	  while (a !== b) l += 2 * (a = a.next)._.r;
+	  return l - b._.r;
+	}
+	
+	function distance2(node, x, y) {
+	  var a = node._,
+	      b = node.next._,
+	      ab = a.r + b.r,
+	      dx = (a.x * b.r + b.x * a.r) / ab - x,
+	      dy = (a.y * b.r + b.y * a.r) / ab - y;
 	  return dx * dx + dy * dy;
 	}
 	
@@ -27899,35 +28043,27 @@
 	  pack: for (i = 3; i < n; ++i) {
 	    place(a._, b._, c = circles[i]), c = new Node$1(c);
 	
-	    // If there are only three elements in the front-chain…
-	    if ((k = a.previous) === (j = b.next)) {
-	      // If the new circle intersects the third circle,
-	      // rotate the front chain to try the next position.
-	      if (intersects(j._, c._)) {
-	        a = b, b = j, --i;
-	        continue pack;
-	      }
-	    }
-	
 	    // Find the closest intersecting circle on the front-chain, if any.
-	    else {
-	      sj = j._.r, sk = k._.r;
-	      do {
-	        if (sj <= sk) {
-	          if (intersects(j._, c._)) {
-	            b = j, a.next = b, b.previous = a, --i;
-	            continue pack;
-	          }
-	          j = j.next, sj += j._.r;
-	        } else {
-	          if (intersects(k._, c._)) {
-	            a = k, a.next = b, b.previous = a, --i;
-	            continue pack;
-	          }
-	          k = k.previous, sk += k._.r;
+	    // “Closeness” is determined by linear distance along the front-chain.
+	    // “Ahead” or “behind” is likewise determined by linear distance.
+	    j = b.next, k = a.previous, sj = b._.r, sk = a._.r;
+	    do {
+	      if (sj <= sk) {
+	        if (intersects(j._, c._)) {
+	          if (sj + a._.r + b._.r > distance1(j, b)) a = j; else b = j;
+	          a.next = b, b.previous = a, --i;
+	          continue pack;
 	        }
-	      } while (j !== k.next);
-	    }
+	        sj += j._.r, j = j.next;
+	      } else {
+	        if (intersects(k._, c._)) {
+	          if (distance1(a, k) > sk + a._.r + b._.r) a = k; else b = k;
+	          a.next = b, b.previous = a, --i;
+	          continue pack;
+	        }
+	        sk += k._.r, k = k.previous;
+	      }
+	    } while (j !== k.next);
 	
 	    // Success! Insert the new circle c between a and b.
 	    c.previous = a, c.next = b, a.next = b.previous = b = c;
@@ -27937,10 +28073,10 @@
 	    ox += ca * c._.x;
 	    oy += ca * c._.y;
 	
-	    // Compute the new closest circle a to centroid.
-	    aa = distance2(a._, cx = ox / oa, cy = oy / oa);
+	    // Compute the new closest circle pair to the centroid.
+	    aa = distance2(a, cx = ox / oa, cy = oy / oa);
 	    while ((c = c.next) !== b) {
-	      if ((ca = distance2(c._, cx, cy)) < aa) {
+	      if ((ca = distance2(c, cx, cy)) < aa) {
 	        a = c, aa = ca;
 	      }
 	    }
@@ -35461,43 +35597,41 @@
 	
 	
 	            if (dataByTopic) {
-	                (function () {
-	                    var flatData = [];
+	                var flatData = [];
 	
-	                    dataByTopic.forEach(function (topic) {
-	                        topic.dates.forEach(function (date) {
-	                            flatData.push({
-	                                topicName: topic[topicNameLabel],
-	                                name: topic[topicLabel],
-	                                date: date[dateLabel],
-	                                value: date[valueLabel]
-	                            });
+	                dataByTopic.forEach(function (topic) {
+	                    topic.dates.forEach(function (date) {
+	                        flatData.push({
+	                            topicName: topic[topicNameLabel],
+	                            name: topic[topicLabel],
+	                            date: date[dateLabel],
+	                            value: date[valueLabel]
 	                        });
 	                    });
+	                });
 	
-	                    // Nest data by date and format
-	                    dataByDate = d3Collection.nest().key(getDate).entries(flatData).map(function (d) {
-	                        return {
-	                            date: new Date(d.key),
-	                            topics: d.values
-	                        };
+	                // Nest data by date and format
+	                dataByDate = d3Collection.nest().key(getDate).entries(flatData).map(function (d) {
+	                    return {
+	                        date: new Date(d.key),
+	                        topics: d.values
+	                    };
+	                });
+	
+	                // Normalize dates in keys
+	                dataByDate = dataByDate.map(function (d) {
+	                    d.date = new Date(d.date);
+	
+	                    return d;
+	                });
+	
+	                // Normalize dataByTopic
+	                dataByTopic.forEach(function (kv) {
+	                    kv.dates.forEach(function (d) {
+	                        d.date = new Date(d[dateLabel]);
+	                        d.value = +d[valueLabel];
 	                    });
-	
-	                    // Normalize dates in keys
-	                    dataByDate = dataByDate.map(function (d) {
-	                        d.date = new Date(d.date);
-	
-	                        return d;
-	                    });
-	
-	                    // Normalize dataByTopic
-	                    dataByTopic.forEach(function (kv) {
-	                        kv.dates.forEach(function (d) {
-	                            d.date = new Date(d[dateLabel]);
-	                            d.value = +d[valueLabel];
-	                        });
-	                    });
-	                })();
+	                });
 	            }
 	
 	            return { dataByTopic: dataByTopic, dataByDate: dataByDate };

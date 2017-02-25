@@ -98,14 +98,14 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
             it('should provide a percentage ratio getter and setter', () => {
                 let defaultRatio = barChart.percentageAxisToMaxRatio(),
-                    testRatio = 1.5,
-                    newAspectRatio;
+                    expected = 1.5,
+                    actual;
 
-                lineChart.percentageAxisToMaxRatio(testRatio);
-                newAspectRatio = lineChart.percentageAxisToMaxRatio();
+                barChart.percentageAxisToMaxRatio(expected);
+                actual = barChart.percentageAxisToMaxRatio();
 
-                expect(defaultAspectRatio).not.toBe(testAspectRatio);
-                expect(newAspectRatio).toBe(testAspectRatio);
+                expect(defaultRatio).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide horizontal direction getter and setter', () => {
@@ -115,6 +115,30 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
                 barChart.horizontal(expected);
                 actual = barChart.horizontal();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide percentage label margin getter and setter', () => {
+                let previous = barChart.percentageLabelMargin(),
+                    expected = 10,
+                    actual;
+
+                barChart.percentageLabelMargin(expected);
+                actual = barChart.percentageLabelMargin();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide enable percentage label getter and setter', () => {
+                let previous = barChart.enablePercentageLabels(),
+                    expected = true,
+                    actual;
+
+                barChart.enablePercentageLabels(expected);
+                actual = barChart.enablePercentageLabels();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
