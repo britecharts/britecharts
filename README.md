@@ -68,7 +68,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-[http://www.apache.org/licenses/LICENSE-2.0][14]
+[https://www.apache.org/licenses/LICENSE-2.0][14]
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -79,9 +79,9 @@ limitations under the License.
 Read more in the [license document][15]
 
 
-[1]: http://d3js.org/
+[1]: https://d3js.org/
 [2]: https://webpack.github.io/
-[3]: http://bost.ocks.org/mike/chart/
+[3]: https://bost.ocks.org/mike/chart/
 [4]: tutorial-bar.html
 [5]: tutorial-line.html
 [6]: tutorial-donut.html
@@ -92,7 +92,7 @@ Read more in the [license document][15]
 [11]: tutorial-step.html
 [12]: https://nodejs.org/en/download/
 [13]: https://github.com/eventbrite/britecharts/releases
-[14]: http://www.apache.org/licenses/LICENSE-2.0
+[14]: https://www.apache.org/licenses/LICENSE-2.0
 [15]: ../LICENSE.md
 [16]: https://github.com/eventbrite/britecharts/issues
 [17]: https://github.com/babel/babel
@@ -109,10 +109,10 @@ Read more in the [license document][15]
 [28]: module-Step.html
 [29]: module-Sparkline.html
 [30]: module-Stacked-area.html
-[31]: http://eventbrite.github.io/britecharts/
-[32]: http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
+[31]: https://eventbrite.github.io/britecharts/
+[32]: https://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
 [33]: https://github.com/eventbrite/britecharts
-[34]: http://eventbrite.github.io/britecharts/tutorial--_GETTINGSTARTED.html
-[35]: http://eventbrite.github.io/britecharts/tutorial--_CONTRIBUTING.html
-[36]: img/logo-stripes-small.png
+[34]: https://eventbrite.github.io/britecharts/tutorial--_GETTINGSTARTED.html
+[35]: https://eventbrite.github.io/britecharts/tutorial--_CONTRIBUTING.html
+[36]: https://eventbrite.github.io/britecharts/img/logo-stripes-small.png
 [37]: https://github.com/d3/d3-selection
