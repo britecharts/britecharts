@@ -1407,7 +1407,7 @@ html {
 }
 
 body {
-  font-family: "Benton Regular", "Karla", Helvetica, Arial, sans-serif;
+  font-family: "Benton Regular", Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.44;
   color: #45494e;
@@ -1505,7 +1505,7 @@ hr {
 
 h1, h2, h3, h4, h5, h6,
 .h1, .h2, .h3, .h4, .h5, .h6 {
-  font-family: "Benton Light", "Radley", sans-serif;
+  font-family: "Benton Light", sans-serif;
   font-weight: 400;
   line-height: 1.2;
   color: inherit;
@@ -1896,8 +1896,8 @@ samp {
 code {
   padding: 2px 4px;
   font-size: 90%;
-  color: #F6682F;
-  background-color: #f8f8fa;
+  color: black;
+  background-color: transparent;
   border-radius: 2px;
 }
 
@@ -1928,7 +1928,7 @@ pre {
   word-wrap: break-word;
   color: #45494e;
   background-color: #eff2f5;
-  border: 1px solid #ccc;
+  border: 1px solid #d2d6df;
   border-radius: 2px;
 }
 pre code {
@@ -4674,7 +4674,7 @@ tbody.collapse.in {
 
 .navbar {
   position: relative;
-  min-height: 66px;
+  min-height: 56px;
   margin-bottom: 23px;
   border: 1px solid transparent;
 }
@@ -4810,10 +4810,10 @@ tbody.collapse.in {
 
 .navbar-brand {
   float: left;
-  padding: 21.5px 15px;
+  padding: 16.5px 15px;
   font-size: 20px;
   line-height: 23px;
-  height: 66px;
+  height: 56px;
 }
 .navbar-brand:hover, .navbar-brand:focus {
   text-decoration: none;
@@ -4832,8 +4832,8 @@ tbody.collapse.in {
   float: right;
   margin-right: 15px;
   padding: 9px 10px;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 11px;
+  margin-bottom: 11px;
   background-color: transparent;
   background-image: none;
   border: 1px solid transparent;
@@ -4858,7 +4858,7 @@ tbody.collapse.in {
 }
 
 .navbar-nav {
-  margin: 10.75px -15px;
+  margin: 8.25px -15px;
 }
 .navbar-nav > li > a {
   padding-top: 10px;
@@ -4896,8 +4896,8 @@ tbody.collapse.in {
     float: left;
   }
   .navbar-nav > li > a {
-    padding-top: 21.5px;
-    padding-bottom: 21.5px;
+    padding-top: 16.5px;
+    padding-bottom: 16.5px;
   }
 }
 
@@ -4909,8 +4909,8 @@ tbody.collapse.in {
   border-bottom: 1px solid transparent;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
-  margin-top: 11.5px;
-  margin-bottom: 11.5px;
+  margin-top: 6.5px;
+  margin-bottom: 6.5px;
 }
 @media (min-width: 768px) {
   .navbar-form .form-group {
@@ -4998,21 +4998,21 @@ tbody.collapse.in {
 }
 
 .navbar-btn {
-  margin-top: 11.5px;
-  margin-bottom: 11.5px;
+  margin-top: 6.5px;
+  margin-bottom: 6.5px;
 }
 .navbar-btn.btn-sm, .btn-group-sm > .navbar-btn.btn {
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 11px;
+  margin-bottom: 11px;
 }
 .navbar-btn.btn-xs, .btn-group-xs > .navbar-btn.btn {
-  margin-top: 22px;
-  margin-bottom: 22px;
+  margin-top: 17px;
+  margin-bottom: 17px;
 }
 
 .navbar-text {
-  margin-top: 21.5px;
-  margin-bottom: 21.5px;
+  margin-top: 16.5px;
+  margin-bottom: 16.5px;
 }
 @media (min-width: 768px) {
   .navbar-text {
@@ -5036,14 +5036,14 @@ tbody.collapse.in {
   }
 }
 .navbar-default {
-  background-color: #fff;
+  background-color: white;
   border-color: transparent;
 }
 .navbar-default .navbar-brand {
   color: #45494e;
 }
 .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
-  color: #45494e;
+  color: #282c35;
   background-color: transparent;
 }
 .navbar-default .navbar-text {
@@ -5053,12 +5053,12 @@ tbody.collapse.in {
   color: #45494e;
 }
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
-  color: #45494e;
-  background-color: #f8f8fa;
+  color: #282c35;
+  background-color: #eff2f5;
 }
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
   color: #45494e;
-  background-color: #eff2f5;
+  background-color: #d2d6df;
 }
 .navbar-default .navbar-nav > .disabled > a, .navbar-default .navbar-nav > .disabled > a:hover, .navbar-default .navbar-nav > .disabled > a:focus {
   color: #9b9ea7;
@@ -5071,14 +5071,14 @@ tbody.collapse.in {
   background-color: #e6e6e6;
 }
 .navbar-default .navbar-toggle .icon-bar {
-  background-color: #fff;
+  background-color: #45494e;
 }
 .navbar-default .navbar-collapse,
 .navbar-default .navbar-form {
   border-color: transparent;
 }
 .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
-  background-color: #eff2f5;
+  background-color: #d2d6df;
   color: #45494e;
 }
 @media (max-width: 767px) {
@@ -5086,12 +5086,12 @@ tbody.collapse.in {
     color: #45494e;
   }
   .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
-    color: #45494e;
-    background-color: #f8f8fa;
+    color: #282c35;
+    background-color: #eff2f5;
   }
   .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
     color: #45494e;
-    background-color: #eff2f5;
+    background-color: #d2d6df;
   }
   .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a, .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .disabled > a:focus {
     color: #9b9ea7;
@@ -5102,13 +5102,13 @@ tbody.collapse.in {
   color: #45494e;
 }
 .navbar-default .navbar-link:hover {
-  color: #45494e;
+  color: #282c35;
 }
 .navbar-default .btn-link {
   color: #45494e;
 }
 .navbar-default .btn-link:hover, .navbar-default .btn-link:focus {
-  color: #45494e;
+  color: #282c35;
 }
 .navbar-default .btn-link[disabled]:hover, .navbar-default .btn-link[disabled]:focus, fieldset[disabled] .navbar-default .btn-link:hover, fieldset[disabled] .navbar-default .btn-link:focus {
   color: #9b9ea7;
@@ -6585,7 +6585,7 @@ button.close {
   position: absolute;
   z-index: 1070;
   display: block;
-  font-family: "Benton Regular", "Karla", Helvetica, Arial, sans-serif;
+  font-family: "Benton Regular", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
@@ -6707,7 +6707,7 @@ button.close {
   display: none;
   max-width: 276px;
   padding: 1px;
-  font-family: "Benton Regular", "Karla", Helvetica, Arial, sans-serif;
+  font-family: "Benton Regular", Helvetica, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
@@ -7367,6 +7367,20 @@ button.close {
     display: none !important;
   }
 }
+@font-face {
+  font-family: 'Benton Light';
+  src: url("../fonts/benton/light/Benton_Sans-Light.eot");
+  /* IE9 Compat Modes */
+  src: url("../fonts/benton/light/Benton_Sans-Light.eot?#iefix") format("embedded-opentype"), url("../fonts/benton/light/Benton_Sans-Light.woff") format("woff"), url("../fonts/benton/light/Benton_Sans-Light.ttf") format("truetype"), url("../fonts/benton/light/Benton_Sans-Light.svg#svgFontName") format("svg");
+  /* Legacy iOS */
+}
+@font-face {
+  font-family: 'Benton Regular';
+  src: url("../fonts/benton/regular/Benton_Sans-Regular.eot");
+  /* IE9 Compat Modes */
+  src: url("../fonts/benton/regular/Benton_Sans-Regular.eot?#iefix") format("embedded-opentype"), url("../fonts/benton/regular/Benton_Sans-Regular.woff") format("woff"), url("../fonts/benton/regular/Benton_Sans-Regular.ttf") format("truetype"), url("../fonts/benton/regular/Benton_Sans-Regular.svg#svgFontName") format("svg");
+  /* Legacy iOS */
+}
 body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -7386,7 +7400,7 @@ h6 {
 }
 .navbar-default .badge {
   background-color: #fff;
-  color: #fff;
+  color: white;
 }
 .navbar-inverse .badge {
   background-color: #fff;
