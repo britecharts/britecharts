@@ -11,3 +11,6 @@
 
 .bar-chart .tick line {
   display: none; }
+
+.bar-chart .percentage-label {
+  fill: #666A73; }
