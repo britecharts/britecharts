@@ -64,7 +64,7 @@
         <div class="navbar navbar-fixed-top navbar-default">
             <div class="container">
             	<div class="navbar-header">
-            		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="img/logo.svg"
+            		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="img/britecharts-logo.svg"
             		alt="Britecharts"/></a>
             		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
             			<span class="icon-bar"></span>
@@ -207,6 +207,8 @@
 <pre class="prettyprint source"><code>npm run test</code></pre><p>This process will watch the test and spec files, re-running the tests when those change.</p>
 <h3>JSDoc</h3><p>JSDoc is an API documentation generator. It allows us to follow a methodology when commenting our code, so that later we can automatically generate documentation from these comments. Check it's <a href="http://usejsdoc.org/about-getting-started.html">getting started guide</a> to know more about it.</p>
 <p>We are also using <a href="http://gruntjs.com/">Grunt</a> and a <a href="https://github.com/krampstudio/grunt-jsdoc">grunt task</a> to generate the documentation.</p>
+<p>Lastly, for the documentation site theme we are using a custom <a href="https://bootswatch.com/">Bootswatch theme</a>. Its repository is <a href="https://github.com/Golodhros/bootswatch">a fork</a> of the original, and in order to update it, we would simply run:</p>
+<pre class="prettyprint source"><code>grunt swatch_scss:custom</code></pre><p>to generate the theme living in the <code>/custom</code> folder. We can also preview it by running <code>grunt</code> and check it out in <code>http://0.0.0.0:3000/custom/</code>.</p>
 <hr>
 <h2>The Workflow</h2><h3>ES6 transpiling</h3><p>Britecharts modules are written in ES6, so we would need to create an ES5-compatible version of the charts before releasing a new version.</p>
 <p>In order to work with the development version of the charts, we just need to run:</p>

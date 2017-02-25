@@ -159,6 +159,12 @@ JSDoc is an API documentation generator. It allows us to follow a methodology wh
 
 We are also using [Grunt](http://gruntjs.com/) and a [grunt task](https://github.com/krampstudio/grunt-jsdoc) to generate the documentation.
 
+Lastly, for the documentation site theme we are using a custom [Bootswatch theme](https://bootswatch.com/). Its repository is [a fork](https://github.com/Golodhros/bootswatch) of the original, and in order to update it, we would simply run:
+```
+grunt swatch_scss:custom
+```
+to generate the theme living in the `/custom` folder. We can also preview it by running `grunt` and check it out in `http://0.0.0.0:3000/custom/`.
+
 ---
 
 ## The Workflow
