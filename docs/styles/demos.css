@@ -1,25 +1,3 @@
-/* Typography */
-@font-face {
-    font-family: "Benton Light";
-    src: url("../fonts/benton/light/Benton_Sans-Light.eot?") format("eot"),
-    url("../fonts/benton/light/Benton_Sans-Light.woff") format("woff"),
-    url("../fonts/benton/light/Benton_Sans-Light.ttf") format("truetype"),
-    url("../fonts/benton/light/Benton_Sans-Light.svg#BentonLight") format("svg");
-}
-
-@font-face {
-    font-family: "Benton Regular";
-    src: url("../fonts/benton/regular/Benton_Sans-Regular.eot?") format("eot"),
-    url("../fonts/benton/regular/Benton_Sans-Regular.woff") format("woff"),
-    url("../fonts/benton/regular/Benton_Sans-Regular.ttf") format("truetype"),
-    url("../fonts/benton/regular/Benton_Sans-Regular.svg#BentonRegular") format("svg");
-}
-
-body {
-    font-family: 'Benton Regular', sans-serif;
-    -webkit-font-smoothing: antialiased;
-}
-
 /* Layout */
 .sidebar {
     margin-top: 50px;

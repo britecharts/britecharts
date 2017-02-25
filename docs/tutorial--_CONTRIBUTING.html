@@ -47,7 +47,7 @@
         
             <meta property="og:title" content="Britecharts - D3.js based charting library of reusable components"/>
             <meta property="og:type" content="website"/>
-            <meta property="og:image" content="img/logo.svg"/>
+            <meta property="og:image" content="https://eventbrite.github.io/britecharts/img/logo-stripes-small.png"/>
             <meta property="og:site_name" content="Britecharts"/>
             <meta property="og:url" content=""/>
         
@@ -229,8 +229,20 @@
 <td>Create a new release of the library.</td>
 </tr>
 <tr>
+<td><code>npm run release:minor</code></td>
+<td>Create a new release of the library by bumping the second number of the version (1.N.1)</td>
+</tr>
+<tr>
+<td><code>npm run release:major</code></td>
+<td>Create a new release of the library by bumping the third number of the version (N.1.1)</td>
+</tr>
+<tr>
 <td><code>npm run test</code></td>
 <td>Start the Karma runner that will test the project and keep watching for changes.</td>
+</tr>
+<tr>
+<td><code>npm run styles</code></td>
+<td>Compiles the styles for the charts</td>
 </tr>
 <tr>
 <td><code>npm run demos:compile</code></td>

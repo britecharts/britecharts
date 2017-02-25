@@ -184,14 +184,16 @@ The build sequence consists of a small set of [Node][node] tasks. While you'll p
 | ---                       | ---
 | `npm run prod`            | Build everything and generate the distribution version of the charts.
 | `npm run release`         | Create a new release of the library.
+| `npm run release:minor`   | Create a new release of the library by bumping the second number of the version (1.N.1)
+| `npm run release:major`   | Create a new release of the library by bumping the third number of the version (N.1.1)
 | `npm run test`            | Start the Karma runner that will test the project and keep watching for changes.
+| `npm run styles`          | Compiles the styles for the charts
 | `npm run demos:compile`   | Compiles our demo files.
 | `npm run demos:watch`     | Watches for changes in our demo files.
 | `npm run demos:serve`     | Serves the demos for our tutorials.
 | `npm run docs`            | Compiles the docs with JSDoc and opens a browser showing them.
 
 **Note that for running `npm run docs`, you will need to first have `npm run demos:watch` and `npm run demos:serve` in two different terminal windows.
-
 
 ## Project Structure
 
