@@ -51,4 +51,4 @@ Check in our [kitchen sink][demos] all the available charts. If you already know
 
 
 [demos]: http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
-[contribute]: https://github.com/eventbrite/britecharts/CONTRIBUTING.md
+[contribute]: https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md
