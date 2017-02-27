@@ -80,6 +80,9 @@
 .bar-chart .tick line {
   display: none; }
 
+.bar-chart .percentage-label {
+  fill: #666A73; }
+
 .line-chart .topic .line {
   fill: none;
   stroke-width: 2;
