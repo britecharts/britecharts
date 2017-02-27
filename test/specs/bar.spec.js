@@ -143,6 +143,19 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
+
+
+            it('should provide yAxisPaddingBetweenChart getter and setter', () => {
+                let previous = barChart.yAxisPaddingBetweenChart(),
+                    expected = 15,
+                    actual;
+
+                barChart.yAxisPaddingBetweenChart(expected);
+                actual = barChart.yAxisPaddingBetweenChart();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
         });
 
         describe('when hovering a bar', function() {
