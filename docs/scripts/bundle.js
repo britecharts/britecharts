@@ -56,7 +56,7 @@
 	__webpack_require__(2);
 	__webpack_require__(6);
 	__webpack_require__(38);
-	__webpack_require__(44);
+	__webpack_require__(45);
 	__webpack_require__(51);
 	__webpack_require__(60);
 	__webpack_require__(64);
@@ -16386,8 +16386,8 @@
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
 	    bar = __webpack_require__(39),
-	    miniTooltip = __webpack_require__(40),
-	    dataBuilder = __webpack_require__(41);
+	    miniTooltip = __webpack_require__(41),
+	    dataBuilder = __webpack_require__(42);
 	
 	function createBarChart() {
 	    var barChart = bar(),
@@ -16418,11 +16418,11 @@
 	        dataset = testDataSet.withColors().build();
 	
 	        barChart.margin({
-	            left: 80,
+	            left: 150,
 	            right: 20,
 	            top: 20,
 	            bottom: 5
-	        }).horizontal(true).enablePercentageLabels(true).width(containerWidth).height(300).percentageAxisToMaxRatio(1.3).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
+	        }).horizontal(true).enablePercentageLabels(true).width(containerWidth).yAxisPaddingBetweenChart(30).height(300).percentageAxisToMaxRatio(1.3).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
 	
 	        barContainer.datum(dataset).call(barChart);
 	
@@ -16491,6 +16491,7 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
+	    var textHelper = __webpack_require__(40);
 	    var exportChart = __webpack_require__(24);
 	
 	    /**
@@ -16563,6 +16564,8 @@
 	            bottom: 0,
 	            right: 0
 	        },
+	            yAxisPaddingBetweenChart = 10,
+	            yAxisLineWrapLimit = 2,
 	            horizontal = false,
 	            svg = void 0,
 	            valueLabel = 'value',
@@ -16618,7 +16621,7 @@
 	         */
 	        function exports(_selection) {
 	            _selection.each(function (_data) {
-	                chartWidth = width - margin.left - margin.right;
+	                chartWidth = width - margin.left - margin.right - yAxisPaddingBetweenChart * 1.2;
 	                chartHeight = height - margin.top - margin.bottom;
 	                data = cleanData(_data);
 	
@@ -16656,12 +16659,12 @@
 	         * @private
 	         */
 	        function buildContainerGroups() {
-	            var container = svg.append('g').classed('container-group', true).attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
+	            var container = svg.append('g').classed('container-group', true).attr('transform', 'translate(' + (margin.left + yAxisPaddingBetweenChart) + ', ' + margin.top + ')');
 	
 	            container.append('g').classed('grid-lines-group', true);
 	            container.append('g').classed('chart-group', true);
 	            container.append('g').classed('x-axis-group axis', true);
-	            container.append('g').classed('y-axis-group axis', true);
+	            container.append('g').attr('transform', 'translate(' + -1 * yAxisPaddingBetweenChart + ', 0)').classed('y-axis-group axis', true);
 	            container.append('g').classed('metadata-group', true);
 	        }
 	
@@ -16713,6 +16716,16 @@
 	        }
 	
 	        /**
+	         * Utility function that wraps a text into the given width
+	         * @param  {D3Selection} text         Text to write
+	         * @param  {Number} containerWidth
+	         * @private
+	         */
+	        function wrapText(text, containerWidth) {
+	            textHelper.wrapTextWithEllipses(text, containerWidth, 0, yAxisLineWrapLimit);
+	        }
+	
+	        /**
 	         * Draws the x and y axis on the svg object within their
 	         * respective groups
 	         * @private
@@ -16721,6 +16734,8 @@
 	            svg.select('.x-axis-group.axis').attr('transform', 'translate(0, ' + chartHeight + ')').call(xAxis);
 	
 	            svg.select('.y-axis-group.axis').call(yAxis);
+	
+	            svg.selectAll('.y-axis-group .tick text').call(wrapText, margin.left - yAxisPaddingBetweenChart);
 	        }
 	
 	        /**
@@ -16980,12 +16995,140 @@
 	            return this;
 	        };
 	
+	        /**
+	         * Default 10. Space between y axis and chart
+	         * @param  {number} _x space between y axis and chart
+	         * @return {number| module}    Current value of yAxisPaddingBetweenChart or Bar Chart module to chain calls
+	         */
+	        exports.yAxisPaddingBetweenChart = function (_x) {
+	            if (!arguments.length) {
+	                return yAxisPaddingBetweenChart;
+	            }
+	            yAxisPaddingBetweenChart = _x;
+	            return this;
+	        };
+	
 	        return exports;
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
 /* 40 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	
+	    var d3Selection = __webpack_require__(4);
+	
+	    var wrapConfig = {
+	        lineHeight: 1.2,
+	        smallTextOffset: 10,
+	        smallTextLineHeightRatio: 0.9,
+	        smallTextRatio: 0.6,
+	        valueClassName: 'value',
+	        labelClassName: 'label'
+	    };
+	
+	    /**
+	     * Wraps a selection of text within the available width
+	     * @param  {Number} fontSize       Size of the base font
+	     * @param  {Number} availableWidth Width of the container where the text needs to wrap on
+	     * @param  {D3Selection} node      SVG text element that contains the text to wrap
+	     *
+	     * REF: http://bl.ocks.org/mbostock/7555321
+	     * More discussions on https://github.com/mbostock/d3/issues/1642
+	     * @return {void}
+	     */
+	    var wrapText = function wrapText(xOffset, fontSize, availableWidth, node, data, i) {
+	        var text = d3Selection.select(node),
+	            words = text.text().split(/\s+/).reverse(),
+	            word = void 0,
+	            line = [],
+	            lineNumber = 0,
+	            smallLineHeight = wrapConfig.lineHeight * wrapConfig.smallTextLineHeightRatio,
+	            y = text.attr('y'),
+	            dy = parseFloat(text.attr('dy')),
+	            smallFontSize = fontSize * wrapConfig.smallTextRatio,
+	            tspan = text.text(null).append('tspan').attr('x', xOffset).attr('y', y - 5).attr('dy', dy + 'em').classed(wrapConfig.valueClassName, true).style('font-size', fontSize + 'px');
+	
+	        tspan.text(words.pop());
+	        tspan = text.append('tspan').classed(wrapConfig.labelClassName, true).attr('x', xOffset).attr('y', y + wrapConfig.smallTextOffset).attr('dy', ++lineNumber * smallLineHeight + dy + 'em').style('font-size', smallFontSize + 'px');
+	
+	        while (word = words.pop()) {
+	            line.push(word);
+	            tspan.text(line.join(' '));
+	            if (tspan.node().getComputedTextLength() > availableWidth - 50) {
+	                line.pop();
+	                tspan.text(line.join(' '));
+	                line = [word];
+	                tspan = text.append('tspan').classed(wrapConfig.labelClassName, true).attr('x', xOffset).attr('y', y + wrapConfig.smallTextOffset).attr('dy', ++lineNumber * smallLineHeight + dy + 'em').text(word).style('font-size', smallFontSize + 'px');
+	            }
+	        }
+	    };
+	
+	    /**
+	     * Wraps a selection of text within the available width, also adds class .adjust-upwards
+	     * to configure a y offset for entries with multiple rows
+	     * @param  {D3Sekectuib} text       d3 text element
+	     * @param  {Number} width           Width of the container where the text needs to wrap on
+	     * @param  {Number} xpos            number passed to determine the x offset
+	     * @param  {Number} limit           number of lines before an ellipses is added and the rest of the text is cut off
+	     *
+	     * REF: http://bl.ocks.org/mbostock/7555321
+	     * More discussions on https://github.com/mbostock/d3/issues/1642
+	     * @return {void}
+	     */
+	    var wrapTextWithEllipses = function wrapTextWithEllipses(text, width) {
+	        var xpos = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+	        var limit = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 2;
+	
+	
+	        text.each(function () {
+	            var words, word, line, lineNumber, lineHeight, y, dy, tspan;
+	
+	            text = d3Selection.select(this);
+	
+	            words = text.text().split(/\s+/).reverse();
+	            line = [];
+	            lineNumber = 0;
+	            lineHeight = 1.2;
+	            y = text.attr('y');
+	            dy = parseFloat(text.attr('dy'));
+	            tspan = text.text(null).append('tspan').attr('x', xpos).attr('y', y).attr('dy', dy + 'em');
+	
+	            while (word = words.pop()) {
+	                line.push(word);
+	                tspan.text(line.join(' '));
+	
+	                if (tspan.node().getComputedTextLength() > width) {
+	                    line.pop();
+	                    tspan.text(line.join(' '));
+	
+	                    if (lineNumber < limit - 1) {
+	                        line = [word];
+	                        tspan = text.append('tspan').attr('x', xpos).attr('y', y).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);
+	                        // if we need two lines for the text, move them both up to center them
+	                        text.classed('adjust-upwards', true);
+	                    } else {
+	                        line.push('...');
+	                        tspan.text(line.join(' '));
+	                        break;
+	                    }
+	                }
+	            }
+	        });
+	    };
+	
+	    return {
+	        wrapText: wrapText,
+	        wrapTextWithEllipses: wrapTextWithEllipses
+	    };
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+/***/ },
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -17372,7 +17515,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -17381,8 +17524,8 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonColors = __webpack_require__(42),
-	        jsonLetters = __webpack_require__(43);
+	        jsonColors = __webpack_require__(43),
+	        jsonLetters = __webpack_require__(44);
 	
 	    function BarDataBuilder(config) {
 	        this.Klass = BarDataBuilder;
@@ -17425,7 +17568,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -17435,7 +17578,7 @@
 				"value": 0.08167
 			},
 			{
-				"name": "Reflecting",
+				"name": "Opalescent",
 				"value": 0.0492
 			},
 			{
@@ -17443,7 +17586,7 @@
 				"value": 0.02782
 			},
 			{
-				"name": "Sunshine",
+				"name": "Vibrant",
 				"value": 0.04253
 			},
 			{
@@ -17458,7 +17601,7 @@
 	};
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -17571,15 +17714,15 @@
 	};
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    donut = __webpack_require__(45),
-	    legend = __webpack_require__(48),
+	    donut = __webpack_require__(46),
+	    legend = __webpack_require__(47),
 	    dataBuilder = __webpack_require__(49),
 	    colorSelectorHelper = __webpack_require__(37),
 	    dataset = new dataBuilder.DonutDataBuilder().withFivePlusOther().build(),
@@ -17665,7 +17808,7 @@
 	}
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -17682,7 +17825,7 @@
 	    var d3Transition = __webpack_require__(22);
 	
 	    var exportChart = __webpack_require__(24);
-	    var textHelper = __webpack_require__(46);
+	    var textHelper = __webpack_require__(40);
 	    var colorHelper = __webpack_require__(7);
 	
 	    /**
@@ -18127,78 +18270,306 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	    'use strict';
 	
-	    var d3 = __webpack_require__(47);
+	    var d3 = __webpack_require__(48);
 	
-	    var wrapConfig = {
-	        lineHeight: 1.2,
-	        smallTextOffset: 10,
-	        smallTextLineHeightRatio: 0.9,
-	        smallTextRatio: 0.6,
-	        valueClassName: 'value',
-	        labelClassName: 'label'
-	    };
+	    var d3Format = __webpack_require__(14);
+	    var d3Scale = __webpack_require__(15);
+	    var d3Selection = __webpack_require__(4);
+	    var d3Transition = __webpack_require__(22);
+	
+	    var colorHelper = __webpack_require__(7);
 	
 	    /**
-	     * Wraps a selection of text within the available width
-	     * @param  {Number} fontSize       Size of the base font
-	     * @param  {Number} availableWidth Width of the container where the text needs to wrap on
-	     * @param  {D3Selection} node      SVG text element that contains the text to wrap
+	     * @typedef LegendChartData
+	     * @type {Object[]}
+	     * @property {Number} id        Id of the group (required)
+	     * @property {Number} quantity  Quantity of the group (required)
+	     * @property {String} name      Name of the group (required)
 	     *
-	     * REF: http://bl.ocks.org/mbostock/7555321
-	     * More discussions on https://github.com/mbostock/d3/issues/1642
-	     * @return {void}
+	     * @example
+	     * [
+	     *     {
+	     *         id: 1,
+	     *         quantity: 2,
+	     *         name: 'glittering'
+	     *     },
+	     *     {
+	     *         id: 2,
+	     *         quantity: 3,
+	     *         name: 'luminous'
+	     *     }
 	     */
-	    var wrapText = function wrapText(xOffset, fontSize, availableWidth, node, data, i) {
-	        var text = d3.select(node),
-	            words = text.text().split(/\s+/).reverse(),
-	            word = void 0,
-	            line = [],
-	            lineNumber = 0,
-	            smallLineHeight = wrapConfig.lineHeight * wrapConfig.smallTextLineHeightRatio,
-	            y = text.attr('y'),
-	            dy = parseFloat(text.attr('dy')),
-	            smallFontSize = fontSize * wrapConfig.smallTextRatio,
-	            tspan = text.text(null).append('tspan').attr('x', xOffset).attr('y', y - 5).attr('dy', dy + 'em').classed(wrapConfig.valueClassName, true).style('font-size', fontSize + 'px');
 	
-	        tspan.text(words.pop());
-	        tspan = text.append('tspan').classed(wrapConfig.labelClassName, true).attr('x', xOffset).attr('y', y + wrapConfig.smallTextOffset).attr('dy', ++lineNumber * smallLineHeight + dy + 'em').style('font-size', smallFontSize + 'px');
+	    /**
+	     * @fileOverview Legend Component reusable API class that renders a
+	     * simple and configurable legend element.
+	     *
+	     * @example
+	     * var donutChart = donut(),
+	     *     legendBox = legend();
+	     *
+	     * donutChart
+	     *     .externalRadius(500)
+	     *     .internalRadius(200)
+	     *     .on('customMouseOver', function(data) {
+	     *         legendBox.highlight(data.data.id);
+	     *     })
+	     *     .on('customMouseOut', function() {
+	     *         legendBox.clearHighlight();
+	     *     });
+	     *
+	     * d3Selection.select('.css-selector')
+	     *     .datum(dataset)
+	     *     .call(donutChart);
+	     *
+	     * d3Selection.select('.other-css-selector')
+	     *     .datum(dataset)
+	     *     .call(legendBox);
+	     *
+	     * @module Legend
+	     * @tutorial legend
+	     * @exports charts/legend
+	     * @requires d3
+	     */
+	    return function module() {
 	
-	        while (word = words.pop()) {
-	            line.push(word);
-	            tspan.text(line.join(' '));
-	            if (tspan.node().getComputedTextLength() > availableWidth - 50) {
-	                line.pop();
-	                tspan.text(line.join(' '));
-	                line = [word];
-	                tspan = text.append('tspan').classed(wrapConfig.labelClassName, true).attr('x', xOffset).attr('y', y + wrapConfig.smallTextOffset).attr('dy', ++lineNumber * smallLineHeight + dy + 'em').text(word).style('font-size', smallFontSize + 'px');
-	            }
+	        var margin = {
+	            top: 0,
+	            right: 0,
+	            bottom: 0,
+	            left: 0
+	        },
+	            width = 320,
+	            height = 180,
+	            lineMargin = 12,
+	            circleRadius = 8,
+	            circleYOffset = -5,
+	            textSize = 12,
+	            textLetterSpacing = 0.5,
+	            valueReservedSpace = 40,
+	            numberLetterSpacing = 0.8,
+	            numberFormat = d3Format.format('s'),
+	            isFadedClassName = 'is-faded',
+	
+	
+	        // colors
+	        colorScale = void 0,
+	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+	            getId = function getId(_ref) {
+	            var id = _ref.id;
+	            return id;
+	        },
+	            getName = function getName(_ref2) {
+	            var name = _ref2.name;
+	            return name;
+	        },
+	            getFormattedQuantity = function getFormattedQuantity(_ref3) {
+	            var quantity = _ref3.quantity;
+	            return numberFormat(quantity);
+	        },
+	            entries = void 0,
+	            chartWidth = void 0,
+	            chartHeight = void 0,
+	            data = void 0,
+	            svg = void 0;
+	
+	        /**
+	         * This function creates the graph using the selection as container
+	         * @param  {D3Selection} _selection A d3 selection that represents
+	         *                                  the container(s) where the chart(s) will be rendered
+	         * @param {object} _data The data to attach and generate the chart
+	         */
+	        function exports(_selection) {
+	            _selection.each(function (_data) {
+	                chartWidth = width - margin.left - margin.right;
+	                chartHeight = height - margin.top - margin.bottom;
+	                data = _data;
+	
+	                buildColorScale();
+	                buildSVG(this);
+	                drawEntries();
+	            });
 	        }
-	    };
 	
-	    return {
-	        wrapText: wrapText
+	        /**
+	         * Builds containers for the legend
+	         * Also applies the Margin convention
+	         * @private
+	         */
+	        function buildContainerGroups() {
+	            var container = svg.append('g').classed('legend-container-group', true).attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+	
+	            container.append('g').classed('legend-group', true);
+	        }
+	
+	        /**
+	         * Builds color scale for chart, if any colorSchema was defined
+	         * @private
+	         */
+	        function buildColorScale() {
+	            colorScale = d3Scale.scaleOrdinal().range(colorSchema);
+	        }
+	
+	        /**
+	         * Builds the SVG element that will contain the chart
+	         * @param  {HTMLElement} container DOM element that will work as the container of the graph
+	         * @private
+	         */
+	        function buildSVG(container) {
+	            if (!svg) {
+	                svg = d3Selection.select(container).append('svg').classed('britechart britechart-legend', true);
+	
+	                buildContainerGroups();
+	            }
+	
+	            svg.transition().attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+	        }
+	
+	        /**
+	         * Removes the faded class from all the entry lines
+	         */
+	        function cleanFadedLines() {
+	            svg.select('.legend-group').selectAll('g.legend-line').classed(isFadedClassName, false);
+	        }
+	
+	        /**
+	         * Draws the entries of the legend
+	         * @private
+	         */
+	        function drawEntries() {
+	            entries = svg.select('.legend-group').selectAll('g.legend-line').data(data);
+	
+	            // Enter
+	            entries.enter().append('g').classed('legend-line', true).attr('data-item', getId).attr('transform', function (d, i) {
+	                var horizontalOffset = 2 * circleRadius + 10,
+	                    lineHeight = chartHeight / (data.length + 1),
+	                    verticalOffset = (i + 1) * lineHeight;
+	
+	                return 'translate(' + horizontalOffset + ',' + verticalOffset + ')';
+	            }).merge(entries).append('circle').classed('legend-circle', true).attr('cx', 0).attr('cy', circleYOffset).attr('r', circleRadius).style('fill', function (_ref4) {
+	                var quantity = _ref4.quantity;
+	
+	                return colorScale(quantity);
+	            }).style('stroke-width', 1);
+	
+	            svg.select('.legend-group').selectAll('g.legend-line').append('text').classed('legend-entry-name', true).text(getName).attr('x', 2 * circleRadius + lineMargin).style('font-size', textSize + 'px').style('letter-spacing', textLetterSpacing + 'px');
+	
+	            svg.select('.legend-group').selectAll('g.legend-line').append('text').classed('legend-entry-value', true).text(getFormattedQuantity).attr('x', chartWidth - valueReservedSpace).style('font-size', textSize + 'px').style('letter-spacing', numberLetterSpacing + 'px').style('text-anchor', 'end').style('startOffset', '100%');
+	
+	            // Exit
+	            svg.select('.legend-group').selectAll('g.legend-line').exit().transition().style('opacity', 0).remove();
+	        }
+	
+	        /**
+	         * Applies the faded class to all lines but the one that has the given id
+	         * @param  {number} exceptionItemId Id of the line that needs to stay the same
+	         */
+	        function fadeLinesBut(exceptionItemId) {
+	            svg.select('.legend-group').selectAll('g.legend-line').classed(isFadedClassName, true);
+	
+	            d3Selection.select('[data-item="' + exceptionItemId + '"]').classed(isFadedClassName, false);
+	        }
+	
+	        /**
+	         * Clears the highlighted line entry
+	         */
+	        exports.clearHighlight = function () {
+	            cleanFadedLines();
+	        };
+	
+	        /**
+	         * Gets or Sets the colorSchema of the chart
+	         * @param  {Array} _x Color scheme array to get/set
+	         * @return { (Number | Module) } Current colorSchema or Donut Chart module to chain calls
+	         * @public
+	         */
+	        exports.colorSchema = function (_x) {
+	            if (!arguments.length) {
+	                return colorSchema;
+	            }
+	            colorSchema = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the height of the legend chart
+	         * @param  {number} _x Desired width for the chart
+	         * @return { height | module} Current height or Legend module to chain calls
+	         * @public
+	         */
+	        exports.height = function (_x) {
+	            if (!arguments.length) {
+	                return height;
+	            }
+	            height = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Highlights a line entry by fading the rest of lines
+	         * @param  {number} entryId ID of the entry line
+	         */
+	        exports.highlight = function (entryId) {
+	            cleanFadedLines();
+	            fadeLinesBut(entryId);
+	        };
+	
+	        /**
+	         * Gets or Sets the margin of the legend chart
+	         * @param  {object} _x Margin object to get/set
+	         * @return { margin | module} Current margin or Legend module to chain calls
+	         * @public
+	         */
+	        exports.margin = function (_x) {
+	            if (!arguments.length) {
+	                return margin;
+	            }
+	            margin = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the width of the legend chart
+	         * @param  {number} _x Desired width for the graph
+	         * @return { width | module} Current width or Legend module to chain calls
+	         * @public
+	         */
+	        exports.width = function (_x) {
+	            if (!arguments.length) {
+	                return width;
+	            }
+	            width = _x;
+	
+	            return this;
+	        };
+	
+	        return exports;
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org Version 4.6.0. Copyright 2017 Mike Bostock.
+	// https://d3js.org Version 4.4.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
 		(factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
-	var version = "4.6.0";
+	var version = "4.4.4";
 	
 	var ascending = function(a, b) {
 	  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -25067,10 +25438,8 @@
 	      }
 	    }
 	  } else {
-	    ranges.push(range = [lambda0$1 = lambda, lambda1 = lambda]);
+	    boundsPoint(lambda, phi);
 	  }
-	  if (phi < phi0) phi0 = phi;
-	  if (phi > phi1) phi1 = phi;
 	  p0 = p, lambda2 = lambda;
 	}
 	
@@ -25270,7 +25639,7 @@
 	      cz = x0 * y - y0 * x,
 	      m = sqrt(cx * cx + cy * cy + cz * cz),
 	      u = x0 * x + y0 * y + z0 * z,
-	      v = m && -asin(m) / m, // area weight
+	      v = m && -acos(u) / m, // area weight
 	      w = atan2(m, u); // line weight
 	  X2 += v * cx;
 	  Y2 += v * cy;
@@ -26248,46 +26617,6 @@
 	  result: noop$1
 	};
 	
-	var lengthSum$1 = adder();
-	var lengthRing;
-	var x00$2;
-	var y00$2;
-	var x0$4;
-	var y0$4;
-	
-	var lengthStream$1 = {
-	  point: noop$1,
-	  lineStart: function() {
-	    lengthStream$1.point = lengthPointFirst$1;
-	  },
-	  lineEnd: function() {
-	    if (lengthRing) lengthPoint$1(x00$2, y00$2);
-	    lengthStream$1.point = noop$1;
-	  },
-	  polygonStart: function() {
-	    lengthRing = true;
-	  },
-	  polygonEnd: function() {
-	    lengthRing = null;
-	  },
-	  result: function() {
-	    var length = +lengthSum$1;
-	    lengthSum$1.reset();
-	    return length;
-	  }
-	};
-	
-	function lengthPointFirst$1(x, y) {
-	  lengthStream$1.point = lengthPoint$1;
-	  x00$2 = x0$4 = x, y00$2 = y0$4 = y;
-	}
-	
-	function lengthPoint$1(x, y) {
-	  x0$4 -= x, y0$4 -= y;
-	  lengthSum$1.add(sqrt(x0$4 * x0$4 + y0$4 * y0$4));
-	  x0$4 = x, y0$4 = y;
-	}
-	
 	function PathString() {
 	  this._string = [];
 	}
@@ -26359,11 +26688,6 @@
 	  path.area = function(object) {
 	    geoStream(object, projectionStream(areaStream$1));
 	    return areaStream$1.result();
-	  };
-	
-	  path.measure = function(object) {
-	    geoStream(object, projectionStream(lengthStream$1));
-	    return lengthStream$1.result();
 	  };
 	
 	  path.bounds = function(object) {
@@ -27632,19 +27956,6 @@
 	  return cluster;
 	};
 	
-	function count(node) {
-	  var sum = 0,
-	      children = node.children,
-	      i = children && children.length;
-	  if (!i) sum = 1;
-	  else while (--i >= 0) sum += children[i].value;
-	  node.value = sum;
-	}
-	
-	var node_count = function() {
-	  return this.eachAfter(count);
-	};
-	
 	var node_each = function(callback) {
 	  var node = this, current, next = [node], children, i, n;
 	  do {
@@ -27823,7 +28134,6 @@
 	
 	Node.prototype = hierarchy.prototype = {
 	  constructor: Node,
-	  count: node_count,
 	  each: node_each,
 	  eachAfter: node_eachAfter,
 	  eachBefore: node_eachBefore,
@@ -27984,21 +28294,12 @@
 	  var dx = b.x - a.x,
 	      dy = b.y - a.y,
 	      dr = a.r + b.r;
-	  return dr * dr - 1e-6 > dx * dx + dy * dy;
+	  return dr * dr > dx * dx + dy * dy;
 	}
 	
-	function distance1(a, b) {
-	  var l = a._.r;
-	  while (a !== b) l += 2 * (a = a.next)._.r;
-	  return l - b._.r;
-	}
-	
-	function distance2(node, x, y) {
-	  var a = node._,
-	      b = node.next._,
-	      ab = a.r + b.r,
-	      dx = (a.x * b.r + b.x * a.r) / ab - x,
-	      dy = (a.y * b.r + b.y * a.r) / ab - y;
+	function distance2(circle, x, y) {
+	  var dx = circle.x - x,
+	      dy = circle.y - y;
 	  return dx * dx + dy * dy;
 	}
 	
@@ -28043,27 +28344,35 @@
 	  pack: for (i = 3; i < n; ++i) {
 	    place(a._, b._, c = circles[i]), c = new Node$1(c);
 	
-	    // Find the closest intersecting circle on the front-chain, if any.
-	    // “Closeness” is determined by linear distance along the front-chain.
-	    // “Ahead” or “behind” is likewise determined by linear distance.
-	    j = b.next, k = a.previous, sj = b._.r, sk = a._.r;
-	    do {
-	      if (sj <= sk) {
-	        if (intersects(j._, c._)) {
-	          if (sj + a._.r + b._.r > distance1(j, b)) a = j; else b = j;
-	          a.next = b, b.previous = a, --i;
-	          continue pack;
-	        }
-	        sj += j._.r, j = j.next;
-	      } else {
-	        if (intersects(k._, c._)) {
-	          if (distance1(a, k) > sk + a._.r + b._.r) a = k; else b = k;
-	          a.next = b, b.previous = a, --i;
-	          continue pack;
-	        }
-	        sk += k._.r, k = k.previous;
+	    // If there are only three elements in the front-chain…
+	    if ((k = a.previous) === (j = b.next)) {
+	      // If the new circle intersects the third circle,
+	      // rotate the front chain to try the next position.
+	      if (intersects(j._, c._)) {
+	        a = b, b = j, --i;
+	        continue pack;
 	      }
-	    } while (j !== k.next);
+	    }
+	
+	    // Find the closest intersecting circle on the front-chain, if any.
+	    else {
+	      sj = j._.r, sk = k._.r;
+	      do {
+	        if (sj <= sk) {
+	          if (intersects(j._, c._)) {
+	            b = j, a.next = b, b.previous = a, --i;
+	            continue pack;
+	          }
+	          j = j.next, sj += j._.r;
+	        } else {
+	          if (intersects(k._, c._)) {
+	            a = k, a.next = b, b.previous = a, --i;
+	            continue pack;
+	          }
+	          k = k.previous, sk += k._.r;
+	        }
+	      } while (j !== k.next);
+	    }
 	
 	    // Success! Insert the new circle c between a and b.
 	    c.previous = a, c.next = b, a.next = b.previous = b = c;
@@ -28073,10 +28382,10 @@
 	    ox += ca * c._.x;
 	    oy += ca * c._.y;
 	
-	    // Compute the new closest circle pair to the centroid.
-	    aa = distance2(a, cx = ox / oa, cy = oy / oa);
+	    // Compute the new closest circle a to centroid.
+	    aa = distance2(a._, cx = ox / oa, cy = oy / oa);
 	    while ((c = c.next) !== b) {
-	      if ((ca = distance2(c, cx, cy)) < aa) {
+	      if ((ca = distance2(c._, cx, cy)) < aa) {
 	        a = c, aa = ca;
 	      }
 	    }
@@ -34649,295 +34958,6 @@
 
 
 /***/ },
-/* 48 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-	    'use strict';
-	
-	    var d3 = __webpack_require__(47);
-	
-	    var d3Format = __webpack_require__(14);
-	    var d3Scale = __webpack_require__(15);
-	    var d3Selection = __webpack_require__(4);
-	    var d3Transition = __webpack_require__(22);
-	
-	    var colorHelper = __webpack_require__(7);
-	
-	    /**
-	     * @typedef LegendChartData
-	     * @type {Object[]}
-	     * @property {Number} id        Id of the group (required)
-	     * @property {Number} quantity  Quantity of the group (required)
-	     * @property {String} name      Name of the group (required)
-	     *
-	     * @example
-	     * [
-	     *     {
-	     *         id: 1,
-	     *         quantity: 2,
-	     *         name: 'glittering'
-	     *     },
-	     *     {
-	     *         id: 2,
-	     *         quantity: 3,
-	     *         name: 'luminous'
-	     *     }
-	     */
-	
-	    /**
-	     * @fileOverview Legend Component reusable API class that renders a
-	     * simple and configurable legend element.
-	     *
-	     * @example
-	     * var donutChart = donut(),
-	     *     legendBox = legend();
-	     *
-	     * donutChart
-	     *     .externalRadius(500)
-	     *     .internalRadius(200)
-	     *     .on('customMouseOver', function(data) {
-	     *         legendBox.highlight(data.data.id);
-	     *     })
-	     *     .on('customMouseOut', function() {
-	     *         legendBox.clearHighlight();
-	     *     });
-	     *
-	     * d3Selection.select('.css-selector')
-	     *     .datum(dataset)
-	     *     .call(donutChart);
-	     *
-	     * d3Selection.select('.other-css-selector')
-	     *     .datum(dataset)
-	     *     .call(legendBox);
-	     *
-	     * @module Legend
-	     * @tutorial legend
-	     * @exports charts/legend
-	     * @requires d3
-	     */
-	    return function module() {
-	
-	        var margin = {
-	            top: 0,
-	            right: 0,
-	            bottom: 0,
-	            left: 0
-	        },
-	            width = 320,
-	            height = 180,
-	            lineMargin = 12,
-	            circleRadius = 8,
-	            circleYOffset = -5,
-	            textSize = 12,
-	            textLetterSpacing = 0.5,
-	            valueReservedSpace = 40,
-	            numberLetterSpacing = 0.8,
-	            numberFormat = d3Format.format('s'),
-	            isFadedClassName = 'is-faded',
-	
-	
-	        // colors
-	        colorScale = void 0,
-	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
-	            getId = function getId(_ref) {
-	            var id = _ref.id;
-	            return id;
-	        },
-	            getName = function getName(_ref2) {
-	            var name = _ref2.name;
-	            return name;
-	        },
-	            getFormattedQuantity = function getFormattedQuantity(_ref3) {
-	            var quantity = _ref3.quantity;
-	            return numberFormat(quantity);
-	        },
-	            entries = void 0,
-	            chartWidth = void 0,
-	            chartHeight = void 0,
-	            data = void 0,
-	            svg = void 0;
-	
-	        /**
-	         * This function creates the graph using the selection as container
-	         * @param  {D3Selection} _selection A d3 selection that represents
-	         *                                  the container(s) where the chart(s) will be rendered
-	         * @param {object} _data The data to attach and generate the chart
-	         */
-	        function exports(_selection) {
-	            _selection.each(function (_data) {
-	                chartWidth = width - margin.left - margin.right;
-	                chartHeight = height - margin.top - margin.bottom;
-	                data = _data;
-	
-	                buildColorScale();
-	                buildSVG(this);
-	                drawEntries();
-	            });
-	        }
-	
-	        /**
-	         * Builds containers for the legend
-	         * Also applies the Margin convention
-	         * @private
-	         */
-	        function buildContainerGroups() {
-	            var container = svg.append('g').classed('legend-container-group', true).attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-	
-	            container.append('g').classed('legend-group', true);
-	        }
-	
-	        /**
-	         * Builds color scale for chart, if any colorSchema was defined
-	         * @private
-	         */
-	        function buildColorScale() {
-	            colorScale = d3Scale.scaleOrdinal().range(colorSchema);
-	        }
-	
-	        /**
-	         * Builds the SVG element that will contain the chart
-	         * @param  {HTMLElement} container DOM element that will work as the container of the graph
-	         * @private
-	         */
-	        function buildSVG(container) {
-	            if (!svg) {
-	                svg = d3Selection.select(container).append('svg').classed('britechart britechart-legend', true);
-	
-	                buildContainerGroups();
-	            }
-	
-	            svg.transition().attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
-	        }
-	
-	        /**
-	         * Removes the faded class from all the entry lines
-	         */
-	        function cleanFadedLines() {
-	            svg.select('.legend-group').selectAll('g.legend-line').classed(isFadedClassName, false);
-	        }
-	
-	        /**
-	         * Draws the entries of the legend
-	         * @private
-	         */
-	        function drawEntries() {
-	            entries = svg.select('.legend-group').selectAll('g.legend-line').data(data);
-	
-	            // Enter
-	            entries.enter().append('g').classed('legend-line', true).attr('data-item', getId).attr('transform', function (d, i) {
-	                var horizontalOffset = 2 * circleRadius + 10,
-	                    lineHeight = chartHeight / (data.length + 1),
-	                    verticalOffset = (i + 1) * lineHeight;
-	
-	                return 'translate(' + horizontalOffset + ',' + verticalOffset + ')';
-	            }).merge(entries).append('circle').classed('legend-circle', true).attr('cx', 0).attr('cy', circleYOffset).attr('r', circleRadius).style('fill', function (_ref4) {
-	                var quantity = _ref4.quantity;
-	
-	                return colorScale(quantity);
-	            }).style('stroke-width', 1);
-	
-	            svg.select('.legend-group').selectAll('g.legend-line').append('text').classed('legend-entry-name', true).text(getName).attr('x', 2 * circleRadius + lineMargin).style('font-size', textSize + 'px').style('letter-spacing', textLetterSpacing + 'px');
-	
-	            svg.select('.legend-group').selectAll('g.legend-line').append('text').classed('legend-entry-value', true).text(getFormattedQuantity).attr('x', chartWidth - valueReservedSpace).style('font-size', textSize + 'px').style('letter-spacing', numberLetterSpacing + 'px').style('text-anchor', 'end').style('startOffset', '100%');
-	
-	            // Exit
-	            svg.select('.legend-group').selectAll('g.legend-line').exit().transition().style('opacity', 0).remove();
-	        }
-	
-	        /**
-	         * Applies the faded class to all lines but the one that has the given id
-	         * @param  {number} exceptionItemId Id of the line that needs to stay the same
-	         */
-	        function fadeLinesBut(exceptionItemId) {
-	            svg.select('.legend-group').selectAll('g.legend-line').classed(isFadedClassName, true);
-	
-	            d3Selection.select('[data-item="' + exceptionItemId + '"]').classed(isFadedClassName, false);
-	        }
-	
-	        /**
-	         * Clears the highlighted line entry
-	         */
-	        exports.clearHighlight = function () {
-	            cleanFadedLines();
-	        };
-	
-	        /**
-	         * Gets or Sets the colorSchema of the chart
-	         * @param  {Array} _x Color scheme array to get/set
-	         * @return { (Number | Module) } Current colorSchema or Donut Chart module to chain calls
-	         * @public
-	         */
-	        exports.colorSchema = function (_x) {
-	            if (!arguments.length) {
-	                return colorSchema;
-	            }
-	            colorSchema = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the height of the legend chart
-	         * @param  {number} _x Desired width for the chart
-	         * @return { height | module} Current height or Legend module to chain calls
-	         * @public
-	         */
-	        exports.height = function (_x) {
-	            if (!arguments.length) {
-	                return height;
-	            }
-	            height = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Highlights a line entry by fading the rest of lines
-	         * @param  {number} entryId ID of the entry line
-	         */
-	        exports.highlight = function (entryId) {
-	            cleanFadedLines();
-	            fadeLinesBut(entryId);
-	        };
-	
-	        /**
-	         * Gets or Sets the margin of the legend chart
-	         * @param  {object} _x Margin object to get/set
-	         * @return { margin | module} Current margin or Legend module to chain calls
-	         * @public
-	         */
-	        exports.margin = function (_x) {
-	            if (!arguments.length) {
-	                return margin;
-	            }
-	            margin = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the width of the legend chart
-	         * @param  {number} _x Desired width for the graph
-	         * @return { width | module} Current width or Legend module to chain calls
-	         * @public
-	         */
-	        exports.width = function (_x) {
-	            if (!arguments.length) {
-	                return width;
-	            }
-	            width = _x;
-	
-	            return this;
-	        };
-	
-	        return exports;
-	    };
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ },
 /* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -35597,41 +35617,43 @@
 	
 	
 	            if (dataByTopic) {
-	                var flatData = [];
+	                (function () {
+	                    var flatData = [];
 	
-	                dataByTopic.forEach(function (topic) {
-	                    topic.dates.forEach(function (date) {
-	                        flatData.push({
-	                            topicName: topic[topicNameLabel],
-	                            name: topic[topicLabel],
-	                            date: date[dateLabel],
-	                            value: date[valueLabel]
+	                    dataByTopic.forEach(function (topic) {
+	                        topic.dates.forEach(function (date) {
+	                            flatData.push({
+	                                topicName: topic[topicNameLabel],
+	                                name: topic[topicLabel],
+	                                date: date[dateLabel],
+	                                value: date[valueLabel]
+	                            });
 	                        });
 	                    });
-	                });
 	
-	                // Nest data by date and format
-	                dataByDate = d3Collection.nest().key(getDate).entries(flatData).map(function (d) {
-	                    return {
-	                        date: new Date(d.key),
-	                        topics: d.values
-	                    };
-	                });
-	
-	                // Normalize dates in keys
-	                dataByDate = dataByDate.map(function (d) {
-	                    d.date = new Date(d.date);
-	
-	                    return d;
-	                });
-	
-	                // Normalize dataByTopic
-	                dataByTopic.forEach(function (kv) {
-	                    kv.dates.forEach(function (d) {
-	                        d.date = new Date(d[dateLabel]);
-	                        d.value = +d[valueLabel];
+	                    // Nest data by date and format
+	                    dataByDate = d3Collection.nest().key(getDate).entries(flatData).map(function (d) {
+	                        return {
+	                            date: new Date(d.key),
+	                            topics: d.values
+	                        };
 	                    });
-	                });
+	
+	                    // Normalize dates in keys
+	                    dataByDate = dataByDate.map(function (d) {
+	                        d.date = new Date(d.date);
+	
+	                        return d;
+	                    });
+	
+	                    // Normalize dataByTopic
+	                    dataByTopic.forEach(function (kv) {
+	                        kv.dates.forEach(function (d) {
+	                            d.date = new Date(d[dateLabel]);
+	                            d.value = +d[valueLabel];
+	                        });
+	                    });
+	                })();
 	            }
 	
 	            return { dataByTopic: dataByTopic, dataByDate: dataByDate };
@@ -52002,7 +52024,7 @@
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
 	    step = __webpack_require__(65),
-	    miniTooltip = __webpack_require__(40),
+	    miniTooltip = __webpack_require__(41),
 	    dataBuilder = __webpack_require__(66);
 	
 	function createStepChart() {
