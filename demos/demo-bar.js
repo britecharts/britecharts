@@ -48,8 +48,10 @@ function createHorizontalBarChart() {
                 bottom: 5
             })
             .horizontal(true)
+            .enablePercentageLabels(true)
             .width(containerWidth)
             .height(300)
+            .percentageAxisToMaxRatio(1.3)
             .on('customMouseOver', tooltip.show)
             .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);
