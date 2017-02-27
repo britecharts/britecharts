@@ -42,7 +42,7 @@ function createHorizontalBarChart() {
 
         barChart
             .margin({
-                left: 80,
+                left: 150,
                 right: 20,
                 top: 20,
                 bottom: 5
@@ -50,6 +50,7 @@ function createHorizontalBarChart() {
             .horizontal(true)
             .enablePercentageLabels(true)
             .width(containerWidth)
+            .yAxisPaddingBetweenChart(30)
             .height(300)
             .percentageAxisToMaxRatio(1.3)
             .on('customMouseOver', tooltip.show)

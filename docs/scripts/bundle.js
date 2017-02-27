@@ -35,6 +35,17 @@
 /******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
+/******/ 	// webpack-livereload-plugin
+/******/ 	(function() {
+/******/ 	  if (typeof window === "undefined") { return };
+/******/ 	  var id = "webpack-livereload-plugin-script";
+/******/ 	  if (document.getElementById(id)) { return; }
+/******/ 	  var el = document.createElement("script");
+/******/ 	  el.id = id;
+/******/ 	  el.async = true;
+/******/ 	  el.src = "http://localhost:35729/livereload.js";
+/******/ 	  document.getElementsByTagName("head")[0].appendChild(el);
+/******/ 	}());
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -16418,11 +16429,11 @@
 	        dataset = testDataSet.withColors().build();
 	
 	        barChart.margin({
-	            left: 80,
+	            left: 150,
 	            right: 20,
 	            top: 20,
 	            bottom: 5
-	        }).horizontal(true).enablePercentageLabels(true).width(containerWidth).height(300).percentageAxisToMaxRatio(1.3).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
+	        }).horizontal(true).enablePercentageLabels(true).width(containerWidth).yAxisPaddingBetweenChart(30).height(300).percentageAxisToMaxRatio(1.3).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
 	
 	        barContainer.datum(dataset).call(barChart);
 	
@@ -16491,6 +16502,7 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
+	    var textHelper = __webpack_require__(46);
 	    var exportChart = __webpack_require__(24);
 	
 	    /**
@@ -16563,6 +16575,8 @@
 	            bottom: 0,
 	            right: 0
 	        },
+	            yAxisPaddingBetweenChart = 10,
+	            yAxisLineWrapLimit = 2,
 	            horizontal = false,
 	            svg = void 0,
 	            valueLabel = 'value',
@@ -16618,7 +16632,7 @@
 	         */
 	        function exports(_selection) {
 	            _selection.each(function (_data) {
-	                chartWidth = width - margin.left - margin.right;
+	                chartWidth = width - margin.left - margin.right - yAxisPaddingBetweenChart * 1.2;
 	                chartHeight = height - margin.top - margin.bottom;
 	                data = cleanData(_data);
 	
@@ -16656,12 +16670,12 @@
 	         * @private
 	         */
 	        function buildContainerGroups() {
-	            var container = svg.append('g').classed('container-group', true).attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
+	            var container = svg.append('g').classed('container-group', true).attr('transform', 'translate(' + (margin.left + yAxisPaddingBetweenChart) + ', ' + margin.top + ')');
 	
 	            container.append('g').classed('grid-lines-group', true);
 	            container.append('g').classed('chart-group', true);
 	            container.append('g').classed('x-axis-group axis', true);
-	            container.append('g').classed('y-axis-group axis', true);
+	            container.append('g').attr('transform', 'translate(' + -1 * yAxisPaddingBetweenChart + ', 0)').classed('y-axis-group axis', true);
 	            container.append('g').classed('metadata-group', true);
 	        }
 	
@@ -16713,6 +16727,16 @@
 	        }
 	
 	        /**
+	         * Utility function that wraps a text into the given width
+	         * @param  {D3Selection} text         Text to write
+	         * @param  {Number} containerWidth
+	         * @private
+	         */
+	        function wrapText(text, containerWidth) {
+	            textHelper.wrapTextWithEllipses(text, containerWidth, 0, yAxisLineWrapLimit);
+	        }
+	
+	        /**
 	         * Draws the x and y axis on the svg object within their
 	         * respective groups
 	         * @private
@@ -16721,6 +16745,8 @@
 	            svg.select('.x-axis-group.axis').attr('transform', 'translate(0, ' + chartHeight + ')').call(xAxis);
 	
 	            svg.select('.y-axis-group.axis').call(yAxis);
+	
+	            svg.selectAll('.y-axis-group .tick text').call(wrapText, margin.left - yAxisPaddingBetweenChart);
 	        }
 	
 	        /**
@@ -16977,6 +17003,19 @@
 	                return enablePercentageLabels;
 	            }
 	            enablePercentageLabels = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Default 10. Space between y axis and chart
+	         * @param  {number} _x space between y axis and chart
+	         * @return {number| module}    Current value of yAxisPaddingBetweenChart or Bar Chart module to chain calls
+	         */
+	        exports.yAxisPaddingBetweenChart = function (_x) {
+	            if (!arguments.length) {
+	                return yAxisPaddingBetweenChart;
+	            }
+	            yAxisPaddingBetweenChart = _x;
 	            return this;
 	        };
 	
@@ -17435,7 +17474,7 @@
 				"value": 0.08167
 			},
 			{
-				"name": "Reflecting",
+				"name": "Opalescent",
 				"value": 0.0492
 			},
 			{
@@ -17443,7 +17482,7 @@
 				"value": 0.02782
 			},
 			{
-				"name": "Sunshine",
+				"name": "Vibrant",
 				"value": 0.04253
 			},
 			{
@@ -18134,7 +18173,7 @@
 	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	
-	    var d3 = __webpack_require__(47);
+	    var d3Selection = __webpack_require__(4);
 	
 	    var wrapConfig = {
 	        lineHeight: 1.2,
@@ -18156,7 +18195,7 @@
 	     * @return {void}
 	     */
 	    var wrapText = function wrapText(xOffset, fontSize, availableWidth, node, data, i) {
-	        var text = d3.select(node),
+	        var text = d3Selection.select(node),
 	            words = text.text().split(/\s+/).reverse(),
 	            word = void 0,
 	            line = [],
@@ -18182,8 +18221,62 @@
 	        }
 	    };
 	
+	    /**
+	     * Wraps a selection of text within the available width, also adds class .adjust-upwards
+	     * to configure a y offset for entries with multiple rows
+	     * @param  {D3Sekectuib} text       d3 text element
+	     * @param  {Number} width           Width of the container where the text needs to wrap on
+	     * @param  {Number} xpos            number passed to determine the x offset
+	     * @param  {Number} limit           number of lines before an ellipses is added and the rest of the text is cut off
+	     *
+	     * REF: http://bl.ocks.org/mbostock/7555321
+	     * More discussions on https://github.com/mbostock/d3/issues/1642
+	     * @return {void}
+	     */
+	    var wrapTextWithEllipses = function wrapTextWithEllipses(text, width) {
+	        var xpos = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+	        var limit = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 2;
+	
+	
+	        text.each(function () {
+	            var words, word, line, lineNumber, lineHeight, y, dy, tspan;
+	
+	            text = d3Selection.select(this);
+	
+	            words = text.text().split(/\s+/).reverse();
+	            line = [];
+	            lineNumber = 0;
+	            lineHeight = 1.2;
+	            y = text.attr('y');
+	            dy = parseFloat(text.attr('dy'));
+	            tspan = text.text(null).append('tspan').attr('x', xpos).attr('y', y).attr('dy', dy + 'em');
+	
+	            while (word = words.pop()) {
+	                line.push(word);
+	                tspan.text(line.join(' '));
+	
+	                if (tspan.node().getComputedTextLength() > width) {
+	                    line.pop();
+	                    tspan.text(line.join(' '));
+	
+	                    if (lineNumber < limit - 1) {
+	                        line = [word];
+	                        tspan = text.append('tspan').attr('x', xpos).attr('y', y).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);
+	                        // if we need two lines for the text, move them both up to center them
+	                        text.classed('adjust-upwards', true);
+	                    } else {
+	                        line.push('...');
+	                        tspan.text(line.join(' '));
+	                        break;
+	                    }
+	                }
+	            }
+	        });
+	    };
+	
 	    return {
-	        wrapText: wrapText
+	        wrapText: wrapText,
+	        wrapTextWithEllipses: wrapTextWithEllipses
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
