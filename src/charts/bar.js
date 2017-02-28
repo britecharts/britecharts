@@ -9,6 +9,7 @@ define(function(require) {
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
 
+    const textHelper = require('./helpers/text');
     const exportChart = require('./helpers/exportChart');
 
 
@@ -79,6 +80,8 @@ define(function(require) {
                 bottom: 0,
                 right: 0
             },
+            yAxisPaddingBetweenChart = 10,
+            yAxisLineWrapLimit = 2,
             horizontal = false,
             svg,
 
@@ -112,7 +115,7 @@ define(function(require) {
          */
         function exports(_selection){
             _selection.each(function(_data){
-                chartWidth = width - margin.left - margin.right;
+                chartWidth = width - margin.left - margin.right - (yAxisPaddingBetweenChart * 1.2);
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
 
@@ -155,7 +158,7 @@ define(function(require) {
         function buildContainerGroups(){
             let container = svg.append('g')
                 .classed('container-group', true)
-                .attr('transform', `translate(${margin.left}, ${margin.top})`);
+                .attr('transform', `translate(${margin.left + yAxisPaddingBetweenChart}, ${margin.top})`);
 
             container
                 .append('g').classed('grid-lines-group', true);
@@ -164,7 +167,9 @@ define(function(require) {
             container
                 .append('g').classed('x-axis-group axis', true);
             container
-                .append('g').classed('y-axis-group axis', true);
+                .append('g')
+                .attr('transform', `translate(${-1 * (yAxisPaddingBetweenChart)}, 0)`)
+                .classed('y-axis-group axis', true);
             container
                 .append('g').classed('metadata-group', true);
         }
@@ -231,6 +236,16 @@ define(function(require) {
         }
 
         /**
+         * Utility function that wraps a text into the given width
+         * @param  {D3Selection} text         Text to write
+         * @param  {Number} containerWidth
+         * @private
+         */
+        function wrapText(text, containerWidth) {
+            textHelper.wrapTextWithEllipses(text, containerWidth, 0, yAxisLineWrapLimit)
+        }
+
+        /**
          * Draws the x and y axis on the svg object within their
          * respective groups
          * @private
@@ -242,6 +257,9 @@ define(function(require) {
 
             svg.select('.y-axis-group.axis')
                 .call(yAxis);
+
+            svg.selectAll('.y-axis-group .tick text')
+                .call(wrapText, margin.left - yAxisPaddingBetweenChart)
         }
 
         /**
@@ -544,6 +562,19 @@ define(function(require) {
                 return enablePercentageLabels;
             }
             enablePercentageLabels = _x;
+            return this;
+        }
+
+        /**
+         * Default 10. Space between y axis and chart
+         * @param  {number} _x space between y axis and chart
+         * @return {number| module}    Current value of yAxisPaddingBetweenChart or Bar Chart module to chain calls
+         */
+        exports.yAxisPaddingBetweenChart = function(_x) {
+            if (!arguments.length) {
+                return yAxisPaddingBetweenChart;
+            }
+            yAxisPaddingBetweenChart = _x;
             return this;
         }
 

@@ -15,6 +15,14 @@ $bar-stroke-width: 0;
         fill: $bar-color-hover;
     }
 
+    .y-axis-group {
+        .tick {
+            text {
+                font-size: 14px;
+            }
+        }
+    }
+
     // Axes
     .axis {
         path {
@@ -26,6 +34,11 @@ $bar-stroke-width: 0;
             display: none;
         }
     }
+
+    .adjust-upwards {
+        transform: translate(0, -10px);
+    }
+
     .percentage-label {
         fill: $grey-600;
     }
