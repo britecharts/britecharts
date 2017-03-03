@@ -44,6 +44,10 @@ All the components expose some basic API methods like width, height and margin. 
 
 Britecharts components are distributed in **UMD modules**, each one exposing a D3.js component written with the [Reusable API pattern][3]. In order to use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules. You would also need to load the [D3.js selection][37] library in order to select the chart container.
 
+```
+   npm install britecharts d3-selection
+```
+
 They also provide some minimal CSS styling, that can be loaded independently or as a bundle.
 
 ## Roadmap
