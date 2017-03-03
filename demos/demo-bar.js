@@ -42,13 +42,12 @@ function createHorizontalBarChart() {
 
         barChart
             .margin({
-                left: 150,
+                left: 120,
                 right: 20,
                 top: 20,
                 bottom: 5
             })
             .horizontal(true)
-            .enablePercentageLabels(true)
             .width(containerWidth)
             .yAxisPaddingBetweenChart(30)
             .height(300)
