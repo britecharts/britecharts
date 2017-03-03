@@ -16418,11 +16418,11 @@
 	        dataset = testDataSet.withColors().build();
 	
 	        barChart.margin({
-	            left: 150,
+	            left: 120,
 	            right: 20,
 	            top: 20,
 	            bottom: 5
-	        }).horizontal(true).enablePercentageLabels(true).width(containerWidth).yAxisPaddingBetweenChart(30).height(300).percentageAxisToMaxRatio(1.3).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
+	        }).horizontal(true).width(containerWidth).yAxisPaddingBetweenChart(30).height(300).percentageAxisToMaxRatio(1.3).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
 	
 	        barContainer.datum(dataset).call(barChart);
 	
@@ -16553,7 +16553,7 @@
 	            percentageAxisToMaxRatio = 1,
 	            enablePercentageLabels = false,
 	            percentageLabelMargin = 7,
-	            percentageLabelSize = 14,
+	            percentageLabelSize = 12,
 	            horizontalLabelFormat = '.0%',
 	            verticalLabelFormat = '.0f',
 	            xAxis = void 0,
@@ -16565,7 +16565,7 @@
 	            right: 0
 	        },
 	            yAxisPaddingBetweenChart = 10,
-	            yAxisLineWrapLimit = 2,
+	            yAxisLineWrapLimit = 1,
 	            horizontal = false,
 	            svg = void 0,
 	            valueLabel = 'value',
@@ -18562,14 +18562,14 @@
 /* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org Version 4.4.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org Version 4.6.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
 		(factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
-	var version = "4.4.4";
+	var version = "4.6.0";
 	
 	var ascending = function(a, b) {
 	  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -25438,8 +25438,10 @@
 	      }
 	    }
 	  } else {
-	    boundsPoint(lambda, phi);
+	    ranges.push(range = [lambda0$1 = lambda, lambda1 = lambda]);
 	  }
+	  if (phi < phi0) phi0 = phi;
+	  if (phi > phi1) phi1 = phi;
 	  p0 = p, lambda2 = lambda;
 	}
 	
@@ -25639,7 +25641,7 @@
 	      cz = x0 * y - y0 * x,
 	      m = sqrt(cx * cx + cy * cy + cz * cz),
 	      u = x0 * x + y0 * y + z0 * z,
-	      v = m && -acos(u) / m, // area weight
+	      v = m && -asin(m) / m, // area weight
 	      w = atan2(m, u); // line weight
 	  X2 += v * cx;
 	  Y2 += v * cy;
@@ -26617,6 +26619,46 @@
 	  result: noop$1
 	};
 	
+	var lengthSum$1 = adder();
+	var lengthRing;
+	var x00$2;
+	var y00$2;
+	var x0$4;
+	var y0$4;
+	
+	var lengthStream$1 = {
+	  point: noop$1,
+	  lineStart: function() {
+	    lengthStream$1.point = lengthPointFirst$1;
+	  },
+	  lineEnd: function() {
+	    if (lengthRing) lengthPoint$1(x00$2, y00$2);
+	    lengthStream$1.point = noop$1;
+	  },
+	  polygonStart: function() {
+	    lengthRing = true;
+	  },
+	  polygonEnd: function() {
+	    lengthRing = null;
+	  },
+	  result: function() {
+	    var length = +lengthSum$1;
+	    lengthSum$1.reset();
+	    return length;
+	  }
+	};
+	
+	function lengthPointFirst$1(x, y) {
+	  lengthStream$1.point = lengthPoint$1;
+	  x00$2 = x0$4 = x, y00$2 = y0$4 = y;
+	}
+	
+	function lengthPoint$1(x, y) {
+	  x0$4 -= x, y0$4 -= y;
+	  lengthSum$1.add(sqrt(x0$4 * x0$4 + y0$4 * y0$4));
+	  x0$4 = x, y0$4 = y;
+	}
+	
 	function PathString() {
 	  this._string = [];
 	}
@@ -26688,6 +26730,11 @@
 	  path.area = function(object) {
 	    geoStream(object, projectionStream(areaStream$1));
 	    return areaStream$1.result();
+	  };
+	
+	  path.measure = function(object) {
+	    geoStream(object, projectionStream(lengthStream$1));
+	    return lengthStream$1.result();
 	  };
 	
 	  path.bounds = function(object) {
@@ -27956,6 +28003,19 @@
 	  return cluster;
 	};
 	
+	function count(node) {
+	  var sum = 0,
+	      children = node.children,
+	      i = children && children.length;
+	  if (!i) sum = 1;
+	  else while (--i >= 0) sum += children[i].value;
+	  node.value = sum;
+	}
+	
+	var node_count = function() {
+	  return this.eachAfter(count);
+	};
+	
 	var node_each = function(callback) {
 	  var node = this, current, next = [node], children, i, n;
 	  do {
@@ -28134,6 +28194,7 @@
 	
 	Node.prototype = hierarchy.prototype = {
 	  constructor: Node,
+	  count: node_count,
 	  each: node_each,
 	  eachAfter: node_eachAfter,
 	  eachBefore: node_eachBefore,
@@ -28294,12 +28355,21 @@
 	  var dx = b.x - a.x,
 	      dy = b.y - a.y,
 	      dr = a.r + b.r;
-	  return dr * dr > dx * dx + dy * dy;
+	  return dr * dr - 1e-6 > dx * dx + dy * dy;
 	}
 	
-	function distance2(circle, x, y) {
-	  var dx = circle.x - x,
-	      dy = circle.y - y;
+	function distance1(a, b) {
+	  var l = a._.r;
+	  while (a !== b) l += 2 * (a = a.next)._.r;
+	  return l - b._.r;
+	}
+	
+	function distance2(node, x, y) {
+	  var a = node._,
+	      b = node.next._,
+	      ab = a.r + b.r,
+	      dx = (a.x * b.r + b.x * a.r) / ab - x,
+	      dy = (a.y * b.r + b.y * a.r) / ab - y;
 	  return dx * dx + dy * dy;
 	}
 	
@@ -28344,35 +28414,27 @@
 	  pack: for (i = 3; i < n; ++i) {
 	    place(a._, b._, c = circles[i]), c = new Node$1(c);
 	
-	    // If there are only three elements in the front-chain…
-	    if ((k = a.previous) === (j = b.next)) {
-	      // If the new circle intersects the third circle,
-	      // rotate the front chain to try the next position.
-	      if (intersects(j._, c._)) {
-	        a = b, b = j, --i;
-	        continue pack;
-	      }
-	    }
-	
 	    // Find the closest intersecting circle on the front-chain, if any.
-	    else {
-	      sj = j._.r, sk = k._.r;
-	      do {
-	        if (sj <= sk) {
-	          if (intersects(j._, c._)) {
-	            b = j, a.next = b, b.previous = a, --i;
-	            continue pack;
-	          }
-	          j = j.next, sj += j._.r;
-	        } else {
-	          if (intersects(k._, c._)) {
-	            a = k, a.next = b, b.previous = a, --i;
-	            continue pack;
-	          }
-	          k = k.previous, sk += k._.r;
+	    // “Closeness” is determined by linear distance along the front-chain.
+	    // “Ahead” or “behind” is likewise determined by linear distance.
+	    j = b.next, k = a.previous, sj = b._.r, sk = a._.r;
+	    do {
+	      if (sj <= sk) {
+	        if (intersects(j._, c._)) {
+	          if (sj + a._.r + b._.r > distance1(j, b)) a = j; else b = j;
+	          a.next = b, b.previous = a, --i;
+	          continue pack;
 	        }
-	      } while (j !== k.next);
-	    }
+	        sj += j._.r, j = j.next;
+	      } else {
+	        if (intersects(k._, c._)) {
+	          if (distance1(a, k) > sk + a._.r + b._.r) a = k; else b = k;
+	          a.next = b, b.previous = a, --i;
+	          continue pack;
+	        }
+	        sk += k._.r, k = k.previous;
+	      }
+	    } while (j !== k.next);
 	
 	    // Success! Insert the new circle c between a and b.
 	    c.previous = a, c.next = b, a.next = b.previous = b = c;
@@ -28382,10 +28444,10 @@
 	    ox += ca * c._.x;
 	    oy += ca * c._.y;
 	
-	    // Compute the new closest circle a to centroid.
-	    aa = distance2(a._, cx = ox / oa, cy = oy / oa);
+	    // Compute the new closest circle pair to the centroid.
+	    aa = distance2(a, cx = ox / oa, cy = oy / oa);
 	    while ((c = c.next) !== b) {
-	      if ((ca = distance2(c._, cx, cy)) < aa) {
+	      if ((ca = distance2(c, cx, cy)) < aa) {
 	        a = c, aa = ca;
 	      }
 	    }
@@ -35617,43 +35679,41 @@
 	
 	
 	            if (dataByTopic) {
-	                (function () {
-	                    var flatData = [];
+	                var flatData = [];
 	
-	                    dataByTopic.forEach(function (topic) {
-	                        topic.dates.forEach(function (date) {
-	                            flatData.push({
-	                                topicName: topic[topicNameLabel],
-	                                name: topic[topicLabel],
-	                                date: date[dateLabel],
-	                                value: date[valueLabel]
-	                            });
+	                dataByTopic.forEach(function (topic) {
+	                    topic.dates.forEach(function (date) {
+	                        flatData.push({
+	                            topicName: topic[topicNameLabel],
+	                            name: topic[topicLabel],
+	                            date: date[dateLabel],
+	                            value: date[valueLabel]
 	                        });
 	                    });
+	                });
 	
-	                    // Nest data by date and format
-	                    dataByDate = d3Collection.nest().key(getDate).entries(flatData).map(function (d) {
-	                        return {
-	                            date: new Date(d.key),
-	                            topics: d.values
-	                        };
+	                // Nest data by date and format
+	                dataByDate = d3Collection.nest().key(getDate).entries(flatData).map(function (d) {
+	                    return {
+	                        date: new Date(d.key),
+	                        topics: d.values
+	                    };
+	                });
+	
+	                // Normalize dates in keys
+	                dataByDate = dataByDate.map(function (d) {
+	                    d.date = new Date(d.date);
+	
+	                    return d;
+	                });
+	
+	                // Normalize dataByTopic
+	                dataByTopic.forEach(function (kv) {
+	                    kv.dates.forEach(function (d) {
+	                        d.date = new Date(d[dateLabel]);
+	                        d.value = +d[valueLabel];
 	                    });
-	
-	                    // Normalize dates in keys
-	                    dataByDate = dataByDate.map(function (d) {
-	                        d.date = new Date(d.date);
-	
-	                        return d;
-	                    });
-	
-	                    // Normalize dataByTopic
-	                    dataByTopic.forEach(function (kv) {
-	                        kv.dates.forEach(function (d) {
-	                            d.date = new Date(d[dateLabel]);
-	                            d.value = +d[valueLabel];
-	                        });
-	                    });
-	                })();
+	                });
 	            }
 	
 	            return { dataByTopic: dataByTopic, dataByDate: dataByDate };

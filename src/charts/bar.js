@@ -70,7 +70,7 @@ define(function(require) {
             percentageAxisToMaxRatio = 1,
             enablePercentageLabels = false,
             percentageLabelMargin = 7,
-            percentageLabelSize = 14,
+            percentageLabelSize = 12,
             horizontalLabelFormat = '.0%',
             verticalLabelFormat = '.0f',
             xAxis, yAxis,
@@ -81,7 +81,7 @@ define(function(require) {
                 right: 0
             },
             yAxisPaddingBetweenChart = 10,
-            yAxisLineWrapLimit = 2,
+            yAxisLineWrapLimit = 1,
             horizontal = false,
             svg,
 
