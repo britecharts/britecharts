@@ -48,9 +48,6 @@
     "es2015",
     "visualization"
   ],
-  "publishConfig": {
-    "registry": "http://packages:8889"
-  },
   "author": "Eventbrite",
   "license": "Apache-2.0",
   "bugs": {

@@ -6,11 +6,11 @@ Britecharts has been created to help users consume and create d3 charts. It leve
 
 In order to use a Britecharts chart in your project you would need to:
 
-- Add Britecharts as a dependency in your package.json (not needed in core).
+- Add Britecharts and D3 selection as dependencies in your package.json or install them by typing:
 ```
-    "britecharts": "git+https://git@github.com/eventbrite/britecharts.git"
+   npm install --save britecharts d3-selection
 ```
-- Require the proper chart as a requirejs module, we can do:
+- Require the proper chart as a module, we can do:
 ```
     LineChart = require('britecharts/dist/umd/line.min')
 ```
