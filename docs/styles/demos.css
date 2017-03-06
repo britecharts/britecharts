@@ -1,0 +1,68 @@
+/* Navigation */
+.navbar-brand {
+    padding: 18px 15px;
+}
+.navbar-brand img {
+    height: 26px;
+}
+
+/* Layout */
+.sidebar {
+    margin-top: 50px;
+}
+#main {
+    padding-top: 80px;
+}
+/* TOC Sidebar */
+#toc {
+    position: fixed;
+    top: 76px;
+    right: 10px;
+    max-height: 82%;
+    max-height: calc(100% - 72px);
+    overflow: auto;
+    padding: 5px;
+}
+
+/* Footer */
+.footer {
+    bottom: 0;
+    position: sticky;
+    background-color: white;
+    padding: 10px;
+}
+/* Copyright */
+.copyright {
+    font-size: 80%;
+    text-align: center;
+    width: 100%;
+    display: block;
+}
+.jsdoc-message {
+    display: none;
+}
+
+
+/* Demos */
+.tutorial-section__heading {
+    display: none;
+}
+
+.readme-section h1 {
+    display: none;
+}
+.readme-section img {
+    max-width: 100%;
+}
+
+/* Charts */
+.card--chart {
+    overflow: hidden;
+    border-width: 1px;
+    margin-bottom: 20px;
+    background-color: white;
+    margin: 0 auto;
+    text-align: center;
+}
+
+
