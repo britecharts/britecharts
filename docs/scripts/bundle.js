@@ -3555,7 +3555,7 @@
 	         * @private
 	         */
 	        function getDataByDate(data) {
-	            return d3Collection.nest().key(getDate).sortKeys(d3Array.ascending).entries(data);
+	            return d3Collection.nest().key(getDate).entries(_(data).sortBy('date'));
 	        }
 	
 	        /**

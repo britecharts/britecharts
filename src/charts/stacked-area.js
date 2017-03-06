@@ -552,8 +552,10 @@ define(function(require){
          */
         function getDataByDate(data) {
             return d3Collection.nest()
-                                .key(getDate).sortKeys(d3Array.ascending)
-                                .entries(data);
+                                .key(getDate)
+                                .entries(
+                                    _(data).sortBy('date')
+                                );
         }
 
         /**
