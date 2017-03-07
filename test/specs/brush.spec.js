@@ -130,6 +130,18 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
                 expect(defaultDateRange).not.toBe(testDateRange);
                 expect(newDateRange).toBe(testDateRange);
             });
+
+            it('should provide a forceAxisFormat getter and setter', () => {
+                let defaultSchema = brushChart.forceAxisFormat(),
+                    testFormat = brushChart.axisTimeCombinations.HOUR_DAY,
+                    newSchema;
+
+                brushChart.forceAxisFormat(testFormat);
+                newSchema = brushChart.forceAxisFormat();
+
+                expect(defaultSchema).not.toBe(testFormat);
+                expect(newSchema).toBe(testFormat);
+            });
         });
     });
 });
