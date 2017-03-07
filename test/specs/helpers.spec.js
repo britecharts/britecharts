@@ -3,14 +3,15 @@ define([
     'jquery',
     'd3',
     'helpers/serializeWithStyles',
-    'helpers/text'
+    'helpers/text',
+    'helpers/common'
     ], function (
         _,
         $,
         d3,
         serializeWithStyles,
         textHelper,
-        encoder
+        common
     ) {
     'use strict';
 
@@ -84,7 +85,16 @@ define([
                 expect(d3.selectAll('.test-container label').size()).toEqual(expected);
             });
         });
+
+        describe('common', () => {
+
+            it('should return true if its an integer', () => {
+                expect(common.isInteger(3)).toEqual(true);
+            });
+
+            it('should return false passed a non integer', () => {
+                expect(common.isInteger(3.2)).toEqual(false);
+            });
+        });
     });
 });
-
-
