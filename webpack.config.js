@@ -50,10 +50,10 @@ config = {
     demos : {
         devtool: 'source-map',
         entry: [
-            './demos/index.js',
+            './demos/index.js'
         ],
         output: {
-            path: './demos/build/',
+            path: './docs/scripts/',
             filename: 'bundle.js',
         },
         resolve:{

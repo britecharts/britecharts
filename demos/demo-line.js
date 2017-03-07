@@ -1,16 +1,51 @@
 'use strict';
 
-var d3Selection = require('d3-selection'),
+var _ = require('underscore'),
+    d3Selection = require('d3-selection'),
+    d3TimeFormat = require('d3-time-format'),
 
     PubSub = require('pubsub-js'),
 
+    brush = require('./../src/charts/brush'),
     line = require('./../src/charts/line'),
     tooltip = require('./../src/charts/tooltip'),
     dataBuilder = require('./../test/fixtures/lineChartDataBuilder'),
     colorSelectorHelper = require('./helpers/colorSelector');
 
 
-function createLineChart(optionalColorSchema) {
+function createBrushChart() {
+    var brushChart = brush(),
+        brushMargin = {top:0, bottom: 40, left: 70, right: 30},
+        testDataSet = new dataBuilder.SalesDataBuilder(),
+        brushContainer = d3Selection.select('.js-line-brush-chart-container'),
+        containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
+        dataset;
+
+    if (containerWidth) {
+        dataset = testDataSet.with5Topics().build();
+
+        brushChart
+            .width(containerWidth)
+            .height(100)
+            .margin(brushMargin)
+            .onBrush(function(brushExtent) {
+                var format = d3TimeFormat.timeFormat('%m/%d/%Y');
+
+                d3Selection.select('.js-start-date').text(format(brushExtent[0]));
+                d3Selection.select('.js-end-date').text(format(brushExtent[1]));
+
+                d3Selection.select('.js-date-range').classed('is-hidden', false);
+
+                // Filter
+                d3Selection.selectAll('.js-line-chart-container .line-chart').remove();
+                createLineChart(null, filterData(brushExtent[0], brushExtent[1]));
+            });
+
+        brushContainer.datum(brushDataAdapter(dataset)).call(brushChart);
+    }
+}
+
+function createLineChart(optionalColorSchema, optionalData) {
     var lineChart1 = line(),
         chartTooltip = tooltip(),
         testDataSet = new dataBuilder.SalesDataBuilder(),
@@ -45,7 +80,11 @@ function createLineChart(optionalColorSchema) {
             lineChart1.colorSchema(optionalColorSchema);
         }
 
-        container.datum(dataset).call(lineChart1);
+        if (optionalData) {
+            container.datum(optionalData).call(lineChart1);
+        } else {
+            container.datum(dataset).call(lineChart1);
+        }
 
         // Tooltip Setup and start
         chartTooltip
@@ -141,16 +180,62 @@ function createLineChartWithFixedHeight() {
     }
 }
 
+/*
+ * The Brush chart wants an input like this one
+ * @example
+ * [
+ *     {
+ *         value: 1,
+ *         date: '2011-01-06T00:00:00Z'
+ *     },
+ *     {
+ *         value: 2,
+ *         date: '2011-01-07T00:00:00Z'
+ *     }
+ * ]
+ */
+function brushDataAdapter(dataLine) {
+    return dataLine.dataByDate.map(function(d){
+        d.value = d.topics.reduce(function(acc, topic) {
+            return acc + topic.value;
+        },0);
+
+        return d;
+    })
+}
+
+function filterData(d0, d1) {
+    var testDataSet = new dataBuilder.SalesDataBuilder(),
+        data = JSON.parse(JSON.stringify(testDataSet.with5Topics().build()));
+
+    data.dataByDate = data.dataByDate.filter(isInRange.bind(null, d0, d1));
+
+    data.dataByTopic = data.dataByTopic.map((topic) => {
+        topic.dates = topic.dates.filter(isInRange.bind(null, d0, d1));
+
+        return topic;
+    });
+
+    return data;
+}
+
+function isInRange(d0, d1, d) {
+    return new Date(d.date) >= d0 && new Date(d.date) <= d1;
+}
+
 // Show charts if container available
 if (d3Selection.select('.js-line-chart-container').node()) {
     createLineChart();
+    createBrushChart();
     createLineChartWithSingleLine();
     createLineChartWithFixedHeight();
 
     var redrawCharts = function(){
         d3Selection.selectAll('.line-chart').remove();
+        d3Selection.selectAll('.brush-chart').remove();
 
         createLineChart();
+        createBrushChart();
         createLineChartWithSingleLine();
         createLineChartWithFixedHeight();
     };

@@ -9,10 +9,12 @@ define(function(require) {
     const d3Shape = require('d3-shape');
     const d3Selection = require('d3-selection');
     const d3Time = require('d3-time');
-    const d3TimeFormat = require('d3-time-format');
     const d3Transition = require('d3-transition');
 
     const colorHelper = require('./helpers/colors');
+    const timeAxisHelper = require('./helpers/timeAxis');
+
+    const {axisTimeCombinations} = require('./helpers/constants');
 
 
     /**
@@ -79,17 +81,18 @@ define(function(require) {
             xScale, yScale,
             xAxis,
 
+            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
+            forceAxisSettings = null,
+
             brush,
             chartBrush,
             handle,
 
+            tickPadding = 5,
+
             onBrush = null,
 
             gradient = colorHelper.colorGradients.greenBlueGradient,
-
-            // formats
-            defaultTimeFormat = '%m/%d/%Y',
-            xTickMonthFormat = d3TimeFormat.timeFormat('%b'),
 
             // extractors
             getValue = ({value}) => value,
@@ -125,8 +128,14 @@ define(function(require) {
          * @private
          */
         function buildAxis(){
+
+            let {minor, major} = timeAxisHelper.getXAxisSettings(data, xScale, width, forceAxisSettings || defaultAxisSettings);
+
             xAxis = d3Axis.axisBottom(xScale)
-                .tickFormat(xTickMonthFormat);
+                .ticks(minor.tick)
+                .tickSize(10, 0)
+                .tickPadding([tickPadding])
+                .tickFormat(minor.format);
         }
 
         /**
@@ -229,10 +238,8 @@ define(function(require) {
          * @param  {BrushChartData} data Data
          */
         function cleanData(data) {
-            let parseDate = d3TimeFormat.timeParse(defaultTimeFormat);
-
             return data.map(function (d) {
-                d.date = parseDate(d[dateLabel]);
+                d.date = new Date(d[dateLabel]);
                 d.value = +d[valueLabel];
 
                 return d;
@@ -415,6 +422,26 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Exposes the ability to force the chart to show a certain x axis grouping
+         * @param  {String} _x Desired format
+         * @return { (String|Module) }    Current format or module to chain calls
+         */
+        exports.forceAxisFormat = function(_x) {
+            if (!arguments.length) {
+              return forceAxisSettings || defaultAxisSettings;
+            }
+            forceAxisSettings = _x;
+            return this;
+        };
+
+        /**
+         * constants to be used to force the x axis to respect a certain granularity
+         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
+         * @example line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
+         */
+        exports.axisTimeCombinations = axisTimeCombinations;
 
         /**
          * Gets or Sets the gradient of the chart
