@@ -18,6 +18,12 @@ define(function(require){
     const colorHelper = require('./helpers/colors');
     const exportChart = require('./helpers/exportChart');
 
+    const {isInteger} = require('./helpers/common');
+    const {
+      formatIntegerValue,
+      formatDecimalValue,
+    } = require('./helpers/formatHelpers');
+
     const ONE_AND_A_HALF_YEARS = 47304000000;
     const ONE_DAY = 86400001;
 
@@ -206,6 +212,24 @@ define(function(require){
         }
 
         /**
+         * Formats the value depending on its characteristics
+         * @param  {Number} value Value to format
+         * @return {Number}       Formatted value
+         */
+        function getFormattedValue(value) {
+            let format;
+
+            if (isInteger(value)) {
+                format = formatIntegerValue;
+            } else {
+                format = formatDecimalValue;
+            }
+
+            return format(value);
+        }
+
+
+        /**
          * Creates the d3 x and y axis, setting orientations
          * @private
          */
@@ -235,7 +259,7 @@ define(function(require){
 
             yAxis = d3Axis.axisRight(yScale)
                 .ticks(numVerticalTicks)
-                .tickFormat(yTickNumberFormat)
+                .tickFormat(getFormattedValue)
                 .tickSize(chartWidth + yTickTextXOffset, 0, 0)
                 .tickPadding(tickPadding);
         }
