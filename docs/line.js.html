@@ -144,13 +144,20 @@
     const _ = require('underscore');
     const colorHelper = require('./helpers/colors');
     const exportChart = require('./helpers/exportChart');
+    const {
+      formatIntegerValue,
+      formatDecimalValue,
+    } = require('./helpers/formatHelpers');
 
     const {
         axisTimeCombinations,
         lineGradientId,
         timeBenchmarks
-    } = require('./helpers/constants.js');
+    } = require('./helpers/constants');
 
+    const {
+        isInteger
+    } = require('./helpers/common');
     /**
      * @typedef D3Selection
      * @type {Array[]}
@@ -297,7 +304,6 @@
             getLineColor = ({topic}) => colorScale(topic),
 
             // formats
-            yTickNumberFormat = d3Format.format('.3'),
             xTickHourFormat = d3TimeFormat.timeFormat('%H %p'),
             xTickDateFormat = d3TimeFormat.timeFormat('%e'),
             xTickMonthFormat = d3TimeFormat.timeFormat('%b'),
@@ -409,6 +415,23 @@
         }
 
         /**
+         * Formats the value depending on its characteristics
+         * @param  {Number} value Value to format
+         * @return {Number}       Formatted value
+         */
+        function getFormattedValue(value) {
+            let format;
+
+            if (isInteger(value)) {
+                format = formatIntegerValue;
+            } else {
+                format = formatDecimalValue;
+            }
+
+            return format(value);
+        }
+
+        /**
          * Creates the d3 x and y axis, setting orientations
          * @private
          */
@@ -433,7 +456,7 @@
                 .ticks(yTickNumber)
                 .tickSize([0])
                 .tickPadding(tickPadding)
-                .tickFormat(yTickNumberFormat);
+                .tickFormat(getFormattedValue);
         }
 
         /**
