@@ -10,20 +10,18 @@ define(function(require){
     const d3Scale = require('d3-scale');
     const d3Shape = require('d3-shape');
     const d3Selection = require('d3-selection');
-    const d3Time = require('d3-time');
-    const d3TimeFormat = require('d3-time-format');
     const d3Transition = require('d3-transition');
 
     const _ = require('underscore');
 
     const exportChart = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
+    const timeAxisHelper = require('./helpers/timeAxis');
     const {isInteger} = require('./helpers/common');
 
     const {
         axisTimeCombinations,
-        lineGradientId,
-        timeBenchmarks
+        lineGradientId
     } = require('./helpers/constants');
 
     const {
@@ -146,9 +144,6 @@ define(function(require){
             defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
             forceAxisSettings = null,
 
-            singleTickWidth = 20,
-            horizontalTickSpacing = 40,
-
             ease = d3Ease.easeQuadInOut,
             animationDuration = 1500,
 
@@ -176,20 +171,8 @@ define(function(require){
             getTopic = ({topic}) => topic,
             getLineColor = ({topic}) => colorScale(topic),
 
-            // formats
-            xTickHourFormat = d3TimeFormat.timeFormat('%H %p'),
-            xTickDateFormat = d3TimeFormat.timeFormat('%e'),
-            xTickMonthFormat = d3TimeFormat.timeFormat('%b'),
-            xTickYearFormat = d3TimeFormat.timeFormat('%Y'),
-
             // events
             dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
-
-        const formatMap = {
-            hour: xTickHourFormat,
-            day: xTickDateFormat,
-            month: xTickMonthFormat
-        };
 
         /**
          * This function creates the graph using the selection and data provided
@@ -246,48 +229,6 @@ define(function(require){
         }
 
         /**
-         * Returns tick object to be used when building the x axis
-         * @return {object} tick settings for major and minr axis
-         */
-        function getXAxisSettings() {
-            let settings = forceAxisSettings || defaultAxisSettings;
-            let minorTickValue, majorTickValue;
-            let dateTimeSpan = xScale.domain()[1] - xScale.domain()[0];
-            let {
-              ONE_AND_A_HALF_YEARS,
-              ONE_DAY
-            } = timeBenchmarks;
-
-            // might want to add minute-hour
-            if (dateTimeSpan < ONE_DAY) {
-                settings = axisTimeCombinations.HOUR_DAY;
-                majorTickValue = d3Time.timeDay.every(1);
-            } else if (dateTimeSpan < ONE_AND_A_HALF_YEARS) {
-                settings = axisTimeCombinations.DAY_MONTH;
-                majorTickValue = d3Time.timeMonth.every(1);
-            } else {
-                settings = axisTimeCombinations.MONTH_YEAR;
-                minorTickValue = 10;
-                majorTickValue = d3Time.timeYear.every(1);
-            }
-            let [minor, major] = settings.split('-');
-
-            minorTickValue = dataByDate.length < 5 ? d3Time.timeDay :
-                    getMaxNumOfHorizontalTicks(width, dataByDate.length);
-
-            return {
-                minor: {
-                  format: formatMap[minor],
-                  tick: minorTickValue,
-                },
-                major: {
-                  format: formatMap[major],
-                  tick: majorTickValue,
-                }
-            };
-        }
-
-        /**
          * Formats the value depending on its characteristics
          * @param  {Number} value Value to format
          * @return {Number}       Formatted value
@@ -312,7 +253,7 @@ define(function(require){
             let rangeDiff = yScale.domain()[1] - yScale.domain()[0];
             let yTickNumber = rangeDiff < numVerticalTics - 1 ? rangeDiff : numVerticalTics;
 
-            let {minor, major} = getXAxisSettings();
+            let {minor, major} = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings);
 
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(minor.tick)
@@ -646,18 +587,6 @@ define(function(require){
          */
         function findOutNearestDate(x0, d0, d1){
             return (new Date(x0).getTime() - new Date(d0.date).getTime()) > (new Date(d1.date).getTime() - new Date(x0).getTime()) ? d0 : d1;
-        }
-
-        /**
-         * Calculates the maximum number of ticks for the x axis
-         * @param  {Number} width Chart width
-         * @param  {Number} dataPointNumber  Number of entries on the data
-         * @return {Number}       Number of ticks to render
-         */
-        function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
-            let ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
-
-            return Math.min(dataPointNumber, ticksForWidth);
         }
 
         /**
