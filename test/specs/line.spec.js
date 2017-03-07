@@ -318,8 +318,6 @@ define([
                 expect(newTopicLabel).toBe(testTopicLabel);
             });
 
-
-
             it('should provide a colorSchema getter and setter', () => {
                 let defaultSchema = lineChart.colorSchema(),
                     testSchema = ['#ffffff', '#fafefc', '#000000'],
