@@ -8,8 +8,16 @@ define(function(require){
 
     const {
       axisTimeCombinations
-    } = require('./helpers/constants.js');
+    } = require('./helpers/constants');
 
+    const {
+        formatIntegerValue,
+        formatDecimalValue
+    } = require('./helpers/formatHelpers');
+
+    const {
+        isInteger
+    } = require('./helpers/common');
 
     /**
      * Tooltip Component reusable API class that renders a
@@ -98,20 +106,6 @@ define(function(require){
             // formats
             monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
             monthDayHourFormat = d3TimeFormat.timeFormat('%b %d, %I %p'),
-            valueRangeLimits = {
-                small: 10,
-                medium: 100
-            },
-            integerValueFormats = {
-                small: d3Format.format(''),
-                medium: d3Format.format(''),
-                large: d3Format.format('.2s')
-            },
-            decimalValueFormats = {
-                small: d3Format.format('.3f'),
-                medium: d3Format.format('.1f'),
-                large: d3Format.format('.2s')
-            },
 
             chartWidth, chartHeight,
             data,
@@ -225,41 +219,6 @@ define(function(require){
         }
 
         /**
-         * Formats a floating point value depending on its value range
-         * @param  {Number} value Decimal point value to format
-         * @return {Number}       Formatted value to show
-         */
-        function formatDecimalValue(value) {
-            let size = 'large';
-
-            if (value < valueRangeLimits.small) {
-                size = 'small';
-            } else if (value < valueRangeLimits.medium) {
-                size = 'medium';
-            }
-
-            return decimalValueFormats[size](value);
-        }
-
-
-        /**
-         * Formats an integer value depending on its value range
-         * @param  {Number} value Decimal point value to format
-         * @return {Number}       Formatted value to show
-         */
-        function formatIntegerValue(value) {
-            let size = 'large';
-
-            if (value < valueRangeLimits.small) {
-                size = 'small';
-            } if (value < valueRangeLimits.medium) {
-                size = 'medium';
-            }
-
-            return integerValueFormats[size](value);
-        }
-
-        /**
          * Formats the value depending on its characteristics
          * @param  {Number} value Value to format
          * @return {Number}       Formatted value
@@ -294,15 +253,6 @@ define(function(require){
             }
 
             return valueText;
-        }
-
-        /**
-         * Checks if a number is an integer of has decimal values
-         * @param  {Number}  value Value to check
-         * @return {Boolean}       If it is an iteger
-         */
-        function isInteger(value) {
-            return value % 1 === 0;
         }
 
         /**

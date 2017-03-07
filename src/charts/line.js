@@ -15,14 +15,21 @@ define(function(require){
     const d3Transition = require('d3-transition');
 
     const _ = require('underscore');
-    const colorHelper = require('./helpers/colors');
+
     const exportChart = require('./helpers/exportChart');
+    const colorHelper = require('./helpers/colors');
+    const {isInteger} = require('./helpers/common');
 
     const {
         axisTimeCombinations,
         lineGradientId,
         timeBenchmarks
-    } = require('./helpers/constants.js');
+    } = require('./helpers/constants');
+
+    const {
+      formatIntegerValue,
+      formatDecimalValue,
+    } = require('./helpers/formatHelpers');
 
     /**
      * @typedef D3Selection
@@ -170,7 +177,6 @@ define(function(require){
             getLineColor = ({topic}) => colorScale(topic),
 
             // formats
-            yTickNumberFormat = d3Format.format('.3'),
             xTickHourFormat = d3TimeFormat.timeFormat('%H %p'),
             xTickDateFormat = d3TimeFormat.timeFormat('%e'),
             xTickMonthFormat = d3TimeFormat.timeFormat('%b'),
@@ -282,6 +288,23 @@ define(function(require){
         }
 
         /**
+         * Formats the value depending on its characteristics
+         * @param  {Number} value Value to format
+         * @return {Number}       Formatted value
+         */
+        function getFormattedValue(value) {
+            let format;
+
+            if (isInteger(value)) {
+                format = formatIntegerValue;
+            } else {
+                format = formatDecimalValue;
+            }
+
+            return format(value);
+        }
+
+        /**
          * Creates the d3 x and y axis, setting orientations
          * @private
          */
@@ -306,7 +329,7 @@ define(function(require){
                 .ticks(yTickNumber)
                 .tickSize([0])
                 .tickPadding(tickPadding)
-                .tickFormat(yTickNumberFormat);
+                .tickFormat(getFormattedValue);
         }
 
         /**
