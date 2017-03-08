@@ -3,6 +3,7 @@ define(function(require) {
 
     const d3Array = require('d3-array');
     const d3Axis = require('d3-axis');
+    const d3Color = require('d3-color');
     const d3Dispatch = require('d3-dispatch');
     const d3Format = require('d3-format');
     const d3Scale = require('d3-scale');
@@ -11,6 +12,7 @@ define(function(require) {
 
     const textHelper = require('./helpers/text');
     const exportChart = require('./helpers/exportChart');
+    const colorHelper = require('./helpers/colors');
 
 
     /**
@@ -65,6 +67,9 @@ define(function(require) {
             data,
             chartWidth, chartHeight,
             xScale, yScale,
+            colorSchema = colorHelper.colorSchemas.singleColorAloeGreen,
+            colorScale,
+            topicColorMap,
             numOfVerticalTicks = 5,
             numOfHorizontalTicks = 5,
             percentageAxisToMaxRatio = 1,
@@ -98,6 +103,8 @@ define(function(require) {
             // extractors
             getName = ({name}) => name,
             getValue = ({value}) => value,
+            getLineColor = ({topic}) => colorScale(topic),
+
             _percentageLabelHorizontalX = ({value}) => xScale(value) + percentageLabelMargin,
             _percentageLabelHorizontalY= ({name}) => yScale(name) + (yScale.bandwidth() / 2) + (percentageLabelSize * (3/8)),
 
@@ -200,6 +207,13 @@ define(function(require) {
                     .rangeRound([chartHeight, 0])
                     .padding(0.1);
             }
+            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(data.map((_, i) => i))
+
+            let range = colorScale.range();
+            topicColorMap = colorScale.domain().reduce((memo, item, i) => {
+                memo[item] = range[i];
+                return memo;
+            }, {});
         }
 
         /**
@@ -276,14 +290,17 @@ define(function(require) {
                 .attr('x', 0)
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value))
+                .attr('fill', ({name}) => colorScale(name))
                 .on('mouseover', function() {
                     dispatcher.call('customMouseOver', this);
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorScale(name)).darker())
                 })
                 .on('mousemove', function(d) {
                     dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
                 .on('mouseout', function() {
                     dispatcher.call('customMouseOut', this);
+                    d3Selection.select(this).attr('fill', ({name}) => colorScale(name))
                 })
               .merge(bars)
                 .attr('x', 0)
@@ -306,14 +323,17 @@ define(function(require) {
                 .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
                 .attr('height', ({value}) => chartHeight - yScale(value))
+                .attr('fill', ({name}) => colorScale(name))
                 .on('mouseover', function() {
                     dispatcher.call('customMouseOver', this);
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorScale(name)).darker())
                 })
                 .on('mousemove', function(d) {
                     dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
                 .on('mouseout', function() {
                     dispatcher.call('customMouseOut', this);
+                    d3Selection.select(this).attr('fill', ({name}) => colorScale(name))
                 })
               .merge(bars)
                 .attr('x', ({name}) => xScale(name))
@@ -523,6 +543,20 @@ define(function(require) {
         exports.exportChart = function(filename, title) {
             exportChart.call(exports, svg, filename, title);
         };
+
+        /**
+         * Gets or Sets the colorSchema of the chart
+         * @param  {String[]} _x Desired colorSchema for the graph
+         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
+         * @public
+         */
+        exports.colorSchema = function(_x) {
+            if (!arguments.length) {
+                return colorSchema;
+            }
+            colorSchema = _x;
+            return this;
+        }
 
         /**
          * Configurable extension of the x axis
