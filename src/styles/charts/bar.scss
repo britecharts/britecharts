@@ -7,12 +7,7 @@ $bar-stroke-width: 0;
 .bar-chart {
     // Bars
     .bar {
-        fill: $bar-color;
-        stroke-width: $bar-stroke-width;
         shape-rendering: crispEdges;
-    }
-    .bar:hover {
-        fill: $bar-color-hover;
     }
 
     .y-axis-group {

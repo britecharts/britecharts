@@ -6,6 +6,7 @@ var d3Selection = require('d3-selection'),
 
     bar = require('./../src/charts/bar'),
     miniTooltip = require('./../src/charts/mini-tooltip'),
+    colors = require('./../src/charts/helpers/colors'),
 
     dataBuilder = require('./../test/fixtures/barChartDataBuilder');
 
@@ -48,6 +49,7 @@ function createHorizontalBarChart() {
                 bottom: 5
             })
             .horizontal(true)
+            .colorSchema(colors.colorSchemas.britechartsColorSchema)
             .width(containerWidth)
             .yAxisPaddingBetweenChart(30)
             .height(300)

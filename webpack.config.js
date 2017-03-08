@@ -21,7 +21,9 @@ var webpack = require('webpack'),
         'sparkline': './src/charts/sparkline.js',
         'stacked-area': './src/charts/stacked-area.js',
         'step': './src/charts/step.js',
-        'brush': './src/charts/brush.js'
+        'brush': './src/charts/brush.js',
+        // hack to make webpack use colors as an entry point while its also a dependency of the charts above
+        'colors': ['./src/charts/helpers/colors.js']
     },
 
     defaultJSLoader = {
@@ -113,7 +115,7 @@ config = {
         devtool: 'source-map',
 
         output: {
-            path:     'dist/bundled',
+            path: 'dist/bundled',
             filename: outputFile,
             libraryTarget: 'umd'
         },

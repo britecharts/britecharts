@@ -128,6 +128,10 @@ define(function(require) {
             '#9c1e19'
         ];
 
+    const singleColorAloeGreen = [
+            '#7bdcc0'
+        ];
+
     return {
         colorSchemas: {
             britechartsColorSchema,
@@ -139,7 +143,8 @@ define(function(require) {
             extendedYellowColorSchema,
             extendedPinkColorSchema,
             extendedPurpleColorSchema,
-            extendedRedColorSchema
+            extendedRedColorSchema,
+            singleColorAloeGreen
         },
         colorSchemasHuman: {
             'britechartsColorSchema': 'Britecharts Default',
