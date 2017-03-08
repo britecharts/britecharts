@@ -156,6 +156,18 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide colorSchema getter and setter', () => {
+                let previous = barChart.colorSchema(),
+                    expected = ['#FFFFFF'],
+                    actual;
+
+                barChart.colorSchema(expected);
+                actual = barChart.colorSchema();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
         });
 
         describe('when hovering a bar', function() {
