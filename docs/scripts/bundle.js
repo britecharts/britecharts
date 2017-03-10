@@ -3003,7 +3003,13 @@
 	
 	    // Color Schemas
 	    // Standard Color Schema for Britecharts
-	    var britechartsColorSchema = ['#39c2c9', '#ffce00', '#ffa71a', '#f866b9', '#998ce3', '#6aedc7'];
+	    var britechartsColorSchema = ['#6aedc7', //green
+	    '#39c2c9', //blue
+	    '#ffce00', //yellow
+	    '#ffa71a', //orange
+	    '#f866b9', //pink
+	    '#998ce3' //purple
+	    ];
 	
 	    // Grey Schema for Britecharts
 	    var britechartsGreySchema = ['#F8F8FA', '#EFF2F5', '#D2D6DF', '#C3C6CF', '#ADB0B6', '#666A73', '#45494E', '#363A43', '#282C35'];
@@ -11225,11 +11231,11 @@
 /* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-timer/ Version 1.0.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-timer/ Version 1.0.3. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports) :
-		typeof define === 'function' && define.amd ? define(['exports'], factory) :
-		(factory((global.d3 = global.d3 || {})));
+	   true ? factory(exports) :
+	  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	  (factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
 	var frame = 0;
@@ -11243,7 +11249,6 @@
 	var clockSkew = 0;
 	var clock = typeof performance === "object" && performance.now ? performance : Date;
 	var setFrame = typeof requestAnimationFrame === "function" ? requestAnimationFrame : function(f) { setTimeout(f, 17); };
-	
 	function now() {
 	  return clockNow || (setFrame(clearNow), clockNow = clock.now() + clockSkew);
 	}
@@ -11338,12 +11343,12 @@
 	    if (time < Infinity) timeout = setTimeout(wake, delay);
 	    if (interval) interval = clearInterval(interval);
 	  } else {
-	    if (!interval) clockLast = clockNow, interval = setInterval(poke, pokeDelay);
+	    if (!interval) interval = setInterval(poke, pokeDelay);
 	    frame = 1, setFrame(wake);
 	  }
 	}
 	
-	var timeout$1 = function(callback, delay, time) {
+	function timeout$1(callback, delay, time) {
 	  var t = new Timer;
 	  delay = delay == null ? 0 : +delay;
 	  t.restart(function(elapsed) {
@@ -11351,9 +11356,9 @@
 	    callback(elapsed + delay);
 	  }, delay, time);
 	  return t;
-	};
+	}
 	
-	var interval$1 = function(callback, delay, time) {
+	function interval$1(callback, delay, time) {
 	  var t = new Timer, total = delay;
 	  if (delay == null) return t.restart(callback, delay, time), t;
 	  delay = +delay, time = time == null ? now() : +time;
@@ -11363,7 +11368,7 @@
 	    callback(elapsed);
 	  }, delay, time);
 	  return t;
-	};
+	}
 	
 	exports.now = now;
 	exports.timer = timer;
@@ -11374,7 +11379,6 @@
 	Object.defineProperty(exports, '__esModule', { value: true });
 	
 	})));
-
 
 /***/ },
 /* 24 */
@@ -16657,8 +16661,8 @@
 	            xScale = void 0,
 	            yScale = void 0,
 	            colorSchema = colorHelper.colorSchemas.singleColorAloeGreen,
-	            colorScale = void 0,
-	            topicColorMap = void 0,
+	            colorList = void 0,
+	            colorMap = void 0,
 	            numOfVerticalTicks = 5,
 	            numOfHorizontalTicks = 5,
 	            percentageAxisToMaxRatio = 1,
@@ -16699,32 +16703,28 @@
 	            var value = _ref2.value;
 	            return value;
 	        },
-	            getLineColor = function getLineColor(_ref3) {
-	            var topic = _ref3.topic;
-	            return colorScale(topic);
-	        },
-	            _percentageLabelHorizontalX = function _percentageLabelHorizontalX(_ref4) {
-	            var value = _ref4.value;
+	            _percentageLabelHorizontalX = function _percentageLabelHorizontalX(_ref3) {
+	            var value = _ref3.value;
 	            return xScale(value) + percentageLabelMargin;
 	        },
-	            _percentageLabelHorizontalY = function _percentageLabelHorizontalY(_ref5) {
-	            var name = _ref5.name;
+	            _percentageLabelHorizontalY = function _percentageLabelHorizontalY(_ref4) {
+	            var name = _ref4.name;
 	            return yScale(name) + yScale.bandwidth() / 2 + percentageLabelSize * (3 / 8);
 	        },
-	            _percentageLabelVerticalX = function _percentageLabelVerticalX(_ref6) {
-	            var name = _ref6.name;
+	            _percentageLabelVerticalX = function _percentageLabelVerticalX(_ref5) {
+	            var name = _ref5.name;
 	            return xScale(name);
 	        },
-	            _percentageLabelVerticalY = function _percentageLabelVerticalY(_ref7) {
-	            var value = _ref7.value;
+	            _percentageLabelVerticalY = function _percentageLabelVerticalY(_ref6) {
+	            var value = _ref6.value;
 	            return yScale(value) - percentageLabelMargin;
 	        },
-	            _percentageLabelHorizontalFormatValue = function _percentageLabelHorizontalFormatValue(_ref8) {
-	            var value = _ref8.value;
+	            _percentageLabelHorizontalFormatValue = function _percentageLabelHorizontalFormatValue(_ref7) {
+	            var value = _ref7.value;
 	            return d3Format.format(horizontalLabelFormat)(value);
 	        },
-	            _percentageLabelVerticalFormatValue = function _percentageLabelVerticalFormatValue(_ref9) {
-	            var value = _ref9.value;
+	            _percentageLabelVerticalFormatValue = function _percentageLabelVerticalFormatValue(_ref8) {
+	            var value = _ref8.value;
 	            return d3Format.format(verticalLabelFormat)(parseFloat(value) * 100);
 	        };
 	
@@ -16799,15 +16799,22 @@
 	
 	                yScale = d3Scale.scaleBand().domain(data.map(getName)).rangeRound([chartHeight, 0]).padding(0.1);
 	            }
-	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(data.map(function (_, i) {
-	                return i;
-	            }));
 	
-	            var range = colorScale.range();
-	            topicColorMap = colorScale.domain().reduce(function (memo, item, i) {
-	                memo[item] = range[i];
-	                return memo;
-	            }, {});
+	            colorList = data.map(function (d) {
+	                return d;
+	            }).reverse().map(function (_ref9, i) {
+	                var name = _ref9.name;
+	                return {
+	                    name: name,
+	                    color: colorSchema[i % colorSchema.length] };
+	            });
+	
+	            colorMap = function colorMap(item) {
+	                return colorList.filter(function (_ref10) {
+	                    var name = _ref10.name;
+	                    return name === item;
+	                })[0].color;
+	            };
 	        }
 	
 	        /**
@@ -16869,31 +16876,31 @@
 	         */
 	        function drawHorizontalBars(bars) {
 	            // Enter + Update
-	            bars.enter().append('rect').classed('bar', true).attr('y', chartHeight).attr('x', 0).attr('height', yScale.bandwidth()).attr('width', function (_ref10) {
-	                var value = _ref10.value;
+	            bars.enter().append('rect').classed('bar', true).attr('y', chartHeight).attr('x', 0).attr('height', yScale.bandwidth()).attr('width', function (_ref11) {
+	                var value = _ref11.value;
 	                return xScale(value);
-	            }).attr('fill', function (_ref11) {
-	                var name = _ref11.name;
-	                return colorScale(name);
+	            }).attr('fill', function (_ref12) {
+	                var name = _ref12.name;
+	                return colorMap(name);
 	            }).on('mouseover', function () {
 	                dispatcher.call('customMouseOver', this);
-	                d3Selection.select(this).attr('fill', function (_ref12) {
-	                    var name = _ref12.name;
-	                    return d3Color.color(colorScale(name)).darker();
+	                d3Selection.select(this).attr('fill', function (_ref13) {
+	                    var name = _ref13.name;
+	                    return d3Color.color(colorMap(name)).darker();
 	                });
 	            }).on('mousemove', function (d) {
 	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
 	            }).on('mouseout', function () {
 	                dispatcher.call('customMouseOut', this);
-	                d3Selection.select(this).attr('fill', function (_ref13) {
-	                    var name = _ref13.name;
-	                    return colorScale(name);
+	                d3Selection.select(this).attr('fill', function (_ref14) {
+	                    var name = _ref14.name;
+	                    return colorMap(name);
 	                });
-	            }).merge(bars).attr('x', 0).attr('y', function (_ref14) {
-	                var name = _ref14.name;
+	            }).merge(bars).attr('x', 0).attr('y', function (_ref15) {
+	                var name = _ref15.name;
 	                return yScale(name);
-	            }).attr('height', yScale.bandwidth()).attr('width', function (_ref15) {
-	                var value = _ref15.value;
+	            }).attr('height', yScale.bandwidth()).attr('width', function (_ref16) {
+	                var value = _ref16.value;
 	                return xScale(value);
 	            });
 	        }
@@ -16905,37 +16912,37 @@
 	         */
 	        function drawVerticalBars(bars) {
 	            // Enter + Update
-	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref16) {
-	                var value = _ref16.value;
-	                return yScale(value);
-	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref17) {
+	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref17) {
 	                var value = _ref17.value;
+	                return yScale(value);
+	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref18) {
+	                var value = _ref18.value;
 	                return chartHeight - yScale(value);
-	            }).attr('fill', function (_ref18) {
-	                var name = _ref18.name;
-	                return colorScale(name);
+	            }).attr('fill', function (_ref19) {
+	                var name = _ref19.name;
+	                return colorMap(name);
 	            }).on('mouseover', function () {
 	                dispatcher.call('customMouseOver', this);
-	                d3Selection.select(this).attr('fill', function (_ref19) {
-	                    var name = _ref19.name;
-	                    return d3Color.color(colorScale(name)).darker();
+	                d3Selection.select(this).attr('fill', function (_ref20) {
+	                    var name = _ref20.name;
+	                    return d3Color.color(colorMap(name)).darker();
 	                });
 	            }).on('mousemove', function (d) {
 	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
 	            }).on('mouseout', function () {
 	                dispatcher.call('customMouseOut', this);
-	                d3Selection.select(this).attr('fill', function (_ref20) {
-	                    var name = _ref20.name;
-	                    return colorScale(name);
+	                d3Selection.select(this).attr('fill', function (_ref21) {
+	                    var name = _ref21.name;
+	                    return colorMap(name);
 	                });
-	            }).merge(bars).attr('x', function (_ref21) {
-	                var name = _ref21.name;
+	            }).merge(bars).attr('x', function (_ref22) {
+	                var name = _ref22.name;
 	                return xScale(name);
-	            }).attr('y', function (_ref22) {
-	                var value = _ref22.value;
-	                return yScale(value);
-	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref23) {
+	            }).attr('y', function (_ref23) {
 	                var value = _ref23.value;
+	                return yScale(value);
+	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref24) {
+	                var value = _ref24.value;
 	                return chartHeight - yScale(value);
 	            });
 	        }
@@ -18722,14 +18729,14 @@
 /* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org Version 4.4.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org Version 4.4.2. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
 		(factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
-	var version = "4.4.4";
+	var version = "4.4.2";
 	
 	var ascending = function(a, b) {
 	  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -21683,7 +21690,7 @@
 	    if (time < Infinity) timeout = setTimeout(wake, delay);
 	    if (interval) interval = clearInterval(interval);
 	  } else {
-	    if (!interval) clockLast = clockNow, interval = setInterval(poke, pokeDelay);
+	    if (!interval) interval = setInterval(poke, pokeDelay);
 	    frame = 1, setFrame(wake);
 	  }
 	}
