@@ -55,7 +55,7 @@ config = {
             './demos/index.js'
         ],
         output: {
-            path: './docs/scripts/',
+            path: './demos/build/',
             filename: 'bundle.js',
         },
         resolve:{

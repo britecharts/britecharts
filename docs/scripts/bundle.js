@@ -18722,14 +18722,14 @@
 /* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org Version 4.6.0. Copyright 2017 Mike Bostock.
+	// https://d3js.org Version 4.4.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
 		(factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
-	var version = "4.6.0";
+	var version = "4.4.4";
 	
 	var ascending = function(a, b) {
 	  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -25598,10 +25598,8 @@
 	      }
 	    }
 	  } else {
-	    ranges.push(range = [lambda0$1 = lambda, lambda1 = lambda]);
+	    boundsPoint(lambda, phi);
 	  }
-	  if (phi < phi0) phi0 = phi;
-	  if (phi > phi1) phi1 = phi;
 	  p0 = p, lambda2 = lambda;
 	}
 	
@@ -25801,7 +25799,7 @@
 	      cz = x0 * y - y0 * x,
 	      m = sqrt(cx * cx + cy * cy + cz * cz),
 	      u = x0 * x + y0 * y + z0 * z,
-	      v = m && -asin(m) / m, // area weight
+	      v = m && -acos(u) / m, // area weight
 	      w = atan2(m, u); // line weight
 	  X2 += v * cx;
 	  Y2 += v * cy;
@@ -26779,46 +26777,6 @@
 	  result: noop$1
 	};
 	
-	var lengthSum$1 = adder();
-	var lengthRing;
-	var x00$2;
-	var y00$2;
-	var x0$4;
-	var y0$4;
-	
-	var lengthStream$1 = {
-	  point: noop$1,
-	  lineStart: function() {
-	    lengthStream$1.point = lengthPointFirst$1;
-	  },
-	  lineEnd: function() {
-	    if (lengthRing) lengthPoint$1(x00$2, y00$2);
-	    lengthStream$1.point = noop$1;
-	  },
-	  polygonStart: function() {
-	    lengthRing = true;
-	  },
-	  polygonEnd: function() {
-	    lengthRing = null;
-	  },
-	  result: function() {
-	    var length = +lengthSum$1;
-	    lengthSum$1.reset();
-	    return length;
-	  }
-	};
-	
-	function lengthPointFirst$1(x, y) {
-	  lengthStream$1.point = lengthPoint$1;
-	  x00$2 = x0$4 = x, y00$2 = y0$4 = y;
-	}
-	
-	function lengthPoint$1(x, y) {
-	  x0$4 -= x, y0$4 -= y;
-	  lengthSum$1.add(sqrt(x0$4 * x0$4 + y0$4 * y0$4));
-	  x0$4 = x, y0$4 = y;
-	}
-	
 	function PathString() {
 	  this._string = [];
 	}
@@ -26890,11 +26848,6 @@
 	  path.area = function(object) {
 	    geoStream(object, projectionStream(areaStream$1));
 	    return areaStream$1.result();
-	  };
-	
-	  path.measure = function(object) {
-	    geoStream(object, projectionStream(lengthStream$1));
-	    return lengthStream$1.result();
 	  };
 	
 	  path.bounds = function(object) {
@@ -28163,19 +28116,6 @@
 	  return cluster;
 	};
 	
-	function count(node) {
-	  var sum = 0,
-	      children = node.children,
-	      i = children && children.length;
-	  if (!i) sum = 1;
-	  else while (--i >= 0) sum += children[i].value;
-	  node.value = sum;
-	}
-	
-	var node_count = function() {
-	  return this.eachAfter(count);
-	};
-	
 	var node_each = function(callback) {
 	  var node = this, current, next = [node], children, i, n;
 	  do {
@@ -28354,7 +28294,6 @@
 	
 	Node.prototype = hierarchy.prototype = {
 	  constructor: Node,
-	  count: node_count,
 	  each: node_each,
 	  eachAfter: node_eachAfter,
 	  eachBefore: node_eachBefore,
@@ -28515,21 +28454,12 @@
 	  var dx = b.x - a.x,
 	      dy = b.y - a.y,
 	      dr = a.r + b.r;
-	  return dr * dr - 1e-6 > dx * dx + dy * dy;
+	  return dr * dr > dx * dx + dy * dy;
 	}
 	
-	function distance1(a, b) {
-	  var l = a._.r;
-	  while (a !== b) l += 2 * (a = a.next)._.r;
-	  return l - b._.r;
-	}
-	
-	function distance2(node, x, y) {
-	  var a = node._,
-	      b = node.next._,
-	      ab = a.r + b.r,
-	      dx = (a.x * b.r + b.x * a.r) / ab - x,
-	      dy = (a.y * b.r + b.y * a.r) / ab - y;
+	function distance2(circle, x, y) {
+	  var dx = circle.x - x,
+	      dy = circle.y - y;
 	  return dx * dx + dy * dy;
 	}
 	
@@ -28574,27 +28504,35 @@
 	  pack: for (i = 3; i < n; ++i) {
 	    place(a._, b._, c = circles[i]), c = new Node$1(c);
 	
-	    // Find the closest intersecting circle on the front-chain, if any.
-	    // “Closeness” is determined by linear distance along the front-chain.
-	    // “Ahead” or “behind” is likewise determined by linear distance.
-	    j = b.next, k = a.previous, sj = b._.r, sk = a._.r;
-	    do {
-	      if (sj <= sk) {
-	        if (intersects(j._, c._)) {
-	          if (sj + a._.r + b._.r > distance1(j, b)) a = j; else b = j;
-	          a.next = b, b.previous = a, --i;
-	          continue pack;
-	        }
-	        sj += j._.r, j = j.next;
-	      } else {
-	        if (intersects(k._, c._)) {
-	          if (distance1(a, k) > sk + a._.r + b._.r) a = k; else b = k;
-	          a.next = b, b.previous = a, --i;
-	          continue pack;
-	        }
-	        sk += k._.r, k = k.previous;
+	    // If there are only three elements in the front-chain…
+	    if ((k = a.previous) === (j = b.next)) {
+	      // If the new circle intersects the third circle,
+	      // rotate the front chain to try the next position.
+	      if (intersects(j._, c._)) {
+	        a = b, b = j, --i;
+	        continue pack;
 	      }
-	    } while (j !== k.next);
+	    }
+	
+	    // Find the closest intersecting circle on the front-chain, if any.
+	    else {
+	      sj = j._.r, sk = k._.r;
+	      do {
+	        if (sj <= sk) {
+	          if (intersects(j._, c._)) {
+	            b = j, a.next = b, b.previous = a, --i;
+	            continue pack;
+	          }
+	          j = j.next, sj += j._.r;
+	        } else {
+	          if (intersects(k._, c._)) {
+	            a = k, a.next = b, b.previous = a, --i;
+	            continue pack;
+	          }
+	          k = k.previous, sk += k._.r;
+	        }
+	      } while (j !== k.next);
+	    }
 	
 	    // Success! Insert the new circle c between a and b.
 	    c.previous = a, c.next = b, a.next = b.previous = b = c;
@@ -28604,10 +28542,10 @@
 	    ox += ca * c._.x;
 	    oy += ca * c._.y;
 	
-	    // Compute the new closest circle pair to the centroid.
-	    aa = distance2(a, cx = ox / oa, cy = oy / oa);
+	    // Compute the new closest circle a to centroid.
+	    aa = distance2(a._, cx = ox / oa, cy = oy / oa);
 	    while ((c = c.next) !== b) {
-	      if ((ca = distance2(c, cx, cy)) < aa) {
+	      if ((ca = distance2(c._, cx, cy)) < aa) {
 	        a = c, aa = ca;
 	      }
 	    }
@@ -35286,7 +35224,7 @@
 	    dataBuilder = __webpack_require__(59),
 	    colorSelectorHelper = __webpack_require__(39);
 	
-	function createBrushChart() {
+	function createBrushChart(optionalColorSchema) {
 	    var brushChart = brush(),
 	        brushMargin = { top: 0, bottom: 40, left: 70, right: 30 },
 	        testDataSet = new dataBuilder.SalesDataBuilder(),
@@ -35307,7 +35245,7 @@
 	
 	            // Filter
 	            d3Selection.selectAll('.js-line-chart-container .line-chart').remove();
-	            createLineChart(null, filterData(brushExtent[0], brushExtent[1]));
+	            createLineChart(optionalColorSchema ? optionalColorSchema : null, filterData(brushExtent[0], brushExtent[1]));
 	        });
 	
 	        brushContainer.datum(brushDataAdapter(dataset)).call(brushChart);
@@ -35496,7 +35434,11 @@
 	    PubSub.subscribe('resize', redrawCharts);
 	
 	    // Color schema selector
-	    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.line-chart', createLineChart);
+	    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.line-chart', function (newSchema) {
+	        createLineChart(newSchema);
+	        d3Selection.selectAll('.brush-chart').remove();
+	        createBrushChart(newSchema);
+	    });
 	}
 
 /***/ },
@@ -37237,41 +37179,43 @@
 	
 	
 	            if (dataByTopic) {
-	                var flatData = [];
+	                (function () {
+	                    var flatData = [];
 	
-	                dataByTopic.forEach(function (topic) {
-	                    topic.dates.forEach(function (date) {
-	                        flatData.push({
-	                            topicName: topic[topicNameLabel],
-	                            name: topic[topicLabel],
-	                            date: date[dateLabel],
-	                            value: date[valueLabel]
+	                    dataByTopic.forEach(function (topic) {
+	                        topic.dates.forEach(function (date) {
+	                            flatData.push({
+	                                topicName: topic[topicNameLabel],
+	                                name: topic[topicLabel],
+	                                date: date[dateLabel],
+	                                value: date[valueLabel]
+	                            });
 	                        });
 	                    });
-	                });
 	
-	                // Nest data by date and format
-	                dataByDate = d3Collection.nest().key(getDate).entries(flatData).map(function (d) {
-	                    return {
-	                        date: new Date(d.key),
-	                        topics: d.values
-	                    };
-	                });
-	
-	                // Normalize dates in keys
-	                dataByDate = dataByDate.map(function (d) {
-	                    d.date = new Date(d.date);
-	
-	                    return d;
-	                });
-	
-	                // Normalize dataByTopic
-	                dataByTopic.forEach(function (kv) {
-	                    kv.dates.forEach(function (d) {
-	                        d.date = new Date(d[dateLabel]);
-	                        d.value = +d[valueLabel];
+	                    // Nest data by date and format
+	                    dataByDate = d3Collection.nest().key(getDate).entries(flatData).map(function (d) {
+	                        return {
+	                            date: new Date(d.key),
+	                            topics: d.values
+	                        };
 	                    });
-	                });
+	
+	                    // Normalize dates in keys
+	                    dataByDate = dataByDate.map(function (d) {
+	                        d.date = new Date(d.date);
+	
+	                        return d;
+	                    });
+	
+	                    // Normalize dataByTopic
+	                    dataByTopic.forEach(function (kv) {
+	                        kv.dates.forEach(function (d) {
+	                            d.date = new Date(d[dateLabel]);
+	                            d.value = +d[valueLabel];
+	                        });
+	                    });
+	                })();
 	            }
 	
 	            return { dataByTopic: dataByTopic, dataByDate: dataByDate };
@@ -40260,1359 +40204,142 @@
 		"dataByTopic": [
 			{
 				"topic": -1,
+				"topicName": "Quantity",
 				"dates": [
 					{
-						"date": "30-Dec-15",
-						"value": 15,
-						"fullDate": "2015-12-30T00:00:00-08:00"
+						"date": "31-Jul-16",
+						"value": 0,
+						"fullDate": "2016-07-31T00:00:00-07:00"
 					},
 					{
-						"date": "31-Dec-15",
-						"value": 16,
-						"fullDate": "2015-12-31T00:00:00-08:00"
+						"date": "1-Aug-16",
+						"value": 0,
+						"fullDate": "2016-08-01T00:00:00-07:00"
 					},
 					{
-						"date": "1-Jan-16",
-						"value": 17,
-						"fullDate": "2016-01-01T00:00:00-08:00"
+						"date": "2-Aug-16",
+						"value": 3,
+						"fullDate": "2016-08-02T00:00:00-07:00"
 					},
 					{
-						"date": "2-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-02T00:00:00-08:00"
+						"date": "3-Aug-16",
+						"value": 1,
+						"fullDate": "2016-08-03T00:00:00-07:00"
 					},
 					{
-						"date": "3-Jan-16",
-						"value": 19,
-						"fullDate": "2016-01-03T00:00:00-08:00"
+						"date": "4-Aug-16",
+						"value": 3,
+						"fullDate": "2016-08-04T00:00:00-07:00"
 					},
 					{
-						"date": "4-Jan-16",
-						"value": 20,
-						"fullDate": "2016-01-04T00:00:00-08:00"
+						"date": "5-Aug-16",
+						"value": 3,
+						"fullDate": "2016-08-05T00:00:00-07:00"
 					},
 					{
-						"date": "5-Jan-16",
-						"value": 21,
-						"fullDate": "2016-01-05T00:00:00-08:00"
+						"date": "6-Aug-16",
+						"value": 0,
+						"fullDate": "2016-08-06T00:00:00-07:00"
 					},
 					{
-						"date": "6-Jan-16",
-						"value": 22,
-						"fullDate": "2016-01-06T00:00:00-08:00"
+						"date": "7-Aug-16",
+						"value": 1,
+						"fullDate": "2016-08-07T00:00:00-07:00"
 					},
 					{
-						"date": "7-Jan-16",
-						"value": 21,
-						"fullDate": "2016-01-07T00:00:00-08:00"
+						"date": "8-Aug-16",
+						"value": 1,
+						"fullDate": "2016-08-08T00:00:00-07:00"
 					},
 					{
-						"date": "8-Jan-16",
-						"value": 20,
-						"fullDate": "2016-01-08T00:00:00-08:00"
+						"date": "9-Aug-16",
+						"value": 0,
+						"fullDate": "2016-08-09T00:00:00-07:00"
 					},
 					{
-						"date": "9-Jan-16",
-						"value": 19,
-						"fullDate": "2016-01-09T00:00:00-08:00"
+						"date": "10-Aug-16",
+						"value": 3,
+						"fullDate": "2016-08-10T00:00:00-07:00"
 					},
 					{
-						"date": "10-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-10T00:00:00-08:00"
+						"date": "11-Aug-16",
+						"value": 4,
+						"fullDate": "2016-08-11T00:00:00-07:00"
 					},
 					{
-						"date": "11-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-11T00:00:00-08:00"
+						"date": "12-Aug-16",
+						"value": 4,
+						"fullDate": "2016-08-12T00:00:00-07:00"
 					},
 					{
-						"date": "12-Jan-16",
-						"value": 17,
-						"fullDate": "2016-01-12T00:00:00-08:00"
+						"date": "13-Aug-16",
+						"value": 2,
+						"fullDate": "2016-08-13T00:00:00-07:00"
 					},
 					{
-						"date": "13-Jan-16",
-						"value": 16,
-						"fullDate": "2016-01-13T00:00:00-08:00"
+						"date": "14-Aug-16",
+						"value": 3,
+						"fullDate": "2016-08-14T00:00:00-07:00"
 					},
 					{
-						"date": "14-Jan-16",
-						"value": 15,
-						"fullDate": "2016-01-14T00:00:00-08:00"
+						"date": "15-Aug-16",
+						"value": 0,
+						"fullDate": "2016-08-15T00:00:00-07:00"
 					},
 					{
-						"date": "15-Jan-16",
-						"value": 16,
-						"fullDate": "2016-01-15T00:00:00-08:00"
+						"date": "16-Aug-16",
+						"value": 1,
+						"fullDate": "2016-08-16T00:00:00-07:00"
 					},
 					{
-						"date": "16-Jan-16",
-						"value": 17,
-						"fullDate": "2016-01-16T00:00:00-08:00"
+						"date": "17-Aug-16",
+						"value": 0,
+						"fullDate": "2016-08-17T00:00:00-07:00"
 					},
 					{
-						"date": "17-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-17T00:00:00-08:00"
+						"date": "18-Aug-16",
+						"value": 2,
+						"fullDate": "2016-08-18T00:00:00-07:00"
 					},
 					{
-						"date": "18-Jan-16",
-						"value": 20,
-						"fullDate": "2016-01-18T00:00:00-08:00"
+						"date": "19-Aug-16",
+						"value": 5,
+						"fullDate": "2016-08-19T00:00:00-07:00"
 					},
 					{
-						"date": "19-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-19T00:00:00-08:00"
+						"date": "20-Aug-16",
+						"value": 1,
+						"fullDate": "2016-08-20T00:00:00-07:00"
 					},
 					{
-						"date": "20-Jan-16",
-						"value": 21,
-						"fullDate": "2016-01-20T00:00:00-08:00"
+						"date": "21-Aug-16",
+						"value": 2,
+						"fullDate": "2016-08-21T00:00:00-07:00"
 					},
 					{
-						"date": "21-Jan-16",
-						"value": 22,
-						"fullDate": "2016-01-21T00:00:00-08:00"
+						"date": "22-Aug-16",
+						"value": 9,
+						"fullDate": "2016-08-22T00:00:00-07:00"
 					},
 					{
-						"date": "22-Jan-16",
-						"value": 23,
-						"fullDate": "2016-01-22T00:00:00-08:00"
+						"date": "23-Aug-16",
+						"value": 4,
+						"fullDate": "2016-08-23T00:00:00-07:00"
 					},
 					{
-						"date": "23-Jan-16",
-						"value": 24,
-						"fullDate": "2016-01-23T00:00:00-08:00"
+						"date": "24-Aug-16",
+						"value": 3,
+						"fullDate": "2016-08-24T00:00:00-07:00"
 					},
 					{
-						"date": "24-Jan-16",
-						"value": 25,
-						"fullDate": "2016-01-24T00:00:00-08:00"
+						"date": "25-Aug-16",
+						"value": 2,
+						"fullDate": "2016-08-25T00:00:00-07:00"
 					},
 					{
-						"date": "25-Jan-16",
-						"value": 26,
-						"fullDate": "2016-01-25T00:00:00-08:00"
-					},
-					{
-						"date": "26-Jan-16",
-						"value": 26,
-						"fullDate": "2016-01-26T00:00:00-08:00"
-					},
-					{
-						"date": "27-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-27T00:00:00-08:00"
-					},
-					{
-						"date": "28-Jan-16",
-						"value": 21,
-						"fullDate": "2016-01-28T00:00:00-08:00"
-					},
-					{
-						"date": "29-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-29T00:00:00-08:00"
-					},
-					{
-						"date": "30-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-30T00:00:00-08:00"
-					},
-					{
-						"date": "31-Jan-16",
-						"value": 18,
-						"fullDate": "2016-01-31T00:00:00-08:00"
-					},
-					{
-						"date": "1-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-01T00:00:00-08:00"
-					},
-					{
-						"date": "2-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-02T00:00:00-08:00"
-					},
-					{
-						"date": "3-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-03T00:00:00-08:00"
-					},
-					{
-						"date": "4-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-04T00:00:00-08:00"
-					},
-					{
-						"date": "5-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-05T00:00:00-08:00"
-					},
-					{
-						"date": "6-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-06T00:00:00-08:00"
-					},
-					{
-						"date": "7-Feb-16",
-						"value": 20,
-						"fullDate": "2016-02-07T00:00:00-08:00"
-					},
-					{
-						"date": "8-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-08T00:00:00-08:00"
-					},
-					{
-						"date": "9-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-09T00:00:00-08:00"
-					},
-					{
-						"date": "10-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-10T00:00:00-08:00"
-					},
-					{
-						"date": "11-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-11T00:00:00-08:00"
-					},
-					{
-						"date": "12-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-12T00:00:00-08:00"
-					},
-					{
-						"date": "13-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-13T00:00:00-08:00"
-					},
-					{
-						"date": "14-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-14T00:00:00-08:00"
-					},
-					{
-						"date": "15-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-15T00:00:00-08:00"
-					},
-					{
-						"date": "16-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-16T00:00:00-08:00"
-					},
-					{
-						"date": "17-Feb-16",
-						"value": 21,
-						"fullDate": "2016-02-17T00:00:00-08:00"
-					},
-					{
-						"date": "18-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-18T00:00:00-08:00"
-					},
-					{
-						"date": "19-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-19T00:00:00-08:00"
-					},
-					{
-						"date": "20-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-20T00:00:00-08:00"
-					},
-					{
-						"date": "21-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-21T00:00:00-08:00"
-					},
-					{
-						"date": "22-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-22T00:00:00-08:00"
-					},
-					{
-						"date": "23-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-23T00:00:00-08:00"
-					},
-					{
-						"date": "24-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-24T00:00:00-08:00"
-					},
-					{
-						"date": "25-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-25T00:00:00-08:00"
-					},
-					{
-						"date": "26-Feb-16",
-						"value": 18,
-						"fullDate": "2016-02-26T00:00:00-08:00"
-					},
-					{
-						"date": "27-Feb-16",
-						"value": 20,
-						"fullDate": "2016-02-27T00:00:00-08:00"
-					},
-					{
-						"date": "28-Feb-16",
-						"value": 17,
-						"fullDate": "2016-02-28T00:00:00-08:00"
-					},
-					{
-						"date": "29-Feb-16",
-						"value": 17,
-						"fullDate": "2016-02-29T00:00:00-08:00"
-					},
-					{
-						"date": "1-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-01T00:00:00-08:00"
-					},
-					{
-						"date": "2-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-02T00:00:00-08:00"
-					},
-					{
-						"date": "3-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-03T00:00:00-08:00"
-					},
-					{
-						"date": "4-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-04T00:00:00-08:00"
-					},
-					{
-						"date": "5-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-05T00:00:00-08:00"
-					},
-					{
-						"date": "6-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-06T00:00:00-08:00"
-					},
-					{
-						"date": "7-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-07T00:00:00-08:00"
-					},
-					{
-						"date": "8-Mar-16",
-						"value": 20,
-						"fullDate": "2016-03-08T00:00:00-08:00"
-					},
-					{
-						"date": "9-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-09T00:00:00-08:00"
-					},
-					{
-						"date": "10-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-10T00:00:00-08:00"
-					},
-					{
-						"date": "11-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-11T00:00:00-08:00"
-					},
-					{
-						"date": "12-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-12T00:00:00-08:00"
-					},
-					{
-						"date": "13-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-13T00:00:00-08:00"
-					},
-					{
-						"date": "14-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-14T00:00:00-07:00"
-					},
-					{
-						"date": "15-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-15T00:00:00-07:00"
-					},
-					{
-						"date": "16-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-16T00:00:00-07:00"
-					},
-					{
-						"date": "17-Mar-16",
-						"value": 17,
-						"fullDate": "2016-03-17T00:00:00-07:00"
-					},
-					{
-						"date": "18-Mar-16",
-						"value": 20,
-						"fullDate": "2016-03-18T00:00:00-07:00"
-					},
-					{
-						"date": "19-Mar-16",
-						"value": 18,
-						"fullDate": "2016-03-19T00:00:00-07:00"
-					},
-					{
-						"date": "20-Mar-16",
-						"value": 18,
-						"fullDate": "2016-03-20T00:00:00-07:00"
-					},
-					{
-						"date": "21-Mar-16",
-						"value": 18,
-						"fullDate": "2016-03-21T00:00:00-07:00"
-					},
-					{
-						"date": "22-Mar-16",
-						"value": 18,
-						"fullDate": "2016-03-22T00:00:00-07:00"
-					},
-					{
-						"date": "23-Mar-16",
-						"value": 18,
-						"fullDate": "2016-03-23T00:00:00-07:00"
-					},
-					{
-						"date": "24-Mar-16",
-						"value": 10,
-						"fullDate": "2016-03-24T00:00:00-07:00"
-					},
-					{
-						"date": "25-Mar-16",
-						"value": 11,
-						"fullDate": "2016-03-25T00:00:00-07:00"
-					},
-					{
-						"date": "26-Mar-16",
-						"value": 12,
-						"fullDate": "2016-03-26T00:00:00-07:00"
-					},
-					{
-						"date": "27-Mar-16",
-						"value": 13,
-						"fullDate": "2016-03-27T00:00:00-07:00"
-					},
-					{
-						"date": "28-Mar-16",
-						"value": 14,
-						"fullDate": "2016-03-28T00:00:00-07:00"
-					}
-				],
-				"topicName": "Sales"
-			}
-		],
-		"dataByDate": [
-			{
-				"date": "2015-12-30T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 15,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2015-12-31T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 16,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-01T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-02T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-03T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 19,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-04T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 20,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-05T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 21,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-06T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 22,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-07T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 21,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-08T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 20,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-09T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 19,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-10T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-11T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-12T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-13T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 16,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-14T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 15,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-15T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 16,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-16T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-17T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 20,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-19T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-20T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 21,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-21T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 22,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-22T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 23,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-23T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 24,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-24T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 25,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-25T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 26,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-26T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 26,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-27T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-28T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 21,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-29T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-30T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-01-31T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-01T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-02T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-03T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-04T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-05T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-06T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-07T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 20,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-08T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-09T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-10T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-11T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-12T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-13T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-14T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-15T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-16T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-17T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 21,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-18T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-19T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-20T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-21T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-22T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-23T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-24T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-25T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-26T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-27T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 20,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-28T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-02-29T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-01T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-02T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-03T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-04T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-05T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-06T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-07T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-08T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 20,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-09T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-10T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-11T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-12T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-13T08:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-14T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-15T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-16T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-17T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 17,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-18T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 20,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-19T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-20T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-21T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-22T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-23T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 18,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-24T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 10,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-25T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 11,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-26T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 12,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-27T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 13,
-						"topicName": "Sales"
-					}
-				]
-			},
-			{
-				"date": "2016-03-28T07:00:00.000Z",
-				"topics": [
-					{
-						"name": -1,
-						"value": 14,
-						"topicName": "Sales"
+						"date": "26-Aug-16",
+						"value": 5,
+						"fullDate": "2016-08-26T00:00:00-07:00"
 					}
 				]
 			}

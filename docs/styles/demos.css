@@ -1,9 +1,15 @@
 /* Navigation */
 .navbar-brand {
-    padding: 18px 15px;
+    padding: 14px 15px;
 }
 .navbar-brand img {
     height: 26px;
+}
+.navbar .navbar-form {
+    text-align: right;
+}
+.no-gutter {
+    padding: 0;
 }
 
 /* Layout */
@@ -65,4 +71,7 @@
     text-align: center;
 }
 
+.is-hidden {
+    display: none;
+}
 
