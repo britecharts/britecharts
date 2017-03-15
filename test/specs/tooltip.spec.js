@@ -380,6 +380,18 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                     MONTH_YEAR: 'month-year'
                 });
             });
+
+            it('should provide a forceOrder getter and setter', () => {
+                let defaultOrder = tooltipChart.forceOrder(),
+                    testOrder = [1,2,3,4,5],
+                    newOrder;
+
+                tooltipChart.forceOrder(testOrder);
+                newOrder = tooltipChart.forceOrder();
+
+                expect(defaultOrder).not.toBe(testOrder);
+                expect(newOrder).toBe(testOrder);
+            });
         });
     });
 });

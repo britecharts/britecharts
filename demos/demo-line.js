@@ -45,6 +45,7 @@ function createBrushChart() {
     }
 }
 
+
 function createLineChart(optionalColorSchema, optionalData) {
     var lineChart1 = line(),
         chartTooltip = tooltip(),
@@ -90,7 +91,10 @@ function createLineChart(optionalColorSchema, optionalData) {
         chartTooltip
             // In order to change the date range on the tooltip title, uncomment this line
             // .forceDateRange(chartTooltip.axisTimeCombinations.HOUR_DAY)
-            .title('Quantity Sold');
+            .title('Quantity Sold')
+            .forceOrder(dataset.dataByTopic.map(function(topic) {
+                return topic.topic;
+            }));
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
@@ -246,5 +250,3 @@ if (d3Selection.select('.js-line-chart-container').node()) {
     // Color schema selector
     colorSelectorHelper.createColorSelector('.js-color-selector-container', '.line-chart', createLineChart);
 }
-
-

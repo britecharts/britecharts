@@ -35,17 +35,6 @@
 /******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/ 	// webpack-livereload-plugin
-/******/ 	(function() {
-/******/ 	  if (typeof window === "undefined") { return };
-/******/ 	  var id = "webpack-livereload-plugin-script";
-/******/ 	  if (document.getElementById(id)) { return; }
-/******/ 	  var el = document.createElement("script");
-/******/ 	  el.id = id;
-/******/ 	  el.async = true;
-/******/ 	  el.src = "http://localhost:35729/livereload.js";
-/******/ 	  document.getElementsByTagName("head")[0].appendChild(el);
-/******/ 	}());
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -12665,6 +12654,7 @@
 	            topicLabel = 'topics',
 	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
 	            forceAxisSettings = null,
+	            forceOrder = [],
 	
 	
 	        // formats
@@ -12873,6 +12863,23 @@
 	        }
 	
 	        /**
+	         * Helper method to sort the passed topics array by the names passed int he order arary
+	         * @param  {Object[]} topics    Topics data, retrieved from datapoint passed by line chart
+	         * @param  {Object[]} order     Array of names in the order to sort topics by
+	         * @return {Object[]}           sorted topics object
+	         */
+	        function _sortByForceOrder(topics) {
+	            var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : forceOrder;
+	
+	            return forceOrder.map(function (orderName) {
+	                return topics.filter(function (_ref) {
+	                    var name = _ref.name;
+	                    return name === orderName;
+	                })[0];
+	            });
+	        }
+	
+	        /**
 	         * Updates tooltip title, content, size and position
 	         *
 	         * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
@@ -12881,6 +12888,11 @@
 	         */
 	        function updateTooltip(dataPoint, xPosition) {
 	            var topics = dataPoint[topicLabel];
+	
+	            // sort order by forceOrder array if passed
+	            if (forceOrder.length) {
+	                topics = _sortByForceOrder(topics);
+	            }
 	
 	            cleanContent();
 	            resetSizeAndPositionPointers();
@@ -13009,6 +13021,22 @@
 	                return title;
 	            }
 	            title = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Pass an override for the ordering of your tooltip
+	         * @param  {Object[]} _x    Array of the names of your tooltip items
+	         * @return { overrideOrder | module} Current overrideOrder or Chart module to chain calls
+	         * @public
+	         */
+	        exports.forceOrder = function (_x) {
+	            if (!arguments.length) {
+	                return forceOrder;
+	            }
+	            forceOrder = _x;
+	
 	            return this;
 	        };
 	
@@ -35325,7 +35353,9 @@
 	        chartTooltip
 	        // In order to change the date range on the tooltip title, uncomment this line
 	        // .forceDateRange(chartTooltip.axisTimeCombinations.HOUR_DAY)
-	        .title('Quantity Sold');
+	        .title('Quantity Sold').forceOrder(dataset.dataByTopic.map(function (topic) {
+	            return topic.topic;
+	        }));
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -37444,7 +37474,7 @@
 	            dataPoint.topics = dataPoint.topics.filter(function (t) {
 	                return !!t;
 	            }).sort(function (a, b) {
-	                return topicColorMap[a.name] > topicColorMap[b.name];
+	                return topicColorMap[a.name] < topicColorMap[b.name];
 	            });
 	
 	            dataPoint.topics.forEach(function (_ref15, index) {
