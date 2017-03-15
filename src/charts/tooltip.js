@@ -102,6 +102,7 @@ define(function(require){
 
             defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
             forceAxisSettings = null,
+            forceOrder = [],
 
             // formats
             monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
@@ -373,6 +374,16 @@ define(function(require){
         }
 
         /**
+         * Helper method to sort the passed topics array by the names passed int he order arary
+         * @param  {Object[]} topics    Topics data, retrieved from datapoint passed by line chart
+         * @param  {Object[]} order     Array of names in the order to sort topics by
+         * @return {Object[]}           sorted topics object
+         */
+        function _sortByForceOrder(topics, order=forceOrder) {
+            return forceOrder.map((orderName) => topics.filter(({name}) => name === orderName)[0]);
+        }
+
+        /**
          * Updates tooltip title, content, size and position
          *
          * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
@@ -381,6 +392,11 @@ define(function(require){
          */
         function updateTooltip(dataPoint, xPosition) {
             var topics = dataPoint[topicLabel];
+
+            // sort order by forceOrder array if passed
+            if (forceOrder.length) {
+                topics = _sortByForceOrder(topics);
+            }
 
             cleanContent();
             resetSizeAndPositionPointers();
@@ -525,8 +541,24 @@ define(function(require){
                 return title;
             }
             title = _x;
+
             return this;
         };
+
+        /**
+         * Pass an override for the ordering of your tooltip
+         * @param  {Object[]} _x    Array of the names of your tooltip items
+         * @return { overrideOrder | module} Current overrideOrder or Chart module to chain calls
+         * @public
+         */
+        exports.forceOrder = function(_x) {
+            if (!arguments.length) {
+                return forceOrder;
+            }
+            forceOrder = _x;
+
+            return this;
+        }
 
         /**
          * Updates the position and content of the tooltip
