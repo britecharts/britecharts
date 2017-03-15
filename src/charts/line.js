@@ -677,7 +677,7 @@ define(function(require){
             // so that the order always stays constant
             dataPoint.topics = dataPoint.topics
                                     .filter(t => !!t)
-                                    .sort((a, b) => topicColorMap[a.name] > topicColorMap[b.name]);
+                                    .sort((a, b) => topicColorMap[a.name] < topicColorMap[b.name]);
 
             dataPoint.topics.forEach(({name}, index) => {
                 let marker = verticalMarkerContainer
