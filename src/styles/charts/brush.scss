@@ -3,13 +3,24 @@
 .brush-chart {
 
     .brush-area {
-        fill: url('#brush-area-gradient');
+        // fill: url('#brush-area-gradient');
+        fill: $grey-200;
     }
 
-    .extent.brush-rect {
-        stroke: #fff;
-        stroke-width: 3;
-        fill: rgba(69, 73, 78, 0.05);
+    rect.brush-rect.selection {
+        // stroke: $bc-e-blue-300;
+        // stroke-width: 1;
+        // fill-opacity: 0.08;
+        fill-opacity: 1;
+        fill: url('#brush-area-gradient');
+        stroke-linejoin: round;
+        mix-blend-mode: color-burn;
+    }
+
+    rect.brush-rect.handle {
+        fill: $bc-e-blue-300;
+        // width: 0.13rem;
+        width: 0.2rem;
     }
 
     // Axes
