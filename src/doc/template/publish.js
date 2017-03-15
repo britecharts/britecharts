@@ -463,7 +463,7 @@ function buildNav(members) {
 
     // even if there are no links, provide a link to the global page.
     if (nav.global.members.length === 0) {
-      nav.global.members.push(linkto("global", "Global"));
+      nav.global.members.push(linkto("global", "Types"));
     }
   }
 
