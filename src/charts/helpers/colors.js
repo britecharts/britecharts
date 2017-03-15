@@ -10,12 +10,12 @@ define(function(require) {
     // Color Schemas
     // Standard Color Schema for Britecharts
     const britechartsColorSchema = [
-            '#39c2c9',
-            '#ffce00',
-            '#ffa71a',
-            '#f866b9',
-            '#998ce3',
-            '#6aedc7'
+            '#6aedc7', //green
+            '#39c2c9', //blue
+            '#ffce00', //yellow
+            '#ffa71a', //orange
+            '#f866b9', //pink
+            '#998ce3' //purple
         ];
 
     // Grey Schema for Britecharts

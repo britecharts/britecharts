@@ -68,8 +68,8 @@ define(function(require) {
             chartWidth, chartHeight,
             xScale, yScale,
             colorSchema = colorHelper.colorSchemas.singleColorAloeGreen,
-            colorScale,
-            topicColorMap,
+            colorList,
+            colorMap,
             numOfVerticalTicks = 5,
             numOfHorizontalTicks = 5,
             percentageAxisToMaxRatio = 1,
@@ -103,7 +103,6 @@ define(function(require) {
             // extractors
             getName = ({name}) => name,
             getValue = ({value}) => value,
-            getLineColor = ({topic}) => colorScale(topic),
 
             _percentageLabelHorizontalX = ({value}) => xScale(value) + percentageLabelMargin,
             _percentageLabelHorizontalY= ({name}) => yScale(name) + (yScale.bandwidth() / 2) + (percentageLabelSize * (3/8)),
@@ -207,13 +206,15 @@ define(function(require) {
                     .rangeRound([chartHeight, 0])
                     .padding(0.1);
             }
-            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(data.map((_, i) => i))
 
-            let range = colorScale.range();
-            topicColorMap = colorScale.domain().reduce((memo, item, i) => {
-                memo[item] = range[i];
-                return memo;
-            }, {});
+            colorList = data.map(d => d)
+                            .reverse()
+                            .map(({name}, i) => ({
+                                    name,
+                                    color: colorSchema[i % colorSchema.length]}
+                                ));
+
+            colorMap = (item) => colorList.filter(({name}) => name === item)[0].color;
         }
 
         /**
@@ -290,17 +291,17 @@ define(function(require) {
                 .attr('x', 0)
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value))
-                .attr('fill', ({name}) => colorScale(name))
+                .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function() {
                     dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorScale(name)).darker())
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
                 })
                 .on('mousemove', function(d) {
                     dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
                 .on('mouseout', function() {
                     dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', ({name}) => colorScale(name))
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
                 })
               .merge(bars)
                 .attr('x', 0)
@@ -323,17 +324,17 @@ define(function(require) {
                 .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
                 .attr('height', ({value}) => chartHeight - yScale(value))
-                .attr('fill', ({name}) => colorScale(name))
+                .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function() {
                     dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorScale(name)).darker())
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker())
                 })
                 .on('mousemove', function(d) {
                     dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
                 .on('mouseout', function() {
                     dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', ({name}) => colorScale(name))
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
                 })
               .merge(bars)
                 .attr('x', ({name}) => xScale(name))
