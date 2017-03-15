@@ -13,7 +13,7 @@ var _ = require('underscore'),
     colorSelectorHelper = require('./helpers/colorSelector');
 
 
-function createBrushChart() {
+function createBrushChart(optionalColorSchema) {
     var brushChart = brush(),
         brushMargin = {top:0, bottom: 40, left: 70, right: 30},
         testDataSet = new dataBuilder.SalesDataBuilder(),
@@ -38,7 +38,7 @@ function createBrushChart() {
 
                 // Filter
                 d3Selection.selectAll('.js-line-chart-container .line-chart').remove();
-                createLineChart(null, filterData(brushExtent[0], brushExtent[1]));
+                createLineChart(optionalColorSchema ? optionalColorSchema : null, filterData(brushExtent[0], brushExtent[1]));
             });
 
         brushContainer.datum(brushDataAdapter(dataset)).call(brushChart);
@@ -248,5 +248,9 @@ if (d3Selection.select('.js-line-chart-container').node()) {
     PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
-    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.line-chart', createLineChart);
+    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.line-chart', function(newSchema) {
+        createLineChart(newSchema);
+        d3Selection.selectAll('.brush-chart').remove();
+        createBrushChart(newSchema);
+    });
 }
