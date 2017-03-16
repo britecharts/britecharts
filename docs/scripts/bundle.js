@@ -3092,14 +3092,16 @@
 	
 	    var _ = __webpack_require__(3);
 	    var colorHelper = __webpack_require__(7);
-	    var exportChart = __webpack_require__(24);
 	
-	    var _require = __webpack_require__(31),
-	        isInteger = _require.isInteger;
+	    var _require = __webpack_require__(24),
+	        exportChart = _require.exportChart;
 	
-	    var _require2 = __webpack_require__(32),
-	        formatIntegerValue = _require2.formatIntegerValue,
-	        formatDecimalValue = _require2.formatDecimalValue;
+	    var _require2 = __webpack_require__(31),
+	        isInteger = _require2.isInteger;
+	
+	    var _require3 = __webpack_require__(32),
+	        formatIntegerValue = _require3.formatIntegerValue,
+	        formatDecimalValue = _require3.formatDecimalValue;
 	
 	    var ONE_AND_A_HALF_YEARS = 47304000000;
 	    var ONE_DAY = 86400001;
@@ -11231,11 +11233,11 @@
 /* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-timer/ Version 1.0.3. Copyright 2016 Mike Bostock.
+	// https://d3js.org/d3-timer/ Version 1.0.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
-	   true ? factory(exports) :
-	  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	  (factory((global.d3 = global.d3 || {})));
+		 true ? factory(exports) :
+		typeof define === 'function' && define.amd ? define(['exports'], factory) :
+		(factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
 	var frame = 0;
@@ -11249,6 +11251,7 @@
 	var clockSkew = 0;
 	var clock = typeof performance === "object" && performance.now ? performance : Date;
 	var setFrame = typeof requestAnimationFrame === "function" ? requestAnimationFrame : function(f) { setTimeout(f, 17); };
+	
 	function now() {
 	  return clockNow || (setFrame(clearNow), clockNow = clock.now() + clockSkew);
 	}
@@ -11343,12 +11346,12 @@
 	    if (time < Infinity) timeout = setTimeout(wake, delay);
 	    if (interval) interval = clearInterval(interval);
 	  } else {
-	    if (!interval) interval = setInterval(poke, pokeDelay);
+	    if (!interval) clockLast = clockNow, interval = setInterval(poke, pokeDelay);
 	    frame = 1, setFrame(wake);
 	  }
 	}
 	
-	function timeout$1(callback, delay, time) {
+	var timeout$1 = function(callback, delay, time) {
 	  var t = new Timer;
 	  delay = delay == null ? 0 : +delay;
 	  t.restart(function(elapsed) {
@@ -11356,9 +11359,9 @@
 	    callback(elapsed + delay);
 	  }, delay, time);
 	  return t;
-	}
+	};
 	
-	function interval$1(callback, delay, time) {
+	var interval$1 = function(callback, delay, time) {
 	  var t = new Timer, total = delay;
 	  if (delay == null) return t.restart(callback, delay, time), t;
 	  delay = +delay, time = time == null ? now() : +time;
@@ -11368,7 +11371,7 @@
 	    callback(elapsed);
 	  }, delay, time);
 	  return t;
-	}
+	};
 	
 	exports.now = now;
 	exports.timer = timer;
@@ -11379,6 +11382,7 @@
 	Object.defineProperty(exports, '__esModule', { value: true });
 	
 	})));
+
 
 /***/ },
 /* 24 */
@@ -11403,13 +11407,21 @@
 	        encoder = __webpack_require__(29).encode;
 	    }
 	
+	    // Base64 doesn't work really well with Unicode strings, so we need to use this function
+	    // Ref: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
+	    var b64EncodeUnicode = function b64EncodeUnicode(str) {
+	        return encoder(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+	            return String.fromCharCode('0x' + p1);
+	        }));
+	    };
+	
 	    var config = {
 	        styleClass: 'britechartStyle',
 	        defaultFilename: 'britechart.png',
 	        chartBackground: 'white',
 	        imageSourceBase: 'data:image/svg+xml;base64,',
 	        titleFontSize: '15px',
-	        titleFontFamily: '\'Heebo-thin\', sans-serif',
+	        titleFontFamily: '\'Benton Sans\', sans-serif',
 	        titleTopOffset: 30,
 	        get styleBackgroundString() {
 	            return '<style>svg{background:' + this.chartBackground + ';}</style>';
@@ -11418,8 +11430,9 @@
 	
 	    /**
 	     * Main function to be used as a method by chart instances to export charts to png
-	     * @param  {array} svgs (or an svg element) pass in both chart & legend as array or just chart as svg or in array
-	     * @param  {string} filename [download to be called <filename>.png]
+	     * @param  {array} svgs         (or an svg element) pass in both chart & legend as array or just chart as svg or in array
+	     * @param  {string} filename    [download to be called <filename>.png]
+	     * @param  {string} title       Title for the image
 	     */
 	    function exportChart(d3svg, filename, title) {
 	        var img = createImage(convertSvgToHtml.call(this, d3svg, title));
@@ -11447,7 +11460,6 @@
 	        }
 	
 	        d3svg.attr('version', 1.1).attr('xmlns', 'http://www.w3.org/2000/svg');
-	
 	        var serializer = serializeWithStyles.initializeSerializer();
 	        var html = serializer(d3svg.node());
 	        html = formatHtmlByBrowser(html);
@@ -11468,6 +11480,7 @@
 	
 	        canvas.height = height;
 	        canvas.width = width;
+	
 	        return canvas;
 	    }
 	
@@ -11479,7 +11492,8 @@
 	    function createImage(svgHtml) {
 	        var img = new Image();
 	
-	        img.src = '' + config.imageSourceBase + encoder(svgHtml);
+	        img.src = '' + config.imageSourceBase + b64EncodeUnicode(svgHtml);
+	
 	        return img;
 	    };
 	
@@ -11490,6 +11504,8 @@
 	     */
 	    function drawImageOnCanvas(image, canvas) {
 	        canvas.getContext('2d').drawImage(image, 0, 0);
+	
+	        return canvas;
 	    }
 	
 	    /**
@@ -11501,7 +11517,7 @@
 	     * @param  {string} extensionType
 	     */
 	    function downloadCanvas(canvas) {
-	        var filename = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'britechart.png';
+	        var filename = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : config.defaultFilename;
 	        var extensionType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'image/png';
 	
 	        var url = canvas.toDataURL(extensionType);
@@ -11535,9 +11551,8 @@
 	     */
 	    function handleImageLoad(canvas, filename, e) {
 	        e.preventDefault();
-	        drawImageOnCanvas(this, canvas);
 	
-	        downloadCanvas(canvas, filename || config.defaultFilename);
+	        downloadCanvas(drawImageOnCanvas(this, canvas), filename);
 	    }
 	
 	    /**
@@ -11553,12 +11568,17 @@
 	        }
 	        var britechartsGreySchema = colorSchemas.britechartsGreySchema;
 	
-	
 	        html = html.replace(/<g/, '<text x="' + this.margin().left + '" y="' + config.titleTopOffset + '" font-family="' + config.titleFontFamily + '" font-size="' + config.titleFontSize + '" fill="' + britechartsGreySchema[6] + '"> ' + title + ' </text><g ');
+	
 	        return html;
 	    }
 	
-	    return exportChart;
+	    return {
+	        exportChart: exportChart,
+	        convertSvgToHtml: convertSvgToHtml,
+	        createImage: createImage,
+	        drawImageOnCanvas: drawImageOnCanvas
+	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
@@ -16603,7 +16623,10 @@
 	    var d3Transition = __webpack_require__(22);
 	
 	    var textHelper = __webpack_require__(42);
-	    var exportChart = __webpack_require__(24);
+	
+	    var _require = __webpack_require__(24),
+	        exportChart = _require.exportChart;
+	
 	    var colorHelper = __webpack_require__(7);
 	
 	    /**
@@ -17991,7 +18014,9 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
-	    var exportChart = __webpack_require__(24);
+	    var _require = __webpack_require__(24),
+	        exportChart = _require.exportChart;
+	
 	    var textHelper = __webpack_require__(42);
 	    var colorHelper = __webpack_require__(7);
 	
@@ -18729,14 +18754,14 @@
 /* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org Version 4.4.2. Copyright 2017 Mike Bostock.
+	// https://d3js.org Version 4.4.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
 		(factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
-	var version = "4.4.2";
+	var version = "4.4.4";
 	
 	var ascending = function(a, b) {
 	  return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
@@ -21690,7 +21715,7 @@
 	    if (time < Infinity) timeout = setTimeout(wake, delay);
 	    if (interval) interval = clearInterval(interval);
 	  } else {
-	    if (!interval) interval = setInterval(poke, pokeDelay);
+	    if (!interval) clockLast = clockNow, interval = setInterval(poke, pokeDelay);
 	    frame = 1, setFrame(wake);
 	  }
 	}
@@ -35322,7 +35347,7 @@
 	        dataset = testDataSet.withOneSource().build();
 	
 	        d3Selection.select('#button2').on('click', function () {
-	            lineChart2.exportChart('linechart.png', 'Britecharts Line Chart');
+	            lineChart2.exportChart('linechart.png', 'Britecharts LÍne Chart');
 	        });
 	
 	        lineChart2.tooltipThreshold(600).height(500).width(containerWidth).on('customMouseOver', function () {
@@ -36825,20 +36850,22 @@
 	
 	    var _ = __webpack_require__(3);
 	
-	    var exportChart = __webpack_require__(24);
+	    var _require = __webpack_require__(24),
+	        exportChart = _require.exportChart;
+	
 	    var colorHelper = __webpack_require__(7);
 	    var timeAxisHelper = __webpack_require__(57);
 	
-	    var _require = __webpack_require__(31),
-	        isInteger = _require.isInteger;
+	    var _require2 = __webpack_require__(31),
+	        isInteger = _require2.isInteger;
 	
-	    var _require2 = __webpack_require__(27),
-	        axisTimeCombinations = _require2.axisTimeCombinations,
-	        lineGradientId = _require2.lineGradientId;
+	    var _require3 = __webpack_require__(27),
+	        axisTimeCombinations = _require3.axisTimeCombinations,
+	        lineGradientId = _require3.lineGradientId;
 	
-	    var _require3 = __webpack_require__(32),
-	        formatIntegerValue = _require3.formatIntegerValue,
-	        formatDecimalValue = _require3.formatDecimalValue;
+	    var _require4 = __webpack_require__(32),
+	        formatIntegerValue = _require4.formatIntegerValue,
+	        formatDecimalValue = _require4.formatDecimalValue;
 	
 	    /**
 	     * @typedef D3Selection
@@ -51894,7 +51921,9 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
-	    var exportChart = __webpack_require__(24);
+	    var _require = __webpack_require__(24),
+	        exportChart = _require.exportChart;
+	
 	    var colorHelper = __webpack_require__(7);
 	
 	    /**
@@ -52433,7 +52462,8 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
-	    var exportChart = __webpack_require__(24);
+	    var _require = __webpack_require__(24),
+	        exportChart = _require.exportChart;
 	
 	    /**
 	     * @typedef StepChartData
