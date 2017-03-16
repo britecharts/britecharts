@@ -10,7 +10,7 @@ define(function(require) {
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
 
-    const exportChart = require('./helpers/exportChart');
+    const {exportChart} = require('./helpers/exportChart');
 
 
     /**
