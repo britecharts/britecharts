@@ -160,10 +160,7 @@ define(function(require){
             getName = ({name}) => name,
             getDate = ({date}) => date,
 
-
             // formats
-            parseUTC = d3TimeFormat.timeParse('%Y-%m-%dT%H:%M:%SZ'),
-
             yTickNumberFormat = d3Format.format('.3'),
             xTickHourFormat = d3TimeFormat.timeFormat('%H %p'),
             xTickDateFormat = d3TimeFormat.timeFormat('%e'),
@@ -390,13 +387,13 @@ define(function(require){
          * @return {obj}      Parsed data with values and dates
          */
         function cleanData(data) {
-
             // could be rewritten using spread operator
             /*
                 return data.map((d) => {...d, date: parseUTC(d[dateLabel], [valueLabel] : +d[valueLabel]})
              */
+
             return data.map((d) => {
-                d.date = parseUTC(d[dateLabel]);
+                d.date = new Date(d[dateLabel]);
                 d.value = +d[valueLabel];
 
                 return d;
@@ -580,6 +577,10 @@ define(function(require){
                                 .entries(
                                     _(data).sortBy('date')
                                 );
+
+            // let b =  d3Collection.nest()
+            //                     .key(getDate).sortKeys(d3Array.ascending)
+            //                     .entries(data);
         }
 
         /**
