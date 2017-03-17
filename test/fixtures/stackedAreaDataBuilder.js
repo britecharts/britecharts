@@ -5,6 +5,7 @@ define(function(require) {
 
         jsonThreeSources = require('json!../json/areaDataThreeSources.json'),
         jsonSixSources = require('json!../json/areaDataSixSources.json'),
+        jsonSalesChannel = require('json!../json/areaDataSalesChannel.json'),
         jsonReportService = require('json!../json/areaDataReportService.json'),
         jsonLargeService = require('json!../json/areaDataLArge.json');
 
@@ -28,6 +29,12 @@ define(function(require) {
 
         this.withReportData = function(){
             var attributes = _.extend({}, this.config, jsonReportService);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withSalesChannelData = function(){
+            var attributes = _.extend({}, this.config, jsonSalesChannel);
 
             return new this.Klass(attributes);
         };
