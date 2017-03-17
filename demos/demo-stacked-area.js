@@ -24,7 +24,8 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
     if (containerWidth) {
         // dataset = testDataSet.withReportData().build();
         // dataset = testDataSet.with3Sources().build();
-        dataset = testDataSet.with6Sources().build();
+        // dataset = testDataSet.with6Sources().build();
+        dataset = testDataSet.withSalesChannelData().build();
         // dataset = testDataSet.withLargeData().build();
         // dataset = testDataSet.withGeneratedData().build();
 
@@ -32,8 +33,8 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
         stackedArea
             .tooltipThreshold(600)
             .width(containerWidth)
-            .dateLabel('dateUTC')
-            .valueLabel('views')
+            // .dateLabel('dateUTC')
+            // .valueLabel('views')
             .on('customMouseOver', function() {
                 chartTooltip.show();
             })
