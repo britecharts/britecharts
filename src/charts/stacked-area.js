@@ -16,7 +16,7 @@ define(function(require){
 
     const _ = require('underscore');
     const colorHelper = require('./helpers/colors');
-    const exportChart = require('./helpers/exportChart');
+    const {exportChart} = require('./helpers/exportChart');
 
     const {isInteger} = require('./helpers/common');
     const {

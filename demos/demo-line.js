@@ -116,7 +116,7 @@ function createLineChartWithSingleLine() {
         dataset = testDataSet.withOneSource().build();
 
         d3Selection.select('#button2').on('click', function() {
-            lineChart2.exportChart('linechart.png', 'Britecharts Line Chart');
+            lineChart2.exportChart('linechart.png', 'Britecharts LÍne Chart');
         });
 
         lineChart2

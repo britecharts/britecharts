@@ -14,7 +14,7 @@ define(function(require){
 
     const _ = require('underscore');
 
-    const exportChart = require('./helpers/exportChart');
+    const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
     const timeAxisHelper = require('./helpers/timeAxis');
     const {isInteger} = require('./helpers/common');
