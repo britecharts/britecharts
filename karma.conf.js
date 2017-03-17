@@ -53,6 +53,7 @@ module.exports = function(config) {
             require('karma-jasmine-jquery'),
             require('karma-coverage'),
             require('karma-chrome-launcher'),
+            require('karma-phantomjs-launcher'),
             require('karma-sourcemap-loader')
         ],
 
@@ -89,6 +90,7 @@ module.exports = function(config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+        // possible values: 'PhantomJS', 'Chrome'
         browsers: ['Chrome'],
 
 

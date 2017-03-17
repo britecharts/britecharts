@@ -106,7 +106,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                     });
                 });
 
-                describe('when date has hour granularity', function() {
+                xdescribe('when date has hour granularity', function() {
 
                     it('should update the title of the tooltip with a date with hours', () =>  {
                         tooltipChart.forceDateRange(tooltipChart.axisTimeCombinations.HOUR_DAY);
