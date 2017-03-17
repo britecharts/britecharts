@@ -56,11 +56,11 @@ config = {
         ],
         output: {
             path: './demos/build/',
-            filename: 'bundle.js',
+            filename: 'bundle.js'
         },
         resolve:{
             root: [
-                __dirname,
+                __dirname
             ],
         },
         module: {
@@ -88,7 +88,7 @@ config = {
                     loader: 'babel',
                     query: {
                         presets: ['es2015', 'stage-0'],
-                        cacheDirectory: true,
+                        cacheDirectory: true
                     },
                 },
                 {
@@ -98,14 +98,15 @@ config = {
                     loader: 'babel-istanbul',
                     query: {
                         presets: ['es2015', 'stage-0'],
-                        cacheDirectory: true,
+                        cacheDirectory: true
                     },
                 }
             ],
 
             loaders: [ defaultJSLoader ]
         },
-        plugins: plugins
+
+        plugins
     },
 
     // Creates a bundle with all britecharts
@@ -141,7 +142,7 @@ config = {
             }
         },
 
-        plugins: plugins
+        plugins
     },
 
     // Creates minified UMD versions of each chart
@@ -177,11 +178,8 @@ config = {
             }
         },
 
-        plugins: plugins
+        plugins
     }
 };
 
-
 module.exports = config[env];
-
-
