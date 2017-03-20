@@ -24,7 +24,7 @@ define([
     describe('Line Chart', () => {
         let dataset, containerFixture, f, lineChart;
 
-        describe('with a single line', function() {
+        xdescribe('with a single line', function() {
 
             beforeEach(() => {
                 dataset = aTestDataSet().withOneSource().build();

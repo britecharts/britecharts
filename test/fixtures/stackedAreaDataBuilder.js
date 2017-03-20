@@ -7,7 +7,7 @@ define(function(require) {
         jsonSixSources = require('json!../json/areaDataSixSources.json'),
         jsonSalesChannel = require('json!../json/areaDataSalesChannel.json'),
         jsonReportService = require('json!../json/areaDataReportService.json'),
-        jsonLargeService = require('json!../json/areaDataLArge.json');
+        jsonLargeService = require('json!../json/areaDataLarge.json');
 
 
     function StackedAreaDataBuilder(config){

@@ -126,7 +126,7 @@ define([
                 d3.select('.test-container svg').attr('width', 200);
             });
 
-            describe('convertSvgToHtml', () => {
+            xdescribe('convertSvgToHtml', () => {
 
                 describe('when the title is regular text', () => {
 
