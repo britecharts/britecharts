@@ -482,7 +482,7 @@ define(function(require){
         function drawStackedAreas(){
             // Creating Area function
             area = d3Shape.area()
-                .curve(d3Shape.curveCardinal)
+                .curve(d3Shape.curveMonotoneX)
                 .x( ({data}) => xScale(data.date) )
                 .y0( (d) => yScale(d[0]) )
                 .y1( (d) => yScale(d[1]) );
