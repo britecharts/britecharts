@@ -5,6 +5,8 @@
 > Britecharts is a client-side **reusable Charting Library** based on [D3.js v4][1] that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.
 
 [![Build Status](https://travis-ci.org/eventbrite/britecharts.svg?branch=master)](https://travis-ci.org/eventbrite/britecharts)
+[![npm version](https://badge.fury.io/js/britecharts.svg)](https://badge.fury.io/js/britecharts)
+[![Bower version](https://badge.fury.io/bo/britecharts.svg)](https://badge.fury.io/bo/britecharts)
 
 Britecharts [components][32] have been written in ES2015 with a Test Driven methodology so they are **fully tested**, and we are commited to keep them that way.
 
