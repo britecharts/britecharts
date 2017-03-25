@@ -6,7 +6,7 @@ module.exports = function (grunt, configOptions) {
             {
                 expand: true,
                 cwd: './dist/css',
-                src: ['bundle.css', '!bundle.min.css'],
+                src: ['britecharts.css', '!britecharts.min.css'],
                 dest: './dist/css',
                 ext: '.min.css'
             },
