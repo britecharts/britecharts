@@ -21,7 +21,7 @@
     "demos:compile": "WEBPACK_ENV=demos webpack --progress --colors",
     "demos:watch": "WEBPACK_ENV=demos webpack --watch --progress --colors",
     "demos:serve": "WEBPACK_ENV=demos webpack-dev-server --inline --hot --port 8001",
-    "styles": "grunt lint && grunt sass",
+    "styles": "grunt lint && grunt sass && grunt cssmin",
     "docs": "WEBPACK_ENV=demos webpack && npm run styles && grunt docs",
     "prod": "npm run _prod && npm run _prodUMD",
     "untrack": "grunt untrack",
