@@ -6,26 +6,22 @@ define(function(require){
     const d3Collection = require('d3-collection');
     const d3Dispatch = require('d3-dispatch');
     const d3Ease = require('d3-ease');
-    const d3Format = require('d3-format');
     const d3Scale = require('d3-scale');
     const d3Shape = require('d3-shape');
     const d3Selection = require('d3-selection');
-    const d3Time = require('d3-time');
-    const d3TimeFormat = require('d3-time-format');
     const d3Transition = require('d3-transition');
 
     const _ = require('underscore');
-    const colorHelper = require('./helpers/colors');
     const {exportChart} = require('./helpers/exportChart');
-
+    const colorHelper = require('./helpers/colors');
+    const timeAxisHelper = require('./helpers/timeAxis');
     const {isInteger} = require('./helpers/common');
+    const {axisTimeCombinations} = require('./helpers/constants');
+
     const {
       formatIntegerValue,
       formatDecimalValue,
     } = require('./helpers/formatHelpers');
-
-    const ONE_AND_A_HALF_YEARS = 47304000000;
-    const ONE_DAY = 86400001;
 
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
 
@@ -94,7 +90,7 @@ define(function(require){
             monthAxisPadding = 30,
             numVerticalTicks = 5,
             yTickTextYOffset = -8,
-            yTickTextXOffset = 40,
+            yTickTextXOffset = -20,
             tickPadding = 5,
 
             colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
@@ -105,9 +101,13 @@ define(function(require){
 
                     return acc;
                 }, {}),
-            areaOpacity = 0.8,
+            areaOpacity = 0.64,
             colorScale,
             categoryColorMap,
+
+            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
+            forceAxisSettings = null,
+            baseLine,
 
             layers,
             layersInitial,
@@ -131,14 +131,13 @@ define(function(require){
             ease = d3Ease.easeQuadInOut,
             areaAnimationDuration = 1000,
 
-            defaultNumMonths = 10,
-
             svg,
             chartWidth, chartHeight,
             data,
             dataByDate,
             dataByDateFormatted,
             dataByDateZeroed,
+            maskGridLines,
 
             tooltipThreshold = 480,
 
@@ -154,17 +153,8 @@ define(function(require){
             keyLabel = 'name',
 
             // getters
-            getValueLabel = d => d[valueLabel],
-            getValues = ({values}) => values,
-            getKey = ({key}) => key,
             getName = ({name}) => name,
             getDate = ({date}) => date,
-
-            // formats
-            yTickNumberFormat = d3Format.format('.3'),
-            xTickHourFormat = d3TimeFormat.timeFormat('%H %p'),
-            xTickDateFormat = d3TimeFormat.timeFormat('%e'),
-            xTickMonthFormat = d3TimeFormat.timeFormat('%b'),
 
             // events
             dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
@@ -186,6 +176,7 @@ define(function(require){
                 buildScales();
                 buildAxis();
                 buildSVG(this);
+                drawGridLines();
                 drawAxis();
                 drawStackedAreas();
 
@@ -232,33 +223,26 @@ define(function(require){
          */
         function buildAxis() {
             let dataTimeSpan = xScale.domain()[1] - xScale.domain()[0];
-            let xMonthTicks = dataTimeSpan > ONE_AND_A_HALF_YEARS ? defaultNumMonths : d3Time.timeMonth;
+            let yTickNumber = dataTimeSpan < numVerticalTicks - 1 ? dataTimeSpan : numVerticalTicks;
 
-            let xMainFormat = xTickDateFormat;
-            let xSecondaryFormat = xTickMonthFormat;
-
-            if (dataTimeSpan < ONE_DAY) {
-                xMainFormat = xTickHourFormat;
-                xSecondaryFormat = xTickDateFormat;
-            }
+            let {minor, major} = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings);
 
             xAxis = d3Axis.axisBottom(xScale)
-                .ticks(getMaxNumOfHorizontalTicks(chartWidth, dataByDate.length))
+                .ticks(minor.tick)
                 .tickSize(10, 0)
                 .tickPadding(tickPadding)
-                .tickFormat(xMainFormat);
+                .tickFormat(minor.format);
 
-            //TODO: Review this axis with real data
             xMonthAxis = d3Axis.axisBottom(xScale)
-                .ticks(xMonthTicks)
+                .ticks(major.tick)
                 .tickSize(0, 0)
-                .tickFormat(xSecondaryFormat);
+                .tickFormat(major.format);
 
             yAxis = d3Axis.axisRight(yScale)
-                .ticks(numVerticalTicks)
-                .tickFormat(getFormattedValue)
-                .tickSize(chartWidth + yTickTextXOffset, 0, 0)
-                .tickPadding(tickPadding);
+                .ticks(yTickNumber)
+                .tickSize([0])
+                .tickPadding(tickPadding)
+                .tickFormat(getFormattedValue);
         }
 
         /**
@@ -268,21 +252,24 @@ define(function(require){
          * @private
          */
         function buildContainerGroups(){
-           let container = svg.append('g')
+            let container = svg
+              .append('g')
                 .classed('container-group', true)
                 .attr('transform', `translate(${margin.left},${margin.top})`);
 
             container
-                .append('g').classed('x-axis-group', true)
-                .append('g').classed('x axis', true);
+              .append('g').classed('x-axis-group', true)
+              .append('g').classed('x axis', true);
             container.selectAll('.x-axis-group')
-                .append('g').classed('month-axis', true);
+              .append('g').classed('month-axis', true);
             container
-                .append('g').classed('y-axis-group axis', true);
+              .append('g').classed('y-axis-group axis', true);
             container
-                .append('g').classed('chart-group', true);
+              .append('g').classed('grid-lines-group', true);
             container
-                .append('g').classed('metadata-group', true);
+              .append('g').classed('chart-group', true);
+            container
+              .append('g').classed('metadata-group', true);
         }
 
         /**
@@ -341,8 +328,7 @@ define(function(require){
             yScale = d3Scale.scaleLinear()
                 .domain([0, getMaxValueByDate()])
                 .range([chartHeight, 0])
-                .nice([numVerticalTicks + 1]);
-
+                .nice([numVerticalTicks - 2]);
 
             colorScale = d3Scale.scaleOrdinal()
                   .range(colorSchema)
@@ -415,12 +401,23 @@ define(function(require){
                 .call(xMonthAxis);
 
             svg.select('.y-axis-group.axis')
-                .attr('transform', `translate( ${-yTickTextXOffset}, 0)`)
-                .call(yAxis);
+                .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
+                .call(yAxis)
+                .call(adjustYTickLabels);
 
             // Moving the YAxis tick labels to the right side
-            d3Selection.selectAll('.y-axis-group .tick text')
-                .attr('transform', `translate( ${-chartWidth - yTickTextXOffset}, ${yTickTextYOffset})` );
+            // d3Selection.selectAll('.y-axis-group .tick text')
+            //     .attr('transform', `translate( ${-chartWidth - yTickTextXOffset}, ${yTickTextYOffset})` );
+        }
+
+        /**
+         * Adjusts the position of the y axis' ticks
+         * @param  {D3Selection} selection Y axis group
+         * @return void
+         */
+        function adjustYTickLabels(selection) {
+            selection.selectAll('.tick text')
+                .attr('transform', `translate(${yTickTextXOffset}, ${yTickTextYOffset})`);
         }
 
         /**
@@ -434,7 +431,7 @@ define(function(require){
               .enter().append('g')
                 .attr('class', 'dots')
                 .attr('d', ({values}) => area(values))
-                .attr('clip-path', 'url(#clip)')
+                .attr('clip-path', 'url(#clip)');
 
             // Processes the points
             // TODO: Optimize this code
@@ -457,6 +454,35 @@ define(function(require){
                     let {date, y, y0} = point;
                     return `translate( ${xScale(date)}, ${yScale(y + y0)} )`;
                 });
+        }
+
+        /**
+         * Draws grid lines on the background of the chart
+         * @return void
+         */
+        function drawGridLines(){
+            maskGridLines = svg.select('.grid-lines-group')
+                .selectAll('line.horizontal-grid-line')
+                .data(yScale.ticks(5))
+                .enter()
+                    .append('line')
+                    .attr('class', 'horizontal-grid-line')
+                    .attr('x1', (-xAxisPadding.left - 30))
+                    .attr('x2', chartWidth)
+                    .attr('y1', (d) => yScale(d))
+                    .attr('y2', (d) => yScale(d));
+
+            //draw a horizontal line to extend x-axis till the edges
+            baseLine = svg.select('.grid-lines-group')
+                .selectAll('line.extended-x-line')
+                .data([0])
+                .enter()
+              .append('line')
+                .attr('class', 'extended-x-line')
+                .attr('x1', (-xAxisPadding.left - 30))
+                .attr('x2', chartWidth)
+                .attr('y1', height - margin.bottom - margin.top)
+                .attr('y2', height - margin.bottom - margin.top);
         }
 
         /**
@@ -549,20 +575,6 @@ define(function(require){
          */
         function eraseDataPointHighlights() {
             verticalMarkerContainer.selectAll('.circle-container').remove();
-        }
-
-        /**
-         * Calculates the maximum number of ticks for the x axis
-         * @param  {Number} width Chart width
-         * @param  {Number} dataPointNumber  Number of entries on the data
-         * @return {Number}       Number of ticks to render
-         */
-        function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
-            let singleTickWidth = 30,
-                spacing = 30,
-                ticksForWidth = Math.ceil(width / (singleTickWidth + spacing));
-
-            return Math.min(dataPointNumber, ticksForWidth);
         }
 
         /**
@@ -819,6 +831,20 @@ define(function(require){
                 return margin;
             }
             margin = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
+         * @param  {Object} _x                  Opacity to get/set
+         * @return { opacity | module}          Current opacity or Area Chart module to chain calls
+         * @public
+         */
+        exports.areaOpacity = function(_x) {
+            if (!arguments.length) {
+                return areaOpacity;
+            }
+            areaOpacity = _x;
             return this;
         };
 

@@ -6,13 +6,10 @@ define(function(require){
     const d3Collection = require('d3-collection');
     const d3Dispatch = require('d3-dispatch');
     const d3Ease = require('d3-ease');
-    const d3Format = require('d3-format');
     const d3Scale = require('d3-scale');
     const d3Shape = require('d3-shape');
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
-
-    const _ = require('underscore');
 
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
@@ -136,6 +133,7 @@ define(function(require){
                 bottom: 0,
                 right: 0
             },
+            monthAxisPadding = 28,
             tickPadding = 5,
             colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
             singleLineGradientColors = colorHelper.colorGradients.greenBlueGradient,
@@ -156,7 +154,6 @@ define(function(require){
             topicNameLabel = 'topicName',
 
             numVerticalTics = 5,
-            defaultNumMonths = 10,
 
             overlay,
             overlayColor = 'rgba(0, 0, 0, 0)',
@@ -250,8 +247,8 @@ define(function(require){
          * @private
          */
         function buildAxis() {
-            let rangeDiff = yScale.domain()[1] - yScale.domain()[0];
-            let yTickNumber = rangeDiff < numVerticalTics - 1 ? rangeDiff : numVerticalTics;
+            let dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
+            let yTickNumber = dataTimeSpan < numVerticalTics - 1 ? dataTimeSpan : numVerticalTics;
 
             let {minor, major} = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings);
 
@@ -280,7 +277,8 @@ define(function(require){
          * @private
          */
         function buildContainerGroups(){
-           let container = svg.append('g')
+            let container = svg
+              .append('g')
                 .classed('container-group', true)
                 .attr('transform', `translate(${margin.left},${margin.top})`);
 
@@ -450,7 +448,7 @@ define(function(require){
                 .call(xAxis);
 
             svg.select('.x-axis-group .month-axis')
-                .attr('transform', `translate(0, ${(chartHeight + 28)})`)
+                .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
                 .call(xMonthAxis);
 
             svg.select('.y-axis-group.axis.y')

@@ -55,7 +55,12 @@ define([
             expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.x-axis-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.y-axis-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.grid-lines-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
+        });
+
+        it('should render grid lines', () => {
+            expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
         });
 
         it('should render an X and Y axis', () => {
@@ -242,6 +247,18 @@ define([
 
                 expect(defaultDateLabel).not.toBe(testDateLabel);
                 expect(newDateLabel).toBe(testDateLabel);
+            });
+
+            it('should provide areaOpacity getter and setter', () => {
+                let defaultOpacity = stackedAreaChart.areaOpacity(),
+                    testOpacity = 0.5,
+                    newOpacity;
+
+                stackedAreaChart.areaOpacity(testOpacity);
+                newOpacity = stackedAreaChart.areaOpacity();
+
+                expect(defaultOpacity).not.toBe(testOpacity);
+                expect(newOpacity).toBe(testOpacity);
             });
         });
 
