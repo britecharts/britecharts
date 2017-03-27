@@ -1,6 +1,6 @@
 {
   "name": "britecharts",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "D3.js based Modular Charting Library by Eventbrite",
   "main": "README.md",
   "contributors": [
