@@ -55,9 +55,9 @@
 	
 	__webpack_require__(2);
 	__webpack_require__(6);
-	__webpack_require__(41);
-	__webpack_require__(48);
-	__webpack_require__(54);
+	__webpack_require__(42);
+	__webpack_require__(49);
+	__webpack_require__(55);
 	__webpack_require__(67);
 	__webpack_require__(71);
 	__webpack_require__(75);
@@ -2876,9 +2876,9 @@
 	    PubSub = __webpack_require__(5),
 	    colors = __webpack_require__(7),
 	    stackedAreaChart = __webpack_require__(8),
-	    tooltip = __webpack_require__(33),
-	    stackedDataBuilder = __webpack_require__(34),
-	    colorSelectorHelper = __webpack_require__(40);
+	    tooltip = __webpack_require__(34),
+	    stackedDataBuilder = __webpack_require__(35),
+	    colorSelectorHelper = __webpack_require__(41);
 	
 	function createStackedAreaChartWithTooltip(optionalColorSchema) {
 	    var stackedArea = stackedAreaChart(),
@@ -3086,29 +3086,28 @@
 	    var d3Collection = __webpack_require__(11);
 	    var d3Dispatch = __webpack_require__(12);
 	    var d3Ease = __webpack_require__(13);
-	    var d3Format = __webpack_require__(14);
-	    var d3Scale = __webpack_require__(15);
+	    var d3Scale = __webpack_require__(14);
 	    var d3Shape = __webpack_require__(20);
 	    var d3Selection = __webpack_require__(4);
-	    var d3Time = __webpack_require__(18);
-	    var d3TimeFormat = __webpack_require__(19);
 	    var d3Transition = __webpack_require__(22);
 	
 	    var _ = __webpack_require__(3);
-	    var colorHelper = __webpack_require__(7);
 	
 	    var _require = __webpack_require__(24),
 	        exportChart = _require.exportChart;
 	
-	    var _require2 = __webpack_require__(31),
+	    var colorHelper = __webpack_require__(7);
+	    var timeAxisHelper = __webpack_require__(31);
+	
+	    var _require2 = __webpack_require__(32),
 	        isInteger = _require2.isInteger;
 	
-	    var _require3 = __webpack_require__(32),
-	        formatIntegerValue = _require3.formatIntegerValue,
-	        formatDecimalValue = _require3.formatDecimalValue;
+	    var _require3 = __webpack_require__(27),
+	        axisTimeCombinations = _require3.axisTimeCombinations;
 	
-	    var ONE_AND_A_HALF_YEARS = 47304000000;
-	    var ONE_DAY = 86400001;
+	    var _require4 = __webpack_require__(33),
+	        formatIntegerValue = _require4.formatIntegerValue,
+	        formatDecimalValue = _require4.formatDecimalValue;
 	
 	    var uniq = function uniq(arrArg) {
 	        return arrArg.filter(function (elem, pos, arr) {
@@ -3180,7 +3179,7 @@
 	            monthAxisPadding = 30,
 	            numVerticalTicks = 5,
 	            yTickTextYOffset = -8,
-	            yTickTextXOffset = 40,
+	            yTickTextXOffset = -20,
 	            tickPadding = 5,
 	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
 	            colorOrder = colorSchema.reduce(function (acc, color, index) {
@@ -3188,9 +3187,12 @@
 	
 	            return acc;
 	        }, {}),
-	            areaOpacity = 0.8,
+	            areaOpacity = 0.64,
 	            colorScale = void 0,
 	            categoryColorMap = void 0,
+	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
+	            forceAxisSettings = null,
+	            baseLine = void 0,
 	            layers = void 0,
 	            layersInitial = void 0,
 	            area = void 0,
@@ -3209,7 +3211,6 @@
 	            pointsBorderColor = '#ffffff',
 	            ease = d3Ease.easeQuadInOut,
 	            areaAnimationDuration = 1000,
-	            defaultNumMonths = 10,
 	            svg = void 0,
 	            chartWidth = void 0,
 	            chartHeight = void 0,
@@ -3217,6 +3218,7 @@
 	            dataByDate = void 0,
 	            dataByDateFormatted = void 0,
 	            dataByDateZeroed = void 0,
+	            maskGridLines = void 0,
 	            tooltipThreshold = 480,
 	            xAxisPadding = {
 	            top: 0,
@@ -3230,32 +3232,14 @@
 	
 	
 	        // getters
-	        getValueLabel = function getValueLabel(d) {
-	            return d[valueLabel];
-	        },
-	            getValues = function getValues(_ref) {
-	            var values = _ref.values;
-	            return values;
-	        },
-	            getKey = function getKey(_ref2) {
-	            var key = _ref2.key;
-	            return key;
-	        },
-	            getName = function getName(_ref3) {
-	            var name = _ref3.name;
+	        getName = function getName(_ref) {
+	            var name = _ref.name;
 	            return name;
 	        },
-	            getDate = function getDate(_ref4) {
-	            var date = _ref4.date;
+	            getDate = function getDate(_ref2) {
+	            var date = _ref2.date;
 	            return date;
 	        },
-	
-	
-	        // formats
-	        yTickNumberFormat = d3Format.format('.3'),
-	            xTickHourFormat = d3TimeFormat.timeFormat('%H %p'),
-	            xTickDateFormat = d3TimeFormat.timeFormat('%e'),
-	            xTickMonthFormat = d3TimeFormat.timeFormat('%b'),
 	
 	
 	        // events
@@ -3278,6 +3262,7 @@
 	                buildScales();
 	                buildAxis();
 	                buildSVG(this);
+	                drawGridLines();
 	                drawAxis();
 	                drawStackedAreas();
 	
@@ -3320,22 +3305,17 @@
 	         */
 	        function buildAxis() {
 	            var dataTimeSpan = xScale.domain()[1] - xScale.domain()[0];
-	            var xMonthTicks = dataTimeSpan > ONE_AND_A_HALF_YEARS ? defaultNumMonths : d3Time.timeMonth;
+	            var yTickNumber = dataTimeSpan < numVerticalTicks - 1 ? dataTimeSpan : numVerticalTicks;
 	
-	            var xMainFormat = xTickDateFormat;
-	            var xSecondaryFormat = xTickMonthFormat;
+	            var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings),
+	                minor = _timeAxisHelper$getXA.minor,
+	                major = _timeAxisHelper$getXA.major;
 	
-	            if (dataTimeSpan < ONE_DAY) {
-	                xMainFormat = xTickHourFormat;
-	                xSecondaryFormat = xTickDateFormat;
-	            }
+	            xAxis = d3Axis.axisBottom(xScale).ticks(minor.tick).tickSize(10, 0).tickPadding(tickPadding).tickFormat(minor.format);
 	
-	            xAxis = d3Axis.axisBottom(xScale).ticks(getMaxNumOfHorizontalTicks(chartWidth, dataByDate.length)).tickSize(10, 0).tickPadding(tickPadding).tickFormat(xMainFormat);
+	            xMonthAxis = d3Axis.axisBottom(xScale).ticks(major.tick).tickSize(0, 0).tickFormat(major.format);
 	
-	            //TODO: Review this axis with real data
-	            xMonthAxis = d3Axis.axisBottom(xScale).ticks(xMonthTicks).tickSize(0, 0).tickFormat(xSecondaryFormat);
-	
-	            yAxis = d3Axis.axisRight(yScale).ticks(numVerticalTicks).tickFormat(getFormattedValue).tickSize(chartWidth + yTickTextXOffset, 0, 0).tickPadding(tickPadding);
+	            yAxis = d3Axis.axisRight(yScale).ticks(yTickNumber).tickSize([0]).tickPadding(tickPadding).tickFormat(getFormattedValue);
 	        }
 	
 	        /**
@@ -3350,6 +3330,7 @@
 	            container.append('g').classed('x-axis-group', true).append('g').classed('x axis', true);
 	            container.selectAll('.x-axis-group').append('g').classed('month-axis', true);
 	            container.append('g').classed('y-axis-group axis', true);
+	            container.append('g').classed('grid-lines-group', true);
 	            container.append('g').classed('chart-group', true);
 	            container.append('g').classed('metadata-group', true);
 	        }
@@ -3398,12 +3379,12 @@
 	         * @private
 	         */
 	        function buildScales() {
-	            xScale = d3Scale.scaleTime().domain(d3Array.extent(data, function (_ref5) {
-	                var date = _ref5.date;
+	            xScale = d3Scale.scaleTime().domain(d3Array.extent(data, function (_ref3) {
+	                var date = _ref3.date;
 	                return date;
 	            })).range([0, chartWidth]);
 	
-	            yScale = d3Scale.scaleLinear().domain([0, getMaxValueByDate()]).range([chartHeight, 0]).nice([numVerticalTicks + 1]);
+	            yScale = d3Scale.scaleLinear().domain([0, getMaxValueByDate()]).range([chartHeight, 0]).nice([numVerticalTicks - 2]);
 	
 	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(data.map(getName));
 	
@@ -3463,10 +3444,20 @@
 	
 	            svg.select('.x-axis-group .month-axis').attr('transform', 'translate(0, ' + (chartHeight + monthAxisPadding) + ')').call(xMonthAxis);
 	
-	            svg.select('.y-axis-group.axis').attr('transform', 'translate( ' + -yTickTextXOffset + ', 0)').call(yAxis);
+	            svg.select('.y-axis-group.axis').attr('transform', 'translate( ' + -xAxisPadding.left + ', 0)').call(yAxis).call(adjustYTickLabels);
 	
 	            // Moving the YAxis tick labels to the right side
-	            d3Selection.selectAll('.y-axis-group .tick text').attr('transform', 'translate( ' + (-chartWidth - yTickTextXOffset) + ', ' + yTickTextYOffset + ')');
+	            // d3Selection.selectAll('.y-axis-group .tick text')
+	            //     .attr('transform', `translate( ${-chartWidth - yTickTextXOffset}, ${yTickTextYOffset})` );
+	        }
+	
+	        /**
+	         * Adjusts the position of the y axis' ticks
+	         * @param  {D3Selection} selection Y axis group
+	         * @return void
+	         */
+	        function adjustYTickLabels(selection) {
+	            selection.selectAll('.tick text').attr('transform', 'translate(' + yTickTextXOffset + ', ' + yTickTextYOffset + ')');
 	        }
 	
 	        /**
@@ -3475,15 +3466,15 @@
 	         */
 	        function drawDataReferencePoints() {
 	            // Creates Dots on Data points
-	            var points = svg.select('.chart-group').selectAll('.dots').data(layers).enter().append('g').attr('class', 'dots').attr('d', function (_ref6) {
-	                var values = _ref6.values;
+	            var points = svg.select('.chart-group').selectAll('.dots').data(layers).enter().append('g').attr('class', 'dots').attr('d', function (_ref4) {
+	                var values = _ref4.values;
 	                return area(values);
 	            }).attr('clip-path', 'url(#clip)');
 	
 	            // Processes the points
 	            // TODO: Optimize this code
-	            points.selectAll('.dot').data(function (_ref7, index) {
-	                var values = _ref7.values;
+	            points.selectAll('.dot').data(function (_ref5, index) {
+	                var values = _ref5.values;
 	                return values.map(function (point) {
 	                    return { index: index, point: point };
 	                });
@@ -3508,6 +3499,21 @@
 	        }
 	
 	        /**
+	         * Draws grid lines on the background of the chart
+	         * @return void
+	         */
+	        function drawGridLines() {
+	            maskGridLines = svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(yScale.ticks(5)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left - 30).attr('x2', chartWidth).attr('y1', function (d) {
+	                return yScale(d);
+	            }).attr('y2', function (d) {
+	                return yScale(d);
+	            });
+	
+	            //draw a horizontal line to extend x-axis till the edges
+	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-x-line').data([0]).enter().append('line').attr('class', 'extended-x-line').attr('x1', -xAxisPadding.left - 30).attr('x2', chartWidth).attr('y1', height - margin.bottom - margin.top).attr('y2', height - margin.bottom - margin.top);
+	        }
+	
+	        /**
 	         * Draws an overlay element over the graph
 	         * @private
 	         */
@@ -3521,8 +3527,8 @@
 	         */
 	        function drawStackedAreas() {
 	            // Creating Area function
-	            area = d3Shape.area().curve(d3Shape.curveMonotoneX).x(function (_ref8) {
-	                var data = _ref8.data;
+	            area = d3Shape.area().curve(d3Shape.curveMonotoneX).x(function (_ref6) {
+	                var data = _ref6.data;
 	                return xScale(data.date);
 	            }).y0(function (d) {
 	                return yScale(d[0]);
@@ -3532,16 +3538,16 @@
 	
 	            var series = svg.select('.chart-group').selectAll('.layer').data(layersInitial).enter().append('g').classed('layer-container', true);
 	
-	            series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref9) {
-	                var key = _ref9.key;
+	            series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref7) {
+	                var key = _ref7.key;
 	                return categoryColorMap[key];
 	            });
 	
 	            // Update
 	            svg.select('.chart-group').selectAll('.layer').data(layers).transition().delay(function (_, i) {
 	                return areaAnimationDelays[i];
-	            }).duration(areaAnimationDuration).ease(ease).attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref10) {
-	                var key = _ref10.key;
+	            }).duration(areaAnimationDuration).ease(ease).attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref8) {
+	                var key = _ref8.key;
 	                return categoryColorMap[key];
 	            });
 	
@@ -3570,20 +3576,6 @@
 	         */
 	        function eraseDataPointHighlights() {
 	            verticalMarkerContainer.selectAll('.circle-container').remove();
-	        }
-	
-	        /**
-	         * Calculates the maximum number of ticks for the x axis
-	         * @param  {Number} width Chart width
-	         * @param  {Number} dataPointNumber  Number of entries on the data
-	         * @return {Number}       Number of ticks to render
-	         */
-	        function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
-	            var singleTickWidth = 30,
-	                spacing = 30,
-	                ticksForWidth = Math.ceil(width / (singleTickWidth + spacing));
-	
-	            return Math.min(dataPointNumber, ticksForWidth);
 	        }
 	
 	        /**
@@ -3648,8 +3640,8 @@
 	            });
 	
 	            epsilon = (xScale(dataByDateParsed[1].key) - xScale(dataByDateParsed[0].key)) / 2;
-	            nearest = dataByDateParsed.find(function (_ref11) {
-	                var key = _ref11.key;
+	            nearest = dataByDateParsed.find(function (_ref9) {
+	                var key = _ref9.key;
 	                return Math.abs(xScale(key) - mouseX) <= epsilon;
 	            });
 	
@@ -3705,8 +3697,8 @@
 	         * @param  {obj} dataPoint Data point to extract info from
 	         * @private
 	         */
-	        function highlightDataPoints(_ref12) {
-	            var values = _ref12.values;
+	        function highlightDataPoints(_ref10) {
+	            var values = _ref10.values;
 	
 	            var accumulator = 0;
 	
@@ -3720,8 +3712,8 @@
 	                return colorOrder[a.el] > colorOrder[b.el];
 	            });
 	
-	            values.forEach(function (_ref13, index) {
-	                var name = _ref13.name;
+	            values.forEach(function (_ref11, index) {
+	                var name = _ref11.name;
 	
 	                var marker = verticalMarkerContainer.append('g').classed('circle-container', true),
 	                    circleSize = 12;
@@ -5175,343 +5167,9 @@
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-format/ Version 1.0.2. Copyright 2016 Mike Bostock.
-	(function (global, factory) {
-	   true ? factory(exports) :
-	  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	  (factory((global.d3 = global.d3 || {})));
-	}(this, function (exports) { 'use strict';
-	
-	  // Computes the decimal coefficient and exponent of the specified number x with
-	  // significant digits p, where x is positive and p is in [1, 21] or undefined.
-	  // For example, formatDecimal(1.23) returns ["123", 0].
-	  function formatDecimal(x, p) {
-	    if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
-	    var i, coefficient = x.slice(0, i);
-	
-	    // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
-	    // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
-	    return [
-	      coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
-	      +x.slice(i + 1)
-	    ];
-	  }
-	
-	  function exponent(x) {
-	    return x = formatDecimal(Math.abs(x)), x ? x[1] : NaN;
-	  }
-	
-	  function formatGroup(grouping, thousands) {
-	    return function(value, width) {
-	      var i = value.length,
-	          t = [],
-	          j = 0,
-	          g = grouping[0],
-	          length = 0;
-	
-	      while (i > 0 && g > 0) {
-	        if (length + g + 1 > width) g = Math.max(1, width - length);
-	        t.push(value.substring(i -= g, i + g));
-	        if ((length += g + 1) > width) break;
-	        g = grouping[j = (j + 1) % grouping.length];
-	      }
-	
-	      return t.reverse().join(thousands);
-	    };
-	  }
-	
-	  function formatDefault(x, p) {
-	    x = x.toPrecision(p);
-	
-	    out: for (var n = x.length, i = 1, i0 = -1, i1; i < n; ++i) {
-	      switch (x[i]) {
-	        case ".": i0 = i1 = i; break;
-	        case "0": if (i0 === 0) i0 = i; i1 = i; break;
-	        case "e": break out;
-	        default: if (i0 > 0) i0 = 0; break;
-	      }
-	    }
-	
-	    return i0 > 0 ? x.slice(0, i0) + x.slice(i1 + 1) : x;
-	  }
-	
-	  var prefixExponent;
-	
-	  function formatPrefixAuto(x, p) {
-	    var d = formatDecimal(x, p);
-	    if (!d) return x + "";
-	    var coefficient = d[0],
-	        exponent = d[1],
-	        i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
-	        n = coefficient.length;
-	    return i === n ? coefficient
-	        : i > n ? coefficient + new Array(i - n + 1).join("0")
-	        : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
-	        : "0." + new Array(1 - i).join("0") + formatDecimal(x, Math.max(0, p + i - 1))[0]; // less than 1y!
-	  }
-	
-	  function formatRounded(x, p) {
-	    var d = formatDecimal(x, p);
-	    if (!d) return x + "";
-	    var coefficient = d[0],
-	        exponent = d[1];
-	    return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
-	        : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
-	        : coefficient + new Array(exponent - coefficient.length + 2).join("0");
-	  }
-	
-	  var formatTypes = {
-	    "": formatDefault,
-	    "%": function(x, p) { return (x * 100).toFixed(p); },
-	    "b": function(x) { return Math.round(x).toString(2); },
-	    "c": function(x) { return x + ""; },
-	    "d": function(x) { return Math.round(x).toString(10); },
-	    "e": function(x, p) { return x.toExponential(p); },
-	    "f": function(x, p) { return x.toFixed(p); },
-	    "g": function(x, p) { return x.toPrecision(p); },
-	    "o": function(x) { return Math.round(x).toString(8); },
-	    "p": function(x, p) { return formatRounded(x * 100, p); },
-	    "r": formatRounded,
-	    "s": formatPrefixAuto,
-	    "X": function(x) { return Math.round(x).toString(16).toUpperCase(); },
-	    "x": function(x) { return Math.round(x).toString(16); }
-	  };
-	
-	  // [[fill]align][sign][symbol][0][width][,][.precision][type]
-	  var re = /^(?:(.)?([<>=^]))?([+\-\( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?([a-z%])?$/i;
-	
-	  function formatSpecifier(specifier) {
-	    return new FormatSpecifier(specifier);
-	  }
-	
-	  function FormatSpecifier(specifier) {
-	    if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
-	
-	    var match,
-	        fill = match[1] || " ",
-	        align = match[2] || ">",
-	        sign = match[3] || "-",
-	        symbol = match[4] || "",
-	        zero = !!match[5],
-	        width = match[6] && +match[6],
-	        comma = !!match[7],
-	        precision = match[8] && +match[8].slice(1),
-	        type = match[9] || "";
-	
-	    // The "n" type is an alias for ",g".
-	    if (type === "n") comma = true, type = "g";
-	
-	    // Map invalid types to the default format.
-	    else if (!formatTypes[type]) type = "";
-	
-	    // If zero fill is specified, padding goes after sign and before digits.
-	    if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
-	
-	    this.fill = fill;
-	    this.align = align;
-	    this.sign = sign;
-	    this.symbol = symbol;
-	    this.zero = zero;
-	    this.width = width;
-	    this.comma = comma;
-	    this.precision = precision;
-	    this.type = type;
-	  }
-	
-	  FormatSpecifier.prototype.toString = function() {
-	    return this.fill
-	        + this.align
-	        + this.sign
-	        + this.symbol
-	        + (this.zero ? "0" : "")
-	        + (this.width == null ? "" : Math.max(1, this.width | 0))
-	        + (this.comma ? "," : "")
-	        + (this.precision == null ? "" : "." + Math.max(0, this.precision | 0))
-	        + this.type;
-	  };
-	
-	  var prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
-	
-	  function identity(x) {
-	    return x;
-	  }
-	
-	  function formatLocale(locale) {
-	    var group = locale.grouping && locale.thousands ? formatGroup(locale.grouping, locale.thousands) : identity,
-	        currency = locale.currency,
-	        decimal = locale.decimal;
-	
-	    function newFormat(specifier) {
-	      specifier = formatSpecifier(specifier);
-	
-	      var fill = specifier.fill,
-	          align = specifier.align,
-	          sign = specifier.sign,
-	          symbol = specifier.symbol,
-	          zero = specifier.zero,
-	          width = specifier.width,
-	          comma = specifier.comma,
-	          precision = specifier.precision,
-	          type = specifier.type;
-	
-	      // Compute the prefix and suffix.
-	      // For SI-prefix, the suffix is lazily computed.
-	      var prefix = symbol === "$" ? currency[0] : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
-	          suffix = symbol === "$" ? currency[1] : /[%p]/.test(type) ? "%" : "";
-	
-	      // What format function should we use?
-	      // Is this an integer type?
-	      // Can this type generate exponential notation?
-	      var formatType = formatTypes[type],
-	          maybeSuffix = !type || /[defgprs%]/.test(type);
-	
-	      // Set the default precision if not specified,
-	      // or clamp the specified precision to the supported range.
-	      // For significant precision, it must be in [1, 21].
-	      // For fixed precision, it must be in [0, 20].
-	      precision = precision == null ? (type ? 6 : 12)
-	          : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
-	          : Math.max(0, Math.min(20, precision));
-	
-	      function format(value) {
-	        var valuePrefix = prefix,
-	            valueSuffix = suffix,
-	            i, n, c;
-	
-	        if (type === "c") {
-	          valueSuffix = formatType(value) + valueSuffix;
-	          value = "";
-	        } else {
-	          value = +value;
-	
-	          // Convert negative to positive, and compute the prefix.
-	          // Note that -0 is not less than 0, but 1 / -0 is!
-	          var valueNegative = (value < 0 || 1 / value < 0) && (value *= -1, true);
-	
-	          // Perform the initial formatting.
-	          value = formatType(value, precision);
-	
-	          // If the original value was negative, it may be rounded to zero during
-	          // formatting; treat this as (positive) zero.
-	          if (valueNegative) {
-	            i = -1, n = value.length;
-	            valueNegative = false;
-	            while (++i < n) {
-	              if (c = value.charCodeAt(i), (48 < c && c < 58)
-	                  || (type === "x" && 96 < c && c < 103)
-	                  || (type === "X" && 64 < c && c < 71)) {
-	                valueNegative = true;
-	                break;
-	              }
-	            }
-	          }
-	
-	          // Compute the prefix and suffix.
-	          valuePrefix = (valueNegative ? (sign === "(" ? sign : "-") : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-	          valueSuffix = valueSuffix + (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + (valueNegative && sign === "(" ? ")" : "");
-	
-	          // Break the formatted value into the integer “value” part that can be
-	          // grouped, and fractional or exponential “suffix” part that is not.
-	          if (maybeSuffix) {
-	            i = -1, n = value.length;
-	            while (++i < n) {
-	              if (c = value.charCodeAt(i), 48 > c || c > 57) {
-	                valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
-	                value = value.slice(0, i);
-	                break;
-	              }
-	            }
-	          }
-	        }
-	
-	        // If the fill character is not "0", grouping is applied before padding.
-	        if (comma && !zero) value = group(value, Infinity);
-	
-	        // Compute the padding.
-	        var length = valuePrefix.length + value.length + valueSuffix.length,
-	            padding = length < width ? new Array(width - length + 1).join(fill) : "";
-	
-	        // If the fill character is "0", grouping is applied after padding.
-	        if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
-	
-	        // Reconstruct the final output based on the desired alignment.
-	        switch (align) {
-	          case "<": return valuePrefix + value + valueSuffix + padding;
-	          case "=": return valuePrefix + padding + value + valueSuffix;
-	          case "^": return padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length);
-	        }
-	        return padding + valuePrefix + value + valueSuffix;
-	      }
-	
-	      format.toString = function() {
-	        return specifier + "";
-	      };
-	
-	      return format;
-	    }
-	
-	    function formatPrefix(specifier, value) {
-	      var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)),
-	          e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3,
-	          k = Math.pow(10, -e),
-	          prefix = prefixes[8 + e / 3];
-	      return function(value) {
-	        return f(k * value) + prefix;
-	      };
-	    }
-	
-	    return {
-	      format: newFormat,
-	      formatPrefix: formatPrefix
-	    };
-	  }
-	
-	  var locale;
-	  defaultLocale({
-	    decimal: ".",
-	    thousands: ",",
-	    grouping: [3],
-	    currency: ["$", ""]
-	  });
-	
-	  function defaultLocale(definition) {
-	    locale = formatLocale(definition);
-	    exports.format = locale.format;
-	    exports.formatPrefix = locale.formatPrefix;
-	    return locale;
-	  }
-	
-	  function precisionFixed(step) {
-	    return Math.max(0, -exponent(Math.abs(step)));
-	  }
-	
-	  function precisionPrefix(step, value) {
-	    return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3 - exponent(Math.abs(step)));
-	  }
-	
-	  function precisionRound(step, max) {
-	    step = Math.abs(step), max = Math.abs(max) - step;
-	    return Math.max(0, exponent(max) - exponent(step)) + 1;
-	  }
-	
-	  exports.formatDefaultLocale = defaultLocale;
-	  exports.formatLocale = formatLocale;
-	  exports.formatSpecifier = formatSpecifier;
-	  exports.precisionFixed = precisionFixed;
-	  exports.precisionPrefix = precisionPrefix;
-	  exports.precisionRound = precisionRound;
-	
-	  Object.defineProperty(exports, '__esModule', { value: true });
-	
-	}));
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// https://d3js.org/d3-scale/ Version 1.0.4. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-	   true ? factory(exports, __webpack_require__(9), __webpack_require__(11), __webpack_require__(16), __webpack_require__(14), __webpack_require__(18), __webpack_require__(19), __webpack_require__(17)) :
+	   true ? factory(exports, __webpack_require__(9), __webpack_require__(11), __webpack_require__(15), __webpack_require__(17), __webpack_require__(18), __webpack_require__(19), __webpack_require__(16)) :
 	  typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-collection', 'd3-interpolate', 'd3-format', 'd3-time', 'd3-time-format', 'd3-color'], factory) :
 	  (factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3,global.d3,global.d3));
 	}(this, (function (exports,d3Array,d3Collection,d3Interpolate,d3Format,d3Time,d3TimeFormat,d3Color) { 'use strict';
@@ -6415,12 +6073,12 @@
 
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-interpolate/ Version 1.1.3. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
-	   true ? factory(exports, __webpack_require__(17)) :
+	   true ? factory(exports, __webpack_require__(16)) :
 	  typeof define === 'function' && define.amd ? define(['exports', 'd3-color'], factory) :
 	  (factory((global.d3 = global.d3 || {}),global.d3));
 	}(this, (function (exports,d3Color) { 'use strict';
@@ -6966,7 +6624,7 @@
 
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-color/ Version 1.0.2. Copyright 2016 Mike Bostock.
@@ -7493,6 +7151,340 @@
 	
 	})));
 
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// https://d3js.org/d3-format/ Version 1.0.2. Copyright 2016 Mike Bostock.
+	(function (global, factory) {
+	   true ? factory(exports) :
+	  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	  (factory((global.d3 = global.d3 || {})));
+	}(this, function (exports) { 'use strict';
+	
+	  // Computes the decimal coefficient and exponent of the specified number x with
+	  // significant digits p, where x is positive and p is in [1, 21] or undefined.
+	  // For example, formatDecimal(1.23) returns ["123", 0].
+	  function formatDecimal(x, p) {
+	    if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
+	    var i, coefficient = x.slice(0, i);
+	
+	    // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
+	    // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
+	    return [
+	      coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
+	      +x.slice(i + 1)
+	    ];
+	  }
+	
+	  function exponent(x) {
+	    return x = formatDecimal(Math.abs(x)), x ? x[1] : NaN;
+	  }
+	
+	  function formatGroup(grouping, thousands) {
+	    return function(value, width) {
+	      var i = value.length,
+	          t = [],
+	          j = 0,
+	          g = grouping[0],
+	          length = 0;
+	
+	      while (i > 0 && g > 0) {
+	        if (length + g + 1 > width) g = Math.max(1, width - length);
+	        t.push(value.substring(i -= g, i + g));
+	        if ((length += g + 1) > width) break;
+	        g = grouping[j = (j + 1) % grouping.length];
+	      }
+	
+	      return t.reverse().join(thousands);
+	    };
+	  }
+	
+	  function formatDefault(x, p) {
+	    x = x.toPrecision(p);
+	
+	    out: for (var n = x.length, i = 1, i0 = -1, i1; i < n; ++i) {
+	      switch (x[i]) {
+	        case ".": i0 = i1 = i; break;
+	        case "0": if (i0 === 0) i0 = i; i1 = i; break;
+	        case "e": break out;
+	        default: if (i0 > 0) i0 = 0; break;
+	      }
+	    }
+	
+	    return i0 > 0 ? x.slice(0, i0) + x.slice(i1 + 1) : x;
+	  }
+	
+	  var prefixExponent;
+	
+	  function formatPrefixAuto(x, p) {
+	    var d = formatDecimal(x, p);
+	    if (!d) return x + "";
+	    var coefficient = d[0],
+	        exponent = d[1],
+	        i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
+	        n = coefficient.length;
+	    return i === n ? coefficient
+	        : i > n ? coefficient + new Array(i - n + 1).join("0")
+	        : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
+	        : "0." + new Array(1 - i).join("0") + formatDecimal(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+	  }
+	
+	  function formatRounded(x, p) {
+	    var d = formatDecimal(x, p);
+	    if (!d) return x + "";
+	    var coefficient = d[0],
+	        exponent = d[1];
+	    return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
+	        : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
+	        : coefficient + new Array(exponent - coefficient.length + 2).join("0");
+	  }
+	
+	  var formatTypes = {
+	    "": formatDefault,
+	    "%": function(x, p) { return (x * 100).toFixed(p); },
+	    "b": function(x) { return Math.round(x).toString(2); },
+	    "c": function(x) { return x + ""; },
+	    "d": function(x) { return Math.round(x).toString(10); },
+	    "e": function(x, p) { return x.toExponential(p); },
+	    "f": function(x, p) { return x.toFixed(p); },
+	    "g": function(x, p) { return x.toPrecision(p); },
+	    "o": function(x) { return Math.round(x).toString(8); },
+	    "p": function(x, p) { return formatRounded(x * 100, p); },
+	    "r": formatRounded,
+	    "s": formatPrefixAuto,
+	    "X": function(x) { return Math.round(x).toString(16).toUpperCase(); },
+	    "x": function(x) { return Math.round(x).toString(16); }
+	  };
+	
+	  // [[fill]align][sign][symbol][0][width][,][.precision][type]
+	  var re = /^(?:(.)?([<>=^]))?([+\-\( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?([a-z%])?$/i;
+	
+	  function formatSpecifier(specifier) {
+	    return new FormatSpecifier(specifier);
+	  }
+	
+	  function FormatSpecifier(specifier) {
+	    if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+	
+	    var match,
+	        fill = match[1] || " ",
+	        align = match[2] || ">",
+	        sign = match[3] || "-",
+	        symbol = match[4] || "",
+	        zero = !!match[5],
+	        width = match[6] && +match[6],
+	        comma = !!match[7],
+	        precision = match[8] && +match[8].slice(1),
+	        type = match[9] || "";
+	
+	    // The "n" type is an alias for ",g".
+	    if (type === "n") comma = true, type = "g";
+	
+	    // Map invalid types to the default format.
+	    else if (!formatTypes[type]) type = "";
+	
+	    // If zero fill is specified, padding goes after sign and before digits.
+	    if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
+	
+	    this.fill = fill;
+	    this.align = align;
+	    this.sign = sign;
+	    this.symbol = symbol;
+	    this.zero = zero;
+	    this.width = width;
+	    this.comma = comma;
+	    this.precision = precision;
+	    this.type = type;
+	  }
+	
+	  FormatSpecifier.prototype.toString = function() {
+	    return this.fill
+	        + this.align
+	        + this.sign
+	        + this.symbol
+	        + (this.zero ? "0" : "")
+	        + (this.width == null ? "" : Math.max(1, this.width | 0))
+	        + (this.comma ? "," : "")
+	        + (this.precision == null ? "" : "." + Math.max(0, this.precision | 0))
+	        + this.type;
+	  };
+	
+	  var prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
+	
+	  function identity(x) {
+	    return x;
+	  }
+	
+	  function formatLocale(locale) {
+	    var group = locale.grouping && locale.thousands ? formatGroup(locale.grouping, locale.thousands) : identity,
+	        currency = locale.currency,
+	        decimal = locale.decimal;
+	
+	    function newFormat(specifier) {
+	      specifier = formatSpecifier(specifier);
+	
+	      var fill = specifier.fill,
+	          align = specifier.align,
+	          sign = specifier.sign,
+	          symbol = specifier.symbol,
+	          zero = specifier.zero,
+	          width = specifier.width,
+	          comma = specifier.comma,
+	          precision = specifier.precision,
+	          type = specifier.type;
+	
+	      // Compute the prefix and suffix.
+	      // For SI-prefix, the suffix is lazily computed.
+	      var prefix = symbol === "$" ? currency[0] : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
+	          suffix = symbol === "$" ? currency[1] : /[%p]/.test(type) ? "%" : "";
+	
+	      // What format function should we use?
+	      // Is this an integer type?
+	      // Can this type generate exponential notation?
+	      var formatType = formatTypes[type],
+	          maybeSuffix = !type || /[defgprs%]/.test(type);
+	
+	      // Set the default precision if not specified,
+	      // or clamp the specified precision to the supported range.
+	      // For significant precision, it must be in [1, 21].
+	      // For fixed precision, it must be in [0, 20].
+	      precision = precision == null ? (type ? 6 : 12)
+	          : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
+	          : Math.max(0, Math.min(20, precision));
+	
+	      function format(value) {
+	        var valuePrefix = prefix,
+	            valueSuffix = suffix,
+	            i, n, c;
+	
+	        if (type === "c") {
+	          valueSuffix = formatType(value) + valueSuffix;
+	          value = "";
+	        } else {
+	          value = +value;
+	
+	          // Convert negative to positive, and compute the prefix.
+	          // Note that -0 is not less than 0, but 1 / -0 is!
+	          var valueNegative = (value < 0 || 1 / value < 0) && (value *= -1, true);
+	
+	          // Perform the initial formatting.
+	          value = formatType(value, precision);
+	
+	          // If the original value was negative, it may be rounded to zero during
+	          // formatting; treat this as (positive) zero.
+	          if (valueNegative) {
+	            i = -1, n = value.length;
+	            valueNegative = false;
+	            while (++i < n) {
+	              if (c = value.charCodeAt(i), (48 < c && c < 58)
+	                  || (type === "x" && 96 < c && c < 103)
+	                  || (type === "X" && 64 < c && c < 71)) {
+	                valueNegative = true;
+	                break;
+	              }
+	            }
+	          }
+	
+	          // Compute the prefix and suffix.
+	          valuePrefix = (valueNegative ? (sign === "(" ? sign : "-") : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
+	          valueSuffix = valueSuffix + (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + (valueNegative && sign === "(" ? ")" : "");
+	
+	          // Break the formatted value into the integer “value” part that can be
+	          // grouped, and fractional or exponential “suffix” part that is not.
+	          if (maybeSuffix) {
+	            i = -1, n = value.length;
+	            while (++i < n) {
+	              if (c = value.charCodeAt(i), 48 > c || c > 57) {
+	                valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
+	                value = value.slice(0, i);
+	                break;
+	              }
+	            }
+	          }
+	        }
+	
+	        // If the fill character is not "0", grouping is applied before padding.
+	        if (comma && !zero) value = group(value, Infinity);
+	
+	        // Compute the padding.
+	        var length = valuePrefix.length + value.length + valueSuffix.length,
+	            padding = length < width ? new Array(width - length + 1).join(fill) : "";
+	
+	        // If the fill character is "0", grouping is applied after padding.
+	        if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
+	
+	        // Reconstruct the final output based on the desired alignment.
+	        switch (align) {
+	          case "<": return valuePrefix + value + valueSuffix + padding;
+	          case "=": return valuePrefix + padding + value + valueSuffix;
+	          case "^": return padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length);
+	        }
+	        return padding + valuePrefix + value + valueSuffix;
+	      }
+	
+	      format.toString = function() {
+	        return specifier + "";
+	      };
+	
+	      return format;
+	    }
+	
+	    function formatPrefix(specifier, value) {
+	      var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)),
+	          e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3,
+	          k = Math.pow(10, -e),
+	          prefix = prefixes[8 + e / 3];
+	      return function(value) {
+	        return f(k * value) + prefix;
+	      };
+	    }
+	
+	    return {
+	      format: newFormat,
+	      formatPrefix: formatPrefix
+	    };
+	  }
+	
+	  var locale;
+	  defaultLocale({
+	    decimal: ".",
+	    thousands: ",",
+	    grouping: [3],
+	    currency: ["$", ""]
+	  });
+	
+	  function defaultLocale(definition) {
+	    locale = formatLocale(definition);
+	    exports.format = locale.format;
+	    exports.formatPrefix = locale.formatPrefix;
+	    return locale;
+	  }
+	
+	  function precisionFixed(step) {
+	    return Math.max(0, -exponent(Math.abs(step)));
+	  }
+	
+	  function precisionPrefix(step, value) {
+	    return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3 - exponent(Math.abs(step)));
+	  }
+	
+	  function precisionRound(step, max) {
+	    step = Math.abs(step), max = Math.abs(max) - step;
+	    return Math.max(0, exponent(max) - exponent(step)) + 1;
+	  }
+	
+	  exports.formatDefaultLocale = defaultLocale;
+	  exports.formatLocale = formatLocale;
+	  exports.formatSpecifier = formatSpecifier;
+	  exports.precisionFixed = precisionFixed;
+	  exports.precisionPrefix = precisionPrefix;
+	  exports.precisionRound = precisionRound;
+	
+	  Object.defineProperty(exports, '__esModule', { value: true });
+	
+	}));
 
 /***/ },
 /* 18 */
@@ -10447,7 +10439,7 @@
 
 	// https://d3js.org/d3-transition/ Version 1.0.3. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-	   true ? factory(exports, __webpack_require__(4), __webpack_require__(12), __webpack_require__(23), __webpack_require__(16), __webpack_require__(17), __webpack_require__(13)) :
+	   true ? factory(exports, __webpack_require__(4), __webpack_require__(12), __webpack_require__(23), __webpack_require__(15), __webpack_require__(16), __webpack_require__(13)) :
 	  typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-timer', 'd3-interpolate', 'd3-color', 'd3-ease'], factory) :
 	  (factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3,global.d3));
 	}(this, (function (exports,d3Selection,d3Dispatch,d3Timer,d3Interpolate,d3Color,d3Ease) { 'use strict';
@@ -12497,6 +12489,98 @@
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	    'use strict';
+	
+	    var d3Time = __webpack_require__(18);
+	    var d3TimeFormat = __webpack_require__(19);
+	
+	    var _require = __webpack_require__(27),
+	        axisTimeCombinations = _require.axisTimeCombinations,
+	        timeBenchmarks = _require.timeBenchmarks;
+	
+	    var singleTickWidth = 20;
+	    var horizontalTickSpacing = 40;
+	    var xTickHourFormat = d3TimeFormat.timeFormat('%H %p');
+	    var xTickDateFormat = d3TimeFormat.timeFormat('%e');
+	    var xTickMonthFormat = d3TimeFormat.timeFormat('%b');
+	    var xTickYearFormat = d3TimeFormat.timeFormat('%Y');
+	
+	    var formatMap = {
+	        hour: xTickHourFormat,
+	        day: xTickDateFormat,
+	        month: xTickMonthFormat
+	    };
+	
+	    /**
+	     * Calculates the maximum number of ticks for the x axis
+	     * @param  {Number} width Chart width
+	     * @param  {Number} dataPointNumber  Number of entries on the data
+	     * @return {Number}       Number of ticks to render
+	     */
+	    var getMaxNumOfHorizontalTicks = function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
+	        var ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
+	
+	        return Math.min(dataPointNumber, ticksForWidth);
+	    };
+	
+	    /**
+	     * Returns tick object to be used when building the x axis
+	     * @return {object} tick settings for major and minr axis
+	     */
+	    var getXAxisSettings = function getXAxisSettings(dataByDate, xScale, width, settings) {
+	        var minorTickValue = void 0,
+	            majorTickValue = void 0;
+	        var dateTimeSpan = xScale.domain()[1] - xScale.domain()[0];
+	        var ONE_AND_A_HALF_YEARS = timeBenchmarks.ONE_AND_A_HALF_YEARS,
+	            ONE_DAY = timeBenchmarks.ONE_DAY;
+	
+	        // might want to add minute-hour
+	
+	        if (dateTimeSpan < ONE_DAY) {
+	            settings = axisTimeCombinations.HOUR_DAY;
+	            majorTickValue = d3Time.timeDay.every(1);
+	        } else if (dateTimeSpan < ONE_AND_A_HALF_YEARS) {
+	            settings = axisTimeCombinations.DAY_MONTH;
+	            majorTickValue = d3Time.timeMonth.every(1);
+	        } else {
+	            settings = axisTimeCombinations.MONTH_YEAR;
+	            minorTickValue = 10;
+	            majorTickValue = d3Time.timeYear.every(1);
+	        }
+	
+	        var _settings$split = settings.split('-'),
+	            _settings$split2 = _slicedToArray(_settings$split, 2),
+	            minor = _settings$split2[0],
+	            major = _settings$split2[1];
+	
+	        minorTickValue = dataByDate.length < 5 ? d3Time.timeDay : getMaxNumOfHorizontalTicks(width, dataByDate.length);
+	
+	        return {
+	            minor: {
+	                format: formatMap[minor],
+	                tick: minorTickValue
+	            },
+	            major: {
+	                format: formatMap[major],
+	                tick: majorTickValue
+	            }
+	        };
+	    };
+	
+	    return {
+	        getXAxisSettings: getXAxisSettings
+	    };
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
@@ -12516,7 +12600,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12524,7 +12608,7 @@
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
-	    var d3Format = __webpack_require__(14);
+	    var d3Format = __webpack_require__(17);
 	
 	    var valueRangeLimits = {
 	        small: 10,
@@ -12581,7 +12665,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12589,7 +12673,7 @@
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
-	    var d3Format = __webpack_require__(14);
+	    var d3Format = __webpack_require__(17);
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	    var d3TimeFormat = __webpack_require__(19);
@@ -12597,11 +12681,11 @@
 	    var _require = __webpack_require__(27),
 	        axisTimeCombinations = _require.axisTimeCombinations;
 	
-	    var _require2 = __webpack_require__(32),
+	    var _require2 = __webpack_require__(33),
 	        formatIntegerValue = _require2.formatIntegerValue,
 	        formatDecimalValue = _require2.formatDecimalValue;
 	
-	    var _require3 = __webpack_require__(31),
+	    var _require3 = __webpack_require__(32),
 	        isInteger = _require3.isInteger;
 	
 	    /**
@@ -13111,7 +13195,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -13120,11 +13204,11 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonThreeSources = __webpack_require__(35),
-	        jsonSixSources = __webpack_require__(36),
-	        jsonSalesChannel = __webpack_require__(37),
-	        jsonReportService = __webpack_require__(38),
-	        jsonLargeService = __webpack_require__(39);
+	        jsonThreeSources = __webpack_require__(36),
+	        jsonSixSources = __webpack_require__(37),
+	        jsonSalesChannel = __webpack_require__(38),
+	        jsonReportService = __webpack_require__(39),
+	        jsonLargeService = __webpack_require__(40);
 	
 	    function StackedAreaDataBuilder(config) {
 	        this.Klass = StackedAreaDataBuilder;
@@ -13171,7 +13255,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -13240,7 +13324,7 @@
 	};
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -13369,7 +13453,7 @@
 	};
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -13638,7 +13722,7 @@
 	};
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -13719,7 +13803,7 @@
 	};
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -16728,7 +16812,7 @@
 	};
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -16790,17 +16874,17 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    bar = __webpack_require__(42),
-	    miniTooltip = __webpack_require__(44),
+	    bar = __webpack_require__(43),
+	    miniTooltip = __webpack_require__(45),
 	    colors = __webpack_require__(7),
-	    dataBuilder = __webpack_require__(45);
+	    dataBuilder = __webpack_require__(46);
 	
 	function createBarChart() {
 	    var barChart = bar(),
@@ -16888,7 +16972,7 @@
 	}
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -16898,14 +16982,14 @@
 	
 	    var d3Array = __webpack_require__(9);
 	    var d3Axis = __webpack_require__(10);
-	    var d3Color = __webpack_require__(17);
+	    var d3Color = __webpack_require__(16);
 	    var d3Dispatch = __webpack_require__(12);
-	    var d3Format = __webpack_require__(14);
-	    var d3Scale = __webpack_require__(15);
+	    var d3Format = __webpack_require__(17);
+	    var d3Scale = __webpack_require__(14);
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
-	    var textHelper = __webpack_require__(43);
+	    var textHelper = __webpack_require__(44);
 	
 	    var _require = __webpack_require__(24),
 	        exportChart = _require.exportChart;
@@ -17486,7 +17570,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -17601,7 +17685,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -17613,7 +17697,7 @@
 	
 	    var d3Array = __webpack_require__(9);
 	    var d3Ease = __webpack_require__(13);
-	    var d3Format = __webpack_require__(14);
+	    var d3Format = __webpack_require__(17);
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
@@ -17988,7 +18072,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -17997,8 +18081,8 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonColors = __webpack_require__(46),
-	        jsonLetters = __webpack_require__(47);
+	        jsonColors = __webpack_require__(47),
+	        jsonLetters = __webpack_require__(48);
 	
 	    function BarDataBuilder(config) {
 	        this.Klass = BarDataBuilder;
@@ -18041,7 +18125,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -18074,7 +18158,7 @@
 	};
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -18187,17 +18271,17 @@
 	};
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    donut = __webpack_require__(49),
-	    legend = __webpack_require__(50),
-	    dataBuilder = __webpack_require__(52),
-	    colorSelectorHelper = __webpack_require__(40),
+	    donut = __webpack_require__(50),
+	    legend = __webpack_require__(51),
+	    dataBuilder = __webpack_require__(53),
+	    colorSelectorHelper = __webpack_require__(41),
 	    dataset = new dataBuilder.DonutDataBuilder().withFivePlusOther().build(),
 	    legendChart;
 	
@@ -18281,7 +18365,7 @@
 	}
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -18291,8 +18375,8 @@
 	
 	    var d3Dispatch = __webpack_require__(12);
 	    var d3Ease = __webpack_require__(13);
-	    var d3Interpolate = __webpack_require__(16);
-	    var d3Scale = __webpack_require__(15);
+	    var d3Interpolate = __webpack_require__(15);
+	    var d3Scale = __webpack_require__(14);
 	    var d3Shape = __webpack_require__(20);
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
@@ -18300,7 +18384,7 @@
 	    var _require = __webpack_require__(24),
 	        exportChart = _require.exportChart;
 	
-	    var textHelper = __webpack_require__(43);
+	    var textHelper = __webpack_require__(44);
 	    var colorHelper = __webpack_require__(7);
 	
 	    /**
@@ -18745,7 +18829,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -18753,10 +18837,10 @@
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
-	    var d3 = __webpack_require__(51);
+	    var d3 = __webpack_require__(52);
 	
-	    var d3Format = __webpack_require__(14);
-	    var d3Scale = __webpack_require__(15);
+	    var d3Format = __webpack_require__(17);
+	    var d3Scale = __webpack_require__(14);
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
@@ -19034,7 +19118,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org Version 4.4.4. Copyright 2017 Mike Bostock.
@@ -35433,7 +35517,7 @@
 
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -35442,7 +35526,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonFivePlusOther = __webpack_require__(53);
+	        jsonFivePlusOther = __webpack_require__(54);
 	
 	    function DonutDataBuilder(config) {
 	        this.Klass = DonutDataBuilder;
@@ -35479,7 +35563,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -35524,7 +35608,7 @@
 	};
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35533,11 +35617,11 @@
 	    d3Selection = __webpack_require__(4),
 	    d3TimeFormat = __webpack_require__(19),
 	    PubSub = __webpack_require__(5),
-	    brush = __webpack_require__(55),
+	    brush = __webpack_require__(56),
 	    line = __webpack_require__(59),
-	    tooltip = __webpack_require__(33),
+	    tooltip = __webpack_require__(34),
 	    dataBuilder = __webpack_require__(60),
-	    colorSelectorHelper = __webpack_require__(40);
+	    colorSelectorHelper = __webpack_require__(41);
 	
 	function createBrushChart(optionalColorSchema) {
 	    var brushChart = brush(),
@@ -35757,7 +35841,7 @@
 	}
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -35769,16 +35853,16 @@
 	
 	    var d3Array = __webpack_require__(9);
 	    var d3Axis = __webpack_require__(10);
-	    var d3Brush = __webpack_require__(56);
+	    var d3Brush = __webpack_require__(57);
 	    var d3Ease = __webpack_require__(13);
-	    var d3Scale = __webpack_require__(15);
+	    var d3Scale = __webpack_require__(14);
 	    var d3Shape = __webpack_require__(20);
 	    var d3Selection = __webpack_require__(4);
 	    var d3Time = __webpack_require__(18);
 	    var d3Transition = __webpack_require__(22);
 	
 	    var colorHelper = __webpack_require__(7);
-	    var timeAxisHelper = __webpack_require__(58);
+	    var timeAxisHelper = __webpack_require__(31);
 	
 	    var _require = __webpack_require__(27),
 	        axisTimeCombinations = _require.axisTimeCombinations;
@@ -36230,12 +36314,12 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-brush/ Version 1.0.3. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-	   true ? factory(exports, __webpack_require__(12), __webpack_require__(57), __webpack_require__(16), __webpack_require__(4), __webpack_require__(22)) :
+	   true ? factory(exports, __webpack_require__(12), __webpack_require__(58), __webpack_require__(15), __webpack_require__(4), __webpack_require__(22)) :
 	  typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-selection', 'd3-transition'], factory) :
 	  (factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3));
 	}(this, (function (exports,d3Dispatch,d3Drag,d3Interpolate,d3Selection,d3Transition) { 'use strict';
@@ -36803,7 +36887,7 @@
 
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-drag/ Version 1.0.2. Copyright 2016 Mike Bostock.
@@ -37020,98 +37104,6 @@
 
 
 /***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-	
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-	    'use strict';
-	
-	    var d3Time = __webpack_require__(18);
-	    var d3TimeFormat = __webpack_require__(19);
-	
-	    var _require = __webpack_require__(27),
-	        axisTimeCombinations = _require.axisTimeCombinations,
-	        timeBenchmarks = _require.timeBenchmarks;
-	
-	    var singleTickWidth = 20;
-	    var horizontalTickSpacing = 40;
-	    var xTickHourFormat = d3TimeFormat.timeFormat('%H %p');
-	    var xTickDateFormat = d3TimeFormat.timeFormat('%e');
-	    var xTickMonthFormat = d3TimeFormat.timeFormat('%b');
-	    var xTickYearFormat = d3TimeFormat.timeFormat('%Y');
-	
-	    var formatMap = {
-	        hour: xTickHourFormat,
-	        day: xTickDateFormat,
-	        month: xTickMonthFormat
-	    };
-	
-	    /**
-	     * Calculates the maximum number of ticks for the x axis
-	     * @param  {Number} width Chart width
-	     * @param  {Number} dataPointNumber  Number of entries on the data
-	     * @return {Number}       Number of ticks to render
-	     */
-	    var getMaxNumOfHorizontalTicks = function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
-	        var ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
-	
-	        return Math.min(dataPointNumber, ticksForWidth);
-	    };
-	
-	    /**
-	     * Returns tick object to be used when building the x axis
-	     * @return {object} tick settings for major and minr axis
-	     */
-	    var getXAxisSettings = function getXAxisSettings(dataByDate, xScale, width, settings) {
-	        var minorTickValue = void 0,
-	            majorTickValue = void 0;
-	        var dateTimeSpan = xScale.domain()[1] - xScale.domain()[0];
-	        var ONE_AND_A_HALF_YEARS = timeBenchmarks.ONE_AND_A_HALF_YEARS,
-	            ONE_DAY = timeBenchmarks.ONE_DAY;
-	
-	        // might want to add minute-hour
-	
-	        if (dateTimeSpan < ONE_DAY) {
-	            settings = axisTimeCombinations.HOUR_DAY;
-	            majorTickValue = d3Time.timeDay.every(1);
-	        } else if (dateTimeSpan < ONE_AND_A_HALF_YEARS) {
-	            settings = axisTimeCombinations.DAY_MONTH;
-	            majorTickValue = d3Time.timeMonth.every(1);
-	        } else {
-	            settings = axisTimeCombinations.MONTH_YEAR;
-	            minorTickValue = 10;
-	            majorTickValue = d3Time.timeYear.every(1);
-	        }
-	
-	        var _settings$split = settings.split('-'),
-	            _settings$split2 = _slicedToArray(_settings$split, 2),
-	            minor = _settings$split2[0],
-	            major = _settings$split2[1];
-	
-	        minorTickValue = dataByDate.length < 5 ? d3Time.timeDay : getMaxNumOfHorizontalTicks(width, dataByDate.length);
-	
-	        return {
-	            minor: {
-	                format: formatMap[minor],
-	                tick: minorTickValue
-	            },
-	            major: {
-	                format: formatMap[major],
-	                tick: majorTickValue
-	            }
-	        };
-	    };
-	
-	    return {
-	        getXAxisSettings: getXAxisSettings
-	    };
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ },
 /* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -37125,28 +37117,25 @@
 	    var d3Collection = __webpack_require__(11);
 	    var d3Dispatch = __webpack_require__(12);
 	    var d3Ease = __webpack_require__(13);
-	    var d3Format = __webpack_require__(14);
-	    var d3Scale = __webpack_require__(15);
+	    var d3Scale = __webpack_require__(14);
 	    var d3Shape = __webpack_require__(20);
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
-	
-	    var _ = __webpack_require__(3);
 	
 	    var _require = __webpack_require__(24),
 	        exportChart = _require.exportChart;
 	
 	    var colorHelper = __webpack_require__(7);
-	    var timeAxisHelper = __webpack_require__(58);
+	    var timeAxisHelper = __webpack_require__(31);
 	
-	    var _require2 = __webpack_require__(31),
+	    var _require2 = __webpack_require__(32),
 	        isInteger = _require2.isInteger;
 	
 	    var _require3 = __webpack_require__(27),
 	        axisTimeCombinations = _require3.axisTimeCombinations,
 	        lineGradientId = _require3.lineGradientId;
 	
-	    var _require4 = __webpack_require__(32),
+	    var _require4 = __webpack_require__(33),
 	        formatIntegerValue = _require4.formatIntegerValue,
 	        formatDecimalValue = _require4.formatDecimalValue;
 	
@@ -37264,6 +37253,7 @@
 	            bottom: 0,
 	            right: 0
 	        },
+	            monthAxisPadding = 28,
 	            tickPadding = 5,
 	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
 	            singleLineGradientColors = colorHelper.colorGradients.greenBlueGradient,
@@ -37279,7 +37269,6 @@
 	            topicLabel = 'topic',
 	            topicNameLabel = 'topicName',
 	            numVerticalTics = 5,
-	            defaultNumMonths = 10,
 	            overlay = void 0,
 	            overlayColor = 'rgba(0, 0, 0, 0)',
 	            verticalMarkerContainer = void 0,
@@ -37383,8 +37372,8 @@
 	         * @private
 	         */
 	        function buildAxis() {
-	            var rangeDiff = yScale.domain()[1] - yScale.domain()[0];
-	            var yTickNumber = rangeDiff < numVerticalTics - 1 ? rangeDiff : numVerticalTics;
+	            var dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
+	            var yTickNumber = dataTimeSpan < numVerticalTics - 1 ? dataTimeSpan : numVerticalTics;
 	
 	            var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings),
 	                minor = _timeAxisHelper$getXA.minor,
@@ -37554,7 +37543,7 @@
 	        function drawAxis() {
 	            svg.select('.x-axis-group .axis.x').attr('transform', 'translate(0, ' + chartHeight + ')').call(xAxis);
 	
-	            svg.select('.x-axis-group .month-axis').attr('transform', 'translate(0, ' + (chartHeight + 28) + ')').call(xMonthAxis);
+	            svg.select('.x-axis-group .month-axis').attr('transform', 'translate(0, ' + (chartHeight + monthAxisPadding) + ')').call(xMonthAxis);
 	
 	            svg.select('.y-axis-group.axis.y').transition().ease(ease).attr('transform', 'translate(' + -xAxisPadding.left + ', 0)').call(yAxis).call(adjustYTickLabels);
 	        }
@@ -52199,7 +52188,7 @@
 	
 	    var d3Array = __webpack_require__(9);
 	    var d3Ease = __webpack_require__(13);
-	    var d3Scale = __webpack_require__(15);
+	    var d3Scale = __webpack_require__(14);
 	    var d3Shape = __webpack_require__(20);
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
@@ -52676,7 +52665,7 @@
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
 	    step = __webpack_require__(72),
-	    miniTooltip = __webpack_require__(44),
+	    miniTooltip = __webpack_require__(45),
 	    dataBuilder = __webpack_require__(73);
 	
 	function createStepChart() {
@@ -52740,8 +52729,8 @@
 	    var d3Axis = __webpack_require__(10);
 	    var d3Dispatch = __webpack_require__(12);
 	    var d3Ease = __webpack_require__(13);
-	    var d3Format = __webpack_require__(14);
-	    var d3Scale = __webpack_require__(15);
+	    var d3Format = __webpack_require__(17);
+	    var d3Scale = __webpack_require__(14);
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
@@ -53218,7 +53207,7 @@
 	var d3Selection = __webpack_require__(4),
 	    d3TimeFormat = __webpack_require__(19),
 	    PubSub = __webpack_require__(5),
-	    brush = __webpack_require__(55),
+	    brush = __webpack_require__(56),
 	    dataBuilder = __webpack_require__(76);
 	
 	function createBrushChart() {
