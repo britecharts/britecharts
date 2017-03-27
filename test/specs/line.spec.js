@@ -96,7 +96,7 @@ define([
             });
 
             it('should render an X and Y axis', () => {
-                expect(containerFixture.select('.x.axis').empty()).toBeFalsy();
+                expect(containerFixture.select('.x-axis-group .x.axis').empty()).toBeFalsy();
                 expect(containerFixture.select('.x-axis-group .month-axis').empty()).toBeFalsy();
                 expect(containerFixture.select('.y.axis').empty()).toBeFalsy();
             });
