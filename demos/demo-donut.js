@@ -72,17 +72,51 @@ function getLegendChart(dataset, optionalColorSchema) {
     }
 }
 
+function getInlineLegendChart(dataset, optionalColorSchema) {
+    var legendChart = legend(),
+        legendContainer = d3Selection.select('.js-inline-legend-chart-container'),
+        containerWidth = legendContainer.node() ? legendContainer.node().getBoundingClientRect().width : false;
+
+    if (containerWidth) {
+        d3Selection.select('.js-inline-legend-chart-container .britechart-legend').remove();
+
+        legendChart
+            .inline(true)
+            .width(containerWidth*0.6)
+            .height(40)
+
+        if (optionalColorSchema) {
+            legendChart.colorSchema(optionalColorSchema);
+        }
+
+        legendContainer.datum(dataset).call(legendChart);
+
+        return legendChart;
+    }
+}
+
 function createSmallDonutChart() {
     var donutChart = donut(),
         donutContainer = d3Selection.select('.js-small-donut-chart-container'),
-        containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false;
+        containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false,
+        dataset = new dataBuilder.DonutDataBuilder()
+            .withThreeCategories()
+            .build(),
+        legendChart = getInlineLegendChart(dataset);
 
     if (containerWidth) {
         donutChart
             .width(containerWidth)
-            .height(containerWidth/1.5)
+            .height(containerWidth/1.8)
             .externalRadius(containerWidth/5)
-            .internalRadius(containerWidth/10);
+            .internalRadius(containerWidth/10)
+            .on('customMouseOver', function(data) {
+                legendChart.highlight(data.data.id);
+            })
+            .on('customMouseOut', function() {
+                legendChart.clearHighlight();
+            });
+
         donutContainer.datum(dataset).call(donutChart);
     }
 }

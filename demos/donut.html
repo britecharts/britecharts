@@ -63,8 +63,9 @@ legendContainer.datum(dataset).call(legendChart);
 col-md-6">
                 <section>
                     <article>
-                        <h2>Simple Donut Chart</h2>
+                        <h2>Small Donut Chart with Inline Legend</h2>
                         <div class="js-small-donut-chart-container card--chart"></div>
+                        <div class="js-inline-legend-chart-container legend-chart-container"></div>
                     </article>
                 </section>
             </div>
@@ -74,9 +75,15 @@ col-md-6 sidebar">
                 <pre><code class="language-javascript">
 donutChart
     .width(containerWidth)
-    .height(containerWidth)
-    .externalRadius(containerWidth/4)
-    .internalRadius(containerWidth/8);
+    .height(containerWidth/1.8)
+    .externalRadius(containerWidth/5)
+    .internalRadius(containerWidth/10)
+    .on('customMouseOver', function(data) {
+        legendChart.highlight(data.data.id);
+    })
+    .on('customMouseOut', function() {
+        legendChart.clearHighlight();
+    });
 
 donutContainer.datum(dataset).call(donutChart);
                 </code></pre>

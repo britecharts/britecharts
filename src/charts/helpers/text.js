@@ -11,6 +11,9 @@ define(function(require) {
         labelClassName: 'label'
     };
 
+    const defaultTextSize = 12;
+    const defaultFontFace = 'Arial';
+
     /**
      * Wraps a selection of text within the available width
      * @param  {Number} fontSize       Size of the base font
@@ -128,9 +131,27 @@ define(function(require) {
                     }
                 }
             });
-        }
+    };
+
+    /**
+     * Figures out an approximate of the text width by using a canvas element
+     * This avoids having to actually render the text to measure it from the DOM itself
+     * @param  {String} text     Text to measure
+     * @param  {Number} fontSize Fontsize (or default)
+     * @param  {String} fontFace Font familty (or default)
+     * @return {String}          Approximate font size of the text
+     */
+    const getTextWidth = function(text, fontSize = defaultTextSize, fontFace = defaultFontFace) {
+        let a = document.createElement('canvas'),
+            b = a.getContext('2d');
+
+        b.font = fontSize + 'px ' + fontFace;
+
+        return b.measureText(text).width;
+    }
 
     return {
+        getTextWidth,
         wrapText,
         wrapTextWithEllipses
     };

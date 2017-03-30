@@ -90,7 +90,7 @@ define(function(require){
             percentageLabel = 'percentage',
 
             // colors
-            colorScale = d3Scale.schemeCategory20c,
+            colorScale,
             colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
 
             // utils
