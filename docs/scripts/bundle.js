@@ -57,10 +57,10 @@
 	__webpack_require__(6);
 	__webpack_require__(42);
 	__webpack_require__(49);
-	__webpack_require__(55);
-	__webpack_require__(67);
-	__webpack_require__(71);
-	__webpack_require__(75);
+	__webpack_require__(56);
+	__webpack_require__(68);
+	__webpack_require__(72);
+	__webpack_require__(76);
 
 /***/ },
 /* 2 */
@@ -3831,6 +3831,20 @@
 	                return margin;
 	            }
 	            margin = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
+	         * @param  {Object} _x                  Opacity to get/set
+	         * @return { opacity | module}          Current opacity or Area Chart module to chain calls
+	         * @public
+	         */
+	        exports.areaOpacity = function (_x) {
+	            if (!arguments.length) {
+	                return areaOpacity;
+	            }
+	            areaOpacity = _x;
 	            return this;
 	        };
 	
@@ -17588,6 +17602,9 @@
 	        labelClassName: 'label'
 	    };
 	
+	    var defaultTextSize = 12;
+	    var defaultFontFace = 'Arial';
+	
 	    /**
 	     * Wraps a selection of text within the available width
 	     * @param  {Number} fontSize       Size of the base font
@@ -17678,7 +17695,28 @@
 	        });
 	    };
 	
+	    /**
+	     * Figures out an approximate of the text width by using a canvas element
+	     * This avoids having to actually render the text to measure it from the DOM itself
+	     * @param  {String} text     Text to measure
+	     * @param  {Number} fontSize Fontsize (or default)
+	     * @param  {String} fontFace Font familty (or default)
+	     * @return {String}          Approximate font size of the text
+	     */
+	    var getTextWidth = function getTextWidth(text) {
+	        var fontSize = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultTextSize;
+	        var fontFace = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : defaultFontFace;
+	
+	        var a = document.createElement('canvas'),
+	            b = a.getContext('2d');
+	
+	        b.font = fontSize + 'px ' + fontFace;
+	
+	        return b.measureText(text).width;
+	    };
+	
 	    return {
+	        getTextWidth: getTextWidth,
 	        wrapText: wrapText,
 	        wrapTextWithEllipses: wrapTextWithEllipses
 	    };
@@ -18334,13 +18372,40 @@
 	    }
 	}
 	
+	function getInlineLegendChart(dataset, optionalColorSchema) {
+	    var legendChart = legend(),
+	        legendContainer = d3Selection.select('.js-inline-legend-chart-container'),
+	        containerWidth = legendContainer.node() ? legendContainer.node().getBoundingClientRect().width : false;
+	
+	    if (containerWidth) {
+	        d3Selection.select('.js-inline-legend-chart-container .britechart-legend').remove();
+	
+	        legendChart.inline(true).width(containerWidth * 0.6).height(40);
+	
+	        if (optionalColorSchema) {
+	            legendChart.colorSchema(optionalColorSchema);
+	        }
+	
+	        legendContainer.datum(dataset).call(legendChart);
+	
+	        return legendChart;
+	    }
+	}
+	
 	function createSmallDonutChart() {
 	    var donutChart = donut(),
 	        donutContainer = d3Selection.select('.js-small-donut-chart-container'),
-	        containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false;
+	        containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false,
+	        dataset = new dataBuilder.DonutDataBuilder().withThreeCategories().build(),
+	        legendChart = getInlineLegendChart(dataset);
 	
 	    if (containerWidth) {
-	        donutChart.width(containerWidth).height(containerWidth / 1.5).externalRadius(containerWidth / 5).internalRadius(containerWidth / 10);
+	        donutChart.width(containerWidth).height(containerWidth / 1.8).externalRadius(containerWidth / 5).internalRadius(containerWidth / 10).on('customMouseOver', function (data) {
+	            legendChart.highlight(data.data.id);
+	        }).on('customMouseOut', function () {
+	            legendChart.clearHighlight();
+	        });
+	
 	        donutContainer.datum(dataset).call(donutChart);
 	    }
 	}
@@ -18464,7 +18529,7 @@
 	
 	
 	        // colors
-	        colorScale = d3Scale.schemeCategory20c,
+	        colorScale = void 0,
 	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
 	
 	
@@ -18844,6 +18909,7 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
+	    var textHelper = __webpack_require__(44);
 	    var colorHelper = __webpack_require__(7);
 	
 	    /**
@@ -18917,6 +18983,7 @@
 	            numberLetterSpacing = 0.8,
 	            numberFormat = d3Format.format('s'),
 	            isFadedClassName = 'is-faded',
+	            inline = false,
 	
 	
 	        // colors
@@ -18933,6 +19000,10 @@
 	            getFormattedQuantity = function getFormattedQuantity(_ref3) {
 	            var quantity = _ref3.quantity;
 	            return numberFormat(quantity);
+	        },
+	            getCircleFill = function getCircleFill(_ref4) {
+	            var name = _ref4.name;
+	            return colorScale(name);
 	        },
 	            entries = void 0,
 	            chartWidth = void 0,
@@ -18954,7 +19025,11 @@
 	
 	                buildColorScale();
 	                buildSVG(this);
-	                drawEntries();
+	                if (inline) {
+	                    drawInlineLegend();
+	                } else {
+	                    drawStackedLegend();
+	                }
 	            });
 	        }
 	
@@ -18974,7 +19049,9 @@
 	         * @private
 	         */
 	        function buildColorScale() {
-	            colorScale = d3Scale.scaleOrdinal().range(colorSchema);
+	            if (colorSchema) {
+	                colorScale = d3Scale.scaleOrdinal().range(colorSchema);
+	            }
 	        }
 	
 	        /**
@@ -18993,35 +19070,78 @@
 	        }
 	
 	        /**
+	         * Centers the legend on the chart given that is a single line of labels
+	         * @return {void}
+	         */
+	        function centerLegendOnSVG() {
+	            var legendGroupSize = svg.select('g.legend-container-group').node().getBoundingClientRect().width;
+	            var emptySpace = width - legendGroupSize;
+	
+	            if (emptySpace > 0) {
+	                svg.select('g.legend-container-group').attr('transform', 'translate(' + emptySpace / 2 + ',0)');
+	            }
+	        }
+	
+	        /**
 	         * Removes the faded class from all the entry lines
 	         */
 	        function cleanFadedLines() {
-	            svg.select('.legend-group').selectAll('g.legend-line').classed(isFadedClassName, false);
+	            svg.select('.legend-group').selectAll('g.legend-entry').classed(isFadedClassName, false);
+	        }
+	
+	        /**
+	         * Draws the entries of the legend within a single line
+	         * @private
+	         */
+	        function drawInlineLegend() {
+	            var circleSize = 2 * circleRadius;
+	            var xOffset = circleSize;
+	
+	            // We want a single line
+	            svg.select('.legend-group').append('g').classed('legend-line', true);
+	
+	            // And one entry per data item
+	            entries = svg.select('.legend-line').selectAll('g.legend-entry').data(data);
+	
+	            // Enter
+	            entries.enter().append('g').classed('legend-entry', true).attr('data-item', getId).attr('transform', function (d, i) {
+	                var horizontalOffset = xOffset,
+	                    lineHeight = chartHeight / 2,
+	                    verticalOffset = lineHeight,
+	                    labelWidth = textHelper.getTextWidth(d.name, textSize);
+	
+	                xOffset += circleSize + 2 * lineMargin + labelWidth;
+	
+	                return 'translate(' + horizontalOffset + ',' + verticalOffset + ')';
+	            }).merge(entries).append('circle').classed('legend-circle', true).attr('cx', 0).attr('cy', circleYOffset).attr('r', circleRadius).style('fill', getCircleFill).style('stroke-width', 1);
+	
+	            svg.select('.legend-group').selectAll('g.legend-entry').append('text').classed('legend-entry-name', true).text(getName).attr('x', lineMargin).style('font-size', textSize + 'px').style('letter-spacing', textLetterSpacing + 'px');
+	
+	            // Exit
+	            svg.select('.legend-group').selectAll('g.legend-entry').exit().transition().style('opacity', 0).remove();
+	
+	            centerLegendOnSVG();
 	        }
 	
 	        /**
 	         * Draws the entries of the legend
 	         * @private
 	         */
-	        function drawEntries() {
+	        function drawStackedLegend() {
 	            entries = svg.select('.legend-group').selectAll('g.legend-line').data(data);
 	
 	            // Enter
-	            entries.enter().append('g').classed('legend-line', true).attr('data-item', getId).attr('transform', function (d, i) {
-	                var horizontalOffset = 2 * circleRadius + 10,
+	            entries.enter().append('g').classed('legend-line', true).append('g').classed('legend-entry', true).attr('data-item', getId).attr('transform', function (d, i) {
+	                var horizontalOffset = 2 * circleRadius + lineMargin,
 	                    lineHeight = chartHeight / (data.length + 1),
 	                    verticalOffset = (i + 1) * lineHeight;
 	
 	                return 'translate(' + horizontalOffset + ',' + verticalOffset + ')';
-	            }).merge(entries).append('circle').classed('legend-circle', true).attr('cx', 0).attr('cy', circleYOffset).attr('r', circleRadius).style('fill', function (_ref4) {
-	                var quantity = _ref4.quantity;
+	            }).merge(entries).append('circle').classed('legend-circle', true).attr('cx', 0).attr('cy', circleYOffset).attr('r', circleRadius).style('fill', getCircleFill).style('stroke-width', 1);
 	
-	                return colorScale(quantity);
-	            }).style('stroke-width', 1);
+	            svg.select('.legend-group').selectAll('g.legend-line').selectAll('g.legend-entry').append('text').classed('legend-entry-name', true).text(getName).attr('x', 2 * circleRadius + lineMargin).style('font-size', textSize + 'px').style('letter-spacing', textLetterSpacing + 'px');
 	
-	            svg.select('.legend-group').selectAll('g.legend-line').append('text').classed('legend-entry-name', true).text(getName).attr('x', 2 * circleRadius + lineMargin).style('font-size', textSize + 'px').style('letter-spacing', textLetterSpacing + 'px');
-	
-	            svg.select('.legend-group').selectAll('g.legend-line').append('text').classed('legend-entry-value', true).text(getFormattedQuantity).attr('x', chartWidth - valueReservedSpace).style('font-size', textSize + 'px').style('letter-spacing', numberLetterSpacing + 'px').style('text-anchor', 'end').style('startOffset', '100%');
+	            svg.select('.legend-group').selectAll('g.legend-line').selectAll('g.legend-entry').append('text').classed('legend-entry-value', true).text(getFormattedQuantity).attr('x', chartWidth - valueReservedSpace).style('font-size', textSize + 'px').style('letter-spacing', numberLetterSpacing + 'px').style('text-anchor', 'end').style('startOffset', '100%');
 	
 	            // Exit
 	            svg.select('.legend-group').selectAll('g.legend-line').exit().transition().style('opacity', 0).remove();
@@ -19032,9 +19152,11 @@
 	         * @param  {number} exceptionItemId Id of the line that needs to stay the same
 	         */
 	        function fadeLinesBut(exceptionItemId) {
-	            svg.select('.legend-group').selectAll('g.legend-line').classed(isFadedClassName, true);
+	            var classToFade = 'g.legend-entry';
 	
-	            d3Selection.select('[data-item="' + exceptionItemId + '"]').classed(isFadedClassName, false);
+	            svg.select('.legend-group').selectAll(classToFade).classed(isFadedClassName, true);
+	
+	            svg.select('[data-item="' + exceptionItemId + '"]').classed(isFadedClassName, false);
 	        }
 	
 	        /**
@@ -19046,8 +19168,8 @@
 	
 	        /**
 	         * Gets or Sets the colorSchema of the chart
-	         * @param  {Array} _x Color scheme array to get/set
-	         * @return { (Number | Module) } Current colorSchema or Donut Chart module to chain calls
+	         * @param  {array} _x Color scheme array to get/set
+	         * @return {number | module} Current colorSchema or Donut Chart module to chain calls
 	         * @public
 	         */
 	        exports.colorSchema = function (_x) {
@@ -19062,7 +19184,7 @@
 	        /**
 	         * Gets or Sets the height of the legend chart
 	         * @param  {number} _x Desired width for the chart
-	         * @return { height | module} Current height or Legend module to chain calls
+	         * @return {height | module} Current height or Legend module to chain calls
 	         * @public
 	         */
 	        exports.height = function (_x) {
@@ -19084,9 +19206,24 @@
 	        };
 	
 	        /**
+	         * Gets or Sets the inline mode on the legend
+	         * @param  {boolean} _x Desired inline mode for the graph
+	         * @return {inline | module} Current inline mode or Legend module to chain calls
+	         * @public
+	         */
+	        exports.inline = function (_x) {
+	            if (!arguments.length) {
+	                return inline;
+	            }
+	            inline = _x;
+	
+	            return this;
+	        };
+	
+	        /**
 	         * Gets or Sets the margin of the legend chart
 	         * @param  {object} _x Margin object to get/set
-	         * @return { margin | module} Current margin or Legend module to chain calls
+	         * @return {margin | module} Current margin or Legend module to chain calls
 	         * @public
 	         */
 	        exports.margin = function (_x) {
@@ -19101,7 +19238,7 @@
 	        /**
 	         * Gets or Sets the width of the legend chart
 	         * @param  {number} _x Desired width for the graph
-	         * @return { width | module} Current width or Legend module to chain calls
+	         * @return {width | module} Current width or Legend module to chain calls
 	         * @public
 	         */
 	        exports.width = function (_x) {
@@ -35526,7 +35663,8 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonFivePlusOther = __webpack_require__(54);
+	        jsonFivePlusOther = __webpack_require__(54),
+	        jsonThreeCategories = __webpack_require__(55);
 	
 	    function DonutDataBuilder(config) {
 	        this.Klass = DonutDataBuilder;
@@ -35535,6 +35673,12 @@
 	
 	        this.withFivePlusOther = function () {
 	            var attributes = _.extend({}, this.config, jsonFivePlusOther);
+	
+	            return new this.Klass(attributes);
+	        };
+	
+	        this.withThreeCategories = function () {
+	            var attributes = _.extend({}, this.config, jsonThreeCategories);
 	
 	            return new this.Klass(attributes);
 	        };
@@ -35609,6 +35753,33 @@
 
 /***/ },
 /* 55 */
+/***/ function(module, exports) {
+
+	module.exports = {
+		"data": [
+			{
+				"name": "Shiny",
+				"id": 1,
+				"quantity": 200,
+				"percentage": 20
+			},
+			{
+				"name": "Radiant",
+				"id": 2,
+				"quantity": 200,
+				"percentage": 20
+			},
+			{
+				"name": "Sparkling",
+				"id": 3,
+				"quantity": 600,
+				"percentage": 60
+			}
+		]
+	};
+
+/***/ },
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -35617,10 +35788,10 @@
 	    d3Selection = __webpack_require__(4),
 	    d3TimeFormat = __webpack_require__(19),
 	    PubSub = __webpack_require__(5),
-	    brush = __webpack_require__(56),
-	    line = __webpack_require__(59),
+	    brush = __webpack_require__(57),
+	    line = __webpack_require__(60),
 	    tooltip = __webpack_require__(34),
-	    dataBuilder = __webpack_require__(60),
+	    dataBuilder = __webpack_require__(61),
 	    colorSelectorHelper = __webpack_require__(41);
 	
 	function createBrushChart(optionalColorSchema) {
@@ -35841,7 +36012,7 @@
 	}
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -35853,7 +36024,7 @@
 	
 	    var d3Array = __webpack_require__(9);
 	    var d3Axis = __webpack_require__(10);
-	    var d3Brush = __webpack_require__(57);
+	    var d3Brush = __webpack_require__(58);
 	    var d3Ease = __webpack_require__(13);
 	    var d3Scale = __webpack_require__(14);
 	    var d3Shape = __webpack_require__(20);
@@ -36314,12 +36485,12 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-brush/ Version 1.0.3. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-	   true ? factory(exports, __webpack_require__(12), __webpack_require__(58), __webpack_require__(15), __webpack_require__(4), __webpack_require__(22)) :
+	   true ? factory(exports, __webpack_require__(12), __webpack_require__(59), __webpack_require__(15), __webpack_require__(4), __webpack_require__(22)) :
 	  typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-selection', 'd3-transition'], factory) :
 	  (factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3));
 	}(this, (function (exports,d3Dispatch,d3Drag,d3Interpolate,d3Selection,d3Transition) { 'use strict';
@@ -36887,7 +37058,7 @@
 
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-drag/ Version 1.0.2. Copyright 2016 Mike Bostock.
@@ -37104,7 +37275,7 @@
 
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -37939,7 +38110,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 60 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -37948,12 +38119,12 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonAllDatas = __webpack_require__(61),
-	        jsonFiveTopics = __webpack_require__(62),
-	        jsonOneSource = __webpack_require__(63),
-	        jsonMultiMonthValueRange = __webpack_require__(64),
-	        jsonHourDateRange = __webpack_require__(65),
-	        jsonSmallValueRange = __webpack_require__(66);
+	        jsonAllDatas = __webpack_require__(62),
+	        jsonFiveTopics = __webpack_require__(63),
+	        jsonOneSource = __webpack_require__(64),
+	        jsonMultiMonthValueRange = __webpack_require__(65),
+	        jsonHourDateRange = __webpack_require__(66),
+	        jsonSmallValueRange = __webpack_require__(67);
 	
 	    function SalesDataBuilder(config) {
 	        this.Klass = SalesDataBuilder;
@@ -38020,7 +38191,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 61 */
+/* 62 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -38427,7 +38598,7 @@
 	};
 
 /***/ },
-/* 62 */
+/* 63 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -40503,7 +40674,7 @@
 	};
 
 /***/ },
-/* 63 */
+/* 64 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -40653,7 +40824,7 @@
 	};
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -51650,7 +51821,7 @@
 	};
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -52027,7 +52198,7 @@
 	};
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -52134,15 +52305,15 @@
 	};
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    sparklineChart = __webpack_require__(68),
-	    sparklineDataBuilder = __webpack_require__(69);
+	    sparklineChart = __webpack_require__(69),
+	    sparklineDataBuilder = __webpack_require__(70);
 	
 	function createSparklineChart() {
 	    var sparkline = sparklineChart(),
@@ -52178,7 +52349,7 @@
 	}
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -52575,7 +52746,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -52584,7 +52755,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonOneSource = __webpack_require__(70);
+	        jsonOneSource = __webpack_require__(71);
 	
 	    function SparklineDataBuilder(config) {
 	        this.Klass = SparklineDataBuilder;
@@ -52608,7 +52779,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -52657,16 +52828,16 @@
 	};
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    step = __webpack_require__(72),
+	    step = __webpack_require__(73),
 	    miniTooltip = __webpack_require__(45),
-	    dataBuilder = __webpack_require__(73);
+	    dataBuilder = __webpack_require__(74);
 	
 	function createStepChart() {
 	    var stepChart = step(),
@@ -52717,7 +52888,7 @@
 	}
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -53129,7 +53300,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -53138,7 +53309,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonStepDataSmall = __webpack_require__(74);
+	        jsonStepDataSmall = __webpack_require__(75);
 	
 	    function StepDataBuilder(config) {
 	        this.Klass = StepDataBuilder;
@@ -53162,7 +53333,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -53199,7 +53370,7 @@
 	};
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -53207,8 +53378,8 @@
 	var d3Selection = __webpack_require__(4),
 	    d3TimeFormat = __webpack_require__(19),
 	    PubSub = __webpack_require__(5),
-	    brush = __webpack_require__(56),
-	    dataBuilder = __webpack_require__(76);
+	    brush = __webpack_require__(57),
+	    dataBuilder = __webpack_require__(77);
 	
 	function createBrushChart() {
 	    var brushChart = brush(),
@@ -53250,7 +53421,7 @@
 	}
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -53259,7 +53430,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonSimpleData = __webpack_require__(77);
+	        jsonSimpleData = __webpack_require__(78);
 	
 	    function BrushDataBuilder(config) {
 	        this.Klass = BrushDataBuilder;
@@ -53296,7 +53467,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports) {
 
 	module.exports = {

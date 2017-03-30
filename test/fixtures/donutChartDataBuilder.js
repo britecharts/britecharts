@@ -3,7 +3,8 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonFivePlusOther = require('json!../json/donutDataFivePlusOther.json');
+        jsonFivePlusOther = require('json!../json/donutDataFivePlusOther.json'),
+        jsonThreeCategories = require('json!../json/donutDataThreeCategories.json');
 
 
     function DonutDataBuilder(config){
@@ -13,6 +14,12 @@ define(function(require) {
 
         this.withFivePlusOther = function(){
             var attributes = _.extend({}, this.config, jsonFivePlusOther);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withThreeCategories = function() {
+            var attributes = _.extend({}, this.config, jsonThreeCategories);
 
             return new this.Klass(attributes);
         };
