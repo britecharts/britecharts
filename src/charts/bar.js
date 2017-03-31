@@ -67,7 +67,7 @@ define(function(require) {
             data,
             chartWidth, chartHeight,
             xScale, yScale,
-            colorSchema = colorHelper.colorSchemas.singleColorAloeGreen,
+            colorSchema = colorHelper.singleColors.aloeGreen,
             colorList,
             colorMap,
             numOfVerticalTicks = 5,

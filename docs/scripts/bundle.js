@@ -3035,7 +3035,7 @@
 	    // Extended Red Palette
 	    var extendedRedColorSchema = ['#ffd8d4', '#ffb5b0', '#ff938c', '#ff766c', '#ff584c', '#f04b42', '#e03d38', '#be2e29', '#9c1e19'];
 	
-	    var singleColorAloeGreen = ['#7bdcc0'];
+	    var aloeGreen = ['#7bdcc0'];
 	
 	    return {
 	        colorSchemas: {
@@ -3048,8 +3048,7 @@
 	            extendedYellowColorSchema: extendedYellowColorSchema,
 	            extendedPinkColorSchema: extendedPinkColorSchema,
 	            extendedPurpleColorSchema: extendedPurpleColorSchema,
-	            extendedRedColorSchema: extendedRedColorSchema,
-	            singleColorAloeGreen: singleColorAloeGreen
+	            extendedRedColorSchema: extendedRedColorSchema
 	        },
 	        colorSchemasHuman: {
 	            'britechartsColorSchema': 'Britecharts Default',
@@ -3062,6 +3061,9 @@
 	            'extendedPinkColorSchema': 'Pink',
 	            'extendedPurpleColorSchema': 'Purple',
 	            'extendedRedColorSchema': 'Red'
+	        },
+	        singleColors: {
+	            aloeGreen: aloeGreen
 	        },
 	        colorGradients: britechartGradients,
 	        colorGradientsHuman: {
@@ -12203,6 +12205,7 @@
 	
 	    var timeBenchmarks = {
 	        ONE_AND_A_HALF_YEARS: 47304000000,
+	        ONE_YEAR: 31536000365,
 	        ONE_DAY: 86400001
 	    };
 	
@@ -12548,7 +12551,7 @@
 	        var minorTickValue = void 0,
 	            majorTickValue = void 0;
 	        var dateTimeSpan = xScale.domain()[1] - xScale.domain()[0];
-	        var ONE_AND_A_HALF_YEARS = timeBenchmarks.ONE_AND_A_HALF_YEARS,
+	        var ONE_YEAR = timeBenchmarks.ONE_YEAR,
 	            ONE_DAY = timeBenchmarks.ONE_DAY;
 	
 	        // might want to add minute-hour
@@ -12556,7 +12559,7 @@
 	        if (dateTimeSpan < ONE_DAY) {
 	            settings = axisTimeCombinations.HOUR_DAY;
 	            majorTickValue = d3Time.timeDay.every(1);
-	        } else if (dateTimeSpan < ONE_AND_A_HALF_YEARS) {
+	        } else if (dateTimeSpan < ONE_YEAR) {
 	            settings = axisTimeCombinations.DAY_MONTH;
 	            majorTickValue = d3Time.timeMonth.every(1);
 	        } else {
@@ -17064,7 +17067,7 @@
 	            chartHeight = void 0,
 	            xScale = void 0,
 	            yScale = void 0,
-	            colorSchema = colorHelper.colorSchemas.singleColorAloeGreen,
+	            colorSchema = colorHelper.singleColors.aloeGreen,
 	            colorList = void 0,
 	            colorMap = void 0,
 	            numOfVerticalTicks = 5,
