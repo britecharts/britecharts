@@ -963,6 +963,20 @@
         };
 
         /**
+         * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
+         * @param  {Object} _x                  Opacity to get/set
+         * @return { opacity | module}          Current opacity or Area Chart module to chain calls
+         * @public
+         */
+        exports.areaOpacity = function(_x) {
+            if (!arguments.length) {
+                return areaOpacity;
+            }
+            areaOpacity = _x;
+            return this;
+        };
+
+        /**
          * Gets or Sets the tooltipThreshold of the chart
          * @param  {Object} _x Margin object to get/set
          * @return { tooltipThreshold | module} Current tooltipThreshold or Area Chart module to chain calls
