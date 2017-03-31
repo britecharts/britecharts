@@ -128,7 +128,7 @@ define(function(require) {
             '#9c1e19'
         ];
 
-    const singleColorAloeGreen = [
+    const aloeGreen = [
             '#7bdcc0'
         ];
 
@@ -143,8 +143,7 @@ define(function(require) {
             extendedYellowColorSchema,
             extendedPinkColorSchema,
             extendedPurpleColorSchema,
-            extendedRedColorSchema,
-            singleColorAloeGreen
+            extendedRedColorSchema
         },
         colorSchemasHuman: {
             'britechartsColorSchema': 'Britecharts Default',
@@ -157,6 +156,9 @@ define(function(require) {
             'extendedPinkColorSchema': 'Pink',
             'extendedPurpleColorSchema': 'Purple',
             'extendedRedColorSchema': 'Red'
+        },
+        singleColors: {
+            aloeGreen
         },
         colorGradients: britechartGradients,
         colorGradientsHuman: {
