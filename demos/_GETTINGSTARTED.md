@@ -37,7 +37,7 @@ And that would generate your britechart!
 
 It won't look perfect though, you will need to load a small CSS file in order to see it styled. You can load the whole bundle:
 ```html
-<link type="text/css" rel="stylesheet" href="pathToBritecharts/dist/css/bundle.css">
+<link type="text/css" rel="stylesheet" href="pathToBritecharts/dist/css/britecharts.min.css">
 ```
 or just load the styles for the current chart:
 ```html
