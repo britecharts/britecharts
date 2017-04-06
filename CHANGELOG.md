@@ -1,11 +1,43 @@
-1.4.5
-1.4.4
-1.4.3
+1.4.6 - Patch
+---------------------
+Bug Fixes:
+* Fixing Legend colors
+* Fixing brush styles
+
+
+1.4.5 - Patch
+---------------------
+Bug Fixes:
+* Fixing Docs font
+
+Changes:
+* Docs navigation styling
+* Renaming css bundle
+* Normalizing stacked area x axis
+
+
+1.4.4 - Patch
+---------------------
+Bug Fixes:
+* Fixed stacked area chart input date formatting
+* Changed stacked area chart curve interpolation
+
+Changes:
+* Added Travis configuration
+
+1.4.3 - Patch
+---------------------
+Changes:
+* Updated Brush styling
+* Added tests for export chart
+
+Bug Fixes:
+* Fixed export chart with unicode characters on title
 
 1.4.2 - Patch
 ---------------------
 Bug Fixes:
-Updated color selection on bar chart
+* Updated color selection on bar chart
 
 1.4.1
 --------------
