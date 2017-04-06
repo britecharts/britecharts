@@ -44,7 +44,8 @@ module.exports = function(grunt) {
             return ':' + val;
         });
 
-        grunt.task.run(bumpTask, 'publish', 'bump-dist');
+        grunt.task.run(bumpTask, 'publish');
+        // grunt.task.run(bumpTask, 'publish', 'bump-dist');
     });
 
     grunt.registerTask('bump-dist', function() {

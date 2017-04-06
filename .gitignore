@@ -19,7 +19,6 @@ coverage
 # Builds
 .grunt
 .sass-cache
-dist
 
 # node-waf configuration
 .lock-wscript
