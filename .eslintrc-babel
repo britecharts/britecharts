@@ -1,8 +1,0 @@
-{
-    "extends": ".eslintrc",
-    "plugins" : ["react"],
-    "parser": "babel-eslint",
-    "rules": {
-        "react/jsx-uses-vars": 1
-    }
-}

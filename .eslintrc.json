@@ -43,6 +43,6 @@
         "no-inline-comments": 1,
         "no-multiple-empty-lines": [2, {"max": 2}],
         "no-nested-ternary": 1,
-        "one-var": [2, 'always']
+        "one-var": [2, "always"]
     }
 }
