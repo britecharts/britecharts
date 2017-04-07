@@ -14,7 +14,6 @@ define(function(require) {
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
 
-
     /**
      * @typedef BarChartData
      * @type {Object[]}

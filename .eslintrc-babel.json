@@ -1,0 +1,5 @@
+{
+    "extends": ".eslintrc",
+    "plugins" : [],
+    "parser": "babel-eslint",
+}
