@@ -6,7 +6,7 @@ Britecharts has been created to help users consume and create d3 charts. It leve
 
 In order to use a Britecharts chart in your project you would need to:
 
-- Add Britecharts and D3 selection as dependencies in your package.json or install them by typing:
+- Add Britecharts and D3 selection as dependencies. You can use NPM, Bower or Github at the moment. If you are using NPM, install Britecharts by typing:
 ```
    npm install --save britecharts d3-selection
 ```
@@ -14,7 +14,7 @@ In order to use a Britecharts chart in your project you would need to:
 ```
     LineChart = require('britecharts/dist/umd/line.min')
 ```
-- Require D3Selection as a dependency, in order to select a container to execute the chart on.
+- Require d3-selection as a dependency, in order to select a container to execute the chart on.
 ```
     d3Selection = require('d3-selection')
 ```
@@ -37,11 +37,11 @@ And that would generate your britechart!
 
 It won't look perfect though, you will need to load a small CSS file in order to see it styled. You can load the whole bundle:
 ```html
-<link type="text/css" rel="stylesheet" href="pathToBritecharts/dist/css/britecharts.min.css">
+<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/css/britecharts.min.css">
 ```
 or just load the styles for the current chart:
 ```html
-<link type="text/css" rel="stylesheet" href="pathToBritecharts/dist/css/charts/line.css">
+<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/css/charts/line.css">
 ```
 
 ### Making it Responsive
