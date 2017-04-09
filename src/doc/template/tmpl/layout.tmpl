@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?js var that = this; ?>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns#">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -50,7 +50,13 @@
             <meta property="og:image" content="<?js= env.conf.templates.openGraph.image ?>"/>
             <?js if (env.conf.templates.openGraph.site_name) { ?><meta property="og:site_name" content="<?js= env.conf.templates.openGraph.site_name ?>"/><?js } ?>
             <meta property="og:url" content="<?js= env.conf.templates.openGraph.url ?>"/>
+
+            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:site" content="@britecharts" />
+            <meta name="twitter:description" content="<?js= env.conf.templates.openGraph.description ?>" />
         <?js } ?>
+
+
         <!--[if lt IE 9]>
             <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
