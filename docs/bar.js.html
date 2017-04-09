@@ -746,6 +746,34 @@
             return this;
         }
 
+        /**
+         * Gets or Sets the valueLabel of the chart
+         * @param  {Number} _x Desired valueLabel for the graph
+         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+         * @public
+         */
+        exports.valueLabel = function(_x) {
+            if (!arguments.length) {
+                return valueLabel;
+            }
+            valueLabel = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the nameLabel of the chart
+         * @param  {Number} _x Desired nameLabel for the graph
+         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+         * @public
+         */
+        exports.nameLabel = function(_x) {
+            if (!arguments.length) {
+                return nameLabel;
+            }
+            nameLabel = _x;
+            return this;
+        };
+
         return exports;
     };
 

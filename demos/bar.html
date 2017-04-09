@@ -49,7 +49,15 @@ tooltipContainer.datum([]).call(tooltip);
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
 barChart
+    .margin({
+        left: 120,
+        right: 20,
+        top: 20,
+        bottom: 5
+    })
+    .percentageAxisToMaxRatio(1.3)
     .horizontal(true)
+    .colorSchema(colors.colorSchemas.britechartsColorSchema)
     .width(containerWidth)
     .height(300);
 
