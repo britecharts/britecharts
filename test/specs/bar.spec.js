@@ -167,6 +167,30 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide valueLabel getter and setter', () => {
+                let defaultValueLabel = barChart.valueLabel(),
+                    testValueLabel = 'quantity',
+                    newValueLabel;
+
+                barChart.valueLabel(testValueLabel);
+                newValueLabel = barChart.valueLabel();
+
+                expect(defaultValueLabel).not.toBe(testValueLabel);
+                expect(newValueLabel).toBe(testValueLabel);
+            });
+
+            it('should provide nameLabel getter and setter', () => {
+                let defaultDateLabel = barChart.nameLabel(),
+                    testNameLabel = 'key',
+                    newNameLabel;
+
+                barChart.nameLabel(testNameLabel);
+                newNameLabel = barChart.nameLabel();
+
+                expect(defaultDateLabel).not.toBe(testNameLabel);
+                expect(newNameLabel).toBe(testNameLabel);
+            });
         });
 
         describe('when hovering a bar', function() {
