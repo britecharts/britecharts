@@ -23,7 +23,7 @@
     "demos:serve": "WEBPACK_ENV=demos webpack-dev-server --inline --hot --port 8001",
     "styles": "grunt lint && grunt sass && grunt cssmin",
     "docs": "WEBPACK_ENV=demos webpack && npm run styles && grunt docs",
-    "prod": "npm run _prod && npm run _prodUMD",
+    "prod": "npm run _prodUMD && npm run _prod",
     "untrack": "grunt untrack",
     "release": "npm run prod && grunt release:patch",
     "release:minor": "npm run prod && grunt release:minor",
@@ -111,6 +111,7 @@
     "sinon": "~1.9.0",
     "text": "requirejs/text",
     "webpack": "^1.13.3",
+    "webpack-bundle-analyzer": "^2.3.1",
     "webpack-dev-server": "^1.16.2",
     "webpack-livereload-plugin": "^0.9.0"
   }

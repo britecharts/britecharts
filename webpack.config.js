@@ -1,7 +1,9 @@
 var webpack = require('webpack'),
     path = require('path'),
+    _ = require('underscore'),
     LiveReloadPlugin = require('webpack-livereload-plugin'),
     UglifyJsPlugin = webpack.optimize.UglifyJsPlugin,
+    BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin,
 
     env = process.env.WEBPACK_ENV, // dev | build
     isProduction = env === 'prod' || env === 'prodUMD',
@@ -25,6 +27,18 @@ var webpack = require('webpack'),
         // hack to make webpack use colors as an entry point while its also a dependency of the charts above
         'colors': ['./src/charts/helpers/colors.js']
     },
+    currentChartsArray = [
+        './src/charts/bar.js',
+        './src/charts/donut.js',
+        './src/charts/legend.js',
+        './src/charts/line.js',
+        './src/charts/tooltip.js',
+        './src/charts/mini-tooltip.js',
+        './src/charts/sparkline.js',
+        './src/charts/stacked-area.js',
+        './src/charts/step.js',
+        './src/charts/brush.js'
+    ],
 
     defaultJSLoader = {
         test: /\.js$/,
@@ -35,15 +49,18 @@ var webpack = require('webpack'),
         }
     },
 
-    plugins = [],
+    plugins = [
+        // Uncomment this line to see bundle composition analysis
+        // new BundleAnalyzerPlugin()
+    ],
     outputFile,
     config;
 
 
 // Set up minification for production
 if (isProduction) {
-    plugins.push(new UglifyJsPlugin({ minimize: true }));
-    outputFile = projectName + '.min.js';
+    plugins.push(new UglifyJsPlugin({ minimize: false }));
+    // outputFile = projectName + '.min.js';
 }
 
 config = {
@@ -94,7 +111,7 @@ config = {
                 {
                     test: /\.js?$/,
                     include: /src/,
-                    exclude: /(node_modules|__tests__)/,
+                    exclude: /(node_modules|__tests__|tests_index.js)/,
                     loader: 'babel-istanbul',
                     query: {
                         presets: ['es2015', 'stage-0'],
@@ -111,13 +128,16 @@ config = {
 
     // Creates a bundle with all britecharts
     prod: {
-        entry:  currentCharts,
+        entry:  {
+            britecharts: currentChartsArray
+        },
 
         devtool: 'source-map',
 
         output: {
             path: 'dist/bundled',
-            filename: outputFile,
+            filename: projectName + '.min.js',
+            library: ['britecharts'],
             libraryTarget: 'umd'
         },
 
@@ -154,6 +174,7 @@ config = {
         output: {
             path:     'dist/umd',
             filename: '[name].min.js',
+            library: ['britecharts', '[name]'],
             libraryTarget: 'umd'
         },
 
