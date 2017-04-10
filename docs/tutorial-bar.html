@@ -155,6 +155,7 @@ col-md-6">
 barChart
     .width(containerWidth)
     .height(300)
+    .usePercentage(true)
     .on('customMouseHover', tooltip.show)
     .on('customMouseMove', tooltip.update);
     .on('customMouseOut', tooltip.hide);
