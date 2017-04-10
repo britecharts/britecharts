@@ -14,6 +14,11 @@ define(function(require) {
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
 
+
+    const PERCENTAGE_FORMAT = '%';
+    const NUMBER_FORMAT = ',f';
+
+
     /**
      * @typedef BarChartData
      * @type {Object[]}
@@ -77,6 +82,7 @@ define(function(require) {
             percentageLabelSize = 12,
             horizontalLabelFormat = '.0%',
             verticalLabelFormat = '.0f',
+            valueLabelFormat = NUMBER_FORMAT,
             xAxis, yAxis,
             xAxisPadding = {
                 top: 0,
@@ -145,10 +151,10 @@ define(function(require) {
                 xAxis = d3Axis.axisBottom(xScale);
 
                 yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(numOfVerticalTicks, '%');
+                    .ticks(numOfVerticalTicks, valueLabelFormat)
             } else {
                 xAxis = d3Axis.axisBottom(xScale)
-                    .ticks(numOfHorizontalTicks, '%')
+                    .ticks(numOfHorizontalTicks, valueLabelFormat)
                     .tickSizeInner([-chartHeight]);
 
                 yAxis = d3Axis.axisLeft(yScale);
@@ -184,7 +190,7 @@ define(function(require) {
          * @private
          */
         function buildScales() {
-            let percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue), 1)
+            let percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue))
 
             if (!horizontal) {
                 xScale = d3Scale.scaleBand()
@@ -555,6 +561,24 @@ define(function(require) {
                 return colorSchema;
             }
             colorSchema = _x;
+            return this;
+        }
+
+        /**
+         * Gets or Sets the valueLabelFormat to a percentage format if true (default false)
+         * @param  {boolean} _x     Should use percentage as value format
+         * @return { valueLabelFormat | module} Is percentage value format used or Chart module to chain calls
+         * @public
+         */
+        exports.usePercentage = function(_x) {
+            if (!arguments.length) {
+                return valueLabelFormat === PERCENTAGE_FORMAT;
+            }
+            if (_x) {
+                valueLabelFormat = PERCENTAGE_FORMAT;
+            } else {
+                valueLabelFormat = NUMBER_FORMAT;
+            }
             return this;
         }
 

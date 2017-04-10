@@ -53,6 +53,7 @@ function createHorizontalBarChart() {
             .width(containerWidth)
             .yAxisPaddingBetweenChart(30)
             .height(300)
+
             .percentageAxisToMaxRatio(1.3)
             .on('customMouseOver', tooltip.show)
             .on('customMouseMove', tooltip.update)
@@ -84,6 +85,7 @@ function createBarChartWithTooltip() {
         barChart
             .width(containerWidth)
             .height(300)
+            .usePercentage(true)
             .on('customMouseOver', tooltip.show)
             .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);

@@ -211,6 +211,7 @@
             percentageLabelSize = 12,
             horizontalLabelFormat = '.0%',
             verticalLabelFormat = '.0f',
+            valueLabelFormat = ',f',
             xAxis, yAxis,
             xAxisPadding = {
                 top: 0,
@@ -279,10 +280,10 @@
                 xAxis = d3Axis.axisBottom(xScale);
 
                 yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(numOfVerticalTicks, '%');
+                    .ticks(numOfVerticalTicks, valueLabelFormat)
             } else {
                 xAxis = d3Axis.axisBottom(xScale)
-                    .ticks(numOfHorizontalTicks, '%')
+                    .ticks(numOfHorizontalTicks, valueLabelFormat)
                     .tickSizeInner([-chartHeight]);
 
                 yAxis = d3Axis.axisLeft(yScale);
@@ -318,11 +319,11 @@
          * @private
          */
         function buildScales() {
-            let percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue), 1)
+            let percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue))
 
             if (!horizontal) {
                 xScale = d3Scale.scaleBand()
-                    .domain(data.map(getName))
+                    .domain(data.map(({name}) => name))
                     .rangeRound([0, chartWidth])
                     .padding(0.1);
 
@@ -689,6 +690,24 @@
                 return colorSchema;
             }
             colorSchema = _x;
+            return this;
+        }
+
+        /**
+         * Gets or Sets the valueLabelFormat to a percentage format if true (default false)
+         * @param  {boolean} _x     Should use percentage as value format
+         * @return { valueLabelFormat | module} Is percentage value format used or Chart module to chain calls
+         * @public
+         */
+        exports.usePercentage = function(_x) {
+            if (!arguments.length) {
+                return valueLabelFormat === '%';
+            }
+            if (_x) {
+                valueLabelFormat = '%';
+            } else {
+                valueLabelFormat = ',f';
+            }
             return this;
         }
 
