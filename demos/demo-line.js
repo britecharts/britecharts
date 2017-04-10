@@ -67,6 +67,7 @@ function createLineChart(optionalColorSchema, optionalData) {
             .aspectRatio(0.5)
             .tooltipThreshold(600)
             .width(containerWidth)
+            .dateLabel('fullDate')
             .on('customMouseOver', function() {
                 chartTooltip.show();
             })
@@ -123,6 +124,7 @@ function createLineChartWithSingleLine() {
             .tooltipThreshold(600)
             .height(500)
             .width(containerWidth)
+            .dateLabel('fullDate')
             .on('customMouseOver', function() {
                 chartTooltip.show();
             })
@@ -161,6 +163,7 @@ function createLineChartWithFixedHeight() {
         lineChart3
             .height(300)
             .width(containerWidth)
+            .dateLabel('fullDate')
             .on('customMouseOver', function() {
                 chartTooltip.show();
             })

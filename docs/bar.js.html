@@ -148,6 +148,11 @@
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
 
+
+    const PERCENTAGE_FORMAT = '%';
+    const NUMBER_FORMAT = ',f';
+
+
     /**
      * @typedef BarChartData
      * @type {Object[]}
@@ -211,7 +216,7 @@
             percentageLabelSize = 12,
             horizontalLabelFormat = '.0%',
             verticalLabelFormat = '.0f',
-            valueLabelFormat = ',f',
+            valueLabelFormat = NUMBER_FORMAT,
             xAxis, yAxis,
             xAxisPadding = {
                 top: 0,
@@ -323,7 +328,7 @@
 
             if (!horizontal) {
                 xScale = d3Scale.scaleBand()
-                    .domain(data.map(({name}) => name))
+                    .domain(data.map(getName))
                     .rangeRound([0, chartWidth])
                     .padding(0.1);
 
@@ -701,12 +706,12 @@
          */
         exports.usePercentage = function(_x) {
             if (!arguments.length) {
-                return valueLabelFormat === '%';
+                return valueLabelFormat === PERCENTAGE_FORMAT;
             }
             if (_x) {
-                valueLabelFormat = '%';
+                valueLabelFormat = PERCENTAGE_FORMAT;
             } else {
-                valueLabelFormat = ',f';
+                valueLabelFormat = NUMBER_FORMAT;
             }
             return this;
         }
