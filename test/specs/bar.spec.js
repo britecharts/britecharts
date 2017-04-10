@@ -191,6 +191,18 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(defaultDateLabel).not.toBe(testNameLabel);
                 expect(newNameLabel).toBe(testNameLabel);
             });
+
+            it('should provide an usePercentage getter and setter', () => {
+                let defaultUsePercentage = barChart.usePercentage(),
+                    testUsePercentage = true,
+                    newUsePercentage;
+
+                barChart.usePercentage(testUsePercentage);
+                newUsePercentage = barChart.usePercentage();
+
+                expect(defaultUsePercentage).not.toBe(testUsePercentage);
+                expect(newUsePercentage).toBe(testUsePercentage);
+            });
         });
 
         describe('when hovering a bar', function() {
