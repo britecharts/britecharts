@@ -133,30 +133,60 @@
     </header>
     <article>
         <h2>Getting Started with Britecharts</h2><p>Britecharts has been created to help users consume and create d3 charts. It leverages a reusable API, which produces chart objects that (after initialization) can be configured and then applied to a container with a data set to plot.</p>
-<h3>Using Britecharts in your project</h3><p>In order to use a Britecharts chart in your project you would need to:</p>
+<h3>Installing Britecharts</h3><p>In order to use a Britecharts chart in your project you would need to install it using NPM, Bower or cloning it via Github:</p>
+<h5>Install with NPM</h5><pre class="prettyprint source"><code>   npm install --save britecharts d3-selection</code></pre><h5>Install with Bower</h5><pre class="prettyprint source"><code>   bower install --save britecharts d3-selection</code></pre><h5>Clone the git repository</h5><pre class="prettyprint source"><code>   git clone https://github.com/eventbrite/britecharts.git</code></pre><h3>Using Britecharts</h3><p>In order to use a Britecharts chart in your project you would need to:</p>
 <ul>
-<li>Add Britecharts and D3 selection as dependencies. You can use NPM, Bower or Github at the moment. If you are using NPM, install Britecharts by typing:<pre class="prettyprint source"><code> npm install --save britecharts d3-selection</code></pre></li>
-<li>Require the proper chart as a module, we can do:<pre class="prettyprint source"><code>  LineChart = require('britecharts/dist/umd/line.min')</code></pre></li>
-<li>Require d3-selection as a dependency, in order to select a container to execute the chart on.<pre class="prettyprint source"><code>  d3Selection = require('d3-selection')</code></pre></li>
-<li><p>Call the chart with a container and data attached to the container.</p>
-<pre class="prettyprint source"><code>  var container = d3Selection.select('.chart-container'),
-      lineChart = new LineChart();
+<li><p>Require the proper chart as a module, we can do:</p>
+<pre class="prettyprint source"><code>  // ES2015 Modules
+  import LineChart from 'britecharts/dist/umd/line.min';
 
-  if (container.node()) {
+  // CommonJS or AMD modules
+  LineChart = require('britecharts/dist/umd/line.min');</code></pre></li>
+<li>Require d3-selection as a dependency, in order to select a container to execute the chart on.<pre class="prettyprint source"><code>  d3Selection = require('d3-selection');</code></pre></li>
+<li>Instantiate a new line chart and select the chart container with <code>d3-selection</code>:<pre class="prettyprint source"><code>  var container = d3Selection.select('.js-chart-container'),
+      lineChart = new LineChart();</code></pre></li>
+<li>Configure the default chart with attributes:<pre class="prettyprint source"><code>  if (container.node()) {
       lineChart
           .tooltipThreshold(tooltipShouldShowThreshold)
           .margin(chartMargin)
           .height(chartHeight)
           .width(chartWidth);
-  }
-  // This line gets together container, data and chart
-  container.datum(data).call(lineChart);</code></pre><p>And that would generate your britechart!</p>
-</li>
+  }</code></pre></li>
+<li>And finally call the chart with a container and data attached to the container.<pre class="prettyprint source"><code>  // This line gets together container, data and chart
+  container.datum(data).call(lineChart);</code></pre>And that would generate your britechart!</li>
 </ul>
-<p>It won't look perfect though, you will need to load a small CSS file in order to see it styled. You can load the whole bundle:</p>
-<pre class="prettyprint source lang-html"><code>&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;node_modules/britecharts/dist/css/britecharts.min.css&quot;></code></pre><p>or just load the styles for the current chart:</p>
-<pre class="prettyprint source lang-html"><code>&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;node_modules/britecharts/dist/css/charts/line.css&quot;></code></pre><h3>Making it Responsive</h3><p>You will probably want to set up a listener for the resize event to re-render the chart, and probably debounce it, so it doesn't render too many times.</p>
-<p>Check in our <a href="http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html">kitchen sink</a> all the available charts. If you already know d3.js and you enjoy the project, we hope you could try to <a href="https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md">make your own chart</a>.</p>
+<p>Here is the whole code:</p>
+<pre class="prettyprint source"><code>    var container = d3Selection.select('.js-chart-container'),
+        lineChart = new LineChart();
+
+    if (container.node()) {
+        lineChart
+            .tooltipThreshold(tooltipShouldShowThreshold)
+            .margin(chartMargin)
+            .height(chartHeight)
+            .width(chartWidth);
+    }
+
+    // This line gets together container, data and chart
+    container.datum(data).call(lineChart);</code></pre><p>It won't look perfect though, you will need to load a small CSS file in order to see it styled. You can load the whole bundle:</p>
+<pre class="prettyprint source lang-html"><code>&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;node_modules/britecharts/dist/css/britecharts.min.css&quot;></code></pre><p>or just load the styles for the current chart plus the common Britecharts styles:</p>
+<pre class="prettyprint source lang-html"><code>&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;node_modules/britecharts/dist/css/common/common.css&quot;>
+&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;node_modules/britecharts/dist/css/charts/line.css&quot;></code></pre><h3>Making it Responsive</h3><p>You will probably want to set up a listener for the resize event to re-render the chart, and probably debounce it, so it doesn't render too many times.</p>
+<p>This code would probably look like this:</p>
+<pre class="prettyprint source"><code>const redrawChart = () => {
+    let container = d3.select(‘.js-chart-container’);
+    let newContainerWidth = container.node() ? container.node().getBoundingClientRect().width : false;
+
+    // Setting the new width on the chart
+    lineChart.width(newContainerWidth);
+
+    // Rendering the chart again
+    container.datum(data).call(lineChart);
+};
+const throttledRedraw =  _.throttle(redrawChart, 200);
+
+window.addEventListener(&quot;resize&quot;, throttledRedraw);</code></pre><h3>Learning More</h3><p>Check out our <a href="http://eventbrite.github.io/britecharts/">Documentation Homepage</a> and our <a href="http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html">kitchen sink</a> to see all the available charts.</p>
+<p>If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our <a href="https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md">Contributing Guide</a>. In it, we walk you through the development environment setup, run our docs and demos and create new Pull Requests.</p>
     </article>
 </section>
 
