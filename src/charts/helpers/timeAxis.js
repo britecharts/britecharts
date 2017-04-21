@@ -11,15 +11,18 @@ define(function(require) {
 
 
     const singleTickWidth = 20;
-    const horizontalTickSpacing = 40;
+    const horizontalTickSpacing = 50;
+    const minEntryNumForDayFormat = 5;
     const xTickHourFormat = d3TimeFormat.timeFormat('%H %p');
-    const xTickDateFormat = d3TimeFormat.timeFormat('%e');
+    const xTickSimpleDayFormat = d3TimeFormat.timeFormat('%e');
+    const xTickDayMonthFormat = d3TimeFormat.timeFormat('%d %b');
     const xTickMonthFormat = d3TimeFormat.timeFormat('%b');
     const xTickYearFormat = d3TimeFormat.timeFormat('%Y');
 
     const formatMap = {
         hour: xTickHourFormat,
-        day: xTickDateFormat,
+        day: xTickSimpleDayFormat,
+        daymonth: xTickDayMonthFormat,
         month: xTickMonthFormat
     };
 
@@ -56,12 +59,11 @@ define(function(require) {
             majorTickValue = d3Time.timeMonth.every(1);
         } else {
             settings = axisTimeCombinations.MONTH_YEAR;
-            minorTickValue = 10;
             majorTickValue = d3Time.timeYear.every(1);
         }
         let [minor, major] = settings.split('-');
 
-        minorTickValue = dataByDate.length < 5 ? d3Time.timeDay :
+        minorTickValue = dataByDate.length < minEntryNumForDayFormat ? d3Time.timeDay :
                 getMaxNumOfHorizontalTicks(width, dataByDate.length);
 
         return {

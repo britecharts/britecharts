@@ -9,7 +9,8 @@ define([
         $,
         d3,
         chart,
-        dataBuilder
+        dataBuilder,
+        constants
     ) {
     'use strict';
 
@@ -345,9 +346,13 @@ define([
             it('should provide an axisTimeCombinations accessor', () => {
                 let axisTimeCombinations = lineChart.axisTimeCombinations;
 
+let c = constants
+debugger
+
+
                 expect(axisTimeCombinations).toEqual({
                     MINUTE_HOUR: 'minute-hour',
-                    HOUR_DAY: 'hour-day',
+                    HOUR_DAY: 'hour-daymonth',
                     DAY_MONTH: 'day-month',
                     MONTH_YEAR: 'month-year'
                 });
