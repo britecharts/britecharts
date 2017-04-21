@@ -12348,7 +12348,7 @@
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    var axisTimeCombinations = {
 	        MINUTE_HOUR: 'minute-hour',
-	        HOUR_DAY: 'hour-day',
+	        HOUR_DAY: 'hour-daymonth',
 	        DAY_MONTH: 'day-month',
 	        MONTH_YEAR: 'month-year'
 	    };
@@ -12669,15 +12669,18 @@
 	        timeBenchmarks = _require.timeBenchmarks;
 	
 	    var singleTickWidth = 20;
-	    var horizontalTickSpacing = 40;
+	    var horizontalTickSpacing = 50;
+	    var minEntryNumForDayFormat = 5;
 	    var xTickHourFormat = d3TimeFormat.timeFormat('%H %p');
-	    var xTickDateFormat = d3TimeFormat.timeFormat('%e');
+	    var xTickSimpleDayFormat = d3TimeFormat.timeFormat('%e');
+	    var xTickDayMonthFormat = d3TimeFormat.timeFormat('%d %b');
 	    var xTickMonthFormat = d3TimeFormat.timeFormat('%b');
 	    var xTickYearFormat = d3TimeFormat.timeFormat('%Y');
 	
 	    var formatMap = {
 	        hour: xTickHourFormat,
-	        day: xTickDateFormat,
+	        day: xTickSimpleDayFormat,
+	        daymonth: xTickDayMonthFormat,
 	        month: xTickMonthFormat
 	    };
 	
@@ -12714,7 +12717,6 @@
 	            majorTickValue = d3Time.timeMonth.every(1);
 	        } else {
 	            settings = axisTimeCombinations.MONTH_YEAR;
-	            minorTickValue = 10;
 	            majorTickValue = d3Time.timeYear.every(1);
 	        }
 	
@@ -12723,7 +12725,7 @@
 	            minor = _settings$split2[0],
 	            major = _settings$split2[1];
 	
-	        minorTickValue = dataByDate.length < 5 ? d3Time.timeDay : getMaxNumOfHorizontalTicks(width, dataByDate.length);
+	        minorTickValue = dataByDate.length < minEntryNumForDayFormat ? d3Time.timeDay : getMaxNumOfHorizontalTicks(width, dataByDate.length);
 	
 	        return {
 	            minor: {
@@ -36365,7 +36367,7 @@
 	        dataset;
 	
 	    if (containerWidth) {
-	        dataset = testDataSet.withOneSource().build();
+	        dataset = testDataSet.withHourDateRange().build();
 	
 	        d3Selection.select('#button2').on('click', function () {
 	            lineChart2.exportChart('linechart.png', 'Britecharts LÍne Chart');

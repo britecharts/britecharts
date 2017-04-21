@@ -1,7 +1,7 @@
 define(function(require) {
     const axisTimeCombinations = {
         MINUTE_HOUR: 'minute-hour',
-        HOUR_DAY: 'hour-day',
+        HOUR_DAY: 'hour-daymonth',
         DAY_MONTH: 'day-month',
         MONTH_YEAR: 'month-year'
     };
