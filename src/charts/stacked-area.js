@@ -758,6 +758,7 @@ define(function(require){
                 return aspectRatio;
             }
             aspectRatio = _x;
+
             return this;
         };
 
@@ -772,6 +773,7 @@ define(function(require){
                 return colorSchema;
             }
             colorSchema = _x;
+
             return this;
         };
 
@@ -786,6 +788,7 @@ define(function(require){
                 return dateLabel;
             }
             dateLabel = _x;
+
             return this;
         };
 
@@ -803,6 +806,7 @@ define(function(require){
                 width = Math.ceil(_x / aspectRatio);
             }
             height = _x;
+
             return this;
         };
 
@@ -817,6 +821,7 @@ define(function(require){
                 return keyLabel;
             }
             keyLabel = _x;
+
             return this;
         };
 
@@ -831,6 +836,7 @@ define(function(require){
                 return margin;
             }
             margin = _x;
+
             return this;
         };
 
@@ -845,11 +851,14 @@ define(function(require){
                 return areaOpacity;
             }
             areaOpacity = _x;
+
             return this;
         };
 
         /**
-         * Gets or Sets the tooltipThreshold of the chart
+         * Gets or Sets the minimum width of the graph in order to show the tooltip
+         * NOTE: This could also depend on the aspect ratio
+         *
          * @param  {Object} _x Margin object to get/set
          * @return { tooltipThreshold | module} Current tooltipThreshold or Area Chart module to chain calls
          * @public
@@ -859,8 +868,11 @@ define(function(require){
                 return tooltipThreshold;
             }
             tooltipThreshold = _x;
+
             return this;
         };
+
+
 
         /**
          * Gets or Sets the valueLabel of the chart
@@ -873,6 +885,7 @@ define(function(require){
                 return valueLabel;
             }
             valueLabel = _x;
+
             return this;
         };
 
@@ -890,6 +903,7 @@ define(function(require){
                 height = Math.ceil(_x * aspectRatio);
             }
             width = _x;
+
             return this;
         };
 
