@@ -18585,7 +18585,7 @@
 	    if (containerWidth) {
 	        d3Selection.select('.js-inline-legend-chart-container .britechart-legend').remove();
 	
-	        legendChart.inline(true).width(containerWidth * 0.6).height(40);
+	        legendChart.horizontal(true).width(containerWidth * 0.6).markerSize(8).height(40);
 	
 	        if (optionalColorSchema) {
 	            legendChart.colorSchema(optionalColorSchema);
@@ -19177,16 +19177,16 @@
 	        },
 	            width = 320,
 	            height = 180,
-	            lineMargin = 12,
-	            circleRadius = 8,
-	            circleYOffset = -5,
 	            textSize = 12,
 	            textLetterSpacing = 0.5,
+	            markerSize = 16,
+	            markerYOffset = -(textSize - 2) / 2,
+	            marginRatio = 1.5,
 	            valueReservedSpace = 40,
 	            numberLetterSpacing = 0.8,
 	            numberFormat = d3Format.format('s'),
 	            isFadedClassName = 'is-faded',
-	            inline = false,
+	            horizontal = false,
 	
 	
 	        // colors
@@ -19228,7 +19228,7 @@
 	
 	                buildColorScale();
 	                buildSVG(this);
-	                if (inline) {
+	                if (horizontal) {
 	                    drawInlineLegend();
 	                } else {
 	                    drawStackedLegend();
@@ -19297,8 +19297,7 @@
 	         * @private
 	         */
 	        function drawInlineLegend() {
-	            var circleSize = 2 * circleRadius;
-	            var xOffset = circleSize;
+	            var xOffset = markerSize;
 	
 	            // We want a single line
 	            svg.select('.legend-group').append('g').classed('legend-line', true);
@@ -19313,12 +19312,12 @@
 	                    verticalOffset = lineHeight,
 	                    labelWidth = textHelper.getTextWidth(d.name, textSize);
 	
-	                xOffset += circleSize + 2 * lineMargin + labelWidth;
+	                xOffset += markerSize + 2 * getLineElementMargin() + labelWidth;
 	
 	                return 'translate(' + horizontalOffset + ',' + verticalOffset + ')';
-	            }).merge(entries).append('circle').classed('legend-circle', true).attr('cx', 0).attr('cy', circleYOffset).attr('r', circleRadius).style('fill', getCircleFill).style('stroke-width', 1);
+	            }).merge(entries).append('circle').classed('legend-circle', true).attr('cx', markerSize / 2).attr('cy', markerYOffset).attr('r', markerSize / 2).style('fill', getCircleFill).style('stroke-width', 1);
 	
-	            svg.select('.legend-group').selectAll('g.legend-entry').append('text').classed('legend-entry-name', true).text(getName).attr('x', lineMargin).style('font-size', textSize + 'px').style('letter-spacing', textLetterSpacing + 'px');
+	            svg.select('.legend-group').selectAll('g.legend-entry').append('text').classed('legend-entry-name', true).text(getName).attr('x', getLineElementMargin()).style('font-size', textSize + 'px').style('letter-spacing', textLetterSpacing + 'px');
 	
 	            // Exit
 	            svg.select('.legend-group').selectAll('g.legend-entry').exit().transition().style('opacity', 0).remove();
@@ -19335,14 +19334,14 @@
 	
 	            // Enter
 	            entries.enter().append('g').classed('legend-line', true).append('g').classed('legend-entry', true).attr('data-item', getId).attr('transform', function (d, i) {
-	                var horizontalOffset = 2 * circleRadius + lineMargin,
+	                var horizontalOffset = markerSize + getLineElementMargin(),
 	                    lineHeight = chartHeight / (data.length + 1),
 	                    verticalOffset = (i + 1) * lineHeight;
 	
 	                return 'translate(' + horizontalOffset + ',' + verticalOffset + ')';
-	            }).merge(entries).append('circle').classed('legend-circle', true).attr('cx', 0).attr('cy', circleYOffset).attr('r', circleRadius).style('fill', getCircleFill).style('stroke-width', 1);
+	            }).merge(entries).append('circle').classed('legend-circle', true).attr('cx', markerSize / 2).attr('cy', markerYOffset).attr('r', markerSize / 2).style('fill', getCircleFill).style('stroke-width', 1);
 	
-	            svg.select('.legend-group').selectAll('g.legend-line').selectAll('g.legend-entry').append('text').classed('legend-entry-name', true).text(getName).attr('x', 2 * circleRadius + lineMargin).style('font-size', textSize + 'px').style('letter-spacing', textLetterSpacing + 'px');
+	            svg.select('.legend-group').selectAll('g.legend-line').selectAll('g.legend-entry').append('text').classed('legend-entry-name', true).text(getName).attr('x', getLineElementMargin()).style('font-size', textSize + 'px').style('letter-spacing', textLetterSpacing + 'px');
 	
 	            svg.select('.legend-group').selectAll('g.legend-line').selectAll('g.legend-entry').append('text').classed('legend-entry-value', true).text(getFormattedQuantity).attr('x', chartWidth - valueReservedSpace).style('font-size', textSize + 'px').style('letter-spacing', numberLetterSpacing + 'px').style('text-anchor', 'end').style('startOffset', '100%');
 	
@@ -19360,6 +19359,14 @@
 	            svg.select('.legend-group').selectAll(classToFade).classed(isFadedClassName, true);
 	
 	            svg.select('[data-item="' + exceptionItemId + '"]').classed(isFadedClassName, false);
+	        }
+	
+	        /**
+	         * Calculates the margin between elements of the legend
+	         * @return {Number} Margin to apply between elements
+	         */
+	        function getLineElementMargin() {
+	            return marginRatio * markerSize;
 	        }
 	
 	        /**
@@ -19409,16 +19416,16 @@
 	        };
 	
 	        /**
-	         * Gets or Sets the inline mode on the legend
-	         * @param  {boolean} _x Desired inline mode for the graph
-	         * @return {inline | module} Current inline mode or Legend module to chain calls
+	         * Gets or Sets the horizontal mode on the legend
+	         * @param  {boolean} _x Desired horizontal mode for the graph
+	         * @return {horizontal | module} Current horizontal mode or Legend module to chain calls
 	         * @public
 	         */
-	        exports.inline = function (_x) {
+	        exports.horizontal = function (_x) {
 	            if (!arguments.length) {
-	                return inline;
+	                return horizontal;
 	            }
-	            inline = _x;
+	            horizontal = _x;
 	
 	            return this;
 	        };
@@ -19434,6 +19441,24 @@
 	                return margin;
 	            }
 	            margin = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the markerSize of the legend chart.
+	         * This markerSize will determine the horizontal and vertical size of the colored marks
+	         * added as color identifiers for the chart's categories.
+	         *
+	         * @param  {object} _x Margin object to get/set
+	         * @return {markerSize | module} Current markerSize or Legend module to chain calls
+	         * @public
+	         */
+	        exports.markerSize = function (_x) {
+	            if (!arguments.length) {
+	                return markerSize;
+	            }
+	            markerSize = _x;
 	
 	            return this;
 	        };
