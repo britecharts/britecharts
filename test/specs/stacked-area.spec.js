@@ -61,6 +61,7 @@ define([
 
         it('should render grid lines', () => {
             expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
+            expect(containerFixture.select('.vertical-grid-line').empty()).toBeTruthy();
         });
 
         it('should render an X and Y axis', () => {
@@ -259,6 +260,18 @@ define([
 
                 expect(defaultOpacity).not.toBe(testOpacity);
                 expect(newOpacity).toBe(testOpacity);
+            });
+
+            it('should provide hasVerticalGrid getter and setter', () => {
+                let defaultVerticalGridState = stackedAreaChart.hasVerticalGrid(),
+                    testValue = true,
+                    newVerticalGridState;
+
+                stackedAreaChart.hasVerticalGrid(testValue);
+                newVerticalGridState = stackedAreaChart.hasVerticalGrid();
+
+                expect(defaultVerticalGridState).not.toBe(testValue);
+                expect(newVerticalGridState).toBe(testValue);
             });
         });
 

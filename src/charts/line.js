@@ -22,8 +22,8 @@ define(function(require){
     } = require('./helpers/constants');
 
     const {
-      formatIntegerValue,
-      formatDecimalValue,
+        formatIntegerValue,
+        formatDecimalValue,
     } = require('./helpers/formatHelpers');
 
     /**
@@ -159,7 +159,11 @@ define(function(require){
             overlayColor = 'rgba(0, 0, 0, 0)',
             verticalMarkerContainer,
             verticalMarkerLine,
-            maskGridLines,
+
+            verticalGridLines,
+            horizontalGridLines,
+            hasVerticalGrid = false,
+
             baseLine,
 
             // extractors
@@ -189,9 +193,8 @@ define(function(require){
                 chartHeight = height - margin.top - margin.bottom;
 
                 buildScales();
-                buildAxis();
                 buildSVG(this);
-                drawGridLines();
+                buildAxis();
                 drawAxis();
                 buildGradient();
                 drawLines();
@@ -268,6 +271,8 @@ define(function(require){
                 .tickSize([0])
                 .tickPadding(tickPadding)
                 .tickFormat(getFormattedValue);
+
+            drawGridLines(minor.tick, yTickNumber);
         }
 
         /**
@@ -508,8 +513,8 @@ define(function(require){
          * Draws grid lines on the background of the chart
          * @return void
          */
-        function drawGridLines(){
-            maskGridLines = svg.select('.grid-lines-group')
+        function drawGridLines(xTicks, yTicks){
+            horizontalGridLines = svg.select('.grid-lines-group')
                 .selectAll('line.horizontal-grid-line')
                 .data(yScale.ticks(5))
                 .enter()
@@ -519,6 +524,19 @@ define(function(require){
                     .attr('x2', chartWidth)
                     .attr('y1', (d) => yScale(d))
                     .attr('y2', (d) => yScale(d));
+
+            if (hasVerticalGrid) {
+                verticalGridLines = svg.select('.grid-lines-group')
+                    .selectAll('line.vertical-grid-line')
+                    .data(xScale.ticks(xTicks))
+                    .enter()
+                        .append('line')
+                        .attr('class', 'vertical-grid-line')
+                        .attr('y1', 0)
+                        .attr('y2', chartHeight)
+                        .attr('x1', (d) => xScale(d))
+                        .attr('x2', (d) => xScale(d));
+            }
 
             //draw a horizontal line to extend x-axis till the edges
             baseLine = svg.select('.grid-lines-group')
@@ -753,6 +771,21 @@ define(function(require){
                 return dateLabel;
             }
             dateLabel = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the vertical grid visibility
+         * @param  {Boolean} _x Desired state for the vertical grid
+         * @return { state | module} Current state of the vertical grid or Area Chart module to chain calls
+         * @public
+         */
+        exports.hasVerticalGrid = function(_x) {
+            if (!arguments.length) {
+                return hasVerticalGrid;
+            }
+            hasVerticalGrid = _x;
+
             return this;
         };
 

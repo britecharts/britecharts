@@ -94,6 +94,7 @@ define([
 
             it('should render grid lines', () => {
                 expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
+                expect(containerFixture.select('.vertical-grid-line').empty()).toBeTruthy();
             });
 
             it('should render an X and Y axis', () => {
@@ -346,16 +347,24 @@ define([
             it('should provide an axisTimeCombinations accessor', () => {
                 let axisTimeCombinations = lineChart.axisTimeCombinations;
 
-let c = constants
-debugger
-
-
                 expect(axisTimeCombinations).toEqual({
                     MINUTE_HOUR: 'minute-hour',
                     HOUR_DAY: 'hour-daymonth',
                     DAY_MONTH: 'day-month',
                     MONTH_YEAR: 'month-year'
                 });
+            });
+
+            it('should provide hasVerticalGrid getter and setter', () => {
+                let defaultVerticalGridState = lineChart.hasVerticalGrid(),
+                    testValue = true,
+                    newVerticalGridState;
+
+                lineChart.hasVerticalGrid(testValue);
+                newVerticalGridState = lineChart.hasVerticalGrid();
+
+                expect(defaultVerticalGridState).not.toBe(testValue);
+                expect(newVerticalGridState).toBe(testValue);
             });
         });
 

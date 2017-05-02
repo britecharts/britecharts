@@ -3231,6 +3231,8 @@
 	            dataByDate = void 0,
 	            dataByDateFormatted = void 0,
 	            dataByDateZeroed = void 0,
+	            verticalGridLines = void 0,
+	            horizontalGridLines = void 0,
 	            maskGridLines = void 0,
 	            tooltipThreshold = 480,
 	            xAxisPadding = {
@@ -3273,9 +3275,8 @@
 	
 	                buildLayers();
 	                buildScales();
-	                buildAxis();
 	                buildSVG(this);
-	                drawGridLines();
+	                buildAxis();
 	                drawAxis();
 	                drawStackedAreas();
 	
@@ -3329,6 +3330,8 @@
 	            xMonthAxis = d3Axis.axisBottom(xScale).ticks(major.tick).tickSize(0, 0).tickFormat(major.format);
 	
 	            yAxis = d3Axis.axisRight(yScale).ticks(yTickNumber).tickSize([0]).tickPadding(tickPadding).tickFormat(getFormattedValue);
+	
+	            drawGridLines(minor.tick, yTickNumber);
 	        }
 	
 	        /**
@@ -3515,11 +3518,17 @@
 	         * Draws grid lines on the background of the chart
 	         * @return void
 	         */
-	        function drawGridLines() {
-	            maskGridLines = svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(yScale.ticks(5)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left - 30).attr('x2', chartWidth).attr('y1', function (d) {
+	        function drawGridLines(xTicks, yTicks) {
+	            horizontalGridLines = svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(yScale.ticks(yTicks)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left - 30).attr('x2', chartWidth).attr('y1', function (d) {
 	                return yScale(d);
 	            }).attr('y2', function (d) {
 	                return yScale(d);
+	            });
+	
+	            verticalGridLines = svg.select('.grid-lines-group').selectAll('line.vertical-grid-line').data(xScale.ticks(xTicks)).enter().append('line').attr('class', 'vertical-grid-line').attr('y1', 0).attr('y2', chartHeight).attr('x1', function (d) {
+	                return xScale(d);
+	            }).attr('x2', function (d) {
+	                return xScale(d);
 	            });
 	
 	            //draw a horizontal line to extend x-axis till the edges
@@ -3771,6 +3780,7 @@
 	                return aspectRatio;
 	            }
 	            aspectRatio = _x;
+	
 	            return this;
 	        };
 	
@@ -3785,6 +3795,7 @@
 	                return colorSchema;
 	            }
 	            colorSchema = _x;
+	
 	            return this;
 	        };
 	
@@ -3799,6 +3810,7 @@
 	                return dateLabel;
 	            }
 	            dateLabel = _x;
+	
 	            return this;
 	        };
 	
@@ -3816,6 +3828,7 @@
 	                width = Math.ceil(_x / aspectRatio);
 	            }
 	            height = _x;
+	
 	            return this;
 	        };
 	
@@ -3830,6 +3843,7 @@
 	                return keyLabel;
 	            }
 	            keyLabel = _x;
+	
 	            return this;
 	        };
 	
@@ -3844,6 +3858,7 @@
 	                return margin;
 	            }
 	            margin = _x;
+	
 	            return this;
 	        };
 	
@@ -3858,11 +3873,14 @@
 	                return areaOpacity;
 	            }
 	            areaOpacity = _x;
+	
 	            return this;
 	        };
 	
 	        /**
-	         * Gets or Sets the tooltipThreshold of the chart
+	         * Gets or Sets the minimum width of the graph in order to show the tooltip
+	         * NOTE: This could also depend on the aspect ratio
+	         *
 	         * @param  {Object} _x Margin object to get/set
 	         * @return { tooltipThreshold | module} Current tooltipThreshold or Area Chart module to chain calls
 	         * @public
@@ -3872,6 +3890,7 @@
 	                return tooltipThreshold;
 	            }
 	            tooltipThreshold = _x;
+	
 	            return this;
 	        };
 	
@@ -3886,6 +3905,7 @@
 	                return valueLabel;
 	            }
 	            valueLabel = _x;
+	
 	            return this;
 	        };
 	
@@ -3903,6 +3923,7 @@
 	                height = Math.ceil(_x * aspectRatio);
 	            }
 	            width = _x;
+	
 	            return this;
 	        };
 	

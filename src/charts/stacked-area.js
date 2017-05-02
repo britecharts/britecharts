@@ -137,7 +137,10 @@ define(function(require){
             dataByDate,
             dataByDateFormatted,
             dataByDateZeroed,
-            maskGridLines,
+
+            verticalGridLines,
+            horizontalGridLines,
+            hasVerticalGrid = false,
 
             tooltipThreshold = 480,
 
@@ -174,9 +177,8 @@ define(function(require){
 
                 buildLayers();
                 buildScales();
-                buildAxis();
                 buildSVG(this);
-                drawGridLines();
+                buildAxis();
                 drawAxis();
                 drawStackedAreas();
 
@@ -243,6 +245,8 @@ define(function(require){
                 .tickSize([0])
                 .tickPadding(tickPadding)
                 .tickFormat(getFormattedValue);
+
+            drawGridLines(minor.tick, yTickNumber);
         }
 
         /**
@@ -460,10 +464,10 @@ define(function(require){
          * Draws grid lines on the background of the chart
          * @return void
          */
-        function drawGridLines(){
-            maskGridLines = svg.select('.grid-lines-group')
+        function drawGridLines(xTicks, yTicks){
+            horizontalGridLines = svg.select('.grid-lines-group')
                 .selectAll('line.horizontal-grid-line')
-                .data(yScale.ticks(5))
+                .data(yScale.ticks(yTicks))
                 .enter()
                     .append('line')
                     .attr('class', 'horizontal-grid-line')
@@ -471,6 +475,19 @@ define(function(require){
                     .attr('x2', chartWidth)
                     .attr('y1', (d) => yScale(d))
                     .attr('y2', (d) => yScale(d));
+
+            if (hasVerticalGrid) {
+                verticalGridLines = svg.select('.grid-lines-group')
+                    .selectAll('line.vertical-grid-line')
+                    .data(xScale.ticks(xTicks))
+                    .enter()
+                        .append('line')
+                        .attr('class', 'vertical-grid-line')
+                        .attr('y1', 0)
+                        .attr('y2', chartHeight)
+                        .attr('x1', (d) => xScale(d))
+                        .attr('x2', (d) => xScale(d));
+            }
 
             //draw a horizontal line to extend x-axis till the edges
             baseLine = svg.select('.grid-lines-group')
@@ -748,6 +765,21 @@ define(function(require){
         // Accessors
 
         /**
+         * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
+         * @param  {Object} _x                  Opacity to get/set
+         * @return { opacity | module}          Current opacity or Area Chart module to chain calls
+         * @public
+         */
+        exports.areaOpacity = function(_x) {
+            if (!arguments.length) {
+                return areaOpacity;
+            }
+            areaOpacity = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the aspect ratio of the chart
          * @param  {Number} _x Desired aspect ratio for the graph
          * @return { (Number | Module) } Current aspect ratio or Area Chart module to chain calls
@@ -788,6 +820,21 @@ define(function(require){
                 return dateLabel;
             }
             dateLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the vertical grid visibility
+         * @param  {Boolean} _x Desired state for the vertical grid
+         * @return { state | module} Current state of the vertical grid or Area Chart module to chain calls
+         * @public
+         */
+        exports.hasVerticalGrid = function(_x) {
+            if (!arguments.length) {
+                return hasVerticalGrid;
+            }
+            hasVerticalGrid = _x;
 
             return this;
         };
@@ -836,21 +883,6 @@ define(function(require){
                 return margin;
             }
             margin = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
-         * @param  {Object} _x                  Opacity to get/set
-         * @return { opacity | module}          Current opacity or Area Chart module to chain calls
-         * @public
-         */
-        exports.areaOpacity = function(_x) {
-            if (!arguments.length) {
-                return areaOpacity;
-            }
-            areaOpacity = _x;
 
             return this;
         };
