@@ -77,7 +77,7 @@ define(function(require){
             textLetterSpacing = 0.5,
 
             markerSize = 16,
-            markerYOffset = -(textSize-2)/2,
+            markerYOffset = - (textSize - 2) / 2,
             marginRatio = 1.5,
 
             valueReservedSpace = 40,
