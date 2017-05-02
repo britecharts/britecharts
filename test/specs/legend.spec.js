@@ -150,13 +150,13 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                     expect(actual).toBe(expected);
                 });
 
-                it('should provide an inline mode getter and setter', () =>{
-                    let previous = legendChart.inline(),
+                it('should provide an horizontal mode getter and setter', () =>{
+                    let previous = legendChart.horizontal(),
                         expected = true,
                         actual;
 
-                    legendChart.inline(expected);
-                    actual = legendChart.inline();
+                    legendChart.horizontal(expected);
+                    actual = legendChart.horizontal();
 
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);
@@ -169,6 +169,18 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
 
                     legendChart.colorSchema(expected);
                     actual = legendChart.colorSchema();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide markerSize getter and setter', () =>{
+                    let previous = legendChart.markerSize(),
+                        expected = 10,
+                        actual;
+
+                    legendChart.markerSize(expected);
+                    actual = legendChart.markerSize();
 
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);
@@ -207,7 +219,7 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
             });
         });
 
-        describe('when legend is inline', () => {
+        describe('when legend is horizontal', () => {
 
             beforeEach(() =>{
                 dataset = aTestDataSet()
@@ -215,7 +227,7 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                             .build();
                 legendChart = legend();
 
-                legendChart.inline(true);
+                legendChart.horizontal(true);
 
                 // DOM Fixture Setup
                 f = jasmine.getFixtures();
