@@ -3190,7 +3190,7 @@
 	            yAxis = void 0,
 	            aspectRatio = null,
 	            monthAxisPadding = 30,
-	            numVerticalTicks = 5,
+	            verticalTicks = 5,
 	            yTickTextYOffset = -8,
 	            yTickTextXOffset = -20,
 	            tickPadding = 5,
@@ -3318,8 +3318,8 @@
 	         * @private
 	         */
 	        function buildAxis() {
-	            var dataTimeSpan = xScale.domain()[1] - xScale.domain()[0];
-	            var yTickNumber = dataTimeSpan < numVerticalTicks - 1 ? dataTimeSpan : numVerticalTicks;
+	            var dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
+	            var yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
 	
 	            var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings),
 	                minor = _timeAxisHelper$getXA.minor,
@@ -3398,21 +3398,16 @@
 	            xScale = d3Scale.scaleTime().domain(d3Array.extent(data, function (_ref3) {
 	                var date = _ref3.date;
 	                return date;
-	            })).range([0, chartWidth]);
+	            })).rangeRound([0, chartWidth]);
 	
-	            yScale = d3Scale.scaleLinear().domain([0, getMaxValueByDate()]).range([chartHeight, 0]).nice([numVerticalTicks - 2]);
+	            yScale = d3Scale.scaleLinear().domain([0, getMaxValueByDate()]).rangeRound([chartHeight, 0]).nice();
 	
 	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(data.map(getName));
-	
-	            // TODO add spread and rest operators to britecharts
-	            /*
-	                let range = colorScale.range();
-	                categoryColorMap = colorScale.domain().reduce((memo, item, i) => ({...memo, [item]: range[i], }), {});
-	             */
 	
 	            var range = colorScale.range();
 	            categoryColorMap = colorScale.domain().reduce(function (memo, item, i) {
 	                memo[item] = range[i];
+	
 	                return memo;
 	            }, {});
 	        }
@@ -3925,6 +3920,21 @@
 	                return valueLabel;
 	            }
 	            valueLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the number of verticalTicks of the yAxis on the chart
+	         * @param  {Number} _x Desired verticalTicks
+	         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
+	         * @public
+	         */
+	        exports.verticalTicks = function (_x) {
+	            if (!arguments.length) {
+	                return verticalTicks;
+	            }
+	            verticalTicks = _x;
 	
 	            return this;
 	        };
@@ -21309,7 +21319,7 @@
 	            valueLabel = 'value',
 	            topicLabel = 'topic',
 	            topicNameLabel = 'topicName',
-	            numVerticalTics = 5,
+	            verticalTicks = 5,
 	            overlay = void 0,
 	            overlayColor = 'rgba(0, 0, 0, 0)',
 	            verticalMarkerContainer = void 0,
@@ -21415,7 +21425,7 @@
 	         */
 	        function buildAxis() {
 	            var dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
-	            var yTickNumber = dataTimeSpan < numVerticalTics - 1 ? dataTimeSpan : numVerticalTics;
+	            var yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
 	
 	            var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings),
 	                minor = _timeAxisHelper$getXA.minor,
@@ -21474,30 +21484,26 @@
 	                var dates = _ref8.dates;
 	                return d3Array.max(dates, getDate);
 	            }),
-	                minY = d3Array.min(dataByTopic, function (_ref9) {
+	                maxY = d3Array.max(dataByTopic, function (_ref9) {
 	                var dates = _ref9.dates;
-	                return d3Array.min(dates, getValue);
-	            }),
-	                maxY = d3Array.max(dataByTopic, function (_ref10) {
-	                var dates = _ref10.dates;
 	                return d3Array.max(dates, getValue);
+	            }),
+	                minY = d3Array.min(dataByTopic, function (_ref10) {
+	                var dates = _ref10.dates;
+	                return d3Array.min(dates, getValue);
 	            });
+	            var yScaleBottomValue = Math.abs(minY) < 0 ? Math.abs(minY) : 0;
 	
-	            xScale = d3Scale.scaleTime().rangeRound([0, chartWidth]).domain([minX, maxX]);
+	            xScale = d3Scale.scaleTime().domain([minX, maxX]).rangeRound([0, chartWidth]);
 	
-	            yScale = d3Scale.scaleLinear().rangeRound([chartHeight, 0]).domain([Math.abs(minY), Math.abs(maxY)]).nice(3);
+	            yScale = d3Scale.scaleLinear().domain([yScaleBottomValue, Math.abs(maxY)]).rangeRound([chartHeight, 0]).nice();
 	
 	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(dataByTopic.map(getTopic));
-	
-	            // TODO add spread and rest operators to britecharts
-	            /*
-	                let range = colorScale.range();
-	                topicColorMap = colorScale.domain().reduce((memo, item, i) => ({...memo, [item]: range[i], }), {});
-	             */
 	
 	            var range = colorScale.range();
 	            topicColorMap = colorScale.domain().reduce(function (memo, item, i) {
 	                memo[item] = range[i];
+	
 	                return memo;
 	            }, {});
 	        }
@@ -21854,6 +21860,19 @@
 	        };
 	
 	        /**
+	         * Exposes the ability to force the chart to show a certain x axis grouping
+	         * @param  {String} _x Desired format
+	         * @return { (String|Module) }    Current format or module to chain calls
+	         */
+	        exports.forceAxisFormat = function (_x) {
+	            if (!arguments.length) {
+	                return forceAxisSettings || defaultAxisSettings;
+	            }
+	            forceAxisSettings = _x;
+	            return this;
+	        };
+	
+	        /**
 	         * Gets or Sets the grid mode.
 	         *
 	         * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
@@ -21865,8 +21884,6 @@
 	                return grid;
 	            }
 	            grid = _x;
-	
-	            return this;
 	        };
 	
 	        /**
@@ -21944,6 +21961,21 @@
 	        };
 	
 	        /**
+	         * Gets or Sets the number of verticalTicks of the yAxis on the chart
+	         * @param  {Number} _x Desired verticalTicks
+	         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
+	         * @public
+	         */
+	        exports.verticalTicks = function (_x) {
+	            if (!arguments.length) {
+	                return verticalTicks;
+	            }
+	            verticalTicks = _x;
+	
+	            return this;
+	        };
+	
+	        /**
 	         * Gets or Sets the width of the chart
 	         * @param  {Number} _x Desired width for the graph
 	         * @return { (Number | Module) } Current width or Line Chart module to chain calls
@@ -21980,19 +22012,6 @@
 	            var value = dispatcher.on.apply(dispatcher, arguments);
 	
 	            return value === dispatcher ? exports : value;
-	        };
-	
-	        /**
-	         * Exposes the ability to force the chart to show a certain x axis grouping
-	         * @param  {String} _x Desired format
-	         * @return { (String|Module) }    Current format or module to chain calls
-	         */
-	        exports.forceAxisFormat = function (_x) {
-	            if (!arguments.length) {
-	                return forceAxisSettings || defaultAxisSettings;
-	            }
-	            forceAxisSettings = _x;
-	            return this;
 	        };
 	
 	        /**

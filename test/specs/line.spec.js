@@ -366,6 +366,18 @@ define([
                 expect(defaultGridMode).not.toBe(testValue);
                 expect(newGridMode).toBe(testValue);
             });
+
+            it('should provide verticalTicks getter and setter', () => {
+                let defaultVerticalTicks = lineChart.verticalTicks(),
+                    testVerticalTicks = 3,
+                    newVerticalTicks;
+
+                lineChart.verticalTicks(testVerticalTicks);
+                newVerticalTicks = lineChart.verticalTicks();
+
+                expect(defaultVerticalTicks).not.toBe(testVerticalTicks);
+                expect(newVerticalTicks).toBe(testVerticalTicks);
+            });
         });
 
         describe('Aspect Ratio', function() {

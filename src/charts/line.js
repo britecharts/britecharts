@@ -153,7 +153,7 @@ define(function(require){
             topicLabel = 'topic',
             topicNameLabel = 'topicName',
 
-            numVerticalTics = 5,
+            verticalTicks = 5,
 
             overlay,
             overlayColor = 'rgba(0, 0, 0, 0)',
@@ -251,7 +251,7 @@ define(function(require){
          */
         function buildAxis() {
             let dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
-            let yTickNumber = dataTimeSpan < numVerticalTics - 1 ? dataTimeSpan : numVerticalTics;
+            let yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
 
             let {minor, major} = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings);
 
@@ -332,32 +332,27 @@ define(function(require){
         function buildScales(){
             let minX = d3Array.min(dataByTopic, ({dates}) => d3Array.min(dates, getDate)),
                 maxX = d3Array.max(dataByTopic, ({dates}) => d3Array.max(dates, getDate)),
-                minY = d3Array.min(dataByTopic, ({dates}) => d3Array.min(dates, getValue)),
-                maxY = d3Array.max(dataByTopic, ({dates}) => d3Array.max(dates, getValue));
+                maxY = d3Array.max(dataByTopic, ({dates}) => d3Array.max(dates, getValue)),
+                minY = d3Array.min(dataByTopic, ({dates}) => d3Array.min(dates, getValue));
+            let yScaleBottomValue = Math.abs(minY) < 0 ? Math.abs(minY) : 0;
 
             xScale = d3Scale.scaleTime()
-                .rangeRound([0, chartWidth])
-                .domain([minX, maxX]);
+                .domain([minX, maxX])
+                .rangeRound([0, chartWidth]);
 
             yScale = d3Scale.scaleLinear()
+                .domain([yScaleBottomValue, Math.abs(maxY)])
                 .rangeRound([chartHeight, 0])
-                .domain([Math.abs(minY), Math.abs(maxY)])
-                .nice(3);
+                .nice();
 
             colorScale = d3Scale.scaleOrdinal()
                 .range(colorSchema)
                 .domain(dataByTopic.map(getTopic));
 
-
-            // TODO add spread and rest operators to britecharts
-            /*
-                let range = colorScale.range();
-                topicColorMap = colorScale.domain().reduce((memo, item, i) => ({...memo, [item]: range[i], }), {});
-             */
-
             let range = colorScale.range();
             topicColorMap = colorScale.domain().reduce((memo, item, i) => {
                 memo[item] = range[i];
+
                 return memo;
             }, {});
         }
@@ -745,6 +740,7 @@ define(function(require){
                 return aspectRatio;
             }
             aspectRatio = _x;
+
             return this;
         };
 
@@ -759,6 +755,7 @@ define(function(require){
                 return colorSchema;
             }
             colorSchema = _x;
+
             return this;
         };
 
@@ -773,6 +770,21 @@ define(function(require){
                 return dateLabel;
             }
             dateLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Exposes the ability to force the chart to show a certain x axis grouping
+         * @param  {String} _x Desired format
+         * @return { (String|Module) }    Current format or module to chain calls
+         */
+        exports.forceAxisFormat = function(_x) {
+            if (!arguments.length) {
+              return forceAxisSettings || defaultAxisSettings;
+            }
+            forceAxisSettings = _x;
+
             return this;
         };
 
@@ -806,6 +818,7 @@ define(function(require){
                 width = Math.ceil(_x / aspectRatio);
             }
             height = _x;
+
             return this;
         };
 
@@ -820,6 +833,7 @@ define(function(require){
                 return margin;
             }
             margin = _x;
+
             return this;
         };
 
@@ -835,6 +849,7 @@ define(function(require){
                 return tooltipThreshold;
             }
             tooltipThreshold = _x;
+
             return this;
         };
 
@@ -849,6 +864,7 @@ define(function(require){
                 return topicLabel;
             }
             topicLabel = _x;
+
             return this;
         };
 
@@ -863,6 +879,22 @@ define(function(require){
                 return valueLabel;
             }
             valueLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the number of verticalTicks of the yAxis on the chart
+         * @param  {Number} _x Desired verticalTicks
+         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
+         * @public
+         */
+        exports.verticalTicks = function(_x) {
+            if (!arguments.length) {
+                return verticalTicks;
+            }
+            verticalTicks = _x;
+
             return this;
         };
 
@@ -880,6 +912,7 @@ define(function(require){
                 height = Math.ceil(_x * aspectRatio);
             }
             width = _x;
+
             return this;
         };
 
@@ -903,19 +936,6 @@ define(function(require){
             let value = dispatcher.on.apply(dispatcher, arguments);
 
             return value === dispatcher ? exports : value;
-        };
-
-        /**
-         * Exposes the ability to force the chart to show a certain x axis grouping
-         * @param  {String} _x Desired format
-         * @return { (String|Module) }    Current format or module to chain calls
-         */
-        exports.forceAxisFormat = function(_x) {
-            if (!arguments.length) {
-              return forceAxisSettings || defaultAxisSettings;
-            }
-            forceAxisSettings = _x;
-            return this;
         };
 
         /**
