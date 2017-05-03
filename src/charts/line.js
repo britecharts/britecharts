@@ -740,6 +740,7 @@ define(function(require){
                 return aspectRatio;
             }
             aspectRatio = _x;
+
             return this;
         };
 
@@ -754,6 +755,7 @@ define(function(require){
                 return colorSchema;
             }
             colorSchema = _x;
+
             return this;
         };
 
@@ -768,6 +770,7 @@ define(function(require){
                 return dateLabel;
             }
             dateLabel = _x;
+
             return this;
         };
 
@@ -781,6 +784,7 @@ define(function(require){
               return forceAxisSettings || defaultAxisSettings;
             }
             forceAxisSettings = _x;
+
             return this;
         };
 
@@ -796,6 +800,8 @@ define(function(require){
                 return grid;
             }
             grid = _x;
+
+            return this;
         };
 
         /**
@@ -812,6 +818,7 @@ define(function(require){
                 width = Math.ceil(_x / aspectRatio);
             }
             height = _x;
+
             return this;
         };
 
@@ -826,6 +833,7 @@ define(function(require){
                 return margin;
             }
             margin = _x;
+
             return this;
         };
 
@@ -841,6 +849,7 @@ define(function(require){
                 return tooltipThreshold;
             }
             tooltipThreshold = _x;
+
             return this;
         };
 
@@ -855,6 +864,7 @@ define(function(require){
                 return topicLabel;
             }
             topicLabel = _x;
+
             return this;
         };
 
@@ -869,6 +879,7 @@ define(function(require){
                 return valueLabel;
             }
             valueLabel = _x;
+
             return this;
         };
 
@@ -901,6 +912,7 @@ define(function(require){
                 height = Math.ceil(_x * aspectRatio);
             }
             width = _x;
+
             return this;
         };
 
