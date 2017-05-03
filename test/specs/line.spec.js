@@ -93,7 +93,8 @@ define([
             });
 
             it('should render grid lines', () => {
-                expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
+                expect(containerFixture.select('.horizontal-grid-line').empty()).toBeTruthy();
+                expect(containerFixture.select('.vertical-grid-line').empty()).toBeTruthy();
             });
 
             it('should render an X and Y axis', () => {
@@ -346,16 +347,24 @@ define([
             it('should provide an axisTimeCombinations accessor', () => {
                 let axisTimeCombinations = lineChart.axisTimeCombinations;
 
-let c = constants
-debugger
-
-
                 expect(axisTimeCombinations).toEqual({
                     MINUTE_HOUR: 'minute-hour',
                     HOUR_DAY: 'hour-daymonth',
                     DAY_MONTH: 'day-month',
                     MONTH_YEAR: 'month-year'
                 });
+            });
+
+            it('should provide grid mode getter and setter', () => {
+                let defaultGridMode = lineChart.grid(),
+                    testValue = 'vertical',
+                    newGridMode;
+
+                lineChart.grid(testValue);
+                newGridMode = lineChart.grid();
+
+                expect(defaultGridMode).not.toBe(testValue);
+                expect(newGridMode).toBe(testValue);
             });
         });
 
@@ -393,6 +402,70 @@ debugger
 
             it('should have exportChart defined', () => {
                 expect(lineChart.exportChart).toBeDefined();
+            });
+        });
+
+        describe('Grid', function() {
+
+            beforeEach(() => {
+                dataset = aTestDataSet().with5Topics().build();
+
+                // DOM Fixture Setup
+                f = jasmine.getFixtures();
+                f.fixturesPath = 'base/test/fixtures/';
+                f.load('testContainer.html');
+            });
+
+            afterEach(() => {
+                containerFixture.remove();
+                f = jasmine.getFixtures();
+                f.cleanUp();
+                f.clearCache();
+            });
+
+            describe('when grid is horizontal', function() {
+
+                beforeEach(function() {
+                    lineChart = chart().grid('horizontal');
+
+                    containerFixture = d3.select('.test-container').append('svg');
+                    containerFixture.datum(dataset).call(lineChart);
+                });
+
+                it('should render the horizontal grid lines', () => {
+                    expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
+                    expect(containerFixture.select('.vertical-grid-line').empty()).toBeTruthy();
+                });
+            });
+
+            describe('when grid is vertical', function() {
+
+                beforeEach(function() {
+                    lineChart = chart().grid('vertical');
+
+                    containerFixture = d3.select('.test-container').append('svg');
+                    containerFixture.datum(dataset).call(lineChart);
+                });
+
+                it('should render the vertical grid lines', () => {
+                    expect(containerFixture.select('.horizontal-grid-line').empty()).toBeTruthy();
+                    expect(containerFixture.select('.vertical-grid-line').empty()).toBeFalsy();
+                });
+            });
+
+            describe('when grid is full', function() {
+
+                beforeEach(function() {
+                    lineChart = chart().grid('full');
+
+                    containerFixture = d3.select('.test-container').append('svg');
+                    containerFixture.datum(dataset).call(lineChart);
+                });
+
+                it('should render the vertical grid lines', () => {
+                    expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
+                    expect(containerFixture.select('.vertical-grid-line').empty()).toBeFalsy();
+                });
             });
         });
     });

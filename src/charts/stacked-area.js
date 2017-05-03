@@ -137,7 +137,10 @@ define(function(require){
             dataByDate,
             dataByDateFormatted,
             dataByDateZeroed,
-            maskGridLines,
+
+            verticalGridLines,
+            horizontalGridLines,
+            grid = null,
 
             tooltipThreshold = 480,
 
@@ -174,9 +177,8 @@ define(function(require){
 
                 buildLayers();
                 buildScales();
-                buildAxis();
                 buildSVG(this);
-                drawGridLines();
+                buildAxis();
                 drawAxis();
                 drawStackedAreas();
 
@@ -243,6 +245,8 @@ define(function(require){
                 .tickSize([0])
                 .tickPadding(tickPadding)
                 .tickFormat(getFormattedValue);
+
+            drawGridLines(minor.tick, yTickNumber);
         }
 
         /**
@@ -460,17 +464,32 @@ define(function(require){
          * Draws grid lines on the background of the chart
          * @return void
          */
-        function drawGridLines(){
-            maskGridLines = svg.select('.grid-lines-group')
-                .selectAll('line.horizontal-grid-line')
-                .data(yScale.ticks(5))
-                .enter()
-                    .append('line')
-                    .attr('class', 'horizontal-grid-line')
-                    .attr('x1', (-xAxisPadding.left - 30))
-                    .attr('x2', chartWidth)
-                    .attr('y1', (d) => yScale(d))
-                    .attr('y2', (d) => yScale(d));
+        function drawGridLines(xTicks, yTicks){
+            if (grid === 'horizontal' || grid === 'full') {
+                horizontalGridLines = svg.select('.grid-lines-group')
+                    .selectAll('line.horizontal-grid-line')
+                    .data(yScale.ticks(yTicks))
+                    .enter()
+                        .append('line')
+                        .attr('class', 'horizontal-grid-line')
+                        .attr('x1', (-xAxisPadding.left - 30))
+                        .attr('x2', chartWidth)
+                        .attr('y1', (d) => yScale(d))
+                        .attr('y2', (d) => yScale(d));
+            }
+
+            if (grid === 'vertical' || grid === 'full') {
+                verticalGridLines = svg.select('.grid-lines-group')
+                    .selectAll('line.vertical-grid-line')
+                    .data(xScale.ticks(xTicks))
+                    .enter()
+                        .append('line')
+                        .attr('class', 'vertical-grid-line')
+                        .attr('y1', 0)
+                        .attr('y2', chartHeight)
+                        .attr('x1', (d) => xScale(d))
+                        .attr('x2', (d) => xScale(d));
+            }
 
             //draw a horizontal line to extend x-axis till the edges
             baseLine = svg.select('.grid-lines-group')
@@ -748,6 +767,21 @@ define(function(require){
         // Accessors
 
         /**
+         * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
+         * @param  {Object} _x                  Opacity to get/set
+         * @return { opacity | module}          Current opacity or Area Chart module to chain calls
+         * @public
+         */
+        exports.areaOpacity = function(_x) {
+            if (!arguments.length) {
+                return areaOpacity;
+            }
+            areaOpacity = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the aspect ratio of the chart
          * @param  {Number} _x Desired aspect ratio for the graph
          * @return { (Number | Module) } Current aspect ratio or Area Chart module to chain calls
@@ -758,6 +792,7 @@ define(function(require){
                 return aspectRatio;
             }
             aspectRatio = _x;
+
             return this;
         };
 
@@ -772,6 +807,7 @@ define(function(require){
                 return colorSchema;
             }
             colorSchema = _x;
+
             return this;
         };
 
@@ -786,6 +822,23 @@ define(function(require){
                 return dateLabel;
             }
             dateLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the grid mode.
+         *
+         * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
+         * @return { String | module} Current mode of the grid or Area Chart module to chain calls
+         * @public
+         */
+        exports.grid = function(_x) {
+            if (!arguments.length) {
+                return grid;
+            }
+            grid = _x;
+
             return this;
         };
 
@@ -803,6 +856,7 @@ define(function(require){
                 width = Math.ceil(_x / aspectRatio);
             }
             height = _x;
+
             return this;
         };
 
@@ -817,6 +871,7 @@ define(function(require){
                 return keyLabel;
             }
             keyLabel = _x;
+
             return this;
         };
 
@@ -831,25 +886,14 @@ define(function(require){
                 return margin;
             }
             margin = _x;
+
             return this;
         };
 
         /**
-         * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
-         * @param  {Object} _x                  Opacity to get/set
-         * @return { opacity | module}          Current opacity or Area Chart module to chain calls
-         * @public
-         */
-        exports.areaOpacity = function(_x) {
-            if (!arguments.length) {
-                return areaOpacity;
-            }
-            areaOpacity = _x;
-            return this;
-        };
-
-        /**
-         * Gets or Sets the tooltipThreshold of the chart
+         * Gets or Sets the minimum width of the graph in order to show the tooltip
+         * NOTE: This could also depend on the aspect ratio
+         *
          * @param  {Object} _x Margin object to get/set
          * @return { tooltipThreshold | module} Current tooltipThreshold or Area Chart module to chain calls
          * @public
@@ -859,8 +903,11 @@ define(function(require){
                 return tooltipThreshold;
             }
             tooltipThreshold = _x;
+
             return this;
         };
+
+
 
         /**
          * Gets or Sets the valueLabel of the chart
@@ -873,6 +920,7 @@ define(function(require){
                 return valueLabel;
             }
             valueLabel = _x;
+
             return this;
         };
 
@@ -890,6 +938,7 @@ define(function(require){
                 height = Math.ceil(_x * aspectRatio);
             }
             width = _x;
+
             return this;
         };
 
