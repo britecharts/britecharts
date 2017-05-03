@@ -2956,7 +2956,11 @@
 	        // dataset = testDataSet.withLargeData().build();
 	
 	        // StackedAreChart Setup and start
+<<<<<<< HEAD
 	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', function () {
+=======
+	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).verticalTicks(6).width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', function () {
+>>>>>>> Adding vertical ticks  getter/setter on line and area
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -3190,7 +3194,7 @@
 	            yAxis = void 0,
 	            aspectRatio = null,
 	            monthAxisPadding = 30,
-	            numVerticalTicks = 5,
+	            verticalTicks = 5,
 	            yTickTextYOffset = -8,
 	            yTickTextXOffset = -20,
 	            tickPadding = 5,
@@ -3318,8 +3322,8 @@
 	         * @private
 	         */
 	        function buildAxis() {
-	            var dataTimeSpan = xScale.domain()[1] - xScale.domain()[0];
-	            var yTickNumber = dataTimeSpan < numVerticalTicks - 1 ? dataTimeSpan : numVerticalTicks;
+	            var dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
+	            var yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
 	
 	            var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings),
 	                minor = _timeAxisHelper$getXA.minor,
@@ -3398,9 +3402,9 @@
 	            xScale = d3Scale.scaleTime().domain(d3Array.extent(data, function (_ref3) {
 	                var date = _ref3.date;
 	                return date;
-	            })).range([0, chartWidth]);
+	            })).rangeRound([0, chartWidth]);
 	
-	            yScale = d3Scale.scaleLinear().domain([0, getMaxValueByDate()]).range([chartHeight, 0]).nice([numVerticalTicks - 2]);
+	            yScale = d3Scale.scaleLinear().domain([0, getMaxValueByDate()]).rangeRound([chartHeight, 0]).nice();
 	
 	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(data.map(getName));
 	
@@ -3925,6 +3929,21 @@
 	                return valueLabel;
 	            }
 	            valueLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the number of verticalTicks of the yAxis on the chart
+	         * @param  {Number} _x Desired verticalTicks
+	         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
+	         * @public
+	         */
+	        exports.verticalTicks = function (_x) {
+	            if (!arguments.length) {
+	                return verticalTicks;
+	            }
+	            verticalTicks = _x;
 	
 	            return this;
 	        };
@@ -21474,18 +21493,19 @@
 	                var dates = _ref8.dates;
 	                return d3Array.max(dates, getDate);
 	            }),
-	                minY = d3Array.min(dataByTopic, function (_ref9) {
+	                maxY = d3Array.max(dataByTopic, function (_ref9) {
 	                var dates = _ref9.dates;
-	                return d3Array.min(dates, getValue);
-	            }),
-	                maxY = d3Array.max(dataByTopic, function (_ref10) {
-	                var dates = _ref10.dates;
 	                return d3Array.max(dates, getValue);
+	            }),
+	                minY = d3Array.min(dataByTopic, function (_ref10) {
+	                var dates = _ref10.dates;
+	                return d3Array.min(dates, getValue);
 	            });
+	            var yScaleBottomValue = Math.abs(minY) < 0 ? Math.abs(minY) : 0;
 	
 	            xScale = d3Scale.scaleTime().rangeRound([0, chartWidth]).domain([minX, maxX]);
 	
-	            yScale = d3Scale.scaleLinear().rangeRound([chartHeight, 0]).domain([Math.abs(minY), Math.abs(maxY)]).nice(3);
+	            yScale = d3Scale.scaleLinear().rangeRound([chartHeight, 0]).domain([yScaleBottomValue, Math.abs(maxY)]).nice();
 	
 	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(dataByTopic.map(getTopic));
 	

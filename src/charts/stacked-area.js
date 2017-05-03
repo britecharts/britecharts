@@ -88,7 +88,7 @@ define(function(require){
             aspectRatio = null,
 
             monthAxisPadding = 30,
-            numVerticalTicks = 5,
+            verticalTicks = 5,
             yTickTextYOffset = -8,
             yTickTextXOffset = -20,
             tickPadding = 5,
@@ -224,8 +224,8 @@ define(function(require){
          * @private
          */
         function buildAxis() {
-            let dataTimeSpan = xScale.domain()[1] - xScale.domain()[0];
-            let yTickNumber = dataTimeSpan < numVerticalTicks - 1 ? dataTimeSpan : numVerticalTicks;
+            let dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
+            let yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
 
             let {minor, major} = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings);
 
@@ -327,28 +327,23 @@ define(function(require){
         function buildScales() {
             xScale = d3Scale.scaleTime()
                 .domain(d3Array.extent(data, ({date}) => date))
-                .range([0, chartWidth]);
+                .rangeRound([0, chartWidth]);
 
             yScale = d3Scale.scaleLinear()
                 .domain([0, getMaxValueByDate()])
-                .range([chartHeight, 0])
-                .nice([numVerticalTicks - 2]);
+                .rangeRound([chartHeight, 0])
+                .nice();
 
             colorScale = d3Scale.scaleOrdinal()
-                  .range(colorSchema)
-                  .domain(data.map(getName));
-
-            // TODO add spread and rest operators to britecharts
-            /*
-                let range = colorScale.range();
-                categoryColorMap = colorScale.domain().reduce((memo, item, i) => ({...memo, [item]: range[i], }), {});
-             */
+                .range(colorSchema)
+                .domain(data.map(getName));
 
             let range = colorScale.range();
             categoryColorMap = colorScale
                 .domain()
                 .reduce((memo, item, i) => {
                     memo[item] = range[i];
+
                     return memo;
                 }, {});
         }
@@ -920,6 +915,21 @@ define(function(require){
                 return valueLabel;
             }
             valueLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the number of verticalTicks of the yAxis on the chart
+         * @param  {Number} _x Desired verticalTicks
+         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
+         * @public
+         */
+        exports.verticalTicks = function(_x) {
+            if (!arguments.length) {
+                return verticalTicks;
+            }
+            verticalTicks = _x;
 
             return this;
         };
