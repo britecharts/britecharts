@@ -33,6 +33,7 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
         stackedArea
             .tooltipThreshold(600)
             .width(containerWidth)
+            .grid('horizontal')
             // .dateLabel('dateUTC')
             // .valueLabel('views')
             .on('customMouseOver', function() {
@@ -86,6 +87,7 @@ function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
         stackedArea
             .tooltipThreshold(600)
             .aspectRatio(0.6)
+            .grid('full')
             .width(containerWidth)
             .dateLabel('dateUTC')
             .valueLabel('views')

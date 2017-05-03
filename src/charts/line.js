@@ -22,8 +22,8 @@ define(function(require){
     } = require('./helpers/constants');
 
     const {
-      formatIntegerValue,
-      formatDecimalValue,
+        formatIntegerValue,
+        formatDecimalValue,
     } = require('./helpers/formatHelpers');
 
     /**
@@ -159,7 +159,11 @@ define(function(require){
             overlayColor = 'rgba(0, 0, 0, 0)',
             verticalMarkerContainer,
             verticalMarkerLine,
-            maskGridLines,
+
+            verticalGridLines,
+            horizontalGridLines,
+            grid = null,
+
             baseLine,
 
             // extractors
@@ -189,9 +193,8 @@ define(function(require){
                 chartHeight = height - margin.top - margin.bottom;
 
                 buildScales();
-                buildAxis();
                 buildSVG(this);
-                drawGridLines();
+                buildAxis();
                 drawAxis();
                 buildGradient();
                 drawLines();
@@ -268,6 +271,8 @@ define(function(require){
                 .tickSize([0])
                 .tickPadding(tickPadding)
                 .tickFormat(getFormattedValue);
+
+            drawGridLines(minor.tick, yTickNumber);
         }
 
         /**
@@ -508,17 +513,32 @@ define(function(require){
          * Draws grid lines on the background of the chart
          * @return void
          */
-        function drawGridLines(){
-            maskGridLines = svg.select('.grid-lines-group')
-                .selectAll('line.horizontal-grid-line')
-                .data(yScale.ticks(5))
-                .enter()
-                    .append('line')
-                    .attr('class', 'horizontal-grid-line')
-                    .attr('x1', (-xAxisPadding.left - 30))
-                    .attr('x2', chartWidth)
-                    .attr('y1', (d) => yScale(d))
-                    .attr('y2', (d) => yScale(d));
+        function drawGridLines(xTicks, yTicks){
+            if (grid === 'horizontal' || grid === 'full') {
+                horizontalGridLines = svg.select('.grid-lines-group')
+                    .selectAll('line.horizontal-grid-line')
+                    .data(yScale.ticks(yTicks))
+                    .enter()
+                        .append('line')
+                        .attr('class', 'horizontal-grid-line')
+                        .attr('x1', (-xAxisPadding.left - 30))
+                        .attr('x2', chartWidth)
+                        .attr('y1', (d) => yScale(d))
+                        .attr('y2', (d) => yScale(d));
+            }
+
+            if (grid === 'vertical' || grid === 'full') {
+                verticalGridLines = svg.select('.grid-lines-group')
+                    .selectAll('line.vertical-grid-line')
+                    .data(xScale.ticks(xTicks))
+                    .enter()
+                        .append('line')
+                        .attr('class', 'vertical-grid-line')
+                        .attr('y1', 0)
+                        .attr('y2', chartHeight)
+                        .attr('x1', (d) => xScale(d))
+                        .attr('x2', (d) => xScale(d));
+            }
 
             //draw a horizontal line to extend x-axis till the edges
             baseLine = svg.select('.grid-lines-group')
@@ -544,8 +564,8 @@ define(function(require){
                 .attr('class','overlay')
                 .attr('y1', 0)
                 .attr('y2', height)
-                .attr('height', height - margin.top - margin.bottom)
-                .attr('width', width - margin.left - margin.right)
+                .attr('height', chartHeight)
+                .attr('width', chartWidth)
                 .attr('fill', overlayColor)
                 .style('display', 'none');
         }
@@ -571,7 +591,7 @@ define(function(require){
               .append('line')
                 .classed('vertical-marker', true)
                 .attr('x1', 0)
-                .attr('y1', height - margin.top - margin.bottom)
+                .attr('y1', chartHeight)
                 .attr('x2', 0)
                 .attr('y2', 0);
         }
@@ -753,6 +773,22 @@ define(function(require){
                 return dateLabel;
             }
             dateLabel = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the grid mode.
+         *
+         * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
+         * @return { String | module} Current mode of the grid or Line Chart module to chain calls
+         * @public
+         */
+        exports.grid = function(_x) {
+            if (!arguments.length) {
+                return grid;
+            }
+            grid = _x;
+
             return this;
         };
 
