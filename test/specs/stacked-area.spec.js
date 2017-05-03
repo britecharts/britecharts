@@ -59,8 +59,8 @@ define([
             expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
         });
 
-        it('should render grid lines', () => {
-            expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
+        it('should not render grid lines', () => {
+            expect(containerFixture.select('.horizontal-grid-line').empty()).toBeTruthy();
             expect(containerFixture.select('.vertical-grid-line').empty()).toBeTruthy();
         });
 
@@ -262,16 +262,16 @@ define([
                 expect(newOpacity).toBe(testOpacity);
             });
 
-            it('should provide hasVerticalGrid getter and setter', () => {
-                let defaultVerticalGridState = stackedAreaChart.hasVerticalGrid(),
-                    testValue = true,
-                    newVerticalGridState;
+            it('should provide grid mode getter and setter', () => {
+                let defaultGridMode = stackedAreaChart.grid(),
+                    testValue = 'vertical',
+                    newGridMode;
 
-                stackedAreaChart.hasVerticalGrid(testValue);
-                newVerticalGridState = stackedAreaChart.hasVerticalGrid();
+                stackedAreaChart.grid(testValue);
+                newGridMode = stackedAreaChart.grid();
 
-                expect(defaultVerticalGridState).not.toBe(testValue);
-                expect(newVerticalGridState).toBe(testValue);
+                expect(defaultGridMode).not.toBe(testValue);
+                expect(newGridMode).toBe(testValue);
             });
         });
 
@@ -309,6 +309,66 @@ define([
 
             it('should have exportChart defined', () => {
                 expect(stackedAreaChart.exportChart).toBeDefined();
+            });
+        });
+
+        describe('Grid', function() {
+
+            describe('when grid is horizontal', function() {
+
+                beforeEach(function() {
+                    dataset = aTestDataSet().withReportData().build();
+                    stackedAreaChart = stackedArea()
+                                        .grid('horizontal')
+                                        .valueLabel('views')
+                                        .dateLabel('dateUTC');
+
+                    containerFixture = d3.select('.test-container').append('svg');
+                    containerFixture.datum(dataset.data).call(stackedAreaChart);
+                });
+
+                it('should render the horizontal grid lines', () => {
+                    expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
+                    expect(containerFixture.select('.vertical-grid-line').empty()).toBeTruthy();
+                });
+            });
+
+            describe('when grid is vertical', function() {
+
+                beforeEach(function() {
+                    dataset = aTestDataSet().withReportData().build();
+                    stackedAreaChart = stackedArea()
+                                        .grid('vertical')
+                                        .valueLabel('views')
+                                        .dateLabel('dateUTC');
+
+                    containerFixture = d3.select('.test-container').append('svg');
+                    containerFixture.datum(dataset.data).call(stackedAreaChart);
+                });
+
+                it('should render the vertical grid lines', () => {
+                    expect(containerFixture.select('.horizontal-grid-line').empty()).toBeTruthy();
+                    expect(containerFixture.select('.vertical-grid-line').empty()).toBeFalsy();
+                });
+            });
+
+            describe('when grid is full', function() {
+
+                beforeEach(function() {
+                    dataset = aTestDataSet().withReportData().build();
+                    stackedAreaChart = stackedArea()
+                                        .grid('full')
+                                        .valueLabel('views')
+                                        .dateLabel('dateUTC');
+
+                    containerFixture = d3.select('.test-container').append('svg');
+                    containerFixture.datum(dataset.data).call(stackedAreaChart);
+                });
+
+                it('should render the vertical grid lines', () => {
+                    expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
+                    expect(containerFixture.select('.vertical-grid-line').empty()).toBeFalsy();
+                });
             });
         });
     });

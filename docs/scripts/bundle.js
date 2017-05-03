@@ -2909,7 +2909,7 @@
 	        // dataset = testDataSet.withGeneratedData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).width(containerWidth)
+	        stackedArea.tooltipThreshold(600).width(containerWidth).grid('horizontal')
 	        // .dateLabel('dateUTC')
 	        // .valueLabel('views')
 	        .on('customMouseOver', function () {
@@ -2956,7 +2956,7 @@
 	        // dataset = testDataSet.withLargeData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', function () {
+	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -3233,7 +3233,7 @@
 	            dataByDateZeroed = void 0,
 	            verticalGridLines = void 0,
 	            horizontalGridLines = void 0,
-	            maskGridLines = void 0,
+	            grid = null,
 	            tooltipThreshold = 480,
 	            xAxisPadding = {
 	            top: 0,
@@ -3519,17 +3519,21 @@
 	         * @return void
 	         */
 	        function drawGridLines(xTicks, yTicks) {
-	            horizontalGridLines = svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(yScale.ticks(yTicks)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left - 30).attr('x2', chartWidth).attr('y1', function (d) {
-	                return yScale(d);
-	            }).attr('y2', function (d) {
-	                return yScale(d);
-	            });
+	            if (grid === 'horizontal' || grid === 'full') {
+	                horizontalGridLines = svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(yScale.ticks(yTicks)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left - 30).attr('x2', chartWidth).attr('y1', function (d) {
+	                    return yScale(d);
+	                }).attr('y2', function (d) {
+	                    return yScale(d);
+	                });
+	            }
 	
-	            verticalGridLines = svg.select('.grid-lines-group').selectAll('line.vertical-grid-line').data(xScale.ticks(xTicks)).enter().append('line').attr('class', 'vertical-grid-line').attr('y1', 0).attr('y2', chartHeight).attr('x1', function (d) {
-	                return xScale(d);
-	            }).attr('x2', function (d) {
-	                return xScale(d);
-	            });
+	            if (grid === 'vertical' || grid === 'full') {
+	                verticalGridLines = svg.select('.grid-lines-group').selectAll('line.vertical-grid-line').data(xScale.ticks(xTicks)).enter().append('line').attr('class', 'vertical-grid-line').attr('y1', 0).attr('y2', chartHeight).attr('x1', function (d) {
+	                    return xScale(d);
+	                }).attr('x2', function (d) {
+	                    return xScale(d);
+	                });
+	            }
 	
 	            //draw a horizontal line to extend x-axis till the edges
 	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-x-line').data([0]).enter().append('line').attr('class', 'extended-x-line').attr('x1', -xAxisPadding.left - 30).attr('x2', chartWidth).attr('y1', height - margin.bottom - margin.top).attr('y2', height - margin.bottom - margin.top);
@@ -3770,6 +3774,21 @@
 	        // Accessors
 	
 	        /**
+	         * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
+	         * @param  {Object} _x                  Opacity to get/set
+	         * @return { opacity | module}          Current opacity or Area Chart module to chain calls
+	         * @public
+	         */
+	        exports.areaOpacity = function (_x) {
+	            if (!arguments.length) {
+	                return areaOpacity;
+	            }
+	            areaOpacity = _x;
+	
+	            return this;
+	        };
+	
+	        /**
 	         * Gets or Sets the aspect ratio of the chart
 	         * @param  {Number} _x Desired aspect ratio for the graph
 	         * @return { (Number | Module) } Current aspect ratio or Area Chart module to chain calls
@@ -3810,6 +3829,22 @@
 	                return dateLabel;
 	            }
 	            dateLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the grid mode.
+	         *
+	         * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
+	         * @return { String | module} Current mode of the grid or Area Chart module to chain calls
+	         * @public
+	         */
+	        exports.grid = function (_x) {
+	            if (!arguments.length) {
+	                return grid;
+	            }
+	            grid = _x;
 	
 	            return this;
 	        };
@@ -3858,21 +3893,6 @@
 	                return margin;
 	            }
 	            margin = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
-	         * @param  {Object} _x                  Opacity to get/set
-	         * @return { opacity | module}          Current opacity or Area Chart module to chain calls
-	         * @public
-	         */
-	        exports.areaOpacity = function (_x) {
-	            if (!arguments.length) {
-	                return areaOpacity;
-	            }
-	            areaOpacity = _x;
 	
 	            return this;
 	        };
@@ -19689,7 +19709,7 @@
 	        dataset = testDataSet.with5Topics().build();
 	
 	        // LineChart Setup and start
-	        lineChart1.aspectRatio(0.5).tooltipThreshold(600).width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
+	        lineChart1.aspectRatio(0.5).grid('horizontal').tooltipThreshold(600).width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -19738,7 +19758,7 @@
 	            lineChart2.exportChart('linechart.png', 'Britecharts LÍne Chart');
 	        });
 	
-	        lineChart2.tooltipThreshold(600).height(500).width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
+	        lineChart2.tooltipThreshold(600).height(500).grid('horizontal').width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -19770,7 +19790,7 @@
 	    if (containerWidth) {
 	        dataset = testDataSet.with5Topics().build();
 	
-	        lineChart3.height(300).width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
+	        lineChart3.height(300).width(containerWidth).grid('full').dateLabel('fullDate').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -21294,7 +21314,9 @@
 	            overlayColor = 'rgba(0, 0, 0, 0)',
 	            verticalMarkerContainer = void 0,
 	            verticalMarkerLine = void 0,
-	            maskGridLines = void 0,
+	            verticalGridLines = void 0,
+	            horizontalGridLines = void 0,
+	            grid = null,
 	            baseLine = void 0,
 	
 	
@@ -21339,9 +21361,8 @@
 	                chartHeight = height - margin.top - margin.bottom;
 	
 	                buildScales();
-	                buildAxis();
 	                buildSVG(this);
-	                drawGridLines();
+	                buildAxis();
 	                drawAxis();
 	                buildGradient();
 	                drawLines();
@@ -21405,6 +21426,8 @@
 	            xMonthAxis = d3Axis.axisBottom(xScale).ticks(major.tick).tickSize(0, 0).tickFormat(major.format);
 	
 	            yAxis = d3Axis.axisLeft(yScale).ticks(yTickNumber).tickSize([0]).tickPadding(tickPadding).tickFormat(getFormattedValue);
+	
+	            drawGridLines(minor.tick, yTickNumber);
 	        }
 	
 	        /**
@@ -21607,12 +21630,22 @@
 	         * Draws grid lines on the background of the chart
 	         * @return void
 	         */
-	        function drawGridLines() {
-	            maskGridLines = svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(yScale.ticks(5)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left - 30).attr('x2', chartWidth).attr('y1', function (d) {
-	                return yScale(d);
-	            }).attr('y2', function (d) {
-	                return yScale(d);
-	            });
+	        function drawGridLines(xTicks, yTicks) {
+	            if (grid === 'horizontal' || grid === 'full') {
+	                horizontalGridLines = svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(yScale.ticks(yTicks)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left - 30).attr('x2', chartWidth).attr('y1', function (d) {
+	                    return yScale(d);
+	                }).attr('y2', function (d) {
+	                    return yScale(d);
+	                });
+	            }
+	
+	            if (grid === 'vertical' || grid === 'full') {
+	                verticalGridLines = svg.select('.grid-lines-group').selectAll('line.vertical-grid-line').data(xScale.ticks(xTicks)).enter().append('line').attr('class', 'vertical-grid-line').attr('y1', 0).attr('y2', chartHeight).attr('x1', function (d) {
+	                    return xScale(d);
+	                }).attr('x2', function (d) {
+	                    return xScale(d);
+	                });
+	            }
 	
 	            //draw a horizontal line to extend x-axis till the edges
 	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-x-line').data([0]).enter().append('line').attr('class', 'extended-x-line').attr('x1', -xAxisPadding.left - 30).attr('x2', chartWidth).attr('y1', height - margin.bottom - margin.top).attr('y2', height - margin.bottom - margin.top);
@@ -21624,7 +21657,7 @@
 	         * @return void
 	         */
 	        function drawHoverOverlay() {
-	            overlay = svg.select('.metadata-group').append('rect').attr('class', 'overlay').attr('y1', 0).attr('y2', height).attr('height', height - margin.top - margin.bottom).attr('width', width - margin.left - margin.right).attr('fill', overlayColor).style('display', 'none');
+	            overlay = svg.select('.metadata-group').append('rect').attr('class', 'overlay').attr('y1', 0).attr('y2', height).attr('height', chartHeight).attr('width', chartWidth).attr('fill', overlayColor).style('display', 'none');
 	        }
 	
 	        /**
@@ -21639,7 +21672,7 @@
 	                y1: 0,
 	                x2: 0,
 	                y2: 0
-	            }]).enter().append('line').classed('vertical-marker', true).attr('x1', 0).attr('y1', height - margin.top - margin.bottom).attr('x2', 0).attr('y2', 0);
+	            }]).enter().append('line').classed('vertical-marker', true).attr('x1', 0).attr('y1', chartHeight).attr('x2', 0).attr('y2', 0);
 	        }
 	
 	        /**
@@ -21817,6 +21850,22 @@
 	                return dateLabel;
 	            }
 	            dateLabel = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the grid mode.
+	         *
+	         * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
+	         * @return { String | module} Current mode of the grid or Line Chart module to chain calls
+	         * @public
+	         */
+	        exports.grid = function (_x) {
+	            if (!arguments.length) {
+	                return grid;
+	            }
+	            grid = _x;
+	
 	            return this;
 	        };
 	

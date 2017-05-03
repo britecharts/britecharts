@@ -155,6 +155,7 @@
                 <pre><code class="language-javascript">
 lineChart
     .aspectRatio(0.5)
+    .grid('horizontal')
     .tooltipThreshold(600)
     .width(containerWidth);
 
@@ -185,6 +186,7 @@ container.datum(dataset).call(lineChart);
 lineChart
     .tooltipThreshold(600)
     .height(300)
+    .grid('horizontal')
     .width(containerWidth);
 
 container.datum(dataset).call(lineChart);
@@ -208,7 +210,8 @@ container.datum(dataset).call(lineChart);
 lineChart
     .tooltipThreshold(600)
     .height(300)
-    .width(containerWidth);
+    .width(containerWidth)
+    .grid('full');
 
 container.datum(dataset).call(lineChart);
                 </code></pre>

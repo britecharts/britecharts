@@ -162,7 +162,7 @@ define(function(require){
 
             verticalGridLines,
             horizontalGridLines,
-            hasVerticalGrid = false,
+            grid = null,
 
             baseLine,
 
@@ -514,18 +514,20 @@ define(function(require){
          * @return void
          */
         function drawGridLines(xTicks, yTicks){
-            horizontalGridLines = svg.select('.grid-lines-group')
-                .selectAll('line.horizontal-grid-line')
-                .data(yScale.ticks(5))
-                .enter()
-                    .append('line')
-                    .attr('class', 'horizontal-grid-line')
-                    .attr('x1', (-xAxisPadding.left - 30))
-                    .attr('x2', chartWidth)
-                    .attr('y1', (d) => yScale(d))
-                    .attr('y2', (d) => yScale(d));
+            if (grid === 'horizontal' || grid === 'full') {
+                horizontalGridLines = svg.select('.grid-lines-group')
+                    .selectAll('line.horizontal-grid-line')
+                    .data(yScale.ticks(yTicks))
+                    .enter()
+                        .append('line')
+                        .attr('class', 'horizontal-grid-line')
+                        .attr('x1', (-xAxisPadding.left - 30))
+                        .attr('x2', chartWidth)
+                        .attr('y1', (d) => yScale(d))
+                        .attr('y2', (d) => yScale(d));
+            }
 
-            if (hasVerticalGrid) {
+            if (grid === 'vertical' || grid === 'full') {
                 verticalGridLines = svg.select('.grid-lines-group')
                     .selectAll('line.vertical-grid-line')
                     .data(xScale.ticks(xTicks))
@@ -562,8 +564,8 @@ define(function(require){
                 .attr('class','overlay')
                 .attr('y1', 0)
                 .attr('y2', height)
-                .attr('height', height - margin.top - margin.bottom)
-                .attr('width', width - margin.left - margin.right)
+                .attr('height', chartHeight)
+                .attr('width', chartWidth)
                 .attr('fill', overlayColor)
                 .style('display', 'none');
         }
@@ -589,7 +591,7 @@ define(function(require){
               .append('line')
                 .classed('vertical-marker', true)
                 .attr('x1', 0)
-                .attr('y1', height - margin.top - margin.bottom)
+                .attr('y1', chartHeight)
                 .attr('x2', 0)
                 .attr('y2', 0);
         }
@@ -775,16 +777,17 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the vertical grid visibility
-         * @param  {Boolean} _x Desired state for the vertical grid
-         * @return { state | module} Current state of the vertical grid or Area Chart module to chain calls
+         * Gets or Sets the grid mode.
+         *
+         * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
+         * @return { String | module} Current mode of the grid or Line Chart module to chain calls
          * @public
          */
-        exports.hasVerticalGrid = function(_x) {
+        exports.grid = function(_x) {
             if (!arguments.length) {
-                return hasVerticalGrid;
+                return grid;
             }
-            hasVerticalGrid = _x;
+            grid = _x;
 
             return this;
         };

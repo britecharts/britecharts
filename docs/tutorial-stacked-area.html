@@ -187,6 +187,7 @@ tooltipContainer.datum([]).call(chartTooltip);
 stackedArea
     .tooltipThreshold(400)
     .width(containerWidth)
+    .grid('full')
     .aspectRatio(0.6)
     .on('customMouseOver', function() {
         chartTooltip.show();
