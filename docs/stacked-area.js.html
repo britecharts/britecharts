@@ -472,17 +472,12 @@
                 .range(colorSchema)
                 .domain(data.map(getName));
 
-            // TODO add spread and rest operators to britecharts
-            /*
-                let range = colorScale.range();
-                categoryColorMap = colorScale.domain().reduce((memo, item, i) => ({...memo, [item]: range[i], }), {});
-             */
-
             let range = colorScale.range();
             categoryColorMap = colorScale
                 .domain()
                 .reduce((memo, item, i) => {
                     memo[item] = range[i];
+
                     return memo;
                 }, {});
         }
