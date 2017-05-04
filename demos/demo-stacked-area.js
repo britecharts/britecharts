@@ -88,6 +88,9 @@ function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
             .tooltipThreshold(600)
             .aspectRatio(0.6)
             .grid('full')
+            .forceAxisFormat('custom')
+            .forcedXFormat('%Y/%m/%d')
+            .forcedXTicks(2)
             .width(containerWidth)
             .dateLabel('dateUTC')
             .valueLabel('views')
@@ -110,7 +113,7 @@ function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
         // Tooltip Setup and start
         chartTooltip
             .topicLabel('values')
-            .title('Testing tooltip');
+            .title('Dummy Tooltip Title');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up

@@ -142,6 +142,30 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
                 expect(defaultSchema).not.toBe(testFormat);
                 expect(newSchema).toBe(testFormat);
             });
+
+            it('should provide a forcedXTicks getter and setter', () => {
+                let defaultForcedXTicks = brushChart.forcedXTicks(),
+                    testXTicks = 2,
+                    newForcedXTicks;
+
+                brushChart.forcedXTicks(testXTicks);
+                newForcedXTicks = brushChart.forcedXTicks();
+
+                expect(defaultForcedXTicks).not.toBe(testXTicks);
+                expect(newForcedXTicks).toBe(testXTicks);
+            });
+
+            it('should provide a forcedXFormat getter and setter', () => {
+                let defaultForcedXFormat = brushChart.forcedXFormat(),
+                    testXFormat = '%d %b',
+                    newForcedXFormat;
+
+                brushChart.forcedXFormat(testXFormat);
+                newForcedXFormat = brushChart.forcedXFormat();
+
+                expect(defaultForcedXFormat).not.toBe(testXFormat);
+                expect(newForcedXFormat).toBe(testXFormat);
+            });
         });
     });
 });

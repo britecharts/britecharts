@@ -11,8 +11,8 @@ define(function(require) {
         jsonSmallValueRange = require('json!../json/lineDataSmallValueRange');
 
 
-    function SalesDataBuilder(config) {
-        this.Klass = SalesDataBuilder;
+    function LineDataBuilder(config) {
+        this.Klass = LineDataBuilder;
 
         this.config = _.defaults({}, config);
 
@@ -55,7 +55,7 @@ define(function(require) {
         /**
          * Sets the path for fetching the data
          * @param  {string} path Desired path for test data
-         * @return {SalesDataBuilder}      Builder object
+         * @return {LineDataBuilder}      Builder object
          */
         this.withPath = function(path){
             var attributes = _.extend({}, this.config, {
@@ -71,7 +71,7 @@ define(function(require) {
     }
 
     return {
-        SalesDataBuilder: SalesDataBuilder
+        LineDataBuilder: LineDataBuilder
     };
 
 });

@@ -2956,7 +2956,7 @@
 	        // dataset = testDataSet.withLargeData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', function () {
+	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').forceAxisFormat('custom').forcedXFormat('%Y/%m/%d').forcedXTicks(2).width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -2971,7 +2971,7 @@
 	        container.datum(dataset.data).call(stackedArea);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.topicLabel('values').title('Testing tooltip');
+	        chartTooltip.topicLabel('values').title('Dummy Tooltip Title');
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -3103,6 +3103,7 @@
 	    var d3Shape = __webpack_require__(20);
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
+	    var d3TimeFormat = __webpack_require__(19);
 	
 	    var _ = __webpack_require__(3);
 	
@@ -3203,8 +3204,9 @@
 	            areaOpacity = 0.64,
 	            colorScale = void 0,
 	            categoryColorMap = void 0,
-	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
 	            forceAxisSettings = null,
+	            forcedXTicks = null,
+	            forcedXFormat = null,
 	            baseLine = void 0,
 	            layers = void 0,
 	            layersInitial = void 0,
@@ -3320,14 +3322,26 @@
 	        function buildAxis() {
 	            var dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
 	            var yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
+	            var minor = void 0,
+	                major = void 0;
 	
-	            var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings),
-	                minor = _timeAxisHelper$getXA.minor,
+	            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+	                minor = {
+	                    tick: forcedXTicks,
+	                    format: d3TimeFormat.timeFormat(forcedXFormat)
+	                };
+	                major = null;
+	            } else {
+	                var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(dataByDate, width, forceAxisSettings);
+	
+	                minor = _timeAxisHelper$getXA.minor;
 	                major = _timeAxisHelper$getXA.major;
 	
-	            xAxis = d3Axis.axisBottom(xScale).ticks(minor.tick).tickSize(10, 0).tickPadding(tickPadding).tickFormat(minor.format);
 	
-	            xMonthAxis = d3Axis.axisBottom(xScale).ticks(major.tick).tickSize(0, 0).tickFormat(major.format);
+	                xMonthAxis = d3Axis.axisBottom(xScale).ticks(major.tick).tickSize(0, 0).tickFormat(major.format);
+	            }
+	
+	            xAxis = d3Axis.axisBottom(xScale).ticks(minor.tick).tickSize(10, 0).tickPadding(tickPadding).tickFormat(minor.format);
 	
 	            yAxis = d3Axis.axisRight(yScale).ticks(yTickNumber).tickSize([0]).tickPadding(tickPadding).tickFormat(getFormattedValue);
 	
@@ -3453,7 +3467,9 @@
 	        function drawAxis() {
 	            svg.select('.x-axis-group .axis.x').attr('transform', 'translate( 0, ' + chartHeight + ' )').call(xAxis);
 	
-	            svg.select('.x-axis-group .month-axis').attr('transform', 'translate(0, ' + (chartHeight + monthAxisPadding) + ')').call(xMonthAxis);
+	            if (forceAxisSettings !== 'custom') {
+	                svg.select('.x-axis-group .month-axis').attr('transform', 'translate(0, ' + (chartHeight + monthAxisPadding) + ')').call(xMonthAxis);
+	            }
 	
 	            svg.select('.y-axis-group.axis').attr('transform', 'translate( ' + -xAxisPadding.left + ', 0)').call(yAxis).call(adjustYTickLabels);
 	
@@ -3829,6 +3845,54 @@
 	        };
 	
 	        /**
+	         * Exposes the ability to force the chart to show a certain x axis grouping
+	         * @param  {String} _x Desired format
+	         * @return { (String|Module) }    Current format or module to chain calls
+	         * @example
+	         *     area.forceAxisFormat(area.axisTimeCombinations.HOUR_DAY)
+	         */
+	        exports.forceAxisFormat = function (_x) {
+	            if (!arguments.length) {
+	                return forceAxisSettings;
+	            }
+	            forceAxisSettings = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x format
+	         * It requires a `forceAxisFormat` of 'custom' in order to work.
+	         * @param  {String} _x              Desired format for x axis
+	         * @return { (String|Module) }      Current format or module to chain calls
+	         */
+	        exports.forcedXFormat = function (_x) {
+	            if (!arguments.length) {
+	                return forcedXFormat;
+	            }
+	            forcedXFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
+	         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
+	         * how many and where the ticks will appear.
+	         *
+	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
+	         * @return { (Number|Module) }      Current number or ticks or module to chain calls
+	         */
+	        exports.forcedXTicks = function (_x) {
+	            if (!arguments.length) {
+	                return forcedXTicks;
+	            }
+	            forcedXTicks = _x;
+	
+	            return this;
+	        };
+	
+	        /**
 	         * Gets or Sets the grid mode.
 	         *
 	         * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
@@ -3978,6 +4042,14 @@
 	
 	            return value === dispatcher ? exports : value;
 	        };
+	
+	        /**
+	         * Exposes the constants to be used to force the x axis to respect a certain granularity
+	         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+	         * @example
+	         *     area.forceAxisFormat(area.axisTimeCombinations.HOUR_DAY)
+	         */
+	        exports.axisTimeCombinations = axisTimeCombinations;
 	
 	        return exports;
 	    };
@@ -12709,8 +12781,12 @@
 	
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
+	
+	    var _settingsToMajorTickM;
 	
 	    var d3Time = __webpack_require__(18);
 	    var d3TimeFormat = __webpack_require__(19);
@@ -12722,6 +12798,7 @@
 	    var singleTickWidth = 20;
 	    var horizontalTickSpacing = 50;
 	    var minEntryNumForDayFormat = 5;
+	    var xTickMinuteFormat = d3TimeFormat.timeFormat('%M m');
 	    var xTickHourFormat = d3TimeFormat.timeFormat('%H %p');
 	    var xTickSimpleDayFormat = d3TimeFormat.timeFormat('%e');
 	    var xTickDayMonthFormat = d3TimeFormat.timeFormat('%d %b');
@@ -12729,10 +12806,35 @@
 	    var xTickYearFormat = d3TimeFormat.timeFormat('%Y');
 	
 	    var formatMap = {
+	        minute: xTickMinuteFormat,
 	        hour: xTickHourFormat,
 	        day: xTickSimpleDayFormat,
 	        daymonth: xTickDayMonthFormat,
-	        month: xTickMonthFormat
+	        month: xTickMonthFormat,
+	        year: xTickYearFormat
+	    };
+	    var settingsToMajorTickMap = (_settingsToMajorTickM = {}, _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MINUTE_HOUR, d3Time.timeHour.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.HOUR_DAY, d3Time.timeDay.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.DAY_MONTH, d3Time.timeMonth.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MONTH_YEAR, d3Time.timeYear.every(1)), _settingsToMajorTickM);
+	
+	    /**
+	     * Figures out the proper settings from the current time span
+	     * @param  {Number} timeSpan    Span of time charted by the graph in milliseconds
+	     * @return {String}             Type of settings for the given timeSpan
+	     */
+	    var getAxisSettingsFromTimeSpan = function getAxisSettingsFromTimeSpan(timeSpan) {
+	        var ONE_YEAR = timeBenchmarks.ONE_YEAR,
+	            ONE_DAY = timeBenchmarks.ONE_DAY;
+	
+	        var settings = void 0;
+	
+	        if (timeSpan < ONE_DAY) {
+	            settings = axisTimeCombinations.HOUR_DAY;
+	        } else if (timeSpan < ONE_YEAR) {
+	            settings = axisTimeCombinations.DAY_MONTH;
+	        } else {
+	            settings = axisTimeCombinations.MONTH_YEAR;
+	        }
+	
+	        return settings;
 	    };
 	
 	    /**
@@ -12744,31 +12846,25 @@
 	    var getMaxNumOfHorizontalTicks = function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
 	        var ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
 	
-	        return Math.min(dataPointNumber, ticksForWidth);
+	        return dataPointNumber < minEntryNumForDayFormat ? d3Time.timeDay : Math.min(dataPointNumber, ticksForWidth);
 	    };
 	
 	    /**
 	     * Returns tick object to be used when building the x axis
+	     * @param {dataByDate} dataByDate       Chart data ordered by Date
+	     * @param {Number} width                Chart width
+	     * @param {String} settings             Optional forced settings for axis
 	     * @return {object} tick settings for major and minr axis
 	     */
-	    var getXAxisSettings = function getXAxisSettings(dataByDate, xScale, width, settings) {
-	        var minorTickValue = void 0,
-	            majorTickValue = void 0;
-	        var dateTimeSpan = xScale.domain()[1] - xScale.domain()[0];
-	        var ONE_YEAR = timeBenchmarks.ONE_YEAR,
-	            ONE_DAY = timeBenchmarks.ONE_DAY;
+	    var getXAxisSettings = function getXAxisSettings(dataByDate, width) {
+	        var settings = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 	
-	        // might want to add minute-hour
+	        var firstDate = new Date(dataByDate[0].date);
+	        var lastDate = new Date(dataByDate[dataByDate.length - 1].date);
+	        var dateTimeSpan = lastDate - firstDate;
 	
-	        if (dateTimeSpan < ONE_DAY) {
-	            settings = axisTimeCombinations.HOUR_DAY;
-	            majorTickValue = d3Time.timeDay.every(1);
-	        } else if (dateTimeSpan < ONE_YEAR) {
-	            settings = axisTimeCombinations.DAY_MONTH;
-	            majorTickValue = d3Time.timeMonth.every(1);
-	        } else {
-	            settings = axisTimeCombinations.MONTH_YEAR;
-	            majorTickValue = d3Time.timeYear.every(1);
+	        if (!settings) {
+	            settings = getAxisSettingsFromTimeSpan(dateTimeSpan);
 	        }
 	
 	        var _settings$split = settings.split('-'),
@@ -12776,7 +12872,8 @@
 	            minor = _settings$split2[0],
 	            major = _settings$split2[1];
 	
-	        minorTickValue = dataByDate.length < minEntryNumForDayFormat ? d3Time.timeDay : getMaxNumOfHorizontalTicks(width, dataByDate.length);
+	        var majorTickValue = settingsToMajorTickMap[settings];
+	        var minorTickValue = getMaxNumOfHorizontalTicks(width, dataByDate.length);
 	
 	        return {
 	            minor: {
@@ -19677,7 +19774,7 @@
 	function createBrushChart(optionalColorSchema) {
 	    var brushChart = brush(),
 	        brushMargin = { top: 0, bottom: 40, left: 70, right: 30 },
-	        testDataSet = new dataBuilder.SalesDataBuilder(),
+	        testDataSet = new dataBuilder.LineDataBuilder(),
 	        brushContainer = d3Selection.select('.js-line-brush-chart-container'),
 	        containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
 	        dataset;
@@ -19705,7 +19802,7 @@
 	function createLineChart(optionalColorSchema, optionalData) {
 	    var lineChart1 = line(),
 	        chartTooltip = tooltip(),
-	        testDataSet = new dataBuilder.SalesDataBuilder(),
+	        testDataSet = new dataBuilder.LineDataBuilder(),
 	        container = d3Selection.select('.js-line-chart-container'),
 	        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
 	        tooltipContainer,
@@ -19719,7 +19816,7 @@
 	        dataset = testDataSet.with5Topics().build();
 	
 	        // LineChart Setup and start
-	        lineChart1.aspectRatio(0.5).grid('horizontal').tooltipThreshold(600).width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
+	        lineChart1.aspectRatio(0.5).grid('horizontal').tooltipThreshold(600).width(containerWidth).dateLabel('fullDate').forceAxisFormat('month-year').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -19755,7 +19852,7 @@
 	function createLineChartWithSingleLine() {
 	    var lineChart2 = line(),
 	        chartTooltip = tooltip(),
-	        testDataSet = new dataBuilder.SalesDataBuilder(),
+	        testDataSet = new dataBuilder.LineDataBuilder(),
 	        container = d3Selection.select('.js-single-line-chart-container'),
 	        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
 	        tooltipContainer,
@@ -19791,7 +19888,7 @@
 	function createLineChartWithFixedHeight() {
 	    var lineChart3 = line(),
 	        chartTooltip = tooltip(),
-	        testDataSet = new dataBuilder.SalesDataBuilder(),
+	        testDataSet = new dataBuilder.LineDataBuilder(),
 	        container = d3Selection.select('.js-fixed-line-chart-container'),
 	        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
 	        tooltipContainer,
@@ -19845,7 +19942,7 @@
 	}
 	
 	function filterData(d0, d1) {
-	    var testDataSet = new dataBuilder.SalesDataBuilder(),
+	    var testDataSet = new dataBuilder.LineDataBuilder(),
 	        data = JSON.parse(JSON.stringify(testDataSet.with5Topics().build()));
 	
 	    data.dataByDate = data.dataByDate.filter(isInRange.bind(null, d0, d1));
@@ -19911,6 +20008,7 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Time = __webpack_require__(18);
 	    var d3Transition = __webpack_require__(22);
+	    var d3TimeFormat = __webpack_require__(19);
 	
 	    var colorHelper = __webpack_require__(7);
 	    var timeAxisHelper = __webpack_require__(31);
@@ -19979,8 +20077,9 @@
 	            xScale = void 0,
 	            yScale = void 0,
 	            xAxis = void 0,
-	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
 	            forceAxisSettings = null,
+	            forcedXTicks = null,
+	            forcedXFormat = null,
 	            brush = void 0,
 	            chartBrush = void 0,
 	            handle = void 0,
@@ -20028,9 +20127,20 @@
 	         * @private
 	         */
 	        function buildAxis() {
-	            var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(data, xScale, width, forceAxisSettings || defaultAxisSettings),
-	                minor = _timeAxisHelper$getXA.minor,
+	            var minor = void 0,
+	                major = void 0;
+	
+	            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+	                minor = {
+	                    tick: forcedXTicks,
+	                    format: d3TimeFormat.timeFormat(forcedXFormat)
+	                };
+	            } else {
+	                var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(data, width, forceAxisSettings);
+	
+	                minor = _timeAxisHelper$getXA.minor;
 	                major = _timeAxisHelper$getXA.major;
+	            }
 	
 	            xAxis = d3Axis.axisBottom(xScale).ticks(minor.tick).tickSize(10, 0).tickPadding([tickPadding]).tickFormat(minor.format);
 	        }
@@ -20276,19 +20386,55 @@
 	         * Exposes the ability to force the chart to show a certain x axis grouping
 	         * @param  {String} _x Desired format
 	         * @return { (String|Module) }    Current format or module to chain calls
+	         * @example
+	         *     brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
 	         */
 	        exports.forceAxisFormat = function (_x) {
 	            if (!arguments.length) {
-	                return forceAxisSettings || defaultAxisSettings;
+	                return forceAxisSettings;
 	            }
 	            forceAxisSettings = _x;
+	
 	            return this;
 	        };
 	
 	        /**
-	         * constants to be used to force the x axis to respect a certain granularity
-	         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
-	         * @example line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
+	         * Exposes the ability to force the chart to show a certain x format
+	         * It requires a `forceAxisFormat` of 'custom' in order to work.
+	         * @param  {String} _x              Desired format for x axis
+	         * @return { (String|Module) }      Current format or module to chain calls
+	         */
+	        exports.forcedXFormat = function (_x) {
+	            if (!arguments.length) {
+	                return forcedXFormat;
+	            }
+	            forcedXFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
+	         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
+	         * how many and where the ticks will appear.
+	         *
+	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
+	         * @return { (Number|Module) }      Current number or ticks or module to chain calls
+	         */
+	        exports.forcedXTicks = function (_x) {
+	            if (!arguments.length) {
+	                return forcedXTicks;
+	            }
+	            forcedXTicks = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the constants to be used to force the x axis to respect a certain granularity
+	         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+	         * @example
+	         *     brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
 	         */
 	        exports.axisTimeCombinations = axisTimeCombinations;
 	
@@ -20303,6 +20449,7 @@
 	                return gradient;
 	            }
 	            gradient = _x;
+	
 	            return this;
 	        };
 	
@@ -20317,6 +20464,7 @@
 	                return height;
 	            }
 	            height = _x;
+	
 	            return this;
 	        };
 	
@@ -20331,6 +20479,7 @@
 	                return margin;
 	            }
 	            margin = _x;
+	
 	            return this;
 	        };
 	
@@ -20357,6 +20506,7 @@
 	                return width;
 	            }
 	            width = _x;
+	
 	            return this;
 	        };
 	
@@ -21172,6 +21322,7 @@
 	    var d3Shape = __webpack_require__(20);
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
+	    var d3TimeFormat = __webpack_require__(19);
 	
 	    var _require = __webpack_require__(24),
 	        exportChart = _require.exportChart;
@@ -21309,8 +21460,9 @@
 	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
 	            singleLineGradientColors = colorHelper.colorGradients.greenBlueGradient,
 	            topicColorMap = void 0,
-	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
 	            forceAxisSettings = null,
+	            forcedXTicks = null,
+	            forcedXFormat = null,
 	            ease = d3Ease.easeQuadInOut,
 	            animationDuration = 1500,
 	            dataByTopic = void 0,
@@ -21426,14 +21578,26 @@
 	        function buildAxis() {
 	            var dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
 	            var yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
+	            var minor = void 0,
+	                major = void 0;
 	
-	            var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings),
-	                minor = _timeAxisHelper$getXA.minor,
+	            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+	                minor = {
+	                    tick: forcedXTicks,
+	                    format: d3TimeFormat.timeFormat(forcedXFormat)
+	                };
+	                major = null;
+	            } else {
+	                var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(dataByDate, width, forceAxisSettings);
+	
+	                minor = _timeAxisHelper$getXA.minor;
 	                major = _timeAxisHelper$getXA.major;
 	
-	            xAxis = d3Axis.axisBottom(xScale).ticks(minor.tick).tickSize(10, 0).tickPadding(tickPadding).tickFormat(minor.format);
 	
-	            xMonthAxis = d3Axis.axisBottom(xScale).ticks(major.tick).tickSize(0, 0).tickFormat(major.format);
+	                xMonthAxis = d3Axis.axisBottom(xScale).ticks(major.tick).tickSize(0, 0).tickFormat(major.format);
+	            }
+	
+	            xAxis = d3Axis.axisBottom(xScale).ticks(minor.tick).tickSize(10, 0).tickPadding(tickPadding).tickFormat(minor.format);
 	
 	            yAxis = d3Axis.axisLeft(yScale).ticks(yTickNumber).tickSize([0]).tickPadding(tickPadding).tickFormat(getFormattedValue);
 	
@@ -21591,7 +21755,9 @@
 	        function drawAxis() {
 	            svg.select('.x-axis-group .axis.x').attr('transform', 'translate(0, ' + chartHeight + ')').call(xAxis);
 	
-	            svg.select('.x-axis-group .month-axis').attr('transform', 'translate(0, ' + (chartHeight + monthAxisPadding) + ')').call(xMonthAxis);
+	            if (forceAxisSettings !== 'custom') {
+	                svg.select('.x-axis-group .month-axis').attr('transform', 'translate(0, ' + (chartHeight + monthAxisPadding) + ')').call(xMonthAxis);
+	            }
 	
 	            svg.select('.y-axis-group.axis.y').transition().ease(ease).attr('transform', 'translate(' + -xAxisPadding.left + ', 0)').call(yAxis).call(adjustYTickLabels);
 	        }
@@ -21828,6 +21994,7 @@
 	                return aspectRatio;
 	            }
 	            aspectRatio = _x;
+	
 	            return this;
 	        };
 	
@@ -21842,6 +22009,7 @@
 	                return colorSchema;
 	            }
 	            colorSchema = _x;
+	
 	            return this;
 	        };
 	
@@ -21856,6 +22024,7 @@
 	                return dateLabel;
 	            }
 	            dateLabel = _x;
+	
 	            return this;
 	        };
 	
@@ -21863,12 +22032,47 @@
 	         * Exposes the ability to force the chart to show a certain x axis grouping
 	         * @param  {String} _x Desired format
 	         * @return { (String|Module) }    Current format or module to chain calls
+	         * @example
+	         *     line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
 	         */
 	        exports.forceAxisFormat = function (_x) {
 	            if (!arguments.length) {
-	                return forceAxisSettings || defaultAxisSettings;
+	                return forceAxisSettings;
 	            }
 	            forceAxisSettings = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x format
+	         * It requires a `forceAxisFormat` of 'custom' in order to work.
+	         * @param  {String} _x              Desired format for x axis
+	         * @return { (String|Module) }      Current format or module to chain calls
+	         */
+	        exports.forcedXFormat = function (_x) {
+	            if (!arguments.length) {
+	                return forcedXFormat;
+	            }
+	            forcedXFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
+	         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
+	         * how many and where the ticks will appear.
+	         *
+	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
+	         * @return { (Number|Module) }      Current number or ticks or module to chain calls
+	         */
+	        exports.forcedXTicks = function (_x) {
+	            if (!arguments.length) {
+	                return forcedXTicks;
+	            }
+	            forcedXTicks = _x;
+	
 	            return this;
 	        };
 	
@@ -21884,6 +22088,8 @@
 	                return grid;
 	            }
 	            grid = _x;
+	
+	            return this;
 	        };
 	
 	        /**
@@ -21900,6 +22106,7 @@
 	                width = Math.ceil(_x / aspectRatio);
 	            }
 	            height = _x;
+	
 	            return this;
 	        };
 	
@@ -21914,6 +22121,7 @@
 	                return margin;
 	            }
 	            margin = _x;
+	
 	            return this;
 	        };
 	
@@ -21929,6 +22137,7 @@
 	                return tooltipThreshold;
 	            }
 	            tooltipThreshold = _x;
+	
 	            return this;
 	        };
 	
@@ -21943,6 +22152,7 @@
 	                return topicLabel;
 	            }
 	            topicLabel = _x;
+	
 	            return this;
 	        };
 	
@@ -21957,6 +22167,7 @@
 	                return valueLabel;
 	            }
 	            valueLabel = _x;
+	
 	            return this;
 	        };
 	
@@ -21989,6 +22200,7 @@
 	                height = Math.ceil(_x * aspectRatio);
 	            }
 	            width = _x;
+	
 	            return this;
 	        };
 	
@@ -22015,9 +22227,10 @@
 	        };
 	
 	        /**
-	         * constants to be used to force the x axis to respect a certain granularity
-	         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
-	         * @example line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
+	         * Exposes the constants to be used to force the x axis to respect a certain granularity
+	         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+	         * @example
+	         *     line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
 	         */
 	        exports.axisTimeCombinations = axisTimeCombinations;
 	
@@ -22042,8 +22255,8 @@
 	        jsonHourDateRange = __webpack_require__(65),
 	        jsonSmallValueRange = __webpack_require__(66);
 	
-	    function SalesDataBuilder(config) {
-	        this.Klass = SalesDataBuilder;
+	    function LineDataBuilder(config) {
+	        this.Klass = LineDataBuilder;
 	
 	        this.config = _.defaults({}, config);
 	
@@ -22086,7 +22299,7 @@
 	        /**
 	         * Sets the path for fetching the data
 	         * @param  {string} path Desired path for test data
-	         * @return {SalesDataBuilder}      Builder object
+	         * @return {LineDataBuilder}      Builder object
 	         */
 	        this.withPath = function (path) {
 	            var attributes = _.extend({}, this.config, {
@@ -22102,7 +22315,7 @@
 	    }
 	
 	    return {
-	        SalesDataBuilder: SalesDataBuilder
+	        LineDataBuilder: LineDataBuilder
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 

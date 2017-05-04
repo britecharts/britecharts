@@ -344,8 +344,8 @@ simple and configurable brush chart.</div>
 <dd>
     
     <div class="description">
-        constants to be used to force the x axis to respect a certain granularity
-current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
+        Exposes the constants to be used to force the x axis to respect a certain granularity
+current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
     </div>
     
 
@@ -403,7 +403,7 @@ current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
     
         <h5>Example</h5>
         
-    <pre class=""><code class="language-javascript">line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)</code></pre>
+    <pre class=""><code class="language-javascript">brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)</code></pre>
 
 
     
@@ -890,6 +890,343 @@ current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
     <dd>
         
 <span class="param-type">String</span>
+|
+
+<span class="param-type">Module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+        <h5>Example</h5>
+        
+    <pre class=""><code class="language-javascript">brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)</code></pre>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".forcedXFormat"><span class="type-signature">&lt;static> </span>forcedXFormat(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Exposes the ability to force the chart to show a certain x format
+It requires a `forceAxisFormat` of 'custom' in order to work.
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired format for x axis</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="brush.js.html">brush.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current format or module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".forcedXTicks"><span class="type-signature">&lt;static> </span>forcedXTicks(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
+NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
+how many and where the ticks will appear.
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired number of x axis ticks (multiple of 2, 5 or 10)</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="brush.js.html">brush.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current number or ticks or module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
 |
 
 <span class="param-type">Module</span>
