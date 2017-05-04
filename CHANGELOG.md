@@ -1,6 +1,30 @@
-1.4.8
-1.4.7
-1.4.6
+[1.5.0][https://github.com/eventbrite/britecharts/compare/1.5.0...1.4.0] - Minor Release
+---------------------
+Changes:
+* Adding Grid options to area and line charts
+* Allow configuration of Y axis ticks on area and line charts
+* Added custom x format and x tick numbers
+
+1.4.8 - Patch
+---------------------
+Bug Fixes:
+* Removing d3 dependency from legend chart
+
+1.4.7 - Patch
+---------------------
+Bug Fixes:
+* Fixed css bundle link on docs and demos
+* Fixed broken links on readme
+* Adjusted hourly x axis config
+
+Changes:
+* Updated eslint files
+* Adding twitter cards to docs homepage
+* Added namespaces to bundles when loading via script tags
+* Updated horizontal bar chart to not default to percentages
+* Updated getting started guide
+
+
 1.4.6 - Patch
 ---------------------
 Bug Fixes:
