@@ -10,6 +10,7 @@ define(function(require){
     const d3Shape = require('d3-shape');
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
+    const d3TimeFormat = require('d3-time-format');
 
     const _ = require('underscore');
     const {exportChart} = require('./helpers/exportChart');
@@ -106,6 +107,9 @@ define(function(require){
             categoryColorMap,
 
             forceAxisSettings = null,
+            forcedXTicks = null,
+            forcedXFormat = null,
+
             baseLine,
 
             layers,
@@ -224,8 +228,22 @@ define(function(require){
         function buildAxis() {
             let dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
             let yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
+            let minor, major;
 
-            let {minor, major} = timeAxisHelper.getXAxisSettings(dataByDate, width, forceAxisSettings);
+            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+                minor = {
+                    tick: forcedXTicks,
+                    format: d3TimeFormat.timeFormat(forcedXFormat)
+                };
+                major = null;
+            } else {
+                ({minor, major} = timeAxisHelper.getXAxisSettings(dataByDate, width, forceAxisSettings));
+
+                xMonthAxis = d3Axis.axisBottom(xScale)
+                    .ticks(major.tick)
+                    .tickSize(0, 0)
+                    .tickFormat(major.format);
+            }
 
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(minor.tick)
@@ -233,10 +251,6 @@ define(function(require){
                 .tickPadding(tickPadding)
                 .tickFormat(minor.format);
 
-            xMonthAxis = d3Axis.axisBottom(xScale)
-                .ticks(major.tick)
-                .tickSize(0, 0)
-                .tickFormat(major.format);
 
             yAxis = d3Axis.axisRight(yScale)
                 .ticks(yTickNumber)
@@ -393,9 +407,11 @@ define(function(require){
                 .attr('transform', `translate( 0, ${chartHeight} )`)
                 .call(xAxis);
 
-            svg.select('.x-axis-group .month-axis')
-                .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
-                .call(xMonthAxis);
+            if (forceAxisSettings !== 'custom') {
+                svg.select('.x-axis-group .month-axis')
+                    .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
+                    .call(xMonthAxis);
+            }
 
             svg.select('.y-axis-group.axis')
                 .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
@@ -831,6 +847,38 @@ define(function(require){
               return forceAxisSettings;
             }
             forceAxisSettings = _x;
+
+            return this;
+        };
+
+        /**
+         * Exposes the ability to force the chart to show a certain x format
+         * It requires a `forceAxisFormat` of 'custom' in order to work.
+         * @param  {String} _x              Desired format for x axis
+         * @return { (String|Module) }      Current format or module to chain calls
+         */
+        exports.forcedXFormat = function(_x) {
+            if (!arguments.length) {
+              return forcedXFormat;
+            }
+            forcedXFormat = _x;
+
+            return this;
+        };
+
+        /**
+         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
+         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
+         * how many and where the ticks will appear.
+         *
+         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
+         * @return { (Number|Module) }      Current number or ticks or module to chain calls
+         */
+        exports.forcedXTicks = function(_x) {
+            if (!arguments.length) {
+              return forcedXTicks;
+            }
+            forcedXTicks = _x;
 
             return this;
         };

@@ -188,6 +188,8 @@ stackedArea
     .tooltipThreshold(400)
     .width(containerWidth)
     .grid('full')
+    .forceAxisFormat('custom')
+    .forcedXFormat('%Y/%m/%d')
     .aspectRatio(0.6)
     .on('customMouseOver', function() {
         chartTooltip.show();
@@ -202,7 +204,7 @@ container.datum(dataset.data).call(stackedArea);
 
 // Tooltip Setup and start
 chartTooltip
-    .title('Testing tooltip');
+    .title('Dummy Tooltip Title');
 
 // Note that if the viewport width is less than the tooltipThreshold value,
 // this container won't exist, and the tooltip won't show up

@@ -67,7 +67,7 @@ define(function(require) {
     const getMaxNumOfHorizontalTicks = (width, dataPointNumber) => {
         let ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
 
-        return Math.min(dataPointNumber, ticksForWidth);
+        return dataPointNumber < minEntryNumForDayFormat ? d3Time.timeDay : Math.min(dataPointNumber, ticksForWidth);
     }
 
     /**
@@ -88,8 +88,7 @@ define(function(require) {
         let [minor, major] = settings.split('-');
 
         let majorTickValue = settingsToMajorTickMap[settings];
-        let minorTickValue = dataByDate.length < minEntryNumForDayFormat ? d3Time.timeDay :
-                getMaxNumOfHorizontalTicks(width, dataByDate.length);
+        let minorTickValue = getMaxNumOfHorizontalTicks(width, dataByDate.length);
 
         return {
             minor: {

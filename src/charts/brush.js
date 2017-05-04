@@ -10,6 +10,7 @@ define(function(require) {
     const d3Selection = require('d3-selection');
     const d3Time = require('d3-time');
     const d3Transition = require('d3-transition');
+    const d3TimeFormat = require('d3-time-format');
 
     const colorHelper = require('./helpers/colors');
     const timeAxisHelper = require('./helpers/timeAxis');
@@ -82,6 +83,8 @@ define(function(require) {
             xAxis,
 
             forceAxisSettings = null,
+            forcedXTicks = null,
+            forcedXFormat = null,
 
             brush,
             chartBrush,
@@ -127,7 +130,16 @@ define(function(require) {
          * @private
          */
         function buildAxis(){
-            let {minor, major} = timeAxisHelper.getXAxisSettings(data, width, forceAxisSettings);
+            let minor, major;
+
+            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+                minor = {
+                    tick: forcedXTicks,
+                    format: d3TimeFormat.timeFormat(forcedXFormat)
+                };
+            } else {
+                ({minor, major} = timeAxisHelper.getXAxisSettings(data, width, forceAxisSettings));
+            }
 
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(minor.tick)
@@ -433,6 +445,38 @@ define(function(require) {
               return forceAxisSettings;
             }
             forceAxisSettings = _x;
+
+            return this;
+        };
+
+        /**
+         * Exposes the ability to force the chart to show a certain x format
+         * It requires a `forceAxisFormat` of 'custom' in order to work.
+         * @param  {String} _x              Desired format for x axis
+         * @return { (String|Module) }      Current format or module to chain calls
+         */
+        exports.forcedXFormat = function(_x) {
+            if (!arguments.length) {
+              return forcedXFormat;
+            }
+            forcedXFormat = _x;
+
+            return this;
+        };
+
+        /**
+         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
+         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
+         * how many and where the ticks will appear.
+         *
+         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
+         * @return { (Number|Module) }      Current number or ticks or module to chain calls
+         */
+        exports.forcedXTicks = function(_x) {
+            if (!arguments.length) {
+              return forcedXTicks;
+            }
+            forcedXTicks = _x;
 
             return this;
         };

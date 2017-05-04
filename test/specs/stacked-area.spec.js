@@ -274,6 +274,30 @@ define([
                 expect(newSchema).toBe(testFormat);
             });
 
+            it('should provide a forcedXTicks getter and setter', () => {
+                let defaultForcedXTicks = stackedAreaChart.forcedXTicks(),
+                    testXTicks = 2,
+                    newForcedXTicks;
+
+                stackedAreaChart.forcedXTicks(testXTicks);
+                newForcedXTicks = stackedAreaChart.forcedXTicks();
+
+                expect(defaultForcedXTicks).not.toBe(testXTicks);
+                expect(newForcedXTicks).toBe(testXTicks);
+            });
+
+            it('should provide a forcedXFormat getter and setter', () => {
+                let defaultForcedXFormat = stackedAreaChart.forcedXFormat(),
+                    testXFormat = '%d %b',
+                    newForcedXFormat;
+
+                stackedAreaChart.forcedXFormat(testXFormat);
+                newForcedXFormat = stackedAreaChart.forcedXFormat();
+
+                expect(defaultForcedXFormat).not.toBe(testXFormat);
+                expect(newForcedXFormat).toBe(testXFormat);
+            });
+
             it('should provide grid mode getter and setter', () => {
                 let defaultGridMode = stackedAreaChart.grid(),
                     testValue = 'vertical',
