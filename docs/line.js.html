@@ -387,7 +387,7 @@
             let dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
             let yTickNumber = dataTimeSpan &lt; verticalTicks - 1 ? dataTimeSpan : verticalTicks;
 
-            let {minor, major} = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings);
+            let {minor, major} = timeAxisHelper.getXAxisSettings(dataByDate, width, forceAxisSettings);
 
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(minor.tick)
@@ -874,6 +874,7 @@
                 return aspectRatio;
             }
             aspectRatio = _x;
+
             return this;
         };
 
@@ -888,6 +889,7 @@
                 return colorSchema;
             }
             colorSchema = _x;
+
             return this;
         };
 
@@ -902,6 +904,7 @@
                 return dateLabel;
             }
             dateLabel = _x;
+
             return this;
         };
 
@@ -915,6 +918,7 @@
               return forceAxisSettings || defaultAxisSettings;
             }
             forceAxisSettings = _x;
+
             return this;
         };
 
@@ -930,6 +934,8 @@
                 return grid;
             }
             grid = _x;
+
+            return this;
         };
 
         /**
@@ -946,6 +952,7 @@
                 width = Math.ceil(_x / aspectRatio);
             }
             height = _x;
+
             return this;
         };
 
@@ -960,6 +967,7 @@
                 return margin;
             }
             margin = _x;
+
             return this;
         };
 
@@ -975,6 +983,7 @@
                 return tooltipThreshold;
             }
             tooltipThreshold = _x;
+
             return this;
         };
 
@@ -989,6 +998,7 @@
                 return topicLabel;
             }
             topicLabel = _x;
+
             return this;
         };
 
@@ -1003,6 +1013,7 @@
                 return valueLabel;
             }
             valueLabel = _x;
+
             return this;
         };
 
@@ -1035,6 +1046,7 @@
                 height = Math.ceil(_x * aspectRatio);
             }
             width = _x;
+
             return this;
         };
 

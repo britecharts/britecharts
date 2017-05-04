@@ -3321,7 +3321,7 @@
 	            var dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
 	            var yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
 	
-	            var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings),
+	            var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(dataByDate, width, forceAxisSettings || defaultAxisSettings),
 	                minor = _timeAxisHelper$getXA.minor,
 	                major = _timeAxisHelper$getXA.major;
 	
@@ -12709,8 +12709,12 @@
 	
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
+	
+	    var _settingsToMajorTickM;
 	
 	    var d3Time = __webpack_require__(18);
 	    var d3TimeFormat = __webpack_require__(19);
@@ -12734,6 +12738,29 @@
 	        daymonth: xTickDayMonthFormat,
 	        month: xTickMonthFormat
 	    };
+	    var settingsToMajorTickMap = (_settingsToMajorTickM = {}, _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MINUTE_HOUR, d3Time.timeHour.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.HOUR_DAY, d3Time.timeDay.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.DAY_MONTH, d3Time.timeMonth.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MONTH_YEAR, d3Time.timeYear.every(1)), _settingsToMajorTickM);
+	
+	    /**
+	     * Figures out the proper settings from the current time span
+	     * @param  {Number} timeSpan    Span of time charted by the graph in milliseconds
+	     * @return {String}             Type of settings for the given timeSpan
+	     */
+	    var getAxisSettingsFromTimeSpan = function getAxisSettingsFromTimeSpan(timeSpan) {
+	        var ONE_YEAR = timeBenchmarks.ONE_YEAR,
+	            ONE_DAY = timeBenchmarks.ONE_DAY;
+	
+	        var settings = void 0;
+	
+	        if (timeSpan < ONE_DAY) {
+	            settings = axisTimeCombinations.HOUR_DAY;
+	        } else if (timeSpan < ONE_YEAR) {
+	            settings = axisTimeCombinations.DAY_MONTH;
+	        } else {
+	            settings = axisTimeCombinations.MONTH_YEAR;
+	        }
+	
+	        return settings;
+	    };
 	
 	    /**
 	     * Calculates the maximum number of ticks for the x axis
@@ -12749,26 +12776,20 @@
 	
 	    /**
 	     * Returns tick object to be used when building the x axis
+	     * @param {dataByDate} dataByDate       Chart data ordered by Date
+	     * @param {Number} width                Chart width
+	     * @param {String} settings             Optional forced settings for axis
 	     * @return {object} tick settings for major and minr axis
 	     */
-	    var getXAxisSettings = function getXAxisSettings(dataByDate, xScale, width, settings) {
-	        var minorTickValue = void 0,
-	            majorTickValue = void 0;
-	        var dateTimeSpan = xScale.domain()[1] - xScale.domain()[0];
-	        var ONE_YEAR = timeBenchmarks.ONE_YEAR,
-	            ONE_DAY = timeBenchmarks.ONE_DAY;
+	    var getXAxisSettings = function getXAxisSettings(dataByDate, width) {
+	        var settings = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 	
-	        // might want to add minute-hour
+	        var firstDate = dataByDate[0].date;
+	        var lastDate = dataByDate[dataByDate.length - 1].date;
+	        var dateTimeSpan = lastDate - firstDate;
 	
-	        if (dateTimeSpan < ONE_DAY) {
-	            settings = axisTimeCombinations.HOUR_DAY;
-	            majorTickValue = d3Time.timeDay.every(1);
-	        } else if (dateTimeSpan < ONE_YEAR) {
-	            settings = axisTimeCombinations.DAY_MONTH;
-	            majorTickValue = d3Time.timeMonth.every(1);
-	        } else {
-	            settings = axisTimeCombinations.MONTH_YEAR;
-	            majorTickValue = d3Time.timeYear.every(1);
+	        if (!settings) {
+	            settings = getAxisSettingsFromTimeSpan(dateTimeSpan);
 	        }
 	
 	        var _settings$split = settings.split('-'),
@@ -12776,7 +12797,8 @@
 	            minor = _settings$split2[0],
 	            major = _settings$split2[1];
 	
-	        minorTickValue = dataByDate.length < minEntryNumForDayFormat ? d3Time.timeDay : getMaxNumOfHorizontalTicks(width, dataByDate.length);
+	        var majorTickValue = settingsToMajorTickMap[settings];
+	        var minorTickValue = dataByDate.length < minEntryNumForDayFormat ? d3Time.timeDay : getMaxNumOfHorizontalTicks(width, dataByDate.length);
 	
 	        return {
 	            minor: {
@@ -19677,7 +19699,7 @@
 	function createBrushChart(optionalColorSchema) {
 	    var brushChart = brush(),
 	        brushMargin = { top: 0, bottom: 40, left: 70, right: 30 },
-	        testDataSet = new dataBuilder.SalesDataBuilder(),
+	        testDataSet = new dataBuilder.LineDataBuilder(),
 	        brushContainer = d3Selection.select('.js-line-brush-chart-container'),
 	        containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
 	        dataset;
@@ -19705,7 +19727,7 @@
 	function createLineChart(optionalColorSchema, optionalData) {
 	    var lineChart1 = line(),
 	        chartTooltip = tooltip(),
-	        testDataSet = new dataBuilder.SalesDataBuilder(),
+	        testDataSet = new dataBuilder.LineDataBuilder(),
 	        container = d3Selection.select('.js-line-chart-container'),
 	        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
 	        tooltipContainer,
@@ -19719,7 +19741,7 @@
 	        dataset = testDataSet.with5Topics().build();
 	
 	        // LineChart Setup and start
-	        lineChart1.aspectRatio(0.5).grid('horizontal').tooltipThreshold(600).width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
+	        lineChart1.aspectRatio(0.5).grid('horizontal').tooltipThreshold(600).width(containerWidth).dateLabel('fullDate').forceAxisFormat('month-year').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -19755,7 +19777,7 @@
 	function createLineChartWithSingleLine() {
 	    var lineChart2 = line(),
 	        chartTooltip = tooltip(),
-	        testDataSet = new dataBuilder.SalesDataBuilder(),
+	        testDataSet = new dataBuilder.LineDataBuilder(),
 	        container = d3Selection.select('.js-single-line-chart-container'),
 	        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
 	        tooltipContainer,
@@ -19791,7 +19813,7 @@
 	function createLineChartWithFixedHeight() {
 	    var lineChart3 = line(),
 	        chartTooltip = tooltip(),
-	        testDataSet = new dataBuilder.SalesDataBuilder(),
+	        testDataSet = new dataBuilder.LineDataBuilder(),
 	        container = d3Selection.select('.js-fixed-line-chart-container'),
 	        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
 	        tooltipContainer,
@@ -19845,7 +19867,7 @@
 	}
 	
 	function filterData(d0, d1) {
-	    var testDataSet = new dataBuilder.SalesDataBuilder(),
+	    var testDataSet = new dataBuilder.LineDataBuilder(),
 	        data = JSON.parse(JSON.stringify(testDataSet.with5Topics().build()));
 	
 	    data.dataByDate = data.dataByDate.filter(isInRange.bind(null, d0, d1));
@@ -20028,7 +20050,7 @@
 	         * @private
 	         */
 	        function buildAxis() {
-	            var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(data, xScale, width, forceAxisSettings || defaultAxisSettings),
+	            var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(data, width, forceAxisSettings || defaultAxisSettings),
 	                minor = _timeAxisHelper$getXA.minor,
 	                major = _timeAxisHelper$getXA.major;
 	
@@ -20282,6 +20304,7 @@
 	                return forceAxisSettings || defaultAxisSettings;
 	            }
 	            forceAxisSettings = _x;
+	
 	            return this;
 	        };
 	
@@ -20303,6 +20326,7 @@
 	                return gradient;
 	            }
 	            gradient = _x;
+	
 	            return this;
 	        };
 	
@@ -20317,6 +20341,7 @@
 	                return height;
 	            }
 	            height = _x;
+	
 	            return this;
 	        };
 	
@@ -20331,6 +20356,7 @@
 	                return margin;
 	            }
 	            margin = _x;
+	
 	            return this;
 	        };
 	
@@ -20357,6 +20383,7 @@
 	                return width;
 	            }
 	            width = _x;
+	
 	            return this;
 	        };
 	
@@ -21427,7 +21454,7 @@
 	            var dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
 	            var yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
 	
-	            var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings),
+	            var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(dataByDate, width, forceAxisSettings),
 	                minor = _timeAxisHelper$getXA.minor,
 	                major = _timeAxisHelper$getXA.major;
 	
@@ -21828,6 +21855,7 @@
 	                return aspectRatio;
 	            }
 	            aspectRatio = _x;
+	
 	            return this;
 	        };
 	
@@ -21842,6 +21870,7 @@
 	                return colorSchema;
 	            }
 	            colorSchema = _x;
+	
 	            return this;
 	        };
 	
@@ -21856,6 +21885,7 @@
 	                return dateLabel;
 	            }
 	            dateLabel = _x;
+	
 	            return this;
 	        };
 	
@@ -21869,6 +21899,7 @@
 	                return forceAxisSettings || defaultAxisSettings;
 	            }
 	            forceAxisSettings = _x;
+	
 	            return this;
 	        };
 	
@@ -21884,6 +21915,8 @@
 	                return grid;
 	            }
 	            grid = _x;
+	
+	            return this;
 	        };
 	
 	        /**
@@ -21900,6 +21933,7 @@
 	                width = Math.ceil(_x / aspectRatio);
 	            }
 	            height = _x;
+	
 	            return this;
 	        };
 	
@@ -21914,6 +21948,7 @@
 	                return margin;
 	            }
 	            margin = _x;
+	
 	            return this;
 	        };
 	
@@ -21929,6 +21964,7 @@
 	                return tooltipThreshold;
 	            }
 	            tooltipThreshold = _x;
+	
 	            return this;
 	        };
 	
@@ -21943,6 +21979,7 @@
 	                return topicLabel;
 	            }
 	            topicLabel = _x;
+	
 	            return this;
 	        };
 	
@@ -21957,6 +21994,7 @@
 	                return valueLabel;
 	            }
 	            valueLabel = _x;
+	
 	            return this;
 	        };
 	
@@ -21989,6 +22027,7 @@
 	                height = Math.ceil(_x * aspectRatio);
 	            }
 	            width = _x;
+	
 	            return this;
 	        };
 	
@@ -22042,8 +22081,8 @@
 	        jsonHourDateRange = __webpack_require__(65),
 	        jsonSmallValueRange = __webpack_require__(66);
 	
-	    function SalesDataBuilder(config) {
-	        this.Klass = SalesDataBuilder;
+	    function LineDataBuilder(config) {
+	        this.Klass = LineDataBuilder;
 	
 	        this.config = _.defaults({}, config);
 	
@@ -22086,7 +22125,7 @@
 	        /**
 	         * Sets the path for fetching the data
 	         * @param  {string} path Desired path for test data
-	         * @return {SalesDataBuilder}      Builder object
+	         * @return {LineDataBuilder}      Builder object
 	         */
 	        this.withPath = function (path) {
 	            var attributes = _.extend({}, this.config, {
@@ -22102,7 +22141,7 @@
 	    }
 	
 	    return {
-	        SalesDataBuilder: SalesDataBuilder
+	        LineDataBuilder: LineDataBuilder
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 

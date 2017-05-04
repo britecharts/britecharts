@@ -139,7 +139,6 @@ define(function(require){
             singleLineGradientColors = colorHelper.colorGradients.greenBlueGradient,
             topicColorMap,
 
-            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
             forceAxisSettings = null,
 
             ease = d3Ease.easeQuadInOut,
@@ -253,7 +252,7 @@ define(function(require){
             let dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
             let yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
 
-            let {minor, major} = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings);
+            let {minor, major} = timeAxisHelper.getXAxisSettings(dataByDate, width, forceAxisSettings);
 
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(minor.tick)
@@ -778,10 +777,12 @@ define(function(require){
          * Exposes the ability to force the chart to show a certain x axis grouping
          * @param  {String} _x Desired format
          * @return { (String|Module) }    Current format or module to chain calls
+         * @example
+         *     line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
          */
         exports.forceAxisFormat = function(_x) {
             if (!arguments.length) {
-              return forceAxisSettings || defaultAxisSettings;
+              return forceAxisSettings;
             }
             forceAxisSettings = _x;
 
@@ -939,9 +940,10 @@ define(function(require){
         };
 
         /**
-         * constants to be used to force the x axis to respect a certain granularity
-         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
-         * @example line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
+         * Exposes the constants to be used to force the x axis to respect a certain granularity
+         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+         * @example
+         *     line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
          */
         exports.axisTimeCombinations = axisTimeCombinations;
 

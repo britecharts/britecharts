@@ -262,6 +262,18 @@ define([
                 expect(newOpacity).toBe(testOpacity);
             });
 
+            it('should provide a forceAxisFormat getter and setter', () => {
+                let defaultSchema = stackedAreaChart.forceAxisFormat(),
+                    testFormat = stackedAreaChart.axisTimeCombinations.HOUR_DAY,
+                    newSchema;
+
+                stackedAreaChart.forceAxisFormat(testFormat);
+                newSchema = stackedAreaChart.forceAxisFormat();
+
+                expect(defaultSchema).not.toBe(testFormat);
+                expect(newSchema).toBe(testFormat);
+            });
+
             it('should provide grid mode getter and setter', () => {
                 let defaultGridMode = stackedAreaChart.grid(),
                     testValue = 'vertical',

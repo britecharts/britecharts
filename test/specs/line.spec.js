@@ -15,7 +15,7 @@ define([
     'use strict';
 
     function aTestDataSet() {
-        return new dataBuilder.SalesDataBuilder();
+        return new dataBuilder.LineDataBuilder();
     }
 
     function hasClass(element, className) {
@@ -25,7 +25,7 @@ define([
     describe('Line Chart', () => {
         let dataset, containerFixture, f, lineChart;
 
-        xdescribe('with a single line', function() {
+        xdescribe('when a single line', function() {
 
             beforeEach(() => {
                 dataset = aTestDataSet().withOneSource().build();
@@ -57,7 +57,7 @@ define([
             });
         });
 
-        describe('with multiple lines', function() {
+        describe('when multiple lines', function() {
 
             beforeEach(() => {
                 dataset = aTestDataSet().with5Topics().build();

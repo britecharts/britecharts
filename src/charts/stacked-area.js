@@ -105,7 +105,6 @@ define(function(require){
             colorScale,
             categoryColorMap,
 
-            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
             forceAxisSettings = null,
             baseLine,
 
@@ -218,7 +217,6 @@ define(function(require){
             return format(value);
         }
 
-
         /**
          * Creates the d3 x and y axis, setting orientations
          * @private
@@ -227,7 +225,7 @@ define(function(require){
             let dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
             let yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
 
-            let {minor, major} = timeAxisHelper.getXAxisSettings(dataByDate, xScale, width, forceAxisSettings || defaultAxisSettings);
+            let {minor, major} = timeAxisHelper.getXAxisSettings(dataByDate, width, forceAxisSettings);
 
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(minor.tick)
@@ -822,6 +820,22 @@ define(function(require){
         };
 
         /**
+         * Exposes the ability to force the chart to show a certain x axis grouping
+         * @param  {String} _x Desired format
+         * @return { (String|Module) }    Current format or module to chain calls
+         * @example
+         *     area.forceAxisFormat(area.axisTimeCombinations.HOUR_DAY)
+         */
+        exports.forceAxisFormat = function(_x) {
+            if (!arguments.length) {
+              return forceAxisSettings;
+            }
+            forceAxisSettings = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the grid mode.
          *
          * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
@@ -902,8 +916,6 @@ define(function(require){
             return this;
         };
 
-
-
         /**
          * Gets or Sets the valueLabel of the chart
          * @param  {Number} _x Desired valueLabel for the graph
@@ -973,6 +985,14 @@ define(function(require){
 
             return value === dispatcher ? exports : value;
         };
+
+        /**
+         * Exposes the constants to be used to force the x axis to respect a certain granularity
+         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+         * @example
+         *     area.forceAxisFormat(area.axisTimeCombinations.HOUR_DAY)
+         */
+        exports.axisTimeCombinations = axisTimeCombinations;
 
         return exports;
     };

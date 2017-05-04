@@ -81,7 +81,6 @@ define(function(require) {
             xScale, yScale,
             xAxis,
 
-            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
             forceAxisSettings = null,
 
             brush,
@@ -128,8 +127,7 @@ define(function(require) {
          * @private
          */
         function buildAxis(){
-
-            let {minor, major} = timeAxisHelper.getXAxisSettings(data, xScale, width, forceAxisSettings || defaultAxisSettings);
+            let {minor, major} = timeAxisHelper.getXAxisSettings(data, width, forceAxisSettings);
 
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(minor.tick)
@@ -427,19 +425,23 @@ define(function(require) {
          * Exposes the ability to force the chart to show a certain x axis grouping
          * @param  {String} _x Desired format
          * @return { (String|Module) }    Current format or module to chain calls
+         * @example
+         *     brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
          */
         exports.forceAxisFormat = function(_x) {
             if (!arguments.length) {
-              return forceAxisSettings || defaultAxisSettings;
+              return forceAxisSettings;
             }
             forceAxisSettings = _x;
+
             return this;
         };
 
         /**
-         * constants to be used to force the x axis to respect a certain granularity
-         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
-         * @example line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
+         * Exposes the constants to be used to force the x axis to respect a certain granularity
+         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+         * @example
+         *     brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
          */
         exports.axisTimeCombinations = axisTimeCombinations;
 
@@ -454,6 +456,7 @@ define(function(require) {
                 return gradient;
             }
             gradient = _x;
+
             return this;
         };
 
@@ -468,6 +471,7 @@ define(function(require) {
                 return height;
             }
             height = _x;
+
             return this;
         };
 
@@ -482,6 +486,7 @@ define(function(require) {
                 return margin;
             }
             margin = _x;
+
             return this;
         };
 
@@ -508,6 +513,7 @@ define(function(require) {
                 return width;
             }
             width = _x;
+
             return this;
         };
 

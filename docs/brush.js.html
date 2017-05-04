@@ -262,8 +262,7 @@
          * @private
          */
         function buildAxis(){
-
-            let {minor, major} = timeAxisHelper.getXAxisSettings(data, xScale, width, forceAxisSettings || defaultAxisSettings);
+            let {minor, major} = timeAxisHelper.getXAxisSettings(data, width, forceAxisSettings || defaultAxisSettings);
 
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(minor.tick)
@@ -567,6 +566,7 @@
               return forceAxisSettings || defaultAxisSettings;
             }
             forceAxisSettings = _x;
+
             return this;
         };
 
@@ -588,6 +588,7 @@
                 return gradient;
             }
             gradient = _x;
+
             return this;
         };
 
@@ -602,6 +603,7 @@
                 return height;
             }
             height = _x;
+
             return this;
         };
 
@@ -616,6 +618,7 @@
                 return margin;
             }
             margin = _x;
+
             return this;
         };
 
@@ -642,6 +645,7 @@
                 return width;
             }
             width = _x;
+
             return this;
         };
 

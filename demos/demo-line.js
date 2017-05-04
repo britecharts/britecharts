@@ -16,7 +16,7 @@ var _ = require('underscore'),
 function createBrushChart(optionalColorSchema) {
     var brushChart = brush(),
         brushMargin = {top:0, bottom: 40, left: 70, right: 30},
-        testDataSet = new dataBuilder.SalesDataBuilder(),
+        testDataSet = new dataBuilder.LineDataBuilder(),
         brushContainer = d3Selection.select('.js-line-brush-chart-container'),
         containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
         dataset;
@@ -49,7 +49,7 @@ function createBrushChart(optionalColorSchema) {
 function createLineChart(optionalColorSchema, optionalData) {
     var lineChart1 = line(),
         chartTooltip = tooltip(),
-        testDataSet = new dataBuilder.SalesDataBuilder(),
+        testDataSet = new dataBuilder.LineDataBuilder(),
         container = d3Selection.select('.js-line-chart-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
@@ -69,6 +69,7 @@ function createLineChart(optionalColorSchema, optionalData) {
             .tooltipThreshold(600)
             .width(containerWidth)
             .dateLabel('fullDate')
+            .forceAxisFormat('month-year')
             .on('customMouseOver', function() {
                 chartTooltip.show();
             })
@@ -108,7 +109,7 @@ function createLineChart(optionalColorSchema, optionalData) {
 function createLineChartWithSingleLine() {
     var lineChart2 = line(),
         chartTooltip = tooltip(),
-        testDataSet = new dataBuilder.SalesDataBuilder(),
+        testDataSet = new dataBuilder.LineDataBuilder(),
         container = d3Selection.select('.js-single-line-chart-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
@@ -153,7 +154,7 @@ function createLineChartWithSingleLine() {
 function createLineChartWithFixedHeight() {
     var lineChart3 = line(),
         chartTooltip = tooltip(),
-        testDataSet = new dataBuilder.SalesDataBuilder(),
+        testDataSet = new dataBuilder.LineDataBuilder(),
         container = d3Selection.select('.js-fixed-line-chart-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
@@ -215,7 +216,7 @@ function brushDataAdapter(dataLine) {
 }
 
 function filterData(d0, d1) {
-    var testDataSet = new dataBuilder.SalesDataBuilder(),
+    var testDataSet = new dataBuilder.LineDataBuilder(),
         data = JSON.parse(JSON.stringify(testDataSet.with5Topics().build()));
 
     data.dataByDate = data.dataByDate.filter(isInRange.bind(null, d0, d1));
