@@ -1,3 +1,4 @@
+1.5.0
 [1.5.0][https://github.com/eventbrite/britecharts/compare/1.5.0...1.4.0] - Minor Release
 ---------------------
 Changes:
