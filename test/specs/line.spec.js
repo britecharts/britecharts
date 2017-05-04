@@ -15,7 +15,7 @@ define([
     'use strict';
 
     function aTestDataSet() {
-        return new dataBuilder.SalesDataBuilder();
+        return new dataBuilder.LineDataBuilder();
     }
 
     function hasClass(element, className) {
@@ -25,7 +25,7 @@ define([
     describe('Line Chart', () => {
         let dataset, containerFixture, f, lineChart;
 
-        xdescribe('with a single line', function() {
+        xdescribe('when a single line', function() {
 
             beforeEach(() => {
                 dataset = aTestDataSet().withOneSource().build();
@@ -57,7 +57,7 @@ define([
             });
         });
 
-        describe('with multiple lines', function() {
+        describe('when multiple lines', function() {
 
             beforeEach(() => {
                 dataset = aTestDataSet().with5Topics().build();
@@ -342,6 +342,30 @@ define([
 
                 expect(defaultSchema).not.toBe(testFormat);
                 expect(newSchema).toBe(testFormat);
+            });
+
+            it('should provide a forcedXTicks getter and setter', () => {
+                let defaultForcedXTicks = lineChart.forcedXTicks(),
+                    testXTicks = 2,
+                    newForcedXTicks;
+
+                lineChart.forcedXTicks(testXTicks);
+                newForcedXTicks = lineChart.forcedXTicks();
+
+                expect(defaultForcedXTicks).not.toBe(testXTicks);
+                expect(newForcedXTicks).toBe(testXTicks);
+            });
+
+            it('should provide a forcedXFormat getter and setter', () => {
+                let defaultForcedXFormat = lineChart.forcedXFormat(),
+                    testXFormat = '%d %b',
+                    newForcedXFormat;
+
+                lineChart.forcedXFormat(testXFormat);
+                newForcedXFormat = lineChart.forcedXFormat();
+
+                expect(defaultForcedXFormat).not.toBe(testXFormat);
+                expect(newForcedXFormat).toBe(testXFormat);
             });
 
             it('should provide an axisTimeCombinations accessor', () => {

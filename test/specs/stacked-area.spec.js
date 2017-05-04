@@ -262,6 +262,42 @@ define([
                 expect(newOpacity).toBe(testOpacity);
             });
 
+            it('should provide a forceAxisFormat getter and setter', () => {
+                let defaultSchema = stackedAreaChart.forceAxisFormat(),
+                    testFormat = stackedAreaChart.axisTimeCombinations.HOUR_DAY,
+                    newSchema;
+
+                stackedAreaChart.forceAxisFormat(testFormat);
+                newSchema = stackedAreaChart.forceAxisFormat();
+
+                expect(defaultSchema).not.toBe(testFormat);
+                expect(newSchema).toBe(testFormat);
+            });
+
+            it('should provide a forcedXTicks getter and setter', () => {
+                let defaultForcedXTicks = stackedAreaChart.forcedXTicks(),
+                    testXTicks = 2,
+                    newForcedXTicks;
+
+                stackedAreaChart.forcedXTicks(testXTicks);
+                newForcedXTicks = stackedAreaChart.forcedXTicks();
+
+                expect(defaultForcedXTicks).not.toBe(testXTicks);
+                expect(newForcedXTicks).toBe(testXTicks);
+            });
+
+            it('should provide a forcedXFormat getter and setter', () => {
+                let defaultForcedXFormat = stackedAreaChart.forcedXFormat(),
+                    testXFormat = '%d %b',
+                    newForcedXFormat;
+
+                stackedAreaChart.forcedXFormat(testXFormat);
+                newForcedXFormat = stackedAreaChart.forcedXFormat();
+
+                expect(defaultForcedXFormat).not.toBe(testXFormat);
+                expect(newForcedXFormat).toBe(testXFormat);
+            });
+
             it('should provide grid mode getter and setter', () => {
                 let defaultGridMode = stackedAreaChart.grid(),
                     testValue = 'vertical',
