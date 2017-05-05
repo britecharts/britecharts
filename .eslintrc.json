@@ -6,7 +6,7 @@
         "es6": true,
         "browser": true,
         "jasmine": true,
-        "amd": true,
+        "amd": true
     },
     "rules": {
         "complexity": 1,
