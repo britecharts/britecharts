@@ -101,7 +101,7 @@ Read more in the [license document][15]
 [12]: https://nodejs.org/en/download/
 [13]: https://github.com/eventbrite/britecharts/releases
 [14]: https://www.apache.org/licenses/LICENSE-2.0
-[15]: ../LICENSE.md
+[15]: https://github.com/eventbrite/britecharts/blob/master/LICENSE.md
 [16]: https://github.com/eventbrite/britecharts/issues
 [17]: https://github.com/babel/babel
 [18]: https://eventbrite.github.io/britecharts/tutorial-brush.html
