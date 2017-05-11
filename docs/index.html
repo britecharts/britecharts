@@ -156,7 +156,7 @@
 <p><a href="https://travis-ci.org/eventbrite/britecharts"><img src="https://travis-ci.org/eventbrite/britecharts.svg?branch=master" alt="Build Status"></a>
 <a href="https://badge.fury.io/js/britecharts"><img src="https://badge.fury.io/js/britecharts.svg" alt="npm version"></a>
 <a href="https://badge.fury.io/bo/britecharts"><img src="https://badge.fury.io/bo/britecharts.svg" alt="Bower version"></a></p>
-<p>Britecharts <a href="https://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html">components</a> have been written in ES2015 with a Test Driven methodology so they are <strong>fully tested</strong>, and we are commited to keep them that way.</p>
+<p>Britecharts <a href="https://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html">components</a> have been written in ES2015 with a Test Driven methodology so they are <strong>fully tested</strong>, and we are commited to keeping them that way.</p>
 <h2>Key Features</h2><p>The main characteristics of this library are:</p>
 <ul>
 <li>Reusability</li>
@@ -164,12 +164,12 @@
 <li>Fully tested</li>
 <li>ES2015 source code (transpiled with <a href="https://github.com/babel/babel">Babel</a>)</li>
 </ul>
-<h2>Usage</h2><p>The typical use of Britecharts involves creating a chart using it's simple API, and rendering it on a container which has previously been applied some data. The code will look like this:</p>
+<h2>Usage</h2><p>The typical use of Britecharts involves creating a chart using its simple API, then rendering it on a container which has previously had data applied to it. The code will look like this:</p>
 <pre class="prettyprint source"><code>barChart
     .width(500)
     .height(300);
 
-barContainer.datum(dataset).call(barChart);</code></pre><h2>API</h2><p>All the components expose some basic API methods like width, height and margin. Additionally, each chart or component can expose more methods. They will be ready to check in the documentation of the modules:</p>
+barContainer.datum(dataset).call(barChart);</code></pre><h2>API</h2><p>All the components expose some basic API methods like width, height and margin. Additionally, each chart or component can expose more methods. Those can be found in the documentation of the modules:</p>
 <ul>
 <li>Bar Chart: <a href="https://eventbrite.github.io/britecharts/module-Bar.html">API</a> - <a href="https://eventbrite.github.io/britecharts/tutorial-bar.html">Demo</a></li>
 <li>Line Chart: <a href="https://eventbrite.github.io/britecharts/module-Line.html">API</a> - <a href="https://eventbrite.github.io/britecharts/tutorial-line.html">Demo</a></li>
@@ -182,9 +182,9 @@ barContainer.datum(dataset).call(barChart);</code></pre><h2>API</h2><p>All the c
 <li>Legend Chart: <a href="https://eventbrite.github.io/britecharts/module-Legend.html">API</a> - <a href="https://eventbrite.github.io/britecharts/tutorial-donut.html">Demo</a></li>
 <li>Step Chart: <a href="https://eventbrite.github.io/britecharts/module-Step.html">API</a> - <a href="https://eventbrite.github.io/britecharts/tutorial-step.html">Demo</a></li>
 </ul>
-<h2>Installation</h2><p>Britecharts components are distributed in <strong>UMD modules</strong>, each one exposing a D3.js component written with the <a href="https://bost.ocks.org/mike/chart/">Reusable API pattern</a>. In order to use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules or adding a script tag with the <code>src</code> pointing to the file. You would also need to load the <a href="https://github.com/d3/d3-selection">D3.js selection</a> library in order to select the chart container.</p>
+<h2>Installation</h2><p>Britecharts components are distributed in <strong>UMD modules</strong>, each one exposing a D3.js component written with the <a href="https://bost.ocks.org/mike/chart/">Reusable API pattern</a>. In order to use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules or add a script tag with the <code>src</code> pointing to the file. You would also need to load the <a href="https://github.com/d3/d3-selection">D3.js selection</a> library in order to select the chart container.</p>
 <pre class="prettyprint source"><code>   npm install britecharts d3-selection</code></pre><p>They also provide some minimal CSS styling, that can be loaded independently or as a bundle.</p>
-<h2>Roadmap</h2><p>This project is in active development, if you are interested on helping you can check the <a href="https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md">contributing</a> document. Review the <a href="https://github.com/eventbrite/britecharts/issues">issues page</a> for more info in what's coming and to give your feedback and to vote for your favorite proposals.</p>
+<h2>Roadmap</h2><p>This project is in active development, if you are interested on helping you can check the <a href="https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md">contributing</a> document. Review the <a href="https://github.com/eventbrite/britecharts/issues">issues page</a> for more info on what's coming, to give your feedback, and to vote for your favorite proposals.</p>
 <h2>See Also</h2><ul>
 <li><a href="https://eventbrite.github.io/britecharts/tutorial--_GETTINGSTARTED.html">Getting Started Guide</a></li>
 <li><a href="https://eventbrite.github.io/britecharts/">Documentation</a></li>
