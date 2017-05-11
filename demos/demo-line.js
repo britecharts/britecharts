@@ -69,7 +69,6 @@ function createLineChart(optionalColorSchema, optionalData) {
             .tooltipThreshold(600)
             .width(containerWidth)
             .dateLabel('fullDate')
-            .forceAxisFormat('month-year')
             .on('customMouseOver', function() {
                 chartTooltip.show();
             })
