@@ -2,7 +2,7 @@
     var basePath = './charts/',
         britecharts;
 
-    if (!_ || !d3 || +d3.version[0] < 4) {
+    if (typeof _ === 'undefined' || typeof d3 === 'undefined' || +d3.version[0] < 4) {
         console.error('Dependencies not found. Britecharts requires underscore and d3 v4');
     }
 
