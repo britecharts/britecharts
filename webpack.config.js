@@ -166,7 +166,7 @@ config = {
     },
 
     cdn: {
-        entry: './src/charts/index.js',
+        entry: './src/index.js',
         output: {
             path: 'dist/cdn/',
             filename: 'bundle.min.js'

@@ -1,13 +1,15 @@
 (function(root) {
-    var basePath = './',
+    var basePath = './charts/',
         britecharts;
 
     if (!_ || !d3 || +d3.version[0] < 4) {
         console.error('Dependencies not found. Britecharts requires underscore and d3 v4');
     }
 
-    if (typeof underscore === 'undefined') {
+    if (typeof underscore === 'undefined' && typeof _ !== undefined) {
         underscore = _;
+    } else {
+        underscore = _ = require('underscore');
     }
 
     britecharts = {
