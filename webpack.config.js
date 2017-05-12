@@ -165,6 +165,39 @@ config = {
         plugins
     },
 
+    cdn: {
+        entry: './src/charts/index.js',
+        output: {
+            path: 'dist/cdn/',
+            filename: 'bundle.min.js'
+        },
+        externals: {
+            d3: 'd3',
+            underscore: 'underscore'
+        },
+        module: {
+
+            loaders: [ defaultJSLoader ],
+
+            // Tell Webpack not to parse certain modules.
+            noParse: [
+                new RegExp(vendorsPath + '/underscore/underscore.js'),
+                new RegExp(vendorsPath + '/d3/d3.js')
+            ]
+        },
+
+        resolve: {
+            alias: {
+                underscore: vendorsPath + '/underscore/underscore.js',
+                d3: vendorsPath + '/d3'
+            }
+        },
+
+        plugins: [
+            new UglifyJsPlugin({ minimize: false })
+        ]
+    },
+
     // Creates minified UMD versions of each chart
     prodUMD: {
         entry:  currentCharts,
