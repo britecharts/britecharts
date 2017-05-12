@@ -33,7 +33,8 @@
     "_prod": "WEBPACK_ENV=prod webpack",
     "_prodUMD": "WEBPACK_ENV=prodUMD webpack",
     "move": "grunt moveDemos",
-    "watch": "grunt watch"
+    "watch": "grunt watch",
+    "cdn": "WEBPACK_ENV=cdn webpack"
   },
   "repository": {
     "type": "git",
