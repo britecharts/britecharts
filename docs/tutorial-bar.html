@@ -138,6 +138,7 @@
     <meta charset="UTF-8">
     <title>Bar Chart Demo - Britecharts</title>
     <link type="text/css" rel="stylesheet" href="styles/britecharts.css" />
+    <script type="text/javascript" src="./../dist/bundled/britecharts.min.js"></script>
 </head>
 <body id="bar">
     <div class="container">
@@ -157,7 +158,7 @@ barChart
     .height(300)
     .usePercentage(true)
     .on('customMouseHover', tooltip.show)
-    .on('customMouseMove', tooltip.update);
+    .on('customMouseMove', tooltip.update)
     .on('customMouseOut', tooltip.hide);
 
 barContainer.datum(dataset).call(barChart);
