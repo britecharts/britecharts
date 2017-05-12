@@ -2,16 +2,20 @@ define(function(require) {
 
     var _ = require('underscore'),
         d3Selection = require('d3-selection'),
-
         PubSub = require('pubsub-js'),
-
-        debounceDelay = 200;
-
+        debounceDelay = 200,
+        cachedWidth = window.innerWidth;
 
     d3Selection.select(window)
         .on('resize', _.debounce(function(){
-            PubSub.publish('resize');
-        }, debounceDelay));
+                var newWidth = window.innerWidth;
+
+                if (cachedWidth !== newWidth) {
+                    cachedWidth = newWidth;
+                    PubSub.publish('resize');
+                }
+
+            }, debounceDelay));
 
     return {};
 });
