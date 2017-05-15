@@ -7516,7 +7516,6 @@
 	      : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
 	      : "0." + new Array(1 - i).join("0") + formatDecimal(x, Math.max(0, p + i - 1))[0]; // less than 1y!
 	};
-<<<<<<< HEAD
 	
 	var formatRounded = function(x, p) {
 	  var d = formatDecimal(x, p);
@@ -7577,68 +7576,6 @@
 	  // If zero fill is specified, padding goes after sign and before digits.
 	  if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
 	
-=======
-	
-	var formatRounded = function(x, p) {
-	  var d = formatDecimal(x, p);
-	  if (!d) return x + "";
-	  var coefficient = d[0],
-	      exponent = d[1];
-	  return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
-	      : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
-	      : coefficient + new Array(exponent - coefficient.length + 2).join("0");
-	};
-	
-	var formatTypes = {
-	  "": formatDefault,
-	  "%": function(x, p) { return (x * 100).toFixed(p); },
-	  "b": function(x) { return Math.round(x).toString(2); },
-	  "c": function(x) { return x + ""; },
-	  "d": function(x) { return Math.round(x).toString(10); },
-	  "e": function(x, p) { return x.toExponential(p); },
-	  "f": function(x, p) { return x.toFixed(p); },
-	  "g": function(x, p) { return x.toPrecision(p); },
-	  "o": function(x) { return Math.round(x).toString(8); },
-	  "p": function(x, p) { return formatRounded(x * 100, p); },
-	  "r": formatRounded,
-	  "s": formatPrefixAuto,
-	  "X": function(x) { return Math.round(x).toString(16).toUpperCase(); },
-	  "x": function(x) { return Math.round(x).toString(16); }
-	};
-	
-	// [[fill]align][sign][symbol][0][width][,][.precision][type]
-	var re = /^(?:(.)?([<>=^]))?([+\-\( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?([a-z%])?$/i;
-	
-	function formatSpecifier(specifier) {
-	  return new FormatSpecifier(specifier);
-	}
-	
-	formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
-	
-	function FormatSpecifier(specifier) {
-	  if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
-	
-	  var match,
-	      fill = match[1] || " ",
-	      align = match[2] || ">",
-	      sign = match[3] || "-",
-	      symbol = match[4] || "",
-	      zero = !!match[5],
-	      width = match[6] && +match[6],
-	      comma = !!match[7],
-	      precision = match[8] && +match[8].slice(1),
-	      type = match[9] || "";
-	
-	  // The "n" type is an alias for ",g".
-	  if (type === "n") comma = true, type = "g";
-	
-	  // Map invalid types to the default format.
-	  else if (!formatTypes[type]) type = "";
-	
-	  // If zero fill is specified, padding goes after sign and before digits.
-	  if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
-	
->>>>>>> Fixing bundle setup
 	  this.fill = fill;
 	  this.align = align;
 	  this.sign = sign;
@@ -17271,8 +17208,6 @@
 	    miniTooltip = __webpack_require__(45),
 	    colors = __webpack_require__(7),
 	    dataBuilder = __webpack_require__(46);
-	
-	// var britecharts = require('./../dist/bundled/britecharts.min');
 	
 	function createBarChart() {
 	    var barChart = bar(),

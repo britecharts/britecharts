@@ -131,8 +131,7 @@ config = {
         },
 
         externals: {
-            d3: 'd3',
-            underscore: 'underscore'
+            d3: 'd3'
         },
 
         module: {
@@ -168,8 +167,7 @@ config = {
         },
 
         externals: {
-            d3: 'd3',
-            underscore: 'underscore'
+            d3: 'd3'
         },
 
         module: {

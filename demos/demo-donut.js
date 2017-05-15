@@ -1,11 +1,11 @@
 'use strict';
 
 var d3Selection = require('d3-selection'),
-
     PubSub = require('pubsub-js'),
 
     donut = require('./../src/charts/donut'),
     legend = require('./../src/charts/legend'),
+
     dataBuilder = require('./../test/fixtures/donutChartDataBuilder'),
     colorSelectorHelper = require('./helpers/colorSelector'),
 
