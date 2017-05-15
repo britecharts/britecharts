@@ -18739,7 +18739,7 @@
 	    if (containerWidth) {
 	        d3Selection.select('.js-inline-legend-chart-container .britechart-legend').remove();
 	
-	        legendChart.horizontal(true).width(containerWidth * 0.3).markerSize(8).height(60);
+	        legendChart.horizontal(true).width(containerWidth * 0.6).markerSize(8).height(40);
 	
 	        if (optionalColorSchema) {
 	            legendChart.colorSchema(optionalColorSchema);
@@ -19391,6 +19391,22 @@
 	        }
 	
 	        /**
+	         * Depending on the size of the horizontal legend, we are going to either
+	         * center the legend or add a new line with the last entry of the legend
+	         * @return {void}
+	         */
+	        function adjustLines() {
+	            var lineWidth = svg.select('.legend-line').node().getBoundingClientRect().width;
+	            var lineWidthSpace = chartWidth - lineWidth;
+	
+	            if (lineWidthSpace > 0) {
+	                centerLegendOnSVG();
+	            } else {
+	                splitInLines();
+	            }
+	        }
+	
+	        /**
 	         * Builds containers for the legend
 	         * Also applies the Margin convention
 	         * @private
@@ -19479,36 +19495,6 @@
 	            adjustLines();
 	        }
 	
-	        function adjustLines() {
-	            var lineWidth = svg.select('.legend-line').node().getBoundingClientRect().width;
-	            var lineWidthSpace = chartWidth - lineWidth;
-	
-	            if (lineWidthSpace > 0) {
-	                centerLegendOnSVG();
-	            } else {
-	                splitInLines();
-	            }
-	        }
-	
-	        /**
-	         * Simple method to move the last item of an overflowing legend into the next line
-	         * @return {void}
-	         * @private
-	         */
-	        function splitInLines() {
-	            var legendEntries = svg.selectAll('.legend-entry');
-	            var numberOfEntries = legendEntries.size();
-	            var lastEntry = legendEntries.filter(':nth-child(' + numberOfEntries + ')');
-	
-	            var lineHeight = chartHeight / 2 * 1.7;
-	            var newLine = svg.select('.legend-group').append('g').classed('legend-line', true).attr('transform', 'translate(0, ' + lineHeight + ')');
-	
-	            lastEntry.attr('transform', 'translate(' + markerSize + ',0)');
-	            newLine.append(function () {
-	                return lastEntry.node();
-	            });
-	        }
-	
 	        /**
 	         * Draws the entries of the legend
 	         * @private
@@ -19551,6 +19537,25 @@
 	         */
 	        function getLineElementMargin() {
 	            return marginRatio * markerSize;
+	        }
+	
+	        /**
+	         * Simple method to move the last item of an overflowing legend into the next line
+	         * @return {void}
+	         * @private
+	         */
+	        function splitInLines() {
+	            var legendEntries = svg.selectAll('.legend-entry');
+	            var numberOfEntries = legendEntries.size();
+	            var lineHeight = chartHeight / 2 * 1.7;
+	
+	            var newLine = svg.select('.legend-group').append('g').classed('legend-line', true).attr('transform', 'translate(0, ' + lineHeight + ')');
+	
+	            var lastEntry = legendEntries.filter(':nth-child(' + numberOfEntries + ')');
+	            lastEntry.attr('transform', 'translate(' + markerSize + ',0)');
+	            newLine.append(function () {
+	                return lastEntry.node();
+	            });
 	        }
 	
 	        /**
