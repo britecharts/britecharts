@@ -82,9 +82,9 @@ function getInlineLegendChart(dataset, optionalColorSchema) {
 
         legendChart
             .horizontal(true)
-            .width(containerWidth*0.6)
+            .width(containerWidth*0.3)
             .markerSize(8)
-            .height(40)
+            .height(60)
 
         if (optionalColorSchema) {
             legendChart.colorSchema(optionalColorSchema);

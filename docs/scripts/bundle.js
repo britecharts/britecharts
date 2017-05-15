@@ -73,10 +73,16 @@
 	    var _ = __webpack_require__(3),
 	        d3Selection = __webpack_require__(4),
 	        PubSub = __webpack_require__(5),
-	        debounceDelay = 200;
+	        debounceDelay = 200,
+	        cachedWidth = window.innerWidth;
 	
 	    d3Selection.select(window).on('resize', _.debounce(function () {
-	        PubSub.publish('resize');
+	        var newWidth = window.innerWidth;
+	
+	        if (cachedWidth !== newWidth) {
+	            cachedWidth = newWidth;
+	            PubSub.publish('resize');
+	        }
 	    }, debounceDelay));
 	
 	    return {};
@@ -18733,7 +18739,7 @@
 	    if (containerWidth) {
 	        d3Selection.select('.js-inline-legend-chart-container .britechart-legend').remove();
 	
-	        legendChart.horizontal(true).width(containerWidth * 0.6).markerSize(8).height(40);
+	        legendChart.horizontal(true).width(containerWidth * 0.3).markerSize(8).height(60);
 	
 	        if (optionalColorSchema) {
 	            legendChart.colorSchema(optionalColorSchema);
@@ -19318,10 +19324,10 @@
 	    return function module() {
 	
 	        var margin = {
-	            top: 0,
-	            right: 0,
-	            bottom: 0,
-	            left: 0
+	            top: 5,
+	            right: 5,
+	            bottom: 5,
+	            left: 5
 	        },
 	            width = 320,
 	            height = 180,
@@ -19377,9 +19383,9 @@
 	                buildColorScale();
 	                buildSVG(this);
 	                if (horizontal) {
-	                    drawInlineLegend();
+	                    drawHorizontalLegend();
 	                } else {
-	                    drawStackedLegend();
+	                    drawVerticalLegend();
 	                }
 	            });
 	        }
@@ -19444,7 +19450,7 @@
 	         * Draws the entries of the legend within a single line
 	         * @private
 	         */
-	        function drawInlineLegend() {
+	        function drawHorizontalLegend() {
 	            var xOffset = markerSize;
 	
 	            // We want a single line
@@ -19470,14 +19476,44 @@
 	            // Exit
 	            svg.select('.legend-group').selectAll('g.legend-entry').exit().transition().style('opacity', 0).remove();
 	
-	            centerLegendOnSVG();
+	            adjustLines();
+	        }
+	
+	        function adjustLines() {
+	            var lineWidth = svg.select('.legend-line').node().getBoundingClientRect().width;
+	            var lineWidthSpace = chartWidth - lineWidth;
+	
+	            if (lineWidthSpace > 0) {
+	                centerLegendOnSVG();
+	            } else {
+	                splitInLines();
+	            }
+	        }
+	
+	        /**
+	         * Simple method to move the last item of an overflowing legend into the next line
+	         * @return {void}
+	         * @private
+	         */
+	        function splitInLines() {
+	            var legendEntries = svg.selectAll('.legend-entry');
+	            var numberOfEntries = legendEntries.size();
+	            var lastEntry = legendEntries.filter(':nth-child(' + numberOfEntries + ')');
+	
+	            var lineHeight = chartHeight / 2 * 1.7;
+	            var newLine = svg.select('.legend-group').append('g').classed('legend-line', true).attr('transform', 'translate(0, ' + lineHeight + ')');
+	
+	            lastEntry.attr('transform', 'translate(' + markerSize + ',0)');
+	            newLine.append(function () {
+	                return lastEntry.node();
+	            });
 	        }
 	
 	        /**
 	         * Draws the entries of the legend
 	         * @private
 	         */
-	        function drawStackedLegend() {
+	        function drawVerticalLegend() {
 	            entries = svg.select('.legend-group').selectAll('g.legend-line').data(data);
 	
 	            // Enter
