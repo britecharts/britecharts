@@ -505,7 +505,7 @@
                 .classed('legend-line', true)
                 .attr('transform', `translate(0, ${lineHeight})`);
 
-            let lastEntry = legendEntries.filter(':nth-child(' + numberOfEntries + ')');
+            let lastEntry = legendEntries.filter(`:nth-child(${numberOfEntries})`);
             lastEntry.attr('transform', `translate(${markerSize},0)`);
             newLine.append(() => lastEntry.node());
         }
