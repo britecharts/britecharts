@@ -18,20 +18,20 @@
     }
   ],
   "scripts": {
-    "demos:compile": "WEBPACK_ENV=demos webpack --progress --colors",
-    "demos:watch": "WEBPACK_ENV=demos webpack --watch --progress --colors",
-    "demos:serve": "WEBPACK_ENV=demos webpack-dev-server --inline --hot --port 8001",
+    "demos:compile": "webpack --progress --colors --mode=demos",
+    "demos:watch": "webpack --watch --progress --colors --mode=demos",
+    "demos:serve": "webpack-dev-server --inline --hot --port 8001 --mode=demos",
     "styles": "grunt lint && grunt sass && grunt cssmin",
-    "docs": "WEBPACK_ENV=demos webpack && npm run styles && grunt docs",
+    "docs": "webpack --mode=demos && npm run styles && grunt docs",
     "prod": "npm run _prodUMD && npm run _prod",
     "untrack": "grunt untrack",
     "release": "npm run prod && grunt release:patch",
     "release:minor": "npm run prod && grunt release:minor",
     "release:major": "npm run prod && grunt release:major",
-    "test": "WEBPACK_ENV=test karma start",
-    "test:travis": "WEBPACK_ENV=test karma start --single-run --browsers PhantomJS",
-    "_prod": "WEBPACK_ENV=prod webpack",
-    "_prodUMD": "WEBPACK_ENV=prodUMD webpack",
+    "test": "karma start --mode=test",
+    "test:travis": "karma start --single-run --browsers PhantomJS --mode=test",
+    "_prod": "webpack --mode=prod",
+    "_prodUMD": "webpack --mode=prodUMD",
     "move": "grunt moveDemos",
     "watch": "grunt watch"
   },
@@ -110,6 +110,7 @@
     "webpack": "^1.13.3",
     "webpack-bundle-analyzer": "^2.3.1",
     "webpack-dev-server": "^1.16.2",
-    "webpack-livereload-plugin": "^0.9.0"
+    "webpack-livereload-plugin": "^0.9.0",
+    "yargs": "^8.0.1"
   }
 }
