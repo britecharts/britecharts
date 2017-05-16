@@ -37,6 +37,13 @@
     background-color: white;
     padding: 10px;
 }
+@media print
+{
+    .footer {
+        position: fixed;
+    }
+}
+
 /* Copyright */
 .copyright {
     font-size: 80%;
