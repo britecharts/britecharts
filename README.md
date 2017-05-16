@@ -8,7 +8,7 @@
 [![npm version](https://badge.fury.io/js/britecharts.svg)](https://badge.fury.io/js/britecharts)
 [![Bower version](https://badge.fury.io/bo/britecharts.svg)](https://badge.fury.io/bo/britecharts)
 
-Britecharts [components][32] have been written in ES2015 with a Test Driven methodology so they are **fully tested**, and we are commited to keep them that way.
+Britecharts [components][32] have been written in ES2015 with a Test Driven methodology so they are **fully tested**, and we are commited to keeping them that way.
 
 ## Key Features
 
@@ -21,7 +21,7 @@ The main characteristics of this library are:
 
 ## Usage
 
-The typical use of Britecharts involves creating a chart using it's simple API, and rendering it on a container which has previously been applied some data. The code will look like this:
+The typical use of Britecharts involves creating a chart using its simple API, then rendering it on a container which has previously had data applied to it. The code will look like this:
 
     barChart
         .width(500)
@@ -31,7 +31,7 @@ The typical use of Britecharts involves creating a chart using it's simple API, 
 
 ## API
 
-All the components expose some basic API methods like width, height and margin. Additionally, each chart or component can expose more methods. They will be ready to check in the documentation of the modules:
+All the components expose some basic API methods like width, height and margin. Additionally, each chart or component can expose more methods. Those can be found in the documentation of the modules:
 
  - Bar Chart: [API][22] - [Demo][4]
  - Line Chart: [API][25] - [Demo][5]
@@ -55,7 +55,7 @@ Britecharts components are distributed in **UMD modules**, each one exposing a D
 They also provide some minimal CSS styling, that can be loaded independently or as a bundle.
 
 ## Roadmap
-This project is in active development, if you are interested on helping you can check the [contributing][35] document. Review the [issues page][16] for more info in what's coming and to give your feedback and to vote for your favorite proposals.
+This project is in active development, if you are interested on helping you can check the [contributing][35] document. Review the [issues page][16] for more info on what's coming, to give your feedback, and to vote for your favorite proposals.
 
 ## See Also
 - [Getting Started Guide][34]
