@@ -5,7 +5,7 @@ var webpack = require('webpack'),
     UglifyJsPlugin = webpack.optimize.UglifyJsPlugin,
     BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin,
 
-    env = process.env.WEBPACK_ENV, // dev | build
+    env = require('yargs').argv.mode,
     isProduction = env === 'prod' || env === 'prodUMD',
 
     chartModulesPath = path.resolve('./src/charts'),
