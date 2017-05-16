@@ -39,7 +39,7 @@
 }
 @media print
 {
-    .footer, .footer * {
+    .footer {
         position: fixed;
     }
 }
