@@ -8,7 +8,7 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
     describe('Legend Component', () =>{
         let legendChart, dataset, containerFixture, f;
 
-        describe('when legend is stacked', () => {
+        describe('when legend is vertical', () => {
 
             beforeEach(() =>{
                 dataset = aTestDataSet()
@@ -303,6 +303,41 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                         .size();
 
                 expect(actual).toEqual(expected);
+            });
+
+            describe('when chart width is not enough for one line', () => {
+
+                beforeEach(() =>{
+                    legendChart = legend();
+
+                    legendChart.horizontal(true)
+                        .height(50)
+                        .width(200);
+
+                    // DOM Fixture Setup
+                    f = jasmine.getFixtures();
+                    f.fixturesPath = 'base/test/fixtures/';
+                    f.load('testContainer.html');
+
+                    containerFixture = d3.select('.test-container');
+                    containerFixture.datum(dataset).call(legendChart);
+                });
+
+                afterEach(() =>{
+                    containerFixture.remove();
+                    f = jasmine.getFixtures();
+                    f.cleanUp();
+                    f.clearCache();
+                });
+
+                it('should create another line below', function() {
+                    let expected = 2,
+                        actual = containerFixture.select('.britechart-legend')
+                            .selectAll('.legend-line')
+                            .size();
+
+                    expect(actual).toEqual(expected);
+                });
             });
         });
     });
