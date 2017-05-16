@@ -38,6 +38,7 @@
     padding: 10px;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 @media print
 {
     .footer {
@@ -50,6 +51,8 @@
     }
 }
 
+=======
+>>>>>>> rollback copyright fix
 /* Copyright */
 .copyright {
     font-size: 80%;
