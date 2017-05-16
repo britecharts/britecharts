@@ -11,6 +11,7 @@ var webpack = require('webpack'),
     chartModulesPath = path.resolve('./src/charts'),
     fixturesPath = path.resolve('./test/fixtures'),
     vendorsPath = path.resolve('./node_modules'),
+    bundleIndexPath = path.resolve('./src/bundle.js'),
 
     projectName = 'britecharts',
     currentCharts = {
@@ -27,18 +28,6 @@ var webpack = require('webpack'),
         // hack to make webpack use colors as an entry point while its also a dependency of the charts above
         'colors': ['./src/charts/helpers/colors.js']
     },
-    currentChartsArray = [
-        './src/charts/bar.js',
-        './src/charts/donut.js',
-        './src/charts/legend.js',
-        './src/charts/line.js',
-        './src/charts/tooltip.js',
-        './src/charts/mini-tooltip.js',
-        './src/charts/sparkline.js',
-        './src/charts/stacked-area.js',
-        './src/charts/step.js',
-        './src/charts/brush.js'
-    ],
 
     defaultJSLoader = {
         test: /\.js$/,
@@ -129,7 +118,7 @@ config = {
     // Creates a bundle with all britecharts
     prod: {
         entry:  {
-            britecharts: currentChartsArray
+            britecharts: bundleIndexPath
         },
 
         devtool: 'source-map',
@@ -142,8 +131,7 @@ config = {
         },
 
         externals: {
-            d3: 'd3',
-            underscore: 'underscore'
+            d3: 'd3'
         },
 
         module: {
@@ -179,8 +167,7 @@ config = {
         },
 
         externals: {
-            d3: 'd3',
-            underscore: 'underscore'
+            d3: 'd3'
         },
 
         module: {
