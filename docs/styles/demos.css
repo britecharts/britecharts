@@ -37,22 +37,13 @@
     background-color: white;
     padding: 10px;
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-@media print
-{
-    .footer {
-        position: fixed;
-=======
+
 @media print {
     .footer {
-        display: none;
->>>>>>> Fixing #228 by hiding footer on print
+        position: fixed;
     }
 }
 
-=======
->>>>>>> rollback copyright fix
 /* Copyright */
 .copyright {
     font-size: 80%;
