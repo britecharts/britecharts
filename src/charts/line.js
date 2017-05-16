@@ -885,6 +885,21 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the gradient colors of the line chart when there is only one line
+         * @param  {String[]} _x Desired color gradient for the line (array of two hexadecimal numbers)
+         * @return { (Number | Module) } Current color gradient or Line Chart module to chain calls
+         * @public
+         */
+        exports.lineGradient = function(_x) {
+            if (!arguments.length) {
+                return singleLineGradientColors;
+            }
+            singleLineGradientColors = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the minimum width of the graph in order to show the tooltip
          * NOTE: This could also depend on the aspect ratio
          * @param  {Number} _x Desired tooltip threshold for the graph
