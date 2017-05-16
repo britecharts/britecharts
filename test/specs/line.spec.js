@@ -402,6 +402,18 @@ define([
                 expect(defaultVerticalTicks).not.toBe(testVerticalTicks);
                 expect(newVerticalTicks).toBe(testVerticalTicks);
             });
+
+            it('should provide lineGradient getter and setter', () => {
+                let defaultVerticalTicks = lineChart.lineGradient(),
+                    testLineGradient = ['#ddd', '#ccc'],
+                    newLineGradient;
+
+                lineChart.lineGradient(testLineGradient);
+                newLineGradient = lineChart.lineGradient();
+
+                expect(defaultVerticalTicks).not.toBe(testLineGradient);
+                expect(newLineGradient).toBe(testLineGradient);
+            });
         });
 
         describe('Aspect Ratio', function() {
