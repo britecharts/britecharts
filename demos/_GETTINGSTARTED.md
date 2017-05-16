@@ -20,6 +20,11 @@ In order to use a Britecharts chart in your project you would need to install it
    git clone https://github.com/eventbrite/britecharts.git
 ```
 
+##### Directly from CDN
+```
+https://cdn.jsdelivr.net/npm/britecharts@1/dist/bundled/britecharts.min.js (latest 1.x.x version)
+```
+Or [browse all CDN files](https://cdn.jsdelivr.net/npm/britecharts/dist/)
 
 ### Using Britecharts
 
