@@ -65,10 +65,10 @@ define(function(require){
     return function module() {
 
         let margin = {
-                top: 0,
-                right: 0,
-                bottom: 0,
-                left: 0
+                top: 5,
+                right: 5,
+                bottom: 5,
+                left: 5
             },
             width = 320,
             height = 180,
@@ -117,11 +117,27 @@ define(function(require){
                 buildColorScale();
                 buildSVG(this);
                 if (horizontal) {
-                    drawInlineLegend();
+                    drawHorizontalLegend();
                 } else {
-                    drawStackedLegend();
+                    drawVerticalLegend();
                 }
             });
+        }
+
+        /**
+         * Depending on the size of the horizontal legend, we are going to either
+         * center the legend or add a new line with the last entry of the legend
+         * @return {void}
+         */
+        function adjustLines() {
+            let lineWidth = svg.select('.legend-line').node().getBoundingClientRect().width;
+            let lineWidthSpace = chartWidth - lineWidth;
+
+            if (lineWidthSpace > 0) {
+                centerLegendOnSVG();
+            } else {
+                splitInLines();
+            }
         }
 
         /**
@@ -197,7 +213,7 @@ define(function(require){
          * Draws the entries of the legend within a single line
          * @private
          */
-        function drawInlineLegend() {
+        function drawHorizontalLegend() {
             let xOffset = markerSize;
 
             // We want a single line
@@ -251,14 +267,14 @@ define(function(require){
                 .style('opacity', 0)
                 .remove();
 
-            centerLegendOnSVG();
+            adjustLines();
         }
 
         /**
          * Draws the entries of the legend
          * @private
          */
-        function drawStackedLegend() {
+        function drawVerticalLegend() {
             entries = svg.select('.legend-group')
                 .selectAll('g.legend-line')
                 .data(data);
@@ -338,6 +354,26 @@ define(function(require){
          */
         function getLineElementMargin() {
             return marginRatio * markerSize;
+        }
+
+        /**
+         * Simple method to move the last item of an overflowing legend into the next line
+         * @return {void}
+         * @private
+         */
+        function splitInLines() {
+            let legendEntries = svg.selectAll('.legend-entry');
+            let numberOfEntries = legendEntries.size();
+            let lineHeight = (chartHeight / 2) * 1.7;
+
+            let newLine = svg.select('.legend-group')
+              .append('g')
+                .classed('legend-line', true)
+                .attr('transform', `translate(0, ${lineHeight})`);
+
+            let lastEntry = legendEntries.filter(`:nth-child(${numberOfEntries})`);
+            lastEntry.attr('transform', `translate(${markerSize},0)`);
+            newLine.append(() => lastEntry.node());
         }
 
         /**
