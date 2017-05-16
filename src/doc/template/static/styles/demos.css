@@ -37,8 +37,8 @@
     background-color: white;
     padding: 10px;
 }
-@media print
-{
+
+@media print {
     .footer {
         position: fixed;
     }
