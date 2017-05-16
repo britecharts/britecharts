@@ -135,16 +135,6 @@
         <!DOCTYPE html>
 <html>
     <head>
-<<<<<<< HEAD
-        <!-- CDN is still a WIP, when it's ready the css cdn bundle should be inserted beow! -->
-        <link rel="stylesheet" href="../dist/css/britecharts.css" type="text/css" />
-    </head>
-    <body>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.4.4/d3.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
-        <!-- CDN is still a WIP, when it's ready the js cdn bundle should be inserted beow! -->
-        <script src="../dist/bundled/britecharts.min.js" type="text/javascript"></script>
-=======
         <meta charset="UTF-8">
         <title>CDN Loading Demo - Britecharts</title>
 
@@ -155,7 +145,6 @@
         <script src="../dist/bundled/britecharts.min.js" type="text/javascript"></script>
     </head>
     <body>
->>>>>>> Fixing bundle and updating CDN demo
         <div class="bar" widht=500 height=500></div>
         <div class="donut" widht=500 height=500></div>
         <div class="stackedArea" widht=500 height=300></div>
@@ -163,13 +152,8 @@
         <div class="sparkline" widht=300 height=200></div>
         <div class="brush" widht=600 height=100></div>
         <div class="step" widht=300 height=300></div>
-<<<<<<< HEAD
-        <script>
-
-=======
 
         <script>
->>>>>>> Fixing bundle and updating CDN demo
             // Bar
             var barChart = britecharts.bar();
             var barData = [
@@ -315,10 +299,6 @@
                 .height(275);
 
             d3.select('.step').datum(stepData).call(stepChart);
-<<<<<<< HEAD
-
-=======
->>>>>>> Fixing bundle and updating CDN demo
         </script>
     </body>
 </html>
