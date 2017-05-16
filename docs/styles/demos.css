@@ -37,10 +37,16 @@
     background-color: white;
     padding: 10px;
 }
+<<<<<<< HEAD
 @media print
 {
     .footer {
         position: fixed;
+=======
+@media print {
+    .footer {
+        display: none;
+>>>>>>> Fixing #228 by hiding footer on print
     }
 }
 
