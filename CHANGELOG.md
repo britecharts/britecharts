@@ -1,7 +1,24 @@
-1.5.3
-1.5.2
-1.5.1
-1.5.0
+1.5.3 - Patch
+---------------------
+Bug Fixes:
+* Fixed release task problem
+
+1.5.2 - Patch
+---------------------
+Changes:
+* Docs improvements
+* Horizontal legend item wrapping
+
+Bug Fixes:
+* Fixed demo resizes on scroll on mobile
+* Fixed bundle export structure
+
+
+1.5.1 - Patch
+---------------------
+Changes:
+* Several docs improvements
+
 [1.5.0][https://github.com/eventbrite/britecharts/compare/1.5.0...1.4.0] - Minor Release
 ---------------------
 Changes:
