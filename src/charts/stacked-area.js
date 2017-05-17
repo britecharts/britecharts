@@ -298,7 +298,7 @@ define(function(require){
                 .map((d) => _.extend(d, d.values))
                 .map((d) => {
                     _(d).each((entry) => {
-                        if(entry['name']) {
+                        if(entry && entry['name']) {
                             d[entry['name']] = entry.value;
                         }
                     });
@@ -312,7 +312,7 @@ define(function(require){
                 .map((d) => _.extend(d, d.values))
                 .map((d) => {
                     _(d).each((entry) => {
-                        if(entry['name']) {
+                        if(entry && entry['name']) {
                             d[entry['name']] = 0;
                         }
                     });
