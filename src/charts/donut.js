@@ -205,13 +205,19 @@ define(function(require){
          * @private
          */
         function cleanData(data) {
-            return data.map((d) => {
+            return data.reduce((acc, d) => {
+                // Skip data without quantity
+                if (!d[quantityLabel]) {
+                    return acc;
+                }
+
                 d.quantity = +d[quantityLabel];
                 d.name = String(d[nameLabel]);
                 d.percentage = String(d[percentageLabel]);
+                acc.push(d);
 
-                return d;
-            });
+                return acc;
+            }, []);
         }
 
         /**
