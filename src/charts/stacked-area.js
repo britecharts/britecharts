@@ -179,7 +179,6 @@ define(function(require){
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
                 dataByDate = getDataByDate(data);
-                debugger
 
                 buildLayers();
                 buildScales();
@@ -188,7 +187,7 @@ define(function(require){
                 drawAxis();
                 drawStackedAreas();
 
-                if(shouldShowTooltip()){
+                if(shouldShowTooltip()) {
                     drawHoverOverlay();
                     drawVerticalMarker();
                     addMouseEvents();
@@ -620,7 +619,7 @@ define(function(require){
                                         ...d,
                                         date: new Date(d.key)
                                     }
-                                })
+                                });
 
             // let b =  d3Collection.nest()
             //                     .key(getDate).sortKeys(d3Array.ascending)
@@ -677,7 +676,6 @@ define(function(require){
 
             let dataPoint = getNearestDataPoint(getMouseXPosition(this) - margin.left),
                 dataPointXPosition;
-
 
             if(dataPoint) {
                 dataPointXPosition = xScale(new Date( dataPoint.key ));

@@ -1,242 +1,242 @@
 {
     "data": [{
-        "date": "2017-02-16T03:00:00Z",
+        "date": "2017-02-16T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 5
     }, {
-        "date": "2017-02-16T03:00:00Z",
+        "date": "2017-02-16T00:00:00-08:00",
         "name": "EB Driven",
         "value": 0
     }, {
-        "date": "2017-02-17T03:00:00Z",
+        "date": "2017-02-17T00:00:00-08:00",
         "name": "EB Driven",
         "value": 1
     }, {
-        "date": "2017-02-17T03:00:00Z",
+        "date": "2017-02-17T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 13
     }, {
-        "date": "2017-02-18T03:00:00Z",
+        "date": "2017-02-18T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 15
     }, {
-        "date": "2017-02-18T03:00:00Z",
+        "date": "2017-02-18T00:00:00-08:00",
         "name": "EB Driven",
         "value": 1
     }, {
-        "date": "2017-02-19T03:00:00Z",
+        "date": "2017-02-19T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 15
     }, {
-        "date": "2017-02-19T03:00:00Z",
+        "date": "2017-02-19T00:00:00-08:00",
         "name": "EB Driven",
         "value": 1
     }, {
-        "date": "2017-02-20T03:00:00Z",
+        "date": "2017-02-20T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 15
     }, {
-        "date": "2017-02-20T03:00:00Z",
+        "date": "2017-02-20T00:00:00-08:00",
         "name": "EB Driven",
         "value": 1
     }, {
-        "date": "2017-02-21T03:00:00Z",
+        "date": "2017-02-21T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 18
     }, {
-        "date": "2017-02-21T03:00:00Z",
+        "date": "2017-02-21T00:00:00-08:00",
         "name": "EB Driven",
         "value": 1
     }, {
-        "date": "2017-02-22T03:00:00Z",
+        "date": "2017-02-22T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 19
     }, {
-        "date": "2017-02-22T03:00:00Z",
+        "date": "2017-02-22T00:00:00-08:00",
         "name": "EB Driven",
         "value": 1
     }, {
-        "date": "2017-02-23T03:00:00Z",
+        "date": "2017-02-23T00:00:00-08:00",
         "name": "EB Driven",
         "value": 2
     }, {
-        "date": "2017-02-23T03:00:00Z",
+        "date": "2017-02-23T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 22
     }, {
-        "date": "2017-02-24T03:00:00Z",
+        "date": "2017-02-24T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 25
     }, {
-        "date": "2017-02-24T03:00:00Z",
+        "date": "2017-02-24T00:00:00-08:00",
         "name": "EB Driven",
         "value": 2
     }, {
-        "date": "2017-02-25T03:00:00Z",
+        "date": "2017-02-25T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 28
     }, {
-        "date": "2017-02-25T03:00:00Z",
+        "date": "2017-02-25T00:00:00-08:00",
         "name": "EB Driven",
         "value": 2
     }, {
-        "date": "2017-02-26T03:00:00Z",
+        "date": "2017-02-26T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 30
     }, {
-        "date": "2017-02-26T03:00:00Z",
+        "date": "2017-02-26T00:00:00-08:00",
         "name": "EB Driven",
         "value": 2
     }, {
-        "date": "2017-02-27T03:00:00Z",
+        "date": "2017-02-27T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 30
     }, {
-        "date": "2017-02-27T03:00:00Z",
+        "date": "2017-02-27T00:00:00-08:00",
         "name": "EB Driven",
         "value": 2
     }, {
-        "date": "2017-02-28T03:00:00Z",
+        "date": "2017-02-28T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 31
     }, {
-        "date": "2017-02-28T03:00:00Z",
+        "date": "2017-02-28T00:00:00-08:00",
         "name": "EB Driven",
         "value": 2
     }, {
-        "date": "2017-03-01T03:00:00Z",
+        "date": "2017-03-01T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 33
     }, {
-        "date": "2017-03-01T03:00:00Z",
+        "date": "2017-03-01T00:00:00-08:00",
         "name": "EB Driven",
         "value": 2
     }, {
-        "date": "2017-03-02T03:00:00Z",
+        "date": "2017-03-02T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 33
     }, {
-        "date": "2017-03-02T03:00:00Z",
+        "date": "2017-03-02T00:00:00-08:00",
         "name": "EB Driven",
         "value": 2
     }, {
-        "date": "2017-03-03T03:00:00Z",
+        "date": "2017-03-03T00:00:00-08:00",
         "name": "EB Driven",
         "value": 4
     }, {
-        "date": "2017-03-03T03:00:00Z",
+        "date": "2017-03-03T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 34
     }, {
-        "date": "2017-03-04T03:00:00Z",
+        "date": "2017-03-04T00:00:00-08:00",
         "name": "EB Driven",
         "value": 4
     }, {
-        "date": "2017-03-04T03:00:00Z",
+        "date": "2017-03-04T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 34
     }, {
-        "date": "2017-03-05T03:00:00Z",
+        "date": "2017-03-05T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 37
     }, {
-        "date": "2017-03-05T03:00:00Z",
+        "date": "2017-03-05T00:00:00-08:00",
         "name": "EB Driven",
         "value": 4
     }, {
-        "date": "2017-03-06T03:00:00Z",
+        "date": "2017-03-06T00:00:00-08:00",
         "name": "EB Driven",
         "value": 5
     }, {
-        "date": "2017-03-06T03:00:00Z",
+        "date": "2017-03-06T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 41
     }, {
-        "date": "2017-03-07T03:00:00Z",
+        "date": "2017-03-07T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 69
     }, {
-        "date": "2017-03-07T03:00:00Z",
+        "date": "2017-03-07T00:00:00-08:00",
         "name": "EB Driven",
         "value": 5
     }, {
-        "date": "2017-03-08T03:00:00Z",
+        "date": "2017-03-08T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 77
     }, {
-        "date": "2017-03-08T03:00:00Z",
+        "date": "2017-03-08T00:00:00-08:00",
         "name": "EB Driven",
         "value": 5
     }, {
-        "date": "2017-03-09T03:00:00Z",
+        "date": "2017-03-09T00:00:00-08:00",
         "name": "EB Driven",
         "value": 8
     }, {
-        "date": "2017-03-09T03:00:00Z",
+        "date": "2017-03-09T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 79
     }, {
-        "date": "2017-03-10T03:00:00Z",
+        "date": "2017-03-10T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 85
     }, {
-        "date": "2017-03-10T03:00:00Z",
+        "date": "2017-03-10T00:00:00-08:00",
         "name": "EB Driven",
         "value": 8
     }, {
-        "date": "2017-03-11T03:00:00Z",
+        "date": "2017-03-11T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 85
     }, {
-        "date": "2017-03-11T03:00:00Z",
+        "date": "2017-03-11T00:00:00-08:00",
         "name": "EB Driven",
         "value": 8
     }, {
-        "date": "2017-03-12T03:00:00Z",
+        "date": "2017-03-12T00:00:00-08:00",
         "name": "Organizer Driven",
         "value": 85
     }, {
-        "date": "2017-03-12T03:00:00Z",
+        "date": "2017-03-12T00:00:00-08:00",
         "name": "EB Driven",
         "value": 8
     }, {
-        "date": "2017-03-13T03:00:00Z",
+        "date": "2017-03-13T00:00:00-07:00",
         "name": "Organizer Driven",
         "value": 85
     }, {
-        "date": "2017-03-13T03:00:00Z",
+        "date": "2017-03-13T00:00:00-07:00",
         "name": "EB Driven",
         "value": 8
     }, {
-        "date": "2017-03-14T03:00:00Z",
+        "date": "2017-03-14T00:00:00-07:00",
         "name": "Organizer Driven",
         "value": 85
     }, {
-        "date": "2017-03-14T03:00:00Z",
+        "date": "2017-03-14T00:00:00-07:00",
         "name": "EB Driven",
         "value": 8
     }, {
-        "date": "2017-03-15T03:00:00Z",
+        "date": "2017-03-15T00:00:00-07:00",
         "name": "Organizer Driven",
         "value": 85
     }, {
-        "date": "2017-03-15T03:00:00Z",
+        "date": "2017-03-15T00:00:00-07:00",
         "name": "EB Driven",
         "value": 8
     }, {
-        "date": "2017-03-16T03:00:00Z",
+        "date": "2017-03-16T00:00:00-07:00",
         "name": "Organizer Driven",
         "value": 85
     }, {
-        "date": "2017-03-16T03:00:00Z",
+        "date": "2017-03-16T00:00:00-07:00",
         "name": "EB Driven",
         "value": 8
     }, {
-        "date": "2017-03-17T03:00:00Z",
+        "date": "2017-03-17T00:00:00-07:00",
         "name": "Organizer Driven",
         "value": 85
     }, {
-        "date": "2017-03-17T03:00:00Z",
+        "date": "2017-03-17T00:00:00-07:00",
         "name": "EB Driven",
         "value": 8
     }]
