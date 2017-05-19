@@ -105,6 +105,7 @@ define(function(require){
             areaOpacity = 0.64,
             colorScale,
             categoryColorMap,
+            order,
 
             forceAxisSettings = null,
             forcedXTicks = null,
@@ -125,6 +126,7 @@ define(function(require){
 
             verticalMarkerContainer,
             verticalMarker,
+            epsilon,
 
             dataPoints            = {},
             pointsSize            = 1.5,
@@ -172,7 +174,7 @@ define(function(require){
          * @param {areaChartData} _data The data to attach and generate the chart
          */
         function exports(_selection) {
-            _selection.each(function(_data){
+            _selection.each(function(_data) {
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
@@ -185,7 +187,7 @@ define(function(require){
                 drawAxis();
                 drawStackedAreas();
 
-                if(shouldShowTooltip()){
+                if(shouldShowTooltip()) {
                     drawHoverOverlay();
                     drawVerticalMarker();
                     addMouseEvents();
@@ -226,8 +228,8 @@ define(function(require){
          * @private
          */
         function buildAxis() {
-            let dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
-            let yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
+            let dataSpan = yScale.domain()[1] - yScale.domain()[0];
+            let yTickNumber = dataSpan < verticalTicks - 1 ? dataSpan : verticalTicks;
             let minor, major;
 
             if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
@@ -267,7 +269,7 @@ define(function(require){
          * as everything else will be drawn on top of them
          * @private
          */
-        function buildContainerGroups(){
+        function buildContainerGroups() {
             let container = svg
               .append('g')
                 .classed('container-group', true)
@@ -293,7 +295,7 @@ define(function(require){
          * @return {D3Layout} Layout for drawing the chart
          * @private
          */
-        function buildLayers(){
+        function buildLayers() {
             dataByDateFormatted = _.chain(dataByDate)
                 .map((d) => _.extend(d, d.values))
                 .map((d) => {
@@ -308,7 +310,7 @@ define(function(require){
                 })
                 .value();
 
-            dataByDateZeroed = _.chain(JSON.parse(JSON.stringify(dataByDate)))
+            dataByDateZeroed =_.chain(JSON.parse(JSON.stringify(dataByDate)))
                 .map((d) => _.extend(d, d.values))
                 .map((d) => {
                     _(d).each((entry) => {
@@ -322,9 +324,9 @@ define(function(require){
                 })
                 .value();
 
-            let keys = uniq(_(data).pluck('name'));
+            order = uniq(_(data).pluck('name'));
             let stack3 = d3Shape.stack()
-                .keys(keys)
+                .keys(order)
                 .order(d3Shape.stackOrderNone)
                 .offset(d3Shape.stackOffsetNone);
 
@@ -338,7 +340,7 @@ define(function(require){
          */
         function buildScales() {
             xScale = d3Scale.scaleTime()
-                .domain(d3Array.extent(data, ({date}) => date))
+                .domain(d3Array.extent(dataByDate, ({date}) => date))
                 .rangeRound([0, chartWidth]);
 
             yScale = d3Scale.scaleLinear()
@@ -358,6 +360,7 @@ define(function(require){
 
                     return memo;
                 }, {});
+
         }
 
         /**
@@ -384,14 +387,9 @@ define(function(require){
          * @return {obj}      Parsed data with values and dates
          */
         function cleanData(data) {
-            // could be rewritten using spread operator
-            /*
-                return data.map((d) => {...d, date: parseUTC(d[dateLabel], [valueLabel] : +d[valueLabel]})
-             */
-
             return data.map((d) => {
-                d.date = new Date(d[dateLabel]);
-                d.value = +d[valueLabel];
+                d.date = new Date(d[dateLabel]),
+                d.value = +d[valueLabel]
 
                 return d;
             });
@@ -402,7 +400,7 @@ define(function(require){
          * respective groups
          * @private
          */
-        function drawAxis(){
+        function drawAxis() {
             svg.select('.x-axis-group .axis.x')
                 .attr('transform', `translate( 0, ${chartHeight} )`)
                 .call(xAxis);
@@ -473,7 +471,7 @@ define(function(require){
          * Draws grid lines on the background of the chart
          * @return void
          */
-        function drawGridLines(xTicks, yTicks){
+        function drawGridLines(xTicks, yTicks) {
             if (grid === 'horizontal' || grid === 'full') {
                 horizontalGridLines = svg.select('.grid-lines-group')
                     .selectAll('line.horizontal-grid-line')
@@ -517,7 +515,7 @@ define(function(require){
          * Draws an overlay element over the graph
          * @private
          */
-        function drawHoverOverlay(){
+        function drawHoverOverlay() {
             overlay = svg.select('.metadata-group')
                 .append('rect')
                 .attr('class', 'overlay')
@@ -533,7 +531,7 @@ define(function(require){
          * Draws the different areas into the chart-group element
          * @private
          */
-        function drawStackedAreas(){
+        function drawStackedAreas() {
             // Creating Area function
             area = d3Shape.area()
                 .curve(d3Shape.curveMonotoneX)
@@ -575,7 +573,7 @@ define(function(require){
          * Creates the vertical marker
          * @return void
          */
-        function drawVerticalMarker(){
+        function drawVerticalMarker() {
             verticalMarkerContainer = svg.select('.metadata-group')
                 .append('g')
                 .attr('class', 'vertical-marker-container')
@@ -616,7 +614,12 @@ define(function(require){
                                 .key(getDate)
                                 .entries(
                                     _(data).sortBy('date')
-                                );
+                                )
+                                .map((d) => {
+                                    // ({...d, date: new Date(d.key)})
+                                    d.date = new Date(d.key);
+                                    return d;
+                                });
 
             // let b =  d3Collection.nest()
             //                     .key(getDate).sortKeys(d3Array.ascending)
@@ -655,23 +658,18 @@ define(function(require){
          * @return {obj}        Data entry that is closer to that x axis position
          */
         function getNearestDataPoint(mouseX) {
-            let epsilon,
-                nearest;
+            return dataByDate.find(({date}) => Math.abs(xScale(date) - mouseX) <= epsilon);
+        }
 
-            //could use spread operator, would prevent mutation of original data
-            /*
-                let dataByDateParsed = dataByDate.map((item) => ({...item, key: new Date(item.key)}))
-             */
-            let dataByDateParsed = dataByDate.map((item) => {
-                item.key = new Date(item.key);
+        /**
+         * Epsilon is the value given to the number representing half of the distance in
+         * pixels between two date data points
+         * @return {Number} half distance between any two points
+         */
+        function setEpsilon() {
+            let dates = dataByDate.map(({date}) => date);
 
-                return item;
-            });
-
-            epsilon = (xScale(dataByDateParsed[1].key) - xScale(dataByDateParsed[0].key)) / 2;
-            nearest = dataByDateParsed.find(({key}) => Math.abs(xScale(key) - mouseX) <= epsilon);
-
-            return nearest;
+            epsilon = (xScale(dates[1]) - xScale(dates[0])) / 2;
         }
 
         /**
@@ -679,7 +677,9 @@ define(function(require){
          * and updates metadata related to it
          * @private
          */
-        function handleMouseMove(){
+        function handleMouseMove() {
+            epsilon || setEpsilon();
+
             let dataPoint = getNearestDataPoint(getMouseXPosition(this) - margin.left),
                 dataPointXPosition;
 
@@ -699,7 +699,7 @@ define(function(require){
          * It also resets the container of the vertical marker
          * @private
          */
-        function handleMouseOut(data){
+        function handleMouseOut(data) {
             overlay.style('display', 'none');
             verticalMarker.classed('bc-is-active', false);
             verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
@@ -711,7 +711,7 @@ define(function(require){
          * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
          * @private
          */
-        function handleMouseOver(data){
+        function handleMouseOver(data) {
             overlay.style('display', 'block');
             verticalMarker.classed('bc-is-active', true);
 
@@ -728,11 +728,10 @@ define(function(require){
 
             eraseDataPointHighlights();
 
-            // sorting the values based on the order of the colors,
-            // so that the order always stays constant
+            // ensure order stays constant
             values = values
                         .filter(v => !!v)
-                        .sort((a, b) => colorOrder[a.el] > colorOrder[b.el]);
+                        .sort((a,b) => order.indexOf(a.name) > order.indexOf(b.name))
 
             values.forEach(({name}, index) => {
                 let marker = verticalMarkerContainer
@@ -759,7 +758,7 @@ define(function(require){
          * @param  {obj} dataPoint Data entry to extract info
          * @return void
          */
-        function moveVerticalMarker(verticalMarkerXPosition){
+        function moveVerticalMarker(verticalMarkerXPosition) {
             verticalMarkerContainer.attr('transform', `translate(${verticalMarkerXPosition},0)`);
         }
 
