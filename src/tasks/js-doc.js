@@ -17,12 +17,6 @@ module.exports = function(grunt) {
         }
     });
 
-    // Open docs
-    grunt.registerTask('openDocs', 'Open docs page on browser', function() {
-        var cmd = 'open http://localhost:8001/docs/';
-
-        shell.exec(cmd);
-    });
 
     // Move demos code
     grunt.registerTask('moveDemos', 'Move demos code into /docs', function() {
@@ -45,7 +39,6 @@ module.exports = function(grunt) {
     grunt.registerTask('docs', 'Generates docs and triggers server to view them', [
         'jsdoc:dist',
         'moveDemos',
-        'moveFonts',
-        'openDocs'
+        'moveFonts'
     ]);
 };
