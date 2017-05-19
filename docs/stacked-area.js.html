@@ -321,7 +321,7 @@
                 drawAxis();
                 drawStackedAreas();
 
-                if(shouldShowTooltip()){
+                if(shouldShowTooltip()) {
                     drawHoverOverlay();
                     drawVerticalMarker();
                     addMouseEvents();
@@ -444,7 +444,7 @@
                 })
                 .value();
 
-            dataByDateZeroed = _.chain(JSON.parse(JSON.stringify(dataByDate)))
+            dataByDateZeroed =_.chain(JSON.parse(JSON.stringify(dataByDate)))
                 .map((d) => _.extend(d, d.values))
                 .map((d) => {
                     _(d).each((entry) => {
@@ -535,7 +535,7 @@
          */
         function drawAxis() {
             svg.select('.x-axis-group .axis.x')
-                .attr('transform', `translate( 18, ${chartHeight} )`)
+                .attr('transform', `translate( 0, ${chartHeight} )`)
                 .call(xAxis);
 
             if (forceAxisSettings !== 'custom') {
@@ -748,10 +748,12 @@
                                 .entries(
                                     _(data).sortBy('date')
                                 )
-                                .map((d) => ({
-                                    ...d,
-                                    date: new Date(d.date)
-                                }))
+                                .map((d) => {
+                                    return {
+                                        ...d,
+                                        date: new Date(d.key)
+                                    }
+                                });
 
             // let b =  d3Collection.nest()
             //                     .key(getDate).sortKeys(d3Array.ascending)
@@ -808,7 +810,6 @@
 
             let dataPoint = getNearestDataPoint(getMouseXPosition(this) - margin.left),
                 dataPointXPosition;
-
 
             if(dataPoint) {
                 dataPointXPosition = xScale(new Date( dataPoint.key ));

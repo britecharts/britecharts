@@ -35,17 +35,6 @@
 /******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/ 	// webpack-livereload-plugin
-/******/ 	(function() {
-/******/ 	  if (typeof window === "undefined") { return };
-/******/ 	  var id = "webpack-livereload-plugin-script";
-/******/ 	  if (document.getElementById(id)) { return; }
-/******/ 	  var el = document.createElement("script");
-/******/ 	  el.id = id;
-/******/ 	  el.async = true;
-/******/ 	  el.src = "http://localhost:35729/livereload.js";
-/******/ 	  document.getElementsByTagName("head")[0].appendChild(el);
-/******/ 	}());
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -66,12 +55,12 @@
 	
 	__webpack_require__(2);
 	__webpack_require__(6);
-	__webpack_require__(42);
-	__webpack_require__(49);
-	__webpack_require__(55);
-	__webpack_require__(67);
-	__webpack_require__(71);
-	__webpack_require__(75);
+	__webpack_require__(40);
+	__webpack_require__(47);
+	__webpack_require__(53);
+	__webpack_require__(65);
+	__webpack_require__(69);
+	__webpack_require__(73);
 
 /***/ }),
 /* 2 */
@@ -2909,9 +2898,9 @@
 	    PubSub = __webpack_require__(5),
 	    colors = __webpack_require__(7),
 	    stackedAreaChart = __webpack_require__(8),
-	    tooltip = __webpack_require__(34),
-	    stackedDataBuilder = __webpack_require__(35),
-	    colorSelectorHelper = __webpack_require__(41);
+	    tooltip = __webpack_require__(32),
+	    stackedDataBuilder = __webpack_require__(33),
+	    colorSelectorHelper = __webpack_require__(39);
 	
 	function createStackedAreaChartWithTooltip(optionalColorSchema) {
 	    var stackedArea = stackedAreaChart(),
@@ -2931,7 +2920,7 @@
 	        // dataset = testDataSet.withGeneratedData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).width(containerWidth).height(300).grid('horizontal')
+	        stackedArea.tooltipThreshold(600).width(containerWidth).grid('horizontal')
 	        // .dateLabel('dateUTC')
 	        // .valueLabel('views')
 	        .on('customMouseOver', function () {
@@ -3135,15 +3124,15 @@
 	        exportChart = _require.exportChart;
 	
 	    var colorHelper = __webpack_require__(7);
-	    var timeAxisHelper = __webpack_require__(31);
+	    var timeAxisHelper = __webpack_require__(29);
 	
-	    var _require2 = __webpack_require__(32),
+	    var _require2 = __webpack_require__(30),
 	        isInteger = _require2.isInteger;
 	
-	    var _require3 = __webpack_require__(27),
+	    var _require3 = __webpack_require__(25),
 	        axisTimeCombinations = _require3.axisTimeCombinations;
 	
-	    var _require4 = __webpack_require__(33),
+	    var _require4 = __webpack_require__(31),
 	        formatIntegerValue = _require4.formatIntegerValue,
 	        formatDecimalValue = _require4.formatDecimalValue;
 	
@@ -11821,13 +11810,13 @@
 	    var _require = __webpack_require__(7),
 	        colorSchemas = _require.colorSchemas;
 	
-	    var constants = __webpack_require__(27);
-	    var serializeWithStyles = __webpack_require__(28);
+	    var constants = __webpack_require__(25);
+	    var serializeWithStyles = __webpack_require__(26);
 	
 	    var encoder = window.btoa;
 	
 	    if (!encoder) {
-	        encoder = __webpack_require__(29).encode;
+	        encoder = __webpack_require__(27).encode;
 	    }
 	
 	    // Base64 doesn't work really well with Unicode strings, so we need to use this function
@@ -12005,9 +11994,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 25 */,
-/* 26 */,
-/* 27 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12034,7 +12021,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 28 */
+/* 26 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -12132,7 +12119,7 @@
 	}();
 
 /***/ }),
-/* 29 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! http://mths.be/base64 v0.1.0 by @mathias | MIT license */
@@ -12299,10 +12286,10 @@
 	
 	}(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)(module), (function() { return this; }())))
 
 /***/ }),
-/* 30 */
+/* 28 */
 /***/ (function(module, exports) {
 
 	module.exports = function(module) {
@@ -12318,7 +12305,7 @@
 
 
 /***/ }),
-/* 31 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12335,7 +12322,7 @@
 	    var d3Time = __webpack_require__(18);
 	    var d3TimeFormat = __webpack_require__(19);
 	
-	    var _require = __webpack_require__(27),
+	    var _require = __webpack_require__(25),
 	        axisTimeCombinations = _require.axisTimeCombinations,
 	        timeBenchmarks = _require.timeBenchmarks;
 	
@@ -12437,7 +12424,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 32 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12461,7 +12448,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 33 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12526,7 +12513,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 34 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12539,14 +12526,14 @@
 	    var d3Transition = __webpack_require__(22);
 	    var d3TimeFormat = __webpack_require__(19);
 	
-	    var _require = __webpack_require__(27),
+	    var _require = __webpack_require__(25),
 	        axisTimeCombinations = _require.axisTimeCombinations;
 	
-	    var _require2 = __webpack_require__(33),
+	    var _require2 = __webpack_require__(31),
 	        formatIntegerValue = _require2.formatIntegerValue,
 	        formatDecimalValue = _require2.formatDecimalValue;
 	
-	    var _require3 = __webpack_require__(32),
+	    var _require3 = __webpack_require__(30),
 	        isInteger = _require3.isInteger;
 	
 	    /**
@@ -13056,7 +13043,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 35 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -13065,11 +13052,11 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonThreeSources = __webpack_require__(36),
-	        jsonSixSources = __webpack_require__(37),
-	        jsonSalesChannel = __webpack_require__(38),
-	        jsonReportService = __webpack_require__(39),
-	        jsonLargeService = __webpack_require__(40);
+	        jsonThreeSources = __webpack_require__(34),
+	        jsonSixSources = __webpack_require__(35),
+	        jsonSalesChannel = __webpack_require__(36),
+	        jsonReportService = __webpack_require__(37),
+	        jsonLargeService = __webpack_require__(38);
 	
 	    function StackedAreaDataBuilder(config) {
 	        this.Klass = StackedAreaDataBuilder;
@@ -13116,7 +13103,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 36 */
+/* 34 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -13185,7 +13172,7 @@
 	};
 
 /***/ }),
-/* 37 */
+/* 35 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -13314,7 +13301,7 @@
 	};
 
 /***/ }),
-/* 38 */
+/* 36 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -13623,7 +13610,7 @@
 	};
 
 /***/ }),
-/* 39 */
+/* 37 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -13704,7 +13691,7 @@
 	};
 
 /***/ }),
-/* 40 */
+/* 38 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -16713,7 +16700,7 @@
 	};
 
 /***/ }),
-/* 41 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -16775,17 +16762,17 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 42 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    bar = __webpack_require__(43),
-	    miniTooltip = __webpack_require__(45),
+	    bar = __webpack_require__(41),
+	    miniTooltip = __webpack_require__(43),
 	    colors = __webpack_require__(7),
-	    dataBuilder = __webpack_require__(46);
+	    dataBuilder = __webpack_require__(44);
 	
 	function createBarChart() {
 	    var barChart = bar(),
@@ -16873,7 +16860,7 @@
 	}
 
 /***/ }),
-/* 43 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -16890,7 +16877,7 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
-	    var textHelper = __webpack_require__(44);
+	    var textHelper = __webpack_require__(42);
 	
 	    var _require = __webpack_require__(24),
 	        exportChart = _require.exportChart;
@@ -17521,7 +17508,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 44 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -17660,7 +17647,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 45 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -18047,7 +18034,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 46 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -18056,8 +18043,8 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonColors = __webpack_require__(47),
-	        jsonLetters = __webpack_require__(48);
+	        jsonColors = __webpack_require__(45),
+	        jsonLetters = __webpack_require__(46);
 	
 	    function BarDataBuilder(config) {
 	        this.Klass = BarDataBuilder;
@@ -18100,7 +18087,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 47 */
+/* 45 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -18133,7 +18120,7 @@
 	};
 
 /***/ }),
-/* 48 */
+/* 46 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -18246,17 +18233,17 @@
 	};
 
 /***/ }),
-/* 49 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    donut = __webpack_require__(50),
-	    legend = __webpack_require__(51),
-	    dataBuilder = __webpack_require__(52),
-	    colorSelectorHelper = __webpack_require__(41),
+	    donut = __webpack_require__(48),
+	    legend = __webpack_require__(49),
+	    dataBuilder = __webpack_require__(50),
+	    colorSelectorHelper = __webpack_require__(39),
 	    dataset = new dataBuilder.DonutDataBuilder().withFivePlusOther().build(),
 	    legendChart;
 	
@@ -18367,7 +18354,7 @@
 	}
 
 /***/ }),
-/* 50 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -18386,7 +18373,7 @@
 	    var _require = __webpack_require__(24),
 	        exportChart = _require.exportChart;
 	
-	    var textHelper = __webpack_require__(44);
+	    var textHelper = __webpack_require__(42);
 	    var colorHelper = __webpack_require__(7);
 	
 	    /**
@@ -18831,7 +18818,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 51 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -18844,7 +18831,7 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
-	    var textHelper = __webpack_require__(44);
+	    var textHelper = __webpack_require__(42);
 	    var colorHelper = __webpack_require__(7);
 	
 	    /**
@@ -19250,7 +19237,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 52 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -19259,8 +19246,8 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonFivePlusOther = __webpack_require__(53),
-	        jsonThreeCategories = __webpack_require__(54);
+	        jsonFivePlusOther = __webpack_require__(51),
+	        jsonThreeCategories = __webpack_require__(52);
 	
 	    function DonutDataBuilder(config) {
 	        this.Klass = DonutDataBuilder;
@@ -19303,7 +19290,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 53 */
+/* 51 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -19348,7 +19335,7 @@
 	};
 
 /***/ }),
-/* 54 */
+/* 52 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -19375,7 +19362,7 @@
 	};
 
 /***/ }),
-/* 55 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19384,11 +19371,11 @@
 	    d3Selection = __webpack_require__(4),
 	    d3TimeFormat = __webpack_require__(19),
 	    PubSub = __webpack_require__(5),
-	    brush = __webpack_require__(56),
-	    line = __webpack_require__(59),
-	    tooltip = __webpack_require__(34),
-	    dataBuilder = __webpack_require__(60),
-	    colorSelectorHelper = __webpack_require__(41);
+	    brush = __webpack_require__(54),
+	    line = __webpack_require__(57),
+	    tooltip = __webpack_require__(32),
+	    dataBuilder = __webpack_require__(58),
+	    colorSelectorHelper = __webpack_require__(39);
 	
 	function createBrushChart(optionalColorSchema) {
 	    var brushChart = brush(),
@@ -19608,7 +19595,7 @@
 	}
 
 /***/ }),
-/* 56 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -19620,7 +19607,7 @@
 	
 	    var d3Array = __webpack_require__(9);
 	    var d3Axis = __webpack_require__(10);
-	    var d3Brush = __webpack_require__(57);
+	    var d3Brush = __webpack_require__(55);
 	    var d3Ease = __webpack_require__(13);
 	    var d3Scale = __webpack_require__(14);
 	    var d3Shape = __webpack_require__(20);
@@ -19630,9 +19617,9 @@
 	    var d3TimeFormat = __webpack_require__(19);
 	
 	    var colorHelper = __webpack_require__(7);
-	    var timeAxisHelper = __webpack_require__(31);
+	    var timeAxisHelper = __webpack_require__(29);
 	
-	    var _require = __webpack_require__(27),
+	    var _require = __webpack_require__(25),
 	        axisTimeCombinations = _require.axisTimeCombinations;
 	
 	    /**
@@ -20134,12 +20121,12 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 57 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-brush/ Version 1.0.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(12), __webpack_require__(58), __webpack_require__(15), __webpack_require__(4), __webpack_require__(22)) :
+		 true ? factory(exports, __webpack_require__(12), __webpack_require__(56), __webpack_require__(15), __webpack_require__(4), __webpack_require__(22)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-selection', 'd3-transition'], factory) :
 		(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3));
 	}(this, (function (exports,d3Dispatch,d3Drag,d3Interpolate,d3Selection,d3Transition) { 'use strict';
@@ -20707,7 +20694,7 @@
 
 
 /***/ }),
-/* 58 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-drag/ Version 1.1.0. Copyright 2017 Mike Bostock.
@@ -20936,7 +20923,7 @@
 
 
 /***/ }),
-/* 59 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -20959,16 +20946,16 @@
 	        exportChart = _require.exportChart;
 	
 	    var colorHelper = __webpack_require__(7);
-	    var timeAxisHelper = __webpack_require__(31);
+	    var timeAxisHelper = __webpack_require__(29);
 	
-	    var _require2 = __webpack_require__(32),
+	    var _require2 = __webpack_require__(30),
 	        isInteger = _require2.isInteger;
 	
-	    var _require3 = __webpack_require__(27),
+	    var _require3 = __webpack_require__(25),
 	        axisTimeCombinations = _require3.axisTimeCombinations,
 	        lineGradientId = _require3.lineGradientId;
 	
-	    var _require4 = __webpack_require__(33),
+	    var _require4 = __webpack_require__(31),
 	        formatIntegerValue = _require4.formatIntegerValue,
 	        formatDecimalValue = _require4.formatDecimalValue;
 	
@@ -21885,7 +21872,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 60 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -21894,12 +21881,12 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonAllDatas = __webpack_require__(61),
-	        jsonFiveTopics = __webpack_require__(62),
-	        jsonOneSource = __webpack_require__(63),
-	        jsonMultiMonthValueRange = __webpack_require__(64),
-	        jsonHourDateRange = __webpack_require__(65),
-	        jsonSmallValueRange = __webpack_require__(66);
+	        jsonAllDatas = __webpack_require__(59),
+	        jsonFiveTopics = __webpack_require__(60),
+	        jsonOneSource = __webpack_require__(61),
+	        jsonMultiMonthValueRange = __webpack_require__(62),
+	        jsonHourDateRange = __webpack_require__(63),
+	        jsonSmallValueRange = __webpack_require__(64);
 	
 	    function LineDataBuilder(config) {
 	        this.Klass = LineDataBuilder;
@@ -21966,7 +21953,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 61 */
+/* 59 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -22373,7 +22360,7 @@
 	};
 
 /***/ }),
-/* 62 */
+/* 60 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -24449,7 +24436,7 @@
 	};
 
 /***/ }),
-/* 63 */
+/* 61 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -24599,7 +24586,7 @@
 	};
 
 /***/ }),
-/* 64 */
+/* 62 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -35596,7 +35583,7 @@
 	};
 
 /***/ }),
-/* 65 */
+/* 63 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -35973,7 +35960,7 @@
 	};
 
 /***/ }),
-/* 66 */
+/* 64 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -36080,15 +36067,15 @@
 	};
 
 /***/ }),
-/* 67 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    sparklineChart = __webpack_require__(68),
-	    sparklineDataBuilder = __webpack_require__(69);
+	    sparklineChart = __webpack_require__(66),
+	    sparklineDataBuilder = __webpack_require__(67);
 	
 	function createSparklineChart() {
 	    var sparkline = sparklineChart(),
@@ -36124,7 +36111,7 @@
 	}
 
 /***/ }),
-/* 68 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -36521,7 +36508,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 69 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -36530,7 +36517,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonOneSource = __webpack_require__(70);
+	        jsonOneSource = __webpack_require__(68);
 	
 	    function SparklineDataBuilder(config) {
 	        this.Klass = SparklineDataBuilder;
@@ -36554,7 +36541,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 70 */
+/* 68 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -36603,16 +36590,16 @@
 	};
 
 /***/ }),
-/* 71 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    step = __webpack_require__(72),
-	    miniTooltip = __webpack_require__(45),
-	    dataBuilder = __webpack_require__(73);
+	    step = __webpack_require__(70),
+	    miniTooltip = __webpack_require__(43),
+	    dataBuilder = __webpack_require__(71);
 	
 	function createStepChart() {
 	    var stepChart = step(),
@@ -36663,7 +36650,7 @@
 	}
 
 /***/ }),
-/* 72 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -37075,7 +37062,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 73 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -37084,7 +37071,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonStepDataSmall = __webpack_require__(74);
+	        jsonStepDataSmall = __webpack_require__(72);
 	
 	    function StepDataBuilder(config) {
 	        this.Klass = StepDataBuilder;
@@ -37108,7 +37095,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 74 */
+/* 72 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -37145,7 +37132,7 @@
 	};
 
 /***/ }),
-/* 75 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37153,8 +37140,8 @@
 	var d3Selection = __webpack_require__(4),
 	    d3TimeFormat = __webpack_require__(19),
 	    PubSub = __webpack_require__(5),
-	    brush = __webpack_require__(56),
-	    dataBuilder = __webpack_require__(76);
+	    brush = __webpack_require__(54),
+	    dataBuilder = __webpack_require__(74);
 	
 	function createBrushChart() {
 	    var brushChart = brush(),
@@ -37196,7 +37183,7 @@
 	}
 
 /***/ }),
-/* 76 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -37205,7 +37192,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonSimpleData = __webpack_require__(77);
+	        jsonSimpleData = __webpack_require__(75);
 	
 	    function BrushDataBuilder(config) {
 	        this.Klass = BrushDataBuilder;
@@ -37242,7 +37229,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 77 */
+/* 75 */
 /***/ (function(module, exports) {
 
 	module.exports = {

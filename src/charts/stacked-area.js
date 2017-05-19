@@ -614,12 +614,10 @@ define(function(require){
                                 .entries(
                                     _(data).sortBy('date')
                                 )
-                                .map((d) => {
-                                    return {
-                                        ...d,
-                                        date: new Date(d.key)
-                                    }
-                                });
+                                .map((d) => ({
+                                    ...d,
+                                    date: new Date(d.key)
+                                }));
 
             // let b =  d3Collection.nest()
             //                     .key(getDate).sortKeys(d3Array.ascending)
