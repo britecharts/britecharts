@@ -57,7 +57,6 @@
   "homepage": "http://eventbrite.github.io/britecharts/",
   "dependencies": {
     "base-64": "^0.1.0",
-    "bowser": "^1.5.0",
     "d3": "^4.4.0",
     "underscore": "~1.8.3"
   },

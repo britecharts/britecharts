@@ -1,7 +1,6 @@
 define(function(require) {
     'use strict';
 
-    const bowser = require('bowser');
     const {colorSchemas} = require('./colors.js');
     const constants = require('./constants.js');
     const serializeWithStyles = require('./serializeWithStyles.js');
@@ -143,7 +142,7 @@ define(function(require) {
      * @return {string} string of svg html
      */
     function formatHtmlByBrowser(html) {
-        if (bowser.name === 'Firefox') {
+        if (navigator.userAgent.search('FireFox') > -1) {
             return html.replace(/url.*&quot;\)/, `url(&quot;#${constants.lineGradientId}&quot;);`);
         }
 

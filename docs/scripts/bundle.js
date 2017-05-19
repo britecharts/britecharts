@@ -42,29 +42,29 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(1);
 
 
-/***/ }),
+/***/ },
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	__webpack_require__(2);
 	__webpack_require__(6);
-	__webpack_require__(42);
-	__webpack_require__(49);
-	__webpack_require__(55);
-	__webpack_require__(67);
-	__webpack_require__(71);
-	__webpack_require__(75);
+	__webpack_require__(40);
+	__webpack_require__(47);
+	__webpack_require__(53);
+	__webpack_require__(65);
+	__webpack_require__(69);
+	__webpack_require__(73);
 
-/***/ }),
+/***/ },
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -88,9 +88,9 @@
 	    return {};
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
+/***/ },
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.8.3
 	//     http://underscorejs.org
@@ -1642,15 +1642,15 @@
 	}.call(this));
 
 
-/***/ }),
+/***/ },
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-selection/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-selection/ Version 1.0.3. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports) :
-		typeof define === 'function' && define.amd ? define(['exports'], factory) :
-		(factory((global.d3 = global.d3 || {})));
+	   true ? factory(exports) :
+	  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	  (factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
 	var xhtml = "http://www.w3.org/1999/xhtml";
@@ -2621,9 +2621,9 @@
 	})));
 
 
-/***/ }),
+/***/ },
 /* 5 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
 	Copyright (c) 2010,2011,2012,2013,2014 Morgan Roderick http://roderick.dk
@@ -2834,18 +2834,7 @@
 		 *		PubSub.unsubscribe('mytopic');
 		 */
 		PubSub.unsubscribe = function(value){
-			var descendantTopicExists = function(topic) {
-					var m;
-					for ( m in messages ){
-						if ( messages.hasOwnProperty(m) && m.indexOf(topic) === 0 ){
-							// a descendant of the topic exists:
-							return true;
-						}
-					}
-	
-					return false;
-				},
-				isTopic    = typeof value === 'string' && ( messages.hasOwnProperty(value) || descendantTopicExists(value) ),
+			var isTopic    = typeof value === 'string' && messages.hasOwnProperty(value),
 				isToken    = !isTopic && typeof value === 'string',
 				isFunction = typeof value === 'function',
 				result = false,
@@ -2883,9 +2872,9 @@
 	}));
 
 
-/***/ }),
+/***/ },
 /* 6 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -2893,9 +2882,9 @@
 	    PubSub = __webpack_require__(5),
 	    colors = __webpack_require__(7),
 	    stackedAreaChart = __webpack_require__(8),
-	    tooltip = __webpack_require__(34),
-	    stackedDataBuilder = __webpack_require__(35),
-	    colorSelectorHelper = __webpack_require__(41);
+	    tooltip = __webpack_require__(32),
+	    stackedDataBuilder = __webpack_require__(33),
+	    colorSelectorHelper = __webpack_require__(39);
 	
 	function createStackedAreaChartWithTooltip(optionalColorSchema) {
 	    var stackedArea = stackedAreaChart(),
@@ -3007,9 +2996,9 @@
 	    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.stacked-area', createStackedAreaChartWithTooltip);
 	}
 
-/***/ }),
+/***/ },
 /* 7 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -3091,9 +3080,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
+/***/ },
 /* 8 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -3117,15 +3106,15 @@
 	        exportChart = _require.exportChart;
 	
 	    var colorHelper = __webpack_require__(7);
-	    var timeAxisHelper = __webpack_require__(31);
+	    var timeAxisHelper = __webpack_require__(29);
 	
-	    var _require2 = __webpack_require__(32),
+	    var _require2 = __webpack_require__(30),
 	        isInteger = _require2.isInteger;
 	
-	    var _require3 = __webpack_require__(27),
+	    var _require3 = __webpack_require__(25),
 	        axisTimeCombinations = _require3.axisTimeCombinations;
 	
-	    var _require4 = __webpack_require__(33),
+	    var _require4 = __webpack_require__(31),
 	        formatIntegerValue = _require4.formatIntegerValue,
 	        formatDecimalValue = _require4.formatDecimalValue;
 	
@@ -3210,6 +3199,7 @@
 	            areaOpacity = 0.64,
 	            colorScale = void 0,
 	            categoryColorMap = void 0,
+	            order = void 0,
 	            forceAxisSettings = null,
 	            forcedXTicks = null,
 	            forcedXFormat = null,
@@ -3226,6 +3216,7 @@
 	            overlay = void 0,
 	            verticalMarkerContainer = void 0,
 	            verticalMarker = void 0,
+	            epsilon = void 0,
 	            dataPoints = {},
 	            pointsSize = 1.5,
 	            pointsColor = '#c0c6cc',
@@ -3326,8 +3317,8 @@
 	         * @private
 	         */
 	        function buildAxis() {
-	            var dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
-	            var yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
+	            var dataSpan = yScale.domain()[1] - yScale.domain()[0];
+	            var yTickNumber = dataSpan < verticalTicks - 1 ? dataSpan : verticalTicks;
 	            var minor = void 0,
 	                major = void 0;
 	
@@ -3403,8 +3394,8 @@
 	                return d;
 	            }).value();
 	
-	            var keys = uniq(_(data).pluck('name'));
-	            var stack3 = d3Shape.stack().keys(keys).order(d3Shape.stackOrderNone).offset(d3Shape.stackOffsetNone);
+	            order = uniq(_(data).pluck('name'));
+	            var stack3 = d3Shape.stack().keys(order).order(d3Shape.stackOrderNone).offset(d3Shape.stackOffsetNone);
 	
 	            layersInitial = stack3(dataByDateZeroed);
 	            layers = stack3(dataByDateFormatted);
@@ -3415,7 +3406,7 @@
 	         * @private
 	         */
 	        function buildScales() {
-	            xScale = d3Scale.scaleTime().domain(d3Array.extent(data, function (_ref3) {
+	            xScale = d3Scale.scaleTime().domain(d3Array.extent(dataByDate, function (_ref3) {
 	                var date = _ref3.date;
 	                return date;
 	            })).rangeRound([0, chartWidth]);
@@ -3452,14 +3443,8 @@
 	         * @return {obj}      Parsed data with values and dates
 	         */
 	        function cleanData(data) {
-	            // could be rewritten using spread operator
-	            /*
-	                return data.map((d) => {...d, date: parseUTC(d[dateLabel], [valueLabel] : +d[valueLabel]})
-	             */
-	
 	            return data.map(function (d) {
-	                d.date = new Date(d[dateLabel]);
-	                d.value = +d[valueLabel];
+	                d.date = new Date(d[dateLabel]), d.value = +d[valueLabel];
 	
 	                return d;
 	            });
@@ -3628,7 +3613,11 @@
 	         * @private
 	         */
 	        function getDataByDate(data) {
-	            return d3Collection.nest().key(getDate).entries(_(data).sortBy('date'));
+	            return d3Collection.nest().key(getDate).entries(_(data).sortBy('date')).map(function (d) {
+	                // ({...d, date: new Date(d.key)})
+	                d.date = new Date(d.key);
+	                return d;
+	            });
 	
 	            // let b =  d3Collection.nest()
 	            //                     .key(getDate).sortKeys(d3Array.ascending)
@@ -3669,26 +3658,24 @@
 	         * @return {obj}        Data entry that is closer to that x axis position
 	         */
 	        function getNearestDataPoint(mouseX) {
-	            var epsilon = void 0,
-	                nearest = void 0;
+	            return dataByDate.find(function (_ref9) {
+	                var date = _ref9.date;
+	                return Math.abs(xScale(date) - mouseX) <= epsilon;
+	            });
+	        }
 	
-	            //could use spread operator, would prevent mutation of original data
-	            /*
-	                let dataByDateParsed = dataByDate.map((item) => ({...item, key: new Date(item.key)}))
-	             */
-	            var dataByDateParsed = dataByDate.map(function (item) {
-	                item.key = new Date(item.key);
-	
-	                return item;
+	        /**
+	         * Epsilon is the value given to the number representing half of the distance in
+	         * pixels between two date data points
+	         * @return {Number} half distance between any two points
+	         */
+	        function setEpsilon() {
+	            var dates = dataByDate.map(function (_ref10) {
+	                var date = _ref10.date;
+	                return date;
 	            });
 	
-	            epsilon = (xScale(dataByDateParsed[1].key) - xScale(dataByDateParsed[0].key)) / 2;
-	            nearest = dataByDateParsed.find(function (_ref9) {
-	                var key = _ref9.key;
-	                return Math.abs(xScale(key) - mouseX) <= epsilon;
-	            });
-	
-	            return nearest;
+	            epsilon = (xScale(dates[1]) - xScale(dates[0])) / 2;
 	        }
 	
 	        /**
@@ -3697,6 +3684,8 @@
 	         * @private
 	         */
 	        function handleMouseMove() {
+	            epsilon || setEpsilon();
+	
 	            var dataPoint = getNearestDataPoint(getMouseXPosition(this) - margin.left),
 	                dataPointXPosition = void 0;
 	
@@ -3740,23 +3729,22 @@
 	         * @param  {obj} dataPoint Data point to extract info from
 	         * @private
 	         */
-	        function highlightDataPoints(_ref10) {
-	            var values = _ref10.values;
+	        function highlightDataPoints(_ref11) {
+	            var values = _ref11.values;
 	
 	            var accumulator = 0;
 	
 	            eraseDataPointHighlights();
 	
-	            // sorting the values based on the order of the colors,
-	            // so that the order always stays constant
+	            // ensure order stays constant
 	            values = values.filter(function (v) {
 	                return !!v;
 	            }).sort(function (a, b) {
-	                return colorOrder[a.el] > colorOrder[b.el];
+	                return order.indexOf(a.name) > order.indexOf(b.name);
 	            });
 	
-	            values.forEach(function (_ref11, index) {
-	                var name = _ref11.name;
+	            values.forEach(function (_ref12, index) {
+	                var name = _ref12.name;
 	
 	                var marker = verticalMarkerContainer.append('g').classed('circle-container', true),
 	                    circleSize = 12;
@@ -4061,15 +4049,15 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
+/***/ },
 /* 9 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-array/ Version 1.2.0. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-array/ Version 1.0.2. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports) :
-		typeof define === 'function' && define.amd ? define(['exports'], factory) :
-		(factory((global.d3 = global.d3 || {})));
+	   true ? factory(exports) :
+	  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	  (factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
 	var ascending = function(a, b) {
@@ -4112,37 +4100,6 @@
 	var bisectRight = ascendingBisect.right;
 	var bisectLeft = ascendingBisect.left;
 	
-	var pairs = function(array, f) {
-	  if (f == null) f = pair;
-	  var i = 0, n = array.length - 1, p = array[0], pairs = new Array(n < 0 ? 0 : n);
-	  while (i < n) pairs[i] = f(p, p = array[++i]);
-	  return pairs;
-	};
-	
-	function pair(a, b) {
-	  return [a, b];
-	}
-	
-	var cross = function(values0, values1, reduce) {
-	  var n0 = values0.length,
-	      n1 = values1.length,
-	      values = new Array(n0 * n1),
-	      i0,
-	      i1,
-	      i,
-	      value0;
-	
-	  if (reduce == null) reduce = pair;
-	
-	  for (i0 = i = 0; i0 < n0; ++i0) {
-	    for (value0 = values0[i0], i1 = 0; i1 < n1; ++i1, ++i) {
-	      values[i] = reduce(value0, values1[i1]);
-	    }
-	  }
-	
-	  return values;
-	};
-	
 	var descending = function(a, b) {
 	  return b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN;
 	};
@@ -4151,36 +4108,36 @@
 	  return x === null ? NaN : +x;
 	};
 	
-	var variance = function(values, valueof) {
-	  var n = values.length,
+	var variance = function(array, f) {
+	  var n = array.length,
 	      m = 0,
+	      a,
+	      d,
+	      s = 0,
 	      i = -1,
-	      mean = 0,
-	      value,
-	      delta,
-	      sum = 0;
+	      j = 0;
 	
-	  if (valueof == null) {
+	  if (f == null) {
 	    while (++i < n) {
-	      if (!isNaN(value = number(values[i]))) {
-	        delta = value - mean;
-	        mean += delta / ++m;
-	        sum += delta * (value - mean);
+	      if (!isNaN(a = number(array[i]))) {
+	        d = a - m;
+	        m += d / ++j;
+	        s += d * (a - m);
 	      }
 	    }
 	  }
 	
 	  else {
 	    while (++i < n) {
-	      if (!isNaN(value = number(valueof(values[i], i, values)))) {
-	        delta = value - mean;
-	        mean += delta / ++m;
-	        sum += delta * (value - mean);
+	      if (!isNaN(a = number(f(array[i], i, array)))) {
+	        d = a - m;
+	        m += d / ++j;
+	        s += d * (a - m);
 	      }
 	    }
 	  }
 	
-	  if (m > 1) return sum / (m - 1);
+	  if (j > 1) return s / (j - 1);
 	};
 	
 	var deviation = function(array, f) {
@@ -4188,42 +4145,30 @@
 	  return v ? Math.sqrt(v) : v;
 	};
 	
-	var extent = function(values, valueof) {
-	  var n = values.length,
-	      i = -1,
-	      value,
-	      min,
-	      max;
+	var extent = function(array, f) {
+	  var i = -1,
+	      n = array.length,
+	      a,
+	      b,
+	      c;
 	
-	  if (valueof == null) {
-	    while (++i < n) { // Find the first comparable value.
-	      if ((value = values[i]) != null && value >= value) {
-	        min = max = value;
-	        while (++i < n) { // Compare the remaining values.
-	          if ((value = values[i]) != null) {
-	            if (min > value) min = value;
-	            if (max < value) max = value;
-	          }
-	        }
-	      }
+	  if (f == null) {
+	    while (++i < n) if ((b = array[i]) != null && b >= b) { a = c = b; break; }
+	    while (++i < n) if ((b = array[i]) != null) {
+	      if (a > b) a = b;
+	      if (c < b) c = b;
 	    }
 	  }
 	
 	  else {
-	    while (++i < n) { // Find the first comparable value.
-	      if ((value = valueof(values[i], i, values)) != null && value >= value) {
-	        min = max = value;
-	        while (++i < n) { // Compare the remaining values.
-	          if ((value = valueof(values[i], i, values)) != null) {
-	            if (min > value) min = value;
-	            if (max < value) max = value;
-	          }
-	        }
-	      }
+	    while (++i < n) if ((b = f(array[i], i, array)) != null && b >= b) { a = c = b; break; }
+	    while (++i < n) if ((b = f(array[i], i, array)) != null) {
+	      if (a > b) a = b;
+	      if (c < b) c = b;
 	    }
 	  }
 	
-	  return [min, max];
+	  return [a, c];
 	};
 	
 	var array = Array.prototype;
@@ -4260,41 +4205,13 @@
 	var e2 = Math.sqrt(2);
 	
 	var ticks = function(start, stop, count) {
-	  var reverse = stop < start,
-	      i = -1,
-	      n,
-	      ticks,
-	      step;
-	
-	  if (reverse) n = start, start = stop, stop = n;
-	
-	  if ((step = tickIncrement(start, stop, count)) === 0 || !isFinite(step)) return [];
-	
-	  if (step > 0) {
-	    start = Math.ceil(start / step);
-	    stop = Math.floor(stop / step);
-	    ticks = new Array(n = Math.ceil(stop - start + 1));
-	    while (++i < n) ticks[i] = (start + i) * step;
-	  } else {
-	    start = Math.floor(start * step);
-	    stop = Math.ceil(stop * step);
-	    ticks = new Array(n = Math.ceil(start - stop + 1));
-	    while (++i < n) ticks[i] = (start - i) / step;
-	  }
-	
-	  if (reverse) ticks.reverse();
-	
-	  return ticks;
+	  var step = tickStep(start, stop, count);
+	  return range(
+	    Math.ceil(start / step) * step,
+	    Math.floor(stop / step) * step + step / 2, // inclusive
+	    step
+	  );
 	};
-	
-	function tickIncrement(start, stop, count) {
-	  var step = (stop - start) / Math.max(0, count),
-	      power = Math.floor(Math.log(step) / Math.LN10),
-	      error = step / Math.pow(10, power);
-	  return power >= 0
-	      ? (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1) * Math.pow(10, power)
-	      : -Math.pow(10, -power) / (error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1);
-	}
 	
 	function tickStep(start, stop, count) {
 	  var step0 = Math.abs(stop - start) / Math.max(0, count),
@@ -4331,15 +4248,12 @@
 	        tz = threshold(values, x0, x1);
 	
 	    // Convert number of thresholds into uniform thresholds.
-	    if (!Array.isArray(tz)) {
-	      tz = tickStep(x0, x1, tz);
-	      tz = range(Math.ceil(x0 / tz) * tz, Math.floor(x1 / tz) * tz, tz); // exclusive
-	    }
+	    if (!Array.isArray(tz)) tz = ticks(x0, x1, tz);
 	
 	    // Remove any thresholds outside the domain.
 	    var m = tz.length;
 	    while (tz[0] <= x0) tz.shift(), --m;
-	    while (tz[m - 1] > x1) tz.pop(), --m;
+	    while (tz[m - 1] >= x1) tz.pop(), --m;
 	
 	    var bins = new Array(m + 1),
 	        bin;
@@ -4377,17 +4291,17 @@
 	  return histogram;
 	};
 	
-	var quantile = function(values, p, valueof) {
-	  if (valueof == null) valueof = number;
-	  if (!(n = values.length)) return;
-	  if ((p = +p) <= 0 || n < 2) return +valueof(values[0], 0, values);
-	  if (p >= 1) return +valueof(values[n - 1], n - 1, values);
+	var quantile = function(array, p, f) {
+	  if (f == null) f = number;
+	  if (!(n = array.length)) return;
+	  if ((p = +p) <= 0 || n < 2) return +f(array[0], 0, array);
+	  if (p >= 1) return +f(array[n - 1], n - 1, array);
 	  var n,
-	      i = (n - 1) * p,
-	      i0 = Math.floor(i),
-	      value0 = +valueof(values[i0], i0, values),
-	      value1 = +valueof(values[i0 + 1], i0 + 1, values);
-	  return value0 + (value1 - value0) * (i - i0);
+	      h = (n - 1) * p,
+	      i = Math.floor(h),
+	      a = +f(array[i], i, array),
+	      b = +f(array[i + 1], i + 1, array);
+	  return a + (b - a) * (h - i);
 	};
 	
 	var freedmanDiaconis = function(values, min, max) {
@@ -4399,85 +4313,55 @@
 	  return Math.ceil((max - min) / (3.5 * deviation(values) * Math.pow(values.length, -1 / 3)));
 	};
 	
-	var max = function(values, valueof) {
-	  var n = values.length,
-	      i = -1,
-	      value,
-	      max;
+	var max = function(array, f) {
+	  var i = -1,
+	      n = array.length,
+	      a,
+	      b;
 	
-	  if (valueof == null) {
-	    while (++i < n) { // Find the first comparable value.
-	      if ((value = values[i]) != null && value >= value) {
-	        max = value;
-	        while (++i < n) { // Compare the remaining values.
-	          if ((value = values[i]) != null && value > max) {
-	            max = value;
-	          }
-	        }
-	      }
-	    }
+	  if (f == null) {
+	    while (++i < n) if ((b = array[i]) != null && b >= b) { a = b; break; }
+	    while (++i < n) if ((b = array[i]) != null && b > a) a = b;
 	  }
 	
 	  else {
-	    while (++i < n) { // Find the first comparable value.
-	      if ((value = valueof(values[i], i, values)) != null && value >= value) {
-	        max = value;
-	        while (++i < n) { // Compare the remaining values.
-	          if ((value = valueof(values[i], i, values)) != null && value > max) {
-	            max = value;
-	          }
-	        }
-	      }
-	    }
+	    while (++i < n) if ((b = f(array[i], i, array)) != null && b >= b) { a = b; break; }
+	    while (++i < n) if ((b = f(array[i], i, array)) != null && b > a) a = b;
 	  }
 	
-	  return max;
+	  return a;
 	};
 	
-	var mean = function(values, valueof) {
-	  var n = values.length,
-	      m = n,
+	var mean = function(array, f) {
+	  var s = 0,
+	      n = array.length,
+	      a,
 	      i = -1,
-	      value,
-	      sum = 0;
+	      j = n;
 	
-	  if (valueof == null) {
-	    while (++i < n) {
-	      if (!isNaN(value = number(values[i]))) sum += value;
-	      else --m;
-	    }
+	  if (f == null) {
+	    while (++i < n) if (!isNaN(a = number(array[i]))) s += a; else --j;
 	  }
 	
 	  else {
-	    while (++i < n) {
-	      if (!isNaN(value = number(valueof(values[i], i, values)))) sum += value;
-	      else --m;
-	    }
+	    while (++i < n) if (!isNaN(a = number(f(array[i], i, array)))) s += a; else --j;
 	  }
 	
-	  if (m) return sum / m;
+	  if (j) return s / j;
 	};
 	
-	var median = function(values, valueof) {
-	  var n = values.length,
-	      i = -1,
-	      value,
-	      numbers = [];
+	var median = function(array, f) {
+	  var numbers = [],
+	      n = array.length,
+	      a,
+	      i = -1;
 	
-	  if (valueof == null) {
-	    while (++i < n) {
-	      if (!isNaN(value = number(values[i]))) {
-	        numbers.push(value);
-	      }
-	    }
+	  if (f == null) {
+	    while (++i < n) if (!isNaN(a = number(array[i]))) numbers.push(a);
 	  }
 	
 	  else {
-	    while (++i < n) {
-	      if (!isNaN(value = number(valueof(values[i], i, values)))) {
-	        numbers.push(value);
-	      }
-	    }
+	    while (++i < n) if (!isNaN(a = number(f(array[i], i, array)))) numbers.push(a);
 	  }
 	
 	  return quantile(numbers.sort(ascending), 0.5);
@@ -4505,39 +4389,29 @@
 	  return merged;
 	};
 	
-	var min = function(values, valueof) {
-	  var n = values.length,
-	      i = -1,
-	      value,
-	      min;
+	var min = function(array, f) {
+	  var i = -1,
+	      n = array.length,
+	      a,
+	      b;
 	
-	  if (valueof == null) {
-	    while (++i < n) { // Find the first comparable value.
-	      if ((value = values[i]) != null && value >= value) {
-	        min = value;
-	        while (++i < n) { // Compare the remaining values.
-	          if ((value = values[i]) != null && min > value) {
-	            min = value;
-	          }
-	        }
-	      }
-	    }
+	  if (f == null) {
+	    while (++i < n) if ((b = array[i]) != null && b >= b) { a = b; break; }
+	    while (++i < n) if ((b = array[i]) != null && a > b) a = b;
 	  }
 	
 	  else {
-	    while (++i < n) { // Find the first comparable value.
-	      if ((value = valueof(values[i], i, values)) != null && value >= value) {
-	        min = value;
-	        while (++i < n) { // Compare the remaining values.
-	          if ((value = valueof(values[i], i, values)) != null && min > value) {
-	            min = value;
-	          }
-	        }
-	      }
-	    }
+	    while (++i < n) if ((b = f(array[i], i, array)) != null && b >= b) { a = b; break; }
+	    while (++i < n) if ((b = f(array[i], i, array)) != null && a > b) a = b;
 	  }
 	
-	  return min;
+	  return a;
+	};
+	
+	var pairs = function(array) {
+	  var i = 0, n = array.length - 1, p = array[0], pairs = new Array(n < 0 ? 0 : n);
+	  while (i < n) pairs[i] = [p, p = array[++i]];
+	  return pairs;
 	};
 	
 	var permute = function(array, indexes) {
@@ -4546,21 +4420,17 @@
 	  return permutes;
 	};
 	
-	var scan = function(values, compare) {
-	  if (!(n = values.length)) return;
-	  var n,
-	      i = 0,
+	var scan = function(array, compare) {
+	  if (!(n = array.length)) return;
+	  var i = 0,
+	      n,
 	      j = 0,
 	      xi,
-	      xj = values[j];
+	      xj = array[j];
 	
-	  if (compare == null) compare = ascending;
+	  if (!compare) compare = ascending;
 	
-	  while (++i < n) {
-	    if (compare(xi = values[i], xj) < 0 || compare(xj, xj) !== 0) {
-	      xj = xi, j = i;
-	    }
-	  }
+	  while (++i < n) if (compare(xi = array[i], xj) < 0 || compare(xj, xj) !== 0) xj = xi, j = i;
 	
 	  if (compare(xj, xj) === 0) return j;
 	};
@@ -4580,25 +4450,21 @@
 	  return array;
 	};
 	
-	var sum = function(values, valueof) {
-	  var n = values.length,
-	      i = -1,
-	      value,
-	      sum = 0;
+	var sum = function(array, f) {
+	  var s = 0,
+	      n = array.length,
+	      a,
+	      i = -1;
 	
-	  if (valueof == null) {
-	    while (++i < n) {
-	      if (value = +values[i]) sum += value; // Note: zero and null are equivalent.
-	    }
+	  if (f == null) {
+	    while (++i < n) if (a = +array[i]) s += a; // Note: zero and null are equivalent.
 	  }
 	
 	  else {
-	    while (++i < n) {
-	      if (value = +valueof(values[i], i, values)) sum += value;
-	    }
+	    while (++i < n) if (a = +f(array[i], i, array)) s += a;
 	  }
 	
-	  return sum;
+	  return s;
 	};
 	
 	var transpose = function(matrix) {
@@ -4624,7 +4490,6 @@
 	exports.bisectLeft = bisectLeft;
 	exports.ascending = ascending;
 	exports.bisector = bisector;
-	exports.cross = cross;
 	exports.descending = descending;
 	exports.deviation = deviation;
 	exports.extent = extent;
@@ -4645,7 +4510,6 @@
 	exports.shuffle = shuffle;
 	exports.sum = sum;
 	exports.ticks = ticks;
-	exports.tickIncrement = tickIncrement;
 	exports.tickStep = tickStep;
 	exports.transpose = transpose;
 	exports.variance = variance;
@@ -4656,15 +4520,15 @@
 	})));
 
 
-/***/ }),
+/***/ },
 /* 10 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-axis/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-axis/ Version 1.0.4. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports) :
-		typeof define === 'function' && define.amd ? define(['exports'], factory) :
-		(factory((global.d3 = global.d3 || {})));
+	   true ? factory(exports) :
+	  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	  (factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
 	var slice = Array.prototype.slice;
@@ -4679,12 +4543,14 @@
 	var left = 4;
 	var epsilon = 1e-6;
 	
-	function translateX(x) {
-	  return "translate(" + x + ",0)";
+	function translateX(scale0, scale1, d) {
+	  var x = scale0(d);
+	  return "translate(" + (isFinite(x) ? x : scale1(d)) + ",0)";
 	}
 	
-	function translateY(y) {
-	  return "translate(0," + y + ")";
+	function translateY(scale0, scale1, d) {
+	  var y = scale0(d);
+	  return "translate(0," + (isFinite(y) ? y : scale1(d)) + ")";
 	}
 	
 	function center(scale) {
@@ -4705,15 +4571,13 @@
 	      tickFormat = null,
 	      tickSizeInner = 6,
 	      tickSizeOuter = 6,
-	      tickPadding = 3,
-	      k = orient === top || orient === left ? -1 : 1,
-	      x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x"),
-	      transform = orient === top || orient === bottom ? translateX : translateY;
+	      tickPadding = 3;
 	
 	  function axis(context) {
 	    var values = tickValues == null ? (scale.ticks ? scale.ticks.apply(scale, tickArguments) : scale.domain()) : tickValues,
 	        format = tickFormat == null ? (scale.tickFormat ? scale.tickFormat.apply(scale, tickArguments) : identity) : tickFormat,
 	        spacing = Math.max(tickSizeInner, 0) + tickPadding,
+	        transform = orient === top || orient === bottom ? translateX : translateY,
 	        range = scale.range(),
 	        range0 = range[0] + 0.5,
 	        range1 = range[range.length - 1] + 0.5,
@@ -4724,7 +4588,9 @@
 	        tickExit = tick.exit(),
 	        tickEnter = tick.enter().append("g").attr("class", "tick"),
 	        line = tick.select("line"),
-	        text = tick.select("text");
+	        text = tick.select("text"),
+	        k = orient === top || orient === left ? -1 : 1,
+	        x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x");
 	
 	    path = path.merge(path.enter().insert("path", ".tick")
 	        .attr("class", "domain")
@@ -4752,11 +4618,11 @@
 	
 	      tickExit = tickExit.transition(context)
 	          .attr("opacity", epsilon)
-	          .attr("transform", function(d) { return isFinite(d = position(d)) ? transform(d) : this.getAttribute("transform"); });
+	          .attr("transform", function(d) { return transform(position, this.parentNode.__axis || position, d); });
 	
 	      tickEnter
 	          .attr("opacity", epsilon)
-	          .attr("transform", function(d) { var p = this.parentNode.__axis; return transform(p && isFinite(p = p(d)) ? p : position(d)); });
+	          .attr("transform", function(d) { return transform(this.parentNode.__axis || position, position, d); });
 	    }
 	
 	    tickExit.remove();
@@ -4768,7 +4634,7 @@
 	
 	    tick
 	        .attr("opacity", 1)
-	        .attr("transform", function(d) { return transform(position(d)); });
+	        .attr("transform", function(d) { return transform(position, position, d); });
 	
 	    line
 	        .attr(x + "2", k * tickSizeInner);
@@ -4852,15 +4718,15 @@
 	})));
 
 
-/***/ }),
+/***/ },
 /* 11 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-collection/ Version 1.0.3. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-collection/ Version 1.0.2. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports) :
-		typeof define === 'function' && define.amd ? define(['exports'], factory) :
-		(factory((global.d3 = global.d3 || {})));
+	   true ? factory(exports) :
+	  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	  (factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
 	var prefix = "$";
@@ -5075,15 +4941,15 @@
 	})));
 
 
-/***/ }),
+/***/ },
 /* 12 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-dispatch/ Version 1.0.3. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-dispatch/ Version 1.0.2. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports) :
-		typeof define === 'function' && define.amd ? define(['exports'], factory) :
-		(factory((global.d3 = global.d3 || {})));
+	   true ? factory(exports) :
+	  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	  (factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
 	var noop = {value: function() {}};
@@ -5176,15 +5042,15 @@
 	})));
 
 
-/***/ }),
+/***/ },
 /* 13 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-ease/ Version 1.0.3. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-ease/ Version 1.0.2. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports) :
-		typeof define === 'function' && define.amd ? define(['exports'], factory) :
-		(factory((global.d3 = global.d3 || {})));
+	   true ? factory(exports) :
+	  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	  (factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
 	function linear(t) {
@@ -5441,15 +5307,15 @@
 	})));
 
 
-/***/ }),
+/***/ },
 /* 14 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-scale/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-scale/ Version 1.0.4. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(9), __webpack_require__(11), __webpack_require__(15), __webpack_require__(17), __webpack_require__(18), __webpack_require__(19), __webpack_require__(16)) :
-		typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-collection', 'd3-interpolate', 'd3-format', 'd3-time', 'd3-time-format', 'd3-color'], factory) :
-		(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3,global.d3,global.d3));
+	   true ? factory(exports, __webpack_require__(9), __webpack_require__(11), __webpack_require__(15), __webpack_require__(17), __webpack_require__(18), __webpack_require__(19), __webpack_require__(16)) :
+	  typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-collection', 'd3-interpolate', 'd3-format', 'd3-time', 'd3-time-format', 'd3-color'], factory) :
+	  (factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3,global.d3,global.d3));
 	}(this, (function (exports,d3Array,d3Collection,d3Interpolate,d3Format,d3Time,d3TimeFormat,d3Color) { 'use strict';
 	
 	var array = Array.prototype;
@@ -6350,15 +6216,15 @@
 	})));
 
 
-/***/ }),
+/***/ },
 /* 15 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-interpolate/ Version 1.1.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-interpolate/ Version 1.1.3. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(16)) :
-		typeof define === 'function' && define.amd ? define(['exports', 'd3-color'], factory) :
-		(factory((global.d3 = global.d3 || {}),global.d3));
+	   true ? factory(exports, __webpack_require__(16)) :
+	  typeof define === 'function' && define.amd ? define(['exports', 'd3-color'], factory) :
+	  (factory((global.d3 = global.d3 || {}),global.d3));
 	}(this, (function (exports,d3Color) { 'use strict';
 	
 	function basis(t1, v0, v1, v2, v3) {
@@ -6901,15 +6767,15 @@
 	})));
 
 
-/***/ }),
+/***/ },
 /* 16 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-color/ Version 1.0.3. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-color/ Version 1.0.2. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports) :
-		typeof define === 'function' && define.amd ? define(['exports'], factory) :
-		(factory((global.d3 = global.d3 || {})));
+	   true ? factory(exports) :
+	  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	  (factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
 	var define = function(constructor, factory, prototype) {
@@ -7430,352 +7296,349 @@
 	})));
 
 
-/***/ }),
+/***/ },
 /* 17 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-format/ Version 1.2.0. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-format/ Version 1.0.2. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports) :
-		typeof define === 'function' && define.amd ? define(['exports'], factory) :
-		(factory((global.d3 = global.d3 || {})));
-	}(this, (function (exports) { 'use strict';
+	   true ? factory(exports) :
+	  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	  (factory((global.d3 = global.d3 || {})));
+	}(this, function (exports) { 'use strict';
 	
-	// Computes the decimal coefficient and exponent of the specified number x with
-	// significant digits p, where x is positive and p is in [1, 21] or undefined.
-	// For example, formatDecimal(1.23) returns ["123", 0].
-	var formatDecimal = function(x, p) {
-	  if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
-	  var i, coefficient = x.slice(0, i);
+	  // Computes the decimal coefficient and exponent of the specified number x with
+	  // significant digits p, where x is positive and p is in [1, 21] or undefined.
+	  // For example, formatDecimal(1.23) returns ["123", 0].
+	  function formatDecimal(x, p) {
+	    if ((i = (x = p ? x.toExponential(p - 1) : x.toExponential()).indexOf("e")) < 0) return null; // NaN, ±Infinity
+	    var i, coefficient = x.slice(0, i);
 	
-	  // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
-	  // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
-	  return [
-	    coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
-	    +x.slice(i + 1)
-	  ];
-	};
-	
-	var exponent = function(x) {
-	  return x = formatDecimal(Math.abs(x)), x ? x[1] : NaN;
-	};
-	
-	var formatGroup = function(grouping, thousands) {
-	  return function(value, width) {
-	    var i = value.length,
-	        t = [],
-	        j = 0,
-	        g = grouping[0],
-	        length = 0;
-	
-	    while (i > 0 && g > 0) {
-	      if (length + g + 1 > width) g = Math.max(1, width - length);
-	      t.push(value.substring(i -= g, i + g));
-	      if ((length += g + 1) > width) break;
-	      g = grouping[j = (j + 1) % grouping.length];
-	    }
-	
-	    return t.reverse().join(thousands);
-	  };
-	};
-	
-	var formatNumerals = function(numerals) {
-	  return function(value) {
-	    return value.replace(/[0-9]/g, function(i) {
-	      return numerals[+i];
-	    });
-	  };
-	};
-	
-	var formatDefault = function(x, p) {
-	  x = x.toPrecision(p);
-	
-	  out: for (var n = x.length, i = 1, i0 = -1, i1; i < n; ++i) {
-	    switch (x[i]) {
-	      case ".": i0 = i1 = i; break;
-	      case "0": if (i0 === 0) i0 = i; i1 = i; break;
-	      case "e": break out;
-	      default: if (i0 > 0) i0 = 0; break;
-	    }
+	    // The string returned by toExponential either has the form \d\.\d+e[-+]\d+
+	    // (e.g., 1.2e+3) or the form \de[-+]\d+ (e.g., 1e+3).
+	    return [
+	      coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
+	      +x.slice(i + 1)
+	    ];
 	  }
 	
-	  return i0 > 0 ? x.slice(0, i0) + x.slice(i1 + 1) : x;
-	};
+	  function exponent(x) {
+	    return x = formatDecimal(Math.abs(x)), x ? x[1] : NaN;
+	  }
 	
-	var prefixExponent;
+	  function formatGroup(grouping, thousands) {
+	    return function(value, width) {
+	      var i = value.length,
+	          t = [],
+	          j = 0,
+	          g = grouping[0],
+	          length = 0;
 	
-	var formatPrefixAuto = function(x, p) {
-	  var d = formatDecimal(x, p);
-	  if (!d) return x + "";
-	  var coefficient = d[0],
-	      exponent = d[1],
-	      i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
-	      n = coefficient.length;
-	  return i === n ? coefficient
-	      : i > n ? coefficient + new Array(i - n + 1).join("0")
-	      : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
-	      : "0." + new Array(1 - i).join("0") + formatDecimal(x, Math.max(0, p + i - 1))[0]; // less than 1y!
-	};
+	      while (i > 0 && g > 0) {
+	        if (length + g + 1 > width) g = Math.max(1, width - length);
+	        t.push(value.substring(i -= g, i + g));
+	        if ((length += g + 1) > width) break;
+	        g = grouping[j = (j + 1) % grouping.length];
+	      }
 	
-	var formatRounded = function(x, p) {
-	  var d = formatDecimal(x, p);
-	  if (!d) return x + "";
-	  var coefficient = d[0],
-	      exponent = d[1];
-	  return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
-	      : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
-	      : coefficient + new Array(exponent - coefficient.length + 2).join("0");
-	};
+	      return t.reverse().join(thousands);
+	    };
+	  }
 	
-	var formatTypes = {
-	  "": formatDefault,
-	  "%": function(x, p) { return (x * 100).toFixed(p); },
-	  "b": function(x) { return Math.round(x).toString(2); },
-	  "c": function(x) { return x + ""; },
-	  "d": function(x) { return Math.round(x).toString(10); },
-	  "e": function(x, p) { return x.toExponential(p); },
-	  "f": function(x, p) { return x.toFixed(p); },
-	  "g": function(x, p) { return x.toPrecision(p); },
-	  "o": function(x) { return Math.round(x).toString(8); },
-	  "p": function(x, p) { return formatRounded(x * 100, p); },
-	  "r": formatRounded,
-	  "s": formatPrefixAuto,
-	  "X": function(x) { return Math.round(x).toString(16).toUpperCase(); },
-	  "x": function(x) { return Math.round(x).toString(16); }
-	};
+	  function formatDefault(x, p) {
+	    x = x.toPrecision(p);
 	
-	// [[fill]align][sign][symbol][0][width][,][.precision][type]
-	var re = /^(?:(.)?([<>=^]))?([+\-\( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?([a-z%])?$/i;
+	    out: for (var n = x.length, i = 1, i0 = -1, i1; i < n; ++i) {
+	      switch (x[i]) {
+	        case ".": i0 = i1 = i; break;
+	        case "0": if (i0 === 0) i0 = i; i1 = i; break;
+	        case "e": break out;
+	        default: if (i0 > 0) i0 = 0; break;
+	      }
+	    }
 	
-	function formatSpecifier(specifier) {
-	  return new FormatSpecifier(specifier);
-	}
+	    return i0 > 0 ? x.slice(0, i0) + x.slice(i1 + 1) : x;
+	  }
 	
-	formatSpecifier.prototype = FormatSpecifier.prototype; // instanceof
+	  var prefixExponent;
 	
-	function FormatSpecifier(specifier) {
-	  if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
+	  function formatPrefixAuto(x, p) {
+	    var d = formatDecimal(x, p);
+	    if (!d) return x + "";
+	    var coefficient = d[0],
+	        exponent = d[1],
+	        i = exponent - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent / 3))) * 3) + 1,
+	        n = coefficient.length;
+	    return i === n ? coefficient
+	        : i > n ? coefficient + new Array(i - n + 1).join("0")
+	        : i > 0 ? coefficient.slice(0, i) + "." + coefficient.slice(i)
+	        : "0." + new Array(1 - i).join("0") + formatDecimal(x, Math.max(0, p + i - 1))[0]; // less than 1y!
+	  }
 	
-	  var match,
-	      fill = match[1] || " ",
-	      align = match[2] || ">",
-	      sign = match[3] || "-",
-	      symbol = match[4] || "",
-	      zero = !!match[5],
-	      width = match[6] && +match[6],
-	      comma = !!match[7],
-	      precision = match[8] && +match[8].slice(1),
-	      type = match[9] || "";
+	  function formatRounded(x, p) {
+	    var d = formatDecimal(x, p);
+	    if (!d) return x + "";
+	    var coefficient = d[0],
+	        exponent = d[1];
+	    return exponent < 0 ? "0." + new Array(-exponent).join("0") + coefficient
+	        : coefficient.length > exponent + 1 ? coefficient.slice(0, exponent + 1) + "." + coefficient.slice(exponent + 1)
+	        : coefficient + new Array(exponent - coefficient.length + 2).join("0");
+	  }
 	
-	  // The "n" type is an alias for ",g".
-	  if (type === "n") comma = true, type = "g";
+	  var formatTypes = {
+	    "": formatDefault,
+	    "%": function(x, p) { return (x * 100).toFixed(p); },
+	    "b": function(x) { return Math.round(x).toString(2); },
+	    "c": function(x) { return x + ""; },
+	    "d": function(x) { return Math.round(x).toString(10); },
+	    "e": function(x, p) { return x.toExponential(p); },
+	    "f": function(x, p) { return x.toFixed(p); },
+	    "g": function(x, p) { return x.toPrecision(p); },
+	    "o": function(x) { return Math.round(x).toString(8); },
+	    "p": function(x, p) { return formatRounded(x * 100, p); },
+	    "r": formatRounded,
+	    "s": formatPrefixAuto,
+	    "X": function(x) { return Math.round(x).toString(16).toUpperCase(); },
+	    "x": function(x) { return Math.round(x).toString(16); }
+	  };
 	
-	  // Map invalid types to the default format.
-	  else if (!formatTypes[type]) type = "";
+	  // [[fill]align][sign][symbol][0][width][,][.precision][type]
+	  var re = /^(?:(.)?([<>=^]))?([+\-\( ])?([$#])?(0)?(\d+)?(,)?(\.\d+)?([a-z%])?$/i;
 	
-	  // If zero fill is specified, padding goes after sign and before digits.
-	  if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
+	  function formatSpecifier(specifier) {
+	    return new FormatSpecifier(specifier);
+	  }
 	
-	  this.fill = fill;
-	  this.align = align;
-	  this.sign = sign;
-	  this.symbol = symbol;
-	  this.zero = zero;
-	  this.width = width;
-	  this.comma = comma;
-	  this.precision = precision;
-	  this.type = type;
-	}
+	  function FormatSpecifier(specifier) {
+	    if (!(match = re.exec(specifier))) throw new Error("invalid format: " + specifier);
 	
-	FormatSpecifier.prototype.toString = function() {
-	  return this.fill
-	      + this.align
-	      + this.sign
-	      + this.symbol
-	      + (this.zero ? "0" : "")
-	      + (this.width == null ? "" : Math.max(1, this.width | 0))
-	      + (this.comma ? "," : "")
-	      + (this.precision == null ? "" : "." + Math.max(0, this.precision | 0))
-	      + this.type;
-	};
+	    var match,
+	        fill = match[1] || " ",
+	        align = match[2] || ">",
+	        sign = match[3] || "-",
+	        symbol = match[4] || "",
+	        zero = !!match[5],
+	        width = match[6] && +match[6],
+	        comma = !!match[7],
+	        precision = match[8] && +match[8].slice(1),
+	        type = match[9] || "";
 	
-	var identity = function(x) {
-	  return x;
-	};
+	    // The "n" type is an alias for ",g".
+	    if (type === "n") comma = true, type = "g";
 	
-	var prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
+	    // Map invalid types to the default format.
+	    else if (!formatTypes[type]) type = "";
 	
-	var formatLocale = function(locale) {
-	  var group = locale.grouping && locale.thousands ? formatGroup(locale.grouping, locale.thousands) : identity,
-	      currency = locale.currency,
-	      decimal = locale.decimal,
-	      numerals = locale.numerals ? formatNumerals(locale.numerals) : identity,
-	      percent = locale.percent || "%";
+	    // If zero fill is specified, padding goes after sign and before digits.
+	    if (zero || (fill === "0" && align === "=")) zero = true, fill = "0", align = "=";
 	
-	  function newFormat(specifier) {
-	    specifier = formatSpecifier(specifier);
+	    this.fill = fill;
+	    this.align = align;
+	    this.sign = sign;
+	    this.symbol = symbol;
+	    this.zero = zero;
+	    this.width = width;
+	    this.comma = comma;
+	    this.precision = precision;
+	    this.type = type;
+	  }
 	
-	    var fill = specifier.fill,
-	        align = specifier.align,
-	        sign = specifier.sign,
-	        symbol = specifier.symbol,
-	        zero = specifier.zero,
-	        width = specifier.width,
-	        comma = specifier.comma,
-	        precision = specifier.precision,
-	        type = specifier.type;
+	  FormatSpecifier.prototype.toString = function() {
+	    return this.fill
+	        + this.align
+	        + this.sign
+	        + this.symbol
+	        + (this.zero ? "0" : "")
+	        + (this.width == null ? "" : Math.max(1, this.width | 0))
+	        + (this.comma ? "," : "")
+	        + (this.precision == null ? "" : "." + Math.max(0, this.precision | 0))
+	        + this.type;
+	  };
 	
-	    // Compute the prefix and suffix.
-	    // For SI-prefix, the suffix is lazily computed.
-	    var prefix = symbol === "$" ? currency[0] : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
-	        suffix = symbol === "$" ? currency[1] : /[%p]/.test(type) ? percent : "";
+	  var prefixes = ["y","z","a","f","p","n","µ","m","","k","M","G","T","P","E","Z","Y"];
 	
-	    // What format function should we use?
-	    // Is this an integer type?
-	    // Can this type generate exponential notation?
-	    var formatType = formatTypes[type],
-	        maybeSuffix = !type || /[defgprs%]/.test(type);
+	  function identity(x) {
+	    return x;
+	  }
 	
-	    // Set the default precision if not specified,
-	    // or clamp the specified precision to the supported range.
-	    // For significant precision, it must be in [1, 21].
-	    // For fixed precision, it must be in [0, 20].
-	    precision = precision == null ? (type ? 6 : 12)
-	        : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
-	        : Math.max(0, Math.min(20, precision));
+	  function formatLocale(locale) {
+	    var group = locale.grouping && locale.thousands ? formatGroup(locale.grouping, locale.thousands) : identity,
+	        currency = locale.currency,
+	        decimal = locale.decimal;
 	
-	    function format(value) {
-	      var valuePrefix = prefix,
-	          valueSuffix = suffix,
-	          i, n, c;
+	    function newFormat(specifier) {
+	      specifier = formatSpecifier(specifier);
 	
-	      if (type === "c") {
-	        valueSuffix = formatType(value) + valueSuffix;
-	        value = "";
-	      } else {
-	        value = +value;
+	      var fill = specifier.fill,
+	          align = specifier.align,
+	          sign = specifier.sign,
+	          symbol = specifier.symbol,
+	          zero = specifier.zero,
+	          width = specifier.width,
+	          comma = specifier.comma,
+	          precision = specifier.precision,
+	          type = specifier.type;
 	
-	        // Perform the initial formatting.
-	        var valueNegative = value < 0;
-	        value = formatType(Math.abs(value), precision);
+	      // Compute the prefix and suffix.
+	      // For SI-prefix, the suffix is lazily computed.
+	      var prefix = symbol === "$" ? currency[0] : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : "",
+	          suffix = symbol === "$" ? currency[1] : /[%p]/.test(type) ? "%" : "";
 	
-	        // If a negative value rounds to zero during formatting, treat as positive.
-	        if (valueNegative && +value === 0) valueNegative = false;
+	      // What format function should we use?
+	      // Is this an integer type?
+	      // Can this type generate exponential notation?
+	      var formatType = formatTypes[type],
+	          maybeSuffix = !type || /[defgprs%]/.test(type);
 	
-	        // Compute the prefix and suffix.
-	        valuePrefix = (valueNegative ? (sign === "(" ? sign : "-") : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
-	        valueSuffix = valueSuffix + (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + (valueNegative && sign === "(" ? ")" : "");
+	      // Set the default precision if not specified,
+	      // or clamp the specified precision to the supported range.
+	      // For significant precision, it must be in [1, 21].
+	      // For fixed precision, it must be in [0, 20].
+	      precision = precision == null ? (type ? 6 : 12)
+	          : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision))
+	          : Math.max(0, Math.min(20, precision));
 	
-	        // Break the formatted value into the integer “value” part that can be
-	        // grouped, and fractional or exponential “suffix” part that is not.
-	        if (maybeSuffix) {
-	          i = -1, n = value.length;
-	          while (++i < n) {
-	            if (c = value.charCodeAt(i), 48 > c || c > 57) {
-	              valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
-	              value = value.slice(0, i);
-	              break;
+	      function format(value) {
+	        var valuePrefix = prefix,
+	            valueSuffix = suffix,
+	            i, n, c;
+	
+	        if (type === "c") {
+	          valueSuffix = formatType(value) + valueSuffix;
+	          value = "";
+	        } else {
+	          value = +value;
+	
+	          // Convert negative to positive, and compute the prefix.
+	          // Note that -0 is not less than 0, but 1 / -0 is!
+	          var valueNegative = (value < 0 || 1 / value < 0) && (value *= -1, true);
+	
+	          // Perform the initial formatting.
+	          value = formatType(value, precision);
+	
+	          // If the original value was negative, it may be rounded to zero during
+	          // formatting; treat this as (positive) zero.
+	          if (valueNegative) {
+	            i = -1, n = value.length;
+	            valueNegative = false;
+	            while (++i < n) {
+	              if (c = value.charCodeAt(i), (48 < c && c < 58)
+	                  || (type === "x" && 96 < c && c < 103)
+	                  || (type === "X" && 64 < c && c < 71)) {
+	                valueNegative = true;
+	                break;
+	              }
+	            }
+	          }
+	
+	          // Compute the prefix and suffix.
+	          valuePrefix = (valueNegative ? (sign === "(" ? sign : "-") : sign === "-" || sign === "(" ? "" : sign) + valuePrefix;
+	          valueSuffix = valueSuffix + (type === "s" ? prefixes[8 + prefixExponent / 3] : "") + (valueNegative && sign === "(" ? ")" : "");
+	
+	          // Break the formatted value into the integer “value” part that can be
+	          // grouped, and fractional or exponential “suffix” part that is not.
+	          if (maybeSuffix) {
+	            i = -1, n = value.length;
+	            while (++i < n) {
+	              if (c = value.charCodeAt(i), 48 > c || c > 57) {
+	                valueSuffix = (c === 46 ? decimal + value.slice(i + 1) : value.slice(i)) + valueSuffix;
+	                value = value.slice(0, i);
+	                break;
+	              }
 	            }
 	          }
 	        }
+	
+	        // If the fill character is not "0", grouping is applied before padding.
+	        if (comma && !zero) value = group(value, Infinity);
+	
+	        // Compute the padding.
+	        var length = valuePrefix.length + value.length + valueSuffix.length,
+	            padding = length < width ? new Array(width - length + 1).join(fill) : "";
+	
+	        // If the fill character is "0", grouping is applied after padding.
+	        if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
+	
+	        // Reconstruct the final output based on the desired alignment.
+	        switch (align) {
+	          case "<": return valuePrefix + value + valueSuffix + padding;
+	          case "=": return valuePrefix + padding + value + valueSuffix;
+	          case "^": return padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length);
+	        }
+	        return padding + valuePrefix + value + valueSuffix;
 	      }
 	
-	      // If the fill character is not "0", grouping is applied before padding.
-	      if (comma && !zero) value = group(value, Infinity);
+	      format.toString = function() {
+	        return specifier + "";
+	      };
 	
-	      // Compute the padding.
-	      var length = valuePrefix.length + value.length + valueSuffix.length,
-	          padding = length < width ? new Array(width - length + 1).join(fill) : "";
-	
-	      // If the fill character is "0", grouping is applied after padding.
-	      if (comma && zero) value = group(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
-	
-	      // Reconstruct the final output based on the desired alignment.
-	      switch (align) {
-	        case "<": value = valuePrefix + value + valueSuffix + padding; break;
-	        case "=": value = valuePrefix + padding + value + valueSuffix; break;
-	        case "^": value = padding.slice(0, length = padding.length >> 1) + valuePrefix + value + valueSuffix + padding.slice(length); break;
-	        default: value = padding + valuePrefix + value + valueSuffix; break;
-	      }
-	
-	      return numerals(value);
+	      return format;
 	    }
 	
-	    format.toString = function() {
-	      return specifier + "";
-	    };
+	    function formatPrefix(specifier, value) {
+	      var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)),
+	          e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3,
+	          k = Math.pow(10, -e),
+	          prefix = prefixes[8 + e / 3];
+	      return function(value) {
+	        return f(k * value) + prefix;
+	      };
+	    }
 	
-	    return format;
+	    return {
+	      format: newFormat,
+	      formatPrefix: formatPrefix
+	    };
 	  }
 	
-	  function formatPrefix(specifier, value) {
-	    var f = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)),
-	        e = Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3,
-	        k = Math.pow(10, -e),
-	        prefix = prefixes[8 + e / 3];
-	    return function(value) {
-	      return f(k * value) + prefix;
-	    };
+	  var locale;
+	  defaultLocale({
+	    decimal: ".",
+	    thousands: ",",
+	    grouping: [3],
+	    currency: ["$", ""]
+	  });
+	
+	  function defaultLocale(definition) {
+	    locale = formatLocale(definition);
+	    exports.format = locale.format;
+	    exports.formatPrefix = locale.formatPrefix;
+	    return locale;
 	  }
 	
-	  return {
-	    format: newFormat,
-	    formatPrefix: formatPrefix
-	  };
-	};
+	  function precisionFixed(step) {
+	    return Math.max(0, -exponent(Math.abs(step)));
+	  }
 	
-	var locale;
+	  function precisionPrefix(step, value) {
+	    return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3 - exponent(Math.abs(step)));
+	  }
 	
+	  function precisionRound(step, max) {
+	    step = Math.abs(step), max = Math.abs(max) - step;
+	    return Math.max(0, exponent(max) - exponent(step)) + 1;
+	  }
 	
+	  exports.formatDefaultLocale = defaultLocale;
+	  exports.formatLocale = formatLocale;
+	  exports.formatSpecifier = formatSpecifier;
+	  exports.precisionFixed = precisionFixed;
+	  exports.precisionPrefix = precisionPrefix;
+	  exports.precisionRound = precisionRound;
 	
-	defaultLocale({
-	  decimal: ".",
-	  thousands: ",",
-	  grouping: [3],
-	  currency: ["$", ""]
-	});
+	  Object.defineProperty(exports, '__esModule', { value: true });
 	
-	function defaultLocale(definition) {
-	  locale = formatLocale(definition);
-	  exports.format = locale.format;
-	  exports.formatPrefix = locale.formatPrefix;
-	  return locale;
-	}
-	
-	var precisionFixed = function(step) {
-	  return Math.max(0, -exponent(Math.abs(step)));
-	};
-	
-	var precisionPrefix = function(step, value) {
-	  return Math.max(0, Math.max(-8, Math.min(8, Math.floor(exponent(value) / 3))) * 3 - exponent(Math.abs(step)));
-	};
-	
-	var precisionRound = function(step, max) {
-	  step = Math.abs(step), max = Math.abs(max) - step;
-	  return Math.max(0, exponent(max) - exponent(step)) + 1;
-	};
-	
-	exports.formatDefaultLocale = defaultLocale;
-	exports.formatLocale = formatLocale;
-	exports.formatSpecifier = formatSpecifier;
-	exports.precisionFixed = precisionFixed;
-	exports.precisionPrefix = precisionPrefix;
-	exports.precisionRound = precisionRound;
-	
-	Object.defineProperty(exports, '__esModule', { value: true });
-	
-	})));
+	}));
 
-
-/***/ }),
+/***/ },
 /* 18 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-time/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-time/ Version 1.0.4. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports) :
-		typeof define === 'function' && define.amd ? define(['exports'], factory) :
-		(factory((global.d3 = global.d3 || {})));
+	   true ? factory(exports) :
+	  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	  (factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
 	var t0 = new Date;
@@ -8151,15 +8014,15 @@
 	})));
 
 
-/***/ }),
+/***/ },
 /* 19 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-time-format/ Version 2.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-time-format/ Version 2.0.3. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(18)) :
-		typeof define === 'function' && define.amd ? define(['exports', 'd3-time'], factory) :
-		(factory((global.d3 = global.d3 || {}),global.d3));
+	   true ? factory(exports, __webpack_require__(18)) :
+	  typeof define === 'function' && define.amd ? define(['exports', 'd3-time'], factory) :
+	  (factory((global.d3 = global.d3 || {}),global.d3));
 	}(this, (function (exports,d3Time) { 'use strict';
 	
 	function localDate(d) {
@@ -8745,43 +8608,27 @@
 	})));
 
 
-/***/ }),
+/***/ },
 /* 20 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-shape/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-shape/ Version 1.0.4. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(21)) :
-		typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
-		(factory((global.d3 = global.d3 || {}),global.d3));
+	   true ? factory(exports, __webpack_require__(21)) :
+	  typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
+	  (factory((global.d3 = global.d3 || {}),global.d3));
 	}(this, (function (exports,d3Path) { 'use strict';
 	
-	var constant = function(x) {
+	var constant$1 = function(x) {
 	  return function constant() {
 	    return x;
 	  };
 	};
 	
-	var abs = Math.abs;
-	var atan2 = Math.atan2;
-	var cos = Math.cos;
-	var max = Math.max;
-	var min = Math.min;
-	var sin = Math.sin;
-	var sqrt = Math.sqrt;
-	
 	var epsilon = 1e-12;
 	var pi = Math.PI;
 	var halfPi = pi / 2;
 	var tau = 2 * pi;
-	
-	function acos(x) {
-	  return x > 1 ? 0 : x < -1 ? pi : Math.acos(x);
-	}
-	
-	function asin(x) {
-	  return x >= 1 ? halfPi : x <= -1 ? -halfPi : Math.asin(x);
-	}
 	
 	function arcInnerRadius(d) {
 	  return d.innerRadius;
@@ -8803,6 +8650,10 @@
 	  return d && d.padAngle; // Note: optional!
 	}
 	
+	function asin(x) {
+	  return x >= 1 ? halfPi : x <= -1 ? -halfPi : Math.asin(x);
+	}
+	
 	function intersect(x0, y0, x1, y1, x2, y2, x3, y3) {
 	  var x10 = x1 - x0, y10 = y1 - y0,
 	      x32 = x3 - x2, y32 = y3 - y2,
@@ -8815,7 +8666,7 @@
 	function cornerTangents(x0, y0, x1, y1, r1, rc, cw) {
 	  var x01 = x0 - x1,
 	      y01 = y0 - y1,
-	      lo = (cw ? rc : -rc) / sqrt(x01 * x01 + y01 * y01),
+	      lo = (cw ? rc : -rc) / Math.sqrt(x01 * x01 + y01 * y01),
 	      ox = lo * y01,
 	      oy = -lo * x01,
 	      x11 = x0 + ox,
@@ -8829,7 +8680,7 @@
 	      d2 = dx * dx + dy * dy,
 	      r = r1 - rc,
 	      D = x11 * y10 - x10 * y11,
-	      d = (dy < 0 ? -1 : 1) * sqrt(max(0, r * r * d2 - D * D)),
+	      d = (dy < 0 ? -1 : 1) * Math.sqrt(Math.max(0, r * r * d2 - D * D)),
 	      cx0 = (D * dy - dx * d) / d2,
 	      cy0 = (-D * dx - dy * d) / d2,
 	      cx1 = (D * dy + dx * d) / d2,
@@ -8856,7 +8707,7 @@
 	var arc = function() {
 	  var innerRadius = arcInnerRadius,
 	      outerRadius = arcOuterRadius,
-	      cornerRadius = constant(0),
+	      cornerRadius = constant$1(0),
 	      padRadius = null,
 	      startAngle = arcStartAngle,
 	      endAngle = arcEndAngle,
@@ -8870,7 +8721,7 @@
 	        r1 = +outerRadius.apply(this, arguments),
 	        a0 = startAngle.apply(this, arguments) - halfPi,
 	        a1 = endAngle.apply(this, arguments) - halfPi,
-	        da = abs(a1 - a0),
+	        da = Math.abs(a1 - a0),
 	        cw = a1 > a0;
 	
 	    if (!context) context = buffer = d3Path.path();
@@ -8883,10 +8734,10 @@
 	
 	    // Or is it a circle or annulus?
 	    else if (da > tau - epsilon) {
-	      context.moveTo(r1 * cos(a0), r1 * sin(a0));
+	      context.moveTo(r1 * Math.cos(a0), r1 * Math.sin(a0));
 	      context.arc(0, 0, r1, a0, a1, !cw);
 	      if (r0 > epsilon) {
-	        context.moveTo(r0 * cos(a1), r0 * sin(a1));
+	        context.moveTo(r0 * Math.cos(a1), r0 * Math.sin(a1));
 	        context.arc(0, 0, r0, a1, a0, cw);
 	      }
 	    }
@@ -8900,8 +8751,8 @@
 	          da0 = da,
 	          da1 = da,
 	          ap = padAngle.apply(this, arguments) / 2,
-	          rp = (ap > epsilon) && (padRadius ? +padRadius.apply(this, arguments) : sqrt(r0 * r0 + r1 * r1)),
-	          rc = min(abs(r1 - r0) / 2, +cornerRadius.apply(this, arguments)),
+	          rp = (ap > epsilon) && (padRadius ? +padRadius.apply(this, arguments) : Math.sqrt(r0 * r0 + r1 * r1)),
+	          rc = Math.min(Math.abs(r1 - r0) / 2, +cornerRadius.apply(this, arguments)),
 	          rc0 = rc,
 	          rc1 = rc,
 	          t0,
@@ -8909,25 +8760,25 @@
 	
 	      // Apply padding? Note that since r1 ≥ r0, da1 ≥ da0.
 	      if (rp > epsilon) {
-	        var p0 = asin(rp / r0 * sin(ap)),
-	            p1 = asin(rp / r1 * sin(ap));
+	        var p0 = asin(rp / r0 * Math.sin(ap)),
+	            p1 = asin(rp / r1 * Math.sin(ap));
 	        if ((da0 -= p0 * 2) > epsilon) p0 *= (cw ? 1 : -1), a00 += p0, a10 -= p0;
 	        else da0 = 0, a00 = a10 = (a0 + a1) / 2;
 	        if ((da1 -= p1 * 2) > epsilon) p1 *= (cw ? 1 : -1), a01 += p1, a11 -= p1;
 	        else da1 = 0, a01 = a11 = (a0 + a1) / 2;
 	      }
 	
-	      var x01 = r1 * cos(a01),
-	          y01 = r1 * sin(a01),
-	          x10 = r0 * cos(a10),
-	          y10 = r0 * sin(a10);
+	      var x01 = r1 * Math.cos(a01),
+	          y01 = r1 * Math.sin(a01),
+	          x10 = r0 * Math.cos(a10),
+	          y10 = r0 * Math.sin(a10);
 	
 	      // Apply rounded corners?
 	      if (rc > epsilon) {
-	        var x11 = r1 * cos(a11),
-	            y11 = r1 * sin(a11),
-	            x00 = r0 * cos(a00),
-	            y00 = r0 * sin(a00);
+	        var x11 = r1 * Math.cos(a11),
+	            y11 = r1 * Math.sin(a11),
+	            x00 = r0 * Math.cos(a00),
+	            y00 = r0 * Math.sin(a00);
 	
 	        // Restrict the corner radius according to the sector angle.
 	        if (da < pi) {
@@ -8936,10 +8787,10 @@
 	              ay = y01 - oc[1],
 	              bx = x11 - oc[0],
 	              by = y11 - oc[1],
-	              kc = 1 / sin(acos((ax * bx + ay * by) / (sqrt(ax * ax + ay * ay) * sqrt(bx * bx + by * by))) / 2),
-	              lc = sqrt(oc[0] * oc[0] + oc[1] * oc[1]);
-	          rc0 = min(rc, (r0 - lc) / (kc - 1));
-	          rc1 = min(rc, (r1 - lc) / (kc + 1));
+	              kc = 1 / Math.sin(Math.acos((ax * bx + ay * by) / (Math.sqrt(ax * ax + ay * ay) * Math.sqrt(bx * bx + by * by))) / 2),
+	              lc = Math.sqrt(oc[0] * oc[0] + oc[1] * oc[1]);
+	          rc0 = Math.min(rc, (r0 - lc) / (kc - 1));
+	          rc1 = Math.min(rc, (r1 - lc) / (kc + 1));
 	        }
 	      }
 	
@@ -8954,13 +8805,13 @@
 	        context.moveTo(t0.cx + t0.x01, t0.cy + t0.y01);
 	
 	        // Have the corners merged?
-	        if (rc1 < rc) context.arc(t0.cx, t0.cy, rc1, atan2(t0.y01, t0.x01), atan2(t1.y01, t1.x01), !cw);
+	        if (rc1 < rc) context.arc(t0.cx, t0.cy, rc1, Math.atan2(t0.y01, t0.x01), Math.atan2(t1.y01, t1.x01), !cw);
 	
 	        // Otherwise, draw the two corners and the ring.
 	        else {
-	          context.arc(t0.cx, t0.cy, rc1, atan2(t0.y01, t0.x01), atan2(t0.y11, t0.x11), !cw);
-	          context.arc(0, 0, r1, atan2(t0.cy + t0.y11, t0.cx + t0.x11), atan2(t1.cy + t1.y11, t1.cx + t1.x11), !cw);
-	          context.arc(t1.cx, t1.cy, rc1, atan2(t1.y11, t1.x11), atan2(t1.y01, t1.x01), !cw);
+	          context.arc(t0.cx, t0.cy, rc1, Math.atan2(t0.y01, t0.x01), Math.atan2(t0.y11, t0.x11), !cw);
+	          context.arc(0, 0, r1, Math.atan2(t0.cy + t0.y11, t0.cx + t0.x11), Math.atan2(t1.cy + t1.y11, t1.cx + t1.x11), !cw);
+	          context.arc(t1.cx, t1.cy, rc1, Math.atan2(t1.y11, t1.x11), Math.atan2(t1.y01, t1.x01), !cw);
 	        }
 	      }
 	
@@ -8979,13 +8830,13 @@
 	        context.lineTo(t0.cx + t0.x01, t0.cy + t0.y01);
 	
 	        // Have the corners merged?
-	        if (rc0 < rc) context.arc(t0.cx, t0.cy, rc0, atan2(t0.y01, t0.x01), atan2(t1.y01, t1.x01), !cw);
+	        if (rc0 < rc) context.arc(t0.cx, t0.cy, rc0, Math.atan2(t0.y01, t0.x01), Math.atan2(t1.y01, t1.x01), !cw);
 	
 	        // Otherwise, draw the two corners and the ring.
 	        else {
-	          context.arc(t0.cx, t0.cy, rc0, atan2(t0.y01, t0.x01), atan2(t0.y11, t0.x11), !cw);
-	          context.arc(0, 0, r0, atan2(t0.cy + t0.y11, t0.cx + t0.x11), atan2(t1.cy + t1.y11, t1.cx + t1.x11), cw);
-	          context.arc(t1.cx, t1.cy, rc0, atan2(t1.y11, t1.x11), atan2(t1.y01, t1.x01), !cw);
+	          context.arc(t0.cx, t0.cy, rc0, Math.atan2(t0.y01, t0.x01), Math.atan2(t0.y11, t0.x11), !cw);
+	          context.arc(0, 0, r0, Math.atan2(t0.cy + t0.y11, t0.cx + t0.x11), Math.atan2(t1.cy + t1.y11, t1.cx + t1.x11), cw);
+	          context.arc(t1.cx, t1.cy, rc0, Math.atan2(t1.y11, t1.x11), Math.atan2(t1.y01, t1.x01), !cw);
 	        }
 	      }
 	
@@ -9001,35 +8852,35 @@
 	  arc.centroid = function() {
 	    var r = (+innerRadius.apply(this, arguments) + +outerRadius.apply(this, arguments)) / 2,
 	        a = (+startAngle.apply(this, arguments) + +endAngle.apply(this, arguments)) / 2 - pi / 2;
-	    return [cos(a) * r, sin(a) * r];
+	    return [Math.cos(a) * r, Math.sin(a) * r];
 	  };
 	
 	  arc.innerRadius = function(_) {
-	    return arguments.length ? (innerRadius = typeof _ === "function" ? _ : constant(+_), arc) : innerRadius;
+	    return arguments.length ? (innerRadius = typeof _ === "function" ? _ : constant$1(+_), arc) : innerRadius;
 	  };
 	
 	  arc.outerRadius = function(_) {
-	    return arguments.length ? (outerRadius = typeof _ === "function" ? _ : constant(+_), arc) : outerRadius;
+	    return arguments.length ? (outerRadius = typeof _ === "function" ? _ : constant$1(+_), arc) : outerRadius;
 	  };
 	
 	  arc.cornerRadius = function(_) {
-	    return arguments.length ? (cornerRadius = typeof _ === "function" ? _ : constant(+_), arc) : cornerRadius;
+	    return arguments.length ? (cornerRadius = typeof _ === "function" ? _ : constant$1(+_), arc) : cornerRadius;
 	  };
 	
 	  arc.padRadius = function(_) {
-	    return arguments.length ? (padRadius = _ == null ? null : typeof _ === "function" ? _ : constant(+_), arc) : padRadius;
+	    return arguments.length ? (padRadius = _ == null ? null : typeof _ === "function" ? _ : constant$1(+_), arc) : padRadius;
 	  };
 	
 	  arc.startAngle = function(_) {
-	    return arguments.length ? (startAngle = typeof _ === "function" ? _ : constant(+_), arc) : startAngle;
+	    return arguments.length ? (startAngle = typeof _ === "function" ? _ : constant$1(+_), arc) : startAngle;
 	  };
 	
 	  arc.endAngle = function(_) {
-	    return arguments.length ? (endAngle = typeof _ === "function" ? _ : constant(+_), arc) : endAngle;
+	    return arguments.length ? (endAngle = typeof _ === "function" ? _ : constant$1(+_), arc) : endAngle;
 	  };
 	
 	  arc.padAngle = function(_) {
-	    return arguments.length ? (padAngle = typeof _ === "function" ? _ : constant(+_), arc) : padAngle;
+	    return arguments.length ? (padAngle = typeof _ === "function" ? _ : constant$1(+_), arc) : padAngle;
 	  };
 	
 	  arc.context = function(_) {
@@ -9082,7 +8933,7 @@
 	var line = function() {
 	  var x$$1 = x,
 	      y$$1 = y,
-	      defined = constant(true),
+	      defined = constant$1(true),
 	      context = null,
 	      curve = curveLinear,
 	      output = null;
@@ -9108,15 +8959,15 @@
 	  }
 	
 	  line.x = function(_) {
-	    return arguments.length ? (x$$1 = typeof _ === "function" ? _ : constant(+_), line) : x$$1;
+	    return arguments.length ? (x$$1 = typeof _ === "function" ? _ : constant$1(+_), line) : x$$1;
 	  };
 	
 	  line.y = function(_) {
-	    return arguments.length ? (y$$1 = typeof _ === "function" ? _ : constant(+_), line) : y$$1;
+	    return arguments.length ? (y$$1 = typeof _ === "function" ? _ : constant$1(+_), line) : y$$1;
 	  };
 	
 	  line.defined = function(_) {
-	    return arguments.length ? (defined = typeof _ === "function" ? _ : constant(!!_), line) : defined;
+	    return arguments.length ? (defined = typeof _ === "function" ? _ : constant$1(!!_), line) : defined;
 	  };
 	
 	  line.curve = function(_) {
@@ -9133,9 +8984,9 @@
 	var area = function() {
 	  var x0 = x,
 	      x1 = null,
-	      y0 = constant(0),
+	      y0 = constant$1(0),
 	      y1 = y,
-	      defined = constant(true),
+	      defined = constant$1(true),
 	      context = null,
 	      curve = curveLinear,
 	      output = null;
@@ -9183,27 +9034,27 @@
 	  }
 	
 	  area.x = function(_) {
-	    return arguments.length ? (x0 = typeof _ === "function" ? _ : constant(+_), x1 = null, area) : x0;
+	    return arguments.length ? (x0 = typeof _ === "function" ? _ : constant$1(+_), x1 = null, area) : x0;
 	  };
 	
 	  area.x0 = function(_) {
-	    return arguments.length ? (x0 = typeof _ === "function" ? _ : constant(+_), area) : x0;
+	    return arguments.length ? (x0 = typeof _ === "function" ? _ : constant$1(+_), area) : x0;
 	  };
 	
 	  area.x1 = function(_) {
-	    return arguments.length ? (x1 = _ == null ? null : typeof _ === "function" ? _ : constant(+_), area) : x1;
+	    return arguments.length ? (x1 = _ == null ? null : typeof _ === "function" ? _ : constant$1(+_), area) : x1;
 	  };
 	
 	  area.y = function(_) {
-	    return arguments.length ? (y0 = typeof _ === "function" ? _ : constant(+_), y1 = null, area) : y0;
+	    return arguments.length ? (y0 = typeof _ === "function" ? _ : constant$1(+_), y1 = null, area) : y0;
 	  };
 	
 	  area.y0 = function(_) {
-	    return arguments.length ? (y0 = typeof _ === "function" ? _ : constant(+_), area) : y0;
+	    return arguments.length ? (y0 = typeof _ === "function" ? _ : constant$1(+_), area) : y0;
 	  };
 	
 	  area.y1 = function(_) {
-	    return arguments.length ? (y1 = _ == null ? null : typeof _ === "function" ? _ : constant(+_), area) : y1;
+	    return arguments.length ? (y1 = _ == null ? null : typeof _ === "function" ? _ : constant$1(+_), area) : y1;
 	  };
 	
 	  area.lineX0 =
@@ -9220,7 +9071,7 @@
 	  };
 	
 	  area.defined = function(_) {
-	    return arguments.length ? (defined = typeof _ === "function" ? _ : constant(!!_), area) : defined;
+	    return arguments.length ? (defined = typeof _ === "function" ? _ : constant$1(!!_), area) : defined;
 	  };
 	
 	  area.curve = function(_) {
@@ -9246,9 +9097,9 @@
 	  var value = identity,
 	      sortValues = descending,
 	      sort = null,
-	      startAngle = constant(0),
-	      endAngle = constant(tau),
-	      padAngle = constant(0);
+	      startAngle = constant$1(0),
+	      endAngle = constant$1(tau),
+	      padAngle = constant$1(0);
 	
 	  function pie(data) {
 	    var i,
@@ -9291,7 +9142,7 @@
 	  }
 	
 	  pie.value = function(_) {
-	    return arguments.length ? (value = typeof _ === "function" ? _ : constant(+_), pie) : value;
+	    return arguments.length ? (value = typeof _ === "function" ? _ : constant$1(+_), pie) : value;
 	  };
 	
 	  pie.sortValues = function(_) {
@@ -9303,15 +9154,15 @@
 	  };
 	
 	  pie.startAngle = function(_) {
-	    return arguments.length ? (startAngle = typeof _ === "function" ? _ : constant(+_), pie) : startAngle;
+	    return arguments.length ? (startAngle = typeof _ === "function" ? _ : constant$1(+_), pie) : startAngle;
 	  };
 	
 	  pie.endAngle = function(_) {
-	    return arguments.length ? (endAngle = typeof _ === "function" ? _ : constant(+_), pie) : endAngle;
+	    return arguments.length ? (endAngle = typeof _ === "function" ? _ : constant$1(+_), pie) : endAngle;
 	  };
 	
 	  pie.padAngle = function(_) {
-	    return arguments.length ? (padAngle = typeof _ === "function" ? _ : constant(+_), pie) : padAngle;
+	    return arguments.length ? (padAngle = typeof _ === "function" ? _ : constant$1(+_), pie) : padAngle;
 	  };
 	
 	  return pie;
@@ -9518,8 +9369,8 @@
 	];
 	
 	var symbol = function() {
-	  var type = constant(circle),
-	      size = constant(64),
+	  var type = constant$1(circle),
+	      size = constant$1(64),
 	      context = null;
 	
 	  function symbol() {
@@ -9530,11 +9381,11 @@
 	  }
 	
 	  symbol.type = function(_) {
-	    return arguments.length ? (type = typeof _ === "function" ? _ : constant(_), symbol) : type;
+	    return arguments.length ? (type = typeof _ === "function" ? _ : constant$1(_), symbol) : type;
 	  };
 	
 	  symbol.size = function(_) {
-	    return arguments.length ? (size = typeof _ === "function" ? _ : constant(+_), symbol) : size;
+	    return arguments.length ? (size = typeof _ === "function" ? _ : constant$1(+_), symbol) : size;
 	  };
 	
 	  symbol.context = function(_) {
@@ -9728,7 +9579,7 @@
 	  }
 	};
 	
-	var bundle = ((function custom(beta) {
+	var bundle = (function custom(beta) {
 	
 	  function bundle(context) {
 	    return beta === 1 ? new Basis(context) : new Bundle(context, beta);
@@ -9739,7 +9590,7 @@
 	  };
 	
 	  return bundle;
-	}))(0.85);
+	})(0.85);
 	
 	function point$1(that, x, y) {
 	  that._context.bezierCurveTo(
@@ -9790,7 +9641,7 @@
 	  }
 	};
 	
-	var cardinal = ((function custom(tension) {
+	var cardinal = (function custom(tension) {
 	
 	  function cardinal(context) {
 	    return new Cardinal(context, tension);
@@ -9801,7 +9652,7 @@
 	  };
 	
 	  return cardinal;
-	}))(0);
+	})(0);
 	
 	function CardinalClosed(context, tension) {
 	  this._context = context;
@@ -9849,7 +9700,7 @@
 	  }
 	};
 	
-	var cardinalClosed = ((function custom(tension) {
+	var cardinalClosed = (function custom(tension) {
 	
 	  function cardinal(context) {
 	    return new CardinalClosed(context, tension);
@@ -9860,7 +9711,7 @@
 	  };
 	
 	  return cardinal;
-	}))(0);
+	})(0);
 	
 	function CardinalOpen(context, tension) {
 	  this._context = context;
@@ -9897,7 +9748,7 @@
 	  }
 	};
 	
-	var cardinalOpen = ((function custom(tension) {
+	var cardinalOpen = (function custom(tension) {
 	
 	  function cardinal(context) {
 	    return new CardinalOpen(context, tension);
@@ -9908,7 +9759,7 @@
 	  };
 	
 	  return cardinal;
-	}))(0);
+	})(0);
 	
 	function point$2(that, x, y) {
 	  var x1 = that._x1,
@@ -9983,7 +9834,7 @@
 	  }
 	};
 	
-	var catmullRom = ((function custom(alpha) {
+	var catmullRom = (function custom(alpha) {
 	
 	  function catmullRom(context) {
 	    return alpha ? new CatmullRom(context, alpha) : new Cardinal(context, 0);
@@ -9994,7 +9845,7 @@
 	  };
 	
 	  return catmullRom;
-	}))(0.5);
+	})(0.5);
 	
 	function CatmullRomClosed(context, alpha) {
 	  this._context = context;
@@ -10054,7 +9905,7 @@
 	  }
 	};
 	
-	var catmullRomClosed = ((function custom(alpha) {
+	var catmullRomClosed = (function custom(alpha) {
 	
 	  function catmullRom(context) {
 	    return alpha ? new CatmullRomClosed(context, alpha) : new CardinalClosed(context, 0);
@@ -10065,7 +9916,7 @@
 	  };
 	
 	  return catmullRom;
-	}))(0.5);
+	})(0.5);
 	
 	function CatmullRomOpen(context, alpha) {
 	  this._context = context;
@@ -10114,7 +9965,7 @@
 	  }
 	};
 	
-	var catmullRomOpen = ((function custom(alpha) {
+	var catmullRomOpen = (function custom(alpha) {
 	
 	  function catmullRom(context) {
 	    return alpha ? new CatmullRomOpen(context, alpha) : new CardinalOpen(context, 0);
@@ -10125,7 +9976,7 @@
 	  };
 	
 	  return catmullRom;
-	}))(0.5);
+	})(0.5);
 	
 	function LinearClosed(context) {
 	  this._context = context;
@@ -10399,7 +10250,7 @@
 	}
 	
 	var stack = function() {
-	  var keys = constant([]),
+	  var keys = constant$1([]),
 	      order = none$1,
 	      offset = none,
 	      value = stackValue;
@@ -10429,15 +10280,15 @@
 	  }
 	
 	  stack.keys = function(_) {
-	    return arguments.length ? (keys = typeof _ === "function" ? _ : constant(slice.call(_)), stack) : keys;
+	    return arguments.length ? (keys = typeof _ === "function" ? _ : constant$1(slice.call(_)), stack) : keys;
 	  };
 	
 	  stack.value = function(_) {
-	    return arguments.length ? (value = typeof _ === "function" ? _ : constant(+_), stack) : value;
+	    return arguments.length ? (value = typeof _ === "function" ? _ : constant$1(+_), stack) : value;
 	  };
 	
 	  stack.order = function(_) {
-	    return arguments.length ? (order = _ == null ? none$1 : typeof _ === "function" ? _ : constant(slice.call(_)), stack) : order;
+	    return arguments.length ? (order = _ == null ? none$1 : typeof _ === "function" ? _ : constant$1(slice.call(_)), stack) : order;
 	  };
 	
 	  stack.offset = function(_) {
@@ -10581,15 +10432,15 @@
 	})));
 
 
-/***/ }),
+/***/ },
 /* 21 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-path/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-path/ Version 1.0.3. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports) :
-		typeof define === 'function' && define.amd ? define(['exports'], factory) :
-		(factory((global.d3 = global.d3 || {})));
+	   true ? factory(exports) :
+	  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	  (factory((global.d3 = global.d3 || {})));
 	}(this, (function (exports) { 'use strict';
 	
 	var pi = Math.PI;
@@ -10700,16 +10551,14 @@
 	    // Is this arc empty? We’re done.
 	    if (!r) return;
 	
-	    // Does the angle go the wrong way? Flip the direction.
-	    if (da < 0) da = da % tau + tau;
-	
 	    // Is this a complete circle? Draw two arcs to complete the circle.
 	    if (da > tauEpsilon) {
 	      this._ += "A" + r + "," + r + ",0,1," + cw + "," + (x - dx) + "," + (y - dy) + "A" + r + "," + r + ",0,1," + cw + "," + (this._x1 = x0) + "," + (this._y1 = y0);
 	    }
 	
-	    // Is this arc non-empty? Draw an arc!
-	    else if (da > epsilon) {
+	    // Otherwise, draw an arc!
+	    else {
+	      if (da < 0) da = da % tau + tau;
 	      this._ += "A" + r + "," + r + ",0," + (+(da >= pi)) + "," + cw + "," + (this._x1 = x + r * Math.cos(a1)) + "," + (this._y1 = y + r * Math.sin(a1));
 	    }
 	  },
@@ -10728,15 +10577,15 @@
 	})));
 
 
-/***/ }),
+/***/ },
 /* 22 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-transition/ Version 1.0.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-transition/ Version 1.0.3. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(4), __webpack_require__(12), __webpack_require__(23), __webpack_require__(15), __webpack_require__(16), __webpack_require__(13)) :
-		typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-timer', 'd3-interpolate', 'd3-color', 'd3-ease'], factory) :
-		(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3,global.d3));
+	   true ? factory(exports, __webpack_require__(4), __webpack_require__(12), __webpack_require__(23), __webpack_require__(15), __webpack_require__(16), __webpack_require__(13)) :
+	  typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-timer', 'd3-interpolate', 'd3-color', 'd3-ease'], factory) :
+	  (factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3,global.d3));
 	}(this, (function (exports,d3Selection,d3Dispatch,d3Timer,d3Interpolate,d3Color,d3Ease) { 'use strict';
 	
 	var emptyOn = d3Dispatch.dispatch("start", "end", "interrupt");
@@ -11076,7 +10925,7 @@
 	  return this.attrTween(name, typeof value === "function"
 	      ? (fullname.local ? attrFunctionNS : attrFunction)(fullname, i, tweenValue(this, "attr." + name, value))
 	      : value == null ? (fullname.local ? attrRemoveNS : attrRemove)(fullname)
-	      : (fullname.local ? attrConstantNS : attrConstant)(fullname, i, value + ""));
+	      : (fullname.local ? attrConstantNS : attrConstant)(fullname, i, value));
 	};
 	
 	function attrTweenNS(fullname, value) {
@@ -11345,7 +11194,7 @@
 	          .on("end.style." + name, styleRemoveEnd(name))
 	      : this.styleTween(name, typeof value === "function"
 	          ? styleFunction(name, i, tweenValue(this, "style." + name, value))
-	          : styleConstant(name, i, value + ""), priority);
+	          : styleConstant(name, i, value), priority);
 	};
 	
 	function styleTween(name, value, priority) {
@@ -11523,11 +11372,11 @@
 	})));
 
 
-/***/ }),
+/***/ },
 /* 23 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-timer/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-timer/ Version 1.0.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -11678,27 +11527,25 @@
 	})));
 
 
-/***/ }),
+/***/ },
 /* 24 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
-	    var bowser = __webpack_require__(25);
-	
 	    var _require = __webpack_require__(7),
 	        colorSchemas = _require.colorSchemas;
 	
-	    var constants = __webpack_require__(27);
-	    var serializeWithStyles = __webpack_require__(28);
+	    var constants = __webpack_require__(25);
+	    var serializeWithStyles = __webpack_require__(26);
 	
 	    var encoder = window.btoa;
 	
 	    if (!encoder) {
-	        encoder = __webpack_require__(29).encode;
+	        encoder = __webpack_require__(27).encode;
 	    }
 	
 	    // Base64 doesn't work really well with Unicode strings, so we need to use this function
@@ -11830,7 +11677,7 @@
 	     * @return {string} string of svg html
 	     */
 	    function formatHtmlByBrowser(html) {
-	        if (bowser.name === 'Firefox') {
+	        if (navigator.userAgent.search('FireFox') > -1) {
 	            return html.replace(/url.*&quot;\)/, 'url(&quot;#' + constants.lineGradientId + '&quot;);');
 	        }
 	
@@ -11875,602 +11722,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
+/***/ },
 /* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/*!
-	 * Bowser - a browser detector
-	 * https://github.com/ded/bowser
-	 * MIT License | (c) Dustin Diaz 2015
-	 */
-	
-	!function (root, name, definition) {
-	  if (typeof module != 'undefined' && module.exports) module.exports = definition()
-	  else if (true) __webpack_require__(26)(name, definition)
-	  else root[name] = definition()
-	}(this, 'bowser', function () {
-	  /**
-	    * See useragents.js for examples of navigator.userAgent
-	    */
-	
-	  var t = true
-	
-	  function detect(ua) {
-	
-	    function getFirstMatch(regex) {
-	      var match = ua.match(regex);
-	      return (match && match.length > 1 && match[1]) || '';
-	    }
-	
-	    function getSecondMatch(regex) {
-	      var match = ua.match(regex);
-	      return (match && match.length > 1 && match[2]) || '';
-	    }
-	
-	    var iosdevice = getFirstMatch(/(ipod|iphone|ipad)/i).toLowerCase()
-	      , likeAndroid = /like android/i.test(ua)
-	      , android = !likeAndroid && /android/i.test(ua)
-	      , nexusMobile = /nexus\s*[0-6]\s*/i.test(ua)
-	      , nexusTablet = !nexusMobile && /nexus\s*[0-9]+/i.test(ua)
-	      , chromeos = /CrOS/.test(ua)
-	      , silk = /silk/i.test(ua)
-	      , sailfish = /sailfish/i.test(ua)
-	      , tizen = /tizen/i.test(ua)
-	      , webos = /(web|hpw)os/i.test(ua)
-	      , windowsphone = /windows phone/i.test(ua)
-	      , samsungBrowser = /SamsungBrowser/i.test(ua)
-	      , windows = !windowsphone && /windows/i.test(ua)
-	      , mac = !iosdevice && !silk && /macintosh/i.test(ua)
-	      , linux = !android && !sailfish && !tizen && !webos && /linux/i.test(ua)
-	      , edgeVersion = getFirstMatch(/edge\/(\d+(\.\d+)?)/i)
-	      , versionIdentifier = getFirstMatch(/version\/(\d+(\.\d+)?)/i)
-	      , tablet = /tablet/i.test(ua)
-	      , mobile = !tablet && /[^-]mobi/i.test(ua)
-	      , xbox = /xbox/i.test(ua)
-	      , result
-	
-	    if (/opera/i.test(ua)) {
-	      //  an old Opera
-	      result = {
-	        name: 'Opera'
-	      , opera: t
-	      , version: versionIdentifier || getFirstMatch(/(?:opera|opr|opios)[\s\/](\d+(\.\d+)?)/i)
-	      }
-	    } else if (/opr|opios/i.test(ua)) {
-	      // a new Opera
-	      result = {
-	        name: 'Opera'
-	        , opera: t
-	        , version: getFirstMatch(/(?:opr|opios)[\s\/](\d+(\.\d+)?)/i) || versionIdentifier
-	      }
-	    }
-	    else if (/SamsungBrowser/i.test(ua)) {
-	      result = {
-	        name: 'Samsung Internet for Android'
-	        , samsungBrowser: t
-	        , version: versionIdentifier || getFirstMatch(/(?:SamsungBrowser)[\s\/](\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/coast/i.test(ua)) {
-	      result = {
-	        name: 'Opera Coast'
-	        , coast: t
-	        , version: versionIdentifier || getFirstMatch(/(?:coast)[\s\/](\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/yabrowser/i.test(ua)) {
-	      result = {
-	        name: 'Yandex Browser'
-	      , yandexbrowser: t
-	      , version: versionIdentifier || getFirstMatch(/(?:yabrowser)[\s\/](\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/ucbrowser/i.test(ua)) {
-	      result = {
-	          name: 'UC Browser'
-	        , ucbrowser: t
-	        , version: getFirstMatch(/(?:ucbrowser)[\s\/](\d+(?:\.\d+)+)/i)
-	      }
-	    }
-	    else if (/mxios/i.test(ua)) {
-	      result = {
-	        name: 'Maxthon'
-	        , maxthon: t
-	        , version: getFirstMatch(/(?:mxios)[\s\/](\d+(?:\.\d+)+)/i)
-	      }
-	    }
-	    else if (/epiphany/i.test(ua)) {
-	      result = {
-	        name: 'Epiphany'
-	        , epiphany: t
-	        , version: getFirstMatch(/(?:epiphany)[\s\/](\d+(?:\.\d+)+)/i)
-	      }
-	    }
-	    else if (/puffin/i.test(ua)) {
-	      result = {
-	        name: 'Puffin'
-	        , puffin: t
-	        , version: getFirstMatch(/(?:puffin)[\s\/](\d+(?:\.\d+)?)/i)
-	      }
-	    }
-	    else if (/sleipnir/i.test(ua)) {
-	      result = {
-	        name: 'Sleipnir'
-	        , sleipnir: t
-	        , version: getFirstMatch(/(?:sleipnir)[\s\/](\d+(?:\.\d+)+)/i)
-	      }
-	    }
-	    else if (/k-meleon/i.test(ua)) {
-	      result = {
-	        name: 'K-Meleon'
-	        , kMeleon: t
-	        , version: getFirstMatch(/(?:k-meleon)[\s\/](\d+(?:\.\d+)+)/i)
-	      }
-	    }
-	    else if (windowsphone) {
-	      result = {
-	        name: 'Windows Phone'
-	      , windowsphone: t
-	      }
-	      if (edgeVersion) {
-	        result.msedge = t
-	        result.version = edgeVersion
-	      }
-	      else {
-	        result.msie = t
-	        result.version = getFirstMatch(/iemobile\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/msie|trident/i.test(ua)) {
-	      result = {
-	        name: 'Internet Explorer'
-	      , msie: t
-	      , version: getFirstMatch(/(?:msie |rv:)(\d+(\.\d+)?)/i)
-	      }
-	    } else if (chromeos) {
-	      result = {
-	        name: 'Chrome'
-	      , chromeos: t
-	      , chromeBook: t
-	      , chrome: t
-	      , version: getFirstMatch(/(?:chrome|crios|crmo)\/(\d+(\.\d+)?)/i)
-	      }
-	    } else if (/chrome.+? edge/i.test(ua)) {
-	      result = {
-	        name: 'Microsoft Edge'
-	      , msedge: t
-	      , version: edgeVersion
-	      }
-	    }
-	    else if (/vivaldi/i.test(ua)) {
-	      result = {
-	        name: 'Vivaldi'
-	        , vivaldi: t
-	        , version: getFirstMatch(/vivaldi\/(\d+(\.\d+)?)/i) || versionIdentifier
-	      }
-	    }
-	    else if (sailfish) {
-	      result = {
-	        name: 'Sailfish'
-	      , sailfish: t
-	      , version: getFirstMatch(/sailfish\s?browser\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/seamonkey\//i.test(ua)) {
-	      result = {
-	        name: 'SeaMonkey'
-	      , seamonkey: t
-	      , version: getFirstMatch(/seamonkey\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/firefox|iceweasel|fxios/i.test(ua)) {
-	      result = {
-	        name: 'Firefox'
-	      , firefox: t
-	      , version: getFirstMatch(/(?:firefox|iceweasel|fxios)[ \/](\d+(\.\d+)?)/i)
-	      }
-	      if (/\((mobile|tablet);[^\)]*rv:[\d\.]+\)/i.test(ua)) {
-	        result.firefoxos = t
-	      }
-	    }
-	    else if (silk) {
-	      result =  {
-	        name: 'Amazon Silk'
-	      , silk: t
-	      , version : getFirstMatch(/silk\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/phantom/i.test(ua)) {
-	      result = {
-	        name: 'PhantomJS'
-	      , phantom: t
-	      , version: getFirstMatch(/phantomjs\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/slimerjs/i.test(ua)) {
-	      result = {
-	        name: 'SlimerJS'
-	        , slimer: t
-	        , version: getFirstMatch(/slimerjs\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/blackberry|\bbb\d+/i.test(ua) || /rim\stablet/i.test(ua)) {
-	      result = {
-	        name: 'BlackBerry'
-	      , blackberry: t
-	      , version: versionIdentifier || getFirstMatch(/blackberry[\d]+\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (webos) {
-	      result = {
-	        name: 'WebOS'
-	      , webos: t
-	      , version: versionIdentifier || getFirstMatch(/w(?:eb)?osbrowser\/(\d+(\.\d+)?)/i)
-	      };
-	      /touchpad\//i.test(ua) && (result.touchpad = t)
-	    }
-	    else if (/bada/i.test(ua)) {
-	      result = {
-	        name: 'Bada'
-	      , bada: t
-	      , version: getFirstMatch(/dolfin\/(\d+(\.\d+)?)/i)
-	      };
-	    }
-	    else if (tizen) {
-	      result = {
-	        name: 'Tizen'
-	      , tizen: t
-	      , version: getFirstMatch(/(?:tizen\s?)?browser\/(\d+(\.\d+)?)/i) || versionIdentifier
-	      };
-	    }
-	    else if (/qupzilla/i.test(ua)) {
-	      result = {
-	        name: 'QupZilla'
-	        , qupzilla: t
-	        , version: getFirstMatch(/(?:qupzilla)[\s\/](\d+(?:\.\d+)+)/i) || versionIdentifier
-	      }
-	    }
-	    else if (/chromium/i.test(ua)) {
-	      result = {
-	        name: 'Chromium'
-	        , chromium: t
-	        , version: getFirstMatch(/(?:chromium)[\s\/](\d+(?:\.\d+)?)/i) || versionIdentifier
-	      }
-	    }
-	    else if (/chrome|crios|crmo/i.test(ua)) {
-	      result = {
-	        name: 'Chrome'
-	        , chrome: t
-	        , version: getFirstMatch(/(?:chrome|crios|crmo)\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (android) {
-	      result = {
-	        name: 'Android'
-	        , version: versionIdentifier
-	      }
-	    }
-	    else if (/safari|applewebkit/i.test(ua)) {
-	      result = {
-	        name: 'Safari'
-	      , safari: t
-	      }
-	      if (versionIdentifier) {
-	        result.version = versionIdentifier
-	      }
-	    }
-	    else if (iosdevice) {
-	      result = {
-	        name : iosdevice == 'iphone' ? 'iPhone' : iosdevice == 'ipad' ? 'iPad' : 'iPod'
-	      }
-	      // WTF: version is not part of user agent in web apps
-	      if (versionIdentifier) {
-	        result.version = versionIdentifier
-	      }
-	    }
-	    else if(/googlebot/i.test(ua)) {
-	      result = {
-	        name: 'Googlebot'
-	      , googlebot: t
-	      , version: getFirstMatch(/googlebot\/(\d+(\.\d+))/i) || versionIdentifier
-	      }
-	    }
-	    else {
-	      result = {
-	        name: getFirstMatch(/^(.*)\/(.*) /),
-	        version: getSecondMatch(/^(.*)\/(.*) /)
-	     };
-	   }
-	
-	    // set webkit or gecko flag for browsers based on these engines
-	    if (!result.msedge && /(apple)?webkit/i.test(ua)) {
-	      if (/(apple)?webkit\/537\.36/i.test(ua)) {
-	        result.name = result.name || "Blink"
-	        result.blink = t
-	      } else {
-	        result.name = result.name || "Webkit"
-	        result.webkit = t
-	      }
-	      if (!result.version && versionIdentifier) {
-	        result.version = versionIdentifier
-	      }
-	    } else if (!result.opera && /gecko\//i.test(ua)) {
-	      result.name = result.name || "Gecko"
-	      result.gecko = t
-	      result.version = result.version || getFirstMatch(/gecko\/(\d+(\.\d+)?)/i)
-	    }
-	
-	    // set OS flags for platforms that have multiple browsers
-	    if (!result.windowsphone && !result.msedge && (android || result.silk)) {
-	      result.android = t
-	    } else if (!result.windowsphone && !result.msedge && iosdevice) {
-	      result[iosdevice] = t
-	      result.ios = t
-	    } else if (mac) {
-	      result.mac = t
-	    } else if (xbox) {
-	      result.xbox = t
-	    } else if (windows) {
-	      result.windows = t
-	    } else if (linux) {
-	      result.linux = t
-	    }
-	
-	    // OS version extraction
-	    var osVersion = '';
-	    if (result.windowsphone) {
-	      osVersion = getFirstMatch(/windows phone (?:os)?\s?(\d+(\.\d+)*)/i);
-	    } else if (iosdevice) {
-	      osVersion = getFirstMatch(/os (\d+([_\s]\d+)*) like mac os x/i);
-	      osVersion = osVersion.replace(/[_\s]/g, '.');
-	    } else if (android) {
-	      osVersion = getFirstMatch(/android[ \/-](\d+(\.\d+)*)/i);
-	    } else if (result.webos) {
-	      osVersion = getFirstMatch(/(?:web|hpw)os\/(\d+(\.\d+)*)/i);
-	    } else if (result.blackberry) {
-	      osVersion = getFirstMatch(/rim\stablet\sos\s(\d+(\.\d+)*)/i);
-	    } else if (result.bada) {
-	      osVersion = getFirstMatch(/bada\/(\d+(\.\d+)*)/i);
-	    } else if (result.tizen) {
-	      osVersion = getFirstMatch(/tizen[\/\s](\d+(\.\d+)*)/i);
-	    }
-	    if (osVersion) {
-	      result.osversion = osVersion;
-	    }
-	
-	    // device type extraction
-	    var osMajorVersion = osVersion.split('.')[0];
-	    if (
-	         tablet
-	      || nexusTablet
-	      || iosdevice == 'ipad'
-	      || (android && (osMajorVersion == 3 || (osMajorVersion >= 4 && !mobile)))
-	      || result.silk
-	    ) {
-	      result.tablet = t
-	    } else if (
-	         mobile
-	      || iosdevice == 'iphone'
-	      || iosdevice == 'ipod'
-	      || android
-	      || nexusMobile
-	      || result.blackberry
-	      || result.webos
-	      || result.bada
-	    ) {
-	      result.mobile = t
-	    }
-	
-	    // Graded Browser Support
-	    // http://developer.yahoo.com/yui/articles/gbs
-	    if (result.msedge ||
-	        (result.msie && result.version >= 10) ||
-	        (result.yandexbrowser && result.version >= 15) ||
-			    (result.vivaldi && result.version >= 1.0) ||
-	        (result.chrome && result.version >= 20) ||
-	        (result.samsungBrowser && result.version >= 4) ||
-	        (result.firefox && result.version >= 20.0) ||
-	        (result.safari && result.version >= 6) ||
-	        (result.opera && result.version >= 10.0) ||
-	        (result.ios && result.osversion && result.osversion.split(".")[0] >= 6) ||
-	        (result.blackberry && result.version >= 10.1)
-	        || (result.chromium && result.version >= 20)
-	        ) {
-	      result.a = t;
-	    }
-	    else if ((result.msie && result.version < 10) ||
-	        (result.chrome && result.version < 20) ||
-	        (result.firefox && result.version < 20.0) ||
-	        (result.safari && result.version < 6) ||
-	        (result.opera && result.version < 10.0) ||
-	        (result.ios && result.osversion && result.osversion.split(".")[0] < 6)
-	        || (result.chromium && result.version < 20)
-	        ) {
-	      result.c = t
-	    } else result.x = t
-	
-	    return result
-	  }
-	
-	  var bowser = detect(typeof navigator !== 'undefined' ? navigator.userAgent || '' : '')
-	
-	  bowser.test = function (browserList) {
-	    for (var i = 0; i < browserList.length; ++i) {
-	      var browserItem = browserList[i];
-	      if (typeof browserItem=== 'string') {
-	        if (browserItem in bowser) {
-	          return true;
-	        }
-	      }
-	    }
-	    return false;
-	  }
-	
-	  /**
-	   * Get version precisions count
-	   *
-	   * @example
-	   *   getVersionPrecision("1.10.3") // 3
-	   *
-	   * @param  {string} version
-	   * @return {number}
-	   */
-	  function getVersionPrecision(version) {
-	    return version.split(".").length;
-	  }
-	
-	  /**
-	   * Array::map polyfill
-	   *
-	   * @param  {Array} arr
-	   * @param  {Function} iterator
-	   * @return {Array}
-	   */
-	  function map(arr, iterator) {
-	    var result = [], i;
-	    if (Array.prototype.map) {
-	      return Array.prototype.map.call(arr, iterator);
-	    }
-	    for (i = 0; i < arr.length; i++) {
-	      result.push(iterator(arr[i]));
-	    }
-	    return result;
-	  }
-	
-	  /**
-	   * Calculate browser version weight
-	   *
-	   * @example
-	   *   compareVersions(['1.10.2.1',  '1.8.2.1.90'])    // 1
-	   *   compareVersions(['1.010.2.1', '1.09.2.1.90']);  // 1
-	   *   compareVersions(['1.10.2.1',  '1.10.2.1']);     // 0
-	   *   compareVersions(['1.10.2.1',  '1.0800.2']);     // -1
-	   *
-	   * @param  {Array<String>} versions versions to compare
-	   * @return {Number} comparison result
-	   */
-	  function compareVersions(versions) {
-	    // 1) get common precision for both versions, for example for "10.0" and "9" it should be 2
-	    var precision = Math.max(getVersionPrecision(versions[0]), getVersionPrecision(versions[1]));
-	    var chunks = map(versions, function (version) {
-	      var delta = precision - getVersionPrecision(version);
-	
-	      // 2) "9" -> "9.0" (for precision = 2)
-	      version = version + new Array(delta + 1).join(".0");
-	
-	      // 3) "9.0" -> ["000000000"", "000000009"]
-	      return map(version.split("."), function (chunk) {
-	        return new Array(20 - chunk.length).join("0") + chunk;
-	      }).reverse();
-	    });
-	
-	    // iterate in reverse order by reversed chunks array
-	    while (--precision >= 0) {
-	      // 4) compare: "000000009" > "000000010" = false (but "9" > "10" = true)
-	      if (chunks[0][precision] > chunks[1][precision]) {
-	        return 1;
-	      }
-	      else if (chunks[0][precision] === chunks[1][precision]) {
-	        if (precision === 0) {
-	          // all version chunks are same
-	          return 0;
-	        }
-	      }
-	      else {
-	        return -1;
-	      }
-	    }
-	  }
-	
-	  /**
-	   * Check if browser is unsupported
-	   *
-	   * @example
-	   *   bowser.isUnsupportedBrowser({
-	   *     msie: "10",
-	   *     firefox: "23",
-	   *     chrome: "29",
-	   *     safari: "5.1",
-	   *     opera: "16",
-	   *     phantom: "534"
-	   *   });
-	   *
-	   * @param  {Object}  minVersions map of minimal version to browser
-	   * @param  {Boolean} [strictMode = false] flag to return false if browser wasn't found in map
-	   * @param  {String}  [ua] user agent string
-	   * @return {Boolean}
-	   */
-	  function isUnsupportedBrowser(minVersions, strictMode, ua) {
-	    var _bowser = bowser;
-	
-	    // make strictMode param optional with ua param usage
-	    if (typeof strictMode === 'string') {
-	      ua = strictMode;
-	      strictMode = void(0);
-	    }
-	
-	    if (strictMode === void(0)) {
-	      strictMode = false;
-	    }
-	    if (ua) {
-	      _bowser = detect(ua);
-	    }
-	
-	    var version = "" + _bowser.version;
-	    for (var browser in minVersions) {
-	      if (minVersions.hasOwnProperty(browser)) {
-	        if (_bowser[browser]) {
-	          if (typeof minVersions[browser] !== 'string') {
-	            throw new Error('Browser version in the minVersion map should be a string: ' + browser + ': ' + String(minVersions));
-	          }
-	
-	          // browser version and min supported version.
-	          return compareVersions([version, minVersions[browser]]) < 0;
-	        }
-	      }
-	    }
-	
-	    return strictMode; // not found
-	  }
-	
-	  /**
-	   * Check if browser is supported
-	   *
-	   * @param  {Object} minVersions map of minimal version to browser
-	   * @param  {Boolean} [strictMode = false] flag to return false if browser wasn't found in map
-	   * @param  {String}  [ua] user agent string
-	   * @return {Boolean}
-	   */
-	  function check(minVersions, strictMode, ua) {
-	    return !isUnsupportedBrowser(minVersions, strictMode, ua);
-	  }
-	
-	  bowser.isUnsupportedBrowser = isUnsupportedBrowser;
-	  bowser.compareVersions = compareVersions;
-	  bowser.check = check;
-	
-	  /*
-	   * Set our detect method to the main bowser object so we can
-	   * reuse it to test other user agents.
-	   * This is needed to implement future tests.
-	   */
-	  bowser._detect = detect;
-	
-	  return bowser
-	});
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports) {
-
-	module.exports = function() { throw new Error("define cannot be used indirect"); };
-
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -12495,9 +11749,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 28 */
-/***/ (function(module, exports) {
+/***/ },
+/* 26 */
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -12593,9 +11847,9 @@
 	    };
 	}();
 
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! http://mths.be/base64 v0.1.0 by @mathias | MIT license */
 	;(function(root) {
@@ -12761,11 +12015,11 @@
 	
 	}(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)(module), (function() { return this; }())))
 
-/***/ }),
-/* 30 */
-/***/ (function(module, exports) {
+/***/ },
+/* 28 */
+/***/ function(module, exports) {
 
 	module.exports = function(module) {
 		if(!module.webpackPolyfill) {
@@ -12779,9 +12033,9 @@
 	}
 
 
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -12797,7 +12051,7 @@
 	    var d3Time = __webpack_require__(18);
 	    var d3TimeFormat = __webpack_require__(19);
 	
-	    var _require = __webpack_require__(27),
+	    var _require = __webpack_require__(25),
 	        axisTimeCombinations = _require.axisTimeCombinations,
 	        timeBenchmarks = _require.timeBenchmarks;
 	
@@ -12898,9 +12152,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -12922,9 +12176,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -12987,9 +12241,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -13001,14 +12255,14 @@
 	    var d3Transition = __webpack_require__(22);
 	    var d3TimeFormat = __webpack_require__(19);
 	
-	    var _require = __webpack_require__(27),
+	    var _require = __webpack_require__(25),
 	        axisTimeCombinations = _require.axisTimeCombinations;
 	
-	    var _require2 = __webpack_require__(33),
+	    var _require2 = __webpack_require__(31),
 	        formatIntegerValue = _require2.formatIntegerValue,
 	        formatDecimalValue = _require2.formatDecimalValue;
 	
-	    var _require3 = __webpack_require__(32),
+	    var _require3 = __webpack_require__(30),
 	        isInteger = _require3.isInteger;
 	
 	    /**
@@ -13517,9 +12771,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -13527,11 +12781,11 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonThreeSources = __webpack_require__(36),
-	        jsonSixSources = __webpack_require__(37),
-	        jsonSalesChannel = __webpack_require__(38),
-	        jsonReportService = __webpack_require__(39),
-	        jsonLargeService = __webpack_require__(40);
+	        jsonThreeSources = __webpack_require__(34),
+	        jsonSixSources = __webpack_require__(35),
+	        jsonSalesChannel = __webpack_require__(36),
+	        jsonReportService = __webpack_require__(37),
+	        jsonLargeService = __webpack_require__(38);
 	
 	    function StackedAreaDataBuilder(config) {
 	        this.Klass = StackedAreaDataBuilder;
@@ -13577,9 +12831,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 36 */
-/***/ (function(module, exports) {
+/***/ },
+/* 34 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"data": [
@@ -13646,9 +12900,9 @@
 		]
 	};
 
-/***/ }),
-/* 37 */
-/***/ (function(module, exports) {
+/***/ },
+/* 35 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"data": [
@@ -13775,278 +13029,318 @@
 		]
 	};
 
-/***/ }),
-/* 38 */
-/***/ (function(module, exports) {
+/***/ },
+/* 36 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"data": [
 			{
-				"date": "2017-02-16T03:00:00Z",
+				"date": "2017-02-16T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 5
 			},
 			{
-				"date": "2017-02-16T03:00:00Z",
+				"date": "2017-02-16T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 0
 			},
 			{
-				"date": "2017-02-17T03:00:00Z",
+				"date": "2017-02-17T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 1
 			},
 			{
-				"date": "2017-02-17T03:00:00Z",
+				"date": "2017-02-17T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 13
 			},
 			{
-				"date": "2017-02-18T03:00:00Z",
+				"date": "2017-02-18T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 15
 			},
 			{
-				"date": "2017-02-18T03:00:00Z",
+				"date": "2017-02-18T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 1
 			},
 			{
-				"date": "2017-02-19T03:00:00Z",
+				"date": "2017-02-19T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 15
 			},
 			{
-				"date": "2017-02-19T03:00:00Z",
+				"date": "2017-02-19T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 1
 			},
 			{
-				"date": "2017-02-21T03:00:00Z",
+				"date": "2017-02-20T00:00:00-08:00",
+				"name": "Organizer Driven",
+				"value": 15
+			},
+			{
+				"date": "2017-02-20T00:00:00-08:00",
+				"name": "EB Driven",
+				"value": 1
+			},
+			{
+				"date": "2017-02-21T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 18
 			},
 			{
-				"date": "2017-02-21T03:00:00Z",
+				"date": "2017-02-21T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 1
 			},
 			{
-				"date": "2017-02-22T03:00:00Z",
+				"date": "2017-02-22T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 19
 			},
 			{
-				"date": "2017-02-22T03:00:00Z",
+				"date": "2017-02-22T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 1
 			},
 			{
-				"date": "2017-02-23T03:00:00Z",
+				"date": "2017-02-23T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 2
 			},
 			{
-				"date": "2017-02-23T03:00:00Z",
+				"date": "2017-02-23T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 22
 			},
 			{
-				"date": "2017-02-24T03:00:00Z",
+				"date": "2017-02-24T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 25
 			},
 			{
-				"date": "2017-02-24T03:00:00Z",
+				"date": "2017-02-24T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 2
 			},
 			{
-				"date": "2017-02-25T03:00:00Z",
+				"date": "2017-02-25T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 28
 			},
 			{
-				"date": "2017-02-25T03:00:00Z",
+				"date": "2017-02-25T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 2
 			},
 			{
-				"date": "2017-02-26T03:00:00Z",
+				"date": "2017-02-26T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 30
 			},
 			{
-				"date": "2017-02-26T03:00:00Z",
+				"date": "2017-02-26T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 2
 			},
 			{
-				"date": "2017-02-28T03:00:00Z",
+				"date": "2017-02-27T00:00:00-08:00",
+				"name": "Organizer Driven",
+				"value": 30
+			},
+			{
+				"date": "2017-02-27T00:00:00-08:00",
+				"name": "EB Driven",
+				"value": 2
+			},
+			{
+				"date": "2017-02-28T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 31
 			},
 			{
-				"date": "2017-02-28T03:00:00Z",
+				"date": "2017-02-28T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 2
 			},
 			{
-				"date": "2017-03-02T03:00:00Z",
+				"date": "2017-03-01T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 33
 			},
 			{
-				"date": "2017-03-02T03:00:00Z",
+				"date": "2017-03-01T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 2
 			},
 			{
-				"date": "2017-03-03T03:00:00Z",
+				"date": "2017-03-02T00:00:00-08:00",
+				"name": "Organizer Driven",
+				"value": 33
+			},
+			{
+				"date": "2017-03-02T00:00:00-08:00",
+				"name": "EB Driven",
+				"value": 2
+			},
+			{
+				"date": "2017-03-03T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 4
 			},
 			{
-				"date": "2017-03-03T03:00:00Z",
+				"date": "2017-03-03T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 34
 			},
 			{
-				"date": "2017-03-05T03:00:00Z",
-				"name": "Organizer Driven",
-				"value": 37
-			},
-			{
-				"date": "2017-03-05T03:00:00Z",
+				"date": "2017-03-04T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 4
 			},
 			{
-				"date": "2017-03-06T03:00:00Z",
+				"date": "2017-03-04T00:00:00-08:00",
+				"name": "Organizer Driven",
+				"value": 34
+			},
+			{
+				"date": "2017-03-05T00:00:00-08:00",
+				"name": "Organizer Driven",
+				"value": 37
+			},
+			{
+				"date": "2017-03-05T00:00:00-08:00",
+				"name": "EB Driven",
+				"value": 4
+			},
+			{
+				"date": "2017-03-06T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 5
 			},
 			{
-				"date": "2017-03-06T03:00:00Z",
+				"date": "2017-03-06T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 41
 			},
 			{
-				"date": "2017-03-07T03:00:00Z",
+				"date": "2017-03-07T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 69
 			},
 			{
-				"date": "2017-03-07T03:00:00Z",
+				"date": "2017-03-07T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 5
 			},
 			{
-				"date": "2017-03-08T03:00:00Z",
+				"date": "2017-03-08T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 77
 			},
 			{
-				"date": "2017-03-08T03:00:00Z",
+				"date": "2017-03-08T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 5
 			},
 			{
-				"date": "2017-03-09T03:00:00Z",
+				"date": "2017-03-09T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-09T03:00:00Z",
+				"date": "2017-03-09T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 79
 			},
 			{
-				"date": "2017-03-10T03:00:00Z",
+				"date": "2017-03-10T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-10T03:00:00Z",
+				"date": "2017-03-10T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-11T03:00:00Z",
+				"date": "2017-03-11T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-11T03:00:00Z",
+				"date": "2017-03-11T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-12T03:00:00Z",
+				"date": "2017-03-12T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-12T03:00:00Z",
+				"date": "2017-03-12T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-13T03:00:00Z",
+				"date": "2017-03-13T00:00:00-07:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-13T03:00:00Z",
+				"date": "2017-03-13T00:00:00-07:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-14T03:00:00Z",
+				"date": "2017-03-14T00:00:00-07:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-14T03:00:00Z",
+				"date": "2017-03-14T00:00:00-07:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-15T03:00:00Z",
+				"date": "2017-03-15T00:00:00-07:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-15T03:00:00Z",
+				"date": "2017-03-15T00:00:00-07:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-16T03:00:00Z",
+				"date": "2017-03-16T00:00:00-07:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-16T03:00:00Z",
+				"date": "2017-03-16T00:00:00-07:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-17T03:00:00Z",
+				"date": "2017-03-17T00:00:00-07:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-17T03:00:00Z",
+				"date": "2017-03-17T00:00:00-07:00",
 				"name": "EB Driven",
 				"value": 8
 			}
 		]
 	};
 
-/***/ }),
-/* 39 */
-/***/ (function(module, exports) {
+/***/ },
+/* 37 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"data": [
@@ -14125,9 +13419,9 @@
 		]
 	};
 
-/***/ }),
-/* 40 */
-/***/ (function(module, exports) {
+/***/ },
+/* 38 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"data": [
@@ -17134,9 +16428,9 @@
 		]
 	};
 
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -17196,18 +16490,18 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 40 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    bar = __webpack_require__(43),
-	    miniTooltip = __webpack_require__(45),
+	    bar = __webpack_require__(41),
+	    miniTooltip = __webpack_require__(43),
 	    colors = __webpack_require__(7),
-	    dataBuilder = __webpack_require__(46);
+	    dataBuilder = __webpack_require__(44);
 	
 	function createBarChart() {
 	    var barChart = bar(),
@@ -17294,9 +16588,9 @@
 	    PubSub.subscribe('resize', redrawCharts);
 	}
 
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -17312,7 +16606,7 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
-	    var textHelper = __webpack_require__(44);
+	    var textHelper = __webpack_require__(42);
 	
 	    var _require = __webpack_require__(24),
 	        exportChart = _require.exportChart;
@@ -17942,9 +17236,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -18081,9 +17375,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -18468,9 +17762,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -18478,8 +17772,8 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonColors = __webpack_require__(47),
-	        jsonLetters = __webpack_require__(48);
+	        jsonColors = __webpack_require__(45),
+	        jsonLetters = __webpack_require__(46);
 	
 	    function BarDataBuilder(config) {
 	        this.Klass = BarDataBuilder;
@@ -18521,9 +17815,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 47 */
-/***/ (function(module, exports) {
+/***/ },
+/* 45 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"data": [
@@ -18554,9 +17848,9 @@
 		]
 	};
 
-/***/ }),
-/* 48 */
-/***/ (function(module, exports) {
+/***/ },
+/* 46 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"data": [
@@ -18667,18 +17961,18 @@
 		]
 	};
 
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    donut = __webpack_require__(50),
-	    legend = __webpack_require__(51),
-	    dataBuilder = __webpack_require__(52),
-	    colorSelectorHelper = __webpack_require__(41),
+	    donut = __webpack_require__(48),
+	    legend = __webpack_require__(49),
+	    dataBuilder = __webpack_require__(50),
+	    colorSelectorHelper = __webpack_require__(39),
 	    dataset = new dataBuilder.DonutDataBuilder().withFivePlusOther().build(),
 	    legendChart;
 	
@@ -18788,9 +18082,9 @@
 	    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.donut-chart', createDonutChart.bind(null, dataset));
 	}
 
-/***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -18808,7 +18102,7 @@
 	    var _require = __webpack_require__(24),
 	        exportChart = _require.exportChart;
 	
-	    var textHelper = __webpack_require__(44);
+	    var textHelper = __webpack_require__(42);
 	    var colorHelper = __webpack_require__(7);
 	
 	    /**
@@ -19252,9 +18546,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 51 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -19266,7 +18560,7 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
-	    var textHelper = __webpack_require__(44);
+	    var textHelper = __webpack_require__(42);
 	    var colorHelper = __webpack_require__(7);
 	
 	    /**
@@ -19671,9 +18965,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -19681,8 +18975,8 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonFivePlusOther = __webpack_require__(53),
-	        jsonThreeCategories = __webpack_require__(54);
+	        jsonFivePlusOther = __webpack_require__(51),
+	        jsonThreeCategories = __webpack_require__(52);
 	
 	    function DonutDataBuilder(config) {
 	        this.Klass = DonutDataBuilder;
@@ -19724,9 +19018,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 53 */
-/***/ (function(module, exports) {
+/***/ },
+/* 51 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"data": [
@@ -19769,9 +19063,9 @@
 		]
 	};
 
-/***/ }),
-/* 54 */
-/***/ (function(module, exports) {
+/***/ },
+/* 52 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"data": [
@@ -19796,9 +19090,9 @@
 		]
 	};
 
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -19806,11 +19100,11 @@
 	    d3Selection = __webpack_require__(4),
 	    d3TimeFormat = __webpack_require__(19),
 	    PubSub = __webpack_require__(5),
-	    brush = __webpack_require__(56),
-	    line = __webpack_require__(59),
-	    tooltip = __webpack_require__(34),
-	    dataBuilder = __webpack_require__(60),
-	    colorSelectorHelper = __webpack_require__(41);
+	    brush = __webpack_require__(54),
+	    line = __webpack_require__(57),
+	    tooltip = __webpack_require__(32),
+	    dataBuilder = __webpack_require__(58),
+	    colorSelectorHelper = __webpack_require__(39);
 	
 	function createBrushChart(optionalColorSchema) {
 	    var brushChart = brush(),
@@ -20029,9 +19323,9 @@
 	    });
 	}
 
-/***/ }),
-/* 56 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -20042,7 +19336,7 @@
 	
 	    var d3Array = __webpack_require__(9);
 	    var d3Axis = __webpack_require__(10);
-	    var d3Brush = __webpack_require__(57);
+	    var d3Brush = __webpack_require__(55);
 	    var d3Ease = __webpack_require__(13);
 	    var d3Scale = __webpack_require__(14);
 	    var d3Shape = __webpack_require__(20);
@@ -20052,9 +19346,9 @@
 	    var d3TimeFormat = __webpack_require__(19);
 	
 	    var colorHelper = __webpack_require__(7);
-	    var timeAxisHelper = __webpack_require__(31);
+	    var timeAxisHelper = __webpack_require__(29);
 	
-	    var _require = __webpack_require__(27),
+	    var _require = __webpack_require__(25),
 	        axisTimeCombinations = _require.axisTimeCombinations;
 	
 	    /**
@@ -20555,28 +19849,28 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 57 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-brush/ Version 1.0.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-brush/ Version 1.0.3. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(12), __webpack_require__(58), __webpack_require__(15), __webpack_require__(4), __webpack_require__(22)) :
-		typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-selection', 'd3-transition'], factory) :
-		(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3));
+	   true ? factory(exports, __webpack_require__(12), __webpack_require__(56), __webpack_require__(15), __webpack_require__(4), __webpack_require__(22)) :
+	  typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-selection', 'd3-transition'], factory) :
+	  (factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3));
 	}(this, (function (exports,d3Dispatch,d3Drag,d3Interpolate,d3Selection,d3Transition) { 'use strict';
 	
 	var constant = function(x) {
 	  return function() {
 	    return x;
 	  };
-	};
+	}
 	
 	var BrushEvent = function(target, type, selection) {
 	  this.target = target;
 	  this.type = type;
 	  this.selection = selection;
-	};
+	}
 	
 	function nopropagation() {
 	  d3Selection.event.stopImmediatePropagation();
@@ -20585,7 +19879,7 @@
 	var noevent = function() {
 	  d3Selection.event.preventDefault();
 	  d3Selection.event.stopImmediatePropagation();
-	};
+	}
 	
 	var MODE_DRAG = {name: "drag"};
 	var MODE_SPACE = {name: "space"};
@@ -20710,7 +20004,7 @@
 	
 	var brush = function() {
 	  return brush$1(XY);
-	};
+	}
 	
 	function brush$1(dim) {
 	  var extent = defaultExtent,
@@ -21128,15 +20422,15 @@
 	})));
 
 
-/***/ }),
-/* 58 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-drag/ Version 1.0.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-drag/ Version 1.0.2. Copyright 2016 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(12), __webpack_require__(4)) :
-		typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-selection'], factory) :
-		(factory((global.d3 = global.d3 || {}),global.d3,global.d3));
+	   true ? factory(exports, __webpack_require__(12), __webpack_require__(4)) :
+	  typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-selection'], factory) :
+	  (factory((global.d3 = global.d3 || {}),global.d3,global.d3));
 	}(this, (function (exports,d3Dispatch,d3Selection) { 'use strict';
 	
 	function nopropagation() {
@@ -21345,9 +20639,9 @@
 	})));
 
 
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -21369,16 +20663,16 @@
 	        exportChart = _require.exportChart;
 	
 	    var colorHelper = __webpack_require__(7);
-	    var timeAxisHelper = __webpack_require__(31);
+	    var timeAxisHelper = __webpack_require__(29);
 	
-	    var _require2 = __webpack_require__(32),
+	    var _require2 = __webpack_require__(30),
 	        isInteger = _require2.isInteger;
 	
-	    var _require3 = __webpack_require__(27),
+	    var _require3 = __webpack_require__(25),
 	        axisTimeCombinations = _require3.axisTimeCombinations,
 	        lineGradientId = _require3.lineGradientId;
 	
-	    var _require4 = __webpack_require__(33),
+	    var _require4 = __webpack_require__(31),
 	        formatIntegerValue = _require4.formatIntegerValue,
 	        formatDecimalValue = _require4.formatDecimalValue;
 	
@@ -22294,9 +21588,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -22304,12 +21598,12 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonAllDatas = __webpack_require__(61),
-	        jsonFiveTopics = __webpack_require__(62),
-	        jsonOneSource = __webpack_require__(63),
-	        jsonMultiMonthValueRange = __webpack_require__(64),
-	        jsonHourDateRange = __webpack_require__(65),
-	        jsonSmallValueRange = __webpack_require__(66);
+	        jsonAllDatas = __webpack_require__(59),
+	        jsonFiveTopics = __webpack_require__(60),
+	        jsonOneSource = __webpack_require__(61),
+	        jsonMultiMonthValueRange = __webpack_require__(62),
+	        jsonHourDateRange = __webpack_require__(63),
+	        jsonSmallValueRange = __webpack_require__(64);
 	
 	    function LineDataBuilder(config) {
 	        this.Klass = LineDataBuilder;
@@ -22375,9 +21669,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 61 */
-/***/ (function(module, exports) {
+/***/ },
+/* 59 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"data": [
@@ -22782,9 +22076,9 @@
 		]
 	};
 
-/***/ }),
-/* 62 */
-/***/ (function(module, exports) {
+/***/ },
+/* 60 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"dataByTopic": [
@@ -24858,9 +24152,9 @@
 		]
 	};
 
-/***/ }),
-/* 63 */
-/***/ (function(module, exports) {
+/***/ },
+/* 61 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"dataByTopic": [
@@ -25008,9 +24302,9 @@
 		]
 	};
 
-/***/ }),
-/* 64 */
-/***/ (function(module, exports) {
+/***/ },
+/* 62 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"dataByTopic": [
@@ -36005,9 +35299,9 @@
 		]
 	};
 
-/***/ }),
-/* 65 */
-/***/ (function(module, exports) {
+/***/ },
+/* 63 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"dataByTopic": [
@@ -36382,9 +35676,9 @@
 		]
 	};
 
-/***/ }),
-/* 66 */
-/***/ (function(module, exports) {
+/***/ },
+/* 64 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"dataByTopic": [
@@ -36489,16 +35783,16 @@
 		]
 	};
 
-/***/ }),
-/* 67 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    sparklineChart = __webpack_require__(68),
-	    sparklineDataBuilder = __webpack_require__(69);
+	    sparklineChart = __webpack_require__(66),
+	    sparklineDataBuilder = __webpack_require__(67);
 	
 	function createSparklineChart() {
 	    var sparkline = sparklineChart(),
@@ -36533,9 +35827,9 @@
 	    PubSub.subscribe('resize', redrawCharts);
 	}
 
-/***/ }),
-/* 68 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -36930,9 +36224,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 69 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -36940,7 +36234,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonOneSource = __webpack_require__(70);
+	        jsonOneSource = __webpack_require__(68);
 	
 	    function SparklineDataBuilder(config) {
 	        this.Klass = SparklineDataBuilder;
@@ -36963,9 +36257,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 70 */
-/***/ (function(module, exports) {
+/***/ },
+/* 68 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"data": [
@@ -37012,17 +36306,17 @@
 		]
 	};
 
-/***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    step = __webpack_require__(72),
-	    miniTooltip = __webpack_require__(45),
-	    dataBuilder = __webpack_require__(73);
+	    step = __webpack_require__(70),
+	    miniTooltip = __webpack_require__(43),
+	    dataBuilder = __webpack_require__(71);
 	
 	function createStepChart() {
 	    var stepChart = step(),
@@ -37072,9 +36366,9 @@
 	    PubSub.subscribe('resize', redrawCharts);
 	}
 
-/***/ }),
-/* 72 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -37484,9 +36778,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -37494,7 +36788,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonStepDataSmall = __webpack_require__(74);
+	        jsonStepDataSmall = __webpack_require__(72);
 	
 	    function StepDataBuilder(config) {
 	        this.Klass = StepDataBuilder;
@@ -37517,9 +36811,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 74 */
-/***/ (function(module, exports) {
+/***/ },
+/* 72 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"data": [
@@ -37554,17 +36848,17 @@
 		]
 	};
 
-/***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 73 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    d3TimeFormat = __webpack_require__(19),
 	    PubSub = __webpack_require__(5),
-	    brush = __webpack_require__(56),
-	    dataBuilder = __webpack_require__(76);
+	    brush = __webpack_require__(54),
+	    dataBuilder = __webpack_require__(74);
 	
 	function createBrushChart() {
 	    var brushChart = brush(),
@@ -37605,9 +36899,9 @@
 	    PubSub.subscribe('resize', redrawCharts);
 	}
 
-/***/ }),
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ },
+/* 74 */
+/***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
@@ -37615,7 +36909,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonSimpleData = __webpack_require__(77);
+	        jsonSimpleData = __webpack_require__(75);
 	
 	    function BrushDataBuilder(config) {
 	        this.Klass = BrushDataBuilder;
@@ -37651,9 +36945,9 @@
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
-/***/ }),
-/* 77 */
-/***/ (function(module, exports) {
+/***/ },
+/* 75 */
+/***/ function(module, exports) {
 
 	module.exports = {
 		"data": [
@@ -37808,6 +37102,6 @@
 		]
 	};
 
-/***/ })
+/***/ }
 /******/ ]);
 //# sourceMappingURL=bundle.js.map
