@@ -33,6 +33,7 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
         stackedArea
             .tooltipThreshold(600)
             .width(containerWidth)
+            .height(300)
             .grid('horizontal')
             // .dateLabel('dateUTC')
             // .valueLabel('views')

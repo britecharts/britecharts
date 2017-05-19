@@ -32,6 +32,14 @@
         "name": "EB Driven",
         "value": 1
     }, {
+        "date": "2017-02-20T03:00:00Z",
+        "name": "Organizer Driven",
+        "value": 15
+    }, {
+        "date": "2017-02-20T03:00:00Z",
+        "name": "EB Driven",
+        "value": 1
+    }, {
         "date": "2017-02-21T03:00:00Z",
         "name": "Organizer Driven",
         "value": 18
@@ -80,11 +88,27 @@
         "name": "EB Driven",
         "value": 2
     }, {
+        "date": "2017-02-27T03:00:00Z",
+        "name": "Organizer Driven",
+        "value": 30
+    }, {
+        "date": "2017-02-27T03:00:00Z",
+        "name": "EB Driven",
+        "value": 2
+    }, {
         "date": "2017-02-28T03:00:00Z",
         "name": "Organizer Driven",
         "value": 31
     }, {
         "date": "2017-02-28T03:00:00Z",
+        "name": "EB Driven",
+        "value": 2
+    }, {
+        "date": "2017-03-01T03:00:00Z",
+        "name": "Organizer Driven",
+        "value": 33
+    }, {
+        "date": "2017-03-01T03:00:00Z",
         "name": "EB Driven",
         "value": 2
     }, {
@@ -101,6 +125,14 @@
         "value": 4
     }, {
         "date": "2017-03-03T03:00:00Z",
+        "name": "Organizer Driven",
+        "value": 34
+    }, {
+        "date": "2017-03-04T03:00:00Z",
+        "name": "EB Driven",
+        "value": 4
+    }, {
+        "date": "2017-03-04T03:00:00Z",
         "name": "Organizer Driven",
         "value": 34
     }, {
