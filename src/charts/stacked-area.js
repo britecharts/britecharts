@@ -174,7 +174,7 @@ define(function(require){
          * @param {areaChartData} _data The data to attach and generate the chart
          */
         function exports(_selection) {
-            _selection.each(function(_data){
+            _selection.each(function(_data) {
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
@@ -269,7 +269,7 @@ define(function(require){
          * as everything else will be drawn on top of them
          * @private
          */
-        function buildContainerGroups(){
+        function buildContainerGroups() {
             let container = svg
               .append('g')
                 .classed('container-group', true)
@@ -295,7 +295,7 @@ define(function(require){
          * @return {D3Layout} Layout for drawing the chart
          * @private
          */
-        function buildLayers(){
+        function buildLayers() {
             dataByDateFormatted = _.chain(dataByDate)
                 .map((d) => _.extend(d, d.values))
                 .map((d) => {
@@ -387,11 +387,12 @@ define(function(require){
          * @return {obj}      Parsed data with values and dates
          */
         function cleanData(data) {
-            return data.map((d) => ({
-                ...d,
-                date: new Date(d[dateLabel]),
-                value: +d[valueLabel]
-            }));
+            return data.map((d) => {
+                d.date = new Date(d[dateLabel]),
+                d.value = +d[valueLabel]
+
+                return d;
+            });
         }
 
         /**
@@ -470,7 +471,7 @@ define(function(require){
          * Draws grid lines on the background of the chart
          * @return void
          */
-        function drawGridLines(xTicks, yTicks){
+        function drawGridLines(xTicks, yTicks) {
             if (grid === 'horizontal' || grid === 'full') {
                 horizontalGridLines = svg.select('.grid-lines-group')
                     .selectAll('line.horizontal-grid-line')
@@ -514,7 +515,7 @@ define(function(require){
          * Draws an overlay element over the graph
          * @private
          */
-        function drawHoverOverlay(){
+        function drawHoverOverlay() {
             overlay = svg.select('.metadata-group')
                 .append('rect')
                 .attr('class', 'overlay')
@@ -530,7 +531,7 @@ define(function(require){
          * Draws the different areas into the chart-group element
          * @private
          */
-        function drawStackedAreas(){
+        function drawStackedAreas() {
             // Creating Area function
             area = d3Shape.area()
                 .curve(d3Shape.curveMonotoneX)
@@ -572,7 +573,7 @@ define(function(require){
          * Creates the vertical marker
          * @return void
          */
-        function drawVerticalMarker(){
+        function drawVerticalMarker() {
             verticalMarkerContainer = svg.select('.metadata-group')
                 .append('g')
                 .attr('class', 'vertical-marker-container')
@@ -614,10 +615,11 @@ define(function(require){
                                 .entries(
                                     _(data).sortBy('date')
                                 )
-                                .map((d) => ({
-                                    ...d,
-                                    date: new Date(d.key)
-                                }));
+                                .map((d) => {
+                                    // ({...d, date: new Date(d.key)})
+                                    d.date = new Date(d.key);
+                                    return d;
+                                });
 
             // let b =  d3Collection.nest()
             //                     .key(getDate).sortKeys(d3Array.ascending)
@@ -659,8 +661,14 @@ define(function(require){
             return dataByDate.find(({date}) => Math.abs(xScale(date) - mouseX) <= epsilon);
         }
 
+        /**
+         * Epsilon is the value given to the number representing half of the distance in
+         * pixels between two date data points
+         * @return {Number} half distance between any two points
+         */
         function setEpsilon() {
             let dates = dataByDate.map(({date}) => date);
+
             epsilon = (xScale(dates[1]) - xScale(dates[0])) / 2;
         }
 
@@ -669,7 +677,7 @@ define(function(require){
          * and updates metadata related to it
          * @private
          */
-        function handleMouseMove(){
+        function handleMouseMove() {
             epsilon || setEpsilon();
 
             let dataPoint = getNearestDataPoint(getMouseXPosition(this) - margin.left),
@@ -691,7 +699,7 @@ define(function(require){
          * It also resets the container of the vertical marker
          * @private
          */
-        function handleMouseOut(data){
+        function handleMouseOut(data) {
             overlay.style('display', 'none');
             verticalMarker.classed('bc-is-active', false);
             verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
@@ -703,7 +711,7 @@ define(function(require){
          * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
          * @private
          */
-        function handleMouseOver(data){
+        function handleMouseOver(data) {
             overlay.style('display', 'block');
             verticalMarker.classed('bc-is-active', true);
 
@@ -750,7 +758,7 @@ define(function(require){
          * @param  {obj} dataPoint Data entry to extract info
          * @return void
          */
-        function moveVerticalMarker(verticalMarkerXPosition){
+        function moveVerticalMarker(verticalMarkerXPosition) {
             verticalMarkerContainer.attr('transform', `translate(${verticalMarkerXPosition},0)`);
         }
 
