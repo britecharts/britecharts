@@ -32,7 +32,6 @@
     "test:travis": "karma start --single-run --browsers PhantomJS --mode=test",
     "_prod": "webpack --mode=prod",
     "_prodUMD": "webpack --mode=prodUMD",
-    "move": "grunt moveDemos",
     "watch": "grunt watch"
   },
   "repository": {
