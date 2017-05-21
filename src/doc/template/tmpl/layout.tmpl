@@ -5,8 +5,8 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title><?js= ((env.conf.templates.meta && env.conf.templates.meta.title) || title) ?></title>
+        <?js meta_title = title ? title :((env.conf.templates.meta && env.conf.templates.meta.title) ) ?>
+        <title><?js=  meta_title ?></title>
 
         <?js if (env.conf.templates.meta) { ?>
             <?js if (env.conf.templates.meta.description) { ?><meta name="description" content="<?js= env.conf.templates.meta.description ?>" /><?js } ?>
