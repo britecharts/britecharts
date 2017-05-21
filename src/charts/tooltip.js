@@ -7,7 +7,7 @@ define(function(require){
     const d3TimeFormat = require('d3-time-format');
 
     const {
-      axisTimeCombinations
+        axisTimeCombinations
     } = require('./helpers/constants');
 
     const {
@@ -156,9 +156,10 @@ define(function(require){
                 buildContainerGroups();
                 drawTooltip();
             }
-            svg.transition()
-                .attr('width', width + margin.left + margin.right)
-                .attr('height', height + margin.top + margin.bottom);
+            svg
+                .transition()
+                .attr('width', width)
+                .attr('height', height);
 
             // Hidden by default
             exports.hide();

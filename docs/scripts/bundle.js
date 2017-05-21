@@ -2915,10 +2915,7 @@
 	        // dataset = testDataSet.withGeneratedData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).width(containerWidth).grid('horizontal')
-	        // .dateLabel('dateUTC')
-	        // .valueLabel('views')
-	        .on('customMouseOver', function () {
+	        stackedArea.tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -2977,7 +2974,7 @@
 	        container.datum(dataset.data).call(stackedArea);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.topicLabel('values').title('Dummy Tooltip Title');
+	        chartTooltip.topicLabel('values').title('Dummy Title');
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -13201,7 +13198,7 @@
 	                buildContainerGroups();
 	                drawTooltip();
 	            }
-	            svg.transition().attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+	            svg.transition().attr('width', width).attr('height', height);
 	
 	            // Hidden by default
 	            exports.hide();
@@ -17340,7 +17337,7 @@
 	            left: 120,
 	            right: 20,
 	            top: 20,
-	            bottom: 5
+	            bottom: 30
 	        }).horizontal(true).colorSchema(colors.colorSchemas.britechartsColorSchema).width(containerWidth).yAxisPaddingBetweenChart(30).height(300).percentageAxisToMaxRatio(1.3).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
 	
 	        barContainer.datum(dataset).call(barChart);
@@ -17465,7 +17462,7 @@
 	        var margin = {
 	            top: 20,
 	            right: 20,
-	            bottom: 10,
+	            bottom: 30,
 	            left: 40
 	        },
 	            width = 960,
@@ -17645,7 +17642,7 @@
 	                buildContainerGroups();
 	            }
 	
-	            svg.attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+	            svg.attr('width', width).attr('height', height);
 	        }
 	
 	        /**
@@ -18322,7 +18319,7 @@
 	
 	                buildContainerGroups();
 	            }
-	            svg.attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+	            svg.transition().attr('width', width).attr('height', height);
 	
 	            // Hidden by default
 	            exports.hide();
@@ -19089,7 +19086,7 @@
 	                buildContainerGroups();
 	            }
 	
-	            svg.transition().ease(ease).attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+	            svg.attr('width', width).attr('height', height);
 	        }
 	
 	        /**
@@ -19538,7 +19535,7 @@
 	                buildContainerGroups();
 	            }
 	
-	            svg.transition().attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+	            svg.attr('width', width).attr('height', height);
 	        }
 	
 	        /**
@@ -20349,7 +20346,7 @@
 	                buildContainerGroups();
 	            }
 	
-	            svg.transition().ease(ease).attr('width', width).attr('height', height);
+	            svg.attr('width', width).attr('height', height);
 	        }
 	
 	        /**
@@ -36791,7 +36788,7 @@
 	                buildContainerGroups();
 	            }
 	
-	            svg.transition().ease(ease).attr('width', width).attr('height', height);
+	            svg.attr('width', width).attr('height', height);
 	        }
 	
 	        /**
@@ -37146,7 +37143,7 @@
 	        stepChart.width(containerWidth).height(300).xAxisLabel('Meal Type').xAxisLabelOffset(45).yAxisLabel('Quantity').yAxisLabelOffset(-50).margin({
 	            top: 40,
 	            right: 40,
-	            bottom: 10,
+	            bottom: 50,
 	            left: 80
 	        }).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
 	
@@ -37239,7 +37236,12 @@
 	
 	    return function module() {
 	
-	        var margin = { top: 20, right: 20, bottom: 30, left: 40 },
+	        var margin = {
+	            top: 20,
+	            right: 20,
+	            bottom: 30,
+	            left: 40
+	        },
 	            width = 960,
 	            height = 500,
 	            ease = d3Ease.easeQuadInOut,
@@ -37357,7 +37359,7 @@
 	                buildContainerGroups();
 	            }
 	
-	            svg.transition().ease(ease).attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+	            svg.attr('width', width).attr('height', height);
 	        }
 	
 	        /**

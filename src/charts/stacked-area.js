@@ -20,8 +20,8 @@ define(function(require){
     const {axisTimeCombinations} = require('./helpers/constants');
 
     const {
-      formatIntegerValue,
-      formatDecimalValue,
+        formatIntegerValue,
+        formatDecimalValue
     } = require('./helpers/formatHelpers');
 
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);

@@ -46,7 +46,7 @@ function createHorizontalBarChart() {
                 left: 120,
                 right: 20,
                 top: 20,
-                bottom: 5
+                bottom: 30
             })
             .horizontal(true)
             .colorSchema(colors.colorSchemas.britechartsColorSchema)

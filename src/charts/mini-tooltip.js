@@ -112,7 +112,8 @@ define(function(require){
          * @private
          */
         function buildContainerGroups() {
-            let container = svg.append('g')
+            let container = svg
+              .append('g')
                 .classed('tooltip-container-group', true)
                 .attr('transform', `translate( ${margin.left}, ${margin.top})`);
 
@@ -133,8 +134,9 @@ define(function(require){
                 buildContainerGroups();
             }
             svg
-                .attr('width', width + margin.left + margin.right)
-                .attr('height', height + margin.top + margin.bottom);
+                .transition()
+                .attr('width', width)
+                .attr('height', height);
 
             // Hidden by default
             exports.hide();
