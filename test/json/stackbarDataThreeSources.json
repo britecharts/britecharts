@@ -1,0 +1,76 @@
+{
+    "data": [
+        {
+            "stack": "Direct",
+            "name": "Direct1",
+            "views": 0,
+            "dateUTC": "2011-01-05T00:00:00Z"
+        },
+        {
+            "stack": "Direct",
+            "name": "Direct2",
+            "views": 10,
+            "dateUTC": "2011-01-06T00:00:00Z"
+        },
+        {
+            "stack": "Direct",
+            "name": "Direct3",
+            "views": 16,
+            "dateUTC": "2011-01-07T00:00:00Z"
+        },
+        {
+            "stack": "Direct",
+            "name": "Direct4",
+            "views": 23,
+            "dateUTC": "2011-01-08T00:00:00Z"
+        },
+        {
+            "stack": "Eventbrite",
+            "name": "Eventbrite1",
+            "views": 23,
+            "dateUTC": "2011-01-05T00:00:00Z"
+        },
+        {
+            "stack": "Eventbrite",
+             "name": "Eventbrite2",
+            "views": 16,
+            "dateUTC": "2011-01-06T00:00:00Z"
+        },
+        {
+            "stack": "Eventbrite",
+             "name": "Eventbrite3",
+            "views": 10,
+            "dateUTC": "2011-01-07T00:00:00Z"
+        },
+        {
+            "stack": "Eventbrite",
+            "name": "Eventbrite4",
+            "views": 0,
+            "dateUTC": "2011-01-08T00:00:00Z"
+        },
+        {
+            "stack": "Email",
+            "name": "Email1",
+            "views": 10,
+            "dateUTC": "2011-01-05T00:00:00Z"
+        },
+        {
+            "stack": "Email",
+            "name": "Email2",
+            "views": 20,
+            "dateUTC": "2011-01-06T00:00:00Z"
+        },
+        {
+            "stack": "Email",
+            "name": "Email3",
+            "views": 26,
+            "dateUTC": "2011-01-07T00:00:00Z"
+        },
+        {
+            "stack": "Email",
+            "name": "Email4",
+            "views": 33,
+            "dateUTC": "2011-01-08T00:00:00Z"
+        }
+    ]
+}
