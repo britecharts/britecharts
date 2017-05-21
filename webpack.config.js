@@ -62,8 +62,10 @@ config = {
         ],
         output: {
             path: './demos/build/',
+            publicPath: '/assets/',
             filename: 'bundle.js'
         },
+        
         resolve:{
             root: [
                 __dirname
@@ -73,8 +75,26 @@ config = {
             loaders: [ defaultJSLoader ]
         },
         plugins : [
-            new LiveReloadPlugin({appendScriptTag:true})
-        ]
+            // new LiveReloadPlugin({appendScriptTag:true})
+        ] ,
+        devServer:{
+            proxy: {
+            '/britecharts/scripts/bundle.js': {
+                target: 'http://localhost:8001/',
+                pathRewrite: {'^/britecharts/scripts/' : '/assets/'}
+            },
+            '/britecharts/scripts/*.js': {
+                target: 'http://localhost:8001/',
+                pathRewrite: {'^/britecharts/scripts/' : 'scripts/'}
+            },
+            '/britecharts/': {
+                target: 'http://localhost:8001/',
+                pathRewrite: {'^/britecharts/' : ''}
+                }
+            
+            },
+            
+        }
     },
 
     // Test configuration for Karma runner

@@ -20,7 +20,7 @@
   "scripts": {
     "demos:compile": "webpack --progress --colors --mode=demos",
     "demos:watch": "webpack --watch --progress --colors --mode=demos",
-    "demos:serve": "webpack-dev-server --inline --hot --port 8001 --mode=demos",
+    "demos:serve": "webpack-dev-server --content-base docs/ --inline --hot --port 8001 --open --mode=demos",
     "styles": "grunt lint && grunt sass && grunt cssmin",
     "docs": "webpack --mode=demos && npm run styles && grunt docs",
     "prod": "npm run _prodUMD && npm run _prod",
@@ -32,7 +32,6 @@
     "test:travis": "karma start --single-run --browsers PhantomJS --mode=test",
     "_prod": "webpack --mode=prod",
     "_prodUMD": "webpack --mode=prodUMD",
-    "move": "grunt moveDemos",
     "watch": "grunt watch"
   },
   "repository": {
@@ -82,6 +81,7 @@
     "grunt-sass": "^1.2.1",
     "grunt-sass-lint": "^0.2.0",
     "grunt-shell": "^2.1.0",
+    "grunt-sync": "^0.6.2",
     "ink-docstrap": "^1.3.0",
     "jasmine-core": "^2.4.1",
     "jasmine-jquery": "^2.0.6",
