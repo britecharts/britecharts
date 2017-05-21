@@ -81,4 +81,18 @@
 .is-hidden {
     display: none;
 }
-
+#brush .date-range {
+            color: #ADB0B6;
+            font-size: 18px;
+            margin-bottom: 40px;
+}
+#brush .is-hidden {
+            display: none;
+}
+    
+#donut  .legend-chart-container {
+            text-align: center;
+}
+#donut .legend-chart-container svg {
+            margin: 0 auto;
+}
