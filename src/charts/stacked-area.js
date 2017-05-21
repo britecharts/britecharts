@@ -12,7 +12,7 @@ define(function(require){
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
 
-    const _ = require('underscore');
+    const assign = require('lodash.assign');
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
     const timeAxisHelper = require('./helpers/timeAxis');
@@ -296,35 +296,39 @@ define(function(require){
          * @private
          */
         function buildLayers() {
-            dataByDateFormatted = _.chain(dataByDate)
-                .map((d) => _.extend(d, d.values))
-                .map((d) => {
-                    _(d).each((entry) => {
-                        if(entry && entry['name']) {
-                            d[entry['name']] = entry.value;
+            dataByDateFormatted = dataByDate
+                .map(d => assign({}, d, d.values))
+                .map(d => {
+                    Object.keys(d).forEach(k => {
+                        const entry = d[k];
+
+                        if (entry && entry.name) {
+                            d[entry.name] = entry.value;
                         }
                     });
-                    d['date'] = new Date(d['key']);
 
-                    return d;
-                })
-                .value();
+                    return assign({}, d, {
+                        date: new Date(d['key'])
+                    });
+                });
 
-            dataByDateZeroed =_.chain(JSON.parse(JSON.stringify(dataByDate)))
-                .map((d) => _.extend(d, d.values))
-                .map((d) => {
-                    _(d).each((entry) => {
-                        if(entry && entry['name']) {
-                            d[entry['name']] = 0;
+            dataByDateZeroed = dataByDate
+                .map(d => assign({}, d, d.values))
+                .map(d => {
+                    Object.keys(d).forEach(k => {
+                        const entry = d[k];
+
+                        if (entry && entry.name) {
+                            d[entry.name] = 0;
                         }
                     });
-                    d['date'] = new Date(d['key']);
 
-                    return d;
-                })
-                .value();
+                    return assign({}, d, {
+                        date: new Date(d['key'])
+                    });
+                });
 
-            order = uniq(_(data).pluck('name'));
+            order = uniq(data.map(o => o.name));
             let stack3 = d3Shape.stack()
                 .keys(order)
                 .order(d3Shape.stackOrderNone)
@@ -613,12 +617,12 @@ define(function(require){
             return d3Collection.nest()
                                 .key(getDate)
                                 .entries(
-                                    _(data).sortBy('date')
+                                    data.sort((a, b) => a.date - b.date)
                                 )
-                                .map((d) => {
-                                    // ({...d, date: new Date(d.key)})
-                                    d.date = new Date(d.key);
-                                    return d;
+                                .map(d => {
+                                    return assign({}, d, {
+                                        date: new Date(d.key)
+                                    });
                                 });
 
             // let b =  d3Collection.nest()
@@ -632,7 +636,7 @@ define(function(require){
          * @return {Number} Max value
          */
         function getMaxValueByDate() {
-            let keys = uniq(_(data).pluck('name'));
+            let keys = uniq(data.map(o => o.name));
             let maxValueByDate = d3Array.max(dataByDateFormatted, function(d){
                 let vals = keys.map((key) => d[key]);
 
