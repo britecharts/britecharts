@@ -5,6 +5,10 @@ module.exports = function(grunt) {
         scripts: {
             files: ['demos/**/*'],
             tasks: ['moveDemos']
+        }, 
+        readme: {
+            files: ['README.md'],
+            tasks: ['jsdoc:dist']
         },
     });
 }
