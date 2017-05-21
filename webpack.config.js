@@ -62,8 +62,10 @@ config = {
         ],
         output: {
             path: './demos/build/',
+            publicPath: '/assets/',
             filename: 'bundle.js'
         },
+        
         resolve:{
             root: [
                 __dirname
@@ -73,7 +75,7 @@ config = {
             loaders: [ defaultJSLoader ]
         },
         plugins : [
-            new LiveReloadPlugin({appendScriptTag:true})
+            // new LiveReloadPlugin({appendScriptTag:true})
         ]
     },
 
