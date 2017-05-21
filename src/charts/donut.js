@@ -292,7 +292,9 @@ define(function(require){
          * @private
          */
         function initHighlightSlice() {
-            if (!highlightedSliceId && highlightedSliceId !== 0) return;
+            if (highlightedSliceId === null || typeof highlightedSliceId === 'undefined') {
+                return;
+            }
 
             highlightedSlice = svg.selectAll('.chart-group .arc path')
                 .select(function(a) {
@@ -301,10 +303,10 @@ define(function(require){
                     }
                 }).node();
 
-            if (!highlightedSlice) return;
-
-            drawLegend(highlightedSlice.__data__);
-            tweenGrowth(highlightedSlice, externalRadius, pieDrawingTransitionDuration);
+            if (highlightedSlice) {
+                drawLegend(highlightedSlice.__data__);
+                tweenGrowth(highlightedSlice, externalRadius, pieDrawingTransitionDuration);
+            }
         }
 
         function handleMouseOver(datum) {
