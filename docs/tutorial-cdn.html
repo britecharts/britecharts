@@ -217,7 +217,8 @@
 
             var lineData =  {
                 dataByTopic: [{
-                    topic: 'Cat data',
+                    topicName: 'Cat data',
+                    topic: 2,
                     dates: [
                         { date: '27-Jun-15', value: 1, fullDate: '2015-06-27T07:00:00.000Z' },
                         { date: '28-Jun-15', value: 1, fullDate: '2015-06-28T07:00:00.000Z' },
@@ -233,6 +234,7 @@
                 .margin({ top: 60, bottom: 50, left: 50, right: 20 })
                 .width(800)
                 .height(300)
+                .dateLabel('fullDate')
                 .on('customMouseOver', tooltip.show)
                 .on('customMouseMove', tooltip.update)
                 .on('customMouseOut', tooltip.hide);
