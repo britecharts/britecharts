@@ -99,5 +99,35 @@ donutContainer.datum(dataset).call(donutChart);
             </div>
         </div>
     </div>
+    <div class="container">
+        <div class="row">
+            <div class="
+col-md-6">
+                <section>
+                    <article>
+                        <h2>Donut Chart and higlight the selected slice</h2>
+                        <div class="js-donut-highlight-slice-chart-container card--chart"></div>
+                    </article>
+                </section>
+            </div>
+            <div class="
+col-md-6 sidebar">
+                <h3>The code    </h3>
+                <pre><code class="language-javascript">
+donutChart
+    .highlightSliceById(1)
+    .width(containerWidth)
+    .height(containerWidth/1.8)
+    .externalRadius(containerWidth/5)
+    .internalRadius(containerWidth/10);
+
+donutContainer.datum(dataset).call(donutChart);
+                </code></pre>
+
+                <h4>Demo Code</h4>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-donut.js">in github</a></p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
