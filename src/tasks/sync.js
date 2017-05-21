@@ -3,20 +3,36 @@ module.exports = function(grunt) {
 
     grunt.config.set('sync', {
         scripts: {
-            src: ['demos/build/*.js'],
-            dest: 'docs/scripts/'
+            files:[{
+                cwd:'demos/build/',
+                src: ['**'],
+                dest: 'docs/scripts/'
+            }],
+            verbose: true
         },
         styles:{
-             src: ['demos/css/*.css'],
-            dest: 'docs/styles/'
+            files:[{
+                 cwd:'demos/css/',
+                 src: ['**'],
+                 dest: 'docs/styles/'
+            }],
+             verbose: true
         },
         fonts:{
-             src: ['src/doc/template/static/fonts/*'],
-            dest: 'docs/fonts/'
+            files:[{
+                cwd:'src/doc/template/static/fonts/',
+                 src: ['**'],
+                dest: 'docs/fonts/'
+            }],
+             verbose: true
         },
         manifest:{
-            src: ['src/doc/template/manifest.json'],
-            dest: 'docs/'
+           files:[{
+                cwd:'src/doc/template/',
+                src: ['manifest.json'],
+                dest: 'docs/'
+           }],
+            verbose: true
         }
     });
 }
