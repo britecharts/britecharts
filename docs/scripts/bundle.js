@@ -20077,17 +20077,7 @@
 	        dataset = testDataSet.with5Topics().build();
 	
 	        // LineChart Setup and start
-	        lineChart1.aspectRatio(0.5).grid('horizontal').tooltipThreshold(600).width(containerWidth).dateLabel('fullDate').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
-	
-	        // .on('customMouseOver', function() {
-	        //     chartTooltip.show();
-	        // })
-	        // .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-	        //     chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-	        // })
-	        // .on('customMouseOut', function() {
-	        //     chartTooltip.hide();
-	        // });
+	        lineChart1.isAnimated(true).aspectRatio(0.5).grid('horizontal').tooltipThreshold(600).width(containerWidth).dateLabel('fullDate').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 	
 	        if (optionalColorSchema) {
 	            lineChart1.colorSchema(optionalColorSchema);
@@ -21740,8 +21730,10 @@
 	            forceAxisSettings = null,
 	            forcedXTicks = null,
 	            forcedXFormat = null,
+	            isAnimated = false,
 	            ease = d3Ease.easeQuadInOut,
 	            animationDuration = 1500,
+	            maskingRectangle = void 0,
 	            dataByTopic = void 0,
 	            dataByDate = void 0,
 	            dateLabel = 'date',
@@ -21805,6 +21797,7 @@
 	                drawAxis();
 	                buildGradient();
 	                drawLines();
+	                createMaskingClip();
 	
 	                if (shouldShowTooltip()) {
 	                    drawVerticalMarker();
@@ -22025,6 +22018,23 @@
 	        }
 	
 	        /**
+	         * Creates a masking clip that would help us fake an animation if the
+	         * proper flag is true
+	         *
+	         * @return {void}
+	         */
+	        function createMaskingClip() {
+	            if (isAnimated) {
+	                // We use a white rectangle to simulate the line drawing animation
+	                maskingRectangle = svg.append('rect').attr('class', 'masking-rectangle').attr('width', width).attr('height', height).attr('x', 0).attr('y', 0);
+	
+	                maskingRectangle.transition().duration(animationDuration).ease(ease).attr('x', width).on('end', function () {
+	                    return maskingRectangle.remove();
+	                });
+	            }
+	        }
+	
+	        /**
 	         * Draws the x and y axis on the svg object within their
 	         * respective groups
 	         * @private
@@ -22045,8 +22055,7 @@
 	         */
 	        function drawLines() {
 	            var lines = void 0,
-	                topicLine = void 0,
-	                maskingRectangle = void 0;
+	                topicLine = void 0;
 	
 	            topicLine = d3Shape.line().x(function (_ref12) {
 	                var date = _ref12.date;
@@ -22066,13 +22075,6 @@
 	            });
 	
 	            lines.exit().remove();
-	
-	            // We use a white rectangle to simulate the line drawing animation
-	            maskingRectangle = svg.append('rect').attr('class', 'masking-rectangle').attr('width', width).attr('height', height).attr('x', 0).attr('y', 0);
-	
-	            maskingRectangle.transition().duration(animationDuration).ease(ease).attr('x', width).on('end', function () {
-	                return maskingRectangle.remove();
-	            });
 	        }
 	
 	        /**
@@ -22383,6 +22385,23 @@
 	                width = Math.ceil(_x / aspectRatio);
 	            }
 	            height = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
+	         * @param  {Boolean} _x Desired animation flag
+	         * @return { isAnimated | module} Current isAnimated flag or Chart module
+	         * @public
+	         */
+	        exports.isAnimated = function (_x) {
+	            if (!arguments.length) {
+	                return isAnimated;
+	            }
+	            isAnimated = _x;
 	
 	            return this;
 	        };
@@ -37095,7 +37114,9 @@
 	        };
 	
 	        /**
-	         * Gets or Sets the isAnimated property of the chart
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
 	         * @param  {Boolean} _x Desired animation flag
 	         * @return { isAnimated | module} Current isAnimated flag or Chart module
 	         * @public

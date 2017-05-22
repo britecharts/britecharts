@@ -144,8 +144,10 @@ define(function(require){
             forcedXTicks = null,
             forcedXFormat = null,
 
+            isAnimated = false,
             ease = d3Ease.easeQuadInOut,
             animationDuration = 1500,
+            maskingRectangle,
 
             dataByTopic,
             dataByDate,
@@ -200,6 +202,7 @@ define(function(require){
                 drawAxis();
                 buildGradient();
                 drawLines();
+                createMaskingClip();
 
                 if (shouldShowTooltip()) {
                     drawVerticalMarker();
@@ -449,6 +452,30 @@ define(function(require){
         }
 
         /**
+         * Creates a masking clip that would help us fake an animation if the
+         * proper flag is true
+         *
+         * @return {void}
+         */
+        function createMaskingClip() {
+            if (isAnimated) {
+                // We use a white rectangle to simulate the line drawing animation
+                maskingRectangle = svg.append('rect')
+                    .attr('class', 'masking-rectangle')
+                    .attr('width', width)
+                    .attr('height', height)
+                    .attr('x', 0)
+                    .attr('y', 0);
+
+                maskingRectangle.transition()
+                    .duration(animationDuration)
+                    .ease(ease)
+                    .attr('x', width)
+                    .on('end', () => maskingRectangle.remove());
+            }
+        }
+
+        /**
          * Draws the x and y axis on the svg object within their
          * respective groups
          * @private
@@ -478,8 +505,7 @@ define(function(require){
          */
         function drawLines(){
             let lines,
-                topicLine,
-                maskingRectangle;
+                topicLine;
 
             topicLine = d3Shape.line()
                 .x(({date}) => xScale(date))
@@ -501,20 +527,6 @@ define(function(require){
             lines
                 .exit()
                 .remove();
-
-            // We use a white rectangle to simulate the line drawing animation
-            maskingRectangle = svg.append('rect')
-                .attr('class', 'masking-rectangle')
-                .attr('width', width)
-                .attr('height', height)
-                .attr('x', 0)
-                .attr('y', 0);
-
-            maskingRectangle.transition()
-                .duration(animationDuration)
-                .ease(ease)
-                .attr('x', width)
-                .on('end', () => maskingRectangle.remove());
         }
 
         /**
@@ -865,6 +877,23 @@ define(function(require){
                 width = Math.ceil(_x / aspectRatio);
             }
             height = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+         * By default this is 'false'
+         *
+         * @param  {Boolean} _x Desired animation flag
+         * @return { isAnimated | module} Current isAnimated flag or Chart module
+         * @public
+         */
+        exports.isAnimated = function(_x) {
+            if (!arguments.length) {
+                return isAnimated;
+            }
+            isAnimated = _x;
 
             return this;
         };

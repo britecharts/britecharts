@@ -153,11 +153,16 @@
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
-lineChart
+lineChart1
+    .isAnimated(true)
     .aspectRatio(0.5)
     .grid('horizontal')
     .tooltipThreshold(600)
-    .width(containerWidth);
+    .width(containerWidth)
+    .dateLabel('fullDate')
+    .on('customMouseOver', chartTooltip.show)
+    .on('customMouseMove', chartTooltip.update)
+    .on('customMouseOut', chartTooltip.hide);
 
 container.datum(dataset).call(lineChart);
                 </code></pre>

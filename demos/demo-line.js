@@ -64,6 +64,7 @@ function createLineChart(optionalColorSchema, optionalData) {
 
         // LineChart Setup and start
         lineChart1
+            .isAnimated(true)
             .aspectRatio(0.5)
             .grid('horizontal')
             .tooltipThreshold(600)
@@ -72,16 +73,6 @@ function createLineChart(optionalColorSchema, optionalData) {
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', chartTooltip.hide);
-
-            // .on('customMouseOver', function() {
-            //     chartTooltip.show();
-            // })
-            // .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-            //     chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-            // })
-            // .on('customMouseOut', function() {
-            //     chartTooltip.hide();
-            // });
 
         if (optionalColorSchema) {
             lineChart1.colorSchema(optionalColorSchema);
