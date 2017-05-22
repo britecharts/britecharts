@@ -5,8 +5,8 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title><?js= ((env.conf.templates.meta && env.conf.templates.meta.title) || title) ?></title>
+        <?js meta_title = title ? title :((env.conf.templates.meta && env.conf.templates.meta.title) ) ?>
+        <title><?js=  meta_title ?></title>
 
         <?js if (env.conf.templates.meta) { ?>
             <?js if (env.conf.templates.meta.description) { ?><meta name="description" content="<?js= env.conf.templates.meta.description ?>" /><?js } ?>
@@ -161,13 +161,13 @@
             </span>
         </footer>
 
-        <script src="scripts/docstrap.lib.js"></script>
-        <script src="scripts/toc.js"></script>
+        <script src="/britecharts/scripts/docstrap.lib.js"></script>
+        <script src="/britecharts/scripts/toc.js"></script>
         <?js if (this.navOptions.search) { ?>
-            <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+            <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
         <?js } ?>
-        <script src="scripts/bundle.js"></script>
-        <script src="scripts/prism.js"></script>
+        <script src="/britecharts/scripts/bundle.js"></script>
+        <script src="/britecharts/scripts/prism.js"></script>
         <script>
         $( function () {
         	$( "[id*='$']" ).each( function () {
