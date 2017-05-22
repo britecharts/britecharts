@@ -164,11 +164,11 @@
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
 donutChart
+    .isAnimated(true)
     .width(containerWidth)
     .height(containerWidth)
     .externalRadius(containerWidth/2.5)
     .internalRadius(containerWidth/5)
-    .colorScheme(briteChartsColors)
     .on('customMouseOver', function(data) {
         legendChart.highlight(data.data.id);
     })
@@ -211,7 +211,7 @@ col-md-6">
             </div>
             <div class="
 col-md-6 sidebar">
-                <h3>The code    </h3>
+                <h3>The code</h3>
                 <pre><code class="language-javascript">
 donutChart
     .width(containerWidth)

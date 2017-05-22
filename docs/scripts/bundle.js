@@ -2921,6 +2921,7 @@
 	
 	        // StackedAreChart Setup and start
 <<<<<<< HEAD
+<<<<<<< HEAD
 	        stackedArea.tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', function () {
 =======
 	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal')
@@ -2934,6 +2935,9 @@
 	        }).on('customMouseOut', function () {
 	            chartTooltip.hide();
 	        });
+=======
+	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
+>>>>>>> Adding animation flag to donut
 	
 	        if (optionalColorSchema) {
 	            stackedArea.colorSchema(optionalColorSchema);
@@ -2971,13 +2975,7 @@
 	        // dataset = testDataSet.withLargeData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').forceAxisFormat('custom').forcedXFormat('%Y/%m/%d').forcedXTicks(2).width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', function () {
-	            chartTooltip.show();
-	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
-	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-	        }).on('customMouseOut', function () {
-	            chartTooltip.hide();
-	        });
+	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').forceAxisFormat('custom').forcedXFormat('%Y/%m/%d').forcedXTicks(2).width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 	
 	        if (optionalColorSchema) {
 	            stackedArea.colorSchema(optionalColorSchema);
@@ -2986,7 +2984,11 @@
 	        container.datum(dataset.data).call(stackedArea);
 	
 	        // Tooltip Setup and start
+<<<<<<< HEAD
 	        chartTooltip.topicLabel('values').title('Dummy Title');
+=======
+	        chartTooltip.topicLabel('values').title('Tooltip Title');
+>>>>>>> Adding animation flag to donut
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -18955,7 +18957,7 @@
 	            donutChart.exportChart();
 	        });
 	
-	        donutChart.width(containerWidth).height(containerWidth).externalRadius(containerWidth / 2.5).internalRadius(containerWidth / 5).on('customMouseOver', function (data) {
+	        donutChart.isAnimated(true).width(containerWidth).height(containerWidth).externalRadius(containerWidth / 2.5).internalRadius(containerWidth / 5).on('customMouseOver', function (data) {
 	            legendChart.highlight(data.data.id);
 	        }).on('customMouseOut', function () {
 	            legendChart.clearHighlight();
@@ -19144,6 +19146,7 @@
 	            shape = void 0,
 	            slices = void 0,
 	            svg = void 0,
+	            isAnimated = false,
 	            quantityLabel = 'quantity',
 	            nameLabel = 'name',
 	            percentageLabel = 'percentage',
@@ -19294,7 +19297,11 @@
 	            if (!slices) {
 	                slices = svg.select('.chart-group').selectAll('g.arc').data(layout(data));
 	
-	                slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration)).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
+	                if (isAnimated) {
+	                    slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration)).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
+	                } else {
+	                    slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration));
+	                }
 	            } else {
 	                slices = svg.select('.chart-group').selectAll('path').data(layout(data));
 	
@@ -19443,6 +19450,23 @@
 	                return height;
 	            }
 	            height = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
+	         * @param  {Boolean} _x Desired animation flag
+	         * @return { isAnimated | module} Current isAnimated flag or Chart module
+	         * @public
+	         */
+	        exports.isAnimated = function (_x) {
+	            if (!arguments.length) {
+	                return isAnimated;
+	            }
+	            isAnimated = _x;
+	
 	            return this;
 	        };
 	
