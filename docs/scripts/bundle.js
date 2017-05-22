@@ -17375,7 +17375,7 @@
 	    if (containerWidth) {
 	        dataset = testDataSet.withLettersFrequency().build();
 	
-	        barChart.width(containerWidth).height(300);
+	        barChart.isAnimated(true).width(containerWidth).height(300);
 	
 	        barContainer.datum(dataset).call(barChart);
 	    }
@@ -17393,12 +17393,17 @@
 	    if (containerWidth) {
 	        dataset = testDataSet.withColors().build();
 	
-	        barChart.margin({
+	        barChart.horizontal(true).isAnimated(true).margin({
 	            left: 120,
 	            right: 20,
 	            top: 20,
+<<<<<<< HEAD
 	            bottom: 30
 	        }).horizontal(true).colorSchema(colors.colorSchemas.britechartsColorSchema).width(containerWidth).yAxisPaddingBetweenChart(30).height(300).percentageAxisToMaxRatio(1.3).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
+=======
+	            bottom: 5
+	        }).colorSchema(colors.colorSchemas.britechartsColorSchema).width(containerWidth).yAxisPaddingBetweenChart(30).height(300).percentageAxisToMaxRatio(1.3).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
+>>>>>>> Playing with bar animations, needing vertical one
 	
 	        barContainer.datum(dataset).call(barChart);
 	
@@ -17460,6 +17465,7 @@
 	    'use strict';
 	
 	    var d3Array = __webpack_require__(9);
+	    var d3Ease = __webpack_require__(13);
 	    var d3Axis = __webpack_require__(10);
 	    var d3Color = __webpack_require__(16);
 	    var d3Dispatch = __webpack_require__(12);
@@ -17528,6 +17534,7 @@
 	            width = 960,
 	            height = 500,
 	            data = void 0,
+	            dataZeroed = void 0,
 	            chartWidth = void 0,
 	            chartHeight = void 0,
 	            xScale = void 0,
@@ -17556,6 +17563,12 @@
 	            yAxisLineWrapLimit = 1,
 	            horizontal = false,
 	            svg = void 0,
+	            isAnimated = false,
+	            ease = d3Ease.easeQuadInOut,
+	            animationDuration = 1200,
+	            interBarDelay = function interBarDelay(d, i) {
+	            return 70 * i;
+	        },
 	            valueLabel = 'value',
 	            nameLabel = 'name',
 	            maskGridLines = void 0,
@@ -17611,7 +17624,12 @@
 	            _selection.each(function (_data) {
 	                chartWidth = width - margin.left - margin.right - yAxisPaddingBetweenChart * 1.2;
 	                chartHeight = height - margin.top - margin.bottom;
-	                data = cleanData(_data);
+	
+	                var _cleanData = cleanData(_data);
+	
+	                data = _cleanData.data;
+	                dataZeroed = _cleanData.dataZeroed;
+	
 	
 	                buildScales();
 	                buildAxis();
@@ -17707,16 +17725,24 @@
 	
 	        /**
 	         * Cleaning data adding the proper format
-	         * @param  {BarChartData} data Data
+	         * @param  {BarChartData} originalData Data
 	         * @private
 	         */
-	        function cleanData(data) {
-	            return data.map(function (d) {
-	                d.value = +d[valueLabel];
-	                d.name = String(d[nameLabel]);
-	
-	                return d;
+	        function cleanData(originalData) {
+	            var data = originalData.map(function (d) {
+	                return {
+	                    value: +d[valueLabel],
+	                    name: String(d[nameLabel])
+	                };
 	            });
+	            var dataZeroed = data.map(function (d) {
+	                return {
+	                    value: 0,
+	                    name: String(d[nameLabel])
+	                };
+	            });
+	
+	            return { data: data, dataZeroed: dataZeroed };
 	        }
 	
 	        /**
@@ -17779,43 +17805,122 @@
 	        }
 	
 	        /**
-	         * Draws the bars along the y axis
+	         * Draws and animates the bars along the x axis
 	         * @param  {D3Selection} bars Selection of bars
 	         * @return {void}
 	         */
-	        function drawVerticalBars(bars) {
+	        function drawAnimatedHorizontalBars(bars) {
 	            // Enter + Update
-	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref17) {
+	            bars.enter().append('rect').classed('bar', true).attr('x', 0).attr('y', chartHeight).attr('height', yScale.bandwidth()).attr('width', function (_ref17) {
 	                var value = _ref17.value;
-	                return yScale(value);
-	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref18) {
-	                var value = _ref18.value;
-	                return chartHeight - yScale(value);
-	            }).attr('fill', function (_ref19) {
-	                var name = _ref19.name;
+	                return xScale(value);
+	            }).attr('fill', function (_ref18) {
+	                var name = _ref18.name;
 	                return colorMap(name);
 	            }).on('mouseover', function () {
 	                dispatcher.call('customMouseOver', this);
-	                d3Selection.select(this).attr('fill', function (_ref20) {
-	                    var name = _ref20.name;
+	                d3Selection.select(this).attr('fill', function (_ref19) {
+	                    var name = _ref19.name;
 	                    return d3Color.color(colorMap(name)).darker();
 	                });
 	            }).on('mousemove', function (d) {
 	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
 	            }).on('mouseout', function () {
 	                dispatcher.call('customMouseOut', this);
-	                d3Selection.select(this).attr('fill', function (_ref21) {
-	                    var name = _ref21.name;
+	                d3Selection.select(this).attr('fill', function (_ref20) {
+	                    var name = _ref20.name;
 	                    return colorMap(name);
 	                });
-	            }).merge(bars).attr('x', function (_ref22) {
-	                var name = _ref22.name;
-	                return xScale(name);
-	            }).attr('y', function (_ref23) {
+	            });
+	
+	            bars.attr('x', 0).attr('y', function (_ref21) {
+	                var name = _ref21.name;
+	                return yScale(name);
+	            }).attr('height', yScale.bandwidth()).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('width', function (_ref22) {
+	                var value = _ref22.value;
+	                return xScale(value);
+	            });
+	        }
+	
+	        /**
+	         * Draws and animates the bars along the y axis
+	         * @param  {D3Selection} bars Selection of bars
+	         * @return {void}
+	         */
+	        function drawAnimatedVerticalBars(bars) {
+	            // Enter + Update
+	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', chartHeight)
+	            // .attr('y', ({value}) => yScale(value))
+	            .attr('width', xScale.bandwidth()).attr('height', function (_ref23) {
 	                var value = _ref23.value;
 	                return yScale(value);
-	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref24) {
-	                var value = _ref24.value;
+	            }).attr('fill', function (_ref24) {
+	                var name = _ref24.name;
+	                return colorMap(name);
+	            }).on('mouseover', function () {
+	                dispatcher.call('customMouseOver', this);
+	                d3Selection.select(this).attr('fill', function (_ref25) {
+	                    var name = _ref25.name;
+	                    return d3Color.color(colorMap(name)).darker();
+	                });
+	            }).on('mousemove', function (d) {
+	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+	            }).on('mouseout', function () {
+	                dispatcher.call('customMouseOut', this);
+	                d3Selection.select(this).attr('fill', function (_ref26) {
+	                    var name = _ref26.name;
+	                    return colorMap(name);
+	                });
+	            }).merge(bars).attr('x', function (_ref27) {
+	                var name = _ref27.name;
+	                return xScale(name);
+	            }).attr('y', function (_ref28) {
+	                var value = _ref28.value;
+	                return yScale(value);
+	            }).attr('width', xScale.bandwidth()).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('height', function (_ref29) {
+	                var value = _ref29.value;
+	                return chartHeight - yScale(value);
+	            });
+	        }
+	
+	        /**
+	         * Draws the bars along the y axis
+	         * @param  {D3Selection} bars Selection of bars
+	         * @return {void}
+	         */
+	        function drawVerticalBars(bars) {
+	            // Enter + Update
+	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref30) {
+	                var value = _ref30.value;
+	                return yScale(value);
+	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref31) {
+	                var value = _ref31.value;
+	                return chartHeight - yScale(value);
+	            }).attr('fill', function (_ref32) {
+	                var name = _ref32.name;
+	                return colorMap(name);
+	            }).on('mouseover', function () {
+	                dispatcher.call('customMouseOver', this);
+	                d3Selection.select(this).attr('fill', function (_ref33) {
+	                    var name = _ref33.name;
+	                    return d3Color.color(colorMap(name)).darker();
+	                });
+	            }).on('mousemove', function (d) {
+	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+	            }).on('mouseout', function () {
+	                dispatcher.call('customMouseOut', this);
+	                d3Selection.select(this).attr('fill', function (_ref34) {
+	                    var name = _ref34.name;
+	                    return colorMap(name);
+	                });
+	            }).merge(bars).attr('x', function (_ref35) {
+	                var name = _ref35.name;
+	                return xScale(name);
+	            }).attr('y', function (_ref36) {
+	                var value = _ref36.value;
+	                return yScale(value);
+	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref37) {
+	                var value = _ref37.value;
 	                return chartHeight - yScale(value);
 	            });
 	        }
@@ -17840,12 +17945,32 @@
 	         * @private
 	         */
 	        function drawBars() {
-	            var bars = svg.select('.chart-group').selectAll('.bar').data(data);
+	            var bars = void 0;
 	
-	            if (!horizontal) {
-	                drawVerticalBars(bars);
+	            if (isAnimated) {
+	                bars = svg.select('.chart-group').selectAll('.bar').data(dataZeroed);
+	
+	                if (!horizontal) {
+	                    drawVerticalBars(bars);
+	                } else {
+	                    drawHorizontalBars(bars);
+	                }
+	
+	                bars = svg.select('.chart-group').selectAll('.bar').data(data);
+	
+	                if (!horizontal) {
+	                    drawAnimatedVerticalBars(bars);
+	                } else {
+	                    drawAnimatedHorizontalBars(bars);
+	                }
 	            } else {
-	                drawHorizontalBars(bars);
+	                bars = svg.select('.chart-group').selectAll('.bar').data(data);
+	
+	                if (!horizontal) {
+	                    drawVerticalBars(bars);
+	                } else {
+	                    drawHorizontalBars(bars);
+	                }
 	            }
 	
 	            // Exit
@@ -17955,6 +18080,23 @@
 	                return horizontal;
 	            }
 	            horizontal = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
+	         * @param  {Boolean} _x Desired animation flag
+	         * @return { isAnimated | module} Current isAnimated flag or Chart module
+	         * @public
+	         */
+	        exports.isAnimated = function (_x) {
+	            if (!arguments.length) {
+	                return isAnimated;
+	            }
+	            isAnimated = _x;
+	
 	            return this;
 	        };
 	

@@ -203,6 +203,18 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(defaultUsePercentage).not.toBe(testUsePercentage);
                 expect(newUsePercentage).toBe(testUsePercentage);
             });
+
+            it('should provide animation getter and setter', () => {
+                let defaultAnimation = barChart.isAnimated(),
+                    testAnimation = true,
+                    newAnimation;
+
+                barChart.isAnimated(testAnimation);
+                newAnimation = barChart.isAnimated();
+
+                expect(defaultAnimation).not.toBe(testAnimation);
+                expect(newAnimation).toBe(testAnimation);
+            });
         });
 
         describe('when hovering a bar', function() {

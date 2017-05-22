@@ -2,6 +2,7 @@ define(function(require) {
     'use strict';
 
     const d3Array = require('d3-array');
+    const d3Ease = require('d3-ease');
     const d3Axis = require('d3-axis');
     const d3Color = require('d3-color');
     const d3Dispatch = require('d3-dispatch');
@@ -69,6 +70,7 @@ define(function(require) {
             width = 960,
             height = 500,
             data,
+            dataZeroed,
             chartWidth, chartHeight,
             xScale, yScale,
             colorSchema = colorHelper.singleColors.aloeGreen,
@@ -94,6 +96,11 @@ define(function(require) {
             yAxisLineWrapLimit = 1,
             horizontal = false,
             svg,
+
+            isAnimated = false,
+            ease = d3Ease.easeQuadInOut,
+            animationDuration = 1200,
+            interBarDelay = function(d, i) { return 70 * i},
 
             valueLabel = 'value',
             nameLabel = 'name',
@@ -128,7 +135,7 @@ define(function(require) {
             _selection.each(function(_data){
                 chartWidth = width - margin.left - margin.right - (yAxisPaddingBetweenChart * 1.2);
                 chartHeight = height - margin.top - margin.bottom;
-                data = cleanData(_data);
+                ({data, dataZeroed} = cleanData(_data));
 
                 buildScales();
                 buildAxis();
@@ -244,16 +251,20 @@ define(function(require) {
 
         /**
          * Cleaning data adding the proper format
-         * @param  {BarChartData} data Data
+         * @param  {BarChartData} originalData Data
          * @private
          */
-        function cleanData(data) {
-            return data.map((d) => {
-                d.value = +d[valueLabel];
-                d.name = String(d[nameLabel]);
+        function cleanData(originalData) {
+            let data = originalData.map((d) => ({
+                    value: +d[valueLabel],
+                    name: String(d[nameLabel])
+                }));
+            let dataZeroed = data.map((d) => ({
+                    value: 0,
+                    name: String(d[nameLabel])
+                }));
 
-                return d;
-            });
+            return {data, dataZeroed}
         }
 
         /**
@@ -314,6 +325,81 @@ define(function(require) {
                 .attr('y', ({name}) => yScale(name))
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value));
+        }
+
+        /**
+         * Draws and animates the bars along the x axis
+         * @param  {D3Selection} bars Selection of bars
+         * @return {void}
+         */
+        function drawAnimatedHorizontalBars(bars) {
+            // Enter + Update
+            bars.enter()
+              .append('rect')
+                .classed('bar', true)
+                .attr('x', 0)
+                .attr('y', chartHeight)
+                .attr('height', yScale.bandwidth())
+                .attr('width', ({value}) => xScale(value))
+                .attr('fill', ({name}) => colorMap(name))
+                .on('mouseover', function() {
+                    dispatcher.call('customMouseOver', this);
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+                })
+                .on('mousemove', function(d) {
+                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                })
+                .on('mouseout', function() {
+                    dispatcher.call('customMouseOut', this);
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
+                });
+
+            bars
+                .attr('x', 0)
+                .attr('y', ({name}) => yScale(name))
+                .attr('height', yScale.bandwidth())
+                .transition()
+                .duration(animationDuration)
+                .delay(interBarDelay)
+                .ease(ease)
+                .attr('width', ({value}) => xScale(value));
+        }
+
+        /**
+         * Draws and animates the bars along the y axis
+         * @param  {D3Selection} bars Selection of bars
+         * @return {void}
+         */
+        function drawAnimatedVerticalBars(bars) {
+            // Enter + Update
+            bars.enter()
+              .append('rect')
+                .classed('bar', true)
+                .attr('x', chartWidth)
+                .attr('y', ({value}) => yScale(value))
+                .attr('width', xScale.bandwidth())
+                .attr('height', ({value}) => chartHeight - yScale(value))
+                .attr('fill', ({name}) => colorMap(name))
+                .on('mouseover', function() {
+                    dispatcher.call('customMouseOver', this);
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker())
+                })
+                .on('mousemove', function(d) {
+                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                })
+                .on('mouseout', function() {
+                    dispatcher.call('customMouseOut', this);
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
+                })
+              .merge(bars)
+                .attr('x', ({name}) => xScale(name))
+                .attr('y', ({value}) => yScale(value))
+                .attr('width', xScale.bandwidth())
+                .transition()
+                .duration(animationDuration)
+                .delay(interBarDelay)
+                .ease(ease)
+                .attr('height', ({value}) => chartHeight - yScale(value));
         }
 
         /**
@@ -380,12 +466,35 @@ define(function(require) {
          * @private
          */
         function drawBars(){
-            let bars = svg.select('.chart-group').selectAll('.bar').data(data);
+            let bars;
 
-            if (!horizontal) {
-                drawVerticalBars(bars);
+            if (isAnimated) {
+                bars = svg.select('.chart-group').selectAll('.bar')
+                    .data(dataZeroed);
+
+                if (!horizontal) {
+                    drawVerticalBars(bars);
+                } else {
+                    drawHorizontalBars(bars);
+                }
+
+                bars = svg.select('.chart-group').selectAll('.bar')
+                    .data(data);
+
+                if (!horizontal) {
+                    drawAnimatedVerticalBars(bars);
+                } else {
+                    drawAnimatedHorizontalBars(bars);
+                }
             } else {
-                drawHorizontalBars(bars)
+                bars = svg.select('.chart-group').selectAll('.bar')
+                    .data(data);
+
+                if (!horizontal) {
+                    drawVerticalBars(bars);
+                } else {
+                    drawHorizontalBars(bars);
+                }
             }
 
             // Exit
@@ -526,6 +635,23 @@ define(function(require) {
                 return horizontal;
             }
             horizontal = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+         * By default this is 'false'
+         *
+         * @param  {Boolean} _x Desired animation flag
+         * @return { isAnimated | module} Current isAnimated flag or Chart module
+         * @public
+         */
+        exports.isAnimated = function(_x) {
+            if (!arguments.length) {
+                return isAnimated;
+            }
+            isAnimated = _x;
+
             return this;
         };
 

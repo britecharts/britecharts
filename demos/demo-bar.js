@@ -22,6 +22,7 @@ function createBarChart() {
         dataset = testDataSet.withLettersFrequency().build();
 
         barChart
+            .isAnimated(true)
             .width(containerWidth)
             .height(300);
 
@@ -42,18 +43,18 @@ function createHorizontalBarChart() {
         dataset = testDataSet.withColors().build();
 
         barChart
+            .horizontal(true)
+            .isAnimated(true)
             .margin({
                 left: 120,
                 right: 20,
                 top: 20,
                 bottom: 30
             })
-            .horizontal(true)
             .colorSchema(colors.colorSchemas.britechartsColorSchema)
             .width(containerWidth)
             .yAxisPaddingBetweenChart(30)
             .height(300)
-
             .percentageAxisToMaxRatio(1.3)
             .on('customMouseOver', tooltip.show)
             .on('customMouseMove', tooltip.update)
