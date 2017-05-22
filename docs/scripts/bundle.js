@@ -2916,8 +2916,11 @@
 	
 	        // StackedAreChart Setup and start
 <<<<<<< HEAD
+<<<<<<< HEAD
 	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 =======
+=======
+>>>>>>> Adding animation flag to donut
 <<<<<<< HEAD
 	        stackedArea.tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', function () {
 =======
@@ -2932,7 +2935,13 @@
 	        }).on('customMouseOut', function () {
 	            chartTooltip.hide();
 	        });
+<<<<<<< HEAD
 >>>>>>> Adding animation flag in stacked area chart
+=======
+=======
+	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
+>>>>>>> Adding animation flag to donut
+>>>>>>> Adding animation flag to donut
 	
 	        if (optionalColorSchema) {
 	            stackedArea.colorSchema(optionalColorSchema);
@@ -2979,7 +2988,15 @@
 	        container.datum(dataset.data).call(stackedArea);
 	
 	        // Tooltip Setup and start
+<<<<<<< HEAD
 	        chartTooltip.topicLabel('values').title('Tooltip Title');
+=======
+<<<<<<< HEAD
+	        chartTooltip.topicLabel('values').title('Dummy Title');
+=======
+	        chartTooltip.topicLabel('values').title('Tooltip Title');
+>>>>>>> Adding animation flag to donut
+>>>>>>> Adding animation flag to donut
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -19202,12 +19219,27 @@
 	            if (!slices) {
 	                slices = svg.select('.chart-group').selectAll('g.arc').data(layout(data));
 	
+<<<<<<< HEAD
 	                var newSlices = slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true);
+=======
+<<<<<<< HEAD
+	                var newSlices = slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut);
+>>>>>>> Adding animation flag to donut
 	
 	                if (isAnimated) {
 	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', handlePathMouseOver).on('mouseout', handlePathMouseOut).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
 	                } else {
+<<<<<<< HEAD
 	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', handlePathMouseOver).on('mouseout', handlePathMouseOut);
+=======
+	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration));
+=======
+	                if (isAnimated) {
+	                    slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration)).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
+	                } else {
+	                    slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration));
+>>>>>>> Adding animation flag to donut
+>>>>>>> Adding animation flag to donut
 	                }
 	            } else {
 	                slices = svg.select('.chart-group').selectAll('path').data(layout(data));

@@ -391,14 +391,30 @@
                     .selectAll('g.arc')
                     .data(layout(data));
 
+<<<<<<< HEAD
                 let newSlices = slices.enter()
+=======
+                if (isAnimated) {
+                    slices.enter()
+>>>>>>> Adding animation flag to donut
                       .append('g')
                         .each(storeAngle)
                         .each(reduceOuterRadius)
+<<<<<<< HEAD
                         .classed('arc', true);
+=======
+                        .classed('arc', true)
+                        .on('mouseover', handleMouseOver)
+<<<<<<< HEAD
+                        .on('mouseout', handleMouseOut);
+>>>>>>> Adding animation flag to donut
 
                 if (isAnimated) {
                     newSlices.merge(slices)
+=======
+                        .on('mouseout', handleMouseOut)
+                    .merge(slices)
+>>>>>>> Adding animation flag to donut
                       .append('path')
                         .attr('fill', getSliceFill)
                         .on('mouseover', handlePathMouseOver)
@@ -408,7 +424,18 @@
                         .duration(pieDrawingTransitionDuration)
                         .attrTween('d', tweenLoading);
                 } else {
+<<<<<<< HEAD
                     newSlices.merge(slices)
+=======
+                    slices.enter()
+                      .append('g')
+                        .each(storeAngle)
+                        .each(reduceOuterRadius)
+                        .classed('arc', true)
+                        .on('mouseover', handleMouseOver)
+                        .on('mouseout', handleMouseOut)
+                    .merge(slices)
+>>>>>>> Adding animation flag to donut
                       .append('path')
                         .attr('fill', getSliceFill)
                         .attr('d', shape)
