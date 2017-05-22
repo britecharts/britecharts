@@ -2915,7 +2915,24 @@
 	        // dataset = testDataSet.withGeneratedData().build();
 	
 	        // StackedAreChart Setup and start
+<<<<<<< HEAD
 	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
+=======
+<<<<<<< HEAD
+	        stackedArea.tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', function () {
+=======
+	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal')
+	        // .dateLabel('dateUTC')
+	        // .valueLabel('views')
+	        .on('customMouseOver', function () {
+>>>>>>> Adding animation flag in stacked area chart
+	            chartTooltip.show();
+	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
+	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+	        }).on('customMouseOut', function () {
+	            chartTooltip.hide();
+	        });
+>>>>>>> Adding animation flag in stacked area chart
 	
 	        if (optionalColorSchema) {
 	            stackedArea.colorSchema(optionalColorSchema);
@@ -3561,6 +3578,10 @@
 	        function drawStackedAreas() {
 	            var series = void 0;
 	
+<<<<<<< HEAD
+=======
+	            // Creating Area function
+>>>>>>> Adding animation flag in stacked area chart
 	            area = d3Shape.area().curve(d3Shape.curveMonotoneX).x(function (_ref6) {
 	                var data = _ref6.data;
 	                return xScale(data.date);
