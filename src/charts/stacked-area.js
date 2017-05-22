@@ -133,6 +133,7 @@ define(function(require){
             pointsColor           = '#c0c6cc',
             pointsBorderColor     = '#ffffff',
 
+            isAnimated = false,
             ease = d3Ease.easeQuadInOut,
             areaAnimationDuration = 1000,
 
@@ -536,6 +537,8 @@ define(function(require){
          * @private
          */
         function drawStackedAreas() {
+            let series;
+
             // Creating Area function
             area = d3Shape.area()
                 .curve(d3Shape.curveMonotoneX)
@@ -543,28 +546,48 @@ define(function(require){
                 .y0( (d) => yScale(d[0]) )
                 .y1( (d) => yScale(d[1]) );
 
-            let series = svg.select('.chart-group').selectAll('.layer')
-                .data(layersInitial)
-                .enter()
-              .append('g')
-                .classed('layer-container', true);
+            if (isAnimated) {
+                series = svg.select('.chart-group').selectAll('.layer')
+                    .data(layersInitial)
+                    .enter()
+                  .append('g')
+                    .classed('layer-container', true);
 
-            series
-              .append('path')
-                .attr('class', 'layer')
-                .attr('d', area)
-                .style('fill', ({key}) => categoryColorMap[key]);
+                series
+                  .append('path')
+                    .attr('class', 'layer')
+                    .attr('d', area)
+                    .style('fill', ({key}) => categoryColorMap[key]);
 
-            // Update
-            svg.select('.chart-group').selectAll('.layer')
-                .data(layers)
-                .transition()
-                .delay( (_, i) => areaAnimationDelays[i])
-                .duration(areaAnimationDuration)
-                .ease(ease)
-                .attr('d', area)
-                .style('opacity', areaOpacity)
-                .style('fill', ({key}) => categoryColorMap[key]);
+                // Update
+                svg.select('.chart-group').selectAll('.layer')
+                    .data(layers)
+                    .transition()
+                    .delay( (_, i) => areaAnimationDelays[i])
+                    .duration(areaAnimationDuration)
+                    .ease(ease)
+                    .attr('d', area)
+                    .style('opacity', areaOpacity)
+                    .style('fill', ({key}) => categoryColorMap[key]);
+            } else {
+                series = svg.select('.chart-group').selectAll('.layer')
+                    .data(layers)
+                    .enter()
+                  .append('g')
+                    .classed('layer-container', true);
+
+                series
+                  .append('path')
+                    .attr('class', 'layer')
+                    .attr('d', area)
+                    .style('fill', ({key}) => categoryColorMap[key]);
+
+                // Update
+                series
+                    .attr('d', area)
+                    .style('opacity', areaOpacity)
+                    .style('fill', ({key}) => categoryColorMap[key]);
+            }
 
             // Exit
             series.exit()
@@ -916,6 +939,23 @@ define(function(require){
                 width = Math.ceil(_x / aspectRatio);
             }
             height = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+         * By default this is 'false'
+         *
+         * @param  {Boolean} _x Desired animation flag
+         * @return { isAnimated | module} Current isAnimated flag or Chart module
+         * @public
+         */
+        exports.isAnimated = function(_x) {
+            if (!arguments.length) {
+                return isAnimated;
+            }
+            isAnimated = _x;
 
             return this;
         };

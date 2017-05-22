@@ -2920,7 +2920,14 @@
 	        // dataset = testDataSet.withGeneratedData().build();
 	
 	        // StackedAreChart Setup and start
+<<<<<<< HEAD
 	        stackedArea.tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', function () {
+=======
+	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal')
+	        // .dateLabel('dateUTC')
+	        // .valueLabel('views')
+	        .on('customMouseOver', function () {
+>>>>>>> Adding animation flag in stacked area chart
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -3234,6 +3241,7 @@
 	            pointsSize = 1.5,
 	            pointsColor = '#c0c6cc',
 	            pointsBorderColor = '#ffffff',
+	            isAnimated = false,
 	            ease = d3Ease.easeQuadInOut,
 	            areaAnimationDuration = 1000,
 	            svg = void 0,
@@ -3575,6 +3583,8 @@
 	         * @private
 	         */
 	        function drawStackedAreas() {
+	            var series = void 0;
+	
 	            // Creating Area function
 	            area = d3Shape.area().curve(d3Shape.curveMonotoneX).x(function (_ref6) {
 	                var data = _ref6.data;
@@ -3585,20 +3595,35 @@
 	                return yScale(d[1]);
 	            });
 	
-	            var series = svg.select('.chart-group').selectAll('.layer').data(layersInitial).enter().append('g').classed('layer-container', true);
+	            if (isAnimated) {
+	                series = svg.select('.chart-group').selectAll('.layer').data(layersInitial).enter().append('g').classed('layer-container', true);
 	
-	            series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref7) {
-	                var key = _ref7.key;
-	                return categoryColorMap[key];
-	            });
+	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref7) {
+	                    var key = _ref7.key;
+	                    return categoryColorMap[key];
+	                });
 	
-	            // Update
-	            svg.select('.chart-group').selectAll('.layer').data(layers).transition().delay(function (_, i) {
-	                return areaAnimationDelays[i];
-	            }).duration(areaAnimationDuration).ease(ease).attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref8) {
-	                var key = _ref8.key;
-	                return categoryColorMap[key];
-	            });
+	                // Update
+	                svg.select('.chart-group').selectAll('.layer').data(layers).transition().delay(function (_, i) {
+	                    return areaAnimationDelays[i];
+	                }).duration(areaAnimationDuration).ease(ease).attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref8) {
+	                    var key = _ref8.key;
+	                    return categoryColorMap[key];
+	                });
+	            } else {
+	                series = svg.select('.chart-group').selectAll('.layer').data(layers).enter().append('g').classed('layer-container', true);
+	
+	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref9) {
+	                    var key = _ref9.key;
+	                    return categoryColorMap[key];
+	                });
+	
+	                // Update
+	                series.attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref10) {
+	                    var key = _ref10.key;
+	                    return categoryColorMap[key];
+	                });
+	            }
 	
 	            // Exit
 	            series.exit().transition().style('opacity', 0).remove();
@@ -3683,8 +3708,8 @@
 	         * @return {obj}        Data entry that is closer to that x axis position
 	         */
 	        function getNearestDataPoint(mouseX) {
-	            return dataByDate.find(function (_ref9) {
-	                var date = _ref9.date;
+	            return dataByDate.find(function (_ref11) {
+	                var date = _ref11.date;
 	                return Math.abs(xScale(date) - mouseX) <= epsilon;
 	            });
 	        }
@@ -3695,8 +3720,8 @@
 	         * @return {Number} half distance between any two points
 	         */
 	        function setEpsilon() {
-	            var dates = dataByDate.map(function (_ref10) {
-	                var date = _ref10.date;
+	            var dates = dataByDate.map(function (_ref12) {
+	                var date = _ref12.date;
 	                return date;
 	            });
 	
@@ -3754,8 +3779,8 @@
 	         * @param  {obj} dataPoint Data point to extract info from
 	         * @private
 	         */
-	        function highlightDataPoints(_ref11) {
-	            var values = _ref11.values;
+	        function highlightDataPoints(_ref13) {
+	            var values = _ref13.values;
 	
 	            var accumulator = 0;
 	
@@ -3768,8 +3793,8 @@
 	                return order.indexOf(a.name) > order.indexOf(b.name);
 	            });
 	
-	            values.forEach(function (_ref12, index) {
-	                var name = _ref12.name;
+	            values.forEach(function (_ref14, index) {
+	                var name = _ref14.name;
 	
 	                var marker = verticalMarkerContainer.append('g').classed('circle-container', true),
 	                    circleSize = 12;
@@ -3941,6 +3966,23 @@
 	                width = Math.ceil(_x / aspectRatio);
 	            }
 	            height = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
+	         * @param  {Boolean} _x Desired animation flag
+	         * @return { isAnimated | module} Current isAnimated flag or Chart module
+	         * @public
+	         */
+	        exports.isAnimated = function (_x) {
+	            if (!arguments.length) {
+	                return isAnimated;
+	            }
+	            isAnimated = _x;
 	
 	            return this;
 	        };

@@ -321,6 +321,18 @@ define([
                 expect(defaultVerticalTicks).not.toBe(testVerticalTicks);
                 expect(newVerticalTicks).toBe(testVerticalTicks);
             });
+
+            it('should provide animation getter and setter', () => {
+                let defaultAnimation = stackedAreaChart.isAnimated(),
+                    testAnimation = true,
+                    newAnimation;
+
+                stackedAreaChart.isAnimated(testAnimation);
+                newAnimation = stackedAreaChart.isAnimated();
+
+                expect(defaultAnimation).not.toBe(testAnimation);
+                expect(newAnimation).toBe(testAnimation);
+            });
         });
 
         describe('Aspect Ratio', function() {
