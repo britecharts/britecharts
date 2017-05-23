@@ -27,6 +27,7 @@ function createDonutChart(dataset, optionalColorSchema) {
         });
 
         donutChart
+            .isAnimated(true)
             .width(containerWidth)
             .height(containerWidth)
             .externalRadius(containerWidth/2.5)

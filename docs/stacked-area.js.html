@@ -5,8 +5,8 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Britecharts - D3.js based charting library of reusable components</title>
+        
+        <title>Source: stacked-area.js</title>
 
         
             <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
@@ -91,7 +91,7 @@
             			<li class="dropdown">
             				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Demos<b class="caret"></b></a>
             				<ul class="dropdown-menu inline">
-            					<li><a href="tutorial--_GETTINGSTARTED.html">_GETTINGSTARTED</a></li><li><a href="tutorial-bar.html">bar</a></li><li><a href="tutorial-brush.html">brush</a></li><li><a href="tutorial-cdn.html">cdn</a></li><li><a href="tutorial-donut.html">donut</a></li><li><a href="tutorial-kitchen-sink.html">kitchen-sink</a></li><li><a href="tutorial-line.html">line</a></li><li><a href="tutorial-sparkline.html">sparkline</a></li><li><a href="tutorial-stacked-area.html">stacked-area</a></li><li><a href="tutorial-step.html">step</a></li>
+            					<li><a href="tutorial--_GETTINGSTARTED.html">Getting Started</a></li><li><a href="tutorial-bar.html">Bar Chart</a></li><li><a href="tutorial-brush.html">Brush Chart</a></li><li><a href="tutorial-cdn.html">CDN</a></li><li><a href="tutorial-donut.html">Donut Chart</a></li><li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li><li><a href="tutorial-line.html">Line Chart</a></li><li><a href="tutorial-sparkline.html">Sparkline Chart</a></li><li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li><li><a href="tutorial-step.html">Step Chart</a></li>
             				</ul>
             			</li>
             			
@@ -267,6 +267,7 @@
             pointsColor           = '#c0c6cc',
             pointsBorderColor     = '#ffffff',
 
+            isAnimated = false,
             ease = d3Ease.easeQuadInOut,
             areaAnimationDuration = 1000,
 
@@ -670,35 +671,56 @@
          * @private
          */
         function drawStackedAreas() {
-            // Creating Area function
+            let series;
+
             area = d3Shape.area()
                 .curve(d3Shape.curveMonotoneX)
                 .x( ({data}) => xScale(data.date) )
                 .y0( (d) => yScale(d[0]) )
                 .y1( (d) => yScale(d[1]) );
 
-            let series = svg.select('.chart-group').selectAll('.layer')
-                .data(layersInitial)
-                .enter()
-              .append('g')
-                .classed('layer-container', true);
+            if (isAnimated) {
+                series = svg.select('.chart-group').selectAll('.layer')
+                    .data(layersInitial)
+                    .enter()
+                  .append('g')
+                    .classed('layer-container', true);
 
-            series
-              .append('path')
-                .attr('class', 'layer')
-                .attr('d', area)
-                .style('fill', ({key}) => categoryColorMap[key]);
+                series
+                  .append('path')
+                    .attr('class', 'layer')
+                    .attr('d', area)
+                    .style('fill', ({key}) => categoryColorMap[key]);
 
-            // Update
-            svg.select('.chart-group').selectAll('.layer')
-                .data(layers)
-                .transition()
-                .delay( (_, i) => areaAnimationDelays[i])
-                .duration(areaAnimationDuration)
-                .ease(ease)
-                .attr('d', area)
-                .style('opacity', areaOpacity)
-                .style('fill', ({key}) => categoryColorMap[key]);
+                // Update
+                svg.select('.chart-group').selectAll('.layer')
+                    .data(layers)
+                    .transition()
+                    .delay( (_, i) => areaAnimationDelays[i])
+                    .duration(areaAnimationDuration)
+                    .ease(ease)
+                    .attr('d', area)
+                    .style('opacity', areaOpacity)
+                    .style('fill', ({key}) => categoryColorMap[key]);
+            } else {
+                series = svg.select('.chart-group').selectAll('.layer')
+                    .data(layers)
+                    .enter()
+                  .append('g')
+                    .classed('layer-container', true);
+
+                series
+                  .append('path')
+                    .attr('class', 'layer')
+                    .attr('d', area)
+                    .style('fill', ({key}) => categoryColorMap[key]);
+
+                // Update
+                series
+                    .attr('d', area)
+                    .style('opacity', areaOpacity)
+                    .style('fill', ({key}) => categoryColorMap[key]);
+            }
 
             // Exit
             series.exit()
@@ -1055,6 +1077,23 @@
         };
 
         /**
+         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+         * By default this is 'false'
+         *
+         * @param  {Boolean} _x Desired animation flag
+         * @return { isAnimated | module} Current isAnimated flag or Chart module
+         * @public
+         */
+        exports.isAnimated = function(_x) {
+            if (!arguments.length) {
+                return isAnimated;
+            }
+            isAnimated = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the keyLabel of the chart
          * @param  {Number} _x Desired keyLabel for the graph
          * @return { keyLabel | module} Current keyLabel or Chart module to chain calls
@@ -1229,13 +1268,13 @@
             </span>
         </footer>
 
-        <script src="scripts/docstrap.lib.js"></script>
-        <script src="scripts/toc.js"></script>
+        <script src="/britecharts/scripts/docstrap.lib.js"></script>
+        <script src="/britecharts/scripts/toc.js"></script>
         
-            <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+            <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
         
-        <script src="scripts/bundle.js"></script>
-        <script src="scripts/prism.js"></script>
+        <script src="/britecharts/scripts/bundle.js"></script>
+        <script src="/britecharts/scripts/prism.js"></script>
         <script>
         $( function () {
         	$( "[id*='$']" ).each( function () {

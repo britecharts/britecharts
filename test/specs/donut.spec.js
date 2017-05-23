@@ -127,6 +127,18 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 expect(defaultSchema).not.toBe(testSchema);
                 expect(newSchema).toBe(testSchema);
             });
+
+            it('should provide animation getter and setter', () => {
+                let defaultAnimation = donutChart.isAnimated(),
+                    testAnimation = true,
+                    newAnimation;
+
+                donutChart.isAnimated(testAnimation);
+                newAnimation = donutChart.isAnimated();
+
+                expect(defaultAnimation).not.toBe(testAnimation);
+                expect(newAnimation).toBe(testAnimation);
+            });
         });
 
         describe('when mouse events are triggered', () => {
