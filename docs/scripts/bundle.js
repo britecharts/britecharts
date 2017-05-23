@@ -3566,7 +3566,6 @@
 	        function drawStackedAreas() {
 	            var series = void 0;
 	
-	            // Creating Area function
 	            area = d3Shape.area().curve(d3Shape.curveMonotoneX).x(function (_ref6) {
 	                var data = _ref6.data;
 	                return xScale(data.date);
@@ -19276,10 +19275,12 @@
 	            if (!slices) {
 	                slices = svg.select('.chart-group').selectAll('g.arc').data(layout(data));
 	
+	                var newSlices = slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut);
+	
 	                if (isAnimated) {
-	                    slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration)).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
+	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration)).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
 	                } else {
-	                    slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration));
+	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration));
 	                }
 	            } else {
 	                slices = svg.select('.chart-group').selectAll('path').data(layout(data));

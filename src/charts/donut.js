@@ -240,15 +240,16 @@ define(function(require){
                     .selectAll('g.arc')
                     .data(layout(data));
 
-                if (isAnimated) {
-                    slices.enter()
+                let newSlices = slices.enter()
                       .append('g')
                         .each(storeAngle)
                         .each(reduceOuterRadius)
                         .classed('arc', true)
                         .on('mouseover', handleMouseOver)
-                        .on('mouseout', handleMouseOut)
-                    .merge(slices)
+                        .on('mouseout', handleMouseOut);
+
+                if (isAnimated) {
+                    newSlices.merge(slices)
                       .append('path')
                         .attr('fill', getSliceFill)
                         .on('mouseover', tweenGrowthFactory(externalRadius, 0))
@@ -258,14 +259,7 @@ define(function(require){
                         .duration(pieDrawingTransitionDuration)
                         .attrTween('d', tweenLoading);
                 } else {
-                    slices.enter()
-                      .append('g')
-                        .each(storeAngle)
-                        .each(reduceOuterRadius)
-                        .classed('arc', true)
-                        .on('mouseover', handleMouseOver)
-                        .on('mouseout', handleMouseOut)
-                    .merge(slices)
+                    newSlices.merge(slices)
                       .append('path')
                         .attr('fill', getSliceFill)
                         .attr('d', shape)
