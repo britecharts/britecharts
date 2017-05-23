@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "/assets/";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -55,12 +55,12 @@
 	
 	__webpack_require__(2);
 	__webpack_require__(6);
-	__webpack_require__(42);
-	__webpack_require__(49);
-	__webpack_require__(55);
-	__webpack_require__(67);
-	__webpack_require__(71);
-	__webpack_require__(75);
+	__webpack_require__(41);
+	__webpack_require__(48);
+	__webpack_require__(54);
+	__webpack_require__(66);
+	__webpack_require__(70);
+	__webpack_require__(74);
 
 /***/ }),
 /* 2 */
@@ -2893,9 +2893,9 @@
 	    PubSub = __webpack_require__(5),
 	    colors = __webpack_require__(7),
 	    stackedAreaChart = __webpack_require__(8),
-	    tooltip = __webpack_require__(34),
-	    stackedDataBuilder = __webpack_require__(35),
-	    colorSelectorHelper = __webpack_require__(41);
+	    tooltip = __webpack_require__(33),
+	    stackedDataBuilder = __webpack_require__(34),
+	    colorSelectorHelper = __webpack_require__(40);
 	
 	function createStackedAreaChartWithTooltip(optionalColorSchema) {
 	    var stackedArea = stackedAreaChart(),
@@ -2915,16 +2915,7 @@
 	        // dataset = testDataSet.withGeneratedData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).width(containerWidth).grid('horizontal')
-	        // .dateLabel('dateUTC')
-	        // .valueLabel('views')
-	        .on('customMouseOver', function () {
-	            chartTooltip.show();
-	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
-	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-	        }).on('customMouseOut', function () {
-	            chartTooltip.hide();
-	        });
+	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 	
 	        if (optionalColorSchema) {
 	            stackedArea.colorSchema(optionalColorSchema);
@@ -2962,13 +2953,7 @@
 	        // dataset = testDataSet.withLargeData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').forceAxisFormat('custom').forcedXFormat('%Y/%m/%d').forcedXTicks(2).width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', function () {
-	            chartTooltip.show();
-	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
-	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-	        }).on('customMouseOut', function () {
-	            chartTooltip.hide();
-	        });
+	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').forceAxisFormat('custom').forcedXFormat('%Y/%m/%d').forcedXTicks(2).width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 	
 	        if (optionalColorSchema) {
 	            stackedArea.colorSchema(optionalColorSchema);
@@ -2977,7 +2962,7 @@
 	        container.datum(dataset.data).call(stackedArea);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.topicLabel('values').title('Dummy Tooltip Title');
+	        chartTooltip.topicLabel('values').title('Tooltip Title');
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -3111,21 +3096,21 @@
 	    var d3Transition = __webpack_require__(22);
 	    var d3TimeFormat = __webpack_require__(19);
 	
-	    var _ = __webpack_require__(3);
+	    var assign = __webpack_require__(24);
 	
-	    var _require = __webpack_require__(24),
+	    var _require = __webpack_require__(25),
 	        exportChart = _require.exportChart;
 	
 	    var colorHelper = __webpack_require__(7);
-	    var timeAxisHelper = __webpack_require__(31);
+	    var timeAxisHelper = __webpack_require__(30);
 	
-	    var _require2 = __webpack_require__(32),
+	    var _require2 = __webpack_require__(31),
 	        isInteger = _require2.isInteger;
 	
-	    var _require3 = __webpack_require__(27),
+	    var _require3 = __webpack_require__(26),
 	        axisTimeCombinations = _require3.axisTimeCombinations;
 	
-	    var _require4 = __webpack_require__(33),
+	    var _require4 = __webpack_require__(32),
 	        formatIntegerValue = _require4.formatIntegerValue,
 	        formatDecimalValue = _require4.formatDecimalValue;
 	
@@ -3210,6 +3195,7 @@
 	            areaOpacity = 0.64,
 	            colorScale = void 0,
 	            categoryColorMap = void 0,
+	            order = void 0,
 	            forceAxisSettings = null,
 	            forcedXTicks = null,
 	            forcedXFormat = null,
@@ -3226,10 +3212,12 @@
 	            overlay = void 0,
 	            verticalMarkerContainer = void 0,
 	            verticalMarker = void 0,
+	            epsilon = void 0,
 	            dataPoints = {},
 	            pointsSize = 1.5,
 	            pointsColor = '#c0c6cc',
 	            pointsBorderColor = '#ffffff',
+	            isAnimated = false,
 	            ease = d3Ease.easeQuadInOut,
 	            areaAnimationDuration = 1000,
 	            svg = void 0,
@@ -3326,8 +3314,8 @@
 	         * @private
 	         */
 	        function buildAxis() {
-	            var dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
-	            var yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
+	            var dataSpan = yScale.domain()[1] - yScale.domain()[0];
+	            var yTickNumber = dataSpan < verticalTicks - 1 ? dataSpan : verticalTicks;
 	            var minor = void 0,
 	                major = void 0;
 	
@@ -3377,34 +3365,42 @@
 	         * @private
 	         */
 	        function buildLayers() {
-	            dataByDateFormatted = _.chain(dataByDate).map(function (d) {
-	                return _.extend(d, d.values);
+	            dataByDateFormatted = dataByDate.map(function (d) {
+	                return assign({}, d, d.values);
 	            }).map(function (d) {
-	                _(d).each(function (entry) {
-	                    if (entry && entry['name']) {
-	                        d[entry['name']] = entry.value;
+	                Object.keys(d).forEach(function (k) {
+	                    var entry = d[k];
+	
+	                    if (entry && entry.name) {
+	                        d[entry.name] = entry.value;
 	                    }
 	                });
-	                d['date'] = new Date(d['key']);
 	
-	                return d;
-	            }).value();
+	                return assign({}, d, {
+	                    date: new Date(d['key'])
+	                });
+	            });
 	
-	            dataByDateZeroed = _.chain(JSON.parse(JSON.stringify(dataByDate))).map(function (d) {
-	                return _.extend(d, d.values);
+	            dataByDateZeroed = dataByDate.map(function (d) {
+	                return assign({}, d, d.values);
 	            }).map(function (d) {
-	                _(d).each(function (entry) {
-	                    if (entry && entry['name']) {
-	                        d[entry['name']] = 0;
+	                Object.keys(d).forEach(function (k) {
+	                    var entry = d[k];
+	
+	                    if (entry && entry.name) {
+	                        d[entry.name] = 0;
 	                    }
 	                });
-	                d['date'] = new Date(d['key']);
 	
-	                return d;
-	            }).value();
+	                return assign({}, d, {
+	                    date: new Date(d['key'])
+	                });
+	            });
 	
-	            var keys = uniq(_(data).pluck('name'));
-	            var stack3 = d3Shape.stack().keys(keys).order(d3Shape.stackOrderNone).offset(d3Shape.stackOffsetNone);
+	            order = uniq(data.map(function (o) {
+	                return o.name;
+	            }));
+	            var stack3 = d3Shape.stack().keys(order).order(d3Shape.stackOrderNone).offset(d3Shape.stackOffsetNone);
 	
 	            layersInitial = stack3(dataByDateZeroed);
 	            layers = stack3(dataByDateFormatted);
@@ -3415,7 +3411,7 @@
 	         * @private
 	         */
 	        function buildScales() {
-	            xScale = d3Scale.scaleTime().domain(d3Array.extent(data, function (_ref3) {
+	            xScale = d3Scale.scaleTime().domain(d3Array.extent(dataByDate, function (_ref3) {
 	                var date = _ref3.date;
 	                return date;
 	            })).rangeRound([0, chartWidth]);
@@ -3452,14 +3448,8 @@
 	         * @return {obj}      Parsed data with values and dates
 	         */
 	        function cleanData(data) {
-	            // could be rewritten using spread operator
-	            /*
-	                return data.map((d) => {...d, date: parseUTC(d[dateLabel], [valueLabel] : +d[valueLabel]})
-	             */
-	
 	            return data.map(function (d) {
-	                d.date = new Date(d[dateLabel]);
-	                d.value = +d[valueLabel];
+	                d.date = new Date(d[dateLabel]), d.value = +d[valueLabel];
 	
 	                return d;
 	            });
@@ -3569,7 +3559,8 @@
 	         * @private
 	         */
 	        function drawStackedAreas() {
-	            // Creating Area function
+	            var series = void 0;
+	
 	            area = d3Shape.area().curve(d3Shape.curveMonotoneX).x(function (_ref6) {
 	                var data = _ref6.data;
 	                return xScale(data.date);
@@ -3579,20 +3570,35 @@
 	                return yScale(d[1]);
 	            });
 	
-	            var series = svg.select('.chart-group').selectAll('.layer').data(layersInitial).enter().append('g').classed('layer-container', true);
+	            if (isAnimated) {
+	                series = svg.select('.chart-group').selectAll('.layer').data(layersInitial).enter().append('g').classed('layer-container', true);
 	
-	            series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref7) {
-	                var key = _ref7.key;
-	                return categoryColorMap[key];
-	            });
+	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref7) {
+	                    var key = _ref7.key;
+	                    return categoryColorMap[key];
+	                });
 	
-	            // Update
-	            svg.select('.chart-group').selectAll('.layer').data(layers).transition().delay(function (_, i) {
-	                return areaAnimationDelays[i];
-	            }).duration(areaAnimationDuration).ease(ease).attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref8) {
-	                var key = _ref8.key;
-	                return categoryColorMap[key];
-	            });
+	                // Update
+	                svg.select('.chart-group').selectAll('.layer').data(layers).transition().delay(function (_, i) {
+	                    return areaAnimationDelays[i];
+	                }).duration(areaAnimationDuration).ease(ease).attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref8) {
+	                    var key = _ref8.key;
+	                    return categoryColorMap[key];
+	                });
+	            } else {
+	                series = svg.select('.chart-group').selectAll('.layer').data(layers).enter().append('g').classed('layer-container', true);
+	
+	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref9) {
+	                    var key = _ref9.key;
+	                    return categoryColorMap[key];
+	                });
+	
+	                // Update
+	                series.attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref10) {
+	                    var key = _ref10.key;
+	                    return categoryColorMap[key];
+	                });
+	            }
 	
 	            // Exit
 	            series.exit().transition().style('opacity', 0).remove();
@@ -3628,7 +3634,13 @@
 	         * @private
 	         */
 	        function getDataByDate(data) {
-	            return d3Collection.nest().key(getDate).entries(_(data).sortBy('date'));
+	            return d3Collection.nest().key(getDate).entries(data.sort(function (a, b) {
+	                return a.date - b.date;
+	            })).map(function (d) {
+	                return assign({}, d, {
+	                    date: new Date(d.key)
+	                });
+	            });
 	
 	            // let b =  d3Collection.nest()
 	            //                     .key(getDate).sortKeys(d3Array.ascending)
@@ -3641,7 +3653,9 @@
 	         * @return {Number} Max value
 	         */
 	        function getMaxValueByDate() {
-	            var keys = uniq(_(data).pluck('name'));
+	            var keys = uniq(data.map(function (o) {
+	                return o.name;
+	            }));
 	            var maxValueByDate = d3Array.max(dataByDateFormatted, function (d) {
 	                var vals = keys.map(function (key) {
 	                    return d[key];
@@ -3669,26 +3683,24 @@
 	         * @return {obj}        Data entry that is closer to that x axis position
 	         */
 	        function getNearestDataPoint(mouseX) {
-	            var epsilon = void 0,
-	                nearest = void 0;
+	            return dataByDate.find(function (_ref11) {
+	                var date = _ref11.date;
+	                return Math.abs(xScale(date) - mouseX) <= epsilon;
+	            });
+	        }
 	
-	            //could use spread operator, would prevent mutation of original data
-	            /*
-	                let dataByDateParsed = dataByDate.map((item) => ({...item, key: new Date(item.key)}))
-	             */
-	            var dataByDateParsed = dataByDate.map(function (item) {
-	                item.key = new Date(item.key);
-	
-	                return item;
+	        /**
+	         * Epsilon is the value given to the number representing half of the distance in
+	         * pixels between two date data points
+	         * @return {Number} half distance between any two points
+	         */
+	        function setEpsilon() {
+	            var dates = dataByDate.map(function (_ref12) {
+	                var date = _ref12.date;
+	                return date;
 	            });
 	
-	            epsilon = (xScale(dataByDateParsed[1].key) - xScale(dataByDateParsed[0].key)) / 2;
-	            nearest = dataByDateParsed.find(function (_ref9) {
-	                var key = _ref9.key;
-	                return Math.abs(xScale(key) - mouseX) <= epsilon;
-	            });
-	
-	            return nearest;
+	            epsilon = (xScale(dates[1]) - xScale(dates[0])) / 2;
 	        }
 	
 	        /**
@@ -3697,6 +3709,8 @@
 	         * @private
 	         */
 	        function handleMouseMove() {
+	            epsilon || setEpsilon();
+	
 	            var dataPoint = getNearestDataPoint(getMouseXPosition(this) - margin.left),
 	                dataPointXPosition = void 0;
 	
@@ -3740,23 +3754,22 @@
 	         * @param  {obj} dataPoint Data point to extract info from
 	         * @private
 	         */
-	        function highlightDataPoints(_ref10) {
-	            var values = _ref10.values;
+	        function highlightDataPoints(_ref13) {
+	            var values = _ref13.values;
 	
 	            var accumulator = 0;
 	
 	            eraseDataPointHighlights();
 	
-	            // sorting the values based on the order of the colors,
-	            // so that the order always stays constant
+	            // ensure order stays constant
 	            values = values.filter(function (v) {
 	                return !!v;
 	            }).sort(function (a, b) {
-	                return colorOrder[a.el] > colorOrder[b.el];
+	                return order.indexOf(a.name) > order.indexOf(b.name);
 	            });
 	
-	            values.forEach(function (_ref11, index) {
-	                var name = _ref11.name;
+	            values.forEach(function (_ref14, index) {
+	                var name = _ref14.name;
 	
 	                var marker = verticalMarkerContainer.append('g').classed('circle-container', true),
 	                    circleSize = 12;
@@ -3928,6 +3941,23 @@
 	                width = Math.ceil(_x / aspectRatio);
 	            }
 	            height = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
+	         * @param  {Boolean} _x Desired animation flag
+	         * @return { isAnimated | module} Current isAnimated flag or Chart module
+	         * @public
+	         */
+	        exports.isAnimated = function (_x) {
+	            if (!arguments.length) {
+	                return isAnimated;
+	            }
+	            isAnimated = _x;
 	
 	            return this;
 	        };
@@ -11680,6 +11710,649 @@
 
 /***/ }),
 /* 24 */
+/***/ (function(module, exports) {
+
+	/**
+	 * lodash (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modularize exports="npm" -o ./`
+	 * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+	 * Released under MIT license <https://lodash.com/license>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 */
+	
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+	
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]',
+	    funcTag = '[object Function]',
+	    genTag = '[object GeneratorFunction]';
+	
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^(?:0|[1-9]\d*)$/;
+	
+	/**
+	 * A faster alternative to `Function#apply`, this function invokes `func`
+	 * with the `this` binding of `thisArg` and the arguments of `args`.
+	 *
+	 * @private
+	 * @param {Function} func The function to invoke.
+	 * @param {*} thisArg The `this` binding of `func`.
+	 * @param {Array} args The arguments to invoke `func` with.
+	 * @returns {*} Returns the result of `func`.
+	 */
+	function apply(func, thisArg, args) {
+	  switch (args.length) {
+	    case 0: return func.call(thisArg);
+	    case 1: return func.call(thisArg, args[0]);
+	    case 2: return func.call(thisArg, args[0], args[1]);
+	    case 3: return func.call(thisArg, args[0], args[1], args[2]);
+	  }
+	  return func.apply(thisArg, args);
+	}
+	
+	/**
+	 * The base implementation of `_.times` without support for iteratee shorthands
+	 * or max array length checks.
+	 *
+	 * @private
+	 * @param {number} n The number of times to invoke `iteratee`.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array} Returns the array of results.
+	 */
+	function baseTimes(n, iteratee) {
+	  var index = -1,
+	      result = Array(n);
+	
+	  while (++index < n) {
+	    result[index] = iteratee(index);
+	  }
+	  return result;
+	}
+	
+	/**
+	 * Creates a unary function that invokes `func` with its argument transformed.
+	 *
+	 * @private
+	 * @param {Function} func The function to wrap.
+	 * @param {Function} transform The argument transform.
+	 * @returns {Function} Returns the new function.
+	 */
+	function overArg(func, transform) {
+	  return function(arg) {
+	    return func(transform(arg));
+	  };
+	}
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+	
+	/** Built-in value references. */
+	var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+	
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+	var nativeKeys = overArg(Object.keys, Object),
+	    nativeMax = Math.max;
+	
+	/** Detect if properties shadowing those on `Object.prototype` are non-enumerable. */
+	var nonEnumShadows = !propertyIsEnumerable.call({ 'valueOf': 1 }, 'valueOf');
+	
+	/**
+	 * Creates an array of the enumerable property names of the array-like `value`.
+	 *
+	 * @private
+	 * @param {*} value The value to query.
+	 * @param {boolean} inherited Specify returning inherited property names.
+	 * @returns {Array} Returns the array of property names.
+	 */
+	function arrayLikeKeys(value, inherited) {
+	  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+	  // Safari 9 makes `arguments.length` enumerable in strict mode.
+	  var result = (isArray(value) || isArguments(value))
+	    ? baseTimes(value.length, String)
+	    : [];
+	
+	  var length = result.length,
+	      skipIndexes = !!length;
+	
+	  for (var key in value) {
+	    if ((inherited || hasOwnProperty.call(value, key)) &&
+	        !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+	
+	/**
+	 * Assigns `value` to `key` of `object` if the existing value is not equivalent
+	 * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * for equality comparisons.
+	 *
+	 * @private
+	 * @param {Object} object The object to modify.
+	 * @param {string} key The key of the property to assign.
+	 * @param {*} value The value to assign.
+	 */
+	function assignValue(object, key, value) {
+	  var objValue = object[key];
+	  if (!(hasOwnProperty.call(object, key) && eq(objValue, value)) ||
+	      (value === undefined && !(key in object))) {
+	    object[key] = value;
+	  }
+	}
+	
+	/**
+	 * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 */
+	function baseKeys(object) {
+	  if (!isPrototype(object)) {
+	    return nativeKeys(object);
+	  }
+	  var result = [];
+	  for (var key in Object(object)) {
+	    if (hasOwnProperty.call(object, key) && key != 'constructor') {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+	
+	/**
+	 * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+	 *
+	 * @private
+	 * @param {Function} func The function to apply a rest parameter to.
+	 * @param {number} [start=func.length-1] The start position of the rest parameter.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseRest(func, start) {
+	  start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+	  return function() {
+	    var args = arguments,
+	        index = -1,
+	        length = nativeMax(args.length - start, 0),
+	        array = Array(length);
+	
+	    while (++index < length) {
+	      array[index] = args[start + index];
+	    }
+	    index = -1;
+	    var otherArgs = Array(start + 1);
+	    while (++index < start) {
+	      otherArgs[index] = args[index];
+	    }
+	    otherArgs[start] = array;
+	    return apply(func, this, otherArgs);
+	  };
+	}
+	
+	/**
+	 * Copies properties of `source` to `object`.
+	 *
+	 * @private
+	 * @param {Object} source The object to copy properties from.
+	 * @param {Array} props The property identifiers to copy.
+	 * @param {Object} [object={}] The object to copy properties to.
+	 * @param {Function} [customizer] The function to customize copied values.
+	 * @returns {Object} Returns `object`.
+	 */
+	function copyObject(source, props, object, customizer) {
+	  object || (object = {});
+	
+	  var index = -1,
+	      length = props.length;
+	
+	  while (++index < length) {
+	    var key = props[index];
+	
+	    var newValue = customizer
+	      ? customizer(object[key], source[key], key, object, source)
+	      : undefined;
+	
+	    assignValue(object, key, newValue === undefined ? source[key] : newValue);
+	  }
+	  return object;
+	}
+	
+	/**
+	 * Creates a function like `_.assign`.
+	 *
+	 * @private
+	 * @param {Function} assigner The function to assign values.
+	 * @returns {Function} Returns the new assigner function.
+	 */
+	function createAssigner(assigner) {
+	  return baseRest(function(object, sources) {
+	    var index = -1,
+	        length = sources.length,
+	        customizer = length > 1 ? sources[length - 1] : undefined,
+	        guard = length > 2 ? sources[2] : undefined;
+	
+	    customizer = (assigner.length > 3 && typeof customizer == 'function')
+	      ? (length--, customizer)
+	      : undefined;
+	
+	    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+	      customizer = length < 3 ? undefined : customizer;
+	      length = 1;
+	    }
+	    object = Object(object);
+	    while (++index < length) {
+	      var source = sources[index];
+	      if (source) {
+	        assigner(object, source, index, customizer);
+	      }
+	    }
+	    return object;
+	  });
+	}
+	
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return !!length &&
+	    (typeof value == 'number' || reIsUint.test(value)) &&
+	    (value > -1 && value % 1 == 0 && value < length);
+	}
+	
+	/**
+	 * Checks if the given arguments are from an iteratee call.
+	 *
+	 * @private
+	 * @param {*} value The potential iteratee value argument.
+	 * @param {*} index The potential iteratee index or key argument.
+	 * @param {*} object The potential iteratee object argument.
+	 * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+	 *  else `false`.
+	 */
+	function isIterateeCall(value, index, object) {
+	  if (!isObject(object)) {
+	    return false;
+	  }
+	  var type = typeof index;
+	  if (type == 'number'
+	        ? (isArrayLike(object) && isIndex(index, object.length))
+	        : (type == 'string' && index in object)
+	      ) {
+	    return eq(object[index], value);
+	  }
+	  return false;
+	}
+	
+	/**
+	 * Checks if `value` is likely a prototype object.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+	 */
+	function isPrototype(value) {
+	  var Ctor = value && value.constructor,
+	      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto;
+	
+	  return value === proto;
+	}
+	
+	/**
+	 * Performs a
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * comparison between two values to determine if they are equivalent.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 * @example
+	 *
+	 * var object = { 'a': 1 };
+	 * var other = { 'a': 1 };
+	 *
+	 * _.eq(object, object);
+	 * // => true
+	 *
+	 * _.eq(object, other);
+	 * // => false
+	 *
+	 * _.eq('a', 'a');
+	 * // => true
+	 *
+	 * _.eq('a', Object('a'));
+	 * // => false
+	 *
+	 * _.eq(NaN, NaN);
+	 * // => true
+	 */
+	function eq(value, other) {
+	  return value === other || (value !== value && other !== other);
+	}
+	
+	/**
+	 * Checks if `value` is likely an `arguments` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArguments(function() { return arguments; }());
+	 * // => true
+	 *
+	 * _.isArguments([1, 2, 3]);
+	 * // => false
+	 */
+	function isArguments(value) {
+	  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+	  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+	    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+	}
+	
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(document.body.children);
+	 * // => false
+	 *
+	 * _.isArray('abc');
+	 * // => false
+	 *
+	 * _.isArray(_.noop);
+	 * // => false
+	 */
+	var isArray = Array.isArray;
+	
+	/**
+	 * Checks if `value` is array-like. A value is considered array-like if it's
+	 * not a function and has a `value.length` that's an integer greater than or
+	 * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLike(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLike('abc');
+	 * // => true
+	 *
+	 * _.isArrayLike(_.noop);
+	 * // => false
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(value.length) && !isFunction(value);
+	}
+	
+	/**
+	 * This method is like `_.isArrayLike` except that it also checks if `value`
+	 * is an object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array-like object,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArrayLikeObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject('abc');
+	 * // => false
+	 *
+	 * _.isArrayLikeObject(_.noop);
+	 * // => false
+	 */
+	function isArrayLikeObject(value) {
+	  return isObjectLike(value) && isArrayLike(value);
+	}
+	
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in Safari 8-9 which returns 'object' for typed array and other constructors.
+	  var tag = isObject(value) ? objectToString.call(value) : '';
+	  return tag == funcTag || tag == genTag;
+	}
+	
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This method is loosely based on
+	 * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 * @example
+	 *
+	 * _.isLength(3);
+	 * // => true
+	 *
+	 * _.isLength(Number.MIN_VALUE);
+	 * // => false
+	 *
+	 * _.isLength(Infinity);
+	 * // => false
+	 *
+	 * _.isLength('3');
+	 * // => false
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' &&
+	    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+	
+	/**
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject(value) {
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+	
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+	
+	/**
+	 * Assigns own enumerable string keyed properties of source objects to the
+	 * destination object. Source objects are applied from left to right.
+	 * Subsequent sources overwrite property assignments of previous sources.
+	 *
+	 * **Note:** This method mutates `object` and is loosely based on
+	 * [`Object.assign`](https://mdn.io/Object/assign).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.10.0
+	 * @category Object
+	 * @param {Object} object The destination object.
+	 * @param {...Object} [sources] The source objects.
+	 * @returns {Object} Returns `object`.
+	 * @see _.assignIn
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 * }
+	 *
+	 * function Bar() {
+	 *   this.c = 3;
+	 * }
+	 *
+	 * Foo.prototype.b = 2;
+	 * Bar.prototype.d = 4;
+	 *
+	 * _.assign({ 'a': 0 }, new Foo, new Bar);
+	 * // => { 'a': 1, 'c': 3 }
+	 */
+	var assign = createAssigner(function(object, source) {
+	  if (nonEnumShadows || isPrototype(source) || isArrayLike(source)) {
+	    copyObject(source, keys(source), object);
+	    return;
+	  }
+	  for (var key in source) {
+	    if (hasOwnProperty.call(source, key)) {
+	      assignValue(object, key, source[key]);
+	    }
+	  }
+	});
+	
+	/**
+	 * Creates an array of the own enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects. See the
+	 * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+	 * for more details.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keys(new Foo);
+	 * // => ['a', 'b'] (iteration order is not guaranteed)
+	 *
+	 * _.keys('hi');
+	 * // => ['0', '1']
+	 */
+	function keys(object) {
+	  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+	}
+	
+	module.exports = assign;
+
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11687,18 +12360,16 @@
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
-	    var bowser = __webpack_require__(25);
-	
 	    var _require = __webpack_require__(7),
 	        colorSchemas = _require.colorSchemas;
 	
-	    var constants = __webpack_require__(27);
-	    var serializeWithStyles = __webpack_require__(28);
+	    var constants = __webpack_require__(26);
+	    var serializeWithStyles = __webpack_require__(27);
 	
 	    var encoder = window.btoa;
 	
 	    if (!encoder) {
-	        encoder = __webpack_require__(29).encode;
+	        encoder = __webpack_require__(28).encode;
 	    }
 	
 	    // Base64 doesn't work really well with Unicode strings, so we need to use this function
@@ -11830,7 +12501,7 @@
 	     * @return {string} string of svg html
 	     */
 	    function formatHtmlByBrowser(html) {
-	        if (bowser.name === 'Firefox') {
+	        if (navigator.userAgent.search('FireFox') > -1) {
 	            return html.replace(/url.*&quot;\)/, 'url(&quot;#' + constants.lineGradientId + '&quot;);');
 	        }
 	
@@ -11876,600 +12547,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/*!
-	 * Bowser - a browser detector
-	 * https://github.com/ded/bowser
-	 * MIT License | (c) Dustin Diaz 2015
-	 */
-	
-	!function (root, name, definition) {
-	  if (typeof module != 'undefined' && module.exports) module.exports = definition()
-	  else if (true) __webpack_require__(26)(name, definition)
-	  else root[name] = definition()
-	}(this, 'bowser', function () {
-	  /**
-	    * See useragents.js for examples of navigator.userAgent
-	    */
-	
-	  var t = true
-	
-	  function detect(ua) {
-	
-	    function getFirstMatch(regex) {
-	      var match = ua.match(regex);
-	      return (match && match.length > 1 && match[1]) || '';
-	    }
-	
-	    function getSecondMatch(regex) {
-	      var match = ua.match(regex);
-	      return (match && match.length > 1 && match[2]) || '';
-	    }
-	
-	    var iosdevice = getFirstMatch(/(ipod|iphone|ipad)/i).toLowerCase()
-	      , likeAndroid = /like android/i.test(ua)
-	      , android = !likeAndroid && /android/i.test(ua)
-	      , nexusMobile = /nexus\s*[0-6]\s*/i.test(ua)
-	      , nexusTablet = !nexusMobile && /nexus\s*[0-9]+/i.test(ua)
-	      , chromeos = /CrOS/.test(ua)
-	      , silk = /silk/i.test(ua)
-	      , sailfish = /sailfish/i.test(ua)
-	      , tizen = /tizen/i.test(ua)
-	      , webos = /(web|hpw)os/i.test(ua)
-	      , windowsphone = /windows phone/i.test(ua)
-	      , samsungBrowser = /SamsungBrowser/i.test(ua)
-	      , windows = !windowsphone && /windows/i.test(ua)
-	      , mac = !iosdevice && !silk && /macintosh/i.test(ua)
-	      , linux = !android && !sailfish && !tizen && !webos && /linux/i.test(ua)
-	      , edgeVersion = getFirstMatch(/edge\/(\d+(\.\d+)?)/i)
-	      , versionIdentifier = getFirstMatch(/version\/(\d+(\.\d+)?)/i)
-	      , tablet = /tablet/i.test(ua)
-	      , mobile = !tablet && /[^-]mobi/i.test(ua)
-	      , xbox = /xbox/i.test(ua)
-	      , result
-	
-	    if (/opera/i.test(ua)) {
-	      //  an old Opera
-	      result = {
-	        name: 'Opera'
-	      , opera: t
-	      , version: versionIdentifier || getFirstMatch(/(?:opera|opr|opios)[\s\/](\d+(\.\d+)?)/i)
-	      }
-	    } else if (/opr|opios/i.test(ua)) {
-	      // a new Opera
-	      result = {
-	        name: 'Opera'
-	        , opera: t
-	        , version: getFirstMatch(/(?:opr|opios)[\s\/](\d+(\.\d+)?)/i) || versionIdentifier
-	      }
-	    }
-	    else if (/SamsungBrowser/i.test(ua)) {
-	      result = {
-	        name: 'Samsung Internet for Android'
-	        , samsungBrowser: t
-	        , version: versionIdentifier || getFirstMatch(/(?:SamsungBrowser)[\s\/](\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/coast/i.test(ua)) {
-	      result = {
-	        name: 'Opera Coast'
-	        , coast: t
-	        , version: versionIdentifier || getFirstMatch(/(?:coast)[\s\/](\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/yabrowser/i.test(ua)) {
-	      result = {
-	        name: 'Yandex Browser'
-	      , yandexbrowser: t
-	      , version: versionIdentifier || getFirstMatch(/(?:yabrowser)[\s\/](\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/ucbrowser/i.test(ua)) {
-	      result = {
-	          name: 'UC Browser'
-	        , ucbrowser: t
-	        , version: getFirstMatch(/(?:ucbrowser)[\s\/](\d+(?:\.\d+)+)/i)
-	      }
-	    }
-	    else if (/mxios/i.test(ua)) {
-	      result = {
-	        name: 'Maxthon'
-	        , maxthon: t
-	        , version: getFirstMatch(/(?:mxios)[\s\/](\d+(?:\.\d+)+)/i)
-	      }
-	    }
-	    else if (/epiphany/i.test(ua)) {
-	      result = {
-	        name: 'Epiphany'
-	        , epiphany: t
-	        , version: getFirstMatch(/(?:epiphany)[\s\/](\d+(?:\.\d+)+)/i)
-	      }
-	    }
-	    else if (/puffin/i.test(ua)) {
-	      result = {
-	        name: 'Puffin'
-	        , puffin: t
-	        , version: getFirstMatch(/(?:puffin)[\s\/](\d+(?:\.\d+)?)/i)
-	      }
-	    }
-	    else if (/sleipnir/i.test(ua)) {
-	      result = {
-	        name: 'Sleipnir'
-	        , sleipnir: t
-	        , version: getFirstMatch(/(?:sleipnir)[\s\/](\d+(?:\.\d+)+)/i)
-	      }
-	    }
-	    else if (/k-meleon/i.test(ua)) {
-	      result = {
-	        name: 'K-Meleon'
-	        , kMeleon: t
-	        , version: getFirstMatch(/(?:k-meleon)[\s\/](\d+(?:\.\d+)+)/i)
-	      }
-	    }
-	    else if (windowsphone) {
-	      result = {
-	        name: 'Windows Phone'
-	      , windowsphone: t
-	      }
-	      if (edgeVersion) {
-	        result.msedge = t
-	        result.version = edgeVersion
-	      }
-	      else {
-	        result.msie = t
-	        result.version = getFirstMatch(/iemobile\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/msie|trident/i.test(ua)) {
-	      result = {
-	        name: 'Internet Explorer'
-	      , msie: t
-	      , version: getFirstMatch(/(?:msie |rv:)(\d+(\.\d+)?)/i)
-	      }
-	    } else if (chromeos) {
-	      result = {
-	        name: 'Chrome'
-	      , chromeos: t
-	      , chromeBook: t
-	      , chrome: t
-	      , version: getFirstMatch(/(?:chrome|crios|crmo)\/(\d+(\.\d+)?)/i)
-	      }
-	    } else if (/chrome.+? edge/i.test(ua)) {
-	      result = {
-	        name: 'Microsoft Edge'
-	      , msedge: t
-	      , version: edgeVersion
-	      }
-	    }
-	    else if (/vivaldi/i.test(ua)) {
-	      result = {
-	        name: 'Vivaldi'
-	        , vivaldi: t
-	        , version: getFirstMatch(/vivaldi\/(\d+(\.\d+)?)/i) || versionIdentifier
-	      }
-	    }
-	    else if (sailfish) {
-	      result = {
-	        name: 'Sailfish'
-	      , sailfish: t
-	      , version: getFirstMatch(/sailfish\s?browser\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/seamonkey\//i.test(ua)) {
-	      result = {
-	        name: 'SeaMonkey'
-	      , seamonkey: t
-	      , version: getFirstMatch(/seamonkey\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/firefox|iceweasel|fxios/i.test(ua)) {
-	      result = {
-	        name: 'Firefox'
-	      , firefox: t
-	      , version: getFirstMatch(/(?:firefox|iceweasel|fxios)[ \/](\d+(\.\d+)?)/i)
-	      }
-	      if (/\((mobile|tablet);[^\)]*rv:[\d\.]+\)/i.test(ua)) {
-	        result.firefoxos = t
-	      }
-	    }
-	    else if (silk) {
-	      result =  {
-	        name: 'Amazon Silk'
-	      , silk: t
-	      , version : getFirstMatch(/silk\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/phantom/i.test(ua)) {
-	      result = {
-	        name: 'PhantomJS'
-	      , phantom: t
-	      , version: getFirstMatch(/phantomjs\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/slimerjs/i.test(ua)) {
-	      result = {
-	        name: 'SlimerJS'
-	        , slimer: t
-	        , version: getFirstMatch(/slimerjs\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (/blackberry|\bbb\d+/i.test(ua) || /rim\stablet/i.test(ua)) {
-	      result = {
-	        name: 'BlackBerry'
-	      , blackberry: t
-	      , version: versionIdentifier || getFirstMatch(/blackberry[\d]+\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (webos) {
-	      result = {
-	        name: 'WebOS'
-	      , webos: t
-	      , version: versionIdentifier || getFirstMatch(/w(?:eb)?osbrowser\/(\d+(\.\d+)?)/i)
-	      };
-	      /touchpad\//i.test(ua) && (result.touchpad = t)
-	    }
-	    else if (/bada/i.test(ua)) {
-	      result = {
-	        name: 'Bada'
-	      , bada: t
-	      , version: getFirstMatch(/dolfin\/(\d+(\.\d+)?)/i)
-	      };
-	    }
-	    else if (tizen) {
-	      result = {
-	        name: 'Tizen'
-	      , tizen: t
-	      , version: getFirstMatch(/(?:tizen\s?)?browser\/(\d+(\.\d+)?)/i) || versionIdentifier
-	      };
-	    }
-	    else if (/qupzilla/i.test(ua)) {
-	      result = {
-	        name: 'QupZilla'
-	        , qupzilla: t
-	        , version: getFirstMatch(/(?:qupzilla)[\s\/](\d+(?:\.\d+)+)/i) || versionIdentifier
-	      }
-	    }
-	    else if (/chromium/i.test(ua)) {
-	      result = {
-	        name: 'Chromium'
-	        , chromium: t
-	        , version: getFirstMatch(/(?:chromium)[\s\/](\d+(?:\.\d+)?)/i) || versionIdentifier
-	      }
-	    }
-	    else if (/chrome|crios|crmo/i.test(ua)) {
-	      result = {
-	        name: 'Chrome'
-	        , chrome: t
-	        , version: getFirstMatch(/(?:chrome|crios|crmo)\/(\d+(\.\d+)?)/i)
-	      }
-	    }
-	    else if (android) {
-	      result = {
-	        name: 'Android'
-	        , version: versionIdentifier
-	      }
-	    }
-	    else if (/safari|applewebkit/i.test(ua)) {
-	      result = {
-	        name: 'Safari'
-	      , safari: t
-	      }
-	      if (versionIdentifier) {
-	        result.version = versionIdentifier
-	      }
-	    }
-	    else if (iosdevice) {
-	      result = {
-	        name : iosdevice == 'iphone' ? 'iPhone' : iosdevice == 'ipad' ? 'iPad' : 'iPod'
-	      }
-	      // WTF: version is not part of user agent in web apps
-	      if (versionIdentifier) {
-	        result.version = versionIdentifier
-	      }
-	    }
-	    else if(/googlebot/i.test(ua)) {
-	      result = {
-	        name: 'Googlebot'
-	      , googlebot: t
-	      , version: getFirstMatch(/googlebot\/(\d+(\.\d+))/i) || versionIdentifier
-	      }
-	    }
-	    else {
-	      result = {
-	        name: getFirstMatch(/^(.*)\/(.*) /),
-	        version: getSecondMatch(/^(.*)\/(.*) /)
-	     };
-	   }
-	
-	    // set webkit or gecko flag for browsers based on these engines
-	    if (!result.msedge && /(apple)?webkit/i.test(ua)) {
-	      if (/(apple)?webkit\/537\.36/i.test(ua)) {
-	        result.name = result.name || "Blink"
-	        result.blink = t
-	      } else {
-	        result.name = result.name || "Webkit"
-	        result.webkit = t
-	      }
-	      if (!result.version && versionIdentifier) {
-	        result.version = versionIdentifier
-	      }
-	    } else if (!result.opera && /gecko\//i.test(ua)) {
-	      result.name = result.name || "Gecko"
-	      result.gecko = t
-	      result.version = result.version || getFirstMatch(/gecko\/(\d+(\.\d+)?)/i)
-	    }
-	
-	    // set OS flags for platforms that have multiple browsers
-	    if (!result.windowsphone && !result.msedge && (android || result.silk)) {
-	      result.android = t
-	    } else if (!result.windowsphone && !result.msedge && iosdevice) {
-	      result[iosdevice] = t
-	      result.ios = t
-	    } else if (mac) {
-	      result.mac = t
-	    } else if (xbox) {
-	      result.xbox = t
-	    } else if (windows) {
-	      result.windows = t
-	    } else if (linux) {
-	      result.linux = t
-	    }
-	
-	    // OS version extraction
-	    var osVersion = '';
-	    if (result.windowsphone) {
-	      osVersion = getFirstMatch(/windows phone (?:os)?\s?(\d+(\.\d+)*)/i);
-	    } else if (iosdevice) {
-	      osVersion = getFirstMatch(/os (\d+([_\s]\d+)*) like mac os x/i);
-	      osVersion = osVersion.replace(/[_\s]/g, '.');
-	    } else if (android) {
-	      osVersion = getFirstMatch(/android[ \/-](\d+(\.\d+)*)/i);
-	    } else if (result.webos) {
-	      osVersion = getFirstMatch(/(?:web|hpw)os\/(\d+(\.\d+)*)/i);
-	    } else if (result.blackberry) {
-	      osVersion = getFirstMatch(/rim\stablet\sos\s(\d+(\.\d+)*)/i);
-	    } else if (result.bada) {
-	      osVersion = getFirstMatch(/bada\/(\d+(\.\d+)*)/i);
-	    } else if (result.tizen) {
-	      osVersion = getFirstMatch(/tizen[\/\s](\d+(\.\d+)*)/i);
-	    }
-	    if (osVersion) {
-	      result.osversion = osVersion;
-	    }
-	
-	    // device type extraction
-	    var osMajorVersion = osVersion.split('.')[0];
-	    if (
-	         tablet
-	      || nexusTablet
-	      || iosdevice == 'ipad'
-	      || (android && (osMajorVersion == 3 || (osMajorVersion >= 4 && !mobile)))
-	      || result.silk
-	    ) {
-	      result.tablet = t
-	    } else if (
-	         mobile
-	      || iosdevice == 'iphone'
-	      || iosdevice == 'ipod'
-	      || android
-	      || nexusMobile
-	      || result.blackberry
-	      || result.webos
-	      || result.bada
-	    ) {
-	      result.mobile = t
-	    }
-	
-	    // Graded Browser Support
-	    // http://developer.yahoo.com/yui/articles/gbs
-	    if (result.msedge ||
-	        (result.msie && result.version >= 10) ||
-	        (result.yandexbrowser && result.version >= 15) ||
-			    (result.vivaldi && result.version >= 1.0) ||
-	        (result.chrome && result.version >= 20) ||
-	        (result.samsungBrowser && result.version >= 4) ||
-	        (result.firefox && result.version >= 20.0) ||
-	        (result.safari && result.version >= 6) ||
-	        (result.opera && result.version >= 10.0) ||
-	        (result.ios && result.osversion && result.osversion.split(".")[0] >= 6) ||
-	        (result.blackberry && result.version >= 10.1)
-	        || (result.chromium && result.version >= 20)
-	        ) {
-	      result.a = t;
-	    }
-	    else if ((result.msie && result.version < 10) ||
-	        (result.chrome && result.version < 20) ||
-	        (result.firefox && result.version < 20.0) ||
-	        (result.safari && result.version < 6) ||
-	        (result.opera && result.version < 10.0) ||
-	        (result.ios && result.osversion && result.osversion.split(".")[0] < 6)
-	        || (result.chromium && result.version < 20)
-	        ) {
-	      result.c = t
-	    } else result.x = t
-	
-	    return result
-	  }
-	
-	  var bowser = detect(typeof navigator !== 'undefined' ? navigator.userAgent || '' : '')
-	
-	  bowser.test = function (browserList) {
-	    for (var i = 0; i < browserList.length; ++i) {
-	      var browserItem = browserList[i];
-	      if (typeof browserItem=== 'string') {
-	        if (browserItem in bowser) {
-	          return true;
-	        }
-	      }
-	    }
-	    return false;
-	  }
-	
-	  /**
-	   * Get version precisions count
-	   *
-	   * @example
-	   *   getVersionPrecision("1.10.3") // 3
-	   *
-	   * @param  {string} version
-	   * @return {number}
-	   */
-	  function getVersionPrecision(version) {
-	    return version.split(".").length;
-	  }
-	
-	  /**
-	   * Array::map polyfill
-	   *
-	   * @param  {Array} arr
-	   * @param  {Function} iterator
-	   * @return {Array}
-	   */
-	  function map(arr, iterator) {
-	    var result = [], i;
-	    if (Array.prototype.map) {
-	      return Array.prototype.map.call(arr, iterator);
-	    }
-	    for (i = 0; i < arr.length; i++) {
-	      result.push(iterator(arr[i]));
-	    }
-	    return result;
-	  }
-	
-	  /**
-	   * Calculate browser version weight
-	   *
-	   * @example
-	   *   compareVersions(['1.10.2.1',  '1.8.2.1.90'])    // 1
-	   *   compareVersions(['1.010.2.1', '1.09.2.1.90']);  // 1
-	   *   compareVersions(['1.10.2.1',  '1.10.2.1']);     // 0
-	   *   compareVersions(['1.10.2.1',  '1.0800.2']);     // -1
-	   *
-	   * @param  {Array<String>} versions versions to compare
-	   * @return {Number} comparison result
-	   */
-	  function compareVersions(versions) {
-	    // 1) get common precision for both versions, for example for "10.0" and "9" it should be 2
-	    var precision = Math.max(getVersionPrecision(versions[0]), getVersionPrecision(versions[1]));
-	    var chunks = map(versions, function (version) {
-	      var delta = precision - getVersionPrecision(version);
-	
-	      // 2) "9" -> "9.0" (for precision = 2)
-	      version = version + new Array(delta + 1).join(".0");
-	
-	      // 3) "9.0" -> ["000000000"", "000000009"]
-	      return map(version.split("."), function (chunk) {
-	        return new Array(20 - chunk.length).join("0") + chunk;
-	      }).reverse();
-	    });
-	
-	    // iterate in reverse order by reversed chunks array
-	    while (--precision >= 0) {
-	      // 4) compare: "000000009" > "000000010" = false (but "9" > "10" = true)
-	      if (chunks[0][precision] > chunks[1][precision]) {
-	        return 1;
-	      }
-	      else if (chunks[0][precision] === chunks[1][precision]) {
-	        if (precision === 0) {
-	          // all version chunks are same
-	          return 0;
-	        }
-	      }
-	      else {
-	        return -1;
-	      }
-	    }
-	  }
-	
-	  /**
-	   * Check if browser is unsupported
-	   *
-	   * @example
-	   *   bowser.isUnsupportedBrowser({
-	   *     msie: "10",
-	   *     firefox: "23",
-	   *     chrome: "29",
-	   *     safari: "5.1",
-	   *     opera: "16",
-	   *     phantom: "534"
-	   *   });
-	   *
-	   * @param  {Object}  minVersions map of minimal version to browser
-	   * @param  {Boolean} [strictMode = false] flag to return false if browser wasn't found in map
-	   * @param  {String}  [ua] user agent string
-	   * @return {Boolean}
-	   */
-	  function isUnsupportedBrowser(minVersions, strictMode, ua) {
-	    var _bowser = bowser;
-	
-	    // make strictMode param optional with ua param usage
-	    if (typeof strictMode === 'string') {
-	      ua = strictMode;
-	      strictMode = void(0);
-	    }
-	
-	    if (strictMode === void(0)) {
-	      strictMode = false;
-	    }
-	    if (ua) {
-	      _bowser = detect(ua);
-	    }
-	
-	    var version = "" + _bowser.version;
-	    for (var browser in minVersions) {
-	      if (minVersions.hasOwnProperty(browser)) {
-	        if (_bowser[browser]) {
-	          if (typeof minVersions[browser] !== 'string') {
-	            throw new Error('Browser version in the minVersion map should be a string: ' + browser + ': ' + String(minVersions));
-	          }
-	
-	          // browser version and min supported version.
-	          return compareVersions([version, minVersions[browser]]) < 0;
-	        }
-	      }
-	    }
-	
-	    return strictMode; // not found
-	  }
-	
-	  /**
-	   * Check if browser is supported
-	   *
-	   * @param  {Object} minVersions map of minimal version to browser
-	   * @param  {Boolean} [strictMode = false] flag to return false if browser wasn't found in map
-	   * @param  {String}  [ua] user agent string
-	   * @return {Boolean}
-	   */
-	  function check(minVersions, strictMode, ua) {
-	    return !isUnsupportedBrowser(minVersions, strictMode, ua);
-	  }
-	
-	  bowser.isUnsupportedBrowser = isUnsupportedBrowser;
-	  bowser.compareVersions = compareVersions;
-	  bowser.check = check;
-	
-	  /*
-	   * Set our detect method to the main bowser object so we can
-	   * reuse it to test other user agents.
-	   * This is needed to implement future tests.
-	   */
-	  bowser._detect = detect;
-	
-	  return bowser
-	});
-
-
-/***/ }),
 /* 26 */
-/***/ (function(module, exports) {
-
-	module.exports = function() { throw new Error("define cannot be used indirect"); };
-
-
-/***/ }),
-/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12496,7 +12574,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -12594,7 +12672,7 @@
 	}();
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/*! http://mths.be/base64 v0.1.0 by @mathias | MIT license */
@@ -12761,10 +12839,10 @@
 	
 	}(this));
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(30)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)(module), (function() { return this; }())))
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports) {
 
 	module.exports = function(module) {
@@ -12780,7 +12858,7 @@
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12797,7 +12875,7 @@
 	    var d3Time = __webpack_require__(18);
 	    var d3TimeFormat = __webpack_require__(19);
 	
-	    var _require = __webpack_require__(27),
+	    var _require = __webpack_require__(26),
 	        axisTimeCombinations = _require.axisTimeCombinations,
 	        timeBenchmarks = _require.timeBenchmarks;
 	
@@ -12899,7 +12977,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12923,7 +13001,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12988,7 +13066,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -13001,14 +13079,14 @@
 	    var d3Transition = __webpack_require__(22);
 	    var d3TimeFormat = __webpack_require__(19);
 	
-	    var _require = __webpack_require__(27),
+	    var _require = __webpack_require__(26),
 	        axisTimeCombinations = _require.axisTimeCombinations;
 	
-	    var _require2 = __webpack_require__(33),
+	    var _require2 = __webpack_require__(32),
 	        formatIntegerValue = _require2.formatIntegerValue,
 	        formatDecimalValue = _require2.formatDecimalValue;
 	
-	    var _require3 = __webpack_require__(32),
+	    var _require3 = __webpack_require__(31),
 	        isInteger = _require3.isInteger;
 	
 	    /**
@@ -13142,7 +13220,7 @@
 	                buildContainerGroups();
 	                drawTooltip();
 	            }
-	            svg.transition().attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+	            svg.transition().attr('width', width).attr('height', height);
 	
 	            // Hidden by default
 	            exports.hide();
@@ -13518,7 +13596,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -13527,11 +13605,11 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonThreeSources = __webpack_require__(36),
-	        jsonSixSources = __webpack_require__(37),
-	        jsonSalesChannel = __webpack_require__(38),
-	        jsonReportService = __webpack_require__(39),
-	        jsonLargeService = __webpack_require__(40);
+	        jsonThreeSources = __webpack_require__(35),
+	        jsonSixSources = __webpack_require__(36),
+	        jsonSalesChannel = __webpack_require__(37),
+	        jsonReportService = __webpack_require__(38),
+	        jsonLargeService = __webpack_require__(39);
 	
 	    function StackedAreaDataBuilder(config) {
 	        this.Klass = StackedAreaDataBuilder;
@@ -13578,7 +13656,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -13647,7 +13725,7 @@
 	};
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -13776,268 +13854,308 @@
 	};
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports) {
 
 	module.exports = {
 		"data": [
 			{
-				"date": "2017-02-16T03:00:00Z",
+				"date": "2017-02-16T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 5
 			},
 			{
-				"date": "2017-02-16T03:00:00Z",
+				"date": "2017-02-16T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 0
 			},
 			{
-				"date": "2017-02-17T03:00:00Z",
+				"date": "2017-02-17T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 1
 			},
 			{
-				"date": "2017-02-17T03:00:00Z",
+				"date": "2017-02-17T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 13
 			},
 			{
-				"date": "2017-02-18T03:00:00Z",
+				"date": "2017-02-18T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 15
 			},
 			{
-				"date": "2017-02-18T03:00:00Z",
+				"date": "2017-02-18T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 1
 			},
 			{
-				"date": "2017-02-19T03:00:00Z",
+				"date": "2017-02-19T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 15
 			},
 			{
-				"date": "2017-02-19T03:00:00Z",
+				"date": "2017-02-19T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 1
 			},
 			{
-				"date": "2017-02-21T03:00:00Z",
+				"date": "2017-02-20T00:00:00-08:00",
+				"name": "Organizer Driven",
+				"value": 15
+			},
+			{
+				"date": "2017-02-20T00:00:00-08:00",
+				"name": "EB Driven",
+				"value": 1
+			},
+			{
+				"date": "2017-02-21T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 18
 			},
 			{
-				"date": "2017-02-21T03:00:00Z",
+				"date": "2017-02-21T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 1
 			},
 			{
-				"date": "2017-02-22T03:00:00Z",
+				"date": "2017-02-22T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 19
 			},
 			{
-				"date": "2017-02-22T03:00:00Z",
+				"date": "2017-02-22T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 1
 			},
 			{
-				"date": "2017-02-23T03:00:00Z",
+				"date": "2017-02-23T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 2
 			},
 			{
-				"date": "2017-02-23T03:00:00Z",
+				"date": "2017-02-23T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 22
 			},
 			{
-				"date": "2017-02-24T03:00:00Z",
+				"date": "2017-02-24T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 25
 			},
 			{
-				"date": "2017-02-24T03:00:00Z",
+				"date": "2017-02-24T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 2
 			},
 			{
-				"date": "2017-02-25T03:00:00Z",
+				"date": "2017-02-25T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 28
 			},
 			{
-				"date": "2017-02-25T03:00:00Z",
+				"date": "2017-02-25T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 2
 			},
 			{
-				"date": "2017-02-26T03:00:00Z",
+				"date": "2017-02-26T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 30
 			},
 			{
-				"date": "2017-02-26T03:00:00Z",
+				"date": "2017-02-26T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 2
 			},
 			{
-				"date": "2017-02-28T03:00:00Z",
+				"date": "2017-02-27T00:00:00-08:00",
+				"name": "Organizer Driven",
+				"value": 30
+			},
+			{
+				"date": "2017-02-27T00:00:00-08:00",
+				"name": "EB Driven",
+				"value": 2
+			},
+			{
+				"date": "2017-02-28T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 31
 			},
 			{
-				"date": "2017-02-28T03:00:00Z",
+				"date": "2017-02-28T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 2
 			},
 			{
-				"date": "2017-03-02T03:00:00Z",
+				"date": "2017-03-01T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 33
 			},
 			{
-				"date": "2017-03-02T03:00:00Z",
+				"date": "2017-03-01T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 2
 			},
 			{
-				"date": "2017-03-03T03:00:00Z",
+				"date": "2017-03-02T00:00:00-08:00",
+				"name": "Organizer Driven",
+				"value": 33
+			},
+			{
+				"date": "2017-03-02T00:00:00-08:00",
+				"name": "EB Driven",
+				"value": 2
+			},
+			{
+				"date": "2017-03-03T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 4
 			},
 			{
-				"date": "2017-03-03T03:00:00Z",
+				"date": "2017-03-03T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 34
 			},
 			{
-				"date": "2017-03-05T03:00:00Z",
-				"name": "Organizer Driven",
-				"value": 37
-			},
-			{
-				"date": "2017-03-05T03:00:00Z",
+				"date": "2017-03-04T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 4
 			},
 			{
-				"date": "2017-03-06T03:00:00Z",
+				"date": "2017-03-04T00:00:00-08:00",
+				"name": "Organizer Driven",
+				"value": 34
+			},
+			{
+				"date": "2017-03-05T00:00:00-08:00",
+				"name": "Organizer Driven",
+				"value": 37
+			},
+			{
+				"date": "2017-03-05T00:00:00-08:00",
+				"name": "EB Driven",
+				"value": 4
+			},
+			{
+				"date": "2017-03-06T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 5
 			},
 			{
-				"date": "2017-03-06T03:00:00Z",
+				"date": "2017-03-06T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 41
 			},
 			{
-				"date": "2017-03-07T03:00:00Z",
+				"date": "2017-03-07T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 69
 			},
 			{
-				"date": "2017-03-07T03:00:00Z",
+				"date": "2017-03-07T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 5
 			},
 			{
-				"date": "2017-03-08T03:00:00Z",
+				"date": "2017-03-08T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 77
 			},
 			{
-				"date": "2017-03-08T03:00:00Z",
+				"date": "2017-03-08T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 5
 			},
 			{
-				"date": "2017-03-09T03:00:00Z",
+				"date": "2017-03-09T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-09T03:00:00Z",
+				"date": "2017-03-09T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 79
 			},
 			{
-				"date": "2017-03-10T03:00:00Z",
+				"date": "2017-03-10T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-10T03:00:00Z",
+				"date": "2017-03-10T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-11T03:00:00Z",
+				"date": "2017-03-11T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-11T03:00:00Z",
+				"date": "2017-03-11T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-12T03:00:00Z",
+				"date": "2017-03-12T00:00:00-08:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-12T03:00:00Z",
+				"date": "2017-03-12T00:00:00-08:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-13T03:00:00Z",
+				"date": "2017-03-13T00:00:00-07:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-13T03:00:00Z",
+				"date": "2017-03-13T00:00:00-07:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-14T03:00:00Z",
+				"date": "2017-03-14T00:00:00-07:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-14T03:00:00Z",
+				"date": "2017-03-14T00:00:00-07:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-15T03:00:00Z",
+				"date": "2017-03-15T00:00:00-07:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-15T03:00:00Z",
+				"date": "2017-03-15T00:00:00-07:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-16T03:00:00Z",
+				"date": "2017-03-16T00:00:00-07:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-16T03:00:00Z",
+				"date": "2017-03-16T00:00:00-07:00",
 				"name": "EB Driven",
 				"value": 8
 			},
 			{
-				"date": "2017-03-17T03:00:00Z",
+				"date": "2017-03-17T00:00:00-07:00",
 				"name": "Organizer Driven",
 				"value": 85
 			},
 			{
-				"date": "2017-03-17T03:00:00Z",
+				"date": "2017-03-17T00:00:00-07:00",
 				"name": "EB Driven",
 				"value": 8
 			}
@@ -14045,7 +14163,7 @@
 	};
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -14126,7 +14244,7 @@
 	};
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -17135,7 +17253,7 @@
 	};
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -17197,17 +17315,17 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    bar = __webpack_require__(43),
-	    miniTooltip = __webpack_require__(45),
+	    bar = __webpack_require__(42),
+	    miniTooltip = __webpack_require__(44),
 	    colors = __webpack_require__(7),
-	    dataBuilder = __webpack_require__(46);
+	    dataBuilder = __webpack_require__(45);
 	
 	function createBarChart() {
 	    var barChart = bar(),
@@ -17241,7 +17359,7 @@
 	            left: 120,
 	            right: 20,
 	            top: 20,
-	            bottom: 5
+	            bottom: 30
 	        }).horizontal(true).colorSchema(colors.colorSchemas.britechartsColorSchema).width(containerWidth).yAxisPaddingBetweenChart(30).height(300).percentageAxisToMaxRatio(1.3).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
 	
 	        barContainer.datum(dataset).call(barChart);
@@ -17295,7 +17413,7 @@
 	}
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -17312,9 +17430,9 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
-	    var textHelper = __webpack_require__(44);
+	    var textHelper = __webpack_require__(43);
 	
-	    var _require = __webpack_require__(24),
+	    var _require = __webpack_require__(25),
 	        exportChart = _require.exportChart;
 	
 	    var colorHelper = __webpack_require__(7);
@@ -17366,7 +17484,7 @@
 	        var margin = {
 	            top: 20,
 	            right: 20,
-	            bottom: 10,
+	            bottom: 30,
 	            left: 40
 	        },
 	            width = 960,
@@ -17546,7 +17664,7 @@
 	                buildContainerGroups();
 	            }
 	
-	            svg.attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+	            svg.attr('width', width).attr('height', height);
 	        }
 	
 	        /**
@@ -17943,7 +18061,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -18082,7 +18200,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -18223,7 +18341,7 @@
 	
 	                buildContainerGroups();
 	            }
-	            svg.attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+	            svg.transition().attr('width', width).attr('height', height);
 	
 	            // Hidden by default
 	            exports.hide();
@@ -18469,7 +18587,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -18478,8 +18596,8 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonColors = __webpack_require__(47),
-	        jsonLetters = __webpack_require__(48);
+	        jsonColors = __webpack_require__(46),
+	        jsonLetters = __webpack_require__(47);
 	
 	    function BarDataBuilder(config) {
 	        this.Klass = BarDataBuilder;
@@ -18522,7 +18640,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -18555,7 +18673,7 @@
 	};
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -18668,17 +18786,17 @@
 	};
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    donut = __webpack_require__(50),
-	    legend = __webpack_require__(51),
-	    dataBuilder = __webpack_require__(52),
-	    colorSelectorHelper = __webpack_require__(41),
+	    donut = __webpack_require__(49),
+	    legend = __webpack_require__(50),
+	    dataBuilder = __webpack_require__(51),
+	    colorSelectorHelper = __webpack_require__(40),
 	    dataset = new dataBuilder.DonutDataBuilder().withFivePlusOther().build(),
 	    legendChart;
 	
@@ -18693,7 +18811,7 @@
 	            donutChart.exportChart();
 	        });
 	
-	        donutChart.width(containerWidth).height(containerWidth).externalRadius(containerWidth / 2.5).internalRadius(containerWidth / 5).on('customMouseOver', function (data) {
+	        donutChart.isAnimated(true).width(containerWidth).height(containerWidth).externalRadius(containerWidth / 2.5).internalRadius(containerWidth / 5).on('customMouseOver', function (data) {
 	            legendChart.highlight(data.data.id);
 	        }).on('customMouseOut', function () {
 	            legendChart.clearHighlight();
@@ -18789,7 +18907,7 @@
 	}
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -18805,10 +18923,10 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
-	    var _require = __webpack_require__(24),
+	    var _require = __webpack_require__(25),
 	        exportChart = _require.exportChart;
 	
-	    var textHelper = __webpack_require__(44);
+	    var textHelper = __webpack_require__(43);
 	    var colorHelper = __webpack_require__(7);
 	
 	    /**
@@ -18882,6 +19000,7 @@
 	            shape = void 0,
 	            slices = void 0,
 	            svg = void 0,
+	            isAnimated = false,
 	            quantityLabel = 'quantity',
 	            nameLabel = 'name',
 	            percentageLabel = 'percentage',
@@ -18990,7 +19109,7 @@
 	                buildContainerGroups();
 	            }
 	
-	            svg.transition().ease(ease).attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+	            svg.attr('width', width).attr('height', height);
 	        }
 	
 	        /**
@@ -19032,7 +19151,13 @@
 	            if (!slices) {
 	                slices = svg.select('.chart-group').selectAll('g.arc').data(layout(data));
 	
-	                slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration)).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
+	                var newSlices = slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut);
+	
+	                if (isAnimated) {
+	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration)).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
+	                } else {
+	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration));
+	                }
 	            } else {
 	                slices = svg.select('.chart-group').selectAll('path').data(layout(data));
 	
@@ -19185,6 +19310,23 @@
 	        };
 	
 	        /**
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
+	         * @param  {Boolean} _x Desired animation flag
+	         * @return { isAnimated | module} Current isAnimated flag or Chart module
+	         * @public
+	         */
+	        exports.isAnimated = function (_x) {
+	            if (!arguments.length) {
+	                return isAnimated;
+	            }
+	            isAnimated = _x;
+	
+	            return this;
+	        };
+	
+	        /**
 	         * Gets or Sets the internalRadius of the chart
 	         * @param  {Number} _x InternalRadius number to get/set
 	         * @return { (Number | Module) } Current internalRadius or Donut Chart module to chain calls
@@ -19253,7 +19395,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -19266,7 +19408,7 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
-	    var textHelper = __webpack_require__(44);
+	    var textHelper = __webpack_require__(43);
 	    var colorHelper = __webpack_require__(7);
 	
 	    /**
@@ -19439,7 +19581,7 @@
 	                buildContainerGroups();
 	            }
 	
-	            svg.transition().attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+	            svg.attr('width', width).attr('height', height);
 	        }
 	
 	        /**
@@ -19672,7 +19814,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -19681,8 +19823,8 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonFivePlusOther = __webpack_require__(53),
-	        jsonThreeCategories = __webpack_require__(54);
+	        jsonFivePlusOther = __webpack_require__(52),
+	        jsonThreeCategories = __webpack_require__(53);
 	
 	    function DonutDataBuilder(config) {
 	        this.Klass = DonutDataBuilder;
@@ -19725,7 +19867,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -19734,43 +19876,43 @@
 				"name": "Shiny",
 				"id": 1,
 				"quantity": 86,
-				"percentage": 3
+				"percentage": 5
 			},
 			{
 				"name": "Blazing",
 				"id": 2,
 				"quantity": 300,
-				"percentage": 10
+				"percentage": 18
 			},
 			{
 				"name": "Dazzling",
 				"id": 3,
 				"quantity": 276,
-				"percentage": 10
+				"percentage": 16
 			},
 			{
 				"name": "Radiant",
 				"id": 4,
 				"quantity": 195,
-				"percentage": 10
+				"percentage": 11
 			},
 			{
 				"name": "Sparkling",
 				"id": 5,
 				"quantity": 36,
-				"percentage": 1
+				"percentage": 2
 			},
 			{
 				"name": "Other",
 				"id": 0,
 				"quantity": 814,
-				"percentage": 65
+				"percentage": 48
 			}
 		]
 	};
 
 /***/ }),
-/* 54 */
+/* 53 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -19797,7 +19939,7 @@
 	};
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -19806,11 +19948,11 @@
 	    d3Selection = __webpack_require__(4),
 	    d3TimeFormat = __webpack_require__(19),
 	    PubSub = __webpack_require__(5),
-	    brush = __webpack_require__(56),
-	    line = __webpack_require__(59),
-	    tooltip = __webpack_require__(34),
-	    dataBuilder = __webpack_require__(60),
-	    colorSelectorHelper = __webpack_require__(41);
+	    brush = __webpack_require__(55),
+	    line = __webpack_require__(58),
+	    tooltip = __webpack_require__(33),
+	    dataBuilder = __webpack_require__(59),
+	    colorSelectorHelper = __webpack_require__(40);
 	
 	function createBrushChart(optionalColorSchema) {
 	    var brushChart = brush(),
@@ -19857,13 +19999,7 @@
 	        dataset = testDataSet.with5Topics().build();
 	
 	        // LineChart Setup and start
-	        lineChart1.aspectRatio(0.5).grid('horizontal').tooltipThreshold(600).width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
-	            chartTooltip.show();
-	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
-	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-	        }).on('customMouseOut', function () {
-	            chartTooltip.hide();
-	        });
+	        lineChart1.isAnimated(true).aspectRatio(0.5).grid('horizontal').tooltipThreshold(600).width(containerWidth).dateLabel('fullDate').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 	
 	        if (optionalColorSchema) {
 	            lineChart1.colorSchema(optionalColorSchema);
@@ -20030,7 +20166,7 @@
 	}
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -20042,7 +20178,7 @@
 	
 	    var d3Array = __webpack_require__(9);
 	    var d3Axis = __webpack_require__(10);
-	    var d3Brush = __webpack_require__(57);
+	    var d3Brush = __webpack_require__(56);
 	    var d3Ease = __webpack_require__(13);
 	    var d3Scale = __webpack_require__(14);
 	    var d3Shape = __webpack_require__(20);
@@ -20052,9 +20188,9 @@
 	    var d3TimeFormat = __webpack_require__(19);
 	
 	    var colorHelper = __webpack_require__(7);
-	    var timeAxisHelper = __webpack_require__(31);
+	    var timeAxisHelper = __webpack_require__(30);
 	
-	    var _require = __webpack_require__(27),
+	    var _require = __webpack_require__(26),
 	        axisTimeCombinations = _require.axisTimeCombinations;
 	
 	    /**
@@ -20246,7 +20382,7 @@
 	                buildContainerGroups();
 	            }
 	
-	            svg.transition().ease(ease).attr('width', width).attr('height', height);
+	            svg.attr('width', width).attr('height', height);
 	        }
 	
 	        /**
@@ -20556,12 +20692,12 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-brush/ Version 1.0.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(12), __webpack_require__(58), __webpack_require__(15), __webpack_require__(4), __webpack_require__(22)) :
+		 true ? factory(exports, __webpack_require__(12), __webpack_require__(57), __webpack_require__(15), __webpack_require__(4), __webpack_require__(22)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-selection', 'd3-transition'], factory) :
 		(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3));
 	}(this, (function (exports,d3Dispatch,d3Drag,d3Interpolate,d3Selection,d3Transition) { 'use strict';
@@ -21129,7 +21265,7 @@
 
 
 /***/ }),
-/* 58 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-drag/ Version 1.0.4. Copyright 2017 Mike Bostock.
@@ -21346,7 +21482,7 @@
 
 
 /***/ }),
-/* 59 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -21365,20 +21501,20 @@
 	    var d3Transition = __webpack_require__(22);
 	    var d3TimeFormat = __webpack_require__(19);
 	
-	    var _require = __webpack_require__(24),
+	    var _require = __webpack_require__(25),
 	        exportChart = _require.exportChart;
 	
 	    var colorHelper = __webpack_require__(7);
-	    var timeAxisHelper = __webpack_require__(31);
+	    var timeAxisHelper = __webpack_require__(30);
 	
-	    var _require2 = __webpack_require__(32),
+	    var _require2 = __webpack_require__(31),
 	        isInteger = _require2.isInteger;
 	
-	    var _require3 = __webpack_require__(27),
+	    var _require3 = __webpack_require__(26),
 	        axisTimeCombinations = _require3.axisTimeCombinations,
 	        lineGradientId = _require3.lineGradientId;
 	
-	    var _require4 = __webpack_require__(33),
+	    var _require4 = __webpack_require__(32),
 	        formatIntegerValue = _require4.formatIntegerValue,
 	        formatDecimalValue = _require4.formatDecimalValue;
 	
@@ -21504,8 +21640,10 @@
 	            forceAxisSettings = null,
 	            forcedXTicks = null,
 	            forcedXFormat = null,
+	            isAnimated = false,
 	            ease = d3Ease.easeQuadInOut,
 	            animationDuration = 1500,
+	            maskingRectangle = void 0,
 	            dataByTopic = void 0,
 	            dataByDate = void 0,
 	            dateLabel = 'date',
@@ -21569,6 +21707,7 @@
 	                drawAxis();
 	                buildGradient();
 	                drawLines();
+	                createMaskingClip();
 	
 	                if (shouldShowTooltip()) {
 	                    drawVerticalMarker();
@@ -21789,6 +21928,23 @@
 	        }
 	
 	        /**
+	         * Creates a masking clip that would help us fake an animation if the
+	         * proper flag is true
+	         *
+	         * @return {void}
+	         */
+	        function createMaskingClip() {
+	            if (isAnimated) {
+	                // We use a white rectangle to simulate the line drawing animation
+	                maskingRectangle = svg.append('rect').attr('class', 'masking-rectangle').attr('width', width).attr('height', height).attr('x', 0).attr('y', 0);
+	
+	                maskingRectangle.transition().duration(animationDuration).ease(ease).attr('x', width).on('end', function () {
+	                    return maskingRectangle.remove();
+	                });
+	            }
+	        }
+	
+	        /**
 	         * Draws the x and y axis on the svg object within their
 	         * respective groups
 	         * @private
@@ -21809,8 +21965,7 @@
 	         */
 	        function drawLines() {
 	            var lines = void 0,
-	                topicLine = void 0,
-	                maskingRectangle = void 0;
+	                topicLine = void 0;
 	
 	            topicLine = d3Shape.line().x(function (_ref12) {
 	                var date = _ref12.date;
@@ -21830,13 +21985,6 @@
 	            });
 	
 	            lines.exit().remove();
-	
-	            // We use a white rectangle to simulate the line drawing animation
-	            maskingRectangle = svg.append('rect').attr('class', 'masking-rectangle').attr('width', width).attr('height', height).attr('x', 0).attr('y', 0);
-	
-	            maskingRectangle.transition().duration(animationDuration).ease(ease).attr('x', width).on('end', function () {
-	                return maskingRectangle.remove();
-	            });
 	        }
 	
 	        /**
@@ -22152,6 +22300,23 @@
 	        };
 	
 	        /**
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
+	         * @param  {Boolean} _x Desired animation flag
+	         * @return { isAnimated | module} Current isAnimated flag or Chart module
+	         * @public
+	         */
+	        exports.isAnimated = function (_x) {
+	            if (!arguments.length) {
+	                return isAnimated;
+	            }
+	            isAnimated = _x;
+	
+	            return this;
+	        };
+	
+	        /**
 	         * Gets or Sets the margin of the chart
 	         * @param  {Object} _x Margin object to get/set
 	         * @return { (Number | Module) } Current margin or Line Chart module to chain calls
@@ -22295,7 +22460,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 60 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -22304,12 +22469,12 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonAllDatas = __webpack_require__(61),
-	        jsonFiveTopics = __webpack_require__(62),
-	        jsonOneSource = __webpack_require__(63),
-	        jsonMultiMonthValueRange = __webpack_require__(64),
-	        jsonHourDateRange = __webpack_require__(65),
-	        jsonSmallValueRange = __webpack_require__(66);
+	        jsonAllDatas = __webpack_require__(60),
+	        jsonFiveTopics = __webpack_require__(61),
+	        jsonOneSource = __webpack_require__(62),
+	        jsonMultiMonthValueRange = __webpack_require__(63),
+	        jsonHourDateRange = __webpack_require__(64),
+	        jsonSmallValueRange = __webpack_require__(65);
 	
 	    function LineDataBuilder(config) {
 	        this.Klass = LineDataBuilder;
@@ -22376,7 +22541,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -22783,7 +22948,7 @@
 	};
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -24859,7 +25024,7 @@
 	};
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -25009,7 +25174,7 @@
 	};
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -36006,7 +36171,7 @@
 	};
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -36383,7 +36548,7 @@
 	};
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -36490,15 +36655,15 @@
 	};
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    sparklineChart = __webpack_require__(68),
-	    sparklineDataBuilder = __webpack_require__(69);
+	    sparklineChart = __webpack_require__(67),
+	    sparklineDataBuilder = __webpack_require__(68);
 	
 	function createSparklineChart() {
 	    var sparkline = sparklineChart(),
@@ -36534,7 +36699,7 @@
 	}
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -36549,7 +36714,7 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
-	    var _require = __webpack_require__(24),
+	    var _require = __webpack_require__(25),
 	        exportChart = _require.exportChart;
 	
 	    var colorHelper = __webpack_require__(7);
@@ -36688,7 +36853,7 @@
 	                buildContainerGroups();
 	            }
 	
-	            svg.transition().ease(ease).attr('width', width).attr('height', height);
+	            svg.attr('width', width).attr('height', height);
 	        }
 	
 	        /**
@@ -36859,7 +37024,9 @@
 	        };
 	
 	        /**
-	         * Gets or Sets the isAnimated property of the chart
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
 	         * @param  {Boolean} _x Desired animation flag
 	         * @return { isAnimated | module} Current isAnimated flag or Chart module
 	         * @public
@@ -36931,7 +37098,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -36940,7 +37107,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonOneSource = __webpack_require__(70);
+	        jsonOneSource = __webpack_require__(69);
 	
 	    function SparklineDataBuilder(config) {
 	        this.Klass = SparklineDataBuilder;
@@ -36964,7 +37131,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -37013,16 +37180,16 @@
 	};
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    step = __webpack_require__(72),
-	    miniTooltip = __webpack_require__(45),
-	    dataBuilder = __webpack_require__(73);
+	    step = __webpack_require__(71),
+	    miniTooltip = __webpack_require__(44),
+	    dataBuilder = __webpack_require__(72);
 	
 	function createStepChart() {
 	    var stepChart = step(),
@@ -37043,7 +37210,7 @@
 	        stepChart.width(containerWidth).height(300).xAxisLabel('Meal Type').xAxisLabelOffset(45).yAxisLabel('Quantity').yAxisLabelOffset(-50).margin({
 	            top: 40,
 	            right: 40,
-	            bottom: 10,
+	            bottom: 50,
 	            left: 80
 	        }).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
 	
@@ -37073,7 +37240,7 @@
 	}
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -37090,7 +37257,7 @@
 	    var d3Selection = __webpack_require__(4);
 	    var d3Transition = __webpack_require__(22);
 	
-	    var _require = __webpack_require__(24),
+	    var _require = __webpack_require__(25),
 	        exportChart = _require.exportChart;
 	
 	    /**
@@ -37136,7 +37303,12 @@
 	
 	    return function module() {
 	
-	        var margin = { top: 20, right: 20, bottom: 30, left: 40 },
+	        var margin = {
+	            top: 20,
+	            right: 20,
+	            bottom: 30,
+	            left: 40
+	        },
 	            width = 960,
 	            height = 500,
 	            ease = d3Ease.easeQuadInOut,
@@ -37254,7 +37426,7 @@
 	                buildContainerGroups();
 	            }
 	
-	            svg.transition().ease(ease).attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom);
+	            svg.attr('width', width).attr('height', height);
 	        }
 	
 	        /**
@@ -37485,7 +37657,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -37494,7 +37666,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonStepDataSmall = __webpack_require__(74);
+	        jsonStepDataSmall = __webpack_require__(73);
 	
 	    function StepDataBuilder(config) {
 	        this.Klass = StepDataBuilder;
@@ -37518,7 +37690,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -37555,7 +37727,7 @@
 	};
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37563,8 +37735,8 @@
 	var d3Selection = __webpack_require__(4),
 	    d3TimeFormat = __webpack_require__(19),
 	    PubSub = __webpack_require__(5),
-	    brush = __webpack_require__(56),
-	    dataBuilder = __webpack_require__(76);
+	    brush = __webpack_require__(55),
+	    dataBuilder = __webpack_require__(75);
 	
 	function createBrushChart() {
 	    var brushChart = brush(),
@@ -37606,7 +37778,7 @@
 	}
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -37615,7 +37787,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonSimpleData = __webpack_require__(77);
+	        jsonSimpleData = __webpack_require__(76);
 	
 	    function BrushDataBuilder(config) {
 	        this.Klass = BrushDataBuilder;
@@ -37652,7 +37824,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports) {
 
 	module.exports = {

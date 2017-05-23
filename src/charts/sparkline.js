@@ -116,7 +116,8 @@ define(function(require){
          * @private
          */
         function buildContainerGroups(){
-           let container = svg.append('g')
+            let container = svg
+              .append('g')
                 .classed('container-group', true)
                 .attr('transform', `translate(${margin.left},${margin.top})`);
 
@@ -155,8 +156,6 @@ define(function(require){
             }
 
             svg
-                .transition()
-                .ease(ease)
                 .attr('width', width)
                 .attr('height', height);
         }
@@ -362,7 +361,9 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the isAnimated property of the chart
+         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+         * By default this is 'false'
+         *
          * @param  {Boolean} _x Desired animation flag
          * @return { isAnimated | module} Current isAnimated flag or Chart module
          * @public

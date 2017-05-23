@@ -5,8 +5,8 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Britecharts - D3.js based charting library of reusable components</title>
+        
+        <title>Tutorial: CDN</title>
 
         
             <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
@@ -91,7 +91,7 @@
             			<li class="dropdown">
             				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Demos<b class="caret"></b></a>
             				<ul class="dropdown-menu inline">
-            					<li><a href="tutorial--_GETTINGSTARTED.html">_GETTINGSTARTED</a></li><li><a href="tutorial-bar.html">bar</a></li><li><a href="tutorial-brush.html">brush</a></li><li><a href="tutorial-cdn.html">cdn</a></li><li><a href="tutorial-donut.html">donut</a></li><li><a href="tutorial-kitchen-sink.html">kitchen-sink</a></li><li><a href="tutorial-line.html">line</a></li><li><a href="tutorial-sparkline.html">sparkline</a></li><li><a href="tutorial-stacked-area.html">stacked-area</a></li><li><a href="tutorial-step.html">step</a></li>
+            					<li><a href="tutorial--_GETTINGSTARTED.html">Getting Started</a></li><li><a href="tutorial-bar.html">Bar Chart</a></li><li><a href="tutorial-brush.html">Brush Chart</a></li><li><a href="tutorial-cdn.html">CDN</a></li><li><a href="tutorial-donut.html">Donut Chart</a></li><li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li><li><a href="tutorial-line.html">Line Chart</a></li><li><a href="tutorial-sparkline.html">Sparkline Chart</a></li><li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li><li><a href="tutorial-step.html">Step Chart</a></li>
             				</ul>
             			</li>
             			
@@ -129,7 +129,7 @@
             			<section class="tutorial-section">
     <header>
         
-        <h2 class="tutorial-section__heading">cdn</h2>
+        <h2 class="tutorial-section__heading">CDN</h2>
     </header>
     <article>
         <!DOCTYPE html>
@@ -200,8 +200,8 @@
                 { date: '2017-02-18T03:00:00.000Z', name: 'EB Driven', value: 1 },
                 { date: '2017-02-19T03:00:00.000Z', name: 'Organizer Driven', value: 15 },
                 { date: '2017-02-19T03:00:00.000Z', name: 'EB Driven', value: 1 },
-                { date: '2017-02-21T03:00:00.000Z', name: 'Organizer Driven', value: 18 },
-                { date: '2017-02-21T03:00:00.000Z', name: 'EB Driven', value: 1 }
+                { date: '2017-02-20T03:00:00.000Z', name: 'Organizer Driven', value: 18 },
+                { date: '2017-02-20T03:00:00.000Z', name: 'EB Driven', value: 1 }
             ];
 
             stackedAreaChart
@@ -217,20 +217,44 @@
 
             var lineData =  {
                 dataByTopic: [{
-                    topic: 'Cat data',
+                    topicName: 'Cat data',
+                    topic: 2,
                     dates: [
-                        { date: '27-Jun-15', value: 1, fullDate: '2015-06-27T07:00:00.000Z' },
-                        { date: '28-Jun-15', value: 1, fullDate: '2015-06-28T07:00:00.000Z' },
-                        { date: '29-Jun-15', value: 4, fullDate: '2015-06-29T07:00:00.000Z' },
-                        { date: '30-Jun-15', value: 2, fullDate: '2015-06-30T07:00:00.000Z' },
-                        { date: '1-Jul-15', value: 3, fullDate: '2015-07-01T07:00:00.000Z' },
-                        { date: '2-Jul-15', value: 3, fullDate: '2015-07-02T07:00:00.000Z' }
+                        {
+                            value: 1,
+                            date: '2015-06-27T07:00:00.000Z'
+                        },
+                        {
+                            value: 1,
+                            date: '2015-06-28T07:00:00.000Z'
+                        },
+                        {
+                            value: 4,
+                            date: '2015-06-29T07:00:00.000Z'
+                        },
+                        {
+                            value: 2,
+                            date: '2015-06-30T07:00:00.000Z'
+                        },
+                        {
+                            value: 3,
+                            date: '2015-07-01T07:00:00.000Z'
+                        },
+                        {
+                            value: 3,
+                            date: '2015-07-02T07:00:00.000Z'
+                        }
                     ]
                 }]
             };
 
             lineChart
-                .margin({ top: 60, bottom: 50, left: 50, right: 20 })
+                .margin({
+                    top: 60,
+                    bottom: 50,
+                    left: 50,
+                    right: 20
+                })
                 .width(800)
                 .height(300)
                 .on('customMouseOver', tooltip.show)
@@ -344,13 +368,13 @@
             </span>
         </footer>
 
-        <script src="scripts/docstrap.lib.js"></script>
-        <script src="scripts/toc.js"></script>
+        <script src="/britecharts/scripts/docstrap.lib.js"></script>
+        <script src="/britecharts/scripts/toc.js"></script>
         
-            <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+            <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
         
-        <script src="scripts/bundle.js"></script>
-        <script src="scripts/prism.js"></script>
+        <script src="/britecharts/scripts/bundle.js"></script>
+        <script src="/britecharts/scripts/prism.js"></script>
         <script>
         $( function () {
         	$( "[id*='$']" ).each( function () {

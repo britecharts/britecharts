@@ -66,8 +66,8 @@
                 { date: '2017-02-18T03:00:00.000Z', name: 'EB Driven', value: 1 },
                 { date: '2017-02-19T03:00:00.000Z', name: 'Organizer Driven', value: 15 },
                 { date: '2017-02-19T03:00:00.000Z', name: 'EB Driven', value: 1 },
-                { date: '2017-02-21T03:00:00.000Z', name: 'Organizer Driven', value: 18 },
-                { date: '2017-02-21T03:00:00.000Z', name: 'EB Driven', value: 1 }
+                { date: '2017-02-20T03:00:00.000Z', name: 'Organizer Driven', value: 18 },
+                { date: '2017-02-20T03:00:00.000Z', name: 'EB Driven', value: 1 }
             ];
 
             stackedAreaChart
@@ -83,20 +83,44 @@
 
             var lineData =  {
                 dataByTopic: [{
-                    topic: 'Cat data',
+                    topicName: 'Cat data',
+                    topic: 2,
                     dates: [
-                        { date: '27-Jun-15', value: 1, fullDate: '2015-06-27T07:00:00.000Z' },
-                        { date: '28-Jun-15', value: 1, fullDate: '2015-06-28T07:00:00.000Z' },
-                        { date: '29-Jun-15', value: 4, fullDate: '2015-06-29T07:00:00.000Z' },
-                        { date: '30-Jun-15', value: 2, fullDate: '2015-06-30T07:00:00.000Z' },
-                        { date: '1-Jul-15', value: 3, fullDate: '2015-07-01T07:00:00.000Z' },
-                        { date: '2-Jul-15', value: 3, fullDate: '2015-07-02T07:00:00.000Z' }
+                        {
+                            value: 1,
+                            date: '2015-06-27T07:00:00.000Z'
+                        },
+                        {
+                            value: 1,
+                            date: '2015-06-28T07:00:00.000Z'
+                        },
+                        {
+                            value: 4,
+                            date: '2015-06-29T07:00:00.000Z'
+                        },
+                        {
+                            value: 2,
+                            date: '2015-06-30T07:00:00.000Z'
+                        },
+                        {
+                            value: 3,
+                            date: '2015-07-01T07:00:00.000Z'
+                        },
+                        {
+                            value: 3,
+                            date: '2015-07-02T07:00:00.000Z'
+                        }
                     ]
                 }]
             };
 
             lineChart
-                .margin({ top: 60, bottom: 50, left: 50, right: 20 })
+                .margin({
+                    top: 60,
+                    bottom: 50,
+                    left: 50,
+                    right: 20
+                })
                 .width(800)
                 .height(300)
                 .on('customMouseOver', tooltip.show)

@@ -9,17 +9,19 @@
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
 stackedArea
-    .tooltipThreshold(400)
+    .isAnimated(true)
+    .tooltipThreshold(600)
     .width(containerWidth)
+    .grid('horizontal')
     .on('customMouseOver', chartTooltip.show)
-    .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-        chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-    })
+    .on('customMouseMove', chartTooltip.update)
     .on('customMouseOut', chartTooltip.hide);
+
 container.datum(dataset.data).call(stackedArea);
 
 chartTooltip
     .title('Testing tooltip');
+
 tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
 tooltipContainer.datum([]).call(chartTooltip);
                 </code></pre>
@@ -44,32 +46,30 @@ tooltipContainer.datum([]).call(chartTooltip);
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
-// StackedAreChart Setup and start
 stackedArea
-    .tooltipThreshold(400)
-    .width(containerWidth)
+    .tooltipThreshold(600)
+    .aspectRatio(0.6)
     .grid('full')
     .forceAxisFormat('custom')
     .forcedXFormat('%Y/%m/%d')
-    .aspectRatio(0.6)
-    .on('customMouseOver', function() {
-        chartTooltip.show();
-    })
-    .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-        chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-    })
-    .on('customMouseOut', function() {
-        chartTooltip.hide();
-    });
+    .forcedXTicks(2)
+    .width(containerWidth)
+    .dateLabel('dateUTC')
+    .valueLabel('views')
+    .on('customMouseOver', chartTooltip.show)
+    .on('customMouseMove', chartTooltip.update)
+    .on('customMouseOut', chartTooltip.hide);
+
 container.datum(dataset.data).call(stackedArea);
 
 // Tooltip Setup and start
 chartTooltip
-    .title('Dummy Tooltip Title');
+    .topicLabel('values')
+    .title('Tooltip Title');
 
 // Note that if the viewport width is less than the tooltipThreshold value,
 // this container won't exist, and the tooltip won't show up
-tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
+tooltipContainer = d3Selection.select('.js-stacked-area-chart-fixed-container .metadata-group .vertical-marker-container');
 tooltipContainer.datum([]).call(chartTooltip);
                 </code></pre>
                 <h4>Demo Code</h4>
