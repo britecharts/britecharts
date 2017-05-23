@@ -1646,7 +1646,7 @@
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-selection/ Version 1.1.0. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-selection/ Version 1.0.5. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -2271,18 +2271,16 @@
 	}
 	
 	var selection_style = function(name, value, priority) {
+	  var node;
 	  return arguments.length > 1
 	      ? this.each((value == null
 	            ? styleRemove : typeof value === "function"
 	            ? styleFunction
 	            : styleConstant)(name, value, priority == null ? "" : priority))
-	      : styleValue(this.node(), name);
+	      : defaultView(node = this.node())
+	          .getComputedStyle(node, null)
+	          .getPropertyValue(name);
 	};
-	
-	function styleValue(node, name) {
-	  return node.style.getPropertyValue(name)
-	      || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
-	}
 	
 	function propertyRemove(name) {
 	  return function() {
@@ -2495,7 +2493,7 @@
 	  var window = defaultView(node),
 	      event = window.CustomEvent;
 	
-	  if (typeof event === "function") {
+	  if (event) {
 	    event = new event(type, params);
 	  } else {
 	    event = window.document.createEvent("Event");
@@ -2613,7 +2611,6 @@
 	exports.selection = selection;
 	exports.selector = selector;
 	exports.selectorAll = selectorAll;
-	exports.style = styleValue;
 	exports.touch = touch;
 	exports.touches = touches;
 	exports.window = defaultView;
@@ -2628,7 +2625,7 @@
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
 	Copyright (c) 2010,2011,2012,2013,2014 Morgan Roderick http://roderick.dk
 	License: MIT - http://mrgnrdrck.mit-license.org
 	
@@ -2637,22 +2634,20 @@
 	(function (root, factory){
 		'use strict';
 	
-		var PubSub = {};
-		root.PubSub = PubSub;
-		factory(PubSub);
+	    if (true){
+	        // AMD. Register as an anonymous module.
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	
-		// AMD support
-		if (true){
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return PubSub; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    } else if (typeof exports === 'object'){
+	        // CommonJS
+	        factory(exports);
 	
-		// CommonJS and Node.js module support
-		} else if (typeof exports === 'object'){
-			if (module !== undefined && module.exports) {
-				exports = module.exports = PubSub; // Node.js specific `module.exports`
-			}
-			exports.PubSub = PubSub; // CommonJS module 1.1.1 spec
-			module.exports = exports = PubSub; // CommonJS
-		}
+	    }
+	
+	    // Browser globals
+	    var PubSub = {};
+	    root.PubSub = PubSub;
+	    factory(PubSub);
 	
 	}(( typeof window === 'object' && window ) || this, function (PubSub){
 		'use strict';
@@ -2920,13 +2915,7 @@
 	        // dataset = testDataSet.withGeneratedData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', function () {
-	            chartTooltip.show();
-	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
-	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-	        }).on('customMouseOut', function () {
-	            chartTooltip.hide();
-	        });
+	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 	
 	        if (optionalColorSchema) {
 	            stackedArea.colorSchema(optionalColorSchema);
@@ -2964,13 +2953,7 @@
 	        // dataset = testDataSet.withLargeData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').forceAxisFormat('custom').forcedXFormat('%Y/%m/%d').forcedXTicks(2).width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', function () {
-	            chartTooltip.show();
-	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
-	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-	        }).on('customMouseOut', function () {
-	            chartTooltip.hide();
-	        });
+	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').forceAxisFormat('custom').forcedXFormat('%Y/%m/%d').forcedXTicks(2).width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 	
 	        if (optionalColorSchema) {
 	            stackedArea.colorSchema(optionalColorSchema);
@@ -2979,7 +2962,7 @@
 	        container.datum(dataset.data).call(stackedArea);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.topicLabel('values').title('Dummy Title');
+	        chartTooltip.topicLabel('values').title('Tooltip Title');
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -3234,6 +3217,7 @@
 	            pointsSize = 1.5,
 	            pointsColor = '#c0c6cc',
 	            pointsBorderColor = '#ffffff',
+	            isAnimated = false,
 	            ease = d3Ease.easeQuadInOut,
 	            areaAnimationDuration = 1000,
 	            svg = void 0,
@@ -3575,7 +3559,8 @@
 	         * @private
 	         */
 	        function drawStackedAreas() {
-	            // Creating Area function
+	            var series = void 0;
+	
 	            area = d3Shape.area().curve(d3Shape.curveMonotoneX).x(function (_ref6) {
 	                var data = _ref6.data;
 	                return xScale(data.date);
@@ -3585,20 +3570,35 @@
 	                return yScale(d[1]);
 	            });
 	
-	            var series = svg.select('.chart-group').selectAll('.layer').data(layersInitial).enter().append('g').classed('layer-container', true);
+	            if (isAnimated) {
+	                series = svg.select('.chart-group').selectAll('.layer').data(layersInitial).enter().append('g').classed('layer-container', true);
 	
-	            series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref7) {
-	                var key = _ref7.key;
-	                return categoryColorMap[key];
-	            });
+	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref7) {
+	                    var key = _ref7.key;
+	                    return categoryColorMap[key];
+	                });
 	
-	            // Update
-	            svg.select('.chart-group').selectAll('.layer').data(layers).transition().delay(function (_, i) {
-	                return areaAnimationDelays[i];
-	            }).duration(areaAnimationDuration).ease(ease).attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref8) {
-	                var key = _ref8.key;
-	                return categoryColorMap[key];
-	            });
+	                // Update
+	                svg.select('.chart-group').selectAll('.layer').data(layers).transition().delay(function (_, i) {
+	                    return areaAnimationDelays[i];
+	                }).duration(areaAnimationDuration).ease(ease).attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref8) {
+	                    var key = _ref8.key;
+	                    return categoryColorMap[key];
+	                });
+	            } else {
+	                series = svg.select('.chart-group').selectAll('.layer').data(layers).enter().append('g').classed('layer-container', true);
+	
+	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref9) {
+	                    var key = _ref9.key;
+	                    return categoryColorMap[key];
+	                });
+	
+	                // Update
+	                series.attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref10) {
+	                    var key = _ref10.key;
+	                    return categoryColorMap[key];
+	                });
+	            }
 	
 	            // Exit
 	            series.exit().transition().style('opacity', 0).remove();
@@ -3683,8 +3683,8 @@
 	         * @return {obj}        Data entry that is closer to that x axis position
 	         */
 	        function getNearestDataPoint(mouseX) {
-	            return dataByDate.find(function (_ref9) {
-	                var date = _ref9.date;
+	            return dataByDate.find(function (_ref11) {
+	                var date = _ref11.date;
 	                return Math.abs(xScale(date) - mouseX) <= epsilon;
 	            });
 	        }
@@ -3695,8 +3695,8 @@
 	         * @return {Number} half distance between any two points
 	         */
 	        function setEpsilon() {
-	            var dates = dataByDate.map(function (_ref10) {
-	                var date = _ref10.date;
+	            var dates = dataByDate.map(function (_ref12) {
+	                var date = _ref12.date;
 	                return date;
 	            });
 	
@@ -3754,8 +3754,8 @@
 	         * @param  {obj} dataPoint Data point to extract info from
 	         * @private
 	         */
-	        function highlightDataPoints(_ref11) {
-	            var values = _ref11.values;
+	        function highlightDataPoints(_ref13) {
+	            var values = _ref13.values;
 	
 	            var accumulator = 0;
 	
@@ -3768,8 +3768,8 @@
 	                return order.indexOf(a.name) > order.indexOf(b.name);
 	            });
 	
-	            values.forEach(function (_ref12, index) {
-	                var name = _ref12.name;
+	            values.forEach(function (_ref14, index) {
+	                var name = _ref14.name;
 	
 	                var marker = verticalMarkerContainer.append('g').classed('circle-container', true),
 	                    circleSize = 12;
@@ -3941,6 +3941,23 @@
 	                width = Math.ceil(_x / aspectRatio);
 	            }
 	            height = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
+	         * @param  {Boolean} _x Desired animation flag
+	         * @return { isAnimated | module} Current isAnimated flag or Chart module
+	         * @public
+	         */
+	        exports.isAnimated = function (_x) {
+	            if (!arguments.length) {
+	                return isAnimated;
+	            }
+	            isAnimated = _x;
 	
 	            return this;
 	        };
@@ -4673,7 +4690,7 @@
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-axis/ Version 1.0.7. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-axis/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -4693,15 +4710,15 @@
 	var epsilon = 1e-6;
 	
 	function translateX(x) {
-	  return "translate(" + (x + 0.5) + ",0)";
+	  return "translate(" + x + ",0)";
 	}
 	
 	function translateY(y) {
-	  return "translate(0," + (y + 0.5) + ")";
+	  return "translate(0," + y + ")";
 	}
 	
 	function center(scale) {
-	  var offset = Math.max(0, scale.bandwidth() - 1) / 2; // Adjust for 0.5px offset.
+	  var offset = scale.bandwidth() / 2;
 	  if (scale.round()) offset = Math.round(offset);
 	  return function(d) {
 	    return scale(d) + offset;
@@ -4720,7 +4737,7 @@
 	      tickSizeOuter = 6,
 	      tickPadding = 3,
 	      k = orient === top || orient === left ? -1 : 1,
-	      x = orient === left || orient === right ? "x" : "y",
+	      x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x"),
 	      transform = orient === top || orient === bottom ? translateX : translateY;
 	
 	  function axis(context) {
@@ -4747,11 +4764,14 @@
 	
 	    line = line.merge(tickEnter.append("line")
 	        .attr("stroke", "#000")
-	        .attr(x + "2", k * tickSizeInner));
+	        .attr(x + "2", k * tickSizeInner)
+	        .attr(y + "1", 0.5)
+	        .attr(y + "2", 0.5));
 	
 	    text = text.merge(tickEnter.append("text")
 	        .attr("fill", "#000")
 	        .attr(x, k * spacing)
+	        .attr(y, 0.5)
 	        .attr("dy", orient === top ? "0em" : orient === bottom ? "0.71em" : "0.32em"));
 	
 	    if (context !== selection) {
@@ -5455,7 +5475,7 @@
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-scale/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-scale/ Version 1.0.5. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(9), __webpack_require__(11), __webpack_require__(15), __webpack_require__(17), __webpack_require__(18), __webpack_require__(19), __webpack_require__(16)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-collection', 'd3-interpolate', 'd3-format', 'd3-time', 'd3-time-format', 'd3-color'], factory) :
@@ -5770,39 +5790,17 @@
 	  };
 	
 	  scale.nice = function(count) {
-	    if (count == null) count = 10;
-	
 	    var d = domain(),
-	        i0 = 0,
-	        i1 = d.length - 1,
-	        start = d[i0],
-	        stop = d[i1],
-	        step;
+	        i = d.length - 1,
+	        n = count == null ? 10 : count,
+	        start = d[0],
+	        stop = d[i],
+	        step = d3Array.tickStep(start, stop, n);
 	
-	    if (stop < start) {
-	      step = start, start = stop, stop = step;
-	      step = i0, i0 = i1, i1 = step;
-	    }
-	
-	    step = d3Array.tickIncrement(start, stop, count);
-	
-	    if (step > 0) {
-	      start = Math.floor(start / step) * step;
-	      stop = Math.ceil(stop / step) * step;
-	      step = d3Array.tickIncrement(start, stop, count);
-	    } else if (step < 0) {
-	      start = Math.ceil(start * step) / step;
-	      stop = Math.floor(stop * step) / step;
-	      step = d3Array.tickIncrement(start, stop, count);
-	    }
-	
-	    if (step > 0) {
-	      d[i0] = Math.floor(start / step) * step;
-	      d[i1] = Math.ceil(stop / step) * step;
-	      domain(d);
-	    } else if (step < 0) {
-	      d[i0] = Math.ceil(start * step) / step;
-	      d[i1] = Math.floor(stop * step) / step;
+	    if (step) {
+	      step = d3Array.tickStep(Math.floor(start / step) * step, Math.ceil(stop / step) * step, n);
+	      d[0] = Math.floor(start / step) * step;
+	      d[i] = Math.ceil(stop / step) * step;
 	      domain(d);
 	    }
 	
@@ -6386,7 +6384,7 @@
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-interpolate/ Version 1.1.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-interpolate/ Version 1.1.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(16)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-color'], factory) :
@@ -6632,7 +6630,7 @@
 	      : b instanceof d3Color.color ? rgb$1
 	      : b instanceof Date ? date
 	      : Array.isArray(b) ? array
-	      : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
+	      : isNaN(b) ? object
 	      : number)(a, b);
 	};
 	
@@ -8781,7 +8779,7 @@
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-shape/ Version 1.1.1. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-shape/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(21)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
@@ -9426,91 +9424,6 @@
 	
 	  return a;
 	};
-	
-	var slice = Array.prototype.slice;
-	
-	var radialPoint = function(x, y) {
-	  return [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x)];
-	};
-	
-	function linkSource(d) {
-	  return d.source;
-	}
-	
-	function linkTarget(d) {
-	  return d.target;
-	}
-	
-	function link(curve) {
-	  var source = linkSource,
-	      target = linkTarget,
-	      x$$1 = x,
-	      y$$1 = y,
-	      context = null;
-	
-	  function link() {
-	    var buffer, argv = slice.call(arguments), s = source.apply(this, argv), t = target.apply(this, argv);
-	    if (!context) context = buffer = d3Path.path();
-	    curve(context, +x$$1.apply(this, (argv[0] = s, argv)), +y$$1.apply(this, argv), +x$$1.apply(this, (argv[0] = t, argv)), +y$$1.apply(this, argv));
-	    if (buffer) return context = null, buffer + "" || null;
-	  }
-	
-	  link.source = function(_) {
-	    return arguments.length ? (source = _, link) : source;
-	  };
-	
-	  link.target = function(_) {
-	    return arguments.length ? (target = _, link) : target;
-	  };
-	
-	  link.x = function(_) {
-	    return arguments.length ? (x$$1 = typeof _ === "function" ? _ : constant(+_), link) : x$$1;
-	  };
-	
-	  link.y = function(_) {
-	    return arguments.length ? (y$$1 = typeof _ === "function" ? _ : constant(+_), link) : y$$1;
-	  };
-	
-	  link.context = function(_) {
-	    return arguments.length ? ((context = _ == null ? null : _), link) : context;
-	  };
-	
-	  return link;
-	}
-	
-	function curveHorizontal(context, x0, y0, x1, y1) {
-	  context.moveTo(x0, y0);
-	  context.bezierCurveTo(x0 = (x0 + x1) / 2, y0, x0, y1, x1, y1);
-	}
-	
-	function curveVertical(context, x0, y0, x1, y1) {
-	  context.moveTo(x0, y0);
-	  context.bezierCurveTo(x0, y0 = (y0 + y1) / 2, x1, y0, x1, y1);
-	}
-	
-	function curveRadial$1(context, x0, y0, x1, y1) {
-	  var p0 = radialPoint(x0, y0),
-	      p1 = radialPoint(x0, y0 = (y0 + y1) / 2),
-	      p2 = radialPoint(x1, y0),
-	      p3 = radialPoint(x1, y1);
-	  context.moveTo(p0[0], p0[1]);
-	  context.bezierCurveTo(p1[0], p1[1], p2[0], p2[1], p3[0], p3[1]);
-	}
-	
-	function linkHorizontal() {
-	  return link(curveHorizontal);
-	}
-	
-	function linkVertical() {
-	  return link(curveVertical);
-	}
-	
-	function linkRadial() {
-	  var l = link(curveRadial$1);
-	  l.angle = l.x, delete l.x;
-	  l.radius = l.y, delete l.y;
-	  return l;
-	}
 	
 	var circle = {
 	  draw: function(context, size) {
@@ -10493,11 +10406,13 @@
 	  return new Step(context, 1);
 	}
 	
+	var slice = Array.prototype.slice;
+	
 	var none = function(series, order) {
 	  if (!((n = series.length) > 1)) return;
-	  for (var i = 1, j, s0, s1 = series[order[0]], n, m = s1.length; i < n; ++i) {
+	  for (var i = 1, s0, s1 = series[order[0]], n, m = s1.length; i < n; ++i) {
 	    s0 = s1, s1 = series[order[i]];
-	    for (j = 0; j < m; ++j) {
+	    for (var j = 0; j < m; ++j) {
 	      s1[j][1] += s1[j][0] = isNaN(s0[j][1]) ? s0[j][0] : s0[j][1];
 	    }
 	  }
@@ -10569,21 +10484,6 @@
 	    if (y) for (i = 0; i < n; ++i) series[i][j][1] /= y;
 	  }
 	  none(series, order);
-	};
-	
-	var diverging = function(series, order) {
-	  if (!((n = series.length) > 1)) return;
-	  for (var i, j = 0, d, dy, yp, yn, n, m = series[order[0]].length; j < m; ++j) {
-	    for (yp = yn = 0, i = 0; i < n; ++i) {
-	      if ((dy = (d = series[order[i]][j])[1] - d[0]) >= 0) {
-	        d[0] = yp, d[1] = yp += dy;
-	      } else if (dy < 0) {
-	        d[1] = yn, d[0] = yn += dy;
-	      } else {
-	        d[0] = yp;
-	      }
-	    }
-	  }
 	};
 	
 	var silhouette = function(series, order) {
@@ -10668,9 +10568,6 @@
 	exports.pie = pie;
 	exports.radialArea = radialArea;
 	exports.radialLine = radialLine$1;
-	exports.linkHorizontal = linkHorizontal;
-	exports.linkVertical = linkVertical;
-	exports.linkRadial = linkRadial;
 	exports.symbol = symbol;
 	exports.symbols = symbols;
 	exports.symbolCircle = circle;
@@ -10700,7 +10597,6 @@
 	exports.curveStepBefore = stepBefore;
 	exports.stack = stack;
 	exports.stackOffsetExpand = expand;
-	exports.stackOffsetDiverging = diverging;
 	exports.stackOffsetNone = none;
 	exports.stackOffsetSilhouette = silhouette;
 	exports.stackOffsetWiggle = wiggle;
@@ -10866,7 +10762,7 @@
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-transition/ Version 1.1.0. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-transition/ Version 1.0.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(4), __webpack_require__(12), __webpack_require__(23), __webpack_require__(15), __webpack_require__(16), __webpack_require__(13)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-timer', 'd3-interpolate', 'd3-color', 'd3-ease'], factory) :
@@ -11431,8 +11327,9 @@
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.style(this, name),
-	        value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
+	    var style = d3Selection.window(this).getComputedStyle(this, null),
+	        value0 = style.getPropertyValue(name),
+	        value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -11449,7 +11346,7 @@
 	  var value00,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.style(this, name);
+	    var value0 = d3Selection.window(this).getComputedStyle(this, null).getPropertyValue(name);
 	    return value0 === value1 ? null
 	        : value0 === value00 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value1);
@@ -11461,9 +11358,10 @@
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.style(this, name),
+	    var style = d3Selection.window(this).getComputedStyle(this, null),
+	        value0 = style.getPropertyValue(name),
 	        value1 = value(this);
-	    if (value1 == null) value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
+	    if (value1 == null) value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -18913,7 +18811,7 @@
 	            donutChart.exportChart();
 	        });
 	
-	        donutChart.width(containerWidth).height(containerWidth).externalRadius(containerWidth / 2.5).internalRadius(containerWidth / 5).on('customMouseOver', function (data) {
+	        donutChart.isAnimated(true).width(containerWidth).height(containerWidth).externalRadius(containerWidth / 2.5).internalRadius(containerWidth / 5).on('customMouseOver', function (data) {
 	            legendChart.highlight(data.data.id);
 	        }).on('customMouseOut', function () {
 	            legendChart.clearHighlight();
@@ -19102,6 +19000,7 @@
 	            shape = void 0,
 	            slices = void 0,
 	            svg = void 0,
+	            isAnimated = false,
 	            quantityLabel = 'quantity',
 	            nameLabel = 'name',
 	            percentageLabel = 'percentage',
@@ -19252,7 +19151,13 @@
 	            if (!slices) {
 	                slices = svg.select('.chart-group').selectAll('g.arc').data(layout(data));
 	
-	                slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration)).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
+	                var newSlices = slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut);
+	
+	                if (isAnimated) {
+	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration)).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
+	                } else {
+	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration));
+	                }
 	            } else {
 	                slices = svg.select('.chart-group').selectAll('path').data(layout(data));
 	
@@ -19401,6 +19306,23 @@
 	                return height;
 	            }
 	            height = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
+	         * @param  {Boolean} _x Desired animation flag
+	         * @return { isAnimated | module} Current isAnimated flag or Chart module
+	         * @public
+	         */
+	        exports.isAnimated = function (_x) {
+	            if (!arguments.length) {
+	                return isAnimated;
+	            }
+	            isAnimated = _x;
+	
 	            return this;
 	        };
 	
@@ -20077,17 +19999,7 @@
 	        dataset = testDataSet.with5Topics().build();
 	
 	        // LineChart Setup and start
-	        lineChart1.aspectRatio(0.5).grid('horizontal').tooltipThreshold(600).width(containerWidth).dateLabel('fullDate').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
-	
-	        // .on('customMouseOver', function() {
-	        //     chartTooltip.show();
-	        // })
-	        // .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-	        //     chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-	        // })
-	        // .on('customMouseOut', function() {
-	        //     chartTooltip.hide();
-	        // });
+	        lineChart1.isAnimated(true).aspectRatio(0.5).grid('horizontal').tooltipThreshold(600).width(containerWidth).dateLabel('fullDate').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 	
 	        if (optionalColorSchema) {
 	            lineChart1.colorSchema(optionalColorSchema);
@@ -21356,7 +21268,7 @@
 /* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-drag/ Version 1.1.0. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-drag/ Version 1.0.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(12), __webpack_require__(4)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-selection'], factory) :
@@ -21442,11 +21354,8 @@
 	      gestures = {},
 	      listeners = d3Dispatch.dispatch("start", "drag", "end"),
 	      active = 0,
-	      mousedownx,
-	      mousedowny,
 	      mousemoving,
-	      touchending,
-	      clickDistance2 = 0;
+	      touchending;
 	
 	  function drag(selection) {
 	    selection
@@ -21465,17 +21374,12 @@
 	    nodrag(d3Selection.event.view);
 	    nopropagation();
 	    mousemoving = false;
-	    mousedownx = d3Selection.event.clientX;
-	    mousedowny = d3Selection.event.clientY;
 	    gesture("start");
 	  }
 	
 	  function mousemoved() {
 	    noevent();
-	    if (!mousemoving) {
-	      var dx = d3Selection.event.clientX - mousedownx, dy = d3Selection.event.clientY - mousedowny;
-	      mousemoving = dx * dx + dy * dy > clickDistance2;
-	    }
+	    mousemoving = true;
 	    gestures.mouse("drag");
 	  }
 	
@@ -21563,10 +21467,6 @@
 	  drag.on = function() {
 	    var value = listeners.on.apply(listeners, arguments);
 	    return value === listeners ? drag : value;
-	  };
-	
-	  drag.clickDistance = function(_) {
-	    return arguments.length ? (clickDistance2 = (_ = +_) * _, drag) : Math.sqrt(clickDistance2);
 	  };
 	
 	  return drag;
@@ -21740,8 +21640,10 @@
 	            forceAxisSettings = null,
 	            forcedXTicks = null,
 	            forcedXFormat = null,
+	            isAnimated = false,
 	            ease = d3Ease.easeQuadInOut,
 	            animationDuration = 1500,
+	            maskingRectangle = void 0,
 	            dataByTopic = void 0,
 	            dataByDate = void 0,
 	            dateLabel = 'date',
@@ -21805,6 +21707,7 @@
 	                drawAxis();
 	                buildGradient();
 	                drawLines();
+	                createMaskingClip();
 	
 	                if (shouldShowTooltip()) {
 	                    drawVerticalMarker();
@@ -22025,6 +21928,23 @@
 	        }
 	
 	        /**
+	         * Creates a masking clip that would help us fake an animation if the
+	         * proper flag is true
+	         *
+	         * @return {void}
+	         */
+	        function createMaskingClip() {
+	            if (isAnimated) {
+	                // We use a white rectangle to simulate the line drawing animation
+	                maskingRectangle = svg.append('rect').attr('class', 'masking-rectangle').attr('width', width).attr('height', height).attr('x', 0).attr('y', 0);
+	
+	                maskingRectangle.transition().duration(animationDuration).ease(ease).attr('x', width).on('end', function () {
+	                    return maskingRectangle.remove();
+	                });
+	            }
+	        }
+	
+	        /**
 	         * Draws the x and y axis on the svg object within their
 	         * respective groups
 	         * @private
@@ -22045,8 +21965,7 @@
 	         */
 	        function drawLines() {
 	            var lines = void 0,
-	                topicLine = void 0,
-	                maskingRectangle = void 0;
+	                topicLine = void 0;
 	
 	            topicLine = d3Shape.line().x(function (_ref12) {
 	                var date = _ref12.date;
@@ -22066,13 +21985,6 @@
 	            });
 	
 	            lines.exit().remove();
-	
-	            // We use a white rectangle to simulate the line drawing animation
-	            maskingRectangle = svg.append('rect').attr('class', 'masking-rectangle').attr('width', width).attr('height', height).attr('x', 0).attr('y', 0);
-	
-	            maskingRectangle.transition().duration(animationDuration).ease(ease).attr('x', width).on('end', function () {
-	                return maskingRectangle.remove();
-	            });
 	        }
 	
 	        /**
@@ -22383,6 +22295,23 @@
 	                width = Math.ceil(_x / aspectRatio);
 	            }
 	            height = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
+	         * @param  {Boolean} _x Desired animation flag
+	         * @return { isAnimated | module} Current isAnimated flag or Chart module
+	         * @public
+	         */
+	        exports.isAnimated = function (_x) {
+	            if (!arguments.length) {
+	                return isAnimated;
+	            }
+	            isAnimated = _x;
 	
 	            return this;
 	        };
@@ -37095,7 +37024,9 @@
 	        };
 	
 	        /**
-	         * Gets or Sets the isAnimated property of the chart
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
 	         * @param  {Boolean} _x Desired animation flag
 	         * @return { isAnimated | module} Current isAnimated flag or Chart module
 	         * @public

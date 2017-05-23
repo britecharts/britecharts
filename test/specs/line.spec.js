@@ -414,6 +414,18 @@ define([
                 expect(defaultVerticalTicks).not.toBe(testLineGradient);
                 expect(newLineGradient).toBe(testLineGradient);
             });
+
+            it('should provide animation getter and setter', () => {
+                let defaultAnimation = lineChart.isAnimated(),
+                    testAnimation = true,
+                    newAnimation;
+
+                lineChart.isAnimated(testAnimation);
+                newAnimation = lineChart.isAnimated();
+
+                expect(defaultAnimation).not.toBe(testAnimation);
+                expect(newAnimation).toBe(testAnimation);
+            });
         });
 
         describe('Aspect Ratio', function() {

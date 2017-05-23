@@ -361,7 +361,9 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the isAnimated property of the chart
+         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+         * By default this is 'false'
+         *
          * @param  {Boolean} _x Desired animation flag
          * @return { isAnimated | module} Current isAnimated flag or Chart module
          * @public

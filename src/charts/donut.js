@@ -85,6 +85,7 @@ define(function(require){
             slices,
             svg,
 
+            isAnimated = false,
             quantityLabel = 'quantity',
             nameLabel = 'name',
             percentageLabel = 'percentage',
@@ -239,23 +240,32 @@ define(function(require){
                     .selectAll('g.arc')
                     .data(layout(data));
 
-                slices.enter()
-                  .append('g')
-                    .each(storeAngle)
-                    .each(reduceOuterRadius)
-                    .classed('arc', true)
-                    .on('mouseover', handleMouseOver)
-                    .on('mouseout', handleMouseOut)
-                .merge(slices)
-                  .append('path')
-                    .attr('fill', getSliceFill)
-                    .on('mouseover', tweenGrowthFactory(externalRadius, 0))
-                    .on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration))
-                    .transition()
-                    .ease(ease)
-                    .duration(pieDrawingTransitionDuration)
-                    .attrTween('d', tweenLoading);
+                let newSlices = slices.enter()
+                      .append('g')
+                        .each(storeAngle)
+                        .each(reduceOuterRadius)
+                        .classed('arc', true)
+                        .on('mouseover', handleMouseOver)
+                        .on('mouseout', handleMouseOut);
 
+                if (isAnimated) {
+                    newSlices.merge(slices)
+                      .append('path')
+                        .attr('fill', getSliceFill)
+                        .on('mouseover', tweenGrowthFactory(externalRadius, 0))
+                        .on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration))
+                        .transition()
+                        .ease(ease)
+                        .duration(pieDrawingTransitionDuration)
+                        .attrTween('d', tweenLoading);
+                } else {
+                    newSlices.merge(slices)
+                      .append('path')
+                        .attr('fill', getSliceFill)
+                        .attr('d', shape)
+                        .on('mouseover', tweenGrowthFactory(externalRadius, 0))
+                        .on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration));
+                }
             } else {
                 slices = svg.select('.chart-group')
                     .selectAll('path')
@@ -413,6 +423,23 @@ define(function(require){
                 return height;
             }
             height = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+         * By default this is 'false'
+         *
+         * @param  {Boolean} _x Desired animation flag
+         * @return { isAnimated | module} Current isAnimated flag or Chart module
+         * @public
+         */
+        exports.isAnimated = function(_x) {
+            if (!arguments.length) {
+                return isAnimated;
+            }
+            isAnimated = _x;
+
             return this;
         };
 
