@@ -2920,24 +2920,7 @@
 	        // dataset = testDataSet.withGeneratedData().build();
 	
 	        // StackedAreChart Setup and start
-<<<<<<< HEAD
-<<<<<<< HEAD
-	        stackedArea.tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', function () {
-=======
-	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal')
-	        // .dateLabel('dateUTC')
-	        // .valueLabel('views')
-	        .on('customMouseOver', function () {
->>>>>>> Adding animation flag in stacked area chart
-	            chartTooltip.show();
-	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
-	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-	        }).on('customMouseOut', function () {
-	            chartTooltip.hide();
-	        });
-=======
 	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
->>>>>>> Adding animation flag to donut
 	
 	        if (optionalColorSchema) {
 	            stackedArea.colorSchema(optionalColorSchema);
@@ -2984,11 +2967,7 @@
 	        container.datum(dataset.data).call(stackedArea);
 	
 	        // Tooltip Setup and start
-<<<<<<< HEAD
-	        chartTooltip.topicLabel('values').title('Dummy Title');
-=======
 	        chartTooltip.topicLabel('values').title('Tooltip Title');
->>>>>>> Adding animation flag to donut
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up

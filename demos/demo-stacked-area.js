@@ -35,21 +35,9 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
             .tooltipThreshold(600)
             .width(containerWidth)
             .grid('horizontal')
-<<<<<<< HEAD
-            .on('customMouseOver', function() {
-                chartTooltip.show();
-            })
-            .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-                chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-            })
-            .on('customMouseOut', function() {
-                chartTooltip.hide();
-            });
-=======
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', chartTooltip.hide);
->>>>>>> Adding animation flag in stacked area chart
 
         if (optionalColorSchema) {
             stackedArea.colorSchema(optionalColorSchema);
@@ -112,11 +100,7 @@ function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
         // Tooltip Setup and start
         chartTooltip
             .topicLabel('values')
-<<<<<<< HEAD
-            .title('Dummy Title');
-=======
             .title('Tooltip Title');
->>>>>>> Adding animation flag in stacked area chart
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
