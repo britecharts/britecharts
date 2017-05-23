@@ -19,6 +19,8 @@ stackedBar
     .tooltipThreshold(400)
     .width(containerWidth)
     .valueLabel('views')
+    .stackLabel('stack')
+    .nameLabel('date')
     .on('customMouseOver', chartTooltip.show)
     .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
         chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -46,7 +48,7 @@ tooltipContainer.datum([]).call(chartTooltip);
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <h2 class="tutorial__heading">Stacked Bar Chart with fixed Aspect Ratio</h2>
+                <h2 class="tutorial__heading">Horizontal Stacked Bar Chart</h2>
                 <div class="britechart js-stacked-bar-chart-fixed-container card--chart"></div>
             </div>
             <div class="col-md-4 sidebar">
@@ -56,9 +58,15 @@ tooltipContainer.datum([]).call(chartTooltip);
 stackedBar
     .tooltipThreshold(400)
     .width(containerWidth)
-    .grid('full')
-    .aspectRatio(0.6)
     .valueLabel('views')
+    .stackLabel('stack')
+   .margin({
+        left: 120,
+        top: 0,
+        right: 0,
+        bottom: 20
+    })
+    .nameLabel('date')
     .on('customMouseOver', function() {
         chartTooltip.show();
     })

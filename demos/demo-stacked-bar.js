@@ -34,7 +34,8 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
             .tooltipThreshold(600)
             .width(containerWidth)
             .grid('horizontal')
-            .dateLabel('dateUTC')
+            .stackLabel('stack')
+            .nameLabel('date')
             .valueLabel('views')
             .on('customMouseOver', function() {
                 chartTooltip.show();
@@ -87,15 +88,19 @@ function createStackedBarChartWithFixedAspectRatio(optionalColorSchema) {
         // StackedAreChart Setup and start
         stackedBar
             .tooltipThreshold(600)
-            .aspectRatio(0.6)
-            .grid('full')
-          
-            .forcedXTicks(2)
-          
+            // .aspectRatio(0.6)
+            // .grid('full')
             .width(containerWidth)
-              .horizontal(true)
-            .dateLabel('dateUTC')
+            .horizontal(true)
+            .nameLabel('date')
+            .margin({
+                left: 120,
+                top: 0,
+                right: 0,
+                bottom: 20
+            })
             .valueLabel('views')
+            .stackLabel('stack')
             .on('customMouseOver', function() {
                 chartTooltip.show();
             })
