@@ -37,11 +37,12 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
             .stackLabel('stack')
             .nameLabel('date')
             .valueLabel('views')
+            .isAnimated('true')
             .on('customMouseOver', function() {
                 chartTooltip.show();
             })
-            .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-                chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+            .on('customMouseMove', function(dataPoint, topicColorMap, x,y) {
+                chartTooltip.update(dataPoint, topicColorMap, x,y);
             })
             .on('customMouseOut', function() {
                 chartTooltip.hide();
@@ -61,7 +62,7 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = d3Selection.select('.js-stacked-bar-chart-tooltip-container .metadata-group .vertical-marker-container');
+        tooltipContainer = d3Selection.select('.js-stacked-bar-chart-tooltip-container .metadata-group');
         tooltipContainer.datum([]).call(chartTooltip);
 
         d3Selection.select('#button').on('click', function() {
@@ -89,7 +90,7 @@ function createStackedBarChartWithFixedAspectRatio(optionalColorSchema) {
         stackedBar
             .tooltipThreshold(600)
             // .aspectRatio(0.6)
-            // .grid('full')
+            .grid('vertical')
             .width(containerWidth)
             .horizontal(true)
             .nameLabel('date')
@@ -99,13 +100,14 @@ function createStackedBarChartWithFixedAspectRatio(optionalColorSchema) {
                 right: 0,
                 bottom: 20
             })
+             .isAnimated('true')
             .valueLabel('views')
             .stackLabel('stack')
             .on('customMouseOver', function() {
                 chartTooltip.show();
             })
-            .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-                chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+            .on('customMouseMove', function(dataPoint, topicColorMap, x, y) {
+                chartTooltip.update(dataPoint, topicColorMap, x, y);
             })
             .on('customMouseOut', function() {
                 chartTooltip.hide();
@@ -125,7 +127,7 @@ function createStackedBarChartWithFixedAspectRatio(optionalColorSchema) {
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = d3Selection.select('.js-stacked-bar-chart-fixed-container .metadata-group .vertical-marker-container');
+        tooltipContainer = d3Selection.select('.js-stacked-bar-chart-fixed-container .metadata-group');
         tooltipContainer.datum([]).call(chartTooltip);
     }
 }

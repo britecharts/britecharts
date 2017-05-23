@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Stacked Bar Chart Demo - Britecharts</title>
-    <link type="text/css" rel="stylesheet" href="styles/britecharts.css" />
-</head>
-<body id="stacked-bar">
+
     <div class="container">
         <div class="row">
             <div class="col-md-8">
@@ -18,6 +11,7 @@
 stackedBar
     .tooltipThreshold(400)
     .width(containerWidth)
+     .isAnimated('true')
     .valueLabel('views')
     .stackLabel('stack')
     .nameLabel('date')
@@ -30,7 +24,7 @@ container.datum(dataset.data).call(stackedBar);
 
 chartTooltip
     .title('Testing tooltip');
-tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
+tooltipContainer = d3.select('.metadata-group');
 tooltipContainer.datum([]).call(chartTooltip);
                 </code></pre>
                 <h4>Colors</h4>
@@ -60,6 +54,7 @@ stackedBar
     .width(containerWidth)
     .valueLabel('views')
     .stackLabel('stack')
+     .isAnimated('true')
    .margin({
         left: 120,
         top: 0,
@@ -84,7 +79,7 @@ chartTooltip
 
 // Note that if the viewport width is less than the tooltipThreshold value,
 // this container won't exist, and the tooltip won't show up
-tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
+tooltipContainer = d3.select('.metadata-group');
 tooltipContainer.datum([]).call(chartTooltip);
                 </code></pre>
                 <h4>Demo Code</h4>
@@ -92,5 +87,3 @@ tooltipContainer.datum([]).call(chartTooltip);
             </div>
         </div>
     </div>
-</body>
-</html>
