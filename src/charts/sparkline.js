@@ -116,7 +116,8 @@ define(function(require){
          * @private
          */
         function buildContainerGroups(){
-           let container = svg.append('g')
+            let container = svg
+              .append('g')
                 .classed('container-group', true)
                 .attr('transform', `translate(${margin.left},${margin.top})`);
 
@@ -155,8 +156,6 @@ define(function(require){
             }
 
             svg
-                .transition()
-                .ease(ease)
                 .attr('width', width)
                 .attr('height', height);
         }

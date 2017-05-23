@@ -34,8 +34,6 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
             .tooltipThreshold(600)
             .width(containerWidth)
             .grid('horizontal')
-            // .dateLabel('dateUTC')
-            // .valueLabel('views')
             .on('customMouseOver', function() {
                 chartTooltip.show();
             })
@@ -113,7 +111,7 @@ function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
         // Tooltip Setup and start
         chartTooltip
             .topicLabel('values')
-            .title('Dummy Tooltip Title');
+            .title('Dummy Title');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up

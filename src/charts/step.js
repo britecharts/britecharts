@@ -56,7 +56,12 @@ define(function(require) {
 
     return function module() {
 
-        let margin = {top: 20, right: 20, bottom: 30, left: 40},
+        let margin = {
+                top: 20,
+                right: 20,
+                bottom: 30,
+                left: 40
+            },
             width = 960,
             height = 500,
             ease = d3Ease.easeQuadInOut,
@@ -191,10 +196,8 @@ define(function(require) {
             }
 
             svg
-                .transition()
-                .ease(ease)
-                .attr('width', width + margin.left + margin.right)
-                .attr('height', height + margin.top + margin.bottom);
+                .attr('width', width)
+                .attr('height', height);
         }
 
         /**

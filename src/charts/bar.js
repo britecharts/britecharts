@@ -63,7 +63,7 @@ define(function(require) {
         let margin = {
                 top: 20,
                 right: 20,
-                bottom: 10,
+                bottom: 30,
                 left: 40
             },
             width = 960,
@@ -167,7 +167,8 @@ define(function(require) {
          * @private
          */
         function buildContainerGroups(){
-            let container = svg.append('g')
+            let container = svg
+              .append('g')
                 .classed('container-group', true)
                 .attr('transform', `translate(${margin.left + yAxisPaddingBetweenChart}, ${margin.top})`);
 
@@ -237,8 +238,8 @@ define(function(require) {
             }
 
             svg
-                .attr('width', width + margin.left + margin.right)
-                .attr('height', height + margin.top + margin.bottom);
+                .attr('width', width)
+                .attr('height', height);
         }
 
         /**

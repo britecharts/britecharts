@@ -36,7 +36,7 @@ function createStepChart() {
             .margin({
                 top: 40,
                 right: 40,
-                bottom: 10,
+                bottom: 50,
                 left: 80
             })
             .on('customMouseOver', tooltip.show)
