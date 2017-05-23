@@ -148,7 +148,7 @@ define(function(require){
          */
         function buildContainerGroups() {
             let container = svg
-              .append('g')
+                .append('g')
                 .classed('container-group', true)
                 .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
@@ -186,7 +186,7 @@ define(function(require){
         function buildSVG(container) {
             if (!svg) {
                 svg = d3Selection.select(container)
-                  .append('svg')
+                    .append('svg')
                     .classed('britechart donut-chart', true)
                     .data([data]);  //TO REVIEW
 
@@ -241,7 +241,7 @@ define(function(require){
                     .data(layout(data));
 
                 let newSlices = slices.enter()
-                      .append('g')
+                        .append('g')
                         .each(storeAngle)
                         .each(reduceOuterRadius)
                         .classed('arc', true)
@@ -250,7 +250,7 @@ define(function(require){
 
                 if (isAnimated) {
                     newSlices.merge(slices)
-                      .append('path')
+                        .append('path')
                         .attr('fill', getSliceFill)
                         .on('mouseover', tweenGrowthFactory(externalRadius, 0))
                         .on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration))
@@ -260,7 +260,7 @@ define(function(require){
                         .attrTween('d', tweenLoading);
                 } else {
                     newSlices.merge(slices)
-                      .append('path')
+                        .append('path')
                         .attr('fill', getSliceFill)
                         .attr('d', shape)
                         .on('mouseover', tweenGrowthFactory(externalRadius, 0))
