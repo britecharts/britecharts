@@ -34,7 +34,7 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
             .tooltipThreshold(600)
             .width(containerWidth)
             .grid('horizontal')
-            // .dateLabel('dateUTC')
+            .dateLabel('dateUTC')
             .valueLabel('views')
             .on('customMouseOver', function() {
                 chartTooltip.show();
@@ -55,6 +55,7 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
         // Tooltip Setup and start
         chartTooltip
             .topicLabel('values')
+            .dateLabel('key')
             .title('Testing tooltip');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
@@ -90,7 +91,9 @@ function createStackedBarChartWithFixedAspectRatio(optionalColorSchema) {
             .grid('full')
           
             .forcedXTicks(2)
+          
             .width(containerWidth)
+              .horizontal(true)
             .dateLabel('dateUTC')
             .valueLabel('views')
             .on('customMouseOver', function() {
@@ -112,6 +115,7 @@ function createStackedBarChartWithFixedAspectRatio(optionalColorSchema) {
         // Tooltip Setup and start
         chartTooltip
             .topicLabel('values')
+             .dateLabel('key')
             .title('Dummy Tooltip Title');
 
         // Note that if the viewport width is less than the tooltipThreshold value,

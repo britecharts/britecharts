@@ -87,7 +87,7 @@ define(function(require){
             xScale, xAxis, xMonthAxis,
             yScale, yAxis,
             zScale,
-
+            
             aspectRatio = null,
 
             monthAxisPadding = 30,
@@ -144,9 +144,12 @@ define(function(require){
             svg,
             chartWidth, chartHeight,
             data,
-            dataByValue,
-            dataByValueFormatted,
-            dataByValueZeroed,
+            stacks,
+            dataStacked,
+            dataByDate,
+            dataByName,
+            dataByDateormatted,
+            dataByDateZeroed,
 
             verticalGridLines,
             horizontalGridLines,
@@ -171,9 +174,12 @@ define(function(require){
 
             // getters
             getName = ({name}) => name,
-            getDate = ({date}) => date,
+            getDate = (data) => data[dateLabel],
             getValue = ({value}) => value,
             getStack = ({stack}) => stack,
+            stack3,
+            dates,
+            transformedData,
 
             // events
             dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
@@ -189,19 +195,48 @@ define(function(require){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
-                dataByValue = getDataByValue(data);
+                dataByDate= getDataByDate(data);
+                dataByName = getDataByName(data);
+                stacks = uniq(data.map(( {stack}) => stack));
+                dates = uniq(data.map(getDate));
+                stack3 = d3Shape.stack().keys(stacks)
+                transformedData = d3Collection.nest()
+                .key(getDate)
+                .rollup(function(values) { 
+                    var ret = {};
+                        _(values).each((entry) => {
+                                        if(entry && entry['stack']) {
+                                            ret[entry['stack']] = getValue(entry);
+                                            ret.values = values;//for tooltip
+                                        }
+                                    });
+                    return ret;
+                }).entries(data).map(function(data){
+                    console.log('data',data)
+                    var ret = data.value;
+                    ret.key = data.key;
+                    // ret.name = data.value.name
+                    return ret
+                })
+                console.log('transformedData',transformedData)
+            dataByDateormatted = _.chain(transformedData)
+            .value();
 
-               
+                // .order(d3Shape.stackOrderNone)
+                // .offset(d3Shape.stackOffsetNone);
                 
+    
+                 buildScales();
                 buildLayers();
-                buildScales();
+               
                 buildSVG(this);
                 drawGridLines();
                 buildAxis();
                 drawAxis();
                 drawStackedBar();
-
+                //  drawDataReferencePoints();
                 if(shouldShowTooltip()){
+                   
                     drawHoverOverlay();
                     drawVerticalMarker();
                     addMouseEvents();
@@ -289,41 +324,19 @@ define(function(require){
          * @private
          */
         function buildLayers(){
-            dataByValueFormatted = _.chain(dataByValue)
-                .map((d) => _.extend(d, d.values))
-                .map((d) => {
-                    _(d).each((entry) => {
-                        if(entry && entry['name']) {
-                            d[entry['name']] = entry.value;
-                        }
+            
+            dataByDateZeroed = _.chain(JSON.parse(JSON.stringify(transformedData)))
+                .map((item) => {
+                     _(stacks).each((key) => {
+                        item[key] = 0;
                     });
-                    // d['key'] = new Date(d['key']);
-
-                    return d;
+                    return item;
                 })
                 .value();
-
-            dataByValueZeroed = _.chain(JSON.parse(JSON.stringify(dataByValue)))
-                .map((d) => _.extend(d, d.values))
-                .map((d) => {
-                    _(d).each((entry) => {
-                        if(entry && entry['name']) {
-                            d[entry['name']] = 0;
-                        }
-                    });
-                //     d['date'] = new Date(d['key']);
-
-                    return d;
-                })
-                .value();
-
-            let stacks = uniq(_(data).pluck('stack')),stack3 = d3Shape.stack()
-                .keys(stacks)
-                .order(d3Shape.stackOrderNone)
-                .offset(d3Shape.stackOffsetNone);
-
-            layersInitial = stack3(dataByValueZeroed);
-            layers = stack3(dataByValueFormatted);
+               
+            layersInitial = stack3(dataByDateZeroed);
+            layers  = stack3(dataByDateormatted);
+            console.log('layers',layers,layersInitial)
         }
           /**
          * Configurable extension of the x axis
@@ -346,43 +359,63 @@ define(function(require){
          */
         function buildScales() {
             let percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue))
+            var yMax = d3Array.max(transformedData.map(function(d){
+                    var sum =0;
+                    stacks.forEach(function(k){
+                       sum+= d[k]
+                    })
+                    return sum;
+                }))
 
             if (!horizontal) {
                 xScale = d3Scale.scaleBand()
-                     .domain(data.map(getName))
+                     .domain(data.map(getDate))
                     .rangeRound([0, chartWidth])
-                    // .padding(0.1);
+                    .padding(0.1);
 
                 yScale = d3Scale.scaleLinear()
-                .domain([0, percentageAxis])
+                .domain([0,yMax])
                 .rangeRound([chartHeight, 0])
                 .nice();
 
-                let stack = uniq(_(data).pluck('stack'));
-                zScale = d3Scale.scaleOrdinal().domain(stack);
+                zScale = d3Scale.scaleOrdinal().domain(stacks);
             } else {
+                var yMax = d3Array.max(transformedData.map(function(d){
+                    var sum =0;
+                    stacks.forEach(function(k){
+                       sum+= d[k]
+                    })
+                    return sum;
+                }))
                 xScale = d3Scale.scaleLinear()
-                    .domain([0, ata.map(getName)])
+                    .domain([0, yMax])
                     .rangeRound([0, chartWidth]);
 
                 yScale = d3Scale.scaleBand()
-                    .domain(data.map(getName))
+                    .domain(data.map(getDate))
                     .rangeRound([chartHeight, 0])
                     .padding(0.1);
             }
 
             colorScale = d3Scale.scaleOrdinal()
                 .range(colorSchema)
-                .domain(data.map(getName));
+                .domain(data.map(getStack));
 
             let range = colorScale.range();
             categoryColorMap = colorScale
-                .domain()
+                .domain(data.map(getDate)).domain()
                 .reduce((memo, item, i) => {
-                    memo[item] = range[i];
-
+                    var stack = '';
+                    data.forEach(function(v){
+                        if (getDate(v)==item){
+                             memo[v.name] = colorScale(v.stack)
+                             memo[v.stack] = colorScale(v.stack)
+                            memo[v.stack + item] = colorScale(v.stack)
+                        }
+                    })
                     return memo;
                 }, {});
+                console.log(categoryColorMap)
         }
 
         /**
@@ -456,42 +489,6 @@ define(function(require){
         function adjustYTickLabels(selection) {
             selection.selectAll('.tick text')
                 .attr('transform', `translate(${yTickTextXOffset}, ${yTickTextYOffset})`);
-        }
-
-        /**
-         * Creates SVG dot elements for each data entry and draws them
-         * TODO: Plug
-         */
-        function drawDataReferencePoints() {
-            // Creates Dots on Data points
-            var points = svg.select('.chart-group').selectAll('.dots')
-                .data(layers)
-              .enter().append('g')
-                .attr('class', 'dots')
-                .attr('d', ({values}) => area(values))
-                .attr('clip-path', 'url(#clip)');
-
-            // Processes the points
-            // TODO: Optimize this code
-            points.selectAll('.dot')
-                .data(({values}, index) => values.map((point) => ({index, point})))
-                .enter()
-                .append('circle')
-                .attr('class','dot')
-                .attr('r', () => pointsSize)
-                .attr('fill', () => pointsColor)
-                .attr('stroke-width', '0')
-                .attr('stroke', pointsBorderColor)
-                .attr('transform', function(d) {
-                    let {point} = d;
-                    let key = xScale(point.date);
-
-                    dataPoints[key] = dataPoints[key] || [];
-                    dataPoints[key].push(d);
-
-                    let {date, y, y0} = point;
-                    return `translate( ${xScale(date)}, ${yScale(y + y0)} )`;
-                });
         }
 
          /**
@@ -569,6 +566,7 @@ define(function(require){
          * @private
          */
         function drawHoverOverlay(){
+            return;
             overlay = svg.select('.metadata-group')
                 .append('rect')
                 .attr('class', 'overlay')
@@ -586,32 +584,49 @@ define(function(require){
          * @param  {D3Selection} bars Selection of bars
          * @return {void}
          */
-        function drawHorizontalBars(bars) {
+        function drawHorizontalBars() {
             // Enter + Update
-            bars.enter()
-              .append('rect')
-                .classed('bar', true)
-                .attr('y', chartHeight)
-                .attr('x', 0)
-                .attr('height', yScale.bandwidth())
-                .attr('width', ({value}) => xScale(value))
-                .attr('fill', ({name}) => categoryColorMap[name])
-                .on('mouseover', function() {
-                    dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(categoryColorMap[name]).darker());
+           svg.select('.chart-group').selectAll('.layer')
+           .data(layers)
+           .enter()
+           .append('g')
+            .classed('layer', true)
+             .each(function(){
+                    console.log('drawHorizontalBars',this,this.__data__)
+                })
+             .attr('fill', (({key}) => categoryColorMap[key]))
+           .selectAll('.bar')
+            .data( (d)=> d)
+            .enter()
+            .append('rect')
+            .classed('bar', true)
+                .each(function(){
+
+                    console.log('drawHorizontalBars',this,this.__data__)
+                })
+                 .attr('fill', (({data}) => categoryColorMap[data.stack+data.key]))
+                .attr('x', (d) => xScale(d[0]) )
+                  .attr('y', (d) => yScale(d.data.key) )
+                 .attr('width', (d) => xScale(d[1]) - xScale(d[0]) )
+                  .attr('height', yScale.bandwidth())
+                .on('mouseover', function(d) {
+                    dispatcher.call('customMouseOver', this, !!d.values ? d:d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                    // console.log(d3Color.color(d3Selection.select(this.parentNode).attr('fill')).darker())
+                    // d3Selection.select(this).style('opacity',1);
+                    d3Selection.select(this).attr('fill', () => d3Color.color(d3Selection.select(this.parentNode).attr('fill')).darker())
                 })
                 .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                    dispatcher.call('customMouseMove', this, !!d.values ? d:d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
                 .on('mouseout', function() {
                     dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', ({name}) => categoryColorMap[name])
+                    d3Selection.select(this).attr('fill', () => d3Selection.select(this.parentNode).attr('fill'))
                 })
-              .merge(bars)
-                .attr('x', 0)
-                .attr('y', ({name}) => yScale(name))
-                .attr('height', yScale.bandwidth())
-                .attr('width', ({value}) => xScale(value));
+                .transition()
+                .delay( (_, i) => areaAnimationDelays[i])
+                .duration(areaAnimationDuration)
+                .ease(ease)
+                .style('opacity', areaOpacity)
         }
 
         /**
@@ -619,91 +634,63 @@ define(function(require){
          * @param  {D3Selection} bars Selection of bars
          * @return {void}
          */
-        function drawVerticalBars(data,seriesIndex,context) {
-            //  let stacks = uniq(_(data).pluck('stack'));
-            console.log('drawVerticalBars',seriesIndex,data)
-           let bars = data.map( ({data}) => data[seriesIndex] )
+        function drawVerticalBars() {
             // Enter + Update
-           svg.select('.chart-group').selectAll('.bar').data(bars).enter()
-          .append('g')
-           .attr('fill', ({name}) => zScale(name))
-              .append('rect')
-              .data(function(d) { 
-                  console.log('data:',d)
-                  return d
-                
-             })
-                .enter().append('rect')
-                .classed('bar', true)
-                .attr('x', ({name}) => xScale(name))
-                // .attr('y', ({value}) => yScale(value))
-                .attr('y', function(data){
-                    console.log(data)
-                    return yScale(data[1])
+          svg.select('.chart-group').selectAll('.layer')
+           .data(layers)
+           .enter()
+           .append('g')
+            .classed('layer', true)
+             .each(function(){
+                    console.log(this,this.__data__)
                 })
+             .attr('fill', (({key}) => categoryColorMap[key]))
+           .selectAll('.bar')
+            .data( (d)=> d)
+            .enter()
+            .append('rect')
+            .classed('bar', true)
+                .each(function(){
+                    console.log(this,this.__data__)
+                })
+                 .attr('fill', (({data}) => categoryColorMap[data.stack+data.key]))
+                .attr('x', (d) => xScale(d.data.key))
+               
+                 .attr('y', (d) => yScale(d[1]))
                 .attr('width', xScale.bandwidth )
-                .attr('height', ({value}) => chartHeight - yScale(value))
-                //   .attr('height', function(d) { return yScale(d[0]) - yScale(d[1]);
-                // console.log('height:',d)  
-                //  })
-                
-                .on('mouseover', function() {
+                .attr('height', (d) => yScale(d[0]) - yScale(d[1]) )
+                .on('mouseover', function(d) {
                     dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(categoryColorMap[name]).darker())
+                    // console.log(d3Color.color(d3Selection.select(this.parentNode).attr('fill')).darker())
+                    console.log('this',d,this,d3Selection.select(this.parentNode).attr('fill'),d3Color.color(d3Selection.select(this.parentNode).attr('fill')).darker())
+                    // d3Selection.select(this).style('opacity',1);
+                    d3Selection.select(this).attr('fill', () => d3Color.color(d3Selection.select(this.parentNode).attr('fill')).darker())
                 })
                 .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                    dispatcher.call('customMouseMove', this, !!d.values ? d:d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
                 .on('mouseout', function() {
                     dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', ({name}) => categoryColorMap[name])
+                    d3Selection.select(this).attr('fill', () => d3Selection.select(this.parentNode).attr('fill'))
                 })
-            //   .merge(data)
-            //     .attr('x', ({name}) => xScale(name))
-            //     .attr('y', ({value}) => yScale(value))
-            //     .attr('width',  xScale.bandwidth)
-            //     .attr('height', ({value}) => chartHeight - yScale(value));
+                .transition()
+                .delay( (_, i) => areaAnimationDelays[i])
+                .duration(areaAnimationDuration)
+                .ease(ease)
+                .style('opacity', areaOpacity)
+
         }
         /**
          * Draws the different areas into the chart-group element
          * @private
          */
         function drawStackedBar(){
-            let func,series = svg.select('.chart-group').selectAll('.layer')
-                .data(layersInitial)
-                .enter()
-              .append('g')
-                .classed('layer-container', true);
-
+            let series = svg.select('.chart-group').selectAll('.layer')
             if (!horizontal) {
-               func =  drawVerticalBars
+               drawVerticalBars()
             } else {
-               func = drawHorizontalBars
+               drawHorizontalBars()
             }
-
-
-            series
-              .append('path')
-                .attr('class', 'layer')
-                .attr('d', func)
-                .style('fill', ({key}) => categoryColorMap[key]);
-
-            //  let bars = svg.select('.chart-group').selectAll('.bar').data(layersInitial) .enter()
-            //   .append('g')
-            //     .classed('layer-container', true);
-
-            
-            // Update
-            svg.select('.chart-group').selectAll('.layer')
-                .data(layers)
-                .transition()
-                .delay( (_, i) => areaAnimationDelays[i])
-                .duration(areaAnimationDuration)
-                .ease(ease)
-                // .attr('d', stack)
-                .style('opacity', areaOpacity)
-                .style('fill', ({key}) => categoryColorMap[key]);
-
             // Exit
             series.exit()
                 .transition()
@@ -716,11 +703,12 @@ define(function(require){
          * @return void
          */
         function drawVerticalMarker(){
+            // return;
             verticalMarkerContainer = svg.select('.metadata-group')
                 .append('g')
                 .attr('class', 'vertical-marker-container')
                 .attr('transform', 'translate(9999, 0)');
-
+                return;
             verticalMarker = verticalMarkerContainer.selectAll('path')
                 .data([{
                     x1: 0,
@@ -751,9 +739,22 @@ define(function(require){
          * @return {Object[]}               Chart data ordered by date
          * @private
          */
-        function getDataByValue(data) {
+        function getDataByDate(data) {
               let b =  d3Collection.nest()
-                                .key(getStack)
+                                .key(getDate).key(getStack)
+                                .entries(_(data).sortBy('value'));
+            // console.log('b',b)
+
+            return b
+
+            // let b =  d3Collection.nest()
+            //                     .key(getDate).sortKeys(d3Array.ascending)
+            //                     .entries(data);
+        }
+
+        function getDataByName(data) {
+              let b =  d3Collection.nest()
+                                .key(getName)
                                 .entries(_(data).sortBy('value'));
             return b
 
@@ -786,17 +787,39 @@ define(function(require){
             /*
                 let dataByDateParsed = dataByDate.map((item) => ({...item, key: new Date(item.key)}))
              */
-            let dataByValueParsed = dataByValue.map((item) => {
-                item.key = item.name
-                console.log('item:',item)
+            let dataByValueParsed = transformedData.map((item) => {
+                item.key = item.key   
                 return item;
             });
-
             epsilon = (xScale(dataByValueParsed[1].key) - xScale(dataByValueParsed[0].key)) / 2;
             nearest = dataByValueParsed.find(({key}) => Math.abs(xScale(key) - mouseX) <= epsilon);
 
             return nearest;
         }
+         /**
+         * Finds out the data entry that is closer to the given position on pixels
+         * @param  {Number} mouseX X position of the mouse
+         * @return {obj}        Data entry that is closer to that x axis position
+         */
+        function getNearestDataPoint2(mouseX) {
+            let epsilon,
+                nearest;
+
+            //could use spread operator, would prevent mutation of original data
+            /*
+                let dataByDateParsed = dataByDate.map((item) => ({...item, key: new Date(item.key)}))
+             */
+            let dataByValueParsed = transformedData.map((item) => {
+                item.key = item.key   
+                return item;
+            });
+           console.log('dataByValueParsed',dataByValueParsed)
+            epsilon = xScale.range() / 2;
+            nearest = dataByValueParsed.find(({key}) => Math.abs(xScale(key) - mouseX) <= epsilon);
+
+            return nearest;
+        }
+
 
         /**
          * MouseMove handler, calculates the nearest dataPoint to the cursor
@@ -804,15 +827,23 @@ define(function(require){
          * @private
          */
         function handleMouseMove(){
-            let dataPoint = getNearestDataPoint(getMouseXPosition(this) - margin.left),
+            let dataPoint = !horizontal ?getNearestDataPoint(getMouseXPosition(this) - margin.left) :getNearestDataPoint2(getMouseXPosition(this) - margin.left),
                 dataPointXPosition;
-
+                 console.log('dataPoint',dataPoint)
             if(dataPoint) {
-                dataPointXPosition = xScale(new Date( dataPoint.key ));
+               
                 // Move verticalMarker to that datapoint
-                moveVerticalMarker(dataPointXPosition);
+                  if (!horizontal) {
+                       dataPointXPosition = xScale(dataPoint.key);
+                        moveVerticalMarker(dataPointXPosition);
+                  }else{
+                     
+                      dataPointXPosition = xScale(dataPoint[1]/2);
+                       dataPointYPosition = yScale(dataPoint.key);
+                       moveVerticalMarkerXY(dataPointXPosition,dataPointYPosition);
+                  }
                 // Add data points highlighting
-                highlightDataPoints(dataPoint);
+                // highlightDataPoints(dataPoint);
                 // Emit event with xPosition for tooltip or similar feature
                 dispatcher.call('customMouseMove', this, dataPoint, categoryColorMap, dataPointXPosition);
             }
@@ -824,8 +855,9 @@ define(function(require){
          * @private
          */
         function handleMouseOut(data){
-            overlay.style('display', 'none');
-            verticalMarker.classed('bc-is-active', false);
+            
+            // overlay.style('display', 'none');
+            // verticalMarker.classed('bc-is-active', false);
             verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
 
             dispatcher.call('customMouseOut', this, data);
@@ -836,6 +868,26 @@ define(function(require){
          * @private
          */
         function handleMouseOver(data){
+           
+             if (!horizontal) {
+                //   verticalMarkerContainer.attr('transform',null);
+             }else{
+                //  verticalMarkerContainer.attr('transform',null);
+                  let dataPoint = getNearestDataPoint(getMouseXPosition(this) - margin.left),
+                    dataPointXPosition;
+                if(dataPoint) {
+                     
+                     dataPointXPosition = xScale(dataPoint[1]/2);
+                       dataPointYPosition = yScale(dataPoint.key);
+                        console.log('handleMouseOver',dataPointXPosition,dataPointYPosition,dataPoint)
+                       moveVerticalMarkerXY(dataPointXPosition,dataPointYPosition);
+                    //    moveVerticalMarker(dataPointXPosition)
+                }
+
+             }
+
+           
+            return;
             overlay.style('display', 'block');
             verticalMarker.classed('bc-is-active', true);
 
@@ -850,32 +902,33 @@ define(function(require){
         function highlightDataPoints({values}) {
             let accumulator = 0;
 
-            eraseDataPointHighlights();
+            // eraseDataPointHighlights();
 
             // sorting the values based on the order of the colors,
             // so that the order always stays constant
-            values = values
-                        .filter(v => !!v)
-                        .sort((a, b) => colorOrder[a.el] > colorOrder[b.el]);
+            // values = values
+            //             .filter(v => !!v)
+            //             .sort((a, b) => colorOrder[a.el] > colorOrder[b.el]);
 
-            values.forEach(({name}, index) => {
-                let marker = verticalMarkerContainer
-                                .append('g')
-                                .classed('circle-container', true),
-                    circleSize = 12;
+            // values.forEach((value, index) => {
+            //     let marker = verticalMarkerContainer
+            //                     .append('g')
+            //                     .classed('circle-container', true),
+            //         circleSize = 12;
+          
+            //     accumulator = accumulator + values[index][valueLabel];
 
-                accumulator = accumulator + values[index][valueLabel];
+            //     marker.append('circle')
+            //         .classed('data-point-highlighter', true)
+            //         .attr('cx', circleSize)
+            //         .attr('cy', 0)
+            //         .attr('r', 5)
+            //         .attr('fill',categoryColorMap[getStack(value)])
+            //         .style('stroke-width', 2)
+            //         .style('stroke', categoryColorMap[getStack(value)]);
 
-                marker.append('circle')
-                    .classed('data-point-highlighter', true)
-                    .attr('cx', circleSize)
-                    .attr('cy', 0)
-                    .attr('r', 5)
-                    .style('stroke-width', 2)
-                    .style('stroke', categoryColorMap[name]);
-
-                marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(accumulator))} )` );
-            });
+            //     marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(accumulator))} )` );
+            // });
         }
 
         /**
@@ -885,6 +938,15 @@ define(function(require){
          */
         function moveVerticalMarker(verticalMarkerXPosition){
             verticalMarkerContainer.attr('transform', `translate(${verticalMarkerXPosition},0)`);
+        }
+
+   /**
+         * Helper method to update the x position of the vertical marker
+         * @param  {obj} dataPoint Data entry to extract info
+         * @return void
+         */
+        function moveVerticalMarkerXY(verticalMarkerXPosition,verticalMarkerYPosition){
+            verticalMarkerContainer.attr('transform', `translate(${verticalMarkerXPosition},${verticalMarkerYPosition})`);
         }
 
         /**
@@ -1133,6 +1195,19 @@ define(function(require){
             }
             width = _x;
 
+            return this;
+        };
+         /**
+         * Gets or Sets the horizontal direction of the chart
+         * @param  {number} _x Desired horizontal direction for the graph
+         * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
+         * @public
+         */
+        exports.horizontal = function(_x) {
+            if (!arguments.length) {
+                return horizontal;
+            }
+            horizontal = _x;
             return this;
         };
 
