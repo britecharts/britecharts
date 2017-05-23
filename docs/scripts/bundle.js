@@ -2917,6 +2917,7 @@
 	        // StackedAreChart Setup and start
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 =======
 =======
@@ -2942,6 +2943,9 @@
 	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 >>>>>>> Adding animation flag to donut
 >>>>>>> Adding animation flag to donut
+=======
+	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
+>>>>>>> updating master
 	
 	        if (optionalColorSchema) {
 	            stackedArea.colorSchema(optionalColorSchema);
@@ -2989,6 +2993,7 @@
 	
 	        // Tooltip Setup and start
 <<<<<<< HEAD
+<<<<<<< HEAD
 	        chartTooltip.topicLabel('values').title('Tooltip Title');
 =======
 <<<<<<< HEAD
@@ -2997,6 +3002,9 @@
 	        chartTooltip.topicLabel('values').title('Tooltip Title');
 >>>>>>> Adding animation flag to donut
 >>>>>>> Adding animation flag to donut
+=======
+	        chartTooltip.topicLabel('values').title('Tooltip Title');
+>>>>>>> updating master
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -17397,13 +17405,8 @@
 	            left: 120,
 	            right: 20,
 	            top: 20,
-<<<<<<< HEAD
 	            bottom: 30
-	        }).horizontal(true).colorSchema(colors.colorSchemas.britechartsColorSchema).width(containerWidth).yAxisPaddingBetweenChart(30).height(300).percentageAxisToMaxRatio(1.3).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
-=======
-	            bottom: 5
 	        }).colorSchema(colors.colorSchemas.britechartsColorSchema).width(containerWidth).yAxisPaddingBetweenChart(30).height(300).percentageAxisToMaxRatio(1.3).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
->>>>>>> Playing with bar animations, needing vertical one
 	
 	        barContainer.datum(dataset).call(barChart);
 	
@@ -17849,36 +17852,37 @@
 	         */
 	        function drawAnimatedVerticalBars(bars) {
 	            // Enter + Update
-	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', chartHeight)
-	            // .attr('y', ({value}) => yScale(value))
-	            .attr('width', xScale.bandwidth()).attr('height', function (_ref23) {
+	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref23) {
 	                var value = _ref23.value;
 	                return yScale(value);
-	            }).attr('fill', function (_ref24) {
-	                var name = _ref24.name;
+	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref24) {
+	                var value = _ref24.value;
+	                return chartHeight - yScale(value);
+	            }).attr('fill', function (_ref25) {
+	                var name = _ref25.name;
 	                return colorMap(name);
 	            }).on('mouseover', function () {
 	                dispatcher.call('customMouseOver', this);
-	                d3Selection.select(this).attr('fill', function (_ref25) {
-	                    var name = _ref25.name;
+	                d3Selection.select(this).attr('fill', function (_ref26) {
+	                    var name = _ref26.name;
 	                    return d3Color.color(colorMap(name)).darker();
 	                });
 	            }).on('mousemove', function (d) {
 	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
 	            }).on('mouseout', function () {
 	                dispatcher.call('customMouseOut', this);
-	                d3Selection.select(this).attr('fill', function (_ref26) {
-	                    var name = _ref26.name;
+	                d3Selection.select(this).attr('fill', function (_ref27) {
+	                    var name = _ref27.name;
 	                    return colorMap(name);
 	                });
-	            }).merge(bars).attr('x', function (_ref27) {
-	                var name = _ref27.name;
+	            }).merge(bars).attr('x', function (_ref28) {
+	                var name = _ref28.name;
 	                return xScale(name);
-	            }).attr('y', function (_ref28) {
-	                var value = _ref28.value;
-	                return yScale(value);
-	            }).attr('width', xScale.bandwidth()).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('height', function (_ref29) {
+	            }).attr('y', function (_ref29) {
 	                var value = _ref29.value;
+	                return yScale(value);
+	            }).attr('width', xScale.bandwidth()).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('height', function (_ref30) {
+	                var value = _ref30.value;
 	                return chartHeight - yScale(value);
 	            });
 	        }
@@ -17890,37 +17894,37 @@
 	         */
 	        function drawVerticalBars(bars) {
 	            // Enter + Update
-	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref30) {
-	                var value = _ref30.value;
-	                return yScale(value);
-	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref31) {
+	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref31) {
 	                var value = _ref31.value;
+	                return yScale(value);
+	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref32) {
+	                var value = _ref32.value;
 	                return chartHeight - yScale(value);
-	            }).attr('fill', function (_ref32) {
-	                var name = _ref32.name;
+	            }).attr('fill', function (_ref33) {
+	                var name = _ref33.name;
 	                return colorMap(name);
 	            }).on('mouseover', function () {
 	                dispatcher.call('customMouseOver', this);
-	                d3Selection.select(this).attr('fill', function (_ref33) {
-	                    var name = _ref33.name;
+	                d3Selection.select(this).attr('fill', function (_ref34) {
+	                    var name = _ref34.name;
 	                    return d3Color.color(colorMap(name)).darker();
 	                });
 	            }).on('mousemove', function (d) {
 	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
 	            }).on('mouseout', function () {
 	                dispatcher.call('customMouseOut', this);
-	                d3Selection.select(this).attr('fill', function (_ref34) {
-	                    var name = _ref34.name;
+	                d3Selection.select(this).attr('fill', function (_ref35) {
+	                    var name = _ref35.name;
 	                    return colorMap(name);
 	                });
-	            }).merge(bars).attr('x', function (_ref35) {
-	                var name = _ref35.name;
+	            }).merge(bars).attr('x', function (_ref36) {
+	                var name = _ref36.name;
 	                return xScale(name);
-	            }).attr('y', function (_ref36) {
-	                var value = _ref36.value;
-	                return yScale(value);
-	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref37) {
+	            }).attr('y', function (_ref37) {
 	                var value = _ref37.value;
+	                return yScale(value);
+	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref38) {
+	                var value = _ref38.value;
 	                return chartHeight - yScale(value);
 	            });
 	        }

@@ -510,10 +510,9 @@
               .append('rect')
                 .classed('bar', true)
                 .attr('x', chartWidth)
-                .attr('y', chartHeight)
-                // .attr('y', ({value}) => yScale(value))
+                .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
-                .attr('height', ({value}) => yScale(value))
+                .attr('height', ({value}) => chartHeight - yScale(value))
                 .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function() {
                     dispatcher.call('customMouseOver', this);
