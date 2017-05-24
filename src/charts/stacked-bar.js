@@ -165,7 +165,6 @@ define(function(require){
          */
          function prepareData(_data) {
             data = cleanData(_data);
-            
             stacks = uniq(data.map(( {stack}) => stack));
             
             transformedData = d3Collection.nest()
@@ -188,7 +187,7 @@ define(function(require){
                     key:data.key,
                 },data.value)
             })
-            console.log('transformedData',transformedData)
+
         }
         /**
          * Adds events to the container group if the environment is not mobile
