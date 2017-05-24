@@ -99,7 +99,7 @@ define(function(require) {
 
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
-            animationDuration = 1200,
+            animationDuration = 800,
             interBarDelay = function(d, i) { return 70 * i},
 
             valueLabel = 'value',
