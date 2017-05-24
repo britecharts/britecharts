@@ -7,6 +7,7 @@ define(function(require){
      const d3Collection = require('d3-collection');
      const d3Dispatch = require('d3-dispatch');
      const d3Ease = require('d3-ease');
+     const d3Interpolate = require('d3-interpolate');
      const d3Scale = require('d3-scale');
      const d3Shape = require('d3-shape');
      const d3Selection = require('d3-selection');
@@ -459,17 +460,23 @@ define(function(require){
                 context;
 
                 if (isAnimated){
-                    context = bars.style('opacity', 0.24).transition()
+                    bars.style('opacity', 0.24).transition()
                     .delay( (_, i) => animationDelays[i])
                     .duration(animationDuration)
                     .ease(ease)
+                    .tween('attr.width', function(d ){
+                        let node = d3Selection.select(this),
+                        i = d3Interpolate.interpolateRound(0,xScale(d[1] - d[0] )),
+                        j = d3Interpolate.interpolateNumber(0,1)
+                        ;
+                        return function(t){
+                            node.attr('width',  i(t) );
+                            node.style('opacity', j(t) );
+                        }
+                    });
                 } else {
-                    context = bars;
+                    bars.attr('width', (d) => xScale(d[1] - d[0] ) )
                 }
-        
-                context.attr('width', (d) => xScale(d[1]) - xScale(d[0]) )
-                .style('opacity', 1)
-                //   .attr('height', yScale.bandwidth());
 
                 bars.on('mouseover', function(d) {
                     dispatcher.call('customMouseOver', this, !!d.values ? d:d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
@@ -509,17 +516,23 @@ define(function(require){
                 .attr('fill', (({data}) => categoryColorMap[data.stack+data.key])),context;
 
                 if (isAnimated){
-                    context = bars.style('opacity', 0.24).transition()
+                    bars.style('opacity', 0.24).transition()
                     .delay( (_, i) => animationDelays[i])
                     .duration(animationDuration)
                     .ease(ease)
+                    .tween('attr.height', function(d ){
+                        let node = d3Selection.select(this),
+                        i = d3Interpolate.interpolateRound(0, yScale(d[0]) - yScale(d[1])),
+                        j = d3Interpolate.interpolateNumber(0,1)
+                        ;
+                        return function(t){
+                            node.attr('height',  i(t) );
+                            node.style('opacity', j(t) );
+                        }
+                    });
                 } else {
-                    context = bars;
+                    bars.attr('height', (d) => yScale(d[0]) - yScale(d[1]) );
                 }
-        
-        
-                context.attr('height', (d) => yScale(d[0]) - yScale(d[1]) )
-                .style('opacity', 1)
 
                 bars.on('mouseover', function(d) {
                     dispatcher.call('customMouseOver', this);
