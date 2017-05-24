@@ -469,6 +469,7 @@ define(function(require){
                         i = d3Interpolate.interpolateRound(0,xScale(d[1] - d[0] )),
                         j = d3Interpolate.interpolateNumber(0,1)
                         ;
+
                         return function(t){
                             node.attr('width',  i(t) );
                             node.style('opacity', j(t) );
@@ -525,6 +526,7 @@ define(function(require){
                         i = d3Interpolate.interpolateRound(0, yScale(d[0]) - yScale(d[1])),
                         j = d3Interpolate.interpolateNumber(0,1)
                         ;
+
                         return function(t){
                             node.attr('height',  i(t) );
                             node.style('opacity', j(t) );
