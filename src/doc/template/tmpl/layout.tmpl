@@ -65,6 +65,7 @@
         <link type="text/css" rel="stylesheet" href="styles/demos.css">
         <link type="text/css" rel="stylesheet" href="styles/prism.css"  />
         <link type="text/css" rel="stylesheet" href="styles/britecharts.css" />
+        <script src="/britecharts/scripts/common.js"></script>
     </head>
     <body>
         <div class="navbar navbar-fixed-top <?js= this.navOptions.inverseNav ? 'navbar-inverse' : 'navbar-default' ?>">
@@ -80,6 +81,7 @@
             	</div>
             	<div class="navbar-collapse collapse" id="topNavigation">
             		<ul class="nav navbar-nav">
+                       <li><a href="getting-started.html">Getting Started</a></li>
             			<?js this.nav.topLevelNav.forEach(function(entry){ ?>
             			<li class="dropdown">
             				<a href="<?js= entry.link ?>" class="dropdown-toggle" data-toggle="dropdown"><?js= entry.title ?><b class="caret"></b></a>
@@ -166,7 +168,7 @@
         <?js if (this.navOptions.search) { ?>
             <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
         <?js } ?>
-        <script src="/britecharts/scripts/bundle.js"></script>
+     
         <script src="/britecharts/scripts/prism.js"></script>
         <script>
         $( function () {

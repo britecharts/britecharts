@@ -30,7 +30,7 @@ var template = require('jsdoc/template'),
 
 var globalUrl = helper.getUniqueFilename('global');
 var indexUrl = helper.getUniqueFilename('index');
-
+var gettingUrl = helper.getUniqueFilename('getting-started');
 var navOptions = {
   includeDate: conf.includeDate !== false,
   logoFile: conf.logoFile,
@@ -501,6 +501,8 @@ exports.publish = function(taffyData, opts, tutorials) {
   //	var globalUrl = helper.getUniqueFilename( 'global' );
   helper.registerLink('global', globalUrl);
 
+ 
+
   // set up templating
   // set up templating
   view.layout = conf['default'].layoutFile ?
@@ -781,6 +783,20 @@ exports.publish = function(taffyData, opts, tutorials) {
       }]
     ).concat(files),
     indexUrl);
+var markdown = require('jsdoc/util/markdown');
+var parser = markdown.getParser();
+
+
+var content = fs.readFileSync((`${process.cwd()}/` + './GETTINGSTARTED.md')).toString();
+var html = parser(content);
+    generate('getting-started', 'Getting Started with Britecharts',
+    [{
+      kind:'mainpage',
+      readme:html
+    }],
+    gettingUrl);
+
+    
 
   // set up the lists that we'll use to generate pages
   var classes = taffy(members.classes);
@@ -840,6 +856,8 @@ exports.publish = function(taffyData, opts, tutorials) {
   function generateTutorial(title, tutorial, filename) {
     var tutorialData = {
       title: title,
+      name: tutorial.name,
+      filename:filename,
       header: tutorial.title,
       content: tutorial.parse(),
       children: tutorial.children,
