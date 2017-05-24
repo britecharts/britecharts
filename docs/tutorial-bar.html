@@ -148,6 +148,7 @@ barChart
     .width(containerWidth)
     .height(300)
     .usePercentage(true)
+    .isAnimated(true)
     .on('customMouseOver', tooltip.show)
     .on('customMouseMove', tooltip.update)
     .on('customMouseOut', tooltip.hide);
@@ -187,6 +188,7 @@ barChart
     })
     .percentageAxisToMaxRatio(1.3)
     .horizontal(true)
+    .isAnimated(true)
     .colorSchema(colors.colorSchemas.britechartsColorSchema)
     .width(containerWidth)
     .height(300);

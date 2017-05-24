@@ -122,7 +122,7 @@ function createLineChartWithSingleLine() {
             .tooltipThreshold(600)
             .height(300)
             .margin(barMargin)
-            .grid('horizontal')
+            .grid('vertical')
             .width(containerWidth)
             .dateLabel('fullDate')
             .on('customMouseOver', function() {

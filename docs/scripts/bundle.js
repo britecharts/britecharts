@@ -20241,11 +20241,12 @@
 	    line = __webpack_require__(58),
 	    tooltip = __webpack_require__(33),
 	    dataBuilder = __webpack_require__(59),
-	    colorSelectorHelper = __webpack_require__(40);
+	    colorSelectorHelper = __webpack_require__(40),
+	    barMargin = { top: 60, bottom: 50, left: 50, right: 30 };
 	
 	function createBrushChart(optionalColorSchema) {
 	    var brushChart = brush(),
-	        brushMargin = { top: 0, bottom: 40, left: 70, right: 30 },
+	        brushMargin = { top: 0, bottom: 40, left: 50, right: 30 },
 	        testDataSet = new dataBuilder.LineDataBuilder(),
 	        brushContainer = d3Selection.select('.js-line-brush-chart-container'),
 	        containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
@@ -20288,7 +20289,7 @@
 	        dataset = testDataSet.with5Topics().build();
 	
 	        // LineChart Setup and start
-	        lineChart1.isAnimated(true).aspectRatio(0.5).grid('horizontal').tooltipThreshold(600).width(containerWidth).dateLabel('fullDate').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
+	        lineChart1.isAnimated(true).aspectRatio(0.7).grid('horizontal').tooltipThreshold(600).width(containerWidth).margin(barMargin).dateLabel('fullDate').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 	
 	        if (optionalColorSchema) {
 	            lineChart1.colorSchema(optionalColorSchema);
@@ -20331,7 +20332,7 @@
 	            lineChart2.exportChart('linechart.png', 'Britecharts LÍne Chart');
 	        });
 	
-	        lineChart2.tooltipThreshold(600).height(500).grid('horizontal').width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
+	        lineChart2.tooltipThreshold(600).height(300).margin(barMargin).grid('vertical').width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -20363,7 +20364,7 @@
 	    if (containerWidth) {
 	        dataset = testDataSet.with5Topics().build();
 	
-	        lineChart3.height(300).width(containerWidth).grid('full').dateLabel('fullDate').on('customMouseOver', function () {
+	        lineChart3.height(300).width(containerWidth).margin(barMargin).grid('full').dateLabel('fullDate').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
