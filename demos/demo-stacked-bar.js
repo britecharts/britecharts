@@ -37,7 +37,7 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
             .stackLabel('stack')
             .nameLabel('date')
             .valueLabel('views')
-            .isAnimated('true')
+            .isAnimated(true)
             .on('customMouseOver', function() {
                 chartTooltip.show();
             })
@@ -100,7 +100,7 @@ function createStackedBarChartWithFixedAspectRatio(optionalColorSchema) {
                 right: 30,
                 bottom: 20
             })
-             .isAnimated('true')
+             .isAnimated(true)
             .valueLabel('views')
             .stackLabel('stack')
             .on('customMouseOver', function() {
