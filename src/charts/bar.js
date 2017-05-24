@@ -393,12 +393,12 @@ define(function(require) {
                 })
               .merge(bars)
                 .attr('x', ({name}) => xScale(name))
-                .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
                 .transition()
                 .duration(animationDuration)
                 .delay(interBarDelay)
                 .ease(ease)
+                .attr('y', ({value}) => yScale(value))
                 .attr('height', ({value}) => chartHeight - yScale(value));
         }
 

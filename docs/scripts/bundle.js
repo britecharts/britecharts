@@ -17327,7 +17327,7 @@
 	    colors = __webpack_require__(7),
 	    dataBuilder = __webpack_require__(45);
 	
-	function createBarChart() {
+	function createSimpleBarChart() {
 	    var barChart = bar(),
 	        testDataSet = new dataBuilder.BarDataBuilder(),
 	        barContainer = d3Selection.select('.js-bar-chart-container'),
@@ -17337,7 +17337,7 @@
 	    if (containerWidth) {
 	        dataset = testDataSet.withLettersFrequency().build();
 	
-	        barChart.isAnimated(true).width(containerWidth).height(300);
+	        barChart.width(containerWidth).height(300);
 	
 	        barContainer.datum(dataset).call(barChart);
 	    }
@@ -17385,7 +17385,7 @@
 	
 	        dataset = testDataSet.withLettersFrequency().build();
 	
-	        barChart.width(containerWidth).height(300).usePercentage(true).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
+	        barChart.width(containerWidth).height(300).isAnimated(true).usePercentage(true).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
 	
 	        barContainer.datum(dataset).call(barChart);
 	
@@ -17396,16 +17396,16 @@
 	
 	// Show charts if container available
 	if (d3Selection.select('.js-bar-chart-tooltip-container').node()) {
-	    createBarChart();
-	    createHorizontalBarChart();
 	    createBarChartWithTooltip();
+	    createHorizontalBarChart();
+	    createSimpleBarChart();
 	
 	    var redrawCharts = function redrawCharts() {
 	        d3Selection.selectAll('.bar-chart').remove();
 	
-	        createBarChart();
-	        createHorizontalBarChart();
 	        createBarChartWithTooltip();
+	        createHorizontalBarChart();
+	        createSimpleBarChart();
 	    };
 	
 	    // Redraw charts on window resize
@@ -17832,10 +17832,10 @@
 	            }).merge(bars).attr('x', function (_ref28) {
 	                var name = _ref28.name;
 	                return xScale(name);
-	            }).attr('y', function (_ref29) {
+	            }).attr('width', xScale.bandwidth()).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('y', function (_ref29) {
 	                var value = _ref29.value;
 	                return yScale(value);
-	            }).attr('width', xScale.bandwidth()).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('height', function (_ref30) {
+	            }).attr('height', function (_ref30) {
 	                var value = _ref30.value;
 	                return chartHeight - yScale(value);
 	            });

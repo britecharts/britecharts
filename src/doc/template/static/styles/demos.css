@@ -95,3 +95,14 @@
 .legend-chart-container {
     text-align: center;
 }
+
+
+/* Bar Chart */
+.bar-chart-tooltip-container {
+    min-height: 300px;
+}
+
+/* Line Chart */
+.line-chart-container {
+    min-height: 130px;
+}
