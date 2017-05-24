@@ -85,7 +85,14 @@ define(function(require){
             slices,
             svg,
 
+<<<<<<< HEAD
             isAnimated = false,
+=======
+            // highlight slice
+            highlightedSliceId,
+            highlightedSlice,
+
+>>>>>>> 168e0f49acbbda41f116b2bb9997d40a00f17ee0
             quantityLabel = 'quantity',
             nameLabel = 'name',
             percentageLabel = 'percentage',
@@ -129,6 +136,7 @@ define(function(require){
                 buildSVG(this);
                 drawSlices();
                 initTooltip();
+                initHighlightSlice();
             });
         }
 
@@ -252,8 +260,8 @@ define(function(require){
                     newSlices.merge(slices)
                       .append('path')
                         .attr('fill', getSliceFill)
-                        .on('mouseover', tweenGrowthFactory(externalRadius, 0))
-                        .on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration))
+                        .on('mouseover', handlePathMouseOver)
+                        .on('mouseout', handlePathMouseOut)
                         .transition()
                         .ease(ease)
                         .duration(pieDrawingTransitionDuration)
@@ -263,8 +271,8 @@ define(function(require){
                       .append('path')
                         .attr('fill', getSliceFill)
                         .attr('d', shape)
-                        .on('mouseover', tweenGrowthFactory(externalRadius, 0))
-                        .on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration));
+                        .on('mouseover', handlePathMouseOver)
+                        .on('mouseout', handlePathMouseOut)
                 }
             } else {
                 slices = svg.select('.chart-group')
@@ -290,6 +298,28 @@ define(function(require){
             svg.select('.donut-text').text('');
         }
 
+        /**
+         * Find the slice by id and growth it if needed
+         * @private
+         */
+        function initHighlightSlice() {
+            if (highlightedSliceId === null || typeof highlightedSliceId === 'undefined') {
+                return;
+            }
+
+            highlightedSlice = svg.selectAll('.chart-group .arc path')
+                .select(function(a) {
+                    if (a.data.id === highlightedSliceId) {
+                        return this;
+                    }
+                }).node();
+
+            if (highlightedSlice) {
+                drawLegend(highlightedSlice.__data__);
+                tweenGrowth(highlightedSlice, externalRadius, pieDrawingTransitionDuration);
+            }
+        }
+
         function handleMouseOver(datum) {
             drawLegend(datum);
 
@@ -297,9 +327,31 @@ define(function(require){
         }
 
         function handleMouseOut() {
-            cleanLegend();
+            if (highlightedSlice) {
+                drawLegend(highlightedSlice.__data__);
+            } else {
+                cleanLegend();
+            }
 
             dispatcher.call('customMouseOut', this);
+        }
+
+        function handlePathMouseOver() {
+            if (highlightedSlice && this !== highlightedSlice) {
+                tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
+            }
+
+            tweenGrowth(this, externalRadius);
+        }
+
+        function handlePathMouseOut() {
+            if (highlightedSlice && this !== highlightedSlice) {
+                tweenGrowth(highlightedSlice, externalRadius);
+            }
+
+            if(this !== highlightedSlice) {
+                tweenGrowth(this, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+            }
         }
 
         /**
@@ -330,28 +382,26 @@ define(function(require){
         }
 
         /**
-         * Generates animations with tweens depending on the attributes given
+         * Animate slice with tweens depending on the attributes given
          *
+         * @param  {DOMElement} slice   Slice to growth
          * @param  {Number} outerRadius Final outer radius value
          * @param  {Number} delay       Delay of animation
-         * @return {Function}           Function that when called will tween the element
          * @private
          */
-        function tweenGrowthFactory(outerRadius, delay) {
-            return function() {
-                d3Selection.select(this)
-                    .transition()
-                    .delay(delay)
-                    .attrTween('d', function(d) {
-                        let i = d3Interpolate.interpolate(d.outerRadius, outerRadius);
+        function tweenGrowth(slice, outerRadius, delay = 0) {
+            d3Selection.select(slice)
+                .transition()
+                .delay(delay)
+                .attrTween('d', function(d) {
+                    let i = d3Interpolate.interpolate(d.outerRadius, outerRadius);
 
-                        return (t) => {
-                            d.outerRadius = i(t);
+                    return (t) => {
+                        d.outerRadius = i(t);
 
-                            return shape(d);
-                        };
-                    });
-            };
+                        return shape(d);
+                    };
+                });
         }
 
         /**
@@ -491,6 +541,21 @@ define(function(require){
          */
         exports.exportChart = function(filename, title) {
             exportChart.call(exports, svg, filename, title);
+        };
+
+
+        /**
+         * Gets or Sets the id of the slice to highlight
+         * @param  {Number} _x Slice id
+         * @return { (Number | Module) } Current highlighted slice id or Donut Chart module to chain calls
+         * @public
+         */
+        exports.highlightSliceById = function(_x) {
+            if (!arguments.length) {
+                return highlightedSliceId;
+            }
+            highlightedSliceId = _x;
+            return this;
         };
 
         /**

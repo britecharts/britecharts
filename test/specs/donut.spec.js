@@ -139,6 +139,18 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 expect(defaultAnimation).not.toBe(testAnimation);
                 expect(newAnimation).toBe(testAnimation);
             });
+
+            it('should provide a highlightSliceById getter and setter', () => {
+                let defaultId = donutChart.highlightSliceById(),
+                    testId = 10,
+                    newId;
+
+                donutChart.highlightSliceById(testId);
+                newId = donutChart.highlightSliceById();
+
+                expect(defaultId).not.toBe(newId);
+                expect(newId).toBe(testId);
+            });
         });
 
         describe('when mouse events are triggered', () => {
