@@ -8,11 +8,16 @@
     },
     "source": {
         "includePattern": ".+\\.js(doc)?$",
-        "excludePattern": "(^|\\/|\\\\)_",
-        "include": ["./README.md"]
+        "excludePattern": "(^|\\/|\\\\)_"
+        // "include": ["./README.md"]
     },
     "plugins": [],
     "templates": {
+        // "default":{
+        //     "staticFiles":{
+        //         "paths":[]
+        //     }
+        // },
         "logoFile": "img/britecharts-logo.svg",
         "systemName": "Britecharts",
         "footer": "",
