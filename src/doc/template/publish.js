@@ -774,7 +774,7 @@ exports.publish = function(taffyData, opts, tutorials) {
       kind: 'package'
     });
 
-  generate('index', 'Index',
+  generate('index', 'Britecharts - D3.js based charting library of reusable components',
     packages.concat(
       [{
         kind: 'mainpage',

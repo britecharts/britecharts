@@ -12,7 +12,8 @@ module.exports = function(grunt) {
                 destination: 'docs',
                 configure: 'src/doc/jsdoc.conf.json',
                 template: 'src/doc/template',
-                tutorials: 'demos'
+                tutorials: 'demos',
+                mainpagetitle:'Britecharts - D3.js based charting library of reusable components'
             }
         }
     });
