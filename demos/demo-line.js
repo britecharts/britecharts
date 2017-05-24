@@ -12,7 +12,7 @@ var _ = require('underscore'),
     dataBuilder = require('./../test/fixtures/lineChartDataBuilder'),
     colorSelectorHelper = require('./helpers/colorSelector'),
 
-    barMargin = {top:60, bottom: 50, left: 50, right: 30};
+    lineMargin = {top:60, bottom: 50, left: 50, right: 30};
 
 
 function createBrushChart(optionalColorSchema) {
@@ -70,7 +70,7 @@ function createLineChart(optionalColorSchema, optionalData) {
             .grid('horizontal')
             .tooltipThreshold(600)
             .width(containerWidth)
-            .margin(barMargin)
+            .margin(lineMargin)
             .dateLabel('fullDate')
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)
@@ -121,7 +121,7 @@ function createLineChartWithSingleLine() {
         lineChart2
             .tooltipThreshold(600)
             .height(300)
-            .margin(barMargin)
+            .margin(lineMargin)
             .grid('vertical')
             .width(containerWidth)
             .dateLabel('fullDate')
@@ -163,7 +163,7 @@ function createLineChartWithFixedHeight() {
         lineChart3
             .height(300)
             .width(containerWidth)
-            .margin(barMargin)
+            .margin(lineMargin)
             .grid('full')
             .dateLabel('fullDate')
             .on('customMouseOver', function() {
