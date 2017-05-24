@@ -13,11 +13,11 @@
     },
     "plugins": [],
     "templates": {
-        // "default":{
-        //     "staticFiles":{
-        //         "paths":[]
-        //     }
-        // },
+        "default":{
+            "staticFiles":{
+                "paths":["./src/doc/html"]
+            }
+        },
         "logoFile": "img/britecharts-logo.svg",
         "systemName": "Britecharts",
         "footer": "",

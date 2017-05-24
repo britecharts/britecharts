@@ -796,6 +796,15 @@ var html = parser(content);
     }],
     gettingUrl);
 
+
+
+    generate('cdn', 'CDN Loading Demo - Britecharts',
+    [{
+      kind:'mainpage',
+      readme:'<div class="embed-responsive embed-responsive-16by9" style="height:1833px;" ><iframe height="1833" scrolling="no" style="height:1833px;" class="embed-responsive-item" frameborder="0" src="cdn-iframe.html" allowfullscreen></iframe></div>'
+    }],
+    helper.getUniqueFilename('cdn'));
+
     
 
   // set up the lists that we'll use to generate pages
