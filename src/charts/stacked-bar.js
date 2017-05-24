@@ -170,8 +170,7 @@ define(function(require){
                 buildAxis();
                 drawAxis();
                 drawStackedBar();
-                if (shouldShowTooltip()){
-                    // drawMetaDataGroup();
+                if (shouldShowTooltip()){   
                     addMouseEvents();
                 }
             });
@@ -239,15 +238,13 @@ define(function(require){
          */
          function buildAxis() {
            if (!horizontal) {
-            xAxis = d3Axis.axisBottom(xScale)
-            yAxis = d3Axis.axisLeft(yScale)
-            .ticks(numOfVerticalTicks, valueLabelFormat)
-        } else {
-            xAxis = d3Axis.axisBottom(xScale)
-            .ticks(numOfHorizontalTicks, valueLabelFormat)
-                    // .tickSizeInner([-chartHeight]);
-
-                    yAxis = d3Axis.axisLeft(yScale);
+                xAxis = d3Axis.axisBottom(xScale)
+                yAxis = d3Axis.axisLeft(yScale)
+                .ticks(numOfVerticalTicks, valueLabelFormat)
+                } else {
+                    xAxis = d3Axis.axisBottom(xScale)
+                    .ticks(numOfHorizontalTicks, valueLabelFormat);
+                    yAxis = d3Axis.axisLeft(yScale)
                 }
             }
 
@@ -328,7 +325,6 @@ define(function(require){
          * @private
          */
          function buildScales() {
-            // let percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue));
             let yMax = d3Array.max(transformedData.map(function(d){
                 return d.total;
             }));
@@ -336,7 +332,7 @@ define(function(require){
             if (!horizontal) {
                 xScale = d3Scale.scaleBand()
                 .domain(data.map(getName))
-                .rangeRound([0, chartWidth])
+                .rangeRound([0, chartWidth ])
                 .padding(0.1);
 
                 yScale = d3Scale.scaleLinear()
@@ -348,11 +344,12 @@ define(function(require){
 
                 xScale = d3Scale.scaleLinear()
                 .domain([0, yMax])
-                .rangeRound([0, chartWidth]);
+                .rangeRound([0, chartWidth - 1]); 
+                // 1 pix for edge tick
 
                 yScale = d3Scale.scaleBand()
                 .domain(data.map(getName))
-                .rangeRound([chartHeight-margin.top, margin.bottom])
+                .rangeRound([chartHeight, 0])
                 .padding(0.1);
             }
 
@@ -360,7 +357,6 @@ define(function(require){
             .range(colorSchema)
             .domain(data.map(getStack));
 
-            // let range = colorScale.range();
             categoryColorMap = colorScale
             .domain(data.map(getName)).domain()
             .reduce((memo, item, i) => {
@@ -418,14 +414,25 @@ define(function(require){
          * @private
          */
          function drawAxis(){
-            svg.select('.x-axis-group .axis.x')
-            .attr('transform', `translate( 0, ${chartHeight} )`)
-            .call(xAxis);
+            if (!horizontal) {
+                svg.select('.x-axis-group .axis.x')
+                .attr('transform', `translate( 0, ${chartHeight} )`)
+                .call(xAxis);
 
-            svg.select('.y-axis-group.axis')
-            .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
-            .call(yAxis)
-            .call(adjustYTickLabels);
+                svg.select('.y-axis-group.axis')
+                .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
+                .call(yAxis)
+                .call(adjustYTickLabels);
+            } else {
+                svg.select('.x-axis-group .axis.x')
+                .attr('transform', `translate( 0, ${chartHeight} )`)
+                .call(xAxis);
+
+                svg.select('.y-axis-group.axis')
+                .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
+                .call(yAxis)
+                // .call(adjustYTickLabels);
+            }
 
         }
 
@@ -445,13 +452,14 @@ define(function(require){
          */
          function drawGridLines(xTicks, yTicks) {
             if (grid === 'horizontal' || grid === 'full') {
+                console.log('yScale.ticks(yTicks)',yScale.ticks(yTicks))
                 horizontalGridLines = svg.select('.grid-lines-group')
                 .selectAll('line.horizontal-grid-line')
-                .data(yScale.ticks(yTicks))
+                .data(yScale.ticks(yTicks).slice(1))
                 .enter()
                 .append('line')
                 .attr('class', 'horizontal-grid-line')
-                .attr('x1', (-xAxisPadding.left - 30))
+                .attr('x1', (-xAxisPadding.left + 1 ))
                 .attr('x2', chartWidth)
                 .attr('y1', (d) => yScale(d))
                 .attr('y2', (d) => yScale(d));
@@ -460,27 +468,15 @@ define(function(require){
             if (grid === 'vertical' || grid === 'full') {
                 verticalGridLines = svg.select('.grid-lines-group')
                 .selectAll('line.vertical-grid-line')
-                .data(xScale.ticks(xTicks))
+                .data(xScale.ticks(xTicks).slice(1))
                 .enter()
                 .append('line')
                 .attr('class', 'vertical-grid-line')
                 .attr('y1', 0)
-                .attr('y2', chartHeight)
+                .attr('y2', chartHeight )
                 .attr('x1', (d) => xScale(d))
                 .attr('x2', (d) => xScale(d));
             }
-
-            //draw a horizontal line to extend x-axis till the edges
-            baseLine = svg.select('.grid-lines-group')
-            .selectAll('line.extended-x-line')
-            .data([0])
-            .enter()
-            .append('line')
-            .attr('class', 'extended-x-line')
-            .attr('x1', (-xAxisPadding.left - 30))
-            .attr('x2', chartWidth)
-            .attr('y1', height - margin.bottom - margin.top)
-            .attr('y2', height - margin.bottom - margin.top);
         }
 
 

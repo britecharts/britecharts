@@ -42,7 +42,7 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
                 chartTooltip.show();
             })
             .on('customMouseMove', function(dataPoint, topicColorMap, x,y) {
-                chartTooltip.update(dataPoint, topicColorMap, x,y);
+                chartTooltip.update(dataPoint, topicColorMap, x, y);
             })
             .on('customMouseOut', function() {
                 chartTooltip.hide();
@@ -95,7 +95,7 @@ function createStackedBarChartWithFixedAspectRatio(optionalColorSchema) {
             .horizontal(true)
             .nameLabel('date')
             .margin({
-                left: 120,
+                left: 80,
                 top: 0,
                 right: 0,
                 bottom: 20
