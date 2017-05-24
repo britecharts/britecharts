@@ -96,8 +96,8 @@ function createStackedBarChartWithFixedAspectRatio(optionalColorSchema) {
             .nameLabel('date')
             .margin({
                 left: 80,
-                top: 0,
-                right: 0,
+                top: 40,
+                right: 30,
                 bottom: 20
             })
              .isAnimated('true')
