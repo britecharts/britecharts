@@ -2915,37 +2915,7 @@
 	        // dataset = testDataSet.withGeneratedData().build();
 	
 	        // StackedAreChart Setup and start
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
-=======
-=======
->>>>>>> Adding animation flag to donut
-<<<<<<< HEAD
-	        stackedArea.tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', function () {
-=======
-	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal')
-	        // .dateLabel('dateUTC')
-	        // .valueLabel('views')
-	        .on('customMouseOver', function () {
->>>>>>> Adding animation flag in stacked area chart
-	            chartTooltip.show();
-	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
-	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-	        }).on('customMouseOut', function () {
-	            chartTooltip.hide();
-	        });
-<<<<<<< HEAD
->>>>>>> Adding animation flag in stacked area chart
-=======
-=======
-	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
->>>>>>> Adding animation flag to donut
->>>>>>> Adding animation flag to donut
-=======
-	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
->>>>>>> updating master
 	
 	        if (optionalColorSchema) {
 	            stackedArea.colorSchema(optionalColorSchema);
@@ -2992,19 +2962,7 @@
 	        container.datum(dataset.data).call(stackedArea);
 	
 	        // Tooltip Setup and start
-<<<<<<< HEAD
-<<<<<<< HEAD
 	        chartTooltip.topicLabel('values').title('Tooltip Title');
-=======
-<<<<<<< HEAD
-	        chartTooltip.topicLabel('values').title('Dummy Title');
-=======
-	        chartTooltip.topicLabel('values').title('Tooltip Title');
->>>>>>> Adding animation flag to donut
->>>>>>> Adding animation flag to donut
-=======
-	        chartTooltip.topicLabel('values').title('Tooltip Title');
->>>>>>> updating master
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -3603,10 +3561,6 @@
 	        function drawStackedAreas() {
 	            var series = void 0;
 	
-<<<<<<< HEAD
-=======
-	            // Creating Area function
->>>>>>> Adding animation flag in stacked area chart
 	            area = d3Shape.area().curve(d3Shape.curveMonotoneX).x(function (_ref6) {
 	                var data = _ref6.data;
 	                return xScale(data.date);
@@ -19366,9 +19320,12 @@
 	                slices = svg.select('.chart-group').selectAll('g.arc').data(layout(data));
 	
 <<<<<<< HEAD
+<<<<<<< HEAD
 	                var newSlices = slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true);
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> Merging master
 	                var newSlices = slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut);
 >>>>>>> Adding animation flag to donut
 	
@@ -19379,6 +19336,7 @@
 	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', handlePathMouseOver).on('mouseout', handlePathMouseOut);
 =======
 	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration));
+<<<<<<< HEAD
 =======
 	                if (isAnimated) {
 	                    slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration)).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
@@ -19386,6 +19344,8 @@
 	                    slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration));
 >>>>>>> Adding animation flag to donut
 >>>>>>> Adding animation flag to donut
+=======
+>>>>>>> Merging master
 	                }
 	            } else {
 	                slices = svg.select('.chart-group').selectAll('path').data(layout(data));
