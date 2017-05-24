@@ -165,6 +165,7 @@ define(function(require){
          */
          function prepareData(_data) {
             data = cleanData(_data);
+            
             stacks = uniq(data.map(( {stack}) => stack));
             
             transformedData = d3Collection.nest()
@@ -173,8 +174,8 @@ define(function(require){
                 let ret = {};
 
                 values.forEach((entry) => {
-                    if (entry && entry['stack']) {
-                        ret[entry['stack']] = getValue(entry);
+                    if (entry && entry[stackLabel]) {
+                        ret[entry[stackLabel]] = getValue(entry);
                     }
                 });
                     ret.values = values; //for tooltip
@@ -187,6 +188,7 @@ define(function(require){
                     key:data.key,
                 },data.value)
             })
+            console.log('transformedData',transformedData)
         }
         /**
          * Adds events to the container group if the environment is not mobile
@@ -355,6 +357,7 @@ define(function(require){
                 return data.map((d) => {
                     d.value = +d[valueLabel];
                     d.stack = d[stackLabel];
+                    d.topicName = getStack(d); // for tooltip
                     d.name = d[nameLabel];
                     return d;
                 });
