@@ -132,23 +132,23 @@
         <h2 class="tutorial-section__heading">Donut Chart</h2>
     </header>
     <article>
-        
-    <div class="container" id="donut">
-        <div class="row">
-            <div class="col-md-6">
-                <article>
-                    <h2 class="tutorial__heading">Donut Chart with Legend</h2>
-                    <div class="card--chart">
-                        <div class="js-donut-chart-container donut-chart-container"></div>
-                        <div class="js-legend-chart-container legend-chart-container"></div>
-                    </div>
-                </article>
-            </div>
-            <div class="col-md-6 sidebar">
-                <h3>The code</h3>
-                <pre><code class="language-javascript">
+        <div class="container" id="donut">
+    <div class="row">
+        <div class="col-md-6">
+            <article>
+                <h2 class="tutorial__heading">Donut Chart with Legend</h2>
+                <div class="card--chart">
+                    <div class="js-donut-chart-container donut-chart-container"></div>
+                    <div class="js-legend-chart-container legend-chart-container"></div>
+                </div>
+            </article>
+        </div>
+        <div class="col-md-6 sidebar">
+            <h3>The code</h3>
+            <pre><code class="language-javascript">
 donutChart
     .isAnimated(true)
+    .highlightSliceById(2)
     .width(containerWidth)
     .height(containerWidth)
     .externalRadius(containerWidth/2.5)
@@ -163,40 +163,41 @@ donutChart
 donutContainer.datum(dataset).call(donutChart);
 
 legendContainer.datum(dataset).call(legendChart);
-                </code></pre>
+            </code></pre>
 
-                <h4>Colors</h4>
-                <label class="control-label">You can also check other color schemas:</label>
-                <div class="js-color-selector-container"></div>
-                </p>
+            <h4>Colors</h4>
+            <label class="control-label">You can also check other color schemas:</label>
+            <div class="js-color-selector-container"></div>
+            </p>
 
-                <h4>Data Input</h4>
-                <p>Check the <a href="/britecharts/global.html#DonutChartData__anchor">data input schema</a> of this chart.</p>
+            <h4>Data Input</h4>
+            <p>Check the <a href="/britecharts/global.html#DonutChartData__anchor">data input schema</a> of this chart.</p>
 
-                <h4>Export Chart</h4>
-                <p>You can also export this chart by pressing: <input id="button" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
+            <h4>Export Chart</h4>
+            <p>You can also export this chart by pressing: <input id="button" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
 
-                <h4>Demo Code</h4>
-                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-donut.js">in github</a></p>
-            </div>
+            <h4>Demo Code</h4>
+            <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-donut.js">in github</a></p>
         </div>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="
 col-md-6">
-                <section>
-                    <article>
-                        <h2>Small Donut Chart with Inline Legend</h2>
-                        <div class="js-small-donut-chart-container card--chart"></div>
-                        <div class="js-inline-legend-chart-container legend-chart-container"></div>
-                    </article>
-                </section>
-            </div>
-            <div class="
+            <section>
+                <article>
+                    <h2>Small Donut Chart with Inline Legend</h2>
+                    <div class="js-small-donut-chart-container card--chart"></div>
+                    <div class="js-inline-legend-chart-container legend-chart-container"></div>
+                </article>
+            </section>
+        </div>
+        <div class="
 col-md-6 sidebar">
-                <h3>The code</h3>
-                <pre><code class="language-javascript">
+            <h3>The code</h3>
+            <pre><code class="language-javascript">
 donutChart
     .width(containerWidth)
     .height(containerWidth/1.8)
@@ -210,14 +211,45 @@ donutChart
     });
 
 donutContainer.datum(dataset).call(donutChart);
-                </code></pre>
+            </code></pre>
 
-                <h4>Demo Code</h4>
-                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-donut.js">in github</a></p>
-            </div>
+            <h4>Demo Code</h4>
+            <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-donut.js">in github</a></p>
         </div>
     </div>
+</div>
 
+<div class="container">
+    <div class="row">
+        <div class="
+col-md-6">
+            <section>
+                <article>
+                    <h2>Donut Chart with fixed higlighted slice</h2>
+                    <div class="js-donut-highlight-slice-chart-container card--chart"></div>
+                </article>
+            </section>
+        </div>
+        <div class="
+col-md-6 sidebar">
+            <h3>The code</h3>
+            <pre><code class="language-javascript">
+donutChart
+    .highlightSliceById(1)
+    .hasFixedHighlightedSlice(true)
+    .width(containerWidth)
+    .height(containerWidth/1.8)
+    .externalRadius(containerWidth/5)
+    .internalRadius(containerWidth/10);
+
+donutContainer.datum(dataset).call(donutChart);
+            </code></pre>
+
+            <h4>Demo Code</h4>
+            <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-donut.js">in github</a></p>
+        </div>
+    </div>
+</div>
 
     </article>
 </section>
