@@ -258,10 +258,10 @@ define(function(require){
                     .data(layout(data));
 
                 let newSlices = slices.enter()
-                      .append('g')
-                        .each(storeAngle)
-                        .each(reduceOuterRadius)
-                        .classed('arc', true);
+                  .append('g')
+                    .each(storeAngle)
+                    .each(reduceOuterRadius)
+                    .classed('arc', true);
 
                 if (isAnimated) {
                     newSlices.merge(slices)

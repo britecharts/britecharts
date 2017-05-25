@@ -11,7 +11,7 @@ var d3Selection = require('d3-selection'),
     dataBuilder = require('./../test/fixtures/barChartDataBuilder');
 
 
-function createBarChart() {
+function createSimpleBarChart() {
     var barChart = bar(),
         testDataSet = new dataBuilder.BarDataBuilder(),
         barContainer = d3Selection.select('.js-bar-chart-container'),
@@ -42,18 +42,18 @@ function createHorizontalBarChart() {
         dataset = testDataSet.withColors().build();
 
         barChart
+            .horizontal(true)
+            .isAnimated(true)
             .margin({
                 left: 120,
                 right: 20,
                 top: 20,
                 bottom: 30
             })
-            .horizontal(true)
             .colorSchema(colors.colorSchemas.britechartsColorSchema)
             .width(containerWidth)
             .yAxisPaddingBetweenChart(30)
             .height(300)
-
             .percentageAxisToMaxRatio(1.3)
             .on('customMouseOver', tooltip.show)
             .on('customMouseMove', tooltip.update)
@@ -85,6 +85,7 @@ function createBarChartWithTooltip() {
         barChart
             .width(containerWidth)
             .height(300)
+            .isAnimated(true)
             .usePercentage(true)
             .on('customMouseOver', tooltip.show)
             .on('customMouseMove', tooltip.update)
@@ -99,16 +100,16 @@ function createBarChartWithTooltip() {
 
 // Show charts if container available
 if (d3Selection.select('.js-bar-chart-tooltip-container').node()){
-    createBarChart();
-    createHorizontalBarChart();
     createBarChartWithTooltip();
+    createHorizontalBarChart();
+    createSimpleBarChart();
 
     var redrawCharts = function(){
         d3Selection.selectAll('.bar-chart').remove();
 
-        createBarChart();
-        createHorizontalBarChart();
         createBarChartWithTooltip();
+        createHorizontalBarChart();
+        createSimpleBarChart();
     };
 
     // Redraw charts on window resize

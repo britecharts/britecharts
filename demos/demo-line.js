@@ -10,12 +10,14 @@ var _ = require('underscore'),
     line = require('./../src/charts/line'),
     tooltip = require('./../src/charts/tooltip'),
     dataBuilder = require('./../test/fixtures/lineChartDataBuilder'),
-    colorSelectorHelper = require('./helpers/colorSelector');
+    colorSelectorHelper = require('./helpers/colorSelector'),
+
+    lineMargin = {top:60, bottom: 50, left: 50, right: 30};
 
 
 function createBrushChart(optionalColorSchema) {
     var brushChart = brush(),
-        brushMargin = {top:0, bottom: 40, left: 70, right: 30},
+        brushMargin = {top:0, bottom: 40, left: 50, right: 30},
         testDataSet = new dataBuilder.LineDataBuilder(),
         brushContainer = d3Selection.select('.js-line-brush-chart-container'),
         containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
@@ -45,7 +47,6 @@ function createBrushChart(optionalColorSchema) {
     }
 }
 
-
 function createLineChart(optionalColorSchema, optionalData) {
     var lineChart1 = line(),
         chartTooltip = tooltip(),
@@ -65,10 +66,11 @@ function createLineChart(optionalColorSchema, optionalData) {
         // LineChart Setup and start
         lineChart1
             .isAnimated(true)
-            .aspectRatio(0.5)
+            .aspectRatio(0.7)
             .grid('horizontal')
             .tooltipThreshold(600)
             .width(containerWidth)
+            .margin(lineMargin)
             .dateLabel('fullDate')
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)
@@ -118,8 +120,9 @@ function createLineChartWithSingleLine() {
 
         lineChart2
             .tooltipThreshold(600)
-            .height(500)
-            .grid('horizontal')
+            .height(300)
+            .margin(lineMargin)
+            .grid('vertical')
             .width(containerWidth)
             .dateLabel('fullDate')
             .on('customMouseOver', function() {
@@ -160,6 +163,7 @@ function createLineChartWithFixedHeight() {
         lineChart3
             .height(300)
             .width(containerWidth)
+            .margin(lineMargin)
             .grid('full')
             .dateLabel('fullDate')
             .on('customMouseOver', function() {
