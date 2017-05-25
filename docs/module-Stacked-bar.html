@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>API: Step</title>
+        <title>API: Stacked-bar</title>
 
         
             <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
@@ -65,7 +65,6 @@
         <link type="text/css" rel="stylesheet" href="styles/demos.css">
         <link type="text/css" rel="stylesheet" href="styles/prism.css"  />
         <link type="text/css" rel="stylesheet" href="styles/britecharts.css" />
-        <script src="/britecharts/scripts/common.js"></script>
     </head>
     <body>
         <div class="navbar navbar-fixed-top navbar-default">
@@ -81,75 +80,25 @@
             	</div>
             	<div class="navbar-collapse collapse" id="topNavigation">
             		<ul class="nav navbar-nav">
-                      
             			
-                        
-            			<li class="">
-            				<a href="getting-started.html" >Getting started<b class=""></b></a>
-            				<ul class="dropdown-menu inline">
-            					
-            				</ul>
-            			</li>
-            			
-                        
             			<li class="dropdown">
-            				<a href="tutorials.list.html"  class="dropdown-toggle" data-toggle="dropdown" >Demos<b class="caret"></b></a>
+            				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">API<b class="caret"></b></a>
             				<ul class="dropdown-menu inline">
-            					
-                                <li><a href="tutorial-bar.html">Bar Chart</a></li>
-                                
-                                <li><a href="tutorial-brush.html">Brush Chart</a></li>
-                                
-                                <li><a href="tutorial-donut.html">Donut Chart</a></li>
-                                
-                                <li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li>
-                                
-                                <li><a href="tutorial-line.html">Line Chart</a></li>
-                                
-                                <li><a href="tutorial-sparkline.html">Sparkline Chart</a></li>
-                                
-                                <li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li>
-                                
-                                <li><a href="tutorial-step.html">Step Chart</a></li>
-                                
+            					<li><a href="module-Bar.html">Bar</a></li><li><a href="module-Brush.html">Brush</a></li><li><a href="module-Donut.html">Donut</a></li><li><a href="module-Legend.html">Legend</a></li><li><a href="module-Line.html">Line</a></li><li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li><li><a href="module-Sparkline.html">Sparkline</a></li><li><a href="module-Stacked-area.html">Stacked-area</a></li><li><a href="module-Stacked-bar.html">Stacked-bar</a></li><li><a href="module-Step.html">Step</a></li><li><a href="module-Tooltip.html">Tooltip</a></li>
             				</ul>
             			</li>
             			
-                        
-            			<li class="">
-            				<a href="cdn.html" >CDN<b class=""></b></a>
-            				<ul class="dropdown-menu inline">
-            					
-            				</ul>
-            			</li>
-            			
-                        
             			<li class="dropdown">
-            				<a href="modules.list.html"  class="dropdown-toggle" data-toggle="dropdown" >API<b class="caret"></b></a>
+            				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Demos<b class="caret"></b></a>
             				<ul class="dropdown-menu inline">
-            					
-                                <li><a href="module-Bar.html">Bar</a></li>
-                                
-                                <li><a href="module-Brush.html">Brush</a></li>
-                                
-                                <li><a href="module-Donut.html">Donut</a></li>
-                                
-                                <li><a href="module-Legend.html">Legend</a></li>
-                                
-                                <li><a href="module-Line.html">Line</a></li>
-                                
-                                <li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li>
-                                
-                                <li><a href="module-Sparkline.html">Sparkline</a></li>
-                                
-                                <li><a href="module-Stacked-area.html">Stacked-area</a></li>
-                                
-                                <li><a href="module-Step.html">Step</a></li>
-                                
-                                <li><a href="module-Tooltip.html">Tooltip</a></li>
-                                
-                                <li><a href="global.html">Types</a></li>
-                                
+            					<li><a href="tutorial--_GETTINGSTARTED.html">Getting Started</a></li><li><a href="tutorial-bar.html">Bar Chart</a></li><li><a href="tutorial-brush.html">Brush Chart</a></li><li><a href="tutorial-cdn.html">CDN</a></li><li><a href="tutorial-donut.html">Donut Chart</a></li><li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li><li><a href="tutorial-line.html">Line Chart</a></li><li><a href="tutorial-sparkline.html">Sparkline Chart</a></li><li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li><li><a href="tutorial-stacked-bar.html">Stacked Bar Chart</a></li><li><a href="tutorial-step.html">Step Chart</a></li>
+            				</ul>
+            			</li>
+            			
+            			<li class="dropdown">
+            				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					<li><a href="global.html">Types</a></li>
             				</ul>
             			</li>
             			
@@ -158,14 +107,14 @@
                         </li>
             		</ul>
                     
-                      
-                            <form class="navbar-form navbar-right" role="search">
+                        <div class="col-sm-3 col-md-4 pull-right no-gutter">
+                            <form class="navbar-form" role="search">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
                                 </div>
                                 <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
                             </form>
-                       
+                        </div>
                     
                 </div>
             </div>
@@ -179,7 +128,7 @@
             		<div id="main">
             			
 
-	<h1 class="page-title">API: Step</h1>
+	<h1 class="page-title">API: Stacked-bar</h1>
 <section>
 
 <header>
@@ -195,15 +144,15 @@
     <div class="container-overview">
     
         
-            <div class="description">Step Chart reusable API class that renders a
-simple and configurable step chart.</div>
+            <div class="description">Stacked Area Chart reusable API module that allows us
+rendering a multi area and configurable chart.</div>
         
 
         
             
 <hr>
 <dt>
-    <h4 class="name" id="module:Step"><span class="type-signature"></span>(require("Step"))(_selection, _data)</h4>
+    <h4 class="name" id="module:Stacked-bar"><span class="type-signature"></span>(require("Stacked-bar"))(_selection, _data)</h4>
     
     
 </dt>
@@ -211,7 +160,7 @@ simple and configurable step chart.</div>
 
     
     <div class="description">
-        This function creates the graph using the selection as container
+        This function creates the graph using the selection and data provided
     </div>
     
 
@@ -264,7 +213,7 @@ simple and configurable step chart.</div>
             
 
             <td class="description last">A d3 selection that represents
-                                 the container(s) where the chart(s) will be rendered</td>
+the container(s) where the chart(s) will be rendered</td>
         </tr>
 
     
@@ -277,7 +226,7 @@ simple and configurable step chart.</div>
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#StepChartData">StepChartData</a></span>
+<span class="param-type"><a href="global.html#areaChartData">areaChartData</a></span>
 
 
 
@@ -332,7 +281,7 @@ simple and configurable step chart.</div>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="step.js.html">step.js</a>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -390,7 +339,7 @@ simple and configurable step chart.</div>
             
 <hr>
 <dt>
-    <h4 class="name" id="module:Step"><span class="type-signature"></span>module:Step(_selection, _data)</h4>
+    <h4 class="name" id="module:Stacked-bar"><span class="type-signature"></span>module:Stacked-bar(_selection, _data)</h4>
     
     
 </dt>
@@ -398,7 +347,7 @@ simple and configurable step chart.</div>
 
     
     <div class="description">
-        This function creates the graph using the selection as container
+        This function creates the graph using the selection and data provided
     </div>
     
 
@@ -451,7 +400,7 @@ simple and configurable step chart.</div>
             
 
             <td class="description last">A d3 selection that represents
-                                 the container(s) where the chart(s) will be rendered</td>
+the container(s) where the chart(s) will be rendered</td>
         </tr>
 
     
@@ -464,7 +413,7 @@ simple and configurable step chart.</div>
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#StepChartData">StepChartData</a></span>
+<span class="param-type"><a href="global.html#areaChartData">areaChartData</a></span>
 
 
 
@@ -519,7 +468,7 @@ simple and configurable step chart.</div>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="step.js.html">step.js</a>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -544,6 +493,334 @@ simple and configurable step chart.</div>
     
 
     
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".aspectRatio"><span class="type-signature">&lt;static> </span>aspectRatio(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the aspect ratio of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired aspect ratio for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current aspect ratio or Area Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">Module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".colorSchema"><span class="type-signature">&lt;static> </span>colorSchema(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the colorSchema of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired colorSchema for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current colorSchema or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">colorSchema</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
 
     
 </dd>
@@ -606,7 +883,7 @@ simple and configurable step chart.</div>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="step.js.html">step.js</a>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -639,7 +916,7 @@ simple and configurable step chart.</div>
             
 <hr>
 <dt>
-    <h4 class="name" id=".exportChart"><span class="type-signature">&lt;static> </span>exportChart()</h4>
+    <h4 class="name" id=".grid"><span class="type-signature">&lt;static> </span>grid(_x)</h4>
     
     
 </dt>
@@ -647,7 +924,7 @@ simple and configurable step chart.</div>
 
     
     <div class="description">
-        Chart exported to png and a download action is fired
+        Gets or Sets the grid mode.
     </div>
     
 
@@ -656,6 +933,56 @@ simple and configurable step chart.</div>
     
 
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired mode for the grid ('vertical'|'horizontal'|'full')</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -693,7 +1020,7 @@ simple and configurable step chart.</div>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="step.js.html">step.js</a>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -718,6 +1045,33 @@ simple and configurable step chart.</div>
     
 
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current mode of the grid or Area Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
 
     
 </dd>
@@ -775,7 +1129,7 @@ simple and configurable step chart.</div>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Number</span>
 
 
 
@@ -830,7 +1184,7 @@ simple and configurable step chart.</div>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="step.js.html">step.js</a>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -859,7 +1213,7 @@ simple and configurable step chart.</div>
     
             
 <div class="param-desc">
-    Current height or Step Chart module to chain calls
+    Current height or Area Chart module to chain calls
 </div>
 
 
@@ -871,6 +1225,335 @@ simple and configurable step chart.</div>
     <dd>
         
 <span class="param-type">height</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".horizontal"><span class="type-signature">&lt;static> </span>horizontal(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the horizontal direction of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired horizontal direction for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current horizontal direction or Bar Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">horizontal</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".isAnimated"><span class="type-signature">&lt;static> </span>isAnimated(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the isAnimated property of the chart, making it to animate when render.
+By default this is 'false'
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired animation flag</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current isAnimated flag or Chart module
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">isAnimated</span>
 |
 
 <span class="param-type">module</span>
@@ -939,7 +1622,7 @@ simple and configurable step chart.</div>
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">Object</span>
 
 
 
@@ -994,7 +1677,7 @@ simple and configurable step chart.</div>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="step.js.html">step.js</a>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1023,7 +1706,7 @@ simple and configurable step chart.</div>
     
             
 <div class="param-desc">
-    Current margin or Step Chart module to chain calls
+    Current margin or Area Chart module to chain calls
 </div>
 
 
@@ -1054,7 +1737,7 @@ simple and configurable step chart.</div>
             
 <hr>
 <dt>
-    <h4 class="name" id=".numOfVerticalTicks"><span class="type-signature">&lt;static> </span>numOfVerticalTicks(_x)</h4>
+    <h4 class="name" id=".nameLabel"><span class="type-signature">&lt;static> </span>nameLabel(_x)</h4>
     
     
 </dt>
@@ -1062,7 +1745,7 @@ simple and configurable step chart.</div>
 
     
     <div class="description">
-        Gets or Sets the number of vertical ticks on the chart
+        Gets or Sets the nameLabel of the chart
     </div>
     
 
@@ -1103,7 +1786,7 @@ simple and configurable step chart.</div>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Number</span>
 
 
 
@@ -1114,7 +1797,7 @@ simple and configurable step chart.</div>
 
             
 
-            <td class="description last">Desired width for the graph</td>
+            <td class="description last">Desired dateLabel for the graph</td>
         </tr>
 
     
@@ -1158,7 +1841,7 @@ simple and configurable step chart.</div>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="step.js.html">step.js</a>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1187,7 +1870,7 @@ simple and configurable step chart.</div>
     
             
 <div class="param-desc">
-    Current height or Step Chart module to chain calls
+    Current nameLabel or Chart module to chain calls
 </div>
 
 
@@ -1198,7 +1881,171 @@ simple and configurable step chart.</div>
     </dt>
     <dd>
         
-<span class="param-type">height</span>
+<span class="param-type">nameLabel</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".nameLabelFormat"><span class="type-signature">&lt;static> </span>nameLabelFormat(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the valueLabelFormat of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired valueLabelFormat for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current valueLabelFormat or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">valueLabelFormat</span>
 |
 
 <span class="param-type">module</span>
@@ -1274,7 +2121,7 @@ customMouseOver, customMouseMove and customMouseOut
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="step.js.html">step.js</a>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1314,6 +2161,992 @@ customMouseOver, customMouseMove and customMouseOut
     </dt>
     <dd>
         
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".percentageAxisToMaxRatio"><span class="type-signature">&lt;static> </span>percentageAxisToMaxRatio(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Configurable extension of the x axis
+if your max point was 50% you might want to show x axis to 60%, pass 1.2
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">ratio to max data point to add to the x axis</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current ratio or Bar Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">ratio</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".stackLabel"><span class="type-signature">&lt;static> </span>stackLabel(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the stackLabel of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired stackLabel for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current stackLabel or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">stackLabel</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".tooltipThreshold"><span class="type-signature">&lt;static> </span>tooltipThreshold(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the minimum width of the graph in order to show the tooltip
+NOTE: This could also depend on the aspect ratio
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Margin object to get/set</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current tooltipThreshold or Area Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">tooltipThreshold</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".valueLabel"><span class="type-signature">&lt;static> </span>valueLabel(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the valueLabel of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired valueLabel for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current valueLabel or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">valueLabel</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".valueLabelFormat"><span class="type-signature">&lt;static> </span>valueLabelFormat(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the valueLabelFormat of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired valueLabelFormat for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current valueLabelFormat or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">valueLabelFormat</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".verticalTicks"><span class="type-signature">&lt;static> </span>verticalTicks(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the number of verticalTicks of the yAxis on the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired verticalTicks</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current verticalTicks or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">verticalTicks</span>
+|
+
 <span class="param-type">module</span>
 
 
@@ -1380,7 +3213,7 @@ customMouseOver, customMouseMove and customMouseOut
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Number</span>
 
 
 
@@ -1435,7 +3268,7 @@ customMouseOver, customMouseMove and customMouseOut
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="step.js.html">step.js</a>
+				<a href="stacked-bar.js.html">stacked-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1464,7 +3297,7 @@ customMouseOver, customMouseMove and customMouseOut
     
             
 <div class="param-desc">
-    Current width or step Chart module to chain calls
+    Current width or Area Chart module to chain calls
 </div>
 
 
@@ -1476,662 +3309,6 @@ customMouseOver, customMouseMove and customMouseOut
     <dd>
         
 <span class="param-type">width</span>
-|
-
-<span class="param-type">module</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".xAxisLabel"><span class="type-signature">&lt;static> </span>xAxisLabel(_x)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Gets or Sets the text of the xAxisLabel on the chart
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>_x</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">text</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Desired text for the label</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="step.js.html">step.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    label or Step Chart module to chain calls
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">text</span>
-|
-
-<span class="param-type">module</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".xAxisLabelOffset"><span class="type-signature">&lt;static> </span>xAxisLabelOffset(_x)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Gets or Sets the offset of the xAxisLabel on the chart
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>_x</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">integer</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Desired offset for the label</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="step.js.html">step.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    label or Step Chart module to chain calls
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">integer</span>
-|
-
-<span class="param-type">module</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".yAxisLabel"><span class="type-signature">&lt;static> </span>yAxisLabel(_x)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Gets or Sets the text of the yAxisLabel on the chart
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>_x</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">text</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Desired text for the label</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="step.js.html">step.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    label or Step Chart module to chain calls
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">text</span>
-|
-
-<span class="param-type">module</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".yAxisLabelOffset"><span class="type-signature">&lt;static> </span>yAxisLabelOffset(_x)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Gets or Sets the offset of the yAxisLabel on the chart
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>_x</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">integer</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Desired offset for the label</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="step.js.html">step.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    label or Step Chart module to chain calls
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">integer</span>
 |
 
 <span class="param-type">module</span>
@@ -2207,7 +3384,7 @@ customMouseOver, customMouseMove and customMouseOut
         
             <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
         
-     
+        <script src="/britecharts/scripts/bundle.js"></script>
         <script src="/britecharts/scripts/prism.js"></script>
         <script>
         $( function () {
