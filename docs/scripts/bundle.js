@@ -19319,33 +19319,12 @@
 	            if (!slices) {
 	                slices = svg.select('.chart-group').selectAll('g.arc').data(layout(data));
 	
-<<<<<<< HEAD
-<<<<<<< HEAD
 	                var newSlices = slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true);
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Merging master
-	                var newSlices = slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut);
->>>>>>> Adding animation flag to donut
 	
 	                if (isAnimated) {
-	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', handlePathMouseOver).on('mouseout', handlePathMouseOut).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
+	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
 	                } else {
-<<<<<<< HEAD
-	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', handlePathMouseOver).on('mouseout', handlePathMouseOut);
-=======
-	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration));
-<<<<<<< HEAD
-=======
-	                if (isAnimated) {
-	                    slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration)).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
-	                } else {
-	                    slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration));
->>>>>>> Adding animation flag to donut
->>>>>>> Adding animation flag to donut
-=======
->>>>>>> Merging master
+	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut);
 	                }
 	            } else {
 	                slices = svg.select('.chart-group').selectAll('path').data(layout(data));
@@ -19354,81 +19333,6 @@
 	
 	                // Redraws the angles of the data
 	                slices.transition().duration(arcTransitionDuration).attrTween('d', tweenArc);
-	            }
-	        }
-	
-	        /**
-	         * Handles a mouse over a donut slice
-	         * @param  {Object} datum Data entry
-	         * @return {void}
-	         * @private
-	         */
-	        function handleMouseOver(datum) {
-	            drawLegend(datum);
-	
-	            dispatcher.call('customMouseOver', this, datum);
-	        }
-	
-	        /**
-	         * Handles a mouse out of a donut slice
-	         * @return {void}
-	         * @private
-	         */
-	        function handleMouseOut() {
-	            if (highlightedSlice) {
-	                drawLegend(highlightedSlice.__data__);
-	            } else {
-	                cleanLegend();
-	            }
-	
-	            dispatcher.call('customMouseOut', this);
-	        }
-	
-	        /**
-	         * Handles a path mouse over
-	         * @return {void}
-	         * @private
-	         */
-	        function handlePathMouseOver(datum) {
-	            drawLegend(datum);
-	            dispatcher.call('customMouseOver', this, datum);
-	
-	            if (highlightedSlice && this !== highlightedSlice) {
-	                tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
-	            }
-	            tweenGrowth(this, externalRadius);
-	        }
-	
-	        /**
-	         * Handles a path mouse out
-	         * @return {void}
-	         * @private
-	         */
-	        function handlePathMouseOut() {
-	            if (highlightedSlice && hasFixedHighlightedSlice) {
-	                drawLegend(highlightedSlice.__data__);
-	            } else {
-	                cleanLegend();
-	            }
-	            dispatcher.call('customMouseOut', this);
-	
-	            if (highlightedSlice && hasFixedHighlightedSlice && this !== highlightedSlice) {
-	                tweenGrowth(highlightedSlice, externalRadius);
-	            } else {
-	                tweenGrowth(this, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
-	            }
-	        }
-	
-	        /**
-	         * Find the slice by id and growth it if needed
-	         * @private
-	         */
-	        function initHighlightSlice() {
-	            highlightedSlice = svg.selectAll('.chart-group .arc path').select(filterHighlightedSlice).node();
-	
-	            if (highlightedSlice) {
-	                drawLegend(highlightedSlice.__data__);
-	                tweenGrowth(highlightedSlice, externalRadius, pieDrawingTransitionDuration);
 	            }
 	        }
 	
@@ -19443,6 +19347,53 @@
 	
 	            if (data.id === highlightedSliceId) {
 	                return this;
+	            }
+	        }
+	
+	        /**
+	         * Handles a path mouse over
+	         * @return {void}
+	         * @private
+	         */
+	        function handleMouseOver(datum) {
+	            drawLegend(datum);
+	            dispatcher.call('customMouseOver', this, datum);
+	
+	            if (highlightedSlice && this !== highlightedSlice) {
+	                tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
+	            }
+	            tweenGrowth(this, externalRadius);
+	        }
+	
+	        /**
+	         * Handles a path mouse out
+	         * @return {void}
+	         * @private
+	         */
+	        function handleMouseOut() {
+	            if (highlightedSlice && hasFixedHighlightedSlice) {
+	                drawLegend(highlightedSlice.__data__);
+	            } else {
+	                cleanLegend();
+	            }
+	            dispatcher.call('customMouseOut', this);
+	
+	            if (highlightedSlice && hasFixedHighlightedSlice && this !== highlightedSlice) {
+	                tweenGrowth(highlightedSlice, externalRadius);
+	            }
+	            tweenGrowth(this, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+	        }
+	
+	        /**
+	         * Find the slice by id and growth it if needed
+	         * @private
+	         */
+	        function initHighlightSlice() {
+	            highlightedSlice = svg.selectAll('.chart-group .arc path').select(filterHighlightedSlice).node();
+	
+	            if (highlightedSlice) {
+	                drawLegend(highlightedSlice.__data__);
+	                tweenGrowth(highlightedSlice, externalRadius, pieDrawingTransitionDuration);
 	            }
 	        }
 	

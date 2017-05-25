@@ -392,37 +392,17 @@
                     .data(layout(data));
 
                 let newSlices = slices.enter()
-<<<<<<< HEAD
-=======
-                if (isAnimated) {
-                    slices.enter()
->>>>>>> Adding animation flag to donut
-                      .append('g')
-                        .each(storeAngle)
-                        .each(reduceOuterRadius)
-<<<<<<< HEAD
-                        .classed('arc', true);
-=======
-                        .classed('arc', true)
-                        .on('mouseover', handleMouseOver)
-<<<<<<< HEAD
-                        .on('mouseout', handleMouseOut);
->>>>>>> Adding animation flag to donut
-=======
                   .append('g')
                     .each(storeAngle)
                     .each(reduceOuterRadius)
-                    .classed('arc', true)
-                    .on('mouseover', handleMouseOver)
-                    .on('mouseout', handleMouseOut)
->>>>>>> Merging master
+                    .classed('arc', true);
 
                 if (isAnimated) {
                     newSlices.merge(slices)
                       .append('path')
                         .attr('fill', getSliceFill)
-                        .on('mouseover', handlePathMouseOver)
-                        .on('mouseout', handlePathMouseOut)
+                        .on('mouseover', handleMouseOver)
+                        .on('mouseout', handleMouseOut)
                         .transition()
                         .ease(ease)
                         .duration(pieDrawingTransitionDuration)
@@ -432,8 +412,8 @@
                       .append('path')
                         .attr('fill', getSliceFill)
                         .attr('d', shape)
-                        .on('mouseover', handlePathMouseOver)
-                        .on('mouseout', handlePathMouseOut)
+                        .on('mouseover', handleMouseOver)
+                        .on('mouseout', handleMouseOut)
                 }
             } else {
                 slices = svg.select('.chart-group')
@@ -452,30 +432,15 @@
         }
 
         /**
-         * Handles a mouse over a donut slice
-         * @param  {Object} datum Data entry
-         * @return {void}
-         * @private
+         * Checks if the given element id is the same as the highlightedSliceId and returns the
+         * element if that's the case
+         * @param  {DOMElement} options.data Dom element to check
+         * @return {DOMElement}              Dom element if it has the same id
          */
-        function handleMouseOver(datum) {
-            drawLegend(datum);
-
-            dispatcher.call('customMouseOver', this, datum);
-        }
-
-        /**
-         * Handles a mouse out of a donut slice
-         * @return {void}
-         * @private
-         */
-        function handleMouseOut() {
-            if (highlightedSlice) {
-                drawLegend(highlightedSlice.__data__);
-            } else {
-                cleanLegend();
+        function filterHighlightedSlice({data}) {
+            if (data.id === highlightedSliceId) {
+                return this;
             }
-
-            dispatcher.call('customMouseOut', this);
         }
 
         /**
@@ -483,7 +448,7 @@
          * @return {void}
          * @private
          */
-        function handlePathMouseOver(datum) {
+        function handleMouseOver(datum) {
             drawLegend(datum);
             dispatcher.call('customMouseOver', this, datum);
 
@@ -498,7 +463,7 @@
          * @return {void}
          * @private
          */
-        function handlePathMouseOut() {
+        function handleMouseOut() {
             if (highlightedSlice &amp;&amp; hasFixedHighlightedSlice) {
                 drawLegend(highlightedSlice.__data__);
             } else {
@@ -508,9 +473,8 @@
 
             if (highlightedSlice &amp;&amp; hasFixedHighlightedSlice &amp;&amp; this !== highlightedSlice) {
                 tweenGrowth(highlightedSlice, externalRadius);
-            } else {
-                tweenGrowth(this, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
             }
+            tweenGrowth(this, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
         }
 
         /**
@@ -524,18 +488,6 @@
             if (highlightedSlice) {
                 drawLegend(highlightedSlice.__data__);
                 tweenGrowth(highlightedSlice, externalRadius, pieDrawingTransitionDuration);
-            }
-        }
-
-        /**
-         * Checks if the given element id is the same as the highlightedSliceId and returns the
-         * element if that's the case
-         * @param  {DOMElement} options.data Dom element to check
-         * @return {DOMElement}              Dom element if it has the same id
-         */
-        function filterHighlightedSlice({data}) {
-            if (data.id === highlightedSliceId) {
-                return this;
             }
         }
 
