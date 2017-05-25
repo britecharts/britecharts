@@ -31,6 +31,7 @@ var template = require('jsdoc/template'),
 var globalUrl = helper.getUniqueFilename('global');
 var indexUrl = helper.getUniqueFilename('index');
 var gettingUrl = helper.getUniqueFilename('getting-started');
+var cdnUrl = helper.getUniqueFilename("cdn");
 var navOptions = {
   includeDate: conf.includeDate !== false,
   logoFile: conf.logoFile,
@@ -61,13 +62,28 @@ var navigationMaster = {
     link: indexUrl,
     members: []
   },
+  gettingStarted:{
+    title:"Getting started",
+    link:gettingUrl,
+    members: []
+  },
+  cdn:{
+    title:"CDN",
+    link:cdnUrl,
+    members: []
+  },
   namespace: {
     title: "Namespaces",
     link: helper.getUniqueFilename("namespaces.list"),
     members: []
   },
+  tutorial: {
+    title: "Demos",
+    link: helper.getUniqueFilename("tutorials.list"),
+    members: []
+  },
   module: {
-    title: "API",
+    title: "Modules",
     link: helper.getUniqueFilename("modules.list"),
     members: []
   },
@@ -89,11 +105,6 @@ var navigationMaster = {
   interface: {
     title: "Interfaces",
     link: helper.getUniqueFilename("interfaces.list"),
-    members: []
-  },
-  tutorial: {
-    title: "Demos",
-    link: helper.getUniqueFilename("tutorials.list"),
     members: []
   },
   global: {
@@ -467,16 +478,23 @@ function buildNav(members) {
     }
   }
 
-  var topLevelNav = [];
+  var topLevelNav = [],apis =[];
   _.each(nav, function(entry, name) {
-    if (entry.members.length > 0 && name !== "index") {
-      topLevelNav.push({
-        title: entry.title,
-        link: entry.link,
-        members: entry.members
+    if (entry.members.length > 0 && name !== "index" && name!="tutorial") {
+      entry.members.forEach(function(c){
+        apis.push( c )
       });
     }
   });
+  topLevelNav.push(nav.gettingStarted);
+  topLevelNav.push(nav.tutorial);
+    topLevelNav.push(nav.cdn);
+  // topLevelNav.push(nav.gettingStarted);
+    topLevelNav.push({
+        title: "API",
+        link: linkto("modules.list.html"),
+        members: apis
+      });
   nav.topLevelNav = topLevelNav;
 }
 
@@ -803,7 +821,7 @@ var html = parser(content);
       kind:'mainpage',
       readme:'<div class="embed-responsive embed-responsive-16by9" style="height:1833px;" ><iframe height="1833" scrolling="no" style="height:1833px;" class="embed-responsive-item" frameborder="0" src="cdn-iframe.html" allowfullscreen></iframe></div>'
     }],
-    helper.getUniqueFilename('cdn'));
+    cdnUrl);
 
     
 

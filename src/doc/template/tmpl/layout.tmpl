@@ -81,12 +81,15 @@
             	</div>
             	<div class="navbar-collapse collapse" id="topNavigation">
             		<ul class="nav navbar-nav">
-                       <li><a href="getting-started.html">Getting Started</a></li>
-            			<?js this.nav.topLevelNav.forEach(function(entry){ ?>
-            			<li class="dropdown">
-            				<a href="<?js= entry.link ?>" class="dropdown-toggle" data-toggle="dropdown"><?js= entry.title ?><b class="caret"></b></a>
+                      
+            			<?js this.nav.topLevelNav.forEach(looplink=function(entry){ ?>
+                        <?js haveChildren = entry.members.length ? true: false ?>
+            			<li class="<?js= haveChildren ? "dropdown" : "" ?>">
+            				<a href="<?js= entry.link ?>" <?js if(haveChildren){ ?> class="dropdown-toggle" data-toggle="dropdown" <?js } ?>><?js= entry.title ?><b class="<?js= haveChildren ? "caret" : "" ?>"></b></a>
             				<ul class="dropdown-menu <?js= that.navOptions.navType ==='inline' ? 'inline' : '' ?>">
-            					<?js entry.members.forEach(function(member){ ?><li><?js= member ?></li><?js	}); ?>
+            					<?js entry.members.forEach(function(member){ ?>
+                                <li><?js= member ?></li>
+                                <?js	}); ?>
             				</ul>
             			</li>
             			<?js }); ?>
@@ -95,14 +98,14 @@
                         </li>
             		</ul>
                     <?js if (this.navOptions.search) { ?>
-                        <div class="col-sm-3 col-md-4 pull-right no-gutter">
-                            <form class="navbar-form" role="search">
+                      
+                            <form class="navbar-form navbar-right" role="search">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
                                 </div>
                                 <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
                             </form>
-                        </div>
+                       
                     <?js } ?>
                 </div>
             </div>
