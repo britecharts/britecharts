@@ -28,6 +28,7 @@ function createDonutChart(dataset, optionalColorSchema) {
 
         donutChart
             .isAnimated(true)
+            .highlightSliceById(2)
             .width(containerWidth)
             .height(containerWidth)
             .externalRadius(containerWidth/2.5)
@@ -134,6 +135,7 @@ function createDonutWithHighlightSliceChart() {
     if (containerWidth) {
         donutChart
             .highlightSliceById(1)
+            .hasFixedHighlightedSlice(true)
             .width(containerWidth)
             .height(containerWidth/1.8)
             .externalRadius(containerWidth/5)

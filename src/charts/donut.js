@@ -85,14 +85,12 @@ define(function(require){
             slices,
             svg,
 
-<<<<<<< HEAD
             isAnimated = false,
-=======
-            // highlight slice
+
             highlightedSliceId,
             highlightedSlice,
+            hasFixedHighlightedSlice = false,
 
->>>>>>> 168e0f49acbbda41f116b2bb9997d40a00f17ee0
             quantityLabel = 'quantity',
             nameLabel = 'name',
             percentageLabel = 'percentage',
@@ -136,7 +134,10 @@ define(function(require){
                 buildSVG(this);
                 drawSlices();
                 initTooltip();
-                initHighlightSlice();
+
+                if (highlightedSliceId) {
+                    initHighlightSlice();
+                }
             });
         }
 
@@ -222,6 +223,14 @@ define(function(require){
         }
 
         /**
+         * Cleans any value that could be on the legend text element
+         * @private
+         */
+        function cleanLegend() {
+            svg.select('.donut-text').text('');
+        }
+
+        /**
          * Draws the values on the donut slice inside the text element
          *
          * @param  {Object} obj Data object
@@ -252,16 +261,14 @@ define(function(require){
                       .append('g')
                         .each(storeAngle)
                         .each(reduceOuterRadius)
-                        .classed('arc', true)
-                        .on('mouseover', handleMouseOver)
-                        .on('mouseout', handleMouseOut);
+                        .classed('arc', true);
 
                 if (isAnimated) {
                     newSlices.merge(slices)
                       .append('path')
                         .attr('fill', getSliceFill)
-                        .on('mouseover', handlePathMouseOver)
-                        .on('mouseout', handlePathMouseOut)
+                        .on('mouseover', handleMouseOver)
+                        .on('mouseout', handleMouseOut)
                         .transition()
                         .ease(ease)
                         .duration(pieDrawingTransitionDuration)
@@ -271,8 +278,8 @@ define(function(require){
                       .append('path')
                         .attr('fill', getSliceFill)
                         .attr('d', shape)
-                        .on('mouseover', handlePathMouseOver)
-                        .on('mouseout', handlePathMouseOut)
+                        .on('mouseover', handleMouseOver)
+                        .on('mouseout', handleMouseOut)
                 }
             } else {
                 slices = svg.select('.chart-group')
@@ -291,11 +298,49 @@ define(function(require){
         }
 
         /**
-         * Cleans any value that could be on the legend text element
+         * Checks if the given element id is the same as the highlightedSliceId and returns the
+         * element if that's the case
+         * @param  {DOMElement} options.data Dom element to check
+         * @return {DOMElement}              Dom element if it has the same id
+         */
+        function filterHighlightedSlice({data}) {
+            if (data.id === highlightedSliceId) {
+                return this;
+            }
+        }
+
+        /**
+         * Handles a path mouse over
+         * @return {void}
          * @private
          */
-        function cleanLegend() {
-            svg.select('.donut-text').text('');
+        function handleMouseOver(datum) {
+            drawLegend(datum);
+            dispatcher.call('customMouseOver', this, datum);
+
+            if (highlightedSlice && this !== highlightedSlice) {
+                tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
+            }
+            tweenGrowth(this, externalRadius);
+        }
+
+        /**
+         * Handles a path mouse out
+         * @return {void}
+         * @private
+         */
+        function handleMouseOut() {
+            if (highlightedSlice && hasFixedHighlightedSlice) {
+                drawLegend(highlightedSlice.__data__);
+            } else {
+                cleanLegend();
+            }
+            dispatcher.call('customMouseOut', this);
+
+            if (highlightedSlice && hasFixedHighlightedSlice && this !== highlightedSlice) {
+                tweenGrowth(highlightedSlice, externalRadius);
+            }
+            tweenGrowth(this, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
         }
 
         /**
@@ -303,54 +348,12 @@ define(function(require){
          * @private
          */
         function initHighlightSlice() {
-            if (highlightedSliceId === null || typeof highlightedSliceId === 'undefined') {
-                return;
-            }
-
             highlightedSlice = svg.selectAll('.chart-group .arc path')
-                .select(function(a) {
-                    if (a.data.id === highlightedSliceId) {
-                        return this;
-                    }
-                }).node();
+                .select(filterHighlightedSlice).node();
 
             if (highlightedSlice) {
                 drawLegend(highlightedSlice.__data__);
                 tweenGrowth(highlightedSlice, externalRadius, pieDrawingTransitionDuration);
-            }
-        }
-
-        function handleMouseOver(datum) {
-            drawLegend(datum);
-
-            dispatcher.call('customMouseOver', this, datum);
-        }
-
-        function handleMouseOut() {
-            if (highlightedSlice) {
-                drawLegend(highlightedSlice.__data__);
-            } else {
-                cleanLegend();
-            }
-
-            dispatcher.call('customMouseOut', this);
-        }
-
-        function handlePathMouseOver() {
-            if (highlightedSlice && this !== highlightedSlice) {
-                tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
-            }
-
-            tweenGrowth(this, externalRadius);
-        }
-
-        function handlePathMouseOut() {
-            if (highlightedSlice && this !== highlightedSlice) {
-                tweenGrowth(highlightedSlice, externalRadius);
-            }
-
-            if(this !== highlightedSlice) {
-                tweenGrowth(this, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
             }
         }
 
@@ -459,6 +462,23 @@ define(function(require){
                 return externalRadius;
             }
             externalRadius = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the hasFixedHighlightedSlice property of the chart, making it to
+         * highlight the selected slice id set with `highlightSliceById` all the time.
+         *
+         * @param  {Boolean} _x                         If we want to make the highlighted slice permanently highlighted
+         * @return { hasFixedHighlightedSlice | module} Current hasFixedHighlightedSlice flag or Chart module
+         * @public
+         */
+        exports.hasFixedHighlightedSlice = function(_x) {
+            if (!arguments.length) {
+                return hasFixedHighlightedSlice;
+            }
+            hasFixedHighlightedSlice = _x;
+
             return this;
         };
 
