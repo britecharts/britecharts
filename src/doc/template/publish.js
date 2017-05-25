@@ -58,7 +58,7 @@ var searchableDocuments = {};
 
 var navigationMaster = {
   index: {
-    title: navOptions.systemName,
+    title: conf.meta.title,
     link: indexUrl,
     members: []
   },
@@ -792,7 +792,7 @@ exports.publish = function(taffyData, opts, tutorials) {
       kind: 'package'
     });
 
-  generate('index', 'Britecharts - D3.js based charting library of reusable components',
+  generate('index', navigationMaster.index.title,
     packages.concat(
       [{
         kind: 'mainpage',
