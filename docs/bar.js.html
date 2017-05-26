@@ -56,7 +56,6 @@
             <meta name="twitter:description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
         
 
-
         <!--[if lt IE 9]>
             <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -65,13 +64,14 @@
         <link type="text/css" rel="stylesheet" href="styles/demos.css">
         <link type="text/css" rel="stylesheet" href="styles/prism.css"  />
         <link type="text/css" rel="stylesheet" href="styles/britecharts.css" />
+        <script src="/britecharts/scripts/common.js"></script>
     </head>
     <body>
         <div class="navbar navbar-fixed-top navbar-default">
             <div class="container">
             	<div class="navbar-header">
             		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="img/britecharts-logo.svg"
-            		alt="Britecharts"/></a>
+            		alt="Britecharts - D3.js based charting library of reusable components"/></a>
             		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
             			<span class="icon-bar"></span>
             			<span class="icon-bar"></span>
@@ -81,24 +81,73 @@
             	<div class="navbar-collapse collapse" id="topNavigation">
             		<ul class="nav navbar-nav">
             			
-            			<li class="dropdown">
-            				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">API<b class="caret"></b></a>
+                        
+            			<li class="">
+            				<a href="getting-started.html" >Getting started<b class=""></b></a>
             				<ul class="dropdown-menu inline">
-            					<li><a href="module-Bar.html">Bar</a></li><li><a href="module-Brush.html">Brush</a></li><li><a href="module-Donut.html">Donut</a></li><li><a href="module-Legend.html">Legend</a></li><li><a href="module-Line.html">Line</a></li><li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li><li><a href="module-Sparkline.html">Sparkline</a></li><li><a href="module-Stacked-area.html">Stacked-area</a></li><li><a href="module-Step.html">Step</a></li><li><a href="module-Tooltip.html">Tooltip</a></li>
+            					
             				</ul>
             			</li>
             			
+                        
             			<li class="dropdown">
-            				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Demos<b class="caret"></b></a>
+            				<a href="tutorials.list.html"  class="dropdown-toggle" data-toggle="dropdown" >Demos<b class="caret"></b></a>
             				<ul class="dropdown-menu inline">
-            					<li><a href="tutorial--_GETTINGSTARTED.html">Getting Started</a></li><li><a href="tutorial-bar.html">Bar Chart</a></li><li><a href="tutorial-brush.html">Brush Chart</a></li><li><a href="tutorial-cdn.html">CDN</a></li><li><a href="tutorial-donut.html">Donut Chart</a></li><li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li><li><a href="tutorial-line.html">Line Chart</a></li><li><a href="tutorial-sparkline.html">Sparkline Chart</a></li><li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li><li><a href="tutorial-step.html">Step Chart</a></li>
+            					
+                                <li><a href="tutorial-bar.html">Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-brush.html">Brush Chart</a></li>
+                                
+                                <li><a href="tutorial-donut.html">Donut Chart</a></li>
+                                
+                                <li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li>
+                                
+                                <li><a href="tutorial-line.html">Line Chart</a></li>
+                                
+                                <li><a href="tutorial-sparkline.html">Sparkline Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li>
+                                
+                                <li><a href="tutorial-step.html">Step Chart</a></li>
+                                
             				</ul>
             			</li>
             			
-            			<li class="dropdown">
-            				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+                        
+            			<li class="">
+            				<a href="cdn.html" >CDN<b class=""></b></a>
             				<ul class="dropdown-menu inline">
-            					<li><a href="global.html">Types</a></li>
+            					
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="modules.list.html"  class="dropdown-toggle" data-toggle="dropdown" >API<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="module-Bar.html">Bar</a></li>
+                                
+                                <li><a href="module-Brush.html">Brush</a></li>
+                                
+                                <li><a href="module-Donut.html">Donut</a></li>
+                                
+                                <li><a href="module-Legend.html">Legend</a></li>
+                                
+                                <li><a href="module-Line.html">Line</a></li>
+                                
+                                <li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li>
+                                
+                                <li><a href="module-Sparkline.html">Sparkline</a></li>
+                                
+                                <li><a href="module-Stacked-area.html">Stacked-area</a></li>
+                                
+                                <li><a href="module-Step.html">Step</a></li>
+                                
+                                <li><a href="module-Tooltip.html">Tooltip</a></li>
+                                
+                                <li><a href="global.html">Types</a></li>
+                                
             				</ul>
             			</li>
             			
@@ -107,14 +156,18 @@
                         </li>
             		</ul>
                     
-                        <div class="col-sm-3 col-md-4 pull-right no-gutter">
-                            <form class="navbar-form" role="search">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
-                                </div>
-                                <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
-                            </form>
-                        </div>
+                    <div class="col-sm-12 col-md-4 no-gutter">
+                        <form class="navbar-form" role="search">
+                            <div class="input-group search-container clearfix">
+                                <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" id="search-submit">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
                     
                 </div>
             </div>
@@ -136,6 +189,7 @@
     'use strict';
 
     const d3Array = require('d3-array');
+    const d3Ease = require('d3-ease');
     const d3Axis = require('d3-axis');
     const d3Color = require('d3-color');
     const d3Dispatch = require('d3-dispatch');
@@ -203,6 +257,7 @@
             width = 960,
             height = 500,
             data,
+            dataZeroed,
             chartWidth, chartHeight,
             xScale, yScale,
             colorSchema = colorHelper.singleColors.aloeGreen,
@@ -228,6 +283,11 @@
             yAxisLineWrapLimit = 1,
             horizontal = false,
             svg,
+
+            isAnimated = false,
+            ease = d3Ease.easeQuadInOut,
+            animationDuration = 800,
+            interBarDelay = function(d, i) { return 70 * i},
 
             valueLabel = 'value',
             nameLabel = 'name',
@@ -262,7 +322,7 @@
             _selection.each(function(_data){
                 chartWidth = width - margin.left - margin.right - (yAxisPaddingBetweenChart * 1.2);
                 chartHeight = height - margin.top - margin.bottom;
-                data = cleanData(_data);
+                ({data, dataZeroed} = cleanData(_data));
 
                 buildScales();
                 buildAxis();
@@ -378,16 +438,20 @@
 
         /**
          * Cleaning data adding the proper format
-         * @param  {BarChartData} data Data
+         * @param  {BarChartData} originalData Data
          * @private
          */
-        function cleanData(data) {
-            return data.map((d) => {
-                d.value = +d[valueLabel];
-                d.name = String(d[nameLabel]);
+        function cleanData(originalData) {
+            let data = originalData.map((d) => ({
+                    value: +d[valueLabel],
+                    name: String(d[nameLabel])
+                }));
+            let dataZeroed = data.map((d) => ({
+                    value: 0,
+                    name: String(d[nameLabel])
+                }));
 
-                return d;
-            });
+            return {data, dataZeroed}
         }
 
         /**
@@ -448,6 +512,81 @@
                 .attr('y', ({name}) => yScale(name))
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value));
+        }
+
+        /**
+         * Draws and animates the bars along the x axis
+         * @param  {D3Selection} bars Selection of bars
+         * @return {void}
+         */
+        function drawAnimatedHorizontalBars(bars) {
+            // Enter + Update
+            bars.enter()
+              .append('rect')
+                .classed('bar', true)
+                .attr('x', 0)
+                .attr('y', chartHeight)
+                .attr('height', yScale.bandwidth())
+                .attr('width', ({value}) => xScale(value))
+                .attr('fill', ({name}) => colorMap(name))
+                .on('mouseover', function() {
+                    dispatcher.call('customMouseOver', this);
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+                })
+                .on('mousemove', function(d) {
+                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                })
+                .on('mouseout', function() {
+                    dispatcher.call('customMouseOut', this);
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
+                });
+
+            bars
+                .attr('x', 0)
+                .attr('y', ({name}) => yScale(name))
+                .attr('height', yScale.bandwidth())
+                .transition()
+                .duration(animationDuration)
+                .delay(interBarDelay)
+                .ease(ease)
+                .attr('width', ({value}) => xScale(value));
+        }
+
+        /**
+         * Draws and animates the bars along the y axis
+         * @param  {D3Selection} bars Selection of bars
+         * @return {void}
+         */
+        function drawAnimatedVerticalBars(bars) {
+            // Enter + Update
+            bars.enter()
+              .append('rect')
+                .classed('bar', true)
+                .attr('x', chartWidth)
+                .attr('y', ({value}) => yScale(value))
+                .attr('width', xScale.bandwidth())
+                .attr('height', ({value}) => chartHeight - yScale(value))
+                .attr('fill', ({name}) => colorMap(name))
+                .on('mouseover', function() {
+                    dispatcher.call('customMouseOver', this);
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker())
+                })
+                .on('mousemove', function(d) {
+                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                })
+                .on('mouseout', function() {
+                    dispatcher.call('customMouseOut', this);
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
+                })
+              .merge(bars)
+                .attr('x', ({name}) => xScale(name))
+                .attr('width', xScale.bandwidth())
+                .transition()
+                .duration(animationDuration)
+                .delay(interBarDelay)
+                .ease(ease)
+                .attr('y', ({value}) => yScale(value))
+                .attr('height', ({value}) => chartHeight - yScale(value));
         }
 
         /**
@@ -514,12 +653,35 @@
          * @private
          */
         function drawBars(){
-            let bars = svg.select('.chart-group').selectAll('.bar').data(data);
+            let bars;
 
-            if (!horizontal) {
-                drawVerticalBars(bars);
+            if (isAnimated) {
+                bars = svg.select('.chart-group').selectAll('.bar')
+                    .data(dataZeroed);
+
+                if (!horizontal) {
+                    drawVerticalBars(bars);
+                } else {
+                    drawHorizontalBars(bars);
+                }
+
+                bars = svg.select('.chart-group').selectAll('.bar')
+                    .data(data);
+
+                if (!horizontal) {
+                    drawAnimatedVerticalBars(bars);
+                } else {
+                    drawAnimatedHorizontalBars(bars);
+                }
             } else {
-                drawHorizontalBars(bars)
+                bars = svg.select('.chart-group').selectAll('.bar')
+                    .data(data);
+
+                if (!horizontal) {
+                    drawVerticalBars(bars);
+                } else {
+                    drawHorizontalBars(bars);
+                }
             }
 
             // Exit
@@ -660,6 +822,23 @@
                 return horizontal;
             }
             horizontal = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+         * By default this is 'false'
+         *
+         * @param  {Boolean} _x Desired animation flag
+         * @return { isAnimated | module} Current isAnimated flag or Chart module
+         * @public
+         */
+        exports.isAnimated = function(_x) {
+            if (!arguments.length) {
+                return isAnimated;
+            }
+            isAnimated = _x;
+
             return this;
         };
 
@@ -854,7 +1033,7 @@
         
             <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
         
-        <script src="/britecharts/scripts/bundle.js"></script>
+
         <script src="/britecharts/scripts/prism.js"></script>
         <script>
         $( function () {

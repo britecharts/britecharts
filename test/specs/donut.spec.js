@@ -139,13 +139,37 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 expect(defaultAnimation).not.toBe(testAnimation);
                 expect(newAnimation).toBe(testAnimation);
             });
+
+            it('should provide a highlightSliceById getter and setter', () => {
+                let defaultId = donutChart.highlightSliceById(),
+                    testId = 10,
+                    newId;
+
+                donutChart.highlightSliceById(testId);
+                newId = donutChart.highlightSliceById();
+
+                expect(defaultId).not.toBe(newId);
+                expect(newId).toBe(testId);
+            });
+
+            it('should provide a hasFixedHighlightedSlice getter and setter', () => {
+                let defaultId = donutChart.hasFixedHighlightedSlice(),
+                    testValue = true,
+                    newValue;
+
+                donutChart.hasFixedHighlightedSlice(testValue);
+                newValue = donutChart.hasFixedHighlightedSlice();
+
+                expect(defaultId).not.toBe(newValue);
+                expect(newValue).toBe(testValue);
+            });
         });
 
         describe('when mouse events are triggered', () => {
 
             it('should trigger an event on hover', () =>{
                 let callback = jasmine.createSpy('hoverCallback'),
-                    firstSlice = containerFixture.select('.chart-group .arc');
+                    firstSlice = containerFixture.select('.chart-group .arc path');
 
                 donutChart.on('customMouseOver', callback);
                 firstSlice.dispatch('mouseover');
@@ -154,7 +178,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
             it('should trigger an event on mouse out', () =>{
                 let callback = jasmine.createSpy('mouseOutCallback'),
-                    firstSlice = containerFixture.select('.chart-group .arc');
+                    firstSlice = containerFixture.select('.chart-group .arc path');
 
                 donutChart.on('customMouseOut', callback);
                 firstSlice.dispatch('mouseout');
