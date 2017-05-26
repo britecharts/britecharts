@@ -488,7 +488,7 @@ function buildNav(members) {
   });
   topLevelNav.push(nav.gettingStarted);
   topLevelNav.push(nav.tutorial);
-    topLevelNav.push(nav.cdn);
+    // topLevelNav.push(nav.cdn);
   // topLevelNav.push(nav.gettingStarted);
     topLevelNav.push({
         title: "API",
