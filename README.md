@@ -125,4 +125,4 @@ Read more in the [license document][15]
 [36]: https://eventbrite.github.io/britecharts/img/logo-stripes-small.png
 [37]: https://github.com/d3/d3-selection
 
-[cdnDemo]: https://eventbrite.github.io/britecharts/tutorial-cdn.html
+[cdnDemo]: https://eventbrite.github.io/britecharts/cdn.html
