@@ -1,4 +1,4 @@
-define(function(require){
+define(function(require) {
     'use strict';
 
     const d3Dispatch = require('d3-dispatch');
@@ -12,13 +12,14 @@ define(function(require){
     const {exportChart} = require('./helpers/exportChart');
     const textHelper = require('./helpers/text');
     const colorHelper = require('./helpers/colors');
+    const {calculatePercent} = require('./helpers/common');
 
 
     /**
      * @typedef DonutChartData
      * @type {Object[]}
      * @property {Number} quantity     Quantity of the group (required)
-     * @property {Number} percentage   Percentage of the total (required)
+     * @property {Number} percentage   Percentage of the total (optional)
      * @property {String} name         Name of the group (required)
      * @property {Number} id           Identifier for the group required for legend feature (optional)
      *
@@ -107,6 +108,7 @@ define(function(require){
                 d.outerRadius = externalRadius - radiusHoverOffset;
             },
             sortComparator = (a, b) => b.quantity - a.quantity,
+            sumValues = (data) => data.reduce((total, d) => d.quantity + total, 0),
 
             // extractors
             getQuantity = ({quantity}) => quantity,
@@ -213,10 +215,12 @@ define(function(require){
          * @private
          */
         function cleanData(data) {
+            let totalQuantity = sumValues(data);
+
             return data.map((d) => {
                 d.quantity = +d[quantityLabel];
                 d.name = String(d[nameLabel]);
-                d.percentage = String(d[percentageLabel]);
+                d.percentage = String(d.percentage || calculatePercent(d[quantityLabel], totalQuantity, '.1f'));
 
                 return d;
             });
