@@ -56,7 +56,6 @@
             <meta name="twitter:description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
         
 
-
         <!--[if lt IE 9]>
             <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -81,7 +80,6 @@
             	</div>
             	<div class="navbar-collapse collapse" id="topNavigation">
             		<ul class="nav navbar-nav">
-                      
             			
                         
             			<li class="">
@@ -158,14 +156,18 @@
                         </li>
             		</ul>
                     
-                      
-                            <form class="navbar-form navbar-right" role="search">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
-                                </div>
-                                <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
-                            </form>
-                       
+                    <div class="col-sm-12 col-md-4 no-gutter">
+                        <form class="navbar-form" role="search">
+                            <div class="input-group search-container clearfix">
+                                <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" id="search-submit">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
                     
                 </div>
             </div>
@@ -800,7 +802,7 @@
         
             <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
         
-     
+
         <script src="/britecharts/scripts/prism.js"></script>
         <script>
         $( function () {

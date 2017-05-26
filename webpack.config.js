@@ -51,15 +51,14 @@ if (isProduction) {
     plugins.push(new UglifyJsPlugin({ minimize: false }));
     // outputFile = projectName + '.min.js';
 }
+
 let commonsPlugin = new webpack.optimize.CommonsChunkPlugin('common.js');
+
 config = {
 
     // Add here listener to sccs files?
     demos : {
         devtool: 'source-map',
-        // entry: [
-        //     './demos/index.js'
-        // ],
         entry: {
             'demo-line': './demos/demo-line.js',
             'demo-stacked-area': './demos/demo-stacked-area.js',
@@ -69,7 +68,6 @@ config = {
             'demo-step': './demos/demo-step.js',
             'demo-brush': './demos/demo-brush.js',
             'demo-kitchen-sink': './demos/demo-kitchen-sink.js'
-            // 'demo-cdn': './demos/demo-cdn.js'
         },
         output: {
             path: './demos/build/',
@@ -79,7 +77,6 @@ config = {
         externals: {
             britecharts: 'britecharts'
         },
-        
         resolve:{
             root: [
                 __dirname
@@ -110,9 +107,9 @@ config = {
                 target: 'http://localhost:8001/',
                 pathRewrite: {'^/britecharts/' : ''}
                 }
-            
+
             },
-            
+
         }
     },
 

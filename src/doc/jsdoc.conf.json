@@ -33,7 +33,6 @@
         "syntaxTheme": "default",
         "monospaceLinks": false,
         "search": true,
-
         "analytics":{
             "ua":"UA-141520-30",
             "domain":"auto"

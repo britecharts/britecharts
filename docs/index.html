@@ -56,7 +56,6 @@
             <meta name="twitter:description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
         
 
-
         <!--[if lt IE 9]>
             <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -81,7 +80,6 @@
             	</div>
             	<div class="navbar-collapse collapse" id="topNavigation">
             		<ul class="nav navbar-nav">
-                      
             			
                         
             			<li class="">
@@ -158,14 +156,18 @@
                         </li>
             		</ul>
                     
-                      
-                            <form class="navbar-form navbar-right" role="search">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
-                                </div>
-                                <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
-                            </form>
-                       
+                    <div class="col-sm-12 col-md-4 no-gutter">
+                        <form class="navbar-form" role="search">
+                            <div class="input-group search-container clearfix">
+                                <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" id="search-submit">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
                     
                 </div>
             </div>
@@ -236,7 +238,7 @@ barContainer.datum(dataset).call(barChart);</code></pre><h2>API</h2><p>All the c
 <li>Step Chart: <a href="module-Step.html">API</a> - <a href="tutorial-step.html">Demo</a></li>
 </ul>
 <h2>Installation</h2><p>Britecharts components are distributed in <strong>UMD modules</strong>, each one exposing a D3.js component written with the <a href="https://bost.ocks.org/mike/chart/">Reusable API pattern</a>. In order to use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules or adding a script tag with the <code>src</code> pointing to the file. You would also need to load the <a href="https://github.com/d3/d3-selection">D3.js selection</a> library in order to select the chart container.</p>
-<pre class="prettyprint source"><code>   npm install britecharts d3-selection</code></pre><p>They also provide some minimal CSS styling, that can be loaded independently or as a bundle.</p>
+<pre class="prettyprint source"><code>   npm install britecharts d3-selection</code></pre><p>They also provide some minimal CSS styling, that can be loaded independently or as a bundle. Check out our <a href="tutorial-cdn.html">CDN demo</a> page.</p>
 <h2>Roadmap</h2><p>This project is in active development, if you are interested on helping you can check the <a href="https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md">contributing</a> document. Review the <a href="https://github.com/eventbrite/britecharts/issues">issues page</a> for more info on what's coming, to give your feedback, and to vote for your favorite proposals.</p>
 <h2>See Also</h2><ul>
 <li><a href="getting-started.html">Getting Started Guide</a></li>
@@ -312,7 +314,7 @@ limitations under the License.</p>
         
             <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
         
-     
+
         <script src="/britecharts/scripts/prism.js"></script>
         <script>
         $( function () {

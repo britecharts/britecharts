@@ -5,11 +5,22 @@
 .navbar-brand img {
     height: 26px;
 }
-.navbar .navbar-form {
-    text-align: right;
-}
 .no-gutter {
     padding: 0;
+}
+
+/* Search */
+.navbar-form {
+    text-align: center;
+}
+.search-container {
+    margin: 0 auto;
+}
+.search-container .input-group-btn {
+    float: left
+}
+.navbar-form .input-group > .form-control {
+    width: auto;
 }
 
 /* Layout */

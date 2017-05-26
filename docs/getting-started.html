@@ -56,7 +56,6 @@
             <meta name="twitter:description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
         
 
-
         <!--[if lt IE 9]>
             <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -81,7 +80,6 @@
             	</div>
             	<div class="navbar-collapse collapse" id="topNavigation">
             		<ul class="nav navbar-nav">
-                      
             			
                         
             			<li class="">
@@ -158,14 +156,18 @@
                         </li>
             		</ul>
                     
-                      
-                            <form class="navbar-form navbar-right" role="search">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
-                                </div>
-                                <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
-                            </form>
-                       
+                    <div class="col-sm-12 col-md-4 no-gutter">
+                        <form class="navbar-form" role="search">
+                            <div class="input-group search-container clearfix">
+                                <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" id="search-submit">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
                     
                 </div>
             </div>
@@ -191,7 +193,7 @@
     <section class="readme-section">
         <article><h2>Getting Started with Britecharts</h2><p>Britecharts has been created to help users consume and create d3 charts. It leverages a reusable API, which produces chart objects that (after initialization) can be configured and then applied to a container with a data set to plot.</p>
 <h3>Installing Britecharts</h3><p>In order to use a Britecharts chart in your project you would need to install it using NPM, Bower or cloning it via Github:</p>
-<h5>Install with NPM</h5><pre class="prettyprint source"><code>   npm install --save britecharts d3-selection</code></pre><h5>Install with Bower</h5><pre class="prettyprint source"><code>   bower install --save britecharts d3-selection</code></pre><h5>Clone the git repository</h5><pre class="prettyprint source"><code>   git clone https://github.com/eventbrite/britecharts.git</code></pre><h5>Directly from CDN</h5><pre class="prettyprint source"><code>https://cdn.jsdelivr.net/npm/britecharts@1/dist/bundled/britecharts.min.js (latest 1.x.x version)</code></pre><p>Or <a href="https://cdn.jsdelivr.net/npm/britecharts/dist/">browse all CDN files</a></p>
+<h5>Install with NPM</h5><pre class="prettyprint source"><code>   npm install --save britecharts d3-selection</code></pre><h5>Install with Bower</h5><pre class="prettyprint source"><code>   bower install --save britecharts d3-selection</code></pre><h5>Clone the git repository</h5><pre class="prettyprint source"><code>   git clone https://github.com/eventbrite/britecharts.git</code></pre><h5>Directly from CDN</h5><pre class="prettyprint source"><code>https://cdn.jsdelivr.net/npm/britecharts@1/dist/bundled/britecharts.min.js (latest 1.x.x version)</code></pre><p>Or <a href="https://cdn.jsdelivr.net/npm/britecharts/dist/">browse all CDN files</a>. Check also our <a href="tutorial-cdn.html">CDN demo page</a></p>
 <h3>Using Britecharts</h3><p>In order to use a Britecharts chart in your project you would need to:</p>
 <ul>
 <li><p>Require the proper chart as a module, we can do:</p>
@@ -300,7 +302,7 @@ window.addEventListener(&quot;resize&quot;, throttledRedraw);</code></pre><h3>Le
         
             <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
         
-     
+
         <script src="/britecharts/scripts/prism.js"></script>
         <script>
         $( function () {
