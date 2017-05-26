@@ -6,13 +6,14 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.config.set('jsdoc', {
         dist : {
-            src: ['./src/charts/*.js'],
+            src: ['./src/charts/*.js','./README.md'],
             jsdoc: './node_modules/.bin/jsdoc',
             options: {
                 destination: 'docs',
                 configure: 'src/doc/jsdoc.conf.json',
                 template: 'src/doc/template',
-                tutorials: 'demos'
+                tutorials: 'demos',
+                mainpagetitle:'Britecharts - D3.js based charting library of reusable components'
             }
         }
     });
