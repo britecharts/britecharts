@@ -57,10 +57,10 @@
 	__webpack_require__(6);
 	__webpack_require__(41);
 	__webpack_require__(48);
-	__webpack_require__(54);
-	__webpack_require__(66);
-	__webpack_require__(70);
-	__webpack_require__(74);
+	__webpack_require__(55);
+	__webpack_require__(67);
+	__webpack_require__(71);
+	__webpack_require__(75);
 
 /***/ }),
 /* 2 */
@@ -1646,7 +1646,7 @@
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-selection/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-selection/ Version 1.1.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -2271,16 +2271,18 @@
 	}
 	
 	var selection_style = function(name, value, priority) {
-	  var node;
 	  return arguments.length > 1
 	      ? this.each((value == null
 	            ? styleRemove : typeof value === "function"
 	            ? styleFunction
 	            : styleConstant)(name, value, priority == null ? "" : priority))
-	      : defaultView(node = this.node())
-	          .getComputedStyle(node, null)
-	          .getPropertyValue(name);
+	      : styleValue(this.node(), name);
 	};
+	
+	function styleValue(node, name) {
+	  return node.style.getPropertyValue(name)
+	      || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
+	}
 	
 	function propertyRemove(name) {
 	  return function() {
@@ -2493,7 +2495,7 @@
 	  var window = defaultView(node),
 	      event = window.CustomEvent;
 	
-	  if (event) {
+	  if (typeof event === "function") {
 	    event = new event(type, params);
 	  } else {
 	    event = window.document.createEvent("Event");
@@ -2611,6 +2613,7 @@
 	exports.selection = selection;
 	exports.selector = selector;
 	exports.selectorAll = selectorAll;
+	exports.style = styleValue;
 	exports.touch = touch;
 	exports.touches = touches;
 	exports.window = defaultView;
@@ -2625,7 +2628,7 @@
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*
 	Copyright (c) 2010,2011,2012,2013,2014 Morgan Roderick http://roderick.dk
 	License: MIT - http://mrgnrdrck.mit-license.org
 	
@@ -2634,20 +2637,22 @@
 	(function (root, factory){
 		'use strict';
 	
-	    if (true){
-	        // AMD. Register as an anonymous module.
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		var PubSub = {};
+		root.PubSub = PubSub;
+		factory(PubSub);
 	
-	    } else if (typeof exports === 'object'){
-	        // CommonJS
-	        factory(exports);
+		// AMD support
+		if (true){
+			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return PubSub; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	
-	    }
-	
-	    // Browser globals
-	    var PubSub = {};
-	    root.PubSub = PubSub;
-	    factory(PubSub);
+		// CommonJS and Node.js module support
+		} else if (typeof exports === 'object'){
+			if (module !== undefined && module.exports) {
+				exports = module.exports = PubSub; // Node.js specific `module.exports`
+			}
+			exports.PubSub = PubSub; // CommonJS module 1.1.1 spec
+			module.exports = exports = PubSub; // CommonJS
+		}
 	
 	}(( typeof window === 'object' && window ) || this, function (PubSub){
 		'use strict';
@@ -4690,7 +4695,7 @@
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-axis/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-axis/ Version 1.0.7. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -4710,15 +4715,15 @@
 	var epsilon = 1e-6;
 	
 	function translateX(x) {
-	  return "translate(" + x + ",0)";
+	  return "translate(" + (x + 0.5) + ",0)";
 	}
 	
 	function translateY(y) {
-	  return "translate(0," + y + ")";
+	  return "translate(0," + (y + 0.5) + ")";
 	}
 	
 	function center(scale) {
-	  var offset = scale.bandwidth() / 2;
+	  var offset = Math.max(0, scale.bandwidth() - 1) / 2; // Adjust for 0.5px offset.
 	  if (scale.round()) offset = Math.round(offset);
 	  return function(d) {
 	    return scale(d) + offset;
@@ -4737,7 +4742,7 @@
 	      tickSizeOuter = 6,
 	      tickPadding = 3,
 	      k = orient === top || orient === left ? -1 : 1,
-	      x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x"),
+	      x = orient === left || orient === right ? "x" : "y",
 	      transform = orient === top || orient === bottom ? translateX : translateY;
 	
 	  function axis(context) {
@@ -4764,14 +4769,11 @@
 	
 	    line = line.merge(tickEnter.append("line")
 	        .attr("stroke", "#000")
-	        .attr(x + "2", k * tickSizeInner)
-	        .attr(y + "1", 0.5)
-	        .attr(y + "2", 0.5));
+	        .attr(x + "2", k * tickSizeInner));
 	
 	    text = text.merge(tickEnter.append("text")
 	        .attr("fill", "#000")
 	        .attr(x, k * spacing)
-	        .attr(y, 0.5)
 	        .attr("dy", orient === top ? "0em" : orient === bottom ? "0.71em" : "0.32em"));
 	
 	    if (context !== selection) {
@@ -5475,7 +5477,7 @@
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-scale/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-scale/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(9), __webpack_require__(11), __webpack_require__(15), __webpack_require__(17), __webpack_require__(18), __webpack_require__(19), __webpack_require__(16)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-collection', 'd3-interpolate', 'd3-format', 'd3-time', 'd3-time-format', 'd3-color'], factory) :
@@ -5790,17 +5792,39 @@
 	  };
 	
 	  scale.nice = function(count) {
-	    var d = domain(),
-	        i = d.length - 1,
-	        n = count == null ? 10 : count,
-	        start = d[0],
-	        stop = d[i],
-	        step = d3Array.tickStep(start, stop, n);
+	    if (count == null) count = 10;
 	
-	    if (step) {
-	      step = d3Array.tickStep(Math.floor(start / step) * step, Math.ceil(stop / step) * step, n);
-	      d[0] = Math.floor(start / step) * step;
-	      d[i] = Math.ceil(stop / step) * step;
+	    var d = domain(),
+	        i0 = 0,
+	        i1 = d.length - 1,
+	        start = d[i0],
+	        stop = d[i1],
+	        step;
+	
+	    if (stop < start) {
+	      step = start, start = stop, stop = step;
+	      step = i0, i0 = i1, i1 = step;
+	    }
+	
+	    step = d3Array.tickIncrement(start, stop, count);
+	
+	    if (step > 0) {
+	      start = Math.floor(start / step) * step;
+	      stop = Math.ceil(stop / step) * step;
+	      step = d3Array.tickIncrement(start, stop, count);
+	    } else if (step < 0) {
+	      start = Math.ceil(start * step) / step;
+	      stop = Math.floor(stop * step) / step;
+	      step = d3Array.tickIncrement(start, stop, count);
+	    }
+	
+	    if (step > 0) {
+	      d[i0] = Math.floor(start / step) * step;
+	      d[i1] = Math.ceil(stop / step) * step;
+	      domain(d);
+	    } else if (step < 0) {
+	      d[i0] = Math.ceil(start * step) / step;
+	      d[i1] = Math.floor(stop * step) / step;
 	      domain(d);
 	    }
 	
@@ -6384,7 +6408,7 @@
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-interpolate/ Version 1.1.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-interpolate/ Version 1.1.5. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(16)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-color'], factory) :
@@ -6630,7 +6654,7 @@
 	      : b instanceof d3Color.color ? rgb$1
 	      : b instanceof Date ? date
 	      : Array.isArray(b) ? array
-	      : isNaN(b) ? object
+	      : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
 	      : number)(a, b);
 	};
 	
@@ -8779,7 +8803,7 @@
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-shape/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-shape/ Version 1.1.1. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(21)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
@@ -9424,6 +9448,91 @@
 	
 	  return a;
 	};
+	
+	var slice = Array.prototype.slice;
+	
+	var radialPoint = function(x, y) {
+	  return [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x)];
+	};
+	
+	function linkSource(d) {
+	  return d.source;
+	}
+	
+	function linkTarget(d) {
+	  return d.target;
+	}
+	
+	function link(curve) {
+	  var source = linkSource,
+	      target = linkTarget,
+	      x$$1 = x,
+	      y$$1 = y,
+	      context = null;
+	
+	  function link() {
+	    var buffer, argv = slice.call(arguments), s = source.apply(this, argv), t = target.apply(this, argv);
+	    if (!context) context = buffer = d3Path.path();
+	    curve(context, +x$$1.apply(this, (argv[0] = s, argv)), +y$$1.apply(this, argv), +x$$1.apply(this, (argv[0] = t, argv)), +y$$1.apply(this, argv));
+	    if (buffer) return context = null, buffer + "" || null;
+	  }
+	
+	  link.source = function(_) {
+	    return arguments.length ? (source = _, link) : source;
+	  };
+	
+	  link.target = function(_) {
+	    return arguments.length ? (target = _, link) : target;
+	  };
+	
+	  link.x = function(_) {
+	    return arguments.length ? (x$$1 = typeof _ === "function" ? _ : constant(+_), link) : x$$1;
+	  };
+	
+	  link.y = function(_) {
+	    return arguments.length ? (y$$1 = typeof _ === "function" ? _ : constant(+_), link) : y$$1;
+	  };
+	
+	  link.context = function(_) {
+	    return arguments.length ? ((context = _ == null ? null : _), link) : context;
+	  };
+	
+	  return link;
+	}
+	
+	function curveHorizontal(context, x0, y0, x1, y1) {
+	  context.moveTo(x0, y0);
+	  context.bezierCurveTo(x0 = (x0 + x1) / 2, y0, x0, y1, x1, y1);
+	}
+	
+	function curveVertical(context, x0, y0, x1, y1) {
+	  context.moveTo(x0, y0);
+	  context.bezierCurveTo(x0, y0 = (y0 + y1) / 2, x1, y0, x1, y1);
+	}
+	
+	function curveRadial$1(context, x0, y0, x1, y1) {
+	  var p0 = radialPoint(x0, y0),
+	      p1 = radialPoint(x0, y0 = (y0 + y1) / 2),
+	      p2 = radialPoint(x1, y0),
+	      p3 = radialPoint(x1, y1);
+	  context.moveTo(p0[0], p0[1]);
+	  context.bezierCurveTo(p1[0], p1[1], p2[0], p2[1], p3[0], p3[1]);
+	}
+	
+	function linkHorizontal() {
+	  return link(curveHorizontal);
+	}
+	
+	function linkVertical() {
+	  return link(curveVertical);
+	}
+	
+	function linkRadial() {
+	  var l = link(curveRadial$1);
+	  l.angle = l.x, delete l.x;
+	  l.radius = l.y, delete l.y;
+	  return l;
+	}
 	
 	var circle = {
 	  draw: function(context, size) {
@@ -10406,13 +10515,11 @@
 	  return new Step(context, 1);
 	}
 	
-	var slice = Array.prototype.slice;
-	
 	var none = function(series, order) {
 	  if (!((n = series.length) > 1)) return;
-	  for (var i = 1, s0, s1 = series[order[0]], n, m = s1.length; i < n; ++i) {
+	  for (var i = 1, j, s0, s1 = series[order[0]], n, m = s1.length; i < n; ++i) {
 	    s0 = s1, s1 = series[order[i]];
-	    for (var j = 0; j < m; ++j) {
+	    for (j = 0; j < m; ++j) {
 	      s1[j][1] += s1[j][0] = isNaN(s0[j][1]) ? s0[j][0] : s0[j][1];
 	    }
 	  }
@@ -10484,6 +10591,21 @@
 	    if (y) for (i = 0; i < n; ++i) series[i][j][1] /= y;
 	  }
 	  none(series, order);
+	};
+	
+	var diverging = function(series, order) {
+	  if (!((n = series.length) > 1)) return;
+	  for (var i, j = 0, d, dy, yp, yn, n, m = series[order[0]].length; j < m; ++j) {
+	    for (yp = yn = 0, i = 0; i < n; ++i) {
+	      if ((dy = (d = series[order[i]][j])[1] - d[0]) >= 0) {
+	        d[0] = yp, d[1] = yp += dy;
+	      } else if (dy < 0) {
+	        d[1] = yn, d[0] = yn += dy;
+	      } else {
+	        d[0] = yp;
+	      }
+	    }
+	  }
 	};
 	
 	var silhouette = function(series, order) {
@@ -10568,6 +10690,9 @@
 	exports.pie = pie;
 	exports.radialArea = radialArea;
 	exports.radialLine = radialLine$1;
+	exports.linkHorizontal = linkHorizontal;
+	exports.linkVertical = linkVertical;
+	exports.linkRadial = linkRadial;
 	exports.symbol = symbol;
 	exports.symbols = symbols;
 	exports.symbolCircle = circle;
@@ -10597,6 +10722,7 @@
 	exports.curveStepBefore = stepBefore;
 	exports.stack = stack;
 	exports.stackOffsetExpand = expand;
+	exports.stackOffsetDiverging = diverging;
 	exports.stackOffsetNone = none;
 	exports.stackOffsetSilhouette = silhouette;
 	exports.stackOffsetWiggle = wiggle;
@@ -10762,7 +10888,7 @@
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-transition/ Version 1.0.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-transition/ Version 1.1.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(4), __webpack_require__(12), __webpack_require__(23), __webpack_require__(15), __webpack_require__(16), __webpack_require__(13)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-timer', 'd3-interpolate', 'd3-color', 'd3-ease'], factory) :
@@ -11327,9 +11453,8 @@
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var style = d3Selection.window(this).getComputedStyle(this, null),
-	        value0 = style.getPropertyValue(name),
-	        value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
+	    var value0 = d3Selection.style(this, name),
+	        value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -11346,7 +11471,7 @@
 	  var value00,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.window(this).getComputedStyle(this, null).getPropertyValue(name);
+	    var value0 = d3Selection.style(this, name);
 	    return value0 === value1 ? null
 	        : value0 === value00 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value1);
@@ -11358,10 +11483,9 @@
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var style = d3Selection.window(this).getComputedStyle(this, null),
-	        value0 = style.getPropertyValue(name),
+	    var value0 = d3Selection.style(this, name),
 	        value1 = value(this);
-	    if (value1 == null) value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
+	    if (value1 == null) value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -12985,17 +13109,30 @@
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
+	    var d3Format = __webpack_require__(17);
+	
+	    /**
+	     * Calculates percentage of value from total
+	     * @param  {Number}  value    Value to check
+	     * @param  {Number}  total    Sum of values
+	     * @param  {String}  decimals Specifies number of decimals https://github.com/d3/d3-format
+	     * @return {String}           Percentage
+	     */
+	    function calculatePercent(value, total, decimals) {
+	        return d3Format.format(decimals)(value / total * 100);
+	    }
+	
 	    /**
 	     * Checks if a number is an integer of has decimal values
 	     * @param  {Number}  value Value to check
 	     * @return {Boolean}       If it is an iteger
 	     */
-	
 	    function isInteger(value) {
 	        return value % 1 === 0;
 	    }
 	
 	    return {
+	        calculatePercent: calculatePercent,
 	        isInteger: isInteger
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -19082,11 +19219,14 @@
 	    var textHelper = __webpack_require__(43);
 	    var colorHelper = __webpack_require__(7);
 	
+	    var _require2 = __webpack_require__(31),
+	        calculatePercent = _require2.calculatePercent;
+	
 	    /**
 	     * @typedef DonutChartData
 	     * @type {Object[]}
 	     * @property {Number} quantity     Quantity of the group (required)
-	     * @property {Number} percentage   Percentage of the total (required)
+	     * @property {Number} percentage   Percentage of the total (optional)
 	     * @property {String} name         Name of the group (required)
 	     * @property {Number} id           Identifier for the group required for legend feature (optional)
 	     *
@@ -19127,6 +19267,8 @@
 	     *     .call(donutChart);
 	     *
 	     */
+	
+	
 	    return function module() {
 	
 	        var margin = {
@@ -19176,6 +19318,11 @@
 	        },
 	            sortComparator = function sortComparator(a, b) {
 	            return b.quantity - a.quantity;
+	        },
+	            sumValues = function sumValues(data) {
+	            return data.reduce(function (total, d) {
+	                return d.quantity + total;
+	            }, 0);
 	        },
 	
 	
@@ -19278,10 +19425,12 @@
 	         * @private
 	         */
 	        function cleanData(data) {
+	            var totalQuantity = sumValues(data);
+	
 	            return data.map(function (d) {
 	                d.quantity = +d[quantityLabel];
 	                d.name = String(d[nameLabel]);
-	                d.percentage = String(d[percentageLabel]);
+	                d.percentage = String(d.percentage || calculatePercent(d[quantityLabel], totalQuantity, '.1f'));
 	
 	                return d;
 	            });
@@ -20064,7 +20213,8 @@
 	
 	    var _ = __webpack_require__(3),
 	        jsonFivePlusOther = __webpack_require__(52),
-	        jsonThreeCategories = __webpack_require__(53);
+	        jsonFivePlusOtherNoPercent = __webpack_require__(53),
+	        jsonThreeCategories = __webpack_require__(54);
 	
 	    function DonutDataBuilder(config) {
 	        this.Klass = DonutDataBuilder;
@@ -20073,6 +20223,12 @@
 	
 	        this.withFivePlusOther = function () {
 	            var attributes = _.extend({}, this.config, jsonFivePlusOther);
+	
+	            return new this.Klass(attributes);
+	        };
+	
+	        this.withFivePlusOtherNoPercent = function () {
+	            var attributes = _.extend({}, this.config, jsonFivePlusOtherNoPercent);
 	
 	            return new this.Klass(attributes);
 	        };
@@ -20160,6 +20316,45 @@
 			{
 				"name": "Shiny",
 				"id": 1,
+				"quantity": 86
+			},
+			{
+				"name": "Blazing",
+				"id": 2,
+				"quantity": 300
+			},
+			{
+				"name": "Dazzling",
+				"id": 3,
+				"quantity": 276
+			},
+			{
+				"name": "Radiant",
+				"id": 4,
+				"quantity": 195
+			},
+			{
+				"name": "Sparkling",
+				"id": 5,
+				"quantity": 36
+			},
+			{
+				"name": "Other",
+				"id": 0,
+				"quantity": 814
+			}
+		]
+	};
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports) {
+
+	module.exports = {
+		"data": [
+			{
+				"name": "Shiny",
+				"id": 1,
 				"quantity": 200,
 				"percentage": 20
 			},
@@ -20179,7 +20374,7 @@
 	};
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20188,10 +20383,10 @@
 	    d3Selection = __webpack_require__(4),
 	    d3TimeFormat = __webpack_require__(19),
 	    PubSub = __webpack_require__(5),
-	    brush = __webpack_require__(55),
-	    line = __webpack_require__(58),
+	    brush = __webpack_require__(56),
+	    line = __webpack_require__(59),
 	    tooltip = __webpack_require__(33),
-	    dataBuilder = __webpack_require__(59),
+	    dataBuilder = __webpack_require__(60),
 	    colorSelectorHelper = __webpack_require__(40),
 	    lineMargin = { top: 60, bottom: 50, left: 50, right: 30 };
 	
@@ -20407,7 +20602,7 @@
 	}
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -20419,7 +20614,7 @@
 	
 	    var d3Array = __webpack_require__(9);
 	    var d3Axis = __webpack_require__(10);
-	    var d3Brush = __webpack_require__(56);
+	    var d3Brush = __webpack_require__(57);
 	    var d3Ease = __webpack_require__(13);
 	    var d3Scale = __webpack_require__(14);
 	    var d3Shape = __webpack_require__(20);
@@ -20933,12 +21128,12 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-brush/ Version 1.0.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(12), __webpack_require__(57), __webpack_require__(15), __webpack_require__(4), __webpack_require__(22)) :
+		 true ? factory(exports, __webpack_require__(12), __webpack_require__(58), __webpack_require__(15), __webpack_require__(4), __webpack_require__(22)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-selection', 'd3-transition'], factory) :
 		(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3));
 	}(this, (function (exports,d3Dispatch,d3Drag,d3Interpolate,d3Selection,d3Transition) { 'use strict';
@@ -21506,10 +21701,10 @@
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-drag/ Version 1.0.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-drag/ Version 1.1.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(12), __webpack_require__(4)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-selection'], factory) :
@@ -21595,8 +21790,11 @@
 	      gestures = {},
 	      listeners = d3Dispatch.dispatch("start", "drag", "end"),
 	      active = 0,
+	      mousedownx,
+	      mousedowny,
 	      mousemoving,
-	      touchending;
+	      touchending,
+	      clickDistance2 = 0;
 	
 	  function drag(selection) {
 	    selection
@@ -21615,12 +21813,17 @@
 	    nodrag(d3Selection.event.view);
 	    nopropagation();
 	    mousemoving = false;
+	    mousedownx = d3Selection.event.clientX;
+	    mousedowny = d3Selection.event.clientY;
 	    gesture("start");
 	  }
 	
 	  function mousemoved() {
 	    noevent();
-	    mousemoving = true;
+	    if (!mousemoving) {
+	      var dx = d3Selection.event.clientX - mousedownx, dy = d3Selection.event.clientY - mousedowny;
+	      mousemoving = dx * dx + dy * dy > clickDistance2;
+	    }
 	    gestures.mouse("drag");
 	  }
 	
@@ -21710,6 +21913,10 @@
 	    return value === listeners ? drag : value;
 	  };
 	
+	  drag.clickDistance = function(_) {
+	    return arguments.length ? (clickDistance2 = (_ = +_) * _, drag) : Math.sqrt(clickDistance2);
+	  };
+	
 	  return drag;
 	};
 	
@@ -21723,7 +21930,7 @@
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -22701,7 +22908,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -22710,12 +22917,12 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonAllDatas = __webpack_require__(60),
-	        jsonFiveTopics = __webpack_require__(61),
-	        jsonOneSource = __webpack_require__(62),
-	        jsonMultiMonthValueRange = __webpack_require__(63),
-	        jsonHourDateRange = __webpack_require__(64),
-	        jsonSmallValueRange = __webpack_require__(65);
+	        jsonAllDatas = __webpack_require__(61),
+	        jsonFiveTopics = __webpack_require__(62),
+	        jsonOneSource = __webpack_require__(63),
+	        jsonMultiMonthValueRange = __webpack_require__(64),
+	        jsonHourDateRange = __webpack_require__(65),
+	        jsonSmallValueRange = __webpack_require__(66);
 	
 	    function LineDataBuilder(config) {
 	        this.Klass = LineDataBuilder;
@@ -22782,7 +22989,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -23189,7 +23396,7 @@
 	};
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -25265,7 +25472,7 @@
 	};
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -25415,7 +25622,7 @@
 	};
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -36412,7 +36619,7 @@
 	};
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -36789,7 +36996,7 @@
 	};
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -36896,15 +37103,15 @@
 	};
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    sparklineChart = __webpack_require__(67),
-	    sparklineDataBuilder = __webpack_require__(68);
+	    sparklineChart = __webpack_require__(68),
+	    sparklineDataBuilder = __webpack_require__(69);
 	
 	function createSparklineChart() {
 	    var sparkline = sparklineChart(),
@@ -36940,7 +37147,7 @@
 	}
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -37339,7 +37546,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -37348,7 +37555,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonOneSource = __webpack_require__(69);
+	        jsonOneSource = __webpack_require__(70);
 	
 	    function SparklineDataBuilder(config) {
 	        this.Klass = SparklineDataBuilder;
@@ -37372,7 +37579,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -37421,16 +37628,16 @@
 	};
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var d3Selection = __webpack_require__(4),
 	    PubSub = __webpack_require__(5),
-	    step = __webpack_require__(71),
+	    step = __webpack_require__(72),
 	    miniTooltip = __webpack_require__(44),
-	    dataBuilder = __webpack_require__(72);
+	    dataBuilder = __webpack_require__(73);
 	
 	function createStepChart() {
 	    var stepChart = step(),
@@ -37481,7 +37688,7 @@
 	}
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -37898,7 +38105,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -37907,7 +38114,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonStepDataSmall = __webpack_require__(73);
+	        jsonStepDataSmall = __webpack_require__(74);
 	
 	    function StepDataBuilder(config) {
 	        this.Klass = StepDataBuilder;
@@ -37931,7 +38138,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -37968,7 +38175,7 @@
 	};
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -37976,8 +38183,8 @@
 	var d3Selection = __webpack_require__(4),
 	    d3TimeFormat = __webpack_require__(19),
 	    PubSub = __webpack_require__(5),
-	    brush = __webpack_require__(55),
-	    dataBuilder = __webpack_require__(75);
+	    brush = __webpack_require__(56),
+	    dataBuilder = __webpack_require__(76);
 	
 	function createBrushChart() {
 	    var brushChart = brush(),
@@ -38019,7 +38226,7 @@
 	}
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -38028,7 +38235,7 @@
 	    'use strict';
 	
 	    var _ = __webpack_require__(3),
-	        jsonSimpleData = __webpack_require__(76);
+	        jsonSimpleData = __webpack_require__(77);
 	
 	    function BrushDataBuilder(config) {
 	        this.Klass = BrushDataBuilder;
@@ -38065,7 +38272,7 @@
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports) {
 
 	module.exports = {
