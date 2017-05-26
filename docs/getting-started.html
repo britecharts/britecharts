@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Tutorial: Bar Chart</title>
+        <title>Getting Started with Britecharts</title>
 
         
             <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
@@ -174,114 +174,92 @@
         <main class="container" id="toc-content">
             <div class="row">
             	
-            	<div class="col-md-12">
+            	<div class="col-md-8 is-source">
             	
             		<div id="main">
-            			<section class="tutorial-section" id="tutorial-bar" data-filename="tutorial-bar.html">
-    <header>
-        
-        <h2 class="tutorial-section__heading">Bar Chart</h2>
-    </header>
-    <article>
-            <div class="container" id="bar">
-        <div class="row">
-            <div class="
-col-md-6">
-                <article>
-                    <h2 class="tutorial__heading">Bar Chart with Tooltip</h2>
-                    <div class="js-bar-chart-tooltip-container bar-chart-tooltip-container card--chart"></div>
-                </article>
-            </div>
-            <div class="col-md-6 sidebar">
-                <h3>The code</h3>
-                <pre><code class="language-javascript">
-barChart
-    .width(containerWidth)
-    .height(300)
-    .usePercentage(true)
-    .isAnimated(true)
-    .on('customMouseOver', tooltip.show)
-    .on('customMouseMove', tooltip.update)
-    .on('customMouseOut', tooltip.hide);
+            			
 
-barContainer.datum(dataset).call(barChart);
-
-tooltipContainer = d3.select('.bar-chart .metadata-group');
-tooltipContainer.datum([]).call(tooltip);
-                </code></pre>
-
-                <h4>Data Input</h4>
-                <p>Check the <a href="/britecharts/global.html#BarChartData__anchor">data input schema</a> of this chart.</p>
-
-                <h4>Export Chart</h4>
-                <p>Export this chart by pressing <input class="js-download-button btn-sm btn btn-primary" type="button" value="Export" /></p>
-
-                <h4>Demo Code</h4>
-                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-bar.js">in github</a></p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <article>
-                    <h2 class="tutorial__heading">Horizontal Bar Chart</h2>
-                    <div class="js-horizontal-bar-chart-container card--chart"></div>
-                </article>
-            </div>
-            <div class="col-md-6 sidebar">
-                <h3>The code</h3>
-                <pre><code class="language-javascript">
-barChart
-    .margin({
-        left: 120,
-        right: 20,
-        top: 20,
-        bottom: 5
-    })
-    .percentageAxisToMaxRatio(1.3)
-    .horizontal(true)
-    .isAnimated(true)
-    .colorSchema(colors.colorSchemas.britechartsColorSchema)
-    .width(containerWidth)
-    .height(300);
-
-barContainer.datum(dataset).call(barChart);
-                </code></pre>
-
-                <h4>Demo Code</h4>
-                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-bar.js">in github</a></p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <article>
-                    <h2 class="tutorial__heading">Simple Bar Chart</h2>
-                    <div class="js-bar-chart-container card--chart"></div>
-                </article>
-            </div>
-            <div class="col-md-6 sidebar">
-                <h3>The code</h3>
-                <pre><code class="language-javascript">
-barChart
-    .width(containerWidth)
-    .height(300);
-
-barContainer.datum(dataset).call(barChart);
-                </code></pre>
-
-                <h4>Demo Code</h4>
-                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-bar.js">in github</a></p>
-            </div>
-        </div>
-    </div>
+	
+	<!--h1 class="page-title">Getting Started with Britecharts</h1-->
+	
+	
 
 
-    </article>
-</section>
 
-<script src="/britecharts/scripts/demo-bar.js"></script>
+
+
+    <section class="readme-section">
+        <article><h2>Getting Started with Britecharts</h2><p>Britecharts has been created to help users consume and create d3 charts. It leverages a reusable API, which produces chart objects that (after initialization) can be configured and then applied to a container with a data set to plot.</p>
+<h3>Installing Britecharts</h3><p>In order to use a Britecharts chart in your project you would need to install it using NPM, Bower or cloning it via Github:</p>
+<h5>Install with NPM</h5><pre class="prettyprint source"><code>   npm install --save britecharts d3-selection</code></pre><h5>Install with Bower</h5><pre class="prettyprint source"><code>   bower install --save britecharts d3-selection</code></pre><h5>Clone the git repository</h5><pre class="prettyprint source"><code>   git clone https://github.com/eventbrite/britecharts.git</code></pre><h5>Directly from CDN</h5><pre class="prettyprint source"><code>https://cdn.jsdelivr.net/npm/britecharts@1/dist/bundled/britecharts.min.js (latest 1.x.x version)</code></pre><p>Or <a href="https://cdn.jsdelivr.net/npm/britecharts/dist/">browse all CDN files</a></p>
+<h3>Using Britecharts</h3><p>In order to use a Britecharts chart in your project you would need to:</p>
+<ul>
+<li><p>Require the proper chart as a module, we can do:</p>
+<pre class="prettyprint source"><code>  // ES2015 Modules
+  import LineChart from 'britecharts/dist/umd/line.min';
+
+  // CommonJS or AMD modules
+  LineChart = require('britecharts/dist/umd/line.min');</code></pre></li>
+<li>Require d3-selection as a dependency, in order to select a container to execute the chart on.<pre class="prettyprint source"><code>  d3Selection = require('d3-selection');</code></pre></li>
+<li>Instantiate a new line chart and select the chart container with <code>d3-selection</code>:<pre class="prettyprint source"><code>  var container = d3Selection.select('.js-chart-container'),
+      lineChart = new LineChart();</code></pre></li>
+<li>Configure the default chart with attributes:<pre class="prettyprint source"><code>  if (container.node()) {
+      lineChart
+          .tooltipThreshold(tooltipShouldShowThreshold)
+          .margin(chartMargin)
+          .height(chartHeight)
+          .width(chartWidth);
+  }</code></pre></li>
+<li>And finally call the chart with a container and data attached to the container.<pre class="prettyprint source"><code>  // This line gets together container, data and chart
+  container.datum(data).call(lineChart);</code></pre>And that would generate your britechart!</li>
+</ul>
+<p>Here is the whole code:</p>
+<pre class="prettyprint source"><code>    var container = d3Selection.select('.js-chart-container'),
+        lineChart = new LineChart();
+
+    if (container.node()) {
+        lineChart
+            .tooltipThreshold(tooltipShouldShowThreshold)
+            .margin(chartMargin)
+            .height(chartHeight)
+            .width(chartWidth);
+    }
+
+    // This line gets together container, data and chart
+    container.datum(data).call(lineChart);</code></pre><p>It won't look perfect though, you will need to load a small CSS file in order to see it styled. You can load the whole bundle:</p>
+<pre class="prettyprint source lang-html"><code>&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;node_modules/britecharts/dist/css/britecharts.min.css&quot;></code></pre><p>or just load the styles for the current chart plus the common Britecharts styles:</p>
+<pre class="prettyprint source lang-html"><code>&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;node_modules/britecharts/dist/css/common/common.css&quot;>
+&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;node_modules/britecharts/dist/css/charts/line.css&quot;></code></pre><h3>Making it Responsive</h3><p>You will probably want to set up a listener for the resize event to re-render the chart, and probably debounce it, so it doesn't render too many times.</p>
+<p>This code would probably look like this:</p>
+<pre class="prettyprint source"><code>const redrawChart = () => {
+    let container = d3.select(‘.js-chart-container’);
+    let newContainerWidth = container.node() ? container.node().getBoundingClientRect().width : false;
+
+    // Setting the new width on the chart
+    lineChart.width(newContainerWidth);
+
+    // Rendering the chart again
+    container.datum(data).call(lineChart);
+};
+const throttledRedraw =  _.throttle(redrawChart, 200);
+
+window.addEventListener(&quot;resize&quot;, throttledRedraw);</code></pre><h3>Learning More</h3><p>Check out our <a href="">Documentation Homepage</a> and our <a href="tutorial-kitchen-sink.html">kitchen sink</a> to see all the available charts.</p>
+<p>If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our <a href="https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md">Contributing Guide</a>. In it, we walk you through the development environment setup, run our docs and demos and create new Pull Requests.</p></article>
+    </section>
+
+
+
+
+
+
+
             		</div>
             	</div>
             	<div class="clearfix"></div>
+            	
+            		<div class="col-md-3">
+            			<div id="toc" class="col-md-3 hidden-xs hidden-sm"></div>
+            		</div>
             	
             </div>
         </main>

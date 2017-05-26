@@ -65,13 +65,14 @@
         <link type="text/css" rel="stylesheet" href="styles/demos.css">
         <link type="text/css" rel="stylesheet" href="styles/prism.css"  />
         <link type="text/css" rel="stylesheet" href="styles/britecharts.css" />
+        <script src="/britecharts/scripts/common.js"></script>
     </head>
     <body>
         <div class="navbar navbar-fixed-top navbar-default">
             <div class="container">
             	<div class="navbar-header">
             		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="img/britecharts-logo.svg"
-            		alt="Britecharts"/></a>
+            		alt="Britecharts - D3.js based charting library of reusable components"/></a>
             		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
             			<span class="icon-bar"></span>
             			<span class="icon-bar"></span>
@@ -80,25 +81,75 @@
             	</div>
             	<div class="navbar-collapse collapse" id="topNavigation">
             		<ul class="nav navbar-nav">
+                      
             			
-            			<li class="dropdown">
-            				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">API<b class="caret"></b></a>
+                        
+            			<li class="">
+            				<a href="getting-started.html" >Getting started<b class=""></b></a>
             				<ul class="dropdown-menu inline">
-            					<li><a href="module-Bar.html">Bar</a></li><li><a href="module-Brush.html">Brush</a></li><li><a href="module-Donut.html">Donut</a></li><li><a href="module-Legend.html">Legend</a></li><li><a href="module-Line.html">Line</a></li><li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li><li><a href="module-Sparkline.html">Sparkline</a></li><li><a href="module-Stacked-area.html">Stacked-area</a></li><li><a href="module-Step.html">Step</a></li><li><a href="module-Tooltip.html">Tooltip</a></li>
+            					
             				</ul>
             			</li>
             			
+                        
             			<li class="dropdown">
-            				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Demos<b class="caret"></b></a>
+            				<a href="tutorials.list.html"  class="dropdown-toggle" data-toggle="dropdown" >Demos<b class="caret"></b></a>
             				<ul class="dropdown-menu inline">
-            					<li><a href="tutorial--_GETTINGSTARTED.html">Getting Started</a></li><li><a href="tutorial-bar.html">Bar Chart</a></li><li><a href="tutorial-brush.html">Brush Chart</a></li><li><a href="tutorial-cdn.html">CDN</a></li><li><a href="tutorial-donut.html">Donut Chart</a></li><li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li><li><a href="tutorial-line.html">Line Chart</a></li><li><a href="tutorial-sparkline.html">Sparkline Chart</a></li><li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li><li><a href="tutorial-step.html">Step Chart</a></li>
+            					
+                                <li><a href="tutorial-bar.html">Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-brush.html">Brush Chart</a></li>
+                                
+                                <li><a href="tutorial-donut.html">Donut Chart</a></li>
+                                
+                                <li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li>
+                                
+                                <li><a href="tutorial-line.html">Line Chart</a></li>
+                                
+                                <li><a href="tutorial-sparkline.html">Sparkline Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li>
+                                
+                                <li><a href="tutorial-step.html">Step Chart</a></li>
+                                
             				</ul>
             			</li>
             			
-            			<li class="dropdown">
-            				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+                        
+            			<li class="">
+            				<a href="cdn.html" >CDN<b class=""></b></a>
             				<ul class="dropdown-menu inline">
-            					<li><a href="global.html">Types</a></li>
+            					
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="modules.list.html"  class="dropdown-toggle" data-toggle="dropdown" >API<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="module-Bar.html">Bar</a></li>
+                                
+                                <li><a href="module-Brush.html">Brush</a></li>
+                                
+                                <li><a href="module-Donut.html">Donut</a></li>
+                                
+                                <li><a href="module-Legend.html">Legend</a></li>
+                                
+                                <li><a href="module-Line.html">Line</a></li>
+                                
+                                <li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li>
+                                
+                                <li><a href="module-Sparkline.html">Sparkline</a></li>
+                                
+                                <li><a href="module-Stacked-area.html">Stacked-area</a></li>
+                                
+                                <li><a href="module-Step.html">Step</a></li>
+                                
+                                <li><a href="module-Tooltip.html">Tooltip</a></li>
+                                
+                                <li><a href="global.html">Types</a></li>
+                                
             				</ul>
             			</li>
             			
@@ -107,14 +158,14 @@
                         </li>
             		</ul>
                     
-                        <div class="col-sm-3 col-md-4 pull-right no-gutter">
-                            <form class="navbar-form" role="search">
+                      
+                            <form class="navbar-form navbar-right" role="search">
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
                                 </div>
                                 <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
                             </form>
-                        </div>
+                       
                     
                 </div>
             </div>
@@ -2235,7 +2286,7 @@ customMouseOver, customMouseMove and customMouseOut
         
             <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
         
-        <script src="/britecharts/scripts/bundle.js"></script>
+     
         <script src="/britecharts/scripts/prism.js"></script>
         <script>
         $( function () {
