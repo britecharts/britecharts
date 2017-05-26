@@ -5,11 +5,22 @@
 .navbar-brand img {
     height: 26px;
 }
-.navbar .navbar-form {
-    text-align: right;
-}
 .no-gutter {
     padding: 0;
+}
+
+/* Search */
+.navbar-form {
+    text-align: center;
+}
+.search-container {
+    margin: 0 auto;
+}
+.search-container .input-group-btn {
+    float: left
+}
+.navbar-form .input-group > .form-control {
+    width: auto;
 }
 
 /* Layout */
@@ -81,18 +92,28 @@
 .is-hidden {
     display: none;
 }
+
+/* Chart styles */
 #brush .date-range {
-            color: #ADB0B6;
-            font-size: 18px;
-            margin-bottom: 40px;
+    color: #ADB0B6;
+    font-size: 18px;
+    margin-bottom: 40px;
 }
 #brush .is-hidden {
-            display: none;
+    display: none;
 }
-    
-#donut  .legend-chart-container {
-            text-align: center;
+
+.legend-chart-container {
+    text-align: center;
 }
-#donut .legend-chart-container svg {
-            margin: 0 auto;
+
+
+/* Bar Chart */
+.bar-chart-tooltip-container {
+    min-height: 300px;
+}
+
+/* Line Chart */
+.line-chart-container {
+    min-height: 130px;
 }

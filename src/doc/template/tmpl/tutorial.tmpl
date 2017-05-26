@@ -1,4 +1,4 @@
-<section class="tutorial-section">
+<section class="tutorial-section" id="tutorial-<?js= obj.name ?>" data-filename="<?js= obj.filename ?>">
     <header>
         <?js if (children.length > 0) { ?>
         <ul><?js
@@ -13,3 +13,5 @@
         <?js= content ?>
     </article>
 </section>
+
+<script src="/britecharts/scripts/demo-<?js= obj.name ?>.js"></script>

@@ -86,6 +86,11 @@ define(function(require){
             svg,
 
             isAnimated = false,
+
+            highlightedSliceId,
+            highlightedSlice,
+            hasFixedHighlightedSlice = false,
+
             quantityLabel = 'quantity',
             nameLabel = 'name',
             percentageLabel = 'percentage',
@@ -129,6 +134,10 @@ define(function(require){
                 buildSVG(this);
                 drawSlices();
                 initTooltip();
+
+                if (highlightedSliceId) {
+                    initHighlightSlice();
+                }
             });
         }
 
@@ -214,6 +223,14 @@ define(function(require){
         }
 
         /**
+         * Cleans any value that could be on the legend text element
+         * @private
+         */
+        function cleanLegend() {
+            svg.select('.donut-text').text('');
+        }
+
+        /**
          * Draws the values on the donut slice inside the text element
          *
          * @param  {Object} obj Data object
@@ -241,19 +258,17 @@ define(function(require){
                     .data(layout(data));
 
                 let newSlices = slices.enter()
-                      .append('g')
-                        .each(storeAngle)
-                        .each(reduceOuterRadius)
-                        .classed('arc', true)
-                        .on('mouseover', handleMouseOver)
-                        .on('mouseout', handleMouseOut);
+                  .append('g')
+                    .each(storeAngle)
+                    .each(reduceOuterRadius)
+                    .classed('arc', true);
 
                 if (isAnimated) {
                     newSlices.merge(slices)
                       .append('path')
                         .attr('fill', getSliceFill)
-                        .on('mouseover', tweenGrowthFactory(externalRadius, 0))
-                        .on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration))
+                        .on('mouseover', handleMouseOver)
+                        .on('mouseout', handleMouseOut)
                         .transition()
                         .ease(ease)
                         .duration(pieDrawingTransitionDuration)
@@ -263,8 +278,8 @@ define(function(require){
                       .append('path')
                         .attr('fill', getSliceFill)
                         .attr('d', shape)
-                        .on('mouseover', tweenGrowthFactory(externalRadius, 0))
-                        .on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration));
+                        .on('mouseover', handleMouseOver)
+                        .on('mouseout', handleMouseOut)
                 }
             } else {
                 slices = svg.select('.chart-group')
@@ -283,23 +298,63 @@ define(function(require){
         }
 
         /**
-         * Cleans any value that could be on the legend text element
+         * Checks if the given element id is the same as the highlightedSliceId and returns the
+         * element if that's the case
+         * @param  {DOMElement} options.data Dom element to check
+         * @return {DOMElement}              Dom element if it has the same id
+         */
+        function filterHighlightedSlice({data}) {
+            if (data.id === highlightedSliceId) {
+                return this;
+            }
+        }
+
+        /**
+         * Handles a path mouse over
+         * @return {void}
          * @private
          */
-        function cleanLegend() {
-            svg.select('.donut-text').text('');
-        }
-
         function handleMouseOver(datum) {
             drawLegend(datum);
-
             dispatcher.call('customMouseOver', this, datum);
+
+            if (highlightedSlice && this !== highlightedSlice) {
+                tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
+            }
+            tweenGrowth(this, externalRadius);
         }
 
+        /**
+         * Handles a path mouse out
+         * @return {void}
+         * @private
+         */
         function handleMouseOut() {
-            cleanLegend();
-
+            if (highlightedSlice && hasFixedHighlightedSlice) {
+                drawLegend(highlightedSlice.__data__);
+            } else {
+                cleanLegend();
+            }
             dispatcher.call('customMouseOut', this);
+
+            if (highlightedSlice && hasFixedHighlightedSlice && this !== highlightedSlice) {
+                tweenGrowth(highlightedSlice, externalRadius);
+            }
+            tweenGrowth(this, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+        }
+
+        /**
+         * Find the slice by id and growth it if needed
+         * @private
+         */
+        function initHighlightSlice() {
+            highlightedSlice = svg.selectAll('.chart-group .arc path')
+                .select(filterHighlightedSlice).node();
+
+            if (highlightedSlice) {
+                drawLegend(highlightedSlice.__data__);
+                tweenGrowth(highlightedSlice, externalRadius, pieDrawingTransitionDuration);
+            }
         }
 
         /**
@@ -330,28 +385,26 @@ define(function(require){
         }
 
         /**
-         * Generates animations with tweens depending on the attributes given
+         * Animate slice with tweens depending on the attributes given
          *
+         * @param  {DOMElement} slice   Slice to growth
          * @param  {Number} outerRadius Final outer radius value
          * @param  {Number} delay       Delay of animation
-         * @return {Function}           Function that when called will tween the element
          * @private
          */
-        function tweenGrowthFactory(outerRadius, delay) {
-            return function() {
-                d3Selection.select(this)
-                    .transition()
-                    .delay(delay)
-                    .attrTween('d', function(d) {
-                        let i = d3Interpolate.interpolate(d.outerRadius, outerRadius);
+        function tweenGrowth(slice, outerRadius, delay = 0) {
+            d3Selection.select(slice)
+                .transition()
+                .delay(delay)
+                .attrTween('d', function(d) {
+                    let i = d3Interpolate.interpolate(d.outerRadius, outerRadius);
 
-                        return (t) => {
-                            d.outerRadius = i(t);
+                    return (t) => {
+                        d.outerRadius = i(t);
 
-                            return shape(d);
-                        };
-                    });
-            };
+                        return shape(d);
+                    };
+                });
         }
 
         /**
@@ -409,6 +462,23 @@ define(function(require){
                 return externalRadius;
             }
             externalRadius = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the hasFixedHighlightedSlice property of the chart, making it to
+         * highlight the selected slice id set with `highlightSliceById` all the time.
+         *
+         * @param  {Boolean} _x                         If we want to make the highlighted slice permanently highlighted
+         * @return { hasFixedHighlightedSlice | module} Current hasFixedHighlightedSlice flag or Chart module
+         * @public
+         */
+        exports.hasFixedHighlightedSlice = function(_x) {
+            if (!arguments.length) {
+                return hasFixedHighlightedSlice;
+            }
+            hasFixedHighlightedSlice = _x;
+
             return this;
         };
 
@@ -491,6 +561,21 @@ define(function(require){
          */
         exports.exportChart = function(filename, title) {
             exportChart.call(exports, svg, filename, title);
+        };
+
+
+        /**
+         * Gets or Sets the id of the slice to highlight
+         * @param  {Number} _x Slice id
+         * @return { (Number | Module) } Current highlighted slice id or Donut Chart module to chain calls
+         * @public
+         */
+        exports.highlightSliceById = function(_x) {
+            if (!arguments.length) {
+                return highlightedSliceId;
+            }
+            highlightedSliceId = _x;
+            return this;
         };
 
         /**

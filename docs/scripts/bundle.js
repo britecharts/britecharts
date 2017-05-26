@@ -17327,7 +17327,7 @@
 	    colors = __webpack_require__(7),
 	    dataBuilder = __webpack_require__(45);
 	
-	function createBarChart() {
+	function createSimpleBarChart() {
 	    var barChart = bar(),
 	        testDataSet = new dataBuilder.BarDataBuilder(),
 	        barContainer = d3Selection.select('.js-bar-chart-container'),
@@ -17355,12 +17355,12 @@
 	    if (containerWidth) {
 	        dataset = testDataSet.withColors().build();
 	
-	        barChart.margin({
+	        barChart.horizontal(true).isAnimated(true).margin({
 	            left: 120,
 	            right: 20,
 	            top: 20,
 	            bottom: 30
-	        }).horizontal(true).colorSchema(colors.colorSchemas.britechartsColorSchema).width(containerWidth).yAxisPaddingBetweenChart(30).height(300).percentageAxisToMaxRatio(1.3).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
+	        }).colorSchema(colors.colorSchemas.britechartsColorSchema).width(containerWidth).yAxisPaddingBetweenChart(30).height(300).percentageAxisToMaxRatio(1.3).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
 	
 	        barContainer.datum(dataset).call(barChart);
 	
@@ -17385,7 +17385,7 @@
 	
 	        dataset = testDataSet.withLettersFrequency().build();
 	
-	        barChart.width(containerWidth).height(300).usePercentage(true).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
+	        barChart.width(containerWidth).height(300).isAnimated(true).usePercentage(true).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
 	
 	        barContainer.datum(dataset).call(barChart);
 	
@@ -17396,16 +17396,16 @@
 	
 	// Show charts if container available
 	if (d3Selection.select('.js-bar-chart-tooltip-container').node()) {
-	    createBarChart();
-	    createHorizontalBarChart();
 	    createBarChartWithTooltip();
+	    createHorizontalBarChart();
+	    createSimpleBarChart();
 	
 	    var redrawCharts = function redrawCharts() {
 	        d3Selection.selectAll('.bar-chart').remove();
 	
-	        createBarChart();
-	        createHorizontalBarChart();
 	        createBarChartWithTooltip();
+	        createHorizontalBarChart();
+	        createSimpleBarChart();
 	    };
 	
 	    // Redraw charts on window resize
@@ -17422,6 +17422,7 @@
 	    'use strict';
 	
 	    var d3Array = __webpack_require__(9);
+	    var d3Ease = __webpack_require__(13);
 	    var d3Axis = __webpack_require__(10);
 	    var d3Color = __webpack_require__(16);
 	    var d3Dispatch = __webpack_require__(12);
@@ -17490,6 +17491,7 @@
 	            width = 960,
 	            height = 500,
 	            data = void 0,
+	            dataZeroed = void 0,
 	            chartWidth = void 0,
 	            chartHeight = void 0,
 	            xScale = void 0,
@@ -17518,6 +17520,12 @@
 	            yAxisLineWrapLimit = 1,
 	            horizontal = false,
 	            svg = void 0,
+	            isAnimated = false,
+	            ease = d3Ease.easeQuadInOut,
+	            animationDuration = 800,
+	            interBarDelay = function interBarDelay(d, i) {
+	            return 70 * i;
+	        },
 	            valueLabel = 'value',
 	            nameLabel = 'name',
 	            maskGridLines = void 0,
@@ -17573,7 +17581,12 @@
 	            _selection.each(function (_data) {
 	                chartWidth = width - margin.left - margin.right - yAxisPaddingBetweenChart * 1.2;
 	                chartHeight = height - margin.top - margin.bottom;
-	                data = cleanData(_data);
+	
+	                var _cleanData = cleanData(_data);
+	
+	                data = _cleanData.data;
+	                dataZeroed = _cleanData.dataZeroed;
+	
 	
 	                buildScales();
 	                buildAxis();
@@ -17669,16 +17682,24 @@
 	
 	        /**
 	         * Cleaning data adding the proper format
-	         * @param  {BarChartData} data Data
+	         * @param  {BarChartData} originalData Data
 	         * @private
 	         */
-	        function cleanData(data) {
-	            return data.map(function (d) {
-	                d.value = +d[valueLabel];
-	                d.name = String(d[nameLabel]);
-	
-	                return d;
+	        function cleanData(originalData) {
+	            var data = originalData.map(function (d) {
+	                return {
+	                    value: +d[valueLabel],
+	                    name: String(d[nameLabel])
+	                };
 	            });
+	            var dataZeroed = data.map(function (d) {
+	                return {
+	                    value: 0,
+	                    name: String(d[nameLabel])
+	                };
+	            });
+	
+	            return { data: data, dataZeroed: dataZeroed };
 	        }
 	
 	        /**
@@ -17741,43 +17762,123 @@
 	        }
 	
 	        /**
-	         * Draws the bars along the y axis
+	         * Draws and animates the bars along the x axis
 	         * @param  {D3Selection} bars Selection of bars
 	         * @return {void}
 	         */
-	        function drawVerticalBars(bars) {
+	        function drawAnimatedHorizontalBars(bars) {
 	            // Enter + Update
-	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref17) {
+	            bars.enter().append('rect').classed('bar', true).attr('x', 0).attr('y', chartHeight).attr('height', yScale.bandwidth()).attr('width', function (_ref17) {
 	                var value = _ref17.value;
-	                return yScale(value);
-	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref18) {
-	                var value = _ref18.value;
-	                return chartHeight - yScale(value);
-	            }).attr('fill', function (_ref19) {
-	                var name = _ref19.name;
+	                return xScale(value);
+	            }).attr('fill', function (_ref18) {
+	                var name = _ref18.name;
 	                return colorMap(name);
 	            }).on('mouseover', function () {
 	                dispatcher.call('customMouseOver', this);
-	                d3Selection.select(this).attr('fill', function (_ref20) {
-	                    var name = _ref20.name;
+	                d3Selection.select(this).attr('fill', function (_ref19) {
+	                    var name = _ref19.name;
 	                    return d3Color.color(colorMap(name)).darker();
 	                });
 	            }).on('mousemove', function (d) {
 	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
 	            }).on('mouseout', function () {
 	                dispatcher.call('customMouseOut', this);
-	                d3Selection.select(this).attr('fill', function (_ref21) {
-	                    var name = _ref21.name;
+	                d3Selection.select(this).attr('fill', function (_ref20) {
+	                    var name = _ref20.name;
 	                    return colorMap(name);
 	                });
-	            }).merge(bars).attr('x', function (_ref22) {
-	                var name = _ref22.name;
-	                return xScale(name);
-	            }).attr('y', function (_ref23) {
+	            });
+	
+	            bars.attr('x', 0).attr('y', function (_ref21) {
+	                var name = _ref21.name;
+	                return yScale(name);
+	            }).attr('height', yScale.bandwidth()).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('width', function (_ref22) {
+	                var value = _ref22.value;
+	                return xScale(value);
+	            });
+	        }
+	
+	        /**
+	         * Draws and animates the bars along the y axis
+	         * @param  {D3Selection} bars Selection of bars
+	         * @return {void}
+	         */
+	        function drawAnimatedVerticalBars(bars) {
+	            // Enter + Update
+	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref23) {
 	                var value = _ref23.value;
 	                return yScale(value);
 	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref24) {
 	                var value = _ref24.value;
+	                return chartHeight - yScale(value);
+	            }).attr('fill', function (_ref25) {
+	                var name = _ref25.name;
+	                return colorMap(name);
+	            }).on('mouseover', function () {
+	                dispatcher.call('customMouseOver', this);
+	                d3Selection.select(this).attr('fill', function (_ref26) {
+	                    var name = _ref26.name;
+	                    return d3Color.color(colorMap(name)).darker();
+	                });
+	            }).on('mousemove', function (d) {
+	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+	            }).on('mouseout', function () {
+	                dispatcher.call('customMouseOut', this);
+	                d3Selection.select(this).attr('fill', function (_ref27) {
+	                    var name = _ref27.name;
+	                    return colorMap(name);
+	                });
+	            }).merge(bars).attr('x', function (_ref28) {
+	                var name = _ref28.name;
+	                return xScale(name);
+	            }).attr('width', xScale.bandwidth()).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('y', function (_ref29) {
+	                var value = _ref29.value;
+	                return yScale(value);
+	            }).attr('height', function (_ref30) {
+	                var value = _ref30.value;
+	                return chartHeight - yScale(value);
+	            });
+	        }
+	
+	        /**
+	         * Draws the bars along the y axis
+	         * @param  {D3Selection} bars Selection of bars
+	         * @return {void}
+	         */
+	        function drawVerticalBars(bars) {
+	            // Enter + Update
+	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref31) {
+	                var value = _ref31.value;
+	                return yScale(value);
+	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref32) {
+	                var value = _ref32.value;
+	                return chartHeight - yScale(value);
+	            }).attr('fill', function (_ref33) {
+	                var name = _ref33.name;
+	                return colorMap(name);
+	            }).on('mouseover', function () {
+	                dispatcher.call('customMouseOver', this);
+	                d3Selection.select(this).attr('fill', function (_ref34) {
+	                    var name = _ref34.name;
+	                    return d3Color.color(colorMap(name)).darker();
+	                });
+	            }).on('mousemove', function (d) {
+	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+	            }).on('mouseout', function () {
+	                dispatcher.call('customMouseOut', this);
+	                d3Selection.select(this).attr('fill', function (_ref35) {
+	                    var name = _ref35.name;
+	                    return colorMap(name);
+	                });
+	            }).merge(bars).attr('x', function (_ref36) {
+	                var name = _ref36.name;
+	                return xScale(name);
+	            }).attr('y', function (_ref37) {
+	                var value = _ref37.value;
+	                return yScale(value);
+	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref38) {
+	                var value = _ref38.value;
 	                return chartHeight - yScale(value);
 	            });
 	        }
@@ -17802,12 +17903,32 @@
 	         * @private
 	         */
 	        function drawBars() {
-	            var bars = svg.select('.chart-group').selectAll('.bar').data(data);
+	            var bars = void 0;
 	
-	            if (!horizontal) {
-	                drawVerticalBars(bars);
+	            if (isAnimated) {
+	                bars = svg.select('.chart-group').selectAll('.bar').data(dataZeroed);
+	
+	                if (!horizontal) {
+	                    drawVerticalBars(bars);
+	                } else {
+	                    drawHorizontalBars(bars);
+	                }
+	
+	                bars = svg.select('.chart-group').selectAll('.bar').data(data);
+	
+	                if (!horizontal) {
+	                    drawAnimatedVerticalBars(bars);
+	                } else {
+	                    drawAnimatedHorizontalBars(bars);
+	                }
 	            } else {
-	                drawHorizontalBars(bars);
+	                bars = svg.select('.chart-group').selectAll('.bar').data(data);
+	
+	                if (!horizontal) {
+	                    drawVerticalBars(bars);
+	                } else {
+	                    drawHorizontalBars(bars);
+	                }
 	            }
 	
 	            // Exit
@@ -17917,6 +18038,23 @@
 	                return horizontal;
 	            }
 	            horizontal = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
+	         * @param  {Boolean} _x Desired animation flag
+	         * @return { isAnimated | module} Current isAnimated flag or Chart module
+	         * @public
+	         */
+	        exports.isAnimated = function (_x) {
+	            if (!arguments.length) {
+	                return isAnimated;
+	            }
+	            isAnimated = _x;
+	
 	            return this;
 	        };
 	
@@ -18811,7 +18949,7 @@
 	            donutChart.exportChart();
 	        });
 	
-	        donutChart.isAnimated(true).width(containerWidth).height(containerWidth).externalRadius(containerWidth / 2.5).internalRadius(containerWidth / 5).on('customMouseOver', function (data) {
+	        donutChart.isAnimated(true).highlightSliceById(2).width(containerWidth).height(containerWidth).externalRadius(containerWidth / 2.5).internalRadius(containerWidth / 5).on('customMouseOver', function (data) {
 	            legendChart.highlight(data.data.id);
 	        }).on('customMouseOut', function () {
 	            legendChart.clearHighlight();
@@ -18887,16 +19025,31 @@
 	    }
 	}
 	
+	function createDonutWithHighlightSliceChart() {
+	    var donutChart = donut(),
+	        donutContainer = d3Selection.select('.js-donut-highlight-slice-chart-container'),
+	        containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false,
+	        dataset = new dataBuilder.DonutDataBuilder().withThreeCategories().build();
+	
+	    if (containerWidth) {
+	        donutChart.highlightSliceById(1).hasFixedHighlightedSlice(true).width(containerWidth).height(containerWidth / 1.8).externalRadius(containerWidth / 5).internalRadius(containerWidth / 10);
+	
+	        donutContainer.datum(dataset).call(donutChart);
+	    }
+	}
+	
 	// Show charts if container available
 	if (d3Selection.select('.js-donut-chart-container').node()) {
 	    createDonutChart(dataset);
 	    createSmallDonutChart();
+	    createDonutWithHighlightSliceChart();
 	
 	    var redrawCharts = function redrawCharts() {
 	        d3Selection.selectAll('.donut-chart').remove();
 	
 	        createDonutChart(dataset);
 	        createSmallDonutChart();
+	        createDonutWithHighlightSliceChart();
 	    };
 	
 	    // Redraw charts on window resize
@@ -19001,6 +19154,9 @@
 	            slices = void 0,
 	            svg = void 0,
 	            isAnimated = false,
+	            highlightedSliceId = void 0,
+	            highlightedSlice = void 0,
+	            hasFixedHighlightedSlice = false,
 	            quantityLabel = 'quantity',
 	            nameLabel = 'name',
 	            percentageLabel = 'percentage',
@@ -19056,6 +19212,10 @@
 	                buildSVG(this);
 	                drawSlices();
 	                initTooltip();
+	
+	                if (highlightedSliceId) {
+	                    initHighlightSlice();
+	                }
 	            });
 	        }
 	
@@ -19128,6 +19288,14 @@
 	        }
 	
 	        /**
+	         * Cleans any value that could be on the legend text element
+	         * @private
+	         */
+	        function cleanLegend() {
+	            svg.select('.donut-text').text('');
+	        }
+	
+	        /**
 	         * Draws the values on the donut slice inside the text element
 	         *
 	         * @param  {Object} obj Data object
@@ -19151,12 +19319,12 @@
 	            if (!slices) {
 	                slices = svg.select('.chart-group').selectAll('g.arc').data(layout(data));
 	
-	                var newSlices = slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut);
+	                var newSlices = slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true);
 	
 	                if (isAnimated) {
-	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration)).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
+	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
 	                } else {
-	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', tweenGrowthFactory(externalRadius, 0)).on('mouseout', tweenGrowthFactory(externalRadius - radiusHoverOffset, pieHoverTransitionDuration));
+	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut);
 	                }
 	            } else {
 	                slices = svg.select('.chart-group').selectAll('path').data(layout(data));
@@ -19169,23 +19337,64 @@
 	        }
 	
 	        /**
-	         * Cleans any value that could be on the legend text element
+	         * Checks if the given element id is the same as the highlightedSliceId and returns the
+	         * element if that's the case
+	         * @param  {DOMElement} options.data Dom element to check
+	         * @return {DOMElement}              Dom element if it has the same id
+	         */
+	        function filterHighlightedSlice(_ref3) {
+	            var data = _ref3.data;
+	
+	            if (data.id === highlightedSliceId) {
+	                return this;
+	            }
+	        }
+	
+	        /**
+	         * Handles a path mouse over
+	         * @return {void}
 	         * @private
 	         */
-	        function cleanLegend() {
-	            svg.select('.donut-text').text('');
-	        }
-	
 	        function handleMouseOver(datum) {
 	            drawLegend(datum);
-	
 	            dispatcher.call('customMouseOver', this, datum);
+	
+	            if (highlightedSlice && this !== highlightedSlice) {
+	                tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
+	            }
+	            tweenGrowth(this, externalRadius);
 	        }
 	
+	        /**
+	         * Handles a path mouse out
+	         * @return {void}
+	         * @private
+	         */
 	        function handleMouseOut() {
-	            cleanLegend();
-	
+	            if (highlightedSlice && hasFixedHighlightedSlice) {
+	                drawLegend(highlightedSlice.__data__);
+	            } else {
+	                cleanLegend();
+	            }
 	            dispatcher.call('customMouseOut', this);
+	
+	            if (highlightedSlice && hasFixedHighlightedSlice && this !== highlightedSlice) {
+	                tweenGrowth(highlightedSlice, externalRadius);
+	            }
+	            tweenGrowth(this, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+	        }
+	
+	        /**
+	         * Find the slice by id and growth it if needed
+	         * @private
+	         */
+	        function initHighlightSlice() {
+	            highlightedSlice = svg.selectAll('.chart-group .arc path').select(filterHighlightedSlice).node();
+	
+	            if (highlightedSlice) {
+	                drawLegend(highlightedSlice.__data__);
+	                tweenGrowth(highlightedSlice, externalRadius, pieDrawingTransitionDuration);
+	            }
 	        }
 	
 	        /**
@@ -19214,25 +19423,25 @@
 	        }
 	
 	        /**
-	         * Generates animations with tweens depending on the attributes given
+	         * Animate slice with tweens depending on the attributes given
 	         *
+	         * @param  {DOMElement} slice   Slice to growth
 	         * @param  {Number} outerRadius Final outer radius value
 	         * @param  {Number} delay       Delay of animation
-	         * @return {Function}           Function that when called will tween the element
 	         * @private
 	         */
-	        function tweenGrowthFactory(outerRadius, delay) {
-	            return function () {
-	                d3Selection.select(this).transition().delay(delay).attrTween('d', function (d) {
-	                    var i = d3Interpolate.interpolate(d.outerRadius, outerRadius);
+	        function tweenGrowth(slice, outerRadius) {
+	            var delay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
 	
-	                    return function (t) {
-	                        d.outerRadius = i(t);
+	            d3Selection.select(slice).transition().delay(delay).attrTween('d', function (d) {
+	                var i = d3Interpolate.interpolate(d.outerRadius, outerRadius);
 	
-	                        return shape(d);
-	                    };
-	                });
-	            };
+	                return function (t) {
+	                    d.outerRadius = i(t);
+	
+	                    return shape(d);
+	                };
+	            });
 	        }
 	
 	        /**
@@ -19292,6 +19501,23 @@
 	                return externalRadius;
 	            }
 	            externalRadius = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the hasFixedHighlightedSlice property of the chart, making it to
+	         * highlight the selected slice id set with `highlightSliceById` all the time.
+	         *
+	         * @param  {Boolean} _x                         If we want to make the highlighted slice permanently highlighted
+	         * @return { hasFixedHighlightedSlice | module} Current hasFixedHighlightedSlice flag or Chart module
+	         * @public
+	         */
+	        exports.hasFixedHighlightedSlice = function (_x) {
+	            if (!arguments.length) {
+	                return hasFixedHighlightedSlice;
+	            }
+	            hasFixedHighlightedSlice = _x;
+	
 	            return this;
 	        };
 	
@@ -19374,6 +19600,20 @@
 	         */
 	        exports.exportChart = function (filename, title) {
 	            exportChart.call(exports, svg, filename, title);
+	        };
+	
+	        /**
+	         * Gets or Sets the id of the slice to highlight
+	         * @param  {Number} _x Slice id
+	         * @return { (Number | Module) } Current highlighted slice id or Donut Chart module to chain calls
+	         * @public
+	         */
+	        exports.highlightSliceById = function (_x) {
+	            if (!arguments.length) {
+	                return highlightedSliceId;
+	            }
+	            highlightedSliceId = _x;
+	            return this;
 	        };
 	
 	        /**
@@ -19952,11 +20192,12 @@
 	    line = __webpack_require__(58),
 	    tooltip = __webpack_require__(33),
 	    dataBuilder = __webpack_require__(59),
-	    colorSelectorHelper = __webpack_require__(40);
+	    colorSelectorHelper = __webpack_require__(40),
+	    lineMargin = { top: 60, bottom: 50, left: 50, right: 30 };
 	
 	function createBrushChart(optionalColorSchema) {
 	    var brushChart = brush(),
-	        brushMargin = { top: 0, bottom: 40, left: 70, right: 30 },
+	        brushMargin = { top: 0, bottom: 40, left: 50, right: 30 },
 	        testDataSet = new dataBuilder.LineDataBuilder(),
 	        brushContainer = d3Selection.select('.js-line-brush-chart-container'),
 	        containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
@@ -19999,7 +20240,7 @@
 	        dataset = testDataSet.with5Topics().build();
 	
 	        // LineChart Setup and start
-	        lineChart1.isAnimated(true).aspectRatio(0.5).grid('horizontal').tooltipThreshold(600).width(containerWidth).dateLabel('fullDate').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
+	        lineChart1.isAnimated(true).aspectRatio(0.7).grid('horizontal').tooltipThreshold(600).width(containerWidth).margin(lineMargin).dateLabel('fullDate').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 	
 	        if (optionalColorSchema) {
 	            lineChart1.colorSchema(optionalColorSchema);
@@ -20042,7 +20283,7 @@
 	            lineChart2.exportChart('linechart.png', 'Britecharts LÍne Chart');
 	        });
 	
-	        lineChart2.tooltipThreshold(600).height(500).grid('horizontal').width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
+	        lineChart2.tooltipThreshold(600).height(300).margin(lineMargin).grid('vertical').width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -20074,7 +20315,7 @@
 	    if (containerWidth) {
 	        dataset = testDataSet.with5Topics().build();
 	
-	        lineChart3.height(300).width(containerWidth).grid('full').dateLabel('fullDate').on('customMouseOver', function () {
+	        lineChart3.height(300).width(containerWidth).margin(lineMargin).grid('full').dateLabel('fullDate').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);

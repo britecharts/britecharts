@@ -52,7 +52,7 @@ Britecharts components are distributed in **UMD modules**, each one exposing a D
    npm install britecharts d3-selection
 ```
 
-They also provide some minimal CSS styling, that can be loaded independently or as a bundle.
+They also provide some minimal CSS styling, that can be loaded independently or as a bundle. Check out our [CDN demo][cdnDemo] page.
 
 ## Roadmap
 This project is in active development, if you are interested on helping you can check the [contributing][35] document. Review the [issues page][16] for more info on what's coming, to give your feedback, and to vote for your favorite proposals.
@@ -120,7 +120,9 @@ Read more in the [license document][15]
 [31]: https://eventbrite.github.io/britecharts/
 [32]: https://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
 [33]: https://github.com/eventbrite/britecharts
-[34]: https://eventbrite.github.io/britecharts/tutorial--_GETTINGSTARTED.html
+[34]: https://eventbrite.github.io/britecharts/getting-started.html
 [35]: https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md
 [36]: https://eventbrite.github.io/britecharts/img/logo-stripes-small.png
 [37]: https://github.com/d3/d3-selection
+
+[cdnDemo]: https://eventbrite.github.io/britecharts/cdn.html

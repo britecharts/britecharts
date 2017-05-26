@@ -52,20 +52,31 @@ if (isProduction) {
     // outputFile = projectName + '.min.js';
 }
 
+let commonsPlugin = new webpack.optimize.CommonsChunkPlugin('common.js');
+
 config = {
 
     // Add here listener to sccs files?
     demos : {
         devtool: 'source-map',
-        entry: [
-            './demos/index.js'
-        ],
+        entry: {
+            'demo-line': './demos/demo-line.js',
+            'demo-stacked-area': './demos/demo-stacked-area.js',
+            'demo-bar': './demos/demo-bar.js',
+            'demo-donut': './demos/demo-donut.js',
+            'demo-sparkline': './demos/demo-sparkline.js',
+            'demo-step': './demos/demo-step.js',
+            'demo-brush': './demos/demo-brush.js',
+            'demo-kitchen-sink': './demos/demo-kitchen-sink.js'
+        },
         output: {
             path: './demos/build/',
             publicPath: '/assets/',
-            filename: 'bundle.js'
+            filename: '[name].js'
         },
-        
+        externals: {
+            britecharts: 'britecharts'
+        },
         resolve:{
             root: [
                 __dirname
@@ -75,11 +86,16 @@ config = {
             loaders: [ defaultJSLoader ]
         },
         plugins : [
+            commonsPlugin
             // new LiveReloadPlugin({appendScriptTag:true})
         ] ,
         devServer:{
             proxy: {
-            '/britecharts/scripts/bundle.js': {
+            '/britecharts/scripts/common.js': {
+                target: 'http://localhost:8001/',
+                pathRewrite: {'^/britecharts/scripts/' : '/assets/'}
+            },
+             '/britecharts/scripts/demo-*.js': {
                 target: 'http://localhost:8001/',
                 pathRewrite: {'^/britecharts/scripts/' : '/assets/'}
             },
@@ -91,9 +107,9 @@ config = {
                 target: 'http://localhost:8001/',
                 pathRewrite: {'^/britecharts/' : ''}
                 }
-            
+
             },
-            
+
         }
     },
 

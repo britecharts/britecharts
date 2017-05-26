@@ -28,6 +28,7 @@ function createDonutChart(dataset, optionalColorSchema) {
 
         donutChart
             .isAnimated(true)
+            .highlightSliceById(2)
             .width(containerWidth)
             .height(containerWidth)
             .externalRadius(containerWidth/2.5)
@@ -123,16 +124,39 @@ function createSmallDonutChart() {
     }
 }
 
+function createDonutWithHighlightSliceChart() {
+    var donutChart = donut(),
+        donutContainer = d3Selection.select('.js-donut-highlight-slice-chart-container'),
+        containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false,
+        dataset = new dataBuilder.DonutDataBuilder()
+            .withThreeCategories()
+            .build();
+
+    if (containerWidth) {
+        donutChart
+            .highlightSliceById(1)
+            .hasFixedHighlightedSlice(true)
+            .width(containerWidth)
+            .height(containerWidth/1.8)
+            .externalRadius(containerWidth/5)
+            .internalRadius(containerWidth/10);
+
+        donutContainer.datum(dataset).call(donutChart);
+    }
+}
+
 // Show charts if container available
 if (d3Selection.select('.js-donut-chart-container').node()) {
     createDonutChart(dataset);
     createSmallDonutChart();
+    createDonutWithHighlightSliceChart();
 
     var redrawCharts = function(){
         d3Selection.selectAll('.donut-chart').remove();
 
         createDonutChart(dataset);
         createSmallDonutChart();
+        createDonutWithHighlightSliceChart();
     };
 
     // Redraw charts on window resize
