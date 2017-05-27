@@ -108,6 +108,8 @@
                                 
                                 <li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li>
                                 
+                                <li><a href="tutorial-stacked-bar.html">Stacked Bar Chart</a></li>
+                                
                                 <li><a href="tutorial-step.html">Step Chart</a></li>
                                 
             				</ul>
@@ -133,6 +135,8 @@
                                 <li><a href="module-Sparkline.html">Sparkline</a></li>
                                 
                                 <li><a href="module-Stacked-area.html">Stacked-area</a></li>
+                                
+                                <li><a href="module-Stacked-bar.html">Stacked-bar</a></li>
                                 
                                 <li><a href="module-Step.html">Step</a></li>
                                 
@@ -492,7 +496,7 @@
                 .attr('cx', 23 - tooltipWidth / 4)
                 .attr('cy', (ttTextY + circleYOffset))
                 .attr('r', 5)
-                .style('fill', colorMap[name])
+                .style('fill', colorMap[tooltipLeftText])
                 .style('stroke-width', 1);
 
             ttTextY += textSize.height + 7;
