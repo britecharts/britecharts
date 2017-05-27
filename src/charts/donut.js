@@ -75,7 +75,7 @@ define(function(require) {
             pieDrawingTransitionDuration = 1200,
             pieHoverTransitionDuration = 150,
             radiusHoverOffset = 12,
-            paddingAngle = 0.016,
+            paddingAngle = 0,
             data,
             chartWidth, chartHeight,
             externalRadius = 140,
@@ -95,6 +95,8 @@ define(function(require) {
             quantityLabel = 'quantity',
             nameLabel = 'name',
             percentageLabel = 'percentage',
+
+            percentageFormat = '.1f',
 
             // colors
             colorScale,
@@ -215,15 +217,27 @@ define(function(require) {
          * @private
          */
         function cleanData(data) {
-            let totalQuantity = sumValues(data);
+            let cleanData = data.reduce((acc, d) => {
+                // Skip data without quantity
+                if (!d[quantityLabel]) {
+                    return acc;
+                }
 
-            return data.map((d) => {
                 d.quantity = +d[quantityLabel];
                 d.name = String(d[nameLabel]);
-                d.percentage = String(d.percentage || calculatePercent(d[quantityLabel], totalQuantity, '.1f'));
+                d.percentage = d[percentageLabel] || null;
+                acc.push(d);
+
+                return acc;
+            }, []);
+            let totalQuantity = sumValues(cleanData);
+            let dataWithPercentages = cleanData.map((d) => {
+                d.percentage = String(d.percentage || calculatePercent(d[quantityLabel], totalQuantity, percentageFormat));
 
                 return d;
             });
+
+            return dataWithPercentages;
         }
 
         /**
