@@ -12,6 +12,9 @@ var d3Selection = require('d3-selection'),
     dataset = new dataBuilder.DonutDataBuilder()
         .withFivePlusOther()
         .build(),
+    datasetNoPercentages = new dataBuilder.DonutDataBuilder()
+        .withFivePlusOtherNoPercent()
+        .build(),
     legendChart;
 
 
@@ -44,7 +47,7 @@ function createDonutChart(dataset, optionalColorSchema) {
             donutChart.colorSchema(optionalColorSchema);
         }
 
-        donutContainer.datum(dataset).call(donutChart);
+        donutContainer.datum(datasetNoPercentages).call(donutChart);
 
         d3Selection.select('#button').on('click', function() {
             donutChart.exportChart('donut.png', 'Britecharts Donut Chart');
