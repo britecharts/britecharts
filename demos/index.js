@@ -6,3 +6,4 @@ require('./demo-line');
 require('./demo-sparkline');
 require('./demo-step');
 require('./demo-brush');
+require('./demo-stacked-bar');

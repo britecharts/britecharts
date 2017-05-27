@@ -118,7 +118,7 @@ if (d3Selection.select('.js-stacked-area-chart-tooltip-container').node()){
     // we'll need to listen to the window resize event
     var redrawCharts = function(){
         d3Selection.selectAll('.stacked-area').remove();
-
+console.log('redraw')
         createStackedAreaChartWithTooltip();
         createStackedAreaChartWithFixedAspectRatio();
     };

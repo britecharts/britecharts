@@ -1,4 +1,4 @@
-webpackJsonp([6,10],[
+webpackJsonp([7,10],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7,104 +7,113 @@ webpackJsonp([6,10],[
 	var d3Selection = __webpack_require__(1),
 	    PubSub = __webpack_require__(2),
 	    colors = __webpack_require__(19),
-	    stackedAreaChart = __webpack_require__(58),
+	    stackedBarChart = __webpack_require__(66),
 	    tooltip = __webpack_require__(47),
-	    stackedDataBuilder = __webpack_require__(60),
+	    stackedDataBuilder = __webpack_require__(67),
 	    colorSelectorHelper = __webpack_require__(44);
 	
-	function createStackedAreaChartWithTooltip(optionalColorSchema) {
-	    var stackedArea = stackedAreaChart(),
+	function createStackedBarChartWithTooltip(optionalColorSchema) {
+	    var stackedBar = stackedBarChart(),
 	        chartTooltip = tooltip(),
-	        testDataSet = new stackedDataBuilder.StackedAreaDataBuilder(),
-	        container = d3Selection.select('.js-stacked-area-chart-tooltip-container'),
+	        testDataSet = new stackedDataBuilder.StackedBarDataBuilder(),
+	        container = d3Selection.select('.js-stacked-bar-chart-tooltip-container'),
 	        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
 	        tooltipContainer,
 	        dataset;
 	
 	    if (containerWidth) {
-	        // dataset = testDataSet.withReportData().build();
-	        // dataset = testDataSet.with3Sources().build();
-	        // dataset = testDataSet.with6Sources().build();
-	        dataset = testDataSet.withSalesChannelData().build();
-	        // dataset = testDataSet.withLargeData().build();
-	        // dataset = testDataSet.withGeneratedData().build();
+	        dataset = testDataSet.with3Sources().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
+	        stackedBar.tooltipThreshold(600).width(containerWidth).grid('horizontal').isAnimated(true).stackLabel('stack').nameLabel('date').valueLabel('views').on('customMouseOver', function () {
+	            chartTooltip.show();
+	        }).on('customMouseMove', function (dataPoint, topicColorMap, x, y) {
+	            chartTooltip.update(dataPoint, topicColorMap, x, y);
+	        }).on('customMouseOut', function () {
+	            chartTooltip.hide();
+	        });
 	
 	        if (optionalColorSchema) {
-	            stackedArea.colorSchema(optionalColorSchema);
+	            stackedBar.colorSchema(optionalColorSchema);
 	        }
 	
-	        container.datum(dataset.data).call(stackedArea);
+	        container.datum(dataset.data).call(stackedBar);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.topicLabel('values').title('Testing tooltip');
+	        chartTooltip.topicLabel('values').dateLabel('key').title('Testing tooltip');
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
-	        tooltipContainer = d3Selection.select('.js-stacked-area-chart-tooltip-container .metadata-group .vertical-marker-container');
+	        tooltipContainer = d3Selection.select('.js-stacked-bar-chart-tooltip-container .metadata-group');
 	        tooltipContainer.datum([]).call(chartTooltip);
 	
 	        d3Selection.select('#button').on('click', function () {
-	            stackedArea.exportChart('stacked-area.png', 'Britecharts Stacked Area');
+	            stackedBar.exportChart('stacked-bar.png', 'Britecharts Stacked Bar');
 	        });
 	    }
 	}
 	
-	function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
-	    var stackedArea = stackedAreaChart(),
+	function createHorizontalStackedBarChart(optionalColorSchema) {
+	    var stackedBar = stackedBarChart(),
 	        chartTooltip = tooltip(),
-	        testDataSet = new stackedDataBuilder.StackedAreaDataBuilder(),
-	        container = d3Selection.select('.js-stacked-area-chart-fixed-container'),
+	        testDataSet = new stackedDataBuilder.StackedBarDataBuilder(),
+	        container = d3Selection.select('.js-stacked-bar-chart-fixed-container'),
 	        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
 	        tooltipContainer,
 	        dataset;
 	
 	    if (containerWidth) {
-	        // dataset = testDataSet.withReportData().build();
 	        dataset = testDataSet.with3Sources().build();
-	        // dataset = testDataSet.with6Sources().build();
-	        // dataset = testDataSet.withLargeData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').forceAxisFormat('custom').forcedXFormat('%Y/%m/%d').forcedXTicks(2).width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
+	        stackedBar.tooltipThreshold(600).grid('vertical').width(containerWidth).horizontal(true).isAnimated(true).margin({
+	            left: 80,
+	            top: 40,
+	            right: 30,
+	            bottom: 20
+	        }).nameLabel('date').valueLabel('views').stackLabel('stack').on('customMouseOver', function () {
+	            chartTooltip.show();
+	        }).on('customMouseMove', function (dataPoint, topicColorMap, x, y) {
+	            chartTooltip.update(dataPoint, topicColorMap, x, y);
+	        }).on('customMouseOut', function () {
+	            chartTooltip.hide();
+	        });
 	
 	        if (optionalColorSchema) {
-	            stackedArea.colorSchema(optionalColorSchema);
+	            stackedBar.colorSchema(optionalColorSchema);
 	        }
 	
-	        container.datum(dataset.data).call(stackedArea);
+	        container.datum(dataset.data).call(stackedBar);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.topicLabel('values').title('Tooltip Title');
+	        chartTooltip.topicLabel('values').dateLabel('key').title('Dummy Tooltip Title');
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
-	        tooltipContainer = d3Selection.select('.js-stacked-area-chart-fixed-container .metadata-group .vertical-marker-container');
+	        tooltipContainer = d3Selection.select('.js-stacked-bar-chart-fixed-container .metadata-group');
 	        tooltipContainer.datum([]).call(chartTooltip);
 	    }
 	}
 	
-	if (d3Selection.select('.js-stacked-area-chart-tooltip-container').node()) {
+	if (d3Selection.select('.js-stacked-bar-chart-tooltip-container').node()) {
 	    // Chart creation
-	    createStackedAreaChartWithTooltip();
-	    createStackedAreaChartWithFixedAspectRatio();
+	    createStackedBarChartWithTooltip();
+	    createHorizontalStackedBarChart();
 	
 	    // For getting a responsive behavior on our chart,
 	    // we'll need to listen to the window resize event
 	    var redrawCharts = function redrawCharts() {
-	        d3Selection.selectAll('.stacked-area').remove();
-	        console.log('redraw');
-	        createStackedAreaChartWithTooltip();
-	        createStackedAreaChartWithFixedAspectRatio();
+	        d3Selection.selectAll('.stacked-bar').remove();
+	
+	        createStackedBarChartWithTooltip();
+	        createHorizontalStackedBarChart();
 	    };
 	
 	    // Redraw charts on window resize
 	    PubSub.subscribe('resize', redrawCharts);
 	
 	    // Color schema selector
-	    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.stacked-area', createStackedAreaChartWithTooltip);
+	    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.stacked-bar', createStackedBarChartWithTooltip);
 	}
 
 /***/ }),
@@ -11119,125 +11128,7 @@ webpackJsonp([6,10],[
 
 
 /***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-	
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-	    'use strict';
-	
-	    var _settingsToMajorTickM;
-	
-	    var d3Time = __webpack_require__(13);
-	    var d3TimeFormat = __webpack_require__(14);
-	
-	    var _require = __webpack_require__(20),
-	        axisTimeCombinations = _require.axisTimeCombinations,
-	        timeBenchmarks = _require.timeBenchmarks;
-	
-	    var singleTickWidth = 20;
-	    var horizontalTickSpacing = 50;
-	    var minEntryNumForDayFormat = 5;
-	    var xTickMinuteFormat = d3TimeFormat.timeFormat('%M m');
-	    var xTickHourFormat = d3TimeFormat.timeFormat('%H %p');
-	    var xTickSimpleDayFormat = d3TimeFormat.timeFormat('%e');
-	    var xTickDayMonthFormat = d3TimeFormat.timeFormat('%d %b');
-	    var xTickMonthFormat = d3TimeFormat.timeFormat('%b');
-	    var xTickYearFormat = d3TimeFormat.timeFormat('%Y');
-	
-	    var formatMap = {
-	        minute: xTickMinuteFormat,
-	        hour: xTickHourFormat,
-	        day: xTickSimpleDayFormat,
-	        daymonth: xTickDayMonthFormat,
-	        month: xTickMonthFormat,
-	        year: xTickYearFormat
-	    };
-	    var settingsToMajorTickMap = (_settingsToMajorTickM = {}, _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MINUTE_HOUR, d3Time.timeHour.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.HOUR_DAY, d3Time.timeDay.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.DAY_MONTH, d3Time.timeMonth.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MONTH_YEAR, d3Time.timeYear.every(1)), _settingsToMajorTickM);
-	
-	    /**
-	     * Figures out the proper settings from the current time span
-	     * @param  {Number} timeSpan    Span of time charted by the graph in milliseconds
-	     * @return {String}             Type of settings for the given timeSpan
-	     */
-	    var getAxisSettingsFromTimeSpan = function getAxisSettingsFromTimeSpan(timeSpan) {
-	        var ONE_YEAR = timeBenchmarks.ONE_YEAR,
-	            ONE_DAY = timeBenchmarks.ONE_DAY;
-	
-	        var settings = void 0;
-	
-	        if (timeSpan < ONE_DAY) {
-	            settings = axisTimeCombinations.HOUR_DAY;
-	        } else if (timeSpan < ONE_YEAR) {
-	            settings = axisTimeCombinations.DAY_MONTH;
-	        } else {
-	            settings = axisTimeCombinations.MONTH_YEAR;
-	        }
-	
-	        return settings;
-	    };
-	
-	    /**
-	     * Calculates the maximum number of ticks for the x axis
-	     * @param  {Number} width Chart width
-	     * @param  {Number} dataPointNumber  Number of entries on the data
-	     * @return {Number}       Number of ticks to render
-	     */
-	    var getMaxNumOfHorizontalTicks = function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
-	        var ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
-	
-	        return dataPointNumber < minEntryNumForDayFormat ? d3Time.timeDay : Math.min(dataPointNumber, ticksForWidth);
-	    };
-	
-	    /**
-	     * Returns tick object to be used when building the x axis
-	     * @param {dataByDate} dataByDate       Chart data ordered by Date
-	     * @param {Number} width                Chart width
-	     * @param {String} settings             Optional forced settings for axis
-	     * @return {object} tick settings for major and minr axis
-	     */
-	    var getXAxisSettings = function getXAxisSettings(dataByDate, width) {
-	        var settings = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	
-	        var firstDate = new Date(dataByDate[0].date);
-	        var lastDate = new Date(dataByDate[dataByDate.length - 1].date);
-	        var dateTimeSpan = lastDate - firstDate;
-	
-	        if (!settings) {
-	            settings = getAxisSettingsFromTimeSpan(dateTimeSpan);
-	        }
-	
-	        var _settings$split = settings.split('-'),
-	            _settings$split2 = _slicedToArray(_settings$split, 2),
-	            minor = _settings$split2[0],
-	            major = _settings$split2[1];
-	
-	        var majorTickValue = settingsToMajorTickMap[settings];
-	        var minorTickValue = getMaxNumOfHorizontalTicks(width, dataByDate.length);
-	
-	        return {
-	            minor: {
-	                format: formatMap[minor],
-	                tick: minorTickValue
-	            },
-	            major: {
-	                format: formatMap[major],
-	                tick: majorTickValue
-	            }
-	        };
-	    };
-	
-	    return {
-	        getXAxisSettings: getXAxisSettings
-	    };
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ }),
+/* 34 */,
 /* 35 */,
 /* 36 */,
 /* 37 */,
@@ -11951,1021 +11842,7 @@ webpackJsonp([6,10],[
 /* 55 */,
 /* 56 */,
 /* 57 */,
-/* 58 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-	    'use strict';
-	
-	    var d3Array = __webpack_require__(4);
-	    var d3Axis = __webpack_require__(6);
-	    var d3Collection = __webpack_require__(11);
-	    var d3Dispatch = __webpack_require__(8);
-	    var d3Ease = __webpack_require__(5);
-	    var d3Scale = __webpack_require__(10);
-	    var d3Shape = __webpack_require__(32);
-	    var d3Selection = __webpack_require__(1);
-	    var d3Transition = __webpack_require__(15);
-	    var d3TimeFormat = __webpack_require__(14);
-	
-	    var assign = __webpack_require__(59);
-	
-	    var _require = __webpack_require__(18),
-	        exportChart = _require.exportChart;
-	
-	    var colorHelper = __webpack_require__(19);
-	    var timeAxisHelper = __webpack_require__(34);
-	
-	    var _require2 = __webpack_require__(38),
-	        isInteger = _require2.isInteger;
-	
-	    var _require3 = __webpack_require__(20),
-	        axisTimeCombinations = _require3.axisTimeCombinations;
-	
-	    var _require4 = __webpack_require__(46),
-	        formatIntegerValue = _require4.formatIntegerValue,
-	        formatDecimalValue = _require4.formatDecimalValue;
-	
-	    var uniq = function uniq(arrArg) {
-	        return arrArg.filter(function (elem, pos, arr) {
-	            return arr.indexOf(elem) == pos;
-	        });
-	    };
-	
-	    /**
-	     * @typdef D3Layout
-	     * @type function
-	     */
-	
-	    /**
-	     * @typedef areaChartData
-	     * @type {Object}
-	     * @property {Object[]} data       All data entries
-	     * @property {String} date         Date of the entry
-	     * @property {String} name         Name of the entry
-	     * @property {Number} value        Value of the entry
-	     *
-	     * @example
-	     * {
-	     *     'data': [
-	     *         {
-	     *             "date": "2011-01-05T00:00:00Z",
-	     *             "name": "Direct",
-	     *             "value": 0
-	     *         }
-	     *     ]
-	     * }
-	     */
-	
-	    /**
-	     * Stacked Area Chart reusable API module that allows us
-	     * rendering a multi area and configurable chart.
-	     *
-	     * @module Stacked-area
-	     * @tutorial stacked-area
-	     * @requires d3-array, d3-axis, d3-collection, d3-ease, d3-scale, d3-shape, d3-selection, d3-time, d3-time-format
-	     *
-	     * @example
-	     * let stackedArea = stackedArea();
-	     *
-	     * stackedArea
-	     *     .width(containerWidth);
-	     *
-	     * d3Selection.select('.css-selector')
-	     *     .datum(dataset.data)
-	     *     .call(stackedArea);
-	     *
-	     */
-	
-	    return function module() {
-	
-	        var margin = {
-	            top: 70,
-	            right: 30,
-	            bottom: 60,
-	            left: 70
-	        },
-	            width = 960,
-	            height = 500,
-	            xScale = void 0,
-	            xAxis = void 0,
-	            xMonthAxis = void 0,
-	            yScale = void 0,
-	            yAxis = void 0,
-	            aspectRatio = null,
-	            monthAxisPadding = 30,
-	            verticalTicks = 5,
-	            yTickTextYOffset = -8,
-	            yTickTextXOffset = -20,
-	            tickPadding = 5,
-	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
-	            colorOrder = colorSchema.reduce(function (acc, color, index) {
-	            acc[color] = index;
-	
-	            return acc;
-	        }, {}),
-	            areaOpacity = 0.64,
-	            colorScale = void 0,
-	            categoryColorMap = void 0,
-	            order = void 0,
-	            forceAxisSettings = null,
-	            forcedXTicks = null,
-	            forcedXFormat = null,
-	            baseLine = void 0,
-	            layers = void 0,
-	            layersInitial = void 0,
-	            area = void 0,
-	
-	
-	        // Area Animation
-	        maxAreaNumber = 8,
-	            areaAnimationDelayStep = 20,
-	            areaAnimationDelays = d3Array.range(areaAnimationDelayStep, maxAreaNumber * areaAnimationDelayStep, areaAnimationDelayStep),
-	            overlay = void 0,
-	            verticalMarkerContainer = void 0,
-	            verticalMarker = void 0,
-	            epsilon = void 0,
-	            dataPoints = {},
-	            pointsSize = 1.5,
-	            pointsColor = '#c0c6cc',
-	            pointsBorderColor = '#ffffff',
-	            isAnimated = false,
-	            ease = d3Ease.easeQuadInOut,
-	            areaAnimationDuration = 1000,
-	            svg = void 0,
-	            chartWidth = void 0,
-	            chartHeight = void 0,
-	            data = void 0,
-	            dataByDate = void 0,
-	            dataByDateFormatted = void 0,
-	            dataByDateZeroed = void 0,
-	            verticalGridLines = void 0,
-	            horizontalGridLines = void 0,
-	            grid = null,
-	            tooltipThreshold = 480,
-	            xAxisPadding = {
-	            top: 0,
-	            left: 15,
-	            bottom: 0,
-	            right: 0
-	        },
-	            dateLabel = 'date',
-	            valueLabel = 'value',
-	            keyLabel = 'name',
-	
-	
-	        // getters
-	        getName = function getName(_ref) {
-	            var name = _ref.name;
-	            return name;
-	        },
-	            getDate = function getDate(_ref2) {
-	            var date = _ref2.date;
-	            return date;
-	        },
-	
-	
-	        // events
-	        dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
-	
-	        /**
-	          * This function creates the graph using the selection and data provided
-	          * @param {D3Selection} _selection A d3 selection that represents
-	          * the container(s) where the chart(s) will be rendered
-	          * @param {areaChartData} _data The data to attach and generate the chart
-	          */
-	        function exports(_selection) {
-	            _selection.each(function (_data) {
-	                chartWidth = width - margin.left - margin.right;
-	                chartHeight = height - margin.top - margin.bottom;
-	                data = cleanData(_data);
-	                dataByDate = getDataByDate(data);
-	
-	                buildLayers();
-	                buildScales();
-	                buildSVG(this);
-	                buildAxis();
-	                drawAxis();
-	                drawStackedAreas();
-	
-	                if (shouldShowTooltip()) {
-	                    drawHoverOverlay();
-	                    drawVerticalMarker();
-	                    addMouseEvents();
-	                }
-	            });
-	        }
-	
-	        /**
-	         * Adds events to the container group if the environment is not mobile
-	         * Adding: mouseover, mouseout and mousemove
-	         */
-	        function addMouseEvents() {
-	            svg.on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).on('mousemove', handleMouseMove);
-	        }
-	
-	        /**
-	         * Formats the value depending on its characteristics
-	         * @param  {Number} value Value to format
-	         * @return {Number}       Formatted value
-	         */
-	        function getFormattedValue(value) {
-	            var format = void 0;
-	
-	            if (isInteger(value)) {
-	                format = formatIntegerValue;
-	            } else {
-	                format = formatDecimalValue;
-	            }
-	
-	            return format(value);
-	        }
-	
-	        /**
-	         * Creates the d3 x and y axis, setting orientations
-	         * @private
-	         */
-	        function buildAxis() {
-	            var dataSpan = yScale.domain()[1] - yScale.domain()[0];
-	            var yTickNumber = dataSpan < verticalTicks - 1 ? dataSpan : verticalTicks;
-	            var minor = void 0,
-	                major = void 0;
-	
-	            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
-	                minor = {
-	                    tick: forcedXTicks,
-	                    format: d3TimeFormat.timeFormat(forcedXFormat)
-	                };
-	                major = null;
-	            } else {
-	                var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(dataByDate, width, forceAxisSettings);
-	
-	                minor = _timeAxisHelper$getXA.minor;
-	                major = _timeAxisHelper$getXA.major;
-	
-	
-	                xMonthAxis = d3Axis.axisBottom(xScale).ticks(major.tick).tickSize(0, 0).tickFormat(major.format);
-	            }
-	
-	            xAxis = d3Axis.axisBottom(xScale).ticks(minor.tick).tickSize(10, 0).tickPadding(tickPadding).tickFormat(minor.format);
-	
-	            yAxis = d3Axis.axisRight(yScale).ticks(yTickNumber).tickSize([0]).tickPadding(tickPadding).tickFormat(getFormattedValue);
-	
-	            drawGridLines(minor.tick, yTickNumber);
-	        }
-	
-	        /**
-	         * Builds containers for the chart, the axis and a wrapper for all of them
-	         * NOTE: The order of drawing of this group elements is really important,
-	         * as everything else will be drawn on top of them
-	         * @private
-	         */
-	        function buildContainerGroups() {
-	            var container = svg.append('g').classed('container-group', true).attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-	
-	            container.append('g').classed('x-axis-group', true).append('g').classed('x axis', true);
-	            container.selectAll('.x-axis-group').append('g').classed('month-axis', true);
-	            container.append('g').classed('y-axis-group axis', true);
-	            container.append('g').classed('grid-lines-group', true);
-	            container.append('g').classed('chart-group', true);
-	            container.append('g').classed('metadata-group', true);
-	        }
-	
-	        /**
-	         * Builds the stacked layers layout
-	         * @return {D3Layout} Layout for drawing the chart
-	         * @private
-	         */
-	        function buildLayers() {
-	            dataByDateFormatted = dataByDate.map(function (d) {
-	                return assign({}, d, d.values);
-	            }).map(function (d) {
-	                Object.keys(d).forEach(function (k) {
-	                    var entry = d[k];
-	
-	                    if (entry && entry.name) {
-	                        d[entry.name] = entry.value;
-	                    }
-	                });
-	
-	                return assign({}, d, {
-	                    date: new Date(d['key'])
-	                });
-	            });
-	
-	            dataByDateZeroed = dataByDate.map(function (d) {
-	                return assign({}, d, d.values);
-	            }).map(function (d) {
-	                Object.keys(d).forEach(function (k) {
-	                    var entry = d[k];
-	
-	                    if (entry && entry.name) {
-	                        d[entry.name] = 0;
-	                    }
-	                });
-	
-	                return assign({}, d, {
-	                    date: new Date(d['key'])
-	                });
-	            });
-	
-	            order = uniq(data.map(function (o) {
-	                return o.name;
-	            }));
-	            var stack3 = d3Shape.stack().keys(order).order(d3Shape.stackOrderNone).offset(d3Shape.stackOffsetNone);
-	
-	            layersInitial = stack3(dataByDateZeroed);
-	            layers = stack3(dataByDateFormatted);
-	        }
-	
-	        /**
-	         * Creates the x, y and color scales of the chart
-	         * @private
-	         */
-	        function buildScales() {
-	            xScale = d3Scale.scaleTime().domain(d3Array.extent(dataByDate, function (_ref3) {
-	                var date = _ref3.date;
-	                return date;
-	            })).rangeRound([0, chartWidth]);
-	
-	            yScale = d3Scale.scaleLinear().domain([0, getMaxValueByDate()]).rangeRound([chartHeight, 0]).nice();
-	
-	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(data.map(getName));
-	
-	            var range = colorScale.range();
-	            categoryColorMap = colorScale.domain().reduce(function (memo, item, i) {
-	                memo[item] = range[i];
-	
-	                return memo;
-	            }, {});
-	        }
-	
-	        /**
-	         * @param  {HTMLElement} container DOM element that will work as the container of the graph
-	         * @private
-	         */
-	        function buildSVG(container) {
-	            if (!svg) {
-	                svg = d3Selection.select(container).append('svg').classed('britechart stacked-area', true);
-	
-	                buildContainerGroups();
-	            }
-	
-	            svg.attr('width', width).attr('height', height);
-	        }
-	
-	        /**
-	         * Parses dates and values into JS Date objects and numbers
-	         * @param  {obj} data Raw data from JSON file
-	         * @return {obj}      Parsed data with values and dates
-	         */
-	        function cleanData(data) {
-	            return data.map(function (d) {
-	                d.date = new Date(d[dateLabel]), d.value = +d[valueLabel];
-	
-	                return d;
-	            });
-	        }
-	
-	        /**
-	         * Draws the x and y axis on the svg object within their
-	         * respective groups
-	         * @private
-	         */
-	        function drawAxis() {
-	            svg.select('.x-axis-group .axis.x').attr('transform', 'translate( 0, ' + chartHeight + ' )').call(xAxis);
-	
-	            if (forceAxisSettings !== 'custom') {
-	                svg.select('.x-axis-group .month-axis').attr('transform', 'translate(0, ' + (chartHeight + monthAxisPadding) + ')').call(xMonthAxis);
-	            }
-	
-	            svg.select('.y-axis-group.axis').attr('transform', 'translate( ' + -xAxisPadding.left + ', 0)').call(yAxis).call(adjustYTickLabels);
-	
-	            // Moving the YAxis tick labels to the right side
-	            // d3Selection.selectAll('.y-axis-group .tick text')
-	            //     .attr('transform', `translate( ${-chartWidth - yTickTextXOffset}, ${yTickTextYOffset})` );
-	        }
-	
-	        /**
-	         * Adjusts the position of the y axis' ticks
-	         * @param  {D3Selection} selection Y axis group
-	         * @return void
-	         */
-	        function adjustYTickLabels(selection) {
-	            selection.selectAll('.tick text').attr('transform', 'translate(' + yTickTextXOffset + ', ' + yTickTextYOffset + ')');
-	        }
-	
-	        /**
-	         * Creates SVG dot elements for each data entry and draws them
-	         * TODO: Plug
-	         */
-	        function drawDataReferencePoints() {
-	            // Creates Dots on Data points
-	            var points = svg.select('.chart-group').selectAll('.dots').data(layers).enter().append('g').attr('class', 'dots').attr('d', function (_ref4) {
-	                var values = _ref4.values;
-	                return area(values);
-	            }).attr('clip-path', 'url(#clip)');
-	
-	            // Processes the points
-	            // TODO: Optimize this code
-	            points.selectAll('.dot').data(function (_ref5, index) {
-	                var values = _ref5.values;
-	                return values.map(function (point) {
-	                    return { index: index, point: point };
-	                });
-	            }).enter().append('circle').attr('class', 'dot').attr('r', function () {
-	                return pointsSize;
-	            }).attr('fill', function () {
-	                return pointsColor;
-	            }).attr('stroke-width', '0').attr('stroke', pointsBorderColor).attr('transform', function (d) {
-	                var point = d.point;
-	
-	                var key = xScale(point.date);
-	
-	                dataPoints[key] = dataPoints[key] || [];
-	                dataPoints[key].push(d);
-	
-	                var date = point.date,
-	                    y = point.y,
-	                    y0 = point.y0;
-	
-	                return 'translate( ' + xScale(date) + ', ' + yScale(y + y0) + ' )';
-	            });
-	        }
-	
-	        /**
-	         * Draws grid lines on the background of the chart
-	         * @return void
-	         */
-	        function drawGridLines(xTicks, yTicks) {
-	            if (grid === 'horizontal' || grid === 'full') {
-	                horizontalGridLines = svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(yScale.ticks(yTicks)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left - 30).attr('x2', chartWidth).attr('y1', function (d) {
-	                    return yScale(d);
-	                }).attr('y2', function (d) {
-	                    return yScale(d);
-	                });
-	            }
-	
-	            if (grid === 'vertical' || grid === 'full') {
-	                verticalGridLines = svg.select('.grid-lines-group').selectAll('line.vertical-grid-line').data(xScale.ticks(xTicks)).enter().append('line').attr('class', 'vertical-grid-line').attr('y1', 0).attr('y2', chartHeight).attr('x1', function (d) {
-	                    return xScale(d);
-	                }).attr('x2', function (d) {
-	                    return xScale(d);
-	                });
-	            }
-	
-	            //draw a horizontal line to extend x-axis till the edges
-	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-x-line').data([0]).enter().append('line').attr('class', 'extended-x-line').attr('x1', -xAxisPadding.left - 30).attr('x2', chartWidth).attr('y1', height - margin.bottom - margin.top).attr('y2', height - margin.bottom - margin.top);
-	        }
-	
-	        /**
-	         * Draws an overlay element over the graph
-	         * @private
-	         */
-	        function drawHoverOverlay() {
-	            overlay = svg.select('.metadata-group').append('rect').attr('class', 'overlay').attr('y1', 0).attr('y2', chartHeight).attr('height', chartHeight).attr('width', chartWidth).attr('fill', 'rgba(0,0,0,0)').style('display', 'none');
-	        }
-	
-	        /**
-	         * Draws the different areas into the chart-group element
-	         * @private
-	         */
-	        function drawStackedAreas() {
-	            var series = void 0;
-	
-	            area = d3Shape.area().curve(d3Shape.curveMonotoneX).x(function (_ref6) {
-	                var data = _ref6.data;
-	                return xScale(data.date);
-	            }).y0(function (d) {
-	                return yScale(d[0]);
-	            }).y1(function (d) {
-	                return yScale(d[1]);
-	            });
-	
-	            if (isAnimated) {
-	                series = svg.select('.chart-group').selectAll('.layer').data(layersInitial).enter().append('g').classed('layer-container', true);
-	
-	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref7) {
-	                    var key = _ref7.key;
-	                    return categoryColorMap[key];
-	                });
-	
-	                // Update
-	                svg.select('.chart-group').selectAll('.layer').data(layers).transition().delay(function (_, i) {
-	                    return areaAnimationDelays[i];
-	                }).duration(areaAnimationDuration).ease(ease).attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref8) {
-	                    var key = _ref8.key;
-	                    return categoryColorMap[key];
-	                });
-	            } else {
-	                series = svg.select('.chart-group').selectAll('.layer').data(layers).enter().append('g').classed('layer-container', true);
-	
-	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref9) {
-	                    var key = _ref9.key;
-	                    return categoryColorMap[key];
-	                });
-	
-	                // Update
-	                series.attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref10) {
-	                    var key = _ref10.key;
-	                    return categoryColorMap[key];
-	                });
-	            }
-	
-	            // Exit
-	            series.exit().transition().style('opacity', 0).remove();
-	        }
-	
-	        /**
-	         * Creates the vertical marker
-	         * @return void
-	         */
-	        function drawVerticalMarker() {
-	            verticalMarkerContainer = svg.select('.metadata-group').append('g').attr('class', 'vertical-marker-container').attr('transform', 'translate(9999, 0)');
-	
-	            verticalMarker = verticalMarkerContainer.selectAll('path').data([{
-	                x1: 0,
-	                y1: 0,
-	                x2: 0,
-	                y2: 0
-	            }]).enter().append('line').classed('vertical-marker', true).attr('x1', 0).attr('y1', chartHeight).attr('x2', 0).attr('y2', 0);
-	        }
-	
-	        /**
-	         * Removes all the datapoints highlighter circles added to the marker container
-	         * @return void
-	         */
-	        function eraseDataPointHighlights() {
-	            verticalMarkerContainer.selectAll('.circle-container').remove();
-	        }
-	
-	        /**
-	         * Orders the data by date for consumption on the chart tooltip
-	         * @param  {areaChartData} data    Chart data
-	         * @return {Object[]}               Chart data ordered by date
-	         * @private
-	         */
-	        function getDataByDate(data) {
-	            return d3Collection.nest().key(getDate).entries(data.sort(function (a, b) {
-	                return a.date - b.date;
-	            })).map(function (d) {
-	                return assign({}, d, {
-	                    date: new Date(d.key)
-	                });
-	            });
-	
-	            // let b =  d3Collection.nest()
-	            //                     .key(getDate).sortKeys(d3Array.ascending)
-	            //                     .entries(data);
-	        }
-	
-	        /**
-	         * Computes the maximum sum of values for any date
-	         *
-	         * @return {Number} Max value
-	         */
-	        function getMaxValueByDate() {
-	            var keys = uniq(data.map(function (o) {
-	                return o.name;
-	            }));
-	            var maxValueByDate = d3Array.max(dataByDateFormatted, function (d) {
-	                var vals = keys.map(function (key) {
-	                    return d[key];
-	                });
-	
-	                return d3Array.sum(vals);
-	            });
-	
-	            return maxValueByDate;
-	        }
-	
-	        /**
-	         * Extract X position on the chart from a given mouse event
-	         * @param  {obj} event D3 mouse event
-	         * @return {Number}       Position on the x axis of the mouse
-	         * @private
-	         */
-	        function getMouseXPosition(event) {
-	            return d3Selection.mouse(event)[0];
-	        }
-	
-	        /**
-	         * Finds out the data entry that is closer to the given position on pixels
-	         * @param  {Number} mouseX X position of the mouse
-	         * @return {obj}        Data entry that is closer to that x axis position
-	         */
-	        function getNearestDataPoint(mouseX) {
-	            return dataByDate.find(function (_ref11) {
-	                var date = _ref11.date;
-	                return Math.abs(xScale(date) - mouseX) <= epsilon;
-	            });
-	        }
-	
-	        /**
-	         * Epsilon is the value given to the number representing half of the distance in
-	         * pixels between two date data points
-	         * @return {Number} half distance between any two points
-	         */
-	        function setEpsilon() {
-	            var dates = dataByDate.map(function (_ref12) {
-	                var date = _ref12.date;
-	                return date;
-	            });
-	
-	            epsilon = (xScale(dates[1]) - xScale(dates[0])) / 2;
-	        }
-	
-	        /**
-	         * MouseMove handler, calculates the nearest dataPoint to the cursor
-	         * and updates metadata related to it
-	         * @private
-	         */
-	        function handleMouseMove() {
-	            epsilon || setEpsilon();
-	
-	            var dataPoint = getNearestDataPoint(getMouseXPosition(this) - margin.left),
-	                dataPointXPosition = void 0;
-	
-	            if (dataPoint) {
-	                dataPointXPosition = xScale(new Date(dataPoint.key));
-	                // Move verticalMarker to that datapoint
-	                moveVerticalMarker(dataPointXPosition);
-	                // Add data points highlighting
-	                highlightDataPoints(dataPoint);
-	                // Emit event with xPosition for tooltip or similar feature
-	                dispatcher.call('customMouseMove', this, dataPoint, categoryColorMap, dataPointXPosition);
-	            }
-	        }
-	
-	        /**
-	         * MouseOut handler, hides overlay and removes active class on verticalMarkerLine
-	         * It also resets the container of the vertical marker
-	         * @private
-	         */
-	        function handleMouseOut(data) {
-	            overlay.style('display', 'none');
-	            verticalMarker.classed('bc-is-active', false);
-	            verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
-	
-	            dispatcher.call('customMouseOut', this, data);
-	        }
-	
-	        /**
-	         * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
-	         * @private
-	         */
-	        function handleMouseOver(data) {
-	            overlay.style('display', 'block');
-	            verticalMarker.classed('bc-is-active', true);
-	
-	            dispatcher.call('customMouseOver', this, data);
-	        }
-	
-	        /**
-	         * Creates coloured circles marking where the exact data y value is for a given data point
-	         * @param  {obj} dataPoint Data point to extract info from
-	         * @private
-	         */
-	        function highlightDataPoints(_ref13) {
-	            var values = _ref13.values;
-	
-	            var accumulator = 0;
-	
-	            eraseDataPointHighlights();
-	
-	            // ensure order stays constant
-	            values = values.filter(function (v) {
-	                return !!v;
-	            }).sort(function (a, b) {
-	                return order.indexOf(a.name) > order.indexOf(b.name);
-	            });
-	
-	            values.forEach(function (_ref14, index) {
-	                var name = _ref14.name;
-	
-	                var marker = verticalMarkerContainer.append('g').classed('circle-container', true),
-	                    circleSize = 12;
-	
-	                accumulator = accumulator + values[index][valueLabel];
-	
-	                marker.append('circle').classed('data-point-highlighter', true).attr('cx', circleSize).attr('cy', 0).attr('r', 5).style('stroke-width', 2).style('stroke', categoryColorMap[name]);
-	
-	                marker.attr('transform', 'translate( ' + -circleSize + ', ' + yScale(accumulator) + ' )');
-	            });
-	        }
-	
-	        /**
-	         * Helper method to update the x position of the vertical marker
-	         * @param  {obj} dataPoint Data entry to extract info
-	         * @return void
-	         */
-	        function moveVerticalMarker(verticalMarkerXPosition) {
-	            verticalMarkerContainer.attr('transform', 'translate(' + verticalMarkerXPosition + ',0)');
-	        }
-	
-	        /**
-	         * Determines if we should add the tooltip related logic depending on the
-	         * size of the chart and the tooltipThreshold variable value
-	         * @return {boolean} Should we build the tooltip?
-	         * @private
-	         */
-	        function shouldShowTooltip() {
-	            return width > tooltipThreshold;
-	        }
-	
-	        // Accessors
-	
-	        /**
-	         * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
-	         * @param  {Object} _x                  Opacity to get/set
-	         * @return { opacity | module}          Current opacity or Area Chart module to chain calls
-	         * @public
-	         */
-	        exports.areaOpacity = function (_x) {
-	            if (!arguments.length) {
-	                return areaOpacity;
-	            }
-	            areaOpacity = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the aspect ratio of the chart
-	         * @param  {Number} _x Desired aspect ratio for the graph
-	         * @return { (Number | Module) } Current aspect ratio or Area Chart module to chain calls
-	         * @public
-	         */
-	        exports.aspectRatio = function (_x) {
-	            if (!arguments.length) {
-	                return aspectRatio;
-	            }
-	            aspectRatio = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the colorSchema of the chart
-	         * @param  {String[]} _x Desired colorSchema for the graph
-	         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
-	         * @public
-	         */
-	        exports.colorSchema = function (_x) {
-	            if (!arguments.length) {
-	                return colorSchema;
-	            }
-	            colorSchema = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the dateLabel of the chart
-	         * @param  {Number} _x Desired dateLabel for the graph
-	         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
-	         * @public
-	         */
-	        exports.dateLabel = function (_x) {
-	            if (!arguments.length) {
-	                return dateLabel;
-	            }
-	            dateLabel = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the ability to force the chart to show a certain x axis grouping
-	         * @param  {String} _x Desired format
-	         * @return { (String|Module) }    Current format or module to chain calls
-	         * @example
-	         *     area.forceAxisFormat(area.axisTimeCombinations.HOUR_DAY)
-	         */
-	        exports.forceAxisFormat = function (_x) {
-	            if (!arguments.length) {
-	                return forceAxisSettings;
-	            }
-	            forceAxisSettings = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the ability to force the chart to show a certain x format
-	         * It requires a `forceAxisFormat` of 'custom' in order to work.
-	         * @param  {String} _x              Desired format for x axis
-	         * @return { (String|Module) }      Current format or module to chain calls
-	         */
-	        exports.forcedXFormat = function (_x) {
-	            if (!arguments.length) {
-	                return forcedXFormat;
-	            }
-	            forcedXFormat = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
-	         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
-	         * how many and where the ticks will appear.
-	         *
-	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
-	         * @return { (Number|Module) }      Current number or ticks or module to chain calls
-	         */
-	        exports.forcedXTicks = function (_x) {
-	            if (!arguments.length) {
-	                return forcedXTicks;
-	            }
-	            forcedXTicks = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the grid mode.
-	         *
-	         * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
-	         * @return { String | module} Current mode of the grid or Area Chart module to chain calls
-	         * @public
-	         */
-	        exports.grid = function (_x) {
-	            if (!arguments.length) {
-	                return grid;
-	            }
-	            grid = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the height of the chart
-	         * @param  {Number} _x Desired width for the graph
-	         * @return { height | module} Current height or Area Chart module to chain calls
-	         * @public
-	         */
-	        exports.height = function (_x) {
-	            if (!arguments.length) {
-	                return height;
-	            }
-	            if (aspectRatio) {
-	                width = Math.ceil(_x / aspectRatio);
-	            }
-	            height = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
-	         * By default this is 'false'
-	         *
-	         * @param  {Boolean} _x Desired animation flag
-	         * @return { isAnimated | module} Current isAnimated flag or Chart module
-	         * @public
-	         */
-	        exports.isAnimated = function (_x) {
-	            if (!arguments.length) {
-	                return isAnimated;
-	            }
-	            isAnimated = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the keyLabel of the chart
-	         * @param  {Number} _x Desired keyLabel for the graph
-	         * @return { keyLabel | module} Current keyLabel or Chart module to chain calls
-	         * @public
-	         */
-	        exports.keyLabel = function (_x) {
-	            if (!arguments.length) {
-	                return keyLabel;
-	            }
-	            keyLabel = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the margin of the chart
-	         * @param  {Object} _x Margin object to get/set
-	         * @return { margin | module} Current margin or Area Chart module to chain calls
-	         * @public
-	         */
-	        exports.margin = function (_x) {
-	            if (!arguments.length) {
-	                return margin;
-	            }
-	            margin = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the minimum width of the graph in order to show the tooltip
-	         * NOTE: This could also depend on the aspect ratio
-	         *
-	         * @param  {Object} _x Margin object to get/set
-	         * @return { tooltipThreshold | module} Current tooltipThreshold or Area Chart module to chain calls
-	         * @public
-	         */
-	        exports.tooltipThreshold = function (_x) {
-	            if (!arguments.length) {
-	                return tooltipThreshold;
-	            }
-	            tooltipThreshold = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the valueLabel of the chart
-	         * @param  {Number} _x Desired valueLabel for the graph
-	         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
-	         * @public
-	         */
-	        exports.valueLabel = function (_x) {
-	            if (!arguments.length) {
-	                return valueLabel;
-	            }
-	            valueLabel = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the number of verticalTicks of the yAxis on the chart
-	         * @param  {Number} _x Desired verticalTicks
-	         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
-	         * @public
-	         */
-	        exports.verticalTicks = function (_x) {
-	            if (!arguments.length) {
-	                return verticalTicks;
-	            }
-	            verticalTicks = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the width of the chart
-	         * @param  {Number} _x Desired width for the graph
-	         * @return { width | module} Current width or Area Chart module to chain calls
-	         * @public
-	         */
-	        exports.width = function (_x) {
-	            if (!arguments.length) {
-	                return width;
-	            }
-	            if (aspectRatio) {
-	                height = Math.ceil(_x * aspectRatio);
-	            }
-	            width = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Chart exported to png and a download action is fired
-	         * @public
-	         */
-	        exports.exportChart = function (filename, title) {
-	            exportChart.call(exports, svg, filename, title);
-	        };
-	
-	        /**
-	         * Exposes an 'on' method that acts as a bridge with the event dispatcher
-	         * We are going to expose this events:
-	         * customMouseOver, customMouseMove and customMouseOut
-	         *
-	         * @return {module} Bar Chart
-	         * @public
-	         */
-	        exports.on = function () {
-	            var value = dispatcher.on.apply(dispatcher, arguments);
-	
-	            return value === dispatcher ? exports : value;
-	        };
-	
-	        /**
-	         * Exposes the constants to be used to force the x axis to respect a certain granularity
-	         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
-	         * @example
-	         *     area.forceAxisFormat(area.axisTimeCombinations.HOUR_DAY)
-	         */
-	        exports.axisTimeCombinations = axisTimeCombinations;
-	
-	        return exports;
-	    };
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ }),
+/* 58 */,
 /* 59 */
 /***/ (function(module, exports) {
 
@@ -13609,7 +12486,918 @@ webpackJsonp([6,10],[
 
 
 /***/ }),
-/* 60 */
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	    'use strict';
+	
+	    var d3Array = __webpack_require__(4);
+	    var d3Axis = __webpack_require__(6);
+	    var d3Color = __webpack_require__(7);
+	    var d3Collection = __webpack_require__(11);
+	    var d3Dispatch = __webpack_require__(8);
+	    var d3Ease = __webpack_require__(5);
+	    var d3Interpolate = __webpack_require__(12);
+	    var d3Scale = __webpack_require__(10);
+	    var d3Shape = __webpack_require__(32);
+	    var d3Selection = __webpack_require__(1);
+	    var assign = __webpack_require__(59);
+	
+	    var _require = __webpack_require__(18),
+	        exportChart = _require.exportChart;
+	
+	    var colorHelper = __webpack_require__(19);
+	    var NUMBER_FORMAT = ',f';
+	    var uniq = function uniq(arrArg) {
+	        return arrArg.filter(function (elem, pos, arr) {
+	            return arr.indexOf(elem) == pos;
+	        });
+	    };
+	
+	    /**
+	     * @typdef D3Layout
+	     * @type function
+	     */
+	
+	    /**
+	     * @typedef stackedBarData
+	     * @type {Object}
+	     * @property {Object[]} data       All data entries
+	     * @property {String} name         Name of the entry
+	     * @property {String} stack        Stack of the entry
+	     * @property {Number} value        Value of the entry
+	     *
+	     * @example
+	     * {
+	     *     'data': [
+	     *         {
+	     *             "name": "2011-01",
+	     *             "stack": "Direct",
+	     *             "value": 0
+	     *         }
+	     *     ]
+	     * }
+	     */
+	
+	    /**
+	     * Stacked Area Chart reusable API module that allows us
+	     * rendering a multi area and configurable chart.
+	     *
+	     * @module Stacked-bar
+	     * @tutorial stacked-bar
+	     * @requires d3-array, d3-axis, d3-color, d3-collection, d3-dispatch, d3-ease,
+	     *  d3-interpolate, d3-scale, d3-shape, d3-selection, lodash assign
+	     *
+	     * @example
+	     * let stackedBar = stackedBar();
+	     *
+	     * stackedBar
+	     *     .width(containerWidth);
+	     *
+	     * d3Selection.select('.css-selector')
+	     *     .datum(dataset.data)
+	     *     .call(stackedBar);
+	     *
+	     */
+	    return function module() {
+	
+	        var margin = {
+	            top: 40,
+	            right: 30,
+	            bottom: 60,
+	            left: 70
+	        },
+	            width = 960,
+	            height = 500,
+	            xScale = void 0,
+	            xAxis = void 0,
+	            yScale = void 0,
+	            yAxis = void 0,
+	            aspectRatio = null,
+	            verticalTicks = 5,
+	            yTickTextYOffset = -8,
+	            yTickTextXOffset = -20,
+	            numOfVerticalTicks = 5,
+	            numOfHorizontalTicks = 5,
+	            percentageAxisToMaxRatio = 1,
+	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+	            colorScale = void 0,
+	            categoryColorMap = void 0,
+	            layers = void 0,
+	            ease = d3Ease.easeQuadInOut,
+	            horizontal = false,
+	            svg = void 0,
+	            chartWidth = void 0,
+	            chartHeight = void 0,
+	            data = void 0,
+	            stacks = void 0,
+	            transformedData = void 0,
+	            tooltipThreshold = 480,
+	            xAxisPadding = {
+	            top: 0,
+	            left: 0,
+	            bottom: 0,
+	            right: 0
+	        },
+	            maxBarNumber = 8,
+	            animationDelayStep = 20,
+	            animationDelays = d3Array.range(animationDelayStep, maxBarNumber * animationDelayStep, animationDelayStep),
+	            animationDuration = 1000,
+	            grid = null,
+	            nameLabel = 'name',
+	            valueLabel = 'value',
+	            stackLabel = 'stack',
+	            nameLabelFormat = void 0,
+	            valueLabelFormat = NUMBER_FORMAT,
+	
+	
+	        // getters
+	        getName = function getName(data) {
+	            return data[nameLabel];
+	        },
+	            getValue = function getValue(data) {
+	            return data[valueLabel];
+	        },
+	            getStack = function getStack(data) {
+	            return data[stackLabel];
+	        },
+	            isAnimated = false,
+	
+	
+	        // events
+	        dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+	
+	        /**
+	         * This function creates the graph using the selection and data provided
+	         * @param {D3Selection} _selection A d3 selection that represents
+	         * the container(s) where the chart(s) will be rendered
+	         * @param {areaChartData} _data The data to attach and generate the chart
+	         */
+	        function exports(_selection) {
+	            _selection.each(function (_data) {
+	                chartWidth = width - margin.left - margin.right;
+	                chartHeight = height - margin.top - margin.bottom;
+	                data = cleanData(_data);
+	
+	                prepareData(data);
+	                buildScales();
+	                buildLayers();
+	                buildSVG(this);
+	                drawGridLines();
+	                buildAxis();
+	                drawAxis();
+	                drawStackedBar();
+	                if (shouldShowTooltip()) {
+	                    addMouseEvents();
+	                }
+	            });
+	        }
+	
+	        /**
+	         * Prepare data for create chart.
+	         * @private
+	         */
+	        function prepareData(data) {
+	            stacks = uniq(data.map(function (_ref) {
+	                var stack = _ref.stack;
+	                return stack;
+	            }));
+	            transformedData = d3Collection.nest().key(getName).rollup(function (values) {
+	                var ret = {};
+	
+	                values.forEach(function (entry) {
+	                    if (entry && entry[stackLabel]) {
+	                        ret[entry[stackLabel]] = getValue(entry);
+	                    }
+	                });
+	                ret.values = values; //for tooltip
+	
+	                return ret;
+	            }).entries(data).map(function (data) {
+	                return assign({}, {
+	                    total: d3Array.sum(d3Array.permute(data.value, stacks)),
+	                    key: data.key
+	                }, data.value);
+	            });
+	        }
+	
+	        /**
+	         * Adds events to the container group if the environment is not mobile
+	         * Adding: mouseover, mouseout and mousemove
+	         */
+	        function addMouseEvents() {
+	            svg.on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).on('mousemove', handleMouseMove);
+	        }
+	
+	        /**
+	         * Creates the d3 x and y axis, setting orientations
+	         * @private
+	         */
+	        function buildAxis() {
+	            if (!horizontal) {
+	                xAxis = d3Axis.axisBottom(xScale);
+	                yAxis = d3Axis.axisLeft(yScale).ticks(numOfVerticalTicks, valueLabelFormat);
+	            } else {
+	                xAxis = d3Axis.axisBottom(xScale).ticks(numOfHorizontalTicks, valueLabelFormat);
+	                yAxis = d3Axis.axisLeft(yScale);
+	            }
+	        }
+	
+	        /**
+	         * Builds containers for the chart, the axis and a wrapper for all of them
+	         * NOTE: The order of drawing of this group elements is really important,
+	         * as everything else will be drawn on top of them
+	         * @private
+	         */
+	        function buildContainerGroups() {
+	            var container = svg.append('g').classed('container-group', true).attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+	
+	            container.append('g').classed('x-axis-group', true).append('g').classed('x axis', true);
+	            container.selectAll('.x-axis-group').append('g').classed('month-axis', true);
+	            container.append('g').classed('y-axis-group axis', true);
+	            container.append('g').classed('grid-lines-group', true);
+	            container.append('g').classed('chart-group', true);
+	            container.append('g').classed('metadata-group', true);
+	        }
+	
+	        /**
+	         * Builds the stacked layers layout
+	         * @return {D3Layout} Layout for drawing the chart
+	         * @private
+	         */
+	        function buildLayers() {
+	            var stack3 = d3Shape.stack().keys(stacks),
+	                dataInitial = transformedData.map(function (item) {
+	                var ret = {};
+	
+	                stacks.forEach(function (key) {
+	                    ret[key] = item[key];
+	                });
+	
+	                return assign({}, item, ret);
+	            });
+	
+	            layers = stack3(dataInitial);
+	        }
+	
+	        /**
+	         * Creates the x, y and color scales of the chart
+	         * @private
+	         */
+	        function buildScales() {
+	            var yMax = d3Array.max(transformedData.map(function (d) {
+	                return d.total;
+	            }));
+	
+	            if (!horizontal) {
+	                xScale = d3Scale.scaleBand().domain(data.map(getName)).rangeRound([0, chartWidth]).padding(0.1);
+	
+	                yScale = d3Scale.scaleLinear().domain([0, yMax]).rangeRound([chartHeight, 0]).nice();
+	            } else {
+	                xScale = d3Scale.scaleLinear().domain([0, yMax]).rangeRound([0, chartWidth - 1]);
+	                // 1 pix for edge tick
+	
+	                yScale = d3Scale.scaleBand().domain(data.map(getName)).rangeRound([chartHeight, 0]).padding(0.1);
+	            }
+	
+	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(data.map(getStack));
+	
+	            categoryColorMap = colorScale.domain(data.map(getName)).domain().reduce(function (memo, item, i) {
+	                data.forEach(function (v) {
+	                    if (getName(v) == item) {
+	                        memo[v.name] = colorScale(v.stack);
+	                        memo[v.stack] = colorScale(v.stack);
+	                        memo[v.stack + item] = colorScale(v.stack);
+	                    }
+	                });
+	                return memo;
+	            }, {});
+	        }
+	
+	        /**
+	         * @param  {HTMLElement} container DOM element that will work as the container of the graph
+	         * @private
+	         */
+	        function buildSVG(container) {
+	            if (!svg) {
+	                svg = d3Selection.select(container).append('svg').classed('britechart stacked-bar', true);
+	
+	                buildContainerGroups();
+	            }
+	
+	            svg.attr('width', width).attr('height', height);
+	        }
+	
+	        /**
+	         * Parses dates and values into JS Date objects and numbers
+	         * @param  {obj} data Raw data from JSON file
+	         * @return {obj}      Parsed data with values and dates
+	         */
+	        function cleanData(data) {
+	            return data.map(function (d) {
+	                d.value = +d[valueLabel];
+	                d.stack = d[stackLabel];
+	                d.topicName = getStack(d); // for tooltip
+	                d.name = d[nameLabel];
+	
+	                return d;
+	            });
+	        }
+	
+	        /**
+	         * Draws the x and y axis on the svg object within their
+	         * respective groups
+	         * @private
+	         */
+	        function drawAxis() {
+	            if (!horizontal) {
+	                svg.select('.x-axis-group .axis.x').attr('transform', 'translate( 0, ' + chartHeight + ' )').call(xAxis);
+	
+	                svg.select('.y-axis-group.axis').attr('transform', 'translate( ' + -xAxisPadding.left + ', 0)').call(yAxis).call(adjustYTickLabels);
+	            } else {
+	                svg.select('.x-axis-group .axis.x').attr('transform', 'translate( 0, ' + chartHeight + ' )').call(xAxis);
+	
+	                svg.select('.y-axis-group.axis').attr('transform', 'translate( ' + -xAxisPadding.left + ', 0)').call(yAxis);
+	            }
+	        }
+	
+	        /**
+	         * Adjusts the position of the y axis' ticks
+	         * @param  {D3Selection} selection Y axis group
+	         * @return void
+	         */
+	        function adjustYTickLabels(selection) {
+	            selection.selectAll('.tick text').attr('transform', 'translate(' + yTickTextXOffset + ', ' + yTickTextYOffset + ')');
+	        }
+	
+	        /**
+	         * Draws grid lines on the background of the chart
+	         * @return void
+	         */
+	        function drawGridLines(xTicks, yTicks) {
+	            if (grid === 'horizontal' || grid === 'full') {
+	                svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(yScale.ticks(yTicks).slice(1)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left + 1).attr('x2', chartWidth).attr('y1', function (d) {
+	                    return yScale(d);
+	                }).attr('y2', function (d) {
+	                    return yScale(d);
+	                });
+	            }
+	
+	            if (grid === 'vertical' || grid === 'full') {
+	                svg.select('.grid-lines-group').selectAll('line.vertical-grid-line').data(xScale.ticks(xTicks).slice(1)).enter().append('line').attr('class', 'vertical-grid-line').attr('y1', 0).attr('y2', chartHeight).attr('x1', function (d) {
+	                    return xScale(d);
+	                }).attr('x2', function (d) {
+	                    return xScale(d);
+	                });
+	            }
+	        }
+	
+	        /**
+	         * Draws the bars along the x axis
+	         * @param  {D3Selection} bars Selection of bars
+	         * @return {void}
+	         */
+	        function drawHorizontalBars(series) {
+	            // Enter + Update
+	            var context = void 0,
+	                bars = series.data(layers).enter().append('g').classed('layer', true).attr('fill', function (_ref2) {
+	                var key = _ref2.key;
+	                return categoryColorMap[key];
+	            }).selectAll('.bar').data(function (d) {
+	                return d;
+	            }).enter().append('rect').classed('bar', true).attr('x', function (d) {
+	                return xScale(d[0]);
+	            }).attr('y', function (d) {
+	                return yScale(d.data.key);
+	            }).attr('height', yScale.bandwidth()).attr('fill', function (_ref3) {
+	                var data = _ref3.data;
+	                return categoryColorMap[data.stack + data.key];
+	            });
+	
+	            if (isAnimated) {
+	                bars.style('opacity', 0.24).transition().delay(function (_, i) {
+	                    return animationDelays[i];
+	                }).duration(animationDuration).ease(ease).tween('attr.width', function (d) {
+	                    var node = d3Selection.select(this),
+	                        i = d3Interpolate.interpolateRound(0, xScale(d[1] - d[0])),
+	                        j = d3Interpolate.interpolateNumber(0, 1);
+	
+	                    return function (t) {
+	                        node.attr('width', i(t));
+	                        node.style('opacity', j(t));
+	                    };
+	                });
+	            } else {
+	                bars.attr('width', function (d) {
+	                    return xScale(d[1] - d[0]);
+	                });
+	            }
+	
+	            bars.on('mouseover', function (d) {
+	                var _this = this;
+	
+	                dispatcher.call('customMouseOver', this, !!d.values ? d : d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
+	                d3Selection.select(this).attr('fill', function () {
+	                    return d3Color.color(d3Selection.select(_this.parentNode).attr('fill')).darker();
+	                });
+	            }).on('mousemove', function (d) {
+	                dispatcher.call('customMouseMove', this, !!d.values ? d : d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
+	            }).on('mouseout', function () {
+	                var _this2 = this;
+	
+	                dispatcher.call('customMouseOut', this);
+	                d3Selection.select(this).attr('fill', function () {
+	                    return d3Selection.select(_this2.parentNode).attr('fill');
+	                });
+	            });
+	        }
+	
+	        /**
+	         * Draws the bars along the y axis
+	         * @param  {D3Selection} bars Selection of bars
+	         * @return {void}
+	         */
+	        function drawVerticalBars(series) {
+	            // Enter + Update
+	            var bars = series.data(layers).enter().append('g').classed('layer', true).attr('fill', function (_ref4) {
+	                var key = _ref4.key;
+	                return categoryColorMap[key];
+	            }).selectAll('.bar').data(function (d) {
+	                return d;
+	            }).enter().append('rect').classed('bar', true).attr('x', function (d) {
+	                return xScale(d.data.key);
+	            }).attr('y', function (d) {
+	                return yScale(d[1]);
+	            }).attr('width', xScale.bandwidth).attr('fill', function (_ref5) {
+	                var data = _ref5.data;
+	                return categoryColorMap[data.stack + data.key];
+	            }),
+	                context = void 0;
+	
+	            if (isAnimated) {
+	                bars.style('opacity', 0.24).transition().delay(function (_, i) {
+	                    return animationDelays[i];
+	                }).duration(animationDuration).ease(ease).tween('attr.height', function (d) {
+	                    var node = d3Selection.select(this),
+	                        i = d3Interpolate.interpolateRound(0, yScale(d[0]) - yScale(d[1])),
+	                        j = d3Interpolate.interpolateNumber(0, 1);
+	
+	                    return function (t) {
+	                        node.attr('height', i(t));
+	                        node.style('opacity', j(t));
+	                    };
+	                });
+	            } else {
+	                bars.attr('height', function (d) {
+	                    return yScale(d[0]) - yScale(d[1]);
+	                });
+	            }
+	
+	            bars.on('mouseover', function (d) {
+	                var _this3 = this;
+	
+	                dispatcher.call('customMouseOver', this);
+	                d3Selection.select(this).attr('fill', function () {
+	                    return d3Color.color(d3Selection.select(_this3.parentNode).attr('fill')).darker();
+	                });
+	            }).on('mousemove', function (d) {
+	                dispatcher.call('customMouseMove', this, !!d.values ? d : d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
+	            }).on('mouseout', function () {
+	                var _this4 = this;
+	
+	                dispatcher.call('customMouseOut', this);
+	                d3Selection.select(this).attr('fill', function () {
+	                    return d3Selection.select(_this4.parentNode).attr('fill');
+	                });
+	            });
+	        }
+	
+	        /**
+	         * Draws the different areas into the chart-group element
+	         * @private
+	         */
+	        function drawStackedBar() {
+	            var series = svg.select('.chart-group').selectAll('.layer');
+	
+	            if (!horizontal) {
+	                drawVerticalBars(series);
+	            } else {
+	                drawHorizontalBars(series);
+	            }
+	            // Exit
+	            series.exit().transition().style('opacity', 0).remove();
+	        }
+	
+	        /**
+	         * Extract X position on the chart from a given mouse event
+	         * @param  {obj} event D3 mouse event
+	         * @return {Number}       Position on the x axis of the mouse
+	         * @private
+	         */
+	        function getMousePosition(event) {
+	            return d3Selection.mouse(event);
+	        }
+	
+	        /**
+	         * Finds out the data entry that is closer to the given position on pixels
+	         * @param  {Number} mouseX X position of the mouse
+	         * @return {obj}        Data entry that is closer to that x axis position
+	         */
+	        function getNearestDataPoint(mouseX) {
+	            var epsilon = void 0,
+	                nearest = void 0,
+	                dataByValueParsed = transformedData.map(function (item) {
+	                item.key = item.key;
+	                return item;
+	            });
+	
+	            epsilon = xScale(dataByValueParsed[1].key) - xScale(dataByValueParsed[0].key);
+	            nearest = dataByValueParsed.find(function (_ref6) {
+	                var key = _ref6.key;
+	                return Math.abs(xScale(key) - mouseX) <= epsilon;
+	            });
+	
+	            return nearest;
+	        }
+	
+	        /**
+	        * Finds out the data entry that is closer to the given position on pixels
+	        * @param  {Number} mouseX X position of the mouse
+	        * @return {obj}        Data entry that is closer to that x axis position
+	        */
+	        function getNearestDataPoint2(pos) {
+	            var mouseY = pos[1] - margin.bottom,
+	                epsilon = yScale.bandwidth(),
+	                nearest = void 0;
+	
+	            nearest = layers.map(function (stackedArray) {
+	                return stackedArray.map(function (d1) {
+	                    var found = d1.data.values.find(function (d2) {
+	                        return Math.abs(mouseY >= yScale(d2[nameLabel])) && Math.abs(mouseY - yScale(d2[nameLabel]) <= epsilon * 2);
+	                    });
+	                    return found ? d1.data : undefined;
+	                });
+	            });
+	            nearest = d3Array.merge(nearest).filter(function (e) {
+	                return e;
+	            });
+	
+	            return nearest.length ? nearest[0] : undefined;
+	        }
+	
+	        /**
+	         * MouseMove handler, calculates the nearest dataPoint to the cursor
+	         * and updates metadata related to it
+	         * @private
+	         */
+	        function handleMouseMove() {
+	            var mousePos = getMousePosition(this),
+	                dataPoint = !horizontal ? getNearestDataPoint(mousePos[0] - margin.left) : getNearestDataPoint2(mousePos),
+	                x = void 0,
+	                y = void 0;
+	
+	            if (dataPoint) {
+	                // Move verticalMarker to that datapoint
+	                if (!horizontal) {
+	                    x = xScale(dataPoint.key), y = yScale(dataPoint.total);
+	                    moveVerticalMarkerXY(x, y);
+	                } else {
+	                    x = mousePos[1], y = yScale(dataPoint.key) + yScale.bandwidth() / 2;
+	                    moveVerticalMarkerXY(x, y);
+	                }
+	                // Emit event with xPosition for tooltip or similar feature
+	                dispatcher.call('customMouseMove', this, dataPoint, categoryColorMap, x, y);
+	            }
+	        }
+	
+	        /**
+	         * MouseOut handler, hides overlay and removes active class on verticalMarkerLine
+	         * It also resets the container of the vertical marker
+	         * @private
+	         */
+	        function handleMouseOut(data) {
+	            svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
+	            dispatcher.call('customMouseOut', this, data);
+	        }
+	
+	        /**
+	         * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
+	         * @private
+	         */
+	        function handleMouseOver(data) {
+	            dispatcher.call('customMouseOver', this, data);
+	        }
+	
+	        /**
+	         * Helper method to update the x position of the vertical marker
+	         * @param  {obj} dataPoint Data entry to extract info
+	         * @return void
+	         */
+	        function moveVerticalMarkerXY(verticalMarkerXPosition, verticalMarkerYPosition) {
+	            svg.select('.metadata-group').attr('transform', 'translate(' + verticalMarkerXPosition + ',' + verticalMarkerYPosition + ')');
+	        }
+	
+	        /**
+	         * Determines if we should add the tooltip related logic depending on the
+	         * size of the chart and the tooltipThreshold variable value
+	         * @return {boolean} Should we build the tooltip?
+	         * @private
+	         */
+	        function shouldShowTooltip() {
+	            return width > tooltipThreshold;
+	        }
+	
+	        // API
+	
+	        /**
+	         * Gets or Sets the aspect ratio of the chart
+	         * @param  {Number} _x Desired aspect ratio for the graph
+	         * @return { (Number | Module) } Current aspect ratio or Area Chart module to chain calls
+	         * @public
+	         */
+	        exports.aspectRatio = function (_x) {
+	            if (!arguments.length) {
+	                return aspectRatio;
+	            }
+	            aspectRatio = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the colorSchema of the chart
+	         * @param  {String[]} _x Desired colorSchema for the graph
+	         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
+	         * @public
+	         */
+	        exports.colorSchema = function (_x) {
+	            if (!arguments.length) {
+	                return colorSchema;
+	            }
+	            colorSchema = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the nameLabel of the chart
+	         * @param  {Number} _x Desired dateLabel for the graph
+	         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.nameLabel = function (_x) {
+	            if (!arguments.length) {
+	                return nameLabel;
+	            }
+	            nameLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the valueLabelFormat of the chart
+	         * @param  {String[]} _x Desired valueLabelFormat for the graph
+	         * @return { valueLabelFormat | module} Current valueLabelFormat or Chart module to chain calls
+	         * @public
+	         */
+	        exports.nameLabelFormat = function (_x) {
+	            if (!arguments.length) {
+	                return nameLabelFormat;
+	            }
+	            nameLabelFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Configurable extension of the x axis
+	         * if your max point was 50% you might want to show x axis to 60%, pass 1.2
+	         * @param  {number} _x ratio to max data point to add to the x axis
+	         * @return { ratio | module} Current ratio or Bar Chart module to chain calls
+	         * @public
+	         */
+	        exports.percentageAxisToMaxRatio = function (_x) {
+	            if (!arguments.length) {
+	                return percentageAxisToMaxRatio;
+	            }
+	            percentageAxisToMaxRatio = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the stackLabel of the chart
+	         * @param  {String} _x Desired stackLabel for the graph
+	         * @return { stackLabel | module} Current stackLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.stackLabel = function (_x) {
+	            if (!arguments.length) {
+	                return stackLabel;
+	            }
+	            stackLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the grid mode.
+	         *
+	         * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
+	         * @return { String | module} Current mode of the grid or Area Chart module to chain calls
+	         * @public
+	         */
+	        exports.grid = function (_x) {
+	            if (!arguments.length) {
+	                return grid;
+	            }
+	            grid = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the height of the chart
+	         * @param  {Number} _x Desired width for the graph
+	         * @return { height | module} Current height or Area Chart module to chain calls
+	         * @public
+	         */
+	        exports.height = function (_x) {
+	            if (!arguments.length) {
+	                return height;
+	            }
+	            if (aspectRatio) {
+	                width = Math.ceil(_x / aspectRatio);
+	            }
+	            height = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the horizontal direction of the chart
+	         * @param  {number} _x Desired horizontal direction for the graph
+	         * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
+	         * @public
+	         */
+	        exports.horizontal = function (_x) {
+	            if (!arguments.length) {
+	                return horizontal;
+	            }
+	            horizontal = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
+	         * @param  {Boolean} _x Desired animation flag
+	         * @return { isAnimated | module} Current isAnimated flag or Chart module
+	         * @public
+	         */
+	        exports.isAnimated = function (_x) {
+	            if (!arguments.length) {
+	                return isAnimated;
+	            }
+	            isAnimated = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the margin of the chart
+	         * @param  {Object} _x Margin object to get/set
+	         * @return { margin | module} Current margin or Area Chart module to chain calls
+	         * @public
+	         */
+	        exports.margin = function (_x) {
+	            if (!arguments.length) {
+	                return margin;
+	            }
+	            margin = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the minimum width of the graph in order to show the tooltip
+	         * NOTE: This could also depend on the aspect ratio
+	         *
+	         * @param  {Object} _x Margin object to get/set
+	         * @return { tooltipThreshold | module} Current tooltipThreshold or Area Chart module to chain calls
+	         * @public
+	         */
+	        exports.tooltipThreshold = function (_x) {
+	            if (!arguments.length) {
+	                return tooltipThreshold;
+	            }
+	            tooltipThreshold = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the valueLabel of the chart
+	         * @param  {Number} _x Desired valueLabel for the graph
+	         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.valueLabel = function (_x) {
+	            if (!arguments.length) {
+	                return valueLabel;
+	            }
+	            valueLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the valueLabelFormat of the chart
+	         * @param  {String[]} _x Desired valueLabelFormat for the graph
+	         * @return { valueLabelFormat | module} Current valueLabelFormat or Chart module to chain calls
+	         * @public
+	         */
+	        exports.valueLabelFormat = function (_x) {
+	            if (!arguments.length) {
+	                return valueLabelFormat;
+	            }
+	            valueLabelFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the number of verticalTicks of the yAxis on the chart
+	         * @param  {Number} _x Desired verticalTicks
+	         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
+	         * @public
+	         */
+	        exports.verticalTicks = function (_x) {
+	            if (!arguments.length) {
+	                return verticalTicks;
+	            }
+	            verticalTicks = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the width of the chart
+	         * @param  {Number} _x Desired width for the graph
+	         * @return { width | module} Current width or Area Chart module to chain calls
+	         * @public
+	         */
+	        exports.width = function (_x) {
+	            if (!arguments.length) {
+	                return width;
+	            }
+	            if (aspectRatio) {
+	                height = Math.ceil(_x * aspectRatio);
+	            }
+	            width = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Chart exported to png and a download action is fired
+	         * @public
+	         */
+	        exports.exportChart = function (filename, title) {
+	            exportChart.call(exports, svg, filename, title);
+	        };
+	
+	        /**
+	         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+	         * We are going to expose this events:
+	         * customMouseOver, customMouseMove and customMouseOut
+	         *
+	         * @return {module} Bar Chart
+	         * @public
+	         */
+	        exports.on = function () {
+	            var value = dispatcher.on.apply(dispatcher, arguments);
+	
+	            return value === dispatcher ? exports : value;
+	        };
+	
+	        return exports;
+	    };
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+/***/ }),
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -13618,14 +13406,10 @@ webpackJsonp([6,10],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonThreeSources = __webpack_require__(61),
-	        jsonSixSources = __webpack_require__(62),
-	        jsonSalesChannel = __webpack_require__(63),
-	        jsonReportService = __webpack_require__(64),
-	        jsonLargeService = __webpack_require__(65);
+	        jsonThreeSources = __webpack_require__(68);
 	
-	    function StackedAreaDataBuilder(config) {
-	        this.Klass = StackedAreaDataBuilder;
+	    function StackedBarDataBuilder(config) {
+	        this.Klass = StackedBarDataBuilder;
 	
 	        this.config = _.defaults({}, config);
 	
@@ -13635,3636 +13419,97 @@ webpackJsonp([6,10],[
 	            return new this.Klass(attributes);
 	        };
 	
-	        this.with6Sources = function () {
-	            var attributes = _.extend({}, this.config, jsonSixSources);
-	
-	            return new this.Klass(attributes);
-	        };
-	
-	        this.withReportData = function () {
-	            var attributes = _.extend({}, this.config, jsonReportService);
-	
-	            return new this.Klass(attributes);
-	        };
-	
-	        this.withSalesChannelData = function () {
-	            var attributes = _.extend({}, this.config, jsonSalesChannel);
-	
-	            return new this.Klass(attributes);
-	        };
-	
-	        this.withLargeData = function () {
-	            var attributes = _.extend({}, this.config, jsonLargeService);
-	            return new this.Klass(attributes);
-	        };
-	
 	        this.build = function () {
 	            return this.config;
 	        };
 	    }
 	
 	    return {
-	        StackedAreaDataBuilder: StackedAreaDataBuilder
+	        StackedBarDataBuilder: StackedBarDataBuilder
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 61 */
+/* 68 */
 /***/ (function(module, exports) {
 
 	module.exports = {
 		"data": [
 			{
-				"name": "Direct",
+				"stack": "Direct",
+				"name": "Direct1",
 				"views": 0,
-				"dateUTC": "2011-01-05T00:00:00Z"
+				"date": "2011-01-05"
 			},
 			{
-				"name": "Direct",
+				"stack": "Direct",
+				"name": "Direct2",
 				"views": 10,
-				"dateUTC": "2011-01-06T00:00:00Z"
+				"date": "2011-01-06"
 			},
 			{
-				"name": "Direct",
+				"stack": "Direct",
+				"name": "Direct3",
 				"views": 16,
-				"dateUTC": "2011-01-07T00:00:00Z"
+				"date": "2011-01-07"
 			},
 			{
-				"name": "Direct",
+				"stack": "Direct",
+				"name": "Direct4",
 				"views": 23,
-				"dateUTC": "2011-01-08T00:00:00Z"
+				"date": "2011-01-08"
 			},
 			{
-				"name": "Eventbrite",
+				"stack": "Eventbrite",
+				"name": "Eventbrite1",
 				"views": 23,
-				"dateUTC": "2011-01-05T00:00:00Z"
+				"date": "2011-01-05"
 			},
 			{
-				"name": "Eventbrite",
+				"stack": "Eventbrite",
+				"name": "Eventbrite2",
 				"views": 16,
-				"dateUTC": "2011-01-06T00:00:00Z"
+				"date": "2011-01-06"
 			},
 			{
-				"name": "Eventbrite",
+				"stack": "Eventbrite",
+				"name": "Eventbrite3",
 				"views": 10,
-				"dateUTC": "2011-01-07T00:00:00Z"
+				"date": "2011-01-07"
 			},
 			{
-				"name": "Eventbrite",
+				"stack": "Eventbrite",
+				"name": "Eventbrite4",
 				"views": 0,
-				"dateUTC": "2011-01-08T00:00:00Z"
+				"date": "2011-01-08"
 			},
 			{
-				"name": "Email",
+				"stack": "Email",
+				"name": "Email1",
 				"views": 10,
-				"dateUTC": "2011-01-05T00:00:00Z"
+				"date": "2011-01-05"
 			},
 			{
-				"name": "Email",
+				"stack": "Email",
+				"name": "Email2",
 				"views": 20,
-				"dateUTC": "2011-01-06T00:00:00Z"
+				"date": "2011-01-06"
 			},
 			{
-				"name": "Email",
+				"stack": "Email",
+				"name": "Email3",
 				"views": 26,
-				"dateUTC": "2011-01-07T00:00:00Z"
+				"date": "2011-01-07"
 			},
 			{
-				"name": "Email",
+				"stack": "Email",
+				"name": "Email4",
 				"views": 33,
-				"dateUTC": "2011-01-08T00:00:00Z"
-			}
-		]
-	};
-
-/***/ }),
-/* 62 */
-/***/ (function(module, exports) {
-
-	module.exports = {
-		"data": [
-			{
-				"name": "Direct",
-				"views": 0,
-				"dateUTC": "2011-01-05T00:00:00Z"
-			},
-			{
-				"name": "Direct",
-				"views": 1000,
-				"dateUTC": "2011-01-06T00:00:00Z"
-			},
-			{
-				"name": "Direct",
-				"views": 1006.34,
-				"dateUTC": "2011-01-07T00:00:00Z"
-			},
-			{
-				"name": "Direct",
-				"views": 2000,
-				"dateUTC": "2011-01-08T00:00:00Z"
-			},
-			{
-				"name": "Eventbrite",
-				"views": 1003,
-				"dateUTC": "2011-01-05T00:00:00Z"
-			},
-			{
-				"name": "Eventbrite",
-				"views": 1006,
-				"dateUTC": "2011-01-06T00:00:00Z"
-			},
-			{
-				"name": "Eventbrite",
-				"views": 1000,
-				"dateUTC": "2011-01-07T00:00:00Z"
-			},
-			{
-				"name": "Eventbrite",
-				"views": 500,
-				"dateUTC": "2011-01-08T00:00:00Z"
-			},
-			{
-				"name": "Email",
-				"views": 1000,
-				"dateUTC": "2011-01-05T00:00:00Z"
-			},
-			{
-				"name": "Email",
-				"views": 2000,
-				"dateUTC": "2011-01-06T00:00:00Z"
-			},
-			{
-				"name": "Email",
-				"views": 2002,
-				"dateUTC": "2011-01-07T00:00:00Z"
-			},
-			{
-				"name": "Email",
-				"views": 700,
-				"dateUTC": "2011-01-08T00:00:00Z"
-			},
-			{
-				"name": "Sun's Website",
-				"views": 0,
-				"dateUTC": "2011-01-05T00:00:00Z"
-			},
-			{
-				"name": "Sun's Website",
-				"views": 1000,
-				"dateUTC": "2011-01-06T00:00:00Z"
-			},
-			{
-				"name": "Sun's Website",
-				"views": 1006,
-				"dateUTC": "2011-01-07T00:00:00Z"
-			},
-			{
-				"name": "Sun's Website",
-				"views": 300,
-				"dateUTC": "2011-01-08T00:00:00Z"
-			},
-			{
-				"name": "Related Events",
-				"views": 1008,
-				"dateUTC": "2011-01-05T00:00:00Z"
-			},
-			{
-				"name": "Related Events",
-				"views": 1002,
-				"dateUTC": "2011-01-06T00:00:00Z"
-			},
-			{
-				"name": "Related Events",
-				"views": 500,
-				"dateUTC": "2011-01-07T00:00:00Z"
-			},
-			{
-				"name": "Related Events",
-				"views": 300,
-				"dateUTC": "2011-01-08T00:00:00Z"
-			},
-			{
-				"name": "Facebook",
-				"views": 400,
-				"dateUTC": "2011-01-05T00:00:00Z"
-			},
-			{
-				"name": "Facebook",
-				"views": 900,
-				"dateUTC": "2011-01-06T00:00:00Z"
-			},
-			{
-				"name": "Facebook",
-				"views": 600,
-				"dateUTC": "2011-01-07T00:00:00Z"
-			},
-			{
-				"name": "Facebook",
-				"views": 300,
-				"dateUTC": "2011-01-08T00:00:00Z"
-			}
-		]
-	};
-
-/***/ }),
-/* 63 */
-/***/ (function(module, exports) {
-
-	module.exports = {
-		"data": [
-			{
-				"date": "2017-02-16T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 5
-			},
-			{
-				"date": "2017-02-16T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 0
-			},
-			{
-				"date": "2017-02-17T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 1
-			},
-			{
-				"date": "2017-02-17T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 13
-			},
-			{
-				"date": "2017-02-18T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 15
-			},
-			{
-				"date": "2017-02-18T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 1
-			},
-			{
-				"date": "2017-02-19T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 15
-			},
-			{
-				"date": "2017-02-19T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 1
-			},
-			{
-				"date": "2017-02-20T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 15
-			},
-			{
-				"date": "2017-02-20T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 1
-			},
-			{
-				"date": "2017-02-21T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 18
-			},
-			{
-				"date": "2017-02-21T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 1
-			},
-			{
-				"date": "2017-02-22T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 19
-			},
-			{
-				"date": "2017-02-22T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 1
-			},
-			{
-				"date": "2017-02-23T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 2
-			},
-			{
-				"date": "2017-02-23T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 22
-			},
-			{
-				"date": "2017-02-24T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 25
-			},
-			{
-				"date": "2017-02-24T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 2
-			},
-			{
-				"date": "2017-02-25T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 28
-			},
-			{
-				"date": "2017-02-25T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 2
-			},
-			{
-				"date": "2017-02-26T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 30
-			},
-			{
-				"date": "2017-02-26T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 2
-			},
-			{
-				"date": "2017-02-27T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 30
-			},
-			{
-				"date": "2017-02-27T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 2
-			},
-			{
-				"date": "2017-02-28T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 31
-			},
-			{
-				"date": "2017-02-28T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 2
-			},
-			{
-				"date": "2017-03-01T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 33
-			},
-			{
-				"date": "2017-03-01T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 2
-			},
-			{
-				"date": "2017-03-02T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 33
-			},
-			{
-				"date": "2017-03-02T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 2
-			},
-			{
-				"date": "2017-03-03T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 4
-			},
-			{
-				"date": "2017-03-03T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 34
-			},
-			{
-				"date": "2017-03-04T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 4
-			},
-			{
-				"date": "2017-03-04T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 34
-			},
-			{
-				"date": "2017-03-05T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 37
-			},
-			{
-				"date": "2017-03-05T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 4
-			},
-			{
-				"date": "2017-03-06T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 5
-			},
-			{
-				"date": "2017-03-06T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 41
-			},
-			{
-				"date": "2017-03-07T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 69
-			},
-			{
-				"date": "2017-03-07T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 5
-			},
-			{
-				"date": "2017-03-08T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 77
-			},
-			{
-				"date": "2017-03-08T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 5
-			},
-			{
-				"date": "2017-03-09T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 8
-			},
-			{
-				"date": "2017-03-09T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 79
-			},
-			{
-				"date": "2017-03-10T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 85
-			},
-			{
-				"date": "2017-03-10T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 8
-			},
-			{
-				"date": "2017-03-11T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 85
-			},
-			{
-				"date": "2017-03-11T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 8
-			},
-			{
-				"date": "2017-03-12T00:00:00-08:00",
-				"name": "Organizer Driven",
-				"value": 85
-			},
-			{
-				"date": "2017-03-12T00:00:00-08:00",
-				"name": "EB Driven",
-				"value": 8
-			},
-			{
-				"date": "2017-03-13T00:00:00-07:00",
-				"name": "Organizer Driven",
-				"value": 85
-			},
-			{
-				"date": "2017-03-13T00:00:00-07:00",
-				"name": "EB Driven",
-				"value": 8
-			},
-			{
-				"date": "2017-03-14T00:00:00-07:00",
-				"name": "Organizer Driven",
-				"value": 85
-			},
-			{
-				"date": "2017-03-14T00:00:00-07:00",
-				"name": "EB Driven",
-				"value": 8
-			},
-			{
-				"date": "2017-03-15T00:00:00-07:00",
-				"name": "Organizer Driven",
-				"value": 85
-			},
-			{
-				"date": "2017-03-15T00:00:00-07:00",
-				"name": "EB Driven",
-				"value": 8
-			},
-			{
-				"date": "2017-03-16T00:00:00-07:00",
-				"name": "Organizer Driven",
-				"value": 85
-			},
-			{
-				"date": "2017-03-16T00:00:00-07:00",
-				"name": "EB Driven",
-				"value": 8
-			},
-			{
-				"date": "2017-03-17T00:00:00-07:00",
-				"name": "Organizer Driven",
-				"value": 85
-			},
-			{
-				"date": "2017-03-17T00:00:00-07:00",
-				"name": "EB Driven",
-				"value": 8
-			}
-		]
-	};
-
-/***/ }),
-/* 64 */
-/***/ (function(module, exports) {
-
-	module.exports = {
-		"data": [
-			{
-				"dateUTC": "2016-01-02T08:00:00Z",
-				"dateEventTZ": "2016-01-02T00:00:00",
-				"name": "google",
-				"views": "22"
-			},
-			{
-				"dateUTC": "2016-01-02T08:00:00Z",
-				"dateEventTZ": "2016-01-02T00:00:00",
-				"name": "facebook",
-				"views": "21"
-			},
-			{
-				"dateUTC": "2016-01-02T08:00:00Z",
-				"dateEventTZ": "2016-01-02T00:00:00",
-				"name": "twitter",
-				"views": "24"
-			},
-			{
-				"dateUTC": "2016-01-02T08:00:00Z",
-				"dateEventTZ": "2016-01-02T00:00:00",
-				"name": "user_newsletter",
-				"views": "26"
-			},
-			{
-				"dateUTC": "2016-01-02T08:00:00Z",
-				"dateEventTZ": "2016-01-02T00:00:00",
-				"name": "user_email",
-				"views": "31"
-			},
-			{
-				"dateUTC": "2016-01-02T08:00:00Z",
-				"dateEventTZ": "2016-01-02T00:00:00",
-				"name": "unknown",
-				"views": "50"
-			},
-			{
-				"dateUTC": "2016-01-03T08:00:00Z",
-				"dateEventTZ": "2016-01-03T00:00:00",
-				"name": "google",
-				"views": "37"
-			},
-			{
-				"dateUTC": "2016-01-03T08:00:00Z",
-				"dateEventTZ": "2016-01-03T00:00:00",
-				"name": "facebook",
-				"views": "24"
-			},
-			{
-				"dateUTC": "2016-01-03T08:00:00Z",
-				"dateEventTZ": "2016-01-03T00:00:00",
-				"name": "twitter",
-				"views": "31"
-			},
-			{
-				"dateUTC": "2016-01-03T08:00:00Z",
-				"dateEventTZ": "2016-01-03T00:00:00",
-				"name": "user_newsletter",
-				"views": "24"
-			},
-			{
-				"dateUTC": "2016-01-03T08:00:00Z",
-				"dateEventTZ": "2016-01-03T00:00:00",
-				"name": "user_email",
-				"views": "41"
-			},
-			{
-				"dateUTC": "2016-01-03T08:00:00Z",
-				"dateEventTZ": "2016-01-03T00:00:00",
-				"name": "unknown",
-				"views": "0"
-			}
-		]
-	};
-
-/***/ }),
-/* 65 */
-/***/ (function(module, exports) {
-
-	module.exports = {
-		"data": [
-			{
-				"dateUTC": "2016-07-14T08:00:00Z",
-				"name": "google",
-				"views": 69
-			},
-			{
-				"dateUTC": "2016-07-14T08:00:00Z",
-				"name": "facebook",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-07-14T08:00:00Z",
-				"name": "twitter",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-07-14T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 46
-			},
-			{
-				"dateUTC": "2016-07-14T08:00:00Z",
-				"name": "user_email",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-07-14T08:00:00Z",
-				"name": "unknown",
-				"views": 56
-			},
-			{
-				"dateUTC": "2016-07-15T08:00:00Z",
-				"name": "google",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-07-15T08:00:00Z",
-				"name": "facebook",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-07-15T08:00:00Z",
-				"name": "twitter",
-				"views": 26
-			},
-			{
-				"dateUTC": "2016-07-15T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-07-15T08:00:00Z",
-				"name": "user_email",
-				"views": 91
-			},
-			{
-				"dateUTC": "2016-07-15T08:00:00Z",
-				"name": "unknown",
-				"views": 2
-			},
-			{
-				"dateUTC": "2016-07-16T08:00:00Z",
-				"name": "google",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-07-16T08:00:00Z",
-				"name": "facebook",
-				"views": 66
-			},
-			{
-				"dateUTC": "2016-07-16T08:00:00Z",
-				"name": "twitter",
-				"views": 10
-			},
-			{
-				"dateUTC": "2016-07-16T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 76
-			},
-			{
-				"dateUTC": "2016-07-16T08:00:00Z",
-				"name": "user_email",
-				"views": 88
-			},
-			{
-				"dateUTC": "2016-07-16T08:00:00Z",
-				"name": "unknown",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-07-17T08:00:00Z",
-				"name": "google",
-				"views": 70
-			},
-			{
-				"dateUTC": "2016-07-17T08:00:00Z",
-				"name": "facebook",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-07-17T08:00:00Z",
-				"name": "twitter",
-				"views": 1
-			},
-			{
-				"dateUTC": "2016-07-17T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 20
-			},
-			{
-				"dateUTC": "2016-07-17T08:00:00Z",
-				"name": "user_email",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-07-17T08:00:00Z",
-				"name": "unknown",
-				"views": 34
-			},
-			{
-				"dateUTC": "2016-07-18T08:00:00Z",
-				"name": "google",
-				"views": 61
-			},
-			{
-				"dateUTC": "2016-07-18T08:00:00Z",
-				"name": "facebook",
-				"views": 7
-			},
-			{
-				"dateUTC": "2016-07-18T08:00:00Z",
-				"name": "twitter",
-				"views": 34
-			},
-			{
-				"dateUTC": "2016-07-18T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 82
-			},
-			{
-				"dateUTC": "2016-07-18T08:00:00Z",
-				"name": "user_email",
-				"views": 61
-			},
-			{
-				"dateUTC": "2016-07-18T08:00:00Z",
-				"name": "unknown",
-				"views": 58
-			},
-			{
-				"dateUTC": "2016-07-19T08:00:00Z",
-				"name": "google",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-07-19T08:00:00Z",
-				"name": "facebook",
-				"views": 1
-			},
-			{
-				"dateUTC": "2016-07-19T08:00:00Z",
-				"name": "twitter",
-				"views": 52
-			},
-			{
-				"dateUTC": "2016-07-19T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-07-19T08:00:00Z",
-				"name": "user_email",
-				"views": 76
-			},
-			{
-				"dateUTC": "2016-07-19T08:00:00Z",
-				"name": "unknown",
-				"views": 33
-			},
-			{
-				"dateUTC": "2016-07-20T08:00:00Z",
-				"name": "google",
-				"views": 3
-			},
-			{
-				"dateUTC": "2016-07-20T08:00:00Z",
-				"name": "facebook",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-07-20T08:00:00Z",
-				"name": "twitter",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-07-20T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 12
-			},
-			{
-				"dateUTC": "2016-07-20T08:00:00Z",
-				"name": "user_email",
-				"views": 10
-			},
-			{
-				"dateUTC": "2016-07-20T08:00:00Z",
-				"name": "unknown",
-				"views": 97
-			},
-			{
-				"dateUTC": "2016-07-21T08:00:00Z",
-				"name": "google",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-07-21T08:00:00Z",
-				"name": "facebook",
-				"views": 13
-			},
-			{
-				"dateUTC": "2016-07-21T08:00:00Z",
-				"name": "twitter",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-07-21T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 37
-			},
-			{
-				"dateUTC": "2016-07-21T08:00:00Z",
-				"name": "user_email",
-				"views": 35
-			},
-			{
-				"dateUTC": "2016-07-21T08:00:00Z",
-				"name": "unknown",
-				"views": 18
-			},
-			{
-				"dateUTC": "2016-07-22T08:00:00Z",
-				"name": "google",
-				"views": 72
-			},
-			{
-				"dateUTC": "2016-07-22T08:00:00Z",
-				"name": "facebook",
-				"views": 88
-			},
-			{
-				"dateUTC": "2016-07-22T08:00:00Z",
-				"name": "twitter",
-				"views": 64
-			},
-			{
-				"dateUTC": "2016-07-22T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-07-22T08:00:00Z",
-				"name": "user_email",
-				"views": 86
-			},
-			{
-				"dateUTC": "2016-07-22T08:00:00Z",
-				"name": "unknown",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-07-23T08:00:00Z",
-				"name": "google",
-				"views": 11
-			},
-			{
-				"dateUTC": "2016-07-23T08:00:00Z",
-				"name": "facebook",
-				"views": 90
-			},
-			{
-				"dateUTC": "2016-07-23T08:00:00Z",
-				"name": "twitter",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-07-23T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 22
-			},
-			{
-				"dateUTC": "2016-07-23T08:00:00Z",
-				"name": "user_email",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-07-23T08:00:00Z",
-				"name": "unknown",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-07-24T08:00:00Z",
-				"name": "google",
-				"views": 46
-			},
-			{
-				"dateUTC": "2016-07-24T08:00:00Z",
-				"name": "facebook",
-				"views": 58
-			},
-			{
-				"dateUTC": "2016-07-24T08:00:00Z",
-				"name": "twitter",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-07-24T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-07-24T08:00:00Z",
-				"name": "user_email",
-				"views": 31
-			},
-			{
-				"dateUTC": "2016-07-24T08:00:00Z",
-				"name": "unknown",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-07-25T08:00:00Z",
-				"name": "google",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-07-25T08:00:00Z",
-				"name": "facebook",
-				"views": 93
-			},
-			{
-				"dateUTC": "2016-07-25T08:00:00Z",
-				"name": "twitter",
-				"views": 15
-			},
-			{
-				"dateUTC": "2016-07-25T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 90
-			},
-			{
-				"dateUTC": "2016-07-25T08:00:00Z",
-				"name": "user_email",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-07-25T08:00:00Z",
-				"name": "unknown",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-07-26T08:00:00Z",
-				"name": "google",
-				"views": 37
-			},
-			{
-				"dateUTC": "2016-07-26T08:00:00Z",
-				"name": "facebook",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-07-26T08:00:00Z",
-				"name": "twitter",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-07-26T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 72
-			},
-			{
-				"dateUTC": "2016-07-26T08:00:00Z",
-				"name": "user_email",
-				"views": 26
-			},
-			{
-				"dateUTC": "2016-07-26T08:00:00Z",
-				"name": "unknown",
-				"views": 70
-			},
-			{
-				"dateUTC": "2016-07-27T08:00:00Z",
-				"name": "google",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-07-27T08:00:00Z",
-				"name": "facebook",
-				"views": 15
-			},
-			{
-				"dateUTC": "2016-07-27T08:00:00Z",
-				"name": "twitter",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-07-27T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 22
-			},
-			{
-				"dateUTC": "2016-07-27T08:00:00Z",
-				"name": "user_email",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-07-27T08:00:00Z",
-				"name": "unknown",
-				"views": 83
-			},
-			{
-				"dateUTC": "2016-07-28T08:00:00Z",
-				"name": "google",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-07-28T08:00:00Z",
-				"name": "facebook",
-				"views": 39
-			},
-			{
-				"dateUTC": "2016-07-28T08:00:00Z",
-				"name": "twitter",
-				"views": 47
-			},
-			{
-				"dateUTC": "2016-07-28T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 90
-			},
-			{
-				"dateUTC": "2016-07-28T08:00:00Z",
-				"name": "user_email",
-				"views": 16
-			},
-			{
-				"dateUTC": "2016-07-28T08:00:00Z",
-				"name": "unknown",
-				"views": 96
-			},
-			{
-				"dateUTC": "2016-07-29T08:00:00Z",
-				"name": "google",
-				"views": 1
-			},
-			{
-				"dateUTC": "2016-07-29T08:00:00Z",
-				"name": "facebook",
-				"views": 38
-			},
-			{
-				"dateUTC": "2016-07-29T08:00:00Z",
-				"name": "twitter",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-07-29T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 26
-			},
-			{
-				"dateUTC": "2016-07-29T08:00:00Z",
-				"name": "user_email",
-				"views": 84
-			},
-			{
-				"dateUTC": "2016-07-29T08:00:00Z",
-				"name": "unknown",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-07-30T08:00:00Z",
-				"name": "google",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-07-30T08:00:00Z",
-				"name": "facebook",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-07-30T08:00:00Z",
-				"name": "twitter",
-				"views": 56
-			},
-			{
-				"dateUTC": "2016-07-30T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-07-30T08:00:00Z",
-				"name": "user_email",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-07-30T08:00:00Z",
-				"name": "unknown",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-07-31T08:00:00Z",
-				"name": "google",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-07-31T08:00:00Z",
-				"name": "facebook",
-				"views": 39
-			},
-			{
-				"dateUTC": "2016-07-31T08:00:00Z",
-				"name": "twitter",
-				"views": 66
-			},
-			{
-				"dateUTC": "2016-07-31T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 31
-			},
-			{
-				"dateUTC": "2016-07-31T08:00:00Z",
-				"name": "user_email",
-				"views": 14
-			},
-			{
-				"dateUTC": "2016-07-31T08:00:00Z",
-				"name": "unknown",
-				"views": 37
-			},
-			{
-				"dateUTC": "2016-08-01T08:00:00Z",
-				"name": "google",
-				"views": 3
-			},
-			{
-				"dateUTC": "2016-08-01T08:00:00Z",
-				"name": "facebook",
-				"views": 90
-			},
-			{
-				"dateUTC": "2016-08-01T08:00:00Z",
-				"name": "twitter",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-08-01T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 42
-			},
-			{
-				"dateUTC": "2016-08-01T08:00:00Z",
-				"name": "user_email",
-				"views": 76
-			},
-			{
-				"dateUTC": "2016-08-01T08:00:00Z",
-				"name": "unknown",
-				"views": 39
-			},
-			{
-				"dateUTC": "2016-08-02T08:00:00Z",
-				"name": "google",
-				"views": 24
-			},
-			{
-				"dateUTC": "2016-08-02T08:00:00Z",
-				"name": "facebook",
-				"views": 20
-			},
-			{
-				"dateUTC": "2016-08-02T08:00:00Z",
-				"name": "twitter",
-				"views": 71
-			},
-			{
-				"dateUTC": "2016-08-02T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-08-02T08:00:00Z",
-				"name": "user_email",
-				"views": 58
-			},
-			{
-				"dateUTC": "2016-08-02T08:00:00Z",
-				"name": "unknown",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-08-03T08:00:00Z",
-				"name": "google",
-				"views": 79
-			},
-			{
-				"dateUTC": "2016-08-03T08:00:00Z",
-				"name": "facebook",
-				"views": 81
-			},
-			{
-				"dateUTC": "2016-08-03T08:00:00Z",
-				"name": "twitter",
-				"views": 2
-			},
-			{
-				"dateUTC": "2016-08-03T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-08-03T08:00:00Z",
-				"name": "user_email",
-				"views": 56
-			},
-			{
-				"dateUTC": "2016-08-03T08:00:00Z",
-				"name": "unknown",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-08-04T08:00:00Z",
-				"name": "google",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-08-04T08:00:00Z",
-				"name": "facebook",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-08-04T08:00:00Z",
-				"name": "twitter",
-				"views": 24
-			},
-			{
-				"dateUTC": "2016-08-04T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-08-04T08:00:00Z",
-				"name": "user_email",
-				"views": 47
-			},
-			{
-				"dateUTC": "2016-08-04T08:00:00Z",
-				"name": "unknown",
-				"views": 49
-			},
-			{
-				"dateUTC": "2016-08-05T08:00:00Z",
-				"name": "google",
-				"views": 38
-			},
-			{
-				"dateUTC": "2016-08-05T08:00:00Z",
-				"name": "facebook",
-				"views": 5
-			},
-			{
-				"dateUTC": "2016-08-05T08:00:00Z",
-				"name": "twitter",
-				"views": 94
-			},
-			{
-				"dateUTC": "2016-08-05T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-08-05T08:00:00Z",
-				"name": "user_email",
-				"views": 76
-			},
-			{
-				"dateUTC": "2016-08-05T08:00:00Z",
-				"name": "unknown",
-				"views": 73
-			},
-			{
-				"dateUTC": "2016-08-06T08:00:00Z",
-				"name": "google",
-				"views": 88
-			},
-			{
-				"dateUTC": "2016-08-06T08:00:00Z",
-				"name": "facebook",
-				"views": 66
-			},
-			{
-				"dateUTC": "2016-08-06T08:00:00Z",
-				"name": "twitter",
-				"views": 18
-			},
-			{
-				"dateUTC": "2016-08-06T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-08-06T08:00:00Z",
-				"name": "user_email",
-				"views": 58
-			},
-			{
-				"dateUTC": "2016-08-06T08:00:00Z",
-				"name": "unknown",
-				"views": 18
-			},
-			{
-				"dateUTC": "2016-08-07T08:00:00Z",
-				"name": "google",
-				"views": 72
-			},
-			{
-				"dateUTC": "2016-08-07T08:00:00Z",
-				"name": "facebook",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-08-07T08:00:00Z",
-				"name": "twitter",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-08-07T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 24
-			},
-			{
-				"dateUTC": "2016-08-07T08:00:00Z",
-				"name": "user_email",
-				"views": 25
-			},
-			{
-				"dateUTC": "2016-08-07T08:00:00Z",
-				"name": "unknown",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-08-08T08:00:00Z",
-				"name": "google",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-08-08T08:00:00Z",
-				"name": "facebook",
-				"views": 5
-			},
-			{
-				"dateUTC": "2016-08-08T08:00:00Z",
-				"name": "twitter",
-				"views": 12
-			},
-			{
-				"dateUTC": "2016-08-08T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-08-08T08:00:00Z",
-				"name": "user_email",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-08-08T08:00:00Z",
-				"name": "unknown",
-				"views": 35
-			},
-			{
-				"dateUTC": "2016-08-09T08:00:00Z",
-				"name": "google",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-08-09T08:00:00Z",
-				"name": "facebook",
-				"views": 81
-			},
-			{
-				"dateUTC": "2016-08-09T08:00:00Z",
-				"name": "twitter",
-				"views": 93
-			},
-			{
-				"dateUTC": "2016-08-09T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 98
-			},
-			{
-				"dateUTC": "2016-08-09T08:00:00Z",
-				"name": "user_email",
-				"views": 25
-			},
-			{
-				"dateUTC": "2016-08-09T08:00:00Z",
-				"name": "unknown",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-08-10T08:00:00Z",
-				"name": "google",
-				"views": 94
-			},
-			{
-				"dateUTC": "2016-08-10T08:00:00Z",
-				"name": "facebook",
-				"views": 12
-			},
-			{
-				"dateUTC": "2016-08-10T08:00:00Z",
-				"name": "twitter",
-				"views": 53
-			},
-			{
-				"dateUTC": "2016-08-10T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 39
-			},
-			{
-				"dateUTC": "2016-08-10T08:00:00Z",
-				"name": "user_email",
-				"views": 61
-			},
-			{
-				"dateUTC": "2016-08-10T08:00:00Z",
-				"name": "unknown",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-08-11T08:00:00Z",
-				"name": "google",
-				"views": 5
-			},
-			{
-				"dateUTC": "2016-08-11T08:00:00Z",
-				"name": "facebook",
-				"views": 25
-			},
-			{
-				"dateUTC": "2016-08-11T08:00:00Z",
-				"name": "twitter",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-08-11T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 96
-			},
-			{
-				"dateUTC": "2016-08-11T08:00:00Z",
-				"name": "user_email",
-				"views": 37
-			},
-			{
-				"dateUTC": "2016-08-11T08:00:00Z",
-				"name": "unknown",
-				"views": 24
-			},
-			{
-				"dateUTC": "2016-08-12T08:00:00Z",
-				"name": "google",
-				"views": 20
-			},
-			{
-				"dateUTC": "2016-08-12T08:00:00Z",
-				"name": "facebook",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-08-12T08:00:00Z",
-				"name": "twitter",
-				"views": 57
-			},
-			{
-				"dateUTC": "2016-08-12T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 68
-			},
-			{
-				"dateUTC": "2016-08-12T08:00:00Z",
-				"name": "user_email",
-				"views": 29
-			},
-			{
-				"dateUTC": "2016-08-12T08:00:00Z",
-				"name": "unknown",
-				"views": 54
-			},
-			{
-				"dateUTC": "2016-08-13T08:00:00Z",
-				"name": "google",
-				"views": 33
-			},
-			{
-				"dateUTC": "2016-08-13T08:00:00Z",
-				"name": "facebook",
-				"views": 75
-			},
-			{
-				"dateUTC": "2016-08-13T08:00:00Z",
-				"name": "twitter",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-08-13T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 42
-			},
-			{
-				"dateUTC": "2016-08-13T08:00:00Z",
-				"name": "user_email",
-				"views": 96
-			},
-			{
-				"dateUTC": "2016-08-13T08:00:00Z",
-				"name": "unknown",
-				"views": 60
-			},
-			{
-				"dateUTC": "2016-08-14T08:00:00Z",
-				"name": "google",
-				"views": 87
-			},
-			{
-				"dateUTC": "2016-08-14T08:00:00Z",
-				"name": "facebook",
-				"views": 40
-			},
-			{
-				"dateUTC": "2016-08-14T08:00:00Z",
-				"name": "twitter",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-08-14T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 75
-			},
-			{
-				"dateUTC": "2016-08-14T08:00:00Z",
-				"name": "user_email",
-				"views": 84
-			},
-			{
-				"dateUTC": "2016-08-14T08:00:00Z",
-				"name": "unknown",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-08-15T08:00:00Z",
-				"name": "google",
-				"views": 6
-			},
-			{
-				"dateUTC": "2016-08-15T08:00:00Z",
-				"name": "facebook",
-				"views": 14
-			},
-			{
-				"dateUTC": "2016-08-15T08:00:00Z",
-				"name": "twitter",
-				"views": 55
-			},
-			{
-				"dateUTC": "2016-08-15T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-08-15T08:00:00Z",
-				"name": "user_email",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-08-15T08:00:00Z",
-				"name": "unknown",
-				"views": 60
-			},
-			{
-				"dateUTC": "2016-08-16T08:00:00Z",
-				"name": "google",
-				"views": 68
-			},
-			{
-				"dateUTC": "2016-08-16T08:00:00Z",
-				"name": "facebook",
-				"views": 88
-			},
-			{
-				"dateUTC": "2016-08-16T08:00:00Z",
-				"name": "twitter",
-				"views": 64
-			},
-			{
-				"dateUTC": "2016-08-16T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-08-16T08:00:00Z",
-				"name": "user_email",
-				"views": 18
-			},
-			{
-				"dateUTC": "2016-08-16T08:00:00Z",
-				"name": "unknown",
-				"views": 59
-			},
-			{
-				"dateUTC": "2016-08-17T08:00:00Z",
-				"name": "google",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-08-17T08:00:00Z",
-				"name": "facebook",
-				"views": 47
-			},
-			{
-				"dateUTC": "2016-08-17T08:00:00Z",
-				"name": "twitter",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-08-17T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 6
-			},
-			{
-				"dateUTC": "2016-08-17T08:00:00Z",
-				"name": "user_email",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-08-17T08:00:00Z",
-				"name": "unknown",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-08-18T08:00:00Z",
-				"name": "google",
-				"views": 1
-			},
-			{
-				"dateUTC": "2016-08-18T08:00:00Z",
-				"name": "facebook",
-				"views": 43
-			},
-			{
-				"dateUTC": "2016-08-18T08:00:00Z",
-				"name": "twitter",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-08-18T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 60
-			},
-			{
-				"dateUTC": "2016-08-18T08:00:00Z",
-				"name": "user_email",
-				"views": 71
-			},
-			{
-				"dateUTC": "2016-08-18T08:00:00Z",
-				"name": "unknown",
-				"views": 7
-			},
-			{
-				"dateUTC": "2016-08-19T08:00:00Z",
-				"name": "google",
-				"views": 57
-			},
-			{
-				"dateUTC": "2016-08-19T08:00:00Z",
-				"name": "facebook",
-				"views": 13
-			},
-			{
-				"dateUTC": "2016-08-19T08:00:00Z",
-				"name": "twitter",
-				"views": 42
-			},
-			{
-				"dateUTC": "2016-08-19T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-08-19T08:00:00Z",
-				"name": "user_email",
-				"views": 73
-			},
-			{
-				"dateUTC": "2016-08-19T08:00:00Z",
-				"name": "unknown",
-				"views": 68
-			},
-			{
-				"dateUTC": "2016-08-20T08:00:00Z",
-				"name": "google",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-08-20T08:00:00Z",
-				"name": "facebook",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-08-20T08:00:00Z",
-				"name": "twitter",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-08-20T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 4
-			},
-			{
-				"dateUTC": "2016-08-20T08:00:00Z",
-				"name": "user_email",
-				"views": 81
-			},
-			{
-				"dateUTC": "2016-08-20T08:00:00Z",
-				"name": "unknown",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-08-21T08:00:00Z",
-				"name": "google",
-				"views": 7
-			},
-			{
-				"dateUTC": "2016-08-21T08:00:00Z",
-				"name": "facebook",
-				"views": 2
-			},
-			{
-				"dateUTC": "2016-08-21T08:00:00Z",
-				"name": "twitter",
-				"views": 18
-			},
-			{
-				"dateUTC": "2016-08-21T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-08-21T08:00:00Z",
-				"name": "user_email",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-08-21T08:00:00Z",
-				"name": "unknown",
-				"views": 69
-			},
-			{
-				"dateUTC": "2016-08-22T08:00:00Z",
-				"name": "google",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-08-22T08:00:00Z",
-				"name": "facebook",
-				"views": 93
-			},
-			{
-				"dateUTC": "2016-08-22T08:00:00Z",
-				"name": "twitter",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-08-22T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-08-22T08:00:00Z",
-				"name": "user_email",
-				"views": 64
-			},
-			{
-				"dateUTC": "2016-08-22T08:00:00Z",
-				"name": "unknown",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-08-23T08:00:00Z",
-				"name": "google",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-08-23T08:00:00Z",
-				"name": "facebook",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-08-23T08:00:00Z",
-				"name": "twitter",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-08-23T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-08-23T08:00:00Z",
-				"name": "user_email",
-				"views": 84
-			},
-			{
-				"dateUTC": "2016-08-23T08:00:00Z",
-				"name": "unknown",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-08-24T08:00:00Z",
-				"name": "google",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-08-24T08:00:00Z",
-				"name": "facebook",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-08-24T08:00:00Z",
-				"name": "twitter",
-				"views": 49
-			},
-			{
-				"dateUTC": "2016-08-24T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 29
-			},
-			{
-				"dateUTC": "2016-08-24T08:00:00Z",
-				"name": "user_email",
-				"views": 38
-			},
-			{
-				"dateUTC": "2016-08-24T08:00:00Z",
-				"name": "unknown",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-08-25T08:00:00Z",
-				"name": "google",
-				"views": 49
-			},
-			{
-				"dateUTC": "2016-08-25T08:00:00Z",
-				"name": "facebook",
-				"views": 41
-			},
-			{
-				"dateUTC": "2016-08-25T08:00:00Z",
-				"name": "twitter",
-				"views": 12
-			},
-			{
-				"dateUTC": "2016-08-25T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 72
-			},
-			{
-				"dateUTC": "2016-08-25T08:00:00Z",
-				"name": "user_email",
-				"views": 31
-			},
-			{
-				"dateUTC": "2016-08-25T08:00:00Z",
-				"name": "unknown",
-				"views": 70
-			},
-			{
-				"dateUTC": "2016-08-26T08:00:00Z",
-				"name": "google",
-				"views": 41
-			},
-			{
-				"dateUTC": "2016-08-26T08:00:00Z",
-				"name": "facebook",
-				"views": 28
-			},
-			{
-				"dateUTC": "2016-08-26T08:00:00Z",
-				"name": "twitter",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-08-26T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 99
-			},
-			{
-				"dateUTC": "2016-08-26T08:00:00Z",
-				"name": "user_email",
-				"views": 71
-			},
-			{
-				"dateUTC": "2016-08-26T08:00:00Z",
-				"name": "unknown",
-				"views": 61
-			},
-			{
-				"dateUTC": "2016-08-27T08:00:00Z",
-				"name": "google",
-				"views": 71
-			},
-			{
-				"dateUTC": "2016-08-27T08:00:00Z",
-				"name": "facebook",
-				"views": 33
-			},
-			{
-				"dateUTC": "2016-08-27T08:00:00Z",
-				"name": "twitter",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-08-27T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 43
-			},
-			{
-				"dateUTC": "2016-08-27T08:00:00Z",
-				"name": "user_email",
-				"views": 1
-			},
-			{
-				"dateUTC": "2016-08-27T08:00:00Z",
-				"name": "unknown",
-				"views": 46
-			},
-			{
-				"dateUTC": "2016-08-28T08:00:00Z",
-				"name": "google",
-				"views": 43
-			},
-			{
-				"dateUTC": "2016-08-28T08:00:00Z",
-				"name": "facebook",
-				"views": 42
-			},
-			{
-				"dateUTC": "2016-08-28T08:00:00Z",
-				"name": "twitter",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-08-28T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-08-28T08:00:00Z",
-				"name": "user_email",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-08-28T08:00:00Z",
-				"name": "unknown",
-				"views": 51
-			},
-			{
-				"dateUTC": "2016-08-29T08:00:00Z",
-				"name": "google",
-				"views": 26
-			},
-			{
-				"dateUTC": "2016-08-29T08:00:00Z",
-				"name": "facebook",
-				"views": 10
-			},
-			{
-				"dateUTC": "2016-08-29T08:00:00Z",
-				"name": "twitter",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-08-29T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 37
-			},
-			{
-				"dateUTC": "2016-08-29T08:00:00Z",
-				"name": "user_email",
-				"views": 72
-			},
-			{
-				"dateUTC": "2016-08-29T08:00:00Z",
-				"name": "unknown",
-				"views": 25
-			},
-			{
-				"dateUTC": "2016-08-30T08:00:00Z",
-				"name": "google",
-				"views": 18
-			},
-			{
-				"dateUTC": "2016-08-30T08:00:00Z",
-				"name": "facebook",
-				"views": 68
-			},
-			{
-				"dateUTC": "2016-08-30T08:00:00Z",
-				"name": "twitter",
-				"views": 79
-			},
-			{
-				"dateUTC": "2016-08-30T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-08-30T08:00:00Z",
-				"name": "user_email",
-				"views": 93
-			},
-			{
-				"dateUTC": "2016-08-30T08:00:00Z",
-				"name": "unknown",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-08-31T08:00:00Z",
-				"name": "google",
-				"views": 47
-			},
-			{
-				"dateUTC": "2016-08-31T08:00:00Z",
-				"name": "facebook",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-08-31T08:00:00Z",
-				"name": "twitter",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-08-31T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 14
-			},
-			{
-				"dateUTC": "2016-08-31T08:00:00Z",
-				"name": "user_email",
-				"views": 28
-			},
-			{
-				"dateUTC": "2016-08-31T08:00:00Z",
-				"name": "unknown",
-				"views": 86
-			},
-			{
-				"dateUTC": "2016-09-01T08:00:00Z",
-				"name": "google",
-				"views": 3
-			},
-			{
-				"dateUTC": "2016-09-01T08:00:00Z",
-				"name": "facebook",
-				"views": 22
-			},
-			{
-				"dateUTC": "2016-09-01T08:00:00Z",
-				"name": "twitter",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-09-01T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 91
-			},
-			{
-				"dateUTC": "2016-09-01T08:00:00Z",
-				"name": "user_email",
-				"views": 15
-			},
-			{
-				"dateUTC": "2016-09-01T08:00:00Z",
-				"name": "unknown",
-				"views": 33
-			},
-			{
-				"dateUTC": "2016-09-02T08:00:00Z",
-				"name": "google",
-				"views": 91
-			},
-			{
-				"dateUTC": "2016-09-02T08:00:00Z",
-				"name": "facebook",
-				"views": 20
-			},
-			{
-				"dateUTC": "2016-09-02T08:00:00Z",
-				"name": "twitter",
-				"views": 28
-			},
-			{
-				"dateUTC": "2016-09-02T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 51
-			},
-			{
-				"dateUTC": "2016-09-02T08:00:00Z",
-				"name": "user_email",
-				"views": 72
-			},
-			{
-				"dateUTC": "2016-09-02T08:00:00Z",
-				"name": "unknown",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-09-03T08:00:00Z",
-				"name": "google",
-				"views": 53
-			},
-			{
-				"dateUTC": "2016-09-03T08:00:00Z",
-				"name": "facebook",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-09-03T08:00:00Z",
-				"name": "twitter",
-				"views": 52
-			},
-			{
-				"dateUTC": "2016-09-03T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-09-03T08:00:00Z",
-				"name": "user_email",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-09-03T08:00:00Z",
-				"name": "unknown",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-09-04T08:00:00Z",
-				"name": "google",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-09-04T08:00:00Z",
-				"name": "facebook",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-09-04T08:00:00Z",
-				"name": "twitter",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-09-04T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 60
-			},
-			{
-				"dateUTC": "2016-09-04T08:00:00Z",
-				"name": "user_email",
-				"views": 79
-			},
-			{
-				"dateUTC": "2016-09-04T08:00:00Z",
-				"name": "unknown",
-				"views": 60
-			},
-			{
-				"dateUTC": "2016-09-05T08:00:00Z",
-				"name": "google",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-09-05T08:00:00Z",
-				"name": "facebook",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-09-05T08:00:00Z",
-				"name": "twitter",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-09-05T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 59
-			},
-			{
-				"dateUTC": "2016-09-05T08:00:00Z",
-				"name": "user_email",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-09-05T08:00:00Z",
-				"name": "unknown",
-				"views": 58
-			},
-			{
-				"dateUTC": "2016-09-06T08:00:00Z",
-				"name": "google",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-09-06T08:00:00Z",
-				"name": "facebook",
-				"views": 53
-			},
-			{
-				"dateUTC": "2016-09-06T08:00:00Z",
-				"name": "twitter",
-				"views": 70
-			},
-			{
-				"dateUTC": "2016-09-06T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 82
-			},
-			{
-				"dateUTC": "2016-09-06T08:00:00Z",
-				"name": "user_email",
-				"views": 6
-			},
-			{
-				"dateUTC": "2016-09-06T08:00:00Z",
-				"name": "unknown",
-				"views": 40
-			},
-			{
-				"dateUTC": "2016-09-07T08:00:00Z",
-				"name": "google",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-09-07T08:00:00Z",
-				"name": "facebook",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-09-07T08:00:00Z",
-				"name": "twitter",
-				"views": 21
-			},
-			{
-				"dateUTC": "2016-09-07T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-09-07T08:00:00Z",
-				"name": "user_email",
-				"views": 81
-			},
-			{
-				"dateUTC": "2016-09-07T08:00:00Z",
-				"name": "unknown",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-09-08T08:00:00Z",
-				"name": "google",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-09-08T08:00:00Z",
-				"name": "facebook",
-				"views": 81
-			},
-			{
-				"dateUTC": "2016-09-08T08:00:00Z",
-				"name": "twitter",
-				"views": 87
-			},
-			{
-				"dateUTC": "2016-09-08T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 69
-			},
-			{
-				"dateUTC": "2016-09-08T08:00:00Z",
-				"name": "user_email",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-09-08T08:00:00Z",
-				"name": "unknown",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-09-09T08:00:00Z",
-				"name": "google",
-				"views": 45
-			},
-			{
-				"dateUTC": "2016-09-09T08:00:00Z",
-				"name": "facebook",
-				"views": 99
-			},
-			{
-				"dateUTC": "2016-09-09T08:00:00Z",
-				"name": "twitter",
-				"views": 11
-			},
-			{
-				"dateUTC": "2016-09-09T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 15
-			},
-			{
-				"dateUTC": "2016-09-09T08:00:00Z",
-				"name": "user_email",
-				"views": 17
-			},
-			{
-				"dateUTC": "2016-09-09T08:00:00Z",
-				"name": "unknown",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-09-10T08:00:00Z",
-				"name": "google",
-				"views": 1
-			},
-			{
-				"dateUTC": "2016-09-10T08:00:00Z",
-				"name": "facebook",
-				"views": 82
-			},
-			{
-				"dateUTC": "2016-09-10T08:00:00Z",
-				"name": "twitter",
-				"views": 87
-			},
-			{
-				"dateUTC": "2016-09-10T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-09-10T08:00:00Z",
-				"name": "user_email",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-09-10T08:00:00Z",
-				"name": "unknown",
-				"views": 12
-			},
-			{
-				"dateUTC": "2016-09-11T08:00:00Z",
-				"name": "google",
-				"views": 64
-			},
-			{
-				"dateUTC": "2016-09-11T08:00:00Z",
-				"name": "facebook",
-				"views": 96
-			},
-			{
-				"dateUTC": "2016-09-11T08:00:00Z",
-				"name": "twitter",
-				"views": 66
-			},
-			{
-				"dateUTC": "2016-09-11T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 2
-			},
-			{
-				"dateUTC": "2016-09-11T08:00:00Z",
-				"name": "user_email",
-				"views": 26
-			},
-			{
-				"dateUTC": "2016-09-11T08:00:00Z",
-				"name": "unknown",
-				"views": 71
-			},
-			{
-				"dateUTC": "2016-09-12T08:00:00Z",
-				"name": "google",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-09-12T08:00:00Z",
-				"name": "facebook",
-				"views": 2
-			},
-			{
-				"dateUTC": "2016-09-12T08:00:00Z",
-				"name": "twitter",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-09-12T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 13
-			},
-			{
-				"dateUTC": "2016-09-12T08:00:00Z",
-				"name": "user_email",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-09-12T08:00:00Z",
-				"name": "unknown",
-				"views": 28
-			},
-			{
-				"dateUTC": "2016-09-13T08:00:00Z",
-				"name": "google",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-09-13T08:00:00Z",
-				"name": "facebook",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-09-13T08:00:00Z",
-				"name": "twitter",
-				"views": 98
-			},
-			{
-				"dateUTC": "2016-09-13T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 60
-			},
-			{
-				"dateUTC": "2016-09-13T08:00:00Z",
-				"name": "user_email",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-09-13T08:00:00Z",
-				"name": "unknown",
-				"views": 34
-			},
-			{
-				"dateUTC": "2016-09-14T08:00:00Z",
-				"name": "google",
-				"views": 71
-			},
-			{
-				"dateUTC": "2016-09-14T08:00:00Z",
-				"name": "facebook",
-				"views": 71
-			},
-			{
-				"dateUTC": "2016-09-14T08:00:00Z",
-				"name": "twitter",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-09-14T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-09-14T08:00:00Z",
-				"name": "user_email",
-				"views": 75
-			},
-			{
-				"dateUTC": "2016-09-14T08:00:00Z",
-				"name": "unknown",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-09-15T08:00:00Z",
-				"name": "google",
-				"views": 54
-			},
-			{
-				"dateUTC": "2016-09-15T08:00:00Z",
-				"name": "facebook",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-09-15T08:00:00Z",
-				"name": "twitter",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-09-15T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 11
-			},
-			{
-				"dateUTC": "2016-09-15T08:00:00Z",
-				"name": "user_email",
-				"views": 41
-			},
-			{
-				"dateUTC": "2016-09-15T08:00:00Z",
-				"name": "unknown",
-				"views": 70
-			},
-			{
-				"dateUTC": "2016-09-16T08:00:00Z",
-				"name": "google",
-				"views": 39
-			},
-			{
-				"dateUTC": "2016-09-16T08:00:00Z",
-				"name": "facebook",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-09-16T08:00:00Z",
-				"name": "twitter",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-09-16T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-09-16T08:00:00Z",
-				"name": "user_email",
-				"views": 56
-			},
-			{
-				"dateUTC": "2016-09-16T08:00:00Z",
-				"name": "unknown",
-				"views": 3
-			},
-			{
-				"dateUTC": "2016-09-17T08:00:00Z",
-				"name": "google",
-				"views": 64
-			},
-			{
-				"dateUTC": "2016-09-17T08:00:00Z",
-				"name": "facebook",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-09-17T08:00:00Z",
-				"name": "twitter",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-09-17T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 59
-			},
-			{
-				"dateUTC": "2016-09-17T08:00:00Z",
-				"name": "user_email",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-09-17T08:00:00Z",
-				"name": "unknown",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-09-18T08:00:00Z",
-				"name": "google",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-09-18T08:00:00Z",
-				"name": "facebook",
-				"views": 38
-			},
-			{
-				"dateUTC": "2016-09-18T08:00:00Z",
-				"name": "twitter",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-09-18T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 73
-			},
-			{
-				"dateUTC": "2016-09-18T08:00:00Z",
-				"name": "user_email",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-09-18T08:00:00Z",
-				"name": "unknown",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-09-19T08:00:00Z",
-				"name": "google",
-				"views": 73
-			},
-			{
-				"dateUTC": "2016-09-19T08:00:00Z",
-				"name": "facebook",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-09-19T08:00:00Z",
-				"name": "twitter",
-				"views": 52
-			},
-			{
-				"dateUTC": "2016-09-19T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 38
-			},
-			{
-				"dateUTC": "2016-09-19T08:00:00Z",
-				"name": "user_email",
-				"views": 53
-			},
-			{
-				"dateUTC": "2016-09-19T08:00:00Z",
-				"name": "unknown",
-				"views": 88
-			},
-			{
-				"dateUTC": "2016-09-20T08:00:00Z",
-				"name": "google",
-				"views": 5
-			},
-			{
-				"dateUTC": "2016-09-20T08:00:00Z",
-				"name": "facebook",
-				"views": 94
-			},
-			{
-				"dateUTC": "2016-09-20T08:00:00Z",
-				"name": "twitter",
-				"views": 34
-			},
-			{
-				"dateUTC": "2016-09-20T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-09-20T08:00:00Z",
-				"name": "user_email",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-09-20T08:00:00Z",
-				"name": "unknown",
-				"views": 88
-			},
-			{
-				"dateUTC": "2016-09-21T08:00:00Z",
-				"name": "google",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-09-21T08:00:00Z",
-				"name": "facebook",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-09-21T08:00:00Z",
-				"name": "twitter",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-09-21T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-09-21T08:00:00Z",
-				"name": "user_email",
-				"views": 31
-			},
-			{
-				"dateUTC": "2016-09-21T08:00:00Z",
-				"name": "unknown",
-				"views": 83
-			},
-			{
-				"dateUTC": "2016-09-22T08:00:00Z",
-				"name": "google",
-				"views": 73
-			},
-			{
-				"dateUTC": "2016-09-22T08:00:00Z",
-				"name": "facebook",
-				"views": 36
-			},
-			{
-				"dateUTC": "2016-09-22T08:00:00Z",
-				"name": "twitter",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-09-22T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 96
-			},
-			{
-				"dateUTC": "2016-09-22T08:00:00Z",
-				"name": "user_email",
-				"views": 22
-			},
-			{
-				"dateUTC": "2016-09-22T08:00:00Z",
-				"name": "unknown",
-				"views": 36
-			},
-			{
-				"dateUTC": "2016-09-23T08:00:00Z",
-				"name": "google",
-				"views": 42
-			},
-			{
-				"dateUTC": "2016-09-23T08:00:00Z",
-				"name": "facebook",
-				"views": 70
-			},
-			{
-				"dateUTC": "2016-09-23T08:00:00Z",
-				"name": "twitter",
-				"views": 91
-			},
-			{
-				"dateUTC": "2016-09-23T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 93
-			},
-			{
-				"dateUTC": "2016-09-23T08:00:00Z",
-				"name": "user_email",
-				"views": 25
-			},
-			{
-				"dateUTC": "2016-09-23T08:00:00Z",
-				"name": "unknown",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-09-24T08:00:00Z",
-				"name": "google",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-09-24T08:00:00Z",
-				"name": "facebook",
-				"views": 6
-			},
-			{
-				"dateUTC": "2016-09-24T08:00:00Z",
-				"name": "twitter",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-09-24T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 3
-			},
-			{
-				"dateUTC": "2016-09-24T08:00:00Z",
-				"name": "user_email",
-				"views": 14
-			},
-			{
-				"dateUTC": "2016-09-24T08:00:00Z",
-				"name": "unknown",
-				"views": 40
-			},
-			{
-				"dateUTC": "2016-09-25T08:00:00Z",
-				"name": "google",
-				"views": 66
-			},
-			{
-				"dateUTC": "2016-09-25T08:00:00Z",
-				"name": "facebook",
-				"views": 33
-			},
-			{
-				"dateUTC": "2016-09-25T08:00:00Z",
-				"name": "twitter",
-				"views": 52
-			},
-			{
-				"dateUTC": "2016-09-25T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 81
-			},
-			{
-				"dateUTC": "2016-09-25T08:00:00Z",
-				"name": "user_email",
-				"views": 87
-			},
-			{
-				"dateUTC": "2016-09-25T08:00:00Z",
-				"name": "unknown",
-				"views": 90
-			},
-			{
-				"dateUTC": "2016-09-26T08:00:00Z",
-				"name": "google",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-09-26T08:00:00Z",
-				"name": "facebook",
-				"views": 91
-			},
-			{
-				"dateUTC": "2016-09-26T08:00:00Z",
-				"name": "twitter",
-				"views": 47
-			},
-			{
-				"dateUTC": "2016-09-26T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 87
-			},
-			{
-				"dateUTC": "2016-09-26T08:00:00Z",
-				"name": "user_email",
-				"views": 82
-			},
-			{
-				"dateUTC": "2016-09-26T08:00:00Z",
-				"name": "unknown",
-				"views": 31
-			},
-			{
-				"dateUTC": "2016-09-27T08:00:00Z",
-				"name": "google",
-				"views": 52
-			},
-			{
-				"dateUTC": "2016-09-27T08:00:00Z",
-				"name": "facebook",
-				"views": 97
-			},
-			{
-				"dateUTC": "2016-09-27T08:00:00Z",
-				"name": "twitter",
-				"views": 21
-			},
-			{
-				"dateUTC": "2016-09-27T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-09-27T08:00:00Z",
-				"name": "user_email",
-				"views": 73
-			},
-			{
-				"dateUTC": "2016-09-27T08:00:00Z",
-				"name": "unknown",
-				"views": 29
-			},
-			{
-				"dateUTC": "2016-09-28T08:00:00Z",
-				"name": "google",
-				"views": 91
-			},
-			{
-				"dateUTC": "2016-09-28T08:00:00Z",
-				"name": "facebook",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-09-28T08:00:00Z",
-				"name": "twitter",
-				"views": 26
-			},
-			{
-				"dateUTC": "2016-09-28T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 1
-			},
-			{
-				"dateUTC": "2016-09-28T08:00:00Z",
-				"name": "user_email",
-				"views": 28
-			},
-			{
-				"dateUTC": "2016-09-28T08:00:00Z",
-				"name": "unknown",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-09-29T08:00:00Z",
-				"name": "google",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-09-29T08:00:00Z",
-				"name": "facebook",
-				"views": 40
-			},
-			{
-				"dateUTC": "2016-09-29T08:00:00Z",
-				"name": "twitter",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-09-29T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 29
-			},
-			{
-				"dateUTC": "2016-09-29T08:00:00Z",
-				"name": "user_email",
-				"views": 82
-			},
-			{
-				"dateUTC": "2016-09-29T08:00:00Z",
-				"name": "unknown",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-09-30T08:00:00Z",
-				"name": "google",
-				"views": 40
-			},
-			{
-				"dateUTC": "2016-09-30T08:00:00Z",
-				"name": "facebook",
-				"views": 20
-			},
-			{
-				"dateUTC": "2016-09-30T08:00:00Z",
-				"name": "twitter",
-				"views": 14
-			},
-			{
-				"dateUTC": "2016-09-30T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 68
-			},
-			{
-				"dateUTC": "2016-09-30T08:00:00Z",
-				"name": "user_email",
-				"views": 26
-			},
-			{
-				"dateUTC": "2016-09-30T08:00:00Z",
-				"name": "unknown",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-10-01T08:00:00Z",
-				"name": "google",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-10-01T08:00:00Z",
-				"name": "facebook",
-				"views": 18
-			},
-			{
-				"dateUTC": "2016-10-01T08:00:00Z",
-				"name": "twitter",
-				"views": 81
-			},
-			{
-				"dateUTC": "2016-10-01T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 15
-			},
-			{
-				"dateUTC": "2016-10-01T08:00:00Z",
-				"name": "user_email",
-				"views": 4
-			},
-			{
-				"dateUTC": "2016-10-01T08:00:00Z",
-				"name": "unknown",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-10-02T08:00:00Z",
-				"name": "google",
-				"views": 28
-			},
-			{
-				"dateUTC": "2016-10-02T08:00:00Z",
-				"name": "facebook",
-				"views": 4
-			},
-			{
-				"dateUTC": "2016-10-02T08:00:00Z",
-				"name": "twitter",
-				"views": 17
-			},
-			{
-				"dateUTC": "2016-10-02T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-10-02T08:00:00Z",
-				"name": "user_email",
-				"views": 47
-			},
-			{
-				"dateUTC": "2016-10-02T08:00:00Z",
-				"name": "unknown",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-10-03T08:00:00Z",
-				"name": "google",
-				"views": 55
-			},
-			{
-				"dateUTC": "2016-10-03T08:00:00Z",
-				"name": "facebook",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-10-03T08:00:00Z",
-				"name": "twitter",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-10-03T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 72
-			},
-			{
-				"dateUTC": "2016-10-03T08:00:00Z",
-				"name": "user_email",
-				"views": 6
-			},
-			{
-				"dateUTC": "2016-10-03T08:00:00Z",
-				"name": "unknown",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-10-04T08:00:00Z",
-				"name": "google",
-				"views": 34
-			},
-			{
-				"dateUTC": "2016-10-04T08:00:00Z",
-				"name": "facebook",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-10-04T08:00:00Z",
-				"name": "twitter",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-10-04T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-10-04T08:00:00Z",
-				"name": "user_email",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-10-04T08:00:00Z",
-				"name": "unknown",
-				"views": 55
-			},
-			{
-				"dateUTC": "2016-10-05T08:00:00Z",
-				"name": "google",
-				"views": 33
-			},
-			{
-				"dateUTC": "2016-10-05T08:00:00Z",
-				"name": "facebook",
-				"views": 99
-			},
-			{
-				"dateUTC": "2016-10-05T08:00:00Z",
-				"name": "twitter",
-				"views": 82
-			},
-			{
-				"dateUTC": "2016-10-05T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 22
-			},
-			{
-				"dateUTC": "2016-10-05T08:00:00Z",
-				"name": "user_email",
-				"views": 94
-			},
-			{
-				"dateUTC": "2016-10-05T08:00:00Z",
-				"name": "unknown",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-10-06T08:00:00Z",
-				"name": "google",
-				"views": 97
-			},
-			{
-				"dateUTC": "2016-10-06T08:00:00Z",
-				"name": "facebook",
-				"views": 31
-			},
-			{
-				"dateUTC": "2016-10-06T08:00:00Z",
-				"name": "twitter",
-				"views": 34
-			},
-			{
-				"dateUTC": "2016-10-06T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-10-06T08:00:00Z",
-				"name": "user_email",
-				"views": 6
-			},
-			{
-				"dateUTC": "2016-10-06T08:00:00Z",
-				"name": "unknown",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-10-07T08:00:00Z",
-				"name": "google",
-				"views": 14
-			},
-			{
-				"dateUTC": "2016-10-07T08:00:00Z",
-				"name": "facebook",
-				"views": 91
-			},
-			{
-				"dateUTC": "2016-10-07T08:00:00Z",
-				"name": "twitter",
-				"views": 88
-			},
-			{
-				"dateUTC": "2016-10-07T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 53
-			},
-			{
-				"dateUTC": "2016-10-07T08:00:00Z",
-				"name": "user_email",
-				"views": 99
-			},
-			{
-				"dateUTC": "2016-10-07T08:00:00Z",
-				"name": "unknown",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-10-08T08:00:00Z",
-				"name": "google",
-				"views": 76
-			},
-			{
-				"dateUTC": "2016-10-08T08:00:00Z",
-				"name": "facebook",
-				"views": 4
-			},
-			{
-				"dateUTC": "2016-10-08T08:00:00Z",
-				"name": "twitter",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-10-08T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 13
-			},
-			{
-				"dateUTC": "2016-10-08T08:00:00Z",
-				"name": "user_email",
-				"views": 76
-			},
-			{
-				"dateUTC": "2016-10-08T08:00:00Z",
-				"name": "unknown",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-10-09T08:00:00Z",
-				"name": "google",
-				"views": 61
-			},
-			{
-				"dateUTC": "2016-10-09T08:00:00Z",
-				"name": "facebook",
-				"views": 25
-			},
-			{
-				"dateUTC": "2016-10-09T08:00:00Z",
-				"name": "twitter",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-10-09T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 64
-			},
-			{
-				"dateUTC": "2016-10-09T08:00:00Z",
-				"name": "user_email",
-				"views": 57
-			},
-			{
-				"dateUTC": "2016-10-09T08:00:00Z",
-				"name": "unknown",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-10-10T08:00:00Z",
-				"name": "google",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-10-10T08:00:00Z",
-				"name": "facebook",
-				"views": 4
-			},
-			{
-				"dateUTC": "2016-10-10T08:00:00Z",
-				"name": "twitter",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-10-10T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-10-10T08:00:00Z",
-				"name": "user_email",
-				"views": 43
-			},
-			{
-				"dateUTC": "2016-10-10T08:00:00Z",
-				"name": "unknown",
-				"views": 98
-			},
-			{
-				"dateUTC": "2016-10-11T08:00:00Z",
-				"name": "google",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-10-11T08:00:00Z",
-				"name": "facebook",
-				"views": 54
-			},
-			{
-				"dateUTC": "2016-10-11T08:00:00Z",
-				"name": "twitter",
-				"views": 56
-			},
-			{
-				"dateUTC": "2016-10-11T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-10-11T08:00:00Z",
-				"name": "user_email",
-				"views": 37
-			},
-			{
-				"dateUTC": "2016-10-11T08:00:00Z",
-				"name": "unknown",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-10-12T08:00:00Z",
-				"name": "google",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-10-12T08:00:00Z",
-				"name": "facebook",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-10-12T08:00:00Z",
-				"name": "twitter",
-				"views": 97
-			},
-			{
-				"dateUTC": "2016-10-12T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 94
-			},
-			{
-				"dateUTC": "2016-10-12T08:00:00Z",
-				"name": "user_email",
-				"views": 61
-			},
-			{
-				"dateUTC": "2016-10-12T08:00:00Z",
-				"name": "unknown",
-				"views": 13
-			},
-			{
-				"dateUTC": "2016-10-13T08:00:00Z",
-				"name": "google",
-				"views": 45
-			},
-			{
-				"dateUTC": "2016-10-13T08:00:00Z",
-				"name": "facebook",
-				"views": 45
-			},
-			{
-				"dateUTC": "2016-10-13T08:00:00Z",
-				"name": "twitter",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-10-13T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 84
-			},
-			{
-				"dateUTC": "2016-10-13T08:00:00Z",
-				"name": "user_email",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-10-13T08:00:00Z",
-				"name": "unknown",
-				"views": 83
-			},
-			{
-				"dateUTC": "2016-10-14T08:00:00Z",
-				"name": "google",
-				"views": 11
-			},
-			{
-				"dateUTC": "2016-10-14T08:00:00Z",
-				"name": "facebook",
-				"views": 39
-			},
-			{
-				"dateUTC": "2016-10-14T08:00:00Z",
-				"name": "twitter",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-10-14T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-10-14T08:00:00Z",
-				"name": "user_email",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-10-14T08:00:00Z",
-				"name": "unknown",
-				"views": 56
-			},
-			{
-				"dateUTC": "2016-10-15T08:00:00Z",
-				"name": "google",
-				"views": 69
-			},
-			{
-				"dateUTC": "2016-10-15T08:00:00Z",
-				"name": "facebook",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-10-15T08:00:00Z",
-				"name": "twitter",
-				"views": 42
-			},
-			{
-				"dateUTC": "2016-10-15T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-10-15T08:00:00Z",
-				"name": "user_email",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-10-15T08:00:00Z",
-				"name": "unknown",
-				"views": 43
-			},
-			{
-				"dateUTC": "2016-10-16T08:00:00Z",
-				"name": "google",
-				"views": 29
-			},
-			{
-				"dateUTC": "2016-10-16T08:00:00Z",
-				"name": "facebook",
-				"views": 86
-			},
-			{
-				"dateUTC": "2016-10-16T08:00:00Z",
-				"name": "twitter",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-10-16T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 35
-			},
-			{
-				"dateUTC": "2016-10-16T08:00:00Z",
-				"name": "user_email",
-				"views": 3
-			},
-			{
-				"dateUTC": "2016-10-16T08:00:00Z",
-				"name": "unknown",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-10-17T08:00:00Z",
-				"name": "google",
-				"views": 39
-			},
-			{
-				"dateUTC": "2016-10-17T08:00:00Z",
-				"name": "facebook",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-10-17T08:00:00Z",
-				"name": "twitter",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-10-17T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 97
-			},
-			{
-				"dateUTC": "2016-10-17T08:00:00Z",
-				"name": "user_email",
-				"views": 75
-			},
-			{
-				"dateUTC": "2016-10-17T08:00:00Z",
-				"name": "unknown",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-10-18T08:00:00Z",
-				"name": "google",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-10-18T08:00:00Z",
-				"name": "facebook",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-10-18T08:00:00Z",
-				"name": "twitter",
-				"views": 75
-			},
-			{
-				"dateUTC": "2016-10-18T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 99
-			},
-			{
-				"dateUTC": "2016-10-18T08:00:00Z",
-				"name": "user_email",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-10-18T08:00:00Z",
-				"name": "unknown",
-				"views": 66
-			},
-			{
-				"dateUTC": "2016-10-19T08:00:00Z",
-				"name": "google",
-				"views": 29
-			},
-			{
-				"dateUTC": "2016-10-19T08:00:00Z",
-				"name": "facebook",
-				"views": 64
-			},
-			{
-				"dateUTC": "2016-10-19T08:00:00Z",
-				"name": "twitter",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-10-19T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-10-19T08:00:00Z",
-				"name": "user_email",
-				"views": 25
-			},
-			{
-				"dateUTC": "2016-10-19T08:00:00Z",
-				"name": "unknown",
-				"views": 40
-			},
-			{
-				"dateUTC": "2016-10-20T08:00:00Z",
-				"name": "google",
-				"views": 41
-			},
-			{
-				"dateUTC": "2016-10-20T08:00:00Z",
-				"name": "facebook",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-10-20T08:00:00Z",
-				"name": "twitter",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-10-20T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 13
-			},
-			{
-				"dateUTC": "2016-10-20T08:00:00Z",
-				"name": "user_email",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-10-20T08:00:00Z",
-				"name": "unknown",
-				"views": 42
-			},
-			{
-				"dateUTC": "2016-10-21T08:00:00Z",
-				"name": "google",
-				"views": 20
-			},
-			{
-				"dateUTC": "2016-10-21T08:00:00Z",
-				"name": "facebook",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-10-21T08:00:00Z",
-				"name": "twitter",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-10-21T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 38
-			},
-			{
-				"dateUTC": "2016-10-21T08:00:00Z",
-				"name": "user_email",
-				"views": 54
-			},
-			{
-				"dateUTC": "2016-10-21T08:00:00Z",
-				"name": "unknown",
-				"views": 42
+				"date": "2011-01-08"
 			}
 		]
 	};
 
 /***/ })
 ]);
-//# sourceMappingURL=demo-stacked-area.js.map
+//# sourceMappingURL=demo-stacked-bar.js.map

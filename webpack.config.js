@@ -23,6 +23,7 @@ var webpack = require('webpack'),
         'mini-tooltip': './src/charts/mini-tooltip.js',
         'sparkline': './src/charts/sparkline.js',
         'stacked-area': './src/charts/stacked-area.js',
+        'stacked-bar': './src/charts/stacked-bar.js',
         'step': './src/charts/step.js',
         'brush': './src/charts/brush.js',
         // hack to make webpack use colors as an entry point while its also a dependency of the charts above
@@ -60,8 +61,10 @@ config = {
     demos : {
         devtool: 'source-map',
         entry: {
+            'resize-helper': './demos/helpers/resizeHelper.js',
             'demo-line': './demos/demo-line.js',
             'demo-stacked-area': './demos/demo-stacked-area.js',
+            'demo-stacked-bar': './demos/demo-stacked-bar.js',
             'demo-bar': './demos/demo-bar.js',
             'demo-donut': './demos/demo-donut.js',
             'demo-sparkline': './demos/demo-sparkline.js',
@@ -91,25 +94,23 @@ config = {
         ] ,
         devServer:{
             proxy: {
-            '/britecharts/scripts/common.js': {
-                target: 'http://localhost:8001/',
-                pathRewrite: {'^/britecharts/scripts/' : '/assets/'}
-            },
-             '/britecharts/scripts/demo-*.js': {
-                target: 'http://localhost:8001/',
-                pathRewrite: {'^/britecharts/scripts/' : '/assets/'}
-            },
-            '/britecharts/scripts/*.js': {
-                target: 'http://localhost:8001/',
-                pathRewrite: {'^/britecharts/scripts/' : 'scripts/'}
-            },
-            '/britecharts/': {
-                target: 'http://localhost:8001/',
-                pathRewrite: {'^/britecharts/' : ''}
+                '/britecharts/scripts/common.js': {
+                    target: 'http://localhost:8001/',
+                    pathRewrite: {'^/britecharts/scripts/' : '/assets/'}
+                },
+                '/britecharts/scripts/demo-*.js': {
+                    target: 'http://localhost:8001/',
+                    pathRewrite: {'^/britecharts/scripts/' : '/assets/'}
+                },
+                '/britecharts/scripts/*.js': {
+                    target: 'http://localhost:8001/',
+                    pathRewrite: {'^/britecharts/scripts/' : 'scripts/'}
+                },
+                '/britecharts/': {
+                    target: 'http://localhost:8001/',
+                    pathRewrite: {'^/britecharts/' : ''}
                 }
-
             },
-
         }
     },
 
