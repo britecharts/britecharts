@@ -75,7 +75,7 @@ webpackJsonp([7,9],[
 	        }).nameLabel('date').valueLabel('views').stackLabel('stack').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, x, y) {
-	            chartTooltip.update(dataPoint, topicColorMap, x, y);
+	            // chartTooltip.update(dataPoint, topicColorMap, x, y);
 	        }).on('customMouseOut', function () {
 	            chartTooltip.hide();
 	        });
@@ -111,7 +111,7 @@ webpackJsonp([7,9],[
 	    };
 	
 	    // Redraw charts on window resize
-	    PubSub.subscribe('resize', redrawCharts);
+	    // PubSub.subscribe('resize', redrawCharts);
 	
 	    // Color schema selector
 	    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.stacked-bar', createStackedBarChartWithTooltip);
@@ -11705,7 +11705,7 @@ webpackJsonp([7,9],[
 	            // Not sure if necessary
 	            tooltipRight.attr('x', tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4);
 	
-	            tooltipBody.append('circle').classed('tooltip-circle', true).attr('cx', 23 - tooltipWidth / 4).attr('cy', ttTextY + circleYOffset).attr('r', 5).style('fill', colorMap[tooltipLeftText]).style('stroke-width', 1);
+	            tooltipBody.append('circle').classed('tooltip-circle', true).attr('cx', 23 - tooltipWidth / 4).attr('cy', ttTextY + circleYOffset).attr('r', 5).style('fill', colorMap[name]).style('stroke-width', 1);
 	
 	            ttTextY += textSize.height + 7;
 	        }

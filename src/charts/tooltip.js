@@ -313,7 +313,7 @@ define(function(require){
                 .attr('cx', 23 - tooltipWidth / 4)
                 .attr('cy', (ttTextY + circleYOffset))
                 .attr('r', 5)
-                .style('fill', colorMap[tooltipLeftText])
+                .style('fill', colorMap[name])
                 .style('stroke-width', 1);
 
             ttTextY += textSize.height + 7;

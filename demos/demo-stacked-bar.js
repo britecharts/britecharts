@@ -98,7 +98,7 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
                 chartTooltip.show();
             })
             .on('customMouseMove', function(dataPoint, topicColorMap, x, y) {
-                chartTooltip.update(dataPoint, topicColorMap, x, y);
+                // chartTooltip.update(dataPoint, topicColorMap, x, y);
             })
             .on('customMouseOut', function() {
                 chartTooltip.hide();
@@ -138,7 +138,7 @@ if (d3Selection.select('.js-stacked-bar-chart-tooltip-container').node()){
     };
 
     // Redraw charts on window resize
-    PubSub.subscribe('resize', redrawCharts);
+    // PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
     colorSelectorHelper.createColorSelector('.js-color-selector-container', '.stacked-bar', createStackedBarChartWithTooltip);

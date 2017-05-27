@@ -115,7 +115,7 @@ webpackJsonp([4,9],[
 	        container.datum(dataset).call(lineChart2);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.title('Quantity Sold');
+	        chartTooltip.valueLabel('value').title('Quantity Sold');
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -14235,7 +14235,7 @@ webpackJsonp([4,9],[
 	            // Not sure if necessary
 	            tooltipRight.attr('x', tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4);
 	
-	            tooltipBody.append('circle').classed('tooltip-circle', true).attr('cx', 23 - tooltipWidth / 4).attr('cy', ttTextY + circleYOffset).attr('r', 5).style('fill', colorMap[tooltipLeftText]).style('stroke-width', 1);
+	            tooltipBody.append('circle').classed('tooltip-circle', true).attr('cx', 23 - tooltipWidth / 4).attr('cy', ttTextY + circleYOffset).attr('r', 5).style('fill', colorMap[name]).style('stroke-width', 1);
 	
 	            ttTextY += textSize.height + 7;
 	        }
