@@ -4,12 +4,13 @@ webpackJsonp([0,10],[
 
 	'use strict';
 	
-	var d3Selection = __webpack_require__(1),
-	    PubSub = __webpack_require__(2),
-	    bar = __webpack_require__(3),
-	    miniTooltip = __webpack_require__(24),
-	    colors = __webpack_require__(19),
-	    dataBuilder = __webpack_require__(25);
+	var d3Selection = __webpack_require__(1);
+	var PubSub = __webpack_require__(2);
+	
+	var bar = __webpack_require__(3);
+	var miniTooltip = __webpack_require__(24);
+	var colors = __webpack_require__(19);
+	var dataBuilder = __webpack_require__(25);
 	
 	__webpack_require__(29);
 	
@@ -18,7 +19,7 @@ webpackJsonp([0,10],[
 	        testDataSet = new dataBuilder.BarDataBuilder(),
 	        barContainer = d3Selection.select('.js-bar-chart-container'),
 	        containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
-	        dataset;
+	        dataset = void 0;
 	
 	    if (containerWidth) {
 	        dataset = testDataSet.withLettersFrequency().build();
@@ -35,8 +36,8 @@ webpackJsonp([0,10],[
 	        testDataSet = new dataBuilder.BarDataBuilder(),
 	        barContainer = d3Selection.select('.js-horizontal-bar-chart-container'),
 	        containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
-	        tooltipContainer,
-	        dataset;
+	        tooltipContainer = void 0,
+	        dataset = void 0;
 	
 	    if (containerWidth) {
 	        dataset = testDataSet.withColors().build();
@@ -61,8 +62,8 @@ webpackJsonp([0,10],[
 	        testDataSet = new dataBuilder.BarDataBuilder(),
 	        barContainer = d3Selection.select('.js-bar-chart-tooltip-container'),
 	        containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
-	        tooltipContainer,
-	        dataset;
+	        tooltipContainer = void 0,
+	        dataset = void 0;
 	
 	    if (containerWidth) {
 	        d3Selection.select('.js-download-button').on('click', function () {

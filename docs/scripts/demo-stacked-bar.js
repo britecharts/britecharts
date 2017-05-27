@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 webpackJsonp([8,10],[
+=======
+webpackJsonp([7,9],[
+>>>>>>> Playing with it
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7,9 +11,15 @@ webpackJsonp([8,10],[
 	var d3Selection = __webpack_require__(1),
 	    PubSub = __webpack_require__(2),
 	    colors = __webpack_require__(19),
+<<<<<<< HEAD
 	    stackedBarChart = __webpack_require__(70),
 	    tooltip = __webpack_require__(48),
 	    stackedDataBuilder = __webpack_require__(71),
+=======
+	    stackedBarChart = __webpack_require__(67),
+	    tooltip = __webpack_require__(48),
+	    stackedDataBuilder = __webpack_require__(68),
+>>>>>>> Playing with it
 	    colorSelectorHelper = __webpack_require__(45);
 	__webpack_require__(29);
 	
@@ -41,7 +51,11 @@ webpackJsonp([8,10],[
 	        container.datum(dataset.data).call(stackedBar);
 	
 	        // Tooltip Setup and start
+<<<<<<< HEAD
 	        chartTooltip.topicLabel('values').dateLabel('key').nameLabel('stack').title('Tooltip title');
+=======
+	        chartTooltip.topicLabel('values').dateLabel('key').title('Testing tooltip');
+>>>>>>> Playing with it
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -87,7 +101,11 @@ webpackJsonp([8,10],[
 	        container.datum(dataset.data).call(stackedBar);
 	
 	        // Tooltip Setup and start
+<<<<<<< HEAD
 	        chartTooltip.topicLabel('values').dateLabel('key').nameLabel('stack').title('Tooltip Title');
+=======
+	        chartTooltip.topicLabel('values').dateLabel('key').title('Dummy Tooltip Title');
+>>>>>>> Playing with it
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -7070,9 +7088,14 @@ webpackJsonp([8,10],[
 	        d3svg.attr('version', 1.1).attr('xmlns', 'http://www.w3.org/2000/svg');
 	        var serializer = serializeWithStyles.initializeSerializer();
 	        var html = serializer(d3svg.node());
+<<<<<<< HEAD
 	
 	        html = formatHtmlByBrowser(html);
 	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width'), 10));
+=======
+	        html = formatHtmlByBrowser(html);
+	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width')));
+>>>>>>> Playing with it
 	        html = addBackground(html);
 	
 	        return html;
@@ -7177,7 +7200,10 @@ webpackJsonp([8,10],[
 	        }
 	        var britechartsGreySchema = colorSchemas.britechartsGreySchema;
 	
+<<<<<<< HEAD
 	
+=======
+>>>>>>> Playing with it
 	        html = html.replace(/<g/, '<text x="' + this.margin().left + '" y="' + config.titleTopOffset + '" font-family="' + config.titleFontFamily + '" font-size="' + config.titleFontSize + '" fill="' + britechartsGreySchema[6] + '"> ' + title + ' </text><g ');
 	
 	        return html;
@@ -7197,7 +7223,11 @@ webpackJsonp([8,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
+<<<<<<< HEAD
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+=======
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+>>>>>>> Playing with it
 	
 	    // Color Gradients
 	    var britechartGradients = {
@@ -7281,8 +7311,12 @@ webpackJsonp([8,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
+<<<<<<< HEAD
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
 	
+=======
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+>>>>>>> Playing with it
 	    var axisTimeCombinations = {
 	        MINUTE_HOUR: 'minute-hour',
 	        HOUR_DAY: 'hour-daymonth',
@@ -7367,8 +7401,12 @@ webpackJsonp([8,10],[
 	                    result = void 0;
 	
 	                if (!elem || elem.nodeType !== Node.ELEMENT_NODE) {
+<<<<<<< HEAD
 	                    // 'Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE'
 	
+=======
+	                    console.error('Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE');
+>>>>>>> Playing with it
 	                    return;
 	                }
 	
@@ -11264,6 +11302,7 @@ webpackJsonp([8,10],[
 /***/ }),
 /* 46 */,
 /* 47 */
+<<<<<<< HEAD
 /***/ (function(module, exports) {
 
 	/**
@@ -12101,6 +12140,253 @@ webpackJsonp([8,10],[
 	            tooltipTitle = tooltipTextContainer.append('text').classed('tooltip-title', true).attr('x', -tooltipWidth / 4 + 17).attr('dy', '.35em').attr('y', 16).style('fill', titleFillColor);
 	
 	            tooltipDivider = tooltipTextContainer.append('line').classed('tooltip-divider', true).attr('x1', -tooltipWidth / 4 + 15).attr('x2', 265).attr('y1', 31).attr('y2', 31).style('stroke', borderStrokeColor);
+=======
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	    'use strict';
+	
+	    var d3Format = __webpack_require__(9);
+	
+	    var valueRangeLimits = {
+	        small: 10,
+	        medium: 100
+	    };
+	    var integerValueFormats = {
+	        small: d3Format.format(''),
+	        medium: d3Format.format(''),
+	        large: d3Format.format('.2s')
+	    };
+	    var decimalValueFormats = {
+	        small: d3Format.format('.3f'),
+	        medium: d3Format.format('.1f'),
+	        large: d3Format.format('.2s')
+	    };
+	
+	    function getValueSize(value) {
+	        var size = 'large';
+	
+	        if (value < valueRangeLimits.small) {
+	            size = 'small';
+	        } else if (value < valueRangeLimits.medium) {
+	            size = 'medium';
+	        }
+	        return size;
+	    }
+	
+	    /**
+	     * Formats an integer value depending on its value range
+	     * @param  {Number} value Decimal point value to format
+	     * @return {Number}       Formatted value to show
+	     */
+	    function formatIntegerValue(value) {
+	        var format = integerValueFormats[getValueSize(value)];
+	
+	        return format(value);
+	    }
+	
+	    /**
+	     * Formats a floating point value depending on its value range
+	     * @param  {Number} value Decimal point value to format
+	     * @return {Number}       Formatted value to show
+	     */
+	    function formatDecimalValue(value) {
+	        var format = decimalValueFormats[getValueSize(value)];
+	
+	        return format(value);
+	    }
+	
+	    return {
+	        formatDecimalValue: formatDecimalValue,
+	        formatIntegerValue: formatIntegerValue
+	    };
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	    'use strict';
+	
+	    var d3Format = __webpack_require__(9);
+	    var d3Selection = __webpack_require__(1);
+	    var d3Transition = __webpack_require__(15);
+	    var d3TimeFormat = __webpack_require__(14);
+	
+	    var _require = __webpack_require__(20),
+	        axisTimeCombinations = _require.axisTimeCombinations;
+	
+	    var _require2 = __webpack_require__(47),
+	        formatIntegerValue = _require2.formatIntegerValue,
+	        formatDecimalValue = _require2.formatDecimalValue;
+	
+	    var _require3 = __webpack_require__(39),
+	        isInteger = _require3.isInteger;
+	
+	    /**
+	     * Tooltip Component reusable API class that renders a
+	     * simple and configurable tooltip element for Britechart's
+	     * line chart or stacked area chart.
+	     *
+	     * @module Tooltip
+	     * @tutorial tooltip
+	     * @requires d3-array, d3-axis, d3-dispatch, d3-format, d3-scale, d3-selection, d3-transition
+	     *
+	     * @example
+	     * var lineChart = line(),
+	     *     tooltip = tooltip();
+	     *
+	     * tooltip
+	     *     .title('Tooltip title');
+	     *
+	     * lineChart
+	     *     .width(500)
+	     *     .on('customMouseOver', function() {
+	     *          tooltip.show();
+	     *     })
+	     *     .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
+	     *          tooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+	     *     })
+	     *     .on('customMouseOut', function() {
+	     *          tooltip.hide();
+	     *     });
+	     *
+	     * d3Selection.select('.css-selector')
+	     *     .datum(dataset)
+	     *     .call(lineChart);
+	     *
+	     * d3Selection.select('.metadata-group .hover-marker')
+	     *     .datum([])
+	     *     .call(tooltip);
+	     *
+	     */
+	
+	
+	    return function module() {
+	
+	        var margin = {
+	            top: 2,
+	            right: 2,
+	            bottom: 2,
+	            left: 2
+	        },
+	            width = 250,
+	            height = 45,
+	            title = 'Tooltip title',
+	
+	
+	        // tooltip
+	        tooltip = void 0,
+	            tooltipOffset = {
+	            y: -55,
+	            x: 0
+	        },
+	            tooltipMaxTopicLength = 170,
+	            tooltipTextContainer = void 0,
+	            tooltipDivider = void 0,
+	            tooltipBody = void 0,
+	            tooltipTitle = void 0,
+	            tooltipWidth = 250,
+	            tooltipHeight = 48,
+	            ttTextX = 0,
+	            ttTextY = 37,
+	            textSize = void 0,
+	            entryLineLimit = 3,
+	            circleYOffset = 8,
+	            colorMap = void 0,
+	            bodyFillColor = '#FFFFFF',
+	            borderStrokeColor = '#D2D6DF',
+	            titleFillColor = '#6D717A',
+	            textFillColor = '#282C35',
+	            tooltipTextColor = '#000000',
+	            dateLabel = 'date',
+	            valueLabel = 'value',
+	            topicLabel = 'topics',
+	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
+	            forceAxisSettings = null,
+	            forceOrder = [],
+	
+	
+	        // formats
+	        monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
+	            monthDayHourFormat = d3TimeFormat.timeFormat('%b %d, %I %p'),
+	            chartWidth = void 0,
+	            chartHeight = void 0,
+	            data = void 0,
+	            svg = void 0;
+	
+	        /**
+	         * This function creates the graph using the selection as container
+	         * @param {D3Selection} _selection A d3 selection that represents
+	         *                                  the container(s) where the chart(s) will be rendered
+	         * @param {Object} _data The data to attach and generate the chart
+	         */
+	        function exports(_selection) {
+	            _selection.each(function (_data) {
+	                chartWidth = width - margin.left - margin.right;
+	                chartHeight = height - margin.top - margin.bottom;
+	                data = _data;
+	
+	                buildSVG(this);
+	            });
+	        }
+	
+	        /**
+	         * Builds containers for the tooltip
+	         * Also applies the Margin convention
+	         * @private
+	         */
+	        function buildContainerGroups() {
+	            var container = svg.append('g').classed('tooltip-container-group', true).attr('transform', 'translate( ' + margin.left + ', ' + margin.top + ')');
+	
+	            container.append('g').classed('tooltip-group', true);
+	        }
+	
+	        /**
+	         * Builds the SVG element that will contain the chart
+	         * @param  {HTMLElement} container DOM element that will work as the container of the graph
+	         * @private
+	         */
+	        function buildSVG(container) {
+	            if (!svg) {
+	                svg = d3Selection.select(container).append('g').classed('britechart britechart-tooltip', true);
+	
+	                buildContainerGroups();
+	                drawTooltip();
+	            }
+	            svg.transition().attr('width', width).attr('height', height);
+	
+	            // Hidden by default
+	            exports.hide();
+	        }
+	
+	        /**
+	         * Resets the tooltipBody content
+	         * @return void
+	         */
+	        function cleanContent() {
+	            tooltipBody.selectAll('text').remove();
+	            tooltipBody.selectAll('circle').remove();
+	        }
+	
+	        /**
+	         * Draws the different elements of the Tooltip box
+	         * @return void
+	         */
+	        function drawTooltip() {
+	            tooltipTextContainer = svg.selectAll('.tooltip-group').append('g').classed('tooltip-text', true);
+	
+	            tooltip = tooltipTextContainer.append('rect').classed('tooltip-text-container', true).attr('x', -tooltipWidth / 4 + 8).attr('y', 0).attr('width', tooltipWidth).attr('height', tooltipHeight).attr('rx', 3).attr('ry', 3).style('fill', bodyFillColor).style('stroke', borderStrokeColor).style('stroke-width', 1);
+	
+	            tooltipTitle = tooltipTextContainer.append('text').classed('tooltip-title', true).attr('x', -tooltipWidth / 4 + 17).attr('dy', '.35em').attr('y', 16).style('fill', titleFillColor);
+	
+	            tooltipDivider = tooltipTextContainer.append('line').classed('tooltip-divider', true).attr('x1', -tooltipWidth / 4 + 15).attr('y1', 31).attr('x2', 265).attr('y2', 31).style('stroke', borderStrokeColor);
+>>>>>>> Playing with it
 	
 	            tooltipBody = tooltipTextContainer.append('g').classed('tooltip-body', true).style('transform', 'translateY(8px)').style('fill', textFillColor);
 	        }
@@ -12108,6 +12394,7 @@ webpackJsonp([8,10],[
 	        /**
 	         * Formats the value depending on its characteristics
 	         * @param  {Number} value Value to format
+<<<<<<< HEAD
 	         * @return {Number}       Formatted value
 	         */
 	        function getFormattedValue(value) {
@@ -12156,6 +12443,22 @@ webpackJsonp([8,10],[
 	            }
 	
 	            return [tooltipX, tooltipY];
+=======
+	         * @return {Number}       Formatted value
+	         */
+	        function getFormattedValue(value) {
+	            if (!value) {
+	                return 0;
+	            }
+	
+	            if (isInteger(value)) {
+	                value = formatIntegerValue(value);
+	            } else {
+	                value = formatDecimalValue(value);
+	            }
+	
+	            return value;
+>>>>>>> Playing with it
 	        }
 	
 	        /**
@@ -12191,8 +12494,13 @@ webpackJsonp([8,10],[
 	         * @param  {Object} topic Topic to extract data from
 	         * @return void
 	         */
+<<<<<<< HEAD
 	        function updateTopicContent(topic) {
 	            var name = topic[nameLabel],
+=======
+	        function updateContent(topic) {
+	            var name = topic.name,
+>>>>>>> Playing with it
 	                tooltipRight = void 0,
 	                tooltipLeftText = void 0,
 	                tooltipRightText = void 0,
@@ -12211,13 +12519,18 @@ webpackJsonp([8,10],[
 	            // Not sure if necessary
 	            tooltipRight.attr('x', tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4);
 	
+<<<<<<< HEAD
 	            tooltipBody.append('circle').classed('tooltip-circle', true).attr('cx', 23 - tooltipWidth / 4).attr('cy', ttTextY + circleYOffset).attr('r', 5).style('fill', colorMap[name]).style('stroke-width', 1);
+=======
+	            tooltipBody.append('circle').classed('tooltip-circle', true).attr('cx', 23 - tooltipWidth / 4).attr('cy', ttTextY + circleYOffset).attr('r', 5).style('fill', colorMap[tooltipLeftText]).style('stroke-width', 1);
+>>>>>>> Playing with it
 	
 	            ttTextY += textSize.height + 7;
 	        }
 	
 	        /**
 	         * Updates size and position of tooltip depending on the side of the chart we are in
+<<<<<<< HEAD
 	         * TODO: This needs a refactor, following the mini-tooltip code.
 	         *
 	         * @param  {Object} dataPoint DataPoint of the tooltip
@@ -12234,6 +12547,23 @@ webpackJsonp([8,10],[
 	            tooltip.attr('width', tooltipWidth).attr('height', tooltipHeight + 10);
 	
 	            tooltipTextContainer.transition().duration(mouseChaseDuration).ease(ease).attr('transform', 'translate(' + tooltipX + ', ' + tooltipY + ')');
+=======
+	         * @param  {Object} dataPoint DataPoint of the tooltip
+	         * @param  {Number} xPosition DataPoint's x position in the chart
+	         * @return void
+	         */
+	        function updatePositionAndSize(dataPoint, xPosition) {
+	            tooltip.attr('width', tooltipWidth).attr('height', tooltipHeight + 10);
+	
+	            // show tooltip to the right
+	            if (xPosition - tooltipWidth < 0) {
+	                // Tooltip on the right
+	                tooltipTextContainer.attr('transform', 'translate(' + (tooltipWidth - 185) + ',' + tooltipOffset.y + ')');
+	            } else {
+	                // Tooltip on the left
+	                tooltipTextContainer.attr('transform', 'translate(' + -205 + ',' + tooltipOffset.y + ')');
+	            }
+>>>>>>> Playing with it
 	
 	            tooltipDivider.attr('x2', tooltipWidth - 60);
 	        }
@@ -12257,6 +12587,7 @@ webpackJsonp([8,10],[
 	        function formatDate(date) {
 	            var settings = forceAxisSettings || defaultAxisSettings;
 	            var format = null;
+<<<<<<< HEAD
 	            var localeOptions = { month: 'short', day: 'numeric' };
 	
 	            if (settings === axisTimeCombinations.DAY_MONTH || settings === axisTimeCombinations.MONTH_YEAR) {
@@ -12271,6 +12602,13 @@ webpackJsonp([8,10],[
 	                var f = Intl.DateTimeFormat(locale, localeOptions);
 	
 	                return f.format(date);
+=======
+	
+	            if (settings === axisTimeCombinations.DAY_MONTH || settings === axisTimeCombinations.MONTH_YEAR) {
+	                format = monthDayYearFormat;
+	            } else if (settings === axisTimeCombinations.HOUR_DAY || settings === axisTimeCombinations.MINUTE_HOUR) {
+	                format = monthDayHourFormat;
+>>>>>>> Playing with it
 	            }
 	
 	            return format(date);
@@ -12285,15 +12623,22 @@ webpackJsonp([8,10],[
 	        function _sortByForceOrder(topics) {
 	            var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : forceOrder;
 	
+<<<<<<< HEAD
 	            return order.map(function (orderName) {
 	                return topics.filter(function (_ref3) {
 	                    var name = _ref3.name;
+=======
+	            return forceOrder.map(function (orderName) {
+	                return topics.filter(function (_ref) {
+	                    var name = _ref.name;
+>>>>>>> Playing with it
 	                    return name === orderName;
 	                })[0];
 	            });
 	        }
 	
 	        /**
+<<<<<<< HEAD
 	         * Sorts topic by alphabetical order for arrays of objects with a name proeprty
 	         * @param  {Array} topics   List of topic objects
 	         * @return {Array}          List of topic name strings
@@ -12317,6 +12662,27 @@ webpackJsonp([8,10],[
 	
 	                topics = topics.concat(other);
 	            }
+=======
+	         * Updates tooltip title, content, size and position
+	         *
+	         * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
+	         * @param  {Number} xPosition           Position of the mouse on the X axis
+	         * @return void
+	         */
+	        function updateTooltip(dataPoint, xPosition) {
+	            var topics = dataPoint[topicLabel];
+	
+	            // sort order by forceOrder array if passed
+	            if (forceOrder.length) {
+	                topics = _sortByForceOrder(topics);
+	            }
+	
+	            cleanContent();
+	            resetSizeAndPositionPointers();
+	            updateTitle(dataPoint);
+	            topics.forEach(updateContent);
+	            updatePositionAndSize(dataPoint, xPosition);
+>>>>>>> Playing with it
 	        }
 	
 	        /**
@@ -12362,6 +12728,7 @@ webpackJsonp([8,10],[
 	        }
 	
 	        /**
+<<<<<<< HEAD
 	         * Draws the data entries inside the tooltip
 	         * @param  {Object} dataPoint   Data entry from to take the info
 	         * @return void
@@ -12673,22 +13040,821 @@ webpackJsonp([8,10],[
 /* 58 */,
 /* 59 */,
 /* 60 */,
+=======
+	         * Gets or Sets the dateLabel of the data
+	         * @param  {Number} _x Desired dateLabel
+	         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.dateLabel = function (_x) {
+	            if (!arguments.length) {
+	                return dateLabel;
+	            }
+	            dateLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the valueLabel of the data
+	         * @param  {Number} _x Desired valueLabel
+	         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.valueLabel = function (_x) {
+	            if (!arguments.length) {
+	                return valueLabel;
+	            }
+	            valueLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the topicLabel of the data
+	         * @param  {Number} _x Desired topicLabel
+	         * @return { topicLabel | module} Current topicLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.topicLabel = function (_x) {
+	            if (!arguments.length) {
+	                return topicLabel;
+	            }
+	            topicLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Hides the tooltip
+	         * @return {Module} Tooltip module to chain calls
+	         * @public
+	         */
+	        exports.hide = function () {
+	            svg.style('display', 'none');
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Shows the tooltip
+	         * @return {Module} Tooltip module to chain calls
+	         * @public
+	         */
+	        exports.show = function () {
+	            svg.style('display', 'block');
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the title of the tooltip
+	         * @param  {string} _x Desired title
+	         * @return { string | module} Current title or module to chain calls
+	         * @public
+	         */
+	        exports.title = function (_x) {
+	            if (!arguments.length) {
+	                return title;
+	            }
+	            title = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Pass an override for the ordering of your tooltip
+	         * @param  {Object[]} _x    Array of the names of your tooltip items
+	         * @return { overrideOrder | module} Current overrideOrder or Chart module to chain calls
+	         * @public
+	         */
+	        exports.forceOrder = function (_x) {
+	            if (!arguments.length) {
+	                return forceOrder;
+	            }
+	            forceOrder = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Updates the position and content of the tooltip
+	         * @param  {Object} dataPoint    Datapoint to represent
+	         * @param  {Object} colorMapping Color scheme of the topics
+	         * @param  {Number} position     X-scale position in pixels
+	         * @return {Module} Tooltip module to chain calls
+	         * @public
+	         */
+	        exports.update = function (dataPoint, colorMapping, position) {
+	            colorMap = colorMapping;
+	            updateTooltip(dataPoint, position);
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the tooltip to use a certain date format
+	         * @param  {String} _x Desired format
+	         * @return { (String|Module) }    Current format or module to chain calls
+	         */
+	        exports.forceDateRange = function (_x) {
+	            if (!arguments.length) {
+	                return forceAxisSettings || defaultAxisSettings;
+	            }
+	            forceAxisSettings = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * constants to be used to force the x axis to respect a certain granularity
+	         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
+	         * @example tooltip.forceDateRange(tooltip.axisTimeCombinations.HOUR_DAY)
+	         */
+	        exports.axisTimeCombinations = axisTimeCombinations;
+	
+	        return exports;
+	    };
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+/***/ }),
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */
+/***/ (function(module, exports) {
+
+	/**
+	 * lodash (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modularize exports="npm" -o ./`
+	 * Copyright jQuery Foundation and other contributors <https://jquery.org/>
+	 * Released under MIT license <https://lodash.com/license>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 */
+	
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+	
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]',
+	    funcTag = '[object Function]',
+	    genTag = '[object GeneratorFunction]';
+	
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^(?:0|[1-9]\d*)$/;
+	
+	/**
+	 * A faster alternative to `Function#apply`, this function invokes `func`
+	 * with the `this` binding of `thisArg` and the arguments of `args`.
+	 *
+	 * @private
+	 * @param {Function} func The function to invoke.
+	 * @param {*} thisArg The `this` binding of `func`.
+	 * @param {Array} args The arguments to invoke `func` with.
+	 * @returns {*} Returns the result of `func`.
+	 */
+	function apply(func, thisArg, args) {
+	  switch (args.length) {
+	    case 0: return func.call(thisArg);
+	    case 1: return func.call(thisArg, args[0]);
+	    case 2: return func.call(thisArg, args[0], args[1]);
+	    case 3: return func.call(thisArg, args[0], args[1], args[2]);
+	  }
+	  return func.apply(thisArg, args);
+	}
+	
+	/**
+	 * The base implementation of `_.times` without support for iteratee shorthands
+	 * or max array length checks.
+	 *
+	 * @private
+	 * @param {number} n The number of times to invoke `iteratee`.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Array} Returns the array of results.
+	 */
+	function baseTimes(n, iteratee) {
+	  var index = -1,
+	      result = Array(n);
+	
+	  while (++index < n) {
+	    result[index] = iteratee(index);
+	  }
+	  return result;
+	}
+	
+	/**
+	 * Creates a unary function that invokes `func` with its argument transformed.
+	 *
+	 * @private
+	 * @param {Function} func The function to wrap.
+	 * @param {Function} transform The argument transform.
+	 * @returns {Function} Returns the new function.
+	 */
+	function overArg(func, transform) {
+	  return function(arg) {
+	    return func(transform(arg));
+	  };
+	}
+	
+	/** Used for built-in method references. */
+	var objectProto = Object.prototype;
+	
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+	
+	/**
+	 * Used to resolve the
+	 * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+	
+	/** Built-in value references. */
+	var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+	
+	/* Built-in method references for those with the same name as other `lodash` methods. */
+	var nativeKeys = overArg(Object.keys, Object),
+	    nativeMax = Math.max;
+	
+	/** Detect if properties shadowing those on `Object.prototype` are non-enumerable. */
+	var nonEnumShadows = !propertyIsEnumerable.call({ 'valueOf': 1 }, 'valueOf');
+	
+	/**
+	 * Creates an array of the enumerable property names of the array-like `value`.
+	 *
+	 * @private
+	 * @param {*} value The value to query.
+	 * @param {boolean} inherited Specify returning inherited property names.
+	 * @returns {Array} Returns the array of property names.
+	 */
+	function arrayLikeKeys(value, inherited) {
+	  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+	  // Safari 9 makes `arguments.length` enumerable in strict mode.
+	  var result = (isArray(value) || isArguments(value))
+	    ? baseTimes(value.length, String)
+	    : [];
+	
+	  var length = result.length,
+	      skipIndexes = !!length;
+	
+	  for (var key in value) {
+	    if ((inherited || hasOwnProperty.call(value, key)) &&
+	        !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+	
+	/**
+	 * Assigns `value` to `key` of `object` if the existing value is not equivalent
+	 * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * for equality comparisons.
+	 *
+	 * @private
+	 * @param {Object} object The object to modify.
+	 * @param {string} key The key of the property to assign.
+	 * @param {*} value The value to assign.
+	 */
+	function assignValue(object, key, value) {
+	  var objValue = object[key];
+	  if (!(hasOwnProperty.call(object, key) && eq(objValue, value)) ||
+	      (value === undefined && !(key in object))) {
+	    object[key] = value;
+	  }
+	}
+	
+	/**
+	 * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 */
+	function baseKeys(object) {
+	  if (!isPrototype(object)) {
+	    return nativeKeys(object);
+	  }
+	  var result = [];
+	  for (var key in Object(object)) {
+	    if (hasOwnProperty.call(object, key) && key != 'constructor') {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+	
+	/**
+	 * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+	 *
+	 * @private
+	 * @param {Function} func The function to apply a rest parameter to.
+	 * @param {number} [start=func.length-1] The start position of the rest parameter.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseRest(func, start) {
+	  start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+	  return function() {
+	    var args = arguments,
+	        index = -1,
+	        length = nativeMax(args.length - start, 0),
+	        array = Array(length);
+	
+	    while (++index < length) {
+	      array[index] = args[start + index];
+	    }
+	    index = -1;
+	    var otherArgs = Array(start + 1);
+	    while (++index < start) {
+	      otherArgs[index] = args[index];
+	    }
+	    otherArgs[start] = array;
+	    return apply(func, this, otherArgs);
+	  };
+	}
+	
+	/**
+	 * Copies properties of `source` to `object`.
+	 *
+	 * @private
+	 * @param {Object} source The object to copy properties from.
+	 * @param {Array} props The property identifiers to copy.
+	 * @param {Object} [object={}] The object to copy properties to.
+	 * @param {Function} [customizer] The function to customize copied values.
+	 * @returns {Object} Returns `object`.
+	 */
+	function copyObject(source, props, object, customizer) {
+	  object || (object = {});
+	
+	  var index = -1,
+	      length = props.length;
+	
+	  while (++index < length) {
+	    var key = props[index];
+	
+	    var newValue = customizer
+	      ? customizer(object[key], source[key], key, object, source)
+	      : undefined;
+	
+	    assignValue(object, key, newValue === undefined ? source[key] : newValue);
+	  }
+	  return object;
+	}
+	
+	/**
+	 * Creates a function like `_.assign`.
+	 *
+	 * @private
+	 * @param {Function} assigner The function to assign values.
+	 * @returns {Function} Returns the new assigner function.
+	 */
+	function createAssigner(assigner) {
+	  return baseRest(function(object, sources) {
+	    var index = -1,
+	        length = sources.length,
+	        customizer = length > 1 ? sources[length - 1] : undefined,
+	        guard = length > 2 ? sources[2] : undefined;
+	
+	    customizer = (assigner.length > 3 && typeof customizer == 'function')
+	      ? (length--, customizer)
+	      : undefined;
+	
+	    if (guard && isIterateeCall(sources[0], sources[1], guard)) {
+	      customizer = length < 3 ? undefined : customizer;
+	      length = 1;
+	    }
+	    object = Object(object);
+	    while (++index < length) {
+	      var source = sources[index];
+	      if (source) {
+	        assigner(object, source, index, customizer);
+	      }
+	    }
+	    return object;
+	  });
+	}
+	
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return !!length &&
+	    (typeof value == 'number' || reIsUint.test(value)) &&
+	    (value > -1 && value % 1 == 0 && value < length);
+	}
+	
+	/**
+	 * Checks if the given arguments are from an iteratee call.
+	 *
+	 * @private
+	 * @param {*} value The potential iteratee value argument.
+	 * @param {*} index The potential iteratee index or key argument.
+	 * @param {*} object The potential iteratee object argument.
+	 * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+	 *  else `false`.
+	 */
+	function isIterateeCall(value, index, object) {
+	  if (!isObject(object)) {
+	    return false;
+	  }
+	  var type = typeof index;
+	  if (type == 'number'
+	        ? (isArrayLike(object) && isIndex(index, object.length))
+	        : (type == 'string' && index in object)
+	      ) {
+	    return eq(object[index], value);
+	  }
+	  return false;
+	}
+	
+	/**
+	 * Checks if `value` is likely a prototype object.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+	 */
+	function isPrototype(value) {
+	  var Ctor = value && value.constructor,
+	      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto;
+	
+	  return value === proto;
+	}
+	
+	/**
+	 * Performs a
+	 * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
+	 * comparison between two values to determine if they are equivalent.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to compare.
+	 * @param {*} other The other value to compare.
+	 * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
+	 * @example
+	 *
+	 * var object = { 'a': 1 };
+	 * var other = { 'a': 1 };
+	 *
+	 * _.eq(object, object);
+	 * // => true
+	 *
+	 * _.eq(object, other);
+	 * // => false
+	 *
+	 * _.eq('a', 'a');
+	 * // => true
+	 *
+	 * _.eq('a', Object('a'));
+	 * // => false
+	 *
+	 * _.eq(NaN, NaN);
+	 * // => true
+	 */
+	function eq(value, other) {
+	  return value === other || (value !== value && other !== other);
+	}
+	
+	/**
+	 * Checks if `value` is likely an `arguments` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArguments(function() { return arguments; }());
+	 * // => true
+	 *
+	 * _.isArguments([1, 2, 3]);
+	 * // => false
+	 */
+	function isArguments(value) {
+	  // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
+	  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+	    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+	}
+	
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array, else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(document.body.children);
+	 * // => false
+	 *
+	 * _.isArray('abc');
+	 * // => false
+	 *
+	 * _.isArray(_.noop);
+	 * // => false
+	 */
+	var isArray = Array.isArray;
+	
+	/**
+	 * Checks if `value` is array-like. A value is considered array-like if it's
+	 * not a function and has a `value.length` that's an integer greater than or
+	 * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLike(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLike('abc');
+	 * // => true
+	 *
+	 * _.isArrayLike(_.noop);
+	 * // => false
+	 */
+	function isArrayLike(value) {
+	  return value != null && isLength(value.length) && !isFunction(value);
+	}
+	
+	/**
+	 * This method is like `_.isArrayLike` except that it also checks if `value`
+	 * is an object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array-like object,
+	 *  else `false`.
+	 * @example
+	 *
+	 * _.isArrayLikeObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject('abc');
+	 * // => false
+	 *
+	 * _.isArrayLikeObject(_.noop);
+	 * // => false
+	 */
+	function isArrayLikeObject(value) {
+	  return isObjectLike(value) && isArrayLike(value);
+	}
+	
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a function, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in Safari 8-9 which returns 'object' for typed array and other constructors.
+	  var tag = isObject(value) ? objectToString.call(value) : '';
+	  return tag == funcTag || tag == genTag;
+	}
+	
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This method is loosely based on
+	 * [`ToLength`](http://ecma-international.org/ecma-262/7.0/#sec-tolength).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 * @example
+	 *
+	 * _.isLength(3);
+	 * // => true
+	 *
+	 * _.isLength(Number.MIN_VALUE);
+	 * // => false
+	 *
+	 * _.isLength(Infinity);
+	 * // => false
+	 *
+	 * _.isLength('3');
+	 * // => false
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' &&
+	    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+	
+	/**
+	 * Checks if `value` is the
+	 * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+	 * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.1.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject(value) {
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+	
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 4.0.0
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+	
+	/**
+	 * Assigns own enumerable string keyed properties of source objects to the
+	 * destination object. Source objects are applied from left to right.
+	 * Subsequent sources overwrite property assignments of previous sources.
+	 *
+	 * **Note:** This method mutates `object` and is loosely based on
+	 * [`Object.assign`](https://mdn.io/Object/assign).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @since 0.10.0
+	 * @category Object
+	 * @param {Object} object The destination object.
+	 * @param {...Object} [sources] The source objects.
+	 * @returns {Object} Returns `object`.
+	 * @see _.assignIn
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 * }
+	 *
+	 * function Bar() {
+	 *   this.c = 3;
+	 * }
+	 *
+	 * Foo.prototype.b = 2;
+	 * Bar.prototype.d = 4;
+	 *
+	 * _.assign({ 'a': 0 }, new Foo, new Bar);
+	 * // => { 'a': 1, 'c': 3 }
+	 */
+	var assign = createAssigner(function(object, source) {
+	  if (nonEnumShadows || isPrototype(source) || isArrayLike(source)) {
+	    copyObject(source, keys(source), object);
+	    return;
+	  }
+	  for (var key in source) {
+	    if (hasOwnProperty.call(source, key)) {
+	      assignValue(object, key, source[key]);
+	    }
+	  }
+	});
+	
+	/**
+	 * Creates an array of the own enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects. See the
+	 * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+	 * for more details.
+	 *
+	 * @static
+	 * @since 0.1.0
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keys(new Foo);
+	 * // => ['a', 'b'] (iteration order is not guaranteed)
+	 *
+	 * _.keys('hi');
+	 * // => ['0', '1']
+	 */
+	function keys(object) {
+	  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
+	}
+	
+	module.exports = assign;
+
+
+/***/ }),
+>>>>>>> Playing with it
 /* 61 */,
 /* 62 */,
 /* 63 */,
 /* 64 */,
 /* 65 */,
 /* 66 */,
+<<<<<<< HEAD
 /* 67 */,
 /* 68 */,
 /* 69 */,
 /* 70 */
+=======
+/* 67 */
+>>>>>>> Playing with it
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
+<<<<<<< HEAD
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 	
+=======
+>>>>>>> Playing with it
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
@@ -12702,7 +13868,11 @@ webpackJsonp([8,10],[
 	    var d3Scale = __webpack_require__(10);
 	    var d3Shape = __webpack_require__(33);
 	    var d3Selection = __webpack_require__(1);
+<<<<<<< HEAD
 	    var assign = __webpack_require__(47);
+=======
+	    var assign = __webpack_require__(60);
+>>>>>>> Playing with it
 	
 	    var _require = __webpack_require__(18),
 	        exportChart = _require.exportChart;
@@ -12791,10 +13961,16 @@ webpackJsonp([8,10],[
 	            chartWidth = void 0,
 	            chartHeight = void 0,
 	            data = void 0,
+<<<<<<< HEAD
 	            transformedData = void 0,
 	            stacks = void 0,
 	            tooltipThreshold = 480,
 	            baseLine = void 0,
+=======
+	            stacks = void 0,
+	            transformedData = void 0,
+	            tooltipThreshold = 480,
+>>>>>>> Playing with it
 	            xAxisPadding = {
 	            top: 0,
 	            left: 0,
@@ -12833,7 +14009,11 @@ webpackJsonp([8,10],[
 	         * This function creates the graph using the selection and data provided
 	         * @param {D3Selection} _selection A d3 selection that represents
 	         * the container(s) where the chart(s) will be rendered
+<<<<<<< HEAD
 	         * @param {stackedBarData} _data The data to attach and generate the chart
+=======
+	         * @param {areaChartData} _data The data to attach and generate the chart
+>>>>>>> Playing with it
 	         */
 	        function exports(_selection) {
 	            _selection.each(function (_data) {
@@ -12849,11 +14029,18 @@ webpackJsonp([8,10],[
 	                buildAxis();
 	                drawAxis();
 	                drawStackedBar();
+<<<<<<< HEAD
 	                addMouseEvents();
+=======
+	                if (shouldShowTooltip()) {
+	                    addMouseEvents();
+	                }
+>>>>>>> Playing with it
 	            });
 	        }
 	
 	        /**
+<<<<<<< HEAD
 	         * Adds events to the container group if the environment is not mobile
 	         * Adding: mouseover, mouseout and mousemove
 	         */
@@ -12872,6 +14059,41 @@ webpackJsonp([8,10],[
 	         */
 	        function adjustYTickLabels(selection) {
 	            selection.selectAll('.tick text').attr('transform', 'translate(' + yTickTextXOffset + ', ' + yTickTextYOffset + ')');
+=======
+	         * Prepare data for create chart.
+	         * @private
+	         */
+	        function prepareData(data) {
+	            stacks = uniq(data.map(function (_ref) {
+	                var stack = _ref.stack;
+	                return stack;
+	            }));
+	            transformedData = d3Collection.nest().key(getName).rollup(function (values) {
+	                var ret = {};
+	
+	                values.forEach(function (entry) {
+	                    if (entry && entry[stackLabel]) {
+	                        ret[entry[stackLabel]] = getValue(entry);
+	                    }
+	                });
+	                ret.values = values; //for tooltip
+	
+	                return ret;
+	            }).entries(data).map(function (data) {
+	                return assign({}, {
+	                    total: d3Array.sum(d3Array.permute(data.value, stacks)),
+	                    key: data.key
+	                }, data.value);
+	            });
+	        }
+	
+	        /**
+	         * Adds events to the container group if the environment is not mobile
+	         * Adding: mouseover, mouseout and mousemove
+	         */
+	        function addMouseEvents() {
+	            svg.on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).on('mousemove', handleMouseMove);
+>>>>>>> Playing with it
 	        }
 	
 	        /**
@@ -12947,9 +14169,15 @@ webpackJsonp([8,10],[
 	
 	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(data.map(getStack));
 	
+<<<<<<< HEAD
 	            categoryColorMap = colorScale.domain(data.map(getName)).domain().reduce(function (memo, item) {
 	                data.forEach(function (v) {
 	                    if (getName(v) === item) {
+=======
+	            categoryColorMap = colorScale.domain(data.map(getName)).domain().reduce(function (memo, item, i) {
+	                data.forEach(function (v) {
+	                    if (getName(v) == item) {
+>>>>>>> Playing with it
 	                        memo[v.name] = colorScale(v.stack);
 	                        memo[v.stack] = colorScale(v.stack);
 	                        memo[v.stack + item] = colorScale(v.stack);
@@ -13007,6 +14235,7 @@ webpackJsonp([8,10],[
 	        }
 	
 	        /**
+<<<<<<< HEAD
 	         * Draws grid lines on the background of the chart
 	         * @return void
 	         */
@@ -13015,6 +14244,23 @@ webpackJsonp([8,10],[
 	
 	            if (grid === 'horizontal' || grid === 'full') {
 	                svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(scale.ticks(numOfVerticalTicks).slice(1)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left + 1).attr('x2', chartWidth).attr('y1', function (d) {
+=======
+	         * Adjusts the position of the y axis' ticks
+	         * @param  {D3Selection} selection Y axis group
+	         * @return void
+	         */
+	        function adjustYTickLabels(selection) {
+	            selection.selectAll('.tick text').attr('transform', 'translate(' + yTickTextXOffset + ', ' + yTickTextYOffset + ')');
+	        }
+	
+	        /**
+	         * Draws grid lines on the background of the chart
+	         * @return void
+	         */
+	        function drawGridLines(xTicks, yTicks) {
+	            if (grid === 'horizontal' || grid === 'full') {
+	                svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(yScale.ticks(yTicks).slice(1)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left + 1).attr('x2', chartWidth).attr('y1', function (d) {
+>>>>>>> Playing with it
 	                    return yScale(d);
 	                }).attr('y2', function (d) {
 	                    return yScale(d);
@@ -13022,18 +14268,25 @@ webpackJsonp([8,10],[
 	            }
 	
 	            if (grid === 'vertical' || grid === 'full') {
+<<<<<<< HEAD
 	                svg.select('.grid-lines-group').selectAll('line.vertical-grid-line').data(scale.ticks(numOfHorizontalTicks).slice(1)).enter().append('line').attr('class', 'vertical-grid-line').attr('y1', 0).attr('y2', chartHeight).attr('x1', function (d) {
+=======
+	                svg.select('.grid-lines-group').selectAll('line.vertical-grid-line').data(xScale.ticks(xTicks).slice(1)).enter().append('line').attr('class', 'vertical-grid-line').attr('y1', 0).attr('y2', chartHeight).attr('x1', function (d) {
+>>>>>>> Playing with it
 	                    return xScale(d);
 	                }).attr('x2', function (d) {
 	                    return xScale(d);
 	                });
 	            }
+<<<<<<< HEAD
 	
 	            if (horizontal) {
 	                drawVerticalExtendedLine();
 	            } else {
 	                drawHorizontalExtendedLine();
 	            }
+=======
+>>>>>>> Playing with it
 	        }
 	
 	        /**
@@ -13044,8 +14297,13 @@ webpackJsonp([8,10],[
 	        function drawHorizontalBars(series) {
 	            // Enter + Update
 	            var context = void 0,
+<<<<<<< HEAD
 	                bars = series.data(layers).enter().append('g').classed('layer', true).attr('fill', function (_ref) {
 	                var key = _ref.key;
+=======
+	                bars = series.data(layers).enter().append('g').classed('layer', true).attr('fill', function (_ref2) {
+	                var key = _ref2.key;
+>>>>>>> Playing with it
 	                return categoryColorMap[key];
 	            }).selectAll('.bar').data(function (d) {
 	                return d;
@@ -13053,8 +14311,13 @@ webpackJsonp([8,10],[
 	                return xScale(d[0]);
 	            }).attr('y', function (d) {
 	                return yScale(d.data.key);
+<<<<<<< HEAD
 	            }).attr('height', yScale.bandwidth()).attr('fill', function (_ref2) {
 	                var data = _ref2.data;
+=======
+	            }).attr('height', yScale.bandwidth()).attr('fill', function (_ref3) {
+	                var data = _ref3.data;
+>>>>>>> Playing with it
 	                return categoryColorMap[data.stack + data.key];
 	            });
 	
@@ -13076,6 +14339,7 @@ webpackJsonp([8,10],[
 	                    return xScale(d[1] - d[0]);
 	                });
 	            }
+<<<<<<< HEAD
 	        }
 	
 	        /**
@@ -13084,6 +14348,26 @@ webpackJsonp([8,10],[
 	         */
 	        function drawHorizontalExtendedLine() {
 	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-x-line').data([0]).enter().append('line').attr('class', 'extended-x-line').attr('x1', xAxisPadding.left).attr('x2', chartWidth).attr('y1', chartHeight).attr('y2', chartHeight);
+=======
+	
+	            bars.on('mouseover', function (d) {
+	                var _this = this;
+	
+	                dispatcher.call('customMouseOver', this, !!d.values ? d : d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
+	                d3Selection.select(this).attr('fill', function () {
+	                    return d3Color.color(d3Selection.select(_this.parentNode).attr('fill')).darker();
+	                });
+	            }).on('mousemove', function (d) {
+	                dispatcher.call('customMouseMove', this, !!d.values ? d : d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
+	            }).on('mouseout', function () {
+	                var _this2 = this;
+	
+	                dispatcher.call('customMouseOut', this);
+	                d3Selection.select(this).attr('fill', function () {
+	                    return d3Selection.select(_this2.parentNode).attr('fill');
+	                });
+	            });
+>>>>>>> Playing with it
 	        }
 	
 	        /**
@@ -13093,8 +14377,13 @@ webpackJsonp([8,10],[
 	         */
 	        function drawVerticalBars(series) {
 	            // Enter + Update
+<<<<<<< HEAD
 	            var bars = series.data(layers).enter().append('g').classed('layer', true).attr('fill', function (_ref3) {
 	                var key = _ref3.key;
+=======
+	            var bars = series.data(layers).enter().append('g').classed('layer', true).attr('fill', function (_ref4) {
+	                var key = _ref4.key;
+>>>>>>> Playing with it
 	                return categoryColorMap[key];
 	            }).selectAll('.bar').data(function (d) {
 	                return d;
@@ -13102,8 +14391,13 @@ webpackJsonp([8,10],[
 	                return xScale(d.data.key);
 	            }).attr('y', function (d) {
 	                return yScale(d[1]);
+<<<<<<< HEAD
 	            }).attr('width', xScale.bandwidth).attr('fill', function (_ref4) {
 	                var data = _ref4.data;
+=======
+	            }).attr('width', xScale.bandwidth).attr('fill', function (_ref5) {
+	                var data = _ref5.data;
+>>>>>>> Playing with it
 	                return categoryColorMap[data.stack + data.key];
 	            }),
 	                context = void 0;
@@ -13126,6 +14420,7 @@ webpackJsonp([8,10],[
 	                    return yScale(d[0]) - yScale(d[1]);
 	                });
 	            }
+<<<<<<< HEAD
 	        }
 	
 	        /**
@@ -13134,6 +14429,26 @@ webpackJsonp([8,10],[
 	         */
 	        function drawVerticalExtendedLine() {
 	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-y-line').data([0]).enter().append('line').attr('class', 'extended-y-line').attr('y1', xAxisPadding.bottom).attr('y2', chartHeight).attr('x1', 0).attr('x2', 0);
+=======
+	
+	            bars.on('mouseover', function (d) {
+	                var _this3 = this;
+	
+	                dispatcher.call('customMouseOver', this);
+	                d3Selection.select(this).attr('fill', function () {
+	                    return d3Color.color(d3Selection.select(_this3.parentNode).attr('fill')).darker();
+	                });
+	            }).on('mousemove', function (d) {
+	                dispatcher.call('customMouseMove', this, !!d.values ? d : d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
+	            }).on('mouseout', function () {
+	                var _this4 = this;
+	
+	                dispatcher.call('customMouseOut', this);
+	                d3Selection.select(this).attr('fill', function () {
+	                    return d3Selection.select(_this4.parentNode).attr('fill');
+	                });
+	            });
+>>>>>>> Playing with it
 	        }
 	
 	        /**
@@ -13164,6 +14479,7 @@ webpackJsonp([8,10],[
 	
 	        /**
 	         * Finds out the data entry that is closer to the given position on pixels
+<<<<<<< HEAD
 	         * @param  {Number} mouseX  X position of the mouse
 	         * @return {obj}            Data entry that is closer to that x axis position
 	         */
@@ -13180,6 +14496,23 @@ webpackJsonp([8,10],[
 	            nearest = dataByValueParsed.find(function (_ref5) {
 	                var key = _ref5.key;
 	                return Math.abs(xScale(key) - adjustedMouseX) <= epsilon;
+=======
+	         * @param  {Number} mouseX X position of the mouse
+	         * @return {obj}        Data entry that is closer to that x axis position
+	         */
+	        function getNearestDataPoint(mouseX) {
+	            var epsilon = void 0,
+	                nearest = void 0,
+	                dataByValueParsed = transformedData.map(function (item) {
+	                item.key = item.key;
+	                return item;
+	            });
+	
+	            epsilon = xScale(dataByValueParsed[1].key) - xScale(dataByValueParsed[0].key);
+	            nearest = dataByValueParsed.find(function (_ref6) {
+	                var key = _ref6.key;
+	                return Math.abs(xScale(key) - mouseX) <= epsilon;
+>>>>>>> Playing with it
 	            });
 	
 	            return nearest;
@@ -13187,21 +14520,34 @@ webpackJsonp([8,10],[
 	
 	        /**
 	        * Finds out the data entry that is closer to the given position on pixels
+<<<<<<< HEAD
 	        * @param  {Number} mouseY  Y position of the mouse
 	        * @return {obj}            Data entry that is closer to that y axis position
 	        */
 	
 	        function getNearestDataPoint2(mouseY) {
 	            var adjustedMouseY = mouseY - margin.bottom,
+=======
+	        * @param  {Number} mouseX X position of the mouse
+	        * @return {obj}        Data entry that is closer to that x axis position
+	        */
+	        function getNearestDataPoint2(pos) {
+	            var mouseY = pos[1] - margin.bottom,
+>>>>>>> Playing with it
 	                epsilon = yScale.bandwidth(),
 	                nearest = void 0;
 	
 	            nearest = layers.map(function (stackedArray) {
 	                return stackedArray.map(function (d1) {
 	                    var found = d1.data.values.find(function (d2) {
+<<<<<<< HEAD
 	                        return Math.abs(adjustedMouseY >= yScale(d2[nameLabel])) && Math.abs(adjustedMouseY - yScale(d2[nameLabel]) <= epsilon * 2);
 	                    });
 	
+=======
+	                        return Math.abs(mouseY >= yScale(d2[nameLabel])) && Math.abs(mouseY - yScale(d2[nameLabel]) <= epsilon * 2);
+	                    });
+>>>>>>> Playing with it
 	                    return found ? d1.data : undefined;
 	                });
 	            });
@@ -13213,6 +14559,7 @@ webpackJsonp([8,10],[
 	        }
 	
 	        /**
+<<<<<<< HEAD
 	         * Handles a mouseover event on top of a bar
 	         * @return {void}
 	         */
@@ -13237,21 +14584,29 @@ webpackJsonp([8,10],[
 	        }
 	
 	        /**
+=======
+>>>>>>> Playing with it
 	         * MouseMove handler, calculates the nearest dataPoint to the cursor
 	         * and updates metadata related to it
 	         * @private
 	         */
 	        function handleMouseMove() {
+<<<<<<< HEAD
 	            var _getMousePosition = getMousePosition(this),
 	                _getMousePosition2 = _slicedToArray(_getMousePosition, 2),
 	                mouseX = _getMousePosition2[0],
 	                mouseY = _getMousePosition2[1],
 	                dataPoint = !horizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
+=======
+	            var mousePos = getMousePosition(this),
+	                dataPoint = !horizontal ? getNearestDataPoint(mousePos[0] - margin.left) : getNearestDataPoint2(mousePos),
+>>>>>>> Playing with it
 	                x = void 0,
 	                y = void 0;
 	
 	            if (dataPoint) {
 	                // Move verticalMarker to that datapoint
+<<<<<<< HEAD
 	                if (horizontal) {
 	                    x = mouseX - margin.left;
 	                    y = yScale(dataPoint.key) + yScale.bandwidth() / 2;
@@ -13261,6 +14616,15 @@ webpackJsonp([8,10],[
 	                }
 	                moveTooltipOriginXY(x, y);
 	
+=======
+	                if (!horizontal) {
+	                    x = xScale(dataPoint.key), y = yScale(dataPoint.total);
+	                    moveVerticalMarkerXY(x, y);
+	                } else {
+	                    x = mousePos[1], y = yScale(dataPoint.key) + yScale.bandwidth() / 2;
+	                    moveVerticalMarkerXY(x, y);
+	                }
+>>>>>>> Playing with it
 	                // Emit event with xPosition for tooltip or similar feature
 	                dispatcher.call('customMouseMove', this, dataPoint, categoryColorMap, x, y);
 	            }
@@ -13271,17 +14635,28 @@ webpackJsonp([8,10],[
 	         * It also resets the container of the vertical marker
 	         * @private
 	         */
+<<<<<<< HEAD
 	        function handleMouseOut(d) {
 	            svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
 	            dispatcher.call('customMouseOut', this, d);
+=======
+	        function handleMouseOut(data) {
+	            svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
+	            dispatcher.call('customMouseOut', this, data);
+>>>>>>> Playing with it
 	        }
 	
 	        /**
 	         * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
 	         * @private
 	         */
+<<<<<<< HEAD
 	        function handleMouseOver(d) {
 	            dispatcher.call('customMouseOver', this, d);
+=======
+	        function handleMouseOver(data) {
+	            dispatcher.call('customMouseOver', this, data);
+>>>>>>> Playing with it
 	        }
 	
 	        /**
@@ -13289,6 +14664,7 @@ webpackJsonp([8,10],[
 	         * @param  {obj} dataPoint Data entry to extract info
 	         * @return void
 	         */
+<<<<<<< HEAD
 	        function moveTooltipOriginXY(originXPosition, originYPosition) {
 	            svg.select('.metadata-group').attr('transform', 'translate(' + originXPosition + ',' + originYPosition + ')');
 	        }
@@ -13319,6 +14695,10 @@ webpackJsonp([8,10],[
 	                    key: data.key
 	                }, data.value);
 	            });
+=======
+	        function moveVerticalMarkerXY(verticalMarkerXPosition, verticalMarkerYPosition) {
+	            svg.select('.metadata-group').attr('transform', 'translate(' + verticalMarkerXPosition + ',' + verticalMarkerYPosition + ')');
+>>>>>>> Playing with it
 	        }
 	
 	        /**
@@ -13332,6 +14712,10 @@ webpackJsonp([8,10],[
 	        }
 	
 	        // API
+<<<<<<< HEAD
+=======
+	
+>>>>>>> Playing with it
 	        /**
 	         * Gets or Sets the aspect ratio of the chart
 	         * @param  {Number} _x Desired aspect ratio for the graph
@@ -13363,11 +14747,72 @@ webpackJsonp([8,10],[
 	        };
 	
 	        /**
+<<<<<<< HEAD
 	         * Chart exported to png and a download action is fired
 	         * @public
 	         */
 	        exports.exportChart = function (filename, title) {
 	            exportChart.call(exports, svg, filename, title);
+=======
+	         * Gets or Sets the nameLabel of the chart
+	         * @param  {Number} _x Desired dateLabel for the graph
+	         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.nameLabel = function (_x) {
+	            if (!arguments.length) {
+	                return nameLabel;
+	            }
+	            nameLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the valueLabelFormat of the chart
+	         * @param  {String[]} _x Desired valueLabelFormat for the graph
+	         * @return { valueLabelFormat | module} Current valueLabelFormat or Chart module to chain calls
+	         * @public
+	         */
+	        exports.nameLabelFormat = function (_x) {
+	            if (!arguments.length) {
+	                return nameLabelFormat;
+	            }
+	            nameLabelFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Configurable extension of the x axis
+	         * if your max point was 50% you might want to show x axis to 60%, pass 1.2
+	         * @param  {number} _x ratio to max data point to add to the x axis
+	         * @return { ratio | module} Current ratio or Bar Chart module to chain calls
+	         * @public
+	         */
+	        exports.percentageAxisToMaxRatio = function (_x) {
+	            if (!arguments.length) {
+	                return percentageAxisToMaxRatio;
+	            }
+	            percentageAxisToMaxRatio = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the stackLabel of the chart
+	         * @param  {String} _x Desired stackLabel for the graph
+	         * @return { stackLabel | module} Current stackLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.stackLabel = function (_x) {
+	            if (!arguments.length) {
+	                return stackLabel;
+	            }
+	            stackLabel = _x;
+	
+	            return this;
+>>>>>>> Playing with it
 	        };
 	
 	        /**
@@ -13452,6 +14897,7 @@ webpackJsonp([8,10],[
 	        };
 	
 	        /**
+<<<<<<< HEAD
 	         * Gets or Sets the nameLabel of the chart
 	         * @param  {Number} _x Desired dateLabel for the graph
 	         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
@@ -13557,6 +15003,8 @@ webpackJsonp([8,10],[
 	        };
 	
 	        /**
+=======
+>>>>>>> Playing with it
 	         * Gets or Sets the minimum width of the graph in order to show the tooltip
 	         * NOTE: This could also depend on the aspect ratio
 	         *
@@ -13604,6 +15052,24 @@ webpackJsonp([8,10],[
 	        };
 	
 	        /**
+<<<<<<< HEAD
+=======
+	         * Gets or Sets the number of verticalTicks of the yAxis on the chart
+	         * @param  {Number} _x Desired verticalTicks
+	         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
+	         * @public
+	         */
+	        exports.verticalTicks = function (_x) {
+	            if (!arguments.length) {
+	                return verticalTicks;
+	            }
+	            verticalTicks = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+>>>>>>> Playing with it
 	         * Gets or Sets the width of the chart
 	         * @param  {Number} _x Desired width for the graph
 	         * @return { width | module} Current width or Area Chart module to chain calls
@@ -13621,12 +15087,41 @@ webpackJsonp([8,10],[
 	            return this;
 	        };
 	
+<<<<<<< HEAD
+=======
+	        /**
+	         * Chart exported to png and a download action is fired
+	         * @public
+	         */
+	        exports.exportChart = function (filename, title) {
+	            exportChart.call(exports, svg, filename, title);
+	        };
+	
+	        /**
+	         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+	         * We are going to expose this events:
+	         * customMouseOver, customMouseMove and customMouseOut
+	         *
+	         * @return {module} Bar Chart
+	         * @public
+	         */
+	        exports.on = function () {
+	            var value = dispatcher.on.apply(dispatcher, arguments);
+	
+	            return value === dispatcher ? exports : value;
+	        };
+	
+>>>>>>> Playing with it
 	        return exports;
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
+<<<<<<< HEAD
 /* 71 */
+=======
+/* 68 */
+>>>>>>> Playing with it
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -13635,7 +15130,11 @@ webpackJsonp([8,10],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
+<<<<<<< HEAD
 	        jsonThreeSources = __webpack_require__(72);
+=======
+	        jsonThreeSources = __webpack_require__(69);
+>>>>>>> Playing with it
 	
 	    function StackedBarDataBuilder(config) {
 	        this.Klass = StackedBarDataBuilder;
@@ -13659,79 +15158,131 @@ webpackJsonp([8,10],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
+<<<<<<< HEAD
 /* 72 */
+=======
+/* 69 */
+>>>>>>> Playing with it
 /***/ (function(module, exports) {
 
 	module.exports = {
 		"data": [
 			{
+<<<<<<< HEAD
 				"stack": "vivid",
+=======
+				"stack": "Direct",
+>>>>>>> Playing with it
 				"name": "Direct1",
 				"views": 0,
 				"date": "2011-01-05"
 			},
 			{
+<<<<<<< HEAD
 				"stack": "vivid",
+=======
+				"stack": "Direct",
+>>>>>>> Playing with it
 				"name": "Direct2",
 				"views": 10,
 				"date": "2011-01-06"
 			},
 			{
+<<<<<<< HEAD
 				"stack": "vivid",
+=======
+				"stack": "Direct",
+>>>>>>> Playing with it
 				"name": "Direct3",
 				"views": 16,
 				"date": "2011-01-07"
 			},
 			{
+<<<<<<< HEAD
 				"stack": "vivid",
+=======
+				"stack": "Direct",
+>>>>>>> Playing with it
 				"name": "Direct4",
 				"views": 23,
 				"date": "2011-01-08"
 			},
 			{
+<<<<<<< HEAD
 				"stack": "sparkling",
+=======
+				"stack": "Eventbrite",
+>>>>>>> Playing with it
 				"name": "Eventbrite1",
 				"views": 23,
 				"date": "2011-01-05"
 			},
 			{
+<<<<<<< HEAD
 				"stack": "sparkling",
+=======
+				"stack": "Eventbrite",
+>>>>>>> Playing with it
 				"name": "Eventbrite2",
 				"views": 16,
 				"date": "2011-01-06"
 			},
 			{
+<<<<<<< HEAD
 				"stack": "sparkling",
+=======
+				"stack": "Eventbrite",
+>>>>>>> Playing with it
 				"name": "Eventbrite3",
 				"views": 10,
 				"date": "2011-01-07"
 			},
 			{
+<<<<<<< HEAD
 				"stack": "sparkling",
+=======
+				"stack": "Eventbrite",
+>>>>>>> Playing with it
 				"name": "Eventbrite4",
 				"views": 0,
 				"date": "2011-01-08"
 			},
 			{
+<<<<<<< HEAD
 				"stack": "sunny",
+=======
+				"stack": "Email",
+>>>>>>> Playing with it
 				"name": "Email1",
 				"views": 10,
 				"date": "2011-01-05"
 			},
 			{
+<<<<<<< HEAD
 				"stack": "sunny",
+=======
+				"stack": "Email",
+>>>>>>> Playing with it
 				"name": "Email2",
 				"views": 20,
 				"date": "2011-01-06"
 			},
 			{
+<<<<<<< HEAD
 				"stack": "sunny",
+=======
+				"stack": "Email",
+>>>>>>> Playing with it
 				"name": "Email3",
 				"views": 26,
 				"date": "2011-01-07"
 			},
 			{
+<<<<<<< HEAD
 				"stack": "sunny",
+=======
+				"stack": "Email",
+>>>>>>> Playing with it
 				"name": "Email4",
 				"views": 33,
 				"date": "2011-01-08"

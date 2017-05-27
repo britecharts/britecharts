@@ -1,16 +1,23 @@
 'use strict';
 
-var d3Selection = require('d3-selection'),
-    d3TimeFormat = require('d3-time-format'),
+const d3Selection = require('d3-selection');
+const d3TimeFormat = require('d3-time-format');
+const PubSub = require('pubsub-js');
 
+<<<<<<< HEAD
     PubSub = require('pubsub-js'),
 
     brush = require('./../src/charts/brush'),
     dataBuilder = require('./../test/fixtures/brushChartDataBuilder');
     require('./helpers/resizeHelper');
+=======
+const brush = require('./../src/charts/brush');
+const dataBuilder = require('./../test/fixtures/brushChartDataBuilder');
+
+>>>>>>> Playing with it
 
 function createBrushChart() {
-    var brushChart = brush(),
+    let brushChart = brush(),
         testDataSet = new dataBuilder.BrushDataBuilder(),
         brushContainer = d3Selection.select('.js-brush-chart-container'),
         containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
@@ -23,7 +30,7 @@ function createBrushChart() {
             .width(containerWidth)
             .height(125)
             .onBrush(function(brushExtent) {
-                var format = d3TimeFormat.timeFormat('%m/%d/%Y');
+                let format = d3TimeFormat.timeFormat('%m/%d/%Y');
 
                 d3Selection.select('.js-start-date').text(format(brushExtent[0]));
                 d3Selection.select('.js-end-date').text(format(brushExtent[1]));
@@ -41,7 +48,7 @@ function createBrushChart() {
 if (d3Selection.select('.js-brush-chart-container').node()){
     createBrushChart();
 
-    var redrawCharts = function(){
+    let redrawCharts = function(){
         d3Selection.select('.brush-chart').remove();
 
         createBrushChart();
