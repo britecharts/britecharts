@@ -1,4 +1,4 @@
-webpackJsonp([6,8],[
+webpackJsonp([6,9],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7,10 +7,11 @@ webpackJsonp([6,8],[
 	var d3Selection = __webpack_require__(1),
 	    PubSub = __webpack_require__(2),
 	    colors = __webpack_require__(19),
-	    stackedAreaChart = __webpack_require__(58),
-	    tooltip = __webpack_require__(47),
-	    stackedDataBuilder = __webpack_require__(60),
-	    colorSelectorHelper = __webpack_require__(44);
+	    stackedAreaChart = __webpack_require__(59),
+	    tooltip = __webpack_require__(48),
+	    stackedDataBuilder = __webpack_require__(61),
+	    colorSelectorHelper = __webpack_require__(45);
+	__webpack_require__(29);
 	
 	function createStackedAreaChartWithTooltip(optionalColorSchema) {
 	    var stackedArea = stackedAreaChart(),
@@ -95,7 +96,7 @@ webpackJsonp([6,8],[
 	    // we'll need to listen to the window resize event
 	    var redrawCharts = function redrawCharts() {
 	        d3Selection.selectAll('.stacked-area').remove();
-	
+	        console.log('redraw');
 	        createStackedAreaChartWithTooltip();
 	        createStackedAreaChartWithFixedAspectRatio();
 	    };
@@ -9155,15 +9156,36 @@ webpackJsonp([6,8],[
 /***/ }),
 /* 27 */,
 /* 28 */,
-/* 29 */,
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _ = __webpack_require__(26),
+	    d3Selection = __webpack_require__(1),
+	    PubSub = __webpack_require__(2),
+	    debounceDelay = 200,
+	    cachedWidth = window.innerWidth;
+	
+	d3Selection.select(window).on('resize', _.debounce(function () {
+	    var newWidth = window.innerWidth;
+	
+	    if (cachedWidth !== newWidth) {
+	        cachedWidth = newWidth;
+	        PubSub.publish('resize');
+	    }
+	}, debounceDelay));
+
+/***/ }),
 /* 30 */,
 /* 31 */,
-/* 32 */
+/* 32 */,
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-shape/ Version 1.1.1. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(33)) :
+		 true ? factory(exports, __webpack_require__(34)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
 		(factory((global.d3 = global.d3 || {}),global.d3));
 	}(this, (function (exports,d3Path) { 'use strict';
@@ -11096,7 +11118,7 @@ webpackJsonp([6,8],[
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-path/ Version 1.0.5. Copyright 2017 Mike Bostock.
@@ -11243,7 +11265,7 @@ webpackJsonp([6,8],[
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11362,10 +11384,10 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 35 */,
 /* 36 */,
 /* 37 */,
-/* 38 */
+/* 38 */,
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11402,12 +11424,12 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 39 */,
 /* 40 */,
 /* 41 */,
 /* 42 */,
 /* 43 */,
-/* 44 */
+/* 44 */,
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11469,8 +11491,8 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 45 */,
-/* 46 */
+/* 46 */,
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11535,7 +11557,7 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11551,11 +11573,11 @@ webpackJsonp([6,8],[
 	    var _require = __webpack_require__(20),
 	        axisTimeCombinations = _require.axisTimeCombinations;
 	
-	    var _require2 = __webpack_require__(46),
+	    var _require2 = __webpack_require__(47),
 	        formatIntegerValue = _require2.formatIntegerValue,
 	        formatDecimalValue = _require2.formatDecimalValue;
 	
-	    var _require3 = __webpack_require__(38),
+	    var _require3 = __webpack_require__(39),
 	        isInteger = _require3.isInteger;
 	
 	    /**
@@ -11792,7 +11814,7 @@ webpackJsonp([6,8],[
 	            // Not sure if necessary
 	            tooltipRight.attr('x', tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4);
 	
-	            tooltipBody.append('circle').classed('tooltip-circle', true).attr('cx', 23 - tooltipWidth / 4).attr('cy', ttTextY + circleYOffset).attr('r', 5).style('fill', colorMap[name]).style('stroke-width', 1);
+	            tooltipBody.append('circle').classed('tooltip-circle', true).attr('cx', 23 - tooltipWidth / 4).attr('cy', ttTextY + circleYOffset).attr('r', 5).style('fill', colorMap[tooltipLeftText]).style('stroke-width', 1);
 	
 	            ttTextY += textSize.height + 7;
 	        }
@@ -12065,7 +12087,6 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 48 */,
 /* 49 */,
 /* 50 */,
 /* 51 */,
@@ -12075,7 +12096,8 @@ webpackJsonp([6,8],[
 /* 55 */,
 /* 56 */,
 /* 57 */,
-/* 58 */
+/* 58 */,
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12089,26 +12111,26 @@ webpackJsonp([6,8],[
 	    var d3Dispatch = __webpack_require__(8);
 	    var d3Ease = __webpack_require__(5);
 	    var d3Scale = __webpack_require__(10);
-	    var d3Shape = __webpack_require__(32);
+	    var d3Shape = __webpack_require__(33);
 	    var d3Selection = __webpack_require__(1);
 	    var d3Transition = __webpack_require__(15);
 	    var d3TimeFormat = __webpack_require__(14);
 	
-	    var assign = __webpack_require__(59);
+	    var assign = __webpack_require__(60);
 	
 	    var _require = __webpack_require__(18),
 	        exportChart = _require.exportChart;
 	
 	    var colorHelper = __webpack_require__(19);
-	    var timeAxisHelper = __webpack_require__(34);
+	    var timeAxisHelper = __webpack_require__(35);
 	
-	    var _require2 = __webpack_require__(38),
+	    var _require2 = __webpack_require__(39),
 	        isInteger = _require2.isInteger;
 	
 	    var _require3 = __webpack_require__(20),
 	        axisTimeCombinations = _require3.axisTimeCombinations;
 	
-	    var _require4 = __webpack_require__(46),
+	    var _require4 = __webpack_require__(47),
 	        formatIntegerValue = _require4.formatIntegerValue,
 	        formatDecimalValue = _require4.formatDecimalValue;
 	
@@ -13090,7 +13112,7 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports) {
 
 	/**
@@ -13733,7 +13755,7 @@ webpackJsonp([6,8],[
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -13742,11 +13764,11 @@ webpackJsonp([6,8],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonThreeSources = __webpack_require__(61),
-	        jsonSixSources = __webpack_require__(62),
-	        jsonSalesChannel = __webpack_require__(63),
-	        jsonReportService = __webpack_require__(64),
-	        jsonLargeService = __webpack_require__(65);
+	        jsonThreeSources = __webpack_require__(62),
+	        jsonSixSources = __webpack_require__(63),
+	        jsonSalesChannel = __webpack_require__(64),
+	        jsonReportService = __webpack_require__(65),
+	        jsonLargeService = __webpack_require__(66);
 	
 	    function StackedAreaDataBuilder(config) {
 	        this.Klass = StackedAreaDataBuilder;
@@ -13793,7 +13815,7 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -13862,7 +13884,7 @@ webpackJsonp([6,8],[
 	};
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -13991,7 +14013,7 @@ webpackJsonp([6,8],[
 	};
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -14300,7 +14322,7 @@ webpackJsonp([6,8],[
 	};
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -14381,7 +14403,7 @@ webpackJsonp([6,8],[
 	};
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports) {
 
 	module.exports = {

@@ -1,4 +1,4 @@
-webpackJsonp([1,8],[
+webpackJsonp([1,9],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7,8 +7,9 @@ webpackJsonp([1,8],[
 	var d3Selection = __webpack_require__(1),
 	    d3TimeFormat = __webpack_require__(14),
 	    PubSub = __webpack_require__(2),
-	    brush = __webpack_require__(29),
-	    dataBuilder = __webpack_require__(35);
+	    brush = __webpack_require__(30),
+	    dataBuilder = __webpack_require__(36);
+	__webpack_require__(29);
 	
 	function createBrushChart() {
 	    var brushChart = brush(),
@@ -8625,6 +8626,27 @@ webpackJsonp([1,8],[
 /* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
+	var _ = __webpack_require__(26),
+	    d3Selection = __webpack_require__(1),
+	    PubSub = __webpack_require__(2),
+	    debounceDelay = 200,
+	    cachedWidth = window.innerWidth;
+	
+	d3Selection.select(window).on('resize', _.debounce(function () {
+	    var newWidth = window.innerWidth;
+	
+	    if (cachedWidth !== newWidth) {
+	        cachedWidth = newWidth;
+	        PubSub.publish('resize');
+	    }
+	}, debounceDelay));
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -8634,17 +8656,17 @@ webpackJsonp([1,8],[
 	
 	    var d3Array = __webpack_require__(4);
 	    var d3Axis = __webpack_require__(6);
-	    var d3Brush = __webpack_require__(30);
+	    var d3Brush = __webpack_require__(31);
 	    var d3Ease = __webpack_require__(5);
 	    var d3Scale = __webpack_require__(10);
-	    var d3Shape = __webpack_require__(32);
+	    var d3Shape = __webpack_require__(33);
 	    var d3Selection = __webpack_require__(1);
 	    var d3Time = __webpack_require__(13);
 	    var d3Transition = __webpack_require__(15);
 	    var d3TimeFormat = __webpack_require__(14);
 	
 	    var colorHelper = __webpack_require__(19);
-	    var timeAxisHelper = __webpack_require__(34);
+	    var timeAxisHelper = __webpack_require__(35);
 	
 	    var _require = __webpack_require__(20),
 	        axisTimeCombinations = _require.axisTimeCombinations;
@@ -9148,12 +9170,12 @@ webpackJsonp([1,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-brush/ Version 1.0.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(8), __webpack_require__(31), __webpack_require__(12), __webpack_require__(1), __webpack_require__(15)) :
+		 true ? factory(exports, __webpack_require__(8), __webpack_require__(32), __webpack_require__(12), __webpack_require__(1), __webpack_require__(15)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-selection', 'd3-transition'], factory) :
 		(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3));
 	}(this, (function (exports,d3Dispatch,d3Drag,d3Interpolate,d3Selection,d3Transition) { 'use strict';
@@ -9721,7 +9743,7 @@ webpackJsonp([1,8],[
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-drag/ Version 1.1.0. Copyright 2017 Mike Bostock.
@@ -9950,12 +9972,12 @@ webpackJsonp([1,8],[
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-shape/ Version 1.1.1. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(33)) :
+		 true ? factory(exports, __webpack_require__(34)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
 		(factory((global.d3 = global.d3 || {}),global.d3));
 	}(this, (function (exports,d3Path) { 'use strict';
@@ -11888,7 +11910,7 @@ webpackJsonp([1,8],[
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-path/ Version 1.0.5. Copyright 2017 Mike Bostock.
@@ -12035,7 +12057,7 @@ webpackJsonp([1,8],[
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12154,7 +12176,7 @@ webpackJsonp([1,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12163,7 +12185,7 @@ webpackJsonp([1,8],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonSimpleData = __webpack_require__(36);
+	        jsonSimpleData = __webpack_require__(37);
 	
 	    function BrushDataBuilder(config) {
 	        this.Klass = BrushDataBuilder;
@@ -12200,7 +12222,7 @@ webpackJsonp([1,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports) {
 
 	module.exports = {

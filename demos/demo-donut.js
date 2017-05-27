@@ -13,6 +13,7 @@ var d3Selection = require('d3-selection'),
         .withFivePlusOther()
         .build(),
     legendChart;
+    require('./helpers/resizeHelper');
 
 
 function createDonutChart(dataset, optionalColorSchema) {

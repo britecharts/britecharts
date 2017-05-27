@@ -1,4 +1,4 @@
-webpackJsonp([2,8],[
+webpackJsonp([2,9],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6,12 +6,13 @@ webpackJsonp([2,8],[
 	
 	var d3Selection = __webpack_require__(1),
 	    PubSub = __webpack_require__(2),
-	    donut = __webpack_require__(37),
-	    legend = __webpack_require__(39),
-	    dataBuilder = __webpack_require__(40),
-	    colorSelectorHelper = __webpack_require__(44),
+	    donut = __webpack_require__(38),
+	    legend = __webpack_require__(40),
+	    dataBuilder = __webpack_require__(41),
+	    colorSelectorHelper = __webpack_require__(45),
 	    dataset = new dataBuilder.DonutDataBuilder().withFivePlusOther().build(),
 	    legendChart;
+	__webpack_require__(29);
 	
 	function createDonutChart(dataset, optionalColorSchema) {
 	    var legendChart = getLegendChart(dataset, optionalColorSchema),
@@ -9128,15 +9129,36 @@ webpackJsonp([2,8],[
 /***/ }),
 /* 27 */,
 /* 28 */,
-/* 29 */,
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _ = __webpack_require__(26),
+	    d3Selection = __webpack_require__(1),
+	    PubSub = __webpack_require__(2),
+	    debounceDelay = 200,
+	    cachedWidth = window.innerWidth;
+	
+	d3Selection.select(window).on('resize', _.debounce(function () {
+	    var newWidth = window.innerWidth;
+	
+	    if (cachedWidth !== newWidth) {
+	        cachedWidth = newWidth;
+	        PubSub.publish('resize');
+	    }
+	}, debounceDelay));
+
+/***/ }),
 /* 30 */,
 /* 31 */,
-/* 32 */
+/* 32 */,
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-shape/ Version 1.1.1. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(33)) :
+		 true ? factory(exports, __webpack_require__(34)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
 		(factory((global.d3 = global.d3 || {}),global.d3));
 	}(this, (function (exports,d3Path) { 'use strict';
@@ -11069,7 +11091,7 @@ webpackJsonp([2,8],[
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-path/ Version 1.0.5. Copyright 2017 Mike Bostock.
@@ -11216,10 +11238,10 @@ webpackJsonp([2,8],[
 
 
 /***/ }),
-/* 34 */,
 /* 35 */,
 /* 36 */,
-/* 37 */
+/* 37 */,
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11231,7 +11253,7 @@ webpackJsonp([2,8],[
 	    var d3Ease = __webpack_require__(5);
 	    var d3Interpolate = __webpack_require__(12);
 	    var d3Scale = __webpack_require__(10);
-	    var d3Shape = __webpack_require__(32);
+	    var d3Shape = __webpack_require__(33);
 	    var d3Selection = __webpack_require__(1);
 	    var d3Transition = __webpack_require__(15);
 	
@@ -11241,7 +11263,7 @@ webpackJsonp([2,8],[
 	    var textHelper = __webpack_require__(17);
 	    var colorHelper = __webpack_require__(19);
 	
-	    var _require2 = __webpack_require__(38),
+	    var _require2 = __webpack_require__(39),
 	        calculatePercent = _require2.calculatePercent;
 	
 	    /**
@@ -11806,7 +11828,7 @@ webpackJsonp([2,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11843,7 +11865,7 @@ webpackJsonp([2,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12262,7 +12284,7 @@ webpackJsonp([2,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12271,9 +12293,9 @@ webpackJsonp([2,8],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonFivePlusOther = __webpack_require__(41),
-	        jsonFivePlusOtherNoPercent = __webpack_require__(42),
-	        jsonThreeCategories = __webpack_require__(43);
+	        jsonFivePlusOther = __webpack_require__(42),
+	        jsonFivePlusOtherNoPercent = __webpack_require__(43),
+	        jsonThreeCategories = __webpack_require__(44);
 	
 	    function DonutDataBuilder(config) {
 	        this.Klass = DonutDataBuilder;
@@ -12322,7 +12344,7 @@ webpackJsonp([2,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -12367,7 +12389,7 @@ webpackJsonp([2,8],[
 	};
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -12406,7 +12428,7 @@ webpackJsonp([2,8],[
 	};
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -12433,7 +12455,7 @@ webpackJsonp([2,8],[
 	};
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';

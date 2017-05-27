@@ -10,7 +10,7 @@ var d3Selection = require('d3-selection'),
     tooltip = require('./../src/charts/tooltip'),
     stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder'),
     colorSelectorHelper = require('./helpers/colorSelector');
-
+    require('./helpers/resizeHelper');
 
 function createStackedAreaChartWithTooltip(optionalColorSchema) {
     var stackedArea = stackedAreaChart(),
@@ -118,7 +118,7 @@ if (d3Selection.select('.js-stacked-area-chart-tooltip-container').node()){
     // we'll need to listen to the window resize event
     var redrawCharts = function(){
         d3Selection.selectAll('.stacked-area').remove();
-
+console.log('redraw')
         createStackedAreaChartWithTooltip();
         createStackedAreaChartWithFixedAspectRatio();
     };

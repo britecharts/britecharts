@@ -6,7 +6,7 @@ var d3Selection = require('d3-selection'),
 
     sparklineChart = require('./../src/charts/sparkline'),
     sparklineDataBuilder = require('./../test/fixtures/sparklineDataBuilder');
-
+    require('./helpers/resizeHelper');
 
 function createSparklineChart() {
     var sparkline = sparklineChart(),
