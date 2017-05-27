@@ -98,7 +98,7 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
                 chartTooltip.show();
             })
             .on('customMouseMove', function(dataPoint, topicColorMap, x, y) {
-                // chartTooltip.update(dataPoint, topicColorMap, x, y);
+                chartTooltip.update(dataPoint, topicColorMap, x, y);
             })
             .on('customMouseOut', function() {
                 chartTooltip.hide();
