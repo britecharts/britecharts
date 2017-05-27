@@ -22,15 +22,10 @@ webpackJsonp([7,10],[
 	        dataset;
 	
 	    if (containerWidth) {
-	        // dataset = testDataSet.withReportData().build();
 	        dataset = testDataSet.with3Sources().build();
-	        // dataset = testDataSet.with6Sources().build();
-	        // dataset = testDataSet.withSalesChannelData().build();
-	        // dataset = testDataSet.withLargeData().build();
-	        // dataset = testDataSet.withGeneratedData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedBar.tooltipThreshold(600).width(containerWidth).grid('horizontal').stackLabel('stack').nameLabel('date').valueLabel('views').isAnimated(true).on('customMouseOver', function () {
+	        stackedBar.tooltipThreshold(600).width(containerWidth).grid('horizontal').isAnimated(true).stackLabel('stack').nameLabel('date').valueLabel('views').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, x, y) {
 	            chartTooltip.update(dataPoint, topicColorMap, x, y);
@@ -58,7 +53,7 @@ webpackJsonp([7,10],[
 	    }
 	}
 	
-	function createStackedBarChartWithFixedAspectRatio(optionalColorSchema) {
+	function createHorizontalStackedBarChart(optionalColorSchema) {
 	    var stackedBar = stackedBarChart(),
 	        chartTooltip = tooltip(),
 	        testDataSet = new stackedDataBuilder.StackedBarDataBuilder(),
@@ -68,20 +63,15 @@ webpackJsonp([7,10],[
 	        dataset;
 	
 	    if (containerWidth) {
-	        // dataset = testDataSet.withReportData().build();
 	        dataset = testDataSet.with3Sources().build();
-	        // dataset = testDataSet.with6Sources().build();
-	        // dataset = testDataSet.withLargeData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedBar.tooltipThreshold(600)
-	        // .aspectRatio(0.6)
-	        .grid('vertical').width(containerWidth).horizontal(true).nameLabel('date').margin({
+	        stackedBar.tooltipThreshold(600).grid('vertical').width(containerWidth).horizontal(true).isAnimated(true).margin({
 	            left: 80,
 	            top: 40,
 	            right: 30,
 	            bottom: 20
-	        }).isAnimated(true).valueLabel('views').stackLabel('stack').on('customMouseOver', function () {
+	        }).nameLabel('date').valueLabel('views').stackLabel('stack').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, x, y) {
 	            chartTooltip.update(dataPoint, topicColorMap, x, y);
@@ -108,7 +98,7 @@ webpackJsonp([7,10],[
 	if (d3Selection.select('.js-stacked-bar-chart-tooltip-container').node()) {
 	    // Chart creation
 	    createStackedBarChartWithTooltip();
-	    createStackedBarChartWithFixedAspectRatio();
+	    createHorizontalStackedBarChart();
 	
 	    // For getting a responsive behavior on our chart,
 	    // we'll need to listen to the window resize event
@@ -116,7 +106,7 @@ webpackJsonp([7,10],[
 	        d3Selection.selectAll('.stacked-bar').remove();
 	
 	        createStackedBarChartWithTooltip();
-	        createStackedBarChartWithFixedAspectRatio();
+	        createHorizontalStackedBarChart();
 	    };
 	
 	    // Redraw charts on window resize
@@ -12564,7 +12554,8 @@ webpackJsonp([7,10],[
 	     *
 	     * @module Stacked-bar
 	     * @tutorial stacked-bar
-	     * @requires d3-array, d3-axis, d3-collection, d3-ease, d3-scale, d3-shape, d3-selection,
+	     * @requires d3-array, d3-axis, d3-color, d3-collection, d3-dispatch, d3-ease,
+	     *  d3-interpolate, d3-scale, d3-shape, d3-selection, lodash assign
 	     *
 	     * @example
 	     * let stackedBar = stackedBar();
@@ -12577,7 +12568,6 @@ webpackJsonp([7,10],[
 	     *     .call(stackedBar);
 	     *
 	     */
-	
 	    return function module() {
 	
 	        var margin = {
@@ -12647,16 +12637,18 @@ webpackJsonp([7,10],[
 	        dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
 	
 	        /**
-	          * This function creates the graph using the selection and data provided
-	          * @param {D3Selection} _selection A d3 selection that represents
-	          * the container(s) where the chart(s) will be rendered
-	          * @param {areaChartData} _data The data to attach and generate the chart
-	          */
+	         * This function creates the graph using the selection and data provided
+	         * @param {D3Selection} _selection A d3 selection that represents
+	         * the container(s) where the chart(s) will be rendered
+	         * @param {areaChartData} _data The data to attach and generate the chart
+	         */
 	        function exports(_selection) {
 	            _selection.each(function (_data) {
 	                chartWidth = width - margin.left - margin.right;
 	                chartHeight = height - margin.top - margin.bottom;
-	                prepareData(_data);
+	                data = cleanData(_data);
+	
+	                prepareData(data);
 	                buildScales();
 	                buildLayers();
 	                buildSVG(this);
@@ -12669,17 +12661,16 @@ webpackJsonp([7,10],[
 	                }
 	            });
 	        }
+	
 	        /**
 	         * Prepare data for create chart.
 	         * @private
 	         */
-	        function prepareData(_data) {
-	            data = cleanData(_data);
+	        function prepareData(data) {
 	            stacks = uniq(data.map(function (_ref) {
 	                var stack = _ref.stack;
 	                return stack;
 	            }));
-	
 	            transformedData = d3Collection.nest().key(getName).rollup(function (values) {
 	                var ret = {};
 	
@@ -12689,6 +12680,7 @@ webpackJsonp([7,10],[
 	                    }
 	                });
 	                ret.values = values; //for tooltip
+	
 	                return ret;
 	            }).entries(data).map(function (data) {
 	                return assign({}, {
@@ -12697,6 +12689,7 @@ webpackJsonp([7,10],[
 	                }, data.value);
 	            });
 	        }
+	
 	        /**
 	         * Adds events to the container group if the environment is not mobile
 	         * Adding: mouseover, mouseout and mousemove
@@ -12749,25 +12742,12 @@ webpackJsonp([7,10],[
 	                stacks.forEach(function (key) {
 	                    ret[key] = item[key];
 	                });
+	
 	                return assign({}, item, ret);
 	            });
 	
 	            layers = stack3(dataInitial);
 	        }
-	        /**
-	        * Configurable extension of the x axis
-	        * if your max point was 50% you might want to show x axis to 60%, pass 1.2
-	        * @param  {number} _x ratio to max data point to add to the x axis
-	        * @return { ratio | module} Current ratio or Bar Chart module to chain calls
-	        * @public
-	        */
-	        exports.percentageAxisToMaxRatio = function (_x) {
-	            if (!arguments.length) {
-	                return percentageAxisToMaxRatio;
-	            }
-	            percentageAxisToMaxRatio = _x;
-	            return this;
-	        };
 	
 	        /**
 	         * Creates the x, y and color scales of the chart
@@ -12783,7 +12763,6 @@ webpackJsonp([7,10],[
 	
 	                yScale = d3Scale.scaleLinear().domain([0, yMax]).rangeRound([chartHeight, 0]).nice();
 	            } else {
-	
 	                xScale = d3Scale.scaleLinear().domain([0, yMax]).rangeRound([0, chartWidth - 1]);
 	                // 1 pix for edge tick
 	
@@ -12824,12 +12803,12 @@ webpackJsonp([7,10],[
 	         * @return {obj}      Parsed data with values and dates
 	         */
 	        function cleanData(data) {
-	
 	            return data.map(function (d) {
 	                d.value = +d[valueLabel];
 	                d.stack = d[stackLabel];
 	                d.topicName = getStack(d); // for tooltip
 	                d.name = d[nameLabel];
+	
 	                return d;
 	            });
 	        }
@@ -12848,7 +12827,6 @@ webpackJsonp([7,10],[
 	                svg.select('.x-axis-group .axis.x').attr('transform', 'translate( 0, ' + chartHeight + ' )').call(xAxis);
 	
 	                svg.select('.y-axis-group.axis').attr('transform', 'translate( ' + -xAxisPadding.left + ', 0)').call(yAxis);
-	                // .call(adjustYTickLabels);
 	            }
 	        }
 	
@@ -12862,9 +12840,9 @@ webpackJsonp([7,10],[
 	        }
 	
 	        /**
-	        * Draws grid lines on the background of the chart
-	        * @return void
-	        */
+	         * Draws grid lines on the background of the chart
+	         * @return void
+	         */
 	        function drawGridLines(xTicks, yTicks) {
 	            if (grid === 'horizontal' || grid === 'full') {
 	                svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(yScale.ticks(yTicks).slice(1)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left + 1).attr('x2', chartWidth).attr('y1', function (d) {
@@ -12890,7 +12868,8 @@ webpackJsonp([7,10],[
 	         */
 	        function drawHorizontalBars(series) {
 	            // Enter + Update
-	            var bars = series.data(layers).enter().append('g').classed('layer', true).attr('fill', function (_ref2) {
+	            var context = void 0,
+	                bars = series.data(layers).enter().append('g').classed('layer', true).attr('fill', function (_ref2) {
 	                var key = _ref2.key;
 	                return categoryColorMap[key];
 	            }).selectAll('.bar').data(function (d) {
@@ -12902,8 +12881,7 @@ webpackJsonp([7,10],[
 	            }).attr('height', yScale.bandwidth()).attr('fill', function (_ref3) {
 	                var data = _ref3.data;
 	                return categoryColorMap[data.stack + data.key];
-	            }),
-	                context = void 0;
+	            });
 	
 	            if (isAnimated) {
 	                bars.style('opacity', 0.24).transition().delay(function (_, i) {
@@ -13020,23 +12998,6 @@ webpackJsonp([7,10],[
 	        }
 	
 	        /**
-	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
-	         * By default this is 'false'
-	         *
-	         * @param  {Boolean} _x Desired animation flag
-	         * @return { isAnimated | module} Current isAnimated flag or Chart module
-	         * @public
-	         */
-	        exports.isAnimated = function (_x) {
-	            if (!arguments.length) {
-	                return isAnimated;
-	            }
-	            isAnimated = _x;
-	
-	            return this;
-	        };
-	
-	        /**
 	         * Extract X position on the chart from a given mouse event
 	         * @param  {obj} event D3 mouse event
 	         * @return {Number}       Position on the x axis of the mouse
@@ -13089,6 +13050,7 @@ webpackJsonp([7,10],[
 	            nearest = d3Array.merge(nearest).filter(function (e) {
 	                return e;
 	            });
+	
 	            return nearest.length ? nearest[0] : undefined;
 	        }
 	
@@ -13102,6 +13064,7 @@ webpackJsonp([7,10],[
 	                dataPoint = !horizontal ? getNearestDataPoint(mousePos[0] - margin.left) : getNearestDataPoint2(mousePos),
 	                x = void 0,
 	                y = void 0;
+	
 	            if (dataPoint) {
 	                // Move verticalMarker to that datapoint
 	                if (!horizontal) {
@@ -13153,6 +13116,8 @@ webpackJsonp([7,10],[
 	            return width > tooltipThreshold;
 	        }
 	
+	        // API
+	
 	        /**
 	         * Gets or Sets the aspect ratio of the chart
 	         * @param  {Number} _x Desired aspect ratio for the graph
@@ -13197,20 +13162,7 @@ webpackJsonp([7,10],[
 	
 	            return this;
 	        };
-	        /**
-	        * Gets or Sets the valueLabelFormat of the chart
-	        * @param  {String[]} _x Desired valueLabelFormat for the graph
-	        * @return { valueLabelFormat | module} Current valueLabelFormat or Chart module to chain calls
-	        * @public
-	        */
-	        exports.valueLabelFormat = function (_x) {
-	            if (!arguments.length) {
-	                return valueLabelFormat;
-	            }
-	            valueLabelFormat = _x;
 	
-	            return this;
-	        };
 	        /**
 	         * Gets or Sets the valueLabelFormat of the chart
 	         * @param  {String[]} _x Desired valueLabelFormat for the graph
@@ -13222,6 +13174,22 @@ webpackJsonp([7,10],[
 	                return nameLabelFormat;
 	            }
 	            nameLabelFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Configurable extension of the x axis
+	         * if your max point was 50% you might want to show x axis to 60%, pass 1.2
+	         * @param  {number} _x ratio to max data point to add to the x axis
+	         * @return { ratio | module} Current ratio or Bar Chart module to chain calls
+	         * @public
+	         */
+	        exports.percentageAxisToMaxRatio = function (_x) {
+	            if (!arguments.length) {
+	                return percentageAxisToMaxRatio;
+	            }
+	            percentageAxisToMaxRatio = _x;
 	
 	            return this;
 	        };
@@ -13276,13 +13244,44 @@ webpackJsonp([7,10],[
 	        };
 	
 	        /**
+	         * Gets or Sets the horizontal direction of the chart
+	         * @param  {number} _x Desired horizontal direction for the graph
+	         * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
+	         * @public
+	         */
+	        exports.horizontal = function (_x) {
+	            if (!arguments.length) {
+	                return horizontal;
+	            }
+	            horizontal = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+	         * By default this is 'false'
+	         *
+	         * @param  {Boolean} _x Desired animation flag
+	         * @return { isAnimated | module} Current isAnimated flag or Chart module
+	         * @public
+	         */
+	        exports.isAnimated = function (_x) {
+	            if (!arguments.length) {
+	                return isAnimated;
+	            }
+	            isAnimated = _x;
+	
+	            return this;
+	        };
+	
+	        /**
 	         * Gets or Sets the margin of the chart
 	         * @param  {Object} _x Margin object to get/set
 	         * @return { margin | module} Current margin or Area Chart module to chain calls
 	         * @public
 	         */
 	        exports.margin = function (_x) {
-	
 	            if (!arguments.length) {
 	                return margin;
 	            }
@@ -13324,6 +13323,21 @@ webpackJsonp([7,10],[
 	        };
 	
 	        /**
+	         * Gets or Sets the valueLabelFormat of the chart
+	         * @param  {String[]} _x Desired valueLabelFormat for the graph
+	         * @return { valueLabelFormat | module} Current valueLabelFormat or Chart module to chain calls
+	         * @public
+	         */
+	        exports.valueLabelFormat = function (_x) {
+	            if (!arguments.length) {
+	                return valueLabelFormat;
+	            }
+	            valueLabelFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
 	         * Gets or Sets the number of verticalTicks of the yAxis on the chart
 	         * @param  {Number} _x Desired verticalTicks
 	         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
@@ -13353,19 +13367,6 @@ webpackJsonp([7,10],[
 	            }
 	            width = _x;
 	
-	            return this;
-	        };
-	        /**
-	        * Gets or Sets the horizontal direction of the chart
-	        * @param  {number} _x Desired horizontal direction for the graph
-	        * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
-	        * @public
-	        */
-	        exports.horizontal = function (_x) {
-	            if (!arguments.length) {
-	                return horizontal;
-	            }
-	            horizontal = _x;
 	            return this;
 	        };
 	
