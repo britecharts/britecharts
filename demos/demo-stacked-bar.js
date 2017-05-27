@@ -22,22 +22,17 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
         dataset;
 
     if (containerWidth) {
-        // dataset = testDataSet.withReportData().build();
         dataset = testDataSet.with3Sources().build();
-        // dataset = testDataSet.with6Sources().build();
-        // dataset = testDataSet.withSalesChannelData().build();
-        // dataset = testDataSet.withLargeData().build();
-        // dataset = testDataSet.withGeneratedData().build();
 
         // StackedAreChart Setup and start
         stackedBar
             .tooltipThreshold(600)
             .width(containerWidth)
             .grid('horizontal')
+            .isAnimated(true)
             .stackLabel('stack')
             .nameLabel('date')
             .valueLabel('views')
-            .isAnimated(true)
             .on('customMouseOver', function() {
                 chartTooltip.show();
             })
@@ -71,7 +66,7 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
     }
 }
 
-function createStackedBarChartWithFixedAspectRatio(optionalColorSchema) {
+function createHorizontalStackedBarChart(optionalColorSchema) {
     var stackedBar = stackedBarChart(),
         chartTooltip = tooltip(),
         testDataSet = new stackedDataBuilder.StackedBarDataBuilder(),
@@ -81,26 +76,22 @@ function createStackedBarChartWithFixedAspectRatio(optionalColorSchema) {
         dataset;
 
     if (containerWidth) {
-        // dataset = testDataSet.withReportData().build();
         dataset = testDataSet.with3Sources().build();
-        // dataset = testDataSet.with6Sources().build();
-        // dataset = testDataSet.withLargeData().build();
 
         // StackedAreChart Setup and start
         stackedBar
             .tooltipThreshold(600)
-            // .aspectRatio(0.6)
             .grid('vertical')
             .width(containerWidth)
             .horizontal(true)
-            .nameLabel('date')
+            .isAnimated(true)
             .margin({
                 left: 80,
                 top: 40,
                 right: 30,
                 bottom: 20
             })
-             .isAnimated(true)
+            .nameLabel('date')
             .valueLabel('views')
             .stackLabel('stack')
             .on('customMouseOver', function() {
@@ -135,7 +126,7 @@ function createStackedBarChartWithFixedAspectRatio(optionalColorSchema) {
 if (d3Selection.select('.js-stacked-bar-chart-tooltip-container').node()){
     // Chart creation
     createStackedBarChartWithTooltip();
-    createStackedBarChartWithFixedAspectRatio();
+    createHorizontalStackedBarChart();
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
@@ -143,7 +134,7 @@ if (d3Selection.select('.js-stacked-bar-chart-tooltip-container').node()){
         d3Selection.selectAll('.stacked-bar').remove();
 
         createStackedBarChartWithTooltip();
-        createStackedBarChartWithFixedAspectRatio();
+        createHorizontalStackedBarChart();
     };
 
     // Redraw charts on window resize

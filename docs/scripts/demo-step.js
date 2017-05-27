@@ -1,4 +1,4 @@
-webpackJsonp([7,8],[
+webpackJsonp([8,9],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6,9 +6,10 @@ webpackJsonp([7,8],[
 	
 	var d3Selection = __webpack_require__(1),
 	    PubSub = __webpack_require__(2),
-	    step = __webpack_require__(66),
+	    step = __webpack_require__(70),
 	    miniTooltip = __webpack_require__(24),
-	    dataBuilder = __webpack_require__(67);
+	    dataBuilder = __webpack_require__(71);
+	__webpack_require__(29);
 	
 	function createStepChart() {
 	    var stepChart = step(),
@@ -9492,7 +9493,27 @@ webpackJsonp([7,8],[
 /***/ }),
 /* 27 */,
 /* 28 */,
-/* 29 */,
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _ = __webpack_require__(26),
+	    d3Selection = __webpack_require__(1),
+	    PubSub = __webpack_require__(2),
+	    debounceDelay = 200,
+	    cachedWidth = window.innerWidth;
+	
+	d3Selection.select(window).on('resize', _.debounce(function () {
+	    var newWidth = window.innerWidth;
+	
+	    if (cachedWidth !== newWidth) {
+	        cachedWidth = newWidth;
+	        PubSub.publish('resize');
+	    }
+	}, debounceDelay));
+
+/***/ }),
 /* 30 */,
 /* 31 */,
 /* 32 */,
@@ -9529,7 +9550,11 @@ webpackJsonp([7,8],[
 /* 63 */,
 /* 64 */,
 /* 65 */,
-/* 66 */
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -9946,7 +9971,7 @@ webpackJsonp([7,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 67 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -9955,7 +9980,7 @@ webpackJsonp([7,8],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonStepDataSmall = __webpack_require__(68);
+	        jsonStepDataSmall = __webpack_require__(72);
 	
 	    function StepDataBuilder(config) {
 	        this.Klass = StepDataBuilder;
@@ -9979,7 +10004,7 @@ webpackJsonp([7,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 68 */
+/* 72 */
 /***/ (function(module, exports) {
 
 	module.exports = {

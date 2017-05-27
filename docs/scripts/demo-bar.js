@@ -1,4 +1,4 @@
-webpackJsonp([0,8],[
+webpackJsonp([0,9],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11,6 +11,7 @@ webpackJsonp([0,8],[
 	    colors = __webpack_require__(19),
 	    dataBuilder = __webpack_require__(25);
 	
+	__webpack_require__(29);
 	function createSimpleBarChart() {
 	    var barChart = bar(),
 	        testDataSet = new dataBuilder.BarDataBuilder(),
@@ -10647,6 +10648,27 @@ webpackJsonp([0,8],[
 			}
 		]
 	};
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _ = __webpack_require__(26),
+	    d3Selection = __webpack_require__(1),
+	    PubSub = __webpack_require__(2),
+	    debounceDelay = 200,
+	    cachedWidth = window.innerWidth;
+	
+	d3Selection.select(window).on('resize', _.debounce(function () {
+	    var newWidth = window.innerWidth;
+	
+	    if (cachedWidth !== newWidth) {
+	        cachedWidth = newWidth;
+	        PubSub.publish('resize');
+	    }
+	}, debounceDelay));
 
 /***/ })
 ]);

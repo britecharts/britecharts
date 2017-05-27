@@ -10,28 +10,36 @@ module.exports = function(grunt) {
             }],
             verbose: true
         },
+        helpers: {
+            files:[{
+                cwd:'demos/helpers/',
+                src: ['**'],
+                dest: 'docs/scripts/'
+            }],
+            verbose: true
+        },
         styles:{
             files:[{
-                 cwd:'demos/css/',
-                 src: ['**'],
-                 dest: 'docs/styles/'
+                cwd:'demos/css/',
+                src: ['**'],
+                dest: 'docs/styles/'
             }],
-             verbose: true
+            verbose: true
         },
         fonts:{
             files:[{
                 cwd:'src/doc/template/static/fonts/',
-                 src: ['**'],
+                src: ['**'],
                 dest: 'docs/fonts/'
             }],
-             verbose: true
+            verbose: true
         },
         manifest:{
-           files:[{
+            files:[{
                 cwd:'src/doc/template/',
                 src: ['manifest.json'],
                 dest: 'docs/'
-           }],
+            }],
             verbose: true
         }
     });
