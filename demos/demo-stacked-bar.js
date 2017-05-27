@@ -10,7 +10,7 @@ var d3Selection = require('d3-selection'),
     tooltip = require('./../src/charts/tooltip'),
     stackedDataBuilder = require('./../test/fixtures/stackedBarDataBuilder'),
     colorSelectorHelper = require('./helpers/colorSelector');
-
+    require('./helpers/resizeHelper');
 
 function createStackedBarChartWithTooltip(optionalColorSchema) {
     var stackedBar = stackedBarChart(),
