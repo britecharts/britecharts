@@ -7,9 +7,9 @@ webpackJsonp([2,8],[
 	var d3Selection = __webpack_require__(1),
 	    PubSub = __webpack_require__(2),
 	    donut = __webpack_require__(37),
-	    legend = __webpack_require__(38),
-	    dataBuilder = __webpack_require__(39),
-	    colorSelectorHelper = __webpack_require__(42),
+	    legend = __webpack_require__(39),
+	    dataBuilder = __webpack_require__(40),
+	    colorSelectorHelper = __webpack_require__(44),
 	    dataset = new dataBuilder.DonutDataBuilder().withFivePlusOther().build(),
 	    legendChart;
 	
@@ -11241,11 +11241,14 @@ webpackJsonp([2,8],[
 	    var textHelper = __webpack_require__(17);
 	    var colorHelper = __webpack_require__(19);
 	
+	    var _require2 = __webpack_require__(38),
+	        calculatePercent = _require2.calculatePercent;
+	
 	    /**
 	     * @typedef DonutChartData
 	     * @type {Object[]}
 	     * @property {Number} quantity     Quantity of the group (required)
-	     * @property {Number} percentage   Percentage of the total (required)
+	     * @property {Number} percentage   Percentage of the total (optional)
 	     * @property {String} name         Name of the group (required)
 	     * @property {Number} id           Identifier for the group required for legend feature (optional)
 	     *
@@ -11286,6 +11289,8 @@ webpackJsonp([2,8],[
 	     *     .call(donutChart);
 	     *
 	     */
+	
+	
 	    return function module() {
 	
 	        var margin = {
@@ -11335,6 +11340,11 @@ webpackJsonp([2,8],[
 	        },
 	            sortComparator = function sortComparator(a, b) {
 	            return b.quantity - a.quantity;
+	        },
+	            sumValues = function sumValues(data) {
+	            return data.reduce(function (total, d) {
+	                return d.quantity + total;
+	            }, 0);
 	        },
 	
 	
@@ -11437,10 +11447,12 @@ webpackJsonp([2,8],[
 	         * @private
 	         */
 	        function cleanData(data) {
+	            var totalQuantity = sumValues(data);
+	
 	            return data.map(function (d) {
 	                d.quantity = +d[quantityLabel];
 	                d.name = String(d[nameLabel]);
-	                d.percentage = String(d[percentageLabel]);
+	                d.percentage = String(d.percentage || calculatePercent(d[quantityLabel], totalQuantity, '.1f'));
 	
 	                return d;
 	            });
@@ -11795,6 +11807,43 @@ webpackJsonp([2,8],[
 
 /***/ }),
 /* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	    'use strict';
+	
+	    var d3Format = __webpack_require__(9);
+	
+	    /**
+	     * Calculates percentage of value from total
+	     * @param  {Number}  value    Value to check
+	     * @param  {Number}  total    Sum of values
+	     * @param  {String}  decimals Specifies number of decimals https://github.com/d3/d3-format
+	     * @return {String}           Percentage
+	     */
+	    function calculatePercent(value, total, decimals) {
+	        return d3Format.format(decimals)(value / total * 100);
+	    }
+	
+	    /**
+	     * Checks if a number is an integer of has decimal values
+	     * @param  {Number}  value Value to check
+	     * @return {Boolean}       If it is an iteger
+	     */
+	    function isInteger(value) {
+	        return value % 1 === 0;
+	    }
+	
+	    return {
+	        calculatePercent: calculatePercent,
+	        isInteger: isInteger
+	    };
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+/***/ }),
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12213,7 +12262,7 @@ webpackJsonp([2,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12222,8 +12271,9 @@ webpackJsonp([2,8],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonFivePlusOther = __webpack_require__(40),
-	        jsonThreeCategories = __webpack_require__(41);
+	        jsonFivePlusOther = __webpack_require__(41),
+	        jsonFivePlusOtherNoPercent = __webpack_require__(42),
+	        jsonThreeCategories = __webpack_require__(43);
 	
 	    function DonutDataBuilder(config) {
 	        this.Klass = DonutDataBuilder;
@@ -12232,6 +12282,12 @@ webpackJsonp([2,8],[
 	
 	        this.withFivePlusOther = function () {
 	            var attributes = _.extend({}, this.config, jsonFivePlusOther);
+	
+	            return new this.Klass(attributes);
+	        };
+	
+	        this.withFivePlusOtherNoPercent = function () {
+	            var attributes = _.extend({}, this.config, jsonFivePlusOtherNoPercent);
 	
 	            return new this.Klass(attributes);
 	        };
@@ -12266,7 +12322,7 @@ webpackJsonp([2,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -12311,7 +12367,46 @@ webpackJsonp([2,8],[
 	};
 
 /***/ }),
-/* 41 */
+/* 42 */
+/***/ (function(module, exports) {
+
+	module.exports = {
+		"data": [
+			{
+				"name": "Shiny",
+				"id": 1,
+				"quantity": 86
+			},
+			{
+				"name": "Blazing",
+				"id": 2,
+				"quantity": 300
+			},
+			{
+				"name": "Dazzling",
+				"id": 3,
+				"quantity": 276
+			},
+			{
+				"name": "Radiant",
+				"id": 4,
+				"quantity": 195
+			},
+			{
+				"name": "Sparkling",
+				"id": 5,
+				"quantity": 36
+			},
+			{
+				"name": "Other",
+				"id": 0,
+				"quantity": 814
+			}
+		]
+	};
+
+/***/ }),
+/* 43 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -12338,7 +12433,7 @@ webpackJsonp([2,8],[
 	};
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';

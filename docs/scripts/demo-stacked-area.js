@@ -7,10 +7,10 @@ webpackJsonp([6,8],[
 	var d3Selection = __webpack_require__(1),
 	    PubSub = __webpack_require__(2),
 	    colors = __webpack_require__(19),
-	    stackedAreaChart = __webpack_require__(57),
-	    tooltip = __webpack_require__(46),
-	    stackedDataBuilder = __webpack_require__(59),
-	    colorSelectorHelper = __webpack_require__(42);
+	    stackedAreaChart = __webpack_require__(58),
+	    tooltip = __webpack_require__(47),
+	    stackedDataBuilder = __webpack_require__(60),
+	    colorSelectorHelper = __webpack_require__(44);
 	
 	function createStackedAreaChartWithTooltip(optionalColorSchema) {
 	    var stackedArea = stackedAreaChart(),
@@ -11365,11 +11365,49 @@ webpackJsonp([6,8],[
 /* 35 */,
 /* 36 */,
 /* 37 */,
-/* 38 */,
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	    'use strict';
+	
+	    var d3Format = __webpack_require__(9);
+	
+	    /**
+	     * Calculates percentage of value from total
+	     * @param  {Number}  value    Value to check
+	     * @param  {Number}  total    Sum of values
+	     * @param  {String}  decimals Specifies number of decimals https://github.com/d3/d3-format
+	     * @return {String}           Percentage
+	     */
+	    function calculatePercent(value, total, decimals) {
+	        return d3Format.format(decimals)(value / total * 100);
+	    }
+	
+	    /**
+	     * Checks if a number is an integer of has decimal values
+	     * @param  {Number}  value Value to check
+	     * @return {Boolean}       If it is an iteger
+	     */
+	    function isInteger(value) {
+	        return value % 1 === 0;
+	    }
+	
+	    return {
+	        calculatePercent: calculatePercent,
+	        isInteger: isInteger
+	    };
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+/***/ }),
 /* 39 */,
 /* 40 */,
 /* 41 */,
-/* 42 */
+/* 42 */,
+/* 43 */,
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11431,32 +11469,8 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 43 */,
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-	    'use strict';
-	
-	    /**
-	     * Checks if a number is an integer of has decimal values
-	     * @param  {Number}  value Value to check
-	     * @return {Boolean}       If it is an iteger
-	     */
-	
-	    function isInteger(value) {
-	        return value % 1 === 0;
-	    }
-	
-	    return {
-	        isInteger: isInteger
-	    };
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ }),
-/* 45 */
+/* 45 */,
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11521,7 +11535,7 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11537,11 +11551,11 @@ webpackJsonp([6,8],[
 	    var _require = __webpack_require__(20),
 	        axisTimeCombinations = _require.axisTimeCombinations;
 	
-	    var _require2 = __webpack_require__(45),
+	    var _require2 = __webpack_require__(46),
 	        formatIntegerValue = _require2.formatIntegerValue,
 	        formatDecimalValue = _require2.formatDecimalValue;
 	
-	    var _require3 = __webpack_require__(44),
+	    var _require3 = __webpack_require__(38),
 	        isInteger = _require3.isInteger;
 	
 	    /**
@@ -12051,7 +12065,6 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 47 */,
 /* 48 */,
 /* 49 */,
 /* 50 */,
@@ -12061,7 +12074,8 @@ webpackJsonp([6,8],[
 /* 54 */,
 /* 55 */,
 /* 56 */,
-/* 57 */
+/* 57 */,
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12080,7 +12094,7 @@ webpackJsonp([6,8],[
 	    var d3Transition = __webpack_require__(15);
 	    var d3TimeFormat = __webpack_require__(14);
 	
-	    var assign = __webpack_require__(58);
+	    var assign = __webpack_require__(59);
 	
 	    var _require = __webpack_require__(18),
 	        exportChart = _require.exportChart;
@@ -12088,13 +12102,13 @@ webpackJsonp([6,8],[
 	    var colorHelper = __webpack_require__(19);
 	    var timeAxisHelper = __webpack_require__(34);
 	
-	    var _require2 = __webpack_require__(44),
+	    var _require2 = __webpack_require__(38),
 	        isInteger = _require2.isInteger;
 	
 	    var _require3 = __webpack_require__(20),
 	        axisTimeCombinations = _require3.axisTimeCombinations;
 	
-	    var _require4 = __webpack_require__(45),
+	    var _require4 = __webpack_require__(46),
 	        formatIntegerValue = _require4.formatIntegerValue,
 	        formatDecimalValue = _require4.formatDecimalValue;
 	
@@ -13076,7 +13090,7 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports) {
 
 	/**
@@ -13719,7 +13733,7 @@ webpackJsonp([6,8],[
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -13728,11 +13742,11 @@ webpackJsonp([6,8],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonThreeSources = __webpack_require__(60),
-	        jsonSixSources = __webpack_require__(61),
-	        jsonSalesChannel = __webpack_require__(62),
-	        jsonReportService = __webpack_require__(63),
-	        jsonLargeService = __webpack_require__(64);
+	        jsonThreeSources = __webpack_require__(61),
+	        jsonSixSources = __webpack_require__(62),
+	        jsonSalesChannel = __webpack_require__(63),
+	        jsonReportService = __webpack_require__(64),
+	        jsonLargeService = __webpack_require__(65);
 	
 	    function StackedAreaDataBuilder(config) {
 	        this.Klass = StackedAreaDataBuilder;
@@ -13779,7 +13793,7 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -13848,7 +13862,7 @@ webpackJsonp([6,8],[
 	};
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -13977,7 +13991,7 @@ webpackJsonp([6,8],[
 	};
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -14286,7 +14300,7 @@ webpackJsonp([6,8],[
 	};
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -14367,7 +14381,7 @@ webpackJsonp([6,8],[
 	};
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports) {
 
 	module.exports = {
