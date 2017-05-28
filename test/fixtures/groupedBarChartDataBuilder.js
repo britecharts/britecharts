@@ -6,8 +6,8 @@ define(function(require) {
         jsonThreeSources = require('json!../json/groupedbarDataThreeSources.json');
 
 
-    function GroupedBarDataBuilder(config){
-        this.Klass = GroupedBarDataBuilder;
+    function GroupedBarChartDataBuilder(config){
+        this.Klass = GroupedBarChartDataBuilder;
 
         this.config = _.defaults({}, config);
 
@@ -23,7 +23,7 @@ define(function(require) {
     }
 
     return {
-        GroupedBarDataBuilder: GroupedBarDataBuilder
+        GroupedBarChartDataBuilder: GroupedBarChartDataBuilder
     };
 
 });

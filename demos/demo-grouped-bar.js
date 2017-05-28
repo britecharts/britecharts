@@ -8,7 +8,7 @@ var d3Selection = require('d3-selection'),
 
     groupedBarChart = require('./../src/charts/grouped-bar'),
     tooltip = require('./../src/charts/tooltip'),
-    groupedDataBuilder = require('./../test/fixtures/groupedBarDataBuilder'),
+    groupedDataBuilder = require('./../test/fixtures/groupedBarChartDataBuilder'),
     colorSelectorHelper = require('./helpers/colorSelector');
     require('./helpers/resizeHelper');
 
