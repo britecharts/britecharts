@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>API: Bar</title>
+        <title>API: Grouped-bar</title>
 
         
             <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
@@ -181,7 +181,7 @@
             		<div id="main">
             			
 
-	<h1 class="page-title">API: Bar</h1>
+	<h1 class="page-title">API: Grouped-bar</h1>
 <section>
 
 <header>
@@ -197,15 +197,15 @@
     <div class="container-overview">
     
         
-            <div class="description">Bar Chart reusable API class that renders a
-simple and configurable bar chart.</div>
+            <div class="description">Grouped Bar Chart reusable API module that allows us
+rendering a multi grouped bar and configurable chart.</div>
         
 
         
             
 <hr>
 <dt>
-    <h4 class="name" id="module:Bar"><span class="type-signature"></span>(require("Bar"))(_selection, _data)</h4>
+    <h4 class="name" id="module:Grouped-bar"><span class="type-signature"></span>(require("Grouped-bar"))(_selection, _data)</h4>
     
     
 </dt>
@@ -213,7 +213,7 @@ simple and configurable bar chart.</div>
 
     
     <div class="description">
-        This function creates the graph using the selection as container
+        This function creates the graph using the selection and data provided
     </div>
     
 
@@ -266,7 +266,7 @@ simple and configurable bar chart.</div>
             
 
             <td class="description last">A d3 selection that represents
-                                 the container(s) where the chart(s) will be rendered</td>
+the container(s) where the chart(s) will be rendered</td>
         </tr>
 
     
@@ -279,7 +279,7 @@ simple and configurable bar chart.</div>
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#BarChartData">BarChartData</a></span>
+<span class="param-type"><a href="global.html#areaChartData">areaChartData</a></span>
 
 
 
@@ -334,7 +334,7 @@ simple and configurable bar chart.</div>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="bar.js.html">bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -392,7 +392,7 @@ simple and configurable bar chart.</div>
             
 <hr>
 <dt>
-    <h4 class="name" id="module:Bar"><span class="type-signature"></span>module:Bar(_selection, _data)</h4>
+    <h4 class="name" id="module:Grouped-bar"><span class="type-signature"></span>module:Grouped-bar(_selection, _data)</h4>
     
     
 </dt>
@@ -400,7 +400,7 @@ simple and configurable bar chart.</div>
 
     
     <div class="description">
-        This function creates the graph using the selection as container
+        This function creates the graph using the selection and data provided
     </div>
     
 
@@ -453,7 +453,7 @@ simple and configurable bar chart.</div>
             
 
             <td class="description last">A d3 selection that represents
-                                 the container(s) where the chart(s) will be rendered</td>
+the container(s) where the chart(s) will be rendered</td>
         </tr>
 
     
@@ -466,7 +466,7 @@ simple and configurable bar chart.</div>
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#BarChartData">BarChartData</a></span>
+<span class="param-type"><a href="global.html#areaChartData">areaChartData</a></span>
 
 
 
@@ -521,7 +521,7 @@ simple and configurable bar chart.</div>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="bar.js.html">bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -546,6 +546,170 @@ simple and configurable bar chart.</div>
     
 
     
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".aspectRatio"><span class="type-signature">&lt;static> </span>aspectRatio(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the aspect ratio of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired aspect ratio for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current aspect ratio or Area Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">Module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
 
     
 </dd>
@@ -658,7 +822,7 @@ simple and configurable bar chart.</div>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="bar.js.html">bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -718,7 +882,7 @@ simple and configurable bar chart.</div>
             
 <hr>
 <dt>
-    <h4 class="name" id=".enablePercentageLabels"><span class="type-signature">&lt;static> </span>enablePercentageLabels(_x)</h4>
+    <h4 class="name" id=".exportChart"><span class="type-signature">&lt;static> </span>exportChart()</h4>
     
     
 </dt>
@@ -726,7 +890,94 @@ simple and configurable bar chart.</div>
 
     
     <div class="description">
-        Default false. If true, adds percentage labels at the end of the bars
+        Chart exported to png and a download action is fired
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".grid"><span class="type-signature">&lt;static> </span>grid(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the grid mode.
     </div>
     
 
@@ -767,7 +1018,7 @@ simple and configurable bar chart.</div>
             <td class="type">
             
                 
-<span class="param-type">Boolean</span>
+<span class="param-type">String</span>
 
 
 
@@ -778,7 +1029,7 @@ simple and configurable bar chart.</div>
 
             
 
-            <td class="description last"></td>
+            <td class="description last">Desired mode for the grid ('vertical'|'horizontal'|'full')</td>
         </tr>
 
     
@@ -822,7 +1073,7 @@ simple and configurable bar chart.</div>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="bar.js.html">bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -851,7 +1102,7 @@ simple and configurable bar chart.</div>
     
             
 <div class="param-desc">
-    Current value of enablePercentageLables or Bar Chart module to chain calls
+    Current mode of the grid or Area Chart module to chain calls
 </div>
 
 
@@ -862,7 +1113,7 @@ simple and configurable bar chart.</div>
     </dt>
     <dd>
         
-<span class="param-type">Boolean</span>
+<span class="param-type">String</span>
 |
 
 <span class="param-type">module</span>
@@ -882,7 +1133,7 @@ simple and configurable bar chart.</div>
             
 <hr>
 <dt>
-    <h4 class="name" id=".exportChart"><span class="type-signature">&lt;static> </span>exportChart()</h4>
+    <h4 class="name" id=".groupLabel"><span class="type-signature">&lt;static> </span>groupLabel(_x)</h4>
     
     
 </dt>
@@ -890,7 +1141,7 @@ simple and configurable bar chart.</div>
 
     
     <div class="description">
-        Chart exported to png and a download action is fired
+        Gets or Sets the groupLabel of the chart
     </div>
     
 
@@ -900,92 +1151,55 @@ simple and configurable bar chart.</div>
 
     
     
+        <h5>Parameters:</h5>
+        
 
-    
-<dl class="details">
-    
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
 
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="bar.js.html">bar.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
+        <th>Type</th>
 
         
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
             
-<hr>
-<dt>
-    <h4 class="name" id=".exportChart"><span class="type-signature">&lt;static> </span>exportChart()</h4>
-    
-    
-</dt>
-<dd>
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired groupLabel for the graph</td>
+        </tr>
 
     
-    <div class="description">
-        Chart exported to png and a download action is fired
-    </div>
-    
+    </tbody>
+</table>
 
-    
-
-    
-
-    
     
 
     
@@ -1023,7 +1237,7 @@ simple and configurable bar chart.</div>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="bar.js.html">bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1048,6 +1262,33 @@ simple and configurable bar chart.</div>
     
 
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current groupLabel or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">groupLabel</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
 
     
 </dd>
@@ -1105,7 +1346,7 @@ simple and configurable bar chart.</div>
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Number</span>
 
 
 
@@ -1160,7 +1401,7 @@ simple and configurable bar chart.</div>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="bar.js.html">bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1189,7 +1430,7 @@ simple and configurable bar chart.</div>
     
             
 <div class="param-desc">
-    Current height or Bar Chart module to chain calls
+    Current height or Area Chart module to chain calls
 </div>
 
 
@@ -1324,7 +1565,7 @@ simple and configurable bar chart.</div>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="bar.js.html">bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1489,7 +1730,7 @@ By default this is 'false'
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="bar.js.html">bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1598,7 +1839,7 @@ By default this is 'false'
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">Object</span>
 
 
 
@@ -1653,7 +1894,7 @@ By default this is 'false'
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="bar.js.html">bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1682,7 +1923,7 @@ By default this is 'false'
     
             
 <div class="param-desc">
-    Current margin or Bar Chart module to chain calls
+    Current margin or Area Chart module to chain calls
 </div>
 
 
@@ -1773,7 +2014,7 @@ By default this is 'false'
 
             
 
-            <td class="description last">Desired nameLabel for the graph</td>
+            <td class="description last">Desired dateLabel for the graph</td>
         </tr>
 
     
@@ -1817,7 +2058,7 @@ By default this is 'false'
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="bar.js.html">bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1858,6 +2099,170 @@ By default this is 'false'
     <dd>
         
 <span class="param-type">nameLabel</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".nameLabelFormat"><span class="type-signature">&lt;static> </span>nameLabelFormat(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the valueLabelFormat of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired valueLabelFormat for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current valueLabelFormat or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">valueLabelFormat</span>
 |
 
 <span class="param-type">module</span>
@@ -1933,7 +2338,7 @@ customMouseOver, customMouseMove and customMouseOut
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="bar.js.html">bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -2095,7 +2500,7 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="bar.js.html">bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -2155,7 +2560,7 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
             
 <hr>
 <dt>
-    <h4 class="name" id=".percentageLabelMargin"><span class="type-signature">&lt;static> </span>percentageLabelMargin(_x)</h4>
+    <h4 class="name" id=".tooltipThreshold"><span class="type-signature">&lt;static> </span>tooltipThreshold(_x)</h4>
     
     
 </dt>
@@ -2163,7 +2568,8 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
 
     
     <div class="description">
-        Default 10px. Offset between end of bar and start of the percentage bars
+        Gets or Sets the minimum width of the graph in order to show the tooltip
+NOTE: This could also depend on the aspect ratio
     </div>
     
 
@@ -2204,7 +2610,7 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Object</span>
 
 
 
@@ -2215,7 +2621,7 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
 
             
 
-            <td class="description last">percentage margin offset from end of bar</td>
+            <td class="description last">Margin object to get/set</td>
         </tr>
 
     
@@ -2259,7 +2665,7 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="bar.js.html">bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -2288,7 +2694,7 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
     
             
 <div class="param-desc">
-    Currnet offset or Bar Chart module to chain calls
+    Current tooltipThreshold or Area Chart module to chain calls
 </div>
 
 
@@ -2299,171 +2705,7 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
     </dt>
     <dd>
         
-<span class="param-type">number</span>
-|
-
-<span class="param-type">module</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".usePercentage"><span class="type-signature">&lt;static> </span>usePercentage(_x)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Gets or Sets the valueLabelFormat to a percentage format if true (default false)
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>_x</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Should use percentage as value format</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="bar.js.html">bar.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    Is percentage value format used or Chart module to chain calls
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">valueLabelFormat</span>
+<span class="param-type">tooltipThreshold</span>
 |
 
 <span class="param-type">module</span>
@@ -2587,7 +2829,7 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="bar.js.html">bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -2628,6 +2870,334 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
     <dd>
         
 <span class="param-type">valueLabel</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".valueLabelFormat"><span class="type-signature">&lt;static> </span>valueLabelFormat(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the valueLabelFormat of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired valueLabelFormat for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current valueLabelFormat or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">valueLabelFormat</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".verticalTicks"><span class="type-signature">&lt;static> </span>verticalTicks(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the number of verticalTicks of the yAxis on the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired verticalTicks</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current verticalTicks or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">verticalTicks</span>
 |
 
 <span class="param-type">module</span>
@@ -2696,7 +3266,7 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">Number</span>
 
 
 
@@ -2751,7 +3321,7 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="bar.js.html">bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -2780,7 +3350,7 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
     
             
 <div class="param-desc">
-    Current width or Bar Chart module to chain calls
+    Current width or Area Chart module to chain calls
 </div>
 
 
@@ -2792,170 +3362,6 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
     <dd>
         
 <span class="param-type">width</span>
-|
-
-<span class="param-type">module</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".yAxisPaddingBetweenChart"><span class="type-signature">&lt;static> </span>yAxisPaddingBetweenChart(_x)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Default 10. Space between y axis and chart
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>_x</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">space between y axis and chart</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="bar.js.html">bar.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    Current value of yAxisPaddingBetweenChart or Bar Chart module to chain calls
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
 |
 
 <span class="param-type">module</span>
