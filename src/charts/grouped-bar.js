@@ -24,11 +24,11 @@ define(function(require){
      */
 
     /**
-     * @typedef GroupedBarData
+     * @typedef groupedBarData
      * @type {Object}
      * @property {Object[]} data       All data entries
      * @property {String} name         Name of the entry
-     * @property {String} stack        Stack of the entry
+     * @property {String} group        group of the entry
      * @property {Number} value        Value of the entry
      *
      * @example
@@ -143,7 +143,7 @@ define(function(require){
          * This function creates the graph using the selection and data provided
          * @param {D3Selection} _selection A d3 selection that represents
          * the container(s) where the chart(s) will be rendered
-         * @param {areaChartData} _data The data to attach and generate the chart
+         * @param {groupedBarData} _data The data to attach and generate the chart
          */
         function exports(_selection) {
             _selection.each(function(_data){
