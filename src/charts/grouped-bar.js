@@ -192,7 +192,6 @@ define(function(require){
                         key:data.key
                     }, data.value);
                 });
-                console.log(transformedData)
         }
 
         /**
