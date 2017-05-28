@@ -11658,6 +11658,7 @@ webpackJsonp([6,9],[
 	            tooltipTextColor = '#000000',
 	            dateLabel = 'date',
 	            valueLabel = 'value',
+	            nameLabel = 'name',
 	            topicLabel = 'topics',
 	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
 	            forceAxisSettings = null,
@@ -11795,7 +11796,7 @@ webpackJsonp([6,9],[
 	         * @return void
 	         */
 	        function updateContent(topic) {
-	            var name = topic.name,
+	            var name = topic[nameLabel],
 	                tooltipRight = void 0,
 	                tooltipLeftText = void 0,
 	                tooltipRightText = void 0,
@@ -11814,7 +11815,7 @@ webpackJsonp([6,9],[
 	            // Not sure if necessary
 	            tooltipRight.attr('x', tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4);
 	
-	            tooltipBody.append('circle').classed('tooltip-circle', true).attr('cx', 23 - tooltipWidth / 4).attr('cy', ttTextY + circleYOffset).attr('r', 5).style('fill', colorMap[tooltipLeftText]).style('stroke-width', 1);
+	            tooltipBody.append('circle').classed('tooltip-circle', true).attr('cx', 23 - tooltipWidth / 4).attr('cy', ttTextY + circleYOffset).attr('r', 5).style('fill', colorMap[name]).style('stroke-width', 1);
 	
 	            ttTextY += textSize.height + 7;
 	        }
@@ -11949,6 +11950,20 @@ webpackJsonp([6,9],[
 	                }
 	            });
 	        }
+	        /**
+	        * Gets or Sets the nameLabel of the data
+	        * @param  {Number} _x Desired nameLabel
+	        * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+	        * @public
+	        */
+	        exports.nameLabel = function (_x) {
+	            if (!arguments.length) {
+	                return nameLabel;
+	            }
+	            nameLabel = _x;
+	
+	            return this;
+	        };
 	
 	        /**
 	         * Gets or Sets the dateLabel of the data

@@ -139,6 +139,7 @@ function createLineChartWithSingleLine() {
 
         // Tooltip Setup and start
         chartTooltip
+        .valueLabel('value')
             .title('Quantity Sold');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
