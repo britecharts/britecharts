@@ -53,6 +53,7 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
         chartTooltip
             .topicLabel('values')
             .dateLabel('key')
+            .nameLabel('stack')
             .title('Testing tooltip');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
@@ -114,6 +115,7 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
         chartTooltip
             .topicLabel('values')
              .dateLabel('key')
+             .nameLabel('stack')
             .title('Dummy Tooltip Title');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
