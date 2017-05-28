@@ -49,7 +49,7 @@ webpackJsonp([3,10],[
 	        tooltipContainer.datum([]).call(chartTooltip);
 	
 	        d3Selection.select('#button').on('click', function () {
-	            groupedBar.exportChart('stacked-bar.png', 'Britecharts Stacked Bar');
+	            groupedBar.exportChart('grouped-bar.png', 'Britecharts Grouped Bar');
 	        });
 	    }
 	}
@@ -104,7 +104,7 @@ webpackJsonp([3,10],[
 	    // For getting a responsive behavior on our chart,
 	    // we'll need to listen to the window resize event
 	    var redrawCharts = function redrawCharts() {
-	        d3Selection.selectAll('.stacked-bar').remove();
+	        d3Selection.selectAll('.grouped-bar').remove();
 	
 	        creategroupedBarChartWithTooltip();
 	        createHorizontalgroupedBarChart();
@@ -114,7 +114,7 @@ webpackJsonp([3,10],[
 	    PubSub.subscribe('resize', redrawCharts);
 	
 	    // Color schema selector
-	    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.stacked-bar', creategroupedBarChartWithTooltip);
+	    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.grouped-bar', creategroupedBarChartWithTooltip);
 	}
 
 /***/ }),
