@@ -6,10 +6,6 @@ module.exports = function(grunt) {
             files: ['README.md'],
             tasks: ['jsdoc:dist']
         },
-        // scripts: {  //since we use webpack-dev-server hot reload no need watch bundle.js
-        //     files:['demos/build/**'],
-        //     tasks:['sync:scripts']
-        // },
         styles:{
             files:['demos/css/**'],
             tasks:['sync:fonts']
@@ -17,7 +13,6 @@ module.exports = function(grunt) {
         fonts:{
             files:['src/doc/template/static/fonts/**'],
             tasks:['sync:fonts']
-            
         },
         manifest:{
             files:['src/doc/template/manifest.json'],

@@ -1,4 +1,4 @@
-webpackJsonp([6,8],[
+webpackJsonp([6,9],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7,10 +7,11 @@ webpackJsonp([6,8],[
 	var d3Selection = __webpack_require__(1),
 	    PubSub = __webpack_require__(2),
 	    colors = __webpack_require__(19),
-	    stackedAreaChart = __webpack_require__(58),
-	    tooltip = __webpack_require__(47),
-	    stackedDataBuilder = __webpack_require__(60),
-	    colorSelectorHelper = __webpack_require__(44);
+	    stackedAreaChart = __webpack_require__(59),
+	    tooltip = __webpack_require__(48),
+	    stackedDataBuilder = __webpack_require__(61),
+	    colorSelectorHelper = __webpack_require__(45);
+	__webpack_require__(29);
 	
 	function createStackedAreaChartWithTooltip(optionalColorSchema) {
 	    var stackedArea = stackedAreaChart(),
@@ -95,7 +96,7 @@ webpackJsonp([6,8],[
 	    // we'll need to listen to the window resize event
 	    var redrawCharts = function redrawCharts() {
 	        d3Selection.selectAll('.stacked-area').remove();
-	
+	        console.log('redraw');
 	        createStackedAreaChartWithTooltip();
 	        createStackedAreaChartWithFixedAspectRatio();
 	    };
@@ -111,7 +112,7 @@ webpackJsonp([6,8],[
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-selection/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-selection/ Version 1.1.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -736,16 +737,18 @@ webpackJsonp([6,8],[
 	}
 	
 	var selection_style = function(name, value, priority) {
-	  var node;
 	  return arguments.length > 1
 	      ? this.each((value == null
 	            ? styleRemove : typeof value === "function"
 	            ? styleFunction
 	            : styleConstant)(name, value, priority == null ? "" : priority))
-	      : defaultView(node = this.node())
-	          .getComputedStyle(node, null)
-	          .getPropertyValue(name);
+	      : styleValue(this.node(), name);
 	};
+	
+	function styleValue(node, name) {
+	  return node.style.getPropertyValue(name)
+	      || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
+	}
 	
 	function propertyRemove(name) {
 	  return function() {
@@ -958,7 +961,7 @@ webpackJsonp([6,8],[
 	  var window = defaultView(node),
 	      event = window.CustomEvent;
 	
-	  if (event) {
+	  if (typeof event === "function") {
 	    event = new event(type, params);
 	  } else {
 	    event = window.document.createEvent("Event");
@@ -1076,6 +1079,7 @@ webpackJsonp([6,8],[
 	exports.selection = selection;
 	exports.selector = selector;
 	exports.selectorAll = selectorAll;
+	exports.style = styleValue;
 	exports.touch = touch;
 	exports.touches = touches;
 	exports.window = defaultView;
@@ -1090,7 +1094,7 @@ webpackJsonp([6,8],[
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*
 	Copyright (c) 2010,2011,2012,2013,2014 Morgan Roderick http://roderick.dk
 	License: MIT - http://mrgnrdrck.mit-license.org
 	
@@ -1099,20 +1103,22 @@ webpackJsonp([6,8],[
 	(function (root, factory){
 		'use strict';
 	
-	    if (true){
-	        // AMD. Register as an anonymous module.
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		var PubSub = {};
+		root.PubSub = PubSub;
+		factory(PubSub);
 	
-	    } else if (typeof exports === 'object'){
-	        // CommonJS
-	        factory(exports);
+		// AMD support
+		if (true){
+			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return PubSub; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	
-	    }
-	
-	    // Browser globals
-	    var PubSub = {};
-	    root.PubSub = PubSub;
-	    factory(PubSub);
+		// CommonJS and Node.js module support
+		} else if (typeof exports === 'object'){
+			if (module !== undefined && module.exports) {
+				exports = module.exports = PubSub; // Node.js specific `module.exports`
+			}
+			exports.PubSub = PubSub; // CommonJS module 1.1.1 spec
+			module.exports = exports = PubSub; // CommonJS
+		}
 	
 	}(( typeof window === 'object' && window ) || this, function (PubSub){
 		'use strict';
@@ -2213,7 +2219,7 @@ webpackJsonp([6,8],[
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-axis/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-axis/ Version 1.0.7. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -2233,15 +2239,15 @@ webpackJsonp([6,8],[
 	var epsilon = 1e-6;
 	
 	function translateX(x) {
-	  return "translate(" + x + ",0)";
+	  return "translate(" + (x + 0.5) + ",0)";
 	}
 	
 	function translateY(y) {
-	  return "translate(0," + y + ")";
+	  return "translate(0," + (y + 0.5) + ")";
 	}
 	
 	function center(scale) {
-	  var offset = scale.bandwidth() / 2;
+	  var offset = Math.max(0, scale.bandwidth() - 1) / 2; // Adjust for 0.5px offset.
 	  if (scale.round()) offset = Math.round(offset);
 	  return function(d) {
 	    return scale(d) + offset;
@@ -2260,7 +2266,7 @@ webpackJsonp([6,8],[
 	      tickSizeOuter = 6,
 	      tickPadding = 3,
 	      k = orient === top || orient === left ? -1 : 1,
-	      x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x"),
+	      x = orient === left || orient === right ? "x" : "y",
 	      transform = orient === top || orient === bottom ? translateX : translateY;
 	
 	  function axis(context) {
@@ -2287,14 +2293,11 @@ webpackJsonp([6,8],[
 	
 	    line = line.merge(tickEnter.append("line")
 	        .attr("stroke", "#000")
-	        .attr(x + "2", k * tickSizeInner)
-	        .attr(y + "1", 0.5)
-	        .attr(y + "2", 0.5));
+	        .attr(x + "2", k * tickSizeInner));
 	
 	    text = text.merge(tickEnter.append("text")
 	        .attr("fill", "#000")
 	        .attr(x, k * spacing)
-	        .attr(y, 0.5)
 	        .attr("dy", orient === top ? "0em" : orient === bottom ? "0.71em" : "0.32em"));
 	
 	    if (context !== selection) {
@@ -3376,7 +3379,7 @@ webpackJsonp([6,8],[
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-scale/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-scale/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(4), __webpack_require__(11), __webpack_require__(12), __webpack_require__(9), __webpack_require__(13), __webpack_require__(14), __webpack_require__(7)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-collection', 'd3-interpolate', 'd3-format', 'd3-time', 'd3-time-format', 'd3-color'], factory) :
@@ -3691,17 +3694,39 @@ webpackJsonp([6,8],[
 	  };
 	
 	  scale.nice = function(count) {
-	    var d = domain(),
-	        i = d.length - 1,
-	        n = count == null ? 10 : count,
-	        start = d[0],
-	        stop = d[i],
-	        step = d3Array.tickStep(start, stop, n);
+	    if (count == null) count = 10;
 	
-	    if (step) {
-	      step = d3Array.tickStep(Math.floor(start / step) * step, Math.ceil(stop / step) * step, n);
-	      d[0] = Math.floor(start / step) * step;
-	      d[i] = Math.ceil(stop / step) * step;
+	    var d = domain(),
+	        i0 = 0,
+	        i1 = d.length - 1,
+	        start = d[i0],
+	        stop = d[i1],
+	        step;
+	
+	    if (stop < start) {
+	      step = start, start = stop, stop = step;
+	      step = i0, i0 = i1, i1 = step;
+	    }
+	
+	    step = d3Array.tickIncrement(start, stop, count);
+	
+	    if (step > 0) {
+	      start = Math.floor(start / step) * step;
+	      stop = Math.ceil(stop / step) * step;
+	      step = d3Array.tickIncrement(start, stop, count);
+	    } else if (step < 0) {
+	      start = Math.ceil(start * step) / step;
+	      stop = Math.floor(stop * step) / step;
+	      step = d3Array.tickIncrement(start, stop, count);
+	    }
+	
+	    if (step > 0) {
+	      d[i0] = Math.floor(start / step) * step;
+	      d[i1] = Math.ceil(stop / step) * step;
+	      domain(d);
+	    } else if (step < 0) {
+	      d[i0] = Math.ceil(start * step) / step;
+	      d[i1] = Math.floor(stop * step) / step;
 	      domain(d);
 	    }
 	
@@ -4508,7 +4533,7 @@ webpackJsonp([6,8],[
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-interpolate/ Version 1.1.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-interpolate/ Version 1.1.5. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(7)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-color'], factory) :
@@ -4754,7 +4779,7 @@ webpackJsonp([6,8],[
 	      : b instanceof d3Color.color ? rgb$1
 	      : b instanceof Date ? date
 	      : Array.isArray(b) ? array
-	      : isNaN(b) ? object
+	      : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
 	      : number)(a, b);
 	};
 	
@@ -6037,7 +6062,7 @@ webpackJsonp([6,8],[
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-transition/ Version 1.0.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-transition/ Version 1.1.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(1), __webpack_require__(8), __webpack_require__(16), __webpack_require__(12), __webpack_require__(7), __webpack_require__(5)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-timer', 'd3-interpolate', 'd3-color', 'd3-ease'], factory) :
@@ -6602,9 +6627,8 @@ webpackJsonp([6,8],[
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var style = d3Selection.window(this).getComputedStyle(this, null),
-	        value0 = style.getPropertyValue(name),
-	        value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
+	    var value0 = d3Selection.style(this, name),
+	        value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -6621,7 +6645,7 @@ webpackJsonp([6,8],[
 	  var value00,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.window(this).getComputedStyle(this, null).getPropertyValue(name);
+	    var value0 = d3Selection.style(this, name);
 	    return value0 === value1 ? null
 	        : value0 === value00 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value1);
@@ -6633,10 +6657,9 @@ webpackJsonp([6,8],[
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var style = d3Selection.window(this).getComputedStyle(this, null),
-	        value0 = style.getPropertyValue(name),
+	    var value0 = d3Selection.style(this, name),
 	        value1 = value(this);
-	    if (value1 == null) value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
+	    if (value1 == null) value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -9133,15 +9156,36 @@ webpackJsonp([6,8],[
 /***/ }),
 /* 27 */,
 /* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */,
-/* 32 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-shape/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	'use strict';
+	
+	var _ = __webpack_require__(26),
+	    d3Selection = __webpack_require__(1),
+	    PubSub = __webpack_require__(2),
+	    debounceDelay = 200,
+	    cachedWidth = window.innerWidth;
+	
+	d3Selection.select(window).on('resize', _.debounce(function () {
+	    var newWidth = window.innerWidth;
+	
+	    if (cachedWidth !== newWidth) {
+	        cachedWidth = newWidth;
+	        PubSub.publish('resize');
+	    }
+	}, debounceDelay));
+
+/***/ }),
+/* 30 */,
+/* 31 */,
+/* 32 */,
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// https://d3js.org/d3-shape/ Version 1.1.1. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(33)) :
+		 true ? factory(exports, __webpack_require__(34)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
 		(factory((global.d3 = global.d3 || {}),global.d3));
 	}(this, (function (exports,d3Path) { 'use strict';
@@ -9784,6 +9828,91 @@ webpackJsonp([6,8],[
 	
 	  return a;
 	};
+	
+	var slice = Array.prototype.slice;
+	
+	var radialPoint = function(x, y) {
+	  return [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x)];
+	};
+	
+	function linkSource(d) {
+	  return d.source;
+	}
+	
+	function linkTarget(d) {
+	  return d.target;
+	}
+	
+	function link(curve) {
+	  var source = linkSource,
+	      target = linkTarget,
+	      x$$1 = x,
+	      y$$1 = y,
+	      context = null;
+	
+	  function link() {
+	    var buffer, argv = slice.call(arguments), s = source.apply(this, argv), t = target.apply(this, argv);
+	    if (!context) context = buffer = d3Path.path();
+	    curve(context, +x$$1.apply(this, (argv[0] = s, argv)), +y$$1.apply(this, argv), +x$$1.apply(this, (argv[0] = t, argv)), +y$$1.apply(this, argv));
+	    if (buffer) return context = null, buffer + "" || null;
+	  }
+	
+	  link.source = function(_) {
+	    return arguments.length ? (source = _, link) : source;
+	  };
+	
+	  link.target = function(_) {
+	    return arguments.length ? (target = _, link) : target;
+	  };
+	
+	  link.x = function(_) {
+	    return arguments.length ? (x$$1 = typeof _ === "function" ? _ : constant(+_), link) : x$$1;
+	  };
+	
+	  link.y = function(_) {
+	    return arguments.length ? (y$$1 = typeof _ === "function" ? _ : constant(+_), link) : y$$1;
+	  };
+	
+	  link.context = function(_) {
+	    return arguments.length ? ((context = _ == null ? null : _), link) : context;
+	  };
+	
+	  return link;
+	}
+	
+	function curveHorizontal(context, x0, y0, x1, y1) {
+	  context.moveTo(x0, y0);
+	  context.bezierCurveTo(x0 = (x0 + x1) / 2, y0, x0, y1, x1, y1);
+	}
+	
+	function curveVertical(context, x0, y0, x1, y1) {
+	  context.moveTo(x0, y0);
+	  context.bezierCurveTo(x0, y0 = (y0 + y1) / 2, x1, y0, x1, y1);
+	}
+	
+	function curveRadial$1(context, x0, y0, x1, y1) {
+	  var p0 = radialPoint(x0, y0),
+	      p1 = radialPoint(x0, y0 = (y0 + y1) / 2),
+	      p2 = radialPoint(x1, y0),
+	      p3 = radialPoint(x1, y1);
+	  context.moveTo(p0[0], p0[1]);
+	  context.bezierCurveTo(p1[0], p1[1], p2[0], p2[1], p3[0], p3[1]);
+	}
+	
+	function linkHorizontal() {
+	  return link(curveHorizontal);
+	}
+	
+	function linkVertical() {
+	  return link(curveVertical);
+	}
+	
+	function linkRadial() {
+	  var l = link(curveRadial$1);
+	  l.angle = l.x, delete l.x;
+	  l.radius = l.y, delete l.y;
+	  return l;
+	}
 	
 	var circle = {
 	  draw: function(context, size) {
@@ -10766,13 +10895,11 @@ webpackJsonp([6,8],[
 	  return new Step(context, 1);
 	}
 	
-	var slice = Array.prototype.slice;
-	
 	var none = function(series, order) {
 	  if (!((n = series.length) > 1)) return;
-	  for (var i = 1, s0, s1 = series[order[0]], n, m = s1.length; i < n; ++i) {
+	  for (var i = 1, j, s0, s1 = series[order[0]], n, m = s1.length; i < n; ++i) {
 	    s0 = s1, s1 = series[order[i]];
-	    for (var j = 0; j < m; ++j) {
+	    for (j = 0; j < m; ++j) {
 	      s1[j][1] += s1[j][0] = isNaN(s0[j][1]) ? s0[j][0] : s0[j][1];
 	    }
 	  }
@@ -10844,6 +10971,21 @@ webpackJsonp([6,8],[
 	    if (y) for (i = 0; i < n; ++i) series[i][j][1] /= y;
 	  }
 	  none(series, order);
+	};
+	
+	var diverging = function(series, order) {
+	  if (!((n = series.length) > 1)) return;
+	  for (var i, j = 0, d, dy, yp, yn, n, m = series[order[0]].length; j < m; ++j) {
+	    for (yp = yn = 0, i = 0; i < n; ++i) {
+	      if ((dy = (d = series[order[i]][j])[1] - d[0]) >= 0) {
+	        d[0] = yp, d[1] = yp += dy;
+	      } else if (dy < 0) {
+	        d[1] = yn, d[0] = yn += dy;
+	      } else {
+	        d[0] = yp;
+	      }
+	    }
+	  }
 	};
 	
 	var silhouette = function(series, order) {
@@ -10928,6 +11070,9 @@ webpackJsonp([6,8],[
 	exports.pie = pie;
 	exports.radialArea = radialArea;
 	exports.radialLine = radialLine$1;
+	exports.linkHorizontal = linkHorizontal;
+	exports.linkVertical = linkVertical;
+	exports.linkRadial = linkRadial;
 	exports.symbol = symbol;
 	exports.symbols = symbols;
 	exports.symbolCircle = circle;
@@ -10957,6 +11102,7 @@ webpackJsonp([6,8],[
 	exports.curveStepBefore = stepBefore;
 	exports.stack = stack;
 	exports.stackOffsetExpand = expand;
+	exports.stackOffsetDiverging = diverging;
 	exports.stackOffsetNone = none;
 	exports.stackOffsetSilhouette = silhouette;
 	exports.stackOffsetWiggle = wiggle;
@@ -10972,7 +11118,7 @@ webpackJsonp([6,8],[
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-path/ Version 1.0.5. Copyright 2017 Mike Bostock.
@@ -11119,7 +11265,7 @@ webpackJsonp([6,8],[
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11238,10 +11384,10 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 35 */,
 /* 36 */,
 /* 37 */,
-/* 38 */
+/* 38 */,
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11278,12 +11424,12 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 39 */,
 /* 40 */,
 /* 41 */,
 /* 42 */,
 /* 43 */,
-/* 44 */
+/* 44 */,
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11345,8 +11491,8 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 45 */,
-/* 46 */
+/* 46 */,
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11411,7 +11557,7 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11427,11 +11573,11 @@ webpackJsonp([6,8],[
 	    var _require = __webpack_require__(20),
 	        axisTimeCombinations = _require.axisTimeCombinations;
 	
-	    var _require2 = __webpack_require__(46),
+	    var _require2 = __webpack_require__(47),
 	        formatIntegerValue = _require2.formatIntegerValue,
 	        formatDecimalValue = _require2.formatDecimalValue;
 	
-	    var _require3 = __webpack_require__(38),
+	    var _require3 = __webpack_require__(39),
 	        isInteger = _require3.isInteger;
 	
 	    /**
@@ -11512,6 +11658,7 @@ webpackJsonp([6,8],[
 	            tooltipTextColor = '#000000',
 	            dateLabel = 'date',
 	            valueLabel = 'value',
+	            nameLabel = 'name',
 	            topicLabel = 'topics',
 	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
 	            forceAxisSettings = null,
@@ -11649,7 +11796,7 @@ webpackJsonp([6,8],[
 	         * @return void
 	         */
 	        function updateContent(topic) {
-	            var name = topic.name,
+	            var name = topic[nameLabel],
 	                tooltipRight = void 0,
 	                tooltipLeftText = void 0,
 	                tooltipRightText = void 0,
@@ -11803,6 +11950,20 @@ webpackJsonp([6,8],[
 	                }
 	            });
 	        }
+	        /**
+	        * Gets or Sets the nameLabel of the data
+	        * @param  {Number} _x Desired nameLabel
+	        * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+	        * @public
+	        */
+	        exports.nameLabel = function (_x) {
+	            if (!arguments.length) {
+	                return nameLabel;
+	            }
+	            nameLabel = _x;
+	
+	            return this;
+	        };
 	
 	        /**
 	         * Gets or Sets the dateLabel of the data
@@ -11941,7 +12102,6 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 48 */,
 /* 49 */,
 /* 50 */,
 /* 51 */,
@@ -11951,7 +12111,8 @@ webpackJsonp([6,8],[
 /* 55 */,
 /* 56 */,
 /* 57 */,
-/* 58 */
+/* 58 */,
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11965,26 +12126,26 @@ webpackJsonp([6,8],[
 	    var d3Dispatch = __webpack_require__(8);
 	    var d3Ease = __webpack_require__(5);
 	    var d3Scale = __webpack_require__(10);
-	    var d3Shape = __webpack_require__(32);
+	    var d3Shape = __webpack_require__(33);
 	    var d3Selection = __webpack_require__(1);
 	    var d3Transition = __webpack_require__(15);
 	    var d3TimeFormat = __webpack_require__(14);
 	
-	    var assign = __webpack_require__(59);
+	    var assign = __webpack_require__(60);
 	
 	    var _require = __webpack_require__(18),
 	        exportChart = _require.exportChart;
 	
 	    var colorHelper = __webpack_require__(19);
-	    var timeAxisHelper = __webpack_require__(34);
+	    var timeAxisHelper = __webpack_require__(35);
 	
-	    var _require2 = __webpack_require__(38),
+	    var _require2 = __webpack_require__(39),
 	        isInteger = _require2.isInteger;
 	
 	    var _require3 = __webpack_require__(20),
 	        axisTimeCombinations = _require3.axisTimeCombinations;
 	
-	    var _require4 = __webpack_require__(46),
+	    var _require4 = __webpack_require__(47),
 	        formatIntegerValue = _require4.formatIntegerValue,
 	        formatDecimalValue = _require4.formatDecimalValue;
 	
@@ -12966,7 +13127,7 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports) {
 
 	/**
@@ -13609,7 +13770,7 @@ webpackJsonp([6,8],[
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -13618,11 +13779,11 @@ webpackJsonp([6,8],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonThreeSources = __webpack_require__(61),
-	        jsonSixSources = __webpack_require__(62),
-	        jsonSalesChannel = __webpack_require__(63),
-	        jsonReportService = __webpack_require__(64),
-	        jsonLargeService = __webpack_require__(65);
+	        jsonThreeSources = __webpack_require__(62),
+	        jsonSixSources = __webpack_require__(63),
+	        jsonSalesChannel = __webpack_require__(64),
+	        jsonReportService = __webpack_require__(65),
+	        jsonLargeService = __webpack_require__(66);
 	
 	    function StackedAreaDataBuilder(config) {
 	        this.Klass = StackedAreaDataBuilder;
@@ -13669,7 +13830,7 @@ webpackJsonp([6,8],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -13738,7 +13899,7 @@ webpackJsonp([6,8],[
 	};
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -13867,7 +14028,7 @@ webpackJsonp([6,8],[
 	};
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -14176,7 +14337,7 @@ webpackJsonp([6,8],[
 	};
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -14257,7 +14418,7 @@ webpackJsonp([6,8],[
 	};
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports) {
 
 	module.exports = {

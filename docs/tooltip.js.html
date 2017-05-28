@@ -108,6 +108,8 @@
                                 
                                 <li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li>
                                 
+                                <li><a href="tutorial-stacked-bar.html">Stacked Bar Chart</a></li>
+                                
                                 <li><a href="tutorial-step.html">Step Chart</a></li>
                                 
             				</ul>
@@ -133,6 +135,8 @@
                                 <li><a href="module-Sparkline.html">Sparkline</a></li>
                                 
                                 <li><a href="module-Stacked-area.html">Stacked-area</a></li>
+                                
+                                <li><a href="module-Stacked-bar.html">Stacked-bar</a></li>
                                 
                                 <li><a href="module-Step.html">Step</a></li>
                                 
@@ -277,6 +281,7 @@
 
             dateLabel = 'date',
             valueLabel = 'value',
+            nameLabel = 'name',
             topicLabel = 'topics',
 
             defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
@@ -452,7 +457,7 @@
          * @return void
          */
         function updateContent(topic){
-            let name = topic.name,
+            let name = topic[nameLabel],
                 tooltipRight,
                 tooltipLeftText,
                 tooltipRightText,
@@ -642,6 +647,20 @@
                 }
             });
         }
+         /**
+         * Gets or Sets the nameLabel of the data
+         * @param  {Number} _x Desired nameLabel
+         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+         * @public
+         */
+        exports.nameLabel = function(_x) {
+            if (!arguments.length) {
+                return nameLabel;
+            }
+            nameLabel = _x;
+
+            return this;
+        };
 
         /**
          * Gets or Sets the dateLabel of the data

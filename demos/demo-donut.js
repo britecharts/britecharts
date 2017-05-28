@@ -16,6 +16,7 @@ var d3Selection = require('d3-selection'),
         .withFivePlusOtherNoPercent()
         .build(),
     legendChart;
+    require('./helpers/resizeHelper');
 
 
 function createDonutChart(dataset, optionalColorSchema) {

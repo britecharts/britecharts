@@ -98,6 +98,7 @@ define(function(require){
 
             dateLabel = 'date',
             valueLabel = 'value',
+            nameLabel = 'name',
             topicLabel = 'topics',
 
             defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
@@ -273,7 +274,7 @@ define(function(require){
          * @return void
          */
         function updateContent(topic){
-            let name = topic.name,
+            let name = topic[nameLabel],
                 tooltipRight,
                 tooltipLeftText,
                 tooltipRightText,
@@ -463,6 +464,20 @@ define(function(require){
                 }
             });
         }
+         /**
+         * Gets or Sets the nameLabel of the data
+         * @param  {Number} _x Desired nameLabel
+         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+         * @public
+         */
+        exports.nameLabel = function(_x) {
+            if (!arguments.length) {
+                return nameLabel;
+            }
+            nameLabel = _x;
+
+            return this;
+        };
 
         /**
          * Gets or Sets the dateLabel of the data
