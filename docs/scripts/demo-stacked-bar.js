@@ -9,7 +9,7 @@ webpackJsonp([8,10],[
 	    colors = __webpack_require__(19),
 	    stackedBarChart = __webpack_require__(70),
 	    tooltip = __webpack_require__(48),
-	    stackedDataBuilder = __webpack_require__(50),
+	    stackedDataBuilder = __webpack_require__(71),
 	    colorSelectorHelper = __webpack_require__(45);
 	__webpack_require__(29);
 	
@@ -12636,120 +12636,8 @@ webpackJsonp([8,10],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-	    'use strict';
-	
-	    var _ = __webpack_require__(26),
-	        jsonThreeSources = __webpack_require__(51);
-	
-	    function StackedBarDataBuilder(config) {
-	        this.Klass = StackedBarDataBuilder;
-	
-	        this.config = _.defaults({}, config);
-	
-	        this.with3Sources = function () {
-	            var attributes = _.extend({}, this.config, jsonThreeSources);
-	
-	            return new this.Klass(attributes);
-	        };
-	
-	        this.build = function () {
-	            return this.config;
-	        };
-	    }
-	
-	    return {
-	        StackedBarDataBuilder: StackedBarDataBuilder
-	    };
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports) {
-
-	module.exports = {
-		"data": [
-			{
-				"stack": "Direct",
-				"name": "Direct1",
-				"views": 0,
-				"date": "2011-01-05"
-			},
-			{
-				"stack": "Direct",
-				"name": "Direct2",
-				"views": 10,
-				"date": "2011-01-06"
-			},
-			{
-				"stack": "Direct",
-				"name": "Direct3",
-				"views": 16,
-				"date": "2011-01-07"
-			},
-			{
-				"stack": "Direct",
-				"name": "Direct4",
-				"views": 23,
-				"date": "2011-01-08"
-			},
-			{
-				"stack": "Eventbrite",
-				"name": "Eventbrite1",
-				"views": 23,
-				"date": "2011-01-05"
-			},
-			{
-				"stack": "Eventbrite",
-				"name": "Eventbrite2",
-				"views": 16,
-				"date": "2011-01-06"
-			},
-			{
-				"stack": "Eventbrite",
-				"name": "Eventbrite3",
-				"views": 10,
-				"date": "2011-01-07"
-			},
-			{
-				"stack": "Eventbrite",
-				"name": "Eventbrite4",
-				"views": 0,
-				"date": "2011-01-08"
-			},
-			{
-				"stack": "Email",
-				"name": "Email1",
-				"views": 10,
-				"date": "2011-01-05"
-			},
-			{
-				"stack": "Email",
-				"name": "Email2",
-				"views": 20,
-				"date": "2011-01-06"
-			},
-			{
-				"stack": "Email",
-				"name": "Email3",
-				"views": 26,
-				"date": "2011-01-07"
-			},
-			{
-				"stack": "Email",
-				"name": "Email4",
-				"views": 33,
-				"date": "2011-01-08"
-			}
-		]
-	};
-
-/***/ }),
+/* 50 */,
+/* 51 */,
 /* 52 */,
 /* 53 */,
 /* 54 */,
@@ -13671,6 +13559,120 @@ webpackJsonp([8,10],[
 	        return exports;
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	    'use strict';
+	
+	    var _ = __webpack_require__(26),
+	        jsonThreeSources = __webpack_require__(72);
+	
+	    function StackedBarDataBuilder(config) {
+	        this.Klass = StackedBarDataBuilder;
+	
+	        this.config = _.defaults({}, config);
+	
+	        this.with3Sources = function () {
+	            var attributes = _.extend({}, this.config, jsonThreeSources);
+	
+	            return new this.Klass(attributes);
+	        };
+	
+	        this.build = function () {
+	            return this.config;
+	        };
+	    }
+	
+	    return {
+	        StackedBarDataBuilder: StackedBarDataBuilder
+	    };
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports) {
+
+	module.exports = {
+		"data": [
+			{
+				"stack": "Direct",
+				"name": "Direct1",
+				"views": 0,
+				"date": "2011-01-05"
+			},
+			{
+				"stack": "Direct",
+				"name": "Direct2",
+				"views": 10,
+				"date": "2011-01-06"
+			},
+			{
+				"stack": "Direct",
+				"name": "Direct3",
+				"views": 16,
+				"date": "2011-01-07"
+			},
+			{
+				"stack": "Direct",
+				"name": "Direct4",
+				"views": 23,
+				"date": "2011-01-08"
+			},
+			{
+				"stack": "Eventbrite",
+				"name": "Eventbrite1",
+				"views": 23,
+				"date": "2011-01-05"
+			},
+			{
+				"stack": "Eventbrite",
+				"name": "Eventbrite2",
+				"views": 16,
+				"date": "2011-01-06"
+			},
+			{
+				"stack": "Eventbrite",
+				"name": "Eventbrite3",
+				"views": 10,
+				"date": "2011-01-07"
+			},
+			{
+				"stack": "Eventbrite",
+				"name": "Eventbrite4",
+				"views": 0,
+				"date": "2011-01-08"
+			},
+			{
+				"stack": "Email",
+				"name": "Email1",
+				"views": 10,
+				"date": "2011-01-05"
+			},
+			{
+				"stack": "Email",
+				"name": "Email2",
+				"views": 20,
+				"date": "2011-01-06"
+			},
+			{
+				"stack": "Email",
+				"name": "Email3",
+				"views": 26,
+				"date": "2011-01-07"
+			},
+			{
+				"stack": "Email",
+				"name": "Email4",
+				"views": 33,
+				"date": "2011-01-08"
+			}
+		]
+	};
 
 /***/ })
 ]);

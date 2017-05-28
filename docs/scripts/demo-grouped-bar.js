@@ -9,14 +9,14 @@ webpackJsonp([3,10],[
 	    colors = __webpack_require__(19),
 	    groupedBarChart = __webpack_require__(46),
 	    tooltip = __webpack_require__(48),
-	    stackedDataBuilder = __webpack_require__(50),
+	    groupedDataBuilder = __webpack_require__(50),
 	    colorSelectorHelper = __webpack_require__(45);
 	__webpack_require__(29);
 	
 	function creategroupedBarChartWithTooltip(optionalColorSchema) {
 	    var groupedBar = groupedBarChart(),
 	        chartTooltip = tooltip(),
-	        testDataSet = new stackedDataBuilder.StackedBarDataBuilder(),
+	        testDataSet = new groupedDataBuilder.GroupedBarChartDataBuilder(),
 	        container = d3Selection.select('.js-grouped-bar-chart-tooltip-container'),
 	        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
 	        tooltipContainer,
@@ -57,7 +57,7 @@ webpackJsonp([3,10],[
 	function createHorizontalgroupedBarChart(optionalColorSchema) {
 	    var groupedBar = groupedBarChart(),
 	        chartTooltip = tooltip(),
-	        testDataSet = new stackedDataBuilder.StackedBarDataBuilder(),
+	        testDataSet = new groupedDataBuilder.GroupedBarChartDataBuilder(),
 	        container = d3Selection.select('.js-grouped-bar-chart-fixed-container'),
 	        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
 	        tooltipContainer,
@@ -97,9 +97,6 @@ webpackJsonp([3,10],[
 	}
 	
 	if (d3Selection.select('.js-grouped-bar-chart-tooltip-container').node()) {
-	    // Chart creation
-	    creategroupedBarChartWithTooltip();
-	    createHorizontalgroupedBarChart();
 	
 	    // For getting a responsive behavior on our chart,
 	    // we'll need to listen to the window resize event
@@ -109,6 +106,10 @@ webpackJsonp([3,10],[
 	        creategroupedBarChartWithTooltip();
 	        createHorizontalgroupedBarChart();
 	    };
+	
+	    // Chart creation
+	    creategroupedBarChartWithTooltip();
+	    createHorizontalgroupedBarChart();;
 	
 	    // Redraw charts on window resize
 	    PubSub.subscribe('resize', redrawCharts);
@@ -9337,11 +9338,11 @@ webpackJsonp([3,10],[
 	     */
 	
 	    /**
-	     * @typedef GroupedBarData
+	     * @typedef GroupedBarChartData
 	     * @type {Object}
 	     * @property {Object[]} data       All data entries
 	     * @property {String} name         Name of the entry
-	     * @property {String} stack        Stack of the entry
+	     * @property {String} group        group of the entry
 	     * @property {Number} value        Value of the entry
 	     *
 	     * @example
@@ -9450,7 +9451,7 @@ webpackJsonp([3,10],[
 	         * This function creates the graph using the selection and data provided
 	         * @param {D3Selection} _selection A d3 selection that represents
 	         * the container(s) where the chart(s) will be rendered
-	         * @param {areaChartData} _data The data to attach and generate the chart
+	         * @param {GroupedBarChartData} _data The data to attach and generate the chart
 	         */
 	        function exports(_selection) {
 	            _selection.each(function (_data) {
@@ -11483,8 +11484,8 @@ webpackJsonp([3,10],[
 	    var _ = __webpack_require__(26),
 	        jsonThreeSources = __webpack_require__(51);
 	
-	    function StackedBarDataBuilder(config) {
-	        this.Klass = StackedBarDataBuilder;
+	    function GroupedBarChartDataBuilder(config) {
+	        this.Klass = GroupedBarChartDataBuilder;
 	
 	        this.config = _.defaults({}, config);
 	
@@ -11500,7 +11501,7 @@ webpackJsonp([3,10],[
 	    }
 	
 	    return {
-	        StackedBarDataBuilder: StackedBarDataBuilder
+	        GroupedBarChartDataBuilder: GroupedBarChartDataBuilder
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
