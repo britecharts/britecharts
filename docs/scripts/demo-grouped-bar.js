@@ -9410,7 +9410,7 @@ webpackJsonp([3,10],[
 	            chartWidth = void 0,
 	            chartHeight = void 0,
 	            data = void 0,
-	            stacks = void 0,
+	            groups = void 0,
 	            transformedData = void 0,
 	            tooltipThreshold = 480,
 	            xAxisPadding = {
@@ -9478,9 +9478,8 @@ webpackJsonp([3,10],[
 	         * @private
 	         */
 	        function prepareData(data) {
-	            stacks = uniq(data.map(function (_ref) {
-	                var stack = _ref.stack;
-	                return stack;
+	            groups = uniq(data.map(function (d) {
+	                return getGroup(d);
 	            }));
 	            transformedData = d3Collection.nest().key(getName).rollup(function (values) {
 	                var ret = {};
@@ -9495,11 +9494,10 @@ webpackJsonp([3,10],[
 	                return ret;
 	            }).entries(data).map(function (data) {
 	                return assign({}, {
-	                    total: d3Array.sum(d3Array.permute(data.value, stacks)),
+	                    total: d3Array.sum(d3Array.permute(data.value, groups)),
 	                    key: data.key
 	                }, data.value);
 	            });
-	            console.log(transformedData);
 	        }
 	
 	        /**
@@ -9550,7 +9548,7 @@ webpackJsonp([3,10],[
 	            var dataInitial = transformedData.map(function (item) {
 	                var ret = {};
 	
-	                stacks.forEach(function (key) {
+	                groups.forEach(function (key) {
 	                    ret[key] = item[key];
 	                });
 	

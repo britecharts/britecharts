@@ -5,13 +5,14 @@ webpackJsonp([4,10],[
 	'use strict';
 	
 	function loadScript(name, fn) {
-	    var head = document.getElementsByTagName('head')[0];
-	    /******/var script = document.createElement('script');
-	    /******/script.type = 'text/javascript';
-	    /******/script.charset = 'utf-8';
-	    /******/script.defer = true;
-	    /******/script.src = name + ".js";
-	    /******/head.appendChild(script);
+	    var head = document.getElementsByTagName('head')[0],
+	        script = document.createElement('script');
+	
+	    script.type = 'text/javascript';
+	    script.charset = 'utf-8';
+	    script.defer = true;
+	    script.src = name + '.js';
+	    head.appendChild(script);
 	    fn && fn();
 	}
 	window.onload = function () {

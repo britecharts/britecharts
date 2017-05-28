@@ -291,7 +291,7 @@
             svg,
             chartWidth, chartHeight,
             data,
-            stacks,
+            groups,
 
             transformedData,
 
@@ -357,7 +357,7 @@
          * @private
          */
         function prepareData(data) {
-            stacks = uniq(data.map(({stack}) => stack));
+            groups = uniq(data.map( (d)=> getGroup(d) ));
             transformedData = d3Collection.nest()
                 .key(getName)
                 .rollup(function(values) {
@@ -375,11 +375,10 @@
                 .entries(data)
                 .map(function(data){
                     return assign({}, {
-                        total:d3Array.sum( d3Array.permute(data.value, stacks) ),
+                        total:d3Array.sum( d3Array.permute(data.value, groups) ),
                         key:data.key
                     }, data.value);
                 });
-                console.log(transformedData)
         }
 
         /**
@@ -445,7 +444,7 @@
             let dataInitial = transformedData.map((item) => {
                         let ret = {};
 
-                        stacks.forEach((key) => {
+                        groups.forEach((key) => {
                             ret[key] = item[key];
                         });
 
