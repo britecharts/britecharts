@@ -69,7 +69,8 @@ config = {
             'demo-sparkline': './demos/demo-sparkline.js',
             'demo-step': './demos/demo-step.js',
             'demo-brush': './demos/demo-brush.js',
-            'demo-kitchen-sink': './demos/demo-kitchen-sink.js'
+            'demo-kitchen-sink': './demos/demo-kitchen-sink.js',
+            'demo-grouped-bar': './demos/demo-grouped-bar.js'
         },
         output: {
             path: './demos/build/',
