@@ -25,7 +25,11 @@ webpackJsonp([9,10],{
 /***/ 1:
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
+	// https://d3js.org/d3-selection/ Version 1.1.0. Copyright 2017 Mike Bostock.
+=======
 	// https://d3js.org/d3-selection/ Version 1.0.5. Copyright 2017 Mike Bostock.
+>>>>>>> 7527618ee6e3552a9fd79ca7519eea719e29704d
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -650,17 +654,31 @@ webpackJsonp([9,10],{
 	}
 	
 	var selection_style = function(name, value, priority) {
+<<<<<<< HEAD
+=======
 	  var node;
+>>>>>>> 7527618ee6e3552a9fd79ca7519eea719e29704d
 	  return arguments.length > 1
 	      ? this.each((value == null
 	            ? styleRemove : typeof value === "function"
 	            ? styleFunction
 	            : styleConstant)(name, value, priority == null ? "" : priority))
+<<<<<<< HEAD
+	      : styleValue(this.node(), name);
+	};
+	
+	function styleValue(node, name) {
+	  return node.style.getPropertyValue(name)
+	      || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
+	}
+	
+=======
 	      : defaultView(node = this.node())
 	          .getComputedStyle(node, null)
 	          .getPropertyValue(name);
 	};
 	
+>>>>>>> 7527618ee6e3552a9fd79ca7519eea719e29704d
 	function propertyRemove(name) {
 	  return function() {
 	    delete this[name];
@@ -872,7 +890,11 @@ webpackJsonp([9,10],{
 	  var window = defaultView(node),
 	      event = window.CustomEvent;
 	
+<<<<<<< HEAD
+	  if (typeof event === "function") {
+=======
 	  if (event) {
+>>>>>>> 7527618ee6e3552a9fd79ca7519eea719e29704d
 	    event = new event(type, params);
 	  } else {
 	    event = window.document.createEvent("Event");
@@ -990,6 +1012,10 @@ webpackJsonp([9,10],{
 	exports.selection = selection;
 	exports.selector = selector;
 	exports.selectorAll = selectorAll;
+<<<<<<< HEAD
+	exports.style = styleValue;
+=======
+>>>>>>> 7527618ee6e3552a9fd79ca7519eea719e29704d
 	exports.touch = touch;
 	exports.touches = touches;
 	exports.window = defaultView;
@@ -1005,7 +1031,11 @@ webpackJsonp([9,10],{
 /***/ 2:
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*
+=======
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+>>>>>>> 7527618ee6e3552a9fd79ca7519eea719e29704d
 	Copyright (c) 2010,2011,2012,2013,2014 Morgan Roderick http://roderick.dk
 	License: MIT - http://mrgnrdrck.mit-license.org
 	
@@ -1014,6 +1044,24 @@ webpackJsonp([9,10],{
 	(function (root, factory){
 		'use strict';
 	
+<<<<<<< HEAD
+		var PubSub = {};
+		root.PubSub = PubSub;
+		factory(PubSub);
+	
+		// AMD support
+		if (true){
+			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return PubSub; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	
+		// CommonJS and Node.js module support
+		} else if (typeof exports === 'object'){
+			if (module !== undefined && module.exports) {
+				exports = module.exports = PubSub; // Node.js specific `module.exports`
+			}
+			exports.PubSub = PubSub; // CommonJS module 1.1.1 spec
+			module.exports = exports = PubSub; // CommonJS
+		}
+=======
 	    if (true){
 	        // AMD. Register as an anonymous module.
 	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -1028,6 +1076,7 @@ webpackJsonp([9,10],{
 	    var PubSub = {};
 	    root.PubSub = PubSub;
 	    factory(PubSub);
+>>>>>>> 7527618ee6e3552a9fd79ca7519eea719e29704d
 	
 	}(( typeof window === 'object' && window ) || this, function (PubSub){
 		'use strict';

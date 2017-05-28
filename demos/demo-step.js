@@ -8,7 +8,7 @@ var d3Selection = require('d3-selection'),
     miniTooltip = require('./../src/charts/mini-tooltip'),
 
     dataBuilder = require('./../test/fixtures/stepChartDataBuilder');
-
+    require('./helpers/resizeHelper');
 
 function createStepChart() {
     var stepChart = step(),

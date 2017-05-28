@@ -13,7 +13,7 @@ var _ = require('underscore'),
     colorSelectorHelper = require('./helpers/colorSelector'),
 
     lineMargin = {top:60, bottom: 50, left: 50, right: 30};
-
+    require('./helpers/resizeHelper');
 
 function createBrushChart(optionalColorSchema) {
     var brushChart = brush(),
@@ -139,6 +139,7 @@ function createLineChartWithSingleLine() {
 
         // Tooltip Setup and start
         chartTooltip
+        .valueLabel('value')
             .title('Quantity Sold');
 
         // Note that if the viewport width is less than the tooltipThreshold value,

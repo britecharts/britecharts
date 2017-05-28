@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Tutorial: Line Chart</title>
+        <title>Tutorial: Stacked Bar Chart</title>
 
         
             <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
@@ -175,108 +175,106 @@
             	<div class="col-md-12">
             	
             		<div id="main">
-            			<section class="tutorial-section" id="tutorial-line" data-filename="tutorial-line.html">
+            			<section class="tutorial-section" id="tutorial-stacked-bar" data-filename="tutorial-stacked-bar.html">
     <header>
         
-        <h2 class="tutorial-section__heading">Line Chart</h2>
+        <h2 class="tutorial-section__heading">Stacked Bar Chart</h2>
     </header>
     <article>
         
-    <div class="container" id="line">
+    <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <article>
-                    <h2>Line Chart with fixed Aspect Ratio</h2>
-                    <div class="britechart js-line-chart-container line-chart-container card--chart"></div>
-                    <div class="britechart js-line-brush-chart-container card--chart"></div>
-                    <p class="js-date-range date-range is-hidden">Selected from <span class="js-start-date"></span> to <span class="js-end-date"></span></p>
-                </article>
+                <h2 class="tutorial__heading">Stacked Bar Chart with Tooltip</h2>
+                <div class="britechart js-stacked-bar-chart-tooltip-container card--chart"></div>
             </div>
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
-lineChart1
-    .isAnimated(true)
-    .aspectRatio(0.5)
-    .grid('horizontal')
-    .tooltipThreshold(600)
+stackedBar
+    .tooltipThreshold(400)
     .width(containerWidth)
-    .dateLabel('fullDate')
+    .isAnimated(true)
+    .valueLabel('views')
+    .stackLabel('stack')
+    .nameLabel('date')
     .on('customMouseOver', chartTooltip.show)
-    .on('customMouseMove', chartTooltip.update)
+    .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
+        chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+    })
     .on('customMouseOut', chartTooltip.hide);
+container.datum(dataset.data).call(stackedBar);
 
-container.datum(dataset).call(lineChart);
+chartTooltip
+    .title('Testing tooltip');
+tooltipContainer = d3.select('.metadata-group');
+tooltipContainer.datum([]).call(chartTooltip);
                 </code></pre>
                 <h4>Colors</h4>
                 <label class="control-label">You can also check other color schemas:</label>
                 <div class="js-color-selector-container card--chart"></div>
                 <h4>Data Input</h4>
-                <p>Check the <a href="/britecharts/global.html#LineChartData__anchor">data input schema</a> of this chart.</p>
+                <p>Check the <a href="http://eventbrite.github.io/britecharts/global.html#areaChartData__anchor">data input schema</a> of this chart.</p>
                 <h4>Export Chart</h4>
                 <p>You can also export this chart by pressing: <input id="button" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
                 <h4>Demo Code</h4>
-                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-stacked-area.js">in github</a></p>
             </div>
         </div>
-
+    </div>
+    <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <article>
-                    <h2>Line Chart with a single data source</h2>
-                    <div class="britechart js-single-line-chart-container card--chart"></div>
-                    <p>This is the same chart as above, but when there is a single data source we apply a gradient to the line to give it a little flair.</p>
-                    <p>This chart has a fixed height like the one below.</p>
-                </article>
+                <h2 class="tutorial__heading">Horizontal Stacked Bar Chart</h2>
+                <div class="britechart js-stacked-bar-chart-fixed-container card--chart"></div>
             </div>
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
-lineChart
-    .tooltipThreshold(600)
-    .height(300)
-    .grid('vertical')
-    .width(containerWidth);
-
-container.datum(dataset).call(lineChart);
-                </code></pre>
-                <h3>Export Chart</h3>
-                <p>You can also export this chart by pressing: <input id="button2" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
-                <h4>Demo Code</h4>
-                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-8">
-                <article>
-                    <h2>Line Chart with Fixed Height</h2>
-                    <div class="britechart js-fixed-line-chart-container card--chart"></div>
-                    <p>In this case, we have set a <strong>fixed height</strong> on the chart, as we are currently doing on the Sales report:</p>
-                </article>
-            </div>
-            <div class="col-md-4 sidebar">
-                <h3>The code</h3>
-                <pre><code class="language-javascript">
-lineChart
-    .tooltipThreshold(600)
-    .height(300)
+// StackedBarChart Setup and start
+stackedBar
+    .tooltipThreshold(400)
     .width(containerWidth)
-    .grid('full');
+    .valueLabel('views')
+    .stackLabel('stack')
+    .isAnimated(true)
+    .margin({
+        left: 80,
+        top: 0,
+        right: 0,
+        bottom: 20
+    })
+    .nameLabel('date')
+    .on('customMouseOver', function() {
+        chartTooltip.show();
+    })
+    .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
+        chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+    })
+    .on('customMouseOut', function() {
+        chartTooltip.hide();
+    });
+container.datum(dataset.data).call(stackedBar);
 
-container.datum(dataset).call(lineChart);
+// Tooltip Setup and start
+chartTooltip
+    .title('Dummy Tooltip Title');
+
+// Note that if the viewport width is less than the tooltipThreshold value,
+// this container won't exist, and the tooltip won't show up
+tooltipContainer = d3.select('.metadata-group');
+tooltipContainer.datum([]).call(chartTooltip);
                 </code></pre>
                 <h4>Demo Code</h4>
-                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-stacked-bar.js">in github</a></p>
             </div>
         </div>
     </div>
 
-
     </article>
 </section>
 
-<script src="/britecharts/scripts/demo-line.js"></script>
+<script src="/britecharts/scripts/demo-stacked-bar.js"></script>
 
             		</div>
             	</div>

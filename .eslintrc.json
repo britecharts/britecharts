@@ -1,6 +1,6 @@
 {
     "globals": {
-        "sinon": 1
+        "sinon": true
     },
     "env": {
         "es6": true,
@@ -38,11 +38,15 @@
         "keyword-spacing": 1,
         "consistent-this": [0, "self"],
         "comma-style": [2, "last"],
-        "func-style": [2, "declaration"],
+        "func-style": [2, "declaration", { "allowArrowFunctions": true }],
         "newline-after-var": 1,
         "no-inline-comments": 1,
         "no-multiple-empty-lines": [2, {"max": 2}],
         "no-nested-ternary": 1,
-        "one-var": [2, "always"]
+        "one-var": ["error",{
+            "var": "always",
+            "let": "always",
+            "const": "never"
+        }]
     }
 }

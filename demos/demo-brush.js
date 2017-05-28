@@ -7,7 +7,7 @@ var d3Selection = require('d3-selection'),
 
     brush = require('./../src/charts/brush'),
     dataBuilder = require('./../test/fixtures/brushChartDataBuilder');
-
+    require('./helpers/resizeHelper');
 
 function createBrushChart() {
     var brushChart = brush(),
