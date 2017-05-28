@@ -11,6 +11,7 @@ webpackJsonp([2,9],[
 	    dataBuilder = __webpack_require__(41),
 	    colorSelectorHelper = __webpack_require__(45),
 	    dataset = new dataBuilder.DonutDataBuilder().withFivePlusOther().build(),
+	    datasetNoPercentages = new dataBuilder.DonutDataBuilder().withFivePlusOtherNoPercent().build(),
 	    legendChart;
 	__webpack_require__(29);
 	
@@ -35,7 +36,7 @@ webpackJsonp([2,9],[
 	            donutChart.colorSchema(optionalColorSchema);
 	        }
 	
-	        donutContainer.datum(dataset).call(donutChart);
+	        donutContainer.datum(datasetNoPercentages).call(donutChart);
 	
 	        d3Selection.select('#button').on('click', function () {
 	            donutChart.exportChart('donut.png', 'Britecharts Donut Chart');
@@ -11328,7 +11329,7 @@ webpackJsonp([2,9],[
 	            pieDrawingTransitionDuration = 1200,
 	            pieHoverTransitionDuration = 150,
 	            radiusHoverOffset = 12,
-	            paddingAngle = 0.016,
+	            paddingAngle = 0,
 	            data = void 0,
 	            chartWidth = void 0,
 	            chartHeight = void 0,
@@ -11346,6 +11347,7 @@ webpackJsonp([2,9],[
 	            quantityLabel = 'quantity',
 	            nameLabel = 'name',
 	            percentageLabel = 'percentage',
+	            percentageFormat = '.1f',
 	
 	
 	        // colors
@@ -11469,15 +11471,27 @@ webpackJsonp([2,9],[
 	         * @private
 	         */
 	        function cleanData(data) {
-	            var totalQuantity = sumValues(data);
+	            var cleanData = data.reduce(function (acc, d) {
+	                // Skip data without quantity
+	                if (!d[quantityLabel]) {
+	                    return acc;
+	                }
 	
-	            return data.map(function (d) {
 	                d.quantity = +d[quantityLabel];
 	                d.name = String(d[nameLabel]);
-	                d.percentage = String(d.percentage || calculatePercent(d[quantityLabel], totalQuantity, '.1f'));
+	                d.percentage = d[percentageLabel] || null;
+	                acc.push(d);
+	
+	                return acc;
+	            }, []);
+	            var totalQuantity = sumValues(cleanData);
+	            var dataWithPercentages = cleanData.map(function (d) {
+	                d.percentage = String(d.percentage || calculatePercent(d[quantityLabel], totalQuantity, percentageFormat));
 	
 	                return d;
 	            });
+	
+	            return dataWithPercentages;
 	        }
 	
 	        /**
