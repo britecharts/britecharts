@@ -8,14 +8,14 @@ var d3Selection = require('d3-selection'),
 
     groupedBarChart = require('./../src/charts/grouped-bar'),
     tooltip = require('./../src/charts/tooltip'),
-    stackedDataBuilder = require('./../test/fixtures/stackedBarDataBuilder'),
+    groupedDataBuilder = require('./../test/fixtures/groupedBarDataBuilder'),
     colorSelectorHelper = require('./helpers/colorSelector');
     require('./helpers/resizeHelper');
 
 function creategroupedBarChartWithTooltip(optionalColorSchema) {
     var groupedBar = groupedBarChart(),
         chartTooltip = tooltip(),
-        testDataSet = new stackedDataBuilder.StackedBarDataBuilder(),
+        testDataSet = new groupedDataBuilder.GroupedBarChartDataBuilder(),
         container = d3Selection.select('.js-grouped-bar-chart-tooltip-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
@@ -70,7 +70,7 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
 function createHorizontalgroupedBarChart(optionalColorSchema) {
     var groupedBar = groupedBarChart(),
         chartTooltip = tooltip(),
-        testDataSet = new stackedDataBuilder.StackedBarDataBuilder(),
+        testDataSet = new groupedDataBuilder.GroupedBarChartDataBuilder(),
         container = d3Selection.select('.js-grouped-bar-chart-fixed-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
@@ -132,7 +132,7 @@ if (d3Selection.select('.js-grouped-bar-chart-tooltip-container').node()){
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
-    var redrawCharts = function(){
+    function redrawCharts () {
         d3Selection.selectAll('.grouped-bar').remove();
 
         creategroupedBarChartWithTooltip();
