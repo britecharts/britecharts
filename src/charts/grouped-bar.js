@@ -9,7 +9,6 @@ define(function(require){
     const d3Ease = require('d3-ease');
     const d3Interpolate = require('d3-interpolate');
     const d3Scale = require('d3-scale');
-    const d3Shape = require('d3-shape');
     const d3Selection = require('d3-selection');
     const assign = require('lodash.assign');
 
@@ -37,7 +36,7 @@ define(function(require){
      *     'data': [
      *         {
      *             "name": "2011-01",
-     *             "stack": "Direct",
+     *             "group": "Direct",
      *             "value": 0
      *         }
      *     ]
@@ -45,23 +44,23 @@ define(function(require){
      */
 
     /**
-     * Stacked Area Chart reusable API module that allows us
-     * rendering a multi area and configurable chart.
+     * Grouped Bar Chart reusable API module that allows us
+     * rendering a multi grouped bar and configurable chart.
      *
-     * @module Stacked-bar
-     * @tutorial stacked-bar
+     * @module Grouped-bar
+     * @tutorial grouped-bar
      * @requires d3-array, d3-axis, d3-color, d3-collection, d3-dispatch, d3-ease,
-     *  d3-interpolate, d3-scale, d3-shape, d3-selection, lodash assign
+     *  d3-interpolate, d3-scale, d3-selection, lodash assign
      *
      * @example
-     * let GroupedBar = GroupedBar();
+     * let groupedBar = GroupedBar();
      *
-     * GroupedBar
+     * groupedBar
      *     .width(containerWidth);
      *
      * d3Selection.select('.css-selector')
      *     .datum(dataset.data)
-     *     .call(GroupedBar);
+     *     .call(groupedBar);
      *
      */
     return function module() {
@@ -127,7 +126,7 @@ define(function(require){
 
             nameLabel = 'name',
             valueLabel = 'value',
-            groupLabel = 'stack',
+            groupLabel = 'group',
             nameLabelFormat,
             valueLabelFormat = NUMBER_FORMAT,
 
@@ -336,7 +335,7 @@ define(function(require){
             if (!svg) {
                 svg = d3Selection.select(container)
                   .append('svg')
-                    .classed('britechart stacked-bar', true);
+                    .classed('britechart grouped-bar', true);
 
                 buildContainerGroups();
             }
@@ -437,8 +436,7 @@ define(function(require){
          */
         function drawHorizontalBars(series) {
             // Enter + Update
-            let context,
-                bars = series
+            let bars = series
                     .data(layers)
                     .enter()
                       .append('g')
@@ -481,10 +479,9 @@ define(function(require){
                     d3Selection.select(this).attr('fill', () => d3Color.color(categoryColorMap[d.stack]).darker())
                 })
                 .on('mousemove', function(d) {
-                    
                     let data = assign({},this.__data__),[x,y] =  d3Selection.mouse(this);
+
                     data.values = this.parentNode.__data__.values;
-                    console.log(x,y,data)
                     dispatcher.call('customMouseMove', this, data,categoryColorMap,x,y);
                 })
                 .on('mouseout', function(d) {
@@ -500,14 +497,12 @@ define(function(require){
          */
         function drawVerticalBars(series) {
             // Enter + Update
-            console.log('layers',layers)
             let bars = series
                 .data(layers)
                 .enter()
                   .append('g')
                   .attr('transform', function(d) { return 'translate(' + xScale(d.key) + ',0)'; })
                     .classed('layer', true)
-                    // .attr('fill', (({key}) => categoryColorMap[key]))
                     .selectAll('.bar')
                     .data((d) => d.values)
                     .enter()
@@ -545,10 +540,9 @@ define(function(require){
                     d3Selection.select(this).attr('fill', () => d3Color.color(categoryColorMap[d.stack]).darker())
                 })
                 .on('mousemove', function(d) {
-                    
                     let data = assign({},this.__data__),[x,y] =  d3Selection.mouse(this);
+
                     data.values = this.parentNode.__data__.values;
-                    console.log(x,y,data)
                     dispatcher.call('customMouseMove', this, data,categoryColorMap,x,y);
                 })
                 .on('mouseout', function(d) {
@@ -597,19 +591,16 @@ define(function(require){
                 nearest  = [];
    
            layers.forEach(function(data){
-                // return data.values.map(function(d1){
                    let found = data.values.find((d2) => Math.abs(mouseX >=  xScale(d2[nameLabel]) + xScale2(d2[groupLabel])) && Math.abs(mouseX - xScale2(d2[groupLabel]) - xScale(d2[nameLabel]) <= epsilon ) );
-                   if(found){
+
+                   if (found) {
                        found.values = data.values;
                        found.key = found.name;
                        nearest.push(found)
                    }
-                  
-            //    })
+
             }); 
-            console.log('nearest',nearest);
-            // nearest = d3Array.merge( nearest).filter(function(e){ return !!e && e });
-            
+
             return nearest.length ? nearest[0] :undefined;
         }
 
@@ -624,16 +615,14 @@ define(function(require){
                 nearest = [];
 
             layers.map(function(data){
-                // return stackedArray.map(function(d1){
                    let found = data.values.find((d2) => Math.abs(mouseY >= yScale(d2[nameLabel])) && Math.abs(mouseY - yScale(d2[nameLabel]) <= epsilon*2) );
-                   if(found){
+
+                   if (found){
                        found.values = data.values;
                        found.key = found.name;
                        nearest.push(found)
                    }
-            //    })
             });
-        
 
             return nearest.length ? nearest[0] :undefined;
         }
@@ -652,7 +641,6 @@ define(function(require){
             if (dataPoint) {
                 // Move verticalMarker to that datapoint
                 if (!horizontal) {
-                    console.log(dataPoint,'dataPoint')
                     x =  xScale(dataPoint.key) + xScale2(dataPoint[groupLabel]),y = yScale(getValue(dataPoint));
                     moveVerticalMarkerXY(x,y);
                 } else {
