@@ -138,7 +138,7 @@ if (d3Selection.select('.js-grouped-bar-chart-tooltip-container').node()){
         creategroupedBarChartWithTooltip();
         createHorizontalgroupedBarChart();
     };
-
+    
     // Redraw charts on window resize
     PubSub.subscribe('resize', redrawCharts);
 
