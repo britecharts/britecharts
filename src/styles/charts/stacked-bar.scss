@@ -1,0 +1,24 @@
+@import "../helpers/_variables.scss";
+
+.stacked-bar {
+
+    // Axes
+    .x-axis-group path,
+    .y-axis-group path {
+        display: none;
+    }
+
+    .y-axis-group {
+        .tick {
+            text {
+                font-size: 14px;
+            }
+        }
+    }
+
+
+    .tick line,
+    .tick line {
+        display: none;
+    }
+}
