@@ -103,12 +103,12 @@ define(function(require){
             svg,
             chartWidth, chartHeight,
             data,
-            stacks,
-
             transformedData,
+            stacks,
 
             tooltipThreshold = 480,
 
+            baseLine,
             xAxisPadding = {
                 top: 0,
                 left: 0,
@@ -142,7 +142,7 @@ define(function(require){
          * This function creates the graph using the selection and data provided
          * @param {D3Selection} _selection A d3 selection that represents
          * the container(s) where the chart(s) will be rendered
-         * @param {areaChartData} _data The data to attach and generate the chart
+         * @param {stackedBarData} _data The data to attach and generate the chart
          */
         function exports(_selection) {
             _selection.each(function(_data){
@@ -412,9 +412,15 @@ define(function(require){
                       .append('line')
                         .attr('class', 'vertical-grid-line')
                         .attr('y1', 0)
-                        .attr('y2', chartHeight )
+                        .attr('y2', chartHeight)
                         .attr('x1', (d) => xScale(d))
                         .attr('x2', (d) => xScale(d));
+            }
+
+            if (horizontal) {
+                drawVerticalExtendedLine();
+            } else {
+                drawHorizontalExtendedLine();
             }
         }
 
@@ -477,6 +483,23 @@ define(function(require){
         }
 
         /**
+         * Draws a vertical line to extend x-axis till the edges
+         * @return {void}
+         */
+        function drawHorizontalExtendedLine() {
+            baseLine = svg.select('.grid-lines-group')
+                .selectAll('line.extended-x-line')
+                .data([0])
+                .enter()
+                  .append('line')
+                    .attr('class', 'extended-x-line')
+                    .attr('x1', (xAxisPadding.left))
+                    .attr('x2', chartWidth)
+                    .attr('y1', chartHeight)
+                    .attr('y2', chartHeight);
+        }
+
+        /**
          * Draws the bars along the y axis
          * @param  {D3Selection} bars Selection of bars
          * @return {void}
@@ -530,6 +553,23 @@ define(function(require){
                     dispatcher.call('customMouseOut', this);
                     d3Selection.select(this).attr('fill', () => d3Selection.select(this.parentNode).attr('fill'))
                 });
+        }
+
+        /**
+         * Draws a vertical line to extend y-axis till the edges
+         * @return {void}
+         */
+        function drawVerticalExtendedLine() {
+            baseLine = svg.select('.grid-lines-group')
+                .selectAll('line.extended-y-line')
+                .data([0])
+                .enter()
+                  .append('line')
+                    .attr('class', 'extended-y-line')
+                    .attr('y1', (xAxisPadding.bottom))
+                    .attr('y2', chartHeight)
+                    .attr('x1', 0)
+                    .attr('x2', 0);
         }
 
         /**
@@ -664,7 +704,6 @@ define(function(require){
         }
 
         // API
-
         /**
          * Gets or Sets the aspect ratio of the chart
          * @param  {Number} _x Desired aspect ratio for the graph

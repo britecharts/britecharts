@@ -532,14 +532,21 @@ define(function(require) {
                     .attr('x1', (d) => xScale(d))
                     .attr('x2', (d) => xScale(d))
 
-            //draw a horizontal line to extend y-axis till the edges
+            drawVerticalExtendedLine();
+        }
+
+        /**
+         * Draws a vertical line to extend y-axis till the edges
+         * @return {void}
+         */
+        function drawVerticalExtendedLine() {
             baseLine = svg.select('.grid-lines-group')
                 .selectAll('line.extended-y-line')
                 .data([0])
                 .enter()
                   .append('line')
                     .attr('class', 'extended-y-line')
-                    .attr('y1', (xAxisPadding.left))
+                    .attr('y1', (xAxisPadding.bottom))
                     .attr('y2', chartHeight)
                     .attr('x1', 0)
                     .attr('x2', 0);
@@ -561,7 +568,14 @@ define(function(require) {
                     .attr('y1', (d) => yScale(d))
                     .attr('y2', (d) => yScale(d))
 
-            //draw a horizontal line to extend x-axis till the edges
+            drawHorizontalExtendedLine();
+        }
+
+        /**
+         * Draws a vertical line to extend x-axis till the edges
+         * @return {void}
+         */
+        function drawHorizontalExtendedLine() {
             baseLine = svg.select('.grid-lines-group')
                 .selectAll('line.extended-x-line')
                 .data([0])
@@ -570,8 +584,8 @@ define(function(require) {
                     .attr('class', 'extended-x-line')
                     .attr('x1', (xAxisPadding.left))
                     .attr('x2', chartWidth)
-                    .attr('y1', height - margin.bottom - margin.top)
-                    .attr('y2', height - margin.bottom - margin.top);
+                    .attr('y1', chartHeight)
+                    .attr('y2', chartHeight);
         }
 
         /**
@@ -593,6 +607,7 @@ define(function(require) {
                 return height;
             }
             height = _x;
+
             return this;
         };
 
@@ -607,6 +622,7 @@ define(function(require) {
                 return margin;
             }
             margin = _x;
+
             return this;
         };
 
@@ -621,6 +637,7 @@ define(function(require) {
                 return width;
             }
             width = _x;
+
             return this;
         };
 
@@ -635,6 +652,7 @@ define(function(require) {
                 return horizontal;
             }
             horizontal = _x;
+
             return this;
         };
 
@@ -688,6 +706,7 @@ define(function(require) {
                 return colorSchema;
             }
             colorSchema = _x;
+
             return this;
         }
 
@@ -706,6 +725,7 @@ define(function(require) {
             } else {
                 valueLabelFormat = NUMBER_FORMAT;
             }
+
             return this;
         }
 
@@ -721,6 +741,7 @@ define(function(require) {
                 return percentageAxisToMaxRatio;
             }
             percentageAxisToMaxRatio = _x;
+
             return this;
         }
 
@@ -734,6 +755,7 @@ define(function(require) {
                 return percentageLabelMargin;
             }
             percentageLabelMargin = _x;
+
             return this;
         }
 
@@ -747,6 +769,7 @@ define(function(require) {
                 return enablePercentageLabels;
             }
             enablePercentageLabels = _x;
+
             return this;
         }
 
@@ -760,6 +783,7 @@ define(function(require) {
                 return yAxisPaddingBetweenChart;
             }
             yAxisPaddingBetweenChart = _x;
+
             return this;
         }
 
@@ -774,6 +798,7 @@ define(function(require) {
                 return valueLabel;
             }
             valueLabel = _x;
+
             return this;
         };
 
@@ -788,6 +813,7 @@ define(function(require) {
                 return nameLabel;
             }
             nameLabel = _x;
+
             return this;
         };
 
