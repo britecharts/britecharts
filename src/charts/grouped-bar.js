@@ -66,11 +66,11 @@ define(function (require) {
     return function module() {
 
         let margin = {
-            top: 40,
-            right: 30,
-            bottom: 60,
-            left: 70
-        },
+                top: 40,
+                right: 30,
+                bottom: 60,
+                left: 70
+            },
             width = 960,
             height = 500,
 
