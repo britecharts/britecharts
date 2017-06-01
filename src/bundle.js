@@ -7,6 +7,7 @@ import miniTooltip from './charts/mini-tooltip.js';
 import sparkline from './charts/sparkline.js';
 import stackedArea from './charts/stacked-area.js';
 import groupedBar from './charts/grouped-bar.js';
+import stackedBar from './charts/stacked-bar.js';
 import step from './charts/step.js';
 import brush from './charts/brush.js';
 import colors from './charts/helpers/colors.js';
@@ -21,6 +22,7 @@ export {
         sparkline,
         stackedArea,
         groupedBar,
+        stackedBar,
         step,
         brush,
         colors

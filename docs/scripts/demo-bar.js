@@ -1889,8 +1889,15 @@ webpackJsonp([0,10],[
 	                return xScale(d);
 	            });
 	
-	            //draw a horizontal line to extend y-axis till the edges
-	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-y-line').data([0]).enter().append('line').attr('class', 'extended-y-line').attr('y1', xAxisPadding.left).attr('y2', chartHeight).attr('x1', 0).attr('x2', 0);
+	            drawVerticalExtendedLine();
+	        }
+	
+	        /**
+	         * Draws a vertical line to extend y-axis till the edges
+	         * @return {void}
+	         */
+	        function drawVerticalExtendedLine() {
+	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-y-line').data([0]).enter().append('line').attr('class', 'extended-y-line').attr('y1', xAxisPadding.bottom).attr('y2', chartHeight).attr('x1', 0).attr('x2', 0);
 	        }
 	
 	        /**
@@ -1904,8 +1911,15 @@ webpackJsonp([0,10],[
 	                return yScale(d);
 	            });
 	
-	            //draw a horizontal line to extend x-axis till the edges
-	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-x-line').data([0]).enter().append('line').attr('class', 'extended-x-line').attr('x1', xAxisPadding.left).attr('x2', chartWidth).attr('y1', height - margin.bottom - margin.top).attr('y2', height - margin.bottom - margin.top);
+	            drawHorizontalExtendedLine();
+	        }
+	
+	        /**
+	         * Draws a vertical line to extend x-axis till the edges
+	         * @return {void}
+	         */
+	        function drawHorizontalExtendedLine() {
+	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-x-line').data([0]).enter().append('line').attr('class', 'extended-x-line').attr('x1', xAxisPadding.left).attr('x2', chartWidth).attr('y1', chartHeight).attr('y2', chartHeight);
 	        }
 	
 	        /**
@@ -1927,6 +1941,7 @@ webpackJsonp([0,10],[
 	                return height;
 	            }
 	            height = _x;
+	
 	            return this;
 	        };
 	
@@ -1941,6 +1956,7 @@ webpackJsonp([0,10],[
 	                return margin;
 	            }
 	            margin = _x;
+	
 	            return this;
 	        };
 	
@@ -1955,6 +1971,7 @@ webpackJsonp([0,10],[
 	                return width;
 	            }
 	            width = _x;
+	
 	            return this;
 	        };
 	
@@ -1969,6 +1986,7 @@ webpackJsonp([0,10],[
 	                return horizontal;
 	            }
 	            horizontal = _x;
+	
 	            return this;
 	        };
 	
@@ -2022,6 +2040,7 @@ webpackJsonp([0,10],[
 	                return colorSchema;
 	            }
 	            colorSchema = _x;
+	
 	            return this;
 	        };
 	
@@ -2040,6 +2059,7 @@ webpackJsonp([0,10],[
 	            } else {
 	                valueLabelFormat = NUMBER_FORMAT;
 	            }
+	
 	            return this;
 	        };
 	
@@ -2055,6 +2075,7 @@ webpackJsonp([0,10],[
 	                return percentageAxisToMaxRatio;
 	            }
 	            percentageAxisToMaxRatio = _x;
+	
 	            return this;
 	        };
 	
@@ -2068,6 +2089,7 @@ webpackJsonp([0,10],[
 	                return percentageLabelMargin;
 	            }
 	            percentageLabelMargin = _x;
+	
 	            return this;
 	        };
 	
@@ -2081,6 +2103,7 @@ webpackJsonp([0,10],[
 	                return enablePercentageLabels;
 	            }
 	            enablePercentageLabels = _x;
+	
 	            return this;
 	        };
 	
@@ -2094,6 +2117,7 @@ webpackJsonp([0,10],[
 	                return yAxisPaddingBetweenChart;
 	            }
 	            yAxisPaddingBetweenChart = _x;
+	
 	            return this;
 	        };
 	
@@ -2108,6 +2132,7 @@ webpackJsonp([0,10],[
 	                return valueLabel;
 	            }
 	            valueLabel = _x;
+	
 	            return this;
 	        };
 	
@@ -2122,6 +2147,7 @@ webpackJsonp([0,10],[
 	                return nameLabel;
 	            }
 	            nameLabel = _x;
+	
 	            return this;
 	        };
 	

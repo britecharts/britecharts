@@ -41,7 +41,7 @@ webpackJsonp([8,10],[
 	        container.datum(dataset.data).call(stackedBar);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.topicLabel('values').dateLabel('key').nameLabel('stack').title('Testing tooltip');
+	        chartTooltip.topicLabel('values').dateLabel('key').nameLabel('stack').title('Tooltip title');
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -87,7 +87,7 @@ webpackJsonp([8,10],[
 	        container.datum(dataset.data).call(stackedBar);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.topicLabel('values').dateLabel('key').nameLabel('stack').title('Dummy Tooltip Title');
+	        chartTooltip.topicLabel('values').dateLabel('key').nameLabel('stack').title('Tooltip Title');
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -12763,9 +12763,10 @@ webpackJsonp([8,10],[
 	            chartWidth = void 0,
 	            chartHeight = void 0,
 	            data = void 0,
-	            stacks = void 0,
 	            transformedData = void 0,
+	            stacks = void 0,
 	            tooltipThreshold = 480,
+	            baseLine = void 0,
 	            xAxisPadding = {
 	            top: 0,
 	            left: 0,
@@ -12804,7 +12805,7 @@ webpackJsonp([8,10],[
 	         * This function creates the graph using the selection and data provided
 	         * @param {D3Selection} _selection A d3 selection that represents
 	         * the container(s) where the chart(s) will be rendered
-	         * @param {areaChartData} _data The data to attach and generate the chart
+	         * @param {stackedBarData} _data The data to attach and generate the chart
 	         */
 	        function exports(_selection) {
 	            _selection.each(function (_data) {
@@ -13023,6 +13024,12 @@ webpackJsonp([8,10],[
 	                    return xScale(d);
 	                });
 	            }
+	
+	            if (horizontal) {
+	                drawVerticalExtendedLine();
+	            } else {
+	                drawHorizontalExtendedLine();
+	            }
 	        }
 	
 	        /**
@@ -13086,6 +13093,14 @@ webpackJsonp([8,10],[
 	        }
 	
 	        /**
+	         * Draws a vertical line to extend x-axis till the edges
+	         * @return {void}
+	         */
+	        function drawHorizontalExtendedLine() {
+	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-x-line').data([0]).enter().append('line').attr('class', 'extended-x-line').attr('x1', xAxisPadding.left).attr('x2', chartWidth).attr('y1', chartHeight).attr('y2', chartHeight);
+	        }
+	
+	        /**
 	         * Draws the bars along the y axis
 	         * @param  {D3Selection} bars Selection of bars
 	         * @return {void}
@@ -13143,6 +13158,14 @@ webpackJsonp([8,10],[
 	                    return d3Selection.select(_this4.parentNode).attr('fill');
 	                });
 	            });
+	        }
+	
+	        /**
+	         * Draws a vertical line to extend y-axis till the edges
+	         * @return {void}
+	         */
+	        function drawVerticalExtendedLine() {
+	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-y-line').data([0]).enter().append('line').attr('class', 'extended-y-line').attr('y1', xAxisPadding.bottom).attr('y2', chartHeight).attr('x1', 0).attr('x2', 0);
 	        }
 	
 	        /**
@@ -13281,7 +13304,6 @@ webpackJsonp([8,10],[
 	        }
 	
 	        // API
-	
 	        /**
 	         * Gets or Sets the aspect ratio of the chart
 	         * @param  {Number} _x Desired aspect ratio for the graph

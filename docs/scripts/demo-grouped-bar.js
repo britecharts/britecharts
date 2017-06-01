@@ -9489,8 +9489,8 @@ webpackJsonp([3,10],[
 	                        ret[entry[groupLabel]] = getValue(entry);
 	                    }
 	                });
-	                ret.values = values; //for tooltip
-	
+	                //for tooltip
+	                ret.values = values;
 	                return ret;
 	            }).entries(data).map(function (data) {
 	                return assign({}, {
@@ -9540,12 +9540,12 @@ webpackJsonp([3,10],[
 	        }
 	
 	        /**
-	         * Builds the stacked layers layout
+	         * Builds the grouped layers layout
 	         * @return {D3Layout} Layout for drawing the chart
 	         * @private
 	         */
 	        function buildLayers() {
-	            var dataInitial = transformedData.map(function (item) {
+	            layers = transformedData.map(function (item) {
 	                var ret = {};
 	
 	                groups.forEach(function (key) {
@@ -9554,8 +9554,6 @@ webpackJsonp([3,10],[
 	
 	                return assign({}, item, ret);
 	            });
-	
-	            layers = dataInitial;
 	        }
 	
 	        /**
@@ -9584,12 +9582,12 @@ webpackJsonp([3,10],[
 	
 	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(data.map(getGroup));
 	
-	            categoryColorMap = colorScale.domain(data.map(getName)).domain().reduce(function (memo, item, i) {
+	            categoryColorMap = colorScale.domain(data.map(getName)).domain().reduce(function (memo, item) {
 	                data.forEach(function (v) {
 	                    if (getName(v) == item) {
-	                        memo[v.name] = colorScale(v.stack);
-	                        memo[v.stack] = colorScale(v.stack);
-	                        memo[v.stack + item] = colorScale(v.stack);
+	                        memo[v.name] = colorScale(v.group);
+	                        memo[v.group] = colorScale(v.group);
+	                        memo[v.group + item] = colorScale(v.group);
 	                    }
 	                });
 	                return memo;
@@ -9618,8 +9616,9 @@ webpackJsonp([3,10],[
 	        function cleanData(data) {
 	            return data.map(function (d) {
 	                d.value = +d[valueLabel];
-	                d.stack = d[groupLabel];
-	                d.topicName = getGroup(d); // for tooltip
+	                d.group = d[groupLabel];
+	                // for tooltip
+	                d.topicName = getGroup(d);
 	                d.name = d[nameLabel];
 	
 	                return d;
@@ -9675,6 +9674,77 @@ webpackJsonp([3,10],[
 	        }
 	
 	        /**
+	         * Animation tween of horizontal bars
+	         * @param  {obj} d data of bar
+	         * @return {void}
+	         */
+	        function horizontalBarsTween(d) {
+	            var node = d3Selection.select(this),
+	                i = d3Interpolate.interpolateRound(0, xScale(getValue(d))),
+	                j = d3Interpolate.interpolateNumber(0, 1);
+	
+	            return function (t) {
+	                node.attr('width', i(t)).style('opacity', j(t));
+	            };
+	        }
+	
+	        /**
+	         * Animation tween of vertical bars
+	         * @param  {obj} d data of bar
+	         * @return {void}
+	         */
+	        function verticalBarsTween(d) {
+	            var node = d3Selection.select(this),
+	                i = d3Interpolate.interpolateRound(0, chartHeight - yScale(getValue(d))),
+	                y = d3Interpolate.interpolateRound(chartHeight, yScale(getValue(d))),
+	                j = d3Interpolate.interpolateNumber(0, 1);
+	
+	            return function (t) {
+	                node.attr('y', y(t)).attr('height', i(t)).style('opacity', j(t));
+	            };
+	        }
+	
+	        /**
+	         * mouseover event handle of bars
+	         * @param  {obj} d data of bar
+	         * @return {void}
+	         */
+	        function barsOnMouseOver(d) {
+	            dispatcher.call('customMouseOver', this);
+	            d3Selection.select(this).attr('fill', function () {
+	                return d3Color.color(categoryColorMap[d.group]).darker();
+	            });
+	        }
+	
+	        /**
+	         * mousemove event handle of bars
+	         * @param  {obj} d data of bar
+	         * @return {void}
+	         */
+	        function barsOnMouseMove(d) {
+	            var data = assign({}, this.__data__),
+	                _d3Selection$mouse = d3Selection.mouse(this),
+	                _d3Selection$mouse2 = _slicedToArray(_d3Selection$mouse, 2),
+	                x = _d3Selection$mouse2[0],
+	                y = _d3Selection$mouse2[1];
+	
+	            data.values = this.parentNode.__data__.values;
+	            dispatcher.call('customMouseMove', this, data, categoryColorMap, x, y);
+	        }
+	
+	        /**
+	         * mouseout event handle of bars
+	         * @param  {obj} d data of bar
+	         * @return {void}
+	         */
+	        function barsOnMouseOut(d) {
+	            dispatcher.call('customMouseOut', this);
+	            d3Selection.select(this).attr('fill', function () {
+	                return categoryColorMap[d.group];
+	            });
+	        }
+	
+	        /**
 	         * Draws the bars along the x axis
 	         * @param  {D3Selection} bars Selection of bars
 	         * @return {void}
@@ -9683,57 +9753,25 @@ webpackJsonp([3,10],[
 	            // Enter + Update
 	            var bars = series.data(layers).enter().append('g').attr('transform', function (d) {
 	                return 'translate(0,' + yScale(d.key) + ')';
-	            }).classed('layer', true)
-	            // .attr('fill', (({key}) => categoryColorMap[key]))
-	            .selectAll('.bar').data(function (d) {
+	            }).classed('layer', true).selectAll('.bar').data(function (d) {
 	                return d.values;
-	            }).enter().append('rect').classed('bar', true).attr('x', function (d) {
-	                return 1;
-	            }).attr('y', function (d) {
+	            }).enter().append('rect').classed('bar', true).attr('x', 1).attr('y', function (d) {
 	                return yScale2(getGroup(d));
 	            }).attr('height', yScale2.bandwidth()).attr('fill', function (data) {
-	                return categoryColorMap[data.stack];
+	                return categoryColorMap[data.group];
 	            });
 	
 	            if (isAnimated) {
 	                bars.style('opacity', 0.24).transition().delay(function (_, i) {
 	                    return animationDelays[i];
-	                }).duration(animationDuration).ease(ease).tween('attr.width', function (d) {
-	                    var node = d3Selection.select(this),
-	                        i = d3Interpolate.interpolateRound(0, xScale(getValue(d))),
-	                        j = d3Interpolate.interpolateNumber(0, 1);
-	
-	                    return function (t) {
-	                        node.attr('width', i(t));
-	                        node.style('opacity', j(t));
-	                    };
-	                });
+	                }).duration(animationDuration).ease(ease).tween('attr.width', horizontalBarsTween);
 	            } else {
 	                bars.attr('width', function (d) {
 	                    return xScale(getValue(d));
 	                });
 	            }
 	
-	            bars.on('mouseover', function (d) {
-	                dispatcher.call('customMouseOver', this);
-	                d3Selection.select(this).attr('fill', function () {
-	                    return d3Color.color(categoryColorMap[d.stack]).darker();
-	                });
-	            }).on('mousemove', function (d) {
-	                var data = assign({}, this.__data__),
-	                    _d3Selection$mouse = d3Selection.mouse(this),
-	                    _d3Selection$mouse2 = _slicedToArray(_d3Selection$mouse, 2),
-	                    x = _d3Selection$mouse2[0],
-	                    y = _d3Selection$mouse2[1];
-	
-	                data.values = this.parentNode.__data__.values;
-	                dispatcher.call('customMouseMove', this, data, categoryColorMap, x, y);
-	            }).on('mouseout', function (d) {
-	                dispatcher.call('customMouseOut', this);
-	                d3Selection.select(this).attr('fill', function () {
-	                    return categoryColorMap[d.stack];
-	                });
-	            });
+	            bars.on('mouseover', barsOnMouseOver).on('mousemove', barsOnMouseMove).on('mouseout', barsOnMouseOut);
 	        }
 	
 	        /**
@@ -9752,51 +9790,20 @@ webpackJsonp([3,10],[
 	            }).attr('y', function (d) {
 	                return yScale(d.value);
 	            }).attr('width', xScale2.bandwidth).attr('fill', function (data) {
-	                return categoryColorMap[data.stack];
-	            }),
-	                context = void 0;
+	                return categoryColorMap[data.group];
+	            });
 	
 	            if (isAnimated) {
 	                bars.style('opacity', 0.24).transition().delay(function (_, i) {
 	                    return animationDelays[i];
-	                }).duration(animationDuration).ease(ease).tween('attr.height', function (d) {
-	                    var node = d3Selection.select(this),
-	                        i = d3Interpolate.interpolateRound(0, chartHeight - yScale(getValue(d))),
-	                        y = d3Interpolate.interpolateRound(chartHeight, yScale(getValue(d))),
-	                        j = d3Interpolate.interpolateNumber(0, 1);
-	
-	                    return function (t) {
-	                        node.attr('y', y(t));
-	                        node.attr('height', i(t));
-	                        node.style('opacity', j(t));
-	                    };
-	                });
+	                }).duration(animationDuration).ease(ease).tween('attr.height', verticalBarsTween);
 	            } else {
 	                bars.attr('height', function (d) {
 	                    return chartHeight - yScale(getValue(d));
 	                });
 	            }
 	
-	            bars.on('mouseover', function (d) {
-	                dispatcher.call('customMouseOver', this);
-	                d3Selection.select(this).attr('fill', function () {
-	                    return d3Color.color(categoryColorMap[d.stack]).darker();
-	                });
-	            }).on('mousemove', function (d) {
-	                var data = assign({}, this.__data__),
-	                    _d3Selection$mouse3 = d3Selection.mouse(this),
-	                    _d3Selection$mouse4 = _slicedToArray(_d3Selection$mouse3, 2),
-	                    x = _d3Selection$mouse4[0],
-	                    y = _d3Selection$mouse4[1];
-	
-	                data.values = this.parentNode.__data__.values;
-	                dispatcher.call('customMouseMove', this, data, categoryColorMap, x, y);
-	            }).on('mouseout', function (d) {
-	                dispatcher.call('customMouseOut', this);
-	                d3Selection.select(this).attr('fill', function () {
-	                    return categoryColorMap[d.stack];
-	                });
-	            });
+	            bars.on('mouseover', barsOnMouseOver).on('mousemove', barsOnMouseMove).on('mouseout', barsOnMouseOut);
 	        }
 	
 	        /**
