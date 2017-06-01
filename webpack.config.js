@@ -24,6 +24,7 @@ var webpack = require('webpack'),
         'sparkline': './src/charts/sparkline.js',
         'stacked-area': './src/charts/stacked-area.js',
         'stacked-bar': './src/charts/stacked-bar.js',
+        'grouped-bar': './src/charts/grouped-bar.js',
         'step': './src/charts/step.js',
         'brush': './src/charts/brush.js',
         // hack to make webpack use colors as an entry point while its also a dependency of the charts above
