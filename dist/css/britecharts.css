@@ -126,6 +126,17 @@
 .stacked-area .x-axis-group path {
   display: none; }
 
+.stacked-bar .x-axis-group path,
+.stacked-bar .y-axis-group path {
+  display: none; }
+
+.stacked-bar .y-axis-group .tick text {
+  font-size: 14px; }
+
+.stacked-bar .tick line,
+.stacked-bar .tick line {
+  display: none; }
+
 .step-chart .step {
   fill: #8FDAD8;
   stroke-width: 0;
