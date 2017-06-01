@@ -1,4 +1,4 @@
-define(function(require){
+define(function (require) {
     'use strict';
 
     const d3Array = require('d3-array');
@@ -12,7 +12,7 @@ define(function(require){
     const d3Selection = require('d3-selection');
     const assign = require('lodash.assign');
 
-    const {exportChart} = require('./helpers/exportChart');
+    const { exportChart } = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
     const NUMBER_FORMAT = ',f';
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
@@ -70,7 +70,7 @@ define(function(require){
             right: 30,
             bottom: 60,
             left: 70
-            },
+        },
             width = 960,
             height = 500,
 
@@ -119,7 +119,7 @@ define(function(require){
             maxBarNumber = 8,
 
             animationDelayStep = 20,
-            animationDelays = d3Array.range(animationDelayStep, maxBarNumber* animationDelayStep, animationDelayStep),
+            animationDelays = d3Array.range(animationDelayStep, maxBarNumber * animationDelayStep, animationDelayStep),
             animationDuration = 1000,
 
             grid = null,
@@ -131,7 +131,7 @@ define(function(require){
             valueLabelFormat = NUMBER_FORMAT,
 
             // getters
-            getName = (data) =>  data[nameLabel],
+            getName = (data) => data[nameLabel],
             getValue = (data) => data[valueLabel],
             getGroup = (data) => data[groupLabel],
             isAnimated = false,
@@ -146,7 +146,7 @@ define(function(require){
          * @param {GroupedBarChartData} _data The data to attach and generate the chart
          */
         function exports(_selection) {
-            _selection.each(function(_data){
+            _selection.each(function (_data) {
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
@@ -159,7 +159,7 @@ define(function(require){
                 buildAxis();
                 drawAxis();
                 drawGroupedBar();
-                if (shouldShowTooltip()){
+                if (shouldShowTooltip()) {
                     addMouseEvents();
                 }
             });
@@ -170,10 +170,10 @@ define(function(require){
          * @private
          */
         function prepareData(data) {
-            groups = uniq(data.map( (d)=> getGroup(d) ));
+            groups = uniq(data.map((d) => getGroup(d)));
             transformedData = d3Collection.nest()
                 .key(getName)
-                .rollup(function(values) {
+                .rollup(function (values) {
                     let ret = {};
 
                     values.forEach((entry) => {
@@ -181,15 +181,15 @@ define(function(require){
                             ret[entry[groupLabel]] = getValue(entry);
                         }
                     });
-                    ret.values = values; //for tooltip
-
+                    //for tooltip
+                    ret.values = values;
                     return ret;
                 })
                 .entries(data)
-                .map(function(data){
+                .map(function (data) {
                     return assign({}, {
-                        total:d3Array.sum( d3Array.permute(data.value, groups) ),
-                        key:data.key
+                        total: d3Array.sum(d3Array.permute(data.value, groups)),
+                        key: data.key
                     }, data.value);
                 });
         }
@@ -216,7 +216,7 @@ define(function(require){
                     .ticks(numOfVerticalTicks, valueLabelFormat)
             } else {
                 xAxis = d3Axis.axisBottom(xScale)
-                .ticks(numOfHorizontalTicks, valueLabelFormat);
+                    .ticks(numOfHorizontalTicks, valueLabelFormat);
                 yAxis = d3Axis.axisLeft(yScale)
             }
         }
@@ -227,7 +227,7 @@ define(function(require){
          * as everything else will be drawn on top of them
          * @private
          */
-        function buildContainerGroups(){
+        function buildContainerGroups() {
             let container = svg
                 .append('g')
                 .classed('container-group', true)
@@ -249,22 +249,20 @@ define(function(require){
         }
 
         /**
-         * Builds the stacked layers layout
+         * Builds the grouped layers layout
          * @return {D3Layout} Layout for drawing the chart
          * @private
          */
-        function buildLayers(){
-            let dataInitial = transformedData.map((item) => {
-                        let ret = {};
+        function buildLayers() {
+            layers = transformedData.map((item) => {
+                let ret = {};
 
-                        groups.forEach((key) => {
-                            ret[key] = item[key];
-                        });
-
-                        return assign({}, item, ret);
+                groups.forEach((key) => {
+                    ret[key] = item[key];
                 });
 
-            layers  = dataInitial;
+                return assign({}, item, ret);
+            });
         }
 
         /**
@@ -272,23 +270,23 @@ define(function(require){
          * @private
          */
         function buildScales() {
-           
-            let yMax = d3Array.max(data.map(function(d){
+
+            let yMax = d3Array.max(data.map(function (d) {
                 return d.value;
             }));
 
             if (!horizontal) {
                 xScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
-                    .rangeRound([0, chartWidth ])
+                    .rangeRound([0, chartWidth])
                     .padding(0.1);
                 xScale2 = d3Scale.scaleBand()
                     .domain(data.map(getGroup))
-                    .rangeRound([0, xScale.bandwidth() ])
+                    .rangeRound([0, xScale.bandwidth()])
                     .padding(0.1);
 
                 yScale = d3Scale.scaleLinear()
-                    .domain([0,yMax])
+                    .domain([0, yMax])
                     .rangeRound([chartHeight, 0])
                     .nice();
             } else {
@@ -314,14 +312,14 @@ define(function(require){
 
             categoryColorMap = colorScale
                 .domain(data.map(getName)).domain()
-                .reduce((memo, item, i) => {
-                    data.forEach(function(v){
-                        if (getName(v)==item){
-                           memo[v.name] = colorScale(v.stack)
-                           memo[v.stack] = colorScale(v.stack)
-                           memo[v.stack + item] = colorScale(v.stack)
-                       }
-                   })
+                .reduce((memo, item) => {
+                    data.forEach(function (v) {
+                        if (getName(v) == item) {
+                            memo[v.name] = colorScale(v.group)
+                            memo[v.group] = colorScale(v.group)
+                            memo[v.group + item] = colorScale(v.group)
+                        }
+                    })
                     return memo;
                 }, {});
         }
@@ -333,7 +331,7 @@ define(function(require){
         function buildSVG(container) {
             if (!svg) {
                 svg = d3Selection.select(container)
-                  .append('svg')
+                    .append('svg')
                     .classed('britechart grouped-bar', true);
 
                 buildContainerGroups();
@@ -351,13 +349,14 @@ define(function(require){
          */
         function cleanData(data) {
             return data.map((d) => {
-                    d.value = +d[valueLabel];
-                    d.stack = d[groupLabel];
-                    d.topicName = getGroup(d); // for tooltip
-                    d.name = d[nameLabel];
+                d.value = +d[valueLabel];
+                d.group = d[groupLabel];
+                // for tooltip
+                d.topicName = getGroup(d);
+                d.name = d[nameLabel];
 
-                    return d;
-                });
+                return d;
+            });
         }
 
         /**
@@ -365,11 +364,11 @@ define(function(require){
          * respective groups
          * @private
          */
-        function drawAxis(){
+        function drawAxis() {
             if (!horizontal) {
                 svg.select('.x-axis-group .axis.x')
-                .attr('transform', `translate( 0, ${chartHeight} )`)
-                .call(xAxis);
+                    .attr('transform', `translate( 0, ${chartHeight} )`)
+                    .call(xAxis);
 
                 svg.select('.y-axis-group.axis')
                     .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
@@ -406,12 +405,12 @@ define(function(require){
                     .selectAll('line.horizontal-grid-line')
                     .data(yScale.ticks(yTicks).slice(1))
                     .enter()
-                      .append('line')
-                        .attr('class', 'horizontal-grid-line')
-                        .attr('x1', (-xAxisPadding.left + 1 ))
-                        .attr('x2', chartWidth)
-                        .attr('y1', (d) => yScale(d))
-                        .attr('y2', (d) => yScale(d));
+                    .append('line')
+                    .attr('class', 'horizontal-grid-line')
+                    .attr('x1', (-xAxisPadding.left + 1))
+                    .attr('x2', chartWidth)
+                    .attr('y1', (d) => yScale(d))
+                    .attr('y2', (d) => yScale(d));
             }
 
             if (grid === 'vertical' || grid === 'full') {
@@ -419,13 +418,78 @@ define(function(require){
                     .selectAll('line.vertical-grid-line')
                     .data(xScale.ticks(xTicks).slice(1))
                     .enter()
-                      .append('line')
-                        .attr('class', 'vertical-grid-line')
-                        .attr('y1', 0)
-                        .attr('y2', chartHeight )
-                        .attr('x1', (d) => xScale(d))
-                        .attr('x2', (d) => xScale(d));
+                    .append('line')
+                    .attr('class', 'vertical-grid-line')
+                    .attr('y1', 0)
+                    .attr('y2', chartHeight)
+                    .attr('x1', (d) => xScale(d))
+                    .attr('x2', (d) => xScale(d));
             }
+        }
+
+        /**
+         * Animation tween of horizontal bars
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function horizontalBarsTween(d) {
+            let node = d3Selection.select(this),
+                i = d3Interpolate.interpolateRound(0, xScale(getValue(d))),
+                j = d3Interpolate.interpolateNumber(0, 1)
+                ;
+
+            return function (t) {
+                node.attr('width', i(t)).style('opacity', j(t));
+            }
+        }
+
+        /**
+         * Animation tween of vertical bars
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function verticalBarsTween(d) {
+            let node = d3Selection.select(this),
+                i = d3Interpolate.interpolateRound(0, chartHeight - yScale(getValue(d))),
+                y = d3Interpolate.interpolateRound(chartHeight, yScale(getValue(d))),
+                j = d3Interpolate.interpolateNumber(0, 1)
+                ;
+
+            return function (t) {
+                node.attr('y', y(t)).attr('height', i(t)).style('opacity', j(t));
+            }
+        }
+
+        /**
+         * mouseover event handle of bars
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function barsOnMouseOver(d) {
+            dispatcher.call('customMouseOver', this);
+            d3Selection.select(this).attr('fill', () => d3Color.color(categoryColorMap[d.group]).darker())
+        }
+
+        /**
+         * mousemove event handle of bars
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function barsOnMouseMove(d) {
+            let data = assign({}, this.__data__), [x, y] = d3Selection.mouse(this);
+
+            data.values = this.parentNode.__data__.values;
+            dispatcher.call('customMouseMove', this, data, categoryColorMap, x, y);
+        }
+
+        /**
+         * mouseout event handle of bars
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function barsOnMouseOut(d) {
+            dispatcher.call('customMouseOut', this);
+            d3Selection.select(this).attr('fill', () => categoryColorMap[d.group])
         }
 
         /**
@@ -436,57 +500,35 @@ define(function(require){
         function drawHorizontalBars(series) {
             // Enter + Update
             let bars = series
-                    .data(layers)
-                    .enter()
-                      .append('g')
-                       .attr('transform', function(d) { return 'translate(0,' + yScale(d.key) + ')'; })
-                        .classed('layer', true)
-                        // .attr('fill', (({key}) => categoryColorMap[key]))
-                        .selectAll('.bar')
-                        .data( (d)=> d.values)
-                        .enter()
-                          .append('rect')
-                            .classed('bar', true)
-                            .attr('x', (d) => 1 )
-                            .attr('y', (d) => yScale2( getGroup(d) ) )
-                            .attr('height', yScale2.bandwidth())
-                            .attr('fill', ((data) => categoryColorMap[data.stack]));
+                .data(layers)
+                .enter()
+                .append('g')
+                .attr('transform', function (d) { return 'translate(0,' + yScale(d.key) + ')'; })
+                .classed('layer', true)
+                .selectAll('.bar')
+                .data((d) => d.values)
+                .enter()
+                .append('rect')
+                .classed('bar', true)
+                .attr('x', 1)
+                .attr('y', (d) => yScale2(getGroup(d)))
+                .attr('height', yScale2.bandwidth())
+                .attr('fill', ((data) => categoryColorMap[data.group]));
 
-            if (isAnimated){
+            if (isAnimated) {
                 bars.style('opacity', 0.24)
                     .transition()
                     .delay((_, i) => animationDelays[i])
                     .duration(animationDuration)
                     .ease(ease)
-                    .tween('attr.width', function(d ){
-                        let node = d3Selection.select(this),
-                        i = d3Interpolate.interpolateRound(0,xScale( getValue(d) )),
-                        j = d3Interpolate.interpolateNumber(0,1)
-                        ;
-
-                        return function(t){
-                            node.attr('width',  i(t) );
-                            node.style('opacity', j(t) );
-                        }
-                    });
+                    .tween('attr.width', horizontalBarsTween);
             } else {
-                bars.attr('width', (d) => xScale( getValue(d) ))
+                bars.attr('width', (d) => xScale(getValue(d)))
             }
 
-              bars.on('mouseover', function(d) {
-                    dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', () => d3Color.color(categoryColorMap[d.stack]).darker())
-                })
-                .on('mousemove', function(d) {
-                    let data = assign({},this.__data__),[x,y] =  d3Selection.mouse(this);
-
-                    data.values = this.parentNode.__data__.values;
-                    dispatcher.call('customMouseMove', this, data,categoryColorMap,x,y);
-                })
-                .on('mouseout', function(d) {
-                    dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', () => categoryColorMap[d.stack])
-                });
+            bars.on('mouseover', barsOnMouseOver)
+                .on('mousemove', barsOnMouseMove)
+                .on('mouseout', barsOnMouseOut);
         }
 
         /**
@@ -499,62 +541,39 @@ define(function(require){
             let bars = series
                 .data(layers)
                 .enter()
-                  .append('g')
-                  .attr('transform', function(d) { return 'translate(' + xScale(d.key) + ',0)'; })
-                    .classed('layer', true)
-                    .selectAll('.bar')
-                    .data((d) => d.values)
-                    .enter()
-                      .append('rect')
-                        .classed('bar', true)
-                        .attr('x', (d) => xScale2( getGroup(d) ) )
-                        .attr('y', (d) => yScale(d.value) )
-                        .attr('width', xScale2.bandwidth )
-                        .attr('fill', ((data) => categoryColorMap[data.stack])),context;
+                .append('g')
+                .attr('transform', function (d) { return 'translate(' + xScale(d.key) + ',0)'; })
+                .classed('layer', true)
+                .selectAll('.bar')
+                .data((d) => d.values)
+                .enter()
+                .append('rect')
+                .classed('bar', true)
+                .attr('x', (d) => xScale2(getGroup(d)))
+                .attr('y', (d) => yScale(d.value))
+                .attr('width', xScale2.bandwidth)
+                .attr('fill', ((data) => categoryColorMap[data.group]));
 
-            if (isAnimated){
+            if (isAnimated) {
                 bars.style('opacity', 0.24).transition()
-                    .delay( (_, i) => animationDelays[i])
+                    .delay((_, i) => animationDelays[i])
                     .duration(animationDuration)
                     .ease(ease)
-                    .tween('attr.height', function(d ){
-                        let node = d3Selection.select(this),
-                        i = d3Interpolate.interpolateRound(0, chartHeight - yScale(getValue(d))),
-                        y = d3Interpolate.interpolateRound(chartHeight, yScale(getValue(d))),
-                        j = d3Interpolate.interpolateNumber(0,1)
-                        ;
-
-                        return function(t){
-                            node.attr('y',  y(t) );
-                            node.attr('height',  i(t) );
-                            node.style('opacity', j(t) );
-                        }
-                    });
+                    .tween('attr.height', verticalBarsTween);
             } else {
-                bars.attr('height', (d) => chartHeight - yScale(getValue(d)) );
+                bars.attr('height', (d) => chartHeight - yScale(getValue(d)));
             }
 
-            bars.on('mouseover', function(d) {
-                    dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', () => d3Color.color(categoryColorMap[d.stack]).darker())
-                })
-                .on('mousemove', function(d) {
-                    let data = assign({},this.__data__),[x,y] =  d3Selection.mouse(this);
-
-                    data.values = this.parentNode.__data__.values;
-                    dispatcher.call('customMouseMove', this, data,categoryColorMap,x,y);
-                })
-                .on('mouseout', function(d) {
-                    dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', () => categoryColorMap[d.stack])
-                });
+            bars.on('mouseover', barsOnMouseOver)
+                .on('mousemove', barsOnMouseMove)
+                .on('mouseout', barsOnMouseOut);
         }
 
         /**
          * Draws the different areas into the chart-group element
          * @private
          */
-        function drawGroupedBar(){
+        function drawGroupedBar() {
             let series = svg.select('.chart-group').selectAll('.layer')
 
             if (!horizontal) {
@@ -587,43 +606,43 @@ define(function(require){
         function getNearestDataPoint(pos) {
             let mouseX = pos[0] - margin.left,
                 epsilon = xScale2.bandwidth(),
-                nearest  = [];
-   
-           layers.forEach(function(data){
-                   let found = data.values.find((d2) => Math.abs(mouseX >=  xScale(d2[nameLabel]) + xScale2(d2[groupLabel])) && Math.abs(mouseX - xScale2(d2[groupLabel]) - xScale(d2[nameLabel]) <= epsilon ) );
+                nearest = [];
 
-                   if (found) {
-                       found.values = data.values;
-                       found.key = found.name;
-                       nearest.push(found)
-                   }
+            layers.forEach(function (data) {
+                let found = data.values.find((d2) => Math.abs(mouseX >= xScale(d2[nameLabel]) + xScale2(d2[groupLabel])) && Math.abs(mouseX - xScale2(d2[groupLabel]) - xScale(d2[nameLabel]) <= epsilon));
 
-            }); 
+                if (found) {
+                    found.values = data.values;
+                    found.key = found.name;
+                    nearest.push(found)
+                }
 
-            return nearest.length ? nearest[0] :undefined;
+            });
+
+            return nearest.length ? nearest[0] : undefined;
         }
 
-         /**
-         * Finds out the data entry that is closer to the given position on pixels
-         * @param  {Number} mouseX X position of the mouse
-         * @return {obj}        Data entry that is closer to that x axis position
-         */
+        /**
+        * Finds out the data entry that is closer to the given position on pixels
+        * @param  {Number} mouseX X position of the mouse
+        * @return {obj}        Data entry that is closer to that x axis position
+        */
         function getNearestDataPoint2(pos) {
             let mouseY = pos[1] - margin.bottom,
                 epsilon = yScale.bandwidth(),
                 nearest = [];
 
-            layers.map(function(data){
-                   let found = data.values.find((d2) => Math.abs(mouseY >= yScale(d2[nameLabel])) && Math.abs(mouseY - yScale(d2[nameLabel]) <= epsilon*2) );
+            layers.map(function (data) {
+                let found = data.values.find((d2) => Math.abs(mouseY >= yScale(d2[nameLabel])) && Math.abs(mouseY - yScale(d2[nameLabel]) <= epsilon * 2));
 
-                   if (found){
-                       found.values = data.values;
-                       found.key = found.name;
-                       nearest.push(found)
-                   }
+                if (found) {
+                    found.values = data.values;
+                    found.key = found.name;
+                    nearest.push(found)
+                }
             });
 
-            return nearest.length ? nearest[0] :undefined;
+            return nearest.length ? nearest[0] : undefined;
         }
 
         /**
@@ -631,7 +650,7 @@ define(function(require){
          * and updates metadata related to it
          * @private
          */
-        function handleMouseMove(){
+        function handleMouseMove() {
             let mousePos = getMousePosition(this),
                 dataPoint = !horizontal ? getNearestDataPoint(mousePos) : getNearestDataPoint2(mousePos),
                 x,
@@ -640,14 +659,14 @@ define(function(require){
             if (dataPoint) {
                 // Move verticalMarker to that datapoint
                 if (!horizontal) {
-                    x =  xScale(dataPoint.key) + xScale2(dataPoint[groupLabel]),y = yScale(getValue(dataPoint));
-                    moveVerticalMarkerXY(x,y);
+                    x = xScale(dataPoint.key) + xScale2(dataPoint[groupLabel]), y = yScale(getValue(dataPoint));
+                    moveVerticalMarkerXY(x, y);
                 } else {
-                    x = mousePos[1],y = yScale(dataPoint.key) +  yScale.bandwidth()/2;
-                    moveVerticalMarkerXY(x,y);
+                    x = mousePos[1], y = yScale(dataPoint.key) + yScale.bandwidth() / 2;
+                    moveVerticalMarkerXY(x, y);
                 }
-                   // Emit event with xPosition for tooltip or similar feature
-                dispatcher.call('customMouseMove', this, dataPoint, categoryColorMap, x,y);
+                // Emit event with xPosition for tooltip or similar feature
+                dispatcher.call('customMouseMove', this, dataPoint, categoryColorMap, x, y);
             }
         }
 
@@ -656,7 +675,7 @@ define(function(require){
          * It also resets the container of the vertical marker
          * @private
          */
-        function handleMouseOut(data){
+        function handleMouseOut(data) {
             svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
             dispatcher.call('customMouseOut', this, data);
         }
@@ -665,7 +684,7 @@ define(function(require){
          * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
          * @private
          */
-        function handleMouseOver(data){
+        function handleMouseOver(data) {
             dispatcher.call('customMouseOver', this, data);
         }
 
@@ -674,7 +693,7 @@ define(function(require){
          * @param  {obj} dataPoint Data entry to extract info
          * @return void
          */
-        function moveVerticalMarkerXY(verticalMarkerXPosition,verticalMarkerYPosition){
+        function moveVerticalMarkerXY(verticalMarkerXPosition, verticalMarkerYPosition) {
             svg.select('.metadata-group').attr('transform', `translate(${verticalMarkerXPosition},${verticalMarkerYPosition})`);
         }
 
@@ -696,7 +715,7 @@ define(function(require){
          * @return { (Number | Module) } Current aspect ratio or Area Chart module to chain calls
          * @public
          */
-        exports.aspectRatio = function(_x) {
+        exports.aspectRatio = function (_x) {
             if (!arguments.length) {
                 return aspectRatio;
             }
@@ -711,7 +730,7 @@ define(function(require){
          * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
          * @public
          */
-        exports.colorSchema = function(_x) {
+        exports.colorSchema = function (_x) {
             if (!arguments.length) {
                 return colorSchema;
             }
@@ -726,7 +745,7 @@ define(function(require){
          * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
          * @public
          */
-        exports.nameLabel = function(_x) {
+        exports.nameLabel = function (_x) {
             if (!arguments.length) {
                 return nameLabel;
             }
@@ -741,7 +760,7 @@ define(function(require){
          * @return { valueLabelFormat | module} Current valueLabelFormat or Chart module to chain calls
          * @public
          */
-        exports.nameLabelFormat = function(_x) {
+        exports.nameLabelFormat = function (_x) {
             if (!arguments.length) {
                 return nameLabelFormat;
             }
@@ -757,7 +776,7 @@ define(function(require){
          * @return { ratio | module} Current ratio or Bar Chart module to chain calls
          * @public
          */
-        exports.percentageAxisToMaxRatio = function(_x) {
+        exports.percentageAxisToMaxRatio = function (_x) {
             if (!arguments.length) {
                 return percentageAxisToMaxRatio;
             }
@@ -772,7 +791,7 @@ define(function(require){
          * @return { groupLabel | module} Current groupLabel or Chart module to chain calls
          * @public
          */
-        exports.groupLabel = function(_x) {
+        exports.groupLabel = function (_x) {
             if (!arguments.length) {
                 return groupLabel;
             }
@@ -788,7 +807,7 @@ define(function(require){
          * @return { String | module} Current mode of the grid or Area Chart module to chain calls
          * @public
          */
-        exports.grid = function(_x) {
+        exports.grid = function (_x) {
             if (!arguments.length) {
                 return grid;
             }
@@ -803,7 +822,7 @@ define(function(require){
          * @return { height | module} Current height or Area Chart module to chain calls
          * @public
          */
-        exports.height = function(_x) {
+        exports.height = function (_x) {
             if (!arguments.length) {
                 return height;
             }
@@ -821,7 +840,7 @@ define(function(require){
          * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
          * @public
          */
-        exports.horizontal = function(_x) {
+        exports.horizontal = function (_x) {
             if (!arguments.length) {
                 return horizontal;
             }
@@ -838,7 +857,7 @@ define(function(require){
          * @return { isAnimated | module} Current isAnimated flag or Chart module
          * @public
          */
-        exports.isAnimated = function(_x) {
+        exports.isAnimated = function (_x) {
             if (!arguments.length) {
                 return isAnimated;
             }
@@ -853,7 +872,7 @@ define(function(require){
          * @return { margin | module} Current margin or Area Chart module to chain calls
          * @public
          */
-        exports.margin = function(_x) {
+        exports.margin = function (_x) {
             if (!arguments.length) {
                 return margin;
             }
@@ -870,7 +889,7 @@ define(function(require){
          * @return { tooltipThreshold | module} Current tooltipThreshold or Area Chart module to chain calls
          * @public
          */
-        exports.tooltipThreshold = function(_x) {
+        exports.tooltipThreshold = function (_x) {
             if (!arguments.length) {
                 return tooltipThreshold;
             }
@@ -885,7 +904,7 @@ define(function(require){
          * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
          * @public
          */
-        exports.valueLabel = function(_x) {
+        exports.valueLabel = function (_x) {
             if (!arguments.length) {
                 return valueLabel;
             }
@@ -900,7 +919,7 @@ define(function(require){
          * @return { valueLabelFormat | module} Current valueLabelFormat or Chart module to chain calls
          * @public
          */
-        exports.valueLabelFormat = function(_x) {
+        exports.valueLabelFormat = function (_x) {
             if (!arguments.length) {
                 return valueLabelFormat;
             }
@@ -915,7 +934,7 @@ define(function(require){
          * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
          * @public
          */
-        exports.verticalTicks = function(_x) {
+        exports.verticalTicks = function (_x) {
             if (!arguments.length) {
                 return verticalTicks;
             }
@@ -930,7 +949,7 @@ define(function(require){
          * @return { width | module} Current width or Area Chart module to chain calls
          * @public
          */
-        exports.width = function(_x) {
+        exports.width = function (_x) {
             if (!arguments.length) {
                 return width;
             }
@@ -946,7 +965,7 @@ define(function(require){
          * Chart exported to png and a download action is fired
          * @public
          */
-        exports.exportChart = function(filename, title) {
+        exports.exportChart = function (filename, title) {
             exportChart.call(exports, svg, filename, title);
         };
 
@@ -958,7 +977,7 @@ define(function(require){
          * @return {module} Bar Chart
          * @public
          */
-        exports.on = function() {
+        exports.on = function () {
             let value = dispatcher.on.apply(dispatcher, arguments);
 
             return value === dispatcher ? exports : value;
