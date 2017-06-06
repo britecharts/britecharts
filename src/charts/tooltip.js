@@ -387,6 +387,7 @@ define(function(require){
 
         /**
          * Updates tooltip title, content, size and position
+         * sorts by alphatical name order
          *
          * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
          * @param  {Number} xPosition           Position of the mouse on the X axis
@@ -398,6 +399,14 @@ define(function(require){
             // sort order by forceOrder array if passed
             if (forceOrder.length) {
                 topics = _sortByForceOrder(topics);
+            } else if (topics.length && topics[0].name) {
+                topics = topics
+                    .map(d => d)
+                    .sort((a, b) => {
+                        if (a.name > b.name) return 1;
+                        if (a.name === b.name) return 0;
+                        return -1;
+                    });
             }
 
             cleanContent();

@@ -96,14 +96,7 @@ define(function(require){
 
             colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
 
-            colorOrder = colorSchema
-                .reduce((acc, color, index) => {
-                    acc[color] = index;
-
-                    return acc;
-                }, {}),
             areaOpacity = 0.64,
-            colorScale,
             categoryColorMap,
             order,
 
@@ -329,7 +322,17 @@ define(function(require){
                     });
                 });
 
-            order = uniq(data.map(o => o.name));
+            let initialTotalsObject = uniq(data.map(({name}) => name))
+                                        .reduce((memo, key) => (
+                                            assign({}, memo, {[key]: 0})
+                                        ), {});
+
+            let totals = data.reduce((memo, item) => (
+                assign({}, memo, {[item.name]: memo[item.name]  += item.value})
+            ), initialTotalsObject);
+
+            order = formatOrder(totals);
+
             let stack3 = d3Shape.stack()
                 .keys(order)
                 .order(d3Shape.stackOrderNone)
@@ -337,6 +340,32 @@ define(function(require){
 
             layersInitial = stack3(dataByDateZeroed);
             layers = stack3(dataByDateFormatted);
+        }
+
+        /**
+         * Takes an object with all topics as keys and their aggregate totals as values,
+         * sorts them into a list by descending total value and
+         * moves "Other" to the end
+         * @param  {Object} totals  Keys of all the topics and their corresponding totals
+         * @return {Array}          List of topic names in aggregate order
+         */
+        function formatOrder(totals) {
+            let order = Object.keys(totals)
+                .sort((a, b) => {
+                    if (totals[a] > totals[b]) return -1;
+                    if (totals[a] === totals[b]) return 0;
+                    return 1;
+                });
+
+            let otherIndex = order.indexOf('Other');
+
+            if (otherIndex >= 0) {
+                let other = order.splice(otherIndex, 1);
+
+                order = order.concat(other);
+            }
+
+            return order;
         }
 
         /**
@@ -353,19 +382,9 @@ define(function(require){
                 .rangeRound([chartHeight, 0])
                 .nice();
 
-            colorScale = d3Scale.scaleOrdinal()
-                .range(colorSchema)
-                .domain(data.map(getName));
-
-            let range = colorScale.range();
-            categoryColorMap = colorScale
-                .domain()
-                .reduce((memo, item, i) => {
-                    memo[item] = range[i];
-
-                    return memo;
-                }, {});
-
+            categoryColorMap =  order.reduce((memo, topic, index) => (
+                assign({}, memo, {[topic]: colorSchema[index]})
+            ), {});
         }
 
         /**

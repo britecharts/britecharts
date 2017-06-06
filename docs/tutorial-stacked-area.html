@@ -203,7 +203,9 @@ stackedArea
 container.datum(dataset.data).call(stackedArea);
 
 chartTooltip
-    .title('Testing tooltip');
+    .topicLabel('values')
+    .title('Testing tooltip')
+    .forceOrder(['Organizer Channels', 'Eventbrite Channels']);
 
 tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
 tooltipContainer.datum([]).call(chartTooltip);

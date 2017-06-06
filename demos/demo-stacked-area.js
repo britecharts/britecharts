@@ -12,6 +12,8 @@ var d3Selection = require('d3-selection'),
     colorSelectorHelper = require('./helpers/colorSelector');
     require('./helpers/resizeHelper');
 
+const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
+
 function createStackedAreaChartWithTooltip(optionalColorSchema) {
     var stackedArea = stackedAreaChart(),
         chartTooltip = tooltip(),
@@ -25,9 +27,9 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
         // dataset = testDataSet.withReportData().build();
         // dataset = testDataSet.with3Sources().build();
         // dataset = testDataSet.with6Sources().build();
-        dataset = testDataSet.withSalesChannelData().build();
         // dataset = testDataSet.withLargeData().build();
         // dataset = testDataSet.withGeneratedData().build();
+        dataset = testDataSet.withSalesChannelData().build();
 
         // StackedAreChart Setup and start
         stackedArea
@@ -48,7 +50,8 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
         // Tooltip Setup and start
         chartTooltip
             .topicLabel('values')
-            .title('Testing tooltip');
+            .title('Testing tooltip')
+            .forceOrder(uniq(dataset.data.map((d) => d.name)));
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
@@ -118,7 +121,6 @@ if (d3Selection.select('.js-stacked-area-chart-tooltip-container').node()){
     // we'll need to listen to the window resize event
     var redrawCharts = function(){
         d3Selection.selectAll('.stacked-area').remove();
-console.log('redraw')
         createStackedAreaChartWithTooltip();
         createStackedAreaChartWithFixedAspectRatio();
     };
