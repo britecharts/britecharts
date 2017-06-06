@@ -12,7 +12,7 @@ var d3Selection = require('d3-selection'),
     colorSelectorHelper = require('./helpers/colorSelector');
     require('./helpers/resizeHelper');
 
-const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
+const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 
 function createStackedAreaChartWithTooltip(optionalColorSchema) {
     var stackedArea = stackedAreaChart(),

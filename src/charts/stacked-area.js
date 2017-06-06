@@ -24,7 +24,7 @@ define(function(require){
         formatDecimalValue
     } = require('./helpers/formatHelpers');
 
-    const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
+    const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 
 
     /**
