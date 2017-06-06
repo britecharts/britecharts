@@ -407,6 +407,15 @@ define(function(require){
                         if (a.name === b.name) return 0;
                         return -1;
                     });
+
+                let otherIndex = topics.map(({name}) => name).indexOf('Other');
+
+                if (otherIndex >= 0) {
+                    let other = topics.splice(otherIndex, 1);
+
+                    topics = topics.concat(other);
+
+                }
             }
 
             cleanContent();
