@@ -13,6 +13,12 @@ webpackJsonp([6,9],[
 	    colorSelectorHelper = __webpack_require__(45);
 	__webpack_require__(29);
 	
+	var uniq = function uniq(arrArg) {
+	    return arrArg.filter(function (elem, pos, arr) {
+	        return arr.indexOf(elem) == pos;
+	    });
+	};
+	
 	function createStackedAreaChartWithTooltip(optionalColorSchema) {
 	    var stackedArea = stackedAreaChart(),
 	        chartTooltip = tooltip(),
@@ -26,9 +32,9 @@ webpackJsonp([6,9],[
 	        // dataset = testDataSet.withReportData().build();
 	        // dataset = testDataSet.with3Sources().build();
 	        // dataset = testDataSet.with6Sources().build();
-	        dataset = testDataSet.withSalesChannelData().build();
 	        // dataset = testDataSet.withLargeData().build();
 	        // dataset = testDataSet.withGeneratedData().build();
+	        dataset = testDataSet.withSalesChannelData().build();
 	
 	        // StackedAreChart Setup and start
 	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
@@ -40,7 +46,9 @@ webpackJsonp([6,9],[
 	        container.datum(dataset.data).call(stackedArea);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.topicLabel('values').title('Testing tooltip');
+	        chartTooltip.topicLabel('values').title('Testing tooltip').forceOrder(uniq(dataset.data.map(function (d) {
+	            return d.name;
+	        })));
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -96,7 +104,6 @@ webpackJsonp([6,9],[
 	    // we'll need to listen to the window resize event
 	    var redrawCharts = function redrawCharts() {
 	        d3Selection.selectAll('.stacked-area').remove();
-	        console.log('redraw');
 	        createStackedAreaChartWithTooltip();
 	        createStackedAreaChartWithFixedAspectRatio();
 	    };
@@ -112,7 +119,7 @@ webpackJsonp([6,9],[
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-selection/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-selection/ Version 1.1.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -737,16 +744,18 @@ webpackJsonp([6,9],[
 	}
 	
 	var selection_style = function(name, value, priority) {
-	  var node;
 	  return arguments.length > 1
 	      ? this.each((value == null
 	            ? styleRemove : typeof value === "function"
 	            ? styleFunction
 	            : styleConstant)(name, value, priority == null ? "" : priority))
-	      : defaultView(node = this.node())
-	          .getComputedStyle(node, null)
-	          .getPropertyValue(name);
+	      : styleValue(this.node(), name);
 	};
+	
+	function styleValue(node, name) {
+	  return node.style.getPropertyValue(name)
+	      || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
+	}
 	
 	function propertyRemove(name) {
 	  return function() {
@@ -959,7 +968,7 @@ webpackJsonp([6,9],[
 	  var window = defaultView(node),
 	      event = window.CustomEvent;
 	
-	  if (event) {
+	  if (typeof event === "function") {
 	    event = new event(type, params);
 	  } else {
 	    event = window.document.createEvent("Event");
@@ -1077,6 +1086,7 @@ webpackJsonp([6,9],[
 	exports.selection = selection;
 	exports.selector = selector;
 	exports.selectorAll = selectorAll;
+	exports.style = styleValue;
 	exports.touch = touch;
 	exports.touches = touches;
 	exports.window = defaultView;
@@ -1091,7 +1101,7 @@ webpackJsonp([6,9],[
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*
 	Copyright (c) 2010,2011,2012,2013,2014 Morgan Roderick http://roderick.dk
 	License: MIT - http://mrgnrdrck.mit-license.org
 	
@@ -1100,20 +1110,22 @@ webpackJsonp([6,9],[
 	(function (root, factory){
 		'use strict';
 	
-	    if (true){
-	        // AMD. Register as an anonymous module.
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		var PubSub = {};
+		root.PubSub = PubSub;
+		factory(PubSub);
 	
-	    } else if (typeof exports === 'object'){
-	        // CommonJS
-	        factory(exports);
+		// AMD support
+		if (true){
+			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return PubSub; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	
-	    }
-	
-	    // Browser globals
-	    var PubSub = {};
-	    root.PubSub = PubSub;
-	    factory(PubSub);
+		// CommonJS and Node.js module support
+		} else if (typeof exports === 'object'){
+			if (module !== undefined && module.exports) {
+				exports = module.exports = PubSub; // Node.js specific `module.exports`
+			}
+			exports.PubSub = PubSub; // CommonJS module 1.1.1 spec
+			module.exports = exports = PubSub; // CommonJS
+		}
 	
 	}(( typeof window === 'object' && window ) || this, function (PubSub){
 		'use strict';
@@ -2214,7 +2226,7 @@ webpackJsonp([6,9],[
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-axis/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-axis/ Version 1.0.7. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -2234,15 +2246,15 @@ webpackJsonp([6,9],[
 	var epsilon = 1e-6;
 	
 	function translateX(x) {
-	  return "translate(" + x + ",0)";
+	  return "translate(" + (x + 0.5) + ",0)";
 	}
 	
 	function translateY(y) {
-	  return "translate(0," + y + ")";
+	  return "translate(0," + (y + 0.5) + ")";
 	}
 	
 	function center(scale) {
-	  var offset = scale.bandwidth() / 2;
+	  var offset = Math.max(0, scale.bandwidth() - 1) / 2; // Adjust for 0.5px offset.
 	  if (scale.round()) offset = Math.round(offset);
 	  return function(d) {
 	    return scale(d) + offset;
@@ -2261,7 +2273,7 @@ webpackJsonp([6,9],[
 	      tickSizeOuter = 6,
 	      tickPadding = 3,
 	      k = orient === top || orient === left ? -1 : 1,
-	      x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x"),
+	      x = orient === left || orient === right ? "x" : "y",
 	      transform = orient === top || orient === bottom ? translateX : translateY;
 	
 	  function axis(context) {
@@ -2288,14 +2300,11 @@ webpackJsonp([6,9],[
 	
 	    line = line.merge(tickEnter.append("line")
 	        .attr("stroke", "#000")
-	        .attr(x + "2", k * tickSizeInner)
-	        .attr(y + "1", 0.5)
-	        .attr(y + "2", 0.5));
+	        .attr(x + "2", k * tickSizeInner));
 	
 	    text = text.merge(tickEnter.append("text")
 	        .attr("fill", "#000")
 	        .attr(x, k * spacing)
-	        .attr(y, 0.5)
 	        .attr("dy", orient === top ? "0em" : orient === bottom ? "0.71em" : "0.32em"));
 	
 	    if (context !== selection) {
@@ -3377,7 +3386,7 @@ webpackJsonp([6,9],[
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-scale/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-scale/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(4), __webpack_require__(11), __webpack_require__(12), __webpack_require__(9), __webpack_require__(13), __webpack_require__(14), __webpack_require__(7)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-collection', 'd3-interpolate', 'd3-format', 'd3-time', 'd3-time-format', 'd3-color'], factory) :
@@ -3692,17 +3701,39 @@ webpackJsonp([6,9],[
 	  };
 	
 	  scale.nice = function(count) {
-	    var d = domain(),
-	        i = d.length - 1,
-	        n = count == null ? 10 : count,
-	        start = d[0],
-	        stop = d[i],
-	        step = d3Array.tickStep(start, stop, n);
+	    if (count == null) count = 10;
 	
-	    if (step) {
-	      step = d3Array.tickStep(Math.floor(start / step) * step, Math.ceil(stop / step) * step, n);
-	      d[0] = Math.floor(start / step) * step;
-	      d[i] = Math.ceil(stop / step) * step;
+	    var d = domain(),
+	        i0 = 0,
+	        i1 = d.length - 1,
+	        start = d[i0],
+	        stop = d[i1],
+	        step;
+	
+	    if (stop < start) {
+	      step = start, start = stop, stop = step;
+	      step = i0, i0 = i1, i1 = step;
+	    }
+	
+	    step = d3Array.tickIncrement(start, stop, count);
+	
+	    if (step > 0) {
+	      start = Math.floor(start / step) * step;
+	      stop = Math.ceil(stop / step) * step;
+	      step = d3Array.tickIncrement(start, stop, count);
+	    } else if (step < 0) {
+	      start = Math.ceil(start * step) / step;
+	      stop = Math.floor(stop * step) / step;
+	      step = d3Array.tickIncrement(start, stop, count);
+	    }
+	
+	    if (step > 0) {
+	      d[i0] = Math.floor(start / step) * step;
+	      d[i1] = Math.ceil(stop / step) * step;
+	      domain(d);
+	    } else if (step < 0) {
+	      d[i0] = Math.ceil(start * step) / step;
+	      d[i1] = Math.floor(stop * step) / step;
 	      domain(d);
 	    }
 	
@@ -4509,7 +4540,7 @@ webpackJsonp([6,9],[
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-interpolate/ Version 1.1.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-interpolate/ Version 1.1.5. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(7)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-color'], factory) :
@@ -4755,7 +4786,7 @@ webpackJsonp([6,9],[
 	      : b instanceof d3Color.color ? rgb$1
 	      : b instanceof Date ? date
 	      : Array.isArray(b) ? array
-	      : isNaN(b) ? object
+	      : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
 	      : number)(a, b);
 	};
 	
@@ -6038,7 +6069,7 @@ webpackJsonp([6,9],[
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-transition/ Version 1.0.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-transition/ Version 1.1.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(1), __webpack_require__(8), __webpack_require__(16), __webpack_require__(12), __webpack_require__(7), __webpack_require__(5)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-timer', 'd3-interpolate', 'd3-color', 'd3-ease'], factory) :
@@ -6603,9 +6634,8 @@ webpackJsonp([6,9],[
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var style = d3Selection.window(this).getComputedStyle(this, null),
-	        value0 = style.getPropertyValue(name),
-	        value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
+	    var value0 = d3Selection.style(this, name),
+	        value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -6622,7 +6652,7 @@ webpackJsonp([6,9],[
 	  var value00,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.window(this).getComputedStyle(this, null).getPropertyValue(name);
+	    var value0 = d3Selection.style(this, name);
 	    return value0 === value1 ? null
 	        : value0 === value00 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value1);
@@ -6634,10 +6664,9 @@ webpackJsonp([6,9],[
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var style = d3Selection.window(this).getComputedStyle(this, null),
-	        value0 = style.getPropertyValue(name),
+	    var value0 = d3Selection.style(this, name),
 	        value1 = value(this);
-	    if (value1 == null) value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
+	    if (value1 == null) value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -9161,7 +9190,7 @@ webpackJsonp([6,9],[
 /* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-shape/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-shape/ Version 1.1.1. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(34)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
@@ -9806,6 +9835,91 @@ webpackJsonp([6,9],[
 	
 	  return a;
 	};
+	
+	var slice = Array.prototype.slice;
+	
+	var radialPoint = function(x, y) {
+	  return [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x)];
+	};
+	
+	function linkSource(d) {
+	  return d.source;
+	}
+	
+	function linkTarget(d) {
+	  return d.target;
+	}
+	
+	function link(curve) {
+	  var source = linkSource,
+	      target = linkTarget,
+	      x$$1 = x,
+	      y$$1 = y,
+	      context = null;
+	
+	  function link() {
+	    var buffer, argv = slice.call(arguments), s = source.apply(this, argv), t = target.apply(this, argv);
+	    if (!context) context = buffer = d3Path.path();
+	    curve(context, +x$$1.apply(this, (argv[0] = s, argv)), +y$$1.apply(this, argv), +x$$1.apply(this, (argv[0] = t, argv)), +y$$1.apply(this, argv));
+	    if (buffer) return context = null, buffer + "" || null;
+	  }
+	
+	  link.source = function(_) {
+	    return arguments.length ? (source = _, link) : source;
+	  };
+	
+	  link.target = function(_) {
+	    return arguments.length ? (target = _, link) : target;
+	  };
+	
+	  link.x = function(_) {
+	    return arguments.length ? (x$$1 = typeof _ === "function" ? _ : constant(+_), link) : x$$1;
+	  };
+	
+	  link.y = function(_) {
+	    return arguments.length ? (y$$1 = typeof _ === "function" ? _ : constant(+_), link) : y$$1;
+	  };
+	
+	  link.context = function(_) {
+	    return arguments.length ? ((context = _ == null ? null : _), link) : context;
+	  };
+	
+	  return link;
+	}
+	
+	function curveHorizontal(context, x0, y0, x1, y1) {
+	  context.moveTo(x0, y0);
+	  context.bezierCurveTo(x0 = (x0 + x1) / 2, y0, x0, y1, x1, y1);
+	}
+	
+	function curveVertical(context, x0, y0, x1, y1) {
+	  context.moveTo(x0, y0);
+	  context.bezierCurveTo(x0, y0 = (y0 + y1) / 2, x1, y0, x1, y1);
+	}
+	
+	function curveRadial$1(context, x0, y0, x1, y1) {
+	  var p0 = radialPoint(x0, y0),
+	      p1 = radialPoint(x0, y0 = (y0 + y1) / 2),
+	      p2 = radialPoint(x1, y0),
+	      p3 = radialPoint(x1, y1);
+	  context.moveTo(p0[0], p0[1]);
+	  context.bezierCurveTo(p1[0], p1[1], p2[0], p2[1], p3[0], p3[1]);
+	}
+	
+	function linkHorizontal() {
+	  return link(curveHorizontal);
+	}
+	
+	function linkVertical() {
+	  return link(curveVertical);
+	}
+	
+	function linkRadial() {
+	  var l = link(curveRadial$1);
+	  l.angle = l.x, delete l.x;
+	  l.radius = l.y, delete l.y;
+	  return l;
+	}
 	
 	var circle = {
 	  draw: function(context, size) {
@@ -10788,13 +10902,11 @@ webpackJsonp([6,9],[
 	  return new Step(context, 1);
 	}
 	
-	var slice = Array.prototype.slice;
-	
 	var none = function(series, order) {
 	  if (!((n = series.length) > 1)) return;
-	  for (var i = 1, s0, s1 = series[order[0]], n, m = s1.length; i < n; ++i) {
+	  for (var i = 1, j, s0, s1 = series[order[0]], n, m = s1.length; i < n; ++i) {
 	    s0 = s1, s1 = series[order[i]];
-	    for (var j = 0; j < m; ++j) {
+	    for (j = 0; j < m; ++j) {
 	      s1[j][1] += s1[j][0] = isNaN(s0[j][1]) ? s0[j][0] : s0[j][1];
 	    }
 	  }
@@ -10866,6 +10978,21 @@ webpackJsonp([6,9],[
 	    if (y) for (i = 0; i < n; ++i) series[i][j][1] /= y;
 	  }
 	  none(series, order);
+	};
+	
+	var diverging = function(series, order) {
+	  if (!((n = series.length) > 1)) return;
+	  for (var i, j = 0, d, dy, yp, yn, n, m = series[order[0]].length; j < m; ++j) {
+	    for (yp = yn = 0, i = 0; i < n; ++i) {
+	      if ((dy = (d = series[order[i]][j])[1] - d[0]) >= 0) {
+	        d[0] = yp, d[1] = yp += dy;
+	      } else if (dy < 0) {
+	        d[1] = yn, d[0] = yn += dy;
+	      } else {
+	        d[0] = yp;
+	      }
+	    }
+	  }
 	};
 	
 	var silhouette = function(series, order) {
@@ -10950,6 +11077,9 @@ webpackJsonp([6,9],[
 	exports.pie = pie;
 	exports.radialArea = radialArea;
 	exports.radialLine = radialLine$1;
+	exports.linkHorizontal = linkHorizontal;
+	exports.linkVertical = linkVertical;
+	exports.linkRadial = linkRadial;
 	exports.symbol = symbol;
 	exports.symbols = symbols;
 	exports.symbolCircle = circle;
@@ -10979,6 +11109,7 @@ webpackJsonp([6,9],[
 	exports.curveStepBefore = stepBefore;
 	exports.stack = stack;
 	exports.stackOffsetExpand = expand;
+	exports.stackOffsetDiverging = diverging;
 	exports.stackOffsetNone = none;
 	exports.stackOffsetSilhouette = silhouette;
 	exports.stackOffsetWiggle = wiggle;
@@ -11765,6 +11896,7 @@ webpackJsonp([6,9],[
 	
 	        /**
 	         * Updates tooltip title, content, size and position
+	         * sorts by alphatical name order
 	         *
 	         * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
 	         * @param  {Number} xPosition           Position of the mouse on the X axis
@@ -11776,6 +11908,14 @@ webpackJsonp([6,9],[
 	            // sort order by forceOrder array if passed
 	            if (forceOrder.length) {
 	                topics = _sortByForceOrder(topics);
+	            } else if (topics.length && topics[0].name) {
+	                topics = topics.map(function (d) {
+	                    return d;
+	                }).sort(function (a, b) {
+	                    if (a.name > b.name) return 1;
+	                    if (a.name === b.name) return 0;
+	                    return -1;
+	                });
 	            }
 	
 	            cleanContent();
@@ -11993,6 +12133,8 @@ webpackJsonp([6,9],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
@@ -12098,13 +12240,7 @@ webpackJsonp([6,9],[
 	            yTickTextXOffset = -20,
 	            tickPadding = 5,
 	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
-	            colorOrder = colorSchema.reduce(function (acc, color, index) {
-	            acc[color] = index;
-	
-	            return acc;
-	        }, {}),
 	            areaOpacity = 0.64,
-	            colorScale = void 0,
 	            categoryColorMap = void 0,
 	            order = void 0,
 	            forceAxisSettings = null,
@@ -12308,9 +12444,19 @@ webpackJsonp([6,9],[
 	                });
 	            });
 	
-	            order = uniq(data.map(function (o) {
-	                return o.name;
-	            }));
+	            var initialTotalsObject = uniq(data.map(function (_ref3) {
+	                var name = _ref3.name;
+	                return name;
+	            })).reduce(function (memo, key) {
+	                return assign({}, memo, _defineProperty({}, key, 0));
+	            }, {});
+	
+	            var totals = data.reduce(function (memo, item) {
+	                return assign({}, memo, _defineProperty({}, item.name, memo[item.name] += item.value));
+	            }, initialTotalsObject);
+	
+	            order = formatOrder(totals);
+	
 	            var stack3 = d3Shape.stack().keys(order).order(d3Shape.stackOrderNone).offset(d3Shape.stackOffsetNone);
 	
 	            layersInitial = stack3(dataByDateZeroed);
@@ -12318,24 +12464,44 @@ webpackJsonp([6,9],[
 	        }
 	
 	        /**
+	         * Takes an object with all topics as keys and their aggregate totals as values,
+	         * sorts them into a list by descending total value and
+	         * moves "Other" to the end
+	         * @param  {Object} totals  Keys of all the topics and their corresponding totals
+	         * @return {Array}          List of topic names in aggregate order
+	         */
+	        function formatOrder(totals) {
+	            var order = Object.keys(totals).sort(function (a, b) {
+	                if (totals[a] > totals[b]) return -1;
+	                if (totals[a] === totals[b]) return 0;
+	                return 1;
+	            });
+	
+	            var otherIndex = order.indexOf('Other');
+	
+	            if (otherIndex >= 0) {
+	                var other = order.splice(otherIndex, 1);
+	
+	                order = order.concat(other);
+	            }
+	
+	            return order;
+	        }
+	
+	        /**
 	         * Creates the x, y and color scales of the chart
 	         * @private
 	         */
 	        function buildScales() {
-	            xScale = d3Scale.scaleTime().domain(d3Array.extent(dataByDate, function (_ref3) {
-	                var date = _ref3.date;
+	            xScale = d3Scale.scaleTime().domain(d3Array.extent(dataByDate, function (_ref4) {
+	                var date = _ref4.date;
 	                return date;
 	            })).rangeRound([0, chartWidth]);
 	
 	            yScale = d3Scale.scaleLinear().domain([0, getMaxValueByDate()]).rangeRound([chartHeight, 0]).nice();
 	
-	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(data.map(getName));
-	
-	            var range = colorScale.range();
-	            categoryColorMap = colorScale.domain().reduce(function (memo, item, i) {
-	                memo[item] = range[i];
-	
-	                return memo;
+	            categoryColorMap = order.reduce(function (memo, topic, index) {
+	                return assign({}, memo, _defineProperty({}, topic, colorSchema[index]));
 	            }, {});
 	        }
 	
@@ -12400,15 +12566,15 @@ webpackJsonp([6,9],[
 	         */
 	        function drawDataReferencePoints() {
 	            // Creates Dots on Data points
-	            var points = svg.select('.chart-group').selectAll('.dots').data(layers).enter().append('g').attr('class', 'dots').attr('d', function (_ref4) {
-	                var values = _ref4.values;
+	            var points = svg.select('.chart-group').selectAll('.dots').data(layers).enter().append('g').attr('class', 'dots').attr('d', function (_ref5) {
+	                var values = _ref5.values;
 	                return area(values);
 	            }).attr('clip-path', 'url(#clip)');
 	
 	            // Processes the points
 	            // TODO: Optimize this code
-	            points.selectAll('.dot').data(function (_ref5, index) {
-	                var values = _ref5.values;
+	            points.selectAll('.dot').data(function (_ref6, index) {
+	                var values = _ref6.values;
 	                return values.map(function (point) {
 	                    return { index: index, point: point };
 	                });
@@ -12472,8 +12638,8 @@ webpackJsonp([6,9],[
 	        function drawStackedAreas() {
 	            var series = void 0;
 	
-	            area = d3Shape.area().curve(d3Shape.curveMonotoneX).x(function (_ref6) {
-	                var data = _ref6.data;
+	            area = d3Shape.area().curve(d3Shape.curveMonotoneX).x(function (_ref7) {
+	                var data = _ref7.data;
 	                return xScale(data.date);
 	            }).y0(function (d) {
 	                return yScale(d[0]);
@@ -12484,29 +12650,29 @@ webpackJsonp([6,9],[
 	            if (isAnimated) {
 	                series = svg.select('.chart-group').selectAll('.layer').data(layersInitial).enter().append('g').classed('layer-container', true);
 	
-	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref7) {
-	                    var key = _ref7.key;
+	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref8) {
+	                    var key = _ref8.key;
 	                    return categoryColorMap[key];
 	                });
 	
 	                // Update
 	                svg.select('.chart-group').selectAll('.layer').data(layers).transition().delay(function (_, i) {
 	                    return areaAnimationDelays[i];
-	                }).duration(areaAnimationDuration).ease(ease).attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref8) {
-	                    var key = _ref8.key;
+	                }).duration(areaAnimationDuration).ease(ease).attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref9) {
+	                    var key = _ref9.key;
 	                    return categoryColorMap[key];
 	                });
 	            } else {
 	                series = svg.select('.chart-group').selectAll('.layer').data(layers).enter().append('g').classed('layer-container', true);
 	
-	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref9) {
-	                    var key = _ref9.key;
+	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref10) {
+	                    var key = _ref10.key;
 	                    return categoryColorMap[key];
 	                });
 	
 	                // Update
-	                series.attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref10) {
-	                    var key = _ref10.key;
+	                series.attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref11) {
+	                    var key = _ref11.key;
 	                    return categoryColorMap[key];
 	                });
 	            }
@@ -12594,8 +12760,8 @@ webpackJsonp([6,9],[
 	         * @return {obj}        Data entry that is closer to that x axis position
 	         */
 	        function getNearestDataPoint(mouseX) {
-	            return dataByDate.find(function (_ref11) {
-	                var date = _ref11.date;
+	            return dataByDate.find(function (_ref12) {
+	                var date = _ref12.date;
 	                return Math.abs(xScale(date) - mouseX) <= epsilon;
 	            });
 	        }
@@ -12606,8 +12772,8 @@ webpackJsonp([6,9],[
 	         * @return {Number} half distance between any two points
 	         */
 	        function setEpsilon() {
-	            var dates = dataByDate.map(function (_ref12) {
-	                var date = _ref12.date;
+	            var dates = dataByDate.map(function (_ref13) {
+	                var date = _ref13.date;
 	                return date;
 	            });
 	
@@ -12665,8 +12831,8 @@ webpackJsonp([6,9],[
 	         * @param  {obj} dataPoint Data point to extract info from
 	         * @private
 	         */
-	        function highlightDataPoints(_ref13) {
-	            var values = _ref13.values;
+	        function highlightDataPoints(_ref14) {
+	            var values = _ref14.values;
 	
 	            var accumulator = 0;
 	
@@ -12679,8 +12845,8 @@ webpackJsonp([6,9],[
 	                return order.indexOf(a.name) > order.indexOf(b.name);
 	            });
 	
-	            values.forEach(function (_ref14, index) {
-	                var name = _ref14.name;
+	            values.forEach(function (_ref15, index) {
+	                var name = _ref15.name;
 	
 	                var marker = verticalMarkerContainer.append('g').classed('circle-container', true),
 	                    circleSize = 12;
@@ -13911,302 +14077,302 @@ webpackJsonp([6,9],[
 		"data": [
 			{
 				"date": "2017-02-16T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 5
 			},
 			{
 				"date": "2017-02-16T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 0
 			},
 			{
 				"date": "2017-02-17T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 1
 			},
 			{
 				"date": "2017-02-17T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 13
 			},
 			{
 				"date": "2017-02-18T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 15
 			},
 			{
 				"date": "2017-02-18T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 1
 			},
 			{
 				"date": "2017-02-19T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 15
 			},
 			{
 				"date": "2017-02-19T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 1
 			},
 			{
 				"date": "2017-02-20T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 15
 			},
 			{
 				"date": "2017-02-20T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 1
 			},
 			{
 				"date": "2017-02-21T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 18
 			},
 			{
 				"date": "2017-02-21T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 1
 			},
 			{
 				"date": "2017-02-22T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 19
 			},
 			{
 				"date": "2017-02-22T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 1
 			},
 			{
 				"date": "2017-02-23T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-02-23T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 22
 			},
 			{
 				"date": "2017-02-24T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 25
 			},
 			{
 				"date": "2017-02-24T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-02-25T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 28
 			},
 			{
 				"date": "2017-02-25T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-02-26T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 30
 			},
 			{
 				"date": "2017-02-26T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-02-27T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 30
 			},
 			{
 				"date": "2017-02-27T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-02-28T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 31
 			},
 			{
 				"date": "2017-02-28T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-03-01T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 33
 			},
 			{
 				"date": "2017-03-01T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-03-02T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 33
 			},
 			{
 				"date": "2017-03-02T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-03-03T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 4
 			},
 			{
 				"date": "2017-03-03T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 34
 			},
 			{
 				"date": "2017-03-04T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 4
 			},
 			{
 				"date": "2017-03-04T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 34
 			},
 			{
 				"date": "2017-03-05T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 37
 			},
 			{
 				"date": "2017-03-05T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 4
 			},
 			{
 				"date": "2017-03-06T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 5
 			},
 			{
 				"date": "2017-03-06T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 41
 			},
 			{
 				"date": "2017-03-07T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 69
 			},
 			{
 				"date": "2017-03-07T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 5
 			},
 			{
 				"date": "2017-03-08T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 77
 			},
 			{
 				"date": "2017-03-08T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 5
 			},
 			{
 				"date": "2017-03-09T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-09T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 79
 			},
 			{
 				"date": "2017-03-10T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-10T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-11T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-11T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-12T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-12T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-13T00:00:00-07:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-13T00:00:00-07:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-14T00:00:00-07:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-14T00:00:00-07:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-15T00:00:00-07:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-15T00:00:00-07:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-16T00:00:00-07:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-16T00:00:00-07:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-17T00:00:00-07:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-17T00:00:00-07:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			}
 		]
