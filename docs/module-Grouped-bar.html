@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>API: Stacked-bar</title>
+        <title>API: Grouped-bar</title>
 
         
             <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
@@ -181,7 +181,7 @@
             		<div id="main">
             			
 
-	<h1 class="page-title">API: Stacked-bar</h1>
+	<h1 class="page-title">API: Grouped-bar</h1>
 <section>
 
 <header>
@@ -197,15 +197,15 @@
     <div class="container-overview">
     
         
-            <div class="description">Stacked Area Chart reusable API module that allows us
-rendering a multi area and configurable chart.</div>
+            <div class="description">Grouped Bar Chart reusable API module that allows us
+rendering a multi grouped bar and configurable chart.</div>
         
 
         
             
 <hr>
 <dt>
-    <h4 class="name" id="module:Stacked-bar"><span class="type-signature"></span>(require("Stacked-bar"))(_selection, _data)</h4>
+    <h4 class="name" id="module:Grouped-bar"><span class="type-signature"></span>(require("Grouped-bar"))(_selection, _data)</h4>
     
     
 </dt>
@@ -279,7 +279,7 @@ the container(s) where the chart(s) will be rendered</td>
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#stackedBarData">stackedBarData</a></span>
+<span class="param-type"><a href="global.html#GroupedBarChartData">GroupedBarChartData</a></span>
 
 
 
@@ -334,7 +334,7 @@ the container(s) where the chart(s) will be rendered</td>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -392,7 +392,7 @@ the container(s) where the chart(s) will be rendered</td>
             
 <hr>
 <dt>
-    <h4 class="name" id="module:Stacked-bar"><span class="type-signature"></span>module:Stacked-bar(_selection, _data)</h4>
+    <h4 class="name" id="module:Grouped-bar"><span class="type-signature"></span>module:Grouped-bar(_selection, _data)</h4>
     
     
 </dt>
@@ -466,7 +466,7 @@ the container(s) where the chart(s) will be rendered</td>
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#stackedBarData">stackedBarData</a></span>
+<span class="param-type"><a href="global.html#GroupedBarChartData">GroupedBarChartData</a></span>
 
 
 
@@ -521,7 +521,7 @@ the container(s) where the chart(s) will be rendered</td>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -658,7 +658,7 @@ the container(s) where the chart(s) will be rendered</td>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -822,7 +822,7 @@ the container(s) where the chart(s) will be rendered</td>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -936,7 +936,7 @@ the container(s) where the chart(s) will be rendered</td>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1073,7 +1073,7 @@ the container(s) where the chart(s) will be rendered</td>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1114,6 +1114,170 @@ the container(s) where the chart(s) will be rendered</td>
     <dd>
         
 <span class="param-type">String</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".groupLabel"><span class="type-signature">&lt;static> </span>groupLabel(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the groupLabel of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired groupLabel for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current groupLabel or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">groupLabel</span>
 |
 
 <span class="param-type">module</span>
@@ -1237,7 +1401,7 @@ the container(s) where the chart(s) will be rendered</td>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1401,7 +1565,7 @@ the container(s) where the chart(s) will be rendered</td>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1566,7 +1730,7 @@ By default this is 'false'
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1730,7 +1894,7 @@ By default this is 'false'
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -1894,7 +2058,7 @@ By default this is 'false'
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -2058,7 +2222,7 @@ By default this is 'false'
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -2174,7 +2338,7 @@ customMouseOver, customMouseMove and customMouseOut
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -2336,7 +2500,7 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -2377,170 +2541,6 @@ if your max point was 50% you might want to show x axis to 60%, pass 1.2
     <dd>
         
 <span class="param-type">ratio</span>
-|
-
-<span class="param-type">module</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".stackLabel"><span class="type-signature">&lt;static> </span>stackLabel(_x)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Gets or Sets the stackLabel of the chart
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>_x</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Desired stackLabel for the graph</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    Current stackLabel or Chart module to chain calls
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">stackLabel</span>
 |
 
 <span class="param-type">module</span>
@@ -2665,7 +2665,7 @@ NOTE: This could also depend on the aspect ratio
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -2829,7 +2829,7 @@ NOTE: This could also depend on the aspect ratio
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -2993,7 +2993,7 @@ NOTE: This could also depend on the aspect ratio
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -3157,7 +3157,7 @@ NOTE: This could also depend on the aspect ratio
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>
@@ -3321,7 +3321,7 @@ NOTE: This could also depend on the aspect ratio
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="stacked-bar.js.html">stacked-bar.js</a>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
 			</li>
 		</ul>
 	</dd>

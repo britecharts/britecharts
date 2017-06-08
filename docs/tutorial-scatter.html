@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>API: Mini-tooltip</title>
+        <title>Tutorial: scatter</title>
 
         
             <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
@@ -100,11 +100,11 @@
                                 
                                 <li><a href="tutorial-donut.html">Donut Chart</a></li>
                                 
-                                <li><a href="tutorial-grouped-bar.html">Grouped Bar Chart</a></li>
-                                
                                 <li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li>
                                 
                                 <li><a href="tutorial-line.html">Line Chart</a></li>
+                                
+                                <li><a href="tutorial-scatter.html">scatter</a></li>
                                 
                                 <li><a href="tutorial-sparkline.html">Sparkline Chart</a></li>
                                 
@@ -127,8 +127,6 @@
                                 <li><a href="module-Brush.html">Brush</a></li>
                                 
                                 <li><a href="module-Donut.html">Donut</a></li>
-                                
-                                <li><a href="module-Grouped-bar.html">Grouped-bar</a></li>
                                 
                                 <li><a href="module-Legend.html">Legend</a></li>
                                 
@@ -176,1160 +174,115 @@
         <main class="container" id="toc-content">
             <div class="row">
             	
-            	<div class="col-md-8 is-source">
+            	<div class="col-md-12">
             	
             		<div id="main">
-            			
-
-	<h1 class="page-title">API: Mini-tooltip</h1>
-<section>
-
-<header>
-    
+            			<section class="tutorial-section" id="tutorial-scatter" data-filename="tutorial-scatter.html">
+    <header>
         
-            
+        <h2 class="tutorial-section__heading">scatter</h2>
+    </header>
+    <article>
         
-    
-</header>
+    <div class="container" id="line">
+        <div class="row">
+            <div class="col-md-8">
+                <article>
+                    <h2>Line Chart with fixed Aspect Ratio</h2>
+                    <div class="britechart js-line-chart-container line-chart-container card--chart"></div>
+                    <div class="britechart js-line-brush-chart-container card--chart"></div>
+                    <p class="js-date-range date-range is-hidden">Selected from <span class="js-start-date"></span> to <span class="js-end-date"></span></p>
+                </article>
+            </div>
+            <div class="col-md-4 sidebar">
+                <h3>The code</h3>
+                <pre><code class="language-javascript">
+lineChart1
+    .isAnimated(true)
+    .aspectRatio(0.5)
+    .grid('horizontal')
+    .tooltipThreshold(600)
+    .width(containerWidth)
+    .dateLabel('fullDate')
+    .on('customMouseOver', chartTooltip.show)
+    .on('customMouseMove', chartTooltip.update)
+    .on('customMouseOut', chartTooltip.hide);
 
+container.datum(dataset).call(lineChart);
+                </code></pre>
+                <h4>Colors</h4>
+                <label class="control-label">You can also check other color schemas:</label>
+                <div class="js-color-selector-container card--chart"></div>
+                <h4>Data Input</h4>
+                <p>Check the <a href="/britecharts/global.html#LineChartData__anchor">data input schema</a> of this chart.</p>
+                <h4>Export Chart</h4>
+                <p>You can also export this chart by pressing: <input id="button" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
+                <h4>Demo Code</h4>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
+            </div>
+        </div>
 
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">Mini Tooltip Component reusable API class that renders a
-simple and configurable tooltip element for Britechart's
-bar and step chart.</div>
-        
+        <div class="row">
+            <div class="col-md-8">
+                <article>
+                    <h2>Line Chart with a single data source</h2>
+                    <div class="britechart js-single-line-chart-container card--chart"></div>
+                    <p>This is the same chart as above, but when there is a single data source we apply a gradient to the line to give it a little flair.</p>
+                    <p>This chart has a fixed height like the one below.</p>
+                </article>
+            </div>
+            <div class="col-md-4 sidebar">
+                <h3>The code</h3>
+                <pre><code class="language-javascript">
+lineChart
+    .tooltipThreshold(600)
+    .height(300)
+    .grid('vertical')
+    .width(containerWidth);
 
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="module:Mini-tooltip"><span class="type-signature"></span>(require("Mini-tooltip"))(_selection, _data)</h4>
-    
-    
-</dt>
-<dd>
+container.datum(dataset).call(lineChart);
+                </code></pre>
+                <h3>Export Chart</h3>
+                <p>You can also export this chart by pressing: <input id="button2" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
+                <h4>Demo Code</h4>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
+            </div>
+        </div>
 
-    
-    <div class="description">
-        This function creates the graph using the selection as container
-    </div>
-    
+        <div class="row">
+            <div class="col-md-8">
+                <article>
+                    <h2>Line Chart with Fixed Height</h2>
+                    <div class="britechart js-fixed-line-chart-container card--chart"></div>
+                    <p>In this case, we have set a <strong>fixed height</strong> on the chart, as we are currently doing on the Sales report:</p>
+                </article>
+            </div>
+            <div class="col-md-4 sidebar">
+                <h3>The code</h3>
+                <pre><code class="language-javascript">
+lineChart
+    .tooltipThreshold(600)
+    .height(300)
+    .width(containerWidth)
+    .grid('full');
 
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>_selection</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#D3Selection">D3Selection</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">A d3 selection that represents
-                                 the container(s) where the chart(s) will be rendered</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>_data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The data to attach and generate the chart (usually an empty array)</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="mini-tooltip.js.html">mini-tooltip.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-    
+container.datum(dataset).call(lineChart);
+                </code></pre>
+                <h4>Demo Code</h4>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
+            </div>
+        </div>
     </div>
 
-    
 
-    
-        <h3 class="subsection-title">Requires</h3>
-
-        <ul>
-            <li>module:d3</li>
-        </ul>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-            
-<hr>
-<dt>
-    <h4 class="name" id="module:Mini-tooltip"><span class="type-signature"></span>module:Mini-tooltip(_selection, _data)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        This function creates the graph using the selection as container
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>_selection</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#D3Selection">D3Selection</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">A d3 selection that represents
-                                 the container(s) where the chart(s) will be rendered</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>_data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The data to attach and generate the chart (usually an empty array)</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="mini-tooltip.js.html">mini-tooltip.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".hide"><span class="type-signature">&lt;static> </span>hide()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Hides the tooltip
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="mini-tooltip.js.html">mini-tooltip.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    Tooltip module to chain calls
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Module</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".nameLabel"><span class="type-signature">&lt;static> </span>nameLabel(_x)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Gets or Sets data's nameLabel
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>_x</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">text</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Desired nameLabel</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="mini-tooltip.js.html">mini-tooltip.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    nameLabel or Step Chart module to chain calls
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">text</span>
-|
-
-<span class="param-type">module</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".show"><span class="type-signature">&lt;static> </span>show()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Shows the tooltip
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="mini-tooltip.js.html">mini-tooltip.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    Tooltip module to chain calls
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Module</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".title"><span class="type-signature">&lt;static> </span>title(_x)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Gets or Sets the title of the tooltip
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>_x</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Desired title</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="mini-tooltip.js.html">mini-tooltip.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    Current title or module to chain calls
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-|
-
-<span class="param-type">module</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".update"><span class="type-signature">&lt;static> </span>update(dataPoint, mousePosition, chartSize)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Updates the position and content of the tooltip
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>dataPoint</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Datapoint of the hovered element</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>mousePosition</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Mouse position relative to the parent chart [x, y]</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>chartSize</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Parent chart size [x, y]</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="mini-tooltip.js.html">mini-tooltip.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    Current component
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">module</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        </dl>
-    
-
-    
-
-    
-</article>
-
+    </article>
 </section>
 
-
-
+<script src="/britecharts/scripts/demo-scatter.js"></script>
 
             		</div>
             	</div>
             	<div class="clearfix"></div>
-            	
-            		<div class="col-md-3">
-            			<div id="toc" class="col-md-3 hidden-xs hidden-sm"></div>
-            		</div>
             	
             </div>
         </main>
