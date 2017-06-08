@@ -131,9 +131,9 @@ define(function (require) {
             valueLabelFormat = NUMBER_FORMAT,
 
             // getters
-            getName = (data) => data[nameLabel],
-            getValue = (data) => data[valueLabel],
-            getGroup = (data) => data[groupLabel],
+            getName = ({name}) => name,
+            getValue = ({value}) => value,
+            getGroup = ({group}) => group,
             isAnimated = false,
 
             // events
@@ -271,9 +271,7 @@ define(function (require) {
          */
         function buildScales() {
 
-            let yMax = d3Array.max(data.map(function (d) {
-                return d.value;
-            }));
+            let yMax = d3Array.max(data.map(getValue));
 
             if (!horizontal) {
                 xScale = d3Scale.scaleBand()
@@ -405,12 +403,12 @@ define(function (require) {
                     .selectAll('line.horizontal-grid-line')
                     .data(yScale.ticks(yTicks).slice(1))
                     .enter()
-                    .append('line')
-                    .attr('class', 'horizontal-grid-line')
-                    .attr('x1', (-xAxisPadding.left + 1))
-                    .attr('x2', chartWidth)
-                    .attr('y1', (d) => yScale(d))
-                    .attr('y2', (d) => yScale(d));
+                        .append('line')
+                        .attr('class', 'horizontal-grid-line')
+                        .attr('x1', (-xAxisPadding.left + 1))
+                        .attr('x2', chartWidth)
+                        .attr('y1', (d) => yScale(d))
+                        .attr('y2', (d) => yScale(d));
             }
 
             if (grid === 'vertical' || grid === 'full') {
@@ -419,11 +417,11 @@ define(function (require) {
                     .data(xScale.ticks(xTicks).slice(1))
                     .enter()
                     .append('line')
-                    .attr('class', 'vertical-grid-line')
-                    .attr('y1', 0)
-                    .attr('y2', chartHeight)
-                    .attr('x1', (d) => xScale(d))
-                    .attr('x2', (d) => xScale(d));
+                        .attr('class', 'vertical-grid-line')
+                        .attr('y1', 0)
+                        .attr('y2', chartHeight)
+                        .attr('x1', (d) => xScale(d))
+                        .attr('x2', (d) => xScale(d));
             }
         }
 
@@ -435,8 +433,7 @@ define(function (require) {
         function horizontalBarsTween(d) {
             let node = d3Selection.select(this),
                 i = d3Interpolate.interpolateRound(0, xScale(getValue(d))),
-                j = d3Interpolate.interpolateNumber(0, 1)
-                ;
+                j = d3Interpolate.interpolateNumber(0, 1);
 
             return function (t) {
                 node.attr('width', i(t)).style('opacity', j(t));
@@ -452,11 +449,11 @@ define(function (require) {
             let node = d3Selection.select(this),
                 i = d3Interpolate.interpolateRound(0, chartHeight - yScale(getValue(d))),
                 y = d3Interpolate.interpolateRound(chartHeight, yScale(getValue(d))),
-                j = d3Interpolate.interpolateNumber(0, 1)
-                ;
+                j = d3Interpolate.interpolateNumber(0, 1);
 
             return function (t) {
-                node.attr('y', y(t)).attr('height', i(t)).style('opacity', j(t));
+                node.attr('y', y(t))
+                    .attr('height', i(t)).style('opacity', j(t));
             }
         }
 
@@ -502,18 +499,18 @@ define(function (require) {
             let bars = series
                 .data(layers)
                 .enter()
-                .append('g')
-                .attr('transform', function (d) { return 'translate(0,' + yScale(d.key) + ')'; })
-                .classed('layer', true)
-                .selectAll('.bar')
-                .data((d) => d.values)
-                .enter()
-                .append('rect')
-                .classed('bar', true)
-                .attr('x', 1)
-                .attr('y', (d) => yScale2(getGroup(d)))
-                .attr('height', yScale2.bandwidth())
-                .attr('fill', ((data) => categoryColorMap[data.group]));
+                  .append('g')
+                    .attr('transform', function (d) { return 'translate(0,' + yScale(d.key) + ')'; })
+                    .classed('layer', true)
+                    .selectAll('.bar')
+                    .data((d) => d.values)
+                    .enter()
+                      .append('rect')
+                        .classed('bar', true)
+                        .attr('x', 1)
+                        .attr('y', (d) => yScale2(getGroup(d)))
+                        .attr('height', yScale2.bandwidth())
+                        .attr('fill', ((data) => categoryColorMap[data.group]));
 
             if (isAnimated) {
                 bars.style('opacity', 0.24)
@@ -542,17 +539,17 @@ define(function (require) {
                 .data(layers)
                 .enter()
                 .append('g')
-                .attr('transform', function (d) { return 'translate(' + xScale(d.key) + ',0)'; })
-                .classed('layer', true)
-                .selectAll('.bar')
-                .data((d) => d.values)
-                .enter()
-                .append('rect')
-                .classed('bar', true)
-                .attr('x', (d) => xScale2(getGroup(d)))
-                .attr('y', (d) => yScale(d.value))
-                .attr('width', xScale2.bandwidth)
-                .attr('fill', ((data) => categoryColorMap[data.group]));
+                  .attr('transform', function (d) { return 'translate(' + xScale(d.key) + ',0)'; })
+                  .classed('layer', true)
+                  .selectAll('.bar')
+                  .data((d) => d.values)
+                  .enter()
+                    .append('rect')
+                      .classed('bar', true)
+                      .attr('x', (d) => xScale2(getGroup(d)))
+                      .attr('y', (d) => yScale(d.value))
+                      .attr('width', xScale2.bandwidth)
+                      .attr('fill', ((data) => categoryColorMap[data.group]));
 
             if (isAnimated) {
                 bars.style('opacity', 0.24).transition()
@@ -659,10 +656,12 @@ define(function (require) {
             if (dataPoint) {
                 // Move verticalMarker to that datapoint
                 if (!horizontal) {
-                    x = xScale(dataPoint.key) + xScale2(dataPoint[groupLabel]), y = yScale(getValue(dataPoint));
+                    x = xScale(dataPoint.key) + xScale2(dataPoint[groupLabel]),
+                    y = yScale(getValue(dataPoint));
                     moveVerticalMarkerXY(x, y);
                 } else {
-                    x = mousePos[1], y = yScale(dataPoint.key) + yScale.bandwidth() / 2;
+                    x = mousePos[1],
+                    y = yScale(dataPoint.key) + yScale.bandwidth() / 2;
                     moveVerticalMarkerXY(x, y);
                 }
                 // Emit event with xPosition for tooltip or similar feature
