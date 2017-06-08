@@ -14309,8 +14309,34 @@ webpackJsonp([4,9],[
 	        }
 	
 	        /**
+	         * Sorts topic by alphabetical order for arrays of objects with a name proeprty
+	         * @param  {Array} topics   List of topic objects
+	         * @return {Array}          List of topic name strings
+	         */
+	        function _sortByAlpha(topics) {
+	            return topics.map(function (d) {
+	                return d;
+	            }).sort(function (a, b) {
+	                if (a.name > b.name) return 1;
+	                if (a.name === b.name) return 0;
+	                return -1;
+	            });
+	
+	            var otherIndex = topics.map(function (_ref2) {
+	                var name = _ref2.name;
+	                return name;
+	            }).indexOf('Other');
+	
+	            if (otherIndex >= 0) {
+	                var other = topics.splice(otherIndex, 1);
+	
+	                topics = topics.concat(other);
+	            }
+	        }
+	
+	        /**
 	         * Updates tooltip title, content, size and position
-	         * sorts by alphatical name order
+	         * sorts by alphatical name order if not forced order given
 	         *
 	         * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
 	         * @param  {Number} xPosition           Position of the mouse on the X axis
@@ -14323,13 +14349,7 @@ webpackJsonp([4,9],[
 	            if (forceOrder.length) {
 	                topics = _sortByForceOrder(topics);
 	            } else if (topics.length && topics[0].name) {
-	                topics = topics.map(function (d) {
-	                    return d;
-	                }).sort(function (a, b) {
-	                    if (a.name > b.name) return 1;
-	                    if (a.name === b.name) return 0;
-	                    return -1;
-	                });
+	                topics = _sortByAlpha(topics);
 	            }
 	
 	            cleanContent();

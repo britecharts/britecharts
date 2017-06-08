@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+
+<html lang="en" prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>Source: scatter.js</title>
+
+        
+            <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+            
+                <meta name="keywords" content="Britecharts, D3.js" />
+            
+        
+
+        <!-- Disable tap highlight on IE -->
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="msapplication-config" content="img/icons/browserconfig.xml">
+
+        <!-- Web Application Manifest -->
+        <link rel="manifest" href="manifest.json">
+
+        <!-- Add to homescreen for Chrome on Android -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="application-name" content="Britecharts">
+        <link rel="icon" sizes="192x192" href="img/icons/chrome-touch-icon-192x192.png">
+
+        <!-- Add to homescreen for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#009FA1">
+        <meta name="apple-mobile-web-app-title" content="Britecharts">
+        <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png">
+
+        <!-- MacOS -->
+        <link rel="mask-icon" href="img/icons/safari-pinned-tab.svg" color="#5bbad5">
+
+        <!-- Color the status bar on mobile devices -->
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="img/icons/favicon.ico">
+        <link rel="icon" type="image/png" href="img/icons/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="img/icons/favicon-16x16.png" sizes="16x16">
+
+        
+            <meta property="og:title" content="Britecharts, a D3.js based charting library of reusable components"/>
+            <meta property="og:type" content="website"/>
+            <meta property="og:image" content="https://eventbrite.github.io/britecharts/img/logo-stripes-small.png"/>
+            <meta property="og:site_name" content="Britecharts"/>
+            <meta property="og:url" content=""/>
+
+            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:site" content="@britecharts" />
+            <meta name="twitter:description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+        
+
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <link type="text/css" rel="stylesheet" href="styles/custom.css">
+        <link type="text/css" rel="stylesheet" href="styles/demos.css">
+        <link type="text/css" rel="stylesheet" href="styles/prism.css"  />
+        <link type="text/css" rel="stylesheet" href="styles/britecharts.css" />
+        <script src="/britecharts/scripts/common.js"></script>
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top navbar-default">
+            <div class="container">
+            	<div class="navbar-header">
+            		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="img/britecharts-logo.svg"
+            		alt="Britecharts - D3.js based charting library of reusable components"/></a>
+            		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+                    </button>
+            	</div>
+            	<div class="navbar-collapse collapse" id="topNavigation">
+            		<ul class="nav navbar-nav">
+            			
+                        
+            			<li class="">
+            				<a href="getting-started.html" >Getting started<b class=""></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="tutorials.list.html"  class="dropdown-toggle" data-toggle="dropdown" >Demos<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="tutorial-bar.html">Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-brush.html">Brush Chart</a></li>
+                                
+                                <li><a href="tutorial-donut.html">Donut Chart</a></li>
+                                
+                                <li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li>
+                                
+                                <li><a href="tutorial-line.html">Line Chart</a></li>
+                                
+                                <li><a href="tutorial-scatter.html">scatter</a></li>
+                                
+                                <li><a href="tutorial-sparkline.html">Sparkline Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-bar.html">Stacked Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-step.html">Step Chart</a></li>
+                                
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="modules.list.html"  class="dropdown-toggle" data-toggle="dropdown" >API<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="module-Bar.html">Bar</a></li>
+                                
+                                <li><a href="module-Brush.html">Brush</a></li>
+                                
+                                <li><a href="module-Donut.html">Donut</a></li>
+                                
+                                <li><a href="module-Legend.html">Legend</a></li>
+                                
+                                <li><a href="module-Line.html">Line</a></li>
+                                
+                                <li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li>
+                                
+                                <li><a href="module-Sparkline.html">Sparkline</a></li>
+                                
+                                <li><a href="module-Stacked-area.html">Stacked-area</a></li>
+                                
+                                <li><a href="module-Stacked-bar.html">Stacked-bar</a></li>
+                                
+                                <li><a href="module-Step.html">Step</a></li>
+                                
+                                <li><a href="module-Tooltip.html">Tooltip</a></li>
+                                
+                                <li><a href="global.html">Types</a></li>
+                                
+            				</ul>
+            			</li>
+            			
+                        <li class="dropdown">
+                            <a class="github-link" href="https://github.com/eventbrite/britecharts/">Github</a>
+                        </li>
+            		</ul>
+                    
+                    <div class="col-sm-12 col-md-4 no-gutter">
+                        <form class="navbar-form" role="search">
+                            <div class="input-group search-container clearfix">
+                                <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" id="search-submit">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <main class="container" id="toc-content">
+            <div class="row">
+            	
+            	<div class="col-md-12">
+            	
+            		<div id="main">
+            			
+
+		<h1 class="page-title">Source: scatter.js</h1>
+    
+<section>
+    <article>
+        <pre class=""><code class="language-javascript">define(function(require) {
+    'use strict';
+
+    const d3Array = require('d3-array');
+    const d3Ease = require('d3-ease');
+    const d3Axis = require('d3-axis');
+    const d3Color = require('d3-color');
+    const d3Dispatch = require('d3-dispatch');
+
+    const d3Scale = require('d3-scale');
+    const d3Selection = require('d3-selection');
+
+    const textHelper = require('./helpers/text');
+    const {exportChart} = require('./helpers/exportChart');
+    const colorHelper = require('./helpers/colors');
+
+    const NUMBER_FORMAT = ',f';
+
+
+    /**
+     * @typedef BarChartData
+     * @type {Object[]}
+     * @property {Number} value        Value of the group (required)
+     * @property {String} name         Name of the group (required)
+     *
+     * @example
+     * [
+     *     {
+     *         value: 1,
+     *         name: 'glittering'
+     *     },
+     *     {
+     *         value: 1,
+     *         name: 'luminous'
+     *     }
+     * ]
+     */
+
+    /**
+     * Bar Chart reusable API class that renders a
+     * simple and configurable bar chart.
+     *
+     * @module Bar
+     * @tutorial bar
+     * @requires d3-array, d3-axis, d3-dispatch, d3-scale, d3-selection
+     *
+     * @example
+     * var barChart = bar();
+     *
+     * barChart
+     *     .height(500)
+     *     .width(800);
+     *
+     * d3Selection.select('.css-selector')
+     *     .datum(dataset)
+     *     .call(barChart);
+     *
+     */
+    return function module() {
+
+        let margin = {
+                top: 20,
+                right: 20,
+                bottom: 30,
+                left: 40
+            },
+            width = 960,
+            height = 500,
+            data,
+            dataZeroed,
+            chartWidth, chartHeight,
+            xScale, yScale,
+            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+            colorScale,
+            colorList,
+            colorMap,
+            colorTheme={},
+            numOfVerticalTicks = 5,
+            numOfHorizontalTicks = 5,
+            percentageAxisToMaxRatio = 1,
+            valueLabelFormat = NUMBER_FORMAT,
+            xAxis, yAxis,
+            xAxisPadding = {
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0
+            },
+            yAxisPaddingBetweenChart = 10,
+            yAxisLineWrapLimit = 1,
+            horizontal = false,
+            svg,
+
+            isAnimated = false,
+            ease = d3Ease.easeQuadInOut,
+            animationDuration = 800,
+            interBarDelay = (d, i) =>  70 * i,
+
+            valueLabel = 'value',
+            nameLabel = 'name',
+
+            maskGridLines,
+            baseLine,
+
+            // Dispatcher object to broadcast the mouse events
+            // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
+            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove'),
+
+            // extractors
+            getName = ({name}) => name,
+            getValue = ({value}) => value;
+        /**
+         * This function creates the graph using the selection as container
+         * @param  {D3Selection} _selection A d3 selection that represents
+         *                                  the container(s) where the chart(s) will be rendered
+         * @param {BarChartData} _data The data to attach and generate the chart
+         */
+        function exports(_selection){
+            _selection.each(function(_data){
+                chartWidth = width - margin.left - margin.right - (yAxisPaddingBetweenChart * 1.2);
+                chartHeight = height - margin.top - margin.bottom;
+                ({data, dataZeroed} = cleanData(_data));
+
+                buildScales();
+                buildAxis();
+                buildSVG(this);
+                drawGridLines();
+                drawBars();
+                drawAxis();
+
+            });
+        }
+
+        /**
+         * Creates the d3 x and y axis, setting orientations
+         * @private
+         */
+        function buildAxis(){
+            if (!horizontal) {
+                xAxis = d3Axis.axisBottom(xScale);
+
+                yAxis = d3Axis.axisLeft(yScale)
+                    .ticks(numOfVerticalTicks, valueLabelFormat)
+            } else {
+                xAxis = d3Axis.axisBottom(xScale)
+                    .ticks(numOfHorizontalTicks, valueLabelFormat)
+                    .tickSizeInner([-chartHeight]);
+
+                yAxis = d3Axis.axisLeft(yScale);
+            }
+        }
+
+        /**
+         * Builds containers for the chart, the axis and a wrapper for all of them
+         * Also applies the Margin convention
+         * @private
+         */
+        function buildContainerGroups(){
+            let container = svg
+              .append('g')
+                .classed('container-group', true)
+                .attr('transform', `translate(${margin.left + yAxisPaddingBetweenChart}, ${margin.top})`);
+
+            container
+                .append('g').classed('grid-lines-group', true);
+            container
+                .append('g').classed('chart-group', true);
+            container
+                .append('g').classed('x-axis-group axis', true);
+            container
+                .append('g')
+                .attr('transform', `translate(${-1 * (yAxisPaddingBetweenChart)}, 0)`)
+                .classed('y-axis-group axis', true);
+            container
+                .append('g').classed('metadata-group', true);
+        }
+
+        /**
+         * Creates the x and y scales of the graph
+         * @private
+         */
+        function buildScales() {
+            let percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue)),
+            [xMin,xMax] = d3Array.extent(data,getValue),
+            [yMin,yMax] = d3Array.extent(data,({yValue}) => yValue )
+            
+            console.log(yMin,yMax,data,'yMin,yMax')
+            if (!horizontal) {
+                xScale = d3Scale.scaleLinear()
+                 .range([0, chartWidth])
+                    .domain([xMin-1, xMax+1])
+                   
+                    // .padding(0.1);
+
+                yScale = d3Scale.scaleLinear()
+                    .domain([yMin-1, yMax+1])
+                    .range([chartHeight, 0]);
+            } else {
+                xScale = d3Scale.scaleLinear()
+                    .domain([0, percentageAxis])
+                    .rangeRound([0, chartWidth]);
+
+                yScale = d3Scale.scaleBand()
+                    .domain(data.map(getName))
+                    .rangeRound([chartHeight, 0])
+                    .padding(0.1);
+            }
+            colorScale = d3Scale.scaleOrdinal().range(colorSchema)
+            colorList = data.map(d => d)
+                            .reverse()
+                            .map(({name}, i) => ({
+                                    name,
+                                    color: colorSchema[i % colorSchema.length]}
+                                ));
+
+             data.map(d => d)
+                           
+                            .forEach(({name}, i) => (
+                                    colorTheme[name] = colorSchema[i % colorSchema.length]
+                                   
+                                ));
+                                colorTheme['value'] = colorSchema[0 % colorSchema.length]
+                                 colorTheme['yValue'] = colorSchema[1 % colorSchema.length]
+            colorMap = (item) => colorList.filter(({name}) => name === item)[0].color;
+            console.log(colorMap,colorList,colorTheme)
+        }
+
+        /**
+         * Builds the SVG element that will contain the chart
+         * @param  {HTMLElement} container DOM element that will work as the container of the graph
+         * @private
+         */
+        function buildSVG(container){
+            if (!svg) {
+                svg = d3Selection.select(container)
+                  .append('svg')
+                    .classed('britechart bar-chart', true);
+
+                buildContainerGroups();
+            }
+
+            svg
+                .attr('width', width)
+                .attr('height', height);
+        }
+
+        /**
+         * Cleaning data adding the proper format
+         * @param  {BarChartData} originalData Data
+         * @private
+         */
+        function cleanData(originalData) {
+            let data = originalData.map((d) => ({
+                    value: +d[valueLabel],
+                    yValue:  +d['yValue'],
+                    key:String(d[nameLabel]),
+                    values:[{
+                        name:'value',
+                        value:+d[valueLabel],
+                       
+                       
+                    },{
+                         name:'yValue',
+                          value:  +d['yValue'],
+                    }],
+                    name: String(d[nameLabel])
+                })),
+                dataZeroed = data.map((d) => ({
+                    value: 0,
+                      key:String(d[nameLabel]),
+                    name: String(d[nameLabel])
+                }));
+
+            return {data, dataZeroed}
+        }
+
+        /**
+         * Utility function that wraps a text into the given width
+         * @param  {D3Selection} text         Text to write
+         * @param  {Number} containerWidth
+         * @private
+         */
+        function wrapText(text, containerWidth) {
+            textHelper.wrapTextWithEllipses(text, containerWidth, 0, yAxisLineWrapLimit)
+        }
+
+        /**
+         * Draws the x and y axis on the svg object within their
+         * respective groups
+         * @private
+         */
+        function drawAxis(){
+            svg.select('.x-axis-group.axis')
+                .attr('transform', `translate(0, ${chartHeight})`)
+                .call(xAxis);
+
+            svg.select('.y-axis-group.axis')
+                .call(yAxis);
+
+            svg.selectAll('.y-axis-group .tick text')
+                .call(wrapText, margin.left - yAxisPaddingBetweenChart)
+        }
+
+        /**
+         * Draws the bars along the x axis
+         * @param  {D3Selection} bars Selection of bars
+         * @return {void}
+         */
+        function drawHorizontalBars(bars) {
+            // Enter + Update
+            bars.enter()
+              .append('rect')
+                .classed('bar', true)
+                .attr('y', chartHeight)
+                .attr('x', 0)
+                .attr('height', yScale.bandwidth())
+                .attr('width', ({value}) => xScale(value))
+                .attr('fill', ({name}) => colorMap(name))
+                .on('mouseover', function() {
+                    dispatcher.call('customMouseOver', this);
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+                })
+                .on('mousemove', function(d) {
+                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                })
+                .on('mouseout', function() {
+                    dispatcher.call('customMouseOut', this);
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
+                })
+              .merge(bars)
+                .attr('x', 0)
+                .attr('y', ({name}) => yScale(name))
+                .attr('height', yScale.bandwidth())
+                .attr('width', ({value}) => xScale(value));
+        }
+
+        /**
+         * Draws and animates the bars along the x axis
+         * @param  {D3Selection} bars Selection of bars
+         * @return {void}
+         */
+        function drawAnimatedHorizontalBars(bars) {
+            // Enter + Update
+            bars.enter()
+              .append('rect')
+                .classed('bar', true)
+                .attr('x', 0)
+                .attr('y', chartHeight)
+                .attr('height', yScale.bandwidth())
+                .attr('width', ({value}) => xScale(value))
+                .attr('fill', ({name}) => colorMap(name))
+                .on('mouseover', function() {
+                    dispatcher.call('customMouseOver', this);
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+                })
+                .on('mousemove', function(d) {
+                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                })
+                .on('mouseout', function() {
+                    dispatcher.call('customMouseOut', this);
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
+                });
+
+            bars
+                .attr('x', 0)
+                .attr('y', ({name}) => yScale(name))
+                .attr('height', yScale.bandwidth())
+                .transition()
+                .duration(animationDuration)
+                .delay(interBarDelay)
+                .ease(ease)
+                .attr('width', ({value}) => xScale(value));
+        }
+
+        /**
+         * Draws and animates the bars along the y axis
+         * @param  {D3Selection} bars Selection of bars
+         * @return {void}
+         */
+        function drawAnimatedVerticalBars(bars) {
+            // Enter + Update
+            bars.enter()
+              .append('rect')
+                .classed('bar', true)
+                .attr('x', chartWidth)
+                .attr('y', ({value}) => yScale(value))
+                .attr('width', xScale.bandwidth())
+                .attr('height', ({value}) => chartHeight - yScale(value))
+                .attr('fill', ({name}) => colorMap(name))
+                .on('mouseover', function() {
+                    dispatcher.call('customMouseOver', this);
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker())
+                })
+                .on('mousemove', function(d) {
+                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                })
+                .on('mouseout', function() {
+                    dispatcher.call('customMouseOut', this);
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
+                })
+              .merge(bars)
+                .attr('x', ({name}) => xScale(name))
+                .attr('width', xScale.bandwidth())
+                .transition()
+                .duration(animationDuration)
+                .delay(interBarDelay)
+                .ease(ease)
+                .attr('y', ({value}) => yScale(value))
+                .attr('height', ({value}) => chartHeight - yScale(value));
+        }
+
+        /**
+         * Draws the bars along the y axis
+         * @param  {D3Selection} bars Selection of bars
+         * @return {void}
+         */
+        function drawVerticalBars(bars) {
+            // Enter + Update
+            bars.enter()
+              .append('circle')
+                .classed('dot', true)
+                .attr('r', 3.5)
+                .attr('cx', ({value}) => xScale(value))
+                .attr('cy', ({yValue}) => yScale( yValue))
+                .attr('fill', ({value}) => colorScale(value))
+                .on('mouseover', function() {
+                    dispatcher.call('customMouseOver', this);
+                    d3Selection.select(this).attr('fill', ({value}) => d3Color.color(colorScale(value)).darker())
+                })
+                .on('mousemove', function(d) {
+                     console.log('mousemove',d,d3Selection.mouse(this));
+                    dispatcher.call('customMouseMove', this, d, colorTheme,d3Selection.mouse(this)[0]);
+                })
+                .on('mouseout', function() {
+                    dispatcher.call('customMouseOut', this);
+                    d3Selection.select(this).attr('fill', ({value}) => d3Color.color(colorScale(value)))
+                })
+        }
+
+       
+
+        /**
+         * Draws the bar elements within the chart group
+         * @private
+         */
+        function drawBars(){
+            let bars;
+
+            if (isAnimated) {
+                bars = svg.select('.chart-group').selectAll('.bar')
+                    .data(dataZeroed);
+
+                if (!horizontal) {
+                    drawVerticalBars(bars);
+                } else {
+                    drawHorizontalBars(bars);
+                }
+
+                bars = svg.select('.chart-group').selectAll('.bar')
+                    .data(data);
+
+                if (!horizontal) {
+                    drawAnimatedVerticalBars(bars);
+                } else {
+                    drawAnimatedHorizontalBars(bars);
+                }
+            } else {
+                bars = svg.select('.chart-group').selectAll('.bar')
+                    .data(data);
+
+                if (!horizontal) {
+                    drawVerticalBars(bars);
+                } else {
+                    drawHorizontalBars(bars);
+                }
+            }
+
+            // Exit
+            bars.exit()
+                .transition()
+                .style('opacity', 0)
+                .remove();
+        }
+
+        /**
+         * Draws grid lines on the background of the chart
+         * @return void
+         */
+        function drawGridLines(){
+            if (!horizontal) {
+                drawVerticalGridLines();
+            } else {
+                drawHorizontalGridLines();
+            }
+        }
+
+        /**
+         * Draws the grid lines for an horizontal bar chart
+         * @return {void}
+         */
+        function drawHorizontalGridLines() {
+            maskGridLines = svg.select('.grid-lines-group')
+                .selectAll('line.vertical-grid-line')
+                .data(xScale.ticks(4))
+                .enter()
+                  .append('line')
+                    .attr('class', 'vertical-grid-line')
+                    .attr('y1', (xAxisPadding.left))
+                    .attr('y2', chartHeight)
+                    .attr('x1', (d) => xScale(d))
+                    .attr('x2', (d) => xScale(d))
+
+            //draw a horizontal line to extend y-axis till the edges
+            baseLine = svg.select('.grid-lines-group')
+                .selectAll('line.extended-y-line')
+                .data([0])
+                .enter()
+                  .append('line')
+                    .attr('class', 'extended-y-line')
+                    .attr('y1', (xAxisPadding.left))
+                    .attr('y2', chartHeight)
+                    .attr('x1', 0)
+                    .attr('x2', 0);
+        }
+
+        /**
+         * Draws the grid lines for a vertical bar chart
+         * @return {void}
+         */
+        function drawVerticalGridLines() {
+            maskGridLines = svg.select('.grid-lines-group')
+                .selectAll('line.horizontal-grid-line')
+                .data(yScale.ticks(4))
+                .enter()
+                  .append('line')
+                    .attr('class', 'horizontal-grid-line')
+                    .attr('x1', (xAxisPadding.left))
+                    .attr('x2', chartWidth)
+                    .attr('y1', (d) => yScale(d))
+                    .attr('y2', (d) => yScale(d))
+
+            //draw a horizontal line to extend x-axis till the edges
+            baseLine = svg.select('.grid-lines-group')
+                .selectAll('line.extended-x-line')
+                .data([0])
+                .enter()
+                  .append('line')
+                    .attr('class', 'extended-x-line')
+                    .attr('x1', (xAxisPadding.left))
+                    .attr('x2', chartWidth)
+                    .attr('y1', height - margin.bottom - margin.top)
+                    .attr('y2', height - margin.bottom - margin.top);
+        }
+
+        /**
+         * Chart exported to png and a download action is fired
+         * @public
+         */
+        exports.exportChart = function(filename) {
+            exportChart.call(exports, svg, filename);
+        };
+
+        /**
+         * Gets or Sets the height of the chart
+         * @param  {number} _x Desired width for the graph
+         * @return { height | module} Current height or Bar Chart module to chain calls
+         * @public
+         */
+        exports.height = function(_x) {
+            if (!arguments.length) {
+                return height;
+            }
+            height = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the margin of the chart
+         * @param  {object} _x Margin object to get/set
+         * @return { margin | module} Current margin or Bar Chart module to chain calls
+         * @public
+         */
+        exports.margin = function(_x) {
+            if (!arguments.length) {
+                return margin;
+            }
+            margin = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the width of the chart
+         * @param  {number} _x Desired width for the graph
+         * @return { width | module} Current width or Bar Chart module to chain calls
+         * @public
+         */
+        exports.width = function(_x) {
+            if (!arguments.length) {
+                return width;
+            }
+            width = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the horizontal direction of the chart
+         * @param  {number} _x Desired horizontal direction for the graph
+         * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
+         * @public
+         */
+        exports.horizontal = function(_x) {
+            if (!arguments.length) {
+                return horizontal;
+            }
+            horizontal = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+         * By default this is 'false'
+         *
+         * @param  {Boolean} _x Desired animation flag
+         * @return { isAnimated | module} Current isAnimated flag or Chart module
+         * @public
+         */
+        exports.isAnimated = function(_x) {
+            if (!arguments.length) {
+                return isAnimated;
+            }
+            isAnimated = _x;
+
+            return this;
+        };
+
+        /**
+         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+         * We are going to expose this events:
+         * customMouseOver, customMouseMove and customMouseOut
+         *
+         * @return {module} Bar Chart
+         * @public
+         */
+        exports.on = function() {
+            let value = dispatcher.on.apply(dispatcher, arguments);
+
+            return value === dispatcher ? exports : value;
+        };
+
+        /**
+         * Chart exported to png and a download action is fired
+         * @public
+         */
+        exports.exportChart = function(filename, title) {
+            exportChart.call(exports, svg, filename, title);
+        };
+
+        /**
+         * Gets or Sets the colorSchema of the chart
+         * @param  {String[]} _x Desired colorSchema for the graph
+         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
+         * @public
+         */
+        exports.colorSchema = function(_x) {
+            if (!arguments.length) {
+                return colorSchema;
+            }
+            colorSchema = _x;
+            return this;
+        }
+
+        /**
+         * Gets or Sets the valueLabel of the chart
+         * @param  {Number} _x Desired valueLabel for the graph
+         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+         * @public
+         */
+        exports.valueLabel = function(_x) {
+            if (!arguments.length) {
+                return valueLabel;
+            }
+            valueLabel = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the nameLabel of the chart
+         * @param  {Number} _x Desired nameLabel for the graph
+         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+         * @public
+         */
+        exports.nameLabel = function(_x) {
+            if (!arguments.length) {
+                return nameLabel;
+            }
+            nameLabel = _x;
+            return this;
+        };
+
+        return exports;
+    };
+
+});
+</code></pre>
+    </article>
+</section>
+
+
+
+
+
+            		</div>
+            	</div>
+            	<div class="clearfix"></div>
+            	
+            </div>
+        </main>
+
+        
+            <div class="modal fade" id="searchResults">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Search results</h4>
+                  </div>
+                  <div class="modal-body"></div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+
+        <footer class="footer">
+            
+            
+            	<span class="copyright">
+            	Eventbrite Copyright
+            	</span>
+            
+            <span class="jsdoc-message">
+            	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+            	
+            	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+            </span>
+        </footer>
+
+        <script src="/britecharts/scripts/docstrap.lib.js"></script>
+        <script src="/britecharts/scripts/toc.js"></script>
+        
+            <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
+        
+
+        <script src="/britecharts/scripts/prism.js"></script>
+        <script>
+        $( function () {
+        	$( "[id*='$']" ).each( function () {
+        		var $this = $( this );
+
+        		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+        	} );
+
+            // Highlight with prism
+            $( "pre.prettyprint.source" )
+                .each( function () {
+                    var $this = $( this );
+                    var example = $this.find( "code" );
+
+                    $this
+                        .wrap("<pre class='language-javascript' ></pre>" )
+                        .wrap("<code class='language-javascript'></code>" )
+                        .addClass( "language-javascript" )
+                        .html( example.html() );
+                } );
+
+        	$.catchAnchorLinks( {
+                navbarOffset: 10
+        	} );
+        	$( "#toc" ).toc( {
+        		anchorName  : function ( i, heading, prefix ) {
+        			return $( heading ).attr( "id" ) || ( prefix + i );
+        		},
+        		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+        		showAndHide : false,
+        		smoothScrolling: true
+        	} );
+
+        	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+        	$( '.dropdown-toggle' ).dropdown();
+
+            $( "table" ).each( function () {
+              var $this = $( this );
+              $this.addClass('table');
+            } );
+        } );
+        </script>
+
+
+        <!--Navigation and Symbol Display-->
+        
+
+        <!--Google Analytics-->
+        
+            <script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+                ga( 'create', 'UA-141520-30', 'auto' );
+                ga( 'send', 'pageview' );
+            </script>
+        
+
+        <!-- Search Init -->
+        
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    SearcherDisplay.init();
+                });
+            </script>
+        
+    </body>
+</html>

@@ -9784,8 +9784,8 @@ webpackJsonp([8,9],[
 	            var steps = svg.select('.chart-group').selectAll('.step').data(data);
 	
 	            // Enter
-	            steps.enter().append('rect').classed('step', true).attr('x', chartWidth // Initially drawing the steps at the end of Y axis
-	            ).attr('y', function (_ref3) {
+	            steps.enter().append('rect').classed('step', true).attr('x', chartWidth) // Initially drawing the steps at the end of Y axis
+	            .attr('y', function (_ref3) {
 	                var value = _ref3.value;
 	                return yScale(value);
 	            }).attr('width', xScale.bandwidth()).attr('height', function (d) {

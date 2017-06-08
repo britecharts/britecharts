@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html lang="en" prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>Tutorial: scatter</title>
+
+        
+            <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+            
+                <meta name="keywords" content="Britecharts, D3.js" />
+            
+        
+
+        <!-- Disable tap highlight on IE -->
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="msapplication-config" content="img/icons/browserconfig.xml">
+
+        <!-- Web Application Manifest -->
+        <link rel="manifest" href="manifest.json">
+
+        <!-- Add to homescreen for Chrome on Android -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="application-name" content="Britecharts">
+        <link rel="icon" sizes="192x192" href="img/icons/chrome-touch-icon-192x192.png">
+
+        <!-- Add to homescreen for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#009FA1">
+        <meta name="apple-mobile-web-app-title" content="Britecharts">
+        <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png">
+
+        <!-- MacOS -->
+        <link rel="mask-icon" href="img/icons/safari-pinned-tab.svg" color="#5bbad5">
+
+        <!-- Color the status bar on mobile devices -->
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="img/icons/favicon.ico">
+        <link rel="icon" type="image/png" href="img/icons/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="img/icons/favicon-16x16.png" sizes="16x16">
+
+        
+            <meta property="og:title" content="Britecharts, a D3.js based charting library of reusable components"/>
+            <meta property="og:type" content="website"/>
+            <meta property="og:image" content="https://eventbrite.github.io/britecharts/img/logo-stripes-small.png"/>
+            <meta property="og:site_name" content="Britecharts"/>
+            <meta property="og:url" content=""/>
+
+            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:site" content="@britecharts" />
+            <meta name="twitter:description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+        
+
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <link type="text/css" rel="stylesheet" href="styles/custom.css">
+        <link type="text/css" rel="stylesheet" href="styles/demos.css">
+        <link type="text/css" rel="stylesheet" href="styles/prism.css"  />
+        <link type="text/css" rel="stylesheet" href="styles/britecharts.css" />
+        <script src="/britecharts/scripts/common.js"></script>
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top navbar-default">
+            <div class="container">
+            	<div class="navbar-header">
+            		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="img/britecharts-logo.svg"
+            		alt="Britecharts - D3.js based charting library of reusable components"/></a>
+            		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+                    </button>
+            	</div>
+            	<div class="navbar-collapse collapse" id="topNavigation">
+            		<ul class="nav navbar-nav">
+            			
+                        
+            			<li class="">
+            				<a href="getting-started.html" >Getting started<b class=""></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="tutorials.list.html"  class="dropdown-toggle" data-toggle="dropdown" >Demos<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="tutorial-bar.html">Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-brush.html">Brush Chart</a></li>
+                                
+                                <li><a href="tutorial-donut.html">Donut Chart</a></li>
+                                
+                                <li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li>
+                                
+                                <li><a href="tutorial-line.html">Line Chart</a></li>
+                                
+                                <li><a href="tutorial-scatter.html">scatter</a></li>
+                                
+                                <li><a href="tutorial-sparkline.html">Sparkline Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-bar.html">Stacked Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-step.html">Step Chart</a></li>
+                                
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="modules.list.html"  class="dropdown-toggle" data-toggle="dropdown" >API<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="module-Bar.html">Bar</a></li>
+                                
+                                <li><a href="module-Brush.html">Brush</a></li>
+                                
+                                <li><a href="module-Donut.html">Donut</a></li>
+                                
+                                <li><a href="module-Legend.html">Legend</a></li>
+                                
+                                <li><a href="module-Line.html">Line</a></li>
+                                
+                                <li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li>
+                                
+                                <li><a href="module-Sparkline.html">Sparkline</a></li>
+                                
+                                <li><a href="module-Stacked-area.html">Stacked-area</a></li>
+                                
+                                <li><a href="module-Stacked-bar.html">Stacked-bar</a></li>
+                                
+                                <li><a href="module-Step.html">Step</a></li>
+                                
+                                <li><a href="module-Tooltip.html">Tooltip</a></li>
+                                
+                                <li><a href="global.html">Types</a></li>
+                                
+            				</ul>
+            			</li>
+            			
+                        <li class="dropdown">
+                            <a class="github-link" href="https://github.com/eventbrite/britecharts/">Github</a>
+                        </li>
+            		</ul>
+                    
+                    <div class="col-sm-12 col-md-4 no-gutter">
+                        <form class="navbar-form" role="search">
+                            <div class="input-group search-container clearfix">
+                                <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" id="search-submit">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <main class="container" id="toc-content">
+            <div class="row">
+            	
+            	<div class="col-md-12">
+            	
+            		<div id="main">
+            			<section class="tutorial-section" id="tutorial-scatter" data-filename="tutorial-scatter.html">
+    <header>
+        
+        <h2 class="tutorial-section__heading">scatter</h2>
+    </header>
+    <article>
+        
+    <div class="container" id="line">
+        <div class="row">
+            <div class="col-md-8">
+                <article>
+                    <h2>Line Chart with fixed Aspect Ratio</h2>
+                    <div class="britechart js-line-chart-container line-chart-container card--chart"></div>
+                    <div class="britechart js-line-brush-chart-container card--chart"></div>
+                    <p class="js-date-range date-range is-hidden">Selected from <span class="js-start-date"></span> to <span class="js-end-date"></span></p>
+                </article>
+            </div>
+            <div class="col-md-4 sidebar">
+                <h3>The code</h3>
+                <pre><code class="language-javascript">
+lineChart1
+    .isAnimated(true)
+    .aspectRatio(0.5)
+    .grid('horizontal')
+    .tooltipThreshold(600)
+    .width(containerWidth)
+    .dateLabel('fullDate')
+    .on('customMouseOver', chartTooltip.show)
+    .on('customMouseMove', chartTooltip.update)
+    .on('customMouseOut', chartTooltip.hide);
+
+container.datum(dataset).call(lineChart);
+                </code></pre>
+                <h4>Colors</h4>
+                <label class="control-label">You can also check other color schemas:</label>
+                <div class="js-color-selector-container card--chart"></div>
+                <h4>Data Input</h4>
+                <p>Check the <a href="/britecharts/global.html#LineChartData__anchor">data input schema</a> of this chart.</p>
+                <h4>Export Chart</h4>
+                <p>You can also export this chart by pressing: <input id="button" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
+                <h4>Demo Code</h4>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <article>
+                    <h2>Line Chart with a single data source</h2>
+                    <div class="britechart js-single-line-chart-container card--chart"></div>
+                    <p>This is the same chart as above, but when there is a single data source we apply a gradient to the line to give it a little flair.</p>
+                    <p>This chart has a fixed height like the one below.</p>
+                </article>
+            </div>
+            <div class="col-md-4 sidebar">
+                <h3>The code</h3>
+                <pre><code class="language-javascript">
+lineChart
+    .tooltipThreshold(600)
+    .height(300)
+    .grid('vertical')
+    .width(containerWidth);
+
+container.datum(dataset).call(lineChart);
+                </code></pre>
+                <h3>Export Chart</h3>
+                <p>You can also export this chart by pressing: <input id="button2" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
+                <h4>Demo Code</h4>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <article>
+                    <h2>Line Chart with Fixed Height</h2>
+                    <div class="britechart js-fixed-line-chart-container card--chart"></div>
+                    <p>In this case, we have set a <strong>fixed height</strong> on the chart, as we are currently doing on the Sales report:</p>
+                </article>
+            </div>
+            <div class="col-md-4 sidebar">
+                <h3>The code</h3>
+                <pre><code class="language-javascript">
+lineChart
+    .tooltipThreshold(600)
+    .height(300)
+    .width(containerWidth)
+    .grid('full');
+
+container.datum(dataset).call(lineChart);
+                </code></pre>
+                <h4>Demo Code</h4>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
+            </div>
+        </div>
+    </div>
+
+
+    </article>
+</section>
+
+<script src="/britecharts/scripts/demo-scatter.js"></script>
+
+            		</div>
+            	</div>
+            	<div class="clearfix"></div>
+            	
+            </div>
+        </main>
+
+        
+            <div class="modal fade" id="searchResults">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Search results</h4>
+                  </div>
+                  <div class="modal-body"></div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+
+        <footer class="footer">
+            
+            
+            	<span class="copyright">
+            	Eventbrite Copyright
+            	</span>
+            
+            <span class="jsdoc-message">
+            	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+            	
+            	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+            </span>
+        </footer>
+
+        <script src="/britecharts/scripts/docstrap.lib.js"></script>
+        <script src="/britecharts/scripts/toc.js"></script>
+        
+            <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
+        
+
+        <script src="/britecharts/scripts/prism.js"></script>
+        <script>
+        $( function () {
+        	$( "[id*='$']" ).each( function () {
+        		var $this = $( this );
+
+        		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+        	} );
+
+            // Highlight with prism
+            $( "pre.prettyprint.source" )
+                .each( function () {
+                    var $this = $( this );
+                    var example = $this.find( "code" );
+
+                    $this
+                        .wrap("<pre class='language-javascript' ></pre>" )
+                        .wrap("<code class='language-javascript'></code>" )
+                        .addClass( "language-javascript" )
+                        .html( example.html() );
+                } );
+
+        	$.catchAnchorLinks( {
+                navbarOffset: 10
+        	} );
+        	$( "#toc" ).toc( {
+        		anchorName  : function ( i, heading, prefix ) {
+        			return $( heading ).attr( "id" ) || ( prefix + i );
+        		},
+        		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+        		showAndHide : false,
+        		smoothScrolling: true
+        	} );
+
+        	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+        	$( '.dropdown-toggle' ).dropdown();
+
+            $( "table" ).each( function () {
+              var $this = $( this );
+              $this.addClass('table');
+            } );
+        } );
+        </script>
+
+
+        <!--Navigation and Symbol Display-->
+        
+
+        <!--Google Analytics-->
+        
+            <script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+                ga( 'create', 'UA-141520-30', 'auto' );
+                ga( 'send', 'pageview' );
+            </script>
+        
+
+        <!-- Search Init -->
+        
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    SearcherDisplay.init();
+                });
+            </script>
+        
+    </body>
+</html>
