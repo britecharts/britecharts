@@ -49,7 +49,7 @@
             "const": "never"
         }]
     }, 
-       "parserOptions": {
+    "parserOptions": {
        "sourceType": "module"
     }
 }
