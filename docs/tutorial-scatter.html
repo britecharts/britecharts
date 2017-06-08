@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Tutorial: Stacked Area Chart</title>
+        <title>Tutorial: scatter</title>
 
         
             <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
@@ -100,11 +100,11 @@
                                 
                                 <li><a href="tutorial-donut.html">Donut Chart</a></li>
                                 
-                                <li><a href="tutorial-grouped-bar.html">Grouped Bar Chart</a></li>
-                                
                                 <li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li>
                                 
                                 <li><a href="tutorial-line.html">Line Chart</a></li>
+                                
+                                <li><a href="tutorial-scatter.html">scatter</a></li>
                                 
                                 <li><a href="tutorial-sparkline.html">Sparkline Chart</a></li>
                                 
@@ -127,8 +127,6 @@
                                 <li><a href="module-Brush.html">Brush</a></li>
                                 
                                 <li><a href="module-Donut.html">Donut</a></li>
-                                
-                                <li><a href="module-Grouped-bar.html">Grouped-bar</a></li>
                                 
                                 <li><a href="module-Legend.html">Legend</a></li>
                                 
@@ -179,98 +177,108 @@
             	<div class="col-md-12">
             	
             		<div id="main">
-            			<section class="tutorial-section" id="tutorial-stacked-area" data-filename="tutorial-stacked-area.html">
+            			<section class="tutorial-section" id="tutorial-scatter" data-filename="tutorial-scatter.html">
     <header>
         
-        <h2 class="tutorial-section__heading">Stacked Area Chart</h2>
+        <h2 class="tutorial-section__heading">scatter</h2>
     </header>
     <article>
         
-    <div class="container" id="stacked-area">
+    <div class="container" id="line">
         <div class="row">
             <div class="col-md-8">
-                <h2 class="tutorial__heading">Stacked Area Chart with Tooltip</h2>
-                <div class="britechart js-stacked-area-chart-tooltip-container card--chart"></div>
+                <article>
+                    <h2>Line Chart with fixed Aspect Ratio</h2>
+                    <div class="britechart js-line-chart-container line-chart-container card--chart"></div>
+                    <div class="britechart js-line-brush-chart-container card--chart"></div>
+                    <p class="js-date-range date-range is-hidden">Selected from <span class="js-start-date"></span> to <span class="js-end-date"></span></p>
+                </article>
             </div>
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
-stackedArea
+lineChart1
     .isAnimated(true)
+    .aspectRatio(0.5)
+    .grid('horizontal')
     .tooltipThreshold(600)
     .width(containerWidth)
-    .grid('horizontal')
+    .dateLabel('fullDate')
     .on('customMouseOver', chartTooltip.show)
     .on('customMouseMove', chartTooltip.update)
     .on('customMouseOut', chartTooltip.hide);
 
-container.datum(dataset.data).call(stackedArea);
-
-chartTooltip
-    .topicLabel('values')
-    .title('Testing tooltip')
-    .forceOrder(['Organizer Channels', 'Eventbrite Channels']);
-
-tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
-tooltipContainer.datum([]).call(chartTooltip);
+container.datum(dataset).call(lineChart);
                 </code></pre>
                 <h4>Colors</h4>
                 <label class="control-label">You can also check other color schemas:</label>
                 <div class="js-color-selector-container card--chart"></div>
                 <h4>Data Input</h4>
-                <p>Check the <a href="/britecharts/global.html#areaChartData__anchor">data input schema</a> of this chart.</p>
+                <p>Check the <a href="/britecharts/global.html#LineChartData__anchor">data input schema</a> of this chart.</p>
                 <h4>Export Chart</h4>
                 <p>You can also export this chart by pressing: <input id="button" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
                 <h4>Demo Code</h4>
-                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-stacked-area.js">in github</a></p>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
             </div>
         </div>
-    </div>
-    <div class="container">
+
         <div class="row">
             <div class="col-md-8">
-                <h2 class="tutorial__heading">Stacked Area Chart with fixed Aspect Ratio</h2>
-                <div class="britechart js-stacked-area-chart-fixed-container card--chart"></div>
+                <article>
+                    <h2>Line Chart with a single data source</h2>
+                    <div class="britechart js-single-line-chart-container card--chart"></div>
+                    <p>This is the same chart as above, but when there is a single data source we apply a gradient to the line to give it a little flair.</p>
+                    <p>This chart has a fixed height like the one below.</p>
+                </article>
             </div>
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
-stackedArea
+lineChart
     .tooltipThreshold(600)
-    .aspectRatio(0.6)
-    .grid('full')
-    .forceAxisFormat('custom')
-    .forcedXFormat('%Y/%m/%d')
-    .forcedXTicks(2)
+    .height(300)
+    .grid('vertical')
+    .width(containerWidth);
+
+container.datum(dataset).call(lineChart);
+                </code></pre>
+                <h3>Export Chart</h3>
+                <p>You can also export this chart by pressing: <input id="button2" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
+                <h4>Demo Code</h4>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <article>
+                    <h2>Line Chart with Fixed Height</h2>
+                    <div class="britechart js-fixed-line-chart-container card--chart"></div>
+                    <p>In this case, we have set a <strong>fixed height</strong> on the chart, as we are currently doing on the Sales report:</p>
+                </article>
+            </div>
+            <div class="col-md-4 sidebar">
+                <h3>The code</h3>
+                <pre><code class="language-javascript">
+lineChart
+    .tooltipThreshold(600)
+    .height(300)
     .width(containerWidth)
-    .dateLabel('dateUTC')
-    .valueLabel('views')
-    .on('customMouseOver', chartTooltip.show)
-    .on('customMouseMove', chartTooltip.update)
-    .on('customMouseOut', chartTooltip.hide);
+    .grid('full');
 
-container.datum(dataset.data).call(stackedArea);
-
-// Tooltip Setup and start
-chartTooltip
-    .topicLabel('values')
-    .title('Tooltip Title');
-
-// Note that if the viewport width is less than the tooltipThreshold value,
-// this container won't exist, and the tooltip won't show up
-tooltipContainer = d3Selection.select('.js-stacked-area-chart-fixed-container .metadata-group .vertical-marker-container');
-tooltipContainer.datum([]).call(chartTooltip);
+container.datum(dataset).call(lineChart);
                 </code></pre>
                 <h4>Demo Code</h4>
-                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-stacked-area.js">in github</a></p>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
             </div>
         </div>
     </div>
 
+
     </article>
 </section>
 
-<script src="/britecharts/scripts/demo-stacked-area.js"></script>
+<script src="/britecharts/scripts/demo-scatter.js"></script>
 
             		</div>
             	</div>

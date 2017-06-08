@@ -1,3 +1,8 @@
+1.6.0
+1.6.0 - Minor Release
+---------------------
+* Tooltip now alphabetical order by default
+
 1.5.3 - Patch
 ---------------------
 Bug Fixes:

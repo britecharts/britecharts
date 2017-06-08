@@ -13,6 +13,12 @@ webpackJsonp([7,10],[
 	    colorSelectorHelper = __webpack_require__(45);
 	__webpack_require__(29);
 	
+	var uniq = function uniq(arrArg) {
+	    return arrArg.filter(function (elem, pos, arr) {
+	        return arr.indexOf(elem) === pos;
+	    });
+	};
+	
 	function createStackedAreaChartWithTooltip(optionalColorSchema) {
 	    var stackedArea = stackedAreaChart(),
 	        chartTooltip = tooltip(),
@@ -26,9 +32,9 @@ webpackJsonp([7,10],[
 	        // dataset = testDataSet.withReportData().build();
 	        // dataset = testDataSet.with3Sources().build();
 	        // dataset = testDataSet.with6Sources().build();
-	        dataset = testDataSet.withSalesChannelData().build();
 	        // dataset = testDataSet.withLargeData().build();
 	        // dataset = testDataSet.withGeneratedData().build();
+	        dataset = testDataSet.withSalesChannelData().build();
 	
 	        // StackedAreChart Setup and start
 	        stackedArea.isAnimated(true).tooltipThreshold(600).width(containerWidth).grid('horizontal').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
@@ -40,7 +46,9 @@ webpackJsonp([7,10],[
 	        container.datum(dataset.data).call(stackedArea);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.topicLabel('values').title('Testing tooltip');
+	        chartTooltip.topicLabel('values').title('Testing tooltip').forceOrder(uniq(dataset.data.map(function (d) {
+	            return d.name;
+	        })));
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -96,7 +104,6 @@ webpackJsonp([7,10],[
 	    // we'll need to listen to the window resize event
 	    var redrawCharts = function redrawCharts() {
 	        d3Selection.selectAll('.stacked-area').remove();
-	        console.log('redraw');
 	        createStackedAreaChartWithTooltip();
 	        createStackedAreaChartWithFixedAspectRatio();
 	    };
@@ -12466,7 +12473,34 @@ webpackJsonp([7,10],[
 	        }
 	
 	        /**
+	         * Sorts topic by alphabetical order for arrays of objects with a name proeprty
+	         * @param  {Array} topics   List of topic objects
+	         * @return {Array}          List of topic name strings
+	         */
+	        function _sortByAlpha(topics) {
+	            return topics.map(function (d) {
+	                return d;
+	            }).sort(function (a, b) {
+	                if (a.name > b.name) return 1;
+	                if (a.name === b.name) return 0;
+	                return -1;
+	            });
+	
+	            var otherIndex = topics.map(function (_ref2) {
+	                var name = _ref2.name;
+	                return name;
+	            }).indexOf('Other');
+	
+	            if (otherIndex >= 0) {
+	                var other = topics.splice(otherIndex, 1);
+	
+	                topics = topics.concat(other);
+	            }
+	        }
+	
+	        /**
 	         * Updates tooltip title, content, size and position
+	         * sorts by alphatical name order if not forced order given
 	         *
 	         * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
 	         * @param  {Number} xPosition           Position of the mouse on the X axis
@@ -12478,6 +12512,8 @@ webpackJsonp([7,10],[
 	            // sort order by forceOrder array if passed
 	            if (forceOrder.length) {
 	                topics = _sortByForceOrder(topics);
+	            } else if (topics.length && topics[0].name) {
+	                topics = _sortByAlpha(topics);
 	            }
 	
 	            cleanContent();
@@ -12763,6 +12799,8 @@ webpackJsonp([7,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
@@ -12797,7 +12835,7 @@ webpackJsonp([7,10],[
 	
 	    var uniq = function uniq(arrArg) {
 	        return arrArg.filter(function (elem, pos, arr) {
-	            return arr.indexOf(elem) == pos;
+	            return arr.indexOf(elem) === pos;
 	        });
 	    };
 	
@@ -12868,13 +12906,7 @@ webpackJsonp([7,10],[
 	            yTickTextXOffset = -20,
 	            tickPadding = 5,
 	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
-	            colorOrder = colorSchema.reduce(function (acc, color, index) {
-	            acc[color] = index;
-	
-	            return acc;
-	        }, {}),
 	            areaOpacity = 0.64,
-	            colorScale = void 0,
 	            categoryColorMap = void 0,
 	            order = void 0,
 	            forceAxisSettings = null,
@@ -13078,9 +13110,19 @@ webpackJsonp([7,10],[
 	                });
 	            });
 	
-	            order = uniq(data.map(function (o) {
-	                return o.name;
-	            }));
+	            var initialTotalsObject = uniq(data.map(function (_ref3) {
+	                var name = _ref3.name;
+	                return name;
+	            })).reduce(function (memo, key) {
+	                return assign({}, memo, _defineProperty({}, key, 0));
+	            }, {});
+	
+	            var totals = data.reduce(function (memo, item) {
+	                return assign({}, memo, _defineProperty({}, item.name, memo[item.name] += item.value));
+	            }, initialTotalsObject);
+	
+	            order = formatOrder(totals);
+	
 	            var stack3 = d3Shape.stack().keys(order).order(d3Shape.stackOrderNone).offset(d3Shape.stackOffsetNone);
 	
 	            layersInitial = stack3(dataByDateZeroed);
@@ -13088,24 +13130,44 @@ webpackJsonp([7,10],[
 	        }
 	
 	        /**
+	         * Takes an object with all topics as keys and their aggregate totals as values,
+	         * sorts them into a list by descending total value and
+	         * moves "Other" to the end
+	         * @param  {Object} totals  Keys of all the topics and their corresponding totals
+	         * @return {Array}          List of topic names in aggregate order
+	         */
+	        function formatOrder(totals) {
+	            var order = Object.keys(totals).sort(function (a, b) {
+	                if (totals[a] > totals[b]) return -1;
+	                if (totals[a] === totals[b]) return 0;
+	                return 1;
+	            });
+	
+	            var otherIndex = order.indexOf('Other');
+	
+	            if (otherIndex >= 0) {
+	                var other = order.splice(otherIndex, 1);
+	
+	                order = order.concat(other);
+	            }
+	
+	            return order;
+	        }
+	
+	        /**
 	         * Creates the x, y and color scales of the chart
 	         * @private
 	         */
 	        function buildScales() {
-	            xScale = d3Scale.scaleTime().domain(d3Array.extent(dataByDate, function (_ref3) {
-	                var date = _ref3.date;
+	            xScale = d3Scale.scaleTime().domain(d3Array.extent(dataByDate, function (_ref4) {
+	                var date = _ref4.date;
 	                return date;
 	            })).rangeRound([0, chartWidth]);
 	
 	            yScale = d3Scale.scaleLinear().domain([0, getMaxValueByDate()]).rangeRound([chartHeight, 0]).nice();
 	
-	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(data.map(getName));
-	
-	            var range = colorScale.range();
-	            categoryColorMap = colorScale.domain().reduce(function (memo, item, i) {
-	                memo[item] = range[i];
-	
-	                return memo;
+	            categoryColorMap = order.reduce(function (memo, topic, index) {
+	                return assign({}, memo, _defineProperty({}, topic, colorSchema[index]));
 	            }, {});
 	        }
 	
@@ -13170,15 +13232,15 @@ webpackJsonp([7,10],[
 	         */
 	        function drawDataReferencePoints() {
 	            // Creates Dots on Data points
-	            var points = svg.select('.chart-group').selectAll('.dots').data(layers).enter().append('g').attr('class', 'dots').attr('d', function (_ref4) {
-	                var values = _ref4.values;
+	            var points = svg.select('.chart-group').selectAll('.dots').data(layers).enter().append('g').attr('class', 'dots').attr('d', function (_ref5) {
+	                var values = _ref5.values;
 	                return area(values);
 	            }).attr('clip-path', 'url(#clip)');
 	
 	            // Processes the points
 	            // TODO: Optimize this code
-	            points.selectAll('.dot').data(function (_ref5, index) {
-	                var values = _ref5.values;
+	            points.selectAll('.dot').data(function (_ref6, index) {
+	                var values = _ref6.values;
 	                return values.map(function (point) {
 	                    return { index: index, point: point };
 	                });
@@ -13242,8 +13304,8 @@ webpackJsonp([7,10],[
 	        function drawStackedAreas() {
 	            var series = void 0;
 	
-	            area = d3Shape.area().curve(d3Shape.curveMonotoneX).x(function (_ref6) {
-	                var data = _ref6.data;
+	            area = d3Shape.area().curve(d3Shape.curveMonotoneX).x(function (_ref7) {
+	                var data = _ref7.data;
 	                return xScale(data.date);
 	            }).y0(function (d) {
 	                return yScale(d[0]);
@@ -13254,29 +13316,29 @@ webpackJsonp([7,10],[
 	            if (isAnimated) {
 	                series = svg.select('.chart-group').selectAll('.layer').data(layersInitial).enter().append('g').classed('layer-container', true);
 	
-	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref7) {
-	                    var key = _ref7.key;
+	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref8) {
+	                    var key = _ref8.key;
 	                    return categoryColorMap[key];
 	                });
 	
 	                // Update
 	                svg.select('.chart-group').selectAll('.layer').data(layers).transition().delay(function (_, i) {
 	                    return areaAnimationDelays[i];
-	                }).duration(areaAnimationDuration).ease(ease).attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref8) {
-	                    var key = _ref8.key;
+	                }).duration(areaAnimationDuration).ease(ease).attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref9) {
+	                    var key = _ref9.key;
 	                    return categoryColorMap[key];
 	                });
 	            } else {
 	                series = svg.select('.chart-group').selectAll('.layer').data(layers).enter().append('g').classed('layer-container', true);
 	
-	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref9) {
-	                    var key = _ref9.key;
+	                series.append('path').attr('class', 'layer').attr('d', area).style('fill', function (_ref10) {
+	                    var key = _ref10.key;
 	                    return categoryColorMap[key];
 	                });
 	
 	                // Update
-	                series.attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref10) {
-	                    var key = _ref10.key;
+	                series.attr('d', area).style('opacity', areaOpacity).style('fill', function (_ref11) {
+	                    var key = _ref11.key;
 	                    return categoryColorMap[key];
 	                });
 	            }
@@ -13364,8 +13426,8 @@ webpackJsonp([7,10],[
 	         * @return {obj}        Data entry that is closer to that x axis position
 	         */
 	        function getNearestDataPoint(mouseX) {
-	            return dataByDate.find(function (_ref11) {
-	                var date = _ref11.date;
+	            return dataByDate.find(function (_ref12) {
+	                var date = _ref12.date;
 	                return Math.abs(xScale(date) - mouseX) <= epsilon;
 	            });
 	        }
@@ -13376,8 +13438,8 @@ webpackJsonp([7,10],[
 	         * @return {Number} half distance between any two points
 	         */
 	        function setEpsilon() {
-	            var dates = dataByDate.map(function (_ref12) {
-	                var date = _ref12.date;
+	            var dates = dataByDate.map(function (_ref13) {
+	                var date = _ref13.date;
 	                return date;
 	            });
 	
@@ -13435,8 +13497,8 @@ webpackJsonp([7,10],[
 	         * @param  {obj} dataPoint Data point to extract info from
 	         * @private
 	         */
-	        function highlightDataPoints(_ref13) {
-	            var values = _ref13.values;
+	        function highlightDataPoints(_ref14) {
+	            var values = _ref14.values;
 	
 	            var accumulator = 0;
 	
@@ -13449,8 +13511,8 @@ webpackJsonp([7,10],[
 	                return order.indexOf(a.name) > order.indexOf(b.name);
 	            });
 	
-	            values.forEach(function (_ref14, index) {
-	                var name = _ref14.name;
+	            values.forEach(function (_ref15, index) {
+	                var name = _ref15.name;
 	
 	                var marker = verticalMarkerContainer.append('g').classed('circle-container', true),
 	                    circleSize = 12;
@@ -14038,302 +14100,302 @@ webpackJsonp([7,10],[
 		"data": [
 			{
 				"date": "2017-02-16T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 5
 			},
 			{
 				"date": "2017-02-16T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 0
 			},
 			{
 				"date": "2017-02-17T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 1
 			},
 			{
 				"date": "2017-02-17T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 13
 			},
 			{
 				"date": "2017-02-18T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 15
 			},
 			{
 				"date": "2017-02-18T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 1
 			},
 			{
 				"date": "2017-02-19T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 15
 			},
 			{
 				"date": "2017-02-19T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 1
 			},
 			{
 				"date": "2017-02-20T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 15
 			},
 			{
 				"date": "2017-02-20T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 1
 			},
 			{
 				"date": "2017-02-21T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 18
 			},
 			{
 				"date": "2017-02-21T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 1
 			},
 			{
 				"date": "2017-02-22T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 19
 			},
 			{
 				"date": "2017-02-22T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 1
 			},
 			{
 				"date": "2017-02-23T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-02-23T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 22
 			},
 			{
 				"date": "2017-02-24T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 25
 			},
 			{
 				"date": "2017-02-24T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-02-25T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 28
 			},
 			{
 				"date": "2017-02-25T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-02-26T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 30
 			},
 			{
 				"date": "2017-02-26T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-02-27T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 30
 			},
 			{
 				"date": "2017-02-27T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-02-28T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 31
 			},
 			{
 				"date": "2017-02-28T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-03-01T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 33
 			},
 			{
 				"date": "2017-03-01T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-03-02T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 33
 			},
 			{
 				"date": "2017-03-02T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 2
 			},
 			{
 				"date": "2017-03-03T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 4
 			},
 			{
 				"date": "2017-03-03T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 34
 			},
 			{
 				"date": "2017-03-04T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 4
 			},
 			{
 				"date": "2017-03-04T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 34
 			},
 			{
 				"date": "2017-03-05T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 37
 			},
 			{
 				"date": "2017-03-05T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 4
 			},
 			{
 				"date": "2017-03-06T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 5
 			},
 			{
 				"date": "2017-03-06T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 41
 			},
 			{
 				"date": "2017-03-07T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 69
 			},
 			{
 				"date": "2017-03-07T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 5
 			},
 			{
 				"date": "2017-03-08T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 77
 			},
 			{
 				"date": "2017-03-08T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 5
 			},
 			{
 				"date": "2017-03-09T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-09T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 79
 			},
 			{
 				"date": "2017-03-10T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-10T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-11T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-11T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-12T00:00:00-08:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-12T00:00:00-08:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-13T00:00:00-07:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-13T00:00:00-07:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-14T00:00:00-07:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-14T00:00:00-07:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-15T00:00:00-07:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-15T00:00:00-07:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-16T00:00:00-07:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-16T00:00:00-07:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			},
 			{
 				"date": "2017-03-17T00:00:00-07:00",
-				"name": "Organizer Driven",
+				"name": "Organizer Channels",
 				"value": 85
 			},
 			{
 				"date": "2017-03-17T00:00:00-07:00",
-				"name": "EB Driven",
+				"name": "Eventbrite Channels",
 				"value": 8
 			}
 		]
