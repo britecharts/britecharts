@@ -11559,6 +11559,7 @@ webpackJsonp([7,9],[
 	        // formats
 	        monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
 	            monthDayHourFormat = d3TimeFormat.timeFormat('%b %d, %I %p'),
+	            locale = void 0,
 	            chartWidth = void 0,
 	            chartHeight = void 0,
 	            data = void 0,
@@ -11751,11 +11752,20 @@ webpackJsonp([7,9],[
 	        function formatDate(date) {
 	            var settings = forceAxisSettings || defaultAxisSettings;
 	            var format = null;
+	            var localeOptions = { month: 'short', day: 'numeric' };
 	
 	            if (settings === axisTimeCombinations.DAY_MONTH || settings === axisTimeCombinations.MONTH_YEAR) {
 	                format = monthDayYearFormat;
+	                localeOptions.year = 'numeric';
 	            } else if (settings === axisTimeCombinations.HOUR_DAY || settings === axisTimeCombinations.MINUTE_HOUR) {
 	                format = monthDayHourFormat;
+	                localeOptions.hour = 'numeric';
+	            }
+	
+	            if (locale) {
+	                var f = Intl.DateTimeFormat(locale, localeOptions);
+	
+	                return f.format(date);
 	            }
 	
 	            return format(date);
@@ -11779,8 +11789,34 @@ webpackJsonp([7,9],[
 	        }
 	
 	        /**
+	         * Sorts topic by alphabetical order for arrays of objects with a name proeprty
+	         * @param  {Array} topics   List of topic objects
+	         * @return {Array}          List of topic name strings
+	         */
+	        function _sortByAlpha(topics) {
+	            return topics.map(function (d) {
+	                return d;
+	            }).sort(function (a, b) {
+	                if (a.name > b.name) return 1;
+	                if (a.name === b.name) return 0;
+	                return -1;
+	            });
+	
+	            var otherIndex = topics.map(function (_ref2) {
+	                var name = _ref2.name;
+	                return name;
+	            }).indexOf('Other');
+	
+	            if (otherIndex >= 0) {
+	                var other = topics.splice(otherIndex, 1);
+	
+	                topics = topics.concat(other);
+	            }
+	        }
+	
+	        /**
 	         * Updates tooltip title, content, size and position
-	         * sorts by alphatical name order
+	         * sorts by alphatical name order if not forced order given
 	         *
 	         * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
 	         * @param  {Number} xPosition           Position of the mouse on the X axis
@@ -11793,13 +11829,7 @@ webpackJsonp([7,9],[
 	            if (forceOrder.length) {
 	                topics = _sortByForceOrder(topics);
 	            } else if (topics.length && topics[0].name) {
-	                topics = topics.map(function (d) {
-	                    return d;
-	                }).sort(function (a, b) {
-	                    if (a.name > b.name) return 1;
-	                    if (a.name === b.name) return 0;
-	                    return -1;
-	                });
+	                topics = _sortByAlpha(topics);
 	            }
 	
 	            cleanContent();
@@ -11987,6 +12017,20 @@ webpackJsonp([7,9],[
 	                return forceAxisSettings || defaultAxisSettings;
 	            }
 	            forceAxisSettings = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Pass locale for the tooltip to render the date in
+	         * @param  {String} _x  must be a locale tag like 'en-US' or 'fr-FR'
+	         * @return { (String|Module) }    Current locale or module to chain calls
+	         */
+	        exports.locale = function (_x) {
+	            if (!arguments.length) {
+	                return locale;
+	            }
+	            locale = _x;
+	
 	            return this;
 	        };
 	

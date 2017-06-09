@@ -14,8 +14,11 @@ define(function(require){
 
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
-    const timeAxisHelper = require('./helpers/timeAxis');
     const {isInteger} = require('./helpers/common');
+    const {
+        getXAxisSettings,
+        getLocaleDateFormatter
+    } = require('./helpers/timeAxis');
 
     const {
         axisTimeCombinations,
@@ -143,6 +146,7 @@ define(function(require){
             forceAxisSettings = null,
             forcedXTicks = null,
             forcedXFormat = null,
+            locale,
 
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
@@ -266,7 +270,7 @@ define(function(require){
                 };
                 major = null;
             } else {
-                ({minor, major} = timeAxisHelper.getXAxisSettings(dataByDate, width, forceAxisSettings));
+                ({minor, major} = getXAxisSettings(dataByDate, width, forceAxisSettings, locale));
 
                 xMonthAxis = d3Axis.axisBottom(xScale)
                     .ticks(major.tick)
@@ -818,6 +822,7 @@ define(function(require){
         /**
          * Exposes the ability to force the chart to show a certain x format
          * It requires a `forceAxisFormat` of 'custom' in order to work.
+         * NOTE: localization not supported
          * @param  {String} _x              Desired format for x axis
          * @return { (String|Module) }      Current format or module to chain calls
          */
@@ -1003,6 +1008,22 @@ define(function(require){
                 height = Math.ceil(_x * aspectRatio);
             }
             width = _x;
+
+            return this;
+        };
+
+        /**
+         * Pass language tag for the tooltip to localize the date.
+         * Feature uses Intl.DateTimeFormat, for compatability and support, refer to
+         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+         * @param  {String} _x  must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
+         * @return { (String|Module) }    Current locale or module to chain calls
+         */
+        exports.locale = function(_x) {
+            if (!arguments.length) {
+                return locale;
+            }
+            locale = _x;
 
             return this;
         };
