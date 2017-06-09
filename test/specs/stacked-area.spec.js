@@ -46,6 +46,19 @@ define([
             f.clearCache();
         });
 
+
+        describe('Locale', () => {
+            beforeEach(() => {
+
+            });
+            it('should pass', () => {
+                expect(true).toEqual(true);
+            });
+            it('should have datetime format', () => {
+                expect(Intl.DateTimeFormat).toBeDefined();
+            });
+        });
+
         it('should render a stacked area chart with minimal requirements', () =>  {
             expect(containerFixture.select('.stacked-area').empty()).toBeFalsy();
         });
@@ -308,6 +321,18 @@ define([
 
                 expect(defaultGridMode).not.toBe(testValue);
                 expect(newGridMode).toBe(testValue);
+            });
+
+            it('should provide locale getter and setter', () => {
+                let defaultLocale = null,
+                    testValue = 'ru-RU',
+                    newLocale;
+
+                stackedAreaChart.locale(testValue);
+                newLocale = stackedAreaChart.locale();
+
+                expect(defaultLocale).not.toBe(testValue);
+                expect(newLocale).toBe(testValue);
             });
 
             it('should provide verticalTicks getter and setter', () => {
