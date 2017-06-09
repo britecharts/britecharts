@@ -108,6 +108,7 @@ define(function(require){
             // formats
             monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
             monthDayHourFormat = d3TimeFormat.timeFormat('%b %d, %I %p'),
+            locale,
 
             chartWidth, chartHeight,
             data,
@@ -365,11 +366,20 @@ define(function(require){
         function formatDate(date) {
             let settings = forceAxisSettings || defaultAxisSettings;
             let format = null;
+            let localeOptions = {month:'short', day:'numeric'};
 
             if (settings === axisTimeCombinations.DAY_MONTH || settings === axisTimeCombinations.MONTH_YEAR) {
                 format = monthDayYearFormat;
+                localeOptions.year = 'numeric';
             } else if (settings === axisTimeCombinations.HOUR_DAY || settings === axisTimeCombinations.MINUTE_HOUR) {
                 format = monthDayHourFormat;
+                localeOptions.hour = 'numeric';
+            }
+
+            if (locale) {
+                let f = Intl.DateTimeFormat(locale, localeOptions);
+
+                return f.format(date);
             }
 
             return format(date);
@@ -627,6 +637,20 @@ define(function(require){
               return forceAxisSettings || defaultAxisSettings;
             }
             forceAxisSettings = _x;
+            return this;
+        };
+
+        /**
+         * Pass locale for the tooltip to render the date in
+         * @param  {String} _x  must be a locale tag like 'en-US' or 'fr-FR'
+         * @return { (String|Module) }    Current locale or module to chain calls
+         */
+        exports.locale = function(_x) {
+            if (!arguments.length) {
+              return locale;
+            }
+            locale = _x;
+
             return this;
         };
 

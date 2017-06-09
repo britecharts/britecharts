@@ -88,7 +88,7 @@ function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
             .forcedXFormat('%Y/%m/%d')
             .forcedXTicks(2)
             .width(containerWidth)
-            .dateLabel('dateUTC')
+            .dateLabel('date')
             .valueLabel('views')
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)

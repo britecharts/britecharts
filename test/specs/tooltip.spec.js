@@ -381,6 +381,18 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                 });
             });
 
+            it('should provide locale getter and setter', () => {
+                let current = tooltipChart.locale(),
+                    expected = 'fr-FR',
+                    actual;
+
+                tooltipChart.locale(expected);
+                actual = tooltipChart.locale();
+
+                expect(current).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide a forceOrder getter and setter', () => {
                 let defaultOrder = tooltipChart.forceOrder(),
                     testOrder = [1,2,3,4,5],

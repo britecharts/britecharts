@@ -310,6 +310,18 @@ define([
                 expect(newGridMode).toBe(testValue);
             });
 
+            it('should provide locale getter and setter', () => {
+                let defaultLocale = null,
+                    testValue = 'ru-RU',
+                    newLocale;
+
+                stackedAreaChart.locale(testValue);
+                newLocale = stackedAreaChart.locale();
+
+                expect(defaultLocale).not.toBe(testValue);
+                expect(newLocale).toBe(testValue);
+            });
+
             it('should provide verticalTicks getter and setter', () => {
                 let defaultVerticalTicks = stackedAreaChart.verticalTicks(),
                     testVerticalTicks = 3,

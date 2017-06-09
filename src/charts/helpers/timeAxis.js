@@ -13,20 +13,22 @@ define(function(require) {
     const singleTickWidth = 20;
     const horizontalTickSpacing = 50;
     const minEntryNumForDayFormat = 5;
-    const xTickMinuteFormat = d3TimeFormat.timeFormat('%M m');
-    const xTickHourFormat = d3TimeFormat.timeFormat('%H %p');
-    const xTickSimpleDayFormat = d3TimeFormat.timeFormat('%e');
-    const xTickDayMonthFormat = d3TimeFormat.timeFormat('%d %b');
-    const xTickMonthFormat = d3TimeFormat.timeFormat('%b');
-    const xTickYearFormat = d3TimeFormat.timeFormat('%Y');
 
     const formatMap = {
-        minute: xTickMinuteFormat,
-        hour: xTickHourFormat,
-        day: xTickSimpleDayFormat,
-        daymonth: xTickDayMonthFormat,
-        month: xTickMonthFormat,
-        year: xTickYearFormat
+        minute: d3TimeFormat.timeFormat('%M m'),
+        hour: d3TimeFormat.timeFormat('%H %p'),
+        day: d3TimeFormat.timeFormat('%e'),
+        daymonth: d3TimeFormat.timeFormat('%d %b'),
+        month: d3TimeFormat.timeFormat('%b'),
+        year: d3TimeFormat.timeFormat('%Y')
+    };
+    const localeTimeMap = {
+        minute: {minute:'numeric'},
+        hour: {hour:'numeric'},
+        day: {day: 'numeric'},
+        daymonth: {day: 'numeric', month:'short'},
+        month: {month: 'short'},
+        year: {year: 'numeric'}
     };
     const settingsToMajorTickMap = {
         [axisTimeCombinations.MINUTE_HOUR]: d3Time.timeHour.every(1),
@@ -71,20 +73,38 @@ define(function(require) {
     }
 
     /**
+     * Takes a locale (string) and the format to return and returns a function to format dates
+     * @param  {String} locale    locale tag eg. en-US, fr-FR, ru-RU
+     * @param  {string} timeUnit  minute, hour, day, dayMonth, month, year
+     * @return {function}         function that formats dates in the proper locale
+     */
+    const getLocaleDateFormatter = (locale, timeUnit='day') => {
+        let options = localeTimeMap[timeUnit];
+        let formatter = new Intl.DateTimeFormat(locale, options);
+
+        return (date) => formatter.format(date);
+    }
+
+    /**
      * Returns tick object to be used when building the x axis
      * @param {dataByDate} dataByDate       Chart data ordered by Date
      * @param {Number} width                Chart width
      * @param {String} settings             Optional forced settings for axis
      * @return {object} tick settings for major and minr axis
      */
-    const getXAxisSettings = (dataByDate, width, settings = null) => {
+    const getXAxisSettings = (dataByDate, width, settings = null, locale=null) => {
         let firstDate = new Date(dataByDate[0].date);
         let lastDate = new Date(dataByDate[dataByDate.length - 1].date);
         let dateTimeSpan = lastDate - firstDate;
 
+        if (locale && ((typeof Intl === 'undefined') || (typeof Intl === 'object' && !Intl.DateTimeFormat))) {
+            locale = null;
+        }
+
         if (!settings) {
             settings = getAxisSettingsFromTimeSpan(dateTimeSpan);
         }
+
         let [minor, major] = settings.split('-');
 
         let majorTickValue = settingsToMajorTickMap[settings];
@@ -92,18 +112,19 @@ define(function(require) {
 
         return {
             minor: {
-              format: formatMap[minor],
+              format: locale ? getLocaleDateFormatter(locale, minor) : formatMap[minor],
               tick: minorTickValue
             },
             major: {
-              format: formatMap[major],
+              format: locale ? getLocaleDateFormatter(locale, major) : formatMap[major],
               tick: majorTickValue
             }
         };
     };
 
     return {
-        getXAxisSettings
-    }
+        getXAxisSettings,
+        getLocaleDateFormatter
+    };
 
 });

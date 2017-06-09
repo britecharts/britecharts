@@ -3,62 +3,62 @@
         {
             "name": "Direct",
             "views": 0,
-            "dateUTC": "2011-01-05T00:00:00Z"
+            "date": "2011-01-05T00:00:00"
         },
         {
             "name": "Direct",
             "views": 10,
-            "dateUTC": "2011-01-06T00:00:00Z"
+            "date": "2011-01-06T00:00:00"
         },
         {
             "name": "Direct",
-            "views": 16,
-            "dateUTC": "2011-01-07T00:00:00Z"
+            "views": 7,
+            "date": "2011-01-07T00:00:00"
         },
         {
             "name": "Direct",
-            "views": 23,
-            "dateUTC": "2011-01-08T00:00:00Z"
+            "views": 6,
+            "date": "2011-01-08T00:00:00"
         },
         {
             "name": "Eventbrite",
-            "views": 23,
-            "dateUTC": "2011-01-05T00:00:00Z"
+            "views": 3,
+            "date": "2011-01-05T00:00:00"
         },
         {
             "name": "Eventbrite",
             "views": 16,
-            "dateUTC": "2011-01-06T00:00:00Z"
+            "date": "2011-01-06T00:00:00"
         },
         {
             "name": "Eventbrite",
             "views": 10,
-            "dateUTC": "2011-01-07T00:00:00Z"
+            "date": "2011-01-07T00:00:00"
         },
         {
             "name": "Eventbrite",
             "views": 0,
-            "dateUTC": "2011-01-08T00:00:00Z"
+            "date": "2011-01-08T00:00:00"
         },
         {
             "name": "Email",
             "views": 10,
-            "dateUTC": "2011-01-05T00:00:00Z"
+            "date": "2011-01-05T00:00:00"
         },
         {
             "name": "Email",
-            "views": 20,
-            "dateUTC": "2011-01-06T00:00:00Z"
+            "views": 15,
+            "date": "2011-01-06T00:00:00"
         },
         {
             "name": "Email",
-            "views": 26,
-            "dateUTC": "2011-01-07T00:00:00Z"
+            "views": 3,
+            "date": "2011-01-07T00:00:00"
         },
         {
             "name": "Email",
             "views": 33,
-            "dateUTC": "2011-01-08T00:00:00Z"
+            "date": "2011-01-08T00:00:00"
         }
     ]
 }

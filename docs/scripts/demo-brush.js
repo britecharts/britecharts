@@ -12064,6 +12064,8 @@ webpackJsonp([1,9],[
 	
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
@@ -12081,20 +12083,22 @@ webpackJsonp([1,9],[
 	    var singleTickWidth = 20;
 	    var horizontalTickSpacing = 50;
 	    var minEntryNumForDayFormat = 5;
-	    var xTickMinuteFormat = d3TimeFormat.timeFormat('%M m');
-	    var xTickHourFormat = d3TimeFormat.timeFormat('%H %p');
-	    var xTickSimpleDayFormat = d3TimeFormat.timeFormat('%e');
-	    var xTickDayMonthFormat = d3TimeFormat.timeFormat('%d %b');
-	    var xTickMonthFormat = d3TimeFormat.timeFormat('%b');
-	    var xTickYearFormat = d3TimeFormat.timeFormat('%Y');
 	
 	    var formatMap = {
-	        minute: xTickMinuteFormat,
-	        hour: xTickHourFormat,
-	        day: xTickSimpleDayFormat,
-	        daymonth: xTickDayMonthFormat,
-	        month: xTickMonthFormat,
-	        year: xTickYearFormat
+	        minute: d3TimeFormat.timeFormat('%M m'),
+	        hour: d3TimeFormat.timeFormat('%H %p'),
+	        day: d3TimeFormat.timeFormat('%e'),
+	        daymonth: d3TimeFormat.timeFormat('%d %b'),
+	        month: d3TimeFormat.timeFormat('%b'),
+	        year: d3TimeFormat.timeFormat('%Y')
+	    };
+	    var localeTimeMap = {
+	        minute: { minute: 'numeric' },
+	        hour: { hour: 'numeric' },
+	        day: { day: 'numeric' },
+	        daymonth: { day: 'numeric', month: 'short' },
+	        month: { month: 'short' },
+	        year: { year: 'numeric' }
 	    };
 	    var settingsToMajorTickMap = (_settingsToMajorTickM = {}, _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MINUTE_HOUR, d3Time.timeHour.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.HOUR_DAY, d3Time.timeDay.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.DAY_MONTH, d3Time.timeMonth.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MONTH_YEAR, d3Time.timeYear.every(1)), _settingsToMajorTickM);
 	
@@ -12133,6 +12137,23 @@ webpackJsonp([1,9],[
 	    };
 	
 	    /**
+	     * Takes a locale (string) and the format to return and returns a function to format dates
+	     * @param  {String} locale    locale tag eg. en-US, fr-FR, ru-RU
+	     * @param  {string} timeUnit  minute, hour, day, dayMonth, month, year
+	     * @return {function}         function that formats dates in the proper locale
+	     */
+	    var getLocaleDateFormatter = function getLocaleDateFormatter(locale) {
+	        var timeUnit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'day';
+	
+	        var options = localeTimeMap[timeUnit];
+	        var formatter = new Intl.DateTimeFormat(locale, options);
+	
+	        return function (date) {
+	            return formatter.format(date);
+	        };
+	    };
+	
+	    /**
 	     * Returns tick object to be used when building the x axis
 	     * @param {dataByDate} dataByDate       Chart data ordered by Date
 	     * @param {Number} width                Chart width
@@ -12141,10 +12162,15 @@ webpackJsonp([1,9],[
 	     */
 	    var getXAxisSettings = function getXAxisSettings(dataByDate, width) {
 	        var settings = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+	        var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 	
 	        var firstDate = new Date(dataByDate[0].date);
 	        var lastDate = new Date(dataByDate[dataByDate.length - 1].date);
 	        var dateTimeSpan = lastDate - firstDate;
+	
+	        if (locale && (typeof Intl === 'undefined' || (typeof Intl === 'undefined' ? 'undefined' : _typeof(Intl)) === 'object' && !Intl.DateTimeFormat)) {
+	            locale = null;
+	        }
 	
 	        if (!settings) {
 	            settings = getAxisSettingsFromTimeSpan(dateTimeSpan);
@@ -12160,18 +12186,19 @@ webpackJsonp([1,9],[
 	
 	        return {
 	            minor: {
-	                format: formatMap[minor],
+	                format: locale ? getLocaleDateFormatter(locale, minor) : formatMap[minor],
 	                tick: minorTickValue
 	            },
 	            major: {
-	                format: formatMap[major],
+	                format: locale ? getLocaleDateFormatter(locale, major) : formatMap[major],
 	                tick: majorTickValue
 	            }
 	        };
 	    };
 	
 	    return {
-	        getXAxisSettings: getXAxisSettings
+	        getXAxisSettings: getXAxisSettings,
+	        getLocaleDateFormatter: getLocaleDateFormatter
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
