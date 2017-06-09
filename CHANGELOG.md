@@ -1,6 +1,9 @@
-1.6.1
-1.6.0
-1.6.0 - Minor Release
+1.6.1 - Patch
+---------------------
+* Locale added to stacked area and line
+* Stacked bar made it in to the dist bundle
+
+[1.6.0][https://github.com/eventbrite/britecharts/compare/1.6.0...1.5.0] - Minor Release
 ---------------------
 * Tooltip now alphabetical order by default
 
