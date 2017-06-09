@@ -46,19 +46,6 @@ define([
             f.clearCache();
         });
 
-
-        describe('Locale', () => {
-            beforeEach(() => {
-
-            });
-            it('should pass', () => {
-                expect(true).toEqual(true);
-            });
-            it('should have datetime format', () => {
-                expect(Intl.DateTimeFormat).toBeDefined();
-            });
-        });
-
         it('should render a stacked area chart with minimal requirements', () =>  {
             expect(containerFixture.select('.stacked-area').empty()).toBeFalsy();
         });
