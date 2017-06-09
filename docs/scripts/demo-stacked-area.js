@@ -15,7 +15,7 @@ webpackJsonp([6,9],[
 	
 	var uniq = function uniq(arrArg) {
 	    return arrArg.filter(function (elem, pos, arr) {
-	        return arr.indexOf(elem) == pos;
+	        return arr.indexOf(elem) === pos;
 	    });
 	};
 	
@@ -77,7 +77,7 @@ webpackJsonp([6,9],[
 	        // dataset = testDataSet.withLargeData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').forceAxisFormat('custom').forcedXFormat('%Y/%m/%d').forcedXTicks(2).width(containerWidth).dateLabel('dateUTC').valueLabel('views').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
+	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').forceAxisFormat('custom').forcedXFormat('%Y/%m/%d').forcedXTicks(2).width(containerWidth).dateLabel('date').valueLabel('views').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 	
 	        if (optionalColorSchema) {
 	            stackedArea.colorSchema(optionalColorSchema);
@@ -11279,6 +11279,8 @@ webpackJsonp([6,9],[
 	
 	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
@@ -11296,20 +11298,22 @@ webpackJsonp([6,9],[
 	    var singleTickWidth = 20;
 	    var horizontalTickSpacing = 50;
 	    var minEntryNumForDayFormat = 5;
-	    var xTickMinuteFormat = d3TimeFormat.timeFormat('%M m');
-	    var xTickHourFormat = d3TimeFormat.timeFormat('%H %p');
-	    var xTickSimpleDayFormat = d3TimeFormat.timeFormat('%e');
-	    var xTickDayMonthFormat = d3TimeFormat.timeFormat('%d %b');
-	    var xTickMonthFormat = d3TimeFormat.timeFormat('%b');
-	    var xTickYearFormat = d3TimeFormat.timeFormat('%Y');
 	
 	    var formatMap = {
-	        minute: xTickMinuteFormat,
-	        hour: xTickHourFormat,
-	        day: xTickSimpleDayFormat,
-	        daymonth: xTickDayMonthFormat,
-	        month: xTickMonthFormat,
-	        year: xTickYearFormat
+	        minute: d3TimeFormat.timeFormat('%M m'),
+	        hour: d3TimeFormat.timeFormat('%H %p'),
+	        day: d3TimeFormat.timeFormat('%e'),
+	        daymonth: d3TimeFormat.timeFormat('%d %b'),
+	        month: d3TimeFormat.timeFormat('%b'),
+	        year: d3TimeFormat.timeFormat('%Y')
+	    };
+	    var localeTimeMap = {
+	        minute: { minute: 'numeric' },
+	        hour: { hour: 'numeric' },
+	        day: { day: 'numeric' },
+	        daymonth: { day: 'numeric', month: 'short' },
+	        month: { month: 'short' },
+	        year: { year: 'numeric' }
 	    };
 	    var settingsToMajorTickMap = (_settingsToMajorTickM = {}, _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MINUTE_HOUR, d3Time.timeHour.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.HOUR_DAY, d3Time.timeDay.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.DAY_MONTH, d3Time.timeMonth.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MONTH_YEAR, d3Time.timeYear.every(1)), _settingsToMajorTickM);
 	
@@ -11348,6 +11352,23 @@ webpackJsonp([6,9],[
 	    };
 	
 	    /**
+	     * Takes a locale (string) and the format to return and returns a function to format dates
+	     * @param  {String} locale    locale tag eg. en-US, fr-FR, ru-RU
+	     * @param  {string} timeUnit  minute, hour, day, dayMonth, month, year
+	     * @return {function}         function that formats dates in the proper locale
+	     */
+	    var getLocaleDateFormatter = function getLocaleDateFormatter(locale) {
+	        var timeUnit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'day';
+	
+	        var options = localeTimeMap[timeUnit];
+	        var formatter = new Intl.DateTimeFormat(locale, options);
+	
+	        return function (date) {
+	            return formatter.format(date);
+	        };
+	    };
+	
+	    /**
 	     * Returns tick object to be used when building the x axis
 	     * @param {dataByDate} dataByDate       Chart data ordered by Date
 	     * @param {Number} width                Chart width
@@ -11356,10 +11377,15 @@ webpackJsonp([6,9],[
 	     */
 	    var getXAxisSettings = function getXAxisSettings(dataByDate, width) {
 	        var settings = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+	        var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 	
 	        var firstDate = new Date(dataByDate[0].date);
 	        var lastDate = new Date(dataByDate[dataByDate.length - 1].date);
 	        var dateTimeSpan = lastDate - firstDate;
+	
+	        if (locale && (typeof Intl === 'undefined' || (typeof Intl === 'undefined' ? 'undefined' : _typeof(Intl)) === 'object' && !Intl.DateTimeFormat)) {
+	            locale = null;
+	        }
 	
 	        if (!settings) {
 	            settings = getAxisSettingsFromTimeSpan(dateTimeSpan);
@@ -11375,18 +11401,19 @@ webpackJsonp([6,9],[
 	
 	        return {
 	            minor: {
-	                format: formatMap[minor],
+	                format: locale ? getLocaleDateFormatter(locale, minor) : formatMap[minor],
 	                tick: minorTickValue
 	            },
 	            major: {
-	                format: formatMap[major],
+	                format: locale ? getLocaleDateFormatter(locale, major) : formatMap[major],
 	                tick: majorTickValue
 	            }
 	        };
 	    };
 	
 	    return {
-	        getXAxisSettings: getXAxisSettings
+	        getXAxisSettings: getXAxisSettings,
+	        getLocaleDateFormatter: getLocaleDateFormatter
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
@@ -11675,6 +11702,7 @@ webpackJsonp([6,9],[
 	        // formats
 	        monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
 	            monthDayHourFormat = d3TimeFormat.timeFormat('%b %d, %I %p'),
+	            locale = void 0,
 	            chartWidth = void 0,
 	            chartHeight = void 0,
 	            data = void 0,
@@ -11867,11 +11895,20 @@ webpackJsonp([6,9],[
 	        function formatDate(date) {
 	            var settings = forceAxisSettings || defaultAxisSettings;
 	            var format = null;
+	            var localeOptions = { month: 'short', day: 'numeric' };
 	
 	            if (settings === axisTimeCombinations.DAY_MONTH || settings === axisTimeCombinations.MONTH_YEAR) {
 	                format = monthDayYearFormat;
+	                localeOptions.year = 'numeric';
 	            } else if (settings === axisTimeCombinations.HOUR_DAY || settings === axisTimeCombinations.MINUTE_HOUR) {
 	                format = monthDayHourFormat;
+	                localeOptions.hour = 'numeric';
+	            }
+	
+	            if (locale) {
+	                var f = Intl.DateTimeFormat(locale, localeOptions);
+	
+	                return f.format(date);
 	            }
 	
 	            return format(date);
@@ -11895,8 +11932,34 @@ webpackJsonp([6,9],[
 	        }
 	
 	        /**
+	         * Sorts topic by alphabetical order for arrays of objects with a name proeprty
+	         * @param  {Array} topics   List of topic objects
+	         * @return {Array}          List of topic name strings
+	         */
+	        function _sortByAlpha(topics) {
+	            return topics.map(function (d) {
+	                return d;
+	            }).sort(function (a, b) {
+	                if (a.name > b.name) return 1;
+	                if (a.name === b.name) return 0;
+	                return -1;
+	            });
+	
+	            var otherIndex = topics.map(function (_ref2) {
+	                var name = _ref2.name;
+	                return name;
+	            }).indexOf('Other');
+	
+	            if (otherIndex >= 0) {
+	                var other = topics.splice(otherIndex, 1);
+	
+	                topics = topics.concat(other);
+	            }
+	        }
+	
+	        /**
 	         * Updates tooltip title, content, size and position
-	         * sorts by alphatical name order
+	         * sorts by alphatical name order if not forced order given
 	         *
 	         * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
 	         * @param  {Number} xPosition           Position of the mouse on the X axis
@@ -11909,13 +11972,7 @@ webpackJsonp([6,9],[
 	            if (forceOrder.length) {
 	                topics = _sortByForceOrder(topics);
 	            } else if (topics.length && topics[0].name) {
-	                topics = topics.map(function (d) {
-	                    return d;
-	                }).sort(function (a, b) {
-	                    if (a.name > b.name) return 1;
-	                    if (a.name === b.name) return 0;
-	                    return -1;
-	                });
+	                topics = _sortByAlpha(topics);
 	            }
 	
 	            cleanContent();
@@ -12107,6 +12164,20 @@ webpackJsonp([6,9],[
 	        };
 	
 	        /**
+	         * Pass locale for the tooltip to render the date in
+	         * @param  {String} _x  must be a locale tag like 'en-US' or 'fr-FR'
+	         * @return { (String|Module) }    Current locale or module to chain calls
+	         */
+	        exports.locale = function (_x) {
+	            if (!arguments.length) {
+	                return locale;
+	            }
+	            locale = _x;
+	
+	            return this;
+	        };
+	
+	        /**
 	         * constants to be used to force the x axis to respect a certain granularity
 	         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
 	         * @example tooltip.forceDateRange(tooltip.axisTimeCombinations.HOUR_DAY)
@@ -12155,21 +12226,24 @@ webpackJsonp([6,9],[
 	        exportChart = _require.exportChart;
 	
 	    var colorHelper = __webpack_require__(19);
-	    var timeAxisHelper = __webpack_require__(35);
 	
-	    var _require2 = __webpack_require__(39),
-	        isInteger = _require2.isInteger;
+	    var _require2 = __webpack_require__(35),
+	        getXAxisSettings = _require2.getXAxisSettings,
+	        getLocaleDateFormatter = _require2.getLocaleDateFormatter;
 	
-	    var _require3 = __webpack_require__(20),
-	        axisTimeCombinations = _require3.axisTimeCombinations;
+	    var _require3 = __webpack_require__(39),
+	        isInteger = _require3.isInteger;
 	
-	    var _require4 = __webpack_require__(47),
-	        formatIntegerValue = _require4.formatIntegerValue,
-	        formatDecimalValue = _require4.formatDecimalValue;
+	    var _require4 = __webpack_require__(20),
+	        axisTimeCombinations = _require4.axisTimeCombinations;
+	
+	    var _require5 = __webpack_require__(47),
+	        formatIntegerValue = _require5.formatIntegerValue,
+	        formatDecimalValue = _require5.formatDecimalValue;
 	
 	    var uniq = function uniq(arrArg) {
 	        return arrArg.filter(function (elem, pos, arr) {
-	            return arr.indexOf(elem) == pos;
+	            return arr.indexOf(elem) === pos;
 	        });
 	    };
 	
@@ -12246,6 +12320,7 @@ webpackJsonp([6,9],[
 	            forceAxisSettings = null,
 	            forcedXTicks = null,
 	            forcedXFormat = null,
+	            locale = void 0,
 	            baseLine = void 0,
 	            layers = void 0,
 	            layersInitial = void 0,
@@ -12373,10 +12448,10 @@ webpackJsonp([6,9],[
 	                };
 	                major = null;
 	            } else {
-	                var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(dataByDate, width, forceAxisSettings);
+	                var _getXAxisSettings = getXAxisSettings(dataByDate, width, forceAxisSettings, locale);
 	
-	                minor = _timeAxisHelper$getXA.minor;
-	                major = _timeAxisHelper$getXA.major;
+	                minor = _getXAxisSettings.minor;
+	                major = _getXAxisSettings.major;
 	
 	
 	                xMonthAxis = d3Axis.axisBottom(xScale).ticks(major.tick).tickSize(0, 0).tickFormat(major.format);
@@ -12959,6 +13034,7 @@ webpackJsonp([6,9],[
 	        /**
 	         * Exposes the ability to force the chart to show a certain x format
 	         * It requires a `forceAxisFormat` of 'custom' in order to work.
+	         * NOTE: localization not supported
 	         * @param  {String} _x              Desired format for x axis
 	         * @return { (String|Module) }      Current format or module to chain calls
 	         */
@@ -13130,6 +13206,22 @@ webpackJsonp([6,9],[
 	                height = Math.ceil(_x * aspectRatio);
 	            }
 	            width = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Pass language tag for the tooltip to localize the date
+	         * Feature uses Intl.DateTimeFormat, for compatability and support, refer to
+	         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+	         * @param  {String} _x  must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
+	         * @return { (String|Module) }    Current locale or module to chain calls
+	         */
+	        exports.locale = function (_x) {
+	            if (!arguments.length) {
+	                return locale;
+	            }
+	            locale = _x;
 	
 	            return this;
 	        };
@@ -13880,62 +13972,62 @@ webpackJsonp([6,9],[
 			{
 				"name": "Direct",
 				"views": 0,
-				"dateUTC": "2011-01-05T00:00:00Z"
+				"date": "2011-01-05T00:00:00"
 			},
 			{
 				"name": "Direct",
 				"views": 10,
-				"dateUTC": "2011-01-06T00:00:00Z"
+				"date": "2011-01-06T00:00:00"
 			},
 			{
 				"name": "Direct",
 				"views": 16,
-				"dateUTC": "2011-01-07T00:00:00Z"
+				"date": "2011-01-07T00:00:00"
 			},
 			{
 				"name": "Direct",
 				"views": 23,
-				"dateUTC": "2011-01-08T00:00:00Z"
+				"date": "2011-01-08T00:00:00"
 			},
 			{
 				"name": "Eventbrite",
 				"views": 23,
-				"dateUTC": "2011-01-05T00:00:00Z"
+				"date": "2011-01-05T00:00:00"
 			},
 			{
 				"name": "Eventbrite",
 				"views": 16,
-				"dateUTC": "2011-01-06T00:00:00Z"
+				"date": "2011-01-06T00:00:00"
 			},
 			{
 				"name": "Eventbrite",
 				"views": 10,
-				"dateUTC": "2011-01-07T00:00:00Z"
+				"date": "2011-01-07T00:00:00"
 			},
 			{
 				"name": "Eventbrite",
 				"views": 0,
-				"dateUTC": "2011-01-08T00:00:00Z"
+				"date": "2011-01-08T00:00:00"
 			},
 			{
 				"name": "Email",
 				"views": 10,
-				"dateUTC": "2011-01-05T00:00:00Z"
+				"date": "2011-01-05T00:00:00"
 			},
 			{
 				"name": "Email",
 				"views": 20,
-				"dateUTC": "2011-01-06T00:00:00Z"
+				"date": "2011-01-06T00:00:00"
 			},
 			{
 				"name": "Email",
 				"views": 26,
-				"dateUTC": "2011-01-07T00:00:00Z"
+				"date": "2011-01-07T00:00:00"
 			},
 			{
 				"name": "Email",
 				"views": 33,
-				"dateUTC": "2011-01-08T00:00:00Z"
+				"date": "2011-01-08T00:00:00"
 			}
 		]
 	};
