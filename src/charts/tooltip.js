@@ -376,7 +376,7 @@ define(function(require){
                 localeOptions.hour = 'numeric';
             }
 
-            if (locale) {
+            if (locale && ((typeof Intl !== 'undefined') && (typeof Intl === 'object' && Intl.DateTimeFormat))) {
                 let f = Intl.DateTimeFormat(locale, localeOptions);
 
                 return f.format(date);
