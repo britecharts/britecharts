@@ -13911,7 +13911,7 @@ webpackJsonp([4,9],[
 	        };
 	
 	        /**
-	         * Pass language tag for the tooltip to localize the date
+	         * Pass language tag for the tooltip to localize the date.
 	         * Feature uses Intl.DateTimeFormat, for compatability and support, refer to
 	         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
 	         * @param  {String} _x  must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
@@ -14030,6 +14030,8 @@ webpackJsonp([4,9],[
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
@@ -14340,7 +14342,7 @@ webpackJsonp([4,9],[
 	                localeOptions.hour = 'numeric';
 	            }
 	
-	            if (locale) {
+	            if (locale && typeof Intl !== 'undefined' && (typeof Intl === 'undefined' ? 'undefined' : _typeof(Intl)) === 'object' && Intl.DateTimeFormat) {
 	                var f = Intl.DateTimeFormat(locale, localeOptions);
 	
 	                return f.format(date);

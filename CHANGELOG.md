@@ -1,3 +1,7 @@
+1.6.2 - Patch
+---------------------
+* Put safety check for Intl on uncompatible browsers
+
 1.6.1 - Patch
 ---------------------
 * Locale added to stacked area and line
