@@ -1,3 +1,4 @@
+1.7.1
 1.7.1 - Patch
 ---------------------
 * remove find from stacked area 
