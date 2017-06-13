@@ -1,3 +1,7 @@
+1.7.1 - Patch
+---------------------
+* remove find from stacked area 
+
 [1.7.0][https://github.com/eventbrite/britecharts/compare/1.7.0...1.6.0] - Minor Release]
 ---------------------
 * Put safety check for Intl on uncompatible browsers

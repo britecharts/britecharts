@@ -707,7 +707,11 @@ define(function(require){
          * @return {obj}        Data entry that is closer to that x axis position
          */
         function getNearestDataPoint(mouseX) {
-            return dataByDate.find(({date}) => Math.abs(xScale(date) - mouseX) <= epsilon);
+            let points = dataByDate.filter(({date}) => Math.abs(xScale(date) - mouseX) <= epsilon);
+
+            if (points.length) {
+                return points[0];
+            }
         }
 
         /**
