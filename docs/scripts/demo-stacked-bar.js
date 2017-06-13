@@ -11453,6 +11453,8 @@ webpackJsonp([7,9],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
@@ -11762,7 +11764,7 @@ webpackJsonp([7,9],[
 	                localeOptions.hour = 'numeric';
 	            }
 	
-	            if (locale) {
+	            if (locale && typeof Intl !== 'undefined' && (typeof Intl === 'undefined' ? 'undefined' : _typeof(Intl)) === 'object' && Intl.DateTimeFormat) {
 	                var f = Intl.DateTimeFormat(locale, localeOptions);
 	
 	                return f.format(date);

@@ -11596,6 +11596,8 @@ webpackJsonp([6,9],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
@@ -11905,7 +11907,7 @@ webpackJsonp([6,9],[
 	                localeOptions.hour = 'numeric';
 	            }
 	
-	            if (locale) {
+	            if (locale && typeof Intl !== 'undefined' && (typeof Intl === 'undefined' ? 'undefined' : _typeof(Intl)) === 'object' && Intl.DateTimeFormat) {
 	                var f = Intl.DateTimeFormat(locale, localeOptions);
 	
 	                return f.format(date);
@@ -13211,7 +13213,7 @@ webpackJsonp([6,9],[
 	        };
 	
 	        /**
-	         * Pass language tag for the tooltip to localize the date
+	         * Pass language tag for the tooltip to localize the date.
 	         * Feature uses Intl.DateTimeFormat, for compatability and support, refer to
 	         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
 	         * @param  {String} _x  must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
@@ -13981,17 +13983,17 @@ webpackJsonp([6,9],[
 			},
 			{
 				"name": "Direct",
-				"views": 16,
+				"views": 7,
 				"date": "2011-01-07T00:00:00"
 			},
 			{
 				"name": "Direct",
-				"views": 23,
+				"views": 6,
 				"date": "2011-01-08T00:00:00"
 			},
 			{
 				"name": "Eventbrite",
-				"views": 23,
+				"views": 3,
 				"date": "2011-01-05T00:00:00"
 			},
 			{
@@ -14016,12 +14018,12 @@ webpackJsonp([6,9],[
 			},
 			{
 				"name": "Email",
-				"views": 20,
+				"views": 15,
 				"date": "2011-01-06T00:00:00"
 			},
 			{
 				"name": "Email",
-				"views": 26,
+				"views": 3,
 				"date": "2011-01-07T00:00:00"
 			},
 			{

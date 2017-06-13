@@ -559,7 +559,7 @@
                 localeOptions.hour = 'numeric';
             }
 
-            if (locale) {
+            if (locale &amp;&amp; ((typeof Intl !== 'undefined') &amp;&amp; (typeof Intl === 'object' &amp;&amp; Intl.DateTimeFormat))) {
                 let f = Intl.DateTimeFormat(locale, localeOptions);
 
                 return f.format(date);
