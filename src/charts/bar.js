@@ -917,7 +917,7 @@ define(function(require) {
         /**
          * Gets or Sets whether the color list should be reversed or not
          * @param  {boolean} _x     Should reverse the color list
-         * @return { reverseColorList | module} Is color list being reversed
+         * @return { boolean | module} Is color list being reversed
          * @public
          */
         exports.reverseColorList = function(_x) {

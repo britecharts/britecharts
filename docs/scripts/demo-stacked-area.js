@@ -12837,10 +12837,14 @@ webpackJsonp([6,9],[
 	         * @return {obj}        Data entry that is closer to that x axis position
 	         */
 	        function getNearestDataPoint(mouseX) {
-	            return dataByDate.find(function (_ref12) {
+	            var points = dataByDate.filter(function (_ref12) {
 	                var date = _ref12.date;
 	                return Math.abs(xScale(date) - mouseX) <= epsilon;
 	            });
+	
+	            if (points.length) {
+	                return points[0];
+	            }
 	        }
 	
 	        /**
