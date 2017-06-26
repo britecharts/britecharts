@@ -12,6 +12,7 @@ webpackJsonp([0,10],[
 	    dataBuilder = __webpack_require__(25);
 	
 	__webpack_require__(29);
+	
 	function createSimpleBarChart() {
 	    var barChart = bar(),
 	        testDataSet = new dataBuilder.BarDataBuilder(),

@@ -1,8 +1,10 @@
-1.7.2
-1.7.1
+1.7.2 - Patch
+---------------------
+* Updated dist with new changes
+
 1.7.1 - Patch
 ---------------------
-* remove find from stacked area 
+* Remove find from stacked area, fixing IE11 bug
 
 [1.7.0][https://github.com/eventbrite/britecharts/compare/1.7.0...1.6.0] - Minor Release]
 ---------------------
