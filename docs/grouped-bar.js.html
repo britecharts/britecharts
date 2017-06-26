@@ -6,7 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Source: stacked-bar.js</title>
+        <title>Source: grouped-bar.js</title>
 
         
             <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
@@ -181,11 +181,11 @@
             		<div id="main">
             			
 
-		<h1 class="page-title">Source: stacked-bar.js</h1>
+		<h1 class="page-title">Source: grouped-bar.js</h1>
     
 <section>
     <article>
-        <pre class=""><code class="language-javascript">define(function(require){
+        <pre class=""><code class="language-javascript">define(function (require) {
     'use strict';
 
     const d3Array = require('d3-array');
@@ -196,11 +196,10 @@
     const d3Ease = require('d3-ease');
     const d3Interpolate = require('d3-interpolate');
     const d3Scale = require('d3-scale');
-    const d3Shape = require('d3-shape');
     const d3Selection = require('d3-selection');
     const assign = require('lodash.assign');
 
-    const {exportChart} = require('./helpers/exportChart');
+    const { exportChart } = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
     const NUMBER_FORMAT = ',f';
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
@@ -212,11 +211,11 @@
      */
 
     /**
-     * @typedef stackedBarData
+     * @typedef GroupedBarChartData
      * @type {Object}
      * @property {Object[]} data       All data entries
      * @property {String} name         Name of the entry
-     * @property {String} stack        Stack of the entry
+     * @property {String} group        group of the entry
      * @property {Number} value        Value of the entry
      *
      * @example
@@ -224,7 +223,7 @@
      *     'data': [
      *         {
      *             "name": "2011-01",
-     *             "stack": "Direct",
+     *             "group": "Direct",
      *             "value": 0
      *         }
      *     ]
@@ -232,39 +231,41 @@
      */
 
     /**
-     * Stacked Area Chart reusable API module that allows us
-     * rendering a multi area and configurable chart.
+     * Grouped Bar Chart reusable API module that allows us
+     * rendering a multi grouped bar and configurable chart.
      *
-     * @module Stacked-bar
-     * @tutorial stacked-bar
+     * @module Grouped-bar
+     * @tutorial grouped-bar
      * @requires d3-array, d3-axis, d3-color, d3-collection, d3-dispatch, d3-ease,
-     *  d3-interpolate, d3-scale, d3-shape, d3-selection, lodash assign
+     *  d3-interpolate, d3-scale, d3-selection, lodash assign
      *
      * @example
-     * let stackedBar = stackedBar();
+     * let groupedBar = GroupedBar();
      *
-     * stackedBar
+     * groupedBar
      *     .width(containerWidth);
      *
      * d3Selection.select('.css-selector')
      *     .datum(dataset.data)
-     *     .call(stackedBar);
+     *     .call(groupedBar);
      *
      */
     return function module() {
 
         let margin = {
-            top: 40,
-            right: 30,
-            bottom: 60,
-            left: 70
+                top: 40,
+                right: 30,
+                bottom: 60,
+                left: 70
             },
             width = 960,
             height = 500,
 
             xScale,
+            xScale2,
             xAxis,
             yScale,
+            yScale2,
             yAxis,
 
             aspectRatio = null,
@@ -290,12 +291,12 @@
             svg,
             chartWidth, chartHeight,
             data,
+            groups,
+
             transformedData,
-            stacks,
 
             tooltipThreshold = 480,
 
-            baseLine,
             xAxisPadding = {
                 top: 0,
                 left: 0,
@@ -305,21 +306,21 @@
             maxBarNumber = 8,
 
             animationDelayStep = 20,
-            animationDelays = d3Array.range(animationDelayStep, maxBarNumber* animationDelayStep, animationDelayStep),
+            animationDelays = d3Array.range(animationDelayStep, maxBarNumber * animationDelayStep, animationDelayStep),
             animationDuration = 1000,
 
             grid = null,
 
             nameLabel = 'name',
             valueLabel = 'value',
-            stackLabel = 'stack',
+            groupLabel = 'group',
             nameLabelFormat,
             valueLabelFormat = NUMBER_FORMAT,
 
             // getters
-            getName = (data) =>  data[nameLabel],
-            getValue = (data) => data[valueLabel],
-            getStack = (data) => data[stackLabel],
+            getName = ({name}) => name,
+            getValue = ({value}) => value,
+            getGroup = ({group}) => group,
             isAnimated = false,
 
             // events
@@ -329,10 +330,10 @@
          * This function creates the graph using the selection and data provided
          * @param {D3Selection} _selection A d3 selection that represents
          * the container(s) where the chart(s) will be rendered
-         * @param {stackedBarData} _data The data to attach and generate the chart
+         * @param {GroupedBarChartData} _data The data to attach and generate the chart
          */
         function exports(_selection) {
-            _selection.each(function(_data){
+            _selection.each(function (_data) {
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
@@ -344,8 +345,8 @@
                 drawGridLines();
                 buildAxis();
                 drawAxis();
-                drawStackedBar();
-                if (shouldShowTooltip()){
+                drawGroupedBar();
+                if (shouldShowTooltip()) {
                     addMouseEvents();
                 }
             });
@@ -356,26 +357,26 @@
          * @private
          */
         function prepareData(data) {
-            stacks = uniq(data.map(({stack}) => stack));
+            groups = uniq(data.map((d) => getGroup(d)));
             transformedData = d3Collection.nest()
                 .key(getName)
-                .rollup(function(values) {
+                .rollup(function (values) {
                     let ret = {};
 
                     values.forEach((entry) => {
-                        if (entry &amp;&amp; entry[stackLabel]) {
-                            ret[entry[stackLabel]] = getValue(entry);
+                        if (entry &amp;&amp; entry[groupLabel]) {
+                            ret[entry[groupLabel]] = getValue(entry);
                         }
                     });
-                    ret.values = values; //for tooltip
-
+                    //for tooltip
+                    ret.values = values;
                     return ret;
                 })
                 .entries(data)
-                .map(function(data){
+                .map(function (data) {
                     return assign({}, {
-                        total:d3Array.sum( d3Array.permute(data.value, stacks) ),
-                        key:data.key
+                        total: d3Array.sum(d3Array.permute(data.value, groups)),
+                        key: data.key
                     }, data.value);
                 });
         }
@@ -402,7 +403,7 @@
                     .ticks(numOfVerticalTicks, valueLabelFormat)
             } else {
                 xAxis = d3Axis.axisBottom(xScale)
-                .ticks(numOfHorizontalTicks, valueLabelFormat);
+                    .ticks(numOfHorizontalTicks, valueLabelFormat);
                 yAxis = d3Axis.axisLeft(yScale)
             }
         }
@@ -413,7 +414,7 @@
          * as everything else will be drawn on top of them
          * @private
          */
-        function buildContainerGroups(){
+        function buildContainerGroups() {
             let container = svg
                 .append('g')
                 .classed('container-group', true)
@@ -435,23 +436,20 @@
         }
 
         /**
-         * Builds the stacked layers layout
+         * Builds the grouped layers layout
          * @return {D3Layout} Layout for drawing the chart
          * @private
          */
-        function buildLayers(){
-            let stack3 = d3Shape.stack().keys(stacks),
-                dataInitial = transformedData.map((item) => {
-                        let ret = {};
+        function buildLayers() {
+            layers = transformedData.map((item) => {
+                let ret = {};
 
-                        stacks.forEach((key) => {
-                            ret[key] = item[key];
-                        });
-
-                        return assign({}, item, ret);
+                groups.forEach((key) => {
+                    ret[key] = item[key];
                 });
 
-            layers  = stack3(dataInitial);
+                return assign({}, item, ret);
+            });
         }
 
         /**
@@ -459,18 +457,21 @@
          * @private
          */
         function buildScales() {
-            let yMax = d3Array.max(transformedData.map(function(d){
-                return d.total;
-            }));
+
+            let yMax = d3Array.max(data.map(getValue));
 
             if (!horizontal) {
                 xScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
-                    .rangeRound([0, chartWidth ])
+                    .rangeRound([0, chartWidth])
+                    .padding(0.1);
+                xScale2 = d3Scale.scaleBand()
+                    .domain(data.map(getGroup))
+                    .rangeRound([0, xScale.bandwidth()])
                     .padding(0.1);
 
                 yScale = d3Scale.scaleLinear()
-                    .domain([0,yMax])
+                    .domain([0, yMax])
                     .rangeRound([chartHeight, 0])
                     .nice();
             } else {
@@ -483,22 +484,27 @@
                     .domain(data.map(getName))
                     .rangeRound([chartHeight, 0])
                     .padding(0.1);
+
+                yScale2 = d3Scale.scaleBand()
+                    .domain(data.map(getGroup))
+                    .rangeRound([yScale.bandwidth(), 0])
+                    .padding(0.1);
             }
 
             colorScale = d3Scale.scaleOrdinal()
                 .range(colorSchema)
-                .domain(data.map(getStack));
+                .domain(data.map(getGroup));
 
             categoryColorMap = colorScale
                 .domain(data.map(getName)).domain()
-                .reduce((memo, item, i) => {
-                    data.forEach(function(v){
-                        if (getName(v)==item){
-                           memo[v.name] = colorScale(v.stack)
-                           memo[v.stack] = colorScale(v.stack)
-                           memo[v.stack + item] = colorScale(v.stack)
-                       }
-                   })
+                .reduce((memo, item) => {
+                    data.forEach(function (v) {
+                        if (getName(v) == item) {
+                            memo[v.name] = colorScale(v.group)
+                            memo[v.group] = colorScale(v.group)
+                            memo[v.group + item] = colorScale(v.group)
+                        }
+                    })
                     return memo;
                 }, {});
         }
@@ -510,8 +516,8 @@
         function buildSVG(container) {
             if (!svg) {
                 svg = d3Selection.select(container)
-                  .append('svg')
-                    .classed('britechart stacked-bar', true);
+                    .append('svg')
+                    .classed('britechart grouped-bar', true);
 
                 buildContainerGroups();
             }
@@ -528,13 +534,14 @@
          */
         function cleanData(data) {
             return data.map((d) => {
-                    d.value = +d[valueLabel];
-                    d.stack = d[stackLabel];
-                    d.topicName = getStack(d); // for tooltip
-                    d.name = d[nameLabel];
+                d.value = +d[valueLabel];
+                d.group = d[groupLabel];
+                // for tooltip
+                d.topicName = getGroup(d);
+                d.name = d[nameLabel];
 
-                    return d;
-                });
+                return d;
+            });
         }
 
         /**
@@ -542,11 +549,11 @@
          * respective groups
          * @private
          */
-        function drawAxis(){
+        function drawAxis() {
             if (!horizontal) {
                 svg.select('.x-axis-group .axis.x')
-                .attr('transform', `translate( 0, ${chartHeight} )`)
-                .call(xAxis);
+                    .attr('transform', `translate( 0, ${chartHeight} )`)
+                    .call(xAxis);
 
                 svg.select('.y-axis-group.axis')
                     .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
@@ -585,7 +592,7 @@
                     .enter()
                       .append('line')
                         .attr('class', 'horizontal-grid-line')
-                        .attr('x1', (-xAxisPadding.left + 1 ))
+                        .attr('x1', (-xAxisPadding.left + 1))
                         .attr('x2', chartWidth)
                         .attr('y1', (d) => yScale(d))
                         .attr('y2', (d) => yScale(d));
@@ -603,12 +610,70 @@
                         .attr('x1', (d) => xScale(d))
                         .attr('x2', (d) => xScale(d));
             }
+        }
 
-            if (horizontal) {
-                drawVerticalExtendedLine();
-            } else {
-                drawHorizontalExtendedLine();
+        /**
+         * Animation tween of horizontal bars
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function horizontalBarsTween(d) {
+            let node = d3Selection.select(this),
+                i = d3Interpolate.interpolateRound(0, xScale(getValue(d))),
+                j = d3Interpolate.interpolateNumber(0, 1);
+
+            return function (t) {
+                node.attr('width', i(t)).style('opacity', j(t));
             }
+        }
+
+        /**
+         * Animation tween of vertical bars
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function verticalBarsTween(d) {
+            let node = d3Selection.select(this),
+                i = d3Interpolate.interpolateRound(0, chartHeight - yScale(getValue(d))),
+                y = d3Interpolate.interpolateRound(chartHeight, yScale(getValue(d))),
+                j = d3Interpolate.interpolateNumber(0, 1);
+
+            return function (t) {
+                node.attr('y', y(t))
+                    .attr('height', i(t)).style('opacity', j(t));
+            }
+        }
+
+        /**
+         * mouseover event handle of bars
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function barsOnMouseOver(d) {
+            dispatcher.call('customMouseOver', this);
+            d3Selection.select(this).attr('fill', () => d3Color.color(categoryColorMap[d.group]).darker())
+        }
+
+        /**
+         * mousemove event handle of bars
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function barsOnMouseMove(d) {
+            let data = assign({}, this.__data__), [x, y] = d3Selection.mouse(this);
+
+            data.values = this.parentNode.__data__.values;
+            dispatcher.call('customMouseMove', this, data, categoryColorMap, x, y);
+        }
+
+        /**
+         * mouseout event handle of bars
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function barsOnMouseOut(d) {
+            dispatcher.call('customMouseOut', this);
+            d3Selection.select(this).attr('fill', () => categoryColorMap[d.group])
         }
 
         /**
@@ -618,72 +683,36 @@
          */
         function drawHorizontalBars(series) {
             // Enter + Update
-            let context,
-                bars = series
-                    .data(layers)
+            let bars = series
+                .data(layers)
+                .enter()
+                  .append('g')
+                    .attr('transform', function (d) { return 'translate(0,' + yScale(d.key) + ')'; })
+                    .classed('layer', true)
+                    .selectAll('.bar')
+                    .data((d) => d.values)
                     .enter()
-                      .append('g')
-                        .classed('layer', true)
-                        .attr('fill', (({key}) => categoryColorMap[key]))
-                        .selectAll('.bar')
-                        .data( (d)=> d)
-                        .enter()
-                          .append('rect')
-                            .classed('bar', true)
-                            .attr('x', (d) => xScale(d[0]) )
-                            .attr('y', (d) => yScale(d.data.key) )
-                            .attr('height', yScale.bandwidth())
-                            .attr('fill', (({data}) => categoryColorMap[data.stack+data.key]));
+                      .append('rect')
+                        .classed('bar', true)
+                        .attr('x', 1)
+                        .attr('y', (d) => yScale2(getGroup(d)))
+                        .attr('height', yScale2.bandwidth())
+                        .attr('fill', ((data) => categoryColorMap[data.group]));
 
-            if (isAnimated){
+            if (isAnimated) {
                 bars.style('opacity', 0.24)
                     .transition()
                     .delay((_, i) => animationDelays[i])
                     .duration(animationDuration)
                     .ease(ease)
-                    .tween('attr.width', function(d ){
-                        let node = d3Selection.select(this),
-                        i = d3Interpolate.interpolateRound(0,xScale(d[1] - d[0] )),
-                        j = d3Interpolate.interpolateNumber(0,1)
-                        ;
-
-                        return function(t){
-                            node.attr('width',  i(t) );
-                            node.style('opacity', j(t) );
-                        }
-                    });
+                    .tween('attr.width', horizontalBarsTween);
             } else {
-                bars.attr('width', (d) => xScale(d[1] - d[0] ) )
+                bars.attr('width', (d) => xScale(getValue(d)))
             }
 
-            bars.on('mouseover', function(d) {
-                    dispatcher.call('customMouseOver', this, !!d.values ? d:d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                    d3Selection.select(this).attr('fill', () => d3Color.color(d3Selection.select(this.parentNode).attr('fill')).darker())
-                })
-                .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, !!d.values ? d:d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                })
-                .on('mouseout', function() {
-                    dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', () => d3Selection.select(this.parentNode).attr('fill'))
-                });
-        }
-
-        /**
-         * Draws a vertical line to extend x-axis till the edges
-         * @return {void}
-         */
-        function drawHorizontalExtendedLine() {
-            baseLine = svg.select('.grid-lines-group')
-                .selectAll('line.extended-x-line')
-                .data([0])
-                .enter()
-                  .append('line')
-                    .attr('class', 'extended-x-line')
-                    .attr('x1', (xAxisPadding.left))
-                    .attr('x2', chartWidth)
-                    .attr('y1', chartHeight)
-                    .attr('y2', chartHeight);
+            bars.on('mouseover', barsOnMouseOver)
+                .on('mousemove', barsOnMouseMove)
+                .on('mouseout', barsOnMouseOut);
         }
 
         /**
@@ -696,74 +725,39 @@
             let bars = series
                 .data(layers)
                 .enter()
-                  .append('g')
-                    .classed('layer', true)
-                    .attr('fill', (({key}) => categoryColorMap[key]))
-                    .selectAll('.bar')
-                    .data((d) => d)
-                    .enter()
-                      .append('rect')
-                        .classed('bar', true)
-                        .attr('x', (d) => xScale(d.data.key))
-                        .attr('y', (d) => yScale(d[1]))
-                        .attr('width', xScale.bandwidth )
-                        .attr('fill', (({data}) => categoryColorMap[data.stack+data.key])),context;
+                .append('g')
+                  .attr('transform', function (d) { return 'translate(' + xScale(d.key) + ',0)'; })
+                  .classed('layer', true)
+                  .selectAll('.bar')
+                  .data((d) => d.values)
+                  .enter()
+                    .append('rect')
+                      .classed('bar', true)
+                      .attr('x', (d) => xScale2(getGroup(d)))
+                      .attr('y', (d) => yScale(d.value))
+                      .attr('width', xScale2.bandwidth)
+                      .attr('fill', ((data) => categoryColorMap[data.group]));
 
-            if (isAnimated){
+            if (isAnimated) {
                 bars.style('opacity', 0.24).transition()
-                    .delay( (_, i) => animationDelays[i])
+                    .delay((_, i) => animationDelays[i])
                     .duration(animationDuration)
                     .ease(ease)
-                    .tween('attr.height', function(d ){
-                        let node = d3Selection.select(this),
-                        i = d3Interpolate.interpolateRound(0, yScale(d[0]) - yScale(d[1])),
-                        j = d3Interpolate.interpolateNumber(0,1)
-                        ;
-
-                        return function(t){
-                            node.attr('height',  i(t) );
-                            node.style('opacity', j(t) );
-                        }
-                    });
+                    .tween('attr.height', verticalBarsTween);
             } else {
-                bars.attr('height', (d) => yScale(d[0]) - yScale(d[1]) );
+                bars.attr('height', (d) => chartHeight - yScale(getValue(d)));
             }
 
-            bars.on('mouseover', function(d) {
-                    dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', () => d3Color.color(d3Selection.select(this.parentNode).attr('fill')).darker())
-                })
-                .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, !!d.values ? d:d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                })
-                .on('mouseout', function() {
-                    dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', () => d3Selection.select(this.parentNode).attr('fill'))
-                });
-        }
-
-        /**
-         * Draws a vertical line to extend y-axis till the edges
-         * @return {void}
-         */
-        function drawVerticalExtendedLine() {
-            baseLine = svg.select('.grid-lines-group')
-                .selectAll('line.extended-y-line')
-                .data([0])
-                .enter()
-                  .append('line')
-                    .attr('class', 'extended-y-line')
-                    .attr('y1', (xAxisPadding.bottom))
-                    .attr('y2', chartHeight)
-                    .attr('x1', 0)
-                    .attr('x2', 0);
+            bars.on('mouseover', barsOnMouseOver)
+                .on('mousemove', barsOnMouseMove)
+                .on('mouseout', barsOnMouseOut);
         }
 
         /**
          * Draws the different areas into the chart-group element
          * @private
          */
-        function drawStackedBar(){
+        function drawGroupedBar() {
             let series = svg.select('.chart-group').selectAll('.layer')
 
             if (!horizontal) {
@@ -793,39 +787,46 @@
          * @param  {Number} mouseX X position of the mouse
          * @return {obj}        Data entry that is closer to that x axis position
          */
-        function getNearestDataPoint(mouseX) {
-            let epsilon,
-                nearest,
-                dataByValueParsed = transformedData.map((item) => {
-                    item.key = item.key
-                    return item;
-                });
+        function getNearestDataPoint(pos) {
+            let mouseX = pos[0] - margin.left,
+                epsilon = xScale2.bandwidth(),
+                nearest = [];
 
-            epsilon = (xScale(dataByValueParsed[1].key) - xScale(dataByValueParsed[0].key));
-            nearest = dataByValueParsed.find(({key}) => Math.abs(xScale(key) - mouseX) &lt;= epsilon);
+            layers.forEach(function (data) {
+                let found = data.values.find((d2) => Math.abs(mouseX >= xScale(d2[nameLabel]) + xScale2(d2[groupLabel])) &amp;&amp; Math.abs(mouseX - xScale2(d2[groupLabel]) - xScale(d2[nameLabel]) &lt;= epsilon));
 
-            return nearest;
+                if (found) {
+                    found.values = data.values;
+                    found.key = found.name;
+                    nearest.push(found)
+                }
+
+            });
+
+            return nearest.length ? nearest[0] : undefined;
         }
 
-         /**
-         * Finds out the data entry that is closer to the given position on pixels
-         * @param  {Number} mouseX X position of the mouse
-         * @return {obj}        Data entry that is closer to that x axis position
-         */
+        /**
+        * Finds out the data entry that is closer to the given position on pixels
+        * @param  {Number} mouseX X position of the mouse
+        * @return {obj}        Data entry that is closer to that x axis position
+        */
         function getNearestDataPoint2(pos) {
             let mouseY = pos[1] - margin.bottom,
                 epsilon = yScale.bandwidth(),
-                nearest;
+                nearest = [];
 
-            nearest = layers.map(function(stackedArray){
-                return stackedArray.map(function(d1){
-                   let found = d1.data.values.find((d2) => Math.abs(mouseY >= yScale(d2[nameLabel])) &amp;&amp; Math.abs(mouseY - yScale(d2[nameLabel]) &lt;= epsilon*2) );
-                   return found ? d1.data :undefined;
-               })
+            layers.map(function (data) {
+                let found = data.values.find((d2) => Math.abs(mouseY >= yScale(d2[nameLabel])) &amp;&amp; Math.abs(mouseY - yScale(d2[nameLabel]) &lt;= epsilon * 2));
+
+                if (found) {
+                    found.values = data.values;
+                    found.key = found.name;
+                    nearest.push(found)
+                }
             });
-            nearest = d3Array.merge( nearest).filter(function(e){return e});
 
-            return nearest.length ? nearest[0] :undefined;
+            return nearest.length ? nearest[0] : undefined;
         }
 
         /**
@@ -833,23 +834,25 @@
          * and updates metadata related to it
          * @private
          */
-        function handleMouseMove(){
+        function handleMouseMove() {
             let mousePos = getMousePosition(this),
-                dataPoint = !horizontal ? getNearestDataPoint(mousePos[0] - margin.left) : getNearestDataPoint2(mousePos),
+                dataPoint = !horizontal ? getNearestDataPoint(mousePos) : getNearestDataPoint2(mousePos),
                 x,
                 y;
 
             if (dataPoint) {
                 // Move verticalMarker to that datapoint
                 if (!horizontal) {
-                    x =  xScale(dataPoint.key),y = yScale(dataPoint.total);
-                    moveVerticalMarkerXY(x,y);
+                    x = xScale(dataPoint.key) + xScale2(dataPoint[groupLabel]),
+                    y = yScale(getValue(dataPoint));
+                    moveVerticalMarkerXY(x, y);
                 } else {
-                    x = mousePos[1],y = yScale(dataPoint.key) +  yScale.bandwidth()/2;
-                    moveVerticalMarkerXY(x,y);
+                    x = mousePos[1],
+                    y = yScale(dataPoint.key) + yScale.bandwidth() / 2;
+                    moveVerticalMarkerXY(x, y);
                 }
-                   // Emit event with xPosition for tooltip or similar feature
-                dispatcher.call('customMouseMove', this, dataPoint, categoryColorMap, x,y);
+                // Emit event with xPosition for tooltip or similar feature
+                dispatcher.call('customMouseMove', this, dataPoint, categoryColorMap, x, y);
             }
         }
 
@@ -858,7 +861,7 @@
          * It also resets the container of the vertical marker
          * @private
          */
-        function handleMouseOut(data){
+        function handleMouseOut(data) {
             svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
             dispatcher.call('customMouseOut', this, data);
         }
@@ -867,7 +870,7 @@
          * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
          * @private
          */
-        function handleMouseOver(data){
+        function handleMouseOver(data) {
             dispatcher.call('customMouseOver', this, data);
         }
 
@@ -876,7 +879,7 @@
          * @param  {obj} dataPoint Data entry to extract info
          * @return void
          */
-        function moveVerticalMarkerXY(verticalMarkerXPosition,verticalMarkerYPosition){
+        function moveVerticalMarkerXY(verticalMarkerXPosition, verticalMarkerYPosition) {
             svg.select('.metadata-group').attr('transform', `translate(${verticalMarkerXPosition},${verticalMarkerYPosition})`);
         }
 
@@ -891,13 +894,14 @@
         }
 
         // API
+
         /**
          * Gets or Sets the aspect ratio of the chart
          * @param  {Number} _x Desired aspect ratio for the graph
          * @return { (Number | Module) } Current aspect ratio or Area Chart module to chain calls
          * @public
          */
-        exports.aspectRatio = function(_x) {
+        exports.aspectRatio = function (_x) {
             if (!arguments.length) {
                 return aspectRatio;
             }
@@ -912,7 +916,7 @@
          * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
          * @public
          */
-        exports.colorSchema = function(_x) {
+        exports.colorSchema = function (_x) {
             if (!arguments.length) {
                 return colorSchema;
             }
@@ -927,7 +931,7 @@
          * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
          * @public
          */
-        exports.nameLabel = function(_x) {
+        exports.nameLabel = function (_x) {
             if (!arguments.length) {
                 return nameLabel;
             }
@@ -942,7 +946,7 @@
          * @return { valueLabelFormat | module} Current valueLabelFormat or Chart module to chain calls
          * @public
          */
-        exports.nameLabelFormat = function(_x) {
+        exports.nameLabelFormat = function (_x) {
             if (!arguments.length) {
                 return nameLabelFormat;
             }
@@ -958,7 +962,7 @@
          * @return { ratio | module} Current ratio or Bar Chart module to chain calls
          * @public
          */
-        exports.percentageAxisToMaxRatio = function(_x) {
+        exports.percentageAxisToMaxRatio = function (_x) {
             if (!arguments.length) {
                 return percentageAxisToMaxRatio;
             }
@@ -968,16 +972,16 @@
         };
 
         /**
-         * Gets or Sets the stackLabel of the chart
-         * @param  {String} _x Desired stackLabel for the graph
-         * @return { stackLabel | module} Current stackLabel or Chart module to chain calls
+         * Gets or Sets the groupLabel of the chart
+         * @param  {String} _x Desired groupLabel for the graph
+         * @return { groupLabel | module} Current groupLabel or Chart module to chain calls
          * @public
          */
-        exports.stackLabel = function(_x) {
+        exports.groupLabel = function (_x) {
             if (!arguments.length) {
-                return stackLabel;
+                return groupLabel;
             }
-            stackLabel = _x;
+            groupLabel = _x;
 
             return this;
         };
@@ -989,7 +993,7 @@
          * @return { String | module} Current mode of the grid or Area Chart module to chain calls
          * @public
          */
-        exports.grid = function(_x) {
+        exports.grid = function (_x) {
             if (!arguments.length) {
                 return grid;
             }
@@ -1004,7 +1008,7 @@
          * @return { height | module} Current height or Area Chart module to chain calls
          * @public
          */
-        exports.height = function(_x) {
+        exports.height = function (_x) {
             if (!arguments.length) {
                 return height;
             }
@@ -1022,7 +1026,7 @@
          * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
          * @public
          */
-        exports.horizontal = function(_x) {
+        exports.horizontal = function (_x) {
             if (!arguments.length) {
                 return horizontal;
             }
@@ -1039,7 +1043,7 @@
          * @return { isAnimated | module} Current isAnimated flag or Chart module
          * @public
          */
-        exports.isAnimated = function(_x) {
+        exports.isAnimated = function (_x) {
             if (!arguments.length) {
                 return isAnimated;
             }
@@ -1054,7 +1058,7 @@
          * @return { margin | module} Current margin or Area Chart module to chain calls
          * @public
          */
-        exports.margin = function(_x) {
+        exports.margin = function (_x) {
             if (!arguments.length) {
                 return margin;
             }
@@ -1071,7 +1075,7 @@
          * @return { tooltipThreshold | module} Current tooltipThreshold or Area Chart module to chain calls
          * @public
          */
-        exports.tooltipThreshold = function(_x) {
+        exports.tooltipThreshold = function (_x) {
             if (!arguments.length) {
                 return tooltipThreshold;
             }
@@ -1086,7 +1090,7 @@
          * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
          * @public
          */
-        exports.valueLabel = function(_x) {
+        exports.valueLabel = function (_x) {
             if (!arguments.length) {
                 return valueLabel;
             }
@@ -1101,7 +1105,7 @@
          * @return { valueLabelFormat | module} Current valueLabelFormat or Chart module to chain calls
          * @public
          */
-        exports.valueLabelFormat = function(_x) {
+        exports.valueLabelFormat = function (_x) {
             if (!arguments.length) {
                 return valueLabelFormat;
             }
@@ -1116,7 +1120,7 @@
          * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
          * @public
          */
-        exports.verticalTicks = function(_x) {
+        exports.verticalTicks = function (_x) {
             if (!arguments.length) {
                 return verticalTicks;
             }
@@ -1131,7 +1135,7 @@
          * @return { width | module} Current width or Area Chart module to chain calls
          * @public
          */
-        exports.width = function(_x) {
+        exports.width = function (_x) {
             if (!arguments.length) {
                 return width;
             }
@@ -1147,7 +1151,7 @@
          * Chart exported to png and a download action is fired
          * @public
          */
-        exports.exportChart = function(filename, title) {
+        exports.exportChart = function (filename, title) {
             exportChart.call(exports, svg, filename, title);
         };
 
@@ -1159,7 +1163,7 @@
          * @return {module} Bar Chart
          * @public
          */
-        exports.on = function() {
+        exports.on = function () {
             let value = dispatcher.on.apply(dispatcher, arguments);
 
             return value === dispatcher ? exports : value;

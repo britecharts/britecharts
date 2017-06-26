@@ -32,7 +32,7 @@
 /******/ 	// "0" means "already loaded"
 /******/ 	// Array means "loading", array contains callbacks
 /******/ 	var installedChunks = {
-/******/ 		9:0
+/******/ 		10:0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -78,7 +78,7 @@
 /******/ 			script.charset = 'utf-8';
 /******/ 			script.async = true;
 /******/
-/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"demo-bar","1":"demo-brush","2":"demo-donut","3":"demo-kitchen-sink","4":"demo-line","5":"demo-sparkline","6":"demo-stacked-area","7":"demo-stacked-bar","8":"demo-step"}[chunkId]||chunkId) + ".js";
+/******/ 			script.src = __webpack_require__.p + "" + chunkId + "." + ({"0":"demo-bar","1":"demo-brush","2":"demo-donut","3":"demo-grouped-bar","4":"demo-kitchen-sink","5":"demo-line","6":"demo-sparkline","7":"demo-stacked-area","8":"demo-stacked-bar","9":"demo-step"}[chunkId]||chunkId) + ".js";
 /******/ 			head.appendChild(script);
 /******/ 		}
 /******/ 	};
