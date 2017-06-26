@@ -11,6 +11,7 @@ var d3Selection = require('d3-selection'),
     dataBuilder = require('./../test/fixtures/barChartDataBuilder');
 
     require('./helpers/resizeHelper');
+
 function createSimpleBarChart() {
     var barChart = bar(),
         testDataSet = new dataBuilder.BarDataBuilder(),
