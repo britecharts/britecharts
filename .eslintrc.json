@@ -48,5 +48,8 @@
             "let": "always",
             "const": "never"
         }]
+    }, 
+    "parserOptions": {
+       "sourceType": "module"
     }
 }

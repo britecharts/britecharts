@@ -1,4 +1,4 @@
-webpackJsonp([5,9],[
+webpackJsonp([6,10],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6,8 +6,8 @@ webpackJsonp([5,9],[
 	
 	var d3Selection = __webpack_require__(1),
 	    PubSub = __webpack_require__(2),
-	    sparklineChart = __webpack_require__(56),
-	    sparklineDataBuilder = __webpack_require__(57);
+	    sparklineChart = __webpack_require__(60),
+	    sparklineDataBuilder = __webpack_require__(61);
 	__webpack_require__(29);
 	
 	function createSparklineChart() {
@@ -11029,7 +11029,11 @@ webpackJsonp([5,9],[
 /* 53 */,
 /* 54 */,
 /* 55 */,
-/* 56 */
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11428,7 +11432,7 @@ webpackJsonp([5,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 57 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11437,7 +11441,7 @@ webpackJsonp([5,9],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonOneSource = __webpack_require__(58);
+	        jsonOneSource = __webpack_require__(62);
 	
 	    function SparklineDataBuilder(config) {
 	        this.Klass = SparklineDataBuilder;
@@ -11461,7 +11465,7 @@ webpackJsonp([5,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 58 */
+/* 62 */
 /***/ (function(module, exports) {
 
 	module.exports = {

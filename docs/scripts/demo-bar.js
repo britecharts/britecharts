@@ -1,4 +1,4 @@
-webpackJsonp([0,9],[
+webpackJsonp([0,10],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -12,6 +12,7 @@ webpackJsonp([0,9],[
 	    dataBuilder = __webpack_require__(25);
 	
 	__webpack_require__(29);
+	
 	function createSimpleBarChart() {
 	    var barChart = bar(),
 	        testDataSet = new dataBuilder.BarDataBuilder(),
@@ -1587,8 +1588,7 @@ webpackJsonp([0,9],[
 	                    var name = _ref9.name;
 	                    return {
 	                        name: name,
-	                        color: colorSchema[i % colorSchema.length]
-	                    };
+	                        color: colorSchema[i % colorSchema.length] };
 	                });
 	            } else {
 	                colorList = data.map(function (d) {
@@ -1597,8 +1597,7 @@ webpackJsonp([0,9],[
 	                    var name = _ref10.name;
 	                    return {
 	                        name: name,
-	                        color: colorSchema[i % colorSchema.length]
-	                    };
+	                        color: colorSchema[i % colorSchema.length] };
 	                });
 	            }
 	
@@ -1644,10 +1643,7 @@ webpackJsonp([0,9],[
 	                };
 	            });
 	
-	            return {
-	                data: data,
-	                dataZeroed: dataZeroed
-	            };
+	            return { data: data, dataZeroed: dataZeroed };
 	        }
 	
 	        /**

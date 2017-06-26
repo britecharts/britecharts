@@ -1,6 +1,7 @@
 define(function(require){
     'use strict';
 
+    const d3Ease = require('d3-ease');
     const d3Format = require('d3-format');
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
@@ -82,10 +83,15 @@ define(function(require){
             tooltipTitle,
             tooltipWidth = 250,
             tooltipHeight = 48,
+            tooltipBorderRadius = 3,
             ttTextX = 0,
             ttTextY = 37,
             textSize,
             entryLineLimit = 3,
+
+            // Animations
+            mouseChaseDuration = 100,
+            ease = d3Ease.easeQuadInOut,
 
             circleYOffset = 8,
 
@@ -182,24 +188,24 @@ define(function(require){
          */
         function drawTooltip(){
             tooltipTextContainer = svg.selectAll('.tooltip-group')
-                .append('g')
+              .append('g')
                 .classed('tooltip-text', true);
 
             tooltip = tooltipTextContainer
-                .append('rect')
+              .append('rect')
                 .classed('tooltip-text-container', true)
                 .attr('x', -tooltipWidth / 4 + 8)
                 .attr('y', 0)
                 .attr('width', tooltipWidth)
                 .attr('height', tooltipHeight)
-                .attr('rx', 3)
-                .attr('ry', 3)
+                .attr('rx', tooltipBorderRadius)
+                .attr('ry', tooltipBorderRadius)
                 .style('fill', bodyFillColor)
                 .style('stroke', borderStrokeColor)
                 .style('stroke-width', 1);
 
             tooltipTitle = tooltipTextContainer
-                .append('text')
+              .append('text')
                 .classed('tooltip-title', true)
                 .attr('x', -tooltipWidth / 4 + 17)
                 .attr('dy', '.35em')
@@ -207,16 +213,16 @@ define(function(require){
                 .style('fill', titleFillColor);
 
             tooltipDivider = tooltipTextContainer
-                .append('line')
+              .append('line')
                 .classed('tooltip-divider', true)
                 .attr('x1', -tooltipWidth / 4 + 15)
-                .attr('y1', 31)
                 .attr('x2', 265)
+                .attr('y1', 31)
                 .attr('y2', 31)
                 .style('stroke', borderStrokeColor);
 
             tooltipBody = tooltipTextContainer
-                .append('g')
+              .append('g')
                 .classed('tooltip-body', true)
                 .style('transform', 'translateY(8px)')
                 .style('fill', textFillColor);
@@ -239,6 +245,34 @@ define(function(require){
             }
 
             return value;
+        }
+
+        /**
+         * Calculates the desired position for the tooltip
+         * @param  {Number} mouseX             Current horizontal mouse position
+         * @param  {Number} mouseY             Current vertical mouse position
+         * @return {Number[]}                  X and Y position
+         */
+        function getTooltipPosition([mouseX, mouseY]) {
+            let tooltipX, tooltipY;
+
+            // show tooltip to the right
+            if ((mouseX - tooltipWidth) < 0) {
+                // Tooltip on the right
+                tooltipX = tooltipWidth - 185;
+            } else {
+                // Tooltip on the left
+                tooltipX = -205
+            }
+
+            if (mouseY) {
+                tooltipY = tooltipOffset.y;
+                // tooltipY = mouseY + tooltipOffset.y;
+            } else {
+                tooltipY = tooltipOffset.y;
+            }
+
+            return [tooltipX, tooltipY];
         }
 
         /**
@@ -274,7 +308,7 @@ define(function(require){
          * @param  {Object} topic Topic to extract data from
          * @return void
          */
-        function updateContent(topic){
+        function updateTopicContent(topic){
             let name = topic[nameLabel],
                 tooltipRight,
                 tooltipLeftText,
@@ -323,25 +357,24 @@ define(function(require){
 
         /**
          * Updates size and position of tooltip depending on the side of the chart we are in
+         * TODO: This needs a refactor, following the mini-tooltip code.
+         *
          * @param  {Object} dataPoint DataPoint of the tooltip
          * @param  {Number} xPosition DataPoint's x position in the chart
+         * @param  {Number} xPosition DataPoint's y position in the chart
          * @return void
          */
-        function updatePositionAndSize(dataPoint, xPosition){
+        function updatePositionAndSize(dataPoint, xPosition, yPosition){
+            let [tooltipX, tooltipY] = getTooltipPosition([xPosition, yPosition])
+
             tooltip
                 .attr('width', tooltipWidth)
                 .attr('height', tooltipHeight + 10);
 
-            // show tooltip to the right
-            if ((xPosition - tooltipWidth) < 0) {
-                // Tooltip on the right
-                tooltipTextContainer
-                    .attr('transform', 'translate(' + (tooltipWidth - 185) + ',' + tooltipOffset.y + ')');
-            } else {
-                // Tooltip on the left
-                tooltipTextContainer
-                    .attr('transform', 'translate(' + (-205) + ',' + tooltipOffset.y + ')');
-            }
+            tooltipTextContainer.transition()
+                .duration(mouseChaseDuration)
+                .ease(ease)
+                .attr('transform', `translate(${tooltipX}, ${tooltipY})`);
 
             tooltipDivider
                 .attr('x2', tooltipWidth - 60);
@@ -419,31 +452,6 @@ define(function(require){
         }
 
         /**
-         * Updates tooltip title, content, size and position
-         * sorts by alphatical name order if not forced order given
-         *
-         * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
-         * @param  {Number} xPosition           Position of the mouse on the X axis
-         * @return void
-         */
-        function updateTooltip(dataPoint, xPosition) {
-            var topics = dataPoint[topicLabel];
-
-            // sort order by forceOrder array if passed
-            if (forceOrder.length) {
-                topics = _sortByForceOrder(topics);
-            } else if (topics.length && topics[0].name) {
-                topics = _sortByAlpha(topics);
-            }
-
-            cleanContent();
-            resetSizeAndPositionPointers();
-            updateTitle(dataPoint);
-            topics.forEach(updateContent);
-            updatePositionAndSize(dataPoint, xPosition);
-        }
-
-        /**
          * Wraps a text given the text, width, x position and textFormatter function
          * @param  {D3Selection} text  Selection with the text to wrap inside
          * @param  {Number} width Desired max width for that line
@@ -500,6 +508,43 @@ define(function(require){
                 }
             });
         }
+
+        /**
+         * Draws the data entries inside the tooltip
+         * @param  {Object} dataPoint   Data entry from to take the info
+         * @return void
+         */
+        function updateContent(dataPoint){
+            var topics = dataPoint[topicLabel];
+
+            // sort order by forceOrder array if passed
+            if (forceOrder.length) {
+                topics = _sortByForceOrder(topics);
+            } else if (topics.length && topics[0].name) {
+                topics = _sortByAlpha(topics);
+            }
+
+            cleanContent();
+            updateTitle(dataPoint);
+            resetSizeAndPositionPointers();
+            topics.forEach(updateTopicContent);
+        }
+
+        /**
+         * Updates tooltip title, content, size and position
+         * sorts by alphatical name order if not forced order given
+         *
+         * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
+         * @param  {Number} xPosition           Position of the mouse on the X axis
+         * @return void
+         */
+        function updateTooltip(dataPoint, xPosition, yPosition) {
+            updateContent(dataPoint);
+            updatePositionAndSize(dataPoint, xPosition, yPosition);
+        }
+
+
+        // API
          /**
          * Gets or Sets the nameLabel of the data
          * @param  {Number} _x Desired nameLabel
@@ -620,9 +665,9 @@ define(function(require){
          * @return {Module} Tooltip module to chain calls
          * @public
          */
-        exports.update = function(dataPoint, colorMapping, position) {
+        exports.update = function(dataPoint, colorMapping, xPosition, yPosition = null) {
             colorMap = colorMapping;
-            updateTooltip(dataPoint, position);
+            updateTooltip(dataPoint, xPosition, yPosition);
 
             return this;
         };
@@ -637,6 +682,7 @@ define(function(require){
               return forceAxisSettings || defaultAxisSettings;
             }
             forceAxisSettings = _x;
+
             return this;
         };
 
