@@ -12,9 +12,7 @@ define(function(require) {
     const d3Transition = require('d3-transition');
 
     const textHelper = require('./helpers/text');
-    const {
-        exportChart
-    } = require('./helpers/exportChart');
+    const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
 
 
@@ -102,9 +100,7 @@ define(function(require) {
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
             animationDuration = 800,
-            interBarDelay = function(d, i) {
-                return 70 * i
-            },
+            interBarDelay = function(d, i) {return 70 * i},
 
             valueLabel = 'value',
             nameLabel = 'name',
@@ -118,33 +114,17 @@ define(function(require) {
             dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove'),
 
             // extractors
-            getName = ({
-                name
-            }) => name,
-            getValue = ({
-                value
-            }) => value,
+            getName = ({name}) => name,
+            getValue = ({value}) => value,
 
-            _percentageLabelHorizontalX = ({
-                value
-            }) => xScale(value) + percentageLabelMargin,
-            _percentageLabelHorizontalY = ({
-                name
-            }) => yScale(name) + (yScale.bandwidth() / 2) + (percentageLabelSize * (3 / 8)),
+            _percentageLabelHorizontalX = ({value}) => xScale(value) + percentageLabelMargin,
+            _percentageLabelHorizontalY= ({name}) => yScale(name) + (yScale.bandwidth() / 2) + (percentageLabelSize * (3/8)),
 
-            _percentageLabelVerticalX = ({
-                name
-            }) => xScale(name),
-            _percentageLabelVerticalY = ({
-                value
-            }) => yScale(value) - percentageLabelMargin,
+            _percentageLabelVerticalX = ({name}) => xScale(name),
+            _percentageLabelVerticalY = ({value}) => yScale(value) - percentageLabelMargin,
 
-            _percentageLabelHorizontalFormatValue = ({
-                value
-            }) => d3Format.format(horizontalLabelFormat)(value),
-            _percentageLabelVerticalFormatValue = ({
-                value
-            }) => d3Format.format(verticalLabelFormat)(parseFloat(value) * 100);
+            _percentageLabelHorizontalFormatValue = ({value}) => d3Format.format(horizontalLabelFormat)(value),
+            _percentageLabelVerticalFormatValue = ({value}) => d3Format.format(verticalLabelFormat)(parseFloat(value) * 100);
 
         /**
          * This function creates the graph using the selection as container
@@ -156,10 +136,7 @@ define(function(require) {
             _selection.each(function(_data) {
                 chartWidth = width - margin.left - margin.right - (yAxisPaddingBetweenChart * 1.2);
                 chartHeight = height - margin.top - margin.bottom;
-                ({
-                    data,
-                    dataZeroed
-                } = cleanData(_data));
+                ({data, dataZeroed} = cleanData(_data));
 
                 buildScales();
                 buildAxis();
@@ -200,8 +177,8 @@ define(function(require) {
         function buildContainerGroups() {
             let container = svg
                 .append('g')
-                .classed('container-group', true)
-                .attr('transform', `translate(${margin.left + yAxisPaddingBetweenChart}, ${margin.top})`);
+                  .classed('container-group', true)
+                  .attr('transform', `translate(${margin.left + yAxisPaddingBetweenChart}, ${margin.top})`);
 
             container
                 .append('g').classed('grid-lines-group', true);
@@ -246,26 +223,20 @@ define(function(require) {
 
             if (reverseColorList) {
                 colorList = data.map(d => d)
-                    .reverse()
-                    .map(({
-                        name
-                    }, i) => ({
-                        name,
-                        color: colorSchema[i % colorSchema.length]
-                    }));
+                                .reverse()
+                                .map(({name}, i) => ({
+                                        name,
+                                        color: colorSchema[i % colorSchema.length]}
+                                    ));
             } else {
                 colorList = data.map(d => d)
-                    .map(({
-                        name
-                    }, i) => ({
-                        name,
-                        color: colorSchema[i % colorSchema.length]
-                    }));
+                                .map(({name}, i) => ({
+                                        name,
+                                        color: colorSchema[i % colorSchema.length]}
+                                    ));
             }
 
-            colorMap = (item) => colorList.filter(({
-                name
-            }) => name === item)[0].color;
+            colorMap = (item) => colorList.filter(({name}) => name === item)[0].color;
         }
 
         /**
@@ -277,7 +248,7 @@ define(function(require) {
             if (!svg) {
                 svg = d3Selection.select(container)
                     .append('svg')
-                    .classed('britechart bar-chart', true);
+                      .classed('britechart bar-chart', true);
 
                 buildContainerGroups();
             }
@@ -294,18 +265,15 @@ define(function(require) {
          */
         function cleanData(originalData) {
             let data = originalData.map((d) => ({
-                value: +d[valueLabel],
-                name: String(d[nameLabel])
-            }));
+                    value: +d[valueLabel],
+                    name: String(d[nameLabel])
+                }));
             let dataZeroed = data.map((d) => ({
-                value: 0,
-                name: String(d[nameLabel])
-            }));
+                    value: 0,
+                    name: String(d[nameLabel])
+                }));
 
-            return {
-                data,
-                dataZeroed
-            }
+            return {data, dataZeroed}
         }
 
         /**
@@ -343,41 +311,29 @@ define(function(require) {
         function drawHorizontalBars(bars) {
             // Enter + Update
             bars.enter()
-                .append('rect')
+              .append('rect')
                 .classed('bar', true)
                 .attr('y', chartHeight)
                 .attr('x', 0)
                 .attr('height', yScale.bandwidth())
-                .attr('width', ({
-                    value
-                }) => xScale(value))
-                .attr('fill', ({
-                    name
-                }) => colorMap(name))
+                .attr('width', ({value}) => xScale(value))
+                .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function() {
                     dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', ({
-                        name
-                    }) => d3Color.color(colorMap(name)).darker());
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
                 })
                 .on('mousemove', function(d) {
                     dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
                 .on('mouseout', function() {
                     dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', ({
-                        name
-                    }) => colorMap(name))
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
                 })
-                .merge(bars)
+              .merge(bars)
                 .attr('x', 0)
-                .attr('y', ({
-                    name
-                }) => yScale(name))
+                .attr('y', ({name}) => yScale(name))
                 .attr('height', yScale.bandwidth())
-                .attr('width', ({
-                    value
-                }) => xScale(value));
+                .attr('width', ({value}) => xScale(value));
         }
 
         /**
@@ -388,46 +344,34 @@ define(function(require) {
         function drawAnimatedHorizontalBars(bars) {
             // Enter + Update
             bars.enter()
-                .append('rect')
+              .append('rect')
                 .classed('bar', true)
                 .attr('x', 0)
                 .attr('y', chartHeight)
                 .attr('height', yScale.bandwidth())
-                .attr('width', ({
-                    value
-                }) => xScale(value))
-                .attr('fill', ({
-                    name
-                }) => colorMap(name))
+                .attr('width', ({value}) => xScale(value))
+                .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function() {
                     dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', ({
-                        name
-                    }) => d3Color.color(colorMap(name)).darker());
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
                 })
                 .on('mousemove', function(d) {
                     dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
                 .on('mouseout', function() {
                     dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', ({
-                        name
-                    }) => colorMap(name))
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
                 });
 
             bars
                 .attr('x', 0)
-                .attr('y', ({
-                    name
-                }) => yScale(name))
+                .attr('y', ({name}) => yScale(name))
                 .attr('height', yScale.bandwidth())
                 .transition()
                 .duration(animationDuration)
                 .delay(interBarDelay)
                 .ease(ease)
-                .attr('width', ({
-                    value
-                }) => xScale(value));
+                .attr('width', ({value}) => xScale(value));
         }
 
         /**
@@ -438,49 +382,33 @@ define(function(require) {
         function drawAnimatedVerticalBars(bars) {
             // Enter + Update
             bars.enter()
-                .append('rect')
+              .append('rect')
                 .classed('bar', true)
                 .attr('x', chartWidth)
-                .attr('y', ({
-                    value
-                }) => yScale(value))
+                .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
-                .attr('height', ({
-                    value
-                }) => chartHeight - yScale(value))
-                .attr('fill', ({
-                    name
-                }) => colorMap(name))
+                .attr('height', ({value}) => chartHeight - yScale(value))
+                .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function() {
                     dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', ({
-                        name
-                    }) => d3Color.color(colorMap(name)).darker())
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker())
                 })
                 .on('mousemove', function(d) {
                     dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
                 .on('mouseout', function() {
                     dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', ({
-                        name
-                    }) => colorMap(name))
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
                 })
-                .merge(bars)
-                .attr('x', ({
-                    name
-                }) => xScale(name))
+              .merge(bars)
+                .attr('x', ({name}) => xScale(name))
                 .attr('width', xScale.bandwidth())
                 .transition()
                 .duration(animationDuration)
                 .delay(interBarDelay)
                 .ease(ease)
-                .attr('y', ({
-                    value
-                }) => yScale(value))
-                .attr('height', ({
-                    value
-                }) => chartHeight - yScale(value));
+                .attr('y', ({value}) => yScale(value))
+                .attr('height', ({value}) => chartHeight - yScale(value));
         }
 
         /**
@@ -491,45 +419,29 @@ define(function(require) {
         function drawVerticalBars(bars) {
             // Enter + Update
             bars.enter()
-                .append('rect')
+              .append('rect')
                 .classed('bar', true)
                 .attr('x', chartWidth)
-                .attr('y', ({
-                    value
-                }) => yScale(value))
+                .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
-                .attr('height', ({
-                    value
-                }) => chartHeight - yScale(value))
-                .attr('fill', ({
-                    name
-                }) => colorMap(name))
+                .attr('height', ({value}) => chartHeight - yScale(value))
+                .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function() {
                     dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', ({
-                        name
-                    }) => d3Color.color(colorMap(name)).darker())
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker())
                 })
                 .on('mousemove', function(d) {
                     dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
                 .on('mouseout', function() {
                     dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', ({
-                        name
-                    }) => colorMap(name))
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
                 })
-                .merge(bars)
-                .attr('x', ({
-                    name
-                }) => xScale(name))
-                .attr('y', ({
-                    value
-                }) => yScale(value))
+              .merge(bars)
+                .attr('x', ({name}) => xScale(name))
+                .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
-                .attr('height', ({
-                    value
-                }) => chartHeight - yScale(value));
+                .attr('height', ({value}) => chartHeight - yScale(value));
         }
 
         /**
@@ -543,12 +455,12 @@ define(function(require) {
             let text = horizontal ? _percentageLabelHorizontalFormatValue : _percentageLabelVerticalFormatValue;
 
             let percentageLabels = svg.select('.metadata-group')
-                .append('g')
+              .append('g')
                 .classed('percentage-label-group', true)
                 .selectAll('text')
                 .data(data.reverse())
                 .enter()
-                .append('text');
+              .append('text');
 
             percentageLabels
                 .classed('percentage-label', true)
@@ -622,12 +534,12 @@ define(function(require) {
                 .selectAll('line.vertical-grid-line')
                 .data(xScale.ticks(4))
                 .enter()
-                .append('line')
-                .attr('class', 'vertical-grid-line')
-                .attr('y1', (xAxisPadding.left))
-                .attr('y2', chartHeight)
-                .attr('x1', (d) => xScale(d))
-                .attr('x2', (d) => xScale(d))
+                  .append('line')
+                    .attr('class', 'vertical-grid-line')
+                    .attr('y1', (xAxisPadding.left))
+                    .attr('y2', chartHeight)
+                    .attr('x1', (d) => xScale(d))
+                    .attr('x2', (d) => xScale(d))
 
             drawVerticalExtendedLine();
         }
@@ -641,12 +553,12 @@ define(function(require) {
                 .selectAll('line.extended-y-line')
                 .data([0])
                 .enter()
-                .append('line')
-                .attr('class', 'extended-y-line')
-                .attr('y1', (xAxisPadding.bottom))
-                .attr('y2', chartHeight)
-                .attr('x1', 0)
-                .attr('x2', 0);
+                  .append('line')
+                    .attr('class', 'extended-y-line')
+                    .attr('y1', (xAxisPadding.bottom))
+                    .attr('y2', chartHeight)
+                    .attr('x1', 0)
+                    .attr('x2', 0);
         }
 
         /**
@@ -658,12 +570,12 @@ define(function(require) {
                 .selectAll('line.horizontal-grid-line')
                 .data(yScale.ticks(4))
                 .enter()
-                .append('line')
-                .attr('class', 'horizontal-grid-line')
-                .attr('x1', (xAxisPadding.left))
-                .attr('x2', chartWidth)
-                .attr('y1', (d) => yScale(d))
-                .attr('y2', (d) => yScale(d))
+                  .append('line')
+                    .attr('class', 'horizontal-grid-line')
+                    .attr('x1', (xAxisPadding.left))
+                    .attr('x2', chartWidth)
+                    .attr('y1', (d) => yScale(d))
+                    .attr('y2', (d) => yScale(d))
 
             drawHorizontalExtendedLine();
         }
@@ -677,12 +589,12 @@ define(function(require) {
                 .selectAll('line.extended-x-line')
                 .data([0])
                 .enter()
-                .append('line')
-                .attr('class', 'extended-x-line')
-                .attr('x1', (xAxisPadding.left))
-                .attr('x2', chartWidth)
-                .attr('y1', chartHeight)
-                .attr('y2', chartHeight);
+                  .append('line')
+                    .attr('class', 'extended-x-line')
+                    .attr('x1', (xAxisPadding.left))
+                    .attr('x2', chartWidth)
+                    .attr('y1', chartHeight)
+                    .attr('y2', chartHeight);
         }
 
         /**
