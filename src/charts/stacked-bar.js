@@ -158,9 +158,7 @@ define(function(require){
                 buildAxis();
                 drawAxis();
                 drawStackedBar();
-                if (shouldShowTooltip()){
-                    addMouseEvents();
-                }
+                addMouseEvents();
             });
         }
 
@@ -198,10 +196,16 @@ define(function(require){
          * Adding: mouseover, mouseout and mousemove
          */
         function addMouseEvents() {
-            svg
-                .on('mouseover', handleMouseOver)
-                .on('mouseout', handleMouseOut)
-                .on('mousemove', handleMouseMove);
+            if (shouldShowTooltip()){
+                svg
+                    .on('mouseover', handleMouseOver)
+                    .on('mouseout', handleMouseOut)
+                    .on('mousemove', handleMouseMove);
+            }
+
+            svg.selectAll('.bar')
+                .on('mouseover', handleBarsMouseOver)
+                .on('mouseout', handleBarsMouseOut);
         }
 
         /**
@@ -358,8 +362,8 @@ define(function(require){
         function drawAxis(){
             if (!horizontal) {
                 svg.select('.x-axis-group .axis.x')
-                .attr('transform', `translate( 0, ${chartHeight} )`)
-                .call(xAxis);
+                    .attr('transform', `translate( 0, ${chartHeight} )`)
+                    .call(xAxis);
 
                 svg.select('.y-axis-group.axis')
                     .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
@@ -468,18 +472,6 @@ define(function(require){
             } else {
                 bars.attr('width', (d) => xScale(d[1] - d[0] ) )
             }
-
-            bars.on('mouseover', function(d) {
-                    dispatcher.call('customMouseOver', this, !!d.values ? d:d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                    d3Selection.select(this).attr('fill', () => d3Color.color(d3Selection.select(this.parentNode).attr('fill')).darker())
-                })
-                .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, !!d.values ? d:d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                })
-                .on('mouseout', function() {
-                    dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', () => d3Selection.select(this.parentNode).attr('fill'))
-                });
         }
 
         /**
@@ -541,18 +533,6 @@ define(function(require){
             } else {
                 bars.attr('height', (d) => yScale(d[0]) - yScale(d[1]) );
             }
-
-            bars.on('mouseover', function(d) {
-                    dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', () => d3Color.color(d3Selection.select(this.parentNode).attr('fill')).darker())
-                })
-                .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, !!d.values ? d:d.data, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                })
-                .on('mouseout', function() {
-                    dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', () => d3Selection.select(this.parentNode).attr('fill'))
-                });
         }
 
         /**
@@ -603,36 +583,37 @@ define(function(require){
 
         /**
          * Finds out the data entry that is closer to the given position on pixels
-         * @param  {Number} mouseX X position of the mouse
-         * @return {obj}        Data entry that is closer to that x axis position
+         * @param  {Number} mouseX  X position of the mouse
+         * @return {obj}            Data entry that is closer to that x axis position
          */
         function getNearestDataPoint(mouseX) {
-            let epsilon,
-                nearest,
+            let adjustedMouseX = mouseX - margin.left,
                 dataByValueParsed = transformedData.map((item) => {
                     item.key = item.key
                     return item;
-                });
+                }),
+                epsilon,
+                nearest;
 
             epsilon = (xScale(dataByValueParsed[1].key) - xScale(dataByValueParsed[0].key));
-            nearest = dataByValueParsed.find(({key}) => Math.abs(xScale(key) - mouseX) <= epsilon);
+            nearest = dataByValueParsed.find(({key}) => Math.abs(xScale(key) - adjustedMouseX) <= epsilon);
 
             return nearest;
         }
 
          /**
          * Finds out the data entry that is closer to the given position on pixels
-         * @param  {Number} mouseX X position of the mouse
-         * @return {obj}        Data entry that is closer to that x axis position
+         * @param  {Number} mouseY  Y position of the mouse
+         * @return {obj}            Data entry that is closer to that y axis position
          */
-        function getNearestDataPoint2(pos) {
-            let mouseY = pos[1] - margin.bottom,
+        function getNearestDataPoint2(mouseY) {
+            let adjustedMouseY = mouseY - margin.bottom,
                 epsilon = yScale.bandwidth(),
                 nearest;
 
             nearest = layers.map(function(stackedArray){
                 return stackedArray.map(function(d1){
-                   let found = d1.data.values.find((d2) => Math.abs(mouseY >= yScale(d2[nameLabel])) && Math.abs(mouseY - yScale(d2[nameLabel]) <= epsilon*2) );
+                   let found = d1.data.values.find((d2) => Math.abs(adjustedMouseY >= yScale(d2[nameLabel])) && Math.abs(adjustedMouseY - yScale(d2[nameLabel]) <= epsilon*2) );
                    return found ? d1.data :undefined;
                })
             });
@@ -642,26 +623,48 @@ define(function(require){
         }
 
         /**
+         * Handles a mouseover event on top of a bar
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function handleBarsMouseOver(d) {
+            d3Selection.select(this)
+                .attr('fill', () => d3Color.color(d3Selection.select(this.parentNode).attr('fill')).darker())
+        }
+
+        /**
+         * Handles a mouseout event out of a bar
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function handleBarsMouseOut(d) {
+            d3Selection
+                .select(this).attr('fill', () => d3Selection.select(this.parentNode).attr('fill'))
+        }
+
+        /**
          * MouseMove handler, calculates the nearest dataPoint to the cursor
          * and updates metadata related to it
          * @private
          */
         function handleMouseMove(){
-            let mousePos = getMousePosition(this),
-                dataPoint = !horizontal ? getNearestDataPoint(mousePos[0] - margin.left) : getNearestDataPoint2(mousePos),
+            let [mouseX, mouseY] = getMousePosition(this),
+                dataPoint = !horizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
                 x,
                 y;
 
             if (dataPoint) {
                 // Move verticalMarker to that datapoint
-                if (!horizontal) {
-                    x =  xScale(dataPoint.key),y = yScale(dataPoint.total);
-                    moveVerticalMarkerXY(x,y);
+                if (horizontal) {
+                    x = mouseX - margin.left;
+                    y = yScale(dataPoint.key) + yScale.bandwidth()/2;
                 } else {
-                    x = mousePos[1],y = yScale(dataPoint.key) +  yScale.bandwidth()/2;
-                    moveVerticalMarkerXY(x,y);
+                    x = xScale(dataPoint.key) + margin.left;
+                    y = mouseY - margin.bottom;
                 }
-                   // Emit event with xPosition for tooltip or similar feature
+                moveTooltipOriginXY(x,y);
+
+                // Emit event with xPosition for tooltip or similar feature
                 dispatcher.call('customMouseMove', this, dataPoint, categoryColorMap, x,y);
             }
         }
@@ -671,17 +674,17 @@ define(function(require){
          * It also resets the container of the vertical marker
          * @private
          */
-        function handleMouseOut(data){
+        function handleMouseOut(d){
             svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
-            dispatcher.call('customMouseOut', this, data);
+            dispatcher.call('customMouseOut', this, d);
         }
 
         /**
          * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
          * @private
          */
-        function handleMouseOver(data){
-            dispatcher.call('customMouseOver', this, data);
+        function handleMouseOver(d){
+            dispatcher.call('customMouseOver', this, d);
         }
 
         /**
@@ -689,8 +692,9 @@ define(function(require){
          * @param  {obj} dataPoint Data entry to extract info
          * @return void
          */
-        function moveVerticalMarkerXY(verticalMarkerXPosition,verticalMarkerYPosition){
-            svg.select('.metadata-group').attr('transform', `translate(${verticalMarkerXPosition},${verticalMarkerYPosition})`);
+        function moveTooltipOriginXY(originXPosition, originYPosition){
+            svg.select('.metadata-group')
+                .attr('transform', `translate(${originXPosition},${originYPosition})`);
         }
 
         /**

@@ -24,6 +24,7 @@ var webpack = require('webpack'),
         'sparkline': './src/charts/sparkline.js',
         'stacked-area': './src/charts/stacked-area.js',
         'stacked-bar': './src/charts/stacked-bar.js',
+        'grouped-bar': './src/charts/grouped-bar.js',
         'step': './src/charts/step.js',
         'brush': './src/charts/brush.js',
         // hack to make webpack use colors as an entry point while its also a dependency of the charts above
@@ -69,7 +70,8 @@ config = {
             'demo-sparkline': './demos/demo-sparkline.js',
             'demo-step': './demos/demo-step.js',
             'demo-brush': './demos/demo-brush.js',
-            'demo-kitchen-sink': './demos/demo-kitchen-sink.js'
+            'demo-kitchen-sink': './demos/demo-kitchen-sink.js',
+            'demo-grouped-bar': './demos/demo-grouped-bar.js'
         },
         output: {
             path: './demos/build/',

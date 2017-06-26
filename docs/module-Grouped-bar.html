@@ -1,0 +1,3511 @@
+<!DOCTYPE html>
+
+<html lang="en" prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>API: Grouped-bar</title>
+
+        
+            <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+            
+                <meta name="keywords" content="Britecharts, D3.js" />
+            
+        
+
+        <!-- Disable tap highlight on IE -->
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="msapplication-config" content="img/icons/browserconfig.xml">
+
+        <!-- Web Application Manifest -->
+        <link rel="manifest" href="manifest.json">
+
+        <!-- Add to homescreen for Chrome on Android -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="application-name" content="Britecharts">
+        <link rel="icon" sizes="192x192" href="img/icons/chrome-touch-icon-192x192.png">
+
+        <!-- Add to homescreen for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#009FA1">
+        <meta name="apple-mobile-web-app-title" content="Britecharts">
+        <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png">
+
+        <!-- MacOS -->
+        <link rel="mask-icon" href="img/icons/safari-pinned-tab.svg" color="#5bbad5">
+
+        <!-- Color the status bar on mobile devices -->
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="img/icons/favicon.ico">
+        <link rel="icon" type="image/png" href="img/icons/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="img/icons/favicon-16x16.png" sizes="16x16">
+
+        
+            <meta property="og:title" content="Britecharts, a D3.js based charting library of reusable components"/>
+            <meta property="og:type" content="website"/>
+            <meta property="og:image" content="https://eventbrite.github.io/britecharts/img/logo-stripes-small.png"/>
+            <meta property="og:site_name" content="Britecharts"/>
+            <meta property="og:url" content=""/>
+
+            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:site" content="@britecharts" />
+            <meta name="twitter:description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+        
+
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <link type="text/css" rel="stylesheet" href="styles/custom.css">
+        <link type="text/css" rel="stylesheet" href="styles/demos.css">
+        <link type="text/css" rel="stylesheet" href="styles/prism.css"  />
+        <link type="text/css" rel="stylesheet" href="styles/britecharts.css" />
+        <script src="/britecharts/scripts/common.js"></script>
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top navbar-default">
+            <div class="container">
+            	<div class="navbar-header">
+            		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="img/britecharts-logo.svg"
+            		alt="Britecharts - D3.js based charting library of reusable components"/></a>
+            		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+                    </button>
+            	</div>
+            	<div class="navbar-collapse collapse" id="topNavigation">
+            		<ul class="nav navbar-nav">
+            			
+                        
+            			<li class="">
+            				<a href="getting-started.html" >Getting started<b class=""></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="tutorials.list.html"  class="dropdown-toggle" data-toggle="dropdown" >Demos<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="tutorial-bar.html">Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-brush.html">Brush Chart</a></li>
+                                
+                                <li><a href="tutorial-donut.html">Donut Chart</a></li>
+                                
+                                <li><a href="tutorial-grouped-bar.html">Grouped Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li>
+                                
+                                <li><a href="tutorial-line.html">Line Chart</a></li>
+                                
+                                <li><a href="tutorial-sparkline.html">Sparkline Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-bar.html">Stacked Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-step.html">Step Chart</a></li>
+                                
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="modules.list.html"  class="dropdown-toggle" data-toggle="dropdown" >API<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="module-Bar.html">Bar</a></li>
+                                
+                                <li><a href="module-Brush.html">Brush</a></li>
+                                
+                                <li><a href="module-Donut.html">Donut</a></li>
+                                
+                                <li><a href="module-Grouped-bar.html">Grouped-bar</a></li>
+                                
+                                <li><a href="module-Legend.html">Legend</a></li>
+                                
+                                <li><a href="module-Line.html">Line</a></li>
+                                
+                                <li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li>
+                                
+                                <li><a href="module-Sparkline.html">Sparkline</a></li>
+                                
+                                <li><a href="module-Stacked-area.html">Stacked-area</a></li>
+                                
+                                <li><a href="module-Stacked-bar.html">Stacked-bar</a></li>
+                                
+                                <li><a href="module-Step.html">Step</a></li>
+                                
+                                <li><a href="module-Tooltip.html">Tooltip</a></li>
+                                
+                                <li><a href="global.html">Types</a></li>
+                                
+            				</ul>
+            			</li>
+            			
+                        <li class="dropdown">
+                            <a class="github-link" href="https://github.com/eventbrite/britecharts/">Github</a>
+                        </li>
+            		</ul>
+                    
+                    <div class="col-sm-12 col-md-4 no-gutter">
+                        <form class="navbar-form" role="search">
+                            <div class="input-group search-container clearfix">
+                                <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" id="search-submit">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <main class="container" id="toc-content">
+            <div class="row">
+            	
+            	<div class="col-md-8 is-source">
+            	
+            		<div id="main">
+            			
+
+	<h1 class="page-title">API: Grouped-bar</h1>
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description">Grouped Bar Chart reusable API module that allows us
+rendering a multi grouped bar and configurable chart.</div>
+        
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="module:Grouped-bar"><span class="type-signature"></span>(require("Grouped-bar"))(_selection, _data)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        This function creates the graph using the selection and data provided
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_selection</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#D3Selection">D3Selection</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A d3 selection that represents
+the container(s) where the chart(s) will be rendered</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>_data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#GroupedBarChartData">GroupedBarChartData</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The data to attach and generate the chart</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+    
+    </div>
+
+    
+
+    
+        <h3 class="subsection-title">Requires</h3>
+
+        <ul>
+            <li>module:d3-array,</li>
+        </ul>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id="module:Grouped-bar"><span class="type-signature"></span>module:Grouped-bar(_selection, _data)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        This function creates the graph using the selection and data provided
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_selection</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#D3Selection">D3Selection</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A d3 selection that represents
+the container(s) where the chart(s) will be rendered</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>_data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#GroupedBarChartData">GroupedBarChartData</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The data to attach and generate the chart</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".aspectRatio"><span class="type-signature">&lt;static> </span>aspectRatio(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the aspect ratio of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired aspect ratio for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current aspect ratio or Area Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">Module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".colorSchema"><span class="type-signature">&lt;static> </span>colorSchema(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the colorSchema of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired colorSchema for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current colorSchema or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">colorSchema</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".exportChart"><span class="type-signature">&lt;static> </span>exportChart()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Chart exported to png and a download action is fired
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".grid"><span class="type-signature">&lt;static> </span>grid(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the grid mode.
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired mode for the grid ('vertical'|'horizontal'|'full')</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current mode of the grid or Area Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".groupLabel"><span class="type-signature">&lt;static> </span>groupLabel(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the groupLabel of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired groupLabel for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current groupLabel or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">groupLabel</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".height"><span class="type-signature">&lt;static> </span>height(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the height of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired width for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current height or Area Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">height</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".horizontal"><span class="type-signature">&lt;static> </span>horizontal(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the horizontal direction of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired horizontal direction for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current horizontal direction or Bar Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">horizontal</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".isAnimated"><span class="type-signature">&lt;static> </span>isAnimated(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the isAnimated property of the chart, making it to animate when render.
+By default this is 'false'
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired animation flag</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current isAnimated flag or Chart module
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">isAnimated</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".margin"><span class="type-signature">&lt;static> </span>margin(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the margin of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Margin object to get/set</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current margin or Area Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">margin</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".nameLabel"><span class="type-signature">&lt;static> </span>nameLabel(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the nameLabel of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired dateLabel for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current nameLabel or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">nameLabel</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".nameLabelFormat"><span class="type-signature">&lt;static> </span>nameLabelFormat(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the valueLabelFormat of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired valueLabelFormat for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current valueLabelFormat or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">valueLabelFormat</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".on"><span class="type-signature">&lt;static> </span>on()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Exposes an 'on' method that acts as a bridge with the event dispatcher
+We are going to expose this events:
+customMouseOver, customMouseMove and customMouseOut
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Bar Chart
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".percentageAxisToMaxRatio"><span class="type-signature">&lt;static> </span>percentageAxisToMaxRatio(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Configurable extension of the x axis
+if your max point was 50% you might want to show x axis to 60%, pass 1.2
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">ratio to max data point to add to the x axis</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current ratio or Bar Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">ratio</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".tooltipThreshold"><span class="type-signature">&lt;static> </span>tooltipThreshold(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the minimum width of the graph in order to show the tooltip
+NOTE: This could also depend on the aspect ratio
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Margin object to get/set</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current tooltipThreshold or Area Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">tooltipThreshold</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".valueLabel"><span class="type-signature">&lt;static> </span>valueLabel(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the valueLabel of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired valueLabel for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current valueLabel or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">valueLabel</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".valueLabelFormat"><span class="type-signature">&lt;static> </span>valueLabelFormat(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the valueLabelFormat of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired valueLabelFormat for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current valueLabelFormat or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">valueLabelFormat</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".verticalTicks"><span class="type-signature">&lt;static> </span>verticalTicks(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the number of verticalTicks of the yAxis on the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired verticalTicks</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current verticalTicks or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">verticalTicks</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".width"><span class="type-signature">&lt;static> </span>width(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the width of the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired width for the graph</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current width or Area Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">width</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        </dl>
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+            		</div>
+            	</div>
+            	<div class="clearfix"></div>
+            	
+            		<div class="col-md-3">
+            			<div id="toc" class="col-md-3 hidden-xs hidden-sm"></div>
+            		</div>
+            	
+            </div>
+        </main>
+
+        
+            <div class="modal fade" id="searchResults">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Search results</h4>
+                  </div>
+                  <div class="modal-body"></div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+
+        <footer class="footer">
+            
+            
+            	<span class="copyright">
+            	Eventbrite Copyright
+            	</span>
+            
+            <span class="jsdoc-message">
+            	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+            	
+            	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+            </span>
+        </footer>
+
+        <script src="/britecharts/scripts/docstrap.lib.js"></script>
+        <script src="/britecharts/scripts/toc.js"></script>
+        
+            <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
+        
+
+        <script src="/britecharts/scripts/prism.js"></script>
+        <script>
+        $( function () {
+        	$( "[id*='$']" ).each( function () {
+        		var $this = $( this );
+
+        		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+        	} );
+
+            // Highlight with prism
+            $( "pre.prettyprint.source" )
+                .each( function () {
+                    var $this = $( this );
+                    var example = $this.find( "code" );
+
+                    $this
+                        .wrap("<pre class='language-javascript' ></pre>" )
+                        .wrap("<code class='language-javascript'></code>" )
+                        .addClass( "language-javascript" )
+                        .html( example.html() );
+                } );
+
+        	$.catchAnchorLinks( {
+                navbarOffset: 10
+        	} );
+        	$( "#toc" ).toc( {
+        		anchorName  : function ( i, heading, prefix ) {
+        			return $( heading ).attr( "id" ) || ( prefix + i );
+        		},
+        		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+        		showAndHide : false,
+        		smoothScrolling: true
+        	} );
+
+        	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+        	$( '.dropdown-toggle' ).dropdown();
+
+            $( "table" ).each( function () {
+              var $this = $( this );
+              $this.addClass('table');
+            } );
+        } );
+        </script>
+
+
+        <!--Navigation and Symbol Display-->
+        
+
+        <!--Google Analytics-->
+        
+            <script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+                ga( 'create', 'UA-141520-30', 'auto' );
+                ga( 'send', 'pageview' );
+            </script>
+        
+
+        <!-- Search Init -->
+        
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    SearcherDisplay.init();
+                });
+            </script>
+        
+    </body>
+</html>

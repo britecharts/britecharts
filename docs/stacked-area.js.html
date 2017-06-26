@@ -100,6 +100,8 @@
                                 
                                 <li><a href="tutorial-donut.html">Donut Chart</a></li>
                                 
+                                <li><a href="tutorial-grouped-bar.html">Grouped Bar Chart</a></li>
+                                
                                 <li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li>
                                 
                                 <li><a href="tutorial-line.html">Line Chart</a></li>
@@ -125,6 +127,8 @@
                                 <li><a href="module-Brush.html">Brush</a></li>
                                 
                                 <li><a href="module-Donut.html">Donut</a></li>
+                                
+                                <li><a href="module-Grouped-bar.html">Grouped-bar</a></li>
                                 
                                 <li><a href="module-Legend.html">Legend</a></li>
                                 
@@ -890,7 +894,11 @@
          * @return {obj}        Data entry that is closer to that x axis position
          */
         function getNearestDataPoint(mouseX) {
-            return dataByDate.find(({date}) => Math.abs(xScale(date) - mouseX) &lt;= epsilon);
+            let points = dataByDate.filter(({date}) => Math.abs(xScale(date) - mouseX) &lt;= epsilon);
+
+            if (points.length) {
+                return points[0];
+            }
         }
 
         /**
