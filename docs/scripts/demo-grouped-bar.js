@@ -9449,9 +9449,7 @@ webpackJsonp([3,10],[
 	                buildAxis();
 	                drawAxis();
 	                drawGroupedBar();
-	                if (shouldShowTooltip()) {
-	                    addMouseEvents();
-	                }
+	                addMouseEvents();
 	            });
 	        }
 	
@@ -9487,7 +9485,11 @@ webpackJsonp([3,10],[
 	         * Adding: mouseover, mouseout and mousemove
 	         */
 	        function addMouseEvents() {
-	            svg.on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).on('mousemove', handleMouseMove);
+	            if (shouldShowTooltip()) {
+	                svg.on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).on('mousemove', handleMouseMove);
+	            }
+	
+	            svg.selectAll('.bar').on('mouseover', handleBarsMouseOver).on('mouseout', handleBarsMouseOut);
 	        }
 	
 	        /**
@@ -9707,46 +9709,6 @@ webpackJsonp([3,10],[
 	        }
 	
 	        /**
-	         * mouseover event handle of bars
-	         * @param  {obj} d data of bar
-	         * @return {void}
-	         */
-	        function barsOnMouseOver(d) {
-	            dispatcher.call('customMouseOver', this);
-	            d3Selection.select(this).attr('fill', function () {
-	                return d3Color.color(categoryColorMap[d.group]).darker();
-	            });
-	        }
-	
-	        /**
-	         * mousemove event handle of bars
-	         * @param  {obj} d data of bar
-	         * @return {void}
-	         */
-	        function barsOnMouseMove(d) {
-	            var data = assign({}, this.__data__),
-	                _d3Selection$mouse = d3Selection.mouse(this),
-	                _d3Selection$mouse2 = _slicedToArray(_d3Selection$mouse, 2),
-	                x = _d3Selection$mouse2[0],
-	                y = _d3Selection$mouse2[1];
-	
-	            data.values = this.parentNode.__data__.values;
-	            dispatcher.call('customMouseMove', this, data, categoryColorMap, x, y);
-	        }
-	
-	        /**
-	         * mouseout event handle of bars
-	         * @param  {obj} d data of bar
-	         * @return {void}
-	         */
-	        function barsOnMouseOut(d) {
-	            dispatcher.call('customMouseOut', this);
-	            d3Selection.select(this).attr('fill', function () {
-	                return categoryColorMap[d.group];
-	            });
-	        }
-	
-	        /**
 	         * Draws the bars along the x axis
 	         * @param  {D3Selection} bars Selection of bars
 	         * @return {void}
@@ -9772,8 +9734,6 @@ webpackJsonp([3,10],[
 	                    return xScale(getValue(d));
 	                });
 	            }
-	
-	            bars.on('mouseover', barsOnMouseOver).on('mousemove', barsOnMouseMove).on('mouseout', barsOnMouseOut);
 	        }
 	
 	        /**
@@ -9804,8 +9764,6 @@ webpackJsonp([3,10],[
 	                    return chartHeight - yScale(getValue(d));
 	                });
 	            }
-	
-	            bars.on('mouseover', barsOnMouseOver).on('mousemove', barsOnMouseMove).on('mouseout', barsOnMouseOut);
 	        }
 	
 	        /**
@@ -9839,14 +9797,14 @@ webpackJsonp([3,10],[
 	         * @param  {Number} mouseX X position of the mouse
 	         * @return {obj}        Data entry that is closer to that x axis position
 	         */
-	        function getNearestDataPoint(pos) {
-	            var mouseX = pos[0] - margin.left,
+	        function getNearestDataPoint(mouseX) {
+	            var adjustedMouseX = mouseX - margin.left,
 	                epsilon = xScale2.bandwidth(),
 	                nearest = [];
 	
 	            layers.forEach(function (data) {
 	                var found = data.values.find(function (d2) {
-	                    return Math.abs(mouseX >= xScale(d2[nameLabel]) + xScale2(d2[groupLabel])) && Math.abs(mouseX - xScale2(d2[groupLabel]) - xScale(d2[nameLabel]) <= epsilon);
+	                    return Math.abs(adjustedMouseX >= xScale(d2[nameLabel]) + xScale2(d2[groupLabel])) && Math.abs(adjustedMouseX - xScale2(d2[groupLabel]) - xScale(d2[nameLabel]) <= epsilon);
 	                });
 	
 	                if (found) {
@@ -9864,14 +9822,14 @@ webpackJsonp([3,10],[
 	        * @param  {Number} mouseX X position of the mouse
 	        * @return {obj}        Data entry that is closer to that x axis position
 	        */
-	        function getNearestDataPoint2(pos) {
-	            var mouseY = pos[1] - margin.bottom,
+	        function getNearestDataPoint2(mouseY) {
+	            var adjustedMouseY = mouseY - margin.bottom,
 	                epsilon = yScale.bandwidth(),
 	                nearest = [];
 	
 	            layers.map(function (data) {
 	                var found = data.values.find(function (d2) {
-	                    return Math.abs(mouseY >= yScale(d2[nameLabel])) && Math.abs(mouseY - yScale(d2[nameLabel]) <= epsilon * 2);
+	                    return Math.abs(adjustedMouseY >= yScale(d2[nameLabel])) && Math.abs(adjustedMouseY - yScale(d2[nameLabel]) <= epsilon * 2);
 	                });
 	
 	                if (found) {
@@ -9885,25 +9843,52 @@ webpackJsonp([3,10],[
 	        }
 	
 	        /**
+	         * Handles a mouseover event on top of a bar
+	         * @param  {obj} d data of bar
+	         * @return {void}
+	         */
+	        function handleBarsMouseOver(d) {
+	            d3Selection.select(this).attr('fill', function () {
+	                return d3Color.color(categoryColorMap[d.group]).darker();
+	            });
+	        }
+	
+	        /**
+	         * Handles a mouseout event out of a bar
+	         * @param  {obj} d data of bar
+	         * @return {void}
+	         */
+	        function handleBarsMouseOut(d) {
+	            d3Selection.select(this).attr('fill', function () {
+	                return categoryColorMap[d.group];
+	            });
+	        }
+	
+	        /**
 	         * MouseMove handler, calculates the nearest dataPoint to the cursor
 	         * and updates metadata related to it
 	         * @private
 	         */
 	        function handleMouseMove() {
-	            var mousePos = getMousePosition(this),
-	                dataPoint = !horizontal ? getNearestDataPoint(mousePos) : getNearestDataPoint2(mousePos),
+	            var _getMousePosition = getMousePosition(this),
+	                _getMousePosition2 = _slicedToArray(_getMousePosition, 2),
+	                mouseX = _getMousePosition2[0],
+	                mouseY = _getMousePosition2[1],
+	                dataPoint = !horizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
 	                x = void 0,
 	                y = void 0;
 	
 	            if (dataPoint) {
 	                // Move verticalMarker to that datapoint
-	                if (!horizontal) {
-	                    x = xScale(dataPoint.key) + xScale2(dataPoint[groupLabel]), y = yScale(getValue(dataPoint));
-	                    moveVerticalMarkerXY(x, y);
+	                if (horizontal) {
+	                    x = mouseX - margin.left;
+	                    y = yScale(dataPoint.key) + yScale.bandwidth() / 2;
 	                } else {
-	                    x = mousePos[1], y = yScale(dataPoint.key) + yScale.bandwidth() / 2;
-	                    moveVerticalMarkerXY(x, y);
+	                    x = xScale(dataPoint.key) + xScale2(dataPoint[groupLabel]);
+	                    y = mouseY - margin.bottom;
 	                }
+	                moveTooltipOriginXY(x, y);
+	
 	                // Emit event with xPosition for tooltip or similar feature
 	                dispatcher.call('customMouseMove', this, dataPoint, categoryColorMap, x, y);
 	            }
@@ -9914,17 +9899,17 @@ webpackJsonp([3,10],[
 	         * It also resets the container of the vertical marker
 	         * @private
 	         */
-	        function handleMouseOut(data) {
+	        function handleMouseOut(d) {
 	            svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
-	            dispatcher.call('customMouseOut', this, data);
+	            dispatcher.call('customMouseOut', this, d);
 	        }
 	
 	        /**
 	         * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
 	         * @private
 	         */
-	        function handleMouseOver(data) {
-	            dispatcher.call('customMouseOver', this, data);
+	        function handleMouseOver(d) {
+	            dispatcher.call('customMouseOver', this, d);
 	        }
 	
 	        /**
@@ -9932,8 +9917,8 @@ webpackJsonp([3,10],[
 	         * @param  {obj} dataPoint Data entry to extract info
 	         * @return void
 	         */
-	        function moveVerticalMarkerXY(verticalMarkerXPosition, verticalMarkerYPosition) {
-	            svg.select('.metadata-group').attr('transform', 'translate(' + verticalMarkerXPosition + ',' + verticalMarkerYPosition + ')');
+	        function moveTooltipOriginXY(originXPosition, originYPosition) {
+	            svg.select('.metadata-group').attr('transform', 'translate(' + originXPosition + ',' + originYPosition + ')');
 	        }
 	
 	        /**
@@ -10877,9 +10862,12 @@ webpackJsonp([3,10],[
 	
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 	
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
+	    var d3Ease = __webpack_require__(5);
 	    var d3Format = __webpack_require__(9);
 	    var d3Selection = __webpack_require__(1);
 	    var d3Transition = __webpack_require__(15);
@@ -10960,10 +10948,16 @@ webpackJsonp([3,10],[
 	            tooltipTitle = void 0,
 	            tooltipWidth = 250,
 	            tooltipHeight = 48,
+	            tooltipBorderRadius = 3,
 	            ttTextX = 0,
 	            ttTextY = 37,
 	            textSize = void 0,
 	            entryLineLimit = 3,
+	
+	
+	        // Animations
+	        mouseChaseDuration = 100,
+	            ease = d3Ease.easeQuadInOut,
 	            circleYOffset = 8,
 	            colorMap = void 0,
 	            bodyFillColor = '#FFFFFF',
@@ -11050,11 +11044,11 @@ webpackJsonp([3,10],[
 	        function drawTooltip() {
 	            tooltipTextContainer = svg.selectAll('.tooltip-group').append('g').classed('tooltip-text', true);
 	
-	            tooltip = tooltipTextContainer.append('rect').classed('tooltip-text-container', true).attr('x', -tooltipWidth / 4 + 8).attr('y', 0).attr('width', tooltipWidth).attr('height', tooltipHeight).attr('rx', 3).attr('ry', 3).style('fill', bodyFillColor).style('stroke', borderStrokeColor).style('stroke-width', 1);
+	            tooltip = tooltipTextContainer.append('rect').classed('tooltip-text-container', true).attr('x', -tooltipWidth / 4 + 8).attr('y', 0).attr('width', tooltipWidth).attr('height', tooltipHeight).attr('rx', tooltipBorderRadius).attr('ry', tooltipBorderRadius).style('fill', bodyFillColor).style('stroke', borderStrokeColor).style('stroke-width', 1);
 	
 	            tooltipTitle = tooltipTextContainer.append('text').classed('tooltip-title', true).attr('x', -tooltipWidth / 4 + 17).attr('dy', '.35em').attr('y', 16).style('fill', titleFillColor);
 	
-	            tooltipDivider = tooltipTextContainer.append('line').classed('tooltip-divider', true).attr('x1', -tooltipWidth / 4 + 15).attr('y1', 31).attr('x2', 265).attr('y2', 31).style('stroke', borderStrokeColor);
+	            tooltipDivider = tooltipTextContainer.append('line').classed('tooltip-divider', true).attr('x1', -tooltipWidth / 4 + 15).attr('x2', 265).attr('y1', 31).attr('y2', 31).style('stroke', borderStrokeColor);
 	
 	            tooltipBody = tooltipTextContainer.append('g').classed('tooltip-body', true).style('transform', 'translateY(8px)').style('fill', textFillColor);
 	        }
@@ -11076,6 +11070,39 @@ webpackJsonp([3,10],[
 	            }
 	
 	            return value;
+	        }
+	
+	        /**
+	         * Calculates the desired position for the tooltip
+	         * @param  {Number} mouseX             Current horizontal mouse position
+	         * @param  {Number} mouseY             Current vertical mouse position
+	         * @return {Number[]}                  X and Y position
+	         */
+	        function getTooltipPosition(_ref) {
+	            var _ref2 = _slicedToArray(_ref, 2),
+	                mouseX = _ref2[0],
+	                mouseY = _ref2[1];
+	
+	            var tooltipX = void 0,
+	                tooltipY = void 0;
+	
+	            // show tooltip to the right
+	            if (mouseX - tooltipWidth < 0) {
+	                // Tooltip on the right
+	                tooltipX = tooltipWidth - 185;
+	            } else {
+	                // Tooltip on the left
+	                tooltipX = -205;
+	            }
+	
+	            if (mouseY) {
+	                tooltipY = tooltipOffset.y;
+	                // tooltipY = mouseY + tooltipOffset.y;
+	            } else {
+	                tooltipY = tooltipOffset.y;
+	            }
+	
+	            return [tooltipX, tooltipY];
 	        }
 	
 	        /**
@@ -11111,7 +11138,7 @@ webpackJsonp([3,10],[
 	         * @param  {Object} topic Topic to extract data from
 	         * @return void
 	         */
-	        function updateContent(topic) {
+	        function updateTopicContent(topic) {
 	            var name = topic[nameLabel],
 	                tooltipRight = void 0,
 	                tooltipLeftText = void 0,
@@ -11138,21 +11165,22 @@ webpackJsonp([3,10],[
 	
 	        /**
 	         * Updates size and position of tooltip depending on the side of the chart we are in
+	         * TODO: This needs a refactor, following the mini-tooltip code.
+	         *
 	         * @param  {Object} dataPoint DataPoint of the tooltip
 	         * @param  {Number} xPosition DataPoint's x position in the chart
+	         * @param  {Number} xPosition DataPoint's y position in the chart
 	         * @return void
 	         */
-	        function updatePositionAndSize(dataPoint, xPosition) {
+	        function updatePositionAndSize(dataPoint, xPosition, yPosition) {
+	            var _getTooltipPosition = getTooltipPosition([xPosition, yPosition]),
+	                _getTooltipPosition2 = _slicedToArray(_getTooltipPosition, 2),
+	                tooltipX = _getTooltipPosition2[0],
+	                tooltipY = _getTooltipPosition2[1];
+	
 	            tooltip.attr('width', tooltipWidth).attr('height', tooltipHeight + 10);
 	
-	            // show tooltip to the right
-	            if (xPosition - tooltipWidth < 0) {
-	                // Tooltip on the right
-	                tooltipTextContainer.attr('transform', 'translate(' + (tooltipWidth - 185) + ',' + tooltipOffset.y + ')');
-	            } else {
-	                // Tooltip on the left
-	                tooltipTextContainer.attr('transform', 'translate(' + -205 + ',' + tooltipOffset.y + ')');
-	            }
+	            tooltipTextContainer.transition().duration(mouseChaseDuration).ease(ease).attr('transform', 'translate(' + tooltipX + ', ' + tooltipY + ')');
 	
 	            tooltipDivider.attr('x2', tooltipWidth - 60);
 	        }
@@ -11205,8 +11233,8 @@ webpackJsonp([3,10],[
 	            var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : forceOrder;
 	
 	            return forceOrder.map(function (orderName) {
-	                return topics.filter(function (_ref) {
-	                    var name = _ref.name;
+	                return topics.filter(function (_ref3) {
+	                    var name = _ref3.name;
 	                    return name === orderName;
 	                })[0];
 	            });
@@ -11226,8 +11254,8 @@ webpackJsonp([3,10],[
 	                return -1;
 	            });
 	
-	            var otherIndex = topics.map(function (_ref2) {
-	                var name = _ref2.name;
+	            var otherIndex = topics.map(function (_ref4) {
+	                var name = _ref4.name;
 	                return name;
 	            }).indexOf('Other');
 	
@@ -11236,31 +11264,6 @@ webpackJsonp([3,10],[
 	
 	                topics = topics.concat(other);
 	            }
-	        }
-	
-	        /**
-	         * Updates tooltip title, content, size and position
-	         * sorts by alphatical name order if not forced order given
-	         *
-	         * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
-	         * @param  {Number} xPosition           Position of the mouse on the X axis
-	         * @return void
-	         */
-	        function updateTooltip(dataPoint, xPosition) {
-	            var topics = dataPoint[topicLabel];
-	
-	            // sort order by forceOrder array if passed
-	            if (forceOrder.length) {
-	                topics = _sortByForceOrder(topics);
-	            } else if (topics.length && topics[0].name) {
-	                topics = _sortByAlpha(topics);
-	            }
-	
-	            cleanContent();
-	            resetSizeAndPositionPointers();
-	            updateTitle(dataPoint);
-	            topics.forEach(updateContent);
-	            updatePositionAndSize(dataPoint, xPosition);
 	        }
 	
 	        /**
@@ -11304,6 +11307,42 @@ webpackJsonp([3,10],[
 	                }
 	            });
 	        }
+	
+	        /**
+	         * Draws the data entries inside the tooltip
+	         * @param  {Object} dataPoint   Data entry from to take the info
+	         * @return void
+	         */
+	        function updateContent(dataPoint) {
+	            var topics = dataPoint[topicLabel];
+	
+	            // sort order by forceOrder array if passed
+	            if (forceOrder.length) {
+	                topics = _sortByForceOrder(topics);
+	            } else if (topics.length && topics[0].name) {
+	                topics = _sortByAlpha(topics);
+	            }
+	
+	            cleanContent();
+	            updateTitle(dataPoint);
+	            resetSizeAndPositionPointers();
+	            topics.forEach(updateTopicContent);
+	        }
+	
+	        /**
+	         * Updates tooltip title, content, size and position
+	         * sorts by alphatical name order if not forced order given
+	         *
+	         * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
+	         * @param  {Number} xPosition           Position of the mouse on the X axis
+	         * @return void
+	         */
+	        function updateTooltip(dataPoint, xPosition, yPosition) {
+	            updateContent(dataPoint);
+	            updatePositionAndSize(dataPoint, xPosition, yPosition);
+	        }
+	
+	        // API
 	        /**
 	        * Gets or Sets the nameLabel of the data
 	        * @param  {Number} _x Desired nameLabel
@@ -11424,9 +11463,11 @@ webpackJsonp([3,10],[
 	         * @return {Module} Tooltip module to chain calls
 	         * @public
 	         */
-	        exports.update = function (dataPoint, colorMapping, position) {
+	        exports.update = function (dataPoint, colorMapping, xPosition) {
+	            var yPosition = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+	
 	            colorMap = colorMapping;
-	            updateTooltip(dataPoint, position);
+	            updateTooltip(dataPoint, xPosition, yPosition);
 	
 	            return this;
 	        };
@@ -11441,6 +11482,7 @@ webpackJsonp([3,10],[
 	                return forceAxisSettings || defaultAxisSettings;
 	            }
 	            forceAxisSettings = _x;
+	
 	            return this;
 	        };
 	
@@ -11576,7 +11618,7 @@ webpackJsonp([3,10],[
 			{
 				"stack": "Direct",
 				"name": "Direct1",
-				"views": 0,
+				"views": 3,
 				"date": "2011-01-05"
 			},
 			{
@@ -11618,7 +11660,7 @@ webpackJsonp([3,10],[
 			{
 				"stack": "Eventbrite",
 				"name": "Eventbrite4",
-				"views": 0,
+				"views": 4,
 				"date": "2011-01-08"
 			},
 			{

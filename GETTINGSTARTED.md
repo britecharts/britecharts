@@ -24,7 +24,7 @@ In order to use a Britecharts chart in your project you would need to install it
 ```
 https://cdn.jsdelivr.net/npm/britecharts@1/dist/bundled/britecharts.min.js (latest 1.x.x version)
 ```
-Or [browse all CDN files](https://cdn.jsdelivr.net/npm/britecharts/dist/). Check also our [CDN demo page][cdnDemo]
+Or [browse all CDN files](https://cdn.jsdelivr.net/npm/britecharts/dist/). Check also our [CDN demo page][cdnDemo] or our [JSBin][jsbinSandbox] and [CodePen][codepenSandbox] sandbox projects.
 
 ### Using Britecharts
 
@@ -123,3 +123,5 @@ If you are excited about Britecharts, want to add more configurable properties o
 [contribute]: https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md
 [home]: http://eventbrite.github.io/britecharts/
 [cdnDemo]: https://eventbrite.github.io/britecharts/cdn.html
+[jsbinSandbox]: https://jsbin.com/wativun/1/edit?html,js,output
+[codepenSandbox]: https://codepen.io/Golodhros/pen/PprGeP?editors=1010
