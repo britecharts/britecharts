@@ -114,9 +114,9 @@ function createHorizontalgroupedBarChart(optionalColorSchema) {
         // Tooltip Setup and start
         chartTooltip
             .topicLabel('values')
-             .dateLabel('key')
-             .nameLabel('stack')
-            .title('Dummy Tooltip Title');
+            .dateLabel('key')
+            .nameLabel('stack')
+            .title('Tooltip Title');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
@@ -138,7 +138,7 @@ if (d3Selection.select('.js-grouped-bar-chart-tooltip-container').node()){
         creategroupedBarChartWithTooltip();
         createHorizontalgroupedBarChart();
     };
-    
+
     // Redraw charts on window resize
     PubSub.subscribe('resize', redrawCharts);
 

@@ -87,7 +87,7 @@ webpackJsonp([3,10],[
 	        container.datum(dataset.data).call(groupedBar);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.topicLabel('values').dateLabel('key').nameLabel('stack').title('Dummy Tooltip Title');
+	        chartTooltip.topicLabel('values').dateLabel('key').nameLabel('stack').title('Tooltip Title');
 	
 	        // Note that if the viewport width is less than the tooltipThreshold value,
 	        // this container won't exist, and the tooltip won't show up
@@ -9378,6 +9378,7 @@ webpackJsonp([3,10],[
 	            numOfVerticalTicks = 5,
 	            numOfHorizontalTicks = 5,
 	            percentageAxisToMaxRatio = 1,
+	            baseLine = void 0,
 	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
 	            colorScale = void 0,
 	            categoryColorMap = void 0,
@@ -9622,6 +9623,22 @@ webpackJsonp([3,10],[
 	        }
 	
 	        /**
+	         * Draws a vertical line to extend x-axis till the edges
+	         * @return {void}
+	         */
+	        function drawHorizontalExtendedLine() {
+	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-x-line').data([0]).enter().append('line').attr('class', 'extended-x-line').attr('x1', xAxisPadding.left).attr('x2', chartWidth).attr('y1', chartHeight).attr('y2', chartHeight);
+	        }
+	
+	        /**
+	         * Draws a vertical line to extend y-axis till the edges
+	         * @return {void}
+	         */
+	        function drawVerticalExtendedLine() {
+	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-y-line').data([0]).enter().append('line').attr('class', 'extended-y-line').attr('y1', xAxisPadding.bottom).attr('y2', chartHeight).attr('x1', 0).attr('x2', 0);
+	        }
+	
+	        /**
 	         * Adjusts the position of the y axis' ticks
 	         * @param  {D3Selection} selection Y axis group
 	         * @return void
@@ -9649,6 +9666,12 @@ webpackJsonp([3,10],[
 	                }).attr('x2', function (d) {
 	                    return xScale(d);
 	                });
+	            }
+	
+	            if (horizontal) {
+	                drawVerticalExtendedLine();
+	            } else {
+	                drawHorizontalExtendedLine();
 	            }
 	        }
 	

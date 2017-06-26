@@ -277,6 +277,7 @@
             numOfVerticalTicks = 5,
             numOfHorizontalTicks = 5,
             percentageAxisToMaxRatio = 1,
+            baseLine,
 
             colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
 
@@ -534,14 +535,14 @@
          */
         function cleanData(data) {
             return data.map((d) => {
-                d.value = +d[valueLabel];
-                d.group = d[groupLabel];
-                // for tooltip
-                d.topicName = getGroup(d);
-                d.name = d[nameLabel];
+                    d.value = +d[valueLabel];
+                    d.group = d[groupLabel];
+                    // for tooltip
+                    d.topicName = getGroup(d);
+                    d.name = d[nameLabel];
 
-                return d;
-            });
+                    return d;
+                });
         }
 
         /**
@@ -568,6 +569,40 @@
                     .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
                     .call(yAxis);
             }
+        }
+
+        /**
+         * Draws a vertical line to extend x-axis till the edges
+         * @return {void}
+         */
+        function drawHorizontalExtendedLine() {
+            baseLine = svg.select('.grid-lines-group')
+                .selectAll('line.extended-x-line')
+                .data([0])
+                .enter()
+                  .append('line')
+                    .attr('class', 'extended-x-line')
+                    .attr('x1', (xAxisPadding.left))
+                    .attr('x2', chartWidth)
+                    .attr('y1', chartHeight)
+                    .attr('y2', chartHeight);
+        }
+
+        /**
+         * Draws a vertical line to extend y-axis till the edges
+         * @return {void}
+         */
+        function drawVerticalExtendedLine() {
+            baseLine = svg.select('.grid-lines-group')
+                .selectAll('line.extended-y-line')
+                .data([0])
+                .enter()
+                  .append('line')
+                    .attr('class', 'extended-y-line')
+                    .attr('y1', (xAxisPadding.bottom))
+                    .attr('y2', chartHeight)
+                    .attr('x1', 0)
+                    .attr('x2', 0);
         }
 
         /**
@@ -609,6 +644,12 @@
                         .attr('y2', chartHeight)
                         .attr('x1', (d) => xScale(d))
                         .attr('x2', (d) => xScale(d));
+            }
+
+            if (horizontal) {
+                drawVerticalExtendedLine();
+            } else {
+                drawHorizontalExtendedLine();
             }
         }
 
