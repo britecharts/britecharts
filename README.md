@@ -33,9 +33,11 @@ The typical use of Britecharts involves creating a chart using its simple API, t
 
 All the components expose some basic API methods like width, height and margin. Additionally, each chart or component can expose more methods. Those can be found in the documentation of the modules:
 
- - Bar Chart: [API][22] - [Demo][4]
  - Line Chart: [API][25] - [Demo][5]
  - Donut Chart: [API][21] - [Demo][6]
+ - Bar Chart: [API][22] - [Demo][4]
+ - Stacked Bar Chart: [API][38] - [Demo][39]
+ - Grouped Bar Chart: [API][40] - [Demo][41]
  - Brush Chart: [API][23] - [Demo][18]
  - Sparkline Chart: [API][29] - [Demo][7]
  - Stacked Area Chart: [API][30] - [Demo][8]
@@ -52,7 +54,7 @@ Britecharts components are distributed in **UMD modules**, each one exposing a D
    npm install britecharts d3-selection
 ```
 
-They also provide some minimal CSS styling, that can be loaded independently or as a bundle. Check out our [CDN demo][cdnDemo] page.
+They also provide some minimal CSS styling, that can be loaded independently or as a bundle. Check out our [CDN demo][cdnDemo] page or our [JSBin][jsbinSandbox] and [CodePen][codepenSandbox] sandbox projects. You can also watch [Per Borgen's screencast][screenCast] to see Britecharts in action.
 
 ## Roadmap
 This project is in active development, if you are interested on helping you can check the [contributing][35] document. Review the [issues page][16] for more info on what's coming, to give your feedback, and to vote for your favorite proposals.
@@ -124,5 +126,13 @@ Read more in the [license document][15]
 [35]: https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md
 [36]: https://eventbrite.github.io/britecharts/img/logo-stripes-small.png
 [37]: https://github.com/d3/d3-selection
+[38]: https://eventbrite.github.io/britecharts/module-Stacked-bar.html
+[39]: https://eventbrite.github.io/britecharts/tutorial-stacked-bar.html
+[40]: https://eventbrite.github.io/britecharts/module-Grouped-bar.html
+[41]: https://eventbrite.github.io/britecharts/tutorial-Grouped-bar.html
+
 
 [cdnDemo]: https://eventbrite.github.io/britecharts/cdn.html
+[jsbinSandbox]: https://jsbin.com/wativun/1/edit?html,js,output
+[codepenSandbox]: https://codepen.io/Golodhros/pen/PprGeP?editors=1010
+[screenCast]: https://scrimba.com/casts/cZWm2tb

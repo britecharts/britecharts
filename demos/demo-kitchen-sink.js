@@ -14,6 +14,8 @@ window.onload = function(){
 
     loadScript('/britecharts/scripts/demo-stacked-area');
     loadScript('/britecharts/scripts/demo-bar');
+    loadScript('/britecharts/scripts/demo-stacked-bar');
+    loadScript('/britecharts/scripts/demo-grouped-bar');
     loadScript('/britecharts/scripts/demo-donut');
     loadScript('/britecharts/scripts/demo-line');
     loadScript('/britecharts/scripts/demo-sparkline');
