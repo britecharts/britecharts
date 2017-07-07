@@ -216,6 +216,18 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                     expect(d3.select(elements[3]).attr('class')).toEqual('legend-entry');
                     expect(d3.select(elements[4]).attr('class')).toEqual('legend-entry');
                 });
+
+                it('should provide numberFormat getter and setter', () =>{
+                    let previous = legendChart.numberFormat(),
+                        expected = 'd',
+                        actual;
+
+                    legendChart.numberFormat(expected);
+                    actual = legendChart.numberFormat();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
             });
         });
 
