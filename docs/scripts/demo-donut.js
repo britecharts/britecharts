@@ -52,7 +52,7 @@ webpackJsonp([2,10],[
 	    if (containerWidth) {
 	        d3Selection.select('.js-legend-chart-container .britechart-legend').remove();
 	
-	        legendChart.width(containerWidth * 0.8).height(200).numberFormat('s');
+	        legendChart.width(containerWidth * 0.8).height(200).numberFormat('s').horizontal(true);
 	
 	        if (optionalColorSchema) {
 	            legendChart.colorSchema(optionalColorSchema);

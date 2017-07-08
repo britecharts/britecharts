@@ -65,6 +65,7 @@ This project is in active development, if you are interested on helping you can 
 - [Release Notes][13]
 - [Contributing Guide][35]
 - [Github Repo][33]
+- [Bar Chart Tutorial (Video)][42]
 
 ## Acknowledgments
 
@@ -130,7 +131,7 @@ Read more in the [license document][15]
 [39]: https://eventbrite.github.io/britecharts/tutorial-stacked-bar.html
 [40]: https://eventbrite.github.io/britecharts/module-Grouped-bar.html
 [41]: https://eventbrite.github.io/britecharts/tutorial-Grouped-bar.html
-
+[42]: https://scrimba.com/casts/cZWm2tb
 
 [cdnDemo]: https://eventbrite.github.io/britecharts/cdn.html
 [jsbinSandbox]: https://jsbin.com/wativun/1/edit?html,js,output

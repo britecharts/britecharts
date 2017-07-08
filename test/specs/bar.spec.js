@@ -215,6 +215,18 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(defaultAnimation).not.toBe(testAnimation);
                 expect(newAnimation).toBe(testAnimation);
             });
+
+            it('should provide a reverseColorList getter and setter', () => {
+                let defaultReverseColorList = barChart.reverseColorList(),
+                    testReverseColorList = false,
+                    newReverseColorList;
+
+                barChart.reverseColorList(testReverseColorList);
+                newReverseColorList = barChart.reverseColorList();
+
+                expect(defaultReverseColorList).not.toBe(testReverseColorList);
+                expect(newReverseColorList).toBe(testReverseColorList);
+            });
         });
 
         describe('when hovering a bar', function() {

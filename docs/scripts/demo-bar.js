@@ -1462,6 +1462,7 @@ webpackJsonp([0,10],[
 	            nameLabel = 'name',
 	            maskGridLines = void 0,
 	            baseLine = void 0,
+	            reverseColorList = true,
 	
 	
 	        // Dispatcher object to broadcast the mouse events
@@ -1580,18 +1581,29 @@ webpackJsonp([0,10],[
 	                yScale = d3Scale.scaleBand().domain(data.map(getName)).rangeRound([chartHeight, 0]).padding(0.1);
 	            }
 	
-	            colorList = data.map(function (d) {
-	                return d;
-	            }).reverse().map(function (_ref9, i) {
-	                var name = _ref9.name;
-	                return {
-	                    name: name,
-	                    color: colorSchema[i % colorSchema.length] };
-	            });
+	            if (reverseColorList) {
+	                colorList = data.map(function (d) {
+	                    return d;
+	                }).reverse().map(function (_ref9, i) {
+	                    var name = _ref9.name;
+	                    return {
+	                        name: name,
+	                        color: colorSchema[i % colorSchema.length] };
+	                });
+	            } else {
+	                colorList = data.map(function (d) {
+	                    return d;
+	                }).map(function (_ref10, i) {
+	                    var name = _ref10.name;
+	                    return {
+	                        name: name,
+	                        color: colorSchema[i % colorSchema.length] };
+	                });
+	            }
 	
 	            colorMap = function colorMap(item) {
-	                return colorList.filter(function (_ref10) {
-	                    var name = _ref10.name;
+	                return colorList.filter(function (_ref11) {
+	                    var name = _ref11.name;
 	                    return name === item;
 	                })[0].color;
 	            };
@@ -1664,31 +1676,31 @@ webpackJsonp([0,10],[
 	         */
 	        function drawHorizontalBars(bars) {
 	            // Enter + Update
-	            bars.enter().append('rect').classed('bar', true).attr('y', chartHeight).attr('x', 0).attr('height', yScale.bandwidth()).attr('width', function (_ref11) {
-	                var value = _ref11.value;
+	            bars.enter().append('rect').classed('bar', true).attr('y', chartHeight).attr('x', 0).attr('height', yScale.bandwidth()).attr('width', function (_ref12) {
+	                var value = _ref12.value;
 	                return xScale(value);
-	            }).attr('fill', function (_ref12) {
-	                var name = _ref12.name;
+	            }).attr('fill', function (_ref13) {
+	                var name = _ref13.name;
 	                return colorMap(name);
 	            }).on('mouseover', function () {
 	                dispatcher.call('customMouseOver', this);
-	                d3Selection.select(this).attr('fill', function (_ref13) {
-	                    var name = _ref13.name;
+	                d3Selection.select(this).attr('fill', function (_ref14) {
+	                    var name = _ref14.name;
 	                    return d3Color.color(colorMap(name)).darker();
 	                });
 	            }).on('mousemove', function (d) {
 	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
 	            }).on('mouseout', function () {
 	                dispatcher.call('customMouseOut', this);
-	                d3Selection.select(this).attr('fill', function (_ref14) {
-	                    var name = _ref14.name;
+	                d3Selection.select(this).attr('fill', function (_ref15) {
+	                    var name = _ref15.name;
 	                    return colorMap(name);
 	                });
-	            }).merge(bars).attr('x', 0).attr('y', function (_ref15) {
-	                var name = _ref15.name;
+	            }).merge(bars).attr('x', 0).attr('y', function (_ref16) {
+	                var name = _ref16.name;
 	                return yScale(name);
-	            }).attr('height', yScale.bandwidth()).attr('width', function (_ref16) {
-	                var value = _ref16.value;
+	            }).attr('height', yScale.bandwidth()).attr('width', function (_ref17) {
+	                var value = _ref17.value;
 	                return xScale(value);
 	            });
 	        }
@@ -1700,33 +1712,33 @@ webpackJsonp([0,10],[
 	         */
 	        function drawAnimatedHorizontalBars(bars) {
 	            // Enter + Update
-	            bars.enter().append('rect').classed('bar', true).attr('x', 0).attr('y', chartHeight).attr('height', yScale.bandwidth()).attr('width', function (_ref17) {
-	                var value = _ref17.value;
+	            bars.enter().append('rect').classed('bar', true).attr('x', 0).attr('y', chartHeight).attr('height', yScale.bandwidth()).attr('width', function (_ref18) {
+	                var value = _ref18.value;
 	                return xScale(value);
-	            }).attr('fill', function (_ref18) {
-	                var name = _ref18.name;
+	            }).attr('fill', function (_ref19) {
+	                var name = _ref19.name;
 	                return colorMap(name);
 	            }).on('mouseover', function () {
 	                dispatcher.call('customMouseOver', this);
-	                d3Selection.select(this).attr('fill', function (_ref19) {
-	                    var name = _ref19.name;
+	                d3Selection.select(this).attr('fill', function (_ref20) {
+	                    var name = _ref20.name;
 	                    return d3Color.color(colorMap(name)).darker();
 	                });
 	            }).on('mousemove', function (d) {
 	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
 	            }).on('mouseout', function () {
 	                dispatcher.call('customMouseOut', this);
-	                d3Selection.select(this).attr('fill', function (_ref20) {
-	                    var name = _ref20.name;
+	                d3Selection.select(this).attr('fill', function (_ref21) {
+	                    var name = _ref21.name;
 	                    return colorMap(name);
 	                });
 	            });
 	
-	            bars.attr('x', 0).attr('y', function (_ref21) {
-	                var name = _ref21.name;
+	            bars.attr('x', 0).attr('y', function (_ref22) {
+	                var name = _ref22.name;
 	                return yScale(name);
-	            }).attr('height', yScale.bandwidth()).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('width', function (_ref22) {
-	                var value = _ref22.value;
+	            }).attr('height', yScale.bandwidth()).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('width', function (_ref23) {
+	                var value = _ref23.value;
 	                return xScale(value);
 	            });
 	        }
@@ -1738,37 +1750,37 @@ webpackJsonp([0,10],[
 	         */
 	        function drawAnimatedVerticalBars(bars) {
 	            // Enter + Update
-	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref23) {
-	                var value = _ref23.value;
-	                return yScale(value);
-	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref24) {
+	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref24) {
 	                var value = _ref24.value;
+	                return yScale(value);
+	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref25) {
+	                var value = _ref25.value;
 	                return chartHeight - yScale(value);
-	            }).attr('fill', function (_ref25) {
-	                var name = _ref25.name;
+	            }).attr('fill', function (_ref26) {
+	                var name = _ref26.name;
 	                return colorMap(name);
 	            }).on('mouseover', function () {
 	                dispatcher.call('customMouseOver', this);
-	                d3Selection.select(this).attr('fill', function (_ref26) {
-	                    var name = _ref26.name;
+	                d3Selection.select(this).attr('fill', function (_ref27) {
+	                    var name = _ref27.name;
 	                    return d3Color.color(colorMap(name)).darker();
 	                });
 	            }).on('mousemove', function (d) {
 	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
 	            }).on('mouseout', function () {
 	                dispatcher.call('customMouseOut', this);
-	                d3Selection.select(this).attr('fill', function (_ref27) {
-	                    var name = _ref27.name;
+	                d3Selection.select(this).attr('fill', function (_ref28) {
+	                    var name = _ref28.name;
 	                    return colorMap(name);
 	                });
-	            }).merge(bars).attr('x', function (_ref28) {
-	                var name = _ref28.name;
+	            }).merge(bars).attr('x', function (_ref29) {
+	                var name = _ref29.name;
 	                return xScale(name);
-	            }).attr('width', xScale.bandwidth()).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('y', function (_ref29) {
-	                var value = _ref29.value;
-	                return yScale(value);
-	            }).attr('height', function (_ref30) {
+	            }).attr('width', xScale.bandwidth()).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('y', function (_ref30) {
 	                var value = _ref30.value;
+	                return yScale(value);
+	            }).attr('height', function (_ref31) {
+	                var value = _ref31.value;
 	                return chartHeight - yScale(value);
 	            });
 	        }
@@ -1780,37 +1792,37 @@ webpackJsonp([0,10],[
 	         */
 	        function drawVerticalBars(bars) {
 	            // Enter + Update
-	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref31) {
-	                var value = _ref31.value;
-	                return yScale(value);
-	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref32) {
+	            bars.enter().append('rect').classed('bar', true).attr('x', chartWidth).attr('y', function (_ref32) {
 	                var value = _ref32.value;
+	                return yScale(value);
+	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref33) {
+	                var value = _ref33.value;
 	                return chartHeight - yScale(value);
-	            }).attr('fill', function (_ref33) {
-	                var name = _ref33.name;
+	            }).attr('fill', function (_ref34) {
+	                var name = _ref34.name;
 	                return colorMap(name);
 	            }).on('mouseover', function () {
 	                dispatcher.call('customMouseOver', this);
-	                d3Selection.select(this).attr('fill', function (_ref34) {
-	                    var name = _ref34.name;
+	                d3Selection.select(this).attr('fill', function (_ref35) {
+	                    var name = _ref35.name;
 	                    return d3Color.color(colorMap(name)).darker();
 	                });
 	            }).on('mousemove', function (d) {
 	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
 	            }).on('mouseout', function () {
 	                dispatcher.call('customMouseOut', this);
-	                d3Selection.select(this).attr('fill', function (_ref35) {
-	                    var name = _ref35.name;
+	                d3Selection.select(this).attr('fill', function (_ref36) {
+	                    var name = _ref36.name;
 	                    return colorMap(name);
 	                });
-	            }).merge(bars).attr('x', function (_ref36) {
-	                var name = _ref36.name;
+	            }).merge(bars).attr('x', function (_ref37) {
+	                var name = _ref37.name;
 	                return xScale(name);
-	            }).attr('y', function (_ref37) {
-	                var value = _ref37.value;
-	                return yScale(value);
-	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref38) {
+	            }).attr('y', function (_ref38) {
 	                var value = _ref38.value;
+	                return yScale(value);
+	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref39) {
+	                var value = _ref39.value;
 	                return chartHeight - yScale(value);
 	            });
 	        }
@@ -2148,6 +2160,21 @@ webpackJsonp([0,10],[
 	                return nameLabel;
 	            }
 	            nameLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets whether the color list should be reversed or not
+	         * @param  {boolean} _x     Should reverse the color list
+	         * @return { boolean | module} Is color list being reversed
+	         * @public
+	         */
+	        exports.reverseColorList = function (_x) {
+	            if (!arguments.length) {
+	                return reverseColorList;
+	            }
+	            reverseColorList = _x;
 	
 	            return this;
 	        };
