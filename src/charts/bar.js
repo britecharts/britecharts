@@ -100,13 +100,14 @@ define(function(require) {
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
             animationDuration = 800,
-            interBarDelay = function(d, i) { return 70 * i},
+            interBarDelay = function(d, i) {return 70 * i},
 
             valueLabel = 'value',
             nameLabel = 'name',
 
             maskGridLines,
             baseLine,
+            reverseColorList = true,
 
             // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
@@ -131,8 +132,8 @@ define(function(require) {
          *                                  the container(s) where the chart(s) will be rendered
          * @param {BarChartData} _data The data to attach and generate the chart
          */
-        function exports(_selection){
-            _selection.each(function(_data){
+        function exports(_selection) {
+            _selection.each(function(_data) {
                 chartWidth = width - margin.left - margin.right - (yAxisPaddingBetweenChart * 1.2);
                 chartHeight = height - margin.top - margin.bottom;
                 ({data, dataZeroed} = cleanData(_data));
@@ -153,7 +154,7 @@ define(function(require) {
          * Creates the d3 x and y axis, setting orientations
          * @private
          */
-        function buildAxis(){
+        function buildAxis() {
             if (!horizontal) {
                 xAxis = d3Axis.axisBottom(xScale);
 
@@ -173,11 +174,11 @@ define(function(require) {
          * Also applies the Margin convention
          * @private
          */
-        function buildContainerGroups(){
+        function buildContainerGroups() {
             let container = svg
-              .append('g')
-                .classed('container-group', true)
-                .attr('transform', `translate(${margin.left + yAxisPaddingBetweenChart}, ${margin.top})`);
+                .append('g')
+                  .classed('container-group', true)
+                  .attr('transform', `translate(${margin.left + yAxisPaddingBetweenChart}, ${margin.top})`);
 
             container
                 .append('g').classed('grid-lines-group', true);
@@ -220,12 +221,20 @@ define(function(require) {
                     .padding(0.1);
             }
 
-            colorList = data.map(d => d)
-                            .reverse()
-                            .map(({name}, i) => ({
-                                    name,
-                                    color: colorSchema[i % colorSchema.length]}
-                                ));
+            if (reverseColorList) {
+                colorList = data.map(d => d)
+                                .reverse()
+                                .map(({name}, i) => ({
+                                        name,
+                                        color: colorSchema[i % colorSchema.length]}
+                                    ));
+            } else {
+                colorList = data.map(d => d)
+                                .map(({name}, i) => ({
+                                        name,
+                                        color: colorSchema[i % colorSchema.length]}
+                                    ));
+            }
 
             colorMap = (item) => colorList.filter(({name}) => name === item)[0].color;
         }
@@ -235,11 +244,11 @@ define(function(require) {
          * @param  {HTMLElement} container DOM element that will work as the container of the graph
          * @private
          */
-        function buildSVG(container){
+        function buildSVG(container) {
             if (!svg) {
                 svg = d3Selection.select(container)
-                  .append('svg')
-                    .classed('britechart bar-chart', true);
+                    .append('svg')
+                      .classed('britechart bar-chart', true);
 
                 buildContainerGroups();
             }
@@ -282,7 +291,7 @@ define(function(require) {
          * respective groups
          * @private
          */
-        function drawAxis(){
+        function drawAxis() {
             svg.select('.x-axis-group.axis')
                 .attr('transform', `translate(0, ${chartHeight})`)
                 .call(xAxis);
@@ -465,7 +474,7 @@ define(function(require) {
          * Draws the bar elements within the chart group
          * @private
          */
-        function drawBars(){
+        function drawBars() {
             let bars;
 
             if (isAnimated) {
@@ -508,7 +517,7 @@ define(function(require) {
          * Draws grid lines on the background of the chart
          * @return void
          */
-        function drawGridLines(){
+        function drawGridLines() {
             if (!horizontal) {
                 drawVerticalGridLines();
             } else {
@@ -813,6 +822,21 @@ define(function(require) {
                 return nameLabel;
             }
             nameLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets whether the color list should be reversed or not
+         * @param  {boolean} _x     Should reverse the color list
+         * @return { boolean | module} Is color list being reversed
+         * @public
+         */
+        exports.reverseColorList = function(_x) {
+            if (!arguments.length) {
+                return reverseColorList;
+            }
+            reverseColorList = _x;
 
             return this;
         };
