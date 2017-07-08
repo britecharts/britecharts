@@ -82,7 +82,7 @@ define(function(require){
 
             valueReservedSpace = 40,
             numberLetterSpacing = 0.8,
-            numberFormat = d3Format.format('s'),
+            numberFormat = 's',
 
             isFadedClassName = 'is-faded',
             horizontal = false,
@@ -93,7 +93,7 @@ define(function(require){
 
             getId = ({id}) => id,
             getName = ({name}) => name,
-            getFormattedQuantity = ({quantity}) => numberFormat(quantity),
+            getFormattedQuantity = ({quantity}) => d3Format.format(numberFormat)(quantity),
             getCircleFill = ({name}) => colorScale(name),
 
             entries,
@@ -480,6 +480,21 @@ define(function(require){
                 return width;
             }
             width = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the number format of the legend chart
+         * @param  {string} _x Desired number format for the legend chart
+         * @return {numberFormat | module} Current number format or Legend module to chain calls
+         * @public
+         */
+        exports.numberFormat = function(_x) {
+            if (!arguments.length) {
+                return numberFormat;
+            }
+            numberFormat = _x;
 
             return this;
         };
