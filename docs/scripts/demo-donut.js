@@ -52,7 +52,7 @@ webpackJsonp([2,10],[
 	    if (containerWidth) {
 	        d3Selection.select('.js-legend-chart-container .britechart-legend').remove();
 	
-	        legendChart.width(containerWidth * 0.8).height(200);
+	        legendChart.width(containerWidth * 0.8).height(200).numberFormat('s').horizontal(true);
 	
 	        if (optionalColorSchema) {
 	            legendChart.colorSchema(optionalColorSchema);
@@ -11964,7 +11964,7 @@ webpackJsonp([2,10],[
 	            marginRatio = 1.5,
 	            valueReservedSpace = 40,
 	            numberLetterSpacing = 0.8,
-	            numberFormat = d3Format.format('s'),
+	            numberFormat = 's',
 	            isFadedClassName = 'is-faded',
 	            horizontal = false,
 	
@@ -11982,7 +11982,7 @@ webpackJsonp([2,10],[
 	        },
 	            getFormattedQuantity = function getFormattedQuantity(_ref3) {
 	            var quantity = _ref3.quantity;
-	            return numberFormat(quantity);
+	            return d3Format.format(numberFormat)(quantity);
 	        },
 	            getCircleFill = function getCircleFill(_ref4) {
 	            var name = _ref4.name;
@@ -12289,6 +12289,21 @@ webpackJsonp([2,10],[
 	                return width;
 	            }
 	            width = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the number format of the legend chart
+	         * @param  {string} _x Desired number format for the legend chart
+	         * @return {numberFormat | module} Current number format or Legend module to chain calls
+	         * @public
+	         */
+	        exports.numberFormat = function (_x) {
+	            if (!arguments.length) {
+	                return numberFormat;
+	            }
+	            numberFormat = _x;
 	
 	            return this;
 	        };
