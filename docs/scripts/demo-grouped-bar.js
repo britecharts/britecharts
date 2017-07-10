@@ -122,7 +122,7 @@ webpackJsonp([3,10],[
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-selection/ Version 1.1.0. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-selection/ Version 1.0.5. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -747,18 +747,16 @@ webpackJsonp([3,10],[
 	}
 	
 	var selection_style = function(name, value, priority) {
+	  var node;
 	  return arguments.length > 1
 	      ? this.each((value == null
 	            ? styleRemove : typeof value === "function"
 	            ? styleFunction
 	            : styleConstant)(name, value, priority == null ? "" : priority))
-	      : styleValue(this.node(), name);
+	      : defaultView(node = this.node())
+	          .getComputedStyle(node, null)
+	          .getPropertyValue(name);
 	};
-	
-	function styleValue(node, name) {
-	  return node.style.getPropertyValue(name)
-	      || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
-	}
 	
 	function propertyRemove(name) {
 	  return function() {
@@ -971,7 +969,7 @@ webpackJsonp([3,10],[
 	  var window = defaultView(node),
 	      event = window.CustomEvent;
 	
-	  if (typeof event === "function") {
+	  if (event) {
 	    event = new event(type, params);
 	  } else {
 	    event = window.document.createEvent("Event");
@@ -1089,7 +1087,6 @@ webpackJsonp([3,10],[
 	exports.selection = selection;
 	exports.selector = selector;
 	exports.selectorAll = selectorAll;
-	exports.style = styleValue;
 	exports.touch = touch;
 	exports.touches = touches;
 	exports.window = defaultView;
@@ -1104,7 +1101,7 @@ webpackJsonp([3,10],[
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
 	Copyright (c) 2010,2011,2012,2013,2014 Morgan Roderick http://roderick.dk
 	License: MIT - http://mrgnrdrck.mit-license.org
 	
@@ -1113,22 +1110,20 @@ webpackJsonp([3,10],[
 	(function (root, factory){
 		'use strict';
 	
-		var PubSub = {};
-		root.PubSub = PubSub;
-		factory(PubSub);
+	    if (true){
+	        // AMD. Register as an anonymous module.
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	
-		// AMD support
-		if (true){
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return PubSub; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    } else if (typeof exports === 'object'){
+	        // CommonJS
+	        factory(exports);
 	
-		// CommonJS and Node.js module support
-		} else if (typeof exports === 'object'){
-			if (module !== undefined && module.exports) {
-				exports = module.exports = PubSub; // Node.js specific `module.exports`
-			}
-			exports.PubSub = PubSub; // CommonJS module 1.1.1 spec
-			module.exports = exports = PubSub; // CommonJS
-		}
+	    }
+	
+	    // Browser globals
+	    var PubSub = {};
+	    root.PubSub = PubSub;
+	    factory(PubSub);
 	
 	}(( typeof window === 'object' && window ) || this, function (PubSub){
 		'use strict';
@@ -2229,7 +2224,7 @@ webpackJsonp([3,10],[
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-axis/ Version 1.0.7. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-axis/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -2249,15 +2244,15 @@ webpackJsonp([3,10],[
 	var epsilon = 1e-6;
 	
 	function translateX(x) {
-	  return "translate(" + (x + 0.5) + ",0)";
+	  return "translate(" + x + ",0)";
 	}
 	
 	function translateY(y) {
-	  return "translate(0," + (y + 0.5) + ")";
+	  return "translate(0," + y + ")";
 	}
 	
 	function center(scale) {
-	  var offset = Math.max(0, scale.bandwidth() - 1) / 2; // Adjust for 0.5px offset.
+	  var offset = scale.bandwidth() / 2;
 	  if (scale.round()) offset = Math.round(offset);
 	  return function(d) {
 	    return scale(d) + offset;
@@ -2276,7 +2271,7 @@ webpackJsonp([3,10],[
 	      tickSizeOuter = 6,
 	      tickPadding = 3,
 	      k = orient === top || orient === left ? -1 : 1,
-	      x = orient === left || orient === right ? "x" : "y",
+	      x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x"),
 	      transform = orient === top || orient === bottom ? translateX : translateY;
 	
 	  function axis(context) {
@@ -2303,11 +2298,14 @@ webpackJsonp([3,10],[
 	
 	    line = line.merge(tickEnter.append("line")
 	        .attr("stroke", "#000")
-	        .attr(x + "2", k * tickSizeInner));
+	        .attr(x + "2", k * tickSizeInner)
+	        .attr(y + "1", 0.5)
+	        .attr(y + "2", 0.5));
 	
 	    text = text.merge(tickEnter.append("text")
 	        .attr("fill", "#000")
 	        .attr(x, k * spacing)
+	        .attr(y, 0.5)
 	        .attr("dy", orient === top ? "0em" : orient === bottom ? "0.71em" : "0.32em"));
 	
 	    if (context !== selection) {
@@ -3389,7 +3387,7 @@ webpackJsonp([3,10],[
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-scale/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-scale/ Version 1.0.5. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(4), __webpack_require__(11), __webpack_require__(12), __webpack_require__(9), __webpack_require__(13), __webpack_require__(14), __webpack_require__(7)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-collection', 'd3-interpolate', 'd3-format', 'd3-time', 'd3-time-format', 'd3-color'], factory) :
@@ -3704,39 +3702,17 @@ webpackJsonp([3,10],[
 	  };
 	
 	  scale.nice = function(count) {
-	    if (count == null) count = 10;
-	
 	    var d = domain(),
-	        i0 = 0,
-	        i1 = d.length - 1,
-	        start = d[i0],
-	        stop = d[i1],
-	        step;
+	        i = d.length - 1,
+	        n = count == null ? 10 : count,
+	        start = d[0],
+	        stop = d[i],
+	        step = d3Array.tickStep(start, stop, n);
 	
-	    if (stop < start) {
-	      step = start, start = stop, stop = step;
-	      step = i0, i0 = i1, i1 = step;
-	    }
-	
-	    step = d3Array.tickIncrement(start, stop, count);
-	
-	    if (step > 0) {
-	      start = Math.floor(start / step) * step;
-	      stop = Math.ceil(stop / step) * step;
-	      step = d3Array.tickIncrement(start, stop, count);
-	    } else if (step < 0) {
-	      start = Math.ceil(start * step) / step;
-	      stop = Math.floor(stop * step) / step;
-	      step = d3Array.tickIncrement(start, stop, count);
-	    }
-	
-	    if (step > 0) {
-	      d[i0] = Math.floor(start / step) * step;
-	      d[i1] = Math.ceil(stop / step) * step;
-	      domain(d);
-	    } else if (step < 0) {
-	      d[i0] = Math.ceil(start * step) / step;
-	      d[i1] = Math.floor(stop * step) / step;
+	    if (step) {
+	      step = d3Array.tickStep(Math.floor(start / step) * step, Math.ceil(stop / step) * step, n);
+	      d[0] = Math.floor(start / step) * step;
+	      d[i] = Math.ceil(stop / step) * step;
 	      domain(d);
 	    }
 	
@@ -4543,7 +4519,7 @@ webpackJsonp([3,10],[
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-interpolate/ Version 1.1.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-interpolate/ Version 1.1.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(7)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-color'], factory) :
@@ -4789,7 +4765,7 @@ webpackJsonp([3,10],[
 	      : b instanceof d3Color.color ? rgb$1
 	      : b instanceof Date ? date
 	      : Array.isArray(b) ? array
-	      : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
+	      : isNaN(b) ? object
 	      : number)(a, b);
 	};
 	
@@ -6072,7 +6048,7 @@ webpackJsonp([3,10],[
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-transition/ Version 1.1.0. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-transition/ Version 1.0.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(1), __webpack_require__(8), __webpack_require__(16), __webpack_require__(12), __webpack_require__(7), __webpack_require__(5)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-timer', 'd3-interpolate', 'd3-color', 'd3-ease'], factory) :
@@ -6637,8 +6613,9 @@ webpackJsonp([3,10],[
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.style(this, name),
-	        value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
+	    var style = d3Selection.window(this).getComputedStyle(this, null),
+	        value0 = style.getPropertyValue(name),
+	        value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -6655,7 +6632,7 @@ webpackJsonp([3,10],[
 	  var value00,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.style(this, name);
+	    var value0 = d3Selection.window(this).getComputedStyle(this, null).getPropertyValue(name);
 	    return value0 === value1 ? null
 	        : value0 === value00 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value1);
@@ -6667,9 +6644,10 @@ webpackJsonp([3,10],[
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.style(this, name),
+	    var style = d3Selection.window(this).getComputedStyle(this, null),
+	        value0 = style.getPropertyValue(name),
 	        value1 = value(this);
-	    if (value1 == null) value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
+	    if (value1 == null) value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);

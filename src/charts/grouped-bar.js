@@ -275,7 +275,6 @@ define(function (require) {
          * @private
          */
         function buildScales() {
-
             let yMax = d3Array.max(data.map(getValue));
 
             if (!horizontal) {
