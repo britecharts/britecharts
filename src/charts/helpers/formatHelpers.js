@@ -5,7 +5,7 @@ define(function(require) {
 
     const valueRangeLimits = {
                 small: 10,
-                medium: 100
+                medium: 1000
             };
     const integerValueFormats = {
                 small: d3Format.format(''),
