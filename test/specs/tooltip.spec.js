@@ -212,7 +212,6 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                             }
                         ]
                     }, topicColorMap, 0);
-
                     actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
                                 .text()
 
@@ -265,7 +264,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                 });
 
                 it('should not format medium numbers', () =>  {
-                    var expected = '100',
+                    var expected = '103',
                         actual;
 
                     tooltipChart.update({
@@ -273,7 +272,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                         topics: [
                             {
                                 name: 103,
-                                value: 100,
+                                value: 103,
                                 topicName: 'San Francisco'
                             }
                         ]
