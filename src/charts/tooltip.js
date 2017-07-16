@@ -69,6 +69,7 @@ define(function(require){
             height = 45,
 
             title = 'Tooltip title',
+            formatFunction = null,
 
             // tooltip
             tooltip,
@@ -238,7 +239,10 @@ define(function(require){
                 return 0;
             }
 
-            if (isInteger(value)) {
+            if( formatFunction ) {
+                value = formatFunction(value);
+            }
+            else if (isInteger(value)) {
                 value = formatIntegerValue(value);
             } else {
                 value = formatDecimalValue(value);
