@@ -647,9 +647,9 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the title of the tooltip
-         * @param  {string} _x Desired title
-         * @return { string | module} Current title or module to chain calls
+         * Gets or Sets the formatFunction of the tooltip
+         * @param  {Function} _x Desired formatFunction
+         * @return { Function | module} Current formatFunction or module to chain calls
          * @public
          */
         exports.formatFunction = function(_x) {
