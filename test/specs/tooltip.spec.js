@@ -312,9 +312,10 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                     var expected = '10,000',
                         actual;
 
+                    tooltipChart.formatFunction(d3.format(','));
+
                     tooltipChart.update({
                         date: '2015-08-05T07:00:00.000Z',
-                        formatFunction: d3.format(','),
                         topics: [
                             {
                                 name: 103,
