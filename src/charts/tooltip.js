@@ -647,6 +647,21 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the title of the tooltip
+         * @param  {string} _x Desired title
+         * @return { string | module} Current title or module to chain calls
+         * @public
+         */
+        exports.formatFunction = function(_x) {
+            if (!arguments.length) {
+                return formatFunction;
+            }
+            formatFunction = _x;
+
+            return this;
+        };
+
+        /**
          * Pass an override for the ordering of your tooltip
          * @param  {Object[]} _x    Array of the names of your tooltip items
          * @return { overrideOrder | module} Current overrideOrder or Chart module to chain calls
