@@ -1,25 +1,24 @@
-define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, dataBuilder) {
+define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataBuilder) {
     'use strict';
 
-    const aTestDataSet = () => new dataBuilder.GroupedBarChartDataBuilder();
-    const differentDatesReducer = (acc, d) => {
-                if (acc.indexOf(d.date) === -1) {
-                    acc.push(d.date);
+    const aTestDataSet = () => new dataBuilder.StackedBarDataBuilder();
+    const differentStacksReducer = (acc, d) => {
+                if (acc.indexOf(d.stack) === -1) {
+                    acc.push(d.stack);
                 }
 
                 return acc;
             };
 
     describe('Grouped Bar Chart', () => {
-        let groupedBarChart, dataset, containerFixture, f;
+        let stackedBarChart, dataset, containerFixture, f;
 
         beforeEach(() => {
             dataset = aTestDataSet()
                 .with3Sources()
                 .build();
-            groupedBarChart = chart()
-                        // .horizontal(true)
-                        .groupLabel('stack')
+            stackedBarChart = chart()
+                        .stackLabel('stack')
                         .nameLabel('date')
                         .valueLabel('views')
                         .grid('full');
@@ -30,7 +29,7 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
             f.load('testContainer.html');
 
             containerFixture = d3.select('.test-container');
-            containerFixture.datum(dataset.data).call(groupedBarChart);
+            containerFixture.datum(dataset.data).call(stackedBarChart);
         });
 
         afterEach(() => {
@@ -41,7 +40,7 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
         });
 
         it('should render a chart with minimal requirements', () => {
-            expect(containerFixture.select('.grouped-bar').empty()).toBeFalsy();
+            expect(containerFixture.select('.stacked-bar').empty()).toBeFalsy();
         });
 
         it('should render container, axis and chart groups', () => {
@@ -65,7 +64,7 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
 
         it('should render a layer for each data entry group', () => {
             let actual = containerFixture.selectAll('.layer').size();
-            let expected = dataset.data.reduce(differentDatesReducer, []).length;
+            let expected = dataset.data.reduce(differentStacksReducer, []).length;
 
             expect(actual).toEqual(expected);
         });
@@ -80,184 +79,184 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
         describe('API', function() {
 
             it('should provide an aspect ratio getter and setter', () => {
-                let previous = groupedBarChart.aspectRatio(),
+                let previous = stackedBarChart.aspectRatio(),
                     expected = 600,
                     actual;
 
-                groupedBarChart.aspectRatio(expected);
-                actual = groupedBarChart.aspectRatio();
+                stackedBarChart.aspectRatio(expected);
+                actual = stackedBarChart.aspectRatio();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
 
             it('should provide a colorSchema getter and setter', () => {
-                let previous = groupedBarChart.colorSchema(),
+                let previous = stackedBarChart.colorSchema(),
                     expected = ['#ffffff', '#fafefc', '#000000'],
                     actual;
 
-                groupedBarChart.colorSchema(expected);
-                actual = groupedBarChart.colorSchema();
+                stackedBarChart.colorSchema(expected);
+                actual = stackedBarChart.colorSchema();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
 
             it('should have exportChart defined', () => {
-                expect(groupedBarChart.exportChart).toBeDefined();
-            });
-
-            it('should provide groupLabel getter and setter', () => {
-                let previous = groupedBarChart.groupLabel(),
-                    expected = 'testLabel',
-                    actual;
-
-                groupedBarChart.groupLabel(expected);
-                actual = groupedBarChart.groupLabel();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
+                expect(stackedBarChart.exportChart).toBeDefined();
             });
 
             it('should provide grid mode getter and setter', () => {
-                let previous = groupedBarChart.grid(),
+                let previous = stackedBarChart.grid(),
                     expected = 'vertical',
                     actual;
 
-                groupedBarChart.grid(expected);
-                actual = groupedBarChart.grid();
+                stackedBarChart.grid(expected);
+                actual = stackedBarChart.grid();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
 
             it('should provide height getter and setter', () => {
-                let previous = groupedBarChart.height(),
+                let previous = stackedBarChart.height(),
                     expected = {top: 4, right: 4, bottom: 4, left: 4},
                     actual;
 
-                groupedBarChart.height(expected);
-                actual = groupedBarChart.height();
+                stackedBarChart.height(expected);
+                actual = stackedBarChart.height();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
 
             it('should provide horizontal direction getter and setter', () => {
-                let previous = groupedBarChart.horizontal(),
+                let previous = stackedBarChart.horizontal(),
                     expected = true,
                     actual;
 
-                groupedBarChart.horizontal(expected);
-                actual = groupedBarChart.horizontal();
+                stackedBarChart.horizontal(expected);
+                actual = stackedBarChart.horizontal();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
 
             it('should provide isAnimated getter and setter', () => {
-                let previous = groupedBarChart.isAnimated(),
+                let previous = stackedBarChart.isAnimated(),
                     expected = true,
                     actual;
 
-                groupedBarChart.isAnimated(expected);
-                actual = groupedBarChart.isAnimated();
+                stackedBarChart.isAnimated(expected);
+                actual = stackedBarChart.isAnimated();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
 
             it('should provide margin getter and setter', () => {
-                let previous = groupedBarChart.margin(),
+                let previous = stackedBarChart.margin(),
                     expected = {top: 4, right: 4, bottom: 4, left: 4},
                     actual;
 
-                groupedBarChart.margin(expected);
-                actual = groupedBarChart.margin();
+                stackedBarChart.margin(expected);
+                actual = stackedBarChart.margin();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
 
             it('should provide nameLabel getter and setter', () => {
-                let previous = groupedBarChart.nameLabel(),
+                let previous = stackedBarChart.nameLabel(),
                     expected = 'key',
                     actual;
 
-                groupedBarChart.nameLabel(expected);
-                actual = groupedBarChart.nameLabel();
+                stackedBarChart.nameLabel(expected);
+                actual = stackedBarChart.nameLabel();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
 
             it('should provide numOfHorizontalTicks getter and setter', () => {
-                let previous = groupedBarChart.numOfHorizontalTicks(),
+                let previous = stackedBarChart.numOfHorizontalTicks(),
                     expected = 4,
                     actual;
 
-                groupedBarChart.numOfHorizontalTicks(expected);
-                actual = groupedBarChart.numOfHorizontalTicks();
+                stackedBarChart.numOfHorizontalTicks(expected);
+                actual = stackedBarChart.numOfHorizontalTicks();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
 
             it('should provide numOfVerticalTicks getter and setter', () => {
-                let previous = groupedBarChart.numOfVerticalTicks(),
+                let previous = stackedBarChart.numOfVerticalTicks(),
                     expected = 4,
                     actual;
 
-                groupedBarChart.numOfVerticalTicks(expected);
-                actual = groupedBarChart.numOfVerticalTicks();
+                stackedBarChart.numOfVerticalTicks(expected);
+                actual = stackedBarChart.numOfVerticalTicks();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide stackLabel getter and setter', () => {
+                let previous = stackedBarChart.stackLabel(),
+                    expected = 'testLabel',
+                    actual;
+
+                stackedBarChart.stackLabel(expected);
+                actual = stackedBarChart.stackLabel();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
 
             it('should provide a tooltip threshold getter and setter', () => {
-                let previous = groupedBarChart.tooltipThreshold(),
+                let previous = stackedBarChart.tooltipThreshold(),
                     expected = 600,
                     actual;
 
-                groupedBarChart.tooltipThreshold(expected);
-                actual = groupedBarChart.tooltipThreshold();
+                stackedBarChart.tooltipThreshold(expected);
+                actual = stackedBarChart.tooltipThreshold();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
 
             it('should provide valueLabel getter and setter', () => {
-                let previous = groupedBarChart.valueLabel(),
+                let previous = stackedBarChart.valueLabel(),
                     expected = 'quantity',
                     actual;
 
-                groupedBarChart.valueLabel(expected);
-                actual = groupedBarChart.valueLabel();
+                stackedBarChart.valueLabel(expected);
+                actual = stackedBarChart.valueLabel();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
 
             it('should provide valueLabelFormat getter and setter', () => {
-                let previous = groupedBarChart.valueLabelFormat(),
+                let previous = stackedBarChart.valueLabelFormat(),
                     expected = 's',
                     actual;
 
-                groupedBarChart.valueLabelFormat(expected);
-                actual = groupedBarChart.valueLabelFormat();
+                stackedBarChart.valueLabelFormat(expected);
+                actual = stackedBarChart.valueLabelFormat();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
 
             it('should provide width getter and setter', () => {
-                let previous = groupedBarChart.width(),
+                let previous = stackedBarChart.width(),
                     expected = 40,
                     actual;
 
-                groupedBarChart.width(expected);
-                actual = groupedBarChart.width();
+                stackedBarChart.width(expected);
+                actual = stackedBarChart.width();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
@@ -267,20 +266,20 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
         describe('when hovering', function() {
 
             it('mouseover should trigger a callback', () => {
-                let chart = containerFixture.selectAll('.grouped-bar');
+                let chart = containerFixture.selectAll('.stacked-bar');
                 let callbackSpy = jasmine.createSpy('callback');
 
-                groupedBarChart.on('customMouseOver', callbackSpy);
+                stackedBarChart.on('customMouseOver', callbackSpy);
                 chart.dispatch('mouseover');
 
                 expect(callbackSpy.calls.count()).toBe(1);
             });
 
             it('mouseout should trigger a callback', () => {
-                let chart = containerFixture.selectAll('.grouped-bar');
+                let chart = containerFixture.selectAll('.stacked-bar');
                 let callbackSpy = jasmine.createSpy('callback');
 
-                groupedBarChart.on('customMouseOut', callbackSpy);
+                stackedBarChart.on('customMouseOut', callbackSpy);
                 chart.dispatch('mouseout');
 
                 expect(callbackSpy.calls.count()).toBe(1);

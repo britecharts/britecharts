@@ -60,111 +60,111 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
         describe('the API', function() {
 
             it('should provide margin getter and setter', function() {
-                var defaultMargin = brushChart.margin(),
-                    testMargin = {top: 4, right: 4, bottom: 4, left: 4},
-                    newMargin;
+                var previous = brushChart.margin(),
+                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    actual;
 
-                brushChart.margin(testMargin);
-                newMargin = brushChart.margin();
+                brushChart.margin(expected);
+                actual = brushChart.margin();
 
-                expect(defaultMargin).not.toBe(testMargin);
-                expect(newMargin).toBe(testMargin);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide width getter and setter', function() {
-                var defaultWidth = brushChart.width(),
-                    testWidth = 200,
-                    newWidth;
+                var previous = brushChart.width(),
+                    expected = 200,
+                    actual;
 
-                brushChart.width(testWidth);
-                newWidth = brushChart.width();
+                brushChart.width(expected);
+                actual = brushChart.width();
 
-                expect(defaultWidth).not.toBe(testWidth);
-                expect(newWidth).toBe(testWidth);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide height getter and setter', function() {
-                var defaultHeight = brushChart.height(),
-                    testHeight = 200,
-                    newHeight;
+                var previous = brushChart.height(),
+                    expected = 200,
+                    actual;
 
-                brushChart.height(testHeight);
-                newHeight = brushChart.height();
+                brushChart.height(expected);
+                actual = brushChart.height();
 
-                expect(defaultHeight).not.toBe(testHeight);
-                expect(newHeight).toBe(testHeight);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide a gradient getter and setter', () => {
-                let defaultGradient = brushChart.gradient(),
-                    testGradient = ['#ffffff', '#fafefc'],
-                    newGradient;
+                let previous = brushChart.gradient(),
+                    expected = ['#ffffff', '#fafefc'],
+                    actual;
 
-                brushChart.gradient(testGradient);
-                newGradient = brushChart.gradient();
+                brushChart.gradient(expected);
+                actual = brushChart.gradient();
 
-                expect(defaultGradient).not.toBe(testGradient);
-                expect(newGradient).toBe(testGradient);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide onBrush getter and setter', function() {
-                var defaultCallback = brushChart.onBrush(),
-                    testCallback = function() {},
-                    newCallback;
+                var previous = brushChart.onBrush(),
+                    expected = function() {},
+                    actual;
 
-                brushChart.onBrush(testCallback);
-                newCallback = brushChart.onBrush();
+                brushChart.onBrush(expected);
+                actual = brushChart.onBrush();
 
-                expect(defaultCallback).not.toBe(testCallback);
-                expect(newCallback).toBe(testCallback);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide a bush date range getter and setter', () => {
-                let defaultDateRange = brushChart.dateRange(),
-                    testDateRange = ["9/15/2015", "1/25/2016"],
-                    newDateRange;
+                let previous = brushChart.dateRange(),
+                    expected = ["9/15/2015", "1/25/2016"],
+                    actual;
 
-                brushChart.dateRange(testDateRange);
-                newDateRange = brushChart.dateRange();
+                brushChart.dateRange(expected);
+                actual = brushChart.dateRange();
 
-                expect(defaultDateRange).not.toBe(testDateRange);
-                expect(newDateRange).toBe(testDateRange);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide a forceAxisFormat getter and setter', () => {
-                let defaultSchema = brushChart.forceAxisFormat(),
-                    testFormat = brushChart.axisTimeCombinations.HOUR_DAY,
-                    newSchema;
+                let previous = brushChart.forceAxisFormat(),
+                    expected = brushChart.axisTimeCombinations.HOUR_DAY,
+                    actual;
 
-                brushChart.forceAxisFormat(testFormat);
-                newSchema = brushChart.forceAxisFormat();
+                brushChart.forceAxisFormat(expected);
+                actual = brushChart.forceAxisFormat();
 
-                expect(defaultSchema).not.toBe(testFormat);
-                expect(newSchema).toBe(testFormat);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide a forcedXTicks getter and setter', () => {
-                let defaultForcedXTicks = brushChart.forcedXTicks(),
-                    testXTicks = 2,
-                    newForcedXTicks;
+                let previous = brushChart.forcedXTicks(),
+                    expected = 2,
+                    actual;
 
-                brushChart.forcedXTicks(testXTicks);
-                newForcedXTicks = brushChart.forcedXTicks();
+                brushChart.forcedXTicks(expected);
+                actual = brushChart.forcedXTicks();
 
-                expect(defaultForcedXTicks).not.toBe(testXTicks);
-                expect(newForcedXTicks).toBe(testXTicks);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide a forcedXFormat getter and setter', () => {
-                let defaultForcedXFormat = brushChart.forcedXFormat(),
-                    testXFormat = '%d %b',
-                    newForcedXFormat;
+                let previous = brushChart.forcedXFormat(),
+                    expected = '%d %b',
+                    actual;
 
-                brushChart.forcedXFormat(testXFormat);
-                newForcedXFormat = brushChart.forcedXFormat();
+                brushChart.forcedXFormat(expected);
+                actual = brushChart.forcedXFormat();
 
-                expect(defaultForcedXFormat).not.toBe(testXFormat);
-                expect(newForcedXFormat).toBe(testXFormat);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
         });
     });

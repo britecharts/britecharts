@@ -12816,34 +12816,6 @@ webpackJsonp([8,10],[
 	        }
 	
 	        /**
-	         * Prepare data for create chart.
-	         * @private
-	         */
-	        function prepareData(data) {
-	            stacks = uniq(data.map(function (_ref) {
-	                var stack = _ref.stack;
-	                return stack;
-	            }));
-	            transformedData = d3Collection.nest().key(getName).rollup(function (values) {
-	                var ret = {};
-	
-	                values.forEach(function (entry) {
-	                    if (entry && entry[stackLabel]) {
-	                        ret[entry[stackLabel]] = getValue(entry);
-	                    }
-	                });
-	                ret.values = values; //for tooltip
-	
-	                return ret;
-	            }).entries(data).map(function (data) {
-	                return assign({}, {
-	                    total: d3Array.sum(d3Array.permute(data.value, stacks)),
-	                    key: data.key
-	                }, data.value);
-	            });
-	        }
-	
-	        /**
 	         * Adds events to the container group if the environment is not mobile
 	         * Adding: mouseover, mouseout and mousemove
 	         */
@@ -12853,6 +12825,15 @@ webpackJsonp([8,10],[
 	            }
 	
 	            svg.selectAll('.bar').on('mouseover', handleBarsMouseOver).on('mouseout', handleBarsMouseOut);
+	        }
+	
+	        /**
+	         * Adjusts the position of the y axis' ticks
+	         * @param  {D3Selection} selection Y axis group
+	         * @return void
+	         */
+	        function adjustYTickLabels(selection) {
+	            selection.selectAll('.tick text').attr('transform', 'translate(' + yTickTextXOffset + ', ' + yTickTextYOffset + ')');
 	        }
 	
 	        /**
@@ -12988,21 +12969,14 @@ webpackJsonp([8,10],[
 	        }
 	
 	        /**
-	         * Adjusts the position of the y axis' ticks
-	         * @param  {D3Selection} selection Y axis group
-	         * @return void
-	         */
-	        function adjustYTickLabels(selection) {
-	            selection.selectAll('.tick text').attr('transform', 'translate(' + yTickTextXOffset + ', ' + yTickTextYOffset + ')');
-	        }
-	
-	        /**
 	         * Draws grid lines on the background of the chart
 	         * @return void
 	         */
-	        function drawGridLines(xTicks, yTicks) {
+	        function drawGridLines() {
+	            var scale = horizontal ? xScale : yScale;
+	
 	            if (grid === 'horizontal' || grid === 'full') {
-	                svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(yScale.ticks(yTicks).slice(1)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left + 1).attr('x2', chartWidth).attr('y1', function (d) {
+	                svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(scale.ticks(numOfVerticalTicks).slice(1)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left + 1).attr('x2', chartWidth).attr('y1', function (d) {
 	                    return yScale(d);
 	                }).attr('y2', function (d) {
 	                    return yScale(d);
@@ -13010,7 +12984,7 @@ webpackJsonp([8,10],[
 	            }
 	
 	            if (grid === 'vertical' || grid === 'full') {
-	                svg.select('.grid-lines-group').selectAll('line.vertical-grid-line').data(xScale.ticks(xTicks).slice(1)).enter().append('line').attr('class', 'vertical-grid-line').attr('y1', 0).attr('y2', chartHeight).attr('x1', function (d) {
+	                svg.select('.grid-lines-group').selectAll('line.vertical-grid-line').data(scale.ticks(numOfHorizontalTicks).slice(1)).enter().append('line').attr('class', 'vertical-grid-line').attr('y1', 0).attr('y2', chartHeight).attr('x1', function (d) {
 	                    return xScale(d);
 	                }).attr('x2', function (d) {
 	                    return xScale(d);
@@ -13032,8 +13006,8 @@ webpackJsonp([8,10],[
 	        function drawHorizontalBars(series) {
 	            // Enter + Update
 	            var context = void 0,
-	                bars = series.data(layers).enter().append('g').classed('layer', true).attr('fill', function (_ref2) {
-	                var key = _ref2.key;
+	                bars = series.data(layers).enter().append('g').classed('layer', true).attr('fill', function (_ref) {
+	                var key = _ref.key;
 	                return categoryColorMap[key];
 	            }).selectAll('.bar').data(function (d) {
 	                return d;
@@ -13041,8 +13015,8 @@ webpackJsonp([8,10],[
 	                return xScale(d[0]);
 	            }).attr('y', function (d) {
 	                return yScale(d.data.key);
-	            }).attr('height', yScale.bandwidth()).attr('fill', function (_ref3) {
-	                var data = _ref3.data;
+	            }).attr('height', yScale.bandwidth()).attr('fill', function (_ref2) {
+	                var data = _ref2.data;
 	                return categoryColorMap[data.stack + data.key];
 	            });
 	
@@ -13081,8 +13055,8 @@ webpackJsonp([8,10],[
 	         */
 	        function drawVerticalBars(series) {
 	            // Enter + Update
-	            var bars = series.data(layers).enter().append('g').classed('layer', true).attr('fill', function (_ref4) {
-	                var key = _ref4.key;
+	            var bars = series.data(layers).enter().append('g').classed('layer', true).attr('fill', function (_ref3) {
+	                var key = _ref3.key;
 	                return categoryColorMap[key];
 	            }).selectAll('.bar').data(function (d) {
 	                return d;
@@ -13090,8 +13064,8 @@ webpackJsonp([8,10],[
 	                return xScale(d.data.key);
 	            }).attr('y', function (d) {
 	                return yScale(d[1]);
-	            }).attr('width', xScale.bandwidth).attr('fill', function (_ref5) {
-	                var data = _ref5.data;
+	            }).attr('width', xScale.bandwidth).attr('fill', function (_ref4) {
+	                var data = _ref4.data;
 	                return categoryColorMap[data.stack + data.key];
 	            }),
 	                context = void 0;
@@ -13165,8 +13139,8 @@ webpackJsonp([8,10],[
 	                nearest = void 0;
 	
 	            epsilon = xScale(dataByValueParsed[1].key) - xScale(dataByValueParsed[0].key);
-	            nearest = dataByValueParsed.find(function (_ref6) {
-	                var key = _ref6.key;
+	            nearest = dataByValueParsed.find(function (_ref5) {
+	                var key = _ref5.key;
 	                return Math.abs(xScale(key) - adjustedMouseX) <= epsilon;
 	            });
 	
@@ -13178,6 +13152,7 @@ webpackJsonp([8,10],[
 	        * @param  {Number} mouseY  Y position of the mouse
 	        * @return {obj}            Data entry that is closer to that y axis position
 	        */
+	
 	        function getNearestDataPoint2(mouseY) {
 	            var adjustedMouseY = mouseY - margin.bottom,
 	                epsilon = yScale.bandwidth(),
@@ -13282,6 +13257,34 @@ webpackJsonp([8,10],[
 	        }
 	
 	        /**
+	         * Prepare data for create chart.
+	         * @private
+	         */
+	        function prepareData(data) {
+	            stacks = uniq(data.map(function (_ref6) {
+	                var stack = _ref6.stack;
+	                return stack;
+	            }));
+	            transformedData = d3Collection.nest().key(getName).rollup(function (values) {
+	                var ret = {};
+	
+	                values.forEach(function (entry) {
+	                    if (entry && entry[stackLabel]) {
+	                        ret[entry[stackLabel]] = getValue(entry);
+	                    }
+	                });
+	                ret.values = values; //for tooltip
+	
+	                return ret;
+	            }).entries(data).map(function (data) {
+	                return assign({}, {
+	                    total: d3Array.sum(d3Array.permute(data.value, stacks)),
+	                    key: data.key
+	                }, data.value);
+	            });
+	        }
+	
+	        /**
 	         * Determines if we should add the tooltip related logic depending on the
 	         * size of the chart and the tooltipThreshold variable value
 	         * @return {boolean} Should we build the tooltip?
@@ -13323,64 +13326,11 @@ webpackJsonp([8,10],[
 	        };
 	
 	        /**
-	         * Gets or Sets the nameLabel of the chart
-	         * @param  {Number} _x Desired dateLabel for the graph
-	         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+	         * Chart exported to png and a download action is fired
 	         * @public
 	         */
-	        exports.nameLabel = function (_x) {
-	            if (!arguments.length) {
-	                return nameLabel;
-	            }
-	            nameLabel = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the valueLabelFormat of the chart
-	         * @param  {String[]} _x Desired valueLabelFormat for the graph
-	         * @return { valueLabelFormat | module} Current valueLabelFormat or Chart module to chain calls
-	         * @public
-	         */
-	        exports.nameLabelFormat = function (_x) {
-	            if (!arguments.length) {
-	                return nameLabelFormat;
-	            }
-	            nameLabelFormat = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Configurable extension of the x axis
-	         * if your max point was 50% you might want to show x axis to 60%, pass 1.2
-	         * @param  {number} _x ratio to max data point to add to the x axis
-	         * @return { ratio | module} Current ratio or Bar Chart module to chain calls
-	         * @public
-	         */
-	        exports.percentageAxisToMaxRatio = function (_x) {
-	            if (!arguments.length) {
-	                return percentageAxisToMaxRatio;
-	            }
-	            percentageAxisToMaxRatio = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the stackLabel of the chart
-	         * @param  {String} _x Desired stackLabel for the graph
-	         * @return { stackLabel | module} Current stackLabel or Chart module to chain calls
-	         * @public
-	         */
-	        exports.stackLabel = function (_x) {
-	            if (!arguments.length) {
-	                return stackLabel;
-	            }
-	            stackLabel = _x;
-	
-	            return this;
+	        exports.exportChart = function (filename, title) {
+	            exportChart.call(exports, svg, filename, title);
 	        };
 	
 	        /**
@@ -13465,6 +13415,111 @@ webpackJsonp([8,10],[
 	        };
 	
 	        /**
+	         * Gets or Sets the nameLabel of the chart
+	         * @param  {Number} _x Desired dateLabel for the graph
+	         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.nameLabel = function (_x) {
+	            if (!arguments.length) {
+	                return nameLabel;
+	            }
+	            nameLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the valueLabelFormat of the chart
+	         * @param  {String[]} _x Desired valueLabelFormat for the graph
+	         * @return { valueLabelFormat | module} Current valueLabelFormat or Chart module to chain calls
+	         * @public
+	         */
+	        exports.nameLabelFormat = function (_x) {
+	            if (!arguments.length) {
+	                return nameLabelFormat;
+	            }
+	            nameLabelFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the number of verticalTicks of the axis on the chart
+	         * @param  {Number} _x Desired verticalTicks
+	         * @return { numOfHorizontalTicks | module} Current numOfHorizontalTicks or Chart module to chain calls
+	         * @public
+	         */
+	        exports.numOfHorizontalTicks = function (_x) {
+	            if (!arguments.length) {
+	                return numOfHorizontalTicks;
+	            }
+	            numOfHorizontalTicks = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the number of verticalTicks of the axis on the chart
+	         * @param  {Number} _x Desired verticalTicks
+	         * @return { numOfVerticalTicks | module} Current numOfVerticalTicks or Chart module to chain calls
+	         * @public
+	         */
+	        exports.numOfVerticalTicks = function (_x) {
+	            if (!arguments.length) {
+	                return numOfVerticalTicks;
+	            }
+	            numOfVerticalTicks = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+	         * We are going to expose this events:
+	         * customMouseOver, customMouseMove and customMouseOut
+	         *
+	         * @return {module} Bar Chart
+	         * @public
+	         */
+	        exports.on = function () {
+	            var value = dispatcher.on.apply(dispatcher, arguments);
+	
+	            return value === dispatcher ? exports : value;
+	        };
+	
+	        /**
+	         * Configurable extension of the x axis
+	         * if your max point was 50% you might want to show x axis to 60%, pass 1.2
+	         * @param  {number} _x ratio to max data point to add to the x axis
+	         * @return { ratio | module} Current ratio or Bar Chart module to chain calls
+	         * @public
+	         */
+	        exports.percentageAxisToMaxRatio = function (_x) {
+	            if (!arguments.length) {
+	                return percentageAxisToMaxRatio;
+	            }
+	            percentageAxisToMaxRatio = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the stackLabel of the chart
+	         * @param  {String} _x Desired stackLabel for the graph
+	         * @return { stackLabel | module} Current stackLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.stackLabel = function (_x) {
+	            if (!arguments.length) {
+	                return stackLabel;
+	            }
+	            stackLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
 	         * Gets or Sets the minimum width of the graph in order to show the tooltip
 	         * NOTE: This could also depend on the aspect ratio
 	         *
@@ -13512,21 +13567,6 @@ webpackJsonp([8,10],[
 	        };
 	
 	        /**
-	         * Gets or Sets the number of verticalTicks of the yAxis on the chart
-	         * @param  {Number} _x Desired verticalTicks
-	         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
-	         * @public
-	         */
-	        exports.verticalTicks = function (_x) {
-	            if (!arguments.length) {
-	                return verticalTicks;
-	            }
-	            verticalTicks = _x;
-	
-	            return this;
-	        };
-	
-	        /**
 	         * Gets or Sets the width of the chart
 	         * @param  {Number} _x Desired width for the graph
 	         * @return { width | module} Current width or Area Chart module to chain calls
@@ -13542,28 +13582,6 @@ webpackJsonp([8,10],[
 	            width = _x;
 	
 	            return this;
-	        };
-	
-	        /**
-	         * Chart exported to png and a download action is fired
-	         * @public
-	         */
-	        exports.exportChart = function (filename, title) {
-	            exportChart.call(exports, svg, filename, title);
-	        };
-	
-	        /**
-	         * Exposes an 'on' method that acts as a bridge with the event dispatcher
-	         * We are going to expose this events:
-	         * customMouseOver, customMouseMove and customMouseOut
-	         *
-	         * @return {module} Bar Chart
-	         * @public
-	         */
-	        exports.on = function () {
-	            var value = dispatcher.on.apply(dispatcher, arguments);
-	
-	            return value === dispatcher ? exports : value;
 	        };
 	
 	        return exports;
@@ -13610,73 +13628,73 @@ webpackJsonp([8,10],[
 	module.exports = {
 		"data": [
 			{
-				"stack": "Direct",
+				"stack": "vivid",
 				"name": "Direct1",
 				"views": 0,
 				"date": "2011-01-05"
 			},
 			{
-				"stack": "Direct",
+				"stack": "vivid",
 				"name": "Direct2",
 				"views": 10,
 				"date": "2011-01-06"
 			},
 			{
-				"stack": "Direct",
+				"stack": "vivid",
 				"name": "Direct3",
 				"views": 16,
 				"date": "2011-01-07"
 			},
 			{
-				"stack": "Direct",
+				"stack": "vivid",
 				"name": "Direct4",
 				"views": 23,
 				"date": "2011-01-08"
 			},
 			{
-				"stack": "Eventbrite",
+				"stack": "sparkling",
 				"name": "Eventbrite1",
 				"views": 23,
 				"date": "2011-01-05"
 			},
 			{
-				"stack": "Eventbrite",
+				"stack": "sparkling",
 				"name": "Eventbrite2",
 				"views": 16,
 				"date": "2011-01-06"
 			},
 			{
-				"stack": "Eventbrite",
+				"stack": "sparkling",
 				"name": "Eventbrite3",
 				"views": 10,
 				"date": "2011-01-07"
 			},
 			{
-				"stack": "Eventbrite",
+				"stack": "sparkling",
 				"name": "Eventbrite4",
 				"views": 0,
 				"date": "2011-01-08"
 			},
 			{
-				"stack": "Email",
+				"stack": "sunny",
 				"name": "Email1",
 				"views": 10,
 				"date": "2011-01-05"
 			},
 			{
-				"stack": "Email",
+				"stack": "sunny",
 				"name": "Email2",
 				"views": 20,
 				"date": "2011-01-06"
 			},
 			{
-				"stack": "Email",
+				"stack": "sunny",
 				"name": "Email3",
 				"views": 26,
 				"date": "2011-01-07"
 			},
 			{
-				"stack": "Email",
+				"stack": "sunny",
 				"name": "Email4",
 				"views": 33,
 				"date": "2011-01-08"
