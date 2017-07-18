@@ -67,8 +67,7 @@ function getLegendChart(dataset, optionalColorSchema) {
         legendChart
             .width(containerWidth*0.8)
             .height(200)
-            .numberFormat('s')
-            .horizontal(true)
+            .numberFormat('s');
 
         if (optionalColorSchema) {
             legendChart.colorSchema(optionalColorSchema);

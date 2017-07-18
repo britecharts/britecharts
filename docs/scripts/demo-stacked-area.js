@@ -119,7 +119,7 @@ webpackJsonp([7,10],[
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-selection/ Version 1.1.0. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-selection/ Version 1.0.5. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -744,18 +744,16 @@ webpackJsonp([7,10],[
 	}
 	
 	var selection_style = function(name, value, priority) {
+	  var node;
 	  return arguments.length > 1
 	      ? this.each((value == null
 	            ? styleRemove : typeof value === "function"
 	            ? styleFunction
 	            : styleConstant)(name, value, priority == null ? "" : priority))
-	      : styleValue(this.node(), name);
+	      : defaultView(node = this.node())
+	          .getComputedStyle(node, null)
+	          .getPropertyValue(name);
 	};
-	
-	function styleValue(node, name) {
-	  return node.style.getPropertyValue(name)
-	      || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
-	}
 	
 	function propertyRemove(name) {
 	  return function() {
@@ -968,7 +966,7 @@ webpackJsonp([7,10],[
 	  var window = defaultView(node),
 	      event = window.CustomEvent;
 	
-	  if (typeof event === "function") {
+	  if (event) {
 	    event = new event(type, params);
 	  } else {
 	    event = window.document.createEvent("Event");
@@ -1086,7 +1084,6 @@ webpackJsonp([7,10],[
 	exports.selection = selection;
 	exports.selector = selector;
 	exports.selectorAll = selectorAll;
-	exports.style = styleValue;
 	exports.touch = touch;
 	exports.touches = touches;
 	exports.window = defaultView;
@@ -1101,7 +1098,7 @@ webpackJsonp([7,10],[
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
 	Copyright (c) 2010,2011,2012,2013,2014 Morgan Roderick http://roderick.dk
 	License: MIT - http://mrgnrdrck.mit-license.org
 	
@@ -1110,22 +1107,20 @@ webpackJsonp([7,10],[
 	(function (root, factory){
 		'use strict';
 	
-		var PubSub = {};
-		root.PubSub = PubSub;
-		factory(PubSub);
+	    if (true){
+	        // AMD. Register as an anonymous module.
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	
-		// AMD support
-		if (true){
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return PubSub; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    } else if (typeof exports === 'object'){
+	        // CommonJS
+	        factory(exports);
 	
-		// CommonJS and Node.js module support
-		} else if (typeof exports === 'object'){
-			if (module !== undefined && module.exports) {
-				exports = module.exports = PubSub; // Node.js specific `module.exports`
-			}
-			exports.PubSub = PubSub; // CommonJS module 1.1.1 spec
-			module.exports = exports = PubSub; // CommonJS
-		}
+	    }
+	
+	    // Browser globals
+	    var PubSub = {};
+	    root.PubSub = PubSub;
+	    factory(PubSub);
 	
 	}(( typeof window === 'object' && window ) || this, function (PubSub){
 		'use strict';
@@ -2226,7 +2221,7 @@ webpackJsonp([7,10],[
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-axis/ Version 1.0.7. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-axis/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -2246,15 +2241,15 @@ webpackJsonp([7,10],[
 	var epsilon = 1e-6;
 	
 	function translateX(x) {
-	  return "translate(" + (x + 0.5) + ",0)";
+	  return "translate(" + x + ",0)";
 	}
 	
 	function translateY(y) {
-	  return "translate(0," + (y + 0.5) + ")";
+	  return "translate(0," + y + ")";
 	}
 	
 	function center(scale) {
-	  var offset = Math.max(0, scale.bandwidth() - 1) / 2; // Adjust for 0.5px offset.
+	  var offset = scale.bandwidth() / 2;
 	  if (scale.round()) offset = Math.round(offset);
 	  return function(d) {
 	    return scale(d) + offset;
@@ -2273,7 +2268,7 @@ webpackJsonp([7,10],[
 	      tickSizeOuter = 6,
 	      tickPadding = 3,
 	      k = orient === top || orient === left ? -1 : 1,
-	      x = orient === left || orient === right ? "x" : "y",
+	      x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x"),
 	      transform = orient === top || orient === bottom ? translateX : translateY;
 	
 	  function axis(context) {
@@ -2300,11 +2295,14 @@ webpackJsonp([7,10],[
 	
 	    line = line.merge(tickEnter.append("line")
 	        .attr("stroke", "#000")
-	        .attr(x + "2", k * tickSizeInner));
+	        .attr(x + "2", k * tickSizeInner)
+	        .attr(y + "1", 0.5)
+	        .attr(y + "2", 0.5));
 	
 	    text = text.merge(tickEnter.append("text")
 	        .attr("fill", "#000")
 	        .attr(x, k * spacing)
+	        .attr(y, 0.5)
 	        .attr("dy", orient === top ? "0em" : orient === bottom ? "0.71em" : "0.32em"));
 	
 	    if (context !== selection) {
@@ -3386,7 +3384,7 @@ webpackJsonp([7,10],[
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-scale/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-scale/ Version 1.0.5. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(4), __webpack_require__(11), __webpack_require__(12), __webpack_require__(9), __webpack_require__(13), __webpack_require__(14), __webpack_require__(7)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-collection', 'd3-interpolate', 'd3-format', 'd3-time', 'd3-time-format', 'd3-color'], factory) :
@@ -3701,39 +3699,17 @@ webpackJsonp([7,10],[
 	  };
 	
 	  scale.nice = function(count) {
-	    if (count == null) count = 10;
-	
 	    var d = domain(),
-	        i0 = 0,
-	        i1 = d.length - 1,
-	        start = d[i0],
-	        stop = d[i1],
-	        step;
+	        i = d.length - 1,
+	        n = count == null ? 10 : count,
+	        start = d[0],
+	        stop = d[i],
+	        step = d3Array.tickStep(start, stop, n);
 	
-	    if (stop < start) {
-	      step = start, start = stop, stop = step;
-	      step = i0, i0 = i1, i1 = step;
-	    }
-	
-	    step = d3Array.tickIncrement(start, stop, count);
-	
-	    if (step > 0) {
-	      start = Math.floor(start / step) * step;
-	      stop = Math.ceil(stop / step) * step;
-	      step = d3Array.tickIncrement(start, stop, count);
-	    } else if (step < 0) {
-	      start = Math.ceil(start * step) / step;
-	      stop = Math.floor(stop * step) / step;
-	      step = d3Array.tickIncrement(start, stop, count);
-	    }
-	
-	    if (step > 0) {
-	      d[i0] = Math.floor(start / step) * step;
-	      d[i1] = Math.ceil(stop / step) * step;
-	      domain(d);
-	    } else if (step < 0) {
-	      d[i0] = Math.ceil(start * step) / step;
-	      d[i1] = Math.floor(stop * step) / step;
+	    if (step) {
+	      step = d3Array.tickStep(Math.floor(start / step) * step, Math.ceil(stop / step) * step, n);
+	      d[0] = Math.floor(start / step) * step;
+	      d[i] = Math.ceil(stop / step) * step;
 	      domain(d);
 	    }
 	
@@ -4540,7 +4516,7 @@ webpackJsonp([7,10],[
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-interpolate/ Version 1.1.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-interpolate/ Version 1.1.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(7)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-color'], factory) :
@@ -4786,7 +4762,7 @@ webpackJsonp([7,10],[
 	      : b instanceof d3Color.color ? rgb$1
 	      : b instanceof Date ? date
 	      : Array.isArray(b) ? array
-	      : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
+	      : isNaN(b) ? object
 	      : number)(a, b);
 	};
 	
@@ -6069,7 +6045,7 @@ webpackJsonp([7,10],[
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-transition/ Version 1.1.0. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-transition/ Version 1.0.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(1), __webpack_require__(8), __webpack_require__(16), __webpack_require__(12), __webpack_require__(7), __webpack_require__(5)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-timer', 'd3-interpolate', 'd3-color', 'd3-ease'], factory) :
@@ -6634,8 +6610,9 @@ webpackJsonp([7,10],[
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.style(this, name),
-	        value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
+	    var style = d3Selection.window(this).getComputedStyle(this, null),
+	        value0 = style.getPropertyValue(name),
+	        value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -6652,7 +6629,7 @@ webpackJsonp([7,10],[
 	  var value00,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.style(this, name);
+	    var value0 = d3Selection.window(this).getComputedStyle(this, null).getPropertyValue(name);
 	    return value0 === value1 ? null
 	        : value0 === value00 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value1);
@@ -6664,9 +6641,10 @@ webpackJsonp([7,10],[
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.style(this, name),
+	    var style = d3Selection.window(this).getComputedStyle(this, null),
+	        value0 = style.getPropertyValue(name),
 	        value1 = value(this);
-	    if (value1 == null) value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
+	    if (value1 == null) value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -9190,7 +9168,7 @@ webpackJsonp([7,10],[
 /* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-shape/ Version 1.1.1. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-shape/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(34)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
@@ -9835,91 +9813,6 @@ webpackJsonp([7,10],[
 	
 	  return a;
 	};
-	
-	var slice = Array.prototype.slice;
-	
-	var radialPoint = function(x, y) {
-	  return [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x)];
-	};
-	
-	function linkSource(d) {
-	  return d.source;
-	}
-	
-	function linkTarget(d) {
-	  return d.target;
-	}
-	
-	function link(curve) {
-	  var source = linkSource,
-	      target = linkTarget,
-	      x$$1 = x,
-	      y$$1 = y,
-	      context = null;
-	
-	  function link() {
-	    var buffer, argv = slice.call(arguments), s = source.apply(this, argv), t = target.apply(this, argv);
-	    if (!context) context = buffer = d3Path.path();
-	    curve(context, +x$$1.apply(this, (argv[0] = s, argv)), +y$$1.apply(this, argv), +x$$1.apply(this, (argv[0] = t, argv)), +y$$1.apply(this, argv));
-	    if (buffer) return context = null, buffer + "" || null;
-	  }
-	
-	  link.source = function(_) {
-	    return arguments.length ? (source = _, link) : source;
-	  };
-	
-	  link.target = function(_) {
-	    return arguments.length ? (target = _, link) : target;
-	  };
-	
-	  link.x = function(_) {
-	    return arguments.length ? (x$$1 = typeof _ === "function" ? _ : constant(+_), link) : x$$1;
-	  };
-	
-	  link.y = function(_) {
-	    return arguments.length ? (y$$1 = typeof _ === "function" ? _ : constant(+_), link) : y$$1;
-	  };
-	
-	  link.context = function(_) {
-	    return arguments.length ? ((context = _ == null ? null : _), link) : context;
-	  };
-	
-	  return link;
-	}
-	
-	function curveHorizontal(context, x0, y0, x1, y1) {
-	  context.moveTo(x0, y0);
-	  context.bezierCurveTo(x0 = (x0 + x1) / 2, y0, x0, y1, x1, y1);
-	}
-	
-	function curveVertical(context, x0, y0, x1, y1) {
-	  context.moveTo(x0, y0);
-	  context.bezierCurveTo(x0, y0 = (y0 + y1) / 2, x1, y0, x1, y1);
-	}
-	
-	function curveRadial$1(context, x0, y0, x1, y1) {
-	  var p0 = radialPoint(x0, y0),
-	      p1 = radialPoint(x0, y0 = (y0 + y1) / 2),
-	      p2 = radialPoint(x1, y0),
-	      p3 = radialPoint(x1, y1);
-	  context.moveTo(p0[0], p0[1]);
-	  context.bezierCurveTo(p1[0], p1[1], p2[0], p2[1], p3[0], p3[1]);
-	}
-	
-	function linkHorizontal() {
-	  return link(curveHorizontal);
-	}
-	
-	function linkVertical() {
-	  return link(curveVertical);
-	}
-	
-	function linkRadial() {
-	  var l = link(curveRadial$1);
-	  l.angle = l.x, delete l.x;
-	  l.radius = l.y, delete l.y;
-	  return l;
-	}
 	
 	var circle = {
 	  draw: function(context, size) {
@@ -10902,11 +10795,13 @@ webpackJsonp([7,10],[
 	  return new Step(context, 1);
 	}
 	
+	var slice = Array.prototype.slice;
+	
 	var none = function(series, order) {
 	  if (!((n = series.length) > 1)) return;
-	  for (var i = 1, j, s0, s1 = series[order[0]], n, m = s1.length; i < n; ++i) {
+	  for (var i = 1, s0, s1 = series[order[0]], n, m = s1.length; i < n; ++i) {
 	    s0 = s1, s1 = series[order[i]];
-	    for (j = 0; j < m; ++j) {
+	    for (var j = 0; j < m; ++j) {
 	      s1[j][1] += s1[j][0] = isNaN(s0[j][1]) ? s0[j][0] : s0[j][1];
 	    }
 	  }
@@ -10978,21 +10873,6 @@ webpackJsonp([7,10],[
 	    if (y) for (i = 0; i < n; ++i) series[i][j][1] /= y;
 	  }
 	  none(series, order);
-	};
-	
-	var diverging = function(series, order) {
-	  if (!((n = series.length) > 1)) return;
-	  for (var i, j = 0, d, dy, yp, yn, n, m = series[order[0]].length; j < m; ++j) {
-	    for (yp = yn = 0, i = 0; i < n; ++i) {
-	      if ((dy = (d = series[order[i]][j])[1] - d[0]) >= 0) {
-	        d[0] = yp, d[1] = yp += dy;
-	      } else if (dy < 0) {
-	        d[1] = yn, d[0] = yn += dy;
-	      } else {
-	        d[0] = yp;
-	      }
-	    }
-	  }
 	};
 	
 	var silhouette = function(series, order) {
@@ -11077,9 +10957,6 @@ webpackJsonp([7,10],[
 	exports.pie = pie;
 	exports.radialArea = radialArea;
 	exports.radialLine = radialLine$1;
-	exports.linkHorizontal = linkHorizontal;
-	exports.linkVertical = linkVertical;
-	exports.linkRadial = linkRadial;
 	exports.symbol = symbol;
 	exports.symbols = symbols;
 	exports.symbolCircle = circle;
@@ -11109,7 +10986,6 @@ webpackJsonp([7,10],[
 	exports.curveStepBefore = stepBefore;
 	exports.stack = stack;
 	exports.stackOffsetExpand = expand;
-	exports.stackOffsetDiverging = diverging;
 	exports.stackOffsetNone = none;
 	exports.stackOffsetSilhouette = silhouette;
 	exports.stackOffsetWiggle = wiggle;
@@ -12836,27 +12712,41 @@ webpackJsonp([7,10],[
 	
 	    var d3Format = __webpack_require__(9);
 	
-	    var valueRangeLimits = {
-	        small: 10,
-	        medium: 100
-	    };
 	    var integerValueFormats = {
-	        small: d3Format.format(''),
-	        medium: d3Format.format(''),
-	        large: d3Format.format('.2s')
+	        small: {
+	            limit: 10,
+	            format: d3Format.format('')
+	        },
+	        medium: {
+	            limit: 1000,
+	            format: d3Format.format('')
+	        },
+	        large: {
+	            limit: null,
+	            format: d3Format.format('.2s')
+	        }
 	    };
 	    var decimalValueFormats = {
-	        small: d3Format.format('.3f'),
-	        medium: d3Format.format('.1f'),
-	        large: d3Format.format('.2s')
+	        small: {
+	            limit: 10,
+	            format: d3Format.format('.3f')
+	        },
+	        medium: {
+	            limit: 100,
+	            format: d3Format.format('.1f')
+	        },
+	        large: {
+	            limit: null,
+	            format: d3Format.format('.2s')
+	        }
 	    };
 	
-	    function getValueSize(value) {
+	    function getValueSize(value, limits) {
 	        var size = 'large';
 	
-	        if (value < valueRangeLimits.small) {
+	        if (value < limits.small.limit) {
 	            size = 'small';
-	        } else if (value < valueRangeLimits.medium) {
+	        } else if (value < limits.medium.limit) {
 	            size = 'medium';
 	        }
 	        return size;
@@ -12868,7 +12758,8 @@ webpackJsonp([7,10],[
 	     * @return {Number}       Formatted value to show
 	     */
 	    function formatIntegerValue(value) {
-	        var format = integerValueFormats[getValueSize(value)];
+	        var size = getValueSize(value, integerValueFormats);
+	        var format = integerValueFormats[size].format;
 	
 	        return format(value);
 	    }
@@ -12879,7 +12770,8 @@ webpackJsonp([7,10],[
 	     * @return {Number}       Formatted value to show
 	     */
 	    function formatDecimalValue(value) {
-	        var format = decimalValueFormats[getValueSize(value)];
+	        var size = getValueSize(value, decimalValueFormats);
+	        var format = decimalValueFormats[size].format;
 	
 	        return format(value);
 	    }

@@ -83,13 +83,11 @@ define(function (require) {
 
             aspectRatio = null,
 
-            verticalTicks = 5,
             yTickTextYOffset = -8,
             yTickTextXOffset = -20,
 
             numOfVerticalTicks = 5,
             numOfHorizontalTicks = 5,
-            percentageAxisToMaxRatio = 1,
             baseLine,
 
             colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
@@ -128,7 +126,6 @@ define(function (require) {
             nameLabel = 'name',
             valueLabel = 'value',
             groupLabel = 'group',
-            nameLabelFormat,
             valueLabelFormat = NUMBER_FORMAT,
 
             // getters
@@ -165,35 +162,6 @@ define(function (require) {
         }
 
         /**
-         * Prepare data for create chart.
-         * @private
-         */
-        function prepareData(data) {
-            groups = uniq(data.map((d) => getGroup(d)));
-            transformedData = d3Collection.nest()
-                .key(getName)
-                .rollup(function (values) {
-                    let ret = {};
-
-                    values.forEach((entry) => {
-                        if (entry && entry[groupLabel]) {
-                            ret[entry[groupLabel]] = getValue(entry);
-                        }
-                    });
-                    //for tooltip
-                    ret.values = values;
-                    return ret;
-                })
-                .entries(data)
-                .map(function (data) {
-                    return assign({}, {
-                        total: d3Array.sum(d3Array.permute(data.value, groups)),
-                        key: data.key
-                    }, data.value);
-                });
-        }
-
-        /**
          * Adds events to the container group if the environment is not mobile
          * Adding: mouseover, mouseout and mousemove
          */
@@ -211,18 +179,28 @@ define(function (require) {
         }
 
         /**
+         * Adjusts the position of the y axis' ticks
+         * @param  {D3Selection} selection Y axis group
+         * @return void
+         */
+        function adjustYTickLabels(selection) {
+            selection.selectAll('.tick text')
+                .attr('transform', `translate(${yTickTextXOffset}, ${yTickTextYOffset})`);
+        }
+
+        /**
          * Creates the d3 x and y axis, setting orientations
          * @private
          */
         function buildAxis() {
-            if (!horizontal) {
-                xAxis = d3Axis.axisBottom(xScale)
-                yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(numOfVerticalTicks, valueLabelFormat)
-            } else {
+            if (horizontal) {
                 xAxis = d3Axis.axisBottom(xScale)
                     .ticks(numOfHorizontalTicks, valueLabelFormat);
                 yAxis = d3Axis.axisLeft(yScale)
+            } else {
+                xAxis = d3Axis.axisBottom(xScale)
+                yAxis = d3Axis.axisLeft(yScale)
+                    .ticks(numOfVerticalTicks, valueLabelFormat)
             }
         }
 
@@ -275,24 +253,9 @@ define(function (require) {
          * @private
          */
         function buildScales() {
-
             let yMax = d3Array.max(data.map(getValue));
 
-            if (!horizontal) {
-                xScale = d3Scale.scaleBand()
-                    .domain(data.map(getName))
-                    .rangeRound([0, chartWidth])
-                    .padding(0.1);
-                xScale2 = d3Scale.scaleBand()
-                    .domain(data.map(getGroup))
-                    .rangeRound([0, xScale.bandwidth()])
-                    .padding(0.1);
-
-                yScale = d3Scale.scaleLinear()
-                    .domain([0, yMax])
-                    .rangeRound([chartHeight, 0])
-                    .nice();
-            } else {
+            if (horizontal) {
                 xScale = d3Scale.scaleLinear()
                     .domain([0, yMax])
                     .rangeRound([0, chartWidth - 1]);
@@ -307,6 +270,20 @@ define(function (require) {
                     .domain(data.map(getGroup))
                     .rangeRound([yScale.bandwidth(), 0])
                     .padding(0.1);
+            } else {
+                xScale = d3Scale.scaleBand()
+                    .domain(data.map(getName))
+                    .rangeRound([0, chartWidth])
+                    .padding(0.1);
+                xScale2 = d3Scale.scaleBand()
+                    .domain(data.map(getGroup))
+                    .rangeRound([0, xScale.bandwidth()])
+                    .padding(0.1);
+
+                yScale = d3Scale.scaleLinear()
+                    .domain([0, yMax])
+                    .rangeRound([chartHeight, 0])
+                    .nice();
             }
 
             colorScale = d3Scale.scaleOrdinal()
@@ -368,7 +345,15 @@ define(function (require) {
          * @private
          */
         function drawAxis() {
-            if (!horizontal) {
+            if (horizontal) {
+                svg.select('.x-axis-group .axis.x')
+                    .attr('transform', `translate( 0, ${chartHeight} )`)
+                    .call(xAxis);
+
+                svg.select('.y-axis-group.axis')
+                    .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
+                    .call(yAxis);
+            } else {
                 svg.select('.x-axis-group .axis.x')
                     .attr('transform', `translate( 0, ${chartHeight} )`)
                     .call(xAxis);
@@ -377,14 +362,6 @@ define(function (require) {
                     .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
                     .call(yAxis)
                     .call(adjustYTickLabels);
-            } else {
-                svg.select('.x-axis-group .axis.x')
-                    .attr('transform', `translate( 0, ${chartHeight} )`)
-                    .call(xAxis);
-
-                svg.select('.y-axis-group.axis')
-                    .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
-                    .call(yAxis);
             }
         }
 
@@ -423,24 +400,16 @@ define(function (require) {
         }
 
         /**
-         * Adjusts the position of the y axis' ticks
-         * @param  {D3Selection} selection Y axis group
-         * @return void
-         */
-        function adjustYTickLabels(selection) {
-            selection.selectAll('.tick text')
-                .attr('transform', `translate(${yTickTextXOffset}, ${yTickTextYOffset})`);
-        }
-
-        /**
          * Draws grid lines on the background of the chart
          * @return void
          */
-        function drawGridLines(xTicks, yTicks) {
+        function drawGridLines() {
+            let scale = horizontal ? xScale : yScale;
+
             if (grid === 'horizontal' || grid === 'full') {
                 svg.select('.grid-lines-group')
                     .selectAll('line.horizontal-grid-line')
-                    .data(yScale.ticks(yTicks).slice(1))
+                    .data(scale.ticks(numOfVerticalTicks).slice(1))
                     .enter()
                       .append('line')
                         .attr('class', 'horizontal-grid-line')
@@ -453,7 +422,7 @@ define(function (require) {
             if (grid === 'vertical' || grid === 'full') {
                 svg.select('.grid-lines-group')
                     .selectAll('line.vertical-grid-line')
-                    .data(xScale.ticks(xTicks).slice(1))
+                    .data(scale.ticks(numOfHorizontalTicks).slice(1))
                     .enter()
                       .append('line')
                         .attr('class', 'vertical-grid-line')
@@ -471,38 +440,6 @@ define(function (require) {
         }
 
         /**
-         * Animation tween of horizontal bars
-         * @param  {obj} d data of bar
-         * @return {void}
-         */
-        function horizontalBarsTween(d) {
-            let node = d3Selection.select(this),
-                i = d3Interpolate.interpolateRound(0, xScale(getValue(d))),
-                j = d3Interpolate.interpolateNumber(0, 1);
-
-            return function (t) {
-                node.attr('width', i(t)).style('opacity', j(t));
-            }
-        }
-
-        /**
-         * Animation tween of vertical bars
-         * @param  {obj} d data of bar
-         * @return {void}
-         */
-        function verticalBarsTween(d) {
-            let node = d3Selection.select(this),
-                i = d3Interpolate.interpolateRound(0, chartHeight - yScale(getValue(d))),
-                y = d3Interpolate.interpolateRound(chartHeight, yScale(getValue(d))),
-                j = d3Interpolate.interpolateNumber(0, 1);
-
-            return function (t) {
-                node.attr('y', y(t))
-                    .attr('height', i(t)).style('opacity', j(t));
-            }
-        }
-
-        /**
          * Draws the bars along the x axis
          * @param  {D3Selection} bars Selection of bars
          * @return {void}
@@ -513,10 +450,10 @@ define(function (require) {
                 .data(layers)
                 .enter()
                   .append('g')
-                    .attr('transform', function (d) { return 'translate(0,' + yScale(d.key) + ')'; })
+                    .attr('transform', function ({key}) { return `translate(0,${yScale(key)})`; })
                     .classed('layer', true)
                     .selectAll('.bar')
-                    .data((d) => d.values)
+                    .data(({values}) => values)
                     .enter()
                       .append('rect')
                         .classed('bar', true)
@@ -576,12 +513,12 @@ define(function (require) {
          * @private
          */
         function drawGroupedBar() {
-            let series = svg.select('.chart-group').selectAll('.layer')
+            let series = svg.select('.chart-group').selectAll('.layer');
 
             if (!horizontal) {
-                drawVerticalBars(series)
+                drawVerticalBars(series);
             } else {
-                drawHorizontalBars(series)
+                drawHorizontalBars(series);
             }
             // Exit
             series.exit()
@@ -616,7 +553,7 @@ define(function (require) {
                 if (found) {
                     found.values = data.values;
                     found.key = found.name;
-                    nearest.push(found)
+                    nearest.push(found);
                 }
 
             });
@@ -713,6 +650,21 @@ define(function (require) {
         }
 
         /**
+         * Animation tween of horizontal bars
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function horizontalBarsTween(d) {
+            let node = d3Selection.select(this),
+                i = d3Interpolate.interpolateRound(0, xScale(getValue(d))),
+                j = d3Interpolate.interpolateNumber(0, 1);
+
+            return function (t) {
+                node.attr('width', i(t)).style('opacity', j(t));
+            }
+        }
+
+        /**
          * Helper method to update the x position of the vertical marker
          * @param  {obj} dataPoint Data entry to extract info
          * @return void
@@ -723,6 +675,35 @@ define(function (require) {
         }
 
         /**
+         * Prepare data for create chart.
+         * @private
+         */
+        function prepareData(data) {
+            groups = uniq(data.map((d) => getGroup(d)));
+            transformedData = d3Collection.nest()
+                .key(getName)
+                .rollup(function (values) {
+                    let ret = {};
+
+                    values.forEach((entry) => {
+                        if (entry && entry[groupLabel]) {
+                            ret[entry[groupLabel]] = getValue(entry);
+                        }
+                    });
+                    //for tooltip
+                    ret.values = values;
+                    return ret;
+                })
+                .entries(data)
+                .map(function (data) {
+                    return assign({}, {
+                        total: d3Array.sum(d3Array.permute(data.value, groups)),
+                        key: data.key
+                    }, data.value);
+                });
+        }
+
+        /**
          * Determines if we should add the tooltip related logic depending on the
          * size of the chart and the tooltipThreshold variable value
          * @return {boolean} Should we build the tooltip?
@@ -730,6 +711,23 @@ define(function (require) {
          */
         function shouldShowTooltip() {
             return width > tooltipThreshold;
+        }
+
+        /**
+         * Animation tween of vertical bars
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function verticalBarsTween(d) {
+            let node = d3Selection.select(this),
+                i = d3Interpolate.interpolateRound(0, chartHeight - yScale(getValue(d))),
+                y = d3Interpolate.interpolateRound(chartHeight, yScale(getValue(d))),
+                j = d3Interpolate.interpolateNumber(0, 1);
+
+            return function (t) {
+                node.attr('y', y(t))
+                    .attr('height', i(t)).style('opacity', j(t));
+            }
         }
 
         // API
@@ -765,49 +763,11 @@ define(function (require) {
         };
 
         /**
-         * Gets or Sets the nameLabel of the chart
-         * @param  {Number} _x Desired dateLabel for the graph
-         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+         * Chart exported to png and a download action is fired
          * @public
          */
-        exports.nameLabel = function (_x) {
-            if (!arguments.length) {
-                return nameLabel;
-            }
-            nameLabel = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets the valueLabelFormat of the chart
-         * @param  {String[]} _x Desired valueLabelFormat for the graph
-         * @return { valueLabelFormat | module} Current valueLabelFormat or Chart module to chain calls
-         * @public
-         */
-        exports.nameLabelFormat = function (_x) {
-            if (!arguments.length) {
-                return nameLabelFormat;
-            }
-            nameLabelFormat = _x;
-
-            return this;
-        };
-
-        /**
-         * Configurable extension of the x axis
-         * if your max point was 50% you might want to show x axis to 60%, pass 1.2
-         * @param  {number} _x ratio to max data point to add to the x axis
-         * @return { ratio | module} Current ratio or Bar Chart module to chain calls
-         * @public
-         */
-        exports.percentageAxisToMaxRatio = function (_x) {
-            if (!arguments.length) {
-                return percentageAxisToMaxRatio;
-            }
-            percentageAxisToMaxRatio = _x;
-
-            return this;
+        exports.exportChart = function (filename, title) {
+            exportChart.call(exports, svg, filename, title);
         };
 
         /**
@@ -907,6 +867,65 @@ define(function (require) {
         };
 
         /**
+         * Gets or Sets the nameLabel of the chart
+         * @param  {Number} _x Desired dateLabel for the graph
+         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+         * @public
+         */
+        exports.nameLabel = function (_x) {
+            if (!arguments.length) {
+                return nameLabel;
+            }
+            nameLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the number of verticalTicks of the axis on the chart
+         * @param  {Number} _x Desired verticalTicks
+         * @return { numOfHorizontalTicks | module} Current numOfHorizontalTicks or Chart module to chain calls
+         * @public
+         */
+        exports.numOfHorizontalTicks = function (_x) {
+            if (!arguments.length) {
+                return numOfHorizontalTicks;
+            }
+            numOfHorizontalTicks = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the number of verticalTicks of the axis on the chart
+         * @param  {Number} _x Desired verticalTicks
+         * @return { numOfVerticalTicks | module} Current numOfVerticalTicks or Chart module to chain calls
+         * @public
+         */
+        exports.numOfVerticalTicks = function (_x) {
+            if (!arguments.length) {
+                return numOfVerticalTicks;
+            }
+            numOfVerticalTicks = _x;
+
+            return this;
+        };
+
+        /**
+         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+         * We are going to expose this events:
+         * customMouseOver, customMouseMove and customMouseOut
+         *
+         * @return {module} Bar Chart
+         * @public
+         */
+        exports.on = function () {
+            let value = dispatcher.on.apply(dispatcher, arguments);
+
+            return value === dispatcher ? exports : value;
+        };
+
+        /**
          * Gets or Sets the minimum width of the graph in order to show the tooltip
          * NOTE: This could also depend on the aspect ratio
          *
@@ -954,21 +973,6 @@ define(function (require) {
         };
 
         /**
-         * Gets or Sets the number of verticalTicks of the yAxis on the chart
-         * @param  {Number} _x Desired verticalTicks
-         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
-         * @public
-         */
-        exports.verticalTicks = function (_x) {
-            if (!arguments.length) {
-                return verticalTicks;
-            }
-            verticalTicks = _x;
-
-            return this;
-        };
-
-        /**
          * Gets or Sets the width of the chart
          * @param  {Number} _x Desired width for the graph
          * @return { width | module} Current width or Area Chart module to chain calls
@@ -984,28 +988,6 @@ define(function (require) {
             width = _x;
 
             return this;
-        };
-
-        /**
-         * Chart exported to png and a download action is fired
-         * @public
-         */
-        exports.exportChart = function (filename, title) {
-            exportChart.call(exports, svg, filename, title);
-        };
-
-        /**
-         * Exposes an 'on' method that acts as a bridge with the event dispatcher
-         * We are going to expose this events:
-         * customMouseOver, customMouseMove and customMouseOut
-         *
-         * @return {module} Bar Chart
-         * @public
-         */
-        exports.on = function () {
-            let value = dispatcher.on.apply(dispatcher, arguments);
-
-            return value === dispatcher ? exports : value;
         };
 
         return exports;
