@@ -2118,7 +2118,7 @@ By default this is 'false'
             
 <hr>
 <dt>
-    <h4 class="name" id=".nameLabelFormat"><span class="type-signature">&lt;static> </span>nameLabelFormat(_x)</h4>
+    <h4 class="name" id=".numOfHorizontalTicks"><span class="type-signature">&lt;static> </span>numOfHorizontalTicks(_x)</h4>
     
     
 </dt>
@@ -2126,7 +2126,7 @@ By default this is 'false'
 
     
     <div class="description">
-        Gets or Sets the valueLabelFormat of the chart
+        Gets or Sets the number of verticalTicks of the axis on the chart
     </div>
     
 
@@ -2167,7 +2167,7 @@ By default this is 'false'
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;String></span>
+<span class="param-type">Number</span>
 
 
 
@@ -2178,7 +2178,7 @@ By default this is 'false'
 
             
 
-            <td class="description last">Desired valueLabelFormat for the graph</td>
+            <td class="description last">Desired verticalTicks</td>
         </tr>
 
     
@@ -2251,7 +2251,7 @@ By default this is 'false'
     
             
 <div class="param-desc">
-    Current valueLabelFormat or Chart module to chain calls
+    Current numOfHorizontalTicks or Chart module to chain calls
 </div>
 
 
@@ -2262,7 +2262,171 @@ By default this is 'false'
     </dt>
     <dd>
         
-<span class="param-type">valueLabelFormat</span>
+<span class="param-type">numOfHorizontalTicks</span>
+|
+
+<span class="param-type">module</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id=".numOfVerticalTicks"><span class="type-signature">&lt;static> </span>numOfVerticalTicks(_x)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Gets or Sets the number of verticalTicks of the axis on the chart
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>_x</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Desired verticalTicks</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="grouped-bar.js.html">grouped-bar.js</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    Current numOfVerticalTicks or Chart module to chain calls
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">numOfVerticalTicks</span>
 |
 
 <span class="param-type">module</span>
@@ -2378,171 +2542,6 @@ customMouseOver, customMouseMove and customMouseOut
     </dt>
     <dd>
         
-<span class="param-type">module</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".percentageAxisToMaxRatio"><span class="type-signature">&lt;static> </span>percentageAxisToMaxRatio(_x)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Configurable extension of the x axis
-if your max point was 50% you might want to show x axis to 60%, pass 1.2
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>_x</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">ratio to max data point to add to the x axis</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="grouped-bar.js.html">grouped-bar.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    Current ratio or Bar Chart module to chain calls
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">ratio</span>
-|
-
 <span class="param-type">module</span>
 
 
@@ -3034,170 +3033,6 @@ NOTE: This could also depend on the aspect ratio
     <dd>
         
 <span class="param-type">valueLabelFormat</span>
-|
-
-<span class="param-type">module</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id=".verticalTicks"><span class="type-signature">&lt;static> </span>verticalTicks(_x)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Gets or Sets the number of verticalTicks of the yAxis on the chart
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>_x</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Desired verticalTicks</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="grouped-bar.js.html">grouped-bar.js</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    Current verticalTicks or Chart module to chain calls
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">verticalTicks</span>
 |
 
 <span class="param-type">module</span>
