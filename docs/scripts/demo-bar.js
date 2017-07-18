@@ -1533,14 +1533,14 @@ webpackJsonp([0,10],[
 	         * @private
 	         */
 	        function buildAxis() {
-	            if (!horizontal) {
-	                xAxis = d3Axis.axisBottom(xScale);
-	
-	                yAxis = d3Axis.axisLeft(yScale).ticks(numOfVerticalTicks, valueLabelFormat);
-	            } else {
+	            if (horizontal) {
 	                xAxis = d3Axis.axisBottom(xScale).ticks(numOfHorizontalTicks, valueLabelFormat).tickSizeInner([-chartHeight]);
 	
 	                yAxis = d3Axis.axisLeft(yScale);
+	            } else {
+	                xAxis = d3Axis.axisBottom(xScale);
+	
+	                yAxis = d3Axis.axisLeft(yScale).ticks(numOfVerticalTicks, valueLabelFormat);
 	            }
 	        }
 	
@@ -1566,14 +1566,14 @@ webpackJsonp([0,10],[
 	        function buildScales() {
 	            var percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue));
 	
-	            if (!horizontal) {
-	                xScale = d3Scale.scaleBand().domain(data.map(getName)).rangeRound([0, chartWidth]).padding(0.1);
-	
-	                yScale = d3Scale.scaleLinear().domain([0, percentageAxis]).rangeRound([chartHeight, 0]);
-	            } else {
+	            if (horizontal) {
 	                xScale = d3Scale.scaleLinear().domain([0, percentageAxis]).rangeRound([0, chartWidth]);
 	
 	                yScale = d3Scale.scaleBand().domain(data.map(getName)).rangeRound([chartHeight, 0]).padding(0.1);
+	            } else {
+	                xScale = d3Scale.scaleBand().domain(data.map(getName)).rangeRound([0, chartWidth]).padding(0.1);
+	
+	                yScale = d3Scale.scaleLinear().domain([0, percentageAxis]).rangeRound([chartHeight, 0]);
 	            }
 	
 	            if (reverseColorList) {
@@ -1930,12 +1930,43 @@ webpackJsonp([0,10],[
 	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-x-line').data([0]).enter().append('line').attr('class', 'extended-x-line').attr('x1', xAxisPadding.left).attr('x2', chartWidth).attr('y1', chartHeight).attr('y2', chartHeight);
 	        }
 	
+	        // API
+	
+	        /**
+	         * Gets or Sets the colorSchema of the chart
+	         * @param  {String[]} _x Desired colorSchema for the graph
+	         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
+	         * @public
+	         */
+	        exports.colorSchema = function (_x) {
+	            if (!arguments.length) {
+	                return colorSchema;
+	            }
+	            colorSchema = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Default false. If true, adds percentage labels at the end of the bars
+	         * @param  {Boolean} _x
+	         * @return {Boolean | module}    Current value of enablePercentageLables or Bar Chart module to chain calls
+	         */
+	        exports.enablePercentageLabels = function (_x) {
+	            if (!arguments.length) {
+	                return enablePercentageLabels;
+	            }
+	            enablePercentageLabels = _x;
+	
+	            return this;
+	        };
+	
 	        /**
 	         * Chart exported to png and a download action is fired
 	         * @public
 	         */
-	        exports.exportChart = function (filename) {
-	            exportChart.call(exports, svg, filename);
+	        exports.exportChart = function (filename, title) {
+	            exportChart.call(exports, svg, filename, title);
 	        };
 	
 	        /**
@@ -1949,36 +1980,6 @@ webpackJsonp([0,10],[
 	                return height;
 	            }
 	            height = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the margin of the chart
-	         * @param  {object} _x Margin object to get/set
-	         * @return { margin | module} Current margin or Bar Chart module to chain calls
-	         * @public
-	         */
-	        exports.margin = function (_x) {
-	            if (!arguments.length) {
-	                return margin;
-	            }
-	            margin = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the width of the chart
-	         * @param  {number} _x Desired width for the graph
-	         * @return { width | module} Current width or Bar Chart module to chain calls
-	         * @public
-	         */
-	        exports.width = function (_x) {
-	            if (!arguments.length) {
-	                return width;
-	            }
-	            width = _x;
 	
 	            return this;
 	        };
@@ -2016,6 +2017,36 @@ webpackJsonp([0,10],[
 	        };
 	
 	        /**
+	         * Gets or Sets the margin of the chart
+	         * @param  {object} _x Margin object to get/set
+	         * @return { margin | module} Current margin or Bar Chart module to chain calls
+	         * @public
+	         */
+	        exports.margin = function (_x) {
+	            if (!arguments.length) {
+	                return margin;
+	            }
+	            margin = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the nameLabel of the chart
+	         * @param  {Number} _x Desired nameLabel for the graph
+	         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.nameLabel = function (_x) {
+	            if (!arguments.length) {
+	                return nameLabel;
+	            }
+	            nameLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
 	         * Exposes an 'on' method that acts as a bridge with the event dispatcher
 	         * We are going to expose this events:
 	         * customMouseOver, customMouseMove and customMouseOut
@@ -2027,48 +2058,6 @@ webpackJsonp([0,10],[
 	            var value = dispatcher.on.apply(dispatcher, arguments);
 	
 	            return value === dispatcher ? exports : value;
-	        };
-	
-	        /**
-	         * Chart exported to png and a download action is fired
-	         * @public
-	         */
-	        exports.exportChart = function (filename, title) {
-	            exportChart.call(exports, svg, filename, title);
-	        };
-	
-	        /**
-	         * Gets or Sets the colorSchema of the chart
-	         * @param  {String[]} _x Desired colorSchema for the graph
-	         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
-	         * @public
-	         */
-	        exports.colorSchema = function (_x) {
-	            if (!arguments.length) {
-	                return colorSchema;
-	            }
-	            colorSchema = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the valueLabelFormat to a percentage format if true (default false)
-	         * @param  {boolean} _x     Should use percentage as value format
-	         * @return { valueLabelFormat | module} Is percentage value format used or Chart module to chain calls
-	         * @public
-	         */
-	        exports.usePercentage = function (_x) {
-	            if (!arguments.length) {
-	                return valueLabelFormat === PERCENTAGE_FORMAT;
-	            }
-	            if (_x) {
-	                valueLabelFormat = PERCENTAGE_FORMAT;
-	            } else {
-	                valueLabelFormat = NUMBER_FORMAT;
-	            }
-	
-	            return this;
 	        };
 	
 	        /**
@@ -2102,29 +2091,35 @@ webpackJsonp([0,10],[
 	        };
 	
 	        /**
-	         * Default false. If true, adds percentage labels at the end of the bars
-	         * @param  {Boolean} _x
-	         * @return {Boolean | module}    Current value of enablePercentageLables or Bar Chart module to chain calls
+	         * Gets or Sets whether the color list should be reversed or not
+	         * @param  {boolean} _x     Should reverse the color list
+	         * @return { boolean | module} Is color list being reversed
+	         * @public
 	         */
-	        exports.enablePercentageLabels = function (_x) {
+	        exports.reverseColorList = function (_x) {
 	            if (!arguments.length) {
-	                return enablePercentageLabels;
+	                return reverseColorList;
 	            }
-	            enablePercentageLabels = _x;
+	            reverseColorList = _x;
 	
 	            return this;
 	        };
 	
 	        /**
-	         * Default 10. Space between y axis and chart
-	         * @param  {number} _x space between y axis and chart
-	         * @return {number| module}    Current value of yAxisPaddingBetweenChart or Bar Chart module to chain calls
+	         * Gets or Sets the valueLabelFormat to a percentage format if true (default false)
+	         * @param  {boolean} _x     Should use percentage as value format
+	         * @return { valueLabelFormat | module} Is percentage value format used or Chart module to chain calls
+	         * @public
 	         */
-	        exports.yAxisPaddingBetweenChart = function (_x) {
+	        exports.usePercentage = function (_x) {
 	            if (!arguments.length) {
-	                return yAxisPaddingBetweenChart;
+	                return valueLabelFormat === PERCENTAGE_FORMAT;
 	            }
-	            yAxisPaddingBetweenChart = _x;
+	            if (_x) {
+	                valueLabelFormat = PERCENTAGE_FORMAT;
+	            } else {
+	                valueLabelFormat = NUMBER_FORMAT;
+	            }
 	
 	            return this;
 	        };
@@ -2145,31 +2140,30 @@ webpackJsonp([0,10],[
 	        };
 	
 	        /**
-	         * Gets or Sets the nameLabel of the chart
-	         * @param  {Number} _x Desired nameLabel for the graph
-	         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+	         * Gets or Sets the width of the chart
+	         * @param  {number} _x Desired width for the graph
+	         * @return { width | module} Current width or Bar Chart module to chain calls
 	         * @public
 	         */
-	        exports.nameLabel = function (_x) {
+	        exports.width = function (_x) {
 	            if (!arguments.length) {
-	                return nameLabel;
+	                return width;
 	            }
-	            nameLabel = _x;
+	            width = _x;
 	
 	            return this;
 	        };
 	
 	        /**
-	         * Gets or Sets whether the color list should be reversed or not
-	         * @param  {boolean} _x     Should reverse the color list
-	         * @return { boolean | module} Is color list being reversed
-	         * @public
+	         * Default 10. Space between y axis and chart
+	         * @param  {number} _x space between y axis and chart
+	         * @return {number| module}    Current value of yAxisPaddingBetweenChart or Bar Chart module to chain calls
 	         */
-	        exports.reverseColorList = function (_x) {
+	        exports.yAxisPaddingBetweenChart = function (_x) {
 	            if (!arguments.length) {
-	                return reverseColorList;
+	                return yAxisPaddingBetweenChart;
 	            }
-	            reverseColorList = _x;
+	            yAxisPaddingBetweenChart = _x;
 	
 	            return this;
 	        };

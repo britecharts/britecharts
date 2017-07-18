@@ -1,9 +1,14 @@
 define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, dataBuilder) {
     'use strict';
 
-    function aTestDataSet() {
-        return new dataBuilder.GroupedBarChartDataBuilder();
-    }
+    const aTestDataSet = () => new dataBuilder.GroupedBarChartDataBuilder();
+    const differentDatesReducer = (acc, d) => {
+                if (acc.indexOf(d.date) === -1) {
+                    acc.push(d.date);
+                }
+
+                return acc;
+            };
 
     describe('Grouped Bar Chart', () => {
         let groupedBarChart, dataset, containerFixture, f;
@@ -13,6 +18,7 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 .with3Sources()
                 .build();
             groupedBarChart = chart()
+                        // .horizontal(true)
                         .groupLabel('stack')
                         .nameLabel('date')
                         .valueLabel('views')
@@ -53,28 +59,75 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
         });
 
         it('should render an X and Y axis', () => {
-            expect(containerFixture.select('.x-axis-group.axis').empty()).toBeFalsy();
+            expect(containerFixture.select('.x-axis-group .axis.x').empty()).toBeFalsy();
             expect(containerFixture.select('.y-axis-group.axis').empty()).toBeFalsy();
         });
 
-        it('should render a bar for each data entry', () => {
-            let actual = containerFixture.selectAll('.bar').size();
-            let expected = dataset.length;
+        it('should render a layer for each data entry group', () => {
+            let actual = containerFixture.selectAll('.layer').size();
+            let expected = dataset.data.reduce(differentDatesReducer, []).length;
 
             expect(actual).toEqual(expected);
         });
 
-        xdescribe('API', function() {
+        it('should render a bar for each data entry', () => {
+            let actual = containerFixture.selectAll('.bar').size();
+            let expected = dataset.data.length;
 
-            it('should provide margin getter and setter', () => {
-                let previous = groupedBarChart.margin(),
-                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+            expect(actual).toEqual(expected);
+        });
+
+        describe('API', function() {
+
+            it('should provide an aspect ratio getter and setter', () => {
+                let previous = groupedBarChart.aspectRatio(),
+                    expected = 600,
                     actual;
 
-                groupedBarChart.margin(expected);
-                actual = groupedBarChart.margin();
+                groupedBarChart.aspectRatio(expected);
+                actual = groupedBarChart.aspectRatio();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a colorSchema getter and setter', () => {
+                let previous = groupedBarChart.colorSchema(),
+                    expected = ['#ffffff', '#fafefc', '#000000'],
+                    actual;
+
+                groupedBarChart.colorSchema(expected);
+                actual = groupedBarChart.colorSchema();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should have exportChart defined', () => {
+                expect(groupedBarChart.exportChart).toBeDefined();
+            });
+
+            it('should provide groupLabel getter and setter', () => {
+                let previous = groupedBarChart.groupLabel(),
+                    expected = 'testLabel',
+                    actual;
+
+                groupedBarChart.groupLabel(expected);
+                actual = groupedBarChart.groupLabel();
 
                 expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide grid mode getter and setter', () => {
+                let previous = groupedBarChart.grid(),
+                    expected = 'vertical',
+                    actual;
+
+                groupedBarChart.grid(expected);
+                actual = groupedBarChart.grid();
+
+                expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
 
@@ -90,30 +143,6 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 expect(actual).toBe(expected);
             });
 
-            it('should provide width getter and setter', () => {
-                let previous = groupedBarChart.width(),
-                    expected = {top: 4, right: 4, bottom: 4, left: 4},
-                    actual;
-
-                groupedBarChart.width(expected);
-                actual = groupedBarChart.width();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide a percentage ratio getter and setter', () => {
-                let defaultRatio = groupedBarChart.percentageAxisToMaxRatio(),
-                    expected = 1.5,
-                    actual;
-
-                groupedBarChart.percentageAxisToMaxRatio(expected);
-                actual = groupedBarChart.percentageAxisToMaxRatio();
-
-                expect(defaultRatio).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
             it('should provide horizontal direction getter and setter', () => {
                 let previous = groupedBarChart.horizontal(),
                     expected = true,
@@ -126,132 +155,125 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 expect(actual).toBe(expected);
             });
 
-            it('should provide percentage label margin getter and setter', () => {
-                let previous = groupedBarChart.percentageLabelMargin(),
-                    expected = 10,
-                    actual;
-
-                groupedBarChart.percentageLabelMargin(expected);
-                actual = groupedBarChart.percentageLabelMargin();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide enable percentage label getter and setter', () => {
-                let previous = groupedBarChart.enablePercentageLabels(),
+            it('should provide isAnimated getter and setter', () => {
+                let previous = groupedBarChart.isAnimated(),
                     expected = true,
                     actual;
 
-                groupedBarChart.enablePercentageLabels(expected);
-                actual = groupedBarChart.enablePercentageLabels();
+                groupedBarChart.isAnimated(expected);
+                actual = groupedBarChart.isAnimated();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide margin getter and setter', () => {
+                let previous = groupedBarChart.margin(),
+                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    actual;
+
+                groupedBarChart.margin(expected);
+                actual = groupedBarChart.margin();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
 
-            it('should provide yAxisPaddingBetweenChart getter and setter', () => {
-                let previous = groupedBarChart.yAxisPaddingBetweenChart(),
-                    expected = 15,
+            it('should provide nameLabel getter and setter', () => {
+                let previous = groupedBarChart.nameLabel(),
+                    expected = 'key',
                     actual;
 
-                groupedBarChart.yAxisPaddingBetweenChart(expected);
-                actual = groupedBarChart.yAxisPaddingBetweenChart();
+                groupedBarChart.nameLabel(expected);
+                actual = groupedBarChart.nameLabel();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide numOfHorizontalTicks getter and setter', () => {
+                let previous = groupedBarChart.numOfHorizontalTicks(),
+                    expected = 4,
+                    actual;
+
+                groupedBarChart.numOfHorizontalTicks(expected);
+                actual = groupedBarChart.numOfHorizontalTicks();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
 
-            it('should provide colorSchema getter and setter', () => {
-                let previous = groupedBarChart.colorSchema(),
-                    expected = ['#FFFFFF'],
+            it('should provide numOfVerticalTicks getter and setter', () => {
+                let previous = groupedBarChart.numOfVerticalTicks(),
+                    expected = 4,
                     actual;
 
-                groupedBarChart.colorSchema(expected);
-                actual = groupedBarChart.colorSchema();
+                groupedBarChart.numOfVerticalTicks(expected);
+                actual = groupedBarChart.numOfVerticalTicks();
 
                 expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a tooltip threshold getter and setter', () => {
+                let previous = groupedBarChart.tooltipThreshold(),
+                    expected = 600,
+                    actual;
+
+                groupedBarChart.tooltipThreshold(expected);
+                actual = groupedBarChart.tooltipThreshold();
+
+                expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
 
             it('should provide valueLabel getter and setter', () => {
-                let defaultValueLabel = groupedBarChart.valueLabel(),
-                    testValueLabel = 'quantity',
-                    newValueLabel;
+                let previous = groupedBarChart.valueLabel(),
+                    expected = 'quantity',
+                    actual;
 
-                groupedBarChart.valueLabel(testValueLabel);
-                newValueLabel = groupedBarChart.valueLabel();
+                groupedBarChart.valueLabel(expected);
+                actual = groupedBarChart.valueLabel();
 
-                expect(defaultValueLabel).not.toBe(testValueLabel);
-                expect(newValueLabel).toBe(testValueLabel);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
-            it('should provide nameLabel getter and setter', () => {
-                let defaultDateLabel = groupedBarChart.nameLabel(),
-                    testNameLabel = 'key',
-                    newNameLabel;
+            it('should provide valueLabelFormat getter and setter', () => {
+                let previous = groupedBarChart.valueLabelFormat(),
+                    expected = 's',
+                    actual;
 
-                groupedBarChart.nameLabel(testNameLabel);
-                newNameLabel = groupedBarChart.nameLabel();
+                groupedBarChart.valueLabelFormat(expected);
+                actual = groupedBarChart.valueLabelFormat();
 
-                expect(defaultDateLabel).not.toBe(testNameLabel);
-                expect(newNameLabel).toBe(testNameLabel);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
-            it('should provide an usePercentage getter and setter', () => {
-                let defaultUsePercentage = groupedBarChart.usePercentage(),
-                    testUsePercentage = true,
-                    newUsePercentage;
+            it('should provide width getter and setter', () => {
+                let previous = groupedBarChart.width(),
+                    expected = 40,
+                    actual;
 
-                groupedBarChart.usePercentage(testUsePercentage);
-                newUsePercentage = groupedBarChart.usePercentage();
+                groupedBarChart.width(expected);
+                actual = groupedBarChart.width();
 
-                expect(defaultUsePercentage).not.toBe(testUsePercentage);
-                expect(newUsePercentage).toBe(testUsePercentage);
-            });
-
-            it('should provide animation getter and setter', () => {
-                let defaultAnimation = groupedBarChart.isAnimated(),
-                    testAnimation = true,
-                    newAnimation;
-
-                groupedBarChart.isAnimated(testAnimation);
-                newAnimation = groupedBarChart.isAnimated();
-
-                expect(defaultAnimation).not.toBe(testAnimation);
-                expect(newAnimation).toBe(testAnimation);
-            });
-
-            it('should provide a reverseColorList getter and setter', () => {
-                let defaultReverseColorList = groupedBarChart.reverseColorList(),
-                    testReverseColorList = false,
-                    newReverseColorList;
-
-                groupedBarChart.reverseColorList(testReverseColorList);
-                newReverseColorList = groupedBarChart.reverseColorList();
-
-                expect(defaultReverseColorList).not.toBe(testReverseColorList);
-                expect(newReverseColorList).toBe(testReverseColorList);
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
             });
         });
 
-        xdescribe('when hovering a bar', function() {
+        describe('when hovering a bar', function() {
 
             it('should trigger a callback', () => {
-                let bar = containerFixture.selectAll('.bar:nth-child(1)');
+                let chart = containerFixture.selectAll('.grouped-bar');
                 let callbackSpy = jasmine.createSpy('callback');
 
                 groupedBarChart.on('customMouseOver', callbackSpy);
-                bar.dispatch('mouseover');
+                chart.dispatch('mouseover');
 
                 expect(callbackSpy.calls.count()).toBe(1);
-            });
-        });
-
-        xdescribe('Export chart functionality', () => {
-
-            it('should have exportChart defined', () => {
-                expect(groupedBarChart.exportChart).toBeDefined();
             });
         });
     });
