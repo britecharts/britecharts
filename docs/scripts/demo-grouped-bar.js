@@ -11506,27 +11506,41 @@ webpackJsonp([3,10],[
 	
 	    var d3Format = __webpack_require__(9);
 	
-	    var valueRangeLimits = {
-	        small: 10,
-	        medium: 100
-	    };
 	    var integerValueFormats = {
-	        small: d3Format.format(''),
-	        medium: d3Format.format(''),
-	        large: d3Format.format('.2s')
+	        small: {
+	            limit: 10,
+	            format: d3Format.format('')
+	        },
+	        medium: {
+	            limit: 1000,
+	            format: d3Format.format('')
+	        },
+	        large: {
+	            limit: null,
+	            format: d3Format.format('.2s')
+	        }
 	    };
 	    var decimalValueFormats = {
-	        small: d3Format.format('.3f'),
-	        medium: d3Format.format('.1f'),
-	        large: d3Format.format('.2s')
+	        small: {
+	            limit: 10,
+	            format: d3Format.format('.3f')
+	        },
+	        medium: {
+	            limit: 100,
+	            format: d3Format.format('.1f')
+	        },
+	        large: {
+	            limit: null,
+	            format: d3Format.format('.2s')
+	        }
 	    };
 	
-	    function getValueSize(value) {
+	    function getValueSize(value, limits) {
 	        var size = 'large';
 	
-	        if (value < valueRangeLimits.small) {
+	        if (value < limits.small.limit) {
 	            size = 'small';
-	        } else if (value < valueRangeLimits.medium) {
+	        } else if (value < limits.medium.limit) {
 	            size = 'medium';
 	        }
 	        return size;
@@ -11538,7 +11552,8 @@ webpackJsonp([3,10],[
 	     * @return {Number}       Formatted value to show
 	     */
 	    function formatIntegerValue(value) {
-	        var format = integerValueFormats[getValueSize(value)];
+	        var size = getValueSize(value, integerValueFormats);
+	        var format = integerValueFormats[size].format;
 	
 	        return format(value);
 	    }
@@ -11549,7 +11564,8 @@ webpackJsonp([3,10],[
 	     * @return {Number}       Formatted value to show
 	     */
 	    function formatDecimalValue(value) {
-	        var format = decimalValueFormats[getValueSize(value)];
+	        var size = getValueSize(value, decimalValueFormats);
+	        var format = decimalValueFormats[size].format;
 	
 	        return format(value);
 	    }
