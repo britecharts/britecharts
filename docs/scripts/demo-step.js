@@ -9808,6 +9808,8 @@ webpackJsonp([9,10],[
 	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-x-line').data([0]).enter().append('line').attr('class', 'extended-x-line').attr('x1', xAxisPadding.left).attr('x2', chartWidth).attr('y1', height - margin.bottom - margin.top).attr('y2', height - margin.bottom - margin.top);
 	        }
 	
+	        // API
+	
 	        /**
 	         * Chart exported to png and a download action is fired
 	         * @public
@@ -9831,34 +9833,6 @@ webpackJsonp([9,10],[
 	        };
 	
 	        /**
-	         * Gets or Sets the width of the chart
-	         * @param  {number} _x Desired width for the graph
-	         * @return { width | module} Current width or step Chart module to chain calls
-	         * @public
-	         */
-	        exports.width = function (_x) {
-	            if (!arguments.length) {
-	                return width;
-	            }
-	            width = _x;
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the height of the chart
-	         * @param  {number} _x Desired width for the graph
-	         * @return { height | module} Current height or Step Chart module to chain calls
-	         * @public
-	         */
-	        exports.height = function (_x) {
-	            if (!arguments.length) {
-	                return height;
-	            }
-	            height = _x;
-	            return this;
-	        };
-	
-	        /**
 	         * Gets or Sets the number of vertical ticks on the chart
 	         * @param  {number} _x Desired width for the graph
 	         * @return { height | module} Current height or Step Chart module to chain calls
@@ -9869,6 +9843,48 @@ webpackJsonp([9,10],[
 	                return numOfVerticalTicks;
 	            }
 	            numOfVerticalTicks = _x;
+	            return this;
+	        };
+	
+	        /**
+	          * Gets or Sets the height of the chart
+	          * @param  {number} _x Desired width for the graph
+	          * @return { height | module} Current height or Step Chart module to chain calls
+	          * @public
+	          */
+	        exports.height = function (_x) {
+	            if (!arguments.length) {
+	                return height;
+	            }
+	            height = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+	         * We are going to expose this events:
+	         * customMouseOver, customMouseMove and customMouseOut
+	         *
+	         * @return {module} Bar Chart
+	         * @public
+	         */
+	        exports.on = function () {
+	            var value = dispatcher.on.apply(dispatcher, arguments);
+	
+	            return value === dispatcher ? exports : value;
+	        };
+	
+	        /**
+	         * Gets or Sets the width of the chart
+	         * @param  {number} _x Desired width for the graph
+	         * @return { width | module} Current width or step Chart module to chain calls
+	         * @public
+	         */
+	        exports.width = function (_x) {
+	            if (!arguments.length) {
+	                return width;
+	            }
+	            width = _x;
 	            return this;
 	        };
 	
@@ -9926,28 +9942,6 @@ webpackJsonp([9,10],[
 	            }
 	            yAxisLabelOffset = _x;
 	            return this;
-	        };
-	
-	        /**
-	         * Exposes an 'on' method that acts as a bridge with the event dispatcher
-	         * We are going to expose this events:
-	         * customMouseOver, customMouseMove and customMouseOut
-	         *
-	         * @return {module} Bar Chart
-	         * @public
-	         */
-	        exports.on = function () {
-	            var value = dispatcher.on.apply(dispatcher, arguments);
-	
-	            return value === dispatcher ? exports : value;
-	        };
-	
-	        /**
-	         * Chart exported to png and a download action is fired
-	         * @public
-	         */
-	        exports.exportChart = function (filename, title) {
-	            exportChart.call(exports, svg, filename, title);
 	        };
 	
 	        return exports;
