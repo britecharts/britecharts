@@ -185,7 +185,7 @@ define(function(require){
                 drawAxis();
                 drawStackedAreas();
 
-                if(shouldShowTooltip()) {
+                if (shouldShowTooltip()) {
                     drawHoverOverlay();
                     drawVerticalMarker();
                     addMouseEvents();
@@ -491,6 +491,7 @@ define(function(require){
                     dataPoints[key].push(d);
 
                     let {date, y, y0} = point;
+
                     return `translate( ${xScale(date)}, ${yScale(y + y0)} )`;
                 });
         }
@@ -736,7 +737,7 @@ define(function(require){
             let dataPoint = getNearestDataPoint(getMouseXPosition(this) - margin.left),
                 dataPointXPosition;
 
-            if(dataPoint) {
+            if (dataPoint) {
                 dataPointXPosition = xScale(new Date( dataPoint.key ));
                 // Move verticalMarker to that datapoint
                 moveVerticalMarker(dataPointXPosition);

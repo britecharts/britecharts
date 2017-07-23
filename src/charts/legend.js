@@ -230,11 +230,11 @@ define(function(require){
               .append('g')
                 .classed('legend-entry', true)
                 .attr('data-item', getId)
-                .attr('transform', function(d, i) {
+                .attr('transform', function({name}) {
                     let horizontalOffset = xOffset,
                         lineHeight = chartHeight / 2,
                         verticalOffset = lineHeight,
-                        labelWidth = textHelper.getTextWidth(d.name, textSize);
+                        labelWidth = textHelper.getTextWidth(name, textSize);
 
                     xOffset += markerSize + 2 * getLineElementMargin() + labelWidth;
 
@@ -364,13 +364,12 @@ define(function(require){
             let legendEntries = svg.selectAll('.legend-entry');
             let numberOfEntries = legendEntries.size();
             let lineHeight = (chartHeight / 2) * 1.7;
-
             let newLine = svg.select('.legend-group')
               .append('g')
                 .classed('legend-line', true)
                 .attr('transform', `translate(0, ${lineHeight})`);
-
             let lastEntry = legendEntries.filter(`:nth-child(${numberOfEntries})`);
+
             lastEntry.attr('transform', `translate(${markerSize},0)`);
             newLine.append(() => lastEntry.node());
         }

@@ -476,9 +476,9 @@
 
             categoryColorMap = colorScale
                 .domain(data.map(getName)).domain()
-                .reduce((memo, item, i) => {
+                .reduce((memo, item) => {
                     data.forEach(function(v){
-                        if (getName(v)==item){
+                        if (getName(v) == item){
                            memo[v.name] = colorScale(v.stack)
                            memo[v.stack] = colorScale(v.stack)
                            memo[v.stack + item] = colorScale(v.stack)
@@ -620,14 +620,13 @@
                     .ease(ease)
                     .tween('attr.width', function(d ){
                         let node = d3Selection.select(this),
-                        i = d3Interpolate.interpolateRound(0,xScale(d[1] - d[0] )),
-                        j = d3Interpolate.interpolateNumber(0,1)
-                        ;
+                            i = d3Interpolate.interpolateRound(0,xScale(d[1] - d[0])),
+                            j = d3Interpolate.interpolateNumber(0,1);
 
-                        return function(t){
+                        return function(t) {
                             node.attr('width',  i(t) );
                             node.style('opacity', j(t) );
-                        }
+                        };
                     });
             } else {
                 bars.attr('width', (d) => xScale(d[1] - d[0] ) )
@@ -681,11 +680,10 @@
                     .ease(ease)
                     .tween('attr.height', function(d ){
                         let node = d3Selection.select(this),
-                        i = d3Interpolate.interpolateRound(0, yScale(d[0]) - yScale(d[1])),
-                        j = d3Interpolate.interpolateNumber(0,1)
-                        ;
+                            i = d3Interpolate.interpolateRound(0, yScale(d[0]) - yScale(d[1])),
+                            j = d3Interpolate.interpolateNumber(0,1);
 
-                        return function(t){
+                        return function(t) {
                             node.attr('height',  i(t) );
                             node.style('opacity', j(t) );
                         }
@@ -775,6 +773,7 @@
             nearest = layers.map(function(stackedArray){
                 return stackedArray.map(function(d1){
                    let found = d1.data.values.find((d2) => Math.abs(adjustedMouseY >= yScale(d2[nameLabel])) &amp;&amp; Math.abs(adjustedMouseY - yScale(d2[nameLabel]) &lt;= epsilon*2) );
+
                    return found ? d1.data :undefined;
                })
             });
@@ -785,20 +784,18 @@
 
         /**
          * Handles a mouseover event on top of a bar
-         * @param  {obj} d data of bar
          * @return {void}
          */
-        function handleBarsMouseOver(d) {
+        function handleBarsMouseOver() {
             d3Selection.select(this)
                 .attr('fill', () => d3Color.color(d3Selection.select(this.parentNode).attr('fill')).darker())
         }
 
         /**
          * Handles a mouseout event out of a bar
-         * @param  {obj} d data of bar
          * @return {void}
          */
-        function handleBarsMouseOut(d) {
+        function handleBarsMouseOut() {
             d3Selection
                 .select(this).attr('fill', () => d3Selection.select(this.parentNode).attr('fill'))
         }

@@ -1450,13 +1450,14 @@ webpackJsonp([0,10],[
 	            isAnimated = false,
 	            ease = d3Ease.easeQuadInOut,
 	            animationDuration = 800,
+	            animationStepRatio = 70,
 	            interBarDelay = function interBarDelay(d, i) {
-	            return 70 * i;
+	            animationStepRatio * i;
 	        },
 	            valueLabel = 'value',
 	            nameLabel = 'name',
-	            maskGridLines = void 0,
 	            baseLine = void 0,
+	            maskGridLines = void 0,
 	            reverseColorList = true,
 	
 	
@@ -7830,6 +7831,7 @@ webpackJsonp([0,10],[
 	
 	    /**
 	     * Wraps a selection of text within the available width
+	     * @param  {Number} xOffset        X axis offset for the text
 	     * @param  {Number} fontSize       Size of the base font
 	     * @param  {Number} availableWidth Width of the container where the text needs to wrap on
 	     * @param  {D3Selection} node      SVG text element that contains the text to wrap
@@ -7838,7 +7840,7 @@ webpackJsonp([0,10],[
 	     * More discussions on https://github.com/mbostock/d3/issues/1642
 	     * @return {void}
 	     */
-	    var wrapText = function wrapText(xOffset, fontSize, availableWidth, node, data, i) {
+	    var wrapText = function wrapText(xOffset, fontSize, availableWidth, node) {
 	        var text = d3Selection.select(node),
 	            words = text.text().split(/\s+/).reverse(),
 	            word = void 0,
@@ -8021,8 +8023,9 @@ webpackJsonp([0,10],[
 	        d3svg.attr('version', 1.1).attr('xmlns', 'http://www.w3.org/2000/svg');
 	        var serializer = serializeWithStyles.initializeSerializer();
 	        var html = serializer(d3svg.node());
+	
 	        html = formatHtmlByBrowser(html);
-	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width')));
+	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width'), 10));
 	        html = addBackground(html);
 	
 	        return html;
@@ -8127,6 +8130,7 @@ webpackJsonp([0,10],[
 	        }
 	        var britechartsGreySchema = colorSchemas.britechartsGreySchema;
 	
+	
 	        html = html.replace(/<g/, '<text x="' + this.margin().left + '" y="' + config.titleTopOffset + '" font-family="' + config.titleFontFamily + '" font-size="' + config.titleFontSize + '" fill="' + britechartsGreySchema[6] + '"> ' + title + ' </text><g ');
 	
 	        return html;
@@ -8146,7 +8150,7 @@ webpackJsonp([0,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
 	
 	    // Color Gradients
 	    var britechartGradients = {
@@ -8230,7 +8234,8 @@ webpackJsonp([0,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	
 	    var axisTimeCombinations = {
 	        MINUTE_HOUR: 'minute-hour',
 	        HOUR_DAY: 'hour-daymonth',
@@ -8315,7 +8320,8 @@ webpackJsonp([0,10],[
 	                    result = void 0;
 	
 	                if (!elem || elem.nodeType !== Node.ELEMENT_NODE) {
-	                    console.error('Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE');
+	                    // 'Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE'
+	
 	                    return;
 	                }
 	
@@ -8643,10 +8649,9 @@ webpackJsonp([0,10],[
 	         * This function creates the graph using the selection as container
 	         * @param {D3Selection} _selection A d3 selection that represents
 	         *                                  the container(s) where the chart(s) will be rendered
-	         * @param {Array} _data The data to attach and generate the chart (usually an empty array)
 	         */
 	        function exports(_selection) {
-	            _selection.each(function (_data) {
+	            _selection.each(function () {
 	                chartWidth = width - margin.left - margin.right;
 	                chartHeight = height - margin.top - margin.bottom;
 	

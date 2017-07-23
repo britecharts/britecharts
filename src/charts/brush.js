@@ -400,7 +400,7 @@ define(function(require) {
          * @return {void}
          */
         function updateHandlers(dateExtent) {
-            if (dateExtent == null) {
+            if (dateExtent === null) {
                 handle.attr('display', 'none');
             } else {
                 handle

@@ -16,6 +16,7 @@ define(function(require) {
 
     /**
      * Wraps a selection of text within the available width
+     * @param  {Number} xOffset        X axis offset for the text
      * @param  {Number} fontSize       Size of the base font
      * @param  {Number} availableWidth Width of the container where the text needs to wrap on
      * @param  {D3Selection} node      SVG text element that contains the text to wrap
@@ -24,7 +25,7 @@ define(function(require) {
      * More discussions on https://github.com/mbostock/d3/issues/1642
      * @return {void}
      */
-    const wrapText = function(xOffset, fontSize, availableWidth, node, data, i) {
+    const wrapText = function(xOffset, fontSize, availableWidth, node) {
         let text = d3Selection.select(node),
             words = text.text().split(/\s+/).reverse(),
             word,

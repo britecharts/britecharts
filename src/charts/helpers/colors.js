@@ -1,4 +1,4 @@
-define(function(require) {
+define(function() {
 
     // Color Gradients
     const britechartGradients = {
