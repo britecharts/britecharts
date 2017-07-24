@@ -101,7 +101,7 @@ define(function(require) {
             ease = d3Ease.easeQuadInOut,
             animationDuration = 800,
             animationStepRatio = 70,
-            interBarDelay = (d, i) => {animationStepRatio * i},
+            interBarDelay = (d, i) => animationStepRatio * i,
 
             valueLabel = 'value',
             nameLabel = 'name',

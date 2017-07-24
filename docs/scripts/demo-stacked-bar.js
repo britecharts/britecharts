@@ -12931,7 +12931,7 @@ webpackJsonp([8,10],[
 	
 	            categoryColorMap = colorScale.domain(data.map(getName)).domain().reduce(function (memo, item) {
 	                data.forEach(function (v) {
-	                    if (getName(v) == item) {
+	                    if (getName(v) === item) {
 	                        memo[v.name] = colorScale(v.stack);
 	                        memo[v.stack] = colorScale(v.stack);
 	                        memo[v.stack + item] = colorScale(v.stack);

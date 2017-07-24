@@ -379,8 +379,8 @@ define(function(require) {
          * @return {module} Bar Chart
          * @public
          */
-        exports.on = function() {
-            let value = dispatcher.on.apply(dispatcher, arguments);
+        exports.on = function(...args) {
+            let value = dispatcher.on(...args);
 
             return value === dispatcher ? exports : value;
         };
