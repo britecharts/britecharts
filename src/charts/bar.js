@@ -327,7 +327,7 @@ define(function(require) {
                 })
                 .on('mouseout', function(d) {
                     dispatcher.call('customMouseOut', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name));
                 })
               .merge(bars)
                 .attr('x', 0)
@@ -360,7 +360,7 @@ define(function(require) {
                 })
                 .on('mouseout', function(d) {
                     dispatcher.call('customMouseOut', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name));
                 });
 
             bars
@@ -398,7 +398,7 @@ define(function(require) {
                 })
                 .on('mouseout', function(d) {
                     dispatcher.call('customMouseOut', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name));
                 })
               .merge(bars)
                 .attr('x', ({name}) => xScale(name))
@@ -435,7 +435,7 @@ define(function(require) {
                 })
                 .on('mouseout', function(d) {
                     dispatcher.call('customMouseOut', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
+                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name));
                 })
               .merge(bars)
                 .attr('x', ({name}) => xScale(name))
