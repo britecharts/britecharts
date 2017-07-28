@@ -163,35 +163,6 @@ define(function(require){
         }
 
         /**
-         * Prepare data for create chart.
-         * @private
-         */
-        function prepareData(data) {
-            stacks = uniq(data.map(({stack}) => stack));
-            transformedData = d3Collection.nest()
-                .key(getName)
-                .rollup(function(values) {
-                    let ret = {};
-
-                    values.forEach((entry) => {
-                        if (entry && entry[stackLabel]) {
-                            ret[entry[stackLabel]] = getValue(entry);
-                        }
-                    });
-                    ret.values = values; //for tooltip
-
-                    return ret;
-                })
-                .entries(data)
-                .map(function(data){
-                    return assign({}, {
-                        total:d3Array.sum( d3Array.permute(data.value, stacks) ),
-                        key:data.key
-                    }, data.value);
-                });
-        }
-
-        /**
          * Adds events to the container group if the environment is not mobile
          * Adding: mouseover, mouseout and mousemove
          */
@@ -206,6 +177,16 @@ define(function(require){
             svg.selectAll('.bar')
                 .on('mouseover', handleBarsMouseOver)
                 .on('mouseout', handleBarsMouseOut);
+        }
+
+        /**
+         * Adjusts the position of the y axis' ticks
+         * @param  {D3Selection} selection Y axis group
+         * @return void
+         */
+        function adjustYTickLabels(selection) {
+            selection.selectAll('.tick text')
+                .attr('transform', `translate(${yTickTextXOffset}, ${yTickTextYOffset})`);
         }
 
         /**
@@ -381,24 +362,16 @@ define(function(require){
         }
 
         /**
-         * Adjusts the position of the y axis' ticks
-         * @param  {D3Selection} selection Y axis group
-         * @return void
-         */
-        function adjustYTickLabels(selection) {
-            selection.selectAll('.tick text')
-                .attr('transform', `translate(${yTickTextXOffset}, ${yTickTextYOffset})`);
-        }
-
-        /**
          * Draws grid lines on the background of the chart
          * @return void
          */
-        function drawGridLines(xTicks, yTicks) {
+        function drawGridLines() {
+            let scale = horizontal ? xScale : yScale;
+
             if (grid === 'horizontal' || grid === 'full') {
                 svg.select('.grid-lines-group')
                     .selectAll('line.horizontal-grid-line')
-                    .data(yScale.ticks(yTicks).slice(1))
+                    .data(scale.ticks(numOfVerticalTicks).slice(1))
                     .enter()
                       .append('line')
                         .attr('class', 'horizontal-grid-line')
@@ -411,7 +384,7 @@ define(function(require){
             if (grid === 'vertical' || grid === 'full') {
                 svg.select('.grid-lines-group')
                     .selectAll('line.vertical-grid-line')
-                    .data(xScale.ticks(xTicks).slice(1))
+                    .data(scale.ticks(numOfHorizontalTicks).slice(1))
                     .enter()
                       .append('line')
                         .attr('class', 'vertical-grid-line')
@@ -606,6 +579,7 @@ define(function(require){
          * @param  {Number} mouseY  Y position of the mouse
          * @return {obj}            Data entry that is closer to that y axis position
          */
+
         function getNearestDataPoint2(mouseY) {
             let adjustedMouseY = mouseY - margin.bottom,
                 epsilon = yScale.bandwidth(),
@@ -698,6 +672,35 @@ define(function(require){
         }
 
         /**
+         * Prepare data for create chart.
+         * @private
+         */
+        function prepareData(data) {
+            stacks = uniq(data.map(({stack}) => stack));
+            transformedData = d3Collection.nest()
+                .key(getName)
+                .rollup(function(values) {
+                    let ret = {};
+
+                    values.forEach((entry) => {
+                        if (entry && entry[stackLabel]) {
+                            ret[entry[stackLabel]] = getValue(entry);
+                        }
+                    });
+                    ret.values = values; //for tooltip
+
+                    return ret;
+                })
+                .entries(data)
+                .map(function(data){
+                    return assign({}, {
+                        total:d3Array.sum( d3Array.permute(data.value, stacks) ),
+                        key:data.key
+                    }, data.value);
+                });
+        }
+
+        /**
          * Determines if we should add the tooltip related logic depending on the
          * size of the chart and the tooltipThreshold variable value
          * @return {boolean} Should we build the tooltip?
@@ -739,64 +742,11 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the nameLabel of the chart
-         * @param  {Number} _x Desired dateLabel for the graph
-         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+         * Chart exported to png and a download action is fired
          * @public
          */
-        exports.nameLabel = function(_x) {
-            if (!arguments.length) {
-                return nameLabel;
-            }
-            nameLabel = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets the valueLabelFormat of the chart
-         * @param  {String[]} _x Desired valueLabelFormat for the graph
-         * @return { valueLabelFormat | module} Current valueLabelFormat or Chart module to chain calls
-         * @public
-         */
-        exports.nameLabelFormat = function(_x) {
-            if (!arguments.length) {
-                return nameLabelFormat;
-            }
-            nameLabelFormat = _x;
-
-            return this;
-        };
-
-        /**
-         * Configurable extension of the x axis
-         * if your max point was 50% you might want to show x axis to 60%, pass 1.2
-         * @param  {number} _x ratio to max data point to add to the x axis
-         * @return { ratio | module} Current ratio or Bar Chart module to chain calls
-         * @public
-         */
-        exports.percentageAxisToMaxRatio = function(_x) {
-            if (!arguments.length) {
-                return percentageAxisToMaxRatio;
-            }
-            percentageAxisToMaxRatio = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets the stackLabel of the chart
-         * @param  {String} _x Desired stackLabel for the graph
-         * @return { stackLabel | module} Current stackLabel or Chart module to chain calls
-         * @public
-         */
-        exports.stackLabel = function(_x) {
-            if (!arguments.length) {
-                return stackLabel;
-            }
-            stackLabel = _x;
-
-            return this;
+        exports.exportChart = function(filename, title) {
+            exportChart.call(exports, svg, filename, title);
         };
 
         /**
@@ -881,6 +831,111 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the nameLabel of the chart
+         * @param  {Number} _x Desired dateLabel for the graph
+         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+         * @public
+         */
+        exports.nameLabel = function(_x) {
+            if (!arguments.length) {
+                return nameLabel;
+            }
+            nameLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the valueLabelFormat of the chart
+         * @param  {String[]} _x Desired valueLabelFormat for the graph
+         * @return { valueLabelFormat | module} Current valueLabelFormat or Chart module to chain calls
+         * @public
+         */
+        exports.nameLabelFormat = function(_x) {
+            if (!arguments.length) {
+                return nameLabelFormat;
+            }
+            nameLabelFormat = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the number of verticalTicks of the axis on the chart
+         * @param  {Number} _x Desired verticalTicks
+         * @return { numOfHorizontalTicks | module} Current numOfHorizontalTicks or Chart module to chain calls
+         * @public
+         */
+        exports.numOfHorizontalTicks = function (_x) {
+            if (!arguments.length) {
+                return numOfHorizontalTicks;
+            }
+            numOfHorizontalTicks = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the number of verticalTicks of the axis on the chart
+         * @param  {Number} _x Desired verticalTicks
+         * @return { numOfVerticalTicks | module} Current numOfVerticalTicks or Chart module to chain calls
+         * @public
+         */
+        exports.numOfVerticalTicks = function (_x) {
+            if (!arguments.length) {
+                return numOfVerticalTicks;
+            }
+            numOfVerticalTicks = _x;
+
+            return this;
+        };
+
+        /**
+         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+         * We are going to expose this events:
+         * customMouseOver, customMouseMove and customMouseOut
+         *
+         * @return {module} Bar Chart
+         * @public
+         */
+        exports.on = function() {
+            let value = dispatcher.on.apply(dispatcher, arguments);
+
+            return value === dispatcher ? exports : value;
+        };
+
+        /**
+         * Configurable extension of the x axis
+         * if your max point was 50% you might want to show x axis to 60%, pass 1.2
+         * @param  {number} _x ratio to max data point to add to the x axis
+         * @return { ratio | module} Current ratio or Bar Chart module to chain calls
+         * @public
+         */
+        exports.percentageAxisToMaxRatio = function(_x) {
+            if (!arguments.length) {
+                return percentageAxisToMaxRatio;
+            }
+            percentageAxisToMaxRatio = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the stackLabel of the chart
+         * @param  {String} _x Desired stackLabel for the graph
+         * @return { stackLabel | module} Current stackLabel or Chart module to chain calls
+         * @public
+         */
+        exports.stackLabel = function(_x) {
+            if (!arguments.length) {
+                return stackLabel;
+            }
+            stackLabel = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the minimum width of the graph in order to show the tooltip
          * NOTE: This could also depend on the aspect ratio
          *
@@ -928,21 +983,6 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the number of verticalTicks of the yAxis on the chart
-         * @param  {Number} _x Desired verticalTicks
-         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
-         * @public
-         */
-        exports.verticalTicks = function(_x) {
-            if (!arguments.length) {
-                return verticalTicks;
-            }
-            verticalTicks = _x;
-
-            return this;
-        };
-
-        /**
          * Gets or Sets the width of the chart
          * @param  {Number} _x Desired width for the graph
          * @return { width | module} Current width or Area Chart module to chain calls
@@ -958,28 +998,6 @@ define(function(require){
             width = _x;
 
             return this;
-        };
-
-        /**
-         * Chart exported to png and a download action is fired
-         * @public
-         */
-        exports.exportChart = function(filename, title) {
-            exportChart.call(exports, svg, filename, title);
-        };
-
-        /**
-         * Exposes an 'on' method that acts as a bridge with the event dispatcher
-         * We are going to expose this events:
-         * customMouseOver, customMouseMove and customMouseOut
-         *
-         * @return {module} Bar Chart
-         * @public
-         */
-        exports.on = function() {
-            let value = dispatcher.on.apply(dispatcher, arguments);
-
-            return value === dispatcher ? exports : value;
         };
 
         return exports;

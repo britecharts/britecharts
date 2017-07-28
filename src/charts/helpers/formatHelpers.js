@@ -3,27 +3,41 @@ define(function(require) {
 
     const d3Format = require('d3-format');
 
-    const valueRangeLimits = {
-                small: 10,
-                medium: 100
-            };
     const integerValueFormats = {
-                small: d3Format.format(''),
-                medium: d3Format.format(''),
-                large: d3Format.format('.2s')
+                small: {
+                    limit: 10,
+                    format: d3Format.format('')
+                },
+                medium: {
+                    limit: 1000,
+                    format: d3Format.format('')
+                },
+                large: {
+                    limit: null,
+                    format: d3Format.format('.2s')
+                }
             };
     const decimalValueFormats = {
-                small: d3Format.format('.3f'),
-                medium: d3Format.format('.1f'),
-                large: d3Format.format('.2s')
+                small: {
+                    limit: 10,
+                    format: d3Format.format('.3f')
+                },
+                medium: {
+                    limit: 100,
+                    format: d3Format.format('.1f')
+                },
+                large: {
+                    limit: null,
+                    format: d3Format.format('.2s')
+                }
             };
 
-    function getValueSize(value){
+    function getValueSize(value, limits) {
         let size = 'large';
 
-        if (value < valueRangeLimits.small) {
+        if (value < limits.small.limit) {
             size = 'small';
-        } else if (value < valueRangeLimits.medium) {
+        } else if (value < limits.medium.limit) {
             size = 'medium';
         }
         return size;
@@ -35,7 +49,8 @@ define(function(require) {
      * @return {Number}       Formatted value to show
      */
     function formatIntegerValue(value) {
-        let format = integerValueFormats[getValueSize(value)];
+        let size = getValueSize(value, integerValueFormats);
+        let format = integerValueFormats[size].format;
 
         return format(value);
     }
@@ -46,7 +61,8 @@ define(function(require) {
      * @return {Number}       Formatted value to show
      */
     function formatDecimalValue(value) {
-        let format = decimalValueFormats[getValueSize(value)];
+        let size = getValueSize(value, decimalValueFormats);
+        let format = decimalValueFormats[size].format;
 
         return format(value);
     }

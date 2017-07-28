@@ -102,7 +102,7 @@ webpackJsonp([0,10],[
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-selection/ Version 1.1.0. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-selection/ Version 1.0.5. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -727,18 +727,16 @@ webpackJsonp([0,10],[
 	}
 	
 	var selection_style = function(name, value, priority) {
+	  var node;
 	  return arguments.length > 1
 	      ? this.each((value == null
 	            ? styleRemove : typeof value === "function"
 	            ? styleFunction
 	            : styleConstant)(name, value, priority == null ? "" : priority))
-	      : styleValue(this.node(), name);
+	      : defaultView(node = this.node())
+	          .getComputedStyle(node, null)
+	          .getPropertyValue(name);
 	};
-	
-	function styleValue(node, name) {
-	  return node.style.getPropertyValue(name)
-	      || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
-	}
 	
 	function propertyRemove(name) {
 	  return function() {
@@ -951,7 +949,7 @@ webpackJsonp([0,10],[
 	  var window = defaultView(node),
 	      event = window.CustomEvent;
 	
-	  if (typeof event === "function") {
+	  if (event) {
 	    event = new event(type, params);
 	  } else {
 	    event = window.document.createEvent("Event");
@@ -1069,7 +1067,6 @@ webpackJsonp([0,10],[
 	exports.selection = selection;
 	exports.selector = selector;
 	exports.selectorAll = selectorAll;
-	exports.style = styleValue;
 	exports.touch = touch;
 	exports.touches = touches;
 	exports.window = defaultView;
@@ -1084,7 +1081,7 @@ webpackJsonp([0,10],[
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
 	Copyright (c) 2010,2011,2012,2013,2014 Morgan Roderick http://roderick.dk
 	License: MIT - http://mrgnrdrck.mit-license.org
 	
@@ -1093,22 +1090,20 @@ webpackJsonp([0,10],[
 	(function (root, factory){
 		'use strict';
 	
-		var PubSub = {};
-		root.PubSub = PubSub;
-		factory(PubSub);
+	    if (true){
+	        // AMD. Register as an anonymous module.
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	
-		// AMD support
-		if (true){
-			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return PubSub; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    } else if (typeof exports === 'object'){
+	        // CommonJS
+	        factory(exports);
 	
-		// CommonJS and Node.js module support
-		} else if (typeof exports === 'object'){
-			if (module !== undefined && module.exports) {
-				exports = module.exports = PubSub; // Node.js specific `module.exports`
-			}
-			exports.PubSub = PubSub; // CommonJS module 1.1.1 spec
-			module.exports = exports = PubSub; // CommonJS
-		}
+	    }
+	
+	    // Browser globals
+	    var PubSub = {};
+	    root.PubSub = PubSub;
+	    factory(PubSub);
 	
 	}(( typeof window === 'object' && window ) || this, function (PubSub){
 		'use strict';
@@ -1538,14 +1533,14 @@ webpackJsonp([0,10],[
 	         * @private
 	         */
 	        function buildAxis() {
-	            if (!horizontal) {
-	                xAxis = d3Axis.axisBottom(xScale);
-	
-	                yAxis = d3Axis.axisLeft(yScale).ticks(numOfVerticalTicks, valueLabelFormat);
-	            } else {
+	            if (horizontal) {
 	                xAxis = d3Axis.axisBottom(xScale).ticks(numOfHorizontalTicks, valueLabelFormat).tickSizeInner([-chartHeight]);
 	
 	                yAxis = d3Axis.axisLeft(yScale);
+	            } else {
+	                xAxis = d3Axis.axisBottom(xScale);
+	
+	                yAxis = d3Axis.axisLeft(yScale).ticks(numOfVerticalTicks, valueLabelFormat);
 	            }
 	        }
 	
@@ -1571,14 +1566,14 @@ webpackJsonp([0,10],[
 	        function buildScales() {
 	            var percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue));
 	
-	            if (!horizontal) {
-	                xScale = d3Scale.scaleBand().domain(data.map(getName)).rangeRound([0, chartWidth]).padding(0.1);
-	
-	                yScale = d3Scale.scaleLinear().domain([0, percentageAxis]).rangeRound([chartHeight, 0]);
-	            } else {
+	            if (horizontal) {
 	                xScale = d3Scale.scaleLinear().domain([0, percentageAxis]).rangeRound([0, chartWidth]);
 	
 	                yScale = d3Scale.scaleBand().domain(data.map(getName)).rangeRound([chartHeight, 0]).padding(0.1);
+	            } else {
+	                xScale = d3Scale.scaleBand().domain(data.map(getName)).rangeRound([0, chartWidth]).padding(0.1);
+	
+	                yScale = d3Scale.scaleLinear().domain([0, percentageAxis]).rangeRound([chartHeight, 0]);
 	            }
 	
 	            if (reverseColorList) {
@@ -1935,12 +1930,43 @@ webpackJsonp([0,10],[
 	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-x-line').data([0]).enter().append('line').attr('class', 'extended-x-line').attr('x1', xAxisPadding.left).attr('x2', chartWidth).attr('y1', chartHeight).attr('y2', chartHeight);
 	        }
 	
+	        // API
+	
+	        /**
+	         * Gets or Sets the colorSchema of the chart
+	         * @param  {String[]} _x Desired colorSchema for the graph
+	         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
+	         * @public
+	         */
+	        exports.colorSchema = function (_x) {
+	            if (!arguments.length) {
+	                return colorSchema;
+	            }
+	            colorSchema = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Default false. If true, adds percentage labels at the end of the bars
+	         * @param  {Boolean} _x
+	         * @return {Boolean | module}    Current value of enablePercentageLables or Bar Chart module to chain calls
+	         */
+	        exports.enablePercentageLabels = function (_x) {
+	            if (!arguments.length) {
+	                return enablePercentageLabels;
+	            }
+	            enablePercentageLabels = _x;
+	
+	            return this;
+	        };
+	
 	        /**
 	         * Chart exported to png and a download action is fired
 	         * @public
 	         */
-	        exports.exportChart = function (filename) {
-	            exportChart.call(exports, svg, filename);
+	        exports.exportChart = function (filename, title) {
+	            exportChart.call(exports, svg, filename, title);
 	        };
 	
 	        /**
@@ -1954,36 +1980,6 @@ webpackJsonp([0,10],[
 	                return height;
 	            }
 	            height = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the margin of the chart
-	         * @param  {object} _x Margin object to get/set
-	         * @return { margin | module} Current margin or Bar Chart module to chain calls
-	         * @public
-	         */
-	        exports.margin = function (_x) {
-	            if (!arguments.length) {
-	                return margin;
-	            }
-	            margin = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the width of the chart
-	         * @param  {number} _x Desired width for the graph
-	         * @return { width | module} Current width or Bar Chart module to chain calls
-	         * @public
-	         */
-	        exports.width = function (_x) {
-	            if (!arguments.length) {
-	                return width;
-	            }
-	            width = _x;
 	
 	            return this;
 	        };
@@ -2021,6 +2017,36 @@ webpackJsonp([0,10],[
 	        };
 	
 	        /**
+	         * Gets or Sets the margin of the chart
+	         * @param  {object} _x Margin object to get/set
+	         * @return { margin | module} Current margin or Bar Chart module to chain calls
+	         * @public
+	         */
+	        exports.margin = function (_x) {
+	            if (!arguments.length) {
+	                return margin;
+	            }
+	            margin = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the nameLabel of the chart
+	         * @param  {Number} _x Desired nameLabel for the graph
+	         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.nameLabel = function (_x) {
+	            if (!arguments.length) {
+	                return nameLabel;
+	            }
+	            nameLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
 	         * Exposes an 'on' method that acts as a bridge with the event dispatcher
 	         * We are going to expose this events:
 	         * customMouseOver, customMouseMove and customMouseOut
@@ -2032,48 +2058,6 @@ webpackJsonp([0,10],[
 	            var value = dispatcher.on.apply(dispatcher, arguments);
 	
 	            return value === dispatcher ? exports : value;
-	        };
-	
-	        /**
-	         * Chart exported to png and a download action is fired
-	         * @public
-	         */
-	        exports.exportChart = function (filename, title) {
-	            exportChart.call(exports, svg, filename, title);
-	        };
-	
-	        /**
-	         * Gets or Sets the colorSchema of the chart
-	         * @param  {String[]} _x Desired colorSchema for the graph
-	         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
-	         * @public
-	         */
-	        exports.colorSchema = function (_x) {
-	            if (!arguments.length) {
-	                return colorSchema;
-	            }
-	            colorSchema = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the valueLabelFormat to a percentage format if true (default false)
-	         * @param  {boolean} _x     Should use percentage as value format
-	         * @return { valueLabelFormat | module} Is percentage value format used or Chart module to chain calls
-	         * @public
-	         */
-	        exports.usePercentage = function (_x) {
-	            if (!arguments.length) {
-	                return valueLabelFormat === PERCENTAGE_FORMAT;
-	            }
-	            if (_x) {
-	                valueLabelFormat = PERCENTAGE_FORMAT;
-	            } else {
-	                valueLabelFormat = NUMBER_FORMAT;
-	            }
-	
-	            return this;
 	        };
 	
 	        /**
@@ -2107,29 +2091,35 @@ webpackJsonp([0,10],[
 	        };
 	
 	        /**
-	         * Default false. If true, adds percentage labels at the end of the bars
-	         * @param  {Boolean} _x
-	         * @return {Boolean | module}    Current value of enablePercentageLables or Bar Chart module to chain calls
+	         * Gets or Sets whether the color list should be reversed or not
+	         * @param  {boolean} _x     Should reverse the color list
+	         * @return { boolean | module} Is color list being reversed
+	         * @public
 	         */
-	        exports.enablePercentageLabels = function (_x) {
+	        exports.reverseColorList = function (_x) {
 	            if (!arguments.length) {
-	                return enablePercentageLabels;
+	                return reverseColorList;
 	            }
-	            enablePercentageLabels = _x;
+	            reverseColorList = _x;
 	
 	            return this;
 	        };
 	
 	        /**
-	         * Default 10. Space between y axis and chart
-	         * @param  {number} _x space between y axis and chart
-	         * @return {number| module}    Current value of yAxisPaddingBetweenChart or Bar Chart module to chain calls
+	         * Gets or Sets the valueLabelFormat to a percentage format if true (default false)
+	         * @param  {boolean} _x     Should use percentage as value format
+	         * @return { valueLabelFormat | module} Is percentage value format used or Chart module to chain calls
+	         * @public
 	         */
-	        exports.yAxisPaddingBetweenChart = function (_x) {
+	        exports.usePercentage = function (_x) {
 	            if (!arguments.length) {
-	                return yAxisPaddingBetweenChart;
+	                return valueLabelFormat === PERCENTAGE_FORMAT;
 	            }
-	            yAxisPaddingBetweenChart = _x;
+	            if (_x) {
+	                valueLabelFormat = PERCENTAGE_FORMAT;
+	            } else {
+	                valueLabelFormat = NUMBER_FORMAT;
+	            }
 	
 	            return this;
 	        };
@@ -2150,31 +2140,30 @@ webpackJsonp([0,10],[
 	        };
 	
 	        /**
-	         * Gets or Sets the nameLabel of the chart
-	         * @param  {Number} _x Desired nameLabel for the graph
-	         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+	         * Gets or Sets the width of the chart
+	         * @param  {number} _x Desired width for the graph
+	         * @return { width | module} Current width or Bar Chart module to chain calls
 	         * @public
 	         */
-	        exports.nameLabel = function (_x) {
+	        exports.width = function (_x) {
 	            if (!arguments.length) {
-	                return nameLabel;
+	                return width;
 	            }
-	            nameLabel = _x;
+	            width = _x;
 	
 	            return this;
 	        };
 	
 	        /**
-	         * Gets or Sets whether the color list should be reversed or not
-	         * @param  {boolean} _x     Should reverse the color list
-	         * @return { boolean | module} Is color list being reversed
-	         * @public
+	         * Default 10. Space between y axis and chart
+	         * @param  {number} _x space between y axis and chart
+	         * @return {number| module}    Current value of yAxisPaddingBetweenChart or Bar Chart module to chain calls
 	         */
-	        exports.reverseColorList = function (_x) {
+	        exports.yAxisPaddingBetweenChart = function (_x) {
 	            if (!arguments.length) {
-	                return reverseColorList;
+	                return yAxisPaddingBetweenChart;
 	            }
-	            reverseColorList = _x;
+	            yAxisPaddingBetweenChart = _x;
 	
 	            return this;
 	        };
@@ -3047,7 +3036,7 @@ webpackJsonp([0,10],[
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-axis/ Version 1.0.7. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-axis/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -3067,15 +3056,15 @@ webpackJsonp([0,10],[
 	var epsilon = 1e-6;
 	
 	function translateX(x) {
-	  return "translate(" + (x + 0.5) + ",0)";
+	  return "translate(" + x + ",0)";
 	}
 	
 	function translateY(y) {
-	  return "translate(0," + (y + 0.5) + ")";
+	  return "translate(0," + y + ")";
 	}
 	
 	function center(scale) {
-	  var offset = Math.max(0, scale.bandwidth() - 1) / 2; // Adjust for 0.5px offset.
+	  var offset = scale.bandwidth() / 2;
 	  if (scale.round()) offset = Math.round(offset);
 	  return function(d) {
 	    return scale(d) + offset;
@@ -3094,7 +3083,7 @@ webpackJsonp([0,10],[
 	      tickSizeOuter = 6,
 	      tickPadding = 3,
 	      k = orient === top || orient === left ? -1 : 1,
-	      x = orient === left || orient === right ? "x" : "y",
+	      x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x"),
 	      transform = orient === top || orient === bottom ? translateX : translateY;
 	
 	  function axis(context) {
@@ -3121,11 +3110,14 @@ webpackJsonp([0,10],[
 	
 	    line = line.merge(tickEnter.append("line")
 	        .attr("stroke", "#000")
-	        .attr(x + "2", k * tickSizeInner));
+	        .attr(x + "2", k * tickSizeInner)
+	        .attr(y + "1", 0.5)
+	        .attr(y + "2", 0.5));
 	
 	    text = text.merge(tickEnter.append("text")
 	        .attr("fill", "#000")
 	        .attr(x, k * spacing)
+	        .attr(y, 0.5)
 	        .attr("dy", orient === top ? "0em" : orient === bottom ? "0.71em" : "0.32em"));
 	
 	    if (context !== selection) {
@@ -4207,7 +4199,7 @@ webpackJsonp([0,10],[
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-scale/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-scale/ Version 1.0.5. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(4), __webpack_require__(11), __webpack_require__(12), __webpack_require__(9), __webpack_require__(13), __webpack_require__(14), __webpack_require__(7)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-collection', 'd3-interpolate', 'd3-format', 'd3-time', 'd3-time-format', 'd3-color'], factory) :
@@ -4522,39 +4514,17 @@ webpackJsonp([0,10],[
 	  };
 	
 	  scale.nice = function(count) {
-	    if (count == null) count = 10;
-	
 	    var d = domain(),
-	        i0 = 0,
-	        i1 = d.length - 1,
-	        start = d[i0],
-	        stop = d[i1],
-	        step;
+	        i = d.length - 1,
+	        n = count == null ? 10 : count,
+	        start = d[0],
+	        stop = d[i],
+	        step = d3Array.tickStep(start, stop, n);
 	
-	    if (stop < start) {
-	      step = start, start = stop, stop = step;
-	      step = i0, i0 = i1, i1 = step;
-	    }
-	
-	    step = d3Array.tickIncrement(start, stop, count);
-	
-	    if (step > 0) {
-	      start = Math.floor(start / step) * step;
-	      stop = Math.ceil(stop / step) * step;
-	      step = d3Array.tickIncrement(start, stop, count);
-	    } else if (step < 0) {
-	      start = Math.ceil(start * step) / step;
-	      stop = Math.floor(stop * step) / step;
-	      step = d3Array.tickIncrement(start, stop, count);
-	    }
-	
-	    if (step > 0) {
-	      d[i0] = Math.floor(start / step) * step;
-	      d[i1] = Math.ceil(stop / step) * step;
-	      domain(d);
-	    } else if (step < 0) {
-	      d[i0] = Math.ceil(start * step) / step;
-	      d[i1] = Math.floor(stop * step) / step;
+	    if (step) {
+	      step = d3Array.tickStep(Math.floor(start / step) * step, Math.ceil(stop / step) * step, n);
+	      d[0] = Math.floor(start / step) * step;
+	      d[i] = Math.ceil(stop / step) * step;
 	      domain(d);
 	    }
 	
@@ -5361,7 +5331,7 @@ webpackJsonp([0,10],[
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-interpolate/ Version 1.1.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-interpolate/ Version 1.1.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(7)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-color'], factory) :
@@ -5607,7 +5577,7 @@ webpackJsonp([0,10],[
 	      : b instanceof d3Color.color ? rgb$1
 	      : b instanceof Date ? date
 	      : Array.isArray(b) ? array
-	      : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
+	      : isNaN(b) ? object
 	      : number)(a, b);
 	};
 	
@@ -6890,7 +6860,7 @@ webpackJsonp([0,10],[
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-transition/ Version 1.1.0. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-transition/ Version 1.0.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(1), __webpack_require__(8), __webpack_require__(16), __webpack_require__(12), __webpack_require__(7), __webpack_require__(5)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-timer', 'd3-interpolate', 'd3-color', 'd3-ease'], factory) :
@@ -7455,8 +7425,9 @@ webpackJsonp([0,10],[
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.style(this, name),
-	        value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
+	    var style = d3Selection.window(this).getComputedStyle(this, null),
+	        value0 = style.getPropertyValue(name),
+	        value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -7473,7 +7444,7 @@ webpackJsonp([0,10],[
 	  var value00,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.style(this, name);
+	    var value0 = d3Selection.window(this).getComputedStyle(this, null).getPropertyValue(name);
 	    return value0 === value1 ? null
 	        : value0 === value00 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value1);
@@ -7485,9 +7456,10 @@ webpackJsonp([0,10],[
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.style(this, name),
+	    var style = d3Selection.window(this).getComputedStyle(this, null),
+	        value0 = style.getPropertyValue(name),
 	        value1 = value(this);
-	    if (value1 == null) value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
+	    if (value1 == null) value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
