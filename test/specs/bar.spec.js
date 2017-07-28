@@ -235,12 +235,32 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
         describe('when hovering a bar', function() {
 
-            it('should trigger a callback', () => {
+            it('should trigger a callback on mouse over', () => {
                 let bar = containerFixture.selectAll('.bar:nth-child(1)');
                 let callbackSpy = jasmine.createSpy('callback');
 
                 barChart.on('customMouseOver', callbackSpy);
                 bar.dispatch('mouseover');
+
+                expect(callbackSpy.calls.count()).toBe(1);
+            });
+
+            it('should trigger a callback on mouse move', () => {
+                let bar = containerFixture.selectAll('.bar:nth-child(1)');
+                let callbackSpy = jasmine.createSpy('callback');
+
+                barChart.on('customMouseMove', callbackSpy);
+                bar.dispatch('mousemove');
+
+                expect(callbackSpy.calls.count()).toBe(1);
+            });
+
+            it('should trigger a callback on mouse out', () => {
+                let bar = containerFixture.selectAll('.bar:nth-child(1)');
+                let callbackSpy = jasmine.createSpy('callback');
+
+                barChart.on('customMouseOut', callbackSpy);
+                bar.dispatch('mouseout');
 
                 expect(callbackSpy.calls.count()).toBe(1);
             });
