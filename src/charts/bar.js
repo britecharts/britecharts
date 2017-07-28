@@ -391,7 +391,7 @@ define(function(require) {
                 .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function() {
                     dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker())
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
                 })
                 .on('mousemove', function(d) {
                     dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
@@ -428,7 +428,7 @@ define(function(require) {
                 .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function() {
                     dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker())
+                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
                 })
                 .on('mousemove', function(d) {
                     dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
