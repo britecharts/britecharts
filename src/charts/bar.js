@@ -325,8 +325,8 @@ define(function(require) {
                 .on('mousemove', function(d) {
                     dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
-                .on('mouseout', function() {
-                    dispatcher.call('customMouseOut', this);
+                .on('mouseout', function(d) {
+                    dispatcher.call('customMouseOut', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                     d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
                 })
               .merge(bars)
@@ -358,8 +358,8 @@ define(function(require) {
                 .on('mousemove', function(d) {
                     dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
-                .on('mouseout', function() {
-                    dispatcher.call('customMouseOut', this);
+                .on('mouseout', function(d) {
+                    dispatcher.call('customMouseOut', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                     d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
                 });
 
@@ -396,8 +396,8 @@ define(function(require) {
                 .on('mousemove', function(d) {
                     dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
-                .on('mouseout', function() {
-                    dispatcher.call('customMouseOut', this);
+                .on('mouseout', function(d) {
+                    dispatcher.call('customMouseOut', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                     d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
                 })
               .merge(bars)
@@ -433,8 +433,8 @@ define(function(require) {
                 .on('mousemove', function(d) {
                     dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                 })
-                .on('mouseout', function() {
-                    dispatcher.call('customMouseOut', this);
+                .on('mouseout', function(d) {
+                    dispatcher.call('customMouseOut', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                     d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
                 })
               .merge(bars)
