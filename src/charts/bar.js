@@ -318,8 +318,8 @@ define(function(require) {
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value))
                 .attr('fill', ({name}) => colorMap(name))
-                .on('mouseover', function() {
-                    dispatcher.call('customMouseOver', this);
+                .on('mouseover', function(d) {
+                    dispatcher.call('customMouseOver', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                     d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
                 })
                 .on('mousemove', function(d) {
@@ -351,8 +351,8 @@ define(function(require) {
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value))
                 .attr('fill', ({name}) => colorMap(name))
-                .on('mouseover', function() {
-                    dispatcher.call('customMouseOver', this);
+                .on('mouseover', function(d) {
+                    dispatcher.call('customMouseOver', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                     d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
                 })
                 .on('mousemove', function(d) {
@@ -389,8 +389,8 @@ define(function(require) {
                 .attr('width', xScale.bandwidth())
                 .attr('height', ({value}) => chartHeight - yScale(value))
                 .attr('fill', ({name}) => colorMap(name))
-                .on('mouseover', function() {
-                    dispatcher.call('customMouseOver', this);
+                .on('mouseover', function(d) {
+                    dispatcher.call('customMouseOver', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                     d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
                 })
                 .on('mousemove', function(d) {
@@ -426,8 +426,8 @@ define(function(require) {
                 .attr('width', xScale.bandwidth())
                 .attr('height', ({value}) => chartHeight - yScale(value))
                 .attr('fill', ({name}) => colorMap(name))
-                .on('mouseover', function() {
-                    dispatcher.call('customMouseOver', this);
+                .on('mouseover', function(d) {
+                    dispatcher.call('customMouseOver', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
                     d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
                 })
                 .on('mousemove', function(d) {
