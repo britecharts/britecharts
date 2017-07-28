@@ -319,15 +319,13 @@ define(function(require) {
                 .attr('width', ({value}) => xScale(value))
                 .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function(d) {
-                    dispatcher.call('customMouseOver', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+                    customOnMouseOver(this, d, chartWidth, chartHeight);
                 })
                 .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                    customOnMouseMove(this, d, chartWidth, chartHeight);
                 })
                 .on('mouseout', function(d) {
-                    dispatcher.call('customMouseOut', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name));
+                    customOnMouseOut(this, d, chartWidth, chartHeight);
                 })
               .merge(bars)
                 .attr('x', 0)
@@ -352,15 +350,13 @@ define(function(require) {
                 .attr('width', ({value}) => xScale(value))
                 .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function(d) {
-                    dispatcher.call('customMouseOver', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+                    customOnMouseOver(this, d, chartWidth, chartHeight);
                 })
                 .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                    customOnMouseMove(this, d, chartWidth, chartHeight);
                 })
                 .on('mouseout', function(d) {
-                    dispatcher.call('customMouseOut', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name));
+                    customOnMouseOut(this, d, chartWidth, chartHeight);
                 });
 
             bars
@@ -390,15 +386,13 @@ define(function(require) {
                 .attr('height', ({value}) => chartHeight - yScale(value))
                 .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function(d) {
-                    dispatcher.call('customMouseOver', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+                    customOnMouseOver(this, d, chartWidth, chartHeight);
                 })
                 .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                    customOnMouseMove(this, d, chartWidth, chartHeight);
                 })
                 .on('mouseout', function(d) {
-                    dispatcher.call('customMouseOut', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name));
+                    customOnMouseOut(this, d, chartWidth, chartHeight);
                 })
               .merge(bars)
                 .attr('x', ({name}) => xScale(name))
@@ -427,15 +421,13 @@ define(function(require) {
                 .attr('height', ({value}) => chartHeight - yScale(value))
                 .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function(d) {
-                    dispatcher.call('customMouseOver', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+                    customOnMouseOver(this, d, chartWidth, chartHeight);
                 })
                 .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                    customOnMouseMove(this, d, chartWidth, chartHeight);
                 })
                 .on('mouseout', function(d) {
-                    dispatcher.call('customMouseOut', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
-                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name));
+                    customOnMouseOut(this, d, chartWidth, chartHeight);
                 })
               .merge(bars)
                 .attr('x', ({name}) => xScale(name))
@@ -597,6 +589,34 @@ define(function(require) {
                     .attr('y2', chartHeight);
         }
 
+        /**
+         * Custom OnMouseOver event handler
+         * @return {void}
+         * @private
+         */
+        function customOnMouseOver(ev, d, chartWidth, chartHeight) {
+          dispatcher.call('customMouseOver', ev, d, d3Selection.mouse(ev), [chartWidth, chartHeight]);
+          d3Selection.select(ev).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+        }
+
+        /**
+         * Custom OnMouseMove event handler
+         * @return {void}
+         * @private
+         */
+        function customOnMouseMove(ev, d, chartWidth, chartHeight) {
+          dispatcher.call('customMouseMove', ev, d, d3Selection.mouse(ev), [chartWidth, chartHeight]);
+        }
+
+        /**
+         * Custom OnMouseOver event handler
+         * @return {void}
+         * @private
+         */
+        function customOnMouseOut(ev, d, chartWidth, chartHeight) {
+          dispatcher.call('customMouseOut', ev, d, d3Selection.mouse(ev), [chartWidth, chartHeight]);
+          d3Selection.select(ev).attr('fill', ({name}) => colorMap(name));
+        }
 
         // API
 
