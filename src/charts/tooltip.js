@@ -69,6 +69,7 @@ define(function(require){
             height = 45,
 
             title = 'Tooltip title',
+            valueFormat = null,
 
             // tooltip
             tooltip,
@@ -234,17 +235,18 @@ define(function(require){
          * @return {Number}       Formatted value
          */
         function getFormattedValue(value) {
+            let valueFormatter = formatDecimalValue;
+
             if (!value) {
                 return 0;
             }
-
-            if (isInteger(value)) {
-                value = formatIntegerValue(value);
-            } else {
-                value = formatDecimalValue(value);
+            if (valueFormat) {
+                valueFormatter = d3Format.format(valueFormat);
+            } else if (isInteger(value)) {
+                valueFormatter = formatIntegerValue;
             }
 
-            return value;
+            return valueFormatter(value);
         }
 
         /**
@@ -545,20 +547,13 @@ define(function(require){
 
 
         // API
-         /**
-         * Gets or Sets the nameLabel of the data
-         * @param  {Number} _x Desired nameLabel
-         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
-         * @public
-         */
-        exports.nameLabel = function(_x) {
-            if (!arguments.length) {
-                return nameLabel;
-            }
-            nameLabel = _x;
 
-            return this;
-        };
+        /**
+         * constants to be used to force the x axis to respect a certain granularity
+         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
+         * @example tooltip.forceDateRange(tooltip.axisTimeCombinations.HOUR_DAY)
+         */
+        exports.axisTimeCombinations = axisTimeCombinations;
 
         /**
          * Gets or Sets the dateLabel of the data
@@ -576,31 +571,15 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the valueLabel of the data
-         * @param  {Number} _x Desired valueLabel
-         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
-         * @public
+         * Exposes the ability to force the tooltip to use a certain date format
+         * @param  {String} _x Desired format
+         * @return { (String|Module) }    Current format or module to chain calls
          */
-        exports.valueLabel = function(_x) {
+        exports.forceDateRange = function(_x) {
             if (!arguments.length) {
-                return valueLabel;
+              return forceAxisSettings || defaultAxisSettings;
             }
-            valueLabel = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets the topicLabel of the data
-         * @param  {Number} _x Desired topicLabel
-         * @return { topicLabel | module} Current topicLabel or Chart module to chain calls
-         * @public
-         */
-        exports.topicLabel = function(_x) {
-            if (!arguments.length) {
-                return topicLabel;
-            }
-            topicLabel = _x;
+            forceAxisSettings = _x;
 
             return this;
         };
@@ -617,12 +596,56 @@ define(function(require){
         };
 
         /**
+         * Pass locale for the tooltip to render the date in
+         * @param  {String} _x  must be a locale tag like 'en-US' or 'fr-FR'
+         * @return { (String|Module) }    Current locale or module to chain calls
+         */
+        exports.locale = function(_x) {
+            if (!arguments.length) {
+              return locale;
+            }
+            locale = _x;
+
+            return this;
+        };        
+
+        /**
+         * Gets or Sets the nameLabel of the data
+         * @param  {Number} _x Desired nameLabel
+         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+         * @public
+         */
+        exports.nameLabel = function(_x) {
+            if (!arguments.length) {
+                return nameLabel;
+            }
+            nameLabel = _x;
+
+            return this;
+        };
+
+        /**
          * Shows the tooltip
          * @return {Module} Tooltip module to chain calls
          * @public
          */
         exports.show = function() {
             svg.style('display', 'block');
+
+            return this;
+        };
+
+        /**
+         * Pass an override for the ordering of your tooltip
+         * @param  {Object[]} _x    Array of the names of your tooltip items
+         * @return { overrideOrder | module} Current overrideOrder or Chart module to chain calls
+         * @public
+         */
+        exports.forceOrder = function(_x) {
+            if (!arguments.length) {
+                return forceOrder;
+            }
+            forceOrder = _x;
 
             return this;
         };
@@ -643,19 +666,19 @@ define(function(require){
         };
 
         /**
-         * Pass an override for the ordering of your tooltip
-         * @param  {Object[]} _x    Array of the names of your tooltip items
-         * @return { overrideOrder | module} Current overrideOrder or Chart module to chain calls
+         * Gets or Sets the topicLabel of the data
+         * @param  {Number} _x Desired topicLabel
+         * @return { topicLabel | module} Current topicLabel or Chart module to chain calls
          * @public
          */
-        exports.forceOrder = function(_x) {
+        exports.topicLabel = function(_x) {
             if (!arguments.length) {
-                return forceOrder;
+                return topicLabel;
             }
-            forceOrder = _x;
+            topicLabel = _x;
 
             return this;
-        }
+        };
 
         /**
          * Updates the position and content of the tooltip
@@ -673,40 +696,34 @@ define(function(require){
         };
 
         /**
-         * Exposes the ability to force the tooltip to use a certain date format
-         * @param  {String} _x Desired format
-         * @return { (String|Module) }    Current format or module to chain calls
+         * Gets or Sets the valueFormat of the tooltip
+         * @param  {String} _x Desired valueFormat
+         * @return { String | module} Current valueFormat or module to chain calls
+         * @public
          */
-        exports.forceDateRange = function(_x) {
+        exports.valueFormat = function(_x) {
             if (!arguments.length) {
-              return forceAxisSettings || defaultAxisSettings;
+                return valueFormat;
             }
-            forceAxisSettings = _x;
+            valueFormat = _x;
 
             return this;
         };
 
         /**
-         * Pass locale for the tooltip to render the date in
-         * @param  {String} _x  must be a locale tag like 'en-US' or 'fr-FR'
-         * @return { (String|Module) }    Current locale or module to chain calls
+         * Gets or Sets the valueLabel of the data
+         * @param  {Number} _x Desired valueLabel
+         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+         * @public
          */
-        exports.locale = function(_x) {
+        exports.valueLabel = function(_x) {
             if (!arguments.length) {
-              return locale;
+                return valueLabel;
             }
-            locale = _x;
+            valueLabel = _x;
 
             return this;
         };
-
-        /**
-         * constants to be used to force the x axis to respect a certain granularity
-         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
-         * @example tooltip.forceDateRange(tooltip.axisTimeCombinations.HOUR_DAY)
-         */
-        exports.axisTimeCombinations = axisTimeCombinations;
-
 
         return exports;
     };
