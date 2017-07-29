@@ -9,8 +9,7 @@ define([
         $,
         d3,
         chart,
-        dataBuilder,
-        constants
+        dataBuilder
     ) {
     'use strict';
 
