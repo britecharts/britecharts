@@ -121,7 +121,7 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
 
             it('should provide a bush date range getter and setter', () => {
                 let previous = brushChart.dateRange(),
-                    expected = ["9/15/2015", "1/25/2016"],
+                    expected = ['9/15/2015', '1/25/2016'],
                     actual;
 
                 brushChart.dateRange(expected);

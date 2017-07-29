@@ -1452,7 +1452,7 @@ webpackJsonp([0,10],[
 	            animationDuration = 800,
 	            animationStepRatio = 70,
 	            interBarDelay = function interBarDelay(d, i) {
-	            animationStepRatio * i;
+	            return animationStepRatio * i;
 	        },
 	            valueLabel = 'value',
 	            nameLabel = 'name',
