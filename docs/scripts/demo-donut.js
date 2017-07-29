@@ -6841,6 +6841,7 @@ webpackJsonp([2,10],[
 	
 	    /**
 	     * Wraps a selection of text within the available width
+	     * @param  {Number} xOffset        X axis offset for the text
 	     * @param  {Number} fontSize       Size of the base font
 	     * @param  {Number} availableWidth Width of the container where the text needs to wrap on
 	     * @param  {D3Selection} node      SVG text element that contains the text to wrap
@@ -6849,7 +6850,7 @@ webpackJsonp([2,10],[
 	     * More discussions on https://github.com/mbostock/d3/issues/1642
 	     * @return {void}
 	     */
-	    var wrapText = function wrapText(xOffset, fontSize, availableWidth, node, data, i) {
+	    var wrapText = function wrapText(xOffset, fontSize, availableWidth, node) {
 	        var text = d3Selection.select(node),
 	            words = text.text().split(/\s+/).reverse(),
 	            word = void 0,
@@ -7032,8 +7033,9 @@ webpackJsonp([2,10],[
 	        d3svg.attr('version', 1.1).attr('xmlns', 'http://www.w3.org/2000/svg');
 	        var serializer = serializeWithStyles.initializeSerializer();
 	        var html = serializer(d3svg.node());
+	
 	        html = formatHtmlByBrowser(html);
-	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width')));
+	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width'), 10));
 	        html = addBackground(html);
 	
 	        return html;
@@ -7138,6 +7140,7 @@ webpackJsonp([2,10],[
 	        }
 	        var britechartsGreySchema = colorSchemas.britechartsGreySchema;
 	
+	
 	        html = html.replace(/<g/, '<text x="' + this.margin().left + '" y="' + config.titleTopOffset + '" font-family="' + config.titleFontFamily + '" font-size="' + config.titleFontSize + '" fill="' + britechartsGreySchema[6] + '"> ' + title + ' </text><g ');
 	
 	        return html;
@@ -7157,7 +7160,7 @@ webpackJsonp([2,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
 	
 	    // Color Gradients
 	    var britechartGradients = {
@@ -7241,7 +7244,8 @@ webpackJsonp([2,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	
 	    var axisTimeCombinations = {
 	        MINUTE_HOUR: 'minute-hour',
 	        HOUR_DAY: 'hour-daymonth',
@@ -7326,7 +7330,8 @@ webpackJsonp([2,10],[
 	                    result = void 0;
 	
 	                if (!elem || elem.nodeType !== Node.ELEMENT_NODE) {
-	                    console.error('Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE');
+	                    // 'Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE'
+	
 	                    return;
 	                }
 	
@@ -11975,11 +11980,13 @@ webpackJsonp([2,10],[
 	            entries = svg.select('.legend-line').selectAll('g.legend-entry').data(data);
 	
 	            // Enter
-	            entries.enter().append('g').classed('legend-entry', true).attr('data-item', getId).attr('transform', function (d, i) {
+	            entries.enter().append('g').classed('legend-entry', true).attr('data-item', getId).attr('transform', function (_ref5) {
+	                var name = _ref5.name;
+	
 	                var horizontalOffset = xOffset,
 	                    lineHeight = chartHeight / 2,
 	                    verticalOffset = lineHeight,
-	                    labelWidth = textHelper.getTextWidth(d.name, textSize);
+	                    labelWidth = textHelper.getTextWidth(name, textSize);
 	
 	                xOffset += markerSize + 2 * getLineElementMargin() + labelWidth;
 	
@@ -12047,10 +12054,9 @@ webpackJsonp([2,10],[
 	            var legendEntries = svg.selectAll('.legend-entry');
 	            var numberOfEntries = legendEntries.size();
 	            var lineHeight = chartHeight / 2 * 1.7;
-	
 	            var newLine = svg.select('.legend-group').append('g').classed('legend-line', true).attr('transform', 'translate(0, ' + lineHeight + ')');
-	
 	            var lastEntry = legendEntries.filter(':nth-child(' + numberOfEntries + ')');
+	
 	            lastEntry.attr('transform', 'translate(' + markerSize + ',0)');
 	            newLine.append(function () {
 	                return lastEntry.node();

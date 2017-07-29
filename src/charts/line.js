@@ -368,6 +368,7 @@ define(function(require){
                 .domain(dataByTopic.map(getTopic));
 
             let range = colorScale.range();
+            
             topicColorMap = colorScale.domain().reduce((memo, item, i) => {
                 memo[item] = range[i];
 

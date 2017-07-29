@@ -71,8 +71,9 @@ define(function(require) {
             .attr('xmlns', 'http://www.w3.org/2000/svg');
         let serializer = serializeWithStyles.initializeSerializer();
         let html = serializer(d3svg.node());
+
         html = formatHtmlByBrowser(html);
-        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width')));
+        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width'), 10));
         html = addBackground(html);
 
         return html;
@@ -173,6 +174,7 @@ define(function(require) {
             return html;
         }
         let {britechartsGreySchema} = colorSchemas;
+        
         html =  html.replace(/<g/,`<text x="${this.margin().left}" y="${config.titleTopOffset}" font-family="${config.titleFontFamily}" font-size="${config.titleFontSize}" fill="${britechartsGreySchema[6]}"> ${title} </text><g `);
 
         return html;

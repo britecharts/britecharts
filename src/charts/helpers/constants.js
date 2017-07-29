@@ -1,4 +1,5 @@
-define(function(require) {
+define(function() {
+    
     const axisTimeCombinations = {
         MINUTE_HOUR: 'minute-hour',
         HOUR_DAY: 'hour-daymonth',

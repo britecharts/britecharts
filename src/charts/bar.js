@@ -100,13 +100,14 @@ define(function(require) {
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
             animationDuration = 800,
-            interBarDelay = function(d, i) {return 70 * i},
+            animationStepRatio = 70,
+            interBarDelay = (d, i) => animationStepRatio * i,
 
             valueLabel = 'value',
             nameLabel = 'name',
 
-            maskGridLines,
             baseLine,
+            maskGridLines,
             reverseColorList = true,
 
             // Dispatcher object to broadcast the mouse events

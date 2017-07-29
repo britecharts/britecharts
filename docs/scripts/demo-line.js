@@ -7180,8 +7180,9 @@ webpackJsonp([5,10],[
 	        d3svg.attr('version', 1.1).attr('xmlns', 'http://www.w3.org/2000/svg');
 	        var serializer = serializeWithStyles.initializeSerializer();
 	        var html = serializer(d3svg.node());
+	
 	        html = formatHtmlByBrowser(html);
-	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width')));
+	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width'), 10));
 	        html = addBackground(html);
 	
 	        return html;
@@ -7286,6 +7287,7 @@ webpackJsonp([5,10],[
 	        }
 	        var britechartsGreySchema = colorSchemas.britechartsGreySchema;
 	
+	
 	        html = html.replace(/<g/, '<text x="' + this.margin().left + '" y="' + config.titleTopOffset + '" font-family="' + config.titleFontFamily + '" font-size="' + config.titleFontSize + '" fill="' + britechartsGreySchema[6] + '"> ' + title + ' </text><g ');
 	
 	        return html;
@@ -7305,7 +7307,7 @@ webpackJsonp([5,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
 	
 	    // Color Gradients
 	    var britechartGradients = {
@@ -7389,7 +7391,8 @@ webpackJsonp([5,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	
 	    var axisTimeCombinations = {
 	        MINUTE_HOUR: 'minute-hour',
 	        HOUR_DAY: 'hour-daymonth',
@@ -7474,7 +7477,8 @@ webpackJsonp([5,10],[
 	                    result = void 0;
 	
 	                if (!elem || elem.nodeType !== Node.ELEMENT_NODE) {
-	                    console.error('Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE');
+	                    // 'Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE'
+	
 	                    return;
 	                }
 	
@@ -9637,7 +9641,7 @@ webpackJsonp([5,10],[
 	         * @return {void}
 	         */
 	        function updateHandlers(dateExtent) {
-	            if (dateExtent == null) {
+	            if (dateExtent === null) {
 	                handle.attr('display', 'none');
 	            } else {
 	                handle.attr('display', null).attr('transform', function (d, i) {
@@ -13205,7 +13209,7 @@ webpackJsonp([5,10],[
 	        function _sortByForceOrder(topics) {
 	            var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : forceOrder;
 	
-	            return forceOrder.map(function (orderName) {
+	            return order.map(function (orderName) {
 	                return topics.filter(function (_ref3) {
 	                    var name = _ref3.name;
 	                    return name === orderName;
@@ -13935,6 +13939,7 @@ webpackJsonp([5,10],[
 	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(dataByTopic.map(getTopic));
 	
 	            var range = colorScale.range();
+	
 	            topicColorMap = colorScale.domain().reduce(function (memo, item, i) {
 	                memo[item] = range[i];
 	
