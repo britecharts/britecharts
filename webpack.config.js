@@ -1,6 +1,5 @@
 var webpack = require('webpack'),
     path = require('path'),
-    _ = require('underscore'),
     LiveReloadPlugin = require('webpack-livereload-plugin'),
     UglifyJsPlugin = webpack.optimize.UglifyJsPlugin,
     BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin,
