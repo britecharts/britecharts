@@ -425,7 +425,7 @@ define(function(require){
          * @return {Object[]}           sorted topics object
          */
         function _sortByForceOrder(topics, order=forceOrder) {
-            return forceOrder.map((orderName) => topics.filter(({name}) => name === orderName)[0]);
+            return order.map((orderName) => topics.filter(({name}) => name === orderName)[0]);
         }
 
         /**

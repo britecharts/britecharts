@@ -6934,7 +6934,7 @@ webpackJsonp([1,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
 	
 	    // Color Gradients
 	    var britechartGradients = {
@@ -7018,7 +7018,8 @@ webpackJsonp([1,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	
 	    var axisTimeCombinations = {
 	        MINUTE_HOUR: 'minute-hour',
 	        HOUR_DAY: 'hour-daymonth',
@@ -8985,7 +8986,7 @@ webpackJsonp([1,10],[
 	         * @return {void}
 	         */
 	        function updateHandlers(dateExtent) {
-	            if (dateExtent == null) {
+	            if (dateExtent === null) {
 	                handle.attr('display', 'none');
 	            } else {
 	                handle.attr('display', null).attr('transform', function (d, i) {

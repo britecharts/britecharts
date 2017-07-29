@@ -289,9 +289,9 @@ define(function(require){
 
             categoryColorMap = colorScale
                 .domain(data.map(getName)).domain()
-                .reduce((memo, item, i) => {
+                .reduce((memo, item) => {
                     data.forEach(function(v){
-                        if (getName(v)==item){
+                        if (getName(v) === item){
                            memo[v.name] = colorScale(v.stack)
                            memo[v.stack] = colorScale(v.stack)
                            memo[v.stack + item] = colorScale(v.stack)
@@ -425,22 +425,21 @@ define(function(require){
                             .attr('height', yScale.bandwidth())
                             .attr('fill', (({data}) => categoryColorMap[data.stack+data.key]));
 
-            if (isAnimated){
+            if (isAnimated) {
                 bars.style('opacity', 0.24)
                     .transition()
                     .delay((_, i) => animationDelays[i])
                     .duration(animationDuration)
                     .ease(ease)
-                    .tween('attr.width', function(d ){
+                    .tween('attr.width', function(d) {
                         let node = d3Selection.select(this),
-                        i = d3Interpolate.interpolateRound(0,xScale(d[1] - d[0] )),
-                        j = d3Interpolate.interpolateNumber(0,1)
-                        ;
+                            i = d3Interpolate.interpolateRound(0, xScale(d[1] - d[0])),
+                            j = d3Interpolate.interpolateNumber(0,1);
 
-                        return function(t){
+                        return function(t) {
                             node.attr('width',  i(t) );
                             node.style('opacity', j(t) );
-                        }
+                        };
                     });
             } else {
                 bars.attr('width', (d) => xScale(d[1] - d[0] ) )
@@ -487,21 +486,20 @@ define(function(require){
                         .attr('width', xScale.bandwidth )
                         .attr('fill', (({data}) => categoryColorMap[data.stack+data.key])),context;
 
-            if (isAnimated){
+            if (isAnimated) {
                 bars.style('opacity', 0.24).transition()
                     .delay( (_, i) => animationDelays[i])
                     .duration(animationDuration)
                     .ease(ease)
-                    .tween('attr.height', function(d ){
+                    .tween('attr.height', function(d) {
                         let node = d3Selection.select(this),
-                        i = d3Interpolate.interpolateRound(0, yScale(d[0]) - yScale(d[1])),
-                        j = d3Interpolate.interpolateNumber(0,1)
-                        ;
+                            i = d3Interpolate.interpolateRound(0, yScale(d[0]) - yScale(d[1])),
+                            j = d3Interpolate.interpolateNumber(0,1);
 
-                        return function(t){
+                        return function(t) {
                             node.attr('height',  i(t) );
                             node.style('opacity', j(t) );
-                        }
+                        };
                     });
             } else {
                 bars.attr('height', (d) => yScale(d[0]) - yScale(d[1]) );
@@ -588,6 +586,7 @@ define(function(require){
             nearest = layers.map(function(stackedArray){
                 return stackedArray.map(function(d1){
                    let found = d1.data.values.find((d2) => Math.abs(adjustedMouseY >= yScale(d2[nameLabel])) && Math.abs(adjustedMouseY - yScale(d2[nameLabel]) <= epsilon*2) );
+
                    return found ? d1.data :undefined;
                })
             });
@@ -598,20 +597,18 @@ define(function(require){
 
         /**
          * Handles a mouseover event on top of a bar
-         * @param  {obj} d data of bar
          * @return {void}
          */
-        function handleBarsMouseOver(d) {
+        function handleBarsMouseOver() {
             d3Selection.select(this)
                 .attr('fill', () => d3Color.color(d3Selection.select(this.parentNode).attr('fill')).darker())
         }
 
         /**
          * Handles a mouseout event out of a bar
-         * @param  {obj} d data of bar
          * @return {void}
          */
-        function handleBarsMouseOut(d) {
+        function handleBarsMouseOut() {
             d3Selection
                 .select(this).attr('fill', () => d3Selection.select(this.parentNode).attr('fill'))
         }
