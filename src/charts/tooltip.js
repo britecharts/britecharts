@@ -69,6 +69,7 @@ define(function(require){
             height = 45,
 
             title = 'Tooltip title',
+            formatFunction = null,
 
             // tooltip
             tooltip,
@@ -238,7 +239,10 @@ define(function(require){
                 return 0;
             }
 
-            if (isInteger(value)) {
+            if( formatFunction ) {
+                value = formatFunction(value);
+            }
+            else if (isInteger(value)) {
                 value = formatIntegerValue(value);
             } else {
                 value = formatDecimalValue(value);
@@ -638,6 +642,21 @@ define(function(require){
                 return title;
             }
             title = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the formatFunction of the tooltip
+         * @param  {Function} _x Desired formatFunction
+         * @return { Function | module} Current formatFunction or module to chain calls
+         * @public
+         */
+        exports.formatFunction = function(_x) {
+            if (!arguments.length) {
+                return formatFunction;
+            }
+            formatFunction = _x;
 
             return this;
         };
