@@ -305,6 +305,32 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                     expect(actual).toEqual(expected);
                 });
             });
+
+            describe('override default formatting', function() {
+
+                it('should respect format override', () =>  {
+                    var expected = '10,000',
+                        actual;
+
+                    tooltipChart.valueFormat(',');
+
+                    tooltipChart.update({
+                        date: '2015-08-05T07:00:00.000Z',
+                        topics: [
+                            {
+                                name: 103,
+                                value: 10000,
+                                topicName: 'San Francisco'
+                            }
+                        ]
+                    }, topicColorMap, 0);
+
+                    actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
+                        .text()
+
+                    expect(actual).toEqual(expected);
+                });
+            });
         });
 
         describe('API', function() {
