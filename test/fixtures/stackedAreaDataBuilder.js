@@ -41,6 +41,7 @@ define(function(require) {
 
         this.withLargeData = function() {
             var attributes = _.extend({}, this.config, jsonLargeService);
+            
             return new this.Klass(attributes);
         }
 
