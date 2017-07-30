@@ -1,4 +1,4 @@
-webpackJsonp([9,10],[
+webpackJsonp([8,9],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6,9 +6,9 @@ webpackJsonp([9,10],[
 	
 	var d3Selection = __webpack_require__(1),
 	    PubSub = __webpack_require__(2),
-	    step = __webpack_require__(73),
+	    step = __webpack_require__(71),
 	    miniTooltip = __webpack_require__(24),
-	    dataBuilder = __webpack_require__(74);
+	    dataBuilder = __webpack_require__(72);
 	__webpack_require__(29);
 	
 	function createStepChart() {
@@ -9536,9 +9536,7 @@ webpackJsonp([9,10],[
 /* 68 */,
 /* 69 */,
 /* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -9949,7 +9947,7 @@ webpackJsonp([9,10],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 74 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -9958,7 +9956,7 @@ webpackJsonp([9,10],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonStepDataSmall = __webpack_require__(75);
+	        jsonStepDataSmall = __webpack_require__(73);
 	
 	    function StepDataBuilder(config) {
 	        this.Klass = StepDataBuilder;
@@ -9982,7 +9980,7 @@ webpackJsonp([9,10],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 75 */
+/* 73 */
 /***/ (function(module, exports) {
 
 	module.exports = {

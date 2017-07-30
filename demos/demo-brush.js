@@ -4,17 +4,9 @@ const d3Selection = require('d3-selection');
 const d3TimeFormat = require('d3-time-format');
 const PubSub = require('pubsub-js');
 
-<<<<<<< HEAD
-    PubSub = require('pubsub-js'),
-
-    brush = require('./../src/charts/brush'),
-    dataBuilder = require('./../test/fixtures/brushChartDataBuilder');
-    require('./helpers/resizeHelper');
-=======
 const brush = require('./../src/charts/brush');
 const dataBuilder = require('./../test/fixtures/brushChartDataBuilder');
 
->>>>>>> Playing with it
 
 function createBrushChart() {
     let brushChart = brush(),

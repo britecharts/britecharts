@@ -1,4 +1,4 @@
-webpackJsonp([6,10],[
+webpackJsonp([5,9],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6,8 +6,8 @@ webpackJsonp([6,10],[
 	
 	var d3Selection = __webpack_require__(1),
 	    PubSub = __webpack_require__(2),
-	    sparklineChart = __webpack_require__(60),
-	    sparklineDataBuilder = __webpack_require__(61);
+	    sparklineChart = __webpack_require__(58),
+	    sparklineDataBuilder = __webpack_require__(59);
 	__webpack_require__(29);
 	
 	function createSparklineChart() {
@@ -8900,14 +8900,12 @@ webpackJsonp([6,10],[
 
 /***/ }),
 /* 30 */,
-/* 31 */,
-/* 32 */,
-/* 33 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-shape/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(34)) :
+		 true ? factory(exports, __webpack_require__(32)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
 		(factory((global.d3 = global.d3 || {}),global.d3));
 	}(this, (function (exports,d3Path) { 'use strict';
@@ -10738,7 +10736,7 @@ webpackJsonp([6,10],[
 
 
 /***/ }),
-/* 34 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-path/ Version 1.0.5. Copyright 2017 Mike Bostock.
@@ -10885,6 +10883,8 @@ webpackJsonp([6,10],[
 
 
 /***/ }),
+/* 33 */,
+/* 34 */,
 /* 35 */,
 /* 36 */,
 /* 37 */,
@@ -10908,9 +10908,7 @@ webpackJsonp([6,10],[
 /* 55 */,
 /* 56 */,
 /* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -10921,7 +10919,7 @@ webpackJsonp([6,10],[
 	    var d3Array = __webpack_require__(4);
 	    var d3Ease = __webpack_require__(5);
 	    var d3Scale = __webpack_require__(10);
-	    var d3Shape = __webpack_require__(33);
+	    var d3Shape = __webpack_require__(31);
 	    var d3Selection = __webpack_require__(1);
 	    var d3Transition = __webpack_require__(15);
 	
@@ -11309,7 +11307,7 @@ webpackJsonp([6,10],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 61 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11318,7 +11316,7 @@ webpackJsonp([6,10],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonOneSource = __webpack_require__(62);
+	        jsonOneSource = __webpack_require__(60);
 	
 	    function SparklineDataBuilder(config) {
 	        this.Klass = SparklineDataBuilder;
@@ -11342,7 +11340,7 @@ webpackJsonp([6,10],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 62 */
+/* 60 */
 /***/ (function(module, exports) {
 
 	module.exports = {

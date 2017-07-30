@@ -1,4 +1,4 @@
-webpackJsonp([3,10],[
+webpackJsonp([2,9],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7,10 +7,10 @@ webpackJsonp([3,10],[
 	var d3Selection = __webpack_require__(1),
 	    PubSub = __webpack_require__(2),
 	    colors = __webpack_require__(19),
-	    groupedBarChart = __webpack_require__(46),
-	    tooltip = __webpack_require__(48),
-	    groupedDataBuilder = __webpack_require__(50),
-	    colorSelectorHelper = __webpack_require__(45);
+	    groupedBarChart = __webpack_require__(40),
+	    tooltip = __webpack_require__(42),
+	    groupedDataBuilder = __webpack_require__(44),
+	    colorSelectorHelper = __webpack_require__(39);
 	__webpack_require__(29);
 	
 	function creategroupedBarChartWithTooltip(optionalColorSchema) {
@@ -9172,13 +9172,7 @@ webpackJsonp([3,10],[
 /* 30 */,
 /* 31 */,
 /* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -9215,12 +9209,12 @@ webpackJsonp([3,10],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -9282,7 +9276,7 @@ webpackJsonp([3,10],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 46 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -9301,7 +9295,7 @@ webpackJsonp([3,10],[
 	    var d3Interpolate = __webpack_require__(12);
 	    var d3Scale = __webpack_require__(10);
 	    var d3Selection = __webpack_require__(1);
-	    var assign = __webpack_require__(47);
+	    var assign = __webpack_require__(41);
 	
 	    var _require = __webpack_require__(18),
 	        exportChart = _require.exportChart;
@@ -10200,7 +10194,7 @@ webpackJsonp([3,10],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 47 */
+/* 41 */
 /***/ (function(module, exports) {
 
 	/**
@@ -10843,7 +10837,7 @@ webpackJsonp([3,10],[
 
 
 /***/ }),
-/* 48 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -10864,11 +10858,11 @@ webpackJsonp([3,10],[
 	    var _require = __webpack_require__(20),
 	        axisTimeCombinations = _require.axisTimeCombinations;
 	
-	    var _require2 = __webpack_require__(49),
+	    var _require2 = __webpack_require__(43),
 	        formatIntegerValue = _require2.formatIntegerValue,
 	        formatDecimalValue = _require2.formatDecimalValue;
 	
-	    var _require3 = __webpack_require__(39),
+	    var _require3 = __webpack_require__(33),
 	        isInteger = _require3.isInteger;
 	
 	    /**
@@ -11518,7 +11512,7 @@ webpackJsonp([3,10],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 49 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11599,7 +11593,7 @@ webpackJsonp([3,10],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 50 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11608,7 +11602,7 @@ webpackJsonp([3,10],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonThreeSources = __webpack_require__(51);
+	        jsonThreeSources = __webpack_require__(45);
 	
 	    function GroupedBarChartDataBuilder(config) {
 	        this.Klass = GroupedBarChartDataBuilder;
@@ -11632,7 +11626,7 @@ webpackJsonp([3,10],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 51 */
+/* 45 */
 /***/ (function(module, exports) {
 
 	module.exports = {

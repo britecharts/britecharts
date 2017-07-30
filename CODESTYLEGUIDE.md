@@ -1,4 +1,4 @@
-# Britecharts' JavaScript and D3 Style Guide
+##Britecharts' JavaScript and D3 Style Guide
 * A guide to build and edit Britecharts code *
 
 ## Table of Contents
