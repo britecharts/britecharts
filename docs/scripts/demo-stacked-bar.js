@@ -1,4 +1,4 @@
-webpackJsonp([7,9],[
+webpackJsonp([8,10],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7,10 +7,10 @@ webpackJsonp([7,9],[
 	var d3Selection = __webpack_require__(1),
 	    PubSub = __webpack_require__(2),
 	    colors = __webpack_require__(19),
-	    stackedBarChart = __webpack_require__(68),
-	    tooltip = __webpack_require__(42),
-	    stackedDataBuilder = __webpack_require__(69),
-	    colorSelectorHelper = __webpack_require__(39);
+	    stackedBarChart = __webpack_require__(70),
+	    tooltip = __webpack_require__(48),
+	    stackedDataBuilder = __webpack_require__(71),
+	    colorSelectorHelper = __webpack_require__(45);
 	__webpack_require__(29);
 	
 	function createStackedBarChartWithTooltip(optionalColorSchema) {
@@ -67,7 +67,7 @@ webpackJsonp([7,9],[
 	        dataset = testDataSet.with3Sources().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedBar.tooltipThreshold(600).grid('vertical').width(containerWidth).horizontal(true).isAnimated(true).margin({
+	        stackedBar.isHorizontal(true).tooltipThreshold(600).grid('vertical').width(containerWidth).isAnimated(true).margin({
 	            left: 80,
 	            top: 40,
 	            right: 30,
@@ -9169,12 +9169,14 @@ webpackJsonp([7,9],[
 
 /***/ }),
 /* 30 */,
-/* 31 */
+/* 31 */,
+/* 32 */,
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-shape/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(32)) :
+		 true ? factory(exports, __webpack_require__(34)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
 		(factory((global.d3 = global.d3 || {}),global.d3));
 	}(this, (function (exports,d3Path) { 'use strict';
@@ -11005,7 +11007,7 @@ webpackJsonp([7,9],[
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-path/ Version 1.0.5. Copyright 2017 Mike Bostock.
@@ -11152,7 +11154,11 @@ webpackJsonp([7,9],[
 
 
 /***/ }),
-/* 33 */
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11189,12 +11195,12 @@ webpackJsonp([7,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11256,8 +11262,8 @@ webpackJsonp([7,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 40 */,
-/* 41 */
+/* 46 */,
+/* 47 */
 /***/ (function(module, exports) {
 
 	/**
@@ -11900,7 +11906,7 @@ webpackJsonp([7,9],[
 
 
 /***/ }),
-/* 42 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11921,11 +11927,11 @@ webpackJsonp([7,9],[
 	    var _require = __webpack_require__(20),
 	        axisTimeCombinations = _require.axisTimeCombinations;
 	
-	    var _require2 = __webpack_require__(43),
+	    var _require2 = __webpack_require__(49),
 	        formatIntegerValue = _require2.formatIntegerValue,
 	        formatDecimalValue = _require2.formatDecimalValue;
 	
-	    var _require3 = __webpack_require__(33),
+	    var _require3 = __webpack_require__(39),
 	        isInteger = _require3.isInteger;
 	
 	    /**
@@ -12575,7 +12581,7 @@ webpackJsonp([7,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 43 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12656,12 +12662,6 @@ webpackJsonp([7,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 44 */,
-/* 45 */,
-/* 46 */,
-/* 47 */,
-/* 48 */,
-/* 49 */,
 /* 50 */,
 /* 51 */,
 /* 52 */,
@@ -12680,7 +12680,9 @@ webpackJsonp([7,9],[
 /* 65 */,
 /* 66 */,
 /* 67 */,
-/* 68 */
+/* 68 */,
+/* 69 */,
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12698,9 +12700,9 @@ webpackJsonp([7,9],[
 	    var d3Ease = __webpack_require__(5);
 	    var d3Interpolate = __webpack_require__(12);
 	    var d3Scale = __webpack_require__(10);
-	    var d3Shape = __webpack_require__(31);
+	    var d3Shape = __webpack_require__(33);
 	    var d3Selection = __webpack_require__(1);
-	    var assign = __webpack_require__(41);
+	    var assign = __webpack_require__(47);
 	
 	    var _require = __webpack_require__(18),
 	        exportChart = _require.exportChart;
@@ -12784,7 +12786,7 @@ webpackJsonp([7,9],[
 	            categoryColorMap = void 0,
 	            layers = void 0,
 	            ease = d3Ease.easeQuadInOut,
-	            horizontal = false,
+	            isHorizontal = false,
 	            svg = void 0,
 	            chartWidth = void 0,
 	            chartHeight = void 0,
@@ -12877,7 +12879,7 @@ webpackJsonp([7,9],[
 	         * @private
 	         */
 	        function buildAxis() {
-	            if (!horizontal) {
+	            if (!isHorizontal) {
 	                xAxis = d3Axis.axisBottom(xScale);
 	                yAxis = d3Axis.axisLeft(yScale).ticks(numOfVerticalTicks, valueLabelFormat);
 	            } else {
@@ -12932,7 +12934,7 @@ webpackJsonp([7,9],[
 	                return d.total;
 	            }));
 	
-	            if (!horizontal) {
+	            if (!isHorizontal) {
 	                xScale = d3Scale.scaleBand().domain(data.map(getName)).rangeRound([0, chartWidth]).padding(0.1);
 	
 	                yScale = d3Scale.scaleLinear().domain([0, yMax]).rangeRound([chartHeight, 0]).nice();
@@ -12993,7 +12995,7 @@ webpackJsonp([7,9],[
 	         * @private
 	         */
 	        function drawAxis() {
-	            if (!horizontal) {
+	            if (!isHorizontal) {
 	                svg.select('.x-axis-group .axis.x').attr('transform', 'translate( 0, ' + chartHeight + ' )').call(xAxis);
 	
 	                svg.select('.y-axis-group.axis').attr('transform', 'translate( ' + -xAxisPadding.left + ', 0)').call(yAxis).call(adjustYTickLabels);
@@ -13009,7 +13011,7 @@ webpackJsonp([7,9],[
 	         * @return void
 	         */
 	        function drawGridLines() {
-	            var scale = horizontal ? xScale : yScale;
+	            var scale = isHorizontal ? xScale : yScale;
 	
 	            if (grid === 'horizontal' || grid === 'full') {
 	                svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(scale.ticks(numOfVerticalTicks).slice(1)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left + 1).attr('x2', chartWidth).attr('y1', function (d) {
@@ -13027,7 +13029,7 @@ webpackJsonp([7,9],[
 	                });
 	            }
 	
-	            if (horizontal) {
+	            if (isHorizontal) {
 	                drawVerticalExtendedLine();
 	            } else {
 	                drawHorizontalExtendedLine();
@@ -13141,7 +13143,7 @@ webpackJsonp([7,9],[
 	        function drawStackedBar() {
 	            var series = svg.select('.chart-group').selectAll('.layer');
 	
-	            if (!horizontal) {
+	            if (!isHorizontal) {
 	                drawVerticalBars(series);
 	            } else {
 	                drawHorizontalBars(series);
@@ -13244,13 +13246,13 @@ webpackJsonp([7,9],[
 	                _getMousePosition2 = _slicedToArray(_getMousePosition, 2),
 	                mouseX = _getMousePosition2[0],
 	                mouseY = _getMousePosition2[1],
-	                dataPoint = !horizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
+	                dataPoint = !isHorizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
 	                x = void 0,
 	                y = void 0;
 	
 	            if (dataPoint) {
 	                // Move verticalMarker to that datapoint
-	                if (horizontal) {
+	                if (isHorizontal) {
 	                    x = mouseX - margin.left;
 	                    y = yScale(dataPoint.key) + yScale.bandwidth() / 2;
 	                } else {
@@ -13405,14 +13407,30 @@ webpackJsonp([7,9],[
 	        /**
 	         * Gets or Sets the horizontal direction of the chart
 	         * @param  {number} _x Desired horizontal direction for the graph
-	         * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
+	         * @return { isHorizontal | module} If it is horizontal or Bar Chart module to chain calls
 	         * @public
+	         */
+	        exports.isHorizontal = function (_x) {
+	            if (!arguments.length) {
+	                return isHorizontal;
+	            }
+	            isHorizontal = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the horizontal direction of the chart
+	         * @param  {number} _x Desired horizontal direction for the chart
+	         * @return { isHorizontal | module} If it is horizontal or module to chain calls
+	         * @deprecated
 	         */
 	        exports.horizontal = function (_x) {
 	            if (!arguments.length) {
-	                return horizontal;
+	                return isHorizontal;
 	            }
-	            horizontal = _x;
+	            isHorizontal = _x;
+	            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
 	
 	            return this;
 	        };
@@ -13624,7 +13642,7 @@ webpackJsonp([7,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -13633,7 +13651,7 @@ webpackJsonp([7,9],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonThreeSources = __webpack_require__(70);
+	        jsonThreeSources = __webpack_require__(72);
 	
 	    function StackedBarDataBuilder(config) {
 	        this.Klass = StackedBarDataBuilder;
@@ -13657,7 +13675,7 @@ webpackJsonp([7,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 70 */
+/* 72 */
 /***/ (function(module, exports) {
 
 	module.exports = {

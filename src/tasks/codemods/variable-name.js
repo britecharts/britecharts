@@ -1,5 +1,5 @@
-const oldVariable = 'usePercentage';
-const newVariable = 'hasPercentage';
+const oldVariable = 'reverseColorList';
+const newVariable = 'shouldReverseColorList';
 
 export default function transformer(file, api) {
     const j = api.jscodeshift;

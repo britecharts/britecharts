@@ -1,4 +1,4 @@
-webpackJsonp([6,9],[
+webpackJsonp([7,10],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7,10 +7,10 @@ webpackJsonp([6,9],[
 	var d3Selection = __webpack_require__(1),
 	    PubSub = __webpack_require__(2),
 	    colors = __webpack_require__(19),
-	    stackedAreaChart = __webpack_require__(61),
-	    tooltip = __webpack_require__(42),
-	    stackedDataBuilder = __webpack_require__(62),
-	    colorSelectorHelper = __webpack_require__(39);
+	    stackedAreaChart = __webpack_require__(63),
+	    tooltip = __webpack_require__(48),
+	    stackedDataBuilder = __webpack_require__(64),
+	    colorSelectorHelper = __webpack_require__(45);
 	__webpack_require__(29);
 	
 	var uniq = function uniq(arrArg) {
@@ -9167,12 +9167,14 @@ webpackJsonp([6,9],[
 
 /***/ }),
 /* 30 */,
-/* 31 */
+/* 31 */,
+/* 32 */,
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-shape/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(32)) :
+		 true ? factory(exports, __webpack_require__(34)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
 		(factory((global.d3 = global.d3 || {}),global.d3));
 	}(this, (function (exports,d3Path) { 'use strict';
@@ -11003,7 +11005,7 @@ webpackJsonp([6,9],[
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-path/ Version 1.0.5. Copyright 2017 Mike Bostock.
@@ -11150,7 +11152,156 @@ webpackJsonp([6,9],[
 
 
 /***/ }),
-/* 33 */
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	    'use strict';
+	
+	    var _settingsToMajorTickM;
+	
+	    var d3Time = __webpack_require__(13);
+	    var d3TimeFormat = __webpack_require__(14);
+	
+	    var _require = __webpack_require__(20),
+	        axisTimeCombinations = _require.axisTimeCombinations,
+	        timeBenchmarks = _require.timeBenchmarks;
+	
+	    var singleTickWidth = 20;
+	    var horizontalTickSpacing = 50;
+	    var minEntryNumForDayFormat = 5;
+	
+	    var formatMap = {
+	        minute: d3TimeFormat.timeFormat('%M m'),
+	        hour: d3TimeFormat.timeFormat('%H %p'),
+	        day: d3TimeFormat.timeFormat('%e'),
+	        daymonth: d3TimeFormat.timeFormat('%d %b'),
+	        month: d3TimeFormat.timeFormat('%b'),
+	        year: d3TimeFormat.timeFormat('%Y')
+	    };
+	    var localeTimeMap = {
+	        minute: { minute: 'numeric' },
+	        hour: { hour: 'numeric' },
+	        day: { day: 'numeric' },
+	        daymonth: { day: 'numeric', month: 'short' },
+	        month: { month: 'short' },
+	        year: { year: 'numeric' }
+	    };
+	    var settingsToMajorTickMap = (_settingsToMajorTickM = {}, _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MINUTE_HOUR, d3Time.timeHour.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.HOUR_DAY, d3Time.timeDay.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.DAY_MONTH, d3Time.timeMonth.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MONTH_YEAR, d3Time.timeYear.every(1)), _settingsToMajorTickM);
+	
+	    /**
+	     * Figures out the proper settings from the current time span
+	     * @param  {Number} timeSpan    Span of time charted by the graph in milliseconds
+	     * @return {String}             Type of settings for the given timeSpan
+	     */
+	    var getAxisSettingsFromTimeSpan = function getAxisSettingsFromTimeSpan(timeSpan) {
+	        var ONE_YEAR = timeBenchmarks.ONE_YEAR,
+	            ONE_DAY = timeBenchmarks.ONE_DAY;
+	
+	        var settings = void 0;
+	
+	        if (timeSpan < ONE_DAY) {
+	            settings = axisTimeCombinations.HOUR_DAY;
+	        } else if (timeSpan < ONE_YEAR) {
+	            settings = axisTimeCombinations.DAY_MONTH;
+	        } else {
+	            settings = axisTimeCombinations.MONTH_YEAR;
+	        }
+	
+	        return settings;
+	    };
+	
+	    /**
+	     * Calculates the maximum number of ticks for the x axis
+	     * @param  {Number} width Chart width
+	     * @param  {Number} dataPointNumber  Number of entries on the data
+	     * @return {Number}       Number of ticks to render
+	     */
+	    var getMaxNumOfHorizontalTicks = function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
+	        var ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
+	
+	        return dataPointNumber < minEntryNumForDayFormat ? d3Time.timeDay : Math.min(dataPointNumber, ticksForWidth);
+	    };
+	
+	    /**
+	     * Takes a locale (string) and the format to return and returns a function to format dates
+	     * @param  {String} locale    locale tag eg. en-US, fr-FR, ru-RU
+	     * @param  {string} timeUnit  minute, hour, day, dayMonth, month, year
+	     * @return {function}         function that formats dates in the proper locale
+	     */
+	    var getLocaleDateFormatter = function getLocaleDateFormatter(locale) {
+	        var timeUnit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'day';
+	
+	        var options = localeTimeMap[timeUnit];
+	        var formatter = new Intl.DateTimeFormat(locale, options);
+	
+	        return function (date) {
+	            return formatter.format(date);
+	        };
+	    };
+	
+	    /**
+	     * Returns tick object to be used when building the x axis
+	     * @param {dataByDate} dataByDate       Chart data ordered by Date
+	     * @param {Number} width                Chart width
+	     * @param {String} settings             Optional forced settings for axis
+	     * @return {object} tick settings for major and minr axis
+	     */
+	    var getXAxisSettings = function getXAxisSettings(dataByDate, width) {
+	        var settings = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+	        var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+	
+	        var firstDate = new Date(dataByDate[0].date);
+	        var lastDate = new Date(dataByDate[dataByDate.length - 1].date);
+	        var dateTimeSpan = lastDate - firstDate;
+	
+	        if (locale && (typeof Intl === 'undefined' || (typeof Intl === 'undefined' ? 'undefined' : _typeof(Intl)) === 'object' && !Intl.DateTimeFormat)) {
+	            locale = null;
+	        }
+	
+	        if (!settings) {
+	            settings = getAxisSettingsFromTimeSpan(dateTimeSpan);
+	        }
+	
+	        var _settings$split = settings.split('-'),
+	            _settings$split2 = _slicedToArray(_settings$split, 2),
+	            minor = _settings$split2[0],
+	            major = _settings$split2[1];
+	
+	        var majorTickValue = settingsToMajorTickMap[settings];
+	        var minorTickValue = getMaxNumOfHorizontalTicks(width, dataByDate.length);
+	
+	        return {
+	            minor: {
+	                format: locale ? getLocaleDateFormatter(locale, minor) : formatMap[minor],
+	                tick: minorTickValue
+	            },
+	            major: {
+	                format: locale ? getLocaleDateFormatter(locale, major) : formatMap[major],
+	                tick: majorTickValue
+	            }
+	        };
+	    };
+	
+	    return {
+	        getXAxisSettings: getXAxisSettings,
+	        getLocaleDateFormatter: getLocaleDateFormatter
+	    };
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+/***/ }),
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11187,12 +11338,12 @@ webpackJsonp([6,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11254,8 +11405,8 @@ webpackJsonp([6,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 40 */,
-/* 41 */
+/* 46 */,
+/* 47 */
 /***/ (function(module, exports) {
 
 	/**
@@ -11898,7 +12049,7 @@ webpackJsonp([6,9],[
 
 
 /***/ }),
-/* 42 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11919,11 +12070,11 @@ webpackJsonp([6,9],[
 	    var _require = __webpack_require__(20),
 	        axisTimeCombinations = _require.axisTimeCombinations;
 	
-	    var _require2 = __webpack_require__(43),
+	    var _require2 = __webpack_require__(49),
 	        formatIntegerValue = _require2.formatIntegerValue,
 	        formatDecimalValue = _require2.formatDecimalValue;
 	
-	    var _require3 = __webpack_require__(33),
+	    var _require3 = __webpack_require__(39),
 	        isInteger = _require3.isInteger;
 	
 	    /**
@@ -12573,7 +12724,7 @@ webpackJsonp([6,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 43 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12654,157 +12805,6 @@ webpackJsonp([6,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 44 */,
-/* 45 */,
-/* 46 */,
-/* 47 */,
-/* 48 */,
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-	
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-	    'use strict';
-	
-	    var _settingsToMajorTickM;
-	
-	    var d3Time = __webpack_require__(13);
-	    var d3TimeFormat = __webpack_require__(14);
-	
-	    var _require = __webpack_require__(20),
-	        axisTimeCombinations = _require.axisTimeCombinations,
-	        timeBenchmarks = _require.timeBenchmarks;
-	
-	    var singleTickWidth = 20;
-	    var horizontalTickSpacing = 50;
-	    var minEntryNumForDayFormat = 5;
-	
-	    var formatMap = {
-	        minute: d3TimeFormat.timeFormat('%M m'),
-	        hour: d3TimeFormat.timeFormat('%H %p'),
-	        day: d3TimeFormat.timeFormat('%e'),
-	        daymonth: d3TimeFormat.timeFormat('%d %b'),
-	        month: d3TimeFormat.timeFormat('%b'),
-	        year: d3TimeFormat.timeFormat('%Y')
-	    };
-	    var localeTimeMap = {
-	        minute: { minute: 'numeric' },
-	        hour: { hour: 'numeric' },
-	        day: { day: 'numeric' },
-	        daymonth: { day: 'numeric', month: 'short' },
-	        month: { month: 'short' },
-	        year: { year: 'numeric' }
-	    };
-	    var settingsToMajorTickMap = (_settingsToMajorTickM = {}, _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MINUTE_HOUR, d3Time.timeHour.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.HOUR_DAY, d3Time.timeDay.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.DAY_MONTH, d3Time.timeMonth.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MONTH_YEAR, d3Time.timeYear.every(1)), _settingsToMajorTickM);
-	
-	    /**
-	     * Figures out the proper settings from the current time span
-	     * @param  {Number} timeSpan    Span of time charted by the graph in milliseconds
-	     * @return {String}             Type of settings for the given timeSpan
-	     */
-	    var getAxisSettingsFromTimeSpan = function getAxisSettingsFromTimeSpan(timeSpan) {
-	        var ONE_YEAR = timeBenchmarks.ONE_YEAR,
-	            ONE_DAY = timeBenchmarks.ONE_DAY;
-	
-	        var settings = void 0;
-	
-	        if (timeSpan < ONE_DAY) {
-	            settings = axisTimeCombinations.HOUR_DAY;
-	        } else if (timeSpan < ONE_YEAR) {
-	            settings = axisTimeCombinations.DAY_MONTH;
-	        } else {
-	            settings = axisTimeCombinations.MONTH_YEAR;
-	        }
-	
-	        return settings;
-	    };
-	
-	    /**
-	     * Calculates the maximum number of ticks for the x axis
-	     * @param  {Number} width Chart width
-	     * @param  {Number} dataPointNumber  Number of entries on the data
-	     * @return {Number}       Number of ticks to render
-	     */
-	    var getMaxNumOfHorizontalTicks = function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
-	        var ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
-	
-	        return dataPointNumber < minEntryNumForDayFormat ? d3Time.timeDay : Math.min(dataPointNumber, ticksForWidth);
-	    };
-	
-	    /**
-	     * Takes a locale (string) and the format to return and returns a function to format dates
-	     * @param  {String} locale    locale tag eg. en-US, fr-FR, ru-RU
-	     * @param  {string} timeUnit  minute, hour, day, dayMonth, month, year
-	     * @return {function}         function that formats dates in the proper locale
-	     */
-	    var getLocaleDateFormatter = function getLocaleDateFormatter(locale) {
-	        var timeUnit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'day';
-	
-	        var options = localeTimeMap[timeUnit];
-	        var formatter = new Intl.DateTimeFormat(locale, options);
-	
-	        return function (date) {
-	            return formatter.format(date);
-	        };
-	    };
-	
-	    /**
-	     * Returns tick object to be used when building the x axis
-	     * @param {dataByDate} dataByDate       Chart data ordered by Date
-	     * @param {Number} width                Chart width
-	     * @param {String} settings             Optional forced settings for axis
-	     * @return {object} tick settings for major and minr axis
-	     */
-	    var getXAxisSettings = function getXAxisSettings(dataByDate, width) {
-	        var settings = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	        var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-	
-	        var firstDate = new Date(dataByDate[0].date);
-	        var lastDate = new Date(dataByDate[dataByDate.length - 1].date);
-	        var dateTimeSpan = lastDate - firstDate;
-	
-	        if (locale && (typeof Intl === 'undefined' || (typeof Intl === 'undefined' ? 'undefined' : _typeof(Intl)) === 'object' && !Intl.DateTimeFormat)) {
-	            locale = null;
-	        }
-	
-	        if (!settings) {
-	            settings = getAxisSettingsFromTimeSpan(dateTimeSpan);
-	        }
-	
-	        var _settings$split = settings.split('-'),
-	            _settings$split2 = _slicedToArray(_settings$split, 2),
-	            minor = _settings$split2[0],
-	            major = _settings$split2[1];
-	
-	        var majorTickValue = settingsToMajorTickMap[settings];
-	        var minorTickValue = getMaxNumOfHorizontalTicks(width, dataByDate.length);
-	
-	        return {
-	            minor: {
-	                format: locale ? getLocaleDateFormatter(locale, minor) : formatMap[minor],
-	                tick: minorTickValue
-	            },
-	            major: {
-	                format: locale ? getLocaleDateFormatter(locale, major) : formatMap[major],
-	                tick: majorTickValue
-	            }
-	        };
-	    };
-	
-	    return {
-	        getXAxisSettings: getXAxisSettings,
-	        getLocaleDateFormatter: getLocaleDateFormatter
-	    };
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ }),
 /* 50 */,
 /* 51 */,
 /* 52 */,
@@ -12816,7 +12816,9 @@ webpackJsonp([6,9],[
 /* 58 */,
 /* 59 */,
 /* 60 */,
-/* 61 */
+/* 61 */,
+/* 62 */,
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12832,29 +12834,29 @@ webpackJsonp([6,9],[
 	    var d3Dispatch = __webpack_require__(8);
 	    var d3Ease = __webpack_require__(5);
 	    var d3Scale = __webpack_require__(10);
-	    var d3Shape = __webpack_require__(31);
+	    var d3Shape = __webpack_require__(33);
 	    var d3Selection = __webpack_require__(1);
 	    var d3Transition = __webpack_require__(15);
 	    var d3TimeFormat = __webpack_require__(14);
 	
-	    var assign = __webpack_require__(41);
+	    var assign = __webpack_require__(47);
 	
 	    var _require = __webpack_require__(18),
 	        exportChart = _require.exportChart;
 	
 	    var colorHelper = __webpack_require__(19);
 	
-	    var _require2 = __webpack_require__(49),
+	    var _require2 = __webpack_require__(35),
 	        getXAxisSettings = _require2.getXAxisSettings,
 	        getLocaleDateFormatter = _require2.getLocaleDateFormatter;
 	
-	    var _require3 = __webpack_require__(33),
+	    var _require3 = __webpack_require__(39),
 	        isInteger = _require3.isInteger;
 	
 	    var _require4 = __webpack_require__(20),
 	        axisTimeCombinations = _require4.axisTimeCombinations;
 	
-	    var _require5 = __webpack_require__(43),
+	    var _require5 = __webpack_require__(49),
 	        formatIntegerValue = _require5.formatIntegerValue,
 	        formatDecimalValue = _require5.formatDecimalValue;
 	
@@ -13883,7 +13885,7 @@ webpackJsonp([6,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -13892,11 +13894,11 @@ webpackJsonp([6,9],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonThreeSources = __webpack_require__(63),
-	        jsonSixSources = __webpack_require__(64),
-	        jsonSalesChannel = __webpack_require__(65),
-	        jsonReportService = __webpack_require__(66),
-	        jsonLargeService = __webpack_require__(67);
+	        jsonThreeSources = __webpack_require__(65),
+	        jsonSixSources = __webpack_require__(66),
+	        jsonSalesChannel = __webpack_require__(67),
+	        jsonReportService = __webpack_require__(68),
+	        jsonLargeService = __webpack_require__(69);
 	
 	    function StackedAreaDataBuilder(config) {
 	        this.Klass = StackedAreaDataBuilder;
@@ -13944,7 +13946,7 @@ webpackJsonp([6,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -14013,7 +14015,7 @@ webpackJsonp([6,9],[
 	};
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -14142,7 +14144,7 @@ webpackJsonp([6,9],[
 	};
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -14451,7 +14453,7 @@ webpackJsonp([6,9],[
 	};
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -14532,7 +14534,7 @@ webpackJsonp([6,9],[
 	};
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports) {
 
 	module.exports = {

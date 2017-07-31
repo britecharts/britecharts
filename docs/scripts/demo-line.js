@@ -1,4 +1,4 @@
-webpackJsonp([4,9],[
+webpackJsonp([5,10],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8,11 +8,11 @@ webpackJsonp([4,9],[
 	    d3Selection = __webpack_require__(1),
 	    d3TimeFormat = __webpack_require__(14),
 	    PubSub = __webpack_require__(2),
-	    brush = __webpack_require__(46),
-	    line = __webpack_require__(50),
-	    tooltip = __webpack_require__(42),
-	    dataBuilder = __webpack_require__(51),
-	    colorSelectorHelper = __webpack_require__(39),
+	    brush = __webpack_require__(30),
+	    line = __webpack_require__(52),
+	    tooltip = __webpack_require__(48),
+	    dataBuilder = __webpack_require__(53),
+	    colorSelectorHelper = __webpack_require__(45),
 	    lineMargin = { top: 60, bottom: 50, left: 50, right: 30 };
 	__webpack_require__(29);
 	
@@ -9278,13 +9278,1328 @@ webpackJsonp([4,9],[
 	}, debounceDelay));
 
 /***/ }),
-/* 30 */,
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	    'use strict';
+	
+	    var d3Array = __webpack_require__(4);
+	    var d3Axis = __webpack_require__(6);
+	    var d3Brush = __webpack_require__(31);
+	    var d3Ease = __webpack_require__(5);
+	    var d3Scale = __webpack_require__(10);
+	    var d3Shape = __webpack_require__(33);
+	    var d3Selection = __webpack_require__(1);
+	    var d3Time = __webpack_require__(13);
+	    var d3Transition = __webpack_require__(15);
+	    var d3TimeFormat = __webpack_require__(14);
+	
+	    var colorHelper = __webpack_require__(19);
+	    var timeAxisHelper = __webpack_require__(35);
+	
+	    var _require = __webpack_require__(20),
+	        axisTimeCombinations = _require.axisTimeCombinations;
+	
+	    /**
+	     * @typedef BrushChartData
+	     * @type {Object[]}
+	     * @property {Number} value        Value to chart (required)
+	     * @property {Date} date           Date of the value (required)
+	     *
+	     * @example
+	     * [
+	     *     {
+	     *         value: 1,
+	     *         date: '2011-01-06T00:00:00Z'
+	     *     },
+	     *     {
+	     *         value: 2,
+	     *         date: '2011-01-07T00:00:00Z'
+	     *     }
+	     * ]
+	     */
+	
+	    /**
+	     * Brush Chart reusable API class that renders a
+	     * simple and configurable brush chart.
+	     *
+	     * @module Brush
+	     * @tutorial brush
+	     * @requires d3-array, d3-axis, d3-brush, d3-ease, d3-scale, d3-shape, d3-selection, d3-time, d3-time-format
+	     *
+	     * @example
+	     * let brushChart = brush();
+	     *
+	     * brushChart
+	     *     .height(500)
+	     *     .width(800);
+	     *
+	     * d3Selection.select('.css-selector')
+	     *     .datum(dataset)
+	     *     .call(brushChart);
+	     *
+	     */
+	
+	    return function module() {
+	
+	        var margin = {
+	            top: 20,
+	            right: 20,
+	            bottom: 30,
+	            left: 20
+	        },
+	            width = 960,
+	            height = 500,
+	            data = void 0,
+	            svg = void 0,
+	            ease = d3Ease.easeQuadOut,
+	            dateLabel = 'date',
+	            valueLabel = 'value',
+	            dateRange = [null, null],
+	            chartWidth = void 0,
+	            chartHeight = void 0,
+	            xScale = void 0,
+	            yScale = void 0,
+	            xAxis = void 0,
+	            forceAxisSettings = null,
+	            forcedXTicks = null,
+	            forcedXFormat = null,
+	            brush = void 0,
+	            chartBrush = void 0,
+	            handle = void 0,
+	            tickPadding = 5,
+	            onBrush = null,
+	            gradient = colorHelper.colorGradients.greenBlueGradient,
+	
+	
+	        // extractors
+	        getValue = function getValue(_ref) {
+	            var value = _ref.value;
+	            return value;
+	        },
+	            getDate = function getDate(_ref2) {
+	            var date = _ref2.date;
+	            return date;
+	        };
+	
+	        /**
+	         * This function creates the graph using the selection as container
+	         * @param  {D3Selection} _selection A d3 selection that represents
+	         *                                  the container(s) where the chart(s) will be rendered
+	         * @param {BrushChartData} _data The data to attach and generate the chart
+	         */
+	        function exports(_selection) {
+	            _selection.each(function (_data) {
+	                chartWidth = width - margin.left - margin.right;
+	                chartHeight = height - margin.top - margin.bottom;
+	                data = cleanData(cloneData(_data));
+	
+	                buildScales();
+	                buildAxis();
+	                buildSVG(this);
+	                buildGradient();
+	                buildBrush();
+	                drawArea();
+	                drawAxis();
+	                drawBrush();
+	                drawHandles();
+	            });
+	        }
+	
+	        /**
+	         * Creates the d3 x axis, setting orientation
+	         * @private
+	         */
+	        function buildAxis() {
+	            var minor = void 0,
+	                major = void 0;
+	
+	            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+	                minor = {
+	                    tick: forcedXTicks,
+	                    format: d3TimeFormat.timeFormat(forcedXFormat)
+	                };
+	            } else {
+	                var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(data, width, forceAxisSettings);
+	
+	                minor = _timeAxisHelper$getXA.minor;
+	                major = _timeAxisHelper$getXA.major;
+	            }
+	
+	            xAxis = d3Axis.axisBottom(xScale).ticks(minor.tick).tickSize(10, 0).tickPadding([tickPadding]).tickFormat(minor.format);
+	        }
+	
+	        /**
+	         * Creates the brush element and attaches a listener
+	         * @return {void}
+	         */
+	        function buildBrush() {
+	            brush = d3Brush.brushX().extent([[0, 0], [chartWidth, chartHeight]]).on('brush', handleBrush).on('end', handleBrushEnded);
+	        }
+	
+	        /**
+	         * Builds containers for the chart, the axis and a wrapper for all of them
+	         * Also applies the Margin convention
+	         * @private
+	         */
+	        function buildContainerGroups() {
+	            var container = svg.append('g').classed('container-group', true).attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
+	
+	            container.append('g').classed('chart-group', true);
+	            container.append('g').classed('metadata-group', true);
+	            container.append('g').classed('x-axis-group', true);
+	            container.append('g').classed('brush-group', true);
+	        }
+	
+	        /**
+	         * Creates the gradient on the area
+	         * @return {void}
+	         */
+	        function buildGradient() {
+	            var metadataGroup = svg.select('.metadata-group');
+	
+	            metadataGroup.append('linearGradient').attr('id', 'brush-area-gradient').attr('gradientUnits', 'userSpaceOnUse').attr('x1', 0).attr('x2', xScale(data[data.length - 1].date)).attr('y1', 0).attr('y2', 0).selectAll('stop').data([{ offset: '0%', color: gradient[0] }, { offset: '100%', color: gradient[1] }]).enter().append('stop').attr('offset', function (_ref3) {
+	                var offset = _ref3.offset;
+	                return offset;
+	            }).attr('stop-color', function (_ref4) {
+	                var color = _ref4.color;
+	                return color;
+	            });
+	        }
+	
+	        /**
+	         * Creates the x and y scales of the graph
+	         * @private
+	         */
+	        function buildScales() {
+	            xScale = d3Scale.scaleTime().domain(d3Array.extent(data, getDate)).range([0, chartWidth]);
+	
+	            yScale = d3Scale.scaleLinear().domain([0, d3Array.max(data, getValue)]).range([chartHeight, 0]);
+	        }
+	
+	        /**
+	         * Builds the SVG element that will contain the chart
+	         * @param  {HTMLElement} container DOM element that will work as the container of the graph
+	         * @private
+	         */
+	        function buildSVG(container) {
+	            if (!svg) {
+	                svg = d3Selection.select(container).append('svg').classed('britechart brush-chart', true);
+	
+	                buildContainerGroups();
+	            }
+	
+	            svg.attr('width', width).attr('height', height);
+	        }
+	
+	        /**
+	         * Cleaning data adding the proper format
+	         *
+	         * @param  {BrushChartData} data Data
+	         */
+	        function cleanData(data) {
+	            return data.map(function (d) {
+	                d.date = new Date(d[dateLabel]);
+	                d.value = +d[valueLabel];
+	
+	                return d;
+	            });
+	        }
+	
+	        /**
+	         * Clones the passed array of data
+	         * @param  {Object[]} dataToClone Data to clone
+	         * @return {Object[]}             Cloned data
+	         */
+	        function cloneData(dataToClone) {
+	            return JSON.parse(JSON.stringify(dataToClone));
+	        }
+	
+	        /**
+	         * Draws the x axis on the svg object within its group
+	         *
+	         * @private
+	         */
+	        function drawAxis() {
+	            svg.select('.x-axis-group').append('g').attr('class', 'x axis').attr('transform', 'translate(0, ' + chartHeight + ')').call(xAxis);
+	        }
+	
+	        /**
+	         * Draws the area that is going to represent the data
+	         *
+	         * @return {void}
+	         */
+	        function drawArea() {
+	            // Create and configure the area generator
+	            var area = d3Shape.area().x(function (_ref5) {
+	                var date = _ref5.date;
+	                return xScale(date);
+	            }).y0(chartHeight).y1(function (_ref6) {
+	                var value = _ref6.value;
+	                return yScale(value);
+	            }).curve(d3Shape.curveBasis);
+	
+	            // Create the area path
+	            svg.select('.chart-group').append('path').datum(data).attr('class', 'brush-area').attr('d', area);
+	        }
+	
+	        /**
+	         * Draws the Brush components on its group
+	         * @return {void}
+	         */
+	        function drawBrush() {
+	            chartBrush = svg.select('.brush-group').call(brush);
+	
+	            // Update the height of the brushing rectangle
+	            chartBrush.selectAll('rect').classed('brush-rect', true).attr('height', chartHeight);
+	        }
+	
+	        /**
+	         * Draws a handle for the Brush section
+	         * @return {void}
+	         */
+	        function drawHandles() {
+	            var handleFillColor = colorHelper.colorSchemasHuman.britechartsGreySchema[1];
+	
+	            // Styling
+	            handle = chartBrush.selectAll('.handle.brush-rect').style('fill', handleFillColor);
+	        }
+	
+	        /**
+	         * When a brush event happens, we can extract info from the extension
+	         * of the brush.
+	         *
+	         * @return {void}
+	         */
+	        function handleBrush() {
+	            var s = d3Selection.event.selection,
+	                dateExtent = s.map(xScale.invert);
+	
+	            if (typeof onBrush === 'function') {
+	                onBrush.call(null, dateExtent);
+	            }
+	
+	            // updateHandlers(dateExtent);
+	        }
+	
+	        /**
+	         * Processes the end brush event, snapping the boundaries to days
+	         * as showed on the example on https://bl.ocks.org/mbostock/6232537
+	         * @return {void}
+	         * @private
+	         */
+	        function handleBrushEnded() {
+	            if (!d3Selection.event.sourceEvent) return; // Only transition after input.
+	            if (!d3Selection.event.selection) return; // Ignore empty selections.
+	
+	            var d0 = d3Selection.event.selection.map(xScale.invert),
+	                d1 = d0.map(d3Time.timeDay.round);
+	
+	            // If empty when rounded, use floor & ceil instead.
+	            if (d1[0] >= d1[1]) {
+	                d1[0] = d3Time.timeDay.floor(d0[0]);
+	                d1[1] = d3Time.timeDay.offset(d1[0]);
+	            }
+	
+	            d3Selection.select(this).transition().call(d3Selection.event.target.move, d1.map(xScale));
+	        }
+	
+	        /**
+	         * Sets a new brush extent within the passed percentage positions
+	         * @param {Number} a Percentage of data that the brush start with
+	         * @param {Number} b Percentage of data that the brush ends with
+	         * @example
+	         *     setBrushByPercentages(0.25, 0.5)
+	         */
+	        function setBrushByPercentages(a, b) {
+	            var x0 = a * chartWidth,
+	                x1 = b * chartWidth;
+	
+	            brush.move(chartBrush, [x0, x1]);
+	        }
+	
+	        /**
+	         * Sets a new brush extent within the passed dates
+	         * @param {String | Date} dateA Initial Date
+	         * @param {String | Date} dateB End Date
+	         */
+	        function setBrushByDates(dateA, dateB) {
+	            var x0 = xScale(new Date(dateA)),
+	                x1 = xScale(new Date(dateB));
+	
+	            brush.move(chartBrush, [x0, x1]);
+	        }
+	
+	        /**
+	         * Updates visibility and position of the brush handlers
+	         * @param  {Number[]} dateExtent Date range
+	         * @return {void}
+	         */
+	        function updateHandlers(dateExtent) {
+	            if (dateExtent === null) {
+	                handle.attr('display', 'none');
+	            } else {
+	                handle.attr('display', null).attr('transform', function (d, i) {
+	                    return 'translate(' + dateExtent[i] + ',' + chartHeight / 2 + ')';
+	                });
+	            }
+	        }
+	
+	        // API
+	
+	        /**
+	         * Gets or Sets the dateRange for the selected part of the brush
+	         * @param  {String[]} _x Desired dateRange for the graph
+	         * @return { dateRange | module} Current dateRange or Chart module to chain calls
+	         * @public
+	         */
+	        exports.dateRange = function (_x) {
+	            if (!arguments.length) {
+	                return dateRange;
+	            }
+	            dateRange = _x;
+	
+	            if (Array.isArray(dateRange)) {
+	                setBrushByDates.apply(undefined, _toConsumableArray(dateRange));
+	            }
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x axis grouping
+	         * @param  {String} _x Desired format
+	         * @return { (String|Module) }    Current format or module to chain calls
+	         * @example
+	         *     brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
+	         */
+	        exports.forceAxisFormat = function (_x) {
+	            if (!arguments.length) {
+	                return forceAxisSettings;
+	            }
+	            forceAxisSettings = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x format
+	         * It requires a `forceAxisFormat` of 'custom' in order to work.
+	         * @param  {String} _x              Desired format for x axis
+	         * @return { (String|Module) }      Current format or module to chain calls
+	         */
+	        exports.forcedXFormat = function (_x) {
+	            if (!arguments.length) {
+	                return forcedXFormat;
+	            }
+	            forcedXFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
+	         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
+	         * how many and where the ticks will appear.
+	         *
+	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
+	         * @return { (Number|Module) }      Current number or ticks or module to chain calls
+	         */
+	        exports.forcedXTicks = function (_x) {
+	            if (!arguments.length) {
+	                return forcedXTicks;
+	            }
+	            forcedXTicks = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the constants to be used to force the x axis to respect a certain granularity
+	         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+	         * @example
+	         *     brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
+	         */
+	        exports.axisTimeCombinations = axisTimeCombinations;
+	
+	        /**
+	         * Gets or Sets the gradient of the chart
+	         * @param  {String[]} _x Desired gradient for the graph
+	         * @return { gradient | module} Current gradient or Chart module to chain calls
+	         * @public
+	         */
+	        exports.gradient = function (_x) {
+	            if (!arguments.length) {
+	                return gradient;
+	            }
+	            gradient = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the height of the chart
+	         * @param  {number} _x Desired width for the graph
+	         * @return { height | module} Current height or Chart module to chain calls
+	         * @public
+	         */
+	        exports.height = function (_x) {
+	            if (!arguments.length) {
+	                return height;
+	            }
+	            height = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the margin of the chart
+	         * @param  {object} _x Margin object to get/set
+	         * @return { margin | module} Current margin or Chart module to chain calls
+	         * @public
+	         */
+	        exports.margin = function (_x) {
+	            if (!arguments.length) {
+	                return margin;
+	            }
+	            margin = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the callback that will be called when the user brushes over the area
+	         * @param  {Function} _x Callback to call
+	         * @return {Function | module}    Current callback function or the Chart Module
+	         */
+	        exports.onBrush = function (_x) {
+	            if (!arguments.length) return onBrush;
+	            onBrush = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the width of the chart
+	         * @param  {number} _x Desired width for the graph
+	         * @return { width | module} Current width or Chart module to chain calls
+	         * @public
+	         */
+	        exports.width = function (_x) {
+	            if (!arguments.length) {
+	                return width;
+	            }
+	            width = _x;
+	
+	            return this;
+	        };
+	
+	        return exports;
+	    };
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+/***/ }),
 /* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// https://d3js.org/d3-brush/ Version 1.0.4. Copyright 2017 Mike Bostock.
+	(function (global, factory) {
+		 true ? factory(exports, __webpack_require__(8), __webpack_require__(32), __webpack_require__(12), __webpack_require__(1), __webpack_require__(15)) :
+		typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-selection', 'd3-transition'], factory) :
+		(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3));
+	}(this, (function (exports,d3Dispatch,d3Drag,d3Interpolate,d3Selection,d3Transition) { 'use strict';
+	
+	var constant = function(x) {
+	  return function() {
+	    return x;
+	  };
+	};
+	
+	var BrushEvent = function(target, type, selection) {
+	  this.target = target;
+	  this.type = type;
+	  this.selection = selection;
+	};
+	
+	function nopropagation() {
+	  d3Selection.event.stopImmediatePropagation();
+	}
+	
+	var noevent = function() {
+	  d3Selection.event.preventDefault();
+	  d3Selection.event.stopImmediatePropagation();
+	};
+	
+	var MODE_DRAG = {name: "drag"};
+	var MODE_SPACE = {name: "space"};
+	var MODE_HANDLE = {name: "handle"};
+	var MODE_CENTER = {name: "center"};
+	
+	var X = {
+	  name: "x",
+	  handles: ["e", "w"].map(type),
+	  input: function(x, e) { return x && [[x[0], e[0][1]], [x[1], e[1][1]]]; },
+	  output: function(xy) { return xy && [xy[0][0], xy[1][0]]; }
+	};
+	
+	var Y = {
+	  name: "y",
+	  handles: ["n", "s"].map(type),
+	  input: function(y, e) { return y && [[e[0][0], y[0]], [e[1][0], y[1]]]; },
+	  output: function(xy) { return xy && [xy[0][1], xy[1][1]]; }
+	};
+	
+	var XY = {
+	  name: "xy",
+	  handles: ["n", "e", "s", "w", "nw", "ne", "se", "sw"].map(type),
+	  input: function(xy) { return xy; },
+	  output: function(xy) { return xy; }
+	};
+	
+	var cursors = {
+	  overlay: "crosshair",
+	  selection: "move",
+	  n: "ns-resize",
+	  e: "ew-resize",
+	  s: "ns-resize",
+	  w: "ew-resize",
+	  nw: "nwse-resize",
+	  ne: "nesw-resize",
+	  se: "nwse-resize",
+	  sw: "nesw-resize"
+	};
+	
+	var flipX = {
+	  e: "w",
+	  w: "e",
+	  nw: "ne",
+	  ne: "nw",
+	  se: "sw",
+	  sw: "se"
+	};
+	
+	var flipY = {
+	  n: "s",
+	  s: "n",
+	  nw: "sw",
+	  ne: "se",
+	  se: "ne",
+	  sw: "nw"
+	};
+	
+	var signsX = {
+	  overlay: +1,
+	  selection: +1,
+	  n: null,
+	  e: +1,
+	  s: null,
+	  w: -1,
+	  nw: -1,
+	  ne: +1,
+	  se: +1,
+	  sw: -1
+	};
+	
+	var signsY = {
+	  overlay: +1,
+	  selection: +1,
+	  n: -1,
+	  e: null,
+	  s: +1,
+	  w: null,
+	  nw: -1,
+	  ne: -1,
+	  se: +1,
+	  sw: +1
+	};
+	
+	function type(t) {
+	  return {type: t};
+	}
+	
+	// Ignore right-click, since that should open the context menu.
+	function defaultFilter() {
+	  return !d3Selection.event.button;
+	}
+	
+	function defaultExtent() {
+	  var svg = this.ownerSVGElement || this;
+	  return [[0, 0], [svg.width.baseVal.value, svg.height.baseVal.value]];
+	}
+	
+	// Like d3.local, but with the name “__brush” rather than auto-generated.
+	function local(node) {
+	  while (!node.__brush) if (!(node = node.parentNode)) return;
+	  return node.__brush;
+	}
+	
+	function empty(extent) {
+	  return extent[0][0] === extent[1][0]
+	      || extent[0][1] === extent[1][1];
+	}
+	
+	function brushSelection(node) {
+	  var state = node.__brush;
+	  return state ? state.dim.output(state.selection) : null;
+	}
+	
+	function brushX() {
+	  return brush$1(X);
+	}
+	
+	function brushY() {
+	  return brush$1(Y);
+	}
+	
+	var brush = function() {
+	  return brush$1(XY);
+	};
+	
+	function brush$1(dim) {
+	  var extent = defaultExtent,
+	      filter = defaultFilter,
+	      listeners = d3Dispatch.dispatch(brush, "start", "brush", "end"),
+	      handleSize = 6,
+	      touchending;
+	
+	  function brush(group) {
+	    var overlay = group
+	        .property("__brush", initialize)
+	      .selectAll(".overlay")
+	      .data([type("overlay")]);
+	
+	    overlay.enter().append("rect")
+	        .attr("class", "overlay")
+	        .attr("pointer-events", "all")
+	        .attr("cursor", cursors.overlay)
+	      .merge(overlay)
+	        .each(function() {
+	          var extent = local(this).extent;
+	          d3Selection.select(this)
+	              .attr("x", extent[0][0])
+	              .attr("y", extent[0][1])
+	              .attr("width", extent[1][0] - extent[0][0])
+	              .attr("height", extent[1][1] - extent[0][1]);
+	        });
+	
+	    group.selectAll(".selection")
+	      .data([type("selection")])
+	      .enter().append("rect")
+	        .attr("class", "selection")
+	        .attr("cursor", cursors.selection)
+	        .attr("fill", "#777")
+	        .attr("fill-opacity", 0.3)
+	        .attr("stroke", "#fff")
+	        .attr("shape-rendering", "crispEdges");
+	
+	    var handle = group.selectAll(".handle")
+	      .data(dim.handles, function(d) { return d.type; });
+	
+	    handle.exit().remove();
+	
+	    handle.enter().append("rect")
+	        .attr("class", function(d) { return "handle handle--" + d.type; })
+	        .attr("cursor", function(d) { return cursors[d.type]; });
+	
+	    group
+	        .each(redraw)
+	        .attr("fill", "none")
+	        .attr("pointer-events", "all")
+	        .style("-webkit-tap-highlight-color", "rgba(0,0,0,0)")
+	        .on("mousedown.brush touchstart.brush", started);
+	  }
+	
+	  brush.move = function(group, selection) {
+	    if (group.selection) {
+	      group
+	          .on("start.brush", function() { emitter(this, arguments).beforestart().start(); })
+	          .on("interrupt.brush end.brush", function() { emitter(this, arguments).end(); })
+	          .tween("brush", function() {
+	            var that = this,
+	                state = that.__brush,
+	                emit = emitter(that, arguments),
+	                selection0 = state.selection,
+	                selection1 = dim.input(typeof selection === "function" ? selection.apply(this, arguments) : selection, state.extent),
+	                i = d3Interpolate.interpolate(selection0, selection1);
+	
+	            function tween(t) {
+	              state.selection = t === 1 && empty(selection1) ? null : i(t);
+	              redraw.call(that);
+	              emit.brush();
+	            }
+	
+	            return selection0 && selection1 ? tween : tween(1);
+	          });
+	    } else {
+	      group
+	          .each(function() {
+	            var that = this,
+	                args = arguments,
+	                state = that.__brush,
+	                selection1 = dim.input(typeof selection === "function" ? selection.apply(that, args) : selection, state.extent),
+	                emit = emitter(that, args).beforestart();
+	
+	            d3Transition.interrupt(that);
+	            state.selection = selection1 == null || empty(selection1) ? null : selection1;
+	            redraw.call(that);
+	            emit.start().brush().end();
+	          });
+	    }
+	  };
+	
+	  function redraw() {
+	    var group = d3Selection.select(this),
+	        selection = local(this).selection;
+	
+	    if (selection) {
+	      group.selectAll(".selection")
+	          .style("display", null)
+	          .attr("x", selection[0][0])
+	          .attr("y", selection[0][1])
+	          .attr("width", selection[1][0] - selection[0][0])
+	          .attr("height", selection[1][1] - selection[0][1]);
+	
+	      group.selectAll(".handle")
+	          .style("display", null)
+	          .attr("x", function(d) { return d.type[d.type.length - 1] === "e" ? selection[1][0] - handleSize / 2 : selection[0][0] - handleSize / 2; })
+	          .attr("y", function(d) { return d.type[0] === "s" ? selection[1][1] - handleSize / 2 : selection[0][1] - handleSize / 2; })
+	          .attr("width", function(d) { return d.type === "n" || d.type === "s" ? selection[1][0] - selection[0][0] + handleSize : handleSize; })
+	          .attr("height", function(d) { return d.type === "e" || d.type === "w" ? selection[1][1] - selection[0][1] + handleSize : handleSize; });
+	    }
+	
+	    else {
+	      group.selectAll(".selection,.handle")
+	          .style("display", "none")
+	          .attr("x", null)
+	          .attr("y", null)
+	          .attr("width", null)
+	          .attr("height", null);
+	    }
+	  }
+	
+	  function emitter(that, args) {
+	    return that.__brush.emitter || new Emitter(that, args);
+	  }
+	
+	  function Emitter(that, args) {
+	    this.that = that;
+	    this.args = args;
+	    this.state = that.__brush;
+	    this.active = 0;
+	  }
+	
+	  Emitter.prototype = {
+	    beforestart: function() {
+	      if (++this.active === 1) this.state.emitter = this, this.starting = true;
+	      return this;
+	    },
+	    start: function() {
+	      if (this.starting) this.starting = false, this.emit("start");
+	      return this;
+	    },
+	    brush: function() {
+	      this.emit("brush");
+	      return this;
+	    },
+	    end: function() {
+	      if (--this.active === 0) delete this.state.emitter, this.emit("end");
+	      return this;
+	    },
+	    emit: function(type) {
+	      d3Selection.customEvent(new BrushEvent(brush, type, dim.output(this.state.selection)), listeners.apply, listeners, [type, this.that, this.args]);
+	    }
+	  };
+	
+	  function started() {
+	    if (d3Selection.event.touches) { if (d3Selection.event.changedTouches.length < d3Selection.event.touches.length) return noevent(); }
+	    else if (touchending) return;
+	    if (!filter.apply(this, arguments)) return;
+	
+	    var that = this,
+	        type = d3Selection.event.target.__data__.type,
+	        mode = (d3Selection.event.metaKey ? type = "overlay" : type) === "selection" ? MODE_DRAG : (d3Selection.event.altKey ? MODE_CENTER : MODE_HANDLE),
+	        signX = dim === Y ? null : signsX[type],
+	        signY = dim === X ? null : signsY[type],
+	        state = local(that),
+	        extent = state.extent,
+	        selection = state.selection,
+	        W = extent[0][0], w0, w1,
+	        N = extent[0][1], n0, n1,
+	        E = extent[1][0], e0, e1,
+	        S = extent[1][1], s0, s1,
+	        dx,
+	        dy,
+	        moving,
+	        shifting = signX && signY && d3Selection.event.shiftKey,
+	        lockX,
+	        lockY,
+	        point0 = d3Selection.mouse(that),
+	        point = point0,
+	        emit = emitter(that, arguments).beforestart();
+	
+	    if (type === "overlay") {
+	      state.selection = selection = [
+	        [w0 = dim === Y ? W : point0[0], n0 = dim === X ? N : point0[1]],
+	        [e0 = dim === Y ? E : w0, s0 = dim === X ? S : n0]
+	      ];
+	    } else {
+	      w0 = selection[0][0];
+	      n0 = selection[0][1];
+	      e0 = selection[1][0];
+	      s0 = selection[1][1];
+	    }
+	
+	    w1 = w0;
+	    n1 = n0;
+	    e1 = e0;
+	    s1 = s0;
+	
+	    var group = d3Selection.select(that)
+	        .attr("pointer-events", "none");
+	
+	    var overlay = group.selectAll(".overlay")
+	        .attr("cursor", cursors[type]);
+	
+	    if (d3Selection.event.touches) {
+	      group
+	          .on("touchmove.brush", moved, true)
+	          .on("touchend.brush touchcancel.brush", ended, true);
+	    } else {
+	      var view = d3Selection.select(d3Selection.event.view)
+	          .on("keydown.brush", keydowned, true)
+	          .on("keyup.brush", keyupped, true)
+	          .on("mousemove.brush", moved, true)
+	          .on("mouseup.brush", ended, true);
+	
+	      d3Drag.dragDisable(d3Selection.event.view);
+	    }
+	
+	    nopropagation();
+	    d3Transition.interrupt(that);
+	    redraw.call(that);
+	    emit.start();
+	
+	    function moved() {
+	      var point1 = d3Selection.mouse(that);
+	      if (shifting && !lockX && !lockY) {
+	        if (Math.abs(point1[0] - point[0]) > Math.abs(point1[1] - point[1])) lockY = true;
+	        else lockX = true;
+	      }
+	      point = point1;
+	      moving = true;
+	      noevent();
+	      move();
+	    }
+	
+	    function move() {
+	      var t;
+	
+	      dx = point[0] - point0[0];
+	      dy = point[1] - point0[1];
+	
+	      switch (mode) {
+	        case MODE_SPACE:
+	        case MODE_DRAG: {
+	          if (signX) dx = Math.max(W - w0, Math.min(E - e0, dx)), w1 = w0 + dx, e1 = e0 + dx;
+	          if (signY) dy = Math.max(N - n0, Math.min(S - s0, dy)), n1 = n0 + dy, s1 = s0 + dy;
+	          break;
+	        }
+	        case MODE_HANDLE: {
+	          if (signX < 0) dx = Math.max(W - w0, Math.min(E - w0, dx)), w1 = w0 + dx, e1 = e0;
+	          else if (signX > 0) dx = Math.max(W - e0, Math.min(E - e0, dx)), w1 = w0, e1 = e0 + dx;
+	          if (signY < 0) dy = Math.max(N - n0, Math.min(S - n0, dy)), n1 = n0 + dy, s1 = s0;
+	          else if (signY > 0) dy = Math.max(N - s0, Math.min(S - s0, dy)), n1 = n0, s1 = s0 + dy;
+	          break;
+	        }
+	        case MODE_CENTER: {
+	          if (signX) w1 = Math.max(W, Math.min(E, w0 - dx * signX)), e1 = Math.max(W, Math.min(E, e0 + dx * signX));
+	          if (signY) n1 = Math.max(N, Math.min(S, n0 - dy * signY)), s1 = Math.max(N, Math.min(S, s0 + dy * signY));
+	          break;
+	        }
+	      }
+	
+	      if (e1 < w1) {
+	        signX *= -1;
+	        t = w0, w0 = e0, e0 = t;
+	        t = w1, w1 = e1, e1 = t;
+	        if (type in flipX) overlay.attr("cursor", cursors[type = flipX[type]]);
+	      }
+	
+	      if (s1 < n1) {
+	        signY *= -1;
+	        t = n0, n0 = s0, s0 = t;
+	        t = n1, n1 = s1, s1 = t;
+	        if (type in flipY) overlay.attr("cursor", cursors[type = flipY[type]]);
+	      }
+	
+	      if (state.selection) selection = state.selection; // May be set by brush.move!
+	      if (lockX) w1 = selection[0][0], e1 = selection[1][0];
+	      if (lockY) n1 = selection[0][1], s1 = selection[1][1];
+	
+	      if (selection[0][0] !== w1
+	          || selection[0][1] !== n1
+	          || selection[1][0] !== e1
+	          || selection[1][1] !== s1) {
+	        state.selection = [[w1, n1], [e1, s1]];
+	        redraw.call(that);
+	        emit.brush();
+	      }
+	    }
+	
+	    function ended() {
+	      nopropagation();
+	      if (d3Selection.event.touches) {
+	        if (d3Selection.event.touches.length) return;
+	        if (touchending) clearTimeout(touchending);
+	        touchending = setTimeout(function() { touchending = null; }, 500); // Ghost clicks are delayed!
+	        group.on("touchmove.brush touchend.brush touchcancel.brush", null);
+	      } else {
+	        d3Drag.dragEnable(d3Selection.event.view, moving);
+	        view.on("keydown.brush keyup.brush mousemove.brush mouseup.brush", null);
+	      }
+	      group.attr("pointer-events", "all");
+	      overlay.attr("cursor", cursors.overlay);
+	      if (state.selection) selection = state.selection; // May be set by brush.move (on start)!
+	      if (empty(selection)) state.selection = null, redraw.call(that);
+	      emit.end();
+	    }
+	
+	    function keydowned() {
+	      switch (d3Selection.event.keyCode) {
+	        case 16: { // SHIFT
+	          shifting = signX && signY;
+	          break;
+	        }
+	        case 18: { // ALT
+	          if (mode === MODE_HANDLE) {
+	            if (signX) e0 = e1 - dx * signX, w0 = w1 + dx * signX;
+	            if (signY) s0 = s1 - dy * signY, n0 = n1 + dy * signY;
+	            mode = MODE_CENTER;
+	            move();
+	          }
+	          break;
+	        }
+	        case 32: { // SPACE; takes priority over ALT
+	          if (mode === MODE_HANDLE || mode === MODE_CENTER) {
+	            if (signX < 0) e0 = e1 - dx; else if (signX > 0) w0 = w1 - dx;
+	            if (signY < 0) s0 = s1 - dy; else if (signY > 0) n0 = n1 - dy;
+	            mode = MODE_SPACE;
+	            overlay.attr("cursor", cursors.selection);
+	            move();
+	          }
+	          break;
+	        }
+	        default: return;
+	      }
+	      noevent();
+	    }
+	
+	    function keyupped() {
+	      switch (d3Selection.event.keyCode) {
+	        case 16: { // SHIFT
+	          if (shifting) {
+	            lockX = lockY = shifting = false;
+	            move();
+	          }
+	          break;
+	        }
+	        case 18: { // ALT
+	          if (mode === MODE_CENTER) {
+	            if (signX < 0) e0 = e1; else if (signX > 0) w0 = w1;
+	            if (signY < 0) s0 = s1; else if (signY > 0) n0 = n1;
+	            mode = MODE_HANDLE;
+	            move();
+	          }
+	          break;
+	        }
+	        case 32: { // SPACE
+	          if (mode === MODE_SPACE) {
+	            if (d3Selection.event.altKey) {
+	              if (signX) e0 = e1 - dx * signX, w0 = w1 + dx * signX;
+	              if (signY) s0 = s1 - dy * signY, n0 = n1 + dy * signY;
+	              mode = MODE_CENTER;
+	            } else {
+	              if (signX < 0) e0 = e1; else if (signX > 0) w0 = w1;
+	              if (signY < 0) s0 = s1; else if (signY > 0) n0 = n1;
+	              mode = MODE_HANDLE;
+	            }
+	            overlay.attr("cursor", cursors[type]);
+	            move();
+	          }
+	          break;
+	        }
+	        default: return;
+	      }
+	      noevent();
+	    }
+	  }
+	
+	  function initialize() {
+	    var state = this.__brush || {selection: null};
+	    state.extent = extent.apply(this, arguments);
+	    state.dim = dim;
+	    return state;
+	  }
+	
+	  brush.extent = function(_) {
+	    return arguments.length ? (extent = typeof _ === "function" ? _ : constant([[+_[0][0], +_[0][1]], [+_[1][0], +_[1][1]]]), brush) : extent;
+	  };
+	
+	  brush.filter = function(_) {
+	    return arguments.length ? (filter = typeof _ === "function" ? _ : constant(!!_), brush) : filter;
+	  };
+	
+	  brush.handleSize = function(_) {
+	    return arguments.length ? (handleSize = +_, brush) : handleSize;
+	  };
+	
+	  brush.on = function() {
+	    var value = listeners.on.apply(listeners, arguments);
+	    return value === listeners ? brush : value;
+	  };
+	
+	  return brush;
+	}
+	
+	exports.brush = brush;
+	exports.brushX = brushX;
+	exports.brushY = brushY;
+	exports.brushSelection = brushSelection;
+	
+	Object.defineProperty(exports, '__esModule', { value: true });
+	
+	})));
+
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// https://d3js.org/d3-drag/ Version 1.0.4. Copyright 2017 Mike Bostock.
+	(function (global, factory) {
+		 true ? factory(exports, __webpack_require__(8), __webpack_require__(1)) :
+		typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-selection'], factory) :
+		(factory((global.d3 = global.d3 || {}),global.d3,global.d3));
+	}(this, (function (exports,d3Dispatch,d3Selection) { 'use strict';
+	
+	function nopropagation() {
+	  d3Selection.event.stopImmediatePropagation();
+	}
+	
+	var noevent = function() {
+	  d3Selection.event.preventDefault();
+	  d3Selection.event.stopImmediatePropagation();
+	};
+	
+	var nodrag = function(view) {
+	  var root = view.document.documentElement,
+	      selection = d3Selection.select(view).on("dragstart.drag", noevent, true);
+	  if ("onselectstart" in root) {
+	    selection.on("selectstart.drag", noevent, true);
+	  } else {
+	    root.__noselect = root.style.MozUserSelect;
+	    root.style.MozUserSelect = "none";
+	  }
+	};
+	
+	function yesdrag(view, noclick) {
+	  var root = view.document.documentElement,
+	      selection = d3Selection.select(view).on("dragstart.drag", null);
+	  if (noclick) {
+	    selection.on("click.drag", noevent, true);
+	    setTimeout(function() { selection.on("click.drag", null); }, 0);
+	  }
+	  if ("onselectstart" in root) {
+	    selection.on("selectstart.drag", null);
+	  } else {
+	    root.style.MozUserSelect = root.__noselect;
+	    delete root.__noselect;
+	  }
+	}
+	
+	var constant = function(x) {
+	  return function() {
+	    return x;
+	  };
+	};
+	
+	function DragEvent(target, type, subject, id, active, x, y, dx, dy, dispatch$$1) {
+	  this.target = target;
+	  this.type = type;
+	  this.subject = subject;
+	  this.identifier = id;
+	  this.active = active;
+	  this.x = x;
+	  this.y = y;
+	  this.dx = dx;
+	  this.dy = dy;
+	  this._ = dispatch$$1;
+	}
+	
+	DragEvent.prototype.on = function() {
+	  var value = this._.on.apply(this._, arguments);
+	  return value === this._ ? this : value;
+	};
+	
+	// Ignore right-click, since that should open the context menu.
+	function defaultFilter() {
+	  return !d3Selection.event.button;
+	}
+	
+	function defaultContainer() {
+	  return this.parentNode;
+	}
+	
+	function defaultSubject(d) {
+	  return d == null ? {x: d3Selection.event.x, y: d3Selection.event.y} : d;
+	}
+	
+	var drag = function() {
+	  var filter = defaultFilter,
+	      container = defaultContainer,
+	      subject = defaultSubject,
+	      gestures = {},
+	      listeners = d3Dispatch.dispatch("start", "drag", "end"),
+	      active = 0,
+	      mousemoving,
+	      touchending;
+	
+	  function drag(selection) {
+	    selection
+	        .on("mousedown.drag", mousedowned)
+	        .on("touchstart.drag", touchstarted)
+	        .on("touchmove.drag", touchmoved)
+	        .on("touchend.drag touchcancel.drag", touchended)
+	        .style("-webkit-tap-highlight-color", "rgba(0,0,0,0)");
+	  }
+	
+	  function mousedowned() {
+	    if (touchending || !filter.apply(this, arguments)) return;
+	    var gesture = beforestart("mouse", container.apply(this, arguments), d3Selection.mouse, this, arguments);
+	    if (!gesture) return;
+	    d3Selection.select(d3Selection.event.view).on("mousemove.drag", mousemoved, true).on("mouseup.drag", mouseupped, true);
+	    nodrag(d3Selection.event.view);
+	    nopropagation();
+	    mousemoving = false;
+	    gesture("start");
+	  }
+	
+	  function mousemoved() {
+	    noevent();
+	    mousemoving = true;
+	    gestures.mouse("drag");
+	  }
+	
+	  function mouseupped() {
+	    d3Selection.select(d3Selection.event.view).on("mousemove.drag mouseup.drag", null);
+	    yesdrag(d3Selection.event.view, mousemoving);
+	    noevent();
+	    gestures.mouse("end");
+	  }
+	
+	  function touchstarted() {
+	    if (!filter.apply(this, arguments)) return;
+	    var touches = d3Selection.event.changedTouches,
+	        c = container.apply(this, arguments),
+	        n = touches.length, i, gesture;
+	
+	    for (i = 0; i < n; ++i) {
+	      if (gesture = beforestart(touches[i].identifier, c, d3Selection.touch, this, arguments)) {
+	        nopropagation();
+	        gesture("start");
+	      }
+	    }
+	  }
+	
+	  function touchmoved() {
+	    var touches = d3Selection.event.changedTouches,
+	        n = touches.length, i, gesture;
+	
+	    for (i = 0; i < n; ++i) {
+	      if (gesture = gestures[touches[i].identifier]) {
+	        noevent();
+	        gesture("drag");
+	      }
+	    }
+	  }
+	
+	  function touchended() {
+	    var touches = d3Selection.event.changedTouches,
+	        n = touches.length, i, gesture;
+	
+	    if (touchending) clearTimeout(touchending);
+	    touchending = setTimeout(function() { touchending = null; }, 500); // Ghost clicks are delayed!
+	    for (i = 0; i < n; ++i) {
+	      if (gesture = gestures[touches[i].identifier]) {
+	        nopropagation();
+	        gesture("end");
+	      }
+	    }
+	  }
+	
+	  function beforestart(id, container, point, that, args) {
+	    var p = point(container, id), s, dx, dy,
+	        sublisteners = listeners.copy();
+	
+	    if (!d3Selection.customEvent(new DragEvent(drag, "beforestart", s, id, active, p[0], p[1], 0, 0, sublisteners), function() {
+	      if ((d3Selection.event.subject = s = subject.apply(that, args)) == null) return false;
+	      dx = s.x - p[0] || 0;
+	      dy = s.y - p[1] || 0;
+	      return true;
+	    })) return;
+	
+	    return function gesture(type) {
+	      var p0 = p, n;
+	      switch (type) {
+	        case "start": gestures[id] = gesture, n = active++; break;
+	        case "end": delete gestures[id], --active; // nobreak
+	        case "drag": p = point(container, id), n = active; break;
+	      }
+	      d3Selection.customEvent(new DragEvent(drag, type, s, id, n, p[0] + dx, p[1] + dy, p[0] - p0[0], p[1] - p0[1], sublisteners), sublisteners.apply, sublisteners, [type, that, args]);
+	    };
+	  }
+	
+	  drag.filter = function(_) {
+	    return arguments.length ? (filter = typeof _ === "function" ? _ : constant(!!_), drag) : filter;
+	  };
+	
+	  drag.container = function(_) {
+	    return arguments.length ? (container = typeof _ === "function" ? _ : constant(_), drag) : container;
+	  };
+	
+	  drag.subject = function(_) {
+	    return arguments.length ? (subject = typeof _ === "function" ? _ : constant(_), drag) : subject;
+	  };
+	
+	  drag.on = function() {
+	    var value = listeners.on.apply(listeners, arguments);
+	    return value === listeners ? drag : value;
+	  };
+	
+	  return drag;
+	};
+	
+	exports.drag = drag;
+	exports.dragDisable = nodrag;
+	exports.dragEnable = yesdrag;
+	
+	Object.defineProperty(exports, '__esModule', { value: true });
+	
+	})));
+
+
+/***/ }),
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-shape/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(32)) :
+		 true ? factory(exports, __webpack_require__(34)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
 		(factory((global.d3 = global.d3 || {}),global.d3));
 	}(this, (function (exports,d3Path) { 'use strict';
@@ -11115,7 +12430,7 @@ webpackJsonp([4,9],[
 
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// https://d3js.org/d3-path/ Version 1.0.5. Copyright 2017 Mike Bostock.
@@ -11262,7 +12577,156 @@ webpackJsonp([4,9],[
 
 
 /***/ }),
-/* 33 */
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+	
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	    'use strict';
+	
+	    var _settingsToMajorTickM;
+	
+	    var d3Time = __webpack_require__(13);
+	    var d3TimeFormat = __webpack_require__(14);
+	
+	    var _require = __webpack_require__(20),
+	        axisTimeCombinations = _require.axisTimeCombinations,
+	        timeBenchmarks = _require.timeBenchmarks;
+	
+	    var singleTickWidth = 20;
+	    var horizontalTickSpacing = 50;
+	    var minEntryNumForDayFormat = 5;
+	
+	    var formatMap = {
+	        minute: d3TimeFormat.timeFormat('%M m'),
+	        hour: d3TimeFormat.timeFormat('%H %p'),
+	        day: d3TimeFormat.timeFormat('%e'),
+	        daymonth: d3TimeFormat.timeFormat('%d %b'),
+	        month: d3TimeFormat.timeFormat('%b'),
+	        year: d3TimeFormat.timeFormat('%Y')
+	    };
+	    var localeTimeMap = {
+	        minute: { minute: 'numeric' },
+	        hour: { hour: 'numeric' },
+	        day: { day: 'numeric' },
+	        daymonth: { day: 'numeric', month: 'short' },
+	        month: { month: 'short' },
+	        year: { year: 'numeric' }
+	    };
+	    var settingsToMajorTickMap = (_settingsToMajorTickM = {}, _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MINUTE_HOUR, d3Time.timeHour.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.HOUR_DAY, d3Time.timeDay.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.DAY_MONTH, d3Time.timeMonth.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MONTH_YEAR, d3Time.timeYear.every(1)), _settingsToMajorTickM);
+	
+	    /**
+	     * Figures out the proper settings from the current time span
+	     * @param  {Number} timeSpan    Span of time charted by the graph in milliseconds
+	     * @return {String}             Type of settings for the given timeSpan
+	     */
+	    var getAxisSettingsFromTimeSpan = function getAxisSettingsFromTimeSpan(timeSpan) {
+	        var ONE_YEAR = timeBenchmarks.ONE_YEAR,
+	            ONE_DAY = timeBenchmarks.ONE_DAY;
+	
+	        var settings = void 0;
+	
+	        if (timeSpan < ONE_DAY) {
+	            settings = axisTimeCombinations.HOUR_DAY;
+	        } else if (timeSpan < ONE_YEAR) {
+	            settings = axisTimeCombinations.DAY_MONTH;
+	        } else {
+	            settings = axisTimeCombinations.MONTH_YEAR;
+	        }
+	
+	        return settings;
+	    };
+	
+	    /**
+	     * Calculates the maximum number of ticks for the x axis
+	     * @param  {Number} width Chart width
+	     * @param  {Number} dataPointNumber  Number of entries on the data
+	     * @return {Number}       Number of ticks to render
+	     */
+	    var getMaxNumOfHorizontalTicks = function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
+	        var ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
+	
+	        return dataPointNumber < minEntryNumForDayFormat ? d3Time.timeDay : Math.min(dataPointNumber, ticksForWidth);
+	    };
+	
+	    /**
+	     * Takes a locale (string) and the format to return and returns a function to format dates
+	     * @param  {String} locale    locale tag eg. en-US, fr-FR, ru-RU
+	     * @param  {string} timeUnit  minute, hour, day, dayMonth, month, year
+	     * @return {function}         function that formats dates in the proper locale
+	     */
+	    var getLocaleDateFormatter = function getLocaleDateFormatter(locale) {
+	        var timeUnit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'day';
+	
+	        var options = localeTimeMap[timeUnit];
+	        var formatter = new Intl.DateTimeFormat(locale, options);
+	
+	        return function (date) {
+	            return formatter.format(date);
+	        };
+	    };
+	
+	    /**
+	     * Returns tick object to be used when building the x axis
+	     * @param {dataByDate} dataByDate       Chart data ordered by Date
+	     * @param {Number} width                Chart width
+	     * @param {String} settings             Optional forced settings for axis
+	     * @return {object} tick settings for major and minr axis
+	     */
+	    var getXAxisSettings = function getXAxisSettings(dataByDate, width) {
+	        var settings = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+	        var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+	
+	        var firstDate = new Date(dataByDate[0].date);
+	        var lastDate = new Date(dataByDate[dataByDate.length - 1].date);
+	        var dateTimeSpan = lastDate - firstDate;
+	
+	        if (locale && (typeof Intl === 'undefined' || (typeof Intl === 'undefined' ? 'undefined' : _typeof(Intl)) === 'object' && !Intl.DateTimeFormat)) {
+	            locale = null;
+	        }
+	
+	        if (!settings) {
+	            settings = getAxisSettingsFromTimeSpan(dateTimeSpan);
+	        }
+	
+	        var _settings$split = settings.split('-'),
+	            _settings$split2 = _slicedToArray(_settings$split, 2),
+	            minor = _settings$split2[0],
+	            major = _settings$split2[1];
+	
+	        var majorTickValue = settingsToMajorTickMap[settings];
+	        var minorTickValue = getMaxNumOfHorizontalTicks(width, dataByDate.length);
+	
+	        return {
+	            minor: {
+	                format: locale ? getLocaleDateFormatter(locale, minor) : formatMap[minor],
+	                tick: minorTickValue
+	            },
+	            major: {
+	                format: locale ? getLocaleDateFormatter(locale, major) : formatMap[major],
+	                tick: majorTickValue
+	            }
+	        };
+	    };
+	
+	    return {
+	        getXAxisSettings: getXAxisSettings,
+	        getLocaleDateFormatter: getLocaleDateFormatter
+	    };
+	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+/***/ }),
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11299,12 +12763,12 @@ webpackJsonp([4,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11366,9 +12830,9 @@ webpackJsonp([4,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 40 */,
-/* 41 */,
-/* 42 */
+/* 46 */,
+/* 47 */,
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11389,11 +12853,11 @@ webpackJsonp([4,9],[
 	    var _require = __webpack_require__(20),
 	        axisTimeCombinations = _require.axisTimeCombinations;
 	
-	    var _require2 = __webpack_require__(43),
+	    var _require2 = __webpack_require__(49),
 	        formatIntegerValue = _require2.formatIntegerValue,
 	        formatDecimalValue = _require2.formatDecimalValue;
 	
-	    var _require3 = __webpack_require__(33),
+	    var _require3 = __webpack_require__(39),
 	        isInteger = _require3.isInteger;
 	
 	    /**
@@ -12043,7 +13507,7 @@ webpackJsonp([4,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 43 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -12124,1471 +13588,9 @@ webpackJsonp([4,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 44 */,
-/* 45 */,
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-	    'use strict';
-	
-	    var d3Array = __webpack_require__(4);
-	    var d3Axis = __webpack_require__(6);
-	    var d3Brush = __webpack_require__(47);
-	    var d3Ease = __webpack_require__(5);
-	    var d3Scale = __webpack_require__(10);
-	    var d3Shape = __webpack_require__(31);
-	    var d3Selection = __webpack_require__(1);
-	    var d3Time = __webpack_require__(13);
-	    var d3Transition = __webpack_require__(15);
-	    var d3TimeFormat = __webpack_require__(14);
-	
-	    var colorHelper = __webpack_require__(19);
-	    var timeAxisHelper = __webpack_require__(49);
-	
-	    var _require = __webpack_require__(20),
-	        axisTimeCombinations = _require.axisTimeCombinations;
-	
-	    /**
-	     * @typedef BrushChartData
-	     * @type {Object[]}
-	     * @property {Number} value        Value to chart (required)
-	     * @property {Date} date           Date of the value (required)
-	     *
-	     * @example
-	     * [
-	     *     {
-	     *         value: 1,
-	     *         date: '2011-01-06T00:00:00Z'
-	     *     },
-	     *     {
-	     *         value: 2,
-	     *         date: '2011-01-07T00:00:00Z'
-	     *     }
-	     * ]
-	     */
-	
-	    /**
-	     * Brush Chart reusable API class that renders a
-	     * simple and configurable brush chart.
-	     *
-	     * @module Brush
-	     * @tutorial brush
-	     * @requires d3-array, d3-axis, d3-brush, d3-ease, d3-scale, d3-shape, d3-selection, d3-time, d3-time-format
-	     *
-	     * @example
-	     * let brushChart = brush();
-	     *
-	     * brushChart
-	     *     .height(500)
-	     *     .width(800);
-	     *
-	     * d3Selection.select('.css-selector')
-	     *     .datum(dataset)
-	     *     .call(brushChart);
-	     *
-	     */
-	
-	    return function module() {
-	
-	        var margin = {
-	            top: 20,
-	            right: 20,
-	            bottom: 30,
-	            left: 20
-	        },
-	            width = 960,
-	            height = 500,
-	            data = void 0,
-	            svg = void 0,
-	            ease = d3Ease.easeQuadOut,
-	            dateLabel = 'date',
-	            valueLabel = 'value',
-	            dateRange = [null, null],
-	            chartWidth = void 0,
-	            chartHeight = void 0,
-	            xScale = void 0,
-	            yScale = void 0,
-	            xAxis = void 0,
-	            forceAxisSettings = null,
-	            forcedXTicks = null,
-	            forcedXFormat = null,
-	            brush = void 0,
-	            chartBrush = void 0,
-	            handle = void 0,
-	            tickPadding = 5,
-	            onBrush = null,
-	            gradient = colorHelper.colorGradients.greenBlueGradient,
-	
-	
-	        // extractors
-	        getValue = function getValue(_ref) {
-	            var value = _ref.value;
-	            return value;
-	        },
-	            getDate = function getDate(_ref2) {
-	            var date = _ref2.date;
-	            return date;
-	        };
-	
-	        /**
-	         * This function creates the graph using the selection as container
-	         * @param  {D3Selection} _selection A d3 selection that represents
-	         *                                  the container(s) where the chart(s) will be rendered
-	         * @param {BrushChartData} _data The data to attach and generate the chart
-	         */
-	        function exports(_selection) {
-	            _selection.each(function (_data) {
-	                chartWidth = width - margin.left - margin.right;
-	                chartHeight = height - margin.top - margin.bottom;
-	                data = cleanData(cloneData(_data));
-	
-	                buildScales();
-	                buildAxis();
-	                buildSVG(this);
-	                buildGradient();
-	                buildBrush();
-	                drawArea();
-	                drawAxis();
-	                drawBrush();
-	                drawHandles();
-	            });
-	        }
-	
-	        /**
-	         * Creates the d3 x axis, setting orientation
-	         * @private
-	         */
-	        function buildAxis() {
-	            var minor = void 0,
-	                major = void 0;
-	
-	            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
-	                minor = {
-	                    tick: forcedXTicks,
-	                    format: d3TimeFormat.timeFormat(forcedXFormat)
-	                };
-	            } else {
-	                var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(data, width, forceAxisSettings);
-	
-	                minor = _timeAxisHelper$getXA.minor;
-	                major = _timeAxisHelper$getXA.major;
-	            }
-	
-	            xAxis = d3Axis.axisBottom(xScale).ticks(minor.tick).tickSize(10, 0).tickPadding([tickPadding]).tickFormat(minor.format);
-	        }
-	
-	        /**
-	         * Creates the brush element and attaches a listener
-	         * @return {void}
-	         */
-	        function buildBrush() {
-	            brush = d3Brush.brushX().extent([[0, 0], [chartWidth, chartHeight]]).on('brush', handleBrush).on('end', handleBrushEnded);
-	        }
-	
-	        /**
-	         * Builds containers for the chart, the axis and a wrapper for all of them
-	         * Also applies the Margin convention
-	         * @private
-	         */
-	        function buildContainerGroups() {
-	            var container = svg.append('g').classed('container-group', true).attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
-	
-	            container.append('g').classed('chart-group', true);
-	            container.append('g').classed('metadata-group', true);
-	            container.append('g').classed('x-axis-group', true);
-	            container.append('g').classed('brush-group', true);
-	        }
-	
-	        /**
-	         * Creates the gradient on the area
-	         * @return {void}
-	         */
-	        function buildGradient() {
-	            var metadataGroup = svg.select('.metadata-group');
-	
-	            metadataGroup.append('linearGradient').attr('id', 'brush-area-gradient').attr('gradientUnits', 'userSpaceOnUse').attr('x1', 0).attr('x2', xScale(data[data.length - 1].date)).attr('y1', 0).attr('y2', 0).selectAll('stop').data([{ offset: '0%', color: gradient[0] }, { offset: '100%', color: gradient[1] }]).enter().append('stop').attr('offset', function (_ref3) {
-	                var offset = _ref3.offset;
-	                return offset;
-	            }).attr('stop-color', function (_ref4) {
-	                var color = _ref4.color;
-	                return color;
-	            });
-	        }
-	
-	        /**
-	         * Creates the x and y scales of the graph
-	         * @private
-	         */
-	        function buildScales() {
-	            xScale = d3Scale.scaleTime().domain(d3Array.extent(data, getDate)).range([0, chartWidth]);
-	
-	            yScale = d3Scale.scaleLinear().domain([0, d3Array.max(data, getValue)]).range([chartHeight, 0]);
-	        }
-	
-	        /**
-	         * Builds the SVG element that will contain the chart
-	         * @param  {HTMLElement} container DOM element that will work as the container of the graph
-	         * @private
-	         */
-	        function buildSVG(container) {
-	            if (!svg) {
-	                svg = d3Selection.select(container).append('svg').classed('britechart brush-chart', true);
-	
-	                buildContainerGroups();
-	            }
-	
-	            svg.attr('width', width).attr('height', height);
-	        }
-	
-	        /**
-	         * Cleaning data adding the proper format
-	         *
-	         * @param  {BrushChartData} data Data
-	         */
-	        function cleanData(data) {
-	            return data.map(function (d) {
-	                d.date = new Date(d[dateLabel]);
-	                d.value = +d[valueLabel];
-	
-	                return d;
-	            });
-	        }
-	
-	        /**
-	         * Clones the passed array of data
-	         * @param  {Object[]} dataToClone Data to clone
-	         * @return {Object[]}             Cloned data
-	         */
-	        function cloneData(dataToClone) {
-	            return JSON.parse(JSON.stringify(dataToClone));
-	        }
-	
-	        /**
-	         * Draws the x axis on the svg object within its group
-	         *
-	         * @private
-	         */
-	        function drawAxis() {
-	            svg.select('.x-axis-group').append('g').attr('class', 'x axis').attr('transform', 'translate(0, ' + chartHeight + ')').call(xAxis);
-	        }
-	
-	        /**
-	         * Draws the area that is going to represent the data
-	         *
-	         * @return {void}
-	         */
-	        function drawArea() {
-	            // Create and configure the area generator
-	            var area = d3Shape.area().x(function (_ref5) {
-	                var date = _ref5.date;
-	                return xScale(date);
-	            }).y0(chartHeight).y1(function (_ref6) {
-	                var value = _ref6.value;
-	                return yScale(value);
-	            }).curve(d3Shape.curveBasis);
-	
-	            // Create the area path
-	            svg.select('.chart-group').append('path').datum(data).attr('class', 'brush-area').attr('d', area);
-	        }
-	
-	        /**
-	         * Draws the Brush components on its group
-	         * @return {void}
-	         */
-	        function drawBrush() {
-	            chartBrush = svg.select('.brush-group').call(brush);
-	
-	            // Update the height of the brushing rectangle
-	            chartBrush.selectAll('rect').classed('brush-rect', true).attr('height', chartHeight);
-	        }
-	
-	        /**
-	         * Draws a handle for the Brush section
-	         * @return {void}
-	         */
-	        function drawHandles() {
-	            var handleFillColor = colorHelper.colorSchemasHuman.britechartsGreySchema[1];
-	
-	            // Styling
-	            handle = chartBrush.selectAll('.handle.brush-rect').style('fill', handleFillColor);
-	        }
-	
-	        /**
-	         * When a brush event happens, we can extract info from the extension
-	         * of the brush.
-	         *
-	         * @return {void}
-	         */
-	        function handleBrush() {
-	            var s = d3Selection.event.selection,
-	                dateExtent = s.map(xScale.invert);
-	
-	            if (typeof onBrush === 'function') {
-	                onBrush.call(null, dateExtent);
-	            }
-	
-	            // updateHandlers(dateExtent);
-	        }
-	
-	        /**
-	         * Processes the end brush event, snapping the boundaries to days
-	         * as showed on the example on https://bl.ocks.org/mbostock/6232537
-	         * @return {void}
-	         * @private
-	         */
-	        function handleBrushEnded() {
-	            if (!d3Selection.event.sourceEvent) return; // Only transition after input.
-	            if (!d3Selection.event.selection) return; // Ignore empty selections.
-	
-	            var d0 = d3Selection.event.selection.map(xScale.invert),
-	                d1 = d0.map(d3Time.timeDay.round);
-	
-	            // If empty when rounded, use floor & ceil instead.
-	            if (d1[0] >= d1[1]) {
-	                d1[0] = d3Time.timeDay.floor(d0[0]);
-	                d1[1] = d3Time.timeDay.offset(d1[0]);
-	            }
-	
-	            d3Selection.select(this).transition().call(d3Selection.event.target.move, d1.map(xScale));
-	        }
-	
-	        /**
-	         * Sets a new brush extent within the passed percentage positions
-	         * @param {Number} a Percentage of data that the brush start with
-	         * @param {Number} b Percentage of data that the brush ends with
-	         * @example
-	         *     setBrushByPercentages(0.25, 0.5)
-	         */
-	        function setBrushByPercentages(a, b) {
-	            var x0 = a * chartWidth,
-	                x1 = b * chartWidth;
-	
-	            brush.move(chartBrush, [x0, x1]);
-	        }
-	
-	        /**
-	         * Sets a new brush extent within the passed dates
-	         * @param {String | Date} dateA Initial Date
-	         * @param {String | Date} dateB End Date
-	         */
-	        function setBrushByDates(dateA, dateB) {
-	            var x0 = xScale(new Date(dateA)),
-	                x1 = xScale(new Date(dateB));
-	
-	            brush.move(chartBrush, [x0, x1]);
-	        }
-	
-	        /**
-	         * Updates visibility and position of the brush handlers
-	         * @param  {Number[]} dateExtent Date range
-	         * @return {void}
-	         */
-	        function updateHandlers(dateExtent) {
-	            if (dateExtent === null) {
-	                handle.attr('display', 'none');
-	            } else {
-	                handle.attr('display', null).attr('transform', function (d, i) {
-	                    return 'translate(' + dateExtent[i] + ',' + chartHeight / 2 + ')';
-	                });
-	            }
-	        }
-	
-	        // API
-	
-	        /**
-	         * Gets or Sets the dateRange for the selected part of the brush
-	         * @param  {String[]} _x Desired dateRange for the graph
-	         * @return { dateRange | module} Current dateRange or Chart module to chain calls
-	         * @public
-	         */
-	        exports.dateRange = function (_x) {
-	            if (!arguments.length) {
-	                return dateRange;
-	            }
-	            dateRange = _x;
-	
-	            if (Array.isArray(dateRange)) {
-	                setBrushByDates.apply(undefined, _toConsumableArray(dateRange));
-	            }
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the ability to force the chart to show a certain x axis grouping
-	         * @param  {String} _x Desired format
-	         * @return { (String|Module) }    Current format or module to chain calls
-	         * @example
-	         *     brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
-	         */
-	        exports.forceAxisFormat = function (_x) {
-	            if (!arguments.length) {
-	                return forceAxisSettings;
-	            }
-	            forceAxisSettings = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the ability to force the chart to show a certain x format
-	         * It requires a `forceAxisFormat` of 'custom' in order to work.
-	         * @param  {String} _x              Desired format for x axis
-	         * @return { (String|Module) }      Current format or module to chain calls
-	         */
-	        exports.forcedXFormat = function (_x) {
-	            if (!arguments.length) {
-	                return forcedXFormat;
-	            }
-	            forcedXFormat = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
-	         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
-	         * how many and where the ticks will appear.
-	         *
-	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
-	         * @return { (Number|Module) }      Current number or ticks or module to chain calls
-	         */
-	        exports.forcedXTicks = function (_x) {
-	            if (!arguments.length) {
-	                return forcedXTicks;
-	            }
-	            forcedXTicks = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the constants to be used to force the x axis to respect a certain granularity
-	         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
-	         * @example
-	         *     brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
-	         */
-	        exports.axisTimeCombinations = axisTimeCombinations;
-	
-	        /**
-	         * Gets or Sets the gradient of the chart
-	         * @param  {String[]} _x Desired gradient for the graph
-	         * @return { gradient | module} Current gradient or Chart module to chain calls
-	         * @public
-	         */
-	        exports.gradient = function (_x) {
-	            if (!arguments.length) {
-	                return gradient;
-	            }
-	            gradient = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the height of the chart
-	         * @param  {number} _x Desired width for the graph
-	         * @return { height | module} Current height or Chart module to chain calls
-	         * @public
-	         */
-	        exports.height = function (_x) {
-	            if (!arguments.length) {
-	                return height;
-	            }
-	            height = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the margin of the chart
-	         * @param  {object} _x Margin object to get/set
-	         * @return { margin | module} Current margin or Chart module to chain calls
-	         * @public
-	         */
-	        exports.margin = function (_x) {
-	            if (!arguments.length) {
-	                return margin;
-	            }
-	            margin = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the callback that will be called when the user brushes over the area
-	         * @param  {Function} _x Callback to call
-	         * @return {Function | module}    Current callback function or the Chart Module
-	         */
-	        exports.onBrush = function (_x) {
-	            if (!arguments.length) return onBrush;
-	            onBrush = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the width of the chart
-	         * @param  {number} _x Desired width for the graph
-	         * @return { width | module} Current width or Chart module to chain calls
-	         * @public
-	         */
-	        exports.width = function (_x) {
-	            if (!arguments.length) {
-	                return width;
-	            }
-	            width = _x;
-	
-	            return this;
-	        };
-	
-	        return exports;
-	    };
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// https://d3js.org/d3-brush/ Version 1.0.4. Copyright 2017 Mike Bostock.
-	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(8), __webpack_require__(48), __webpack_require__(12), __webpack_require__(1), __webpack_require__(15)) :
-		typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-drag', 'd3-interpolate', 'd3-selection', 'd3-transition'], factory) :
-		(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3,global.d3));
-	}(this, (function (exports,d3Dispatch,d3Drag,d3Interpolate,d3Selection,d3Transition) { 'use strict';
-	
-	var constant = function(x) {
-	  return function() {
-	    return x;
-	  };
-	};
-	
-	var BrushEvent = function(target, type, selection) {
-	  this.target = target;
-	  this.type = type;
-	  this.selection = selection;
-	};
-	
-	function nopropagation() {
-	  d3Selection.event.stopImmediatePropagation();
-	}
-	
-	var noevent = function() {
-	  d3Selection.event.preventDefault();
-	  d3Selection.event.stopImmediatePropagation();
-	};
-	
-	var MODE_DRAG = {name: "drag"};
-	var MODE_SPACE = {name: "space"};
-	var MODE_HANDLE = {name: "handle"};
-	var MODE_CENTER = {name: "center"};
-	
-	var X = {
-	  name: "x",
-	  handles: ["e", "w"].map(type),
-	  input: function(x, e) { return x && [[x[0], e[0][1]], [x[1], e[1][1]]]; },
-	  output: function(xy) { return xy && [xy[0][0], xy[1][0]]; }
-	};
-	
-	var Y = {
-	  name: "y",
-	  handles: ["n", "s"].map(type),
-	  input: function(y, e) { return y && [[e[0][0], y[0]], [e[1][0], y[1]]]; },
-	  output: function(xy) { return xy && [xy[0][1], xy[1][1]]; }
-	};
-	
-	var XY = {
-	  name: "xy",
-	  handles: ["n", "e", "s", "w", "nw", "ne", "se", "sw"].map(type),
-	  input: function(xy) { return xy; },
-	  output: function(xy) { return xy; }
-	};
-	
-	var cursors = {
-	  overlay: "crosshair",
-	  selection: "move",
-	  n: "ns-resize",
-	  e: "ew-resize",
-	  s: "ns-resize",
-	  w: "ew-resize",
-	  nw: "nwse-resize",
-	  ne: "nesw-resize",
-	  se: "nwse-resize",
-	  sw: "nesw-resize"
-	};
-	
-	var flipX = {
-	  e: "w",
-	  w: "e",
-	  nw: "ne",
-	  ne: "nw",
-	  se: "sw",
-	  sw: "se"
-	};
-	
-	var flipY = {
-	  n: "s",
-	  s: "n",
-	  nw: "sw",
-	  ne: "se",
-	  se: "ne",
-	  sw: "nw"
-	};
-	
-	var signsX = {
-	  overlay: +1,
-	  selection: +1,
-	  n: null,
-	  e: +1,
-	  s: null,
-	  w: -1,
-	  nw: -1,
-	  ne: +1,
-	  se: +1,
-	  sw: -1
-	};
-	
-	var signsY = {
-	  overlay: +1,
-	  selection: +1,
-	  n: -1,
-	  e: null,
-	  s: +1,
-	  w: null,
-	  nw: -1,
-	  ne: -1,
-	  se: +1,
-	  sw: +1
-	};
-	
-	function type(t) {
-	  return {type: t};
-	}
-	
-	// Ignore right-click, since that should open the context menu.
-	function defaultFilter() {
-	  return !d3Selection.event.button;
-	}
-	
-	function defaultExtent() {
-	  var svg = this.ownerSVGElement || this;
-	  return [[0, 0], [svg.width.baseVal.value, svg.height.baseVal.value]];
-	}
-	
-	// Like d3.local, but with the name “__brush” rather than auto-generated.
-	function local(node) {
-	  while (!node.__brush) if (!(node = node.parentNode)) return;
-	  return node.__brush;
-	}
-	
-	function empty(extent) {
-	  return extent[0][0] === extent[1][0]
-	      || extent[0][1] === extent[1][1];
-	}
-	
-	function brushSelection(node) {
-	  var state = node.__brush;
-	  return state ? state.dim.output(state.selection) : null;
-	}
-	
-	function brushX() {
-	  return brush$1(X);
-	}
-	
-	function brushY() {
-	  return brush$1(Y);
-	}
-	
-	var brush = function() {
-	  return brush$1(XY);
-	};
-	
-	function brush$1(dim) {
-	  var extent = defaultExtent,
-	      filter = defaultFilter,
-	      listeners = d3Dispatch.dispatch(brush, "start", "brush", "end"),
-	      handleSize = 6,
-	      touchending;
-	
-	  function brush(group) {
-	    var overlay = group
-	        .property("__brush", initialize)
-	      .selectAll(".overlay")
-	      .data([type("overlay")]);
-	
-	    overlay.enter().append("rect")
-	        .attr("class", "overlay")
-	        .attr("pointer-events", "all")
-	        .attr("cursor", cursors.overlay)
-	      .merge(overlay)
-	        .each(function() {
-	          var extent = local(this).extent;
-	          d3Selection.select(this)
-	              .attr("x", extent[0][0])
-	              .attr("y", extent[0][1])
-	              .attr("width", extent[1][0] - extent[0][0])
-	              .attr("height", extent[1][1] - extent[0][1]);
-	        });
-	
-	    group.selectAll(".selection")
-	      .data([type("selection")])
-	      .enter().append("rect")
-	        .attr("class", "selection")
-	        .attr("cursor", cursors.selection)
-	        .attr("fill", "#777")
-	        .attr("fill-opacity", 0.3)
-	        .attr("stroke", "#fff")
-	        .attr("shape-rendering", "crispEdges");
-	
-	    var handle = group.selectAll(".handle")
-	      .data(dim.handles, function(d) { return d.type; });
-	
-	    handle.exit().remove();
-	
-	    handle.enter().append("rect")
-	        .attr("class", function(d) { return "handle handle--" + d.type; })
-	        .attr("cursor", function(d) { return cursors[d.type]; });
-	
-	    group
-	        .each(redraw)
-	        .attr("fill", "none")
-	        .attr("pointer-events", "all")
-	        .style("-webkit-tap-highlight-color", "rgba(0,0,0,0)")
-	        .on("mousedown.brush touchstart.brush", started);
-	  }
-	
-	  brush.move = function(group, selection) {
-	    if (group.selection) {
-	      group
-	          .on("start.brush", function() { emitter(this, arguments).beforestart().start(); })
-	          .on("interrupt.brush end.brush", function() { emitter(this, arguments).end(); })
-	          .tween("brush", function() {
-	            var that = this,
-	                state = that.__brush,
-	                emit = emitter(that, arguments),
-	                selection0 = state.selection,
-	                selection1 = dim.input(typeof selection === "function" ? selection.apply(this, arguments) : selection, state.extent),
-	                i = d3Interpolate.interpolate(selection0, selection1);
-	
-	            function tween(t) {
-	              state.selection = t === 1 && empty(selection1) ? null : i(t);
-	              redraw.call(that);
-	              emit.brush();
-	            }
-	
-	            return selection0 && selection1 ? tween : tween(1);
-	          });
-	    } else {
-	      group
-	          .each(function() {
-	            var that = this,
-	                args = arguments,
-	                state = that.__brush,
-	                selection1 = dim.input(typeof selection === "function" ? selection.apply(that, args) : selection, state.extent),
-	                emit = emitter(that, args).beforestart();
-	
-	            d3Transition.interrupt(that);
-	            state.selection = selection1 == null || empty(selection1) ? null : selection1;
-	            redraw.call(that);
-	            emit.start().brush().end();
-	          });
-	    }
-	  };
-	
-	  function redraw() {
-	    var group = d3Selection.select(this),
-	        selection = local(this).selection;
-	
-	    if (selection) {
-	      group.selectAll(".selection")
-	          .style("display", null)
-	          .attr("x", selection[0][0])
-	          .attr("y", selection[0][1])
-	          .attr("width", selection[1][0] - selection[0][0])
-	          .attr("height", selection[1][1] - selection[0][1]);
-	
-	      group.selectAll(".handle")
-	          .style("display", null)
-	          .attr("x", function(d) { return d.type[d.type.length - 1] === "e" ? selection[1][0] - handleSize / 2 : selection[0][0] - handleSize / 2; })
-	          .attr("y", function(d) { return d.type[0] === "s" ? selection[1][1] - handleSize / 2 : selection[0][1] - handleSize / 2; })
-	          .attr("width", function(d) { return d.type === "n" || d.type === "s" ? selection[1][0] - selection[0][0] + handleSize : handleSize; })
-	          .attr("height", function(d) { return d.type === "e" || d.type === "w" ? selection[1][1] - selection[0][1] + handleSize : handleSize; });
-	    }
-	
-	    else {
-	      group.selectAll(".selection,.handle")
-	          .style("display", "none")
-	          .attr("x", null)
-	          .attr("y", null)
-	          .attr("width", null)
-	          .attr("height", null);
-	    }
-	  }
-	
-	  function emitter(that, args) {
-	    return that.__brush.emitter || new Emitter(that, args);
-	  }
-	
-	  function Emitter(that, args) {
-	    this.that = that;
-	    this.args = args;
-	    this.state = that.__brush;
-	    this.active = 0;
-	  }
-	
-	  Emitter.prototype = {
-	    beforestart: function() {
-	      if (++this.active === 1) this.state.emitter = this, this.starting = true;
-	      return this;
-	    },
-	    start: function() {
-	      if (this.starting) this.starting = false, this.emit("start");
-	      return this;
-	    },
-	    brush: function() {
-	      this.emit("brush");
-	      return this;
-	    },
-	    end: function() {
-	      if (--this.active === 0) delete this.state.emitter, this.emit("end");
-	      return this;
-	    },
-	    emit: function(type) {
-	      d3Selection.customEvent(new BrushEvent(brush, type, dim.output(this.state.selection)), listeners.apply, listeners, [type, this.that, this.args]);
-	    }
-	  };
-	
-	  function started() {
-	    if (d3Selection.event.touches) { if (d3Selection.event.changedTouches.length < d3Selection.event.touches.length) return noevent(); }
-	    else if (touchending) return;
-	    if (!filter.apply(this, arguments)) return;
-	
-	    var that = this,
-	        type = d3Selection.event.target.__data__.type,
-	        mode = (d3Selection.event.metaKey ? type = "overlay" : type) === "selection" ? MODE_DRAG : (d3Selection.event.altKey ? MODE_CENTER : MODE_HANDLE),
-	        signX = dim === Y ? null : signsX[type],
-	        signY = dim === X ? null : signsY[type],
-	        state = local(that),
-	        extent = state.extent,
-	        selection = state.selection,
-	        W = extent[0][0], w0, w1,
-	        N = extent[0][1], n0, n1,
-	        E = extent[1][0], e0, e1,
-	        S = extent[1][1], s0, s1,
-	        dx,
-	        dy,
-	        moving,
-	        shifting = signX && signY && d3Selection.event.shiftKey,
-	        lockX,
-	        lockY,
-	        point0 = d3Selection.mouse(that),
-	        point = point0,
-	        emit = emitter(that, arguments).beforestart();
-	
-	    if (type === "overlay") {
-	      state.selection = selection = [
-	        [w0 = dim === Y ? W : point0[0], n0 = dim === X ? N : point0[1]],
-	        [e0 = dim === Y ? E : w0, s0 = dim === X ? S : n0]
-	      ];
-	    } else {
-	      w0 = selection[0][0];
-	      n0 = selection[0][1];
-	      e0 = selection[1][0];
-	      s0 = selection[1][1];
-	    }
-	
-	    w1 = w0;
-	    n1 = n0;
-	    e1 = e0;
-	    s1 = s0;
-	
-	    var group = d3Selection.select(that)
-	        .attr("pointer-events", "none");
-	
-	    var overlay = group.selectAll(".overlay")
-	        .attr("cursor", cursors[type]);
-	
-	    if (d3Selection.event.touches) {
-	      group
-	          .on("touchmove.brush", moved, true)
-	          .on("touchend.brush touchcancel.brush", ended, true);
-	    } else {
-	      var view = d3Selection.select(d3Selection.event.view)
-	          .on("keydown.brush", keydowned, true)
-	          .on("keyup.brush", keyupped, true)
-	          .on("mousemove.brush", moved, true)
-	          .on("mouseup.brush", ended, true);
-	
-	      d3Drag.dragDisable(d3Selection.event.view);
-	    }
-	
-	    nopropagation();
-	    d3Transition.interrupt(that);
-	    redraw.call(that);
-	    emit.start();
-	
-	    function moved() {
-	      var point1 = d3Selection.mouse(that);
-	      if (shifting && !lockX && !lockY) {
-	        if (Math.abs(point1[0] - point[0]) > Math.abs(point1[1] - point[1])) lockY = true;
-	        else lockX = true;
-	      }
-	      point = point1;
-	      moving = true;
-	      noevent();
-	      move();
-	    }
-	
-	    function move() {
-	      var t;
-	
-	      dx = point[0] - point0[0];
-	      dy = point[1] - point0[1];
-	
-	      switch (mode) {
-	        case MODE_SPACE:
-	        case MODE_DRAG: {
-	          if (signX) dx = Math.max(W - w0, Math.min(E - e0, dx)), w1 = w0 + dx, e1 = e0 + dx;
-	          if (signY) dy = Math.max(N - n0, Math.min(S - s0, dy)), n1 = n0 + dy, s1 = s0 + dy;
-	          break;
-	        }
-	        case MODE_HANDLE: {
-	          if (signX < 0) dx = Math.max(W - w0, Math.min(E - w0, dx)), w1 = w0 + dx, e1 = e0;
-	          else if (signX > 0) dx = Math.max(W - e0, Math.min(E - e0, dx)), w1 = w0, e1 = e0 + dx;
-	          if (signY < 0) dy = Math.max(N - n0, Math.min(S - n0, dy)), n1 = n0 + dy, s1 = s0;
-	          else if (signY > 0) dy = Math.max(N - s0, Math.min(S - s0, dy)), n1 = n0, s1 = s0 + dy;
-	          break;
-	        }
-	        case MODE_CENTER: {
-	          if (signX) w1 = Math.max(W, Math.min(E, w0 - dx * signX)), e1 = Math.max(W, Math.min(E, e0 + dx * signX));
-	          if (signY) n1 = Math.max(N, Math.min(S, n0 - dy * signY)), s1 = Math.max(N, Math.min(S, s0 + dy * signY));
-	          break;
-	        }
-	      }
-	
-	      if (e1 < w1) {
-	        signX *= -1;
-	        t = w0, w0 = e0, e0 = t;
-	        t = w1, w1 = e1, e1 = t;
-	        if (type in flipX) overlay.attr("cursor", cursors[type = flipX[type]]);
-	      }
-	
-	      if (s1 < n1) {
-	        signY *= -1;
-	        t = n0, n0 = s0, s0 = t;
-	        t = n1, n1 = s1, s1 = t;
-	        if (type in flipY) overlay.attr("cursor", cursors[type = flipY[type]]);
-	      }
-	
-	      if (state.selection) selection = state.selection; // May be set by brush.move!
-	      if (lockX) w1 = selection[0][0], e1 = selection[1][0];
-	      if (lockY) n1 = selection[0][1], s1 = selection[1][1];
-	
-	      if (selection[0][0] !== w1
-	          || selection[0][1] !== n1
-	          || selection[1][0] !== e1
-	          || selection[1][1] !== s1) {
-	        state.selection = [[w1, n1], [e1, s1]];
-	        redraw.call(that);
-	        emit.brush();
-	      }
-	    }
-	
-	    function ended() {
-	      nopropagation();
-	      if (d3Selection.event.touches) {
-	        if (d3Selection.event.touches.length) return;
-	        if (touchending) clearTimeout(touchending);
-	        touchending = setTimeout(function() { touchending = null; }, 500); // Ghost clicks are delayed!
-	        group.on("touchmove.brush touchend.brush touchcancel.brush", null);
-	      } else {
-	        d3Drag.dragEnable(d3Selection.event.view, moving);
-	        view.on("keydown.brush keyup.brush mousemove.brush mouseup.brush", null);
-	      }
-	      group.attr("pointer-events", "all");
-	      overlay.attr("cursor", cursors.overlay);
-	      if (state.selection) selection = state.selection; // May be set by brush.move (on start)!
-	      if (empty(selection)) state.selection = null, redraw.call(that);
-	      emit.end();
-	    }
-	
-	    function keydowned() {
-	      switch (d3Selection.event.keyCode) {
-	        case 16: { // SHIFT
-	          shifting = signX && signY;
-	          break;
-	        }
-	        case 18: { // ALT
-	          if (mode === MODE_HANDLE) {
-	            if (signX) e0 = e1 - dx * signX, w0 = w1 + dx * signX;
-	            if (signY) s0 = s1 - dy * signY, n0 = n1 + dy * signY;
-	            mode = MODE_CENTER;
-	            move();
-	          }
-	          break;
-	        }
-	        case 32: { // SPACE; takes priority over ALT
-	          if (mode === MODE_HANDLE || mode === MODE_CENTER) {
-	            if (signX < 0) e0 = e1 - dx; else if (signX > 0) w0 = w1 - dx;
-	            if (signY < 0) s0 = s1 - dy; else if (signY > 0) n0 = n1 - dy;
-	            mode = MODE_SPACE;
-	            overlay.attr("cursor", cursors.selection);
-	            move();
-	          }
-	          break;
-	        }
-	        default: return;
-	      }
-	      noevent();
-	    }
-	
-	    function keyupped() {
-	      switch (d3Selection.event.keyCode) {
-	        case 16: { // SHIFT
-	          if (shifting) {
-	            lockX = lockY = shifting = false;
-	            move();
-	          }
-	          break;
-	        }
-	        case 18: { // ALT
-	          if (mode === MODE_CENTER) {
-	            if (signX < 0) e0 = e1; else if (signX > 0) w0 = w1;
-	            if (signY < 0) s0 = s1; else if (signY > 0) n0 = n1;
-	            mode = MODE_HANDLE;
-	            move();
-	          }
-	          break;
-	        }
-	        case 32: { // SPACE
-	          if (mode === MODE_SPACE) {
-	            if (d3Selection.event.altKey) {
-	              if (signX) e0 = e1 - dx * signX, w0 = w1 + dx * signX;
-	              if (signY) s0 = s1 - dy * signY, n0 = n1 + dy * signY;
-	              mode = MODE_CENTER;
-	            } else {
-	              if (signX < 0) e0 = e1; else if (signX > 0) w0 = w1;
-	              if (signY < 0) s0 = s1; else if (signY > 0) n0 = n1;
-	              mode = MODE_HANDLE;
-	            }
-	            overlay.attr("cursor", cursors[type]);
-	            move();
-	          }
-	          break;
-	        }
-	        default: return;
-	      }
-	      noevent();
-	    }
-	  }
-	
-	  function initialize() {
-	    var state = this.__brush || {selection: null};
-	    state.extent = extent.apply(this, arguments);
-	    state.dim = dim;
-	    return state;
-	  }
-	
-	  brush.extent = function(_) {
-	    return arguments.length ? (extent = typeof _ === "function" ? _ : constant([[+_[0][0], +_[0][1]], [+_[1][0], +_[1][1]]]), brush) : extent;
-	  };
-	
-	  brush.filter = function(_) {
-	    return arguments.length ? (filter = typeof _ === "function" ? _ : constant(!!_), brush) : filter;
-	  };
-	
-	  brush.handleSize = function(_) {
-	    return arguments.length ? (handleSize = +_, brush) : handleSize;
-	  };
-	
-	  brush.on = function() {
-	    var value = listeners.on.apply(listeners, arguments);
-	    return value === listeners ? brush : value;
-	  };
-	
-	  return brush;
-	}
-	
-	exports.brush = brush;
-	exports.brushX = brushX;
-	exports.brushY = brushY;
-	exports.brushSelection = brushSelection;
-	
-	Object.defineProperty(exports, '__esModule', { value: true });
-	
-	})));
-
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// https://d3js.org/d3-drag/ Version 1.0.4. Copyright 2017 Mike Bostock.
-	(function (global, factory) {
-		 true ? factory(exports, __webpack_require__(8), __webpack_require__(1)) :
-		typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-selection'], factory) :
-		(factory((global.d3 = global.d3 || {}),global.d3,global.d3));
-	}(this, (function (exports,d3Dispatch,d3Selection) { 'use strict';
-	
-	function nopropagation() {
-	  d3Selection.event.stopImmediatePropagation();
-	}
-	
-	var noevent = function() {
-	  d3Selection.event.preventDefault();
-	  d3Selection.event.stopImmediatePropagation();
-	};
-	
-	var nodrag = function(view) {
-	  var root = view.document.documentElement,
-	      selection = d3Selection.select(view).on("dragstart.drag", noevent, true);
-	  if ("onselectstart" in root) {
-	    selection.on("selectstart.drag", noevent, true);
-	  } else {
-	    root.__noselect = root.style.MozUserSelect;
-	    root.style.MozUserSelect = "none";
-	  }
-	};
-	
-	function yesdrag(view, noclick) {
-	  var root = view.document.documentElement,
-	      selection = d3Selection.select(view).on("dragstart.drag", null);
-	  if (noclick) {
-	    selection.on("click.drag", noevent, true);
-	    setTimeout(function() { selection.on("click.drag", null); }, 0);
-	  }
-	  if ("onselectstart" in root) {
-	    selection.on("selectstart.drag", null);
-	  } else {
-	    root.style.MozUserSelect = root.__noselect;
-	    delete root.__noselect;
-	  }
-	}
-	
-	var constant = function(x) {
-	  return function() {
-	    return x;
-	  };
-	};
-	
-	function DragEvent(target, type, subject, id, active, x, y, dx, dy, dispatch$$1) {
-	  this.target = target;
-	  this.type = type;
-	  this.subject = subject;
-	  this.identifier = id;
-	  this.active = active;
-	  this.x = x;
-	  this.y = y;
-	  this.dx = dx;
-	  this.dy = dy;
-	  this._ = dispatch$$1;
-	}
-	
-	DragEvent.prototype.on = function() {
-	  var value = this._.on.apply(this._, arguments);
-	  return value === this._ ? this : value;
-	};
-	
-	// Ignore right-click, since that should open the context menu.
-	function defaultFilter() {
-	  return !d3Selection.event.button;
-	}
-	
-	function defaultContainer() {
-	  return this.parentNode;
-	}
-	
-	function defaultSubject(d) {
-	  return d == null ? {x: d3Selection.event.x, y: d3Selection.event.y} : d;
-	}
-	
-	var drag = function() {
-	  var filter = defaultFilter,
-	      container = defaultContainer,
-	      subject = defaultSubject,
-	      gestures = {},
-	      listeners = d3Dispatch.dispatch("start", "drag", "end"),
-	      active = 0,
-	      mousemoving,
-	      touchending;
-	
-	  function drag(selection) {
-	    selection
-	        .on("mousedown.drag", mousedowned)
-	        .on("touchstart.drag", touchstarted)
-	        .on("touchmove.drag", touchmoved)
-	        .on("touchend.drag touchcancel.drag", touchended)
-	        .style("-webkit-tap-highlight-color", "rgba(0,0,0,0)");
-	  }
-	
-	  function mousedowned() {
-	    if (touchending || !filter.apply(this, arguments)) return;
-	    var gesture = beforestart("mouse", container.apply(this, arguments), d3Selection.mouse, this, arguments);
-	    if (!gesture) return;
-	    d3Selection.select(d3Selection.event.view).on("mousemove.drag", mousemoved, true).on("mouseup.drag", mouseupped, true);
-	    nodrag(d3Selection.event.view);
-	    nopropagation();
-	    mousemoving = false;
-	    gesture("start");
-	  }
-	
-	  function mousemoved() {
-	    noevent();
-	    mousemoving = true;
-	    gestures.mouse("drag");
-	  }
-	
-	  function mouseupped() {
-	    d3Selection.select(d3Selection.event.view).on("mousemove.drag mouseup.drag", null);
-	    yesdrag(d3Selection.event.view, mousemoving);
-	    noevent();
-	    gestures.mouse("end");
-	  }
-	
-	  function touchstarted() {
-	    if (!filter.apply(this, arguments)) return;
-	    var touches = d3Selection.event.changedTouches,
-	        c = container.apply(this, arguments),
-	        n = touches.length, i, gesture;
-	
-	    for (i = 0; i < n; ++i) {
-	      if (gesture = beforestart(touches[i].identifier, c, d3Selection.touch, this, arguments)) {
-	        nopropagation();
-	        gesture("start");
-	      }
-	    }
-	  }
-	
-	  function touchmoved() {
-	    var touches = d3Selection.event.changedTouches,
-	        n = touches.length, i, gesture;
-	
-	    for (i = 0; i < n; ++i) {
-	      if (gesture = gestures[touches[i].identifier]) {
-	        noevent();
-	        gesture("drag");
-	      }
-	    }
-	  }
-	
-	  function touchended() {
-	    var touches = d3Selection.event.changedTouches,
-	        n = touches.length, i, gesture;
-	
-	    if (touchending) clearTimeout(touchending);
-	    touchending = setTimeout(function() { touchending = null; }, 500); // Ghost clicks are delayed!
-	    for (i = 0; i < n; ++i) {
-	      if (gesture = gestures[touches[i].identifier]) {
-	        nopropagation();
-	        gesture("end");
-	      }
-	    }
-	  }
-	
-	  function beforestart(id, container, point, that, args) {
-	    var p = point(container, id), s, dx, dy,
-	        sublisteners = listeners.copy();
-	
-	    if (!d3Selection.customEvent(new DragEvent(drag, "beforestart", s, id, active, p[0], p[1], 0, 0, sublisteners), function() {
-	      if ((d3Selection.event.subject = s = subject.apply(that, args)) == null) return false;
-	      dx = s.x - p[0] || 0;
-	      dy = s.y - p[1] || 0;
-	      return true;
-	    })) return;
-	
-	    return function gesture(type) {
-	      var p0 = p, n;
-	      switch (type) {
-	        case "start": gestures[id] = gesture, n = active++; break;
-	        case "end": delete gestures[id], --active; // nobreak
-	        case "drag": p = point(container, id), n = active; break;
-	      }
-	      d3Selection.customEvent(new DragEvent(drag, type, s, id, n, p[0] + dx, p[1] + dy, p[0] - p0[0], p[1] - p0[1], sublisteners), sublisteners.apply, sublisteners, [type, that, args]);
-	    };
-	  }
-	
-	  drag.filter = function(_) {
-	    return arguments.length ? (filter = typeof _ === "function" ? _ : constant(!!_), drag) : filter;
-	  };
-	
-	  drag.container = function(_) {
-	    return arguments.length ? (container = typeof _ === "function" ? _ : constant(_), drag) : container;
-	  };
-	
-	  drag.subject = function(_) {
-	    return arguments.length ? (subject = typeof _ === "function" ? _ : constant(_), drag) : subject;
-	  };
-	
-	  drag.on = function() {
-	    var value = listeners.on.apply(listeners, arguments);
-	    return value === listeners ? drag : value;
-	  };
-	
-	  return drag;
-	};
-	
-	exports.drag = drag;
-	exports.dragDisable = nodrag;
-	exports.dragEnable = yesdrag;
-	
-	Object.defineProperty(exports, '__esModule', { value: true });
-	
-	})));
-
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-	
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-	
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
-	    'use strict';
-	
-	    var _settingsToMajorTickM;
-	
-	    var d3Time = __webpack_require__(13);
-	    var d3TimeFormat = __webpack_require__(14);
-	
-	    var _require = __webpack_require__(20),
-	        axisTimeCombinations = _require.axisTimeCombinations,
-	        timeBenchmarks = _require.timeBenchmarks;
-	
-	    var singleTickWidth = 20;
-	    var horizontalTickSpacing = 50;
-	    var minEntryNumForDayFormat = 5;
-	
-	    var formatMap = {
-	        minute: d3TimeFormat.timeFormat('%M m'),
-	        hour: d3TimeFormat.timeFormat('%H %p'),
-	        day: d3TimeFormat.timeFormat('%e'),
-	        daymonth: d3TimeFormat.timeFormat('%d %b'),
-	        month: d3TimeFormat.timeFormat('%b'),
-	        year: d3TimeFormat.timeFormat('%Y')
-	    };
-	    var localeTimeMap = {
-	        minute: { minute: 'numeric' },
-	        hour: { hour: 'numeric' },
-	        day: { day: 'numeric' },
-	        daymonth: { day: 'numeric', month: 'short' },
-	        month: { month: 'short' },
-	        year: { year: 'numeric' }
-	    };
-	    var settingsToMajorTickMap = (_settingsToMajorTickM = {}, _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MINUTE_HOUR, d3Time.timeHour.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.HOUR_DAY, d3Time.timeDay.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.DAY_MONTH, d3Time.timeMonth.every(1)), _defineProperty(_settingsToMajorTickM, axisTimeCombinations.MONTH_YEAR, d3Time.timeYear.every(1)), _settingsToMajorTickM);
-	
-	    /**
-	     * Figures out the proper settings from the current time span
-	     * @param  {Number} timeSpan    Span of time charted by the graph in milliseconds
-	     * @return {String}             Type of settings for the given timeSpan
-	     */
-	    var getAxisSettingsFromTimeSpan = function getAxisSettingsFromTimeSpan(timeSpan) {
-	        var ONE_YEAR = timeBenchmarks.ONE_YEAR,
-	            ONE_DAY = timeBenchmarks.ONE_DAY;
-	
-	        var settings = void 0;
-	
-	        if (timeSpan < ONE_DAY) {
-	            settings = axisTimeCombinations.HOUR_DAY;
-	        } else if (timeSpan < ONE_YEAR) {
-	            settings = axisTimeCombinations.DAY_MONTH;
-	        } else {
-	            settings = axisTimeCombinations.MONTH_YEAR;
-	        }
-	
-	        return settings;
-	    };
-	
-	    /**
-	     * Calculates the maximum number of ticks for the x axis
-	     * @param  {Number} width Chart width
-	     * @param  {Number} dataPointNumber  Number of entries on the data
-	     * @return {Number}       Number of ticks to render
-	     */
-	    var getMaxNumOfHorizontalTicks = function getMaxNumOfHorizontalTicks(width, dataPointNumber) {
-	        var ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
-	
-	        return dataPointNumber < minEntryNumForDayFormat ? d3Time.timeDay : Math.min(dataPointNumber, ticksForWidth);
-	    };
-	
-	    /**
-	     * Takes a locale (string) and the format to return and returns a function to format dates
-	     * @param  {String} locale    locale tag eg. en-US, fr-FR, ru-RU
-	     * @param  {string} timeUnit  minute, hour, day, dayMonth, month, year
-	     * @return {function}         function that formats dates in the proper locale
-	     */
-	    var getLocaleDateFormatter = function getLocaleDateFormatter(locale) {
-	        var timeUnit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'day';
-	
-	        var options = localeTimeMap[timeUnit];
-	        var formatter = new Intl.DateTimeFormat(locale, options);
-	
-	        return function (date) {
-	            return formatter.format(date);
-	        };
-	    };
-	
-	    /**
-	     * Returns tick object to be used when building the x axis
-	     * @param {dataByDate} dataByDate       Chart data ordered by Date
-	     * @param {Number} width                Chart width
-	     * @param {String} settings             Optional forced settings for axis
-	     * @return {object} tick settings for major and minr axis
-	     */
-	    var getXAxisSettings = function getXAxisSettings(dataByDate, width) {
-	        var settings = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	        var locale = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-	
-	        var firstDate = new Date(dataByDate[0].date);
-	        var lastDate = new Date(dataByDate[dataByDate.length - 1].date);
-	        var dateTimeSpan = lastDate - firstDate;
-	
-	        if (locale && (typeof Intl === 'undefined' || (typeof Intl === 'undefined' ? 'undefined' : _typeof(Intl)) === 'object' && !Intl.DateTimeFormat)) {
-	            locale = null;
-	        }
-	
-	        if (!settings) {
-	            settings = getAxisSettingsFromTimeSpan(dateTimeSpan);
-	        }
-	
-	        var _settings$split = settings.split('-'),
-	            _settings$split2 = _slicedToArray(_settings$split, 2),
-	            minor = _settings$split2[0],
-	            major = _settings$split2[1];
-	
-	        var majorTickValue = settingsToMajorTickMap[settings];
-	        var minorTickValue = getMaxNumOfHorizontalTicks(width, dataByDate.length);
-	
-	        return {
-	            minor: {
-	                format: locale ? getLocaleDateFormatter(locale, minor) : formatMap[minor],
-	                tick: minorTickValue
-	            },
-	            major: {
-	                format: locale ? getLocaleDateFormatter(locale, major) : formatMap[major],
-	                tick: majorTickValue
-	            }
-	        };
-	    };
-	
-	    return {
-	        getXAxisSettings: getXAxisSettings,
-	        getLocaleDateFormatter: getLocaleDateFormatter
-	    };
-	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-
-/***/ }),
-/* 50 */
+/* 50 */,
+/* 51 */,
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -13602,7 +13604,7 @@ webpackJsonp([4,9],[
 	    var d3Dispatch = __webpack_require__(8);
 	    var d3Ease = __webpack_require__(5);
 	    var d3Scale = __webpack_require__(10);
-	    var d3Shape = __webpack_require__(31);
+	    var d3Shape = __webpack_require__(33);
 	    var d3Selection = __webpack_require__(1);
 	    var d3Transition = __webpack_require__(15);
 	    var d3TimeFormat = __webpack_require__(14);
@@ -13612,10 +13614,10 @@ webpackJsonp([4,9],[
 	
 	    var colorHelper = __webpack_require__(19);
 	
-	    var _require2 = __webpack_require__(33),
+	    var _require2 = __webpack_require__(39),
 	        isInteger = _require2.isInteger;
 	
-	    var _require3 = __webpack_require__(49),
+	    var _require3 = __webpack_require__(35),
 	        getXAxisSettings = _require3.getXAxisSettings,
 	        getLocaleDateFormatter = _require3.getLocaleDateFormatter;
 	
@@ -13623,7 +13625,7 @@ webpackJsonp([4,9],[
 	        axisTimeCombinations = _require4.axisTimeCombinations,
 	        lineGradientId = _require4.lineGradientId;
 	
-	    var _require5 = __webpack_require__(43),
+	    var _require5 = __webpack_require__(49),
 	        formatIntegerValue = _require5.formatIntegerValue,
 	        formatDecimalValue = _require5.formatDecimalValue;
 	
@@ -14588,7 +14590,7 @@ webpackJsonp([4,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -14597,12 +14599,12 @@ webpackJsonp([4,9],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonAllDatas = __webpack_require__(52),
-	        jsonFiveTopics = __webpack_require__(53),
-	        jsonOneSource = __webpack_require__(54),
-	        jsonMultiMonthValueRange = __webpack_require__(55),
-	        jsonHourDateRange = __webpack_require__(56),
-	        jsonSmallValueRange = __webpack_require__(57);
+	        jsonAllDatas = __webpack_require__(54),
+	        jsonFiveTopics = __webpack_require__(55),
+	        jsonOneSource = __webpack_require__(56),
+	        jsonMultiMonthValueRange = __webpack_require__(57),
+	        jsonHourDateRange = __webpack_require__(58),
+	        jsonSmallValueRange = __webpack_require__(59);
 	
 	    function LineDataBuilder(config) {
 	        this.Klass = LineDataBuilder;
@@ -14669,7 +14671,7 @@ webpackJsonp([4,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -15076,7 +15078,7 @@ webpackJsonp([4,9],[
 	};
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -17152,7 +17154,7 @@ webpackJsonp([4,9],[
 	};
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -17302,7 +17304,7 @@ webpackJsonp([4,9],[
 	};
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -28299,7 +28301,7 @@ webpackJsonp([4,9],[
 	};
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports) {
 
 	module.exports = {
@@ -28676,7 +28678,7 @@ webpackJsonp([4,9],[
 	};
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports) {
 
 	module.exports = {

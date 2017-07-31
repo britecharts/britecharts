@@ -1,4 +1,4 @@
-webpackJsonp([2,9],[
+webpackJsonp([3,10],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7,10 +7,10 @@ webpackJsonp([2,9],[
 	var d3Selection = __webpack_require__(1),
 	    PubSub = __webpack_require__(2),
 	    colors = __webpack_require__(19),
-	    groupedBarChart = __webpack_require__(40),
-	    tooltip = __webpack_require__(42),
-	    groupedDataBuilder = __webpack_require__(44),
-	    colorSelectorHelper = __webpack_require__(39);
+	    groupedBarChart = __webpack_require__(46),
+	    tooltip = __webpack_require__(48),
+	    groupedDataBuilder = __webpack_require__(50),
+	    colorSelectorHelper = __webpack_require__(45);
 	__webpack_require__(29);
 	
 	function creategroupedBarChartWithTooltip(optionalColorSchema) {
@@ -9172,7 +9172,13 @@ webpackJsonp([2,9],[
 /* 30 */,
 /* 31 */,
 /* 32 */,
-/* 33 */
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -9209,12 +9215,12 @@ webpackJsonp([2,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -9276,7 +9282,7 @@ webpackJsonp([2,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 40 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -9295,7 +9301,7 @@ webpackJsonp([2,9],[
 	    var d3Interpolate = __webpack_require__(12);
 	    var d3Scale = __webpack_require__(10);
 	    var d3Selection = __webpack_require__(1);
-	    var assign = __webpack_require__(41);
+	    var assign = __webpack_require__(47);
 	
 	    var _require = __webpack_require__(18),
 	        exportChart = _require.exportChart;
@@ -9380,7 +9386,7 @@ webpackJsonp([2,9],[
 	            categoryColorMap = void 0,
 	            layers = void 0,
 	            ease = d3Ease.easeQuadInOut,
-	            horizontal = false,
+	            isHorizontal = false,
 	            svg = void 0,
 	            chartWidth = void 0,
 	            chartHeight = void 0,
@@ -9474,7 +9480,7 @@ webpackJsonp([2,9],[
 	         * @private
 	         */
 	        function buildAxis() {
-	            if (horizontal) {
+	            if (isHorizontal) {
 	                xAxis = d3Axis.axisBottom(xScale).ticks(numOfHorizontalTicks, valueLabelFormat);
 	                yAxis = d3Axis.axisLeft(yScale);
 	            } else {
@@ -9524,7 +9530,7 @@ webpackJsonp([2,9],[
 	        function buildScales() {
 	            var yMax = d3Array.max(data.map(getValue));
 	
-	            if (horizontal) {
+	            if (isHorizontal) {
 	                xScale = d3Scale.scaleLinear().domain([0, yMax]).rangeRound([0, chartWidth - 1]);
 	                // 1 pix for edge tick
 	
@@ -9589,7 +9595,7 @@ webpackJsonp([2,9],[
 	         * @private
 	         */
 	        function drawAxis() {
-	            if (horizontal) {
+	            if (isHorizontal) {
 	                svg.select('.x-axis-group .axis.x').attr('transform', 'translate( 0, ' + chartHeight + ' )').call(xAxis);
 	
 	                svg.select('.y-axis-group.axis').attr('transform', 'translate( ' + -xAxisPadding.left + ', 0)').call(yAxis);
@@ -9621,7 +9627,7 @@ webpackJsonp([2,9],[
 	         * @return void
 	         */
 	        function drawGridLines() {
-	            var scale = horizontal ? xScale : yScale;
+	            var scale = isHorizontal ? xScale : yScale;
 	
 	            if (grid === 'horizontal' || grid === 'full') {
 	                svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(scale.ticks(numOfVerticalTicks).slice(1)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left + 1).attr('x2', chartWidth).attr('y1', function (d) {
@@ -9639,7 +9645,7 @@ webpackJsonp([2,9],[
 	                });
 	            }
 	
-	            if (horizontal) {
+	            if (isHorizontal) {
 	                drawVerticalExtendedLine();
 	            } else {
 	                drawHorizontalExtendedLine();
@@ -9713,7 +9719,7 @@ webpackJsonp([2,9],[
 	        function drawGroupedBar() {
 	            var series = svg.select('.chart-group').selectAll('.layer');
 	
-	            if (!horizontal) {
+	            if (!isHorizontal) {
 	                drawVerticalBars(series);
 	            } else {
 	                drawHorizontalBars(series);
@@ -9814,13 +9820,13 @@ webpackJsonp([2,9],[
 	                _getMousePosition2 = _slicedToArray(_getMousePosition, 2),
 	                mouseX = _getMousePosition2[0],
 	                mouseY = _getMousePosition2[1],
-	                dataPoint = !horizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
+	                dataPoint = !isHorizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
 	                x = void 0,
 	                y = void 0;
 	
 	            if (dataPoint) {
 	                // Move verticalMarker to that datapoint
-	                if (horizontal) {
+	                if (isHorizontal) {
 	                    x = mouseX - margin.left;
 	                    y = yScale(dataPoint.key) + yScale.bandwidth() / 2;
 	                } else {
@@ -10021,14 +10027,30 @@ webpackJsonp([2,9],[
 	        /**
 	         * Gets or Sets the horizontal direction of the chart
 	         * @param  {number} _x Desired horizontal direction for the graph
-	         * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
+	         * @return { isHorizontal | module} If it is horizontal or Bar Chart module to chain calls
 	         * @public
+	         */
+	        exports.isHorizontal = function (_x) {
+	            if (!arguments.length) {
+	                return isHorizontal;
+	            }
+	            isHorizontal = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the horizontal direction of the chart
+	         * @param  {number} _x Desired horizontal direction for the chart
+	         * @return { isHorizontal | module} If it is horizontal or module to chain calls
+	         * @deprecated
 	         */
 	        exports.horizontal = function (_x) {
 	            if (!arguments.length) {
-	                return horizontal;
+	                return isHorizontal;
 	            }
-	            horizontal = _x;
+	            isHorizontal = _x;
+	            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
 	
 	            return this;
 	        };
@@ -10194,7 +10216,7 @@ webpackJsonp([2,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 41 */
+/* 47 */
 /***/ (function(module, exports) {
 
 	/**
@@ -10837,7 +10859,7 @@ webpackJsonp([2,9],[
 
 
 /***/ }),
-/* 42 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -10858,11 +10880,11 @@ webpackJsonp([2,9],[
 	    var _require = __webpack_require__(20),
 	        axisTimeCombinations = _require.axisTimeCombinations;
 	
-	    var _require2 = __webpack_require__(43),
+	    var _require2 = __webpack_require__(49),
 	        formatIntegerValue = _require2.formatIntegerValue,
 	        formatDecimalValue = _require2.formatDecimalValue;
 	
-	    var _require3 = __webpack_require__(33),
+	    var _require3 = __webpack_require__(39),
 	        isInteger = _require3.isInteger;
 	
 	    /**
@@ -11512,7 +11534,7 @@ webpackJsonp([2,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 43 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11593,7 +11615,7 @@ webpackJsonp([2,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 44 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -11602,7 +11624,7 @@ webpackJsonp([2,9],[
 	    'use strict';
 	
 	    var _ = __webpack_require__(26),
-	        jsonThreeSources = __webpack_require__(45);
+	        jsonThreeSources = __webpack_require__(51);
 	
 	    function GroupedBarChartDataBuilder(config) {
 	        this.Klass = GroupedBarChartDataBuilder;
@@ -11626,7 +11648,7 @@ webpackJsonp([2,9],[
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 
 /***/ }),
-/* 45 */
+/* 51 */
 /***/ (function(module, exports) {
 
 	module.exports = {

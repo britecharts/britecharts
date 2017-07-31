@@ -1,4 +1,4 @@
-webpackJsonp([0,9],[
+webpackJsonp([0,10],[
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -42,7 +42,7 @@ webpackJsonp([0,9],[
 	    if (containerWidth) {
 	        dataset = testDataSet.withColors().build();
 	
-	        barChart.horizontal(true).isAnimated(true).margin({
+	        barChart.isHorizontal(true).isAnimated(true).margin({
 	            left: 120,
 	            right: 20,
 	            top: 20,
@@ -72,7 +72,7 @@ webpackJsonp([0,9],[
 	
 	        dataset = testDataSet.withLettersFrequency().build();
 	
-	        barChart.width(containerWidth).height(300).isAnimated(true).usePercentage(true).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
+	        barChart.width(containerWidth).height(300).isAnimated(true).hasPercentage(true).on('customMouseOver', tooltip.show).on('customMouseMove', tooltip.update).on('customMouseOut', tooltip.hide);
 	
 	        barContainer.datum(dataset).call(barChart);
 	
@@ -1446,7 +1446,7 @@ webpackJsonp([0,9],[
 	        },
 	            yAxisPaddingBetweenChart = 10,
 	            yAxisLineWrapLimit = 1,
-	            horizontal = false,
+	            isHorizontal = false,
 	            svg = void 0,
 	            isAnimated = false,
 	            ease = d3Ease.easeQuadInOut,
@@ -1535,7 +1535,7 @@ webpackJsonp([0,9],[
 	         * @private
 	         */
 	        function buildAxis() {
-	            if (horizontal) {
+	            if (isHorizontal) {
 	                xAxis = d3Axis.axisBottom(xScale).ticks(numOfHorizontalTicks, valueLabelFormat).tickSizeInner([-chartHeight]);
 	
 	                yAxis = d3Axis.axisLeft(yScale);
@@ -1568,7 +1568,7 @@ webpackJsonp([0,9],[
 	        function buildScales() {
 	            var percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue));
 	
-	            if (horizontal) {
+	            if (isHorizontal) {
 	                xScale = d3Scale.scaleLinear().domain([0, percentageAxis]).rangeRound([0, chartWidth]);
 	
 	                yScale = d3Scale.scaleBand().domain(data.map(getName)).rangeRound([chartHeight, 0]).padding(0.1);
@@ -1830,9 +1830,9 @@ webpackJsonp([0,9],[
 	         * @return {void}
 	         */
 	        function drawPercentageLabels() {
-	            var labelXPosition = horizontal ? _percentageLabelHorizontalX : _percentageLabelVerticalX;
-	            var labelYPosition = horizontal ? _percentageLabelHorizontalY : _percentageLabelVerticalY;
-	            var text = horizontal ? _percentageLabelHorizontalFormatValue : _percentageLabelVerticalFormatValue;
+	            var labelXPosition = isHorizontal ? _percentageLabelHorizontalX : _percentageLabelVerticalX;
+	            var labelYPosition = isHorizontal ? _percentageLabelHorizontalY : _percentageLabelVerticalY;
+	            var text = isHorizontal ? _percentageLabelHorizontalFormatValue : _percentageLabelVerticalFormatValue;
 	
 	            var percentageLabels = svg.select('.metadata-group').append('g').classed('percentage-label-group', true).selectAll('text').data(data.reverse()).enter().append('text');
 	
@@ -1849,7 +1849,7 @@ webpackJsonp([0,9],[
 	            if (isAnimated) {
 	                bars = svg.select('.chart-group').selectAll('.bar').data(dataZeroed);
 	
-	                if (!horizontal) {
+	                if (!isHorizontal) {
 	                    drawVerticalBars(bars);
 	                } else {
 	                    drawHorizontalBars(bars);
@@ -1857,7 +1857,7 @@ webpackJsonp([0,9],[
 	
 	                bars = svg.select('.chart-group').selectAll('.bar').data(data);
 	
-	                if (!horizontal) {
+	                if (!isHorizontal) {
 	                    drawAnimatedVerticalBars(bars);
 	                } else {
 	                    drawAnimatedHorizontalBars(bars);
@@ -1865,7 +1865,7 @@ webpackJsonp([0,9],[
 	            } else {
 	                bars = svg.select('.chart-group').selectAll('.bar').data(data);
 	
-	                if (!horizontal) {
+	                if (!isHorizontal) {
 	                    drawVerticalBars(bars);
 	                } else {
 	                    drawHorizontalBars(bars);
@@ -1881,7 +1881,7 @@ webpackJsonp([0,9],[
 	         * @return void
 	         */
 	        function drawGridLines() {
-	            if (!horizontal) {
+	            if (!isHorizontal) {
 	                drawVerticalGridLines();
 	            } else {
 	                drawHorizontalGridLines();
@@ -1988,15 +1988,16 @@ webpackJsonp([0,9],[
 	
 	        /**
 	         * Gets or Sets the horizontal direction of the chart
-	         * @param  {number} _x Desired horizontal direction for the graph
-	         * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
-	         * @public
+	         * @param  {number} _x Desired horizontal direction for the chart
+	         * @return { isHorizontal | module} If it is horizontal or module to chain calls
+	         * @deprecated
 	         */
 	        exports.horizontal = function (_x) {
 	            if (!arguments.length) {
-	                return horizontal;
+	                return isHorizontal;
 	            }
-	            horizontal = _x;
+	            isHorizontal = _x;
+	            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
 	
 	            return this;
 	        };
@@ -2014,6 +2015,21 @@ webpackJsonp([0,9],[
 	                return isAnimated;
 	            }
 	            isAnimated = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the horizontal direction of the chart
+	         * @param  {number} _x Desired horizontal direction for the graph
+	         * @return { isHorizontal | module} If it is horizontal or Bar Chart module to chain calls
+	         * @public
+	         */
+	        exports.isHorizontal = function (_x) {
+	            if (!arguments.length) {
+	                return isHorizontal;
+	            }
+	            isHorizontal = _x;
 	
 	            return this;
 	        };
@@ -2108,9 +2124,28 @@ webpackJsonp([0,9],[
 	        };
 	
 	        /**
+	         * Gets or Sets the hasPercentage status
+	         * @param  {boolean} _x     Should use percentage as value format
+	         * @return { boolean | module} Is percentage used or Chart module to chain calls
+	         * @public
+	         */
+	        exports.hasPercentage = function (_x) {
+	            if (!arguments.length) {
+	                return valueLabelFormat === PERCENTAGE_FORMAT;
+	            }
+	            if (_x) {
+	                valueLabelFormat = PERCENTAGE_FORMAT;
+	            } else {
+	                valueLabelFormat = NUMBER_FORMAT;
+	            }
+	
+	            return this;
+	        };
+	
+	        /**
 	         * Gets or Sets the valueLabelFormat to a percentage format if true (default false)
 	         * @param  {boolean} _x     Should use percentage as value format
-	         * @return { valueLabelFormat | module} Is percentage value format used or Chart module to chain calls
+	         * @return { boolean | module} Is percentage the value format used or Chart module to chain calls
 	         * @public
 	         */
 	        exports.usePercentage = function (_x) {
