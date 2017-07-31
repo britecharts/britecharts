@@ -515,10 +515,10 @@ define(function (require) {
         function drawGroupedBar() {
             let series = svg.select('.chart-group').selectAll('.layer');
 
-            if (!isHorizontal) {
-                drawVerticalBars(series);
-            } else {
+            if (isHorizontal) {
                 drawHorizontalBars(series);
+            } else {
+                drawVerticalBars(series);
             }
             // Exit
             series.exit()
@@ -611,7 +611,7 @@ define(function (require) {
          */
         function handleMouseMove() {
             let [mouseX, mouseY] = getMousePosition(this),
-                dataPoint = !isHorizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
+                dataPoint = isHorizontal ? getNearestDataPoint2(mouseY) : getNearestDataPoint(mouseX),
                 x,
                 y;
 

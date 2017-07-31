@@ -482,28 +482,28 @@ define(function(require) {
                 bars = svg.select('.chart-group').selectAll('.bar')
                     .data(dataZeroed);
 
-                if (!isHorizontal) {
-                    drawVerticalBars(bars);
-                } else {
+                if (isHorizontal) {
                     drawHorizontalBars(bars);
+                } else {
+                    drawVerticalBars(bars);
                 }
 
                 bars = svg.select('.chart-group').selectAll('.bar')
                     .data(data);
 
-                if (!isHorizontal) {
-                    drawAnimatedVerticalBars(bars);
-                } else {
+                if (isHorizontal) {
                     drawAnimatedHorizontalBars(bars);
+                } else {
+                    drawAnimatedVerticalBars(bars);
                 }
             } else {
                 bars = svg.select('.chart-group').selectAll('.bar')
                     .data(data);
 
-                if (!isHorizontal) {
-                    drawVerticalBars(bars);
-                } else {
+                if (isHorizontal) {
                     drawHorizontalBars(bars);
+                } else {
+                    drawVerticalBars(bars);
                 }
             }
 
@@ -519,10 +519,10 @@ define(function(require) {
          * @return void
          */
         function drawGridLines() {
-            if (!isHorizontal) {
-                drawVerticalGridLines();
-            } else {
+            if (isHorizontal) {
                 drawHorizontalGridLines();
+            } else {
+                drawVerticalGridLines();
             }
         }
 
