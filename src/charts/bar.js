@@ -655,15 +655,16 @@ define(function(require) {
 
         /**
          * Gets or Sets the horizontal direction of the chart
-         * @param  {number} _x Desired horizontal direction for the graph
-         * @return { isHorizontal | module} If it is horizontal or Bar Chart module to chain calls
-         * @public
-         */
-        exports.isHorizontal = function(_x) {
+         * @param  {number} _x Desired horizontal direction for the chart
+         * @return { isHorizontal | module} If it is horizontal or module to chain calls
+         * @deprecated
+         */        
+        exports.horizontal = function (_x) {
             if (!arguments.length) {
                 return isHorizontal;
             }
             isHorizontal = _x;
+            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
 
             return this;
         };
@@ -681,6 +682,21 @@ define(function(require) {
                 return isAnimated;
             }
             isAnimated = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the horizontal direction of the chart
+         * @param  {number} _x Desired horizontal direction for the graph
+         * @return { isHorizontal | module} If it is horizontal or Bar Chart module to chain calls
+         * @public
+         */
+        exports.isHorizontal = function(_x) {
+            if (!arguments.length) {
+                return isHorizontal;
+            }
+            isHorizontal = _x;
 
             return this;
         };
