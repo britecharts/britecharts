@@ -101,12 +101,12 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             });
 
             it('should provide horizontal direction getter and setter', () => {
-                let previous = barChart.horizontal(),
+                let previous = barChart.isHorizontal(),
                     expected = true,
                     actual;
 
-                barChart.horizontal(expected);
-                actual = barChart.horizontal();
+                barChart.isHorizontal(expected);
+                actual = barChart.isHorizontal();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);

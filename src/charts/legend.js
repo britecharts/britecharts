@@ -423,7 +423,7 @@ define(function(require){
         /**
          * Gets or Sets the horizontal mode on the legend
          * @param  {boolean} _x Desired horizontal mode for the graph
-         * @return {horizontal | module} Current horizontal mode or Legend module to chain calls
+         * @return {ishorizontal | module} If it is horizontal or Legend module to chain calls
          * @public
          */
         exports.isHorizontal = function(_x) {
