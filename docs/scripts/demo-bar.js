@@ -1459,7 +1459,7 @@ webpackJsonp([0,10],[
 	            nameLabel = 'name',
 	            baseLine = void 0,
 	            maskGridLines = void 0,
-	            reverseColorList = true,
+	            shouldReverseColorList = true,
 	
 	
 	        // Dispatcher object to broadcast the mouse events
@@ -1578,7 +1578,7 @@ webpackJsonp([0,10],[
 	                yScale = d3Scale.scaleLinear().domain([0, percentageAxis]).rangeRound([chartHeight, 0]);
 	            }
 	
-	            if (reverseColorList) {
+	            if (shouldReverseColorList) {
 	                colorList = data.map(function (d) {
 	                    return d;
 	                }).reverse().map(function (_ref9, i) {
@@ -2114,11 +2114,27 @@ webpackJsonp([0,10],[
 	         * @return { boolean | module} Is color list being reversed
 	         * @public
 	         */
+	        exports.shouldReverseColorList = function (_x) {
+	            if (!arguments.length) {
+	                return shouldReverseColorList;
+	            }
+	            shouldReverseColorList = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets whether the color list should be reversed or not
+	         * @param  {boolean} _x     Should reverse the color list
+	         * @return { boolean | module} Is color list being reversed
+	         * @deprecated
+	         */
 	        exports.reverseColorList = function (_x) {
 	            if (!arguments.length) {
-	                return reverseColorList;
+	                return shouldReverseColorList;
 	            }
-	            reverseColorList = _x;
+	            shouldReverseColorList = _x;
+	            console.log('We are deprecating the .reverseColorList() accessor, use .shouldReverseColorList() instead');
 	
 	            return this;
 	        };
