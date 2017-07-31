@@ -85,7 +85,7 @@ define(function(require){
             numberFormat = 's',
 
             isFadedClassName = 'is-faded',
-            horizontal = false,
+            isHorizontal = false,
 
             // colors
             colorScale,
@@ -116,7 +116,7 @@ define(function(require){
 
                 buildColorScale();
                 buildSVG(this);
-                if (horizontal) {
+                if (isHorizontal) {
                     drawHorizontalLegend();
                 } else {
                     drawVerticalLegend();
@@ -426,11 +426,11 @@ define(function(require){
          * @return {horizontal | module} Current horizontal mode or Legend module to chain calls
          * @public
          */
-        exports.horizontal = function(_x) {
+        exports.isHorizontal = function(_x) {
             if (!arguments.length) {
-                return horizontal;
+                return isHorizontal;
             }
-            horizontal = _x;
+            isHorizontal = _x;
 
             return this;
         };

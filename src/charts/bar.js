@@ -94,7 +94,7 @@ define(function(require) {
             },
             yAxisPaddingBetweenChart = 10,
             yAxisLineWrapLimit = 1,
-            horizontal = false,
+            isHorizontal = false,
             svg,
 
             isAnimated = false,
@@ -156,7 +156,7 @@ define(function(require) {
          * @private
          */
         function buildAxis() {
-            if (horizontal) {
+            if (isHorizontal) {
                 xAxis = d3Axis.axisBottom(xScale)
                     .ticks(numOfHorizontalTicks, valueLabelFormat)
                     .tickSizeInner([-chartHeight]);
@@ -202,7 +202,7 @@ define(function(require) {
         function buildScales() {
             let percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue))
 
-            if (horizontal) {
+            if (isHorizontal) {
                 xScale = d3Scale.scaleLinear()
                     .domain([0, percentageAxis])
                     .rangeRound([0, chartWidth]);
@@ -451,9 +451,9 @@ define(function(require) {
          * @return {void}
          */
         function drawPercentageLabels() {
-            let labelXPosition = horizontal ? _percentageLabelHorizontalX : _percentageLabelVerticalX;
-            let labelYPosition = horizontal ? _percentageLabelHorizontalY : _percentageLabelVerticalY;
-            let text = horizontal ? _percentageLabelHorizontalFormatValue : _percentageLabelVerticalFormatValue;
+            let labelXPosition = isHorizontal ? _percentageLabelHorizontalX : _percentageLabelVerticalX;
+            let labelYPosition = isHorizontal ? _percentageLabelHorizontalY : _percentageLabelVerticalY;
+            let text = isHorizontal ? _percentageLabelHorizontalFormatValue : _percentageLabelVerticalFormatValue;
 
             let percentageLabels = svg.select('.metadata-group')
               .append('g')
@@ -482,7 +482,7 @@ define(function(require) {
                 bars = svg.select('.chart-group').selectAll('.bar')
                     .data(dataZeroed);
 
-                if (!horizontal) {
+                if (!isHorizontal) {
                     drawVerticalBars(bars);
                 } else {
                     drawHorizontalBars(bars);
@@ -491,7 +491,7 @@ define(function(require) {
                 bars = svg.select('.chart-group').selectAll('.bar')
                     .data(data);
 
-                if (!horizontal) {
+                if (!isHorizontal) {
                     drawAnimatedVerticalBars(bars);
                 } else {
                     drawAnimatedHorizontalBars(bars);
@@ -500,7 +500,7 @@ define(function(require) {
                 bars = svg.select('.chart-group').selectAll('.bar')
                     .data(data);
 
-                if (!horizontal) {
+                if (!isHorizontal) {
                     drawVerticalBars(bars);
                 } else {
                     drawHorizontalBars(bars);
@@ -519,7 +519,7 @@ define(function(require) {
          * @return void
          */
         function drawGridLines() {
-            if (!horizontal) {
+            if (!isHorizontal) {
                 drawVerticalGridLines();
             } else {
                 drawHorizontalGridLines();
@@ -656,14 +656,14 @@ define(function(require) {
         /**
          * Gets or Sets the horizontal direction of the chart
          * @param  {number} _x Desired horizontal direction for the graph
-         * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
+         * @return { isHorizontal | module} If it is horizontal or Bar Chart module to chain calls
          * @public
          */
-        exports.horizontal = function(_x) {
+        exports.isHorizontal = function(_x) {
             if (!arguments.length) {
-                return horizontal;
+                return isHorizontal;
             }
-            horizontal = _x;
+            isHorizontal = _x;
 
             return this;
         };
