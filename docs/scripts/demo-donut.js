@@ -72,7 +72,7 @@ webpackJsonp([2,10],[
 	    if (containerWidth) {
 	        d3Selection.select('.js-inline-legend-chart-container .britechart-legend').remove();
 	
-	        legendChart.horizontal(true).width(containerWidth * 0.6).markerSize(8).height(40);
+	        legendChart.isHorizontal(true).width(containerWidth * 0.6).markerSize(8).height(40);
 	
 	        if (optionalColorSchema) {
 	            legendChart.colorSchema(optionalColorSchema);
@@ -11844,7 +11844,7 @@ webpackJsonp([2,10],[
 	            numberLetterSpacing = 0.8,
 	            numberFormat = 's',
 	            isFadedClassName = 'is-faded',
-	            horizontal = false,
+	            isHorizontal = false,
 	
 	
 	        // colors
@@ -11886,7 +11886,7 @@ webpackJsonp([2,10],[
 	
 	                buildColorScale();
 	                buildSVG(this);
-	                if (horizontal) {
+	                if (isHorizontal) {
 	                    drawHorizontalLegend();
 	                } else {
 	                    drawVerticalLegend();
@@ -12112,14 +12112,30 @@ webpackJsonp([2,10],[
 	        /**
 	         * Gets or Sets the horizontal mode on the legend
 	         * @param  {boolean} _x Desired horizontal mode for the graph
-	         * @return {horizontal | module} Current horizontal mode or Legend module to chain calls
+	         * @return {ishorizontal | module} If it is horizontal or Legend module to chain calls
 	         * @public
+	         */
+	        exports.isHorizontal = function (_x) {
+	            if (!arguments.length) {
+	                return isHorizontal;
+	            }
+	            isHorizontal = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the horizontal direction of the chart
+	         * @param  {number} _x Desired horizontal direction for the chart
+	         * @return { isHorizontal | module} If it is horizontal or module to chain calls
+	         * @deprecated
 	         */
 	        exports.horizontal = function (_x) {
 	            if (!arguments.length) {
-	                return horizontal;
+	                return isHorizontal;
 	            }
-	            horizontal = _x;
+	            isHorizontal = _x;
+	            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
 	
 	            return this;
 	        };

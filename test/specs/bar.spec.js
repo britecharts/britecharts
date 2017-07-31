@@ -101,12 +101,12 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             });
 
             it('should provide horizontal direction getter and setter', () => {
-                let previous = barChart.horizontal(),
+                let previous = barChart.isHorizontal(),
                     expected = true,
                     actual;
 
-                barChart.horizontal(expected);
-                actual = barChart.horizontal();
+                barChart.isHorizontal(expected);
+                actual = barChart.isHorizontal();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
@@ -173,24 +173,24 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             });
 
             it('should provide a reverseColorList getter and setter', () => {
-                let previous = barChart.reverseColorList(),
+                let previous = barChart.shouldReverseColorList(),
                     expected = false,
                     actual;
 
-                barChart.reverseColorList(expected);
-                actual = barChart.reverseColorList();
+                barChart.shouldReverseColorList(expected);
+                actual = barChart.shouldReverseColorList();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
 
             it('should provide an usePercentage getter and setter', () => {
-                let previous = barChart.usePercentage(),
+                let previous = barChart.hasPercentage(),
                     expected = true,
                     actual;
 
-                barChart.usePercentage(expected);
-                actual = barChart.usePercentage();
+                barChart.hasPercentage(expected);
+                actual = barChart.hasPercentage();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);

@@ -94,7 +94,7 @@ define(function(require) {
             },
             yAxisPaddingBetweenChart = 10,
             yAxisLineWrapLimit = 1,
-            horizontal = false,
+            isHorizontal = false,
             svg,
 
             isAnimated = false,
@@ -108,7 +108,7 @@ define(function(require) {
 
             baseLine,
             maskGridLines,
-            reverseColorList = true,
+            shouldReverseColorList = true,
 
             // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
@@ -156,7 +156,7 @@ define(function(require) {
          * @private
          */
         function buildAxis() {
-            if (horizontal) {
+            if (isHorizontal) {
                 xAxis = d3Axis.axisBottom(xScale)
                     .ticks(numOfHorizontalTicks, valueLabelFormat)
                     .tickSizeInner([-chartHeight]);
@@ -202,7 +202,7 @@ define(function(require) {
         function buildScales() {
             let percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue))
 
-            if (horizontal) {
+            if (isHorizontal) {
                 xScale = d3Scale.scaleLinear()
                     .domain([0, percentageAxis])
                     .rangeRound([0, chartWidth]);
@@ -222,7 +222,7 @@ define(function(require) {
                     .rangeRound([chartHeight, 0]);
             }
 
-            if (reverseColorList) {
+            if (shouldReverseColorList) {
                 colorList = data.map(d => d)
                                 .reverse()
                                 .map(({name}, i) => ({
@@ -451,9 +451,9 @@ define(function(require) {
          * @return {void}
          */
         function drawPercentageLabels() {
-            let labelXPosition = horizontal ? _percentageLabelHorizontalX : _percentageLabelVerticalX;
-            let labelYPosition = horizontal ? _percentageLabelHorizontalY : _percentageLabelVerticalY;
-            let text = horizontal ? _percentageLabelHorizontalFormatValue : _percentageLabelVerticalFormatValue;
+            let labelXPosition = isHorizontal ? _percentageLabelHorizontalX : _percentageLabelVerticalX;
+            let labelYPosition = isHorizontal ? _percentageLabelHorizontalY : _percentageLabelVerticalY;
+            let text = isHorizontal ? _percentageLabelHorizontalFormatValue : _percentageLabelVerticalFormatValue;
 
             let percentageLabels = svg.select('.metadata-group')
               .append('g')
@@ -482,28 +482,28 @@ define(function(require) {
                 bars = svg.select('.chart-group').selectAll('.bar')
                     .data(dataZeroed);
 
-                if (!horizontal) {
-                    drawVerticalBars(bars);
-                } else {
+                if (isHorizontal) {
                     drawHorizontalBars(bars);
+                } else {
+                    drawVerticalBars(bars);
                 }
 
                 bars = svg.select('.chart-group').selectAll('.bar')
                     .data(data);
 
-                if (!horizontal) {
-                    drawAnimatedVerticalBars(bars);
-                } else {
+                if (isHorizontal) {
                     drawAnimatedHorizontalBars(bars);
+                } else {
+                    drawAnimatedVerticalBars(bars);
                 }
             } else {
                 bars = svg.select('.chart-group').selectAll('.bar')
                     .data(data);
 
-                if (!horizontal) {
-                    drawVerticalBars(bars);
-                } else {
+                if (isHorizontal) {
                     drawHorizontalBars(bars);
+                } else {
+                    drawVerticalBars(bars);
                 }
             }
 
@@ -519,10 +519,10 @@ define(function(require) {
          * @return void
          */
         function drawGridLines() {
-            if (!horizontal) {
-                drawVerticalGridLines();
-            } else {
+            if (isHorizontal) {
                 drawHorizontalGridLines();
+            } else {
+                drawVerticalGridLines();
             }
         }
 
@@ -655,15 +655,16 @@ define(function(require) {
 
         /**
          * Gets or Sets the horizontal direction of the chart
-         * @param  {number} _x Desired horizontal direction for the graph
-         * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
-         * @public
-         */
-        exports.horizontal = function(_x) {
+         * @param  {number} _x Desired horizontal direction for the chart
+         * @return { isHorizontal | module} If it is horizontal or module to chain calls
+         * @deprecated
+         */        
+        exports.horizontal = function (_x) {
             if (!arguments.length) {
-                return horizontal;
+                return isHorizontal;
             }
-            horizontal = _x;
+            isHorizontal = _x;
+            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
 
             return this;
         };
@@ -681,6 +682,21 @@ define(function(require) {
                 return isAnimated;
             }
             isAnimated = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the horizontal direction of the chart
+         * @param  {number} _x Desired horizontal direction for the graph
+         * @return { isHorizontal | module} If it is horizontal or Bar Chart module to chain calls
+         * @public
+         */
+        exports.isHorizontal = function(_x) {
+            if (!arguments.length) {
+                return isHorizontal;
+            }
+            isHorizontal = _x;
 
             return this;
         };
@@ -765,11 +781,46 @@ define(function(require) {
          * @return { boolean | module} Is color list being reversed
          * @public
          */
+        exports.shouldReverseColorList = function(_x) {
+            if (!arguments.length) {
+                return shouldReverseColorList;
+            }
+            shouldReverseColorList = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets whether the color list should be reversed or not
+         * @param  {boolean} _x     Should reverse the color list
+         * @return { boolean | module} Is color list being reversed
+         * @deprecated
+         */
         exports.reverseColorList = function(_x) {
             if (!arguments.length) {
-                return reverseColorList;
+                return shouldReverseColorList;
             }
-            reverseColorList = _x;
+            shouldReverseColorList = _x;
+            console.log('We are deprecating the .reverseColorList() accessor, use .shouldReverseColorList() instead');
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the hasPercentage status
+         * @param  {boolean} _x     Should use percentage as value format
+         * @return { boolean | module} Is percentage used or Chart module to chain calls
+         * @public
+         */
+        exports.hasPercentage = function(_x) {
+            if (!arguments.length) {
+                return valueLabelFormat === PERCENTAGE_FORMAT;
+            }
+            if (_x) {
+                valueLabelFormat = PERCENTAGE_FORMAT;
+            } else {
+                valueLabelFormat = NUMBER_FORMAT;
+            }
 
             return this;
         };
@@ -777,7 +828,7 @@ define(function(require) {
         /**
          * Gets or Sets the valueLabelFormat to a percentage format if true (default false)
          * @param  {boolean} _x     Should use percentage as value format
-         * @return { valueLabelFormat | module} Is percentage value format used or Chart module to chain calls
+         * @return { boolean | module} Is percentage the value format used or Chart module to chain calls
          * @public
          */
         exports.usePercentage = function(_x) {

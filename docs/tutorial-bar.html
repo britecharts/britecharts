@@ -200,7 +200,7 @@ col-md-6">
 barChart
     .width(containerWidth)
     .height(300)
-    .usePercentage(true)
+    .hasPercentage(true)
     .isAnimated(true)
     .on('customMouseOver', tooltip.show)
     .on('customMouseMove', tooltip.update)
@@ -240,7 +240,7 @@ barChart
         bottom: 5
     })
     .percentageAxisToMaxRatio(1.3)
-    .horizontal(true)
+    .isHorizontal(true)
     .isAnimated(true)
     .colorSchema(colors.colorSchemas.britechartsColorSchema)
     .width(containerWidth)

@@ -81,10 +81,10 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
 
         // StackedAreChart Setup and start
         stackedBar
+            .isHorizontal(true)
             .tooltipThreshold(600)
             .grid('vertical')
             .width(containerWidth)
-            .horizontal(true)
             .isAnimated(true)
             .margin({
                 left: 80,

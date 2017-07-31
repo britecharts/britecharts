@@ -131,12 +131,12 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
             });
 
             it('should provide horizontal direction getter and setter', () => {
-                let previous = stackedBarChart.horizontal(),
+                let previous = stackedBarChart.isHorizontal(),
                     expected = true,
                     actual;
 
-                stackedBarChart.horizontal(expected);
-                actual = stackedBarChart.horizontal();
+                stackedBarChart.isHorizontal(expected);
+                actual = stackedBarChart.isHorizontal();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);

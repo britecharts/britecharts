@@ -1,19 +1,17 @@
 'use strict';
 
-var d3Selection = require('d3-selection'),
+const d3Selection = require('d3-selection');
+const PubSub = require('pubsub-js');
 
-    PubSub = require('pubsub-js'),
-
-    bar = require('./../src/charts/bar'),
-    miniTooltip = require('./../src/charts/mini-tooltip'),
-    colors = require('./../src/charts/helpers/colors'),
-
-    dataBuilder = require('./../test/fixtures/barChartDataBuilder');
+const bar = require('./../src/charts/bar');
+const miniTooltip = require('./../src/charts/mini-tooltip');
+const colors = require('./../src/charts/helpers/colors');
+const dataBuilder = require('./../test/fixtures/barChartDataBuilder');
 
     require('./helpers/resizeHelper');
 
 function createSimpleBarChart() {
-    var barChart = bar(),
+    let barChart = bar(),
         testDataSet = new dataBuilder.BarDataBuilder(),
         barContainer = d3Selection.select('.js-bar-chart-container'),
         containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
@@ -31,7 +29,7 @@ function createSimpleBarChart() {
 }
 
 function createHorizontalBarChart() {
-    var barChart = bar(),
+    let barChart = bar(),
         tooltip = miniTooltip(),
         testDataSet = new dataBuilder.BarDataBuilder(),
         barContainer = d3Selection.select('.js-horizontal-bar-chart-container'),
@@ -43,7 +41,7 @@ function createHorizontalBarChart() {
         dataset = testDataSet.withColors().build();
 
         barChart
-            .horizontal(true)
+            .isHorizontal(true)
             .isAnimated(true)
             .margin({
                 left: 120,
@@ -68,7 +66,7 @@ function createHorizontalBarChart() {
 }
 
 function createBarChartWithTooltip() {
-    var barChart = bar(),
+    let barChart = bar(),
         tooltip = miniTooltip(),
         testDataSet = new dataBuilder.BarDataBuilder(),
         barContainer = d3Selection.select('.js-bar-chart-tooltip-container'),
@@ -87,7 +85,7 @@ function createBarChartWithTooltip() {
             .width(containerWidth)
             .height(300)
             .isAnimated(true)
-            .usePercentage(true)
+            .hasPercentage(true)
             .on('customMouseOver', tooltip.show)
             .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);
@@ -105,7 +103,7 @@ if (d3Selection.select('.js-bar-chart-tooltip-container').node()){
     createHorizontalBarChart();
     createSimpleBarChart();
 
-    var redrawCharts = function(){
+    let redrawCharts = function(){
         d3Selection.selectAll('.bar-chart').remove();
 
         createBarChartWithTooltip();

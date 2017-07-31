@@ -50,6 +50,7 @@ tooltipContainer.datum([]).call(chartTooltip);
                 <pre><code class="language-javascript">
 // StackedBarChart Setup and start
 stackedBar
+    .isHorizontal(true)
     .tooltipThreshold(400)
     .width(containerWidth)
     .valueLabel('views')
@@ -65,8 +66,8 @@ stackedBar
     .on('customMouseOver', function() {
         chartTooltip.show();
     })
-    .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-        chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+    .on('customMouseMove', function(dataPoint, topicColorMap, x, y) {
+        chartTooltip.update(dataPoint, topicColorMap, x, y);
     })
     .on('customMouseOut', function() {
         chartTooltip.hide();

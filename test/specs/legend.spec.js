@@ -151,12 +151,12 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                 });
 
                 it('should provide an horizontal mode getter and setter', () =>{
-                    let previous = legendChart.horizontal(),
+                    let previous = legendChart.isHorizontal(),
                         expected = true,
                         actual;
 
-                    legendChart.horizontal(expected);
-                    actual = legendChart.horizontal();
+                    legendChart.isHorizontal(expected);
+                    actual = legendChart.isHorizontal();
 
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);
@@ -239,7 +239,7 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                             .build();
                 legendChart = legend();
 
-                legendChart.horizontal(true);
+                legendChart.isHorizontal(true);
 
                 // DOM Fixture Setup
                 f = jasmine.getFixtures();
@@ -322,7 +322,7 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                 beforeEach(() =>{
                     legendChart = legend();
 
-                    legendChart.horizontal(true)
+                    legendChart.isHorizontal(true)
                         .height(50)
                         .width(200);
 
