@@ -1,5 +1,5 @@
-const oldVariable = 'reverseColorList';
-const newVariable = 'shouldReverseColorList';
+const oldVariable = '';
+const newVariable = '';
 
 export default function transformer(file, api) {
     const j = api.jscodeshift;
