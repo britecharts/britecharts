@@ -41,7 +41,7 @@ function createHorizontalBarChart() {
         dataset = testDataSet.withColors().build();
 
         barChart
-            .horizontal(true)
+            .isHorizontal(true)
             .isAnimated(true)
             .margin({
                 left: 120,
