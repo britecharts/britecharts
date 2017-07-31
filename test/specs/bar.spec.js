@@ -185,12 +185,12 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             });
 
             it('should provide an usePercentage getter and setter', () => {
-                let previous = barChart.usePercentage(),
+                let previous = barChart.hasPercentage(),
                     expected = true,
                     actual;
 
-                barChart.usePercentage(expected);
-                actual = barChart.usePercentage();
+                barChart.hasPercentage(expected);
+                actual = barChart.hasPercentage();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);

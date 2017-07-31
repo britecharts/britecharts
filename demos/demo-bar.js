@@ -85,7 +85,7 @@ function createBarChartWithTooltip() {
             .width(containerWidth)
             .height(300)
             .isAnimated(true)
-            .usePercentage(true)
+            .hasPercentage(true)
             .on('customMouseOver', tooltip.show)
             .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);

@@ -1,5 +1,5 @@
-const oldVariable = '';
-const newVariable = '';
+const oldVariable = 'usePercentage';
+const newVariable = 'hasPercentage';
 
 export default function transformer(file, api) {
     const j = api.jscodeshift;

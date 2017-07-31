@@ -791,9 +791,28 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the hasPercentage status
+         * @param  {boolean} _x     Should use percentage as value format
+         * @return { boolean | module} Is percentage used or Chart module to chain calls
+         * @public
+         */
+        exports.hasPercentage = function(_x) {
+            if (!arguments.length) {
+                return valueLabelFormat === PERCENTAGE_FORMAT;
+            }
+            if (_x) {
+                valueLabelFormat = PERCENTAGE_FORMAT;
+            } else {
+                valueLabelFormat = NUMBER_FORMAT;
+            }
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the valueLabelFormat to a percentage format if true (default false)
          * @param  {boolean} _x     Should use percentage as value format
-         * @return { valueLabelFormat | module} Is percentage value format used or Chart module to chain calls
+         * @return { boolean | module} Is percentage the value format used or Chart module to chain calls
          * @public
          */
         exports.usePercentage = function(_x) {
