@@ -18,7 +18,6 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 .with3Sources()
                 .build();
             groupedBarChart = chart()
-                        // .horizontal(true)
                         .groupLabel('stack')
                         .nameLabel('date')
                         .valueLabel('views')
@@ -144,12 +143,12 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
             });
 
             it('should provide horizontal direction getter and setter', () => {
-                let previous = groupedBarChart.horizontal(),
+                let previous = groupedBarChart.isHorizontal(),
                     expected = true,
                     actual;
 
-                groupedBarChart.horizontal(expected);
-                actual = groupedBarChart.horizontal();
+                groupedBarChart.isHorizontal(expected);
+                actual = groupedBarChart.isHorizontal();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);

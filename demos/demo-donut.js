@@ -88,7 +88,7 @@ function getInlineLegendChart(dataset, optionalColorSchema) {
         d3Selection.select('.js-inline-legend-chart-container .britechart-legend').remove();
 
         legendChart
-            .horizontal(true)
+            .isHorizontal(true)
             .width(containerWidth*0.6)
             .markerSize(8)
             .height(40)

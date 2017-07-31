@@ -98,7 +98,7 @@ define(function(require){
             layers,
 
             ease = d3Ease.easeQuadInOut,
-            horizontal = false,
+            isHorizontal = false,
 
             svg,
             chartWidth, chartHeight,
@@ -194,14 +194,14 @@ define(function(require){
          * @private
          */
         function buildAxis() {
-            if (!horizontal) {
+            if (isHorizontal) {
+                xAxis = d3Axis.axisBottom(xScale)
+                    .ticks(numOfHorizontalTicks, valueLabelFormat);
+                yAxis = d3Axis.axisLeft(yScale)
+            } else {
                 xAxis = d3Axis.axisBottom(xScale)
                 yAxis = d3Axis.axisLeft(yScale)
                     .ticks(numOfVerticalTicks, valueLabelFormat)
-            } else {
-                xAxis = d3Axis.axisBottom(xScale)
-                .ticks(numOfHorizontalTicks, valueLabelFormat);
-                yAxis = d3Axis.axisLeft(yScale)
             }
         }
 
@@ -261,17 +261,7 @@ define(function(require){
                 return d.total;
             }));
 
-            if (!horizontal) {
-                xScale = d3Scale.scaleBand()
-                    .domain(data.map(getName))
-                    .rangeRound([0, chartWidth ])
-                    .padding(0.1);
-
-                yScale = d3Scale.scaleLinear()
-                    .domain([0,yMax])
-                    .rangeRound([chartHeight, 0])
-                    .nice();
-            } else {
+            if (isHorizontal) {
                 xScale = d3Scale.scaleLinear()
                     .domain([0, yMax])
                     .rangeRound([0, chartWidth - 1]);
@@ -281,6 +271,16 @@ define(function(require){
                     .domain(data.map(getName))
                     .rangeRound([chartHeight, 0])
                     .padding(0.1);
+            } else {
+                xScale = d3Scale.scaleBand()
+                    .domain(data.map(getName))
+                    .rangeRound([0, chartWidth ])
+                    .padding(0.1);
+
+                yScale = d3Scale.scaleLinear()
+                    .domain([0,yMax])
+                    .rangeRound([chartHeight, 0])
+                    .nice();
             }
 
             colorScale = d3Scale.scaleOrdinal()
@@ -341,7 +341,15 @@ define(function(require){
          * @private
          */
         function drawAxis(){
-            if (!horizontal) {
+            if (isHorizontal) {
+                svg.select('.x-axis-group .axis.x')
+                    .attr('transform', `translate( 0, ${chartHeight} )`)
+                    .call(xAxis);
+
+                svg.select('.y-axis-group.axis')
+                    .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
+                    .call(yAxis);
+            } else {
                 svg.select('.x-axis-group .axis.x')
                     .attr('transform', `translate( 0, ${chartHeight} )`)
                     .call(xAxis);
@@ -350,14 +358,6 @@ define(function(require){
                     .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
                     .call(yAxis)
                     .call(adjustYTickLabels);
-            } else {
-                svg.select('.x-axis-group .axis.x')
-                    .attr('transform', `translate( 0, ${chartHeight} )`)
-                    .call(xAxis);
-
-                svg.select('.y-axis-group.axis')
-                    .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
-                    .call(yAxis);
             }
         }
 
@@ -366,7 +366,7 @@ define(function(require){
          * @return void
          */
         function drawGridLines() {
-            let scale = horizontal ? xScale : yScale;
+            let scale = isHorizontal ? xScale : yScale;
 
             if (grid === 'horizontal' || grid === 'full') {
                 svg.select('.grid-lines-group')
@@ -394,7 +394,7 @@ define(function(require){
                         .attr('x2', (d) => xScale(d));
             }
 
-            if (horizontal) {
+            if (isHorizontal) {
                 drawVerticalExtendedLine();
             } else {
                 drawHorizontalExtendedLine();
@@ -530,10 +530,10 @@ define(function(require){
         function drawStackedBar(){
             let series = svg.select('.chart-group').selectAll('.layer')
 
-            if (!horizontal) {
-                drawVerticalBars(series)
-            } else {
+            if (isHorizontal) {
                 drawHorizontalBars(series)
+            } else {
+                drawVerticalBars(series)
             }
             // Exit
             series.exit()
@@ -620,13 +620,13 @@ define(function(require){
          */
         function handleMouseMove(){
             let [mouseX, mouseY] = getMousePosition(this),
-                dataPoint = !horizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
+                dataPoint = isHorizontal ? getNearestDataPoint2(mouseY) : getNearestDataPoint(mouseX),
                 x,
                 y;
 
             if (dataPoint) {
                 // Move verticalMarker to that datapoint
-                if (horizontal) {
+                if (isHorizontal) {
                     x = mouseX - margin.left;
                     y = yScale(dataPoint.key) + yScale.bandwidth()/2;
                 } else {
@@ -783,14 +783,30 @@ define(function(require){
         /**
          * Gets or Sets the horizontal direction of the chart
          * @param  {number} _x Desired horizontal direction for the graph
-         * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
+         * @return { isHorizontal | module} If it is horizontal or Bar Chart module to chain calls
          * @public
          */
-        exports.horizontal = function(_x) {
+        exports.isHorizontal = function(_x) {
             if (!arguments.length) {
-                return horizontal;
+                return isHorizontal;
             }
-            horizontal = _x;
+            isHorizontal = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the horizontal direction of the chart
+         * @param  {number} _x Desired horizontal direction for the chart
+         * @return { isHorizontal | module} If it is horizontal or module to chain calls
+         * @deprecated
+         */        
+        exports.horizontal = function (_x) {
+            if (!arguments.length) {
+                return isHorizontal;
+            }
+            isHorizontal = _x;
+            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
 
             return this;
         };

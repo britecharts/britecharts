@@ -9386,7 +9386,7 @@ webpackJsonp([3,10],[
 	            categoryColorMap = void 0,
 	            layers = void 0,
 	            ease = d3Ease.easeQuadInOut,
-	            horizontal = false,
+	            isHorizontal = false,
 	            svg = void 0,
 	            chartWidth = void 0,
 	            chartHeight = void 0,
@@ -9480,7 +9480,7 @@ webpackJsonp([3,10],[
 	         * @private
 	         */
 	        function buildAxis() {
-	            if (horizontal) {
+	            if (isHorizontal) {
 	                xAxis = d3Axis.axisBottom(xScale).ticks(numOfHorizontalTicks, valueLabelFormat);
 	                yAxis = d3Axis.axisLeft(yScale);
 	            } else {
@@ -9530,7 +9530,7 @@ webpackJsonp([3,10],[
 	        function buildScales() {
 	            var yMax = d3Array.max(data.map(getValue));
 	
-	            if (horizontal) {
+	            if (isHorizontal) {
 	                xScale = d3Scale.scaleLinear().domain([0, yMax]).rangeRound([0, chartWidth - 1]);
 	                // 1 pix for edge tick
 	
@@ -9595,7 +9595,7 @@ webpackJsonp([3,10],[
 	         * @private
 	         */
 	        function drawAxis() {
-	            if (horizontal) {
+	            if (isHorizontal) {
 	                svg.select('.x-axis-group .axis.x').attr('transform', 'translate( 0, ' + chartHeight + ' )').call(xAxis);
 	
 	                svg.select('.y-axis-group.axis').attr('transform', 'translate( ' + -xAxisPadding.left + ', 0)').call(yAxis);
@@ -9627,7 +9627,7 @@ webpackJsonp([3,10],[
 	         * @return void
 	         */
 	        function drawGridLines() {
-	            var scale = horizontal ? xScale : yScale;
+	            var scale = isHorizontal ? xScale : yScale;
 	
 	            if (grid === 'horizontal' || grid === 'full') {
 	                svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(scale.ticks(numOfVerticalTicks).slice(1)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left + 1).attr('x2', chartWidth).attr('y1', function (d) {
@@ -9645,7 +9645,7 @@ webpackJsonp([3,10],[
 	                });
 	            }
 	
-	            if (horizontal) {
+	            if (isHorizontal) {
 	                drawVerticalExtendedLine();
 	            } else {
 	                drawHorizontalExtendedLine();
@@ -9719,10 +9719,10 @@ webpackJsonp([3,10],[
 	        function drawGroupedBar() {
 	            var series = svg.select('.chart-group').selectAll('.layer');
 	
-	            if (!horizontal) {
-	                drawVerticalBars(series);
-	            } else {
+	            if (isHorizontal) {
 	                drawHorizontalBars(series);
+	            } else {
+	                drawVerticalBars(series);
 	            }
 	            // Exit
 	            series.exit().transition().style('opacity', 0).remove();
@@ -9820,13 +9820,13 @@ webpackJsonp([3,10],[
 	                _getMousePosition2 = _slicedToArray(_getMousePosition, 2),
 	                mouseX = _getMousePosition2[0],
 	                mouseY = _getMousePosition2[1],
-	                dataPoint = !horizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
+	                dataPoint = isHorizontal ? getNearestDataPoint2(mouseY) : getNearestDataPoint(mouseX),
 	                x = void 0,
 	                y = void 0;
 	
 	            if (dataPoint) {
 	                // Move verticalMarker to that datapoint
-	                if (horizontal) {
+	                if (isHorizontal) {
 	                    x = mouseX - margin.left;
 	                    y = yScale(dataPoint.key) + yScale.bandwidth() / 2;
 	                } else {
@@ -10027,14 +10027,30 @@ webpackJsonp([3,10],[
 	        /**
 	         * Gets or Sets the horizontal direction of the chart
 	         * @param  {number} _x Desired horizontal direction for the graph
-	         * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
+	         * @return { isHorizontal | module} If it is horizontal or Bar Chart module to chain calls
 	         * @public
+	         */
+	        exports.isHorizontal = function (_x) {
+	            if (!arguments.length) {
+	                return isHorizontal;
+	            }
+	            isHorizontal = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the horizontal direction of the chart
+	         * @param  {number} _x Desired horizontal direction for the chart
+	         * @return { isHorizontal | module} If it is horizontal or module to chain calls
+	         * @deprecated
 	         */
 	        exports.horizontal = function (_x) {
 	            if (!arguments.length) {
-	                return horizontal;
+	                return isHorizontal;
 	            }
-	            horizontal = _x;
+	            isHorizontal = _x;
+	            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
 	
 	            return this;
 	        };
