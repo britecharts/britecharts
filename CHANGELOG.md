@@ -1,3 +1,20 @@
+Upcoming Release:
+-----------------
+
+Features:
+* Added number format accessor for legend (thanks @martinmanzo)
+* Added reverseColorList accessor for bar chart (thanks @martinmanzo)
+* Added custom tooltip formatting option (thanks @harrisreynolds)
+
+Bug Fixes:
+* Normalized Chart names between bundle and UMD
+* Updated eslint configuration and cleaned all issues
+* Added tests to stacked and grouped bar charts
+* Updated Readme (thanks @perborgen)
+* Polished Grouped Bar Chart
+* Update docs (thanks @nikkistonge)
+* Fixed tooltip rounding error
+
 1.7.2 - Patch
 ---------------------
 * Updated dist with new changes
@@ -18,7 +35,23 @@
 
 [1.6.0][https://github.com/eventbrite/britecharts/compare/1.6.0...1.5.0] - Minor Release
 ---------------------
+Features:
+* New Stacked bar chart (thanks @bung87)
+* New Grouped bar chart (thanks @bung87)
+* Animations configuration for all charts
+* Automatic computing of Donut percentages (thanks @jenjwong)
+* Docs improvements (thanks @bung87)
+* Donut highlights
+* Removed bowser dependency
+* Added singleLineGradientColors accessor
+
+Bug Fixes:
 * Tooltip now alphabetical order by default
+* More agressive npmignore (thanks @nobitagit)
+* Normalized margins on charts
+* Fixing CDN demo
+* Fixed env arguments in Windows (thanks @Tobbe)
+* Ensure data entry is there in Stacked Area (thanks @tgallice)
 
 1.5.3 - Patch
 ---------------------
