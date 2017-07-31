@@ -12879,12 +12879,12 @@ webpackJsonp([8,10],[
 	         * @private
 	         */
 	        function buildAxis() {
-	            if (!isHorizontal) {
-	                xAxis = d3Axis.axisBottom(xScale);
-	                yAxis = d3Axis.axisLeft(yScale).ticks(numOfVerticalTicks, valueLabelFormat);
-	            } else {
+	            if (isHorizontal) {
 	                xAxis = d3Axis.axisBottom(xScale).ticks(numOfHorizontalTicks, valueLabelFormat);
 	                yAxis = d3Axis.axisLeft(yScale);
+	            } else {
+	                xAxis = d3Axis.axisBottom(xScale);
+	                yAxis = d3Axis.axisLeft(yScale).ticks(numOfVerticalTicks, valueLabelFormat);
 	            }
 	        }
 	
@@ -12934,15 +12934,15 @@ webpackJsonp([8,10],[
 	                return d.total;
 	            }));
 	
-	            if (!isHorizontal) {
-	                xScale = d3Scale.scaleBand().domain(data.map(getName)).rangeRound([0, chartWidth]).padding(0.1);
-	
-	                yScale = d3Scale.scaleLinear().domain([0, yMax]).rangeRound([chartHeight, 0]).nice();
-	            } else {
+	            if (isHorizontal) {
 	                xScale = d3Scale.scaleLinear().domain([0, yMax]).rangeRound([0, chartWidth - 1]);
 	                // 1 pix for edge tick
 	
 	                yScale = d3Scale.scaleBand().domain(data.map(getName)).rangeRound([chartHeight, 0]).padding(0.1);
+	            } else {
+	                xScale = d3Scale.scaleBand().domain(data.map(getName)).rangeRound([0, chartWidth]).padding(0.1);
+	
+	                yScale = d3Scale.scaleLinear().domain([0, yMax]).rangeRound([chartHeight, 0]).nice();
 	            }
 	
 	            colorScale = d3Scale.scaleOrdinal().range(colorSchema).domain(data.map(getStack));
@@ -12995,14 +12995,14 @@ webpackJsonp([8,10],[
 	         * @private
 	         */
 	        function drawAxis() {
-	            if (!isHorizontal) {
-	                svg.select('.x-axis-group .axis.x').attr('transform', 'translate( 0, ' + chartHeight + ' )').call(xAxis);
-	
-	                svg.select('.y-axis-group.axis').attr('transform', 'translate( ' + -xAxisPadding.left + ', 0)').call(yAxis).call(adjustYTickLabels);
-	            } else {
+	            if (isHorizontal) {
 	                svg.select('.x-axis-group .axis.x').attr('transform', 'translate( 0, ' + chartHeight + ' )').call(xAxis);
 	
 	                svg.select('.y-axis-group.axis').attr('transform', 'translate( ' + -xAxisPadding.left + ', 0)').call(yAxis);
+	            } else {
+	                svg.select('.x-axis-group .axis.x').attr('transform', 'translate( 0, ' + chartHeight + ' )').call(xAxis);
+	
+	                svg.select('.y-axis-group.axis').attr('transform', 'translate( ' + -xAxisPadding.left + ', 0)').call(yAxis).call(adjustYTickLabels);
 	            }
 	        }
 	
@@ -13143,10 +13143,10 @@ webpackJsonp([8,10],[
 	        function drawStackedBar() {
 	            var series = svg.select('.chart-group').selectAll('.layer');
 	
-	            if (!isHorizontal) {
-	                drawVerticalBars(series);
-	            } else {
+	            if (isHorizontal) {
 	                drawHorizontalBars(series);
+	            } else {
+	                drawVerticalBars(series);
 	            }
 	            // Exit
 	            series.exit().transition().style('opacity', 0).remove();
@@ -13246,7 +13246,7 @@ webpackJsonp([8,10],[
 	                _getMousePosition2 = _slicedToArray(_getMousePosition, 2),
 	                mouseX = _getMousePosition2[0],
 	                mouseY = _getMousePosition2[1],
-	                dataPoint = !isHorizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
+	                dataPoint = isHorizontal ? getNearestDataPoint2(mouseY) : getNearestDataPoint(mouseX),
 	                x = void 0,
 	                y = void 0;
 	

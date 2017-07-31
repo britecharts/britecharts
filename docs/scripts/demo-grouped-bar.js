@@ -9719,10 +9719,10 @@ webpackJsonp([3,10],[
 	        function drawGroupedBar() {
 	            var series = svg.select('.chart-group').selectAll('.layer');
 	
-	            if (!isHorizontal) {
-	                drawVerticalBars(series);
-	            } else {
+	            if (isHorizontal) {
 	                drawHorizontalBars(series);
+	            } else {
+	                drawVerticalBars(series);
 	            }
 	            // Exit
 	            series.exit().transition().style('opacity', 0).remove();
@@ -9820,7 +9820,7 @@ webpackJsonp([3,10],[
 	                _getMousePosition2 = _slicedToArray(_getMousePosition, 2),
 	                mouseX = _getMousePosition2[0],
 	                mouseY = _getMousePosition2[1],
-	                dataPoint = !isHorizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
+	                dataPoint = isHorizontal ? getNearestDataPoint2(mouseY) : getNearestDataPoint(mouseX),
 	                x = void 0,
 	                y = void 0;
 	
