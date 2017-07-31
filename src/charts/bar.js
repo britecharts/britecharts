@@ -108,7 +108,7 @@ define(function(require) {
 
             baseLine,
             maskGridLines,
-            reverseColorList = true,
+            shouldReverseColorList = true,
 
             // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
@@ -222,7 +222,7 @@ define(function(require) {
                     .rangeRound([chartHeight, 0]);
             }
 
-            if (reverseColorList) {
+            if (shouldReverseColorList) {
                 colorList = data.map(d => d)
                                 .reverse()
                                 .map(({name}, i) => ({
@@ -781,11 +781,27 @@ define(function(require) {
          * @return { boolean | module} Is color list being reversed
          * @public
          */
+        exports.shouldReverseColorList = function(_x) {
+            if (!arguments.length) {
+                return shouldReverseColorList;
+            }
+            shouldReverseColorList = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets whether the color list should be reversed or not
+         * @param  {boolean} _x     Should reverse the color list
+         * @return { boolean | module} Is color list being reversed
+         * @deprecated
+         */
         exports.reverseColorList = function(_x) {
             if (!arguments.length) {
-                return reverseColorList;
+                return shouldReverseColorList;
             }
-            reverseColorList = _x;
+            shouldReverseColorList = _x;
+            console.log('We are deprecating the .reverseColorList() accessor, use .shouldReverseColorList() instead');
 
             return this;
         };

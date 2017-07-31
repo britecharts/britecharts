@@ -173,12 +173,12 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             });
 
             it('should provide a reverseColorList getter and setter', () => {
-                let previous = barChart.reverseColorList(),
+                let previous = barChart.shouldReverseColorList(),
                     expected = false,
                     actual;
 
-                barChart.reverseColorList(expected);
-                actual = barChart.reverseColorList();
+                barChart.shouldReverseColorList(expected);
+                actual = barChart.shouldReverseColorList();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
