@@ -103,9 +103,9 @@ define(function(require){
             categoryColorMap,
             order,
 
-            forceAxisSettings = null,
-            forcedXTicks = null,
-            forcedXFormat = null,
+            xAxisFormat = null,
+            xTicks = null,
+            xAxisCustomFormat = null,
             locale,
 
             baseLine,
@@ -230,14 +230,14 @@ define(function(require){
             let yTickNumber = dataSpan < verticalTicks - 1 ? dataSpan : verticalTicks;
             let minor, major;
 
-            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
                 minor = {
-                    tick: forcedXTicks,
-                    format:  d3TimeFormat.timeFormat(forcedXFormat)
+                    tick: xTicks,
+                    format:  d3TimeFormat.timeFormat(xAxisCustomFormat)
                 };
                 major = null;
             } else {
-                ({minor, major} = getXAxisSettings(dataByDate, width, forceAxisSettings, locale));
+                ({minor, major} = getXAxisSettings(dataByDate, width, xAxisFormat, locale));
 
                 xMonthAxis = d3Axis.axisBottom(xScale)
                     .ticks(major.tick)
@@ -433,7 +433,7 @@ define(function(require){
                 .attr('transform', `translate( 0, ${chartHeight} )`)
                 .call(xAxis);
 
-            if (forceAxisSettings !== 'custom') {
+            if (xAxisFormat !== 'custom') {
                 svg.select('.x-axis-group .month-axis')
                     .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
                     .call(xMonthAxis);
@@ -893,46 +893,46 @@ define(function(require){
          * @param  {String} _x Desired format
          * @return { (String|Module) }    Current format or module to chain calls
          * @example
-         *     area.forceAxisFormat(area.axisTimeCombinations.HOUR_DAY)
+         *     area.xAxisFormat(area.axisTimeCombinations.HOUR_DAY)
          */
-        exports.forceAxisFormat = function(_x) {
+        exports.xAxisFormat = function(_x) {
             if (!arguments.length) {
-              return forceAxisSettings;
+              return xAxisFormat;
             }
-            forceAxisSettings = _x;
+            xAxisFormat = _x;
 
             return this;
         };
 
         /**
          * Exposes the ability to force the chart to show a certain x format
-         * It requires a `forceAxisFormat` of 'custom' in order to work.
+         * It requires a `xAxisFormat` of 'custom' in order to work.
          * NOTE: localization not supported
          * @param  {String} _x              Desired format for x axis
          * @return { (String|Module) }      Current format or module to chain calls
          */
-        exports.forcedXFormat = function(_x) {
+        exports.xAxisCustomFormat = function(_x) {
             if (!arguments.length) {
-              return forcedXFormat;
+              return xAxisCustomFormat;
             }
-            forcedXFormat = _x;
+            xAxisCustomFormat = _x;
 
             return this;
         };
 
         /**
-         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
+         * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisFormat` of 'custom' in order to work.
          * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
          * how many and where the ticks will appear.
          *
          * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
          * @return { (Number|Module) }      Current number or ticks or module to chain calls
          */
-        exports.forcedXTicks = function(_x) {
+        exports.xTicks = function(_x) {
             if (!arguments.length) {
-              return forcedXTicks;
+              return xTicks;
             }
-            forcedXTicks = _x;
+            xTicks = _x;
 
             return this;
         };
@@ -1125,7 +1125,7 @@ define(function(require){
          * Exposes the constants to be used to force the x axis to respect a certain granularity
          * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
          * @example
-         *     area.forceAxisFormat(area.axisTimeCombinations.HOUR_DAY)
+         *     area.xAxisFormat(area.axisTimeCombinations.HOUR_DAY)
          */
         exports.axisTimeCombinations = axisTimeCombinations;
 
