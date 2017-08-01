@@ -331,7 +331,7 @@ define([
                 expect(newSchema).toBe(testSchema);
             });
 
-            it('should provide a forceAxisFormat getter and setter', () => {
+            it('should provide a xAxisFormat getter and setter', () => {
                 let defaultSchema = lineChart.xAxisFormat(),
                     testFormat = lineChart.axisTimeCombinations.HOUR_DAY,
                     newSchema;
@@ -343,19 +343,19 @@ define([
                 expect(newSchema).toBe(testFormat);
             });
 
-            it('should provide a forcedXTicks getter and setter', () => {
-                let defaultForcedXTicks = lineChart.forcedXTicks(),
+            it('should provide a xTicks getter and setter', () => {
+                let defaultForcedXTicks = lineChart.xTicks(),
                     testXTicks = 2,
                     newForcedXTicks;
 
-                lineChart.forcedXTicks(testXTicks);
-                newForcedXTicks = lineChart.forcedXTicks();
+                lineChart.xTicks(testXTicks);
+                newForcedXTicks = lineChart.xTicks();
 
                 expect(defaultForcedXTicks).not.toBe(testXTicks);
                 expect(newForcedXTicks).toBe(testXTicks);
             });
 
-            it('should provide a forcedXFormat getter and setter', () => {
+            it('should provide a xAxisCustomFormat getter and setter', () => {
                 let defaultForcedXFormat = lineChart.xAxisCustomFormat(),
                     testXFormat = '%d %b',
                     newForcedXFormat;

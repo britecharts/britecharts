@@ -144,7 +144,7 @@ define(function(require){
             topicColorMap,
 
             xAxisFormat = null,
-            forcedXTicks = null,
+            xTicks = null,
             xAxisCustomFormat = null,
             locale,
 
@@ -265,7 +265,7 @@ define(function(require){
 
             if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
                 minor = {
-                    tick: forcedXTicks,
+                    tick: xTicks,
                     format: d3TimeFormat.timeFormat(xAxisCustomFormat)
                 };
                 major = null;
@@ -844,11 +844,11 @@ define(function(require){
          * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
          * @return { (Number|Module) }      Current number or ticks or module to chain calls
          */
-        exports.forcedXTicks = function(_x) {
+        exports.xTicks = function(_x) {
             if (!arguments.length) {
-              return forcedXTicks;
+              return xTicks;
             }
-            forcedXTicks = _x;
+            xTicks = _x;
 
             return this;
         };

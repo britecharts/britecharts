@@ -262,7 +262,7 @@ define([
                 expect(newOpacity).toBe(testOpacity);
             });
 
-            it('should provide a forceAxisFormat getter and setter', () => {
+            it('should provide a xAxisFormat getter and setter', () => {
                 let defaultSchema = stackedAreaChart.xAxisFormat(),
                     testFormat = stackedAreaChart.axisTimeCombinations.HOUR_DAY,
                     newSchema;
@@ -274,19 +274,19 @@ define([
                 expect(newSchema).toBe(testFormat);
             });
 
-            it('should provide a forcedXTicks getter and setter', () => {
-                let defaultForcedXTicks = stackedAreaChart.forcedXTicks(),
+            it('should provide a xTicks getter and setter', () => {
+                let defaultForcedXTicks = stackedAreaChart.xTicks(),
                     testXTicks = 2,
                     newForcedXTicks;
 
-                stackedAreaChart.forcedXTicks(testXTicks);
-                newForcedXTicks = stackedAreaChart.forcedXTicks();
+                stackedAreaChart.xTicks(testXTicks);
+                newForcedXTicks = stackedAreaChart.xTicks();
 
                 expect(defaultForcedXTicks).not.toBe(testXTicks);
                 expect(newForcedXTicks).toBe(testXTicks);
             });
 
-            it('should provide a forcedXFormat getter and setter', () => {
+            it('should provide a xAxisCustomFormat getter and setter', () => {
                 let defaultForcedXFormat = stackedAreaChart.xAxisCustomFormat(),
                     testXFormat = '%d %b',
                     newForcedXFormat;

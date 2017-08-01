@@ -1,5 +1,5 @@
-const oldVariable = 'forcedXFormat';
-const newVariable = 'xAxisCustomFormat';
+const oldVariable = 'forcedXTicks';
+const newVariable = 'xTicks';
 
 export default function transformer(file, api) {
     const j = api.jscodeshift;

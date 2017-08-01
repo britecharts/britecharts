@@ -131,7 +131,7 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
                 expect(actual).toBe(expected);
             });
 
-            it('should provide a forceAxisFormat getter and setter', () => {
+            it('should provide a xAxisFormat getter and setter', () => {
                 let previous = brushChart.xAxisFormat(),
                     expected = brushChart.axisTimeCombinations.HOUR_DAY,
                     actual;
@@ -143,19 +143,19 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
                 expect(actual).toBe(expected);
             });
 
-            it('should provide a forcedXTicks getter and setter', () => {
-                let previous = brushChart.forcedXTicks(),
+            it('should provide a xTicks getter and setter', () => {
+                let previous = brushChart.xTicks(),
                     expected = 2,
                     actual;
 
-                brushChart.forcedXTicks(expected);
-                actual = brushChart.forcedXTicks();
+                brushChart.xTicks(expected);
+                actual = brushChart.xTicks();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
 
-            it('should provide a forcedXFormat getter and setter', () => {
+            it('should provide a xAxisCustomFormat getter and setter', () => {
                 let previous = brushChart.xAxisCustomFormat(),
                     expected = '%d %b',
                     actual;

@@ -9367,7 +9367,7 @@ webpackJsonp([5,10],[
 	            yScale = void 0,
 	            xAxis = void 0,
 	            xAxisFormat = null,
-	            forcedXTicks = null,
+	            xTicks = null,
 	            xAxisCustomFormat = null,
 	            brush = void 0,
 	            chartBrush = void 0,
@@ -9421,7 +9421,7 @@ webpackJsonp([5,10],[
 	
 	            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
 	                minor = {
-	                    tick: forcedXTicks,
+	                    tick: xTicks,
 	                    format: d3TimeFormat.timeFormat(xAxisCustomFormat)
 	                };
 	            } else {
@@ -9710,11 +9710,11 @@ webpackJsonp([5,10],[
 	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
 	         * @return {Number | Module}        Current number or ticks or module to chain calls
 	         */
-	        exports.forcedXTicks = function (_x) {
+	        exports.xTicks = function (_x) {
 	            if (!arguments.length) {
-	                return forcedXTicks;
+	                return xTicks;
 	            }
-	            forcedXTicks = _x;
+	            xTicks = _x;
 	
 	            return this;
 	        };
@@ -13749,7 +13749,7 @@ webpackJsonp([5,10],[
 	            singleLineGradientColors = colorHelper.colorGradients.greenBlueGradient,
 	            topicColorMap = void 0,
 	            xAxisFormat = null,
-	            forcedXTicks = null,
+	            xTicks = null,
 	            xAxisCustomFormat = null,
 	            locale = void 0,
 	            isAnimated = false,
@@ -13875,7 +13875,7 @@ webpackJsonp([5,10],[
 	
 	            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
 	                minor = {
-	                    tick: forcedXTicks,
+	                    tick: xTicks,
 	                    format: d3TimeFormat.timeFormat(xAxisCustomFormat)
 	                };
 	                major = null;
@@ -14370,11 +14370,11 @@ webpackJsonp([5,10],[
 	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
 	         * @return { (Number|Module) }      Current number or ticks or module to chain calls
 	         */
-	        exports.forcedXTicks = function (_x) {
+	        exports.xTicks = function (_x) {
 	            if (!arguments.length) {
-	                return forcedXTicks;
+	                return xTicks;
 	            }
-	            forcedXTicks = _x;
+	            xTicks = _x;
 	
 	            return this;
 	        };
