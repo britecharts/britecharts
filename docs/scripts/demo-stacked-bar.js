@@ -12022,7 +12022,7 @@ webpackJsonp([8,10],[
 	            nameLabel = 'name',
 	            topicLabel = 'topics',
 	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
-	            forceAxisSettings = null,
+	            dateFormat = null,
 	            forceOrder = [],
 	
 	
@@ -12255,7 +12255,7 @@ webpackJsonp([8,10],[
 	         * @return {Function} The proper date formatting function
 	         */
 	        function formatDate(date) {
-	            var settings = forceAxisSettings || defaultAxisSettings;
+	            var settings = dateFormat || defaultAxisSettings;
 	            var format = null;
 	            var localeOptions = { month: 'short', day: 'numeric' };
 	
@@ -12400,7 +12400,7 @@ webpackJsonp([8,10],[
 	        /**
 	         * constants to be used to force the x axis to respect a certain granularity
 	         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
-	         * @example tooltip.forceDateRange(tooltip.axisTimeCombinations.HOUR_DAY)
+	         * @example tooltip.dateFormat(tooltip.axisTimeCombinations.HOUR_DAY)
 	         */
 	        exports.axisTimeCombinations = axisTimeCombinations;
 	
@@ -12424,11 +12424,11 @@ webpackJsonp([8,10],[
 	         * @param  {String} _x Desired format
 	         * @return { (String|Module) }    Current format or module to chain calls
 	         */
-	        exports.forceDateRange = function (_x) {
+	        exports.dateFormat = function (_x) {
 	            if (!arguments.length) {
-	                return forceAxisSettings || defaultAxisSettings;
+	                return dateFormat || defaultAxisSettings;
 	            }
-	            forceAxisSettings = _x;
+	            dateFormat = _x;
 	
 	            return this;
 	        };

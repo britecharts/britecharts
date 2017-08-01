@@ -92,7 +92,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                 describe('when date has day granularity', function() {
 
                     it('should update the title of the tooltip with a date with year', () =>  {
-                        tooltipChart.forceDateRange(tooltipChart.axisTimeCombinations.DAY_MONTH);
+                        tooltipChart.dateFormat(tooltipChart.axisTimeCombinations.DAY_MONTH);
                         tooltipChart.update({
                             date: '2015-08-05T07:00:00.000Z',
                             topics: []
@@ -109,7 +109,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                 xdescribe('when date has hour granularity', function() {
 
                     it('should update the title of the tooltip with a date with hours', () =>  {
-                        tooltipChart.forceDateRange(tooltipChart.axisTimeCombinations.HOUR_DAY);
+                        tooltipChart.dateFormat(tooltipChart.axisTimeCombinations.HOUR_DAY);
                         tooltipChart.update({
                             date: '2015-08-05T07:00:00.000Z',
                             topics: []
@@ -383,13 +383,13 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                 expect(newDateLabel).toBe(testDateLabel);
             });
 
-            it('should provide a forceDateRange getter and setter', () => {
-                let defaultSchema = tooltipChart.forceDateRange(),
+            it('should provide a dateFormat getter and setter', () => {
+                let defaultSchema = tooltipChart.dateFormat(),
                     testFormat = tooltipChart.axisTimeCombinations.HOUR_DAY,
                     newSchema;
 
-                tooltipChart.forceDateRange(testFormat);
-                newSchema = tooltipChart.forceDateRange();
+                tooltipChart.dateFormat(testFormat);
+                newSchema = tooltipChart.dateFormat();
 
                 expect(defaultSchema).not.toBe(testFormat);
                 expect(newSchema).toBe(testFormat);
