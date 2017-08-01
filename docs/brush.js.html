@@ -624,9 +624,9 @@
          * @param  {String} _x Desired format
          * @return { (String|Module) }    Current format or module to chain calls
          * @example
-         *     brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
+         *     brush.xAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
          */
-        exports.forceAxisFormat = function(_x) {
+        exports.xAxisFormat = function(_x) {
             if (!arguments.length) {
               return forceAxisSettings;
             }
@@ -637,7 +637,7 @@
 
         /**
          * Exposes the ability to force the chart to show a certain x format
-         * It requires a `forceAxisFormat` of 'custom' in order to work.
+         * It requires a `xAxisFormat` of 'custom' in order to work.
          * @param  {String} _x              Desired format for x axis
          * @return { (String|Module) }      Current format or module to chain calls
          */

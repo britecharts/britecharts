@@ -9676,9 +9676,9 @@ webpackJsonp([5,10],[
 	         * @param  {String} _x Desired format
 	         * @return { (String|Module) }    Current format or module to chain calls
 	         * @example
-	         *     brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
+	         *     brush.xAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
 	         */
-	        exports.forceAxisFormat = function (_x) {
+	        exports.xAxisFormat = function (_x) {
 	            if (!arguments.length) {
 	                return forceAxisSettings;
 	            }
@@ -9689,7 +9689,7 @@ webpackJsonp([5,10],[
 	
 	        /**
 	         * Exposes the ability to force the chart to show a certain x format
-	         * It requires a `forceAxisFormat` of 'custom' in order to work.
+	         * It requires a `xAxisFormat` of 'custom' in order to work.
 	         * @param  {String} _x              Desired format for x axis
 	         * @return { (String|Module) }      Current format or module to chain calls
 	         */
@@ -14335,9 +14335,9 @@ webpackJsonp([5,10],[
 	         * @param  {String} _x Desired format
 	         * @return { (String|Module) }    Current format or module to chain calls
 	         * @example
-	         *     line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
+	         *     line.xAxisFormat(line.axisTimeCombinations.HOUR_DAY)
 	         */
-	        exports.forceAxisFormat = function (_x) {
+	        exports.xAxisFormat = function (_x) {
 	            if (!arguments.length) {
 	                return forceAxisSettings;
 	            }
@@ -14348,7 +14348,7 @@ webpackJsonp([5,10],[
 	
 	        /**
 	         * Exposes the ability to force the chart to show a certain x format
-	         * It requires a `forceAxisFormat` of 'custom' in order to work.
+	         * It requires a `xAxisFormat` of 'custom' in order to work.
 	         * NOTE: localization not supported
 	         * @param  {String} _x              Desired format for x axis
 	         * @return { (String|Module) }      Current format or module to chain calls
@@ -14363,7 +14363,7 @@ webpackJsonp([5,10],[
 	        };
 	
 	        /**
-	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
+	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisFormat` of 'custom' in order to work.
 	         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
 	         * how many and where the ticks will appear.
 	         *

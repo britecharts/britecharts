@@ -893,9 +893,9 @@ define(function(require){
          * @param  {String} _x Desired format
          * @return { (String|Module) }    Current format or module to chain calls
          * @example
-         *     area.forceAxisFormat(area.axisTimeCombinations.HOUR_DAY)
+         *     area.xAxisFormat(area.axisTimeCombinations.HOUR_DAY)
          */
-        exports.forceAxisFormat = function(_x) {
+        exports.xAxisFormat = function(_x) {
             if (!arguments.length) {
               return forceAxisSettings;
             }
@@ -906,7 +906,7 @@ define(function(require){
 
         /**
          * Exposes the ability to force the chart to show a certain x format
-         * It requires a `forceAxisFormat` of 'custom' in order to work.
+         * It requires a `xAxisFormat` of 'custom' in order to work.
          * NOTE: localization not supported
          * @param  {String} _x              Desired format for x axis
          * @return { (String|Module) }      Current format or module to chain calls
@@ -921,7 +921,7 @@ define(function(require){
         };
 
         /**
-         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
+         * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisFormat` of 'custom' in order to work.
          * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
          * how many and where the ticks will appear.
          *

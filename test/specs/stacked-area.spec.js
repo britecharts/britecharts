@@ -263,12 +263,12 @@ define([
             });
 
             it('should provide a forceAxisFormat getter and setter', () => {
-                let defaultSchema = stackedAreaChart.forceAxisFormat(),
+                let defaultSchema = stackedAreaChart.xAxisFormat(),
                     testFormat = stackedAreaChart.axisTimeCombinations.HOUR_DAY,
                     newSchema;
 
-                stackedAreaChart.forceAxisFormat(testFormat);
-                newSchema = stackedAreaChart.forceAxisFormat();
+                stackedAreaChart.xAxisFormat(testFormat);
+                newSchema = stackedAreaChart.xAxisFormat();
 
                 expect(defaultSchema).not.toBe(testFormat);
                 expect(newSchema).toBe(testFormat);

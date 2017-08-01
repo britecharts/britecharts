@@ -332,12 +332,12 @@ define([
             });
 
             it('should provide a forceAxisFormat getter and setter', () => {
-                let defaultSchema = lineChart.forceAxisFormat(),
+                let defaultSchema = lineChart.xAxisFormat(),
                     testFormat = lineChart.axisTimeCombinations.HOUR_DAY,
                     newSchema;
 
-                lineChart.forceAxisFormat(testFormat);
-                newSchema = lineChart.forceAxisFormat();
+                lineChart.xAxisFormat(testFormat);
+                newSchema = lineChart.xAxisFormat();
 
                 expect(defaultSchema).not.toBe(testFormat);
                 expect(newSchema).toBe(testFormat);

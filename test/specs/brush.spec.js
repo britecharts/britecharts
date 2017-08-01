@@ -132,12 +132,12 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
             });
 
             it('should provide a forceAxisFormat getter and setter', () => {
-                let previous = brushChart.forceAxisFormat(),
+                let previous = brushChart.xAxisFormat(),
                     expected = brushChart.axisTimeCombinations.HOUR_DAY,
                     actual;
 
-                brushChart.forceAxisFormat(expected);
-                actual = brushChart.forceAxisFormat();
+                brushChart.xAxisFormat(expected);
+                actual = brushChart.xAxisFormat();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
