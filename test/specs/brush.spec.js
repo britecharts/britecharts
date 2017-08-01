@@ -156,12 +156,12 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
             });
 
             it('should provide a forcedXFormat getter and setter', () => {
-                let previous = brushChart.forcedXFormat(),
+                let previous = brushChart.xAxisCustomFormat(),
                     expected = '%d %b',
                     actual;
 
-                brushChart.forcedXFormat(expected);
-                actual = brushChart.forcedXFormat();
+                brushChart.xAxisCustomFormat(expected);
+                actual = brushChart.xAxisCustomFormat();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);

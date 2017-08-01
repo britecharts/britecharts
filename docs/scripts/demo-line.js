@@ -9366,9 +9366,9 @@ webpackJsonp([5,10],[
 	            xScale = void 0,
 	            yScale = void 0,
 	            xAxis = void 0,
-	            forceAxisSettings = null,
+	            xAxisFormat = null,
 	            forcedXTicks = null,
-	            forcedXFormat = null,
+	            xAxisCustomFormat = null,
 	            brush = void 0,
 	            chartBrush = void 0,
 	            handle = void 0,
@@ -9419,13 +9419,13 @@ webpackJsonp([5,10],[
 	            var minor = void 0,
 	                major = void 0;
 	
-	            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+	            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
 	                minor = {
 	                    tick: forcedXTicks,
-	                    format: d3TimeFormat.timeFormat(forcedXFormat)
+	                    format: d3TimeFormat.timeFormat(xAxisCustomFormat)
 	                };
 	            } else {
-	                var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(data, width, forceAxisSettings);
+	                var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(data, width, xAxisFormat);
 	
 	                minor = _timeAxisHelper$getXA.minor;
 	                major = _timeAxisHelper$getXA.major;
@@ -9673,16 +9673,16 @@ webpackJsonp([5,10],[
 	
 	        /**
 	         * Exposes the ability to force the chart to show a certain x axis grouping
-	         * @param  {String} _x Desired format
-	         * @return { (String|Module) }    Current format or module to chain calls
+	         * @param  {String} _x          Desired format
+	         * @return {String | Module}    Current format or module to chain calls
 	         * @example
 	         *     brush.xAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
 	         */
 	        exports.xAxisFormat = function (_x) {
 	            if (!arguments.length) {
-	                return forceAxisSettings;
+	                return xAxisFormat;
 	            }
-	            forceAxisSettings = _x;
+	            xAxisFormat = _x;
 	
 	            return this;
 	        };
@@ -9691,13 +9691,13 @@ webpackJsonp([5,10],[
 	         * Exposes the ability to force the chart to show a certain x format
 	         * It requires a `xAxisFormat` of 'custom' in order to work.
 	         * @param  {String} _x              Desired format for x axis
-	         * @return { (String|Module) }      Current format or module to chain calls
+	         * @return {String | Module}        Current format or module to chain calls
 	         */
-	        exports.forcedXFormat = function (_x) {
+	        exports.xAxisCustomFormat = function (_x) {
 	            if (!arguments.length) {
-	                return forcedXFormat;
+	                return xAxisCustomFormat;
 	            }
-	            forcedXFormat = _x;
+	            xAxisCustomFormat = _x;
 	
 	            return this;
 	        };
@@ -9708,7 +9708,7 @@ webpackJsonp([5,10],[
 	         * how many and where the ticks will appear.
 	         *
 	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
-	         * @return { (Number|Module) }      Current number or ticks or module to chain calls
+	         * @return {Number | Module}        Current number or ticks or module to chain calls
 	         */
 	        exports.forcedXTicks = function (_x) {
 	            if (!arguments.length) {
@@ -9729,8 +9729,8 @@ webpackJsonp([5,10],[
 	
 	        /**
 	         * Gets or Sets the gradient of the chart
-	         * @param  {String[]} _x Desired gradient for the graph
-	         * @return { gradient | module} Current gradient or Chart module to chain calls
+	         * @param  {String[]} _x        Desired gradient for the graph
+	         * @return {String | Module}    Current gradient or Chart module to chain calls
 	         * @public
 	         */
 	        exports.gradient = function (_x) {
@@ -9744,8 +9744,8 @@ webpackJsonp([5,10],[
 	
 	        /**
 	         * Gets or Sets the height of the chart
-	         * @param  {number} _x Desired width for the graph
-	         * @return { height | module} Current height or Chart module to chain calls
+	         * @param  {Number} _x          Desired width for the graph
+	         * @return {Number | Module}    Current height or Chart module to chain calls
 	         * @public
 	         */
 	        exports.height = function (_x) {
@@ -9759,8 +9759,8 @@ webpackJsonp([5,10],[
 	
 	        /**
 	         * Gets or Sets the margin of the chart
-	         * @param  {object} _x Margin object to get/set
-	         * @return { margin | module} Current margin or Chart module to chain calls
+	         * @param  {Object} _x          Margin object to get/set
+	         * @return {Object | Module}    Current margin or Chart module to chain calls
 	         * @public
 	         */
 	        exports.margin = function (_x) {
@@ -9774,8 +9774,8 @@ webpackJsonp([5,10],[
 	
 	        /**
 	         * Gets or Sets the callback that will be called when the user brushes over the area
-	         * @param  {Function} _x Callback to call
-	         * @return {Function | module}    Current callback function or the Chart Module
+	         * @param  {Function} _x            Callback to call
+	         * @return {Function | module}      Current callback function or the Chart Module
 	         */
 	        exports.onBrush = function (_x) {
 	            if (!arguments.length) return onBrush;
@@ -9786,8 +9786,8 @@ webpackJsonp([5,10],[
 	
 	        /**
 	         * Gets or Sets the width of the chart
-	         * @param  {number} _x Desired width for the graph
-	         * @return { width | module} Current width or Chart module to chain calls
+	         * @param  {Number} _x          Desired width for the graph
+	         * @return {Number | Module}    Current width or Chart module to chain calls
 	         * @public
 	         */
 	        exports.width = function (_x) {
@@ -13748,9 +13748,9 @@ webpackJsonp([5,10],[
 	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
 	            singleLineGradientColors = colorHelper.colorGradients.greenBlueGradient,
 	            topicColorMap = void 0,
-	            forceAxisSettings = null,
+	            xAxisFormat = null,
 	            forcedXTicks = null,
-	            forcedXFormat = null,
+	            xAxisCustomFormat = null,
 	            locale = void 0,
 	            isAnimated = false,
 	            ease = d3Ease.easeQuadInOut,
@@ -13873,14 +13873,14 @@ webpackJsonp([5,10],[
 	            var minor = void 0,
 	                major = void 0;
 	
-	            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+	            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
 	                minor = {
 	                    tick: forcedXTicks,
-	                    format: d3TimeFormat.timeFormat(forcedXFormat)
+	                    format: d3TimeFormat.timeFormat(xAxisCustomFormat)
 	                };
 	                major = null;
 	            } else {
-	                var _getXAxisSettings = getXAxisSettings(dataByDate, width, forceAxisSettings, locale);
+	                var _getXAxisSettings = getXAxisSettings(dataByDate, width, xAxisFormat, locale);
 	
 	                minor = _getXAxisSettings.minor;
 	                major = _getXAxisSettings.major;
@@ -14065,7 +14065,7 @@ webpackJsonp([5,10],[
 	        function drawAxis() {
 	            svg.select('.x-axis-group .axis.x').attr('transform', 'translate(0, ' + chartHeight + ')').call(xAxis);
 	
-	            if (forceAxisSettings !== 'custom') {
+	            if (xAxisFormat !== 'custom') {
 	                svg.select('.x-axis-group .month-axis').attr('transform', 'translate(0, ' + (chartHeight + monthAxisPadding) + ')').call(xMonthAxis);
 	            }
 	
@@ -14339,9 +14339,9 @@ webpackJsonp([5,10],[
 	         */
 	        exports.xAxisFormat = function (_x) {
 	            if (!arguments.length) {
-	                return forceAxisSettings;
+	                return xAxisFormat;
 	            }
-	            forceAxisSettings = _x;
+	            xAxisFormat = _x;
 	
 	            return this;
 	        };
@@ -14353,11 +14353,11 @@ webpackJsonp([5,10],[
 	         * @param  {String} _x              Desired format for x axis
 	         * @return { (String|Module) }      Current format or module to chain calls
 	         */
-	        exports.forcedXFormat = function (_x) {
+	        exports.xAxisCustomFormat = function (_x) {
 	            if (!arguments.length) {
-	                return forcedXFormat;
+	                return xAxisCustomFormat;
 	            }
-	            forcedXFormat = _x;
+	            xAxisCustomFormat = _x;
 	
 	            return this;
 	        };

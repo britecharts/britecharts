@@ -82,9 +82,9 @@ define(function(require) {
             xScale, yScale,
             xAxis,
 
-            forceAxisSettings = null,
+            xAxisFormat = null,
             forcedXTicks = null,
-            forcedXFormat = null,
+            xAxisCustomFormat = null,
 
             brush,
             chartBrush,
@@ -132,13 +132,13 @@ define(function(require) {
         function buildAxis(){
             let minor, major;
 
-            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
                 minor = {
                     tick: forcedXTicks,
-                    format: d3TimeFormat.timeFormat(forcedXFormat)
+                    format: d3TimeFormat.timeFormat(xAxisCustomFormat)
                 };
             } else {
-                ({minor, major} = timeAxisHelper.getXAxisSettings(data, width, forceAxisSettings));
+                ({minor, major} = timeAxisHelper.getXAxisSettings(data, width, xAxisFormat));
             }
 
             xAxis = d3Axis.axisBottom(xScale)
@@ -434,16 +434,16 @@ define(function(require) {
 
         /**
          * Exposes the ability to force the chart to show a certain x axis grouping
-         * @param  {String} _x Desired format
-         * @return { (String|Module) }    Current format or module to chain calls
+         * @param  {String} _x          Desired format
+         * @return {String | Module}    Current format or module to chain calls
          * @example
          *     brush.xAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
          */
         exports.xAxisFormat = function(_x) {
             if (!arguments.length) {
-              return forceAxisSettings;
+              return xAxisFormat;
             }
-            forceAxisSettings = _x;
+            xAxisFormat = _x;
 
             return this;
         };
@@ -452,13 +452,13 @@ define(function(require) {
          * Exposes the ability to force the chart to show a certain x format
          * It requires a `xAxisFormat` of 'custom' in order to work.
          * @param  {String} _x              Desired format for x axis
-         * @return { (String|Module) }      Current format or module to chain calls
+         * @return {String | Module}        Current format or module to chain calls
          */
-        exports.forcedXFormat = function(_x) {
+        exports.xAxisCustomFormat = function(_x) {
             if (!arguments.length) {
-              return forcedXFormat;
+              return xAxisCustomFormat;
             }
-            forcedXFormat = _x;
+            xAxisCustomFormat = _x;
 
             return this;
         };
@@ -469,7 +469,7 @@ define(function(require) {
          * how many and where the ticks will appear.
          *
          * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
-         * @return { (Number|Module) }      Current number or ticks or module to chain calls
+         * @return {Number | Module}        Current number or ticks or module to chain calls
          */
         exports.forcedXTicks = function(_x) {
             if (!arguments.length) {
@@ -490,8 +490,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the gradient of the chart
-         * @param  {String[]} _x Desired gradient for the graph
-         * @return { gradient | module} Current gradient or Chart module to chain calls
+         * @param  {String[]} _x        Desired gradient for the graph
+         * @return {String | Module}    Current gradient or Chart module to chain calls
          * @public
          */
         exports.gradient = function(_x) {
@@ -505,8 +505,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the height of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { height | module} Current height or Chart module to chain calls
+         * @param  {Number} _x          Desired width for the graph
+         * @return {Number | Module}    Current height or Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -520,8 +520,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the margin of the chart
-         * @param  {object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Chart module to chain calls
+         * @param  {Object} _x          Margin object to get/set
+         * @return {Object | Module}    Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -535,8 +535,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the callback that will be called when the user brushes over the area
-         * @param  {Function} _x Callback to call
-         * @return {Function | module}    Current callback function or the Chart Module
+         * @param  {Function} _x            Callback to call
+         * @return {Function | module}      Current callback function or the Chart Module
          */
         exports.onBrush = function(_x) {
             if (!arguments.length) return onBrush;
@@ -547,8 +547,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the width of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { width | module} Current width or Chart module to chain calls
+         * @param  {Number} _x          Desired width for the graph
+         * @return {Number | Module}    Current width or Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {

@@ -12936,9 +12936,9 @@ webpackJsonp([7,10],[
 	            areaOpacity = 0.64,
 	            categoryColorMap = void 0,
 	            order = void 0,
-	            forceAxisSettings = null,
+	            xAxisFormat = null,
 	            forcedXTicks = null,
-	            forcedXFormat = null,
+	            xAxisCustomFormat = null,
 	            locale = void 0,
 	            baseLine = void 0,
 	            layers = void 0,
@@ -13060,14 +13060,14 @@ webpackJsonp([7,10],[
 	            var minor = void 0,
 	                major = void 0;
 	
-	            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+	            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
 	                minor = {
 	                    tick: forcedXTicks,
-	                    format: d3TimeFormat.timeFormat(forcedXFormat)
+	                    format: d3TimeFormat.timeFormat(xAxisCustomFormat)
 	                };
 	                major = null;
 	            } else {
-	                var _getXAxisSettings = getXAxisSettings(dataByDate, width, forceAxisSettings, locale);
+	                var _getXAxisSettings = getXAxisSettings(dataByDate, width, xAxisFormat, locale);
 	
 	                minor = _getXAxisSettings.minor;
 	                major = _getXAxisSettings.major;
@@ -13234,7 +13234,7 @@ webpackJsonp([7,10],[
 	        function drawAxis() {
 	            svg.select('.x-axis-group .axis.x').attr('transform', 'translate( 0, ' + chartHeight + ' )').call(xAxis);
 	
-	            if (forceAxisSettings !== 'custom') {
+	            if (xAxisFormat !== 'custom') {
 	                svg.select('.x-axis-group .month-axis').attr('transform', 'translate(0, ' + (chartHeight + monthAxisPadding) + ')').call(xMonthAxis);
 	            }
 	
@@ -13648,9 +13648,9 @@ webpackJsonp([7,10],[
 	         */
 	        exports.xAxisFormat = function (_x) {
 	            if (!arguments.length) {
-	                return forceAxisSettings;
+	                return xAxisFormat;
 	            }
-	            forceAxisSettings = _x;
+	            xAxisFormat = _x;
 	
 	            return this;
 	        };
@@ -13662,11 +13662,11 @@ webpackJsonp([7,10],[
 	         * @param  {String} _x              Desired format for x axis
 	         * @return { (String|Module) }      Current format or module to chain calls
 	         */
-	        exports.forcedXFormat = function (_x) {
+	        exports.xAxisCustomFormat = function (_x) {
 	            if (!arguments.length) {
-	                return forcedXFormat;
+	                return xAxisCustomFormat;
 	            }
-	            forcedXFormat = _x;
+	            xAxisCustomFormat = _x;
 	
 	            return this;
 	        };

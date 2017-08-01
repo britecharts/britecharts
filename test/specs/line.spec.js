@@ -356,12 +356,12 @@ define([
             });
 
             it('should provide a forcedXFormat getter and setter', () => {
-                let defaultForcedXFormat = lineChart.forcedXFormat(),
+                let defaultForcedXFormat = lineChart.xAxisCustomFormat(),
                     testXFormat = '%d %b',
                     newForcedXFormat;
 
-                lineChart.forcedXFormat(testXFormat);
-                newForcedXFormat = lineChart.forcedXFormat();
+                lineChart.xAxisCustomFormat(testXFormat);
+                newForcedXFormat = lineChart.xAxisCustomFormat();
 
                 expect(defaultForcedXFormat).not.toBe(testXFormat);
                 expect(newForcedXFormat).toBe(testXFormat);

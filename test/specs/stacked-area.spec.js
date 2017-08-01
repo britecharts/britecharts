@@ -287,12 +287,12 @@ define([
             });
 
             it('should provide a forcedXFormat getter and setter', () => {
-                let defaultForcedXFormat = stackedAreaChart.forcedXFormat(),
+                let defaultForcedXFormat = stackedAreaChart.xAxisCustomFormat(),
                     testXFormat = '%d %b',
                     newForcedXFormat;
 
-                stackedAreaChart.forcedXFormat(testXFormat);
-                newForcedXFormat = stackedAreaChart.forcedXFormat();
+                stackedAreaChart.xAxisCustomFormat(testXFormat);
+                newForcedXFormat = stackedAreaChart.xAxisCustomFormat();
 
                 expect(defaultForcedXFormat).not.toBe(testXFormat);
                 expect(newForcedXFormat).toBe(testXFormat);

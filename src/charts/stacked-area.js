@@ -103,9 +103,9 @@ define(function(require){
             categoryColorMap,
             order,
 
-            forceAxisSettings = null,
+            xAxisFormat = null,
             forcedXTicks = null,
-            forcedXFormat = null,
+            xAxisCustomFormat = null,
             locale,
 
             baseLine,
@@ -230,14 +230,14 @@ define(function(require){
             let yTickNumber = dataSpan < verticalTicks - 1 ? dataSpan : verticalTicks;
             let minor, major;
 
-            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
                 minor = {
                     tick: forcedXTicks,
-                    format:  d3TimeFormat.timeFormat(forcedXFormat)
+                    format:  d3TimeFormat.timeFormat(xAxisCustomFormat)
                 };
                 major = null;
             } else {
-                ({minor, major} = getXAxisSettings(dataByDate, width, forceAxisSettings, locale));
+                ({minor, major} = getXAxisSettings(dataByDate, width, xAxisFormat, locale));
 
                 xMonthAxis = d3Axis.axisBottom(xScale)
                     .ticks(major.tick)
@@ -433,7 +433,7 @@ define(function(require){
                 .attr('transform', `translate( 0, ${chartHeight} )`)
                 .call(xAxis);
 
-            if (forceAxisSettings !== 'custom') {
+            if (xAxisFormat !== 'custom') {
                 svg.select('.x-axis-group .month-axis')
                     .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
                     .call(xMonthAxis);
@@ -897,9 +897,9 @@ define(function(require){
          */
         exports.xAxisFormat = function(_x) {
             if (!arguments.length) {
-              return forceAxisSettings;
+              return xAxisFormat;
             }
-            forceAxisSettings = _x;
+            xAxisFormat = _x;
 
             return this;
         };
@@ -911,11 +911,11 @@ define(function(require){
          * @param  {String} _x              Desired format for x axis
          * @return { (String|Module) }      Current format or module to chain calls
          */
-        exports.forcedXFormat = function(_x) {
+        exports.xAxisCustomFormat = function(_x) {
             if (!arguments.length) {
-              return forcedXFormat;
+              return xAxisCustomFormat;
             }
-            forcedXFormat = _x;
+            xAxisCustomFormat = _x;
 
             return this;
         };
