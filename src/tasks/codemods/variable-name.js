@@ -1,5 +1,5 @@
-const oldVariable = 'forcedXTicks';
-const newVariable = 'xTicks';
+const oldVariable = 'forceOrder';
+const newVariable = 'topicsOrder';
 
 export default function transformer(file, api) {
     const j = api.jscodeshift;

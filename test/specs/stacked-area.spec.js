@@ -275,27 +275,27 @@ define([
             });
 
             it('should provide a xTicks getter and setter', () => {
-                let defaultForcedXTicks = stackedAreaChart.xTicks(),
-                    testXTicks = 2,
-                    newForcedXTicks;
+                let previous = stackedAreaChart.xTicks(),
+                    expected = 2,
+                    actual;
 
-                stackedAreaChart.xTicks(testXTicks);
-                newForcedXTicks = stackedAreaChart.xTicks();
+                stackedAreaChart.xTicks(expected);
+                actual = stackedAreaChart.xTicks();
 
-                expect(defaultForcedXTicks).not.toBe(testXTicks);
-                expect(newForcedXTicks).toBe(testXTicks);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide a xAxisCustomFormat getter and setter', () => {
-                let defaultForcedXFormat = stackedAreaChart.xAxisCustomFormat(),
-                    testXFormat = '%d %b',
-                    newForcedXFormat;
+                let previous = stackedAreaChart.xAxisCustomFormat(),
+                    expected = '%d %b',
+                    actual;
 
-                stackedAreaChart.xAxisCustomFormat(testXFormat);
-                newForcedXFormat = stackedAreaChart.xAxisCustomFormat();
+                stackedAreaChart.xAxisCustomFormat(expected);
+                actual = stackedAreaChart.xAxisCustomFormat();
 
-                expect(defaultForcedXFormat).not.toBe(testXFormat);
-                expect(newForcedXFormat).toBe(testXFormat);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide grid mode getter and setter', () => {

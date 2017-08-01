@@ -418,13 +418,13 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                 expect(actual).toBe(expected);
             });
 
-            it('should provide a forceOrder getter and setter', () => {
-                let defaultOrder = tooltipChart.forceOrder(),
+            it('should provide a topicsOrder getter and setter', () => {
+                let defaultOrder = tooltipChart.topicsOrder(),
                     testOrder = [1,2,3,4,5],
                     newOrder;
 
-                tooltipChart.forceOrder(testOrder);
-                newOrder = tooltipChart.forceOrder();
+                tooltipChart.topicsOrder(testOrder);
+                newOrder = tooltipChart.topicsOrder();
 
                 expect(defaultOrder).not.toBe(testOrder);
                 expect(newOrder).toBe(testOrder);

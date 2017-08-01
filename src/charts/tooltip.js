@@ -110,7 +110,7 @@ define(function(require){
 
             defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
             dateFormat = null,
-            forceOrder = [],
+            topicsOrder = [],
 
             // formats
             monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
@@ -426,7 +426,7 @@ define(function(require){
          * @param  {Object[]} order     Array of names in the order to sort topics by
          * @return {Object[]}           sorted topics object
          */
-        function _sortByForceOrder(topics, order=forceOrder) {
+        function _sortByTopicsOrder(topics, order=topicsOrder) {
             return order.map((orderName) => topics.filter(({name}) => name === orderName)[0]);
         }
 
@@ -519,9 +519,9 @@ define(function(require){
         function updateContent(dataPoint){
             var topics = dataPoint[topicLabel];
 
-            // sort order by forceOrder array if passed
-            if (forceOrder.length) {
-                topics = _sortByForceOrder(topics);
+            // sort order by topicsOrder array if passed
+            if (topicsOrder.length) {
+                topics = _sortByTopicsOrder(topics);
             } else if (topics.length && topics[0].name) {
                 topics = _sortByAlpha(topics);
             }
@@ -641,11 +641,11 @@ define(function(require){
          * @return { overrideOrder | module} Current overrideOrder or Chart module to chain calls
          * @public
          */
-        exports.forceOrder = function(_x) {
+        exports.topicsOrder = function(_x) {
             if (!arguments.length) {
-                return forceOrder;
+                return topicsOrder;
             }
-            forceOrder = _x;
+            topicsOrder = _x;
 
             return this;
         };

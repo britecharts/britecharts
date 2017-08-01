@@ -10976,7 +10976,7 @@ webpackJsonp([3,10],[
 	            topicLabel = 'topics',
 	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
 	            dateFormat = null,
-	            forceOrder = [],
+	            topicsOrder = [],
 	
 	
 	        // formats
@@ -11235,8 +11235,8 @@ webpackJsonp([3,10],[
 	         * @param  {Object[]} order     Array of names in the order to sort topics by
 	         * @return {Object[]}           sorted topics object
 	         */
-	        function _sortByForceOrder(topics) {
-	            var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : forceOrder;
+	        function _sortByTopicsOrder(topics) {
+	            var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : topicsOrder;
 	
 	            return order.map(function (orderName) {
 	                return topics.filter(function (_ref3) {
@@ -11322,9 +11322,9 @@ webpackJsonp([3,10],[
 	        function updateContent(dataPoint) {
 	            var topics = dataPoint[topicLabel];
 	
-	            // sort order by forceOrder array if passed
-	            if (forceOrder.length) {
-	                topics = _sortByForceOrder(topics);
+	            // sort order by topicsOrder array if passed
+	            if (topicsOrder.length) {
+	                topics = _sortByTopicsOrder(topics);
 	            } else if (topics.length && topics[0].name) {
 	                topics = _sortByAlpha(topics);
 	            }
@@ -11443,11 +11443,11 @@ webpackJsonp([3,10],[
 	         * @return { overrideOrder | module} Current overrideOrder or Chart module to chain calls
 	         * @public
 	         */
-	        exports.forceOrder = function (_x) {
+	        exports.topicsOrder = function (_x) {
 	            if (!arguments.length) {
-	                return forceOrder;
+	                return topicsOrder;
 	            }
-	            forceOrder = _x;
+	            topicsOrder = _x;
 	
 	            return this;
 	        };

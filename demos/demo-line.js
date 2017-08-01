@@ -91,7 +91,7 @@ function createLineChart(optionalColorSchema, optionalData) {
             // In order to change the date range on the tooltip title, uncomment this line
             // .dateFormat(chartTooltip.axisTimeCombinations.HOUR_DAY)
             .title('Quantity Sold')
-            .forceOrder(dataset.dataByTopic.map(function(topic) {
+            .topicsOrder(dataset.dataByTopic.map(function(topic) {
                 return topic.topic;
             }));
 

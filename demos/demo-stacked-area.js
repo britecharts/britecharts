@@ -51,7 +51,7 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
         chartTooltip
             .topicLabel('values')
             .title('Testing tooltip')
-            .forceOrder(uniq(dataset.data.map((d) => d.name)));
+            .topicsOrder(uniq(dataset.data.map((d) => d.name)));
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
