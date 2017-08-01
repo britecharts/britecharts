@@ -77,7 +77,7 @@ webpackJsonp([7,10],[
 	        // dataset = testDataSet.withLargeData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').xAxisFormat('custom').forcedXFormat('%Y/%m/%d').forcedXTicks(2).width(containerWidth).dateLabel('date').valueLabel('views').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
+	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').xAxisFormat('custom').xAxisCustomFormat('%Y/%m/%d').xTicks(2).width(containerWidth).dateLabel('date').valueLabel('views').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 	
 	        if (optionalColorSchema) {
 	            stackedArea.colorSchema(optionalColorSchema);
@@ -13876,7 +13876,7 @@ webpackJsonp([7,10],[
 	         * Exposes the constants to be used to force the x axis to respect a certain granularity
 	         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 	         * @example
-	         *     area.forceAxisFormat(area.axisTimeCombinations.HOUR_DAY)
+	         *     area.xAxisFormat(area.axisTimeCombinations.HOUR_DAY)
 	         */
 	        exports.axisTimeCombinations = axisTimeCombinations;
 	

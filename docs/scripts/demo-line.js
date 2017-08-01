@@ -9703,7 +9703,7 @@ webpackJsonp([5,10],[
 	        };
 	
 	        /**
-	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
+	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisCustomFormat` of 'custom' in order to work.
 	         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
 	         * how many and where the ticks will appear.
 	         *
@@ -9723,7 +9723,7 @@ webpackJsonp([5,10],[
 	         * Exposes the constants to be used to force the x axis to respect a certain granularity
 	         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 	         * @example
-	         *     brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
+	         *     brush.xAxisCustomFormat(brush.axisTimeCombinations.HOUR_DAY)
 	         */
 	        exports.axisTimeCombinations = axisTimeCombinations;
 	
@@ -14581,7 +14581,7 @@ webpackJsonp([5,10],[
 	         * Exposes the constants to be used to force the x axis to respect a certain granularity
 	         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 	         * @example
-	         *     line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
+	         *     line.xAxisCustomFormat(line.axisTimeCombinations.HOUR_DAY)
 	         */
 	        exports.axisTimeCombinations = axisTimeCombinations;
 	

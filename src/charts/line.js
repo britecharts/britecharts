@@ -1055,7 +1055,7 @@ define(function(require){
          * Exposes the constants to be used to force the x axis to respect a certain granularity
          * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
          * @example
-         *     line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
+         *     line.xAxisCustomFormat(line.axisTimeCombinations.HOUR_DAY)
          */
         exports.axisTimeCombinations = axisTimeCombinations;
 
