@@ -51,7 +51,7 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
         chartTooltip
             .topicLabel('values')
             .title('Testing tooltip')
-            .forceOrder(uniq(dataset.data.map((d) => d.name)));
+            .topicsOrder(uniq(dataset.data.map((d) => d.name)));
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
@@ -84,9 +84,9 @@ function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
             .tooltipThreshold(600)
             .aspectRatio(0.6)
             .grid('full')
-            .forceAxisFormat('custom')
-            .forcedXFormat('%Y/%m/%d')
-            .forcedXTicks(2)
+            .xAxisFormat('custom')
+            .xAxisCustomFormat('%Y/%m/%d')
+            .xTicks(2)
             .width(containerWidth)
             .dateLabel('date')
             .valueLabel('views')

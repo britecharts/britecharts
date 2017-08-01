@@ -262,40 +262,40 @@ define([
                 expect(newOpacity).toBe(testOpacity);
             });
 
-            it('should provide a forceAxisFormat getter and setter', () => {
-                let defaultSchema = stackedAreaChart.forceAxisFormat(),
+            it('should provide a xAxisFormat getter and setter', () => {
+                let defaultSchema = stackedAreaChart.xAxisFormat(),
                     testFormat = stackedAreaChart.axisTimeCombinations.HOUR_DAY,
                     newSchema;
 
-                stackedAreaChart.forceAxisFormat(testFormat);
-                newSchema = stackedAreaChart.forceAxisFormat();
+                stackedAreaChart.xAxisFormat(testFormat);
+                newSchema = stackedAreaChart.xAxisFormat();
 
                 expect(defaultSchema).not.toBe(testFormat);
                 expect(newSchema).toBe(testFormat);
             });
 
-            it('should provide a forcedXTicks getter and setter', () => {
-                let defaultForcedXTicks = stackedAreaChart.forcedXTicks(),
-                    testXTicks = 2,
-                    newForcedXTicks;
+            it('should provide a xTicks getter and setter', () => {
+                let previous = stackedAreaChart.xTicks(),
+                    expected = 2,
+                    actual;
 
-                stackedAreaChart.forcedXTicks(testXTicks);
-                newForcedXTicks = stackedAreaChart.forcedXTicks();
+                stackedAreaChart.xTicks(expected);
+                actual = stackedAreaChart.xTicks();
 
-                expect(defaultForcedXTicks).not.toBe(testXTicks);
-                expect(newForcedXTicks).toBe(testXTicks);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
-            it('should provide a forcedXFormat getter and setter', () => {
-                let defaultForcedXFormat = stackedAreaChart.forcedXFormat(),
-                    testXFormat = '%d %b',
-                    newForcedXFormat;
+            it('should provide a xAxisCustomFormat getter and setter', () => {
+                let previous = stackedAreaChart.xAxisCustomFormat(),
+                    expected = '%d %b',
+                    actual;
 
-                stackedAreaChart.forcedXFormat(testXFormat);
-                newForcedXFormat = stackedAreaChart.forcedXFormat();
+                stackedAreaChart.xAxisCustomFormat(expected);
+                actual = stackedAreaChart.xAxisCustomFormat();
 
-                expect(defaultForcedXFormat).not.toBe(testXFormat);
-                expect(newForcedXFormat).toBe(testXFormat);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide grid mode getter and setter', () => {

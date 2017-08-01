@@ -46,7 +46,7 @@ webpackJsonp([7,10],[
 	        container.datum(dataset.data).call(stackedArea);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.topicLabel('values').title('Testing tooltip').forceOrder(uniq(dataset.data.map(function (d) {
+	        chartTooltip.topicLabel('values').title('Testing tooltip').topicsOrder(uniq(dataset.data.map(function (d) {
 	            return d.name;
 	        })));
 	
@@ -77,7 +77,7 @@ webpackJsonp([7,10],[
 	        // dataset = testDataSet.withLargeData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').forceAxisFormat('custom').forcedXFormat('%Y/%m/%d').forcedXTicks(2).width(containerWidth).dateLabel('date').valueLabel('views').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
+	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').xAxisFormat('custom').xAxisCustomFormat('%Y/%m/%d').xTicks(2).width(containerWidth).dateLabel('date').valueLabel('views').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 	
 	        if (optionalColorSchema) {
 	            stackedArea.colorSchema(optionalColorSchema);
@@ -12165,8 +12165,8 @@ webpackJsonp([7,10],[
 	            nameLabel = 'name',
 	            topicLabel = 'topics',
 	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
-	            forceAxisSettings = null,
-	            forceOrder = [],
+	            dateFormat = null,
+	            topicsOrder = [],
 	
 	
 	        // formats
@@ -12398,7 +12398,7 @@ webpackJsonp([7,10],[
 	         * @return {Function} The proper date formatting function
 	         */
 	        function formatDate(date) {
-	            var settings = forceAxisSettings || defaultAxisSettings;
+	            var settings = dateFormat || defaultAxisSettings;
 	            var format = null;
 	            var localeOptions = { month: 'short', day: 'numeric' };
 	
@@ -12425,8 +12425,8 @@ webpackJsonp([7,10],[
 	         * @param  {Object[]} order     Array of names in the order to sort topics by
 	         * @return {Object[]}           sorted topics object
 	         */
-	        function _sortByForceOrder(topics) {
-	            var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : forceOrder;
+	        function _sortByTopicsOrder(topics) {
+	            var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : topicsOrder;
 	
 	            return order.map(function (orderName) {
 	                return topics.filter(function (_ref3) {
@@ -12512,9 +12512,9 @@ webpackJsonp([7,10],[
 	        function updateContent(dataPoint) {
 	            var topics = dataPoint[topicLabel];
 	
-	            // sort order by forceOrder array if passed
-	            if (forceOrder.length) {
-	                topics = _sortByForceOrder(topics);
+	            // sort order by topicsOrder array if passed
+	            if (topicsOrder.length) {
+	                topics = _sortByTopicsOrder(topics);
 	            } else if (topics.length && topics[0].name) {
 	                topics = _sortByAlpha(topics);
 	            }
@@ -12543,7 +12543,7 @@ webpackJsonp([7,10],[
 	        /**
 	         * constants to be used to force the x axis to respect a certain granularity
 	         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
-	         * @example tooltip.forceDateRange(tooltip.axisTimeCombinations.HOUR_DAY)
+	         * @example tooltip.dateFormat(tooltip.axisTimeCombinations.HOUR_DAY)
 	         */
 	        exports.axisTimeCombinations = axisTimeCombinations;
 	
@@ -12567,11 +12567,11 @@ webpackJsonp([7,10],[
 	         * @param  {String} _x Desired format
 	         * @return { (String|Module) }    Current format or module to chain calls
 	         */
-	        exports.forceDateRange = function (_x) {
+	        exports.dateFormat = function (_x) {
 	            if (!arguments.length) {
-	                return forceAxisSettings || defaultAxisSettings;
+	                return dateFormat || defaultAxisSettings;
 	            }
-	            forceAxisSettings = _x;
+	            dateFormat = _x;
 	
 	            return this;
 	        };
@@ -12633,11 +12633,11 @@ webpackJsonp([7,10],[
 	         * @return { overrideOrder | module} Current overrideOrder or Chart module to chain calls
 	         * @public
 	         */
-	        exports.forceOrder = function (_x) {
+	        exports.topicsOrder = function (_x) {
 	            if (!arguments.length) {
-	                return forceOrder;
+	                return topicsOrder;
 	            }
-	            forceOrder = _x;
+	            topicsOrder = _x;
 	
 	            return this;
 	        };
@@ -12936,9 +12936,9 @@ webpackJsonp([7,10],[
 	            areaOpacity = 0.64,
 	            categoryColorMap = void 0,
 	            order = void 0,
-	            forceAxisSettings = null,
-	            forcedXTicks = null,
-	            forcedXFormat = null,
+	            xAxisFormat = null,
+	            xTicks = null,
+	            xAxisCustomFormat = null,
 	            locale = void 0,
 	            baseLine = void 0,
 	            layers = void 0,
@@ -13060,14 +13060,14 @@ webpackJsonp([7,10],[
 	            var minor = void 0,
 	                major = void 0;
 	
-	            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+	            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
 	                minor = {
-	                    tick: forcedXTicks,
-	                    format: d3TimeFormat.timeFormat(forcedXFormat)
+	                    tick: xTicks,
+	                    format: d3TimeFormat.timeFormat(xAxisCustomFormat)
 	                };
 	                major = null;
 	            } else {
-	                var _getXAxisSettings = getXAxisSettings(dataByDate, width, forceAxisSettings, locale);
+	                var _getXAxisSettings = getXAxisSettings(dataByDate, width, xAxisFormat, locale);
 	
 	                minor = _getXAxisSettings.minor;
 	                major = _getXAxisSettings.major;
@@ -13234,7 +13234,7 @@ webpackJsonp([7,10],[
 	        function drawAxis() {
 	            svg.select('.x-axis-group .axis.x').attr('transform', 'translate( 0, ' + chartHeight + ' )').call(xAxis);
 	
-	            if (forceAxisSettings !== 'custom') {
+	            if (xAxisFormat !== 'custom') {
 	                svg.select('.x-axis-group .month-axis').attr('transform', 'translate(0, ' + (chartHeight + monthAxisPadding) + ')').call(xMonthAxis);
 	            }
 	
@@ -13644,46 +13644,46 @@ webpackJsonp([7,10],[
 	         * @param  {String} _x Desired format
 	         * @return { (String|Module) }    Current format or module to chain calls
 	         * @example
-	         *     area.forceAxisFormat(area.axisTimeCombinations.HOUR_DAY)
+	         *     area.xAxisFormat(area.axisTimeCombinations.HOUR_DAY)
 	         */
-	        exports.forceAxisFormat = function (_x) {
+	        exports.xAxisFormat = function (_x) {
 	            if (!arguments.length) {
-	                return forceAxisSettings;
+	                return xAxisFormat;
 	            }
-	            forceAxisSettings = _x;
+	            xAxisFormat = _x;
 	
 	            return this;
 	        };
 	
 	        /**
 	         * Exposes the ability to force the chart to show a certain x format
-	         * It requires a `forceAxisFormat` of 'custom' in order to work.
+	         * It requires a `xAxisFormat` of 'custom' in order to work.
 	         * NOTE: localization not supported
 	         * @param  {String} _x              Desired format for x axis
 	         * @return { (String|Module) }      Current format or module to chain calls
 	         */
-	        exports.forcedXFormat = function (_x) {
+	        exports.xAxisCustomFormat = function (_x) {
 	            if (!arguments.length) {
-	                return forcedXFormat;
+	                return xAxisCustomFormat;
 	            }
-	            forcedXFormat = _x;
+	            xAxisCustomFormat = _x;
 	
 	            return this;
 	        };
 	
 	        /**
-	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
+	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisFormat` of 'custom' in order to work.
 	         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
 	         * how many and where the ticks will appear.
 	         *
 	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
 	         * @return { (Number|Module) }      Current number or ticks or module to chain calls
 	         */
-	        exports.forcedXTicks = function (_x) {
+	        exports.xTicks = function (_x) {
 	            if (!arguments.length) {
-	                return forcedXTicks;
+	                return xTicks;
 	            }
-	            forcedXTicks = _x;
+	            xTicks = _x;
 	
 	            return this;
 	        };
@@ -13876,7 +13876,7 @@ webpackJsonp([7,10],[
 	         * Exposes the constants to be used to force the x axis to respect a certain granularity
 	         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 	         * @example
-	         *     area.forceAxisFormat(area.axisTimeCombinations.HOUR_DAY)
+	         *     area.xAxisFormat(area.axisTimeCombinations.HOUR_DAY)
 	         */
 	        exports.axisTimeCombinations = axisTimeCombinations;
 	

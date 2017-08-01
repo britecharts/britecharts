@@ -12022,8 +12022,8 @@ webpackJsonp([8,10],[
 	            nameLabel = 'name',
 	            topicLabel = 'topics',
 	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
-	            forceAxisSettings = null,
-	            forceOrder = [],
+	            dateFormat = null,
+	            topicsOrder = [],
 	
 	
 	        // formats
@@ -12255,7 +12255,7 @@ webpackJsonp([8,10],[
 	         * @return {Function} The proper date formatting function
 	         */
 	        function formatDate(date) {
-	            var settings = forceAxisSettings || defaultAxisSettings;
+	            var settings = dateFormat || defaultAxisSettings;
 	            var format = null;
 	            var localeOptions = { month: 'short', day: 'numeric' };
 	
@@ -12282,8 +12282,8 @@ webpackJsonp([8,10],[
 	         * @param  {Object[]} order     Array of names in the order to sort topics by
 	         * @return {Object[]}           sorted topics object
 	         */
-	        function _sortByForceOrder(topics) {
-	            var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : forceOrder;
+	        function _sortByTopicsOrder(topics) {
+	            var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : topicsOrder;
 	
 	            return order.map(function (orderName) {
 	                return topics.filter(function (_ref3) {
@@ -12369,9 +12369,9 @@ webpackJsonp([8,10],[
 	        function updateContent(dataPoint) {
 	            var topics = dataPoint[topicLabel];
 	
-	            // sort order by forceOrder array if passed
-	            if (forceOrder.length) {
-	                topics = _sortByForceOrder(topics);
+	            // sort order by topicsOrder array if passed
+	            if (topicsOrder.length) {
+	                topics = _sortByTopicsOrder(topics);
 	            } else if (topics.length && topics[0].name) {
 	                topics = _sortByAlpha(topics);
 	            }
@@ -12400,7 +12400,7 @@ webpackJsonp([8,10],[
 	        /**
 	         * constants to be used to force the x axis to respect a certain granularity
 	         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
-	         * @example tooltip.forceDateRange(tooltip.axisTimeCombinations.HOUR_DAY)
+	         * @example tooltip.dateFormat(tooltip.axisTimeCombinations.HOUR_DAY)
 	         */
 	        exports.axisTimeCombinations = axisTimeCombinations;
 	
@@ -12424,11 +12424,11 @@ webpackJsonp([8,10],[
 	         * @param  {String} _x Desired format
 	         * @return { (String|Module) }    Current format or module to chain calls
 	         */
-	        exports.forceDateRange = function (_x) {
+	        exports.dateFormat = function (_x) {
 	            if (!arguments.length) {
-	                return forceAxisSettings || defaultAxisSettings;
+	                return dateFormat || defaultAxisSettings;
 	            }
-	            forceAxisSettings = _x;
+	            dateFormat = _x;
 	
 	            return this;
 	        };
@@ -12490,11 +12490,11 @@ webpackJsonp([8,10],[
 	         * @return { overrideOrder | module} Current overrideOrder or Chart module to chain calls
 	         * @public
 	         */
-	        exports.forceOrder = function (_x) {
+	        exports.topicsOrder = function (_x) {
 	            if (!arguments.length) {
-	                return forceOrder;
+	                return topicsOrder;
 	            }
-	            forceOrder = _x;
+	            topicsOrder = _x;
 	
 	            return this;
 	        };
