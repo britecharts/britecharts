@@ -77,7 +77,7 @@ define(function(require) {
             colorList,
             colorMap,
             numOfVerticalTicks = 5,
-            numOfHorizontalTicks = 5,
+            xTicks = 5,
             percentageAxisToMaxRatio = 1,
             enablePercentageLabels = false,
             percentageLabelMargin = 7,
@@ -158,7 +158,7 @@ define(function(require) {
         function buildAxis() {
             if (isHorizontal) {
                 xAxis = d3Axis.axisBottom(xScale)
-                    .ticks(numOfHorizontalTicks, valueLabelFormat)
+                    .ticks(xTicks, valueLabelFormat)
                     .tickSizeInner([-chartHeight]);
 
                 yAxis = d3Axis.axisLeft(yScale);
@@ -875,9 +875,25 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the number of ticks of the x axis on the chart
+         * (Default is 5)
+         * @param  {Number} _x          Desired horizontal ticks
+         * @return {Number | module}    Current numOfHorizontalTicks or Chart module to chain calls
+         * @public
+         */
+        exports.xTicks = function (_x) {
+            if (!arguments.length) {
+                return xTicks;
+            }
+            xTicks = _x;
+
+            return this;
+        };
+
+        /**
          * Default 10. Space between y axis and chart
-         * @param  {number} _x space between y axis and chart
-         * @return {number| module}    Current value of yAxisPaddingBetweenChart or Bar Chart module to chain calls
+         * @param  {Number} _x space between y axis and chart
+         * @return {Number| module}    Current value of yAxisPaddingBetweenChart or Bar Chart module to chain calls
          */
         exports.yAxisPaddingBetweenChart = function(_x) {
             if (!arguments.length) {

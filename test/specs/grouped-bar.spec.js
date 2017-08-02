@@ -190,13 +190,13 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 expect(actual).toBe(expected);
             });
 
-            it('should provide numOfHorizontalTicks getter and setter', () => {
-                let previous = groupedBarChart.numOfHorizontalTicks(),
+            it('should provide xTicks getter and setter', () => {
+                let previous = groupedBarChart.xTicks(),
                     expected = 4,
                     actual;
 
-                groupedBarChart.numOfHorizontalTicks(expected);
-                actual = groupedBarChart.numOfHorizontalTicks();
+                groupedBarChart.xTicks(expected);
+                actual = groupedBarChart.xTicks();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);

@@ -178,13 +178,13 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 expect(actual).toBe(expected);
             });
 
-            it('should provide numOfHorizontalTicks getter and setter', () => {
-                let previous = stackedBarChart.numOfHorizontalTicks(),
+            it('should provide xTicks getter and setter', () => {
+                let previous = stackedBarChart.xTicks(),
                     expected = 4,
                     actual;
 
-                stackedBarChart.numOfHorizontalTicks(expected);
-                actual = stackedBarChart.numOfHorizontalTicks();
+                stackedBarChart.xTicks(expected);
+                actual = stackedBarChart.xTicks();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);

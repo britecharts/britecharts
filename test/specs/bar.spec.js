@@ -220,6 +220,18 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
+            it('should provide xTicks getter and setter', () => {
+                let previous = barChart.xTicks(),
+                    expected = 4,
+                    actual;
+
+                barChart.xTicks(expected);
+                actual = barChart.xTicks();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide yAxisPaddingBetweenChart getter and setter', () => {
                 let previous = barChart.yAxisPaddingBetweenChart(),
                     expected = 15,

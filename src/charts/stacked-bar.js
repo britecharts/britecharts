@@ -87,7 +87,7 @@ define(function(require){
             yTickTextXOffset = -20,
 
             numOfVerticalTicks = 5,
-            numOfHorizontalTicks = 5,
+            xTicks = 5,
             percentageAxisToMaxRatio = 1,
 
             colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
@@ -196,7 +196,7 @@ define(function(require){
         function buildAxis() {
             if (isHorizontal) {
                 xAxis = d3Axis.axisBottom(xScale)
-                    .ticks(numOfHorizontalTicks, valueLabelFormat);
+                    .ticks(xTicks, valueLabelFormat);
                 yAxis = d3Axis.axisLeft(yScale)
             } else {
                 xAxis = d3Axis.axisBottom(xScale)
@@ -384,7 +384,7 @@ define(function(require){
             if (grid === 'vertical' || grid === 'full') {
                 svg.select('.grid-lines-group')
                     .selectAll('line.vertical-grid-line')
-                    .data(scale.ticks(numOfHorizontalTicks).slice(1))
+                    .data(scale.ticks(xTicks).slice(1))
                     .enter()
                       .append('line')
                         .attr('class', 'vertical-grid-line')
@@ -874,16 +874,17 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the number of verticalTicks of the axis on the chart
-         * @param  {Number} _x Desired verticalTicks
-         * @return { numOfHorizontalTicks | module} Current numOfHorizontalTicks or Chart module to chain calls
+         * Gets or Sets the number of ticks of the x axis on the chart
+         * (Default is 5)         
+         * @param  {Number} _x Desired horizontal ticks
+         * @return {Number | module} Current xTicks or Chart module to chain calls
          * @public
          */
-        exports.numOfHorizontalTicks = function (_x) {
+        exports.xTicks = function (_x) {
             if (!arguments.length) {
-                return numOfHorizontalTicks;
+                return xTicks;
             }
-            numOfHorizontalTicks = _x;
+            xTicks = _x;
 
             return this;
         };
