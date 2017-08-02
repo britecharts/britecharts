@@ -899,7 +899,7 @@ define(function (require) {
 
         /**
          * Gets or Sets the number of ticks of the y axis on the chart
-         * @param  {Number} _x          Desired verticalTicks
+         * @param  {Number} _x          Desired vertical ticks
          * @return {Number | module}    Current yTicks or Chart module to chain calls
          * @public
          */
