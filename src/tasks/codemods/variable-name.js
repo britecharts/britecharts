@@ -1,5 +1,5 @@
-const oldVariable = 'numOfHorizontalTicks';
-const newVariable = 'xTicks';
+const oldVariable = 'numOfVerticalTicks';
+const newVariable = 'yTicks';
 
 export default function transformer(file, api) {
     const j = api.jscodeshift;

@@ -9378,7 +9378,7 @@ webpackJsonp([3,10],[
 	            aspectRatio = null,
 	            yTickTextYOffset = -8,
 	            yTickTextXOffset = -20,
-	            numOfVerticalTicks = 5,
+	            yTicks = 5,
 	            xTicks = 5,
 	            baseLine = void 0,
 	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
@@ -9485,7 +9485,7 @@ webpackJsonp([3,10],[
 	                yAxis = d3Axis.axisLeft(yScale);
 	            } else {
 	                xAxis = d3Axis.axisBottom(xScale);
-	                yAxis = d3Axis.axisLeft(yScale).ticks(numOfVerticalTicks, valueLabelFormat);
+	                yAxis = d3Axis.axisLeft(yScale).ticks(yTicks, valueLabelFormat);
 	            }
 	        }
 	
@@ -9630,7 +9630,7 @@ webpackJsonp([3,10],[
 	            var scale = isHorizontal ? xScale : yScale;
 	
 	            if (grid === 'horizontal' || grid === 'full') {
-	                svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(scale.ticks(numOfVerticalTicks).slice(1)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left + 1).attr('x2', chartWidth).attr('y1', function (d) {
+	                svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(scale.ticks(yTicks).slice(1)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left + 1).attr('x2', chartWidth).attr('y1', function (d) {
 	                    return yScale(d);
 	                }).attr('y2', function (d) {
 	                    return yScale(d);
@@ -10103,16 +10103,16 @@ webpackJsonp([3,10],[
 	        };
 	
 	        /**
-	         * Gets or Sets the number of verticalTicks of the axis on the chart
-	         * @param  {Number} _x Desired verticalTicks
-	         * @return { numOfVerticalTicks | module} Current numOfVerticalTicks or Chart module to chain calls
+	         * Gets or Sets the number of ticks of the y axis on the chart
+	         * @param  {Number} _x          Desired verticalTicks
+	         * @return {Number | module}    Current yTicks or Chart module to chain calls
 	         * @public
 	         */
-	        exports.numOfVerticalTicks = function (_x) {
+	        exports.yTicks = function (_x) {
 	            if (!arguments.length) {
-	                return numOfVerticalTicks;
+	                return yTicks;
 	            }
-	            numOfVerticalTicks = _x;
+	            yTicks = _x;
 	
 	            return this;
 	        };

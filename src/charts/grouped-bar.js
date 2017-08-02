@@ -86,7 +86,7 @@ define(function (require) {
             yTickTextYOffset = -8,
             yTickTextXOffset = -20,
 
-            numOfVerticalTicks = 5,
+            yTicks = 5,
             xTicks = 5,
             baseLine,
 
@@ -200,7 +200,7 @@ define(function (require) {
             } else {
                 xAxis = d3Axis.axisBottom(xScale)
                 yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(numOfVerticalTicks, valueLabelFormat)
+                    .ticks(yTicks, valueLabelFormat)
             }
         }
 
@@ -409,7 +409,7 @@ define(function (require) {
             if (grid === 'horizontal' || grid === 'full') {
                 svg.select('.grid-lines-group')
                     .selectAll('line.horizontal-grid-line')
-                    .data(scale.ticks(numOfVerticalTicks).slice(1))
+                    .data(scale.ticks(yTicks).slice(1))
                     .enter()
                       .append('line')
                         .attr('class', 'horizontal-grid-line')
@@ -898,16 +898,16 @@ define(function (require) {
         };
 
         /**
-         * Gets or Sets the number of verticalTicks of the axis on the chart
-         * @param  {Number} _x Desired verticalTicks
-         * @return { numOfVerticalTicks | module} Current numOfVerticalTicks or Chart module to chain calls
+         * Gets or Sets the number of ticks of the y axis on the chart
+         * @param  {Number} _x          Desired verticalTicks
+         * @return {Number | module}    Current yTicks or Chart module to chain calls
          * @public
          */
-        exports.numOfVerticalTicks = function (_x) {
+        exports.yTicks = function (_x) {
             if (!arguments.length) {
-                return numOfVerticalTicks;
+                return yTicks;
             }
-            numOfVerticalTicks = _x;
+            yTicks = _x;
 
             return this;
         };
