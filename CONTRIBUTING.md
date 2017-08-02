@@ -1,5 +1,27 @@
 # Contributing Guide
 
+<!-- TOC -->
+
+- [Contributing Guide](#contributing-guide)
+    - [Setup](#setup)
+        - [Getting setup to contribute](#getting-setup-to-contribute)
+        - [Creating feature branches](#creating-feature-branches)
+        - [Running the Documentation and Demos](#running-the-documentation-and-demos)
+    - [Modifying a chart](#modifying-a-chart)
+    - [Creating a new chart](#creating-a-new-chart)
+    - [Pull Requests](#pull-requests)
+        - [Making pull requests](#making-pull-requests)
+    - [Reporting an Issue/Feature Requests](#reporting-an-issuefeature-requests)
+    - [Standards](#standards)
+        - [Test Driven Development](#test-driven-development)
+        - [JSDoc](#jsdoc)
+    - [The Workflow](#the-workflow)
+        - [ES6 transpiling](#es6-transpiling)
+        - [NPM Tasks](#npm-tasks)
+    - [Project Structure](#project-structure)
+
+<!-- /TOC -->
+
 ## Setup
 
 ### Getting setup to contribute
@@ -10,14 +32,14 @@
 
 3- Navigate to the repository folder and install dependencies with: `npm install`
 
-### Cutting feature branches
+### Creating feature branches
 
 1- in local master, set upstream to https://github.com/eventbrite/britecharts.git
 `git remote add upstream https://github.com/eventbrite/britecharts.git`
 
 2- pull the most recent changes`git pull --rebase upstream master`
 
-3- branch name should be prefixed with either `fix-`or `feat-` depending on pr content. Create a new branch `git co -b [fix|feat]-<your branch name>`
+3- Branch names should be prefixed with either `fix-` or `feat-` depending on your PR content. Create a new branch `git checkout -b [fix|feat]-<your branch name>`
 
 
 ### Running the Documentation and Demos
@@ -39,18 +61,14 @@ In order to generate the demos and see the documentation for the library you wou
 
  + In the root or the repository folder, run:
 
-    `npm run demos:watch`
-
- + In another terminal, run:
-
     `npm run demos:serve`
 
- + In a third terminal window, run:
+ + In a second terminal window, run:
 
     `npm run docs`
 
 
-This process will generate the docs with its current contents and open the interface where you will be able to navigate the API of each chart. You can also see some use examples under the "Tutorials" dropdown section. Use this demos as your testing platform when modifying the charts.
+This process will generate the docs with its current contents and open the interface where you will be able to navigate the API of each chart. You can also see some use examples under the "Demos" dropdown section. Use this demos as your testing platform when modifying the charts.
 
 
 ## Modifying a chart
@@ -60,44 +78,46 @@ We have created this charts with Tests First, and we encourage you to do the sam
 For a TDD workflow, the process would look like this:
 
 - Create a new branch for your modification
+- On a new terminal, run ``npm run demos:serve`` and navigate to the chart's demo
 - Find the test of the chart you want to modify in ``/test/specs/*.spec.js``
 - Write a failing test for the API accessor or the feature you want to add
 - On a new terminal, run ``npm run test``
 - Check that the test fails
-- Write the code that would make that test pass
-- Make the test pass
+- Write the code that would make that test pass on the chart located in ``/src/charts/``
+- Make the test pass by writing the less amount of code
 - Refactor until you get a nice and clean code
-- Add/update the comments so that the proper documentation gets generated when you run
-```
-npm run docs
-```
-- Check the demos to see the code in action (you can also add a new demo there if necessary)
+- Add/update the JSDoc comments so that the proper documentation gets generated when you run ``npm run docs``
+- Check the demo to see the code in action (you can also add a new demo there if necessary)
 - Create a pull request and ask people of the team to review it
-- Once you have a shipit, merge it!
+- Once you have the OK, merge it!
 
 
 ## Creating a new chart
 
-Adding a new chart is a bunch of work, but we hope the current code and documentation will help you in the process.
+Adding a new chart is a bunch of work, but we hope that using the current code and documentation will help in the process.
 
-- Create a new branch for your new chart
-- Create a file for the tests and the chart (on ``src/charts`` and ``test/specs``)
-- Create a file for the demo too, and it's corresponding html (find them on ``demos/``)
-- On a new terminal, run ``npm run test``
-- Using the bar chart tests as a jumpstart, add one test and make it fail
-- Write the code that makes that test pass and keep on adding tests
-- Once you think you are close to have something working, start adding JSDoc comments to your code
-- Generate your docs with:
-```
-    npm run docs
-```
-- Create a pull request with your branch and ping one of the core authors to get it reviewed
-- Once you have a shipit, merge it
+1. Create a new branch for your new chart
+1. On a new terminal, run ``npm run demos:serve`` to get ready the docs and turn on the dev server.
+1. Given that you new chart is ``ChartName``, create in ``/test/specs`` a new test file ``ChartName.spec.js``.
+2. Go to ``/test/fixtures`` and create a new data builder file. Name it something like ``chartNameChartDataBuilder.js``.
+3. Go to ``/test/json`` and create a JSON file for the test data of your new chart. You will load it with the previously created data builder.
+4. Go to ``/src/charts`` and create a new chart file called ``ChartName.js``.
+5. Go to ``/demos`` and create a new demo page for the new chart, add it to ``/demos/index.js``.
+6. Also in ``/demos``, create a new html page called ``chartName.html`` and its .json file with the demo title.
+7. Go to ``webpack.config.js`` and:
+    1. add the new chart to the ``currentCharts`` object, give it a camel case name.
+    2. add the new demo page to the ``demos.entry`` object, keeping the same format.
+8. Go to your test file ``ChartName.spec.js`` and, taking another test as an example, copy over pieces until you have the first test case.
+1. Add one test and make it fail callin ``npm run test``.
+1. Once you think you are close to have something working, start adding JSDoc comments to your code
+1. Generate your docs with ``npm run docs`` and manually test the demos.
+1. Create a pull request with your branch and ping one of the core authors to get it reviewed
+1. Once you have a shipit, merge it
 
 
 ## Pull Requests
 
-####Disclaimer
+*Disclaimer*
 -> While it is true that Britecharts is currently live in Eventbrite production, this project is not being monitored closely for open source contributions. Please have patience and we will get to any issues and pull requests as soon as we can.
 
 ### Making pull requests
@@ -175,11 +195,11 @@ Britecharts modules are written in ES6, so we would need to create an ES5-compat
 
 In order to work with the development version of the charts, we just need to run:
 
-    npm run dev
+    npm run demos:serve
 
-However, if you want to use the production version of the charts, you should run:
+However, if you want to create the production version of the charts, you should run:
 
-    npm run build:all
+    npm run prod
 
 
 ### NPM Tasks
@@ -188,18 +208,16 @@ The build sequence consists of a small set of [Node][node] tasks. While you'll p
 
 | Task                      | Description
 | ---                       | ---
+| `npm run test`            | Start the Karma runner that will test the project and keep watching for changes.
+| `npm run demos:serve`     | Serves the demos for our tutorials.
+| `npm run docs`            | Compiles the docs with JSDoc and opens a browser showing them.
+| `npm run styles`          | Compiles the styles for the charts
 | `npm run prod`            | Build everything and generate the distribution version of the charts.
 | `npm run release`         | Create a new release of the library.
 | `npm run release:minor`   | Create a new release of the library by bumping the second number of the version (1.N.1)
 | `npm run release:major`   | Create a new release of the library by bumping the third number of the version (N.1.1)
-| `npm run test`            | Start the Karma runner that will test the project and keep watching for changes.
-| `npm run styles`          | Compiles the styles for the charts
-| `npm run demos:compile`   | Compiles our demo files.
-| `npm run demos:watch`     | Watches for changes in our demo files.
-| `npm run demos:serve`     | Serves the demos for our tutorials.
-| `npm run docs`            | Compiles the docs with JSDoc and opens a browser showing them.
 
-**Note that for running `npm run docs`, you will need to first have `npm run demos:watch` and `npm run demos:serve` in two different terminal windows.
+**Note that for running `npm run docs`, you will need to first have `npm run demos:serve` in a different terminal.
 
 ## Project Structure
 
@@ -230,8 +248,8 @@ britecharts
 | **docs** | Where the generated documentation website lives
 | **src** | Where we will place the code we create
 | **src/charts** | Where our charts live
+| **src/styles** | Where our .sccs styles source code is
 | **src/doc** | Where the templates and configuration for our docs are
-| **src/fonts** | Our fonts
 | **src/tasks** | Some of our grunt tasks configuration
 | **test** | Where our test related files live
 | **test/fixtures** | Tools for generate data for our charts demos and tests
