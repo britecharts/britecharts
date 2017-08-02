@@ -12775,7 +12775,6 @@ webpackJsonp([8,10],[
 	            yScale = void 0,
 	            yAxis = void 0,
 	            aspectRatio = null,
-	            verticalTicks = 5,
 	            yTickTextYOffset = -8,
 	            yTickTextXOffset = -20,
 	            yTicks = 5,

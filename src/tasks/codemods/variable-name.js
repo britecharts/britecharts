@@ -1,4 +1,4 @@
-const oldVariable = 'numOfVerticalTicks';
+const oldVariable = 'verticalTicks';
 const newVariable = 'yTicks';
 
 export default function transformer(file, api) {

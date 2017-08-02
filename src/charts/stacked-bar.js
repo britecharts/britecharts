@@ -82,7 +82,6 @@ define(function(require){
 
             aspectRatio = null,
 
-            verticalTicks = 5,
             yTickTextYOffset = -8,
             yTickTextXOffset = -20,
 

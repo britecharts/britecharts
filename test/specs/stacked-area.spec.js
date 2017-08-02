@@ -323,12 +323,12 @@ define([
             });
 
             it('should provide verticalTicks getter and setter', () => {
-                let defaultVerticalTicks = stackedAreaChart.verticalTicks(),
+                let defaultVerticalTicks = stackedAreaChart.yTicks(),
                     testVerticalTicks = 3,
                     newVerticalTicks;
 
-                stackedAreaChart.verticalTicks(testVerticalTicks);
-                newVerticalTicks = stackedAreaChart.verticalTicks();
+                stackedAreaChart.yTicks(testVerticalTicks);
+                newVerticalTicks = stackedAreaChart.yTicks();
 
                 expect(defaultVerticalTicks).not.toBe(testVerticalTicks);
                 expect(newVerticalTicks).toBe(testVerticalTicks);
