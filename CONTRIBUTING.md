@@ -107,7 +107,7 @@ Adding a new chart is a bunch of work, but we hope that using the current code a
 6. Also in ``/demos``, create a new html page called ``chartName.html`` and its .json file with the demo title.
 7. Go to ``webpack.config.js`` and:
     1. add the new chart to the ``currentCharts`` object, give it a camel case name.
-    2. add the new demo page to the ``demos.entry`` object, keeping the same format.
+    2. add the new demo page to the ``currentDemos`` object, keeping the same format.
 8. Go to your test file ``ChartName.spec.js`` and, taking another test as an example, copy over pieces until you have the first test case.
 1. Add one test and make it fail callin ``npm run test``.
 1. Once you think you are close to have something working, start adding JSDoc comments to your code

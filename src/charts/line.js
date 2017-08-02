@@ -161,7 +161,7 @@ define(function(require){
             topicLabel = 'topic',
             topicNameLabel = 'topicName',
 
-            verticalTicks = 5,
+            yTicks = 5,
 
             overlay,
             overlayColor = 'rgba(0, 0, 0, 0)',
@@ -260,7 +260,7 @@ define(function(require){
          */
         function buildAxis() {
             let dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
-            let yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
+            let yTickNumber = dataTimeSpan < yTicks - 1 ? dataTimeSpan : yTicks;
             let minor, major;
 
             if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
@@ -981,16 +981,17 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the number of verticalTicks of the yAxis on the chart
-         * @param  {Number} _x Desired verticalTicks
-         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
+         * Gets or Sets the number of ticks of the y axis on the chart
+         * (Default is 5)
+         * @param  {Number} _x          Desired yTicks
+         * @return {Number | module}   Current yTicks or Chart module to chain calls
          * @public
          */
-        exports.verticalTicks = function(_x) {
+        exports.yTicks = function(_x) {
             if (!arguments.length) {
-                return verticalTicks;
+                return yTicks;
             }
-            verticalTicks = _x;
+            yTicks = _x;
 
             return this;
         };
@@ -998,7 +999,7 @@ define(function(require){
         /**
          * Gets or Sets the width of the chart
          * @param  {Number} _x Desired width for the graph
-         * @return { (Number | Module) } Current width or Line Chart module to chain calls
+         * @return {Number | Module} Current width or Line Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
