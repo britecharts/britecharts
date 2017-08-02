@@ -30,7 +30,8 @@
 
 2- Clone repository with `git clone https://github.com/<your handle>/britecharts.git`
 
-3- Navigate to the repository folder and install dependencies with: `npm install`
+3- Navigate to the repository folder and install dependencies with: `npm install` (we are using node 6.9.x at the moment)
+
 
 ### Creating feature branches
 
@@ -77,19 +78,19 @@ We have created this charts with Tests First, and we encourage you to do the sam
 
 For a TDD workflow, the process would look like this:
 
-- Create a new branch for your modification
-- On a new terminal, run ``npm run demos:serve`` and navigate to the chart's demo
-- Find the test of the chart you want to modify in ``/test/specs/*.spec.js``
-- Write a failing test for the API accessor or the feature you want to add
-- On a new terminal, run ``npm run test``
-- Check that the test fails
-- Write the code that would make that test pass on the chart located in ``/src/charts/``
-- Make the test pass by writing the less amount of code
-- Refactor until you get a nice and clean code
-- Add/update the JSDoc comments so that the proper documentation gets generated when you run ``npm run docs``
-- Check the demo to see the code in action (you can also add a new demo there if necessary)
-- Create a pull request and ask people of the team to review it
-- Once you have the OK, merge it!
+1. Create a new branch for your modification
+1. On a new terminal, run ``npm run demos:serve`` and navigate to the chart's demo
+1. Find the test of the chart you want to modify in ``/test/specs/*.spec.js``
+1. Write a failing test for the API accessor or the feature you want to add
+1. On a new terminal, run ``npm run test``
+1. Check that the test fails
+1. Write the code that would make that test pass on the chart located in ``/src/charts/``
+1. Make the test pass by writing the less amount of code
+1. Refactor until you get a nice and clean code
+1. Add/update the JSDoc comments so that the proper documentation gets generated when you run ``npm run docs``
+1. Check the demo to see the code in action (you can also add a new demo there if necessary)
+1. Create a pull request and ask people of the team to review it
+1. Once you have the OK, merge it!
 
 
 ## Creating a new chart
