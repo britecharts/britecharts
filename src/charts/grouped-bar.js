@@ -86,8 +86,8 @@ define(function (require) {
             yTickTextYOffset = -8,
             yTickTextXOffset = -20,
 
-            numOfVerticalTicks = 5,
-            numOfHorizontalTicks = 5,
+            yTicks = 5,
+            xTicks = 5,
             baseLine,
 
             colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
@@ -195,12 +195,12 @@ define(function (require) {
         function buildAxis() {
             if (isHorizontal) {
                 xAxis = d3Axis.axisBottom(xScale)
-                    .ticks(numOfHorizontalTicks, valueLabelFormat);
+                    .ticks(xTicks, valueLabelFormat);
                 yAxis = d3Axis.axisLeft(yScale)
             } else {
                 xAxis = d3Axis.axisBottom(xScale)
                 yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(numOfVerticalTicks, valueLabelFormat)
+                    .ticks(yTicks, valueLabelFormat)
             }
         }
 
@@ -409,7 +409,7 @@ define(function (require) {
             if (grid === 'horizontal' || grid === 'full') {
                 svg.select('.grid-lines-group')
                     .selectAll('line.horizontal-grid-line')
-                    .data(scale.ticks(numOfVerticalTicks).slice(1))
+                    .data(scale.ticks(yTicks).slice(1))
                     .enter()
                       .append('line')
                         .attr('class', 'horizontal-grid-line')
@@ -422,7 +422,7 @@ define(function (require) {
             if (grid === 'vertical' || grid === 'full') {
                 svg.select('.grid-lines-group')
                     .selectAll('line.vertical-grid-line')
-                    .data(scale.ticks(numOfHorizontalTicks).slice(1))
+                    .data(scale.ticks(xTicks).slice(1))
                     .enter()
                       .append('line')
                         .attr('class', 'vertical-grid-line')
@@ -898,31 +898,16 @@ define(function (require) {
         };
 
         /**
-         * Gets or Sets the number of verticalTicks of the axis on the chart
-         * @param  {Number} _x Desired verticalTicks
-         * @return { numOfHorizontalTicks | module} Current numOfHorizontalTicks or Chart module to chain calls
+         * Gets or Sets the number of ticks of the y axis on the chart
+         * @param  {Number} _x          Desired vertical ticks
+         * @return {Number | module}    Current yTicks or Chart module to chain calls
          * @public
          */
-        exports.numOfHorizontalTicks = function (_x) {
+        exports.yTicks = function (_x) {
             if (!arguments.length) {
-                return numOfHorizontalTicks;
+                return yTicks;
             }
-            numOfHorizontalTicks = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets the number of verticalTicks of the axis on the chart
-         * @param  {Number} _x Desired verticalTicks
-         * @return { numOfVerticalTicks | module} Current numOfVerticalTicks or Chart module to chain calls
-         * @public
-         */
-        exports.numOfVerticalTicks = function (_x) {
-            if (!arguments.length) {
-                return numOfVerticalTicks;
-            }
-            numOfVerticalTicks = _x;
+            yTicks = _x;
 
             return this;
         };
@@ -1002,6 +987,21 @@ define(function (require) {
                 height = Math.ceil(_x * aspectRatio);
             }
             width = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the number of ticks of the x axis on the chart
+         * @param  {Number} _x Desired xTicks
+         * @return {Number | module} Current xTicks or Chart module to chain calls
+         * @public
+         */
+        exports.xTicks = function (_x) {
+            if (!arguments.length) {
+                return xTicks;
+            }
+            xTicks = _x;
 
             return this;
         };

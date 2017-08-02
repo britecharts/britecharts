@@ -274,30 +274,6 @@ define([
                 expect(newSchema).toBe(testFormat);
             });
 
-            it('should provide a xTicks getter and setter', () => {
-                let previous = stackedAreaChart.xTicks(),
-                    expected = 2,
-                    actual;
-
-                stackedAreaChart.xTicks(expected);
-                actual = stackedAreaChart.xTicks();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide a xAxisCustomFormat getter and setter', () => {
-                let previous = stackedAreaChart.xAxisCustomFormat(),
-                    expected = '%d %b',
-                    actual;
-
-                stackedAreaChart.xAxisCustomFormat(expected);
-                actual = stackedAreaChart.xAxisCustomFormat();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
             it('should provide grid mode getter and setter', () => {
                 let defaultGridMode = stackedAreaChart.grid(),
                     testValue = 'vertical',
@@ -322,16 +298,40 @@ define([
                 expect(newLocale).toBe(testValue);
             });
 
-            it('should provide verticalTicks getter and setter', () => {
-                let defaultVerticalTicks = stackedAreaChart.verticalTicks(),
-                    testVerticalTicks = 3,
-                    newVerticalTicks;
+            it('should provide a xAxisCustomFormat getter and setter', () => {
+                let previous = stackedAreaChart.xAxisCustomFormat(),
+                    expected = '%d %b',
+                    actual;
 
-                stackedAreaChart.verticalTicks(testVerticalTicks);
-                newVerticalTicks = stackedAreaChart.verticalTicks();
+                stackedAreaChart.xAxisCustomFormat(expected);
+                actual = stackedAreaChart.xAxisCustomFormat();
 
-                expect(defaultVerticalTicks).not.toBe(testVerticalTicks);
-                expect(newVerticalTicks).toBe(testVerticalTicks);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a xTicks getter and setter', () => {
+                let previous = stackedAreaChart.xTicks(),
+                    expected = 2,
+                    actual;
+
+                stackedAreaChart.xTicks(expected);
+                actual = stackedAreaChart.xTicks();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide yTicks getter and setter', () => {
+                let previous = stackedAreaChart.yTicks(),
+                    expected = 3,
+                    actual;
+
+                stackedAreaChart.yTicks(expected);
+                actual = stackedAreaChart.yTicks();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide animation getter and setter', () => {

@@ -9378,8 +9378,8 @@ webpackJsonp([3,10],[
 	            aspectRatio = null,
 	            yTickTextYOffset = -8,
 	            yTickTextXOffset = -20,
-	            numOfVerticalTicks = 5,
-	            numOfHorizontalTicks = 5,
+	            yTicks = 5,
+	            xTicks = 5,
 	            baseLine = void 0,
 	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
 	            colorScale = void 0,
@@ -9481,11 +9481,11 @@ webpackJsonp([3,10],[
 	         */
 	        function buildAxis() {
 	            if (isHorizontal) {
-	                xAxis = d3Axis.axisBottom(xScale).ticks(numOfHorizontalTicks, valueLabelFormat);
+	                xAxis = d3Axis.axisBottom(xScale).ticks(xTicks, valueLabelFormat);
 	                yAxis = d3Axis.axisLeft(yScale);
 	            } else {
 	                xAxis = d3Axis.axisBottom(xScale);
-	                yAxis = d3Axis.axisLeft(yScale).ticks(numOfVerticalTicks, valueLabelFormat);
+	                yAxis = d3Axis.axisLeft(yScale).ticks(yTicks, valueLabelFormat);
 	            }
 	        }
 	
@@ -9630,7 +9630,7 @@ webpackJsonp([3,10],[
 	            var scale = isHorizontal ? xScale : yScale;
 	
 	            if (grid === 'horizontal' || grid === 'full') {
-	                svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(scale.ticks(numOfVerticalTicks).slice(1)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left + 1).attr('x2', chartWidth).attr('y1', function (d) {
+	                svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(scale.ticks(yTicks).slice(1)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', -xAxisPadding.left + 1).attr('x2', chartWidth).attr('y1', function (d) {
 	                    return yScale(d);
 	                }).attr('y2', function (d) {
 	                    return yScale(d);
@@ -9638,7 +9638,7 @@ webpackJsonp([3,10],[
 	            }
 	
 	            if (grid === 'vertical' || grid === 'full') {
-	                svg.select('.grid-lines-group').selectAll('line.vertical-grid-line').data(scale.ticks(numOfHorizontalTicks).slice(1)).enter().append('line').attr('class', 'vertical-grid-line').attr('y1', 0).attr('y2', chartHeight).attr('x1', function (d) {
+	                svg.select('.grid-lines-group').selectAll('line.vertical-grid-line').data(scale.ticks(xTicks).slice(1)).enter().append('line').attr('class', 'vertical-grid-line').attr('y1', 0).attr('y2', chartHeight).attr('x1', function (d) {
 	                    return xScale(d);
 	                }).attr('x2', function (d) {
 	                    return xScale(d);
@@ -10103,31 +10103,16 @@ webpackJsonp([3,10],[
 	        };
 	
 	        /**
-	         * Gets or Sets the number of verticalTicks of the axis on the chart
-	         * @param  {Number} _x Desired verticalTicks
-	         * @return { numOfHorizontalTicks | module} Current numOfHorizontalTicks or Chart module to chain calls
+	         * Gets or Sets the number of ticks of the y axis on the chart
+	         * @param  {Number} _x          Desired vertical ticks
+	         * @return {Number | module}    Current yTicks or Chart module to chain calls
 	         * @public
 	         */
-	        exports.numOfHorizontalTicks = function (_x) {
+	        exports.yTicks = function (_x) {
 	            if (!arguments.length) {
-	                return numOfHorizontalTicks;
+	                return yTicks;
 	            }
-	            numOfHorizontalTicks = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the number of verticalTicks of the axis on the chart
-	         * @param  {Number} _x Desired verticalTicks
-	         * @return { numOfVerticalTicks | module} Current numOfVerticalTicks or Chart module to chain calls
-	         * @public
-	         */
-	        exports.numOfVerticalTicks = function (_x) {
-	            if (!arguments.length) {
-	                return numOfVerticalTicks;
-	            }
-	            numOfVerticalTicks = _x;
+	            yTicks = _x;
 	
 	            return this;
 	        };
@@ -10207,6 +10192,21 @@ webpackJsonp([3,10],[
 	                height = Math.ceil(_x * aspectRatio);
 	            }
 	            width = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the number of ticks of the x axis on the chart
+	         * @param  {Number} _x Desired xTicks
+	         * @return {Number | module} Current xTicks or Chart module to chain calls
+	         * @public
+	         */
+	        exports.xTicks = function (_x) {
+	            if (!arguments.length) {
+	                return xTicks;
+	            }
+	            xTicks = _x;
 	
 	            return this;
 	        };

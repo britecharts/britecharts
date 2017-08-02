@@ -13762,7 +13762,7 @@ webpackJsonp([5,10],[
 	            valueLabel = 'value',
 	            topicLabel = 'topic',
 	            topicNameLabel = 'topicName',
-	            verticalTicks = 5,
+	            yTicks = 5,
 	            overlay = void 0,
 	            overlayColor = 'rgba(0, 0, 0, 0)',
 	            verticalMarkerContainer = void 0,
@@ -13869,7 +13869,7 @@ webpackJsonp([5,10],[
 	         */
 	        function buildAxis() {
 	            var dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
-	            var yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
+	            var yTickNumber = dataTimeSpan < yTicks - 1 ? dataTimeSpan : yTicks;
 	            var minor = void 0,
 	                major = void 0;
 	
@@ -14507,16 +14507,17 @@ webpackJsonp([5,10],[
 	        };
 	
 	        /**
-	         * Gets or Sets the number of verticalTicks of the yAxis on the chart
-	         * @param  {Number} _x Desired verticalTicks
-	         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
+	         * Gets or Sets the number of ticks of the y axis on the chart
+	         * (Default is 5)
+	         * @param  {Number} _x          Desired yTicks
+	         * @return {Number | module}   Current yTicks or Chart module to chain calls
 	         * @public
 	         */
-	        exports.verticalTicks = function (_x) {
+	        exports.yTicks = function (_x) {
 	            if (!arguments.length) {
-	                return verticalTicks;
+	                return yTicks;
 	            }
-	            verticalTicks = _x;
+	            yTicks = _x;
 	
 	            return this;
 	        };
@@ -14524,7 +14525,7 @@ webpackJsonp([5,10],[
 	        /**
 	         * Gets or Sets the width of the chart
 	         * @param  {Number} _x Desired width for the graph
-	         * @return { (Number | Module) } Current width or Line Chart module to chain calls
+	         * @return {Number | Module} Current width or Line Chart module to chain calls
 	         * @public
 	         */
 	        exports.width = function (_x) {
