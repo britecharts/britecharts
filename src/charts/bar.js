@@ -594,9 +594,9 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function customOnMouseOver(ev, d, chartWidth, chartHeight) {
-          dispatcher.call('customMouseOver', ev, d, d3Selection.mouse(ev), [chartWidth, chartHeight]);
-          d3Selection.select(ev).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+        function customOnMouseOver(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+            d3Selection.select(e).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
         }
 
         /**
@@ -604,8 +604,8 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function customOnMouseMove(ev, d, chartWidth, chartHeight) {
-          dispatcher.call('customMouseMove', ev, d, d3Selection.mouse(ev), [chartWidth, chartHeight]);
+        function customOnMouseMove(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
         }
 
         /**
@@ -613,9 +613,9 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function customOnMouseOut(ev, d, chartWidth, chartHeight) {
-          dispatcher.call('customMouseOut', ev, d, d3Selection.mouse(ev), [chartWidth, chartHeight]);
-          d3Selection.select(ev).attr('fill', ({name}) => colorMap(name));
+        function customOnMouseOut(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+            d3Selection.select(e).attr('fill', ({name}) => colorMap(name));
         }
 
         // API
