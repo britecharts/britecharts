@@ -285,8 +285,12 @@ define(function(require) {
                     newSlices.merge(slices)
                       .append('path')
                         .attr('fill', getSliceFill)
-                        .on('mouseover', handleMouseOver)
-                        .on('mouseout', handleMouseOut)
+                        .on('mouseover', function(d) {
+                            handleMouseOver(this, d, chartWidth, chartHeight);
+                        })
+                        .on('mouseout', function(d) {
+                            handleMouseOut(this, d, chartWidth, chartHeight);
+                        })
                         .transition()
                         .ease(ease)
                         .duration(pieDrawingTransitionDuration)
@@ -296,8 +300,12 @@ define(function(require) {
                       .append('path')
                         .attr('fill', getSliceFill)
                         .attr('d', shape)
-                        .on('mouseover', handleMouseOver)
-                        .on('mouseout', handleMouseOut)
+                        .on('mouseover', function(d) {
+                            handleMouseOver(this, d, chartWidth, chartHeight);
+                        })
+                        .on('mouseout', function(d) {
+                            handleMouseOut(this, d, chartWidth, chartHeight);
+                        })
                 }
             } else {
                 slices = svg.select('.chart-group')
@@ -332,14 +340,14 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseOver(datum) {
-            drawLegend(datum);
-            dispatcher.call('customMouseOver', this, datum);
+        function handleMouseOver(e, d, chartWidth, chartHeight) {
+            drawLegend(d);
+            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
 
-            if (highlightedSlice && this !== highlightedSlice) {
+            if (highlightedSlice && e !== highlightedSlice) {
                 tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
             }
-            tweenGrowth(this, externalRadius);
+            tweenGrowth(e, externalRadius);
         }
 
         /**
@@ -347,18 +355,18 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseOut() {
+        function handleMouseOut(e, d, chartWidth, chartHeight) {
             if (highlightedSlice && hasFixedHighlightedSlice) {
                 drawLegend(highlightedSlice.__data__);
             } else {
                 cleanLegend();
             }
-            dispatcher.call('customMouseOut', this);
+            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
 
-            if (highlightedSlice && hasFixedHighlightedSlice && this !== highlightedSlice) {
+            if (highlightedSlice && hasFixedHighlightedSlice && e !== highlightedSlice) {
                 tweenGrowth(highlightedSlice, externalRadius);
             }
-            tweenGrowth(this, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+            tweenGrowth(e, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
         }
 
         /**
