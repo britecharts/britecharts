@@ -288,6 +288,9 @@ define(function(require) {
                         .on('mouseover', function(d) {
                             handleMouseOver(this, d, chartWidth, chartHeight);
                         })
+                        .on('mousemove', function(d) {
+                            handleMouseMove(this, d, chartWidth, chartHeight);
+                        })
                         .on('mouseout', function(d) {
                             handleMouseOut(this, d, chartWidth, chartHeight);
                         })
@@ -302,6 +305,9 @@ define(function(require) {
                         .attr('d', shape)
                         .on('mouseover', function(d) {
                             handleMouseOver(this, d, chartWidth, chartHeight);
+                        })
+                        .on('mousemove', function(d) {
+                            handleMouseMove(this, d, chartWidth, chartHeight);
                         })
                         .on('mouseout', function(d) {
                             handleMouseOut(this, d, chartWidth, chartHeight);
@@ -348,6 +354,15 @@ define(function(require) {
                 tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
             }
             tweenGrowth(e, externalRadius);
+        }
+
+        /**
+         * Handles a path mouse move
+         * @return {void}
+         * @private
+         */
+        function handleMouseMove(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
         }
 
         /**
