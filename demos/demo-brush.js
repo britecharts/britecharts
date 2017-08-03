@@ -21,13 +21,16 @@ function createBrushChart() {
         brushChart
             .width(containerWidth)
             .height(125)
-            .onBrush(function(brushExtent) {
+            .on('customBrushStart', function(brushExtent) {
                 let format = d3TimeFormat.timeFormat('%m/%d/%Y');
 
                 d3Selection.select('.js-start-date').text(format(brushExtent[0]));
                 d3Selection.select('.js-end-date').text(format(brushExtent[1]));
 
                 d3Selection.select('.js-date-range').classed('is-hidden', false);
+            })
+            .on('customBrushEnd', function(brushExtent) {
+                console.log('rounded extent', brushExtent);
             });
 
         brushContainer.datum(dataset).call(brushChart);
