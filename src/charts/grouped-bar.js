@@ -601,7 +601,6 @@ define(function (require) {
          * @return {void}
          */
         function handleBarsMouseOver(e, d) {
-            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
             d3Selection.select(e)
                 .attr('fill', () => d3Color.color(categoryColorMap[d.group]).darker());
         }
@@ -613,7 +612,6 @@ define(function (require) {
          * @return {void}
          */
         function handleBarsMouseOut(e, d) {
-            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
             d3Selection.select(e)
                 .attr('fill', () => categoryColorMap[d.group])
         }
@@ -644,6 +642,8 @@ define(function (require) {
 
                 // Emit event with xPosition for tooltip or similar feature
                 dispatcher.call('customMouseMove', e, dataPoint, categoryColorMap, x, y);
+            } else {
+                dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e));
             }
         }
 

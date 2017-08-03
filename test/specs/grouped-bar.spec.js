@@ -274,7 +274,16 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 chart.dispatch('mouseover');
 
                 expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
+            });
+
+            it('mousemove should trigger a callback', () => {
+                let chart = containerFixture.selectAll('.grouped-bar');
+                let callbackSpy = jasmine.createSpy('callback');
+
+                groupedBarChart.on('customMouseMove', callbackSpy);
+                chart.dispatch('mousemove');
+
+                expect(callbackSpy.calls.count()).toBe(1);
             });
 
             it('mouseout should trigger a callback', () => {
@@ -285,8 +294,8 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 chart.dispatch('mouseout');
 
                 expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
             });
         });
+
     });
 });
