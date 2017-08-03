@@ -276,16 +276,6 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 expect(callbackSpy.calls.count()).toBe(1);
             });
 
-            it('mousemove should trigger a callback', () => {
-                let chart = containerFixture.selectAll('.grouped-bar');
-                let callbackSpy = jasmine.createSpy('callback');
-
-                groupedBarChart.on('customMouseMove', callbackSpy);
-                chart.dispatch('mousemove');
-
-                expect(callbackSpy.calls.count()).toBe(1);
-            });
-
             it('mouseout should trigger a callback', () => {
                 let chart = containerFixture.selectAll('.grouped-bar');
                 let callbackSpy = jasmine.createSpy('callback');

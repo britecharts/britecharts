@@ -642,8 +642,6 @@ define(function (require) {
 
                 // Emit event with xPosition for tooltip or similar feature
                 dispatcher.call('customMouseMove', e, dataPoint, categoryColorMap, x, y);
-            } else {
-                dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e));
             }
         }
 
