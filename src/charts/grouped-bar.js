@@ -169,20 +169,22 @@ define(function (require) {
             if (shouldShowTooltip()) {
                 svg
                     .on('mouseover', function(d) {
-                        handleMouseOver(this, d, chartWidth, chartHeight);
+                        handleMouseOver(this, d);
                     })
                     .on('mouseout', function(d) {
-                        handleMouseOut(this, d, chartWidth, chartHeight);
+                        handleMouseOut(this, d);
                     })
-                    .on('mousemove', handleMouseMove);
+                    .on('mousemove',  function(d) {
+                        handleMouseMove(this, d);
+                    });
             }
 
             svg.selectAll('.bar')
                 .on('mouseover', function(d) {
-                    handleBarsMouseOver(this, d, chartWidth, chartHeight);
+                    handleBarsMouseOver(this, d);
                 })
                 .on('mouseout', function(d) {
-                    handleBarsMouseOut(this, d, chartWidth, chartHeight);
+                    handleBarsMouseOut(this, d);
                 });
         }
 
@@ -594,33 +596,37 @@ define(function (require) {
 
         /**
          * Handles a mouseover event on top of a bar
+         * @param  {obj} e the fired event
          * @param  {obj} d data of bar
          * @return {void}
          */
-        function handleBarsMouseOver(e, d, chartWidth, chartHeight) {
-            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
-            d3Selection.select(this)
+        function handleBarsMouseOver(e, d) {
+            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
+            d3Selection.select(e)
                 .attr('fill', () => d3Color.color(categoryColorMap[d.group]).darker());
         }
 
         /**
          * Handles a mouseout event out of a bar
+         * @param  {obj} e the fired event
          * @param  {obj} d data of bar
          * @return {void}
          */
-        function handleBarsMouseOut(e, d, chartWidth, chartHeight) {
-            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
-            d3Selection.select(this)
+        function handleBarsMouseOut(e, d) {
+            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
+            d3Selection.select(e)
                 .attr('fill', () => categoryColorMap[d.group])
         }
 
         /**
          * MouseMove handler, calculates the nearest dataPoint to the cursor
          * and updates metadata related to it
+         * @param  {obj} e the fired event
+         * @param  {obj} d data of bar
          * @private
          */
-        function handleMouseMove() {
-            let [mouseX, mouseY] = getMousePosition(this),
+        function handleMouseMove(e, d) {
+            let [mouseX, mouseY] = getMousePosition(e),
                 dataPoint = !horizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
                 x,
                 y;
@@ -637,7 +643,7 @@ define(function (require) {
                 moveTooltipOriginXY(x, y);
 
                 // Emit event with xPosition for tooltip or similar feature
-                dispatcher.call('customMouseMove', this, dataPoint, categoryColorMap, x, y);
+                dispatcher.call('customMouseMove', e, dataPoint, categoryColorMap, x, y);
             }
         }
 
@@ -646,17 +652,17 @@ define(function (require) {
          * It also resets the container of the vertical marker
          * @private
          */
-        function handleMouseOut(e, d, chartWidth, chartHeight) {
+        function handleMouseOut(e, d) {
             svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
-            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
         }
 
         /**
          * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
          * @private
          */
-        function handleMouseOver(e, d, chartWidth, chartHeight) {
-            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        function handleMouseOver(e, d) {
+            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
         }
 
         /**

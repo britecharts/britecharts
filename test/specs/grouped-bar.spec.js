@@ -274,7 +274,7 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 chart.dispatch('mouseover');
 
                 expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
             });
 
             it('mouseout should trigger a callback', () => {
@@ -285,7 +285,7 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 chart.dispatch('mouseout');
 
                 expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
             });
         });
     });
