@@ -206,6 +206,17 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     expect(callback.calls.count()).toBe(1);
                     expect(callback.calls.allArgs()[0].length).toBe(3);
                 });
+
+                it('should trigger a callback on mouse move', () => {
+                    let callback = jasmine.createSpy('mouseMoveCallback'),
+                        firstSlice = containerFixture.select('.chart-group .arc path');
+
+                    donutChart.on('customMouseMove', callback);
+                    firstSlice.dispatch('mousemove');
+
+                    expect(callback.calls.count()).toBe(1);
+                    expect(callback.calls.allArgs()[0].length).toBe(3);
+                });
             });
 
             describe('Export chart functionality', () => {
