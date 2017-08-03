@@ -168,14 +168,22 @@ define(function (require) {
         function addMouseEvents() {
             if (shouldShowTooltip()) {
                 svg
-                    .on('mouseover', handleMouseOver)
-                    .on('mouseout', handleMouseOut)
+                    .on('mouseover', function(d) {
+                        handleMouseOver(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mouseout', function(d) {
+                        handleMouseOut(this, d, chartWidth, chartHeight);
+                    })
                     .on('mousemove', handleMouseMove);
             }
 
             svg.selectAll('.bar')
-                .on('mouseover', handleBarsMouseOver)
-                .on('mouseout', handleBarsMouseOut);
+                .on('mouseover', function(d) {
+                    handleBarsMouseOver(this, d, chartWidth, chartHeight);
+                })
+                .on('mouseout', function(d) {
+                    handleBarsMouseOut(this, d, chartWidth, chartHeight);
+                });
         }
 
         /**
@@ -589,7 +597,8 @@ define(function (require) {
          * @param  {obj} d data of bar
          * @return {void}
          */
-        function handleBarsMouseOver(d) {
+        function handleBarsMouseOver(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
             d3Selection.select(this)
                 .attr('fill', () => d3Color.color(categoryColorMap[d.group]).darker());
         }
@@ -599,7 +608,8 @@ define(function (require) {
          * @param  {obj} d data of bar
          * @return {void}
          */
-        function handleBarsMouseOut(d) {
+        function handleBarsMouseOut(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
             d3Selection.select(this)
                 .attr('fill', () => categoryColorMap[d.group])
         }
@@ -636,17 +646,17 @@ define(function (require) {
          * It also resets the container of the vertical marker
          * @private
          */
-        function handleMouseOut(d) {
+        function handleMouseOut(e, d, chartWidth, chartHeight) {
             svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
-            dispatcher.call('customMouseOut', this, d);
+            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
         }
 
         /**
          * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
          * @private
          */
-        function handleMouseOver(d) {
-            dispatcher.call('customMouseOver', this, d);
+        function handleMouseOver(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
         }
 
         /**
