@@ -21,13 +21,15 @@ webpackJsonp([1,10],[
 	    if (containerWidth) {
 	        dataset = testDataSet.withSimpleData().build();
 	
-	        brushChart.width(containerWidth).height(125).onBrush(function (brushExtent) {
+	        brushChart.width(containerWidth).height(125).on('customBrushStart', function (brushExtent) {
 	            var format = d3TimeFormat.timeFormat('%m/%d/%Y');
 	
 	            d3Selection.select('.js-start-date').text(format(brushExtent[0]));
 	            d3Selection.select('.js-end-date').text(format(brushExtent[1]));
 	
 	            d3Selection.select('.js-date-range').classed('is-hidden', false);
+	        }).on('customBrushEnd', function (brushExtent) {
+	            console.log('rounded extent', brushExtent);
 	        });
 	
 	        brushContainer.datum(dataset).call(brushChart);
@@ -8619,6 +8621,7 @@ webpackJsonp([1,10],[
 	    var d3Ease = __webpack_require__(5);
 	    var d3Scale = __webpack_require__(10);
 	    var d3Shape = __webpack_require__(33);
+	    var d3Dispatch = __webpack_require__(8);
 	    var d3Selection = __webpack_require__(1);
 	    var d3Time = __webpack_require__(13);
 	    var d3Transition = __webpack_require__(15);
@@ -8702,6 +8705,11 @@ webpackJsonp([1,10],[
 	            gradient = colorHelper.colorGradients.greenBlueGradient,
 	
 	
+	        // Dispatcher object to broadcast the mouse events
+	        // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
+	        dispatcher = d3Dispatch.dispatch('customBrushStart', 'customBrushEnd'),
+	
+	
 	        // extractors
 	        getValue = function getValue(_ref) {
 	            var value = _ref.value;
@@ -8764,7 +8772,7 @@ webpackJsonp([1,10],[
 	         * @return {void}
 	         */
 	        function buildBrush() {
-	            brush = d3Brush.brushX().extent([[0, 0], [chartWidth, chartHeight]]).on('brush', handleBrush).on('end', handleBrushEnded);
+	            brush = d3Brush.brushX().extent([[0, 0], [chartWidth, chartHeight]]).on('brush', handleBrushStart).on('end', handleBrushEnd);
 	        }
 	
 	        /**
@@ -8896,19 +8904,16 @@ webpackJsonp([1,10],[
 	        }
 	
 	        /**
-	         * When a brush event happens, we can extract info from the extension
+	         * When a brush event starts, we can extract info from the extension
 	         * of the brush.
 	         *
 	         * @return {void}
 	         */
-	        function handleBrush() {
+	        function handleBrushStart() {
 	            var s = d3Selection.event.selection,
 	                dateExtent = s.map(xScale.invert);
 	
-	            if (typeof onBrush === 'function') {
-	                onBrush.call(null, dateExtent);
-	            }
-	
+	            dispatcher.call('customBrushStart', this, dateExtent);
 	            // updateHandlers(dateExtent);
 	        }
 	
@@ -8918,20 +8923,22 @@ webpackJsonp([1,10],[
 	         * @return {void}
 	         * @private
 	         */
-	        function handleBrushEnded() {
+	        function handleBrushEnd() {
 	            if (!d3Selection.event.sourceEvent) return; // Only transition after input.
 	            if (!d3Selection.event.selection) return; // Ignore empty selections.
 	
-	            var d0 = d3Selection.event.selection.map(xScale.invert),
-	                d1 = d0.map(d3Time.timeDay.round);
+	            var s = d3Selection.event.selection;
+	            dateExtent = s.map(xScale.invert), dateExtentRounded = dateExtent.map(d3Time.timeDay.round);
 	
 	            // If empty when rounded, use floor & ceil instead.
-	            if (d1[0] >= d1[1]) {
-	                d1[0] = d3Time.timeDay.floor(d0[0]);
-	                d1[1] = d3Time.timeDay.offset(d1[0]);
+	            if (dateExtentRounded[0] >= dateExtentRounded[1]) {
+	                dateExtentRounded[0] = d3Time.timeDay.floor(dateExtent[0]);
+	                dateExtentRounded[1] = d3Time.timeDay.offset(dateExtentRounded[0]);
 	            }
 	
-	            d3Selection.select(this).transition().call(d3Selection.event.target.move, d1.map(xScale));
+	            d3Selection.select(this).transition().call(d3Selection.event.target.move, dateExtentRounded.map(xScale));
+	
+	            dispatcher.call('customBrushEnd', this, dateExtentRounded);
 	        }
 	
 	        /**
@@ -8978,6 +8985,14 @@ webpackJsonp([1,10],[
 	        // API
 	
 	        /**
+	         * Exposes the constants to be used to force the x axis to respect a certain granularity
+	         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+	         * @example
+	         *     brush.xAxisCustomFormat(brush.axisTimeCombinations.HOUR_DAY)
+	         */
+	        exports.axisTimeCombinations = axisTimeCombinations;
+	
+	        /**
 	         * Gets or Sets the dateRange for the selected part of the brush
 	         * @param  {String[]} _x Desired dateRange for the graph
 	         * @return { dateRange | module} Current dateRange or Chart module to chain calls
@@ -8995,62 +9010,6 @@ webpackJsonp([1,10],[
 	
 	            return this;
 	        };
-	
-	        /**
-	         * Exposes the ability to force the chart to show a certain x axis grouping
-	         * @param  {String} _x          Desired format
-	         * @return {String | Module}    Current format or module to chain calls
-	         * @example
-	         *     brush.xAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
-	         */
-	        exports.xAxisFormat = function (_x) {
-	            if (!arguments.length) {
-	                return xAxisFormat;
-	            }
-	            xAxisFormat = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the ability to force the chart to show a certain x format
-	         * It requires a `xAxisFormat` of 'custom' in order to work.
-	         * @param  {String} _x              Desired format for x axis
-	         * @return {String | Module}        Current format or module to chain calls
-	         */
-	        exports.xAxisCustomFormat = function (_x) {
-	            if (!arguments.length) {
-	                return xAxisCustomFormat;
-	            }
-	            xAxisCustomFormat = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisCustomFormat` of 'custom' in order to work.
-	         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
-	         * how many and where the ticks will appear.
-	         *
-	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
-	         * @return {Number | Module}        Current number or ticks or module to chain calls
-	         */
-	        exports.xTicks = function (_x) {
-	            if (!arguments.length) {
-	                return xTicks;
-	            }
-	            xTicks = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the constants to be used to force the x axis to respect a certain granularity
-	         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
-	         * @example
-	         *     brush.xAxisCustomFormat(brush.axisTimeCombinations.HOUR_DAY)
-	         */
-	        exports.axisTimeCombinations = axisTimeCombinations;
 	
 	        /**
 	         * Gets or Sets the gradient of the chart
@@ -9110,6 +9069,20 @@ webpackJsonp([1,10],[
 	        };
 	
 	        /**
+	         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+	         * We are going to expose this events:
+	         * customMouseOver, customMouseMove and customMouseOut
+	         *
+	         * @return {module} Bar Chart
+	         * @public
+	         */
+	        exports.on = function () {
+	            var value = dispatcher.on.apply(dispatcher, arguments);
+	
+	            return value === dispatcher ? exports : value;
+	        };
+	
+	        /**
 	         * Gets or Sets the width of the chart
 	         * @param  {Number} _x          Desired width for the graph
 	         * @return {Number | Module}    Current width or Chart module to chain calls
@@ -9120,6 +9093,54 @@ webpackJsonp([1,10],[
 	                return width;
 	            }
 	            width = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x format
+	         * It requires a `xAxisFormat` of 'custom' in order to work.
+	         * @param  {String} _x              Desired format for x axis
+	         * @return {String | Module}        Current format or module to chain calls
+	         */
+	        exports.xAxisCustomFormat = function (_x) {
+	            if (!arguments.length) {
+	                return xAxisCustomFormat;
+	            }
+	            xAxisCustomFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x axis grouping
+	         * @param  {String} _x          Desired format
+	         * @return {String | Module}    Current format or module to chain calls
+	         * @example
+	         *     brush.xAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
+	         */
+	        exports.xAxisFormat = function (_x) {
+	            if (!arguments.length) {
+	                return xAxisFormat;
+	            }
+	            xAxisFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisCustomFormat` of 'custom' in order to work.
+	         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
+	         * how many and where the ticks will appear.
+	         *
+	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
+	         * @return {Number | Module}        Current number or ticks or module to chain calls
+	         */
+	        exports.xTicks = function (_x) {
+	            if (!arguments.length) {
+	                return xTicks;
+	            }
+	            xTicks = _x;
 	
 	            return this;
 	        };
