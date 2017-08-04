@@ -7164,9 +7164,9 @@ webpackJsonp([2,10],[
 	
 	    // Color Gradients
 	    var britechartGradients = {
-	        greenBlueGradient: ['#39C7EA', '#4CDCBA'],
-	        orangePinkGradient: ['#FBC670', '#F766B8'],
-	        bluePurpleGradient: ['#3DC3C9', '#824a9e']
+	        greenBlue: ['#39C7EA', '#4CDCBA'],
+	        orangePink: ['#FBC670', '#F766B8'],
+	        bluePurple: ['#3DC3C9', '#824a9e']
 	    };
 	
 	    // Color Schemas
@@ -7231,9 +7231,9 @@ webpackJsonp([2,10],[
 	        },
 	        colorGradients: britechartGradients,
 	        colorGradientsHuman: {
-	            greenBlueGradient: 'Green To Blue',
-	            orangePinkGradient: 'Orange to Pink',
-	            bluePurpleGradient: 'Blue to Purple'
+	            greenBlue: 'Green To Blue',
+	            orangePink: 'Orange to Pink',
+	            bluePurple: 'Blue to Purple'
 	        }
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));

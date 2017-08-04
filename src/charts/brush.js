@@ -95,7 +95,7 @@ define(function(require) {
 
             onBrush = null,
 
-            gradient = colorHelper.colorGradients.greenBlueGradient,
+            gradient = colorHelper.colorGradients.greenBlue,
 
             // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch

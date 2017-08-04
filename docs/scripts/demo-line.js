@@ -7311,9 +7311,9 @@ webpackJsonp([5,10],[
 	
 	    // Color Gradients
 	    var britechartGradients = {
-	        greenBlueGradient: ['#39C7EA', '#4CDCBA'],
-	        orangePinkGradient: ['#FBC670', '#F766B8'],
-	        bluePurpleGradient: ['#3DC3C9', '#824a9e']
+	        greenBlue: ['#39C7EA', '#4CDCBA'],
+	        orangePink: ['#FBC670', '#F766B8'],
+	        bluePurple: ['#3DC3C9', '#824a9e']
 	    };
 	
 	    // Color Schemas
@@ -7378,9 +7378,9 @@ webpackJsonp([5,10],[
 	        },
 	        colorGradients: britechartGradients,
 	        colorGradientsHuman: {
-	            greenBlueGradient: 'Green To Blue',
-	            orangePinkGradient: 'Orange to Pink',
-	            bluePurpleGradient: 'Blue to Purple'
+	            greenBlue: 'Green To Blue',
+	            orangePink: 'Orange to Pink',
+	            bluePurple: 'Blue to Purple'
 	        }
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -9375,7 +9375,7 @@ webpackJsonp([5,10],[
 	            handle = void 0,
 	            tickPadding = 5,
 	            onBrush = null,
-	            gradient = colorHelper.colorGradients.greenBlueGradient,
+	            gradient = colorHelper.colorGradients.greenBlue,
 	
 	
 	        // Dispatcher object to broadcast the mouse events
@@ -13766,7 +13766,7 @@ webpackJsonp([5,10],[
 	            monthAxisPadding = 28,
 	            tickPadding = 5,
 	            colorSchema = colorHelper.colorSchemas.britecharts,
-	            singleLineGradientColors = colorHelper.colorGradients.greenBlueGradient,
+	            singleLineGradientColors = colorHelper.colorGradients.greenBlue,
 	            topicColorMap = void 0,
 	            xAxisFormat = null,
 	            xTicks = null,

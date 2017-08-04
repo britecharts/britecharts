@@ -140,7 +140,7 @@ define(function(require){
             monthAxisPadding = 28,
             tickPadding = 5,
             colorSchema = colorHelper.colorSchemas.britecharts,
-            singleLineGradientColors = colorHelper.colorGradients.greenBlueGradient,
+            singleLineGradientColors = colorHelper.colorGradients.greenBlue,
             topicColorMap,
 
             xAxisFormat = null,
