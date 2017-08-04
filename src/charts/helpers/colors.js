@@ -9,7 +9,7 @@ define(function() {
 
     // Color Schemas
     // Standard Color Schema for Britecharts
-    const britechartsColorSchema = [
+    const britecharts = [
             '#6aedc7', //green
             '#39c2c9', //blue
             '#ffce00', //yellow
@@ -134,7 +134,7 @@ define(function() {
 
     return {
         colorSchemas: {
-            britechartsColorSchema,
+            britecharts,
             britechartsGreySchema,
             extendedOrangeColorSchema,
             extendedBlueColorSchema,
@@ -146,7 +146,7 @@ define(function() {
             extendedRedColorSchema
         },
         colorSchemasHuman: {
-            'britechartsColorSchema': 'Britecharts Default',
+            'britecharts': 'Britecharts Default',
             'britechartsGreySchema': 'Britecharts Grey',
             'extendedOrangeColorSchema': 'Orange',
             'extendedBlueColorSchema': 'Blue',
