@@ -31,8 +31,8 @@ define(function() {
             '#282C35'
         ];
 
-    // Extended Orange Palette
-    const extendedOrangeColorSchema = [
+    // Orange Palette
+    const orange = [
             '#fcc870',
             '#ffa71a',
             '#fb8825',
@@ -43,8 +43,8 @@ define(function() {
             '#892a10',
             '#f9e9c5'
         ];
-    // Extended Blue Palette
-    const extendedBlueColorSchema = [
+    // Blue Palette
+    const blueGreen = [
             '#ccf7f6',
             '#70e4e0',
             '#00d8d2',
@@ -55,8 +55,8 @@ define(function() {
             '#002d2f',
             '#0d2223'
         ];
-    // Extended LightBlue Palette
-    const extendedLightBlueColorSchema = [
+    // LightBlue Palette
+    const teal = [
             '#ccfffe',
             '#94f7f4',
             '#00fff8',
@@ -67,8 +67,8 @@ define(function() {
             '#1a5957',
             '#133f3e'
         ];
-    // Extended Green Palette
-    const extendedGreenColorSchema = [
+    // Green Palette
+    const green = [
             '#edfff7',
             '#d7ffef',
             '#c0ffe7',
@@ -79,8 +79,8 @@ define(function() {
             '#34816a',
             '#206953'
         ];
-    // Extended Yellow Palette
-    const extendedYellowColorSchema = [
+    // Yellow Palette
+    const yellow = [
             '#f9f2b3',
             '#fbe986',
             '#fce05a',
@@ -91,8 +91,8 @@ define(function() {
             '#eda629',
             '#e09819'
         ];
-    // Extended Pink Palette
-    const extendedPinkColorSchema = [
+    // Pink Palette
+    const pink = [
             '#fdd1ea',
             '#fb9cd2',
             '#f866b9',
@@ -103,8 +103,8 @@ define(function() {
             '#a62073',
             '#85135f'
         ];
-    // Extended Purple Palette
-    const extendedPurpleColorSchema = [
+    // Purple Palette
+    const purple = [
             '#ddd6fc',
             '#bbb1f0',
             '#998ce3',
@@ -115,8 +115,8 @@ define(function() {
             '#591650',
             '#470f3f'
         ];
-    // Extended Red Palette
-    const extendedRedColorSchema = [
+    // Red Palette
+    const red = [
             '#ffd8d4',
             '#ffb5b0',
             '#ff938c',
@@ -136,26 +136,26 @@ define(function() {
         colorSchemas: {
             britecharts,
             grey,
-            extendedOrangeColorSchema,
-            extendedBlueColorSchema,
-            extendedLightBlueColorSchema,
-            extendedGreenColorSchema,
-            extendedYellowColorSchema,
-            extendedPinkColorSchema,
-            extendedPurpleColorSchema,
-            extendedRedColorSchema
+            orange,
+            blueGreen,
+            teal,
+            green,
+            yellow,
+            pink,
+            purple,
+            red
         },
         colorSchemasHuman: {
             'britecharts': 'Britecharts Default',
             'grey': 'Britecharts Grey',
-            'extendedOrangeColorSchema': 'Orange',
-            'extendedBlueColorSchema': 'Blue',
-            'extendedLightBlueColorSchema': 'Light Blue',
-            'extendedGreenColorSchema': 'Green',
-            'extendedYellowColorSchema': 'Yellow',
-            'extendedPinkColorSchema': 'Pink',
-            'extendedPurpleColorSchema': 'Purple',
-            'extendedRedColorSchema': 'Red'
+            'orange': 'Orange',
+            'blueGreen': 'Blue',
+            'teal': 'Light Blue',
+            'green': 'Green',
+            'yellow': 'Yellow',
+            'pink': 'Pink',
+            'purple': 'Purple',
+            'red': 'Red'
         },
         singleColors: {
             aloeGreen
