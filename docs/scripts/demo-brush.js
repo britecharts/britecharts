@@ -6947,7 +6947,7 @@ webpackJsonp([1,10],[
 	
 	    // Color Schemas
 	    // Standard Color Schema for Britecharts
-	    var britechartsColorSchema = ['#6aedc7', //green
+	    var britecharts = ['#6aedc7', //green
 	    '#39c2c9', //blue
 	    '#ffce00', //yellow
 	    '#ffa71a', //orange
@@ -6956,7 +6956,7 @@ webpackJsonp([1,10],[
 	    ];
 	
 	    // Grey Schema for Britecharts
-	    var britechartsGreySchema = ['#F8F8FA', '#EFF2F5', '#D2D6DF', '#C3C6CF', '#ADB0B6', '#666A73', '#45494E', '#363A43', '#282C35'];
+	    var grey = ['#F8F8FA', '#EFF2F5', '#D2D6DF', '#C3C6CF', '#ADB0B6', '#666A73', '#45494E', '#363A43', '#282C35'];
 	
 	    // Extended Orange Palette
 	    var extendedOrangeColorSchema = ['#fcc870', '#ffa71a', '#fb8825', '#f6682f', '#db5a2c', '#bf4c28', '#a43b1c', '#892a10', '#f9e9c5'];
@@ -6979,8 +6979,8 @@ webpackJsonp([1,10],[
 	
 	    return {
 	        colorSchemas: {
-	            britechartsColorSchema: britechartsColorSchema,
-	            britechartsGreySchema: britechartsGreySchema,
+	            britecharts: britecharts,
+	            grey: grey,
 	            extendedOrangeColorSchema: extendedOrangeColorSchema,
 	            extendedBlueColorSchema: extendedBlueColorSchema,
 	            extendedLightBlueColorSchema: extendedLightBlueColorSchema,
@@ -6991,8 +6991,8 @@ webpackJsonp([1,10],[
 	            extendedRedColorSchema: extendedRedColorSchema
 	        },
 	        colorSchemasHuman: {
-	            'britechartsColorSchema': 'Britecharts Default',
-	            'britechartsGreySchema': 'Britecharts Grey',
+	            'britecharts': 'Britecharts Default',
+	            'grey': 'Britecharts Grey',
 	            'extendedOrangeColorSchema': 'Orange',
 	            'extendedBlueColorSchema': 'Blue',
 	            'extendedLightBlueColorSchema': 'Light Blue',
@@ -8897,7 +8897,7 @@ webpackJsonp([1,10],[
 	         * @return {void}
 	         */
 	        function drawHandles() {
-	            var handleFillColor = colorHelper.colorSchemasHuman.britechartsGreySchema[1];
+	            var handleFillColor = colorHelper.colorSchemasHuman.grey[1];
 	
 	            // Styling
 	            handle = chartBrush.selectAll('.handle.brush-rect').style('fill', handleFillColor);
@@ -8927,8 +8927,9 @@ webpackJsonp([1,10],[
 	            if (!d3Selection.event.sourceEvent) return; // Only transition after input.
 	            if (!d3Selection.event.selection) return; // Ignore empty selections.
 	
-	            var s = d3Selection.event.selection;
-	            dateExtent = s.map(xScale.invert), dateExtentRounded = dateExtent.map(d3Time.timeDay.round);
+	            var s = d3Selection.event.selection,
+	                dateExtent = s.map(xScale.invert),
+	                dateExtentRounded = dateExtent.map(d3Time.timeDay.round);
 	
 	            // If empty when rounded, use floor & ceil instead.
 	            if (dateExtentRounded[0] >= dateExtentRounded[1]) {

@@ -7138,10 +7138,10 @@ webpackJsonp([2,10],[
 	        if (!title || !svgWidth) {
 	            return html;
 	        }
-	        var britechartsGreySchema = colorSchemas.britechartsGreySchema;
+	        var grey = colorSchemas.grey;
 	
 	
-	        html = html.replace(/<g/, '<text x="' + this.margin().left + '" y="' + config.titleTopOffset + '" font-family="' + config.titleFontFamily + '" font-size="' + config.titleFontSize + '" fill="' + britechartsGreySchema[6] + '"> ' + title + ' </text><g ');
+	        html = html.replace(/<g/, '<text x="' + this.margin().left + '" y="' + config.titleTopOffset + '" font-family="' + config.titleFontFamily + '" font-size="' + config.titleFontSize + '" fill="' + grey[6] + '"> ' + title + ' </text><g ');
 	
 	        return html;
 	    }
@@ -7171,7 +7171,7 @@ webpackJsonp([2,10],[
 	
 	    // Color Schemas
 	    // Standard Color Schema for Britecharts
-	    var britechartsColorSchema = ['#6aedc7', //green
+	    var britecharts = ['#6aedc7', //green
 	    '#39c2c9', //blue
 	    '#ffce00', //yellow
 	    '#ffa71a', //orange
@@ -7180,7 +7180,7 @@ webpackJsonp([2,10],[
 	    ];
 	
 	    // Grey Schema for Britecharts
-	    var britechartsGreySchema = ['#F8F8FA', '#EFF2F5', '#D2D6DF', '#C3C6CF', '#ADB0B6', '#666A73', '#45494E', '#363A43', '#282C35'];
+	    var grey = ['#F8F8FA', '#EFF2F5', '#D2D6DF', '#C3C6CF', '#ADB0B6', '#666A73', '#45494E', '#363A43', '#282C35'];
 	
 	    // Extended Orange Palette
 	    var extendedOrangeColorSchema = ['#fcc870', '#ffa71a', '#fb8825', '#f6682f', '#db5a2c', '#bf4c28', '#a43b1c', '#892a10', '#f9e9c5'];
@@ -7203,8 +7203,8 @@ webpackJsonp([2,10],[
 	
 	    return {
 	        colorSchemas: {
-	            britechartsColorSchema: britechartsColorSchema,
-	            britechartsGreySchema: britechartsGreySchema,
+	            britecharts: britecharts,
+	            grey: grey,
 	            extendedOrangeColorSchema: extendedOrangeColorSchema,
 	            extendedBlueColorSchema: extendedBlueColorSchema,
 	            extendedLightBlueColorSchema: extendedLightBlueColorSchema,
@@ -7215,8 +7215,8 @@ webpackJsonp([2,10],[
 	            extendedRedColorSchema: extendedRedColorSchema
 	        },
 	        colorSchemasHuman: {
-	            'britechartsColorSchema': 'Britecharts Default',
-	            'britechartsGreySchema': 'Britecharts Grey',
+	            'britecharts': 'Britecharts Default',
+	            'grey': 'Britecharts Grey',
 	            'extendedOrangeColorSchema': 'Orange',
 	            'extendedBlueColorSchema': 'Blue',
 	            'extendedLightBlueColorSchema': 'Light Blue',
@@ -11230,7 +11230,7 @@ webpackJsonp([2,10],[
 	
 	        // colors
 	        colorScale = void 0,
-	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+	            colorSchema = colorHelper.colorSchemas.britecharts,
 	
 	
 	        // utils

@@ -19,7 +19,7 @@ define(function() {
         ];
 
     // Grey Schema for Britecharts
-    const britechartsGreySchema = [
+    const grey = [
             '#F8F8FA',
             '#EFF2F5',
             '#D2D6DF',
@@ -135,7 +135,7 @@ define(function() {
     return {
         colorSchemas: {
             britecharts,
-            britechartsGreySchema,
+            grey,
             extendedOrangeColorSchema,
             extendedBlueColorSchema,
             extendedLightBlueColorSchema,
@@ -147,7 +147,7 @@ define(function() {
         },
         colorSchemasHuman: {
             'britecharts': 'Britecharts Default',
-            'britechartsGreySchema': 'Britecharts Grey',
+            'grey': 'Britecharts Grey',
             'extendedOrangeColorSchema': 'Orange',
             'extendedBlueColorSchema': 'Blue',
             'extendedLightBlueColorSchema': 'Light Blue',

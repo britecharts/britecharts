@@ -173,9 +173,9 @@ define(function(require) {
         if (!title || !svgWidth) {
             return html;
         }
-        let {britechartsGreySchema} = colorSchemas;
+        let {grey} = colorSchemas;
         
-        html =  html.replace(/<g/,`<text x="${this.margin().left}" y="${config.titleTopOffset}" font-family="${config.titleFontFamily}" font-size="${config.titleFontSize}" fill="${britechartsGreySchema[6]}"> ${title} </text><g `);
+        html =  html.replace(/<g/,`<text x="${this.margin().left}" y="${config.titleTopOffset}" font-family="${config.titleFontFamily}" font-size="${config.titleFontSize}" fill="${grey[6]}"> ${title} </text><g `);
 
         return html;
     }

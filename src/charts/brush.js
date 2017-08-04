@@ -322,7 +322,7 @@ define(function(require) {
          * @return {void}
          */
         function drawHandles() {
-            let handleFillColor = colorHelper.colorSchemasHuman.britechartsGreySchema[1];
+            let handleFillColor = colorHelper.colorSchemasHuman.grey[1];
 
             // Styling
             handle = chartBrush
