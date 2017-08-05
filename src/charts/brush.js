@@ -95,7 +95,7 @@ define(function(require) {
 
             onBrush = null,
 
-            gradient = colorHelper.colorGradients.greenBlueGradient,
+            gradient = colorHelper.colorGradients.greenBlue,
 
             // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
@@ -322,7 +322,7 @@ define(function(require) {
          * @return {void}
          */
         function drawHandles() {
-            let handleFillColor = colorHelper.colorSchemasHuman.britechartsGreySchema[1];
+            let handleFillColor = colorHelper.colorSchemasHuman.grey[1];
 
             // Styling
             handle = chartBrush

@@ -89,7 +89,7 @@ define(function(require){
 
             // colors
             colorScale,
-            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+            colorSchema = colorHelper.colorSchemas.britecharts,
 
             getId = ({id}) => id,
             getName = ({name}) => name,

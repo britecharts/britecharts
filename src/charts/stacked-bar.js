@@ -89,7 +89,7 @@ define(function(require){
             xTicks = 5,
             percentageAxisToMaxRatio = 1,
 
-            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+            colorSchema = colorHelper.colorSchemas.britecharts,
 
             colorScale,
             categoryColorMap,
