@@ -4,8 +4,7 @@ webpackJsonp([5,10],[
 
 	'use strict';
 	
-	var _ = __webpack_require__(26),
-	    d3Selection = __webpack_require__(1),
+	var d3Selection = __webpack_require__(1),
 	    d3TimeFormat = __webpack_require__(14),
 	    PubSub = __webpack_require__(2),
 	    brush = __webpack_require__(30),
@@ -14,6 +13,7 @@ webpackJsonp([5,10],[
 	    dataBuilder = __webpack_require__(53),
 	    colorSelectorHelper = __webpack_require__(45),
 	    lineMargin = { top: 60, bottom: 50, left: 50, right: 30 };
+	
 	__webpack_require__(29);
 	
 	function createBrushChart(optionalColorSchema) {
@@ -27,12 +27,11 @@ webpackJsonp([5,10],[
 	    if (containerWidth) {
 	        dataset = testDataSet.with5Topics().build();
 	
-	        brushChart.width(containerWidth).height(100).margin(brushMargin).onBrush(function (brushExtent) {
+	        brushChart.width(containerWidth).height(100).margin(brushMargin).on('customBrushEnd', function (brushExtent) {
 	            var format = d3TimeFormat.timeFormat('%m/%d/%Y');
 	
 	            d3Selection.select('.js-start-date').text(format(brushExtent[0]));
 	            d3Selection.select('.js-end-date').text(format(brushExtent[1]));
-	
 	            d3Selection.select('.js-date-range').classed('is-hidden', false);
 	
 	            // Filter
@@ -76,8 +75,8 @@ webpackJsonp([5,10],[
 	        // Tooltip Setup and start
 	        chartTooltip
 	        // In order to change the date range on the tooltip title, uncomment this line
-	        // .dateFormat(chartTooltip.axisTimeCombinations.HOUR_DAY)
-	        .title('Quantity Sold').topicsOrder(dataset.dataByTopic.map(function (topic) {
+	        // .dateFormat(chartTooltip.axisTimeCombinations.HOUR .title('Quantity Sold')
+	        .topicsOrder(dataset.dataByTopic.map(function (topic) {
 	            return topic.topic;
 	        }));
 	
@@ -9374,7 +9373,6 @@ webpackJsonp([5,10],[
 	            chartBrush = void 0,
 	            handle = void 0,
 	            tickPadding = 5,
-	            onBrush = null,
 	            gradient = colorHelper.colorGradients.greenBlue,
 	
 	
@@ -9726,18 +9724,6 @@ webpackJsonp([5,10],[
 	                return margin;
 	            }
 	            margin = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the callback that will be called when the user brushes over the area
-	         * @param  {Function} _x            Callback to call
-	         * @return {Function | module}      Current callback function or the Chart Module
-	         */
-	        exports.onBrush = function (_x) {
-	            if (!arguments.length) return onBrush;
-	            onBrush = _x;
 	
 	            return this;
 	        };
@@ -12807,20 +12793,21 @@ webpackJsonp([5,10],[
 	     * @return {void}
 	     */
 	    function createColorSelector(selectContainerSelector, chartSelector, callback) {
-	        var colorKeys = Object.keys(colors.colorSchemas);
-	        var containerSelector = document.querySelector(selectContainerSelector);
+	        var colorKeys = Object.keys(colors.colorSchemas),
+	            containerSelector = document.querySelector(selectContainerSelector);
 	
 	        if (!containerSelector) {
 	            return;
 	        }
 	
 	        // Create Select
-	        var sel = document.createElement("select");
+	        var sel = document.createElement('select');
+	
 	        sel.className += ' ' + selectClass;
 	
 	        // And fill with options
-	        colorKeys.forEach(function (key, i) {
-	            var opt = document.createElement("option");
+	        colorKeys.forEach(function (key) {
+	            var opt = document.createElement('option');
 	
 	            opt.value = key;
 	            opt.text = colors.colorSchemasHuman[key];
