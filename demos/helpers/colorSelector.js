@@ -13,18 +13,19 @@ define(function(require) {
      * @return {void}
      */
     function createColorSelector(selectContainerSelector, chartSelector, callback) {
-        var colorKeys = Object.keys(colors.colorSchemas);
-        var containerSelector = document.querySelector(selectContainerSelector);
+        var colorKeys = Object.keys(colors.colorSchemas),
+            containerSelector = document.querySelector(selectContainerSelector);
 
         if (!containerSelector) { return; }
 
         // Create Select
-        var sel = document.createElement("select")
-            sel.className += ' ' + selectClass;
+        var sel = document.createElement('select');
+        
+        sel.className += ' ' + selectClass;
 
         // And fill with options
-        colorKeys.forEach(function(key, i) {
-                var opt = document.createElement("option");
+        colorKeys.forEach(function(key) {
+                var opt = document.createElement('option');
 
                 opt.value = key;
                 opt.text = colors.colorSchemasHuman[key];

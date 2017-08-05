@@ -93,8 +93,6 @@ define(function(require) {
 
             tickPadding = 5,
 
-            onBrush = null,
-
             gradient = colorHelper.colorGradients.greenBlue,
 
             // Dispatcher object to broadcast the mouse events
@@ -486,18 +484,6 @@ define(function(require) {
                 return margin;
             }
             margin = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets the callback that will be called when the user brushes over the area
-         * @param  {Function} _x            Callback to call
-         * @return {Function | module}      Current callback function or the Chart Module
-         */
-        exports.onBrush = function(_x) {
-            if (!arguments.length) return onBrush;
-            onBrush = _x;
 
             return this;
         };
