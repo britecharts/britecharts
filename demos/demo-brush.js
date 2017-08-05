@@ -35,7 +35,7 @@ function createBrushChart() {
 
         brushContainer.datum(dataset).call(brushChart);
 
-        brushChart.dateRange(["9/15/2015", "1/25/2016"])
+        brushChart.dateRange(['9/15/2015', '1/25/2016'])
     }
 }
 

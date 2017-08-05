@@ -97,7 +97,7 @@ define(function(require){
             yTickTextXOffset = -20,
             tickPadding = 5,
 
-            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+            colorSchema = colorHelper.colorSchemas.britecharts,
 
             areaOpacity = 0.64,
             categoryColorMap,

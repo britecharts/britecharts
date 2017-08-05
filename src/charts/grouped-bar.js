@@ -90,7 +90,7 @@ define(function (require) {
             xTicks = 5,
             baseLine,
 
-            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+            colorSchema = colorHelper.colorSchemas.britecharts,
 
             colorScale,
             categoryColorMap,

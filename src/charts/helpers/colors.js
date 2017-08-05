@@ -2,14 +2,14 @@ define(function() {
 
     // Color Gradients
     const britechartGradients = {
-            greenBlueGradient: ['#39C7EA', '#4CDCBA'],
-            orangePinkGradient: ['#FBC670', '#F766B8'],
-            bluePurpleGradient: ['#3DC3C9', '#824a9e']
+            greenBlue: ['#39C7EA', '#4CDCBA'],
+            orangePink: ['#FBC670', '#F766B8'],
+            bluePurple: ['#3DC3C9', '#824a9e']
         };
 
     // Color Schemas
     // Standard Color Schema for Britecharts
-    const britechartsColorSchema = [
+    const britecharts = [
             '#6aedc7', //green
             '#39c2c9', //blue
             '#ffce00', //yellow
@@ -19,7 +19,7 @@ define(function() {
         ];
 
     // Grey Schema for Britecharts
-    const britechartsGreySchema = [
+    const grey = [
             '#F8F8FA',
             '#EFF2F5',
             '#D2D6DF',
@@ -31,8 +31,8 @@ define(function() {
             '#282C35'
         ];
 
-    // Extended Orange Palette
-    const extendedOrangeColorSchema = [
+    // Orange Palette
+    const orange = [
             '#fcc870',
             '#ffa71a',
             '#fb8825',
@@ -43,8 +43,8 @@ define(function() {
             '#892a10',
             '#f9e9c5'
         ];
-    // Extended Blue Palette
-    const extendedBlueColorSchema = [
+    // Blue Palette
+    const blueGreen = [
             '#ccf7f6',
             '#70e4e0',
             '#00d8d2',
@@ -55,8 +55,8 @@ define(function() {
             '#002d2f',
             '#0d2223'
         ];
-    // Extended LightBlue Palette
-    const extendedLightBlueColorSchema = [
+    // LightBlue Palette
+    const teal = [
             '#ccfffe',
             '#94f7f4',
             '#00fff8',
@@ -67,8 +67,8 @@ define(function() {
             '#1a5957',
             '#133f3e'
         ];
-    // Extended Green Palette
-    const extendedGreenColorSchema = [
+    // Green Palette
+    const green = [
             '#edfff7',
             '#d7ffef',
             '#c0ffe7',
@@ -79,8 +79,8 @@ define(function() {
             '#34816a',
             '#206953'
         ];
-    // Extended Yellow Palette
-    const extendedYellowColorSchema = [
+    // Yellow Palette
+    const yellow = [
             '#f9f2b3',
             '#fbe986',
             '#fce05a',
@@ -91,8 +91,8 @@ define(function() {
             '#eda629',
             '#e09819'
         ];
-    // Extended Pink Palette
-    const extendedPinkColorSchema = [
+    // Pink Palette
+    const pink = [
             '#fdd1ea',
             '#fb9cd2',
             '#f866b9',
@@ -103,8 +103,8 @@ define(function() {
             '#a62073',
             '#85135f'
         ];
-    // Extended Purple Palette
-    const extendedPurpleColorSchema = [
+    // Purple Palette
+    const purple = [
             '#ddd6fc',
             '#bbb1f0',
             '#998ce3',
@@ -115,8 +115,8 @@ define(function() {
             '#591650',
             '#470f3f'
         ];
-    // Extended Red Palette
-    const extendedRedColorSchema = [
+    // Red Palette
+    const red = [
             '#ffd8d4',
             '#ffb5b0',
             '#ff938c',
@@ -134,37 +134,37 @@ define(function() {
 
     return {
         colorSchemas: {
-            britechartsColorSchema,
-            britechartsGreySchema,
-            extendedOrangeColorSchema,
-            extendedBlueColorSchema,
-            extendedLightBlueColorSchema,
-            extendedGreenColorSchema,
-            extendedYellowColorSchema,
-            extendedPinkColorSchema,
-            extendedPurpleColorSchema,
-            extendedRedColorSchema
+            britecharts,
+            grey,
+            orange,
+            blueGreen,
+            teal,
+            green,
+            yellow,
+            pink,
+            purple,
+            red
         },
         colorSchemasHuman: {
-            'britechartsColorSchema': 'Britecharts Default',
-            'britechartsGreySchema': 'Britecharts Grey',
-            'extendedOrangeColorSchema': 'Orange',
-            'extendedBlueColorSchema': 'Blue',
-            'extendedLightBlueColorSchema': 'Light Blue',
-            'extendedGreenColorSchema': 'Green',
-            'extendedYellowColorSchema': 'Yellow',
-            'extendedPinkColorSchema': 'Pink',
-            'extendedPurpleColorSchema': 'Purple',
-            'extendedRedColorSchema': 'Red'
+            'britecharts': 'Britecharts Default',
+            'grey': 'Britecharts Grey',
+            'orange': 'Orange',
+            'blueGreen': 'Blue',
+            'teal': 'Light Blue',
+            'green': 'Green',
+            'yellow': 'Yellow',
+            'pink': 'Pink',
+            'purple': 'Purple',
+            'red': 'Red'
         },
         singleColors: {
             aloeGreen
         },
         colorGradients: britechartGradients,
         colorGradientsHuman: {
-            greenBlueGradient: 'Green To Blue',
-            orangePinkGradient: 'Orange to Pink',
-            bluePurpleGradient: 'Blue to Purple'
+            greenBlue: 'Green To Blue',
+            orangePink: 'Orange to Pink',
+            bluePurple: 'Blue to Purple'
         }
     };
 });

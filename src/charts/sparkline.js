@@ -64,7 +64,7 @@ define(function(require){
             yScale,
 
             areaGradient = ['#F5FDFF', '#F6FEFC'],
-            lineGradient = colorHelper.colorGradients.greenBlueGradient,
+            lineGradient = colorHelper.colorGradients.greenBlue,
 
             svg,
             chartWidth, chartHeight,
