@@ -119,7 +119,7 @@ webpackJsonp([7,10],[
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-selection/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-selection/ Version 1.1.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -744,16 +744,18 @@ webpackJsonp([7,10],[
 	}
 	
 	var selection_style = function(name, value, priority) {
-	  var node;
 	  return arguments.length > 1
 	      ? this.each((value == null
 	            ? styleRemove : typeof value === "function"
 	            ? styleFunction
 	            : styleConstant)(name, value, priority == null ? "" : priority))
-	      : defaultView(node = this.node())
-	          .getComputedStyle(node, null)
-	          .getPropertyValue(name);
+	      : styleValue(this.node(), name);
 	};
+	
+	function styleValue(node, name) {
+	  return node.style.getPropertyValue(name)
+	      || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
+	}
 	
 	function propertyRemove(name) {
 	  return function() {
@@ -966,7 +968,7 @@ webpackJsonp([7,10],[
 	  var window = defaultView(node),
 	      event = window.CustomEvent;
 	
-	  if (event) {
+	  if (typeof event === "function") {
 	    event = new event(type, params);
 	  } else {
 	    event = window.document.createEvent("Event");
@@ -1084,6 +1086,7 @@ webpackJsonp([7,10],[
 	exports.selection = selection;
 	exports.selector = selector;
 	exports.selectorAll = selectorAll;
+	exports.style = styleValue;
 	exports.touch = touch;
 	exports.touches = touches;
 	exports.window = defaultView;
@@ -1098,7 +1101,7 @@ webpackJsonp([7,10],[
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*
 	Copyright (c) 2010,2011,2012,2013,2014 Morgan Roderick http://roderick.dk
 	License: MIT - http://mrgnrdrck.mit-license.org
 	
@@ -1107,20 +1110,22 @@ webpackJsonp([7,10],[
 	(function (root, factory){
 		'use strict';
 	
-	    if (true){
-	        // AMD. Register as an anonymous module.
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		var PubSub = {};
+		root.PubSub = PubSub;
+		factory(PubSub);
 	
-	    } else if (typeof exports === 'object'){
-	        // CommonJS
-	        factory(exports);
+		// AMD support
+		if (true){
+			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return PubSub; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	
-	    }
-	
-	    // Browser globals
-	    var PubSub = {};
-	    root.PubSub = PubSub;
-	    factory(PubSub);
+		// CommonJS and Node.js module support
+		} else if (typeof exports === 'object'){
+			if (module !== undefined && module.exports) {
+				exports = module.exports = PubSub; // Node.js specific `module.exports`
+			}
+			exports.PubSub = PubSub; // CommonJS module 1.1.1 spec
+			module.exports = exports = PubSub; // CommonJS
+		}
 	
 	}(( typeof window === 'object' && window ) || this, function (PubSub){
 		'use strict';
@@ -2221,7 +2226,7 @@ webpackJsonp([7,10],[
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-axis/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-axis/ Version 1.0.8. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -2241,18 +2246,24 @@ webpackJsonp([7,10],[
 	var epsilon = 1e-6;
 	
 	function translateX(x) {
-	  return "translate(" + x + ",0)";
+	  return "translate(" + (x + 0.5) + ",0)";
 	}
 	
 	function translateY(y) {
-	  return "translate(0," + y + ")";
+	  return "translate(0," + (y + 0.5) + ")";
+	}
+	
+	function number(scale) {
+	  return function(d) {
+	    return +scale(d);
+	  };
 	}
 	
 	function center(scale) {
-	  var offset = scale.bandwidth() / 2;
+	  var offset = Math.max(0, scale.bandwidth() - 1) / 2; // Adjust for 0.5px offset.
 	  if (scale.round()) offset = Math.round(offset);
 	  return function(d) {
-	    return scale(d) + offset;
+	    return +scale(d) + offset;
 	  };
 	}
 	
@@ -2268,7 +2279,7 @@ webpackJsonp([7,10],[
 	      tickSizeOuter = 6,
 	      tickPadding = 3,
 	      k = orient === top || orient === left ? -1 : 1,
-	      x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x"),
+	      x = orient === left || orient === right ? "x" : "y",
 	      transform = orient === top || orient === bottom ? translateX : translateY;
 	
 	  function axis(context) {
@@ -2276,9 +2287,9 @@ webpackJsonp([7,10],[
 	        format = tickFormat == null ? (scale.tickFormat ? scale.tickFormat.apply(scale, tickArguments) : identity) : tickFormat,
 	        spacing = Math.max(tickSizeInner, 0) + tickPadding,
 	        range = scale.range(),
-	        range0 = range[0] + 0.5,
-	        range1 = range[range.length - 1] + 0.5,
-	        position = (scale.bandwidth ? center : identity)(scale.copy()),
+	        range0 = +range[0] + 0.5,
+	        range1 = +range[range.length - 1] + 0.5,
+	        position = (scale.bandwidth ? center : number)(scale.copy()),
 	        selection = context.selection ? context.selection() : context,
 	        path = selection.selectAll(".domain").data([null]),
 	        tick = selection.selectAll(".tick").data(values, scale).order(),
@@ -2295,14 +2306,11 @@ webpackJsonp([7,10],[
 	
 	    line = line.merge(tickEnter.append("line")
 	        .attr("stroke", "#000")
-	        .attr(x + "2", k * tickSizeInner)
-	        .attr(y + "1", 0.5)
-	        .attr(y + "2", 0.5));
+	        .attr(x + "2", k * tickSizeInner));
 	
 	    text = text.merge(tickEnter.append("text")
 	        .attr("fill", "#000")
 	        .attr(x, k * spacing)
-	        .attr(y, 0.5)
 	        .attr("dy", orient === top ? "0em" : orient === bottom ? "0.71em" : "0.32em"));
 	
 	    if (context !== selection) {
@@ -3384,7 +3392,7 @@ webpackJsonp([7,10],[
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-scale/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-scale/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(4), __webpack_require__(11), __webpack_require__(12), __webpack_require__(9), __webpack_require__(13), __webpack_require__(14), __webpack_require__(7)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-collection', 'd3-interpolate', 'd3-format', 'd3-time', 'd3-time-format', 'd3-color'], factory) :
@@ -3699,17 +3707,39 @@ webpackJsonp([7,10],[
 	  };
 	
 	  scale.nice = function(count) {
-	    var d = domain(),
-	        i = d.length - 1,
-	        n = count == null ? 10 : count,
-	        start = d[0],
-	        stop = d[i],
-	        step = d3Array.tickStep(start, stop, n);
+	    if (count == null) count = 10;
 	
-	    if (step) {
-	      step = d3Array.tickStep(Math.floor(start / step) * step, Math.ceil(stop / step) * step, n);
-	      d[0] = Math.floor(start / step) * step;
-	      d[i] = Math.ceil(stop / step) * step;
+	    var d = domain(),
+	        i0 = 0,
+	        i1 = d.length - 1,
+	        start = d[i0],
+	        stop = d[i1],
+	        step;
+	
+	    if (stop < start) {
+	      step = start, start = stop, stop = step;
+	      step = i0, i0 = i1, i1 = step;
+	    }
+	
+	    step = d3Array.tickIncrement(start, stop, count);
+	
+	    if (step > 0) {
+	      start = Math.floor(start / step) * step;
+	      stop = Math.ceil(stop / step) * step;
+	      step = d3Array.tickIncrement(start, stop, count);
+	    } else if (step < 0) {
+	      start = Math.ceil(start * step) / step;
+	      stop = Math.floor(stop * step) / step;
+	      step = d3Array.tickIncrement(start, stop, count);
+	    }
+	
+	    if (step > 0) {
+	      d[i0] = Math.floor(start / step) * step;
+	      d[i1] = Math.ceil(stop / step) * step;
+	      domain(d);
+	    } else if (step < 0) {
+	      d[i0] = Math.ceil(start * step) / step;
+	      d[i1] = Math.floor(stop * step) / step;
 	      domain(d);
 	    }
 	
@@ -4293,7 +4323,7 @@ webpackJsonp([7,10],[
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-collection/ Version 1.0.3. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-collection/ Version 1.0.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -4382,10 +4412,10 @@ webpackJsonp([7,10],[
 	      nest;
 	
 	  function apply(array, depth, createResult, setResult) {
-	    if (depth >= keys.length) return rollup != null
-	        ? rollup(array) : (sortValues != null
-	        ? array.sort(sortValues)
-	        : array);
+	    if (depth >= keys.length) {
+	      if (sortValues != null) array.sort(sortValues);
+	      return rollup != null ? rollup(array) : array;
+	    }
 	
 	    var i = -1,
 	        n = array.length,
@@ -4516,7 +4546,7 @@ webpackJsonp([7,10],[
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-interpolate/ Version 1.1.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-interpolate/ Version 1.1.5. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(7)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-color'], factory) :
@@ -4762,7 +4792,7 @@ webpackJsonp([7,10],[
 	      : b instanceof d3Color.color ? rgb$1
 	      : b instanceof Date ? date
 	      : Array.isArray(b) ? array
-	      : isNaN(b) ? object
+	      : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
 	      : number)(a, b);
 	};
 	
@@ -5067,7 +5097,7 @@ webpackJsonp([7,10],[
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-time/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-time/ Version 1.0.7. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -5112,7 +5142,13 @@ webpackJsonp([7,10],[
 	    return newInterval(function(date) {
 	      if (date >= date) while (floori(date), !test(date)) date.setTime(date - 1);
 	    }, function(date, step) {
-	      if (date >= date) while (--step >= 0) while (offseti(date, 1), !test(date)) {} // eslint-disable-line no-empty
+	      if (date >= date) {
+	        if (step < 0) while (++step <= 0) {
+	          while (offseti(date, -1), !test(date)) {} // eslint-disable-line no-empty
+	        } else while (--step >= 0) {
+	          while (offseti(date, +1), !test(date)) {} // eslint-disable-line no-empty
+	        }
+	      }
 	    });
 	  };
 	
@@ -6045,7 +6081,7 @@ webpackJsonp([7,10],[
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-transition/ Version 1.0.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-transition/ Version 1.1.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(1), __webpack_require__(8), __webpack_require__(16), __webpack_require__(12), __webpack_require__(7), __webpack_require__(5)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-timer', 'd3-interpolate', 'd3-color', 'd3-ease'], factory) :
@@ -6610,9 +6646,8 @@ webpackJsonp([7,10],[
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var style = d3Selection.window(this).getComputedStyle(this, null),
-	        value0 = style.getPropertyValue(name),
-	        value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
+	    var value0 = d3Selection.style(this, name),
+	        value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -6629,7 +6664,7 @@ webpackJsonp([7,10],[
 	  var value00,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.window(this).getComputedStyle(this, null).getPropertyValue(name);
+	    var value0 = d3Selection.style(this, name);
 	    return value0 === value1 ? null
 	        : value0 === value00 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value1);
@@ -6641,10 +6676,9 @@ webpackJsonp([7,10],[
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var style = d3Selection.window(this).getComputedStyle(this, null),
-	        value0 = style.getPropertyValue(name),
+	    var value0 = d3Selection.style(this, name),
 	        value1 = value(this);
-	    if (value1 == null) value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
+	    if (value1 == null) value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -6840,7 +6874,7 @@ webpackJsonp([7,10],[
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-timer/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-timer/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -6857,7 +6891,7 @@ webpackJsonp([7,10],[
 	var clockNow = 0;
 	var clockSkew = 0;
 	var clock = typeof performance === "object" && performance.now ? performance : Date;
-	var setFrame = typeof requestAnimationFrame === "function" ? requestAnimationFrame : function(f) { setTimeout(f, 17); };
+	var setFrame = typeof window === "object" && window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function(f) { setTimeout(f, 17); };
 	
 	function now() {
 	  return clockNow || (setFrame(clearNow), clockNow = clock.now() + clockSkew);
@@ -9172,7 +9206,7 @@ webpackJsonp([7,10],[
 /* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-shape/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-shape/ Version 1.2.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(34)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
@@ -9775,7 +9809,7 @@ webpackJsonp([7,10],[
 	  return radial;
 	}
 	
-	function radialLine(l) {
+	function lineRadial(l) {
 	  var c = l.curve;
 	
 	  l.angle = l.x, delete l.x;
@@ -9788,11 +9822,11 @@ webpackJsonp([7,10],[
 	  return l;
 	}
 	
-	var radialLine$1 = function() {
-	  return radialLine(line().curve(curveRadialLinear));
+	var lineRadial$1 = function() {
+	  return lineRadial(line().curve(curveRadialLinear));
 	};
 	
-	var radialArea = function() {
+	var areaRadial = function() {
 	  var a = area().curve(curveRadialLinear),
 	      c = a.curve,
 	      x0 = a.lineX0,
@@ -9806,10 +9840,10 @@ webpackJsonp([7,10],[
 	  a.radius = a.y, delete a.y;
 	  a.innerRadius = a.y0, delete a.y0;
 	  a.outerRadius = a.y1, delete a.y1;
-	  a.lineStartAngle = function() { return radialLine(x0()); }, delete a.lineX0;
-	  a.lineEndAngle = function() { return radialLine(x1()); }, delete a.lineX1;
-	  a.lineInnerRadius = function() { return radialLine(y0()); }, delete a.lineY0;
-	  a.lineOuterRadius = function() { return radialLine(y1()); }, delete a.lineY1;
+	  a.lineStartAngle = function() { return lineRadial(x0()); }, delete a.lineX0;
+	  a.lineEndAngle = function() { return lineRadial(x1()); }, delete a.lineX1;
+	  a.lineInnerRadius = function() { return lineRadial(y0()); }, delete a.lineY0;
+	  a.lineOuterRadius = function() { return lineRadial(y1()); }, delete a.lineY1;
 	
 	  a.curve = function(_) {
 	    return arguments.length ? c(curveRadial(_)) : c()._curve;
@@ -9817,6 +9851,91 @@ webpackJsonp([7,10],[
 	
 	  return a;
 	};
+	
+	var pointRadial = function(x, y) {
+	  return [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x)];
+	};
+	
+	var slice = Array.prototype.slice;
+	
+	function linkSource(d) {
+	  return d.source;
+	}
+	
+	function linkTarget(d) {
+	  return d.target;
+	}
+	
+	function link(curve) {
+	  var source = linkSource,
+	      target = linkTarget,
+	      x$$1 = x,
+	      y$$1 = y,
+	      context = null;
+	
+	  function link() {
+	    var buffer, argv = slice.call(arguments), s = source.apply(this, argv), t = target.apply(this, argv);
+	    if (!context) context = buffer = d3Path.path();
+	    curve(context, +x$$1.apply(this, (argv[0] = s, argv)), +y$$1.apply(this, argv), +x$$1.apply(this, (argv[0] = t, argv)), +y$$1.apply(this, argv));
+	    if (buffer) return context = null, buffer + "" || null;
+	  }
+	
+	  link.source = function(_) {
+	    return arguments.length ? (source = _, link) : source;
+	  };
+	
+	  link.target = function(_) {
+	    return arguments.length ? (target = _, link) : target;
+	  };
+	
+	  link.x = function(_) {
+	    return arguments.length ? (x$$1 = typeof _ === "function" ? _ : constant(+_), link) : x$$1;
+	  };
+	
+	  link.y = function(_) {
+	    return arguments.length ? (y$$1 = typeof _ === "function" ? _ : constant(+_), link) : y$$1;
+	  };
+	
+	  link.context = function(_) {
+	    return arguments.length ? ((context = _ == null ? null : _), link) : context;
+	  };
+	
+	  return link;
+	}
+	
+	function curveHorizontal(context, x0, y0, x1, y1) {
+	  context.moveTo(x0, y0);
+	  context.bezierCurveTo(x0 = (x0 + x1) / 2, y0, x0, y1, x1, y1);
+	}
+	
+	function curveVertical(context, x0, y0, x1, y1) {
+	  context.moveTo(x0, y0);
+	  context.bezierCurveTo(x0, y0 = (y0 + y1) / 2, x1, y0, x1, y1);
+	}
+	
+	function curveRadial$1(context, x0, y0, x1, y1) {
+	  var p0 = pointRadial(x0, y0),
+	      p1 = pointRadial(x0, y0 = (y0 + y1) / 2),
+	      p2 = pointRadial(x1, y0),
+	      p3 = pointRadial(x1, y1);
+	  context.moveTo(p0[0], p0[1]);
+	  context.bezierCurveTo(p1[0], p1[1], p2[0], p2[1], p3[0], p3[1]);
+	}
+	
+	function linkHorizontal() {
+	  return link(curveHorizontal);
+	}
+	
+	function linkVertical() {
+	  return link(curveVertical);
+	}
+	
+	function linkRadial() {
+	  var l = link(curveRadial$1);
+	  l.angle = l.x, delete l.x;
+	  l.radius = l.y, delete l.y;
+	  return l;
+	}
 	
 	var circle = {
 	  draw: function(context, size) {
@@ -10799,13 +10918,11 @@ webpackJsonp([7,10],[
 	  return new Step(context, 1);
 	}
 	
-	var slice = Array.prototype.slice;
-	
 	var none = function(series, order) {
 	  if (!((n = series.length) > 1)) return;
-	  for (var i = 1, s0, s1 = series[order[0]], n, m = s1.length; i < n; ++i) {
+	  for (var i = 1, j, s0, s1 = series[order[0]], n, m = s1.length; i < n; ++i) {
 	    s0 = s1, s1 = series[order[i]];
-	    for (var j = 0; j < m; ++j) {
+	    for (j = 0; j < m; ++j) {
 	      s1[j][1] += s1[j][0] = isNaN(s0[j][1]) ? s0[j][0] : s0[j][1];
 	    }
 	  }
@@ -10877,6 +10994,21 @@ webpackJsonp([7,10],[
 	    if (y) for (i = 0; i < n; ++i) series[i][j][1] /= y;
 	  }
 	  none(series, order);
+	};
+	
+	var diverging = function(series, order) {
+	  if (!((n = series.length) > 1)) return;
+	  for (var i, j = 0, d, dy, yp, yn, n, m = series[order[0]].length; j < m; ++j) {
+	    for (yp = yn = 0, i = 0; i < n; ++i) {
+	      if ((dy = (d = series[order[i]][j])[1] - d[0]) >= 0) {
+	        d[0] = yp, d[1] = yp += dy;
+	      } else if (dy < 0) {
+	        d[1] = yn, d[0] = yn += dy;
+	      } else {
+	        d[0] = yp;
+	      }
+	    }
+	  }
 	};
 	
 	var silhouette = function(series, order) {
@@ -10959,8 +11091,14 @@ webpackJsonp([7,10],[
 	exports.area = area;
 	exports.line = line;
 	exports.pie = pie;
-	exports.radialArea = radialArea;
-	exports.radialLine = radialLine$1;
+	exports.areaRadial = areaRadial;
+	exports.radialArea = areaRadial;
+	exports.lineRadial = lineRadial$1;
+	exports.radialLine = lineRadial$1;
+	exports.pointRadial = pointRadial;
+	exports.linkHorizontal = linkHorizontal;
+	exports.linkVertical = linkVertical;
+	exports.linkRadial = linkRadial;
 	exports.symbol = symbol;
 	exports.symbols = symbols;
 	exports.symbolCircle = circle;
@@ -10990,6 +11128,7 @@ webpackJsonp([7,10],[
 	exports.curveStepBefore = stepBefore;
 	exports.stack = stack;
 	exports.stackOffsetExpand = expand;
+	exports.stackOffsetDiverging = diverging;
 	exports.stackOffsetNone = none;
 	exports.stackOffsetSilhouette = silhouette;
 	exports.stackOffsetWiggle = wiggle;
@@ -13031,7 +13170,13 @@ webpackJsonp([7,10],[
 	         * Adding: mouseover, mouseout and mousemove
 	         */
 	        function addMouseEvents() {
-	            svg.on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).on('mousemove', handleMouseMove);
+	            svg.on('mouseover', function (d) {
+	                handleMouseOver(this, d);
+	            }).on('mouseout', function (d) {
+	                handleMouseOut(this, d);
+	            }).on('mousemove', function (d) {
+	                handleMouseMove(this, d);
+	            });
 	        }
 	
 	        /**
@@ -13485,10 +13630,10 @@ webpackJsonp([7,10],[
 	         * and updates metadata related to it
 	         * @private
 	         */
-	        function handleMouseMove() {
+	        function handleMouseMove(e, d) {
 	            epsilon || setEpsilon();
 	
-	            var dataPoint = getNearestDataPoint(getMouseXPosition(this) - margin.left),
+	            var dataPoint = getNearestDataPoint(getMouseXPosition(e) - margin.left),
 	                dataPointXPosition = void 0;
 	
 	            if (dataPoint) {
@@ -13498,7 +13643,7 @@ webpackJsonp([7,10],[
 	                // Add data points highlighting
 	                highlightDataPoints(dataPoint);
 	                // Emit event with xPosition for tooltip or similar feature
-	                dispatcher.call('customMouseMove', this, dataPoint, categoryColorMap, dataPointXPosition);
+	                dispatcher.call('customMouseMove', e, dataPoint, categoryColorMap, dataPointXPosition);
 	            }
 	        }
 	
@@ -13507,23 +13652,23 @@ webpackJsonp([7,10],[
 	         * It also resets the container of the vertical marker
 	         * @private
 	         */
-	        function handleMouseOut(data) {
+	        function handleMouseOut(e, d) {
 	            overlay.style('display', 'none');
 	            verticalMarker.classed('bc-is-active', false);
 	            verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
 	
-	            dispatcher.call('customMouseOut', this, data);
+	            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
 	        }
 	
 	        /**
 	         * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
 	         * @private
 	         */
-	        function handleMouseOver(data) {
+	        function handleMouseOver(e, d) {
 	            overlay.style('display', 'block');
 	            verticalMarker.classed('bc-is-active', true);
 	
-	            dispatcher.call('customMouseOver', this, data);
+	            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
 	        }
 	
 	        /**
@@ -13951,3598 +14096,31 @@ webpackJsonp([7,10],[
 /* 65 */
 /***/ (function(module, exports) {
 
-	module.exports = {
-		"data": [
-			{
-				"name": "Direct",
-				"views": 0,
-				"date": "2011-01-05T00:00:00"
-			},
-			{
-				"name": "Direct",
-				"views": 10,
-				"date": "2011-01-06T00:00:00"
-			},
-			{
-				"name": "Direct",
-				"views": 7,
-				"date": "2011-01-07T00:00:00"
-			},
-			{
-				"name": "Direct",
-				"views": 6,
-				"date": "2011-01-08T00:00:00"
-			},
-			{
-				"name": "Eventbrite",
-				"views": 3,
-				"date": "2011-01-05T00:00:00"
-			},
-			{
-				"name": "Eventbrite",
-				"views": 16,
-				"date": "2011-01-06T00:00:00"
-			},
-			{
-				"name": "Eventbrite",
-				"views": 10,
-				"date": "2011-01-07T00:00:00"
-			},
-			{
-				"name": "Eventbrite",
-				"views": 0,
-				"date": "2011-01-08T00:00:00"
-			},
-			{
-				"name": "Email",
-				"views": 10,
-				"date": "2011-01-05T00:00:00"
-			},
-			{
-				"name": "Email",
-				"views": 15,
-				"date": "2011-01-06T00:00:00"
-			},
-			{
-				"name": "Email",
-				"views": 3,
-				"date": "2011-01-07T00:00:00"
-			},
-			{
-				"name": "Email",
-				"views": 33,
-				"date": "2011-01-08T00:00:00"
-			}
-		]
-	};
+	module.exports = {"data":[{"name":"Direct","views":0,"date":"2011-01-05T00:00:00"},{"name":"Direct","views":10,"date":"2011-01-06T00:00:00"},{"name":"Direct","views":7,"date":"2011-01-07T00:00:00"},{"name":"Direct","views":6,"date":"2011-01-08T00:00:00"},{"name":"Eventbrite","views":3,"date":"2011-01-05T00:00:00"},{"name":"Eventbrite","views":16,"date":"2011-01-06T00:00:00"},{"name":"Eventbrite","views":10,"date":"2011-01-07T00:00:00"},{"name":"Eventbrite","views":0,"date":"2011-01-08T00:00:00"},{"name":"Email","views":10,"date":"2011-01-05T00:00:00"},{"name":"Email","views":15,"date":"2011-01-06T00:00:00"},{"name":"Email","views":3,"date":"2011-01-07T00:00:00"},{"name":"Email","views":33,"date":"2011-01-08T00:00:00"}]}
 
 /***/ }),
 /* 66 */
 /***/ (function(module, exports) {
 
-	module.exports = {
-		"data": [
-			{
-				"name": "Direct",
-				"views": 0,
-				"dateUTC": "2011-01-05T00:00:00Z"
-			},
-			{
-				"name": "Direct",
-				"views": 1000,
-				"dateUTC": "2011-01-06T00:00:00Z"
-			},
-			{
-				"name": "Direct",
-				"views": 1006.34,
-				"dateUTC": "2011-01-07T00:00:00Z"
-			},
-			{
-				"name": "Direct",
-				"views": 2000,
-				"dateUTC": "2011-01-08T00:00:00Z"
-			},
-			{
-				"name": "Eventbrite",
-				"views": 1003,
-				"dateUTC": "2011-01-05T00:00:00Z"
-			},
-			{
-				"name": "Eventbrite",
-				"views": 1006,
-				"dateUTC": "2011-01-06T00:00:00Z"
-			},
-			{
-				"name": "Eventbrite",
-				"views": 1000,
-				"dateUTC": "2011-01-07T00:00:00Z"
-			},
-			{
-				"name": "Eventbrite",
-				"views": 500,
-				"dateUTC": "2011-01-08T00:00:00Z"
-			},
-			{
-				"name": "Email",
-				"views": 1000,
-				"dateUTC": "2011-01-05T00:00:00Z"
-			},
-			{
-				"name": "Email",
-				"views": 2000,
-				"dateUTC": "2011-01-06T00:00:00Z"
-			},
-			{
-				"name": "Email",
-				"views": 2002,
-				"dateUTC": "2011-01-07T00:00:00Z"
-			},
-			{
-				"name": "Email",
-				"views": 700,
-				"dateUTC": "2011-01-08T00:00:00Z"
-			},
-			{
-				"name": "Sun's Website",
-				"views": 0,
-				"dateUTC": "2011-01-05T00:00:00Z"
-			},
-			{
-				"name": "Sun's Website",
-				"views": 1000,
-				"dateUTC": "2011-01-06T00:00:00Z"
-			},
-			{
-				"name": "Sun's Website",
-				"views": 1006,
-				"dateUTC": "2011-01-07T00:00:00Z"
-			},
-			{
-				"name": "Sun's Website",
-				"views": 300,
-				"dateUTC": "2011-01-08T00:00:00Z"
-			},
-			{
-				"name": "Related Events",
-				"views": 1008,
-				"dateUTC": "2011-01-05T00:00:00Z"
-			},
-			{
-				"name": "Related Events",
-				"views": 1002,
-				"dateUTC": "2011-01-06T00:00:00Z"
-			},
-			{
-				"name": "Related Events",
-				"views": 500,
-				"dateUTC": "2011-01-07T00:00:00Z"
-			},
-			{
-				"name": "Related Events",
-				"views": 300,
-				"dateUTC": "2011-01-08T00:00:00Z"
-			},
-			{
-				"name": "Facebook",
-				"views": 400,
-				"dateUTC": "2011-01-05T00:00:00Z"
-			},
-			{
-				"name": "Facebook",
-				"views": 900,
-				"dateUTC": "2011-01-06T00:00:00Z"
-			},
-			{
-				"name": "Facebook",
-				"views": 600,
-				"dateUTC": "2011-01-07T00:00:00Z"
-			},
-			{
-				"name": "Facebook",
-				"views": 300,
-				"dateUTC": "2011-01-08T00:00:00Z"
-			}
-		]
-	};
+	module.exports = {"data":[{"name":"Direct","views":0,"dateUTC":"2011-01-05T00:00:00Z"},{"name":"Direct","views":1000,"dateUTC":"2011-01-06T00:00:00Z"},{"name":"Direct","views":1006.34,"dateUTC":"2011-01-07T00:00:00Z"},{"name":"Direct","views":2000,"dateUTC":"2011-01-08T00:00:00Z"},{"name":"Eventbrite","views":1003,"dateUTC":"2011-01-05T00:00:00Z"},{"name":"Eventbrite","views":1006,"dateUTC":"2011-01-06T00:00:00Z"},{"name":"Eventbrite","views":1000,"dateUTC":"2011-01-07T00:00:00Z"},{"name":"Eventbrite","views":500,"dateUTC":"2011-01-08T00:00:00Z"},{"name":"Email","views":1000,"dateUTC":"2011-01-05T00:00:00Z"},{"name":"Email","views":2000,"dateUTC":"2011-01-06T00:00:00Z"},{"name":"Email","views":2002,"dateUTC":"2011-01-07T00:00:00Z"},{"name":"Email","views":700,"dateUTC":"2011-01-08T00:00:00Z"},{"name":"Sun's Website","views":0,"dateUTC":"2011-01-05T00:00:00Z"},{"name":"Sun's Website","views":1000,"dateUTC":"2011-01-06T00:00:00Z"},{"name":"Sun's Website","views":1006,"dateUTC":"2011-01-07T00:00:00Z"},{"name":"Sun's Website","views":300,"dateUTC":"2011-01-08T00:00:00Z"},{"name":"Related Events","views":1008,"dateUTC":"2011-01-05T00:00:00Z"},{"name":"Related Events","views":1002,"dateUTC":"2011-01-06T00:00:00Z"},{"name":"Related Events","views":500,"dateUTC":"2011-01-07T00:00:00Z"},{"name":"Related Events","views":300,"dateUTC":"2011-01-08T00:00:00Z"},{"name":"Facebook","views":400,"dateUTC":"2011-01-05T00:00:00Z"},{"name":"Facebook","views":900,"dateUTC":"2011-01-06T00:00:00Z"},{"name":"Facebook","views":600,"dateUTC":"2011-01-07T00:00:00Z"},{"name":"Facebook","views":300,"dateUTC":"2011-01-08T00:00:00Z"}]}
 
 /***/ }),
 /* 67 */
 /***/ (function(module, exports) {
 
-	module.exports = {
-		"data": [
-			{
-				"date": "2017-02-16T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 5
-			},
-			{
-				"date": "2017-02-16T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 0
-			},
-			{
-				"date": "2017-02-17T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 1
-			},
-			{
-				"date": "2017-02-17T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 13
-			},
-			{
-				"date": "2017-02-18T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 15
-			},
-			{
-				"date": "2017-02-18T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 1
-			},
-			{
-				"date": "2017-02-19T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 15
-			},
-			{
-				"date": "2017-02-19T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 1
-			},
-			{
-				"date": "2017-02-20T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 15
-			},
-			{
-				"date": "2017-02-20T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 1
-			},
-			{
-				"date": "2017-02-21T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 18
-			},
-			{
-				"date": "2017-02-21T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 1
-			},
-			{
-				"date": "2017-02-22T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 19
-			},
-			{
-				"date": "2017-02-22T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 1
-			},
-			{
-				"date": "2017-02-23T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 2
-			},
-			{
-				"date": "2017-02-23T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 22
-			},
-			{
-				"date": "2017-02-24T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 25
-			},
-			{
-				"date": "2017-02-24T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 2
-			},
-			{
-				"date": "2017-02-25T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 28
-			},
-			{
-				"date": "2017-02-25T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 2
-			},
-			{
-				"date": "2017-02-26T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 30
-			},
-			{
-				"date": "2017-02-26T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 2
-			},
-			{
-				"date": "2017-02-27T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 30
-			},
-			{
-				"date": "2017-02-27T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 2
-			},
-			{
-				"date": "2017-02-28T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 31
-			},
-			{
-				"date": "2017-02-28T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 2
-			},
-			{
-				"date": "2017-03-01T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 33
-			},
-			{
-				"date": "2017-03-01T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 2
-			},
-			{
-				"date": "2017-03-02T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 33
-			},
-			{
-				"date": "2017-03-02T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 2
-			},
-			{
-				"date": "2017-03-03T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 4
-			},
-			{
-				"date": "2017-03-03T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 34
-			},
-			{
-				"date": "2017-03-04T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 4
-			},
-			{
-				"date": "2017-03-04T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 34
-			},
-			{
-				"date": "2017-03-05T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 37
-			},
-			{
-				"date": "2017-03-05T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 4
-			},
-			{
-				"date": "2017-03-06T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 5
-			},
-			{
-				"date": "2017-03-06T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 41
-			},
-			{
-				"date": "2017-03-07T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 69
-			},
-			{
-				"date": "2017-03-07T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 5
-			},
-			{
-				"date": "2017-03-08T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 77
-			},
-			{
-				"date": "2017-03-08T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 5
-			},
-			{
-				"date": "2017-03-09T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 8
-			},
-			{
-				"date": "2017-03-09T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 79
-			},
-			{
-				"date": "2017-03-10T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 85
-			},
-			{
-				"date": "2017-03-10T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 8
-			},
-			{
-				"date": "2017-03-11T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 85
-			},
-			{
-				"date": "2017-03-11T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 8
-			},
-			{
-				"date": "2017-03-12T00:00:00-08:00",
-				"name": "Organizer Channels",
-				"value": 85
-			},
-			{
-				"date": "2017-03-12T00:00:00-08:00",
-				"name": "Eventbrite Channels",
-				"value": 8
-			},
-			{
-				"date": "2017-03-13T00:00:00-07:00",
-				"name": "Organizer Channels",
-				"value": 85
-			},
-			{
-				"date": "2017-03-13T00:00:00-07:00",
-				"name": "Eventbrite Channels",
-				"value": 8
-			},
-			{
-				"date": "2017-03-14T00:00:00-07:00",
-				"name": "Organizer Channels",
-				"value": 85
-			},
-			{
-				"date": "2017-03-14T00:00:00-07:00",
-				"name": "Eventbrite Channels",
-				"value": 8
-			},
-			{
-				"date": "2017-03-15T00:00:00-07:00",
-				"name": "Organizer Channels",
-				"value": 85
-			},
-			{
-				"date": "2017-03-15T00:00:00-07:00",
-				"name": "Eventbrite Channels",
-				"value": 8
-			},
-			{
-				"date": "2017-03-16T00:00:00-07:00",
-				"name": "Organizer Channels",
-				"value": 85
-			},
-			{
-				"date": "2017-03-16T00:00:00-07:00",
-				"name": "Eventbrite Channels",
-				"value": 8
-			},
-			{
-				"date": "2017-03-17T00:00:00-07:00",
-				"name": "Organizer Channels",
-				"value": 85
-			},
-			{
-				"date": "2017-03-17T00:00:00-07:00",
-				"name": "Eventbrite Channels",
-				"value": 8
-			}
-		]
-	};
+	module.exports = {"data":[{"date":"2017-02-16T00:00:00-08:00","name":"Organizer Channels","value":5},{"date":"2017-02-16T00:00:00-08:00","name":"Eventbrite Channels","value":0},{"date":"2017-02-17T00:00:00-08:00","name":"Eventbrite Channels","value":1},{"date":"2017-02-17T00:00:00-08:00","name":"Organizer Channels","value":13},{"date":"2017-02-18T00:00:00-08:00","name":"Organizer Channels","value":15},{"date":"2017-02-18T00:00:00-08:00","name":"Eventbrite Channels","value":1},{"date":"2017-02-19T00:00:00-08:00","name":"Organizer Channels","value":15},{"date":"2017-02-19T00:00:00-08:00","name":"Eventbrite Channels","value":1},{"date":"2017-02-20T00:00:00-08:00","name":"Organizer Channels","value":15},{"date":"2017-02-20T00:00:00-08:00","name":"Eventbrite Channels","value":1},{"date":"2017-02-21T00:00:00-08:00","name":"Organizer Channels","value":18},{"date":"2017-02-21T00:00:00-08:00","name":"Eventbrite Channels","value":1},{"date":"2017-02-22T00:00:00-08:00","name":"Organizer Channels","value":19},{"date":"2017-02-22T00:00:00-08:00","name":"Eventbrite Channels","value":1},{"date":"2017-02-23T00:00:00-08:00","name":"Eventbrite Channels","value":2},{"date":"2017-02-23T00:00:00-08:00","name":"Organizer Channels","value":22},{"date":"2017-02-24T00:00:00-08:00","name":"Organizer Channels","value":25},{"date":"2017-02-24T00:00:00-08:00","name":"Eventbrite Channels","value":2},{"date":"2017-02-25T00:00:00-08:00","name":"Organizer Channels","value":28},{"date":"2017-02-25T00:00:00-08:00","name":"Eventbrite Channels","value":2},{"date":"2017-02-26T00:00:00-08:00","name":"Organizer Channels","value":30},{"date":"2017-02-26T00:00:00-08:00","name":"Eventbrite Channels","value":2},{"date":"2017-02-27T00:00:00-08:00","name":"Organizer Channels","value":30},{"date":"2017-02-27T00:00:00-08:00","name":"Eventbrite Channels","value":2},{"date":"2017-02-28T00:00:00-08:00","name":"Organizer Channels","value":31},{"date":"2017-02-28T00:00:00-08:00","name":"Eventbrite Channels","value":2},{"date":"2017-03-01T00:00:00-08:00","name":"Organizer Channels","value":33},{"date":"2017-03-01T00:00:00-08:00","name":"Eventbrite Channels","value":2},{"date":"2017-03-02T00:00:00-08:00","name":"Organizer Channels","value":33},{"date":"2017-03-02T00:00:00-08:00","name":"Eventbrite Channels","value":2},{"date":"2017-03-03T00:00:00-08:00","name":"Eventbrite Channels","value":4},{"date":"2017-03-03T00:00:00-08:00","name":"Organizer Channels","value":34},{"date":"2017-03-04T00:00:00-08:00","name":"Eventbrite Channels","value":4},{"date":"2017-03-04T00:00:00-08:00","name":"Organizer Channels","value":34},{"date":"2017-03-05T00:00:00-08:00","name":"Organizer Channels","value":37},{"date":"2017-03-05T00:00:00-08:00","name":"Eventbrite Channels","value":4},{"date":"2017-03-06T00:00:00-08:00","name":"Eventbrite Channels","value":5},{"date":"2017-03-06T00:00:00-08:00","name":"Organizer Channels","value":41},{"date":"2017-03-07T00:00:00-08:00","name":"Organizer Channels","value":69},{"date":"2017-03-07T00:00:00-08:00","name":"Eventbrite Channels","value":5},{"date":"2017-03-08T00:00:00-08:00","name":"Organizer Channels","value":77},{"date":"2017-03-08T00:00:00-08:00","name":"Eventbrite Channels","value":5},{"date":"2017-03-09T00:00:00-08:00","name":"Eventbrite Channels","value":8},{"date":"2017-03-09T00:00:00-08:00","name":"Organizer Channels","value":79},{"date":"2017-03-10T00:00:00-08:00","name":"Organizer Channels","value":85},{"date":"2017-03-10T00:00:00-08:00","name":"Eventbrite Channels","value":8},{"date":"2017-03-11T00:00:00-08:00","name":"Organizer Channels","value":85},{"date":"2017-03-11T00:00:00-08:00","name":"Eventbrite Channels","value":8},{"date":"2017-03-12T00:00:00-08:00","name":"Organizer Channels","value":85},{"date":"2017-03-12T00:00:00-08:00","name":"Eventbrite Channels","value":8},{"date":"2017-03-13T00:00:00-07:00","name":"Organizer Channels","value":85},{"date":"2017-03-13T00:00:00-07:00","name":"Eventbrite Channels","value":8},{"date":"2017-03-14T00:00:00-07:00","name":"Organizer Channels","value":85},{"date":"2017-03-14T00:00:00-07:00","name":"Eventbrite Channels","value":8},{"date":"2017-03-15T00:00:00-07:00","name":"Organizer Channels","value":85},{"date":"2017-03-15T00:00:00-07:00","name":"Eventbrite Channels","value":8},{"date":"2017-03-16T00:00:00-07:00","name":"Organizer Channels","value":85},{"date":"2017-03-16T00:00:00-07:00","name":"Eventbrite Channels","value":8},{"date":"2017-03-17T00:00:00-07:00","name":"Organizer Channels","value":85},{"date":"2017-03-17T00:00:00-07:00","name":"Eventbrite Channels","value":8}]}
 
 /***/ }),
 /* 68 */
 /***/ (function(module, exports) {
 
-	module.exports = {
-		"data": [
-			{
-				"dateUTC": "2016-01-02T08:00:00Z",
-				"dateEventTZ": "2016-01-02T00:00:00",
-				"name": "google",
-				"views": "22"
-			},
-			{
-				"dateUTC": "2016-01-02T08:00:00Z",
-				"dateEventTZ": "2016-01-02T00:00:00",
-				"name": "facebook",
-				"views": "21"
-			},
-			{
-				"dateUTC": "2016-01-02T08:00:00Z",
-				"dateEventTZ": "2016-01-02T00:00:00",
-				"name": "twitter",
-				"views": "24"
-			},
-			{
-				"dateUTC": "2016-01-02T08:00:00Z",
-				"dateEventTZ": "2016-01-02T00:00:00",
-				"name": "user_newsletter",
-				"views": "26"
-			},
-			{
-				"dateUTC": "2016-01-02T08:00:00Z",
-				"dateEventTZ": "2016-01-02T00:00:00",
-				"name": "user_email",
-				"views": "31"
-			},
-			{
-				"dateUTC": "2016-01-02T08:00:00Z",
-				"dateEventTZ": "2016-01-02T00:00:00",
-				"name": "unknown",
-				"views": "50"
-			},
-			{
-				"dateUTC": "2016-01-03T08:00:00Z",
-				"dateEventTZ": "2016-01-03T00:00:00",
-				"name": "google",
-				"views": "37"
-			},
-			{
-				"dateUTC": "2016-01-03T08:00:00Z",
-				"dateEventTZ": "2016-01-03T00:00:00",
-				"name": "facebook",
-				"views": "24"
-			},
-			{
-				"dateUTC": "2016-01-03T08:00:00Z",
-				"dateEventTZ": "2016-01-03T00:00:00",
-				"name": "twitter",
-				"views": "31"
-			},
-			{
-				"dateUTC": "2016-01-03T08:00:00Z",
-				"dateEventTZ": "2016-01-03T00:00:00",
-				"name": "user_newsletter",
-				"views": "24"
-			},
-			{
-				"dateUTC": "2016-01-03T08:00:00Z",
-				"dateEventTZ": "2016-01-03T00:00:00",
-				"name": "user_email",
-				"views": "41"
-			},
-			{
-				"dateUTC": "2016-01-03T08:00:00Z",
-				"dateEventTZ": "2016-01-03T00:00:00",
-				"name": "unknown",
-				"views": "0"
-			}
-		]
-	};
+	module.exports = {"data":[{"dateUTC":"2016-01-02T08:00:00Z","dateEventTZ":"2016-01-02T00:00:00","name":"google","views":"22"},{"dateUTC":"2016-01-02T08:00:00Z","dateEventTZ":"2016-01-02T00:00:00","name":"facebook","views":"21"},{"dateUTC":"2016-01-02T08:00:00Z","dateEventTZ":"2016-01-02T00:00:00","name":"twitter","views":"24"},{"dateUTC":"2016-01-02T08:00:00Z","dateEventTZ":"2016-01-02T00:00:00","name":"user_newsletter","views":"26"},{"dateUTC":"2016-01-02T08:00:00Z","dateEventTZ":"2016-01-02T00:00:00","name":"user_email","views":"31"},{"dateUTC":"2016-01-02T08:00:00Z","dateEventTZ":"2016-01-02T00:00:00","name":"unknown","views":"50"},{"dateUTC":"2016-01-03T08:00:00Z","dateEventTZ":"2016-01-03T00:00:00","name":"google","views":"37"},{"dateUTC":"2016-01-03T08:00:00Z","dateEventTZ":"2016-01-03T00:00:00","name":"facebook","views":"24"},{"dateUTC":"2016-01-03T08:00:00Z","dateEventTZ":"2016-01-03T00:00:00","name":"twitter","views":"31"},{"dateUTC":"2016-01-03T08:00:00Z","dateEventTZ":"2016-01-03T00:00:00","name":"user_newsletter","views":"24"},{"dateUTC":"2016-01-03T08:00:00Z","dateEventTZ":"2016-01-03T00:00:00","name":"user_email","views":"41"},{"dateUTC":"2016-01-03T08:00:00Z","dateEventTZ":"2016-01-03T00:00:00","name":"unknown","views":"0"}]}
 
 /***/ }),
 /* 69 */
 /***/ (function(module, exports) {
 
-	module.exports = {
-		"data": [
-			{
-				"dateUTC": "2016-07-14T08:00:00Z",
-				"name": "google",
-				"views": 69
-			},
-			{
-				"dateUTC": "2016-07-14T08:00:00Z",
-				"name": "facebook",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-07-14T08:00:00Z",
-				"name": "twitter",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-07-14T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 46
-			},
-			{
-				"dateUTC": "2016-07-14T08:00:00Z",
-				"name": "user_email",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-07-14T08:00:00Z",
-				"name": "unknown",
-				"views": 56
-			},
-			{
-				"dateUTC": "2016-07-15T08:00:00Z",
-				"name": "google",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-07-15T08:00:00Z",
-				"name": "facebook",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-07-15T08:00:00Z",
-				"name": "twitter",
-				"views": 26
-			},
-			{
-				"dateUTC": "2016-07-15T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-07-15T08:00:00Z",
-				"name": "user_email",
-				"views": 91
-			},
-			{
-				"dateUTC": "2016-07-15T08:00:00Z",
-				"name": "unknown",
-				"views": 2
-			},
-			{
-				"dateUTC": "2016-07-16T08:00:00Z",
-				"name": "google",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-07-16T08:00:00Z",
-				"name": "facebook",
-				"views": 66
-			},
-			{
-				"dateUTC": "2016-07-16T08:00:00Z",
-				"name": "twitter",
-				"views": 10
-			},
-			{
-				"dateUTC": "2016-07-16T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 76
-			},
-			{
-				"dateUTC": "2016-07-16T08:00:00Z",
-				"name": "user_email",
-				"views": 88
-			},
-			{
-				"dateUTC": "2016-07-16T08:00:00Z",
-				"name": "unknown",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-07-17T08:00:00Z",
-				"name": "google",
-				"views": 70
-			},
-			{
-				"dateUTC": "2016-07-17T08:00:00Z",
-				"name": "facebook",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-07-17T08:00:00Z",
-				"name": "twitter",
-				"views": 1
-			},
-			{
-				"dateUTC": "2016-07-17T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 20
-			},
-			{
-				"dateUTC": "2016-07-17T08:00:00Z",
-				"name": "user_email",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-07-17T08:00:00Z",
-				"name": "unknown",
-				"views": 34
-			},
-			{
-				"dateUTC": "2016-07-18T08:00:00Z",
-				"name": "google",
-				"views": 61
-			},
-			{
-				"dateUTC": "2016-07-18T08:00:00Z",
-				"name": "facebook",
-				"views": 7
-			},
-			{
-				"dateUTC": "2016-07-18T08:00:00Z",
-				"name": "twitter",
-				"views": 34
-			},
-			{
-				"dateUTC": "2016-07-18T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 82
-			},
-			{
-				"dateUTC": "2016-07-18T08:00:00Z",
-				"name": "user_email",
-				"views": 61
-			},
-			{
-				"dateUTC": "2016-07-18T08:00:00Z",
-				"name": "unknown",
-				"views": 58
-			},
-			{
-				"dateUTC": "2016-07-19T08:00:00Z",
-				"name": "google",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-07-19T08:00:00Z",
-				"name": "facebook",
-				"views": 1
-			},
-			{
-				"dateUTC": "2016-07-19T08:00:00Z",
-				"name": "twitter",
-				"views": 52
-			},
-			{
-				"dateUTC": "2016-07-19T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-07-19T08:00:00Z",
-				"name": "user_email",
-				"views": 76
-			},
-			{
-				"dateUTC": "2016-07-19T08:00:00Z",
-				"name": "unknown",
-				"views": 33
-			},
-			{
-				"dateUTC": "2016-07-20T08:00:00Z",
-				"name": "google",
-				"views": 3
-			},
-			{
-				"dateUTC": "2016-07-20T08:00:00Z",
-				"name": "facebook",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-07-20T08:00:00Z",
-				"name": "twitter",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-07-20T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 12
-			},
-			{
-				"dateUTC": "2016-07-20T08:00:00Z",
-				"name": "user_email",
-				"views": 10
-			},
-			{
-				"dateUTC": "2016-07-20T08:00:00Z",
-				"name": "unknown",
-				"views": 97
-			},
-			{
-				"dateUTC": "2016-07-21T08:00:00Z",
-				"name": "google",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-07-21T08:00:00Z",
-				"name": "facebook",
-				"views": 13
-			},
-			{
-				"dateUTC": "2016-07-21T08:00:00Z",
-				"name": "twitter",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-07-21T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 37
-			},
-			{
-				"dateUTC": "2016-07-21T08:00:00Z",
-				"name": "user_email",
-				"views": 35
-			},
-			{
-				"dateUTC": "2016-07-21T08:00:00Z",
-				"name": "unknown",
-				"views": 18
-			},
-			{
-				"dateUTC": "2016-07-22T08:00:00Z",
-				"name": "google",
-				"views": 72
-			},
-			{
-				"dateUTC": "2016-07-22T08:00:00Z",
-				"name": "facebook",
-				"views": 88
-			},
-			{
-				"dateUTC": "2016-07-22T08:00:00Z",
-				"name": "twitter",
-				"views": 64
-			},
-			{
-				"dateUTC": "2016-07-22T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-07-22T08:00:00Z",
-				"name": "user_email",
-				"views": 86
-			},
-			{
-				"dateUTC": "2016-07-22T08:00:00Z",
-				"name": "unknown",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-07-23T08:00:00Z",
-				"name": "google",
-				"views": 11
-			},
-			{
-				"dateUTC": "2016-07-23T08:00:00Z",
-				"name": "facebook",
-				"views": 90
-			},
-			{
-				"dateUTC": "2016-07-23T08:00:00Z",
-				"name": "twitter",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-07-23T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 22
-			},
-			{
-				"dateUTC": "2016-07-23T08:00:00Z",
-				"name": "user_email",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-07-23T08:00:00Z",
-				"name": "unknown",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-07-24T08:00:00Z",
-				"name": "google",
-				"views": 46
-			},
-			{
-				"dateUTC": "2016-07-24T08:00:00Z",
-				"name": "facebook",
-				"views": 58
-			},
-			{
-				"dateUTC": "2016-07-24T08:00:00Z",
-				"name": "twitter",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-07-24T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-07-24T08:00:00Z",
-				"name": "user_email",
-				"views": 31
-			},
-			{
-				"dateUTC": "2016-07-24T08:00:00Z",
-				"name": "unknown",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-07-25T08:00:00Z",
-				"name": "google",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-07-25T08:00:00Z",
-				"name": "facebook",
-				"views": 93
-			},
-			{
-				"dateUTC": "2016-07-25T08:00:00Z",
-				"name": "twitter",
-				"views": 15
-			},
-			{
-				"dateUTC": "2016-07-25T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 90
-			},
-			{
-				"dateUTC": "2016-07-25T08:00:00Z",
-				"name": "user_email",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-07-25T08:00:00Z",
-				"name": "unknown",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-07-26T08:00:00Z",
-				"name": "google",
-				"views": 37
-			},
-			{
-				"dateUTC": "2016-07-26T08:00:00Z",
-				"name": "facebook",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-07-26T08:00:00Z",
-				"name": "twitter",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-07-26T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 72
-			},
-			{
-				"dateUTC": "2016-07-26T08:00:00Z",
-				"name": "user_email",
-				"views": 26
-			},
-			{
-				"dateUTC": "2016-07-26T08:00:00Z",
-				"name": "unknown",
-				"views": 70
-			},
-			{
-				"dateUTC": "2016-07-27T08:00:00Z",
-				"name": "google",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-07-27T08:00:00Z",
-				"name": "facebook",
-				"views": 15
-			},
-			{
-				"dateUTC": "2016-07-27T08:00:00Z",
-				"name": "twitter",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-07-27T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 22
-			},
-			{
-				"dateUTC": "2016-07-27T08:00:00Z",
-				"name": "user_email",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-07-27T08:00:00Z",
-				"name": "unknown",
-				"views": 83
-			},
-			{
-				"dateUTC": "2016-07-28T08:00:00Z",
-				"name": "google",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-07-28T08:00:00Z",
-				"name": "facebook",
-				"views": 39
-			},
-			{
-				"dateUTC": "2016-07-28T08:00:00Z",
-				"name": "twitter",
-				"views": 47
-			},
-			{
-				"dateUTC": "2016-07-28T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 90
-			},
-			{
-				"dateUTC": "2016-07-28T08:00:00Z",
-				"name": "user_email",
-				"views": 16
-			},
-			{
-				"dateUTC": "2016-07-28T08:00:00Z",
-				"name": "unknown",
-				"views": 96
-			},
-			{
-				"dateUTC": "2016-07-29T08:00:00Z",
-				"name": "google",
-				"views": 1
-			},
-			{
-				"dateUTC": "2016-07-29T08:00:00Z",
-				"name": "facebook",
-				"views": 38
-			},
-			{
-				"dateUTC": "2016-07-29T08:00:00Z",
-				"name": "twitter",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-07-29T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 26
-			},
-			{
-				"dateUTC": "2016-07-29T08:00:00Z",
-				"name": "user_email",
-				"views": 84
-			},
-			{
-				"dateUTC": "2016-07-29T08:00:00Z",
-				"name": "unknown",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-07-30T08:00:00Z",
-				"name": "google",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-07-30T08:00:00Z",
-				"name": "facebook",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-07-30T08:00:00Z",
-				"name": "twitter",
-				"views": 56
-			},
-			{
-				"dateUTC": "2016-07-30T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-07-30T08:00:00Z",
-				"name": "user_email",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-07-30T08:00:00Z",
-				"name": "unknown",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-07-31T08:00:00Z",
-				"name": "google",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-07-31T08:00:00Z",
-				"name": "facebook",
-				"views": 39
-			},
-			{
-				"dateUTC": "2016-07-31T08:00:00Z",
-				"name": "twitter",
-				"views": 66
-			},
-			{
-				"dateUTC": "2016-07-31T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 31
-			},
-			{
-				"dateUTC": "2016-07-31T08:00:00Z",
-				"name": "user_email",
-				"views": 14
-			},
-			{
-				"dateUTC": "2016-07-31T08:00:00Z",
-				"name": "unknown",
-				"views": 37
-			},
-			{
-				"dateUTC": "2016-08-01T08:00:00Z",
-				"name": "google",
-				"views": 3
-			},
-			{
-				"dateUTC": "2016-08-01T08:00:00Z",
-				"name": "facebook",
-				"views": 90
-			},
-			{
-				"dateUTC": "2016-08-01T08:00:00Z",
-				"name": "twitter",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-08-01T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 42
-			},
-			{
-				"dateUTC": "2016-08-01T08:00:00Z",
-				"name": "user_email",
-				"views": 76
-			},
-			{
-				"dateUTC": "2016-08-01T08:00:00Z",
-				"name": "unknown",
-				"views": 39
-			},
-			{
-				"dateUTC": "2016-08-02T08:00:00Z",
-				"name": "google",
-				"views": 24
-			},
-			{
-				"dateUTC": "2016-08-02T08:00:00Z",
-				"name": "facebook",
-				"views": 20
-			},
-			{
-				"dateUTC": "2016-08-02T08:00:00Z",
-				"name": "twitter",
-				"views": 71
-			},
-			{
-				"dateUTC": "2016-08-02T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-08-02T08:00:00Z",
-				"name": "user_email",
-				"views": 58
-			},
-			{
-				"dateUTC": "2016-08-02T08:00:00Z",
-				"name": "unknown",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-08-03T08:00:00Z",
-				"name": "google",
-				"views": 79
-			},
-			{
-				"dateUTC": "2016-08-03T08:00:00Z",
-				"name": "facebook",
-				"views": 81
-			},
-			{
-				"dateUTC": "2016-08-03T08:00:00Z",
-				"name": "twitter",
-				"views": 2
-			},
-			{
-				"dateUTC": "2016-08-03T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-08-03T08:00:00Z",
-				"name": "user_email",
-				"views": 56
-			},
-			{
-				"dateUTC": "2016-08-03T08:00:00Z",
-				"name": "unknown",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-08-04T08:00:00Z",
-				"name": "google",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-08-04T08:00:00Z",
-				"name": "facebook",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-08-04T08:00:00Z",
-				"name": "twitter",
-				"views": 24
-			},
-			{
-				"dateUTC": "2016-08-04T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-08-04T08:00:00Z",
-				"name": "user_email",
-				"views": 47
-			},
-			{
-				"dateUTC": "2016-08-04T08:00:00Z",
-				"name": "unknown",
-				"views": 49
-			},
-			{
-				"dateUTC": "2016-08-05T08:00:00Z",
-				"name": "google",
-				"views": 38
-			},
-			{
-				"dateUTC": "2016-08-05T08:00:00Z",
-				"name": "facebook",
-				"views": 5
-			},
-			{
-				"dateUTC": "2016-08-05T08:00:00Z",
-				"name": "twitter",
-				"views": 94
-			},
-			{
-				"dateUTC": "2016-08-05T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-08-05T08:00:00Z",
-				"name": "user_email",
-				"views": 76
-			},
-			{
-				"dateUTC": "2016-08-05T08:00:00Z",
-				"name": "unknown",
-				"views": 73
-			},
-			{
-				"dateUTC": "2016-08-06T08:00:00Z",
-				"name": "google",
-				"views": 88
-			},
-			{
-				"dateUTC": "2016-08-06T08:00:00Z",
-				"name": "facebook",
-				"views": 66
-			},
-			{
-				"dateUTC": "2016-08-06T08:00:00Z",
-				"name": "twitter",
-				"views": 18
-			},
-			{
-				"dateUTC": "2016-08-06T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-08-06T08:00:00Z",
-				"name": "user_email",
-				"views": 58
-			},
-			{
-				"dateUTC": "2016-08-06T08:00:00Z",
-				"name": "unknown",
-				"views": 18
-			},
-			{
-				"dateUTC": "2016-08-07T08:00:00Z",
-				"name": "google",
-				"views": 72
-			},
-			{
-				"dateUTC": "2016-08-07T08:00:00Z",
-				"name": "facebook",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-08-07T08:00:00Z",
-				"name": "twitter",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-08-07T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 24
-			},
-			{
-				"dateUTC": "2016-08-07T08:00:00Z",
-				"name": "user_email",
-				"views": 25
-			},
-			{
-				"dateUTC": "2016-08-07T08:00:00Z",
-				"name": "unknown",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-08-08T08:00:00Z",
-				"name": "google",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-08-08T08:00:00Z",
-				"name": "facebook",
-				"views": 5
-			},
-			{
-				"dateUTC": "2016-08-08T08:00:00Z",
-				"name": "twitter",
-				"views": 12
-			},
-			{
-				"dateUTC": "2016-08-08T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-08-08T08:00:00Z",
-				"name": "user_email",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-08-08T08:00:00Z",
-				"name": "unknown",
-				"views": 35
-			},
-			{
-				"dateUTC": "2016-08-09T08:00:00Z",
-				"name": "google",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-08-09T08:00:00Z",
-				"name": "facebook",
-				"views": 81
-			},
-			{
-				"dateUTC": "2016-08-09T08:00:00Z",
-				"name": "twitter",
-				"views": 93
-			},
-			{
-				"dateUTC": "2016-08-09T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 98
-			},
-			{
-				"dateUTC": "2016-08-09T08:00:00Z",
-				"name": "user_email",
-				"views": 25
-			},
-			{
-				"dateUTC": "2016-08-09T08:00:00Z",
-				"name": "unknown",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-08-10T08:00:00Z",
-				"name": "google",
-				"views": 94
-			},
-			{
-				"dateUTC": "2016-08-10T08:00:00Z",
-				"name": "facebook",
-				"views": 12
-			},
-			{
-				"dateUTC": "2016-08-10T08:00:00Z",
-				"name": "twitter",
-				"views": 53
-			},
-			{
-				"dateUTC": "2016-08-10T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 39
-			},
-			{
-				"dateUTC": "2016-08-10T08:00:00Z",
-				"name": "user_email",
-				"views": 61
-			},
-			{
-				"dateUTC": "2016-08-10T08:00:00Z",
-				"name": "unknown",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-08-11T08:00:00Z",
-				"name": "google",
-				"views": 5
-			},
-			{
-				"dateUTC": "2016-08-11T08:00:00Z",
-				"name": "facebook",
-				"views": 25
-			},
-			{
-				"dateUTC": "2016-08-11T08:00:00Z",
-				"name": "twitter",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-08-11T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 96
-			},
-			{
-				"dateUTC": "2016-08-11T08:00:00Z",
-				"name": "user_email",
-				"views": 37
-			},
-			{
-				"dateUTC": "2016-08-11T08:00:00Z",
-				"name": "unknown",
-				"views": 24
-			},
-			{
-				"dateUTC": "2016-08-12T08:00:00Z",
-				"name": "google",
-				"views": 20
-			},
-			{
-				"dateUTC": "2016-08-12T08:00:00Z",
-				"name": "facebook",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-08-12T08:00:00Z",
-				"name": "twitter",
-				"views": 57
-			},
-			{
-				"dateUTC": "2016-08-12T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 68
-			},
-			{
-				"dateUTC": "2016-08-12T08:00:00Z",
-				"name": "user_email",
-				"views": 29
-			},
-			{
-				"dateUTC": "2016-08-12T08:00:00Z",
-				"name": "unknown",
-				"views": 54
-			},
-			{
-				"dateUTC": "2016-08-13T08:00:00Z",
-				"name": "google",
-				"views": 33
-			},
-			{
-				"dateUTC": "2016-08-13T08:00:00Z",
-				"name": "facebook",
-				"views": 75
-			},
-			{
-				"dateUTC": "2016-08-13T08:00:00Z",
-				"name": "twitter",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-08-13T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 42
-			},
-			{
-				"dateUTC": "2016-08-13T08:00:00Z",
-				"name": "user_email",
-				"views": 96
-			},
-			{
-				"dateUTC": "2016-08-13T08:00:00Z",
-				"name": "unknown",
-				"views": 60
-			},
-			{
-				"dateUTC": "2016-08-14T08:00:00Z",
-				"name": "google",
-				"views": 87
-			},
-			{
-				"dateUTC": "2016-08-14T08:00:00Z",
-				"name": "facebook",
-				"views": 40
-			},
-			{
-				"dateUTC": "2016-08-14T08:00:00Z",
-				"name": "twitter",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-08-14T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 75
-			},
-			{
-				"dateUTC": "2016-08-14T08:00:00Z",
-				"name": "user_email",
-				"views": 84
-			},
-			{
-				"dateUTC": "2016-08-14T08:00:00Z",
-				"name": "unknown",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-08-15T08:00:00Z",
-				"name": "google",
-				"views": 6
-			},
-			{
-				"dateUTC": "2016-08-15T08:00:00Z",
-				"name": "facebook",
-				"views": 14
-			},
-			{
-				"dateUTC": "2016-08-15T08:00:00Z",
-				"name": "twitter",
-				"views": 55
-			},
-			{
-				"dateUTC": "2016-08-15T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-08-15T08:00:00Z",
-				"name": "user_email",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-08-15T08:00:00Z",
-				"name": "unknown",
-				"views": 60
-			},
-			{
-				"dateUTC": "2016-08-16T08:00:00Z",
-				"name": "google",
-				"views": 68
-			},
-			{
-				"dateUTC": "2016-08-16T08:00:00Z",
-				"name": "facebook",
-				"views": 88
-			},
-			{
-				"dateUTC": "2016-08-16T08:00:00Z",
-				"name": "twitter",
-				"views": 64
-			},
-			{
-				"dateUTC": "2016-08-16T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-08-16T08:00:00Z",
-				"name": "user_email",
-				"views": 18
-			},
-			{
-				"dateUTC": "2016-08-16T08:00:00Z",
-				"name": "unknown",
-				"views": 59
-			},
-			{
-				"dateUTC": "2016-08-17T08:00:00Z",
-				"name": "google",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-08-17T08:00:00Z",
-				"name": "facebook",
-				"views": 47
-			},
-			{
-				"dateUTC": "2016-08-17T08:00:00Z",
-				"name": "twitter",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-08-17T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 6
-			},
-			{
-				"dateUTC": "2016-08-17T08:00:00Z",
-				"name": "user_email",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-08-17T08:00:00Z",
-				"name": "unknown",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-08-18T08:00:00Z",
-				"name": "google",
-				"views": 1
-			},
-			{
-				"dateUTC": "2016-08-18T08:00:00Z",
-				"name": "facebook",
-				"views": 43
-			},
-			{
-				"dateUTC": "2016-08-18T08:00:00Z",
-				"name": "twitter",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-08-18T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 60
-			},
-			{
-				"dateUTC": "2016-08-18T08:00:00Z",
-				"name": "user_email",
-				"views": 71
-			},
-			{
-				"dateUTC": "2016-08-18T08:00:00Z",
-				"name": "unknown",
-				"views": 7
-			},
-			{
-				"dateUTC": "2016-08-19T08:00:00Z",
-				"name": "google",
-				"views": 57
-			},
-			{
-				"dateUTC": "2016-08-19T08:00:00Z",
-				"name": "facebook",
-				"views": 13
-			},
-			{
-				"dateUTC": "2016-08-19T08:00:00Z",
-				"name": "twitter",
-				"views": 42
-			},
-			{
-				"dateUTC": "2016-08-19T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-08-19T08:00:00Z",
-				"name": "user_email",
-				"views": 73
-			},
-			{
-				"dateUTC": "2016-08-19T08:00:00Z",
-				"name": "unknown",
-				"views": 68
-			},
-			{
-				"dateUTC": "2016-08-20T08:00:00Z",
-				"name": "google",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-08-20T08:00:00Z",
-				"name": "facebook",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-08-20T08:00:00Z",
-				"name": "twitter",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-08-20T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 4
-			},
-			{
-				"dateUTC": "2016-08-20T08:00:00Z",
-				"name": "user_email",
-				"views": 81
-			},
-			{
-				"dateUTC": "2016-08-20T08:00:00Z",
-				"name": "unknown",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-08-21T08:00:00Z",
-				"name": "google",
-				"views": 7
-			},
-			{
-				"dateUTC": "2016-08-21T08:00:00Z",
-				"name": "facebook",
-				"views": 2
-			},
-			{
-				"dateUTC": "2016-08-21T08:00:00Z",
-				"name": "twitter",
-				"views": 18
-			},
-			{
-				"dateUTC": "2016-08-21T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-08-21T08:00:00Z",
-				"name": "user_email",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-08-21T08:00:00Z",
-				"name": "unknown",
-				"views": 69
-			},
-			{
-				"dateUTC": "2016-08-22T08:00:00Z",
-				"name": "google",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-08-22T08:00:00Z",
-				"name": "facebook",
-				"views": 93
-			},
-			{
-				"dateUTC": "2016-08-22T08:00:00Z",
-				"name": "twitter",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-08-22T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-08-22T08:00:00Z",
-				"name": "user_email",
-				"views": 64
-			},
-			{
-				"dateUTC": "2016-08-22T08:00:00Z",
-				"name": "unknown",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-08-23T08:00:00Z",
-				"name": "google",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-08-23T08:00:00Z",
-				"name": "facebook",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-08-23T08:00:00Z",
-				"name": "twitter",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-08-23T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-08-23T08:00:00Z",
-				"name": "user_email",
-				"views": 84
-			},
-			{
-				"dateUTC": "2016-08-23T08:00:00Z",
-				"name": "unknown",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-08-24T08:00:00Z",
-				"name": "google",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-08-24T08:00:00Z",
-				"name": "facebook",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-08-24T08:00:00Z",
-				"name": "twitter",
-				"views": 49
-			},
-			{
-				"dateUTC": "2016-08-24T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 29
-			},
-			{
-				"dateUTC": "2016-08-24T08:00:00Z",
-				"name": "user_email",
-				"views": 38
-			},
-			{
-				"dateUTC": "2016-08-24T08:00:00Z",
-				"name": "unknown",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-08-25T08:00:00Z",
-				"name": "google",
-				"views": 49
-			},
-			{
-				"dateUTC": "2016-08-25T08:00:00Z",
-				"name": "facebook",
-				"views": 41
-			},
-			{
-				"dateUTC": "2016-08-25T08:00:00Z",
-				"name": "twitter",
-				"views": 12
-			},
-			{
-				"dateUTC": "2016-08-25T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 72
-			},
-			{
-				"dateUTC": "2016-08-25T08:00:00Z",
-				"name": "user_email",
-				"views": 31
-			},
-			{
-				"dateUTC": "2016-08-25T08:00:00Z",
-				"name": "unknown",
-				"views": 70
-			},
-			{
-				"dateUTC": "2016-08-26T08:00:00Z",
-				"name": "google",
-				"views": 41
-			},
-			{
-				"dateUTC": "2016-08-26T08:00:00Z",
-				"name": "facebook",
-				"views": 28
-			},
-			{
-				"dateUTC": "2016-08-26T08:00:00Z",
-				"name": "twitter",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-08-26T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 99
-			},
-			{
-				"dateUTC": "2016-08-26T08:00:00Z",
-				"name": "user_email",
-				"views": 71
-			},
-			{
-				"dateUTC": "2016-08-26T08:00:00Z",
-				"name": "unknown",
-				"views": 61
-			},
-			{
-				"dateUTC": "2016-08-27T08:00:00Z",
-				"name": "google",
-				"views": 71
-			},
-			{
-				"dateUTC": "2016-08-27T08:00:00Z",
-				"name": "facebook",
-				"views": 33
-			},
-			{
-				"dateUTC": "2016-08-27T08:00:00Z",
-				"name": "twitter",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-08-27T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 43
-			},
-			{
-				"dateUTC": "2016-08-27T08:00:00Z",
-				"name": "user_email",
-				"views": 1
-			},
-			{
-				"dateUTC": "2016-08-27T08:00:00Z",
-				"name": "unknown",
-				"views": 46
-			},
-			{
-				"dateUTC": "2016-08-28T08:00:00Z",
-				"name": "google",
-				"views": 43
-			},
-			{
-				"dateUTC": "2016-08-28T08:00:00Z",
-				"name": "facebook",
-				"views": 42
-			},
-			{
-				"dateUTC": "2016-08-28T08:00:00Z",
-				"name": "twitter",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-08-28T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-08-28T08:00:00Z",
-				"name": "user_email",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-08-28T08:00:00Z",
-				"name": "unknown",
-				"views": 51
-			},
-			{
-				"dateUTC": "2016-08-29T08:00:00Z",
-				"name": "google",
-				"views": 26
-			},
-			{
-				"dateUTC": "2016-08-29T08:00:00Z",
-				"name": "facebook",
-				"views": 10
-			},
-			{
-				"dateUTC": "2016-08-29T08:00:00Z",
-				"name": "twitter",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-08-29T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 37
-			},
-			{
-				"dateUTC": "2016-08-29T08:00:00Z",
-				"name": "user_email",
-				"views": 72
-			},
-			{
-				"dateUTC": "2016-08-29T08:00:00Z",
-				"name": "unknown",
-				"views": 25
-			},
-			{
-				"dateUTC": "2016-08-30T08:00:00Z",
-				"name": "google",
-				"views": 18
-			},
-			{
-				"dateUTC": "2016-08-30T08:00:00Z",
-				"name": "facebook",
-				"views": 68
-			},
-			{
-				"dateUTC": "2016-08-30T08:00:00Z",
-				"name": "twitter",
-				"views": 79
-			},
-			{
-				"dateUTC": "2016-08-30T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-08-30T08:00:00Z",
-				"name": "user_email",
-				"views": 93
-			},
-			{
-				"dateUTC": "2016-08-30T08:00:00Z",
-				"name": "unknown",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-08-31T08:00:00Z",
-				"name": "google",
-				"views": 47
-			},
-			{
-				"dateUTC": "2016-08-31T08:00:00Z",
-				"name": "facebook",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-08-31T08:00:00Z",
-				"name": "twitter",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-08-31T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 14
-			},
-			{
-				"dateUTC": "2016-08-31T08:00:00Z",
-				"name": "user_email",
-				"views": 28
-			},
-			{
-				"dateUTC": "2016-08-31T08:00:00Z",
-				"name": "unknown",
-				"views": 86
-			},
-			{
-				"dateUTC": "2016-09-01T08:00:00Z",
-				"name": "google",
-				"views": 3
-			},
-			{
-				"dateUTC": "2016-09-01T08:00:00Z",
-				"name": "facebook",
-				"views": 22
-			},
-			{
-				"dateUTC": "2016-09-01T08:00:00Z",
-				"name": "twitter",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-09-01T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 91
-			},
-			{
-				"dateUTC": "2016-09-01T08:00:00Z",
-				"name": "user_email",
-				"views": 15
-			},
-			{
-				"dateUTC": "2016-09-01T08:00:00Z",
-				"name": "unknown",
-				"views": 33
-			},
-			{
-				"dateUTC": "2016-09-02T08:00:00Z",
-				"name": "google",
-				"views": 91
-			},
-			{
-				"dateUTC": "2016-09-02T08:00:00Z",
-				"name": "facebook",
-				"views": 20
-			},
-			{
-				"dateUTC": "2016-09-02T08:00:00Z",
-				"name": "twitter",
-				"views": 28
-			},
-			{
-				"dateUTC": "2016-09-02T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 51
-			},
-			{
-				"dateUTC": "2016-09-02T08:00:00Z",
-				"name": "user_email",
-				"views": 72
-			},
-			{
-				"dateUTC": "2016-09-02T08:00:00Z",
-				"name": "unknown",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-09-03T08:00:00Z",
-				"name": "google",
-				"views": 53
-			},
-			{
-				"dateUTC": "2016-09-03T08:00:00Z",
-				"name": "facebook",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-09-03T08:00:00Z",
-				"name": "twitter",
-				"views": 52
-			},
-			{
-				"dateUTC": "2016-09-03T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-09-03T08:00:00Z",
-				"name": "user_email",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-09-03T08:00:00Z",
-				"name": "unknown",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-09-04T08:00:00Z",
-				"name": "google",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-09-04T08:00:00Z",
-				"name": "facebook",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-09-04T08:00:00Z",
-				"name": "twitter",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-09-04T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 60
-			},
-			{
-				"dateUTC": "2016-09-04T08:00:00Z",
-				"name": "user_email",
-				"views": 79
-			},
-			{
-				"dateUTC": "2016-09-04T08:00:00Z",
-				"name": "unknown",
-				"views": 60
-			},
-			{
-				"dateUTC": "2016-09-05T08:00:00Z",
-				"name": "google",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-09-05T08:00:00Z",
-				"name": "facebook",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-09-05T08:00:00Z",
-				"name": "twitter",
-				"views": 65
-			},
-			{
-				"dateUTC": "2016-09-05T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 59
-			},
-			{
-				"dateUTC": "2016-09-05T08:00:00Z",
-				"name": "user_email",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-09-05T08:00:00Z",
-				"name": "unknown",
-				"views": 58
-			},
-			{
-				"dateUTC": "2016-09-06T08:00:00Z",
-				"name": "google",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-09-06T08:00:00Z",
-				"name": "facebook",
-				"views": 53
-			},
-			{
-				"dateUTC": "2016-09-06T08:00:00Z",
-				"name": "twitter",
-				"views": 70
-			},
-			{
-				"dateUTC": "2016-09-06T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 82
-			},
-			{
-				"dateUTC": "2016-09-06T08:00:00Z",
-				"name": "user_email",
-				"views": 6
-			},
-			{
-				"dateUTC": "2016-09-06T08:00:00Z",
-				"name": "unknown",
-				"views": 40
-			},
-			{
-				"dateUTC": "2016-09-07T08:00:00Z",
-				"name": "google",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-09-07T08:00:00Z",
-				"name": "facebook",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-09-07T08:00:00Z",
-				"name": "twitter",
-				"views": 21
-			},
-			{
-				"dateUTC": "2016-09-07T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-09-07T08:00:00Z",
-				"name": "user_email",
-				"views": 81
-			},
-			{
-				"dateUTC": "2016-09-07T08:00:00Z",
-				"name": "unknown",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-09-08T08:00:00Z",
-				"name": "google",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-09-08T08:00:00Z",
-				"name": "facebook",
-				"views": 81
-			},
-			{
-				"dateUTC": "2016-09-08T08:00:00Z",
-				"name": "twitter",
-				"views": 87
-			},
-			{
-				"dateUTC": "2016-09-08T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 69
-			},
-			{
-				"dateUTC": "2016-09-08T08:00:00Z",
-				"name": "user_email",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-09-08T08:00:00Z",
-				"name": "unknown",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-09-09T08:00:00Z",
-				"name": "google",
-				"views": 45
-			},
-			{
-				"dateUTC": "2016-09-09T08:00:00Z",
-				"name": "facebook",
-				"views": 99
-			},
-			{
-				"dateUTC": "2016-09-09T08:00:00Z",
-				"name": "twitter",
-				"views": 11
-			},
-			{
-				"dateUTC": "2016-09-09T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 15
-			},
-			{
-				"dateUTC": "2016-09-09T08:00:00Z",
-				"name": "user_email",
-				"views": 17
-			},
-			{
-				"dateUTC": "2016-09-09T08:00:00Z",
-				"name": "unknown",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-09-10T08:00:00Z",
-				"name": "google",
-				"views": 1
-			},
-			{
-				"dateUTC": "2016-09-10T08:00:00Z",
-				"name": "facebook",
-				"views": 82
-			},
-			{
-				"dateUTC": "2016-09-10T08:00:00Z",
-				"name": "twitter",
-				"views": 87
-			},
-			{
-				"dateUTC": "2016-09-10T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-09-10T08:00:00Z",
-				"name": "user_email",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-09-10T08:00:00Z",
-				"name": "unknown",
-				"views": 12
-			},
-			{
-				"dateUTC": "2016-09-11T08:00:00Z",
-				"name": "google",
-				"views": 64
-			},
-			{
-				"dateUTC": "2016-09-11T08:00:00Z",
-				"name": "facebook",
-				"views": 96
-			},
-			{
-				"dateUTC": "2016-09-11T08:00:00Z",
-				"name": "twitter",
-				"views": 66
-			},
-			{
-				"dateUTC": "2016-09-11T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 2
-			},
-			{
-				"dateUTC": "2016-09-11T08:00:00Z",
-				"name": "user_email",
-				"views": 26
-			},
-			{
-				"dateUTC": "2016-09-11T08:00:00Z",
-				"name": "unknown",
-				"views": 71
-			},
-			{
-				"dateUTC": "2016-09-12T08:00:00Z",
-				"name": "google",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-09-12T08:00:00Z",
-				"name": "facebook",
-				"views": 2
-			},
-			{
-				"dateUTC": "2016-09-12T08:00:00Z",
-				"name": "twitter",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-09-12T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 13
-			},
-			{
-				"dateUTC": "2016-09-12T08:00:00Z",
-				"name": "user_email",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-09-12T08:00:00Z",
-				"name": "unknown",
-				"views": 28
-			},
-			{
-				"dateUTC": "2016-09-13T08:00:00Z",
-				"name": "google",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-09-13T08:00:00Z",
-				"name": "facebook",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-09-13T08:00:00Z",
-				"name": "twitter",
-				"views": 98
-			},
-			{
-				"dateUTC": "2016-09-13T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 60
-			},
-			{
-				"dateUTC": "2016-09-13T08:00:00Z",
-				"name": "user_email",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-09-13T08:00:00Z",
-				"name": "unknown",
-				"views": 34
-			},
-			{
-				"dateUTC": "2016-09-14T08:00:00Z",
-				"name": "google",
-				"views": 71
-			},
-			{
-				"dateUTC": "2016-09-14T08:00:00Z",
-				"name": "facebook",
-				"views": 71
-			},
-			{
-				"dateUTC": "2016-09-14T08:00:00Z",
-				"name": "twitter",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-09-14T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-09-14T08:00:00Z",
-				"name": "user_email",
-				"views": 75
-			},
-			{
-				"dateUTC": "2016-09-14T08:00:00Z",
-				"name": "unknown",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-09-15T08:00:00Z",
-				"name": "google",
-				"views": 54
-			},
-			{
-				"dateUTC": "2016-09-15T08:00:00Z",
-				"name": "facebook",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-09-15T08:00:00Z",
-				"name": "twitter",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-09-15T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 11
-			},
-			{
-				"dateUTC": "2016-09-15T08:00:00Z",
-				"name": "user_email",
-				"views": 41
-			},
-			{
-				"dateUTC": "2016-09-15T08:00:00Z",
-				"name": "unknown",
-				"views": 70
-			},
-			{
-				"dateUTC": "2016-09-16T08:00:00Z",
-				"name": "google",
-				"views": 39
-			},
-			{
-				"dateUTC": "2016-09-16T08:00:00Z",
-				"name": "facebook",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-09-16T08:00:00Z",
-				"name": "twitter",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-09-16T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-09-16T08:00:00Z",
-				"name": "user_email",
-				"views": 56
-			},
-			{
-				"dateUTC": "2016-09-16T08:00:00Z",
-				"name": "unknown",
-				"views": 3
-			},
-			{
-				"dateUTC": "2016-09-17T08:00:00Z",
-				"name": "google",
-				"views": 64
-			},
-			{
-				"dateUTC": "2016-09-17T08:00:00Z",
-				"name": "facebook",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-09-17T08:00:00Z",
-				"name": "twitter",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-09-17T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 59
-			},
-			{
-				"dateUTC": "2016-09-17T08:00:00Z",
-				"name": "user_email",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-09-17T08:00:00Z",
-				"name": "unknown",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-09-18T08:00:00Z",
-				"name": "google",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-09-18T08:00:00Z",
-				"name": "facebook",
-				"views": 38
-			},
-			{
-				"dateUTC": "2016-09-18T08:00:00Z",
-				"name": "twitter",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-09-18T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 73
-			},
-			{
-				"dateUTC": "2016-09-18T08:00:00Z",
-				"name": "user_email",
-				"views": 0
-			},
-			{
-				"dateUTC": "2016-09-18T08:00:00Z",
-				"name": "unknown",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-09-19T08:00:00Z",
-				"name": "google",
-				"views": 73
-			},
-			{
-				"dateUTC": "2016-09-19T08:00:00Z",
-				"name": "facebook",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-09-19T08:00:00Z",
-				"name": "twitter",
-				"views": 52
-			},
-			{
-				"dateUTC": "2016-09-19T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 38
-			},
-			{
-				"dateUTC": "2016-09-19T08:00:00Z",
-				"name": "user_email",
-				"views": 53
-			},
-			{
-				"dateUTC": "2016-09-19T08:00:00Z",
-				"name": "unknown",
-				"views": 88
-			},
-			{
-				"dateUTC": "2016-09-20T08:00:00Z",
-				"name": "google",
-				"views": 5
-			},
-			{
-				"dateUTC": "2016-09-20T08:00:00Z",
-				"name": "facebook",
-				"views": 94
-			},
-			{
-				"dateUTC": "2016-09-20T08:00:00Z",
-				"name": "twitter",
-				"views": 34
-			},
-			{
-				"dateUTC": "2016-09-20T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-09-20T08:00:00Z",
-				"name": "user_email",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-09-20T08:00:00Z",
-				"name": "unknown",
-				"views": 88
-			},
-			{
-				"dateUTC": "2016-09-21T08:00:00Z",
-				"name": "google",
-				"views": 48
-			},
-			{
-				"dateUTC": "2016-09-21T08:00:00Z",
-				"name": "facebook",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-09-21T08:00:00Z",
-				"name": "twitter",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-09-21T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-09-21T08:00:00Z",
-				"name": "user_email",
-				"views": 31
-			},
-			{
-				"dateUTC": "2016-09-21T08:00:00Z",
-				"name": "unknown",
-				"views": 83
-			},
-			{
-				"dateUTC": "2016-09-22T08:00:00Z",
-				"name": "google",
-				"views": 73
-			},
-			{
-				"dateUTC": "2016-09-22T08:00:00Z",
-				"name": "facebook",
-				"views": 36
-			},
-			{
-				"dateUTC": "2016-09-22T08:00:00Z",
-				"name": "twitter",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-09-22T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 96
-			},
-			{
-				"dateUTC": "2016-09-22T08:00:00Z",
-				"name": "user_email",
-				"views": 22
-			},
-			{
-				"dateUTC": "2016-09-22T08:00:00Z",
-				"name": "unknown",
-				"views": 36
-			},
-			{
-				"dateUTC": "2016-09-23T08:00:00Z",
-				"name": "google",
-				"views": 42
-			},
-			{
-				"dateUTC": "2016-09-23T08:00:00Z",
-				"name": "facebook",
-				"views": 70
-			},
-			{
-				"dateUTC": "2016-09-23T08:00:00Z",
-				"name": "twitter",
-				"views": 91
-			},
-			{
-				"dateUTC": "2016-09-23T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 93
-			},
-			{
-				"dateUTC": "2016-09-23T08:00:00Z",
-				"name": "user_email",
-				"views": 25
-			},
-			{
-				"dateUTC": "2016-09-23T08:00:00Z",
-				"name": "unknown",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-09-24T08:00:00Z",
-				"name": "google",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-09-24T08:00:00Z",
-				"name": "facebook",
-				"views": 6
-			},
-			{
-				"dateUTC": "2016-09-24T08:00:00Z",
-				"name": "twitter",
-				"views": 95
-			},
-			{
-				"dateUTC": "2016-09-24T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 3
-			},
-			{
-				"dateUTC": "2016-09-24T08:00:00Z",
-				"name": "user_email",
-				"views": 14
-			},
-			{
-				"dateUTC": "2016-09-24T08:00:00Z",
-				"name": "unknown",
-				"views": 40
-			},
-			{
-				"dateUTC": "2016-09-25T08:00:00Z",
-				"name": "google",
-				"views": 66
-			},
-			{
-				"dateUTC": "2016-09-25T08:00:00Z",
-				"name": "facebook",
-				"views": 33
-			},
-			{
-				"dateUTC": "2016-09-25T08:00:00Z",
-				"name": "twitter",
-				"views": 52
-			},
-			{
-				"dateUTC": "2016-09-25T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 81
-			},
-			{
-				"dateUTC": "2016-09-25T08:00:00Z",
-				"name": "user_email",
-				"views": 87
-			},
-			{
-				"dateUTC": "2016-09-25T08:00:00Z",
-				"name": "unknown",
-				"views": 90
-			},
-			{
-				"dateUTC": "2016-09-26T08:00:00Z",
-				"name": "google",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-09-26T08:00:00Z",
-				"name": "facebook",
-				"views": 91
-			},
-			{
-				"dateUTC": "2016-09-26T08:00:00Z",
-				"name": "twitter",
-				"views": 47
-			},
-			{
-				"dateUTC": "2016-09-26T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 87
-			},
-			{
-				"dateUTC": "2016-09-26T08:00:00Z",
-				"name": "user_email",
-				"views": 82
-			},
-			{
-				"dateUTC": "2016-09-26T08:00:00Z",
-				"name": "unknown",
-				"views": 31
-			},
-			{
-				"dateUTC": "2016-09-27T08:00:00Z",
-				"name": "google",
-				"views": 52
-			},
-			{
-				"dateUTC": "2016-09-27T08:00:00Z",
-				"name": "facebook",
-				"views": 97
-			},
-			{
-				"dateUTC": "2016-09-27T08:00:00Z",
-				"name": "twitter",
-				"views": 21
-			},
-			{
-				"dateUTC": "2016-09-27T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-09-27T08:00:00Z",
-				"name": "user_email",
-				"views": 73
-			},
-			{
-				"dateUTC": "2016-09-27T08:00:00Z",
-				"name": "unknown",
-				"views": 29
-			},
-			{
-				"dateUTC": "2016-09-28T08:00:00Z",
-				"name": "google",
-				"views": 91
-			},
-			{
-				"dateUTC": "2016-09-28T08:00:00Z",
-				"name": "facebook",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-09-28T08:00:00Z",
-				"name": "twitter",
-				"views": 26
-			},
-			{
-				"dateUTC": "2016-09-28T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 1
-			},
-			{
-				"dateUTC": "2016-09-28T08:00:00Z",
-				"name": "user_email",
-				"views": 28
-			},
-			{
-				"dateUTC": "2016-09-28T08:00:00Z",
-				"name": "unknown",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-09-29T08:00:00Z",
-				"name": "google",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-09-29T08:00:00Z",
-				"name": "facebook",
-				"views": 40
-			},
-			{
-				"dateUTC": "2016-09-29T08:00:00Z",
-				"name": "twitter",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-09-29T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 29
-			},
-			{
-				"dateUTC": "2016-09-29T08:00:00Z",
-				"name": "user_email",
-				"views": 82
-			},
-			{
-				"dateUTC": "2016-09-29T08:00:00Z",
-				"name": "unknown",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-09-30T08:00:00Z",
-				"name": "google",
-				"views": 40
-			},
-			{
-				"dateUTC": "2016-09-30T08:00:00Z",
-				"name": "facebook",
-				"views": 20
-			},
-			{
-				"dateUTC": "2016-09-30T08:00:00Z",
-				"name": "twitter",
-				"views": 14
-			},
-			{
-				"dateUTC": "2016-09-30T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 68
-			},
-			{
-				"dateUTC": "2016-09-30T08:00:00Z",
-				"name": "user_email",
-				"views": 26
-			},
-			{
-				"dateUTC": "2016-09-30T08:00:00Z",
-				"name": "unknown",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-10-01T08:00:00Z",
-				"name": "google",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-10-01T08:00:00Z",
-				"name": "facebook",
-				"views": 18
-			},
-			{
-				"dateUTC": "2016-10-01T08:00:00Z",
-				"name": "twitter",
-				"views": 81
-			},
-			{
-				"dateUTC": "2016-10-01T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 15
-			},
-			{
-				"dateUTC": "2016-10-01T08:00:00Z",
-				"name": "user_email",
-				"views": 4
-			},
-			{
-				"dateUTC": "2016-10-01T08:00:00Z",
-				"name": "unknown",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-10-02T08:00:00Z",
-				"name": "google",
-				"views": 28
-			},
-			{
-				"dateUTC": "2016-10-02T08:00:00Z",
-				"name": "facebook",
-				"views": 4
-			},
-			{
-				"dateUTC": "2016-10-02T08:00:00Z",
-				"name": "twitter",
-				"views": 17
-			},
-			{
-				"dateUTC": "2016-10-02T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-10-02T08:00:00Z",
-				"name": "user_email",
-				"views": 47
-			},
-			{
-				"dateUTC": "2016-10-02T08:00:00Z",
-				"name": "unknown",
-				"views": 62
-			},
-			{
-				"dateUTC": "2016-10-03T08:00:00Z",
-				"name": "google",
-				"views": 55
-			},
-			{
-				"dateUTC": "2016-10-03T08:00:00Z",
-				"name": "facebook",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-10-03T08:00:00Z",
-				"name": "twitter",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-10-03T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 72
-			},
-			{
-				"dateUTC": "2016-10-03T08:00:00Z",
-				"name": "user_email",
-				"views": 6
-			},
-			{
-				"dateUTC": "2016-10-03T08:00:00Z",
-				"name": "unknown",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-10-04T08:00:00Z",
-				"name": "google",
-				"views": 34
-			},
-			{
-				"dateUTC": "2016-10-04T08:00:00Z",
-				"name": "facebook",
-				"views": 63
-			},
-			{
-				"dateUTC": "2016-10-04T08:00:00Z",
-				"name": "twitter",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-10-04T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-10-04T08:00:00Z",
-				"name": "user_email",
-				"views": 74
-			},
-			{
-				"dateUTC": "2016-10-04T08:00:00Z",
-				"name": "unknown",
-				"views": 55
-			},
-			{
-				"dateUTC": "2016-10-05T08:00:00Z",
-				"name": "google",
-				"views": 33
-			},
-			{
-				"dateUTC": "2016-10-05T08:00:00Z",
-				"name": "facebook",
-				"views": 99
-			},
-			{
-				"dateUTC": "2016-10-05T08:00:00Z",
-				"name": "twitter",
-				"views": 82
-			},
-			{
-				"dateUTC": "2016-10-05T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 22
-			},
-			{
-				"dateUTC": "2016-10-05T08:00:00Z",
-				"name": "user_email",
-				"views": 94
-			},
-			{
-				"dateUTC": "2016-10-05T08:00:00Z",
-				"name": "unknown",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-10-06T08:00:00Z",
-				"name": "google",
-				"views": 97
-			},
-			{
-				"dateUTC": "2016-10-06T08:00:00Z",
-				"name": "facebook",
-				"views": 31
-			},
-			{
-				"dateUTC": "2016-10-06T08:00:00Z",
-				"name": "twitter",
-				"views": 34
-			},
-			{
-				"dateUTC": "2016-10-06T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-10-06T08:00:00Z",
-				"name": "user_email",
-				"views": 6
-			},
-			{
-				"dateUTC": "2016-10-06T08:00:00Z",
-				"name": "unknown",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-10-07T08:00:00Z",
-				"name": "google",
-				"views": 14
-			},
-			{
-				"dateUTC": "2016-10-07T08:00:00Z",
-				"name": "facebook",
-				"views": 91
-			},
-			{
-				"dateUTC": "2016-10-07T08:00:00Z",
-				"name": "twitter",
-				"views": 88
-			},
-			{
-				"dateUTC": "2016-10-07T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 53
-			},
-			{
-				"dateUTC": "2016-10-07T08:00:00Z",
-				"name": "user_email",
-				"views": 99
-			},
-			{
-				"dateUTC": "2016-10-07T08:00:00Z",
-				"name": "unknown",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-10-08T08:00:00Z",
-				"name": "google",
-				"views": 76
-			},
-			{
-				"dateUTC": "2016-10-08T08:00:00Z",
-				"name": "facebook",
-				"views": 4
-			},
-			{
-				"dateUTC": "2016-10-08T08:00:00Z",
-				"name": "twitter",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-10-08T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 13
-			},
-			{
-				"dateUTC": "2016-10-08T08:00:00Z",
-				"name": "user_email",
-				"views": 76
-			},
-			{
-				"dateUTC": "2016-10-08T08:00:00Z",
-				"name": "unknown",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-10-09T08:00:00Z",
-				"name": "google",
-				"views": 61
-			},
-			{
-				"dateUTC": "2016-10-09T08:00:00Z",
-				"name": "facebook",
-				"views": 25
-			},
-			{
-				"dateUTC": "2016-10-09T08:00:00Z",
-				"name": "twitter",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-10-09T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 64
-			},
-			{
-				"dateUTC": "2016-10-09T08:00:00Z",
-				"name": "user_email",
-				"views": 57
-			},
-			{
-				"dateUTC": "2016-10-09T08:00:00Z",
-				"name": "unknown",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-10-10T08:00:00Z",
-				"name": "google",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-10-10T08:00:00Z",
-				"name": "facebook",
-				"views": 4
-			},
-			{
-				"dateUTC": "2016-10-10T08:00:00Z",
-				"name": "twitter",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-10-10T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-10-10T08:00:00Z",
-				"name": "user_email",
-				"views": 43
-			},
-			{
-				"dateUTC": "2016-10-10T08:00:00Z",
-				"name": "unknown",
-				"views": 98
-			},
-			{
-				"dateUTC": "2016-10-11T08:00:00Z",
-				"name": "google",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-10-11T08:00:00Z",
-				"name": "facebook",
-				"views": 54
-			},
-			{
-				"dateUTC": "2016-10-11T08:00:00Z",
-				"name": "twitter",
-				"views": 56
-			},
-			{
-				"dateUTC": "2016-10-11T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 44
-			},
-			{
-				"dateUTC": "2016-10-11T08:00:00Z",
-				"name": "user_email",
-				"views": 37
-			},
-			{
-				"dateUTC": "2016-10-11T08:00:00Z",
-				"name": "unknown",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-10-12T08:00:00Z",
-				"name": "google",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-10-12T08:00:00Z",
-				"name": "facebook",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-10-12T08:00:00Z",
-				"name": "twitter",
-				"views": 97
-			},
-			{
-				"dateUTC": "2016-10-12T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 94
-			},
-			{
-				"dateUTC": "2016-10-12T08:00:00Z",
-				"name": "user_email",
-				"views": 61
-			},
-			{
-				"dateUTC": "2016-10-12T08:00:00Z",
-				"name": "unknown",
-				"views": 13
-			},
-			{
-				"dateUTC": "2016-10-13T08:00:00Z",
-				"name": "google",
-				"views": 45
-			},
-			{
-				"dateUTC": "2016-10-13T08:00:00Z",
-				"name": "facebook",
-				"views": 45
-			},
-			{
-				"dateUTC": "2016-10-13T08:00:00Z",
-				"name": "twitter",
-				"views": 89
-			},
-			{
-				"dateUTC": "2016-10-13T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 84
-			},
-			{
-				"dateUTC": "2016-10-13T08:00:00Z",
-				"name": "user_email",
-				"views": 78
-			},
-			{
-				"dateUTC": "2016-10-13T08:00:00Z",
-				"name": "unknown",
-				"views": 83
-			},
-			{
-				"dateUTC": "2016-10-14T08:00:00Z",
-				"name": "google",
-				"views": 11
-			},
-			{
-				"dateUTC": "2016-10-14T08:00:00Z",
-				"name": "facebook",
-				"views": 39
-			},
-			{
-				"dateUTC": "2016-10-14T08:00:00Z",
-				"name": "twitter",
-				"views": 80
-			},
-			{
-				"dateUTC": "2016-10-14T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 8
-			},
-			{
-				"dateUTC": "2016-10-14T08:00:00Z",
-				"name": "user_email",
-				"views": 50
-			},
-			{
-				"dateUTC": "2016-10-14T08:00:00Z",
-				"name": "unknown",
-				"views": 56
-			},
-			{
-				"dateUTC": "2016-10-15T08:00:00Z",
-				"name": "google",
-				"views": 69
-			},
-			{
-				"dateUTC": "2016-10-15T08:00:00Z",
-				"name": "facebook",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-10-15T08:00:00Z",
-				"name": "twitter",
-				"views": 42
-			},
-			{
-				"dateUTC": "2016-10-15T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 9
-			},
-			{
-				"dateUTC": "2016-10-15T08:00:00Z",
-				"name": "user_email",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-10-15T08:00:00Z",
-				"name": "unknown",
-				"views": 43
-			},
-			{
-				"dateUTC": "2016-10-16T08:00:00Z",
-				"name": "google",
-				"views": 29
-			},
-			{
-				"dateUTC": "2016-10-16T08:00:00Z",
-				"name": "facebook",
-				"views": 86
-			},
-			{
-				"dateUTC": "2016-10-16T08:00:00Z",
-				"name": "twitter",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-10-16T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 35
-			},
-			{
-				"dateUTC": "2016-10-16T08:00:00Z",
-				"name": "user_email",
-				"views": 3
-			},
-			{
-				"dateUTC": "2016-10-16T08:00:00Z",
-				"name": "unknown",
-				"views": 77
-			},
-			{
-				"dateUTC": "2016-10-17T08:00:00Z",
-				"name": "google",
-				"views": 39
-			},
-			{
-				"dateUTC": "2016-10-17T08:00:00Z",
-				"name": "facebook",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-10-17T08:00:00Z",
-				"name": "twitter",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-10-17T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 97
-			},
-			{
-				"dateUTC": "2016-10-17T08:00:00Z",
-				"name": "user_email",
-				"views": 75
-			},
-			{
-				"dateUTC": "2016-10-17T08:00:00Z",
-				"name": "unknown",
-				"views": 30
-			},
-			{
-				"dateUTC": "2016-10-18T08:00:00Z",
-				"name": "google",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-10-18T08:00:00Z",
-				"name": "facebook",
-				"views": 67
-			},
-			{
-				"dateUTC": "2016-10-18T08:00:00Z",
-				"name": "twitter",
-				"views": 75
-			},
-			{
-				"dateUTC": "2016-10-18T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 99
-			},
-			{
-				"dateUTC": "2016-10-18T08:00:00Z",
-				"name": "user_email",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-10-18T08:00:00Z",
-				"name": "unknown",
-				"views": 66
-			},
-			{
-				"dateUTC": "2016-10-19T08:00:00Z",
-				"name": "google",
-				"views": 29
-			},
-			{
-				"dateUTC": "2016-10-19T08:00:00Z",
-				"name": "facebook",
-				"views": 64
-			},
-			{
-				"dateUTC": "2016-10-19T08:00:00Z",
-				"name": "twitter",
-				"views": 92
-			},
-			{
-				"dateUTC": "2016-10-19T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-10-19T08:00:00Z",
-				"name": "user_email",
-				"views": 25
-			},
-			{
-				"dateUTC": "2016-10-19T08:00:00Z",
-				"name": "unknown",
-				"views": 40
-			},
-			{
-				"dateUTC": "2016-10-20T08:00:00Z",
-				"name": "google",
-				"views": 41
-			},
-			{
-				"dateUTC": "2016-10-20T08:00:00Z",
-				"name": "facebook",
-				"views": 23
-			},
-			{
-				"dateUTC": "2016-10-20T08:00:00Z",
-				"name": "twitter",
-				"views": 19
-			},
-			{
-				"dateUTC": "2016-10-20T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 13
-			},
-			{
-				"dateUTC": "2016-10-20T08:00:00Z",
-				"name": "user_email",
-				"views": 32
-			},
-			{
-				"dateUTC": "2016-10-20T08:00:00Z",
-				"name": "unknown",
-				"views": 42
-			},
-			{
-				"dateUTC": "2016-10-21T08:00:00Z",
-				"name": "google",
-				"views": 20
-			},
-			{
-				"dateUTC": "2016-10-21T08:00:00Z",
-				"name": "facebook",
-				"views": 85
-			},
-			{
-				"dateUTC": "2016-10-21T08:00:00Z",
-				"name": "twitter",
-				"views": 27
-			},
-			{
-				"dateUTC": "2016-10-21T08:00:00Z",
-				"name": "user_newsvarter",
-				"views": 38
-			},
-			{
-				"dateUTC": "2016-10-21T08:00:00Z",
-				"name": "user_email",
-				"views": 54
-			},
-			{
-				"dateUTC": "2016-10-21T08:00:00Z",
-				"name": "unknown",
-				"views": 42
-			}
-		]
-	};
+	module.exports = {"data":[{"dateUTC":"2016-07-14T08:00:00Z","name":"google","views":69},{"dateUTC":"2016-07-14T08:00:00Z","name":"facebook","views":0},{"dateUTC":"2016-07-14T08:00:00Z","name":"twitter","views":23},{"dateUTC":"2016-07-14T08:00:00Z","name":"user_newsvarter","views":46},{"dateUTC":"2016-07-14T08:00:00Z","name":"user_email","views":92},{"dateUTC":"2016-07-14T08:00:00Z","name":"unknown","views":56},{"dateUTC":"2016-07-15T08:00:00Z","name":"google","views":74},{"dateUTC":"2016-07-15T08:00:00Z","name":"facebook","views":74},{"dateUTC":"2016-07-15T08:00:00Z","name":"twitter","views":26},{"dateUTC":"2016-07-15T08:00:00Z","name":"user_newsvarter","views":8},{"dateUTC":"2016-07-15T08:00:00Z","name":"user_email","views":91},{"dateUTC":"2016-07-15T08:00:00Z","name":"unknown","views":2},{"dateUTC":"2016-07-16T08:00:00Z","name":"google","views":63},{"dateUTC":"2016-07-16T08:00:00Z","name":"facebook","views":66},{"dateUTC":"2016-07-16T08:00:00Z","name":"twitter","views":10},{"dateUTC":"2016-07-16T08:00:00Z","name":"user_newsvarter","views":76},{"dateUTC":"2016-07-16T08:00:00Z","name":"user_email","views":88},{"dateUTC":"2016-07-16T08:00:00Z","name":"unknown","views":9},{"dateUTC":"2016-07-17T08:00:00Z","name":"google","views":70},{"dateUTC":"2016-07-17T08:00:00Z","name":"facebook","views":48},{"dateUTC":"2016-07-17T08:00:00Z","name":"twitter","views":1},{"dateUTC":"2016-07-17T08:00:00Z","name":"user_newsvarter","views":20},{"dateUTC":"2016-07-17T08:00:00Z","name":"user_email","views":77},{"dateUTC":"2016-07-17T08:00:00Z","name":"unknown","views":34},{"dateUTC":"2016-07-18T08:00:00Z","name":"google","views":61},{"dateUTC":"2016-07-18T08:00:00Z","name":"facebook","views":7},{"dateUTC":"2016-07-18T08:00:00Z","name":"twitter","views":34},{"dateUTC":"2016-07-18T08:00:00Z","name":"user_newsvarter","views":82},{"dateUTC":"2016-07-18T08:00:00Z","name":"user_email","views":61},{"dateUTC":"2016-07-18T08:00:00Z","name":"unknown","views":58},{"dateUTC":"2016-07-19T08:00:00Z","name":"google","views":0},{"dateUTC":"2016-07-19T08:00:00Z","name":"facebook","views":1},{"dateUTC":"2016-07-19T08:00:00Z","name":"twitter","views":52},{"dateUTC":"2016-07-19T08:00:00Z","name":"user_newsvarter","views":95},{"dateUTC":"2016-07-19T08:00:00Z","name":"user_email","views":76},{"dateUTC":"2016-07-19T08:00:00Z","name":"unknown","views":33},{"dateUTC":"2016-07-20T08:00:00Z","name":"google","views":3},{"dateUTC":"2016-07-20T08:00:00Z","name":"facebook","views":63},{"dateUTC":"2016-07-20T08:00:00Z","name":"twitter","views":67},{"dateUTC":"2016-07-20T08:00:00Z","name":"user_newsvarter","views":12},{"dateUTC":"2016-07-20T08:00:00Z","name":"user_email","views":10},{"dateUTC":"2016-07-20T08:00:00Z","name":"unknown","views":97},{"dateUTC":"2016-07-21T08:00:00Z","name":"google","views":77},{"dateUTC":"2016-07-21T08:00:00Z","name":"facebook","views":13},{"dateUTC":"2016-07-21T08:00:00Z","name":"twitter","views":9},{"dateUTC":"2016-07-21T08:00:00Z","name":"user_newsvarter","views":37},{"dateUTC":"2016-07-21T08:00:00Z","name":"user_email","views":35},{"dateUTC":"2016-07-21T08:00:00Z","name":"unknown","views":18},{"dateUTC":"2016-07-22T08:00:00Z","name":"google","views":72},{"dateUTC":"2016-07-22T08:00:00Z","name":"facebook","views":88},{"dateUTC":"2016-07-22T08:00:00Z","name":"twitter","views":64},{"dateUTC":"2016-07-22T08:00:00Z","name":"user_newsvarter","views":77},{"dateUTC":"2016-07-22T08:00:00Z","name":"user_email","views":86},{"dateUTC":"2016-07-22T08:00:00Z","name":"unknown","views":30},{"dateUTC":"2016-07-23T08:00:00Z","name":"google","views":11},{"dateUTC":"2016-07-23T08:00:00Z","name":"facebook","views":90},{"dateUTC":"2016-07-23T08:00:00Z","name":"twitter","views":30},{"dateUTC":"2016-07-23T08:00:00Z","name":"user_newsvarter","views":22},{"dateUTC":"2016-07-23T08:00:00Z","name":"user_email","views":32},{"dateUTC":"2016-07-23T08:00:00Z","name":"unknown","views":19},{"dateUTC":"2016-07-24T08:00:00Z","name":"google","views":46},{"dateUTC":"2016-07-24T08:00:00Z","name":"facebook","views":58},{"dateUTC":"2016-07-24T08:00:00Z","name":"twitter","views":0},{"dateUTC":"2016-07-24T08:00:00Z","name":"user_newsvarter","views":9},{"dateUTC":"2016-07-24T08:00:00Z","name":"user_email","views":31},{"dateUTC":"2016-07-24T08:00:00Z","name":"unknown","views":48},{"dateUTC":"2016-07-25T08:00:00Z","name":"google","views":19},{"dateUTC":"2016-07-25T08:00:00Z","name":"facebook","views":93},{"dateUTC":"2016-07-25T08:00:00Z","name":"twitter","views":15},{"dateUTC":"2016-07-25T08:00:00Z","name":"user_newsvarter","views":90},{"dateUTC":"2016-07-25T08:00:00Z","name":"user_email","views":30},{"dateUTC":"2016-07-25T08:00:00Z","name":"unknown","views":0},{"dateUTC":"2016-07-26T08:00:00Z","name":"google","views":37},{"dateUTC":"2016-07-26T08:00:00Z","name":"facebook","views":44},{"dateUTC":"2016-07-26T08:00:00Z","name":"twitter","views":78},{"dateUTC":"2016-07-26T08:00:00Z","name":"user_newsvarter","views":72},{"dateUTC":"2016-07-26T08:00:00Z","name":"user_email","views":26},{"dateUTC":"2016-07-26T08:00:00Z","name":"unknown","views":70},{"dateUTC":"2016-07-27T08:00:00Z","name":"google","views":85},{"dateUTC":"2016-07-27T08:00:00Z","name":"facebook","views":15},{"dateUTC":"2016-07-27T08:00:00Z","name":"twitter","views":8},{"dateUTC":"2016-07-27T08:00:00Z","name":"user_newsvarter","views":22},{"dateUTC":"2016-07-27T08:00:00Z","name":"user_email","views":65},{"dateUTC":"2016-07-27T08:00:00Z","name":"unknown","views":83},{"dateUTC":"2016-07-28T08:00:00Z","name":"google","views":89},{"dateUTC":"2016-07-28T08:00:00Z","name":"facebook","views":39},{"dateUTC":"2016-07-28T08:00:00Z","name":"twitter","views":47},{"dateUTC":"2016-07-28T08:00:00Z","name":"user_newsvarter","views":90},{"dateUTC":"2016-07-28T08:00:00Z","name":"user_email","views":16},{"dateUTC":"2016-07-28T08:00:00Z","name":"unknown","views":96},{"dateUTC":"2016-07-29T08:00:00Z","name":"google","views":1},{"dateUTC":"2016-07-29T08:00:00Z","name":"facebook","views":38},{"dateUTC":"2016-07-29T08:00:00Z","name":"twitter","views":89},{"dateUTC":"2016-07-29T08:00:00Z","name":"user_newsvarter","views":26},{"dateUTC":"2016-07-29T08:00:00Z","name":"user_email","views":84},{"dateUTC":"2016-07-29T08:00:00Z","name":"unknown","views":48},{"dateUTC":"2016-07-30T08:00:00Z","name":"google","views":63},{"dateUTC":"2016-07-30T08:00:00Z","name":"facebook","views":8},{"dateUTC":"2016-07-30T08:00:00Z","name":"twitter","views":56},{"dateUTC":"2016-07-30T08:00:00Z","name":"user_newsvarter","views":62},{"dateUTC":"2016-07-30T08:00:00Z","name":"user_email","views":0},{"dateUTC":"2016-07-30T08:00:00Z","name":"unknown","views":23},{"dateUTC":"2016-07-31T08:00:00Z","name":"google","views":9},{"dateUTC":"2016-07-31T08:00:00Z","name":"facebook","views":39},{"dateUTC":"2016-07-31T08:00:00Z","name":"twitter","views":66},{"dateUTC":"2016-07-31T08:00:00Z","name":"user_newsvarter","views":31},{"dateUTC":"2016-07-31T08:00:00Z","name":"user_email","views":14},{"dateUTC":"2016-07-31T08:00:00Z","name":"unknown","views":37},{"dateUTC":"2016-08-01T08:00:00Z","name":"google","views":3},{"dateUTC":"2016-08-01T08:00:00Z","name":"facebook","views":90},{"dateUTC":"2016-08-01T08:00:00Z","name":"twitter","views":80},{"dateUTC":"2016-08-01T08:00:00Z","name":"user_newsvarter","views":42},{"dateUTC":"2016-08-01T08:00:00Z","name":"user_email","views":76},{"dateUTC":"2016-08-01T08:00:00Z","name":"unknown","views":39},{"dateUTC":"2016-08-02T08:00:00Z","name":"google","views":24},{"dateUTC":"2016-08-02T08:00:00Z","name":"facebook","views":20},{"dateUTC":"2016-08-02T08:00:00Z","name":"twitter","views":71},{"dateUTC":"2016-08-02T08:00:00Z","name":"user_newsvarter","views":65},{"dateUTC":"2016-08-02T08:00:00Z","name":"user_email","views":58},{"dateUTC":"2016-08-02T08:00:00Z","name":"unknown","views":19},{"dateUTC":"2016-08-03T08:00:00Z","name":"google","views":79},{"dateUTC":"2016-08-03T08:00:00Z","name":"facebook","views":81},{"dateUTC":"2016-08-03T08:00:00Z","name":"twitter","views":2},{"dateUTC":"2016-08-03T08:00:00Z","name":"user_newsvarter","views":85},{"dateUTC":"2016-08-03T08:00:00Z","name":"user_email","views":56},{"dateUTC":"2016-08-03T08:00:00Z","name":"unknown","views":65},{"dateUTC":"2016-08-04T08:00:00Z","name":"google","views":85},{"dateUTC":"2016-08-04T08:00:00Z","name":"facebook","views":65},{"dateUTC":"2016-08-04T08:00:00Z","name":"twitter","views":24},{"dateUTC":"2016-08-04T08:00:00Z","name":"user_newsvarter","views":80},{"dateUTC":"2016-08-04T08:00:00Z","name":"user_email","views":47},{"dateUTC":"2016-08-04T08:00:00Z","name":"unknown","views":49},{"dateUTC":"2016-08-05T08:00:00Z","name":"google","views":38},{"dateUTC":"2016-08-05T08:00:00Z","name":"facebook","views":5},{"dateUTC":"2016-08-05T08:00:00Z","name":"twitter","views":94},{"dateUTC":"2016-08-05T08:00:00Z","name":"user_newsvarter","views":65},{"dateUTC":"2016-08-05T08:00:00Z","name":"user_email","views":76},{"dateUTC":"2016-08-05T08:00:00Z","name":"unknown","views":73},{"dateUTC":"2016-08-06T08:00:00Z","name":"google","views":88},{"dateUTC":"2016-08-06T08:00:00Z","name":"facebook","views":66},{"dateUTC":"2016-08-06T08:00:00Z","name":"twitter","views":18},{"dateUTC":"2016-08-06T08:00:00Z","name":"user_newsvarter","views":74},{"dateUTC":"2016-08-06T08:00:00Z","name":"user_email","views":58},{"dateUTC":"2016-08-06T08:00:00Z","name":"unknown","views":18},{"dateUTC":"2016-08-07T08:00:00Z","name":"google","views":72},{"dateUTC":"2016-08-07T08:00:00Z","name":"facebook","views":95},{"dateUTC":"2016-08-07T08:00:00Z","name":"twitter","views":62},{"dateUTC":"2016-08-07T08:00:00Z","name":"user_newsvarter","views":24},{"dateUTC":"2016-08-07T08:00:00Z","name":"user_email","views":25},{"dateUTC":"2016-08-07T08:00:00Z","name":"unknown","views":74},{"dateUTC":"2016-08-08T08:00:00Z","name":"google","views":78},{"dateUTC":"2016-08-08T08:00:00Z","name":"facebook","views":5},{"dateUTC":"2016-08-08T08:00:00Z","name":"twitter","views":12},{"dateUTC":"2016-08-08T08:00:00Z","name":"user_newsvarter","views":95},{"dateUTC":"2016-08-08T08:00:00Z","name":"user_email","views":19},{"dateUTC":"2016-08-08T08:00:00Z","name":"unknown","views":35},{"dateUTC":"2016-08-09T08:00:00Z","name":"google","views":92},{"dateUTC":"2016-08-09T08:00:00Z","name":"facebook","views":81},{"dateUTC":"2016-08-09T08:00:00Z","name":"twitter","views":93},{"dateUTC":"2016-08-09T08:00:00Z","name":"user_newsvarter","views":98},{"dateUTC":"2016-08-09T08:00:00Z","name":"user_email","views":25},{"dateUTC":"2016-08-09T08:00:00Z","name":"unknown","views":23},{"dateUTC":"2016-08-10T08:00:00Z","name":"google","views":94},{"dateUTC":"2016-08-10T08:00:00Z","name":"facebook","views":12},{"dateUTC":"2016-08-10T08:00:00Z","name":"twitter","views":53},{"dateUTC":"2016-08-10T08:00:00Z","name":"user_newsvarter","views":39},{"dateUTC":"2016-08-10T08:00:00Z","name":"user_email","views":61},{"dateUTC":"2016-08-10T08:00:00Z","name":"unknown","views":63},{"dateUTC":"2016-08-11T08:00:00Z","name":"google","views":5},{"dateUTC":"2016-08-11T08:00:00Z","name":"facebook","views":25},{"dateUTC":"2016-08-11T08:00:00Z","name":"twitter","views":92},{"dateUTC":"2016-08-11T08:00:00Z","name":"user_newsvarter","views":96},{"dateUTC":"2016-08-11T08:00:00Z","name":"user_email","views":37},{"dateUTC":"2016-08-11T08:00:00Z","name":"unknown","views":24},{"dateUTC":"2016-08-12T08:00:00Z","name":"google","views":20},{"dateUTC":"2016-08-12T08:00:00Z","name":"facebook","views":89},{"dateUTC":"2016-08-12T08:00:00Z","name":"twitter","views":57},{"dateUTC":"2016-08-12T08:00:00Z","name":"user_newsvarter","views":68},{"dateUTC":"2016-08-12T08:00:00Z","name":"user_email","views":29},{"dateUTC":"2016-08-12T08:00:00Z","name":"unknown","views":54},{"dateUTC":"2016-08-13T08:00:00Z","name":"google","views":33},{"dateUTC":"2016-08-13T08:00:00Z","name":"facebook","views":75},{"dateUTC":"2016-08-13T08:00:00Z","name":"twitter","views":74},{"dateUTC":"2016-08-13T08:00:00Z","name":"user_newsvarter","views":42},{"dateUTC":"2016-08-13T08:00:00Z","name":"user_email","views":96},{"dateUTC":"2016-08-13T08:00:00Z","name":"unknown","views":60},{"dateUTC":"2016-08-14T08:00:00Z","name":"google","views":87},{"dateUTC":"2016-08-14T08:00:00Z","name":"facebook","views":40},{"dateUTC":"2016-08-14T08:00:00Z","name":"twitter","views":89},{"dateUTC":"2016-08-14T08:00:00Z","name":"user_newsvarter","views":75},{"dateUTC":"2016-08-14T08:00:00Z","name":"user_email","views":84},{"dateUTC":"2016-08-14T08:00:00Z","name":"unknown","views":77},{"dateUTC":"2016-08-15T08:00:00Z","name":"google","views":6},{"dateUTC":"2016-08-15T08:00:00Z","name":"facebook","views":14},{"dateUTC":"2016-08-15T08:00:00Z","name":"twitter","views":55},{"dateUTC":"2016-08-15T08:00:00Z","name":"user_newsvarter","views":67},{"dateUTC":"2016-08-15T08:00:00Z","name":"user_email","views":63},{"dateUTC":"2016-08-15T08:00:00Z","name":"unknown","views":60},{"dateUTC":"2016-08-16T08:00:00Z","name":"google","views":68},{"dateUTC":"2016-08-16T08:00:00Z","name":"facebook","views":88},{"dateUTC":"2016-08-16T08:00:00Z","name":"twitter","views":64},{"dateUTC":"2016-08-16T08:00:00Z","name":"user_newsvarter","views":50},{"dateUTC":"2016-08-16T08:00:00Z","name":"user_email","views":18},{"dateUTC":"2016-08-16T08:00:00Z","name":"unknown","views":59},{"dateUTC":"2016-08-17T08:00:00Z","name":"google","views":23},{"dateUTC":"2016-08-17T08:00:00Z","name":"facebook","views":47},{"dateUTC":"2016-08-17T08:00:00Z","name":"twitter","views":80},{"dateUTC":"2016-08-17T08:00:00Z","name":"user_newsvarter","views":6},{"dateUTC":"2016-08-17T08:00:00Z","name":"user_email","views":50},{"dateUTC":"2016-08-17T08:00:00Z","name":"unknown","views":19},{"dateUTC":"2016-08-18T08:00:00Z","name":"google","views":1},{"dateUTC":"2016-08-18T08:00:00Z","name":"facebook","views":43},{"dateUTC":"2016-08-18T08:00:00Z","name":"twitter","views":9},{"dateUTC":"2016-08-18T08:00:00Z","name":"user_newsvarter","views":60},{"dateUTC":"2016-08-18T08:00:00Z","name":"user_email","views":71},{"dateUTC":"2016-08-18T08:00:00Z","name":"unknown","views":7},{"dateUTC":"2016-08-19T08:00:00Z","name":"google","views":57},{"dateUTC":"2016-08-19T08:00:00Z","name":"facebook","views":13},{"dateUTC":"2016-08-19T08:00:00Z","name":"twitter","views":42},{"dateUTC":"2016-08-19T08:00:00Z","name":"user_newsvarter","views":50},{"dateUTC":"2016-08-19T08:00:00Z","name":"user_email","views":73},{"dateUTC":"2016-08-19T08:00:00Z","name":"unknown","views":68},{"dateUTC":"2016-08-20T08:00:00Z","name":"google","views":44},{"dateUTC":"2016-08-20T08:00:00Z","name":"facebook","views":23},{"dateUTC":"2016-08-20T08:00:00Z","name":"twitter","views":0},{"dateUTC":"2016-08-20T08:00:00Z","name":"user_newsvarter","views":4},{"dateUTC":"2016-08-20T08:00:00Z","name":"user_email","views":81},{"dateUTC":"2016-08-20T08:00:00Z","name":"unknown","views":78},{"dateUTC":"2016-08-21T08:00:00Z","name":"google","views":7},{"dateUTC":"2016-08-21T08:00:00Z","name":"facebook","views":2},{"dateUTC":"2016-08-21T08:00:00Z","name":"twitter","views":18},{"dateUTC":"2016-08-21T08:00:00Z","name":"user_newsvarter","views":32},{"dateUTC":"2016-08-21T08:00:00Z","name":"user_email","views":8},{"dateUTC":"2016-08-21T08:00:00Z","name":"unknown","views":69},{"dateUTC":"2016-08-22T08:00:00Z","name":"google","views":44},{"dateUTC":"2016-08-22T08:00:00Z","name":"facebook","views":93},{"dateUTC":"2016-08-22T08:00:00Z","name":"twitter","views":30},{"dateUTC":"2016-08-22T08:00:00Z","name":"user_newsvarter","views":80},{"dateUTC":"2016-08-22T08:00:00Z","name":"user_email","views":64},{"dateUTC":"2016-08-22T08:00:00Z","name":"unknown","views":65},{"dateUTC":"2016-08-23T08:00:00Z","name":"google","views":85},{"dateUTC":"2016-08-23T08:00:00Z","name":"facebook","views":23},{"dateUTC":"2016-08-23T08:00:00Z","name":"twitter","views":30},{"dateUTC":"2016-08-23T08:00:00Z","name":"user_newsvarter","views":9},{"dateUTC":"2016-08-23T08:00:00Z","name":"user_email","views":84},{"dateUTC":"2016-08-23T08:00:00Z","name":"unknown","views":95},{"dateUTC":"2016-08-24T08:00:00Z","name":"google","views":23},{"dateUTC":"2016-08-24T08:00:00Z","name":"facebook","views":50},{"dateUTC":"2016-08-24T08:00:00Z","name":"twitter","views":49},{"dateUTC":"2016-08-24T08:00:00Z","name":"user_newsvarter","views":29},{"dateUTC":"2016-08-24T08:00:00Z","name":"user_email","views":38},{"dateUTC":"2016-08-24T08:00:00Z","name":"unknown","views":27},{"dateUTC":"2016-08-25T08:00:00Z","name":"google","views":49},{"dateUTC":"2016-08-25T08:00:00Z","name":"facebook","views":41},{"dateUTC":"2016-08-25T08:00:00Z","name":"twitter","views":12},{"dateUTC":"2016-08-25T08:00:00Z","name":"user_newsvarter","views":72},{"dateUTC":"2016-08-25T08:00:00Z","name":"user_email","views":31},{"dateUTC":"2016-08-25T08:00:00Z","name":"unknown","views":70},{"dateUTC":"2016-08-26T08:00:00Z","name":"google","views":41},{"dateUTC":"2016-08-26T08:00:00Z","name":"facebook","views":28},{"dateUTC":"2016-08-26T08:00:00Z","name":"twitter","views":67},{"dateUTC":"2016-08-26T08:00:00Z","name":"user_newsvarter","views":99},{"dateUTC":"2016-08-26T08:00:00Z","name":"user_email","views":71},{"dateUTC":"2016-08-26T08:00:00Z","name":"unknown","views":61},{"dateUTC":"2016-08-27T08:00:00Z","name":"google","views":71},{"dateUTC":"2016-08-27T08:00:00Z","name":"facebook","views":33},{"dateUTC":"2016-08-27T08:00:00Z","name":"twitter","views":65},{"dateUTC":"2016-08-27T08:00:00Z","name":"user_newsvarter","views":43},{"dateUTC":"2016-08-27T08:00:00Z","name":"user_email","views":1},{"dateUTC":"2016-08-27T08:00:00Z","name":"unknown","views":46},{"dateUTC":"2016-08-28T08:00:00Z","name":"google","views":43},{"dateUTC":"2016-08-28T08:00:00Z","name":"facebook","views":42},{"dateUTC":"2016-08-28T08:00:00Z","name":"twitter","views":63},{"dateUTC":"2016-08-28T08:00:00Z","name":"user_newsvarter","views":65},{"dateUTC":"2016-08-28T08:00:00Z","name":"user_email","views":44},{"dateUTC":"2016-08-28T08:00:00Z","name":"unknown","views":51},{"dateUTC":"2016-08-29T08:00:00Z","name":"google","views":26},{"dateUTC":"2016-08-29T08:00:00Z","name":"facebook","views":10},{"dateUTC":"2016-08-29T08:00:00Z","name":"twitter","views":30},{"dateUTC":"2016-08-29T08:00:00Z","name":"user_newsvarter","views":37},{"dateUTC":"2016-08-29T08:00:00Z","name":"user_email","views":72},{"dateUTC":"2016-08-29T08:00:00Z","name":"unknown","views":25},{"dateUTC":"2016-08-30T08:00:00Z","name":"google","views":18},{"dateUTC":"2016-08-30T08:00:00Z","name":"facebook","views":68},{"dateUTC":"2016-08-30T08:00:00Z","name":"twitter","views":79},{"dateUTC":"2016-08-30T08:00:00Z","name":"user_newsvarter","views":95},{"dateUTC":"2016-08-30T08:00:00Z","name":"user_email","views":93},{"dateUTC":"2016-08-30T08:00:00Z","name":"unknown","views":74},{"dateUTC":"2016-08-31T08:00:00Z","name":"google","views":47},{"dateUTC":"2016-08-31T08:00:00Z","name":"facebook","views":67},{"dateUTC":"2016-08-31T08:00:00Z","name":"twitter","views":44},{"dateUTC":"2016-08-31T08:00:00Z","name":"user_newsvarter","views":14},{"dateUTC":"2016-08-31T08:00:00Z","name":"user_email","views":28},{"dateUTC":"2016-08-31T08:00:00Z","name":"unknown","views":86},{"dateUTC":"2016-09-01T08:00:00Z","name":"google","views":3},{"dateUTC":"2016-09-01T08:00:00Z","name":"facebook","views":22},{"dateUTC":"2016-09-01T08:00:00Z","name":"twitter","views":78},{"dateUTC":"2016-09-01T08:00:00Z","name":"user_newsvarter","views":91},{"dateUTC":"2016-09-01T08:00:00Z","name":"user_email","views":15},{"dateUTC":"2016-09-01T08:00:00Z","name":"unknown","views":33},{"dateUTC":"2016-09-02T08:00:00Z","name":"google","views":91},{"dateUTC":"2016-09-02T08:00:00Z","name":"facebook","views":20},{"dateUTC":"2016-09-02T08:00:00Z","name":"twitter","views":28},{"dateUTC":"2016-09-02T08:00:00Z","name":"user_newsvarter","views":51},{"dateUTC":"2016-09-02T08:00:00Z","name":"user_email","views":72},{"dateUTC":"2016-09-02T08:00:00Z","name":"unknown","views":48},{"dateUTC":"2016-09-03T08:00:00Z","name":"google","views":53},{"dateUTC":"2016-09-03T08:00:00Z","name":"facebook","views":67},{"dateUTC":"2016-09-03T08:00:00Z","name":"twitter","views":52},{"dateUTC":"2016-09-03T08:00:00Z","name":"user_newsvarter","views":92},{"dateUTC":"2016-09-03T08:00:00Z","name":"user_email","views":8},{"dateUTC":"2016-09-03T08:00:00Z","name":"unknown","views":77},{"dateUTC":"2016-09-04T08:00:00Z","name":"google","views":65},{"dateUTC":"2016-09-04T08:00:00Z","name":"facebook","views":62},{"dateUTC":"2016-09-04T08:00:00Z","name":"twitter","views":48},{"dateUTC":"2016-09-04T08:00:00Z","name":"user_newsvarter","views":60},{"dateUTC":"2016-09-04T08:00:00Z","name":"user_email","views":79},{"dateUTC":"2016-09-04T08:00:00Z","name":"unknown","views":60},{"dateUTC":"2016-09-05T08:00:00Z","name":"google","views":80},{"dateUTC":"2016-09-05T08:00:00Z","name":"facebook","views":78},{"dateUTC":"2016-09-05T08:00:00Z","name":"twitter","views":65},{"dateUTC":"2016-09-05T08:00:00Z","name":"user_newsvarter","views":59},{"dateUTC":"2016-09-05T08:00:00Z","name":"user_email","views":95},{"dateUTC":"2016-09-05T08:00:00Z","name":"unknown","views":58},{"dateUTC":"2016-09-06T08:00:00Z","name":"google","views":89},{"dateUTC":"2016-09-06T08:00:00Z","name":"facebook","views":53},{"dateUTC":"2016-09-06T08:00:00Z","name":"twitter","views":70},{"dateUTC":"2016-09-06T08:00:00Z","name":"user_newsvarter","views":82},{"dateUTC":"2016-09-06T08:00:00Z","name":"user_email","views":6},{"dateUTC":"2016-09-06T08:00:00Z","name":"unknown","views":40},{"dateUTC":"2016-09-07T08:00:00Z","name":"google","views":85},{"dateUTC":"2016-09-07T08:00:00Z","name":"facebook","views":62},{"dateUTC":"2016-09-07T08:00:00Z","name":"twitter","views":21},{"dateUTC":"2016-09-07T08:00:00Z","name":"user_newsvarter","views":74},{"dateUTC":"2016-09-07T08:00:00Z","name":"user_email","views":81},{"dateUTC":"2016-09-07T08:00:00Z","name":"unknown","views":19},{"dateUTC":"2016-09-08T08:00:00Z","name":"google","views":50},{"dateUTC":"2016-09-08T08:00:00Z","name":"facebook","views":81},{"dateUTC":"2016-09-08T08:00:00Z","name":"twitter","views":87},{"dateUTC":"2016-09-08T08:00:00Z","name":"user_newsvarter","views":69},{"dateUTC":"2016-09-08T08:00:00Z","name":"user_email","views":8},{"dateUTC":"2016-09-08T08:00:00Z","name":"unknown","views":95},{"dateUTC":"2016-09-09T08:00:00Z","name":"google","views":45},{"dateUTC":"2016-09-09T08:00:00Z","name":"facebook","views":99},{"dateUTC":"2016-09-09T08:00:00Z","name":"twitter","views":11},{"dateUTC":"2016-09-09T08:00:00Z","name":"user_newsvarter","views":15},{"dateUTC":"2016-09-09T08:00:00Z","name":"user_email","views":17},{"dateUTC":"2016-09-09T08:00:00Z","name":"unknown","views":0},{"dateUTC":"2016-09-10T08:00:00Z","name":"google","views":1},{"dateUTC":"2016-09-10T08:00:00Z","name":"facebook","views":82},{"dateUTC":"2016-09-10T08:00:00Z","name":"twitter","views":87},{"dateUTC":"2016-09-10T08:00:00Z","name":"user_newsvarter","views":32},{"dateUTC":"2016-09-10T08:00:00Z","name":"user_email","views":27},{"dateUTC":"2016-09-10T08:00:00Z","name":"unknown","views":12},{"dateUTC":"2016-09-11T08:00:00Z","name":"google","views":64},{"dateUTC":"2016-09-11T08:00:00Z","name":"facebook","views":96},{"dateUTC":"2016-09-11T08:00:00Z","name":"twitter","views":66},{"dateUTC":"2016-09-11T08:00:00Z","name":"user_newsvarter","views":2},{"dateUTC":"2016-09-11T08:00:00Z","name":"user_email","views":26},{"dateUTC":"2016-09-11T08:00:00Z","name":"unknown","views":71},{"dateUTC":"2016-09-12T08:00:00Z","name":"google","views":77},{"dateUTC":"2016-09-12T08:00:00Z","name":"facebook","views":2},{"dateUTC":"2016-09-12T08:00:00Z","name":"twitter","views":85},{"dateUTC":"2016-09-12T08:00:00Z","name":"user_newsvarter","views":13},{"dateUTC":"2016-09-12T08:00:00Z","name":"user_email","views":30},{"dateUTC":"2016-09-12T08:00:00Z","name":"unknown","views":28},{"dateUTC":"2016-09-13T08:00:00Z","name":"google","views":32},{"dateUTC":"2016-09-13T08:00:00Z","name":"facebook","views":80},{"dateUTC":"2016-09-13T08:00:00Z","name":"twitter","views":98},{"dateUTC":"2016-09-13T08:00:00Z","name":"user_newsvarter","views":60},{"dateUTC":"2016-09-13T08:00:00Z","name":"user_email","views":0},{"dateUTC":"2016-09-13T08:00:00Z","name":"unknown","views":34},{"dateUTC":"2016-09-14T08:00:00Z","name":"google","views":71},{"dateUTC":"2016-09-14T08:00:00Z","name":"facebook","views":71},{"dateUTC":"2016-09-14T08:00:00Z","name":"twitter","views":67},{"dateUTC":"2016-09-14T08:00:00Z","name":"user_newsvarter","views":62},{"dateUTC":"2016-09-14T08:00:00Z","name":"user_email","views":75},{"dateUTC":"2016-09-14T08:00:00Z","name":"unknown","views":92},{"dateUTC":"2016-09-15T08:00:00Z","name":"google","views":54},{"dateUTC":"2016-09-15T08:00:00Z","name":"facebook","views":0},{"dateUTC":"2016-09-15T08:00:00Z","name":"twitter","views":74},{"dateUTC":"2016-09-15T08:00:00Z","name":"user_newsvarter","views":11},{"dateUTC":"2016-09-15T08:00:00Z","name":"user_email","views":41},{"dateUTC":"2016-09-15T08:00:00Z","name":"unknown","views":70},{"dateUTC":"2016-09-16T08:00:00Z","name":"google","views":39},{"dateUTC":"2016-09-16T08:00:00Z","name":"facebook","views":92},{"dateUTC":"2016-09-16T08:00:00Z","name":"twitter","views":95},{"dateUTC":"2016-09-16T08:00:00Z","name":"user_newsvarter","views":48},{"dateUTC":"2016-09-16T08:00:00Z","name":"user_email","views":56},{"dateUTC":"2016-09-16T08:00:00Z","name":"unknown","views":3},{"dateUTC":"2016-09-17T08:00:00Z","name":"google","views":64},{"dateUTC":"2016-09-17T08:00:00Z","name":"facebook","views":19},{"dateUTC":"2016-09-17T08:00:00Z","name":"twitter","views":89},{"dateUTC":"2016-09-17T08:00:00Z","name":"user_newsvarter","views":59},{"dateUTC":"2016-09-17T08:00:00Z","name":"user_email","views":80},{"dateUTC":"2016-09-17T08:00:00Z","name":"unknown","views":85},{"dateUTC":"2016-09-18T08:00:00Z","name":"google","views":44},{"dateUTC":"2016-09-18T08:00:00Z","name":"facebook","views":38},{"dateUTC":"2016-09-18T08:00:00Z","name":"twitter","views":89},{"dateUTC":"2016-09-18T08:00:00Z","name":"user_newsvarter","views":73},{"dateUTC":"2016-09-18T08:00:00Z","name":"user_email","views":0},{"dateUTC":"2016-09-18T08:00:00Z","name":"unknown","views":50},{"dateUTC":"2016-09-19T08:00:00Z","name":"google","views":73},{"dateUTC":"2016-09-19T08:00:00Z","name":"facebook","views":8},{"dateUTC":"2016-09-19T08:00:00Z","name":"twitter","views":52},{"dateUTC":"2016-09-19T08:00:00Z","name":"user_newsvarter","views":38},{"dateUTC":"2016-09-19T08:00:00Z","name":"user_email","views":53},{"dateUTC":"2016-09-19T08:00:00Z","name":"unknown","views":88},{"dateUTC":"2016-09-20T08:00:00Z","name":"google","views":5},{"dateUTC":"2016-09-20T08:00:00Z","name":"facebook","views":94},{"dateUTC":"2016-09-20T08:00:00Z","name":"twitter","views":34},{"dateUTC":"2016-09-20T08:00:00Z","name":"user_newsvarter","views":63},{"dateUTC":"2016-09-20T08:00:00Z","name":"user_email","views":48},{"dateUTC":"2016-09-20T08:00:00Z","name":"unknown","views":88},{"dateUTC":"2016-09-21T08:00:00Z","name":"google","views":48},{"dateUTC":"2016-09-21T08:00:00Z","name":"facebook","views":27},{"dateUTC":"2016-09-21T08:00:00Z","name":"twitter","views":78},{"dateUTC":"2016-09-21T08:00:00Z","name":"user_newsvarter","views":50},{"dateUTC":"2016-09-21T08:00:00Z","name":"user_email","views":31},{"dateUTC":"2016-09-21T08:00:00Z","name":"unknown","views":83},{"dateUTC":"2016-09-22T08:00:00Z","name":"google","views":73},{"dateUTC":"2016-09-22T08:00:00Z","name":"facebook","views":36},{"dateUTC":"2016-09-22T08:00:00Z","name":"twitter","views":8},{"dateUTC":"2016-09-22T08:00:00Z","name":"user_newsvarter","views":96},{"dateUTC":"2016-09-22T08:00:00Z","name":"user_email","views":22},{"dateUTC":"2016-09-22T08:00:00Z","name":"unknown","views":36},{"dateUTC":"2016-09-23T08:00:00Z","name":"google","views":42},{"dateUTC":"2016-09-23T08:00:00Z","name":"facebook","views":70},{"dateUTC":"2016-09-23T08:00:00Z","name":"twitter","views":91},{"dateUTC":"2016-09-23T08:00:00Z","name":"user_newsvarter","views":93},{"dateUTC":"2016-09-23T08:00:00Z","name":"user_email","views":25},{"dateUTC":"2016-09-23T08:00:00Z","name":"unknown","views":85},{"dateUTC":"2016-09-24T08:00:00Z","name":"google","views":74},{"dateUTC":"2016-09-24T08:00:00Z","name":"facebook","views":6},{"dateUTC":"2016-09-24T08:00:00Z","name":"twitter","views":95},{"dateUTC":"2016-09-24T08:00:00Z","name":"user_newsvarter","views":3},{"dateUTC":"2016-09-24T08:00:00Z","name":"user_email","views":14},{"dateUTC":"2016-09-24T08:00:00Z","name":"unknown","views":40},{"dateUTC":"2016-09-25T08:00:00Z","name":"google","views":66},{"dateUTC":"2016-09-25T08:00:00Z","name":"facebook","views":33},{"dateUTC":"2016-09-25T08:00:00Z","name":"twitter","views":52},{"dateUTC":"2016-09-25T08:00:00Z","name":"user_newsvarter","views":81},{"dateUTC":"2016-09-25T08:00:00Z","name":"user_email","views":87},{"dateUTC":"2016-09-25T08:00:00Z","name":"unknown","views":90},{"dateUTC":"2016-09-26T08:00:00Z","name":"google","views":50},{"dateUTC":"2016-09-26T08:00:00Z","name":"facebook","views":91},{"dateUTC":"2016-09-26T08:00:00Z","name":"twitter","views":47},{"dateUTC":"2016-09-26T08:00:00Z","name":"user_newsvarter","views":87},{"dateUTC":"2016-09-26T08:00:00Z","name":"user_email","views":82},{"dateUTC":"2016-09-26T08:00:00Z","name":"unknown","views":31},{"dateUTC":"2016-09-27T08:00:00Z","name":"google","views":52},{"dateUTC":"2016-09-27T08:00:00Z","name":"facebook","views":97},{"dateUTC":"2016-09-27T08:00:00Z","name":"twitter","views":21},{"dateUTC":"2016-09-27T08:00:00Z","name":"user_newsvarter","views":32},{"dateUTC":"2016-09-27T08:00:00Z","name":"user_email","views":73},{"dateUTC":"2016-09-27T08:00:00Z","name":"unknown","views":29},{"dateUTC":"2016-09-28T08:00:00Z","name":"google","views":91},{"dateUTC":"2016-09-28T08:00:00Z","name":"facebook","views":32},{"dateUTC":"2016-09-28T08:00:00Z","name":"twitter","views":26},{"dateUTC":"2016-09-28T08:00:00Z","name":"user_newsvarter","views":1},{"dateUTC":"2016-09-28T08:00:00Z","name":"user_email","views":28},{"dateUTC":"2016-09-28T08:00:00Z","name":"unknown","views":50},{"dateUTC":"2016-09-29T08:00:00Z","name":"google","views":80},{"dateUTC":"2016-09-29T08:00:00Z","name":"facebook","views":40},{"dateUTC":"2016-09-29T08:00:00Z","name":"twitter","views":62},{"dateUTC":"2016-09-29T08:00:00Z","name":"user_newsvarter","views":29},{"dateUTC":"2016-09-29T08:00:00Z","name":"user_email","views":82},{"dateUTC":"2016-09-29T08:00:00Z","name":"unknown","views":30},{"dateUTC":"2016-09-30T08:00:00Z","name":"google","views":40},{"dateUTC":"2016-09-30T08:00:00Z","name":"facebook","views":20},{"dateUTC":"2016-09-30T08:00:00Z","name":"twitter","views":14},{"dateUTC":"2016-09-30T08:00:00Z","name":"user_newsvarter","views":68},{"dateUTC":"2016-09-30T08:00:00Z","name":"user_email","views":26},{"dateUTC":"2016-09-30T08:00:00Z","name":"unknown","views":30},{"dateUTC":"2016-10-01T08:00:00Z","name":"google","views":62},{"dateUTC":"2016-10-01T08:00:00Z","name":"facebook","views":18},{"dateUTC":"2016-10-01T08:00:00Z","name":"twitter","views":81},{"dateUTC":"2016-10-01T08:00:00Z","name":"user_newsvarter","views":15},{"dateUTC":"2016-10-01T08:00:00Z","name":"user_email","views":4},{"dateUTC":"2016-10-01T08:00:00Z","name":"unknown","views":67},{"dateUTC":"2016-10-02T08:00:00Z","name":"google","views":28},{"dateUTC":"2016-10-02T08:00:00Z","name":"facebook","views":4},{"dateUTC":"2016-10-02T08:00:00Z","name":"twitter","views":17},{"dateUTC":"2016-10-02T08:00:00Z","name":"user_newsvarter","views":85},{"dateUTC":"2016-10-02T08:00:00Z","name":"user_email","views":47},{"dateUTC":"2016-10-02T08:00:00Z","name":"unknown","views":62},{"dateUTC":"2016-10-03T08:00:00Z","name":"google","views":55},{"dateUTC":"2016-10-03T08:00:00Z","name":"facebook","views":8},{"dateUTC":"2016-10-03T08:00:00Z","name":"twitter","views":63},{"dateUTC":"2016-10-03T08:00:00Z","name":"user_newsvarter","views":72},{"dateUTC":"2016-10-03T08:00:00Z","name":"user_email","views":6},{"dateUTC":"2016-10-03T08:00:00Z","name":"unknown","views":27},{"dateUTC":"2016-10-04T08:00:00Z","name":"google","views":34},{"dateUTC":"2016-10-04T08:00:00Z","name":"facebook","views":63},{"dateUTC":"2016-10-04T08:00:00Z","name":"twitter","views":8},{"dateUTC":"2016-10-04T08:00:00Z","name":"user_newsvarter","views":85},{"dateUTC":"2016-10-04T08:00:00Z","name":"user_email","views":74},{"dateUTC":"2016-10-04T08:00:00Z","name":"unknown","views":55},{"dateUTC":"2016-10-05T08:00:00Z","name":"google","views":33},{"dateUTC":"2016-10-05T08:00:00Z","name":"facebook","views":99},{"dateUTC":"2016-10-05T08:00:00Z","name":"twitter","views":82},{"dateUTC":"2016-10-05T08:00:00Z","name":"user_newsvarter","views":22},{"dateUTC":"2016-10-05T08:00:00Z","name":"user_email","views":94},{"dateUTC":"2016-10-05T08:00:00Z","name":"unknown","views":77},{"dateUTC":"2016-10-06T08:00:00Z","name":"google","views":97},{"dateUTC":"2016-10-06T08:00:00Z","name":"facebook","views":31},{"dateUTC":"2016-10-06T08:00:00Z","name":"twitter","views":34},{"dateUTC":"2016-10-06T08:00:00Z","name":"user_newsvarter","views":50},{"dateUTC":"2016-10-06T08:00:00Z","name":"user_email","views":6},{"dateUTC":"2016-10-06T08:00:00Z","name":"unknown","views":78},{"dateUTC":"2016-10-07T08:00:00Z","name":"google","views":14},{"dateUTC":"2016-10-07T08:00:00Z","name":"facebook","views":91},{"dateUTC":"2016-10-07T08:00:00Z","name":"twitter","views":88},{"dateUTC":"2016-10-07T08:00:00Z","name":"user_newsvarter","views":53},{"dateUTC":"2016-10-07T08:00:00Z","name":"user_email","views":99},{"dateUTC":"2016-10-07T08:00:00Z","name":"unknown","views":9},{"dateUTC":"2016-10-08T08:00:00Z","name":"google","views":76},{"dateUTC":"2016-10-08T08:00:00Z","name":"facebook","views":4},{"dateUTC":"2016-10-08T08:00:00Z","name":"twitter","views":85},{"dateUTC":"2016-10-08T08:00:00Z","name":"user_newsvarter","views":13},{"dateUTC":"2016-10-08T08:00:00Z","name":"user_email","views":76},{"dateUTC":"2016-10-08T08:00:00Z","name":"unknown","views":44},{"dateUTC":"2016-10-09T08:00:00Z","name":"google","views":61},{"dateUTC":"2016-10-09T08:00:00Z","name":"facebook","views":25},{"dateUTC":"2016-10-09T08:00:00Z","name":"twitter","views":30},{"dateUTC":"2016-10-09T08:00:00Z","name":"user_newsvarter","views":64},{"dateUTC":"2016-10-09T08:00:00Z","name":"user_email","views":57},{"dateUTC":"2016-10-09T08:00:00Z","name":"unknown","views":30},{"dateUTC":"2016-10-10T08:00:00Z","name":"google","views":27},{"dateUTC":"2016-10-10T08:00:00Z","name":"facebook","views":4},{"dateUTC":"2016-10-10T08:00:00Z","name":"twitter","views":8},{"dateUTC":"2016-10-10T08:00:00Z","name":"user_newsvarter","views":85},{"dateUTC":"2016-10-10T08:00:00Z","name":"user_email","views":43},{"dateUTC":"2016-10-10T08:00:00Z","name":"unknown","views":98},{"dateUTC":"2016-10-11T08:00:00Z","name":"google","views":8},{"dateUTC":"2016-10-11T08:00:00Z","name":"facebook","views":54},{"dateUTC":"2016-10-11T08:00:00Z","name":"twitter","views":56},{"dateUTC":"2016-10-11T08:00:00Z","name":"user_newsvarter","views":44},{"dateUTC":"2016-10-11T08:00:00Z","name":"user_email","views":37},{"dateUTC":"2016-10-11T08:00:00Z","name":"unknown","views":8},{"dateUTC":"2016-10-12T08:00:00Z","name":"google","views":8},{"dateUTC":"2016-10-12T08:00:00Z","name":"facebook","views":89},{"dateUTC":"2016-10-12T08:00:00Z","name":"twitter","views":97},{"dateUTC":"2016-10-12T08:00:00Z","name":"user_newsvarter","views":94},{"dateUTC":"2016-10-12T08:00:00Z","name":"user_email","views":61},{"dateUTC":"2016-10-12T08:00:00Z","name":"unknown","views":13},{"dateUTC":"2016-10-13T08:00:00Z","name":"google","views":45},{"dateUTC":"2016-10-13T08:00:00Z","name":"facebook","views":45},{"dateUTC":"2016-10-13T08:00:00Z","name":"twitter","views":89},{"dateUTC":"2016-10-13T08:00:00Z","name":"user_newsvarter","views":84},{"dateUTC":"2016-10-13T08:00:00Z","name":"user_email","views":78},{"dateUTC":"2016-10-13T08:00:00Z","name":"unknown","views":83},{"dateUTC":"2016-10-14T08:00:00Z","name":"google","views":11},{"dateUTC":"2016-10-14T08:00:00Z","name":"facebook","views":39},{"dateUTC":"2016-10-14T08:00:00Z","name":"twitter","views":80},{"dateUTC":"2016-10-14T08:00:00Z","name":"user_newsvarter","views":8},{"dateUTC":"2016-10-14T08:00:00Z","name":"user_email","views":50},{"dateUTC":"2016-10-14T08:00:00Z","name":"unknown","views":56},{"dateUTC":"2016-10-15T08:00:00Z","name":"google","views":69},{"dateUTC":"2016-10-15T08:00:00Z","name":"facebook","views":27},{"dateUTC":"2016-10-15T08:00:00Z","name":"twitter","views":42},{"dateUTC":"2016-10-15T08:00:00Z","name":"user_newsvarter","views":9},{"dateUTC":"2016-10-15T08:00:00Z","name":"user_email","views":30},{"dateUTC":"2016-10-15T08:00:00Z","name":"unknown","views":43},{"dateUTC":"2016-10-16T08:00:00Z","name":"google","views":29},{"dateUTC":"2016-10-16T08:00:00Z","name":"facebook","views":86},{"dateUTC":"2016-10-16T08:00:00Z","name":"twitter","views":27},{"dateUTC":"2016-10-16T08:00:00Z","name":"user_newsvarter","views":35},{"dateUTC":"2016-10-16T08:00:00Z","name":"user_email","views":3},{"dateUTC":"2016-10-16T08:00:00Z","name":"unknown","views":77},{"dateUTC":"2016-10-17T08:00:00Z","name":"google","views":39},{"dateUTC":"2016-10-17T08:00:00Z","name":"facebook","views":92},{"dateUTC":"2016-10-17T08:00:00Z","name":"twitter","views":30},{"dateUTC":"2016-10-17T08:00:00Z","name":"user_newsvarter","views":97},{"dateUTC":"2016-10-17T08:00:00Z","name":"user_email","views":75},{"dateUTC":"2016-10-17T08:00:00Z","name":"unknown","views":30},{"dateUTC":"2016-10-18T08:00:00Z","name":"google","views":32},{"dateUTC":"2016-10-18T08:00:00Z","name":"facebook","views":67},{"dateUTC":"2016-10-18T08:00:00Z","name":"twitter","views":75},{"dateUTC":"2016-10-18T08:00:00Z","name":"user_newsvarter","views":99},{"dateUTC":"2016-10-18T08:00:00Z","name":"user_email","views":92},{"dateUTC":"2016-10-18T08:00:00Z","name":"unknown","views":66},{"dateUTC":"2016-10-19T08:00:00Z","name":"google","views":29},{"dateUTC":"2016-10-19T08:00:00Z","name":"facebook","views":64},{"dateUTC":"2016-10-19T08:00:00Z","name":"twitter","views":92},{"dateUTC":"2016-10-19T08:00:00Z","name":"user_newsvarter","views":23},{"dateUTC":"2016-10-19T08:00:00Z","name":"user_email","views":25},{"dateUTC":"2016-10-19T08:00:00Z","name":"unknown","views":40},{"dateUTC":"2016-10-20T08:00:00Z","name":"google","views":41},{"dateUTC":"2016-10-20T08:00:00Z","name":"facebook","views":23},{"dateUTC":"2016-10-20T08:00:00Z","name":"twitter","views":19},{"dateUTC":"2016-10-20T08:00:00Z","name":"user_newsvarter","views":13},{"dateUTC":"2016-10-20T08:00:00Z","name":"user_email","views":32},{"dateUTC":"2016-10-20T08:00:00Z","name":"unknown","views":42},{"dateUTC":"2016-10-21T08:00:00Z","name":"google","views":20},{"dateUTC":"2016-10-21T08:00:00Z","name":"facebook","views":85},{"dateUTC":"2016-10-21T08:00:00Z","name":"twitter","views":27},{"dateUTC":"2016-10-21T08:00:00Z","name":"user_newsvarter","views":38},{"dateUTC":"2016-10-21T08:00:00Z","name":"user_email","views":54},{"dateUTC":"2016-10-21T08:00:00Z","name":"unknown","views":42}]}
 
 /***/ })
 ]);

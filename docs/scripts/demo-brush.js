@@ -56,7 +56,7 @@ webpackJsonp([1,10],[
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-selection/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-selection/ Version 1.1.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -681,16 +681,18 @@ webpackJsonp([1,10],[
 	}
 	
 	var selection_style = function(name, value, priority) {
-	  var node;
 	  return arguments.length > 1
 	      ? this.each((value == null
 	            ? styleRemove : typeof value === "function"
 	            ? styleFunction
 	            : styleConstant)(name, value, priority == null ? "" : priority))
-	      : defaultView(node = this.node())
-	          .getComputedStyle(node, null)
-	          .getPropertyValue(name);
+	      : styleValue(this.node(), name);
 	};
+	
+	function styleValue(node, name) {
+	  return node.style.getPropertyValue(name)
+	      || defaultView(node).getComputedStyle(node, null).getPropertyValue(name);
+	}
 	
 	function propertyRemove(name) {
 	  return function() {
@@ -903,7 +905,7 @@ webpackJsonp([1,10],[
 	  var window = defaultView(node),
 	      event = window.CustomEvent;
 	
-	  if (event) {
+	  if (typeof event === "function") {
 	    event = new event(type, params);
 	  } else {
 	    event = window.document.createEvent("Event");
@@ -1021,6 +1023,7 @@ webpackJsonp([1,10],[
 	exports.selection = selection;
 	exports.selector = selector;
 	exports.selectorAll = selectorAll;
+	exports.style = styleValue;
 	exports.touch = touch;
 	exports.touches = touches;
 	exports.window = defaultView;
@@ -1035,7 +1038,7 @@ webpackJsonp([1,10],[
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*
 	Copyright (c) 2010,2011,2012,2013,2014 Morgan Roderick http://roderick.dk
 	License: MIT - http://mrgnrdrck.mit-license.org
 	
@@ -1044,20 +1047,22 @@ webpackJsonp([1,10],[
 	(function (root, factory){
 		'use strict';
 	
-	    if (true){
-	        // AMD. Register as an anonymous module.
-	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		var PubSub = {};
+		root.PubSub = PubSub;
+		factory(PubSub);
 	
-	    } else if (typeof exports === 'object'){
-	        // CommonJS
-	        factory(exports);
+		// AMD support
+		if (true){
+			!(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return PubSub; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	
-	    }
-	
-	    // Browser globals
-	    var PubSub = {};
-	    root.PubSub = PubSub;
-	    factory(PubSub);
+		// CommonJS and Node.js module support
+		} else if (typeof exports === 'object'){
+			if (module !== undefined && module.exports) {
+				exports = module.exports = PubSub; // Node.js specific `module.exports`
+			}
+			exports.PubSub = PubSub; // CommonJS module 1.1.1 spec
+			module.exports = exports = PubSub; // CommonJS
+		}
 	
 	}(( typeof window === 'object' && window ) || this, function (PubSub){
 		'use strict';
@@ -2158,7 +2163,7 @@ webpackJsonp([1,10],[
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-axis/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-axis/ Version 1.0.8. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -2178,18 +2183,24 @@ webpackJsonp([1,10],[
 	var epsilon = 1e-6;
 	
 	function translateX(x) {
-	  return "translate(" + x + ",0)";
+	  return "translate(" + (x + 0.5) + ",0)";
 	}
 	
 	function translateY(y) {
-	  return "translate(0," + y + ")";
+	  return "translate(0," + (y + 0.5) + ")";
+	}
+	
+	function number(scale) {
+	  return function(d) {
+	    return +scale(d);
+	  };
 	}
 	
 	function center(scale) {
-	  var offset = scale.bandwidth() / 2;
+	  var offset = Math.max(0, scale.bandwidth() - 1) / 2; // Adjust for 0.5px offset.
 	  if (scale.round()) offset = Math.round(offset);
 	  return function(d) {
-	    return scale(d) + offset;
+	    return +scale(d) + offset;
 	  };
 	}
 	
@@ -2205,7 +2216,7 @@ webpackJsonp([1,10],[
 	      tickSizeOuter = 6,
 	      tickPadding = 3,
 	      k = orient === top || orient === left ? -1 : 1,
-	      x, y = orient === left || orient === right ? (x = "x", "y") : (x = "y", "x"),
+	      x = orient === left || orient === right ? "x" : "y",
 	      transform = orient === top || orient === bottom ? translateX : translateY;
 	
 	  function axis(context) {
@@ -2213,9 +2224,9 @@ webpackJsonp([1,10],[
 	        format = tickFormat == null ? (scale.tickFormat ? scale.tickFormat.apply(scale, tickArguments) : identity) : tickFormat,
 	        spacing = Math.max(tickSizeInner, 0) + tickPadding,
 	        range = scale.range(),
-	        range0 = range[0] + 0.5,
-	        range1 = range[range.length - 1] + 0.5,
-	        position = (scale.bandwidth ? center : identity)(scale.copy()),
+	        range0 = +range[0] + 0.5,
+	        range1 = +range[range.length - 1] + 0.5,
+	        position = (scale.bandwidth ? center : number)(scale.copy()),
 	        selection = context.selection ? context.selection() : context,
 	        path = selection.selectAll(".domain").data([null]),
 	        tick = selection.selectAll(".tick").data(values, scale).order(),
@@ -2232,14 +2243,11 @@ webpackJsonp([1,10],[
 	
 	    line = line.merge(tickEnter.append("line")
 	        .attr("stroke", "#000")
-	        .attr(x + "2", k * tickSizeInner)
-	        .attr(y + "1", 0.5)
-	        .attr(y + "2", 0.5));
+	        .attr(x + "2", k * tickSizeInner));
 	
 	    text = text.merge(tickEnter.append("text")
 	        .attr("fill", "#000")
 	        .attr(x, k * spacing)
-	        .attr(y, 0.5)
 	        .attr("dy", orient === top ? "0em" : orient === bottom ? "0.71em" : "0.32em"));
 	
 	    if (context !== selection) {
@@ -3321,7 +3329,7 @@ webpackJsonp([1,10],[
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-scale/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-scale/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(4), __webpack_require__(11), __webpack_require__(12), __webpack_require__(9), __webpack_require__(13), __webpack_require__(14), __webpack_require__(7)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-array', 'd3-collection', 'd3-interpolate', 'd3-format', 'd3-time', 'd3-time-format', 'd3-color'], factory) :
@@ -3636,17 +3644,39 @@ webpackJsonp([1,10],[
 	  };
 	
 	  scale.nice = function(count) {
-	    var d = domain(),
-	        i = d.length - 1,
-	        n = count == null ? 10 : count,
-	        start = d[0],
-	        stop = d[i],
-	        step = d3Array.tickStep(start, stop, n);
+	    if (count == null) count = 10;
 	
-	    if (step) {
-	      step = d3Array.tickStep(Math.floor(start / step) * step, Math.ceil(stop / step) * step, n);
-	      d[0] = Math.floor(start / step) * step;
-	      d[i] = Math.ceil(stop / step) * step;
+	    var d = domain(),
+	        i0 = 0,
+	        i1 = d.length - 1,
+	        start = d[i0],
+	        stop = d[i1],
+	        step;
+	
+	    if (stop < start) {
+	      step = start, start = stop, stop = step;
+	      step = i0, i0 = i1, i1 = step;
+	    }
+	
+	    step = d3Array.tickIncrement(start, stop, count);
+	
+	    if (step > 0) {
+	      start = Math.floor(start / step) * step;
+	      stop = Math.ceil(stop / step) * step;
+	      step = d3Array.tickIncrement(start, stop, count);
+	    } else if (step < 0) {
+	      start = Math.ceil(start * step) / step;
+	      stop = Math.floor(stop * step) / step;
+	      step = d3Array.tickIncrement(start, stop, count);
+	    }
+	
+	    if (step > 0) {
+	      d[i0] = Math.floor(start / step) * step;
+	      d[i1] = Math.ceil(stop / step) * step;
+	      domain(d);
+	    } else if (step < 0) {
+	      d[i0] = Math.ceil(start * step) / step;
+	      d[i1] = Math.floor(stop * step) / step;
 	      domain(d);
 	    }
 	
@@ -4230,7 +4260,7 @@ webpackJsonp([1,10],[
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-collection/ Version 1.0.3. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-collection/ Version 1.0.4. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -4319,10 +4349,10 @@ webpackJsonp([1,10],[
 	      nest;
 	
 	  function apply(array, depth, createResult, setResult) {
-	    if (depth >= keys.length) return rollup != null
-	        ? rollup(array) : (sortValues != null
-	        ? array.sort(sortValues)
-	        : array);
+	    if (depth >= keys.length) {
+	      if (sortValues != null) array.sort(sortValues);
+	      return rollup != null ? rollup(array) : array;
+	    }
 	
 	    var i = -1,
 	        n = array.length,
@@ -4453,7 +4483,7 @@ webpackJsonp([1,10],[
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-interpolate/ Version 1.1.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-interpolate/ Version 1.1.5. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(7)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-color'], factory) :
@@ -4699,7 +4729,7 @@ webpackJsonp([1,10],[
 	      : b instanceof d3Color.color ? rgb$1
 	      : b instanceof Date ? date
 	      : Array.isArray(b) ? array
-	      : isNaN(b) ? object
+	      : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
 	      : number)(a, b);
 	};
 	
@@ -5004,7 +5034,7 @@ webpackJsonp([1,10],[
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-time/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-time/ Version 1.0.7. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -5049,7 +5079,13 @@ webpackJsonp([1,10],[
 	    return newInterval(function(date) {
 	      if (date >= date) while (floori(date), !test(date)) date.setTime(date - 1);
 	    }, function(date, step) {
-	      if (date >= date) while (--step >= 0) while (offseti(date, 1), !test(date)) {} // eslint-disable-line no-empty
+	      if (date >= date) {
+	        if (step < 0) while (++step <= 0) {
+	          while (offseti(date, -1), !test(date)) {} // eslint-disable-line no-empty
+	        } else while (--step >= 0) {
+	          while (offseti(date, +1), !test(date)) {} // eslint-disable-line no-empty
+	        }
+	      }
 	    });
 	  };
 	
@@ -5982,7 +6018,7 @@ webpackJsonp([1,10],[
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-transition/ Version 1.0.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-transition/ Version 1.1.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(1), __webpack_require__(8), __webpack_require__(16), __webpack_require__(12), __webpack_require__(7), __webpack_require__(5)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-selection', 'd3-dispatch', 'd3-timer', 'd3-interpolate', 'd3-color', 'd3-ease'], factory) :
@@ -6547,9 +6583,8 @@ webpackJsonp([1,10],[
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var style = d3Selection.window(this).getComputedStyle(this, null),
-	        value0 = style.getPropertyValue(name),
-	        value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
+	    var value0 = d3Selection.style(this, name),
+	        value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -6566,7 +6601,7 @@ webpackJsonp([1,10],[
 	  var value00,
 	      interpolate0;
 	  return function() {
-	    var value0 = d3Selection.window(this).getComputedStyle(this, null).getPropertyValue(name);
+	    var value0 = d3Selection.style(this, name);
 	    return value0 === value1 ? null
 	        : value0 === value00 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value1);
@@ -6578,10 +6613,9 @@ webpackJsonp([1,10],[
 	      value10,
 	      interpolate0;
 	  return function() {
-	    var style = d3Selection.window(this).getComputedStyle(this, null),
-	        value0 = style.getPropertyValue(name),
+	    var value0 = d3Selection.style(this, name),
 	        value1 = value(this);
-	    if (value1 == null) value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
+	    if (value1 == null) value1 = (this.style.removeProperty(name), d3Selection.style(this, name));
 	    return value0 === value1 ? null
 	        : value0 === value00 && value1 === value10 ? interpolate0
 	        : interpolate0 = interpolate$$1(value00 = value0, value10 = value1);
@@ -6777,7 +6811,7 @@ webpackJsonp([1,10],[
 /* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-timer/ Version 1.0.5. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-timer/ Version 1.0.6. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports) :
 		typeof define === 'function' && define.amd ? define(['exports'], factory) :
@@ -6794,7 +6828,7 @@ webpackJsonp([1,10],[
 	var clockNow = 0;
 	var clockSkew = 0;
 	var clock = typeof performance === "object" && performance.now ? performance : Date;
-	var setFrame = typeof requestAnimationFrame === "function" ? requestAnimationFrame : function(f) { setTimeout(f, 17); };
+	var setFrame = typeof window === "object" && window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function(f) { setTimeout(f, 17); };
 	
 	function now() {
 	  return clockNow || (setFrame(clearNow), clockNow = clock.now() + clockSkew);
@@ -9714,7 +9748,7 @@ webpackJsonp([1,10],[
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-drag/ Version 1.0.4. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-drag/ Version 1.1.1. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(8), __webpack_require__(1)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-dispatch', 'd3-selection'], factory) :
@@ -9793,6 +9827,10 @@ webpackJsonp([1,10],[
 	  return d == null ? {x: d3Selection.event.x, y: d3Selection.event.y} : d;
 	}
 	
+	function touchable() {
+	  return "ontouchstart" in this;
+	}
+	
 	var drag = function() {
 	  var filter = defaultFilter,
 	      container = defaultContainer,
@@ -9800,15 +9838,20 @@ webpackJsonp([1,10],[
 	      gestures = {},
 	      listeners = d3Dispatch.dispatch("start", "drag", "end"),
 	      active = 0,
+	      mousedownx,
+	      mousedowny,
 	      mousemoving,
-	      touchending;
+	      touchending,
+	      clickDistance2 = 0;
 	
 	  function drag(selection) {
 	    selection
 	        .on("mousedown.drag", mousedowned)
+	      .filter(touchable)
 	        .on("touchstart.drag", touchstarted)
 	        .on("touchmove.drag", touchmoved)
 	        .on("touchend.drag touchcancel.drag", touchended)
+	        .style("touch-action", "none")
 	        .style("-webkit-tap-highlight-color", "rgba(0,0,0,0)");
 	  }
 	
@@ -9820,12 +9863,17 @@ webpackJsonp([1,10],[
 	    nodrag(d3Selection.event.view);
 	    nopropagation();
 	    mousemoving = false;
+	    mousedownx = d3Selection.event.clientX;
+	    mousedowny = d3Selection.event.clientY;
 	    gesture("start");
 	  }
 	
 	  function mousemoved() {
 	    noevent();
-	    mousemoving = true;
+	    if (!mousemoving) {
+	      var dx = d3Selection.event.clientX - mousedownx, dy = d3Selection.event.clientY - mousedowny;
+	      mousemoving = dx * dx + dy * dy > clickDistance2;
+	    }
 	    gestures.mouse("drag");
 	  }
 	
@@ -9915,6 +9963,10 @@ webpackJsonp([1,10],[
 	    return value === listeners ? drag : value;
 	  };
 	
+	  drag.clickDistance = function(_) {
+	    return arguments.length ? (clickDistance2 = (_ = +_) * _, drag) : Math.sqrt(clickDistance2);
+	  };
+	
 	  return drag;
 	};
 	
@@ -9931,7 +9983,7 @@ webpackJsonp([1,10],[
 /* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	// https://d3js.org/d3-shape/ Version 1.0.6. Copyright 2017 Mike Bostock.
+	// https://d3js.org/d3-shape/ Version 1.2.0. Copyright 2017 Mike Bostock.
 	(function (global, factory) {
 		 true ? factory(exports, __webpack_require__(34)) :
 		typeof define === 'function' && define.amd ? define(['exports', 'd3-path'], factory) :
@@ -10534,7 +10586,7 @@ webpackJsonp([1,10],[
 	  return radial;
 	}
 	
-	function radialLine(l) {
+	function lineRadial(l) {
 	  var c = l.curve;
 	
 	  l.angle = l.x, delete l.x;
@@ -10547,11 +10599,11 @@ webpackJsonp([1,10],[
 	  return l;
 	}
 	
-	var radialLine$1 = function() {
-	  return radialLine(line().curve(curveRadialLinear));
+	var lineRadial$1 = function() {
+	  return lineRadial(line().curve(curveRadialLinear));
 	};
 	
-	var radialArea = function() {
+	var areaRadial = function() {
 	  var a = area().curve(curveRadialLinear),
 	      c = a.curve,
 	      x0 = a.lineX0,
@@ -10565,10 +10617,10 @@ webpackJsonp([1,10],[
 	  a.radius = a.y, delete a.y;
 	  a.innerRadius = a.y0, delete a.y0;
 	  a.outerRadius = a.y1, delete a.y1;
-	  a.lineStartAngle = function() { return radialLine(x0()); }, delete a.lineX0;
-	  a.lineEndAngle = function() { return radialLine(x1()); }, delete a.lineX1;
-	  a.lineInnerRadius = function() { return radialLine(y0()); }, delete a.lineY0;
-	  a.lineOuterRadius = function() { return radialLine(y1()); }, delete a.lineY1;
+	  a.lineStartAngle = function() { return lineRadial(x0()); }, delete a.lineX0;
+	  a.lineEndAngle = function() { return lineRadial(x1()); }, delete a.lineX1;
+	  a.lineInnerRadius = function() { return lineRadial(y0()); }, delete a.lineY0;
+	  a.lineOuterRadius = function() { return lineRadial(y1()); }, delete a.lineY1;
 	
 	  a.curve = function(_) {
 	    return arguments.length ? c(curveRadial(_)) : c()._curve;
@@ -10576,6 +10628,91 @@ webpackJsonp([1,10],[
 	
 	  return a;
 	};
+	
+	var pointRadial = function(x, y) {
+	  return [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x)];
+	};
+	
+	var slice = Array.prototype.slice;
+	
+	function linkSource(d) {
+	  return d.source;
+	}
+	
+	function linkTarget(d) {
+	  return d.target;
+	}
+	
+	function link(curve) {
+	  var source = linkSource,
+	      target = linkTarget,
+	      x$$1 = x,
+	      y$$1 = y,
+	      context = null;
+	
+	  function link() {
+	    var buffer, argv = slice.call(arguments), s = source.apply(this, argv), t = target.apply(this, argv);
+	    if (!context) context = buffer = d3Path.path();
+	    curve(context, +x$$1.apply(this, (argv[0] = s, argv)), +y$$1.apply(this, argv), +x$$1.apply(this, (argv[0] = t, argv)), +y$$1.apply(this, argv));
+	    if (buffer) return context = null, buffer + "" || null;
+	  }
+	
+	  link.source = function(_) {
+	    return arguments.length ? (source = _, link) : source;
+	  };
+	
+	  link.target = function(_) {
+	    return arguments.length ? (target = _, link) : target;
+	  };
+	
+	  link.x = function(_) {
+	    return arguments.length ? (x$$1 = typeof _ === "function" ? _ : constant(+_), link) : x$$1;
+	  };
+	
+	  link.y = function(_) {
+	    return arguments.length ? (y$$1 = typeof _ === "function" ? _ : constant(+_), link) : y$$1;
+	  };
+	
+	  link.context = function(_) {
+	    return arguments.length ? ((context = _ == null ? null : _), link) : context;
+	  };
+	
+	  return link;
+	}
+	
+	function curveHorizontal(context, x0, y0, x1, y1) {
+	  context.moveTo(x0, y0);
+	  context.bezierCurveTo(x0 = (x0 + x1) / 2, y0, x0, y1, x1, y1);
+	}
+	
+	function curveVertical(context, x0, y0, x1, y1) {
+	  context.moveTo(x0, y0);
+	  context.bezierCurveTo(x0, y0 = (y0 + y1) / 2, x1, y0, x1, y1);
+	}
+	
+	function curveRadial$1(context, x0, y0, x1, y1) {
+	  var p0 = pointRadial(x0, y0),
+	      p1 = pointRadial(x0, y0 = (y0 + y1) / 2),
+	      p2 = pointRadial(x1, y0),
+	      p3 = pointRadial(x1, y1);
+	  context.moveTo(p0[0], p0[1]);
+	  context.bezierCurveTo(p1[0], p1[1], p2[0], p2[1], p3[0], p3[1]);
+	}
+	
+	function linkHorizontal() {
+	  return link(curveHorizontal);
+	}
+	
+	function linkVertical() {
+	  return link(curveVertical);
+	}
+	
+	function linkRadial() {
+	  var l = link(curveRadial$1);
+	  l.angle = l.x, delete l.x;
+	  l.radius = l.y, delete l.y;
+	  return l;
+	}
 	
 	var circle = {
 	  draw: function(context, size) {
@@ -11558,13 +11695,11 @@ webpackJsonp([1,10],[
 	  return new Step(context, 1);
 	}
 	
-	var slice = Array.prototype.slice;
-	
 	var none = function(series, order) {
 	  if (!((n = series.length) > 1)) return;
-	  for (var i = 1, s0, s1 = series[order[0]], n, m = s1.length; i < n; ++i) {
+	  for (var i = 1, j, s0, s1 = series[order[0]], n, m = s1.length; i < n; ++i) {
 	    s0 = s1, s1 = series[order[i]];
-	    for (var j = 0; j < m; ++j) {
+	    for (j = 0; j < m; ++j) {
 	      s1[j][1] += s1[j][0] = isNaN(s0[j][1]) ? s0[j][0] : s0[j][1];
 	    }
 	  }
@@ -11636,6 +11771,21 @@ webpackJsonp([1,10],[
 	    if (y) for (i = 0; i < n; ++i) series[i][j][1] /= y;
 	  }
 	  none(series, order);
+	};
+	
+	var diverging = function(series, order) {
+	  if (!((n = series.length) > 1)) return;
+	  for (var i, j = 0, d, dy, yp, yn, n, m = series[order[0]].length; j < m; ++j) {
+	    for (yp = yn = 0, i = 0; i < n; ++i) {
+	      if ((dy = (d = series[order[i]][j])[1] - d[0]) >= 0) {
+	        d[0] = yp, d[1] = yp += dy;
+	      } else if (dy < 0) {
+	        d[1] = yn, d[0] = yn += dy;
+	      } else {
+	        d[0] = yp;
+	      }
+	    }
+	  }
 	};
 	
 	var silhouette = function(series, order) {
@@ -11718,8 +11868,14 @@ webpackJsonp([1,10],[
 	exports.area = area;
 	exports.line = line;
 	exports.pie = pie;
-	exports.radialArea = radialArea;
-	exports.radialLine = radialLine$1;
+	exports.areaRadial = areaRadial;
+	exports.radialArea = areaRadial;
+	exports.lineRadial = lineRadial$1;
+	exports.radialLine = lineRadial$1;
+	exports.pointRadial = pointRadial;
+	exports.linkHorizontal = linkHorizontal;
+	exports.linkVertical = linkVertical;
+	exports.linkRadial = linkRadial;
 	exports.symbol = symbol;
 	exports.symbols = symbols;
 	exports.symbolCircle = circle;
@@ -11749,6 +11905,7 @@ webpackJsonp([1,10],[
 	exports.curveStepBefore = stepBefore;
 	exports.stack = stack;
 	exports.stackOffsetExpand = expand;
+	exports.stackOffsetDiverging = diverging;
 	exports.stackOffsetNone = none;
 	exports.stackOffsetSilhouette = silhouette;
 	exports.stackOffsetWiggle = wiggle;
@@ -12106,158 +12263,7 @@ webpackJsonp([1,10],[
 /* 37 */
 /***/ (function(module, exports) {
 
-	module.exports = {
-		"data": [
-			{
-				"date": "2015-06-27T07:00:00.000Z",
-				"value": 4
-			},
-			{
-				"date": "2015-06-28T07:00:00.000Z",
-				"value": 12
-			},
-			{
-				"date": "2015-06-29T07:00:00.000Z",
-				"value": 33
-			},
-			{
-				"date": "2015-06-30T07:00:00.000Z",
-				"value": 17
-			},
-			{
-				"date": "2015-07-01T07:00:00.000Z",
-				"value": 17
-			},
-			{
-				"date": "2015-07-02T07:00:00.000Z",
-				"value": 16
-			},
-			{
-				"date": "2015-07-03T07:00:00.000Z",
-				"value": 8
-			},
-			{
-				"date": "2015-07-04T07:00:00.000Z",
-				"value": 14
-			},
-			{
-				"date": "2015-07-05T07:00:00.000Z",
-				"value": 11
-			},
-			{
-				"date": "2015-07-06T07:00:00.000Z",
-				"value": 14
-			},
-			{
-				"date": "2015-07-07T07:00:00.000Z",
-				"value": 25
-			},
-			{
-				"date": "2015-07-08T07:00:00.000Z",
-				"value": 55
-			},
-			{
-				"date": "2015-07-09T07:00:00.000Z",
-				"value": 15
-			},
-			{
-				"date": "2015-07-10T07:00:00.000Z",
-				"value": 26
-			},
-			{
-				"date": "2015-07-11T07:00:00.000Z",
-				"value": 21
-			},
-			{
-				"date": "2015-07-12T07:00:00.000Z",
-				"value": 16
-			},
-			{
-				"date": "2015-07-13T07:00:00.000Z",
-				"value": 20
-			},
-			{
-				"date": "2015-07-14T07:00:00.000Z",
-				"value": 26
-			},
-			{
-				"date": "2015-07-15T07:00:00.000Z",
-				"value": 24
-			},
-			{
-				"date": "2015-07-16T07:00:00.000Z",
-				"value": 29
-			},
-			{
-				"date": "2015-07-17T07:00:00.000Z",
-				"value": 12
-			},
-			{
-				"date": "2015-07-18T07:00:00.000Z",
-				"value": 16
-			},
-			{
-				"date": "2015-07-19T07:00:00.000Z",
-				"value": 11
-			},
-			{
-				"date": "2015-07-20T07:00:00.000Z",
-				"value": 29
-			},
-			{
-				"date": "2015-07-21T07:00:00.000Z",
-				"value": 9
-			},
-			{
-				"date": "2015-07-22T07:00:00.000Z",
-				"value": 26
-			},
-			{
-				"date": "2015-07-23T07:00:00.000Z",
-				"value": 21
-			},
-			{
-				"date": "2015-07-24T07:00:00.000Z",
-				"value": 18
-			},
-			{
-				"date": "2015-07-25T07:00:00.000Z",
-				"value": 15
-			},
-			{
-				"date": "2015-07-26T07:00:00.000Z",
-				"value": 23
-			},
-			{
-				"date": "2015-07-27T07:00:00.000Z",
-				"value": 43
-			},
-			{
-				"date": "2015-07-28T07:00:00.000Z",
-				"value": 44
-			},
-			{
-				"date": "2015-07-29T07:00:00.000Z",
-				"value": 67
-			},
-			{
-				"date": "2015-07-30T07:00:00.000Z",
-				"value": 67
-			},
-			{
-				"date": "2015-07-31T07:00:00.000Z",
-				"value": 0
-			},
-			{
-				"date": "2015-08-01T07:00:00.000Z",
-				"value": 0
-			},
-			{
-				"date": "2015-08-02T07:00:00.000Z",
-				"value": 0
-			}
-		]
-	};
+	module.exports = {"data":[{"date":"2015-06-27T07:00:00.000Z","value":4},{"date":"2015-06-28T07:00:00.000Z","value":12},{"date":"2015-06-29T07:00:00.000Z","value":33},{"date":"2015-06-30T07:00:00.000Z","value":17},{"date":"2015-07-01T07:00:00.000Z","value":17},{"date":"2015-07-02T07:00:00.000Z","value":16},{"date":"2015-07-03T07:00:00.000Z","value":8},{"date":"2015-07-04T07:00:00.000Z","value":14},{"date":"2015-07-05T07:00:00.000Z","value":11},{"date":"2015-07-06T07:00:00.000Z","value":14},{"date":"2015-07-07T07:00:00.000Z","value":25},{"date":"2015-07-08T07:00:00.000Z","value":55},{"date":"2015-07-09T07:00:00.000Z","value":15},{"date":"2015-07-10T07:00:00.000Z","value":26},{"date":"2015-07-11T07:00:00.000Z","value":21},{"date":"2015-07-12T07:00:00.000Z","value":16},{"date":"2015-07-13T07:00:00.000Z","value":20},{"date":"2015-07-14T07:00:00.000Z","value":26},{"date":"2015-07-15T07:00:00.000Z","value":24},{"date":"2015-07-16T07:00:00.000Z","value":29},{"date":"2015-07-17T07:00:00.000Z","value":12},{"date":"2015-07-18T07:00:00.000Z","value":16},{"date":"2015-07-19T07:00:00.000Z","value":11},{"date":"2015-07-20T07:00:00.000Z","value":29},{"date":"2015-07-21T07:00:00.000Z","value":9},{"date":"2015-07-22T07:00:00.000Z","value":26},{"date":"2015-07-23T07:00:00.000Z","value":21},{"date":"2015-07-24T07:00:00.000Z","value":18},{"date":"2015-07-25T07:00:00.000Z","value":15},{"date":"2015-07-26T07:00:00.000Z","value":23},{"date":"2015-07-27T07:00:00.000Z","value":43},{"date":"2015-07-28T07:00:00.000Z","value":44},{"date":"2015-07-29T07:00:00.000Z","value":67},{"date":"2015-07-30T07:00:00.000Z","value":67},{"date":"2015-07-31T07:00:00.000Z","value":0},{"date":"2015-08-01T07:00:00.000Z","value":0},{"date":"2015-08-02T07:00:00.000Z","value":0}]}
 
 /***/ })
 ]);
