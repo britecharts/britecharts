@@ -123,6 +123,7 @@ define([
                 container.dispatch('mouseover');
 
                 expect(callback.calls.count()).toBe(1);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
             });
 
             it('should trigger an event on mouse out', () => {
@@ -132,6 +133,7 @@ define([
                 lineChart.on('customMouseOut', callback);
                 container.dispatch('mouseout');
                 expect(callback.calls.count()).toBe(1);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
             });
 
             // We need to stub some code in order to be able to run this test
@@ -365,7 +367,7 @@ define([
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
-            
+
             it('should provide a xTicks getter and setter', () => {
                 let previous = lineChart.xTicks(),
                     expected = 2,
