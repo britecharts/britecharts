@@ -199,9 +199,15 @@ define(function(require){
          */
         function addMouseEvents() {
             svg
-                .on('mouseover', handleMouseOver)
-                .on('mouseout', handleMouseOut)
-                .on('mousemove', handleMouseMove);
+                .on('mouseover', function(d) {
+                    handleMouseOver(this, d);
+                })
+                .on('mouseout', function(d) {
+                    handleMouseOut(this, d);
+                })
+                .on('mousemove',  function(d) {
+                    handleMouseMove(this, d);
+                });
         }
 
         /**
@@ -731,10 +737,10 @@ define(function(require){
          * and updates metadata related to it
          * @private
          */
-        function handleMouseMove() {
+        function handleMouseMove(e, d) {
             epsilon || setEpsilon();
 
-            let dataPoint = getNearestDataPoint(getMouseXPosition(this) - margin.left),
+            let dataPoint = getNearestDataPoint(getMouseXPosition(e) - margin.left),
                 dataPointXPosition;
 
             if (dataPoint) {
@@ -744,7 +750,7 @@ define(function(require){
                 // Add data points highlighting
                 highlightDataPoints(dataPoint);
                 // Emit event with xPosition for tooltip or similar feature
-                dispatcher.call('customMouseMove', this, dataPoint, categoryColorMap, dataPointXPosition);
+                dispatcher.call('customMouseMove', e, dataPoint, categoryColorMap, dataPointXPosition);
             }
         }
 
@@ -753,23 +759,23 @@ define(function(require){
          * It also resets the container of the vertical marker
          * @private
          */
-        function handleMouseOut(data) {
+        function handleMouseOut(e, d) {
             overlay.style('display', 'none');
             verticalMarker.classed('bc-is-active', false);
             verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
 
-            dispatcher.call('customMouseOut', this, data);
+            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
         }
 
         /**
          * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
          * @private
          */
-        function handleMouseOver(data) {
+        function handleMouseOver(e, d) {
             overlay.style('display', 'block');
             verticalMarker.classed('bc-is-active', true);
 
-            dispatcher.call('customMouseOver', this, data);
+            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
         }
 
         /**
@@ -1064,7 +1070,7 @@ define(function(require){
             width = _x;
 
             return this;
-        };        
+        };
 
         /**
          * Exposes the ability to force the chart to show a certain x format
