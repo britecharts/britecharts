@@ -880,11 +880,7 @@ define(function(require){
 
         /**
          * Gets or Sets the number of ticks of the x axis on the chart
-<<<<<<< HEAD
          * (Default is 5)
-=======
-         * (Default is 5)
->>>>>>> upstream/master
          * @param  {Number} _x Desired horizontal ticks
          * @return {Number | module} Current xTicks or Chart module to chain calls
          * @public
