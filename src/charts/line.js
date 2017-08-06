@@ -222,9 +222,15 @@ define(function(require){
          */
         function addMouseEvents() {
             svg
-                .on('mouseover', handleMouseOver)
-                .on('mouseout', handleMouseOut)
-                .on('mousemove', handleMouseMove);
+                .on('mouseover', function(d) {
+                    handleMouseOver(this, d);
+                })
+                .on('mouseout', function(d) {
+                    handleMouseOut(this, d);
+                })
+                .on('mousemove',  function(d) {
+                    handleMouseMove(this, d);
+                });
         }
 
         /**
@@ -368,7 +374,7 @@ define(function(require){
                 .domain(dataByTopic.map(getTopic));
 
             let range = colorScale.range();
-            
+
             topicColorMap = colorScale.domain().reduce((memo, item, i) => {
                 memo[item] = range[i];
 
@@ -668,9 +674,9 @@ define(function(require){
          * and updates metadata related to it
          * @private
          */
-        function handleMouseMove(){
+        function handleMouseMove(e, d){
             let xPositionOffset = -margin.left, //Arbitrary number, will love to know how to assess it
-                dataPoint = getNearestDataPoint(getMouseXPosition(this) + xPositionOffset),
+                dataPoint = getNearestDataPoint(getMouseXPosition(e) + xPositionOffset),
                 dataPointXPosition;
 
             if (dataPoint) {
@@ -680,7 +686,7 @@ define(function(require){
                 // Add data points highlighting
                 highlightDataPoints(dataPoint);
                 // Emit event with xPosition for tooltip or similar feature
-                dispatcher.call('customMouseMove', this, dataPoint, topicColorMap, dataPointXPosition);
+                dispatcher.call('customMouseMove', e, dataPoint, topicColorMap, dataPointXPosition);
             }
         }
 
@@ -689,23 +695,23 @@ define(function(require){
          * It also resets the container of the vertical marker
          * @private
          */
-        function handleMouseOut(data){
+        function handleMouseOut(e, d){
             overlay.style('display', 'none');
             verticalMarkerLine.classed('bc-is-active', false);
             verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
 
-            dispatcher.call('customMouseOut', this, data);
+            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
         }
 
         /**
          * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
          * @private
          */
-        function handleMouseOver(data){
+        function handleMouseOver(e, d){
             overlay.style('display', 'block');
             verticalMarkerLine.classed('bc-is-active', true);
 
-            dispatcher.call('customMouseOver', this, data);
+            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
         }
 
         /**

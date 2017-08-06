@@ -262,14 +262,14 @@ define(function(require) {
                 .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
                 .attr('height', (d) => (chartHeight - yScale(d.value)))
-                .on('mouseover', function() {
-                    dispatcher.call('customMouseOver', this);
+                .on('mouseover', function(d) {
+                    handleMouseOver(this, d, chartWidth, chartHeight);
                 })
                 .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                    handleMouseMove(this, d, chartWidth, chartHeight);
                 })
-                .on('mouseout', function() {
-                    dispatcher.call('customMouseOut', this);
+                .on('mouseout', function(d) {
+                    handleMouseOut(this, d, chartWidth, chartHeight);
                 })
               .merge(steps)
                 .transition()
@@ -320,6 +320,33 @@ define(function(require) {
         }
 
         // API
+
+        /**
+         * Custom OnMouseOver event handler
+         * @return {void}
+         * @private
+         */
+        function handleMouseOver(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        }
+
+        /**
+         * Custom OnMouseMove event handler
+         * @return {void}
+         * @private
+         */
+        function handleMouseMove(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        }
+
+        /**
+         * Custom OnMouseOver event handler
+         * @return {void}
+         * @private
+         */
+        function handleMouseOut(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        }
 
         /**
          * Chart exported to png and a download action is fired

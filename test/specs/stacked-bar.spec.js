@@ -273,6 +273,7 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 chart.dispatch('mouseover');
 
                 expect(callbackSpy.calls.count()).toBe(1);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
             });
 
             it('mouseout should trigger a callback', () => {
@@ -283,6 +284,7 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 chart.dispatch('mouseout');
 
                 expect(callbackSpy.calls.count()).toBe(1);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
             });
         });
     });

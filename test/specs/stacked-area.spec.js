@@ -129,6 +129,7 @@ define([
             container.dispatch('mouseover');
 
             expect(callback.calls.count()).toBe(1);
+            expect(callback.calls.allArgs()[0].length).toBe(2);
         });
 
         it('should trigger an event on mouse out', () => {
@@ -138,6 +139,7 @@ define([
             stackedAreaChart.on('customMouseOut', callback);
             container.dispatch('mouseout');
             expect(callback.calls.count()).toBe(1);
+            expect(callback.calls.allArgs()[0].length).toBe(2);
         });
 
         describe('API', function() {

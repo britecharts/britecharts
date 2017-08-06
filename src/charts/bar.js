@@ -319,16 +319,14 @@ define(function(require) {
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value))
                 .attr('fill', ({name}) => colorMap(name))
-                .on('mouseover', function() {
-                    dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+                .on('mouseover', function(d) {
+                    handleMouseOver(this, d, chartWidth, chartHeight);
                 })
                 .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                    handleMouseMove(this, d, chartWidth, chartHeight);
                 })
-                .on('mouseout', function() {
-                    dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
+                .on('mouseout', function(d) {
+                    handleMouseOut(this, d, chartWidth, chartHeight);
                 })
               .merge(bars)
                 .attr('x', 0)
@@ -352,16 +350,14 @@ define(function(require) {
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value))
                 .attr('fill', ({name}) => colorMap(name))
-                .on('mouseover', function() {
-                    dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+                .on('mouseover', function(d) {
+                    handleMouseOver(this, d, chartWidth, chartHeight);
                 })
                 .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                    handleMouseMove(this, d, chartWidth, chartHeight);
                 })
-                .on('mouseout', function() {
-                    dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
+                .on('mouseout', function(d) {
+                    handleMouseOut(this, d, chartWidth, chartHeight);
                 });
 
             bars
@@ -390,16 +386,14 @@ define(function(require) {
                 .attr('width', xScale.bandwidth())
                 .attr('height', ({value}) => chartHeight - yScale(value))
                 .attr('fill', ({name}) => colorMap(name))
-                .on('mouseover', function() {
-                    dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker())
+                .on('mouseover', function(d) {
+                    handleMouseOver(this, d, chartWidth, chartHeight);
                 })
                 .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                    handleMouseMove(this, d, chartWidth, chartHeight);
                 })
-                .on('mouseout', function() {
-                    dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
+                .on('mouseout', function(d) {
+                    handleMouseOut(this, d, chartWidth, chartHeight);
                 })
               .merge(bars)
                 .attr('x', ({name}) => xScale(name))
@@ -427,16 +421,14 @@ define(function(require) {
                 .attr('width', xScale.bandwidth())
                 .attr('height', ({value}) => chartHeight - yScale(value))
                 .attr('fill', ({name}) => colorMap(name))
-                .on('mouseover', function() {
-                    dispatcher.call('customMouseOver', this);
-                    d3Selection.select(this).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker())
+                .on('mouseover', function(d) {
+                    handleMouseOver(this, d, chartWidth, chartHeight);
                 })
                 .on('mousemove', function(d) {
-                    dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
+                    handleMouseMove(this, d, chartWidth, chartHeight);
                 })
-                .on('mouseout', function() {
-                    dispatcher.call('customMouseOut', this);
-                    d3Selection.select(this).attr('fill', ({name}) => colorMap(name))
+                .on('mouseout', function(d) {
+                    handleMouseOut(this, d, chartWidth, chartHeight);
                 })
               .merge(bars)
                 .attr('x', ({name}) => xScale(name))
@@ -598,6 +590,34 @@ define(function(require) {
                     .attr('y2', chartHeight);
         }
 
+        /**
+         * Custom OnMouseOver event handler
+         * @return {void}
+         * @private
+         */
+        function handleMouseOver(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+            d3Selection.select(e).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+        }
+
+        /**
+         * Custom OnMouseMove event handler
+         * @return {void}
+         * @private
+         */
+        function handleMouseMove(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        }
+
+        /**
+         * Custom OnMouseOver event handler
+         * @return {void}
+         * @private
+         */
+        function handleMouseOut(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+            d3Selection.select(e).attr('fill', ({name}) => colorMap(name));
+        }
 
         // API
 
