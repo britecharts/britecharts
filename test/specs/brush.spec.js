@@ -59,6 +59,42 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
 
         describe('the API', function() {
 
+            it('should provide a bush date range getter and setter', () => {
+                let previous = brushChart.dateRange(),
+                    expected = ['9/15/2015', '1/25/2016'],
+                    actual;
+
+                brushChart.dateRange(expected);
+                actual = brushChart.dateRange();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a gradient getter and setter', () => {
+                let previous = brushChart.gradient(),
+                    expected = ['#ffffff', '#fafefc'],
+                    actual;
+
+                brushChart.gradient(expected);
+                actual = brushChart.gradient();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide height getter and setter', function() {
+                var previous = brushChart.height(),
+                    expected = 200,
+                    actual;
+
+                brushChart.height(expected);
+                actual = brushChart.height();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide margin getter and setter', function() {
                 var previous = brushChart.margin(),
                     expected = {top: 4, right: 4, bottom: 4, left: 4},
@@ -83,85 +119,37 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
                 expect(actual).toBe(expected);
             });
 
-            it('should provide height getter and setter', function() {
-                var previous = brushChart.height(),
-                    expected = 200,
-                    actual;
-
-                brushChart.height(expected);
-                actual = brushChart.height();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide a gradient getter and setter', () => {
-                let previous = brushChart.gradient(),
-                    expected = ['#ffffff', '#fafefc'],
-                    actual;
-
-                brushChart.gradient(expected);
-                actual = brushChart.gradient();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide onBrush getter and setter', function() {
-                var previous = brushChart.onBrush(),
-                    expected = function() {},
-                    actual;
-
-                brushChart.onBrush(expected);
-                actual = brushChart.onBrush();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide a bush date range getter and setter', () => {
-                let previous = brushChart.dateRange(),
-                    expected = ["9/15/2015", "1/25/2016"],
-                    actual;
-
-                brushChart.dateRange(expected);
-                actual = brushChart.dateRange();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide a forceAxisFormat getter and setter', () => {
-                let previous = brushChart.forceAxisFormat(),
+            it('should provide a xAxisFormat getter and setter', () => {
+                let previous = brushChart.xAxisFormat(),
                     expected = brushChart.axisTimeCombinations.HOUR_DAY,
                     actual;
 
-                brushChart.forceAxisFormat(expected);
-                actual = brushChart.forceAxisFormat();
+                brushChart.xAxisFormat(expected);
+                actual = brushChart.xAxisFormat();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
 
-            it('should provide a forcedXTicks getter and setter', () => {
-                let previous = brushChart.forcedXTicks(),
-                    expected = 2,
-                    actual;
-
-                brushChart.forcedXTicks(expected);
-                actual = brushChart.forcedXTicks();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide a forcedXFormat getter and setter', () => {
-                let previous = brushChart.forcedXFormat(),
+            it('should provide a xAxisCustomFormat getter and setter', () => {
+                let previous = brushChart.xAxisCustomFormat(),
                     expected = '%d %b',
                     actual;
 
-                brushChart.forcedXFormat(expected);
-                actual = brushChart.forcedXFormat();
+                brushChart.xAxisCustomFormat(expected);
+                actual = brushChart.xAxisCustomFormat();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a xTicks getter and setter', () => {
+                let previous = brushChart.xTicks(),
+                    expected = 2,
+                    actual;
+
+                brushChart.xTicks(expected);
+                actual = brushChart.xTicks();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);

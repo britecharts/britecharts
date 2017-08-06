@@ -7046,8 +7046,9 @@ webpackJsonp([9,10],[
 	        d3svg.attr('version', 1.1).attr('xmlns', 'http://www.w3.org/2000/svg');
 	        var serializer = serializeWithStyles.initializeSerializer();
 	        var html = serializer(d3svg.node());
+	
 	        html = formatHtmlByBrowser(html);
-	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width')));
+	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width'), 10));
 	        html = addBackground(html);
 	
 	        return html;
@@ -7150,9 +7151,10 @@ webpackJsonp([9,10],[
 	        if (!title || !svgWidth) {
 	            return html;
 	        }
-	        var britechartsGreySchema = colorSchemas.britechartsGreySchema;
+	        var grey = colorSchemas.grey;
 	
-	        html = html.replace(/<g/, '<text x="' + this.margin().left + '" y="' + config.titleTopOffset + '" font-family="' + config.titleFontFamily + '" font-size="' + config.titleFontSize + '" fill="' + britechartsGreySchema[6] + '"> ' + title + ' </text><g ');
+	
+	        html = html.replace(/<g/, '<text x="' + this.margin().left + '" y="' + config.titleTopOffset + '" font-family="' + config.titleFontFamily + '" font-size="' + config.titleFontSize + '" fill="' + grey[6] + '"> ' + title + ' </text><g ');
 	
 	        return html;
 	    }
@@ -7171,18 +7173,18 @@ webpackJsonp([9,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
 	
 	    // Color Gradients
 	    var britechartGradients = {
-	        greenBlueGradient: ['#39C7EA', '#4CDCBA'],
-	        orangePinkGradient: ['#FBC670', '#F766B8'],
-	        bluePurpleGradient: ['#3DC3C9', '#824a9e']
+	        greenBlue: ['#39C7EA', '#4CDCBA'],
+	        orangePink: ['#FBC670', '#F766B8'],
+	        bluePurple: ['#3DC3C9', '#824a9e']
 	    };
 	
 	    // Color Schemas
 	    // Standard Color Schema for Britecharts
-	    var britechartsColorSchema = ['#6aedc7', //green
+	    var britecharts = ['#6aedc7', //green
 	    '#39c2c9', //blue
 	    '#ffce00', //yellow
 	    '#ffa71a', //orange
@@ -7191,60 +7193,60 @@ webpackJsonp([9,10],[
 	    ];
 	
 	    // Grey Schema for Britecharts
-	    var britechartsGreySchema = ['#F8F8FA', '#EFF2F5', '#D2D6DF', '#C3C6CF', '#ADB0B6', '#666A73', '#45494E', '#363A43', '#282C35'];
+	    var grey = ['#F8F8FA', '#EFF2F5', '#D2D6DF', '#C3C6CF', '#ADB0B6', '#666A73', '#45494E', '#363A43', '#282C35'];
 	
-	    // Extended Orange Palette
-	    var extendedOrangeColorSchema = ['#fcc870', '#ffa71a', '#fb8825', '#f6682f', '#db5a2c', '#bf4c28', '#a43b1c', '#892a10', '#f9e9c5'];
-	    // Extended Blue Palette
-	    var extendedBlueColorSchema = ['#ccf7f6', '#70e4e0', '#00d8d2', '#00acaf', '#007f8c', '#005e66', '#003c3f', '#002d2f', '#0d2223'];
-	    // Extended LightBlue Palette
-	    var extendedLightBlueColorSchema = ['#ccfffe', '#94f7f4', '#00fff8', '#1de1e1', '#39c2c9', '#2e9a9d', '#227270', '#1a5957', '#133f3e'];
-	    // Extended Green Palette
-	    var extendedGreenColorSchema = ['#edfff7', '#d7ffef', '#c0ffe7', '#95f5d7', '#6aedc7', '#59c3a3', '#479980', '#34816a', '#206953'];
-	    // Extended Yellow Palette
-	    var extendedYellowColorSchema = ['#f9f2b3', '#fbe986', '#fce05a', '#fed72d', '#ffce00', '#fcc11c', '#f9b438', '#eda629', '#e09819'];
-	    // Extended Pink Palette
-	    var extendedPinkColorSchema = ['#fdd1ea', '#fb9cd2', '#f866b9', '#fc40b6', '#ff1ab3', '#e3239d', '#c62c86', '#a62073', '#85135f'];
-	    // Extended Purple Palette
-	    var extendedPurpleColorSchema = ['#ddd6fc', '#bbb1f0', '#998ce3', '#8e6bc1', '#824a9e', '#77337f', '#6b1c60', '#591650', '#470f3f'];
-	    // Extended Red Palette
-	    var extendedRedColorSchema = ['#ffd8d4', '#ffb5b0', '#ff938c', '#ff766c', '#ff584c', '#f04b42', '#e03d38', '#be2e29', '#9c1e19'];
+	    // Orange Palette
+	    var orange = ['#fcc870', '#ffa71a', '#fb8825', '#f6682f', '#db5a2c', '#bf4c28', '#a43b1c', '#892a10', '#f9e9c5'];
+	    // Blue Palette
+	    var blueGreen = ['#ccf7f6', '#70e4e0', '#00d8d2', '#00acaf', '#007f8c', '#005e66', '#003c3f', '#002d2f', '#0d2223'];
+	    // LightBlue Palette
+	    var teal = ['#ccfffe', '#94f7f4', '#00fff8', '#1de1e1', '#39c2c9', '#2e9a9d', '#227270', '#1a5957', '#133f3e'];
+	    // Green Palette
+	    var green = ['#edfff7', '#d7ffef', '#c0ffe7', '#95f5d7', '#6aedc7', '#59c3a3', '#479980', '#34816a', '#206953'];
+	    // Yellow Palette
+	    var yellow = ['#f9f2b3', '#fbe986', '#fce05a', '#fed72d', '#ffce00', '#fcc11c', '#f9b438', '#eda629', '#e09819'];
+	    // Pink Palette
+	    var pink = ['#fdd1ea', '#fb9cd2', '#f866b9', '#fc40b6', '#ff1ab3', '#e3239d', '#c62c86', '#a62073', '#85135f'];
+	    // Purple Palette
+	    var purple = ['#ddd6fc', '#bbb1f0', '#998ce3', '#8e6bc1', '#824a9e', '#77337f', '#6b1c60', '#591650', '#470f3f'];
+	    // Red Palette
+	    var red = ['#ffd8d4', '#ffb5b0', '#ff938c', '#ff766c', '#ff584c', '#f04b42', '#e03d38', '#be2e29', '#9c1e19'];
 	
 	    var aloeGreen = ['#7bdcc0'];
 	
 	    return {
 	        colorSchemas: {
-	            britechartsColorSchema: britechartsColorSchema,
-	            britechartsGreySchema: britechartsGreySchema,
-	            extendedOrangeColorSchema: extendedOrangeColorSchema,
-	            extendedBlueColorSchema: extendedBlueColorSchema,
-	            extendedLightBlueColorSchema: extendedLightBlueColorSchema,
-	            extendedGreenColorSchema: extendedGreenColorSchema,
-	            extendedYellowColorSchema: extendedYellowColorSchema,
-	            extendedPinkColorSchema: extendedPinkColorSchema,
-	            extendedPurpleColorSchema: extendedPurpleColorSchema,
-	            extendedRedColorSchema: extendedRedColorSchema
+	            britecharts: britecharts,
+	            grey: grey,
+	            orange: orange,
+	            blueGreen: blueGreen,
+	            teal: teal,
+	            green: green,
+	            yellow: yellow,
+	            pink: pink,
+	            purple: purple,
+	            red: red
 	        },
 	        colorSchemasHuman: {
-	            'britechartsColorSchema': 'Britecharts Default',
-	            'britechartsGreySchema': 'Britecharts Grey',
-	            'extendedOrangeColorSchema': 'Orange',
-	            'extendedBlueColorSchema': 'Blue',
-	            'extendedLightBlueColorSchema': 'Light Blue',
-	            'extendedGreenColorSchema': 'Green',
-	            'extendedYellowColorSchema': 'Yellow',
-	            'extendedPinkColorSchema': 'Pink',
-	            'extendedPurpleColorSchema': 'Purple',
-	            'extendedRedColorSchema': 'Red'
+	            'britecharts': 'Britecharts Default',
+	            'grey': 'Britecharts Grey',
+	            'orange': 'Orange',
+	            'blueGreen': 'Blue',
+	            'teal': 'Light Blue',
+	            'green': 'Green',
+	            'yellow': 'Yellow',
+	            'pink': 'Pink',
+	            'purple': 'Purple',
+	            'red': 'Red'
 	        },
 	        singleColors: {
 	            aloeGreen: aloeGreen
 	        },
 	        colorGradients: britechartGradients,
 	        colorGradientsHuman: {
-	            greenBlueGradient: 'Green To Blue',
-	            orangePinkGradient: 'Orange to Pink',
-	            bluePurpleGradient: 'Blue to Purple'
+	            greenBlue: 'Green To Blue',
+	            orangePink: 'Orange to Pink',
+	            bluePurple: 'Blue to Purple'
 	        }
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -7255,7 +7257,8 @@ webpackJsonp([9,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	
 	    var axisTimeCombinations = {
 	        MINUTE_HOUR: 'minute-hour',
 	        HOUR_DAY: 'hour-daymonth',
@@ -7340,7 +7343,8 @@ webpackJsonp([9,10],[
 	                    result = void 0;
 	
 	                if (!elem || elem.nodeType !== Node.ELEMENT_NODE) {
-	                    console.error('Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE');
+	                    // 'Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE'
+	
 	                    return;
 	                }
 	
@@ -7668,10 +7672,9 @@ webpackJsonp([9,10],[
 	         * This function creates the graph using the selection as container
 	         * @param {D3Selection} _selection A d3 selection that represents
 	         *                                  the container(s) where the chart(s) will be rendered
-	         * @param {Array} _data The data to attach and generate the chart (usually an empty array)
 	         */
 	        function exports(_selection) {
-	            _selection.each(function (_data) {
+	            _selection.each(function () {
 	                chartWidth = width - margin.left - margin.right;
 	                chartHeight = height - margin.top - margin.bottom;
 	
@@ -9646,7 +9649,7 @@ webpackJsonp([9,10],[
 	            chartHeight = void 0,
 	            xScale = void 0,
 	            yScale = void 0,
-	            numOfVerticalTicks = 6,
+	            yTicks = 6,
 	            xAxis = void 0,
 	            xAxisLabel = void 0,
 	            yAxis = void 0,
@@ -9715,7 +9718,7 @@ webpackJsonp([9,10],[
 	        function buildAxis() {
 	            xAxis = d3Axis.axisBottom(xScale);
 	
-	            yAxis = d3Axis.axisLeft(yScale).ticks(numOfVerticalTicks).tickPadding(yTickPadding).tickFormat(yAxisTickFormat);
+	            yAxis = d3Axis.axisLeft(yScale).ticks(yTicks).tickPadding(yTickPadding).tickFormat(yAxisTickFormat);
 	        }
 	
 	        /**
@@ -9805,12 +9808,12 @@ webpackJsonp([9,10],[
 	                return yScale(value);
 	            }).attr('width', xScale.bandwidth()).attr('height', function (d) {
 	                return chartHeight - yScale(d.value);
-	            }).on('mouseover', function () {
-	                dispatcher.call('customMouseOver', this);
+	            }).on('mouseover', function (d) {
+	                handleMouseOver(this, d, chartWidth, chartHeight);
 	            }).on('mousemove', function (d) {
-	                dispatcher.call('customMouseMove', this, d, d3Selection.mouse(this), [chartWidth, chartHeight]);
-	            }).on('mouseout', function () {
-	                dispatcher.call('customMouseOut', this);
+	                handleMouseMove(this, d, chartWidth, chartHeight);
+	            }).on('mouseout', function (d) {
+	                handleMouseOut(this, d, chartWidth, chartHeight);
 	            }).merge(steps).transition().ease(ease).attr('x', function (_ref4) {
 	                var key = _ref4.key;
 	                return xScale(key);
@@ -9829,7 +9832,7 @@ webpackJsonp([9,10],[
 	         * @return void
 	         */
 	        function drawGridLines() {
-	            maskGridLines = svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(yScale.ticks(numOfVerticalTicks)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', xAxisPadding.left).attr('x2', chartWidth).attr('y1', function (d) {
+	            maskGridLines = svg.select('.grid-lines-group').selectAll('line.horizontal-grid-line').data(yScale.ticks(yTicks)).enter().append('line').attr('class', 'horizontal-grid-line').attr('x1', xAxisPadding.left).attr('x2', chartWidth).attr('y1', function (d) {
 	                return yScale(d);
 	            }).attr('y2', function (d) {
 	                return yScale(d);
@@ -9837,6 +9840,35 @@ webpackJsonp([9,10],[
 	
 	            //draw a horizontal line to extend x-axis till the edges
 	            baseLine = svg.select('.grid-lines-group').selectAll('line.extended-x-line').data([0]).enter().append('line').attr('class', 'extended-x-line').attr('x1', xAxisPadding.left).attr('x2', chartWidth).attr('y1', height - margin.bottom - margin.top).attr('y2', height - margin.bottom - margin.top);
+	        }
+	
+	        // API
+	
+	        /**
+	         * Custom OnMouseOver event handler
+	         * @return {void}
+	         * @private
+	         */
+	        function handleMouseOver(e, d, chartWidth, chartHeight) {
+	            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+	        }
+	
+	        /**
+	         * Custom OnMouseMove event handler
+	         * @return {void}
+	         * @private
+	         */
+	        function handleMouseMove(e, d, chartWidth, chartHeight) {
+	            dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+	        }
+	
+	        /**
+	         * Custom OnMouseOver event handler
+	         * @return {void}
+	         * @private
+	         */
+	        function handleMouseOut(e, d, chartWidth, chartHeight) {
+	            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
 	        }
 	
 	        /**
@@ -9850,7 +9882,7 @@ webpackJsonp([9,10],[
 	        /**
 	         * Gets or Sets the margin of the chart
 	         * @param  {object} _x Margin object to get/set
-	         * @return { margin | module} Current margin or Step Chart module to chain calls
+	         * @return { margin | module} Current margin or Chart module to chain calls
 	         * @public
 	         */
 	        exports.margin = function (_x) {
@@ -9862,100 +9894,31 @@ webpackJsonp([9,10],[
 	        };
 	
 	        /**
-	         * Gets or Sets the width of the chart
-	         * @param  {number} _x Desired width for the graph
-	         * @return { width | module} Current width or step Chart module to chain calls
+	         * Gets or Sets the number of vertical ticks on the chart
+	         * (Default is 6)
+	         * @param  {Number} _x          Desired number of vertical ticks for the graph
+	         * @return {Number | module}    Current yTicks or Chart module to chain calls
 	         * @public
 	         */
-	        exports.width = function (_x) {
+	        exports.yTicks = function (_x) {
 	            if (!arguments.length) {
-	                return width;
+	                return yTicks;
 	            }
-	            width = _x;
+	            yTicks = _x;
 	            return this;
 	        };
 	
 	        /**
-	         * Gets or Sets the height of the chart
-	         * @param  {number} _x Desired width for the graph
-	         * @return { height | module} Current height or Step Chart module to chain calls
-	         * @public
-	         */
+	          * Gets or Sets the height of the chart
+	          * @param  {number} _x Desired width for the graph
+	          * @return { height | module} Current height or Chart module to chain calls
+	          * @public
+	          */
 	        exports.height = function (_x) {
 	            if (!arguments.length) {
 	                return height;
 	            }
 	            height = _x;
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the number of vertical ticks on the chart
-	         * @param  {number} _x Desired width for the graph
-	         * @return { height | module} Current height or Step Chart module to chain calls
-	         * @public
-	         */
-	        exports.numOfVerticalTicks = function (_x) {
-	            if (!arguments.length) {
-	                return numOfVerticalTicks;
-	            }
-	            numOfVerticalTicks = _x;
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the text of the xAxisLabel on the chart
-	         * @param  {text} _x Desired text for the label
-	         * @return { text | module} label or Step Chart module to chain calls
-	         * @public
-	         */
-	        exports.xAxisLabel = function (_x) {
-	            if (!arguments.length) {
-	                return xAxisLabel;
-	            }
-	            xAxisLabel = _x;
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the offset of the xAxisLabel on the chart
-	         * @param  {integer} _x Desired offset for the label
-	         * @return { integer | module} label or Step Chart module to chain calls
-	         * @public
-	         */
-	        exports.xAxisLabelOffset = function (_x) {
-	            if (!arguments.length) {
-	                return xAxisLabelOffset;
-	            }
-	            xAxisLabelOffset = _x;
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the text of the yAxisLabel on the chart
-	         * @param  {text} _x Desired text for the label
-	         * @return { text | module} label or Step Chart module to chain calls
-	         * @public
-	         */
-	        exports.yAxisLabel = function (_x) {
-	            if (!arguments.length) {
-	                return yAxisLabel;
-	            }
-	            yAxisLabel = _x;
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the offset of the yAxisLabel on the chart
-	         * @param  {integer} _x Desired offset for the label
-	         * @return { integer | module} label or Step Chart module to chain calls
-	         * @public
-	         */
-	        exports.yAxisLabelOffset = function (_x) {
-	            if (!arguments.length) {
-	                return yAxisLabelOffset;
-	            }
-	            yAxisLabelOffset = _x;
 	            return this;
 	        };
 	
@@ -9974,11 +9937,73 @@ webpackJsonp([9,10],[
 	        };
 	
 	        /**
-	         * Chart exported to png and a download action is fired
+	         * Gets or Sets the width of the chart
+	         * @param  {number} _x Desired width for the graph
+	         * @return { width | module} Current width or Chart module to chain calls
 	         * @public
 	         */
-	        exports.exportChart = function (filename, title) {
-	            exportChart.call(exports, svg, filename, title);
+	        exports.width = function (_x) {
+	            if (!arguments.length) {
+	                return width;
+	            }
+	            width = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the text of the xAxisLabel on the chart
+	         * @param  {text} _x Desired text for the label
+	         * @return { text | module} label or Chart module to chain calls
+	         * @public
+	         */
+	        exports.xAxisLabel = function (_x) {
+	            if (!arguments.length) {
+	                return xAxisLabel;
+	            }
+	            xAxisLabel = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the offset of the xAxisLabel on the chart
+	         * @param  {integer} _x Desired offset for the label
+	         * @return { integer | module} label or Chart module to chain calls
+	         * @public
+	         */
+	        exports.xAxisLabelOffset = function (_x) {
+	            if (!arguments.length) {
+	                return xAxisLabelOffset;
+	            }
+	            xAxisLabelOffset = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the text of the yAxisLabel on the chart
+	         * @param  {text} _x Desired text for the label
+	         * @return { text | module} label or Chart module to chain calls
+	         * @public
+	         */
+	        exports.yAxisLabel = function (_x) {
+	            if (!arguments.length) {
+	                return yAxisLabel;
+	            }
+	            yAxisLabel = _x;
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the offset of the yAxisLabel on the chart
+	         * @param  {integer} _x Desired offset for the label
+	         * @return { integer | module} label or Chart module to chain calls
+	         * @public
+	         */
+	        exports.yAxisLabelOffset = function (_x) {
+	            if (!arguments.length) {
+	                return yAxisLabelOffset;
+	            }
+	            yAxisLabelOffset = _x;
+	            return this;
 	        };
 	
 	        return exports;

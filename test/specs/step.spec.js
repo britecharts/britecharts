@@ -86,16 +86,16 @@ define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, 
                 expect(newHeight).toBe(testHeight);
             });
 
-            it('should provide numOfVerticalTicks getter and setter', () => {
-                let defaultNumOfVerticalTicks = stepChart.numOfVerticalTicks(),
-                    testNumOfVerticalTicks = 20,
-                    newNumOfVerticalTicks;
+            it('should provide yTicks getter and setter', () => {
+                let previous = stepChart.yTicks(),
+                    expected = 20,
+                    actual;
 
-                stepChart.numOfVerticalTicks(testNumOfVerticalTicks);
-                newNumOfVerticalTicks = stepChart.numOfVerticalTicks();
+                stepChart.yTicks(expected);
+                actual = stepChart.yTicks();
 
-                expect(defaultNumOfVerticalTicks).not.toBe(newNumOfVerticalTicks);
-                expect(newNumOfVerticalTicks).toBe(testNumOfVerticalTicks);
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
             });
 
             it('should provide width getter and setter', () => {

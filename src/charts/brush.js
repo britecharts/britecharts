@@ -7,6 +7,7 @@ define(function(require) {
     const d3Ease = require('d3-ease');
     const d3Scale = require('d3-scale');
     const d3Shape = require('d3-shape');
+    const d3Dispatch = require('d3-dispatch');
     const d3Selection = require('d3-selection');
     const d3Time = require('d3-time');
     const d3Transition = require('d3-transition');
@@ -82,9 +83,9 @@ define(function(require) {
             xScale, yScale,
             xAxis,
 
-            forceAxisSettings = null,
-            forcedXTicks = null,
-            forcedXFormat = null,
+            xAxisFormat = null,
+            xTicks = null,
+            xAxisCustomFormat = null,
 
             brush,
             chartBrush,
@@ -92,9 +93,11 @@ define(function(require) {
 
             tickPadding = 5,
 
-            onBrush = null,
+            gradient = colorHelper.colorGradients.greenBlue,
 
-            gradient = colorHelper.colorGradients.greenBlueGradient,
+            // Dispatcher object to broadcast the mouse events
+            // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
+            dispatcher = d3Dispatch.dispatch('customBrushStart', 'customBrushEnd'),
 
             // extractors
             getValue = ({value}) => value,
@@ -132,13 +135,13 @@ define(function(require) {
         function buildAxis(){
             let minor, major;
 
-            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
                 minor = {
-                    tick: forcedXTicks,
-                    format: d3TimeFormat.timeFormat(forcedXFormat)
+                    tick: xTicks,
+                    format: d3TimeFormat.timeFormat(xAxisCustomFormat)
                 };
             } else {
-                ({minor, major} = timeAxisHelper.getXAxisSettings(data, width, forceAxisSettings));
+                ({minor, major} = timeAxisHelper.getXAxisSettings(data, width, xAxisFormat));
             }
 
             xAxis = d3Axis.axisBottom(xScale)
@@ -155,8 +158,8 @@ define(function(require) {
         function buildBrush() {
             brush = d3Brush.brushX()
                 .extent([[0, 0], [chartWidth, chartHeight]])
-                .on('brush', handleBrush)
-                .on('end', handleBrushEnded);
+                .on('brush', handleBrushStart)
+                .on('end', handleBrushEnd);
         }
 
         /**
@@ -317,7 +320,7 @@ define(function(require) {
          * @return {void}
          */
         function drawHandles() {
-            let handleFillColor = colorHelper.colorSchemasHuman.britechartsGreySchema[1];
+            let handleFillColor = colorHelper.colorSchemasHuman.grey[1];
 
             // Styling
             handle = chartBrush
@@ -326,19 +329,16 @@ define(function(require) {
         }
 
         /**
-         * When a brush event happens, we can extract info from the extension
+         * When a brush event starts, we can extract info from the extension
          * of the brush.
          *
          * @return {void}
          */
-        function handleBrush() {
+        function handleBrushStart() {
             let s = d3Selection.event.selection,
                 dateExtent = s.map(xScale.invert);
 
-            if (typeof onBrush === 'function') {
-                onBrush.call(null, dateExtent);
-            }
-
+            dispatcher.call('customBrushStart', this, dateExtent);
             // updateHandlers(dateExtent);
         }
 
@@ -348,22 +348,25 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleBrushEnded() {
+        function handleBrushEnd() {
             if (!d3Selection.event.sourceEvent) return; // Only transition after input.
             if (!d3Selection.event.selection) return; // Ignore empty selections.
 
-            let d0 = d3Selection.event.selection.map(xScale.invert),
-                d1 = d0.map(d3Time.timeDay.round);
+            let s = d3Selection.event.selection,
+                dateExtent = s.map(xScale.invert),
+                dateExtentRounded = dateExtent.map(d3Time.timeDay.round);
 
             // If empty when rounded, use floor & ceil instead.
-            if (d1[0] >= d1[1]) {
-                d1[0] = d3Time.timeDay.floor(d0[0]);
-                d1[1] = d3Time.timeDay.offset(d1[0]);
+            if (dateExtentRounded[0] >= dateExtentRounded[1]) {
+                dateExtentRounded[0] = d3Time.timeDay.floor(dateExtent[0]);
+                dateExtentRounded[1] = d3Time.timeDay.offset(dateExtentRounded[0]);
             }
 
             d3Selection.select(this)
                 .transition()
-                .call(d3Selection.event.target.move, d1.map(xScale));
+                .call(d3Selection.event.target.move, dateExtentRounded.map(xScale));
+
+            dispatcher.call('customBrushEnd', this, dateExtentRounded);
         }
 
         /**
@@ -400,7 +403,7 @@ define(function(require) {
          * @return {void}
          */
         function updateHandlers(dateExtent) {
-            if (dateExtent == null) {
+            if (dateExtent === null) {
                 handle.attr('display', 'none');
             } else {
                 handle
@@ -412,6 +415,14 @@ define(function(require) {
         }
 
         // API
+
+        /**
+         * Exposes the constants to be used to force the x axis to respect a certain granularity
+         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+         * @example
+         *     brush.xAxisCustomFormat(brush.axisTimeCombinations.HOUR_DAY)
+         */
+        exports.axisTimeCombinations = axisTimeCombinations;
 
         /**
          * Gets or Sets the dateRange for the selected part of the brush
@@ -433,65 +444,9 @@ define(function(require) {
         };
 
         /**
-         * Exposes the ability to force the chart to show a certain x axis grouping
-         * @param  {String} _x Desired format
-         * @return { (String|Module) }    Current format or module to chain calls
-         * @example
-         *     brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
-         */
-        exports.forceAxisFormat = function(_x) {
-            if (!arguments.length) {
-              return forceAxisSettings;
-            }
-            forceAxisSettings = _x;
-
-            return this;
-        };
-
-        /**
-         * Exposes the ability to force the chart to show a certain x format
-         * It requires a `forceAxisFormat` of 'custom' in order to work.
-         * @param  {String} _x              Desired format for x axis
-         * @return { (String|Module) }      Current format or module to chain calls
-         */
-        exports.forcedXFormat = function(_x) {
-            if (!arguments.length) {
-              return forcedXFormat;
-            }
-            forcedXFormat = _x;
-
-            return this;
-        };
-
-        /**
-         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
-         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
-         * how many and where the ticks will appear.
-         *
-         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
-         * @return { (Number|Module) }      Current number or ticks or module to chain calls
-         */
-        exports.forcedXTicks = function(_x) {
-            if (!arguments.length) {
-              return forcedXTicks;
-            }
-            forcedXTicks = _x;
-
-            return this;
-        };
-
-        /**
-         * Exposes the constants to be used to force the x axis to respect a certain granularity
-         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
-         * @example
-         *     brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
-         */
-        exports.axisTimeCombinations = axisTimeCombinations;
-
-        /**
          * Gets or Sets the gradient of the chart
-         * @param  {String[]} _x Desired gradient for the graph
-         * @return { gradient | module} Current gradient or Chart module to chain calls
+         * @param  {String[]} _x        Desired gradient for the graph
+         * @return {String | Module}    Current gradient or Chart module to chain calls
          * @public
          */
         exports.gradient = function(_x) {
@@ -505,8 +460,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the height of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { height | module} Current height or Chart module to chain calls
+         * @param  {Number} _x          Desired width for the graph
+         * @return {Number | Module}    Current height or Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -520,8 +475,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the margin of the chart
-         * @param  {object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Chart module to chain calls
+         * @param  {Object} _x          Margin object to get/set
+         * @return {Object | Module}    Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -534,21 +489,23 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the callback that will be called when the user brushes over the area
-         * @param  {Function} _x Callback to call
-         * @return {Function | module}    Current callback function or the Chart Module
+         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+         * We are going to expose this events:
+         * customMouseOver, customMouseMove and customMouseOut
+         *
+         * @return {module} Bar Chart
+         * @public
          */
-        exports.onBrush = function(_x) {
-            if (!arguments.length) return onBrush;
-            onBrush = _x;
+        exports.on = function() {
+            let value = dispatcher.on.apply(dispatcher, arguments);
 
-            return this;
+            return value === dispatcher ? exports : value;
         };
 
         /**
          * Gets or Sets the width of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { width | module} Current width or Chart module to chain calls
+         * @param  {Number} _x          Desired width for the graph
+         * @return {Number | Module}    Current width or Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
@@ -556,6 +513,54 @@ define(function(require) {
                 return width;
             }
             width = _x;
+
+            return this;
+        };
+
+        /**
+         * Exposes the ability to force the chart to show a certain x format
+         * It requires a `xAxisFormat` of 'custom' in order to work.
+         * @param  {String} _x              Desired format for x axis
+         * @return {String | Module}        Current format or module to chain calls
+         */
+        exports.xAxisCustomFormat = function(_x) {
+            if (!arguments.length) {
+              return xAxisCustomFormat;
+            }
+            xAxisCustomFormat = _x;
+
+            return this;
+        };
+
+        /**
+         * Exposes the ability to force the chart to show a certain x axis grouping
+         * @param  {String} _x          Desired format
+         * @return {String | Module}    Current format or module to chain calls
+         * @example
+         *     brush.xAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
+         */
+        exports.xAxisFormat = function(_x) {
+            if (!arguments.length) {
+              return xAxisFormat;
+            }
+            xAxisFormat = _x;
+
+            return this;
+        };
+
+        /**
+         * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisCustomFormat` of 'custom' in order to work.
+         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
+         * how many and where the ticks will appear.
+         *
+         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
+         * @return {Number | Module}        Current number or ticks or module to chain calls
+         */
+        exports.xTicks = function(_x) {
+            if (!arguments.length) {
+              return xTicks;
+            }
+            xTicks = _x;
 
             return this;
         };

@@ -22,7 +22,7 @@ container.datum(dataset.data).call(stackedArea);
 chartTooltip
     .topicLabel('values')
     .title('Testing tooltip')
-    .forceOrder(['Organizer Channels', 'Eventbrite Channels']);
+    .topicsOrder(['Organizer Channels', 'Eventbrite Channels']);
 
 tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
 tooltipContainer.datum([]).call(chartTooltip);
@@ -52,9 +52,9 @@ stackedArea
     .tooltipThreshold(600)
     .aspectRatio(0.6)
     .grid('full')
-    .forceAxisFormat('custom')
-    .forcedXFormat('%Y/%m/%d')
-    .forcedXTicks(2)
+    .xAxisFormat('custom')
+    .xAxisCustomFormat('%Y/%m/%d')
+    .xTicks(2)
     .width(containerWidth)
     .dateLabel('date')
     .valueLabel('views')

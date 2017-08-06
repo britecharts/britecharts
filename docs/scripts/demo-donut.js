@@ -72,7 +72,7 @@ webpackJsonp([2,10],[
 	    if (containerWidth) {
 	        d3Selection.select('.js-inline-legend-chart-container .britechart-legend').remove();
 	
-	        legendChart.horizontal(true).width(containerWidth * 0.6).markerSize(8).height(40);
+	        legendChart.isHorizontal(true).width(containerWidth * 0.6).markerSize(8).height(40);
 	
 	        if (optionalColorSchema) {
 	            legendChart.colorSchema(optionalColorSchema);
@@ -6872,6 +6872,7 @@ webpackJsonp([2,10],[
 	
 	    /**
 	     * Wraps a selection of text within the available width
+	     * @param  {Number} xOffset        X axis offset for the text
 	     * @param  {Number} fontSize       Size of the base font
 	     * @param  {Number} availableWidth Width of the container where the text needs to wrap on
 	     * @param  {D3Selection} node      SVG text element that contains the text to wrap
@@ -6880,7 +6881,7 @@ webpackJsonp([2,10],[
 	     * More discussions on https://github.com/mbostock/d3/issues/1642
 	     * @return {void}
 	     */
-	    var wrapText = function wrapText(xOffset, fontSize, availableWidth, node, data, i) {
+	    var wrapText = function wrapText(xOffset, fontSize, availableWidth, node) {
 	        var text = d3Selection.select(node),
 	            words = text.text().split(/\s+/).reverse(),
 	            word = void 0,
@@ -7063,8 +7064,9 @@ webpackJsonp([2,10],[
 	        d3svg.attr('version', 1.1).attr('xmlns', 'http://www.w3.org/2000/svg');
 	        var serializer = serializeWithStyles.initializeSerializer();
 	        var html = serializer(d3svg.node());
+	
 	        html = formatHtmlByBrowser(html);
-	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width')));
+	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width'), 10));
 	        html = addBackground(html);
 	
 	        return html;
@@ -7167,9 +7169,10 @@ webpackJsonp([2,10],[
 	        if (!title || !svgWidth) {
 	            return html;
 	        }
-	        var britechartsGreySchema = colorSchemas.britechartsGreySchema;
+	        var grey = colorSchemas.grey;
 	
-	        html = html.replace(/<g/, '<text x="' + this.margin().left + '" y="' + config.titleTopOffset + '" font-family="' + config.titleFontFamily + '" font-size="' + config.titleFontSize + '" fill="' + britechartsGreySchema[6] + '"> ' + title + ' </text><g ');
+	
+	        html = html.replace(/<g/, '<text x="' + this.margin().left + '" y="' + config.titleTopOffset + '" font-family="' + config.titleFontFamily + '" font-size="' + config.titleFontSize + '" fill="' + grey[6] + '"> ' + title + ' </text><g ');
 	
 	        return html;
 	    }
@@ -7188,18 +7191,18 @@ webpackJsonp([2,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
 	
 	    // Color Gradients
 	    var britechartGradients = {
-	        greenBlueGradient: ['#39C7EA', '#4CDCBA'],
-	        orangePinkGradient: ['#FBC670', '#F766B8'],
-	        bluePurpleGradient: ['#3DC3C9', '#824a9e']
+	        greenBlue: ['#39C7EA', '#4CDCBA'],
+	        orangePink: ['#FBC670', '#F766B8'],
+	        bluePurple: ['#3DC3C9', '#824a9e']
 	    };
 	
 	    // Color Schemas
 	    // Standard Color Schema for Britecharts
-	    var britechartsColorSchema = ['#6aedc7', //green
+	    var britecharts = ['#6aedc7', //green
 	    '#39c2c9', //blue
 	    '#ffce00', //yellow
 	    '#ffa71a', //orange
@@ -7208,60 +7211,60 @@ webpackJsonp([2,10],[
 	    ];
 	
 	    // Grey Schema for Britecharts
-	    var britechartsGreySchema = ['#F8F8FA', '#EFF2F5', '#D2D6DF', '#C3C6CF', '#ADB0B6', '#666A73', '#45494E', '#363A43', '#282C35'];
+	    var grey = ['#F8F8FA', '#EFF2F5', '#D2D6DF', '#C3C6CF', '#ADB0B6', '#666A73', '#45494E', '#363A43', '#282C35'];
 	
-	    // Extended Orange Palette
-	    var extendedOrangeColorSchema = ['#fcc870', '#ffa71a', '#fb8825', '#f6682f', '#db5a2c', '#bf4c28', '#a43b1c', '#892a10', '#f9e9c5'];
-	    // Extended Blue Palette
-	    var extendedBlueColorSchema = ['#ccf7f6', '#70e4e0', '#00d8d2', '#00acaf', '#007f8c', '#005e66', '#003c3f', '#002d2f', '#0d2223'];
-	    // Extended LightBlue Palette
-	    var extendedLightBlueColorSchema = ['#ccfffe', '#94f7f4', '#00fff8', '#1de1e1', '#39c2c9', '#2e9a9d', '#227270', '#1a5957', '#133f3e'];
-	    // Extended Green Palette
-	    var extendedGreenColorSchema = ['#edfff7', '#d7ffef', '#c0ffe7', '#95f5d7', '#6aedc7', '#59c3a3', '#479980', '#34816a', '#206953'];
-	    // Extended Yellow Palette
-	    var extendedYellowColorSchema = ['#f9f2b3', '#fbe986', '#fce05a', '#fed72d', '#ffce00', '#fcc11c', '#f9b438', '#eda629', '#e09819'];
-	    // Extended Pink Palette
-	    var extendedPinkColorSchema = ['#fdd1ea', '#fb9cd2', '#f866b9', '#fc40b6', '#ff1ab3', '#e3239d', '#c62c86', '#a62073', '#85135f'];
-	    // Extended Purple Palette
-	    var extendedPurpleColorSchema = ['#ddd6fc', '#bbb1f0', '#998ce3', '#8e6bc1', '#824a9e', '#77337f', '#6b1c60', '#591650', '#470f3f'];
-	    // Extended Red Palette
-	    var extendedRedColorSchema = ['#ffd8d4', '#ffb5b0', '#ff938c', '#ff766c', '#ff584c', '#f04b42', '#e03d38', '#be2e29', '#9c1e19'];
+	    // Orange Palette
+	    var orange = ['#fcc870', '#ffa71a', '#fb8825', '#f6682f', '#db5a2c', '#bf4c28', '#a43b1c', '#892a10', '#f9e9c5'];
+	    // Blue Palette
+	    var blueGreen = ['#ccf7f6', '#70e4e0', '#00d8d2', '#00acaf', '#007f8c', '#005e66', '#003c3f', '#002d2f', '#0d2223'];
+	    // LightBlue Palette
+	    var teal = ['#ccfffe', '#94f7f4', '#00fff8', '#1de1e1', '#39c2c9', '#2e9a9d', '#227270', '#1a5957', '#133f3e'];
+	    // Green Palette
+	    var green = ['#edfff7', '#d7ffef', '#c0ffe7', '#95f5d7', '#6aedc7', '#59c3a3', '#479980', '#34816a', '#206953'];
+	    // Yellow Palette
+	    var yellow = ['#f9f2b3', '#fbe986', '#fce05a', '#fed72d', '#ffce00', '#fcc11c', '#f9b438', '#eda629', '#e09819'];
+	    // Pink Palette
+	    var pink = ['#fdd1ea', '#fb9cd2', '#f866b9', '#fc40b6', '#ff1ab3', '#e3239d', '#c62c86', '#a62073', '#85135f'];
+	    // Purple Palette
+	    var purple = ['#ddd6fc', '#bbb1f0', '#998ce3', '#8e6bc1', '#824a9e', '#77337f', '#6b1c60', '#591650', '#470f3f'];
+	    // Red Palette
+	    var red = ['#ffd8d4', '#ffb5b0', '#ff938c', '#ff766c', '#ff584c', '#f04b42', '#e03d38', '#be2e29', '#9c1e19'];
 	
 	    var aloeGreen = ['#7bdcc0'];
 	
 	    return {
 	        colorSchemas: {
-	            britechartsColorSchema: britechartsColorSchema,
-	            britechartsGreySchema: britechartsGreySchema,
-	            extendedOrangeColorSchema: extendedOrangeColorSchema,
-	            extendedBlueColorSchema: extendedBlueColorSchema,
-	            extendedLightBlueColorSchema: extendedLightBlueColorSchema,
-	            extendedGreenColorSchema: extendedGreenColorSchema,
-	            extendedYellowColorSchema: extendedYellowColorSchema,
-	            extendedPinkColorSchema: extendedPinkColorSchema,
-	            extendedPurpleColorSchema: extendedPurpleColorSchema,
-	            extendedRedColorSchema: extendedRedColorSchema
+	            britecharts: britecharts,
+	            grey: grey,
+	            orange: orange,
+	            blueGreen: blueGreen,
+	            teal: teal,
+	            green: green,
+	            yellow: yellow,
+	            pink: pink,
+	            purple: purple,
+	            red: red
 	        },
 	        colorSchemasHuman: {
-	            'britechartsColorSchema': 'Britecharts Default',
-	            'britechartsGreySchema': 'Britecharts Grey',
-	            'extendedOrangeColorSchema': 'Orange',
-	            'extendedBlueColorSchema': 'Blue',
-	            'extendedLightBlueColorSchema': 'Light Blue',
-	            'extendedGreenColorSchema': 'Green',
-	            'extendedYellowColorSchema': 'Yellow',
-	            'extendedPinkColorSchema': 'Pink',
-	            'extendedPurpleColorSchema': 'Purple',
-	            'extendedRedColorSchema': 'Red'
+	            'britecharts': 'Britecharts Default',
+	            'grey': 'Britecharts Grey',
+	            'orange': 'Orange',
+	            'blueGreen': 'Blue',
+	            'teal': 'Light Blue',
+	            'green': 'Green',
+	            'yellow': 'Yellow',
+	            'pink': 'Pink',
+	            'purple': 'Purple',
+	            'red': 'Red'
 	        },
 	        singleColors: {
 	            aloeGreen: aloeGreen
 	        },
 	        colorGradients: britechartGradients,
 	        colorGradientsHuman: {
-	            greenBlueGradient: 'Green To Blue',
-	            orangePinkGradient: 'Orange to Pink',
-	            bluePurpleGradient: 'Blue to Purple'
+	            greenBlue: 'Green To Blue',
+	            orangePink: 'Orange to Pink',
+	            bluePurple: 'Blue to Purple'
 	        }
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -7272,7 +7275,8 @@ webpackJsonp([2,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	
 	    var axisTimeCombinations = {
 	        MINUTE_HOUR: 'minute-hour',
 	        HOUR_DAY: 'hour-daymonth',
@@ -7357,7 +7361,8 @@ webpackJsonp([2,10],[
 	                    result = void 0;
 	
 	                if (!elem || elem.nodeType !== Node.ELEMENT_NODE) {
-	                    console.error('Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE');
+	                    // 'Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE'
+	
 	                    return;
 	                }
 	
@@ -11361,7 +11366,7 @@ webpackJsonp([2,10],[
 	
 	        // colors
 	        colorScale = void 0,
-	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+	            colorSchema = colorHelper.colorSchemas.britecharts,
 	
 	
 	        // utils
@@ -11538,9 +11543,21 @@ webpackJsonp([2,10],[
 	                var newSlices = slices.enter().append('g').each(storeAngle).each(reduceOuterRadius).classed('arc', true);
 	
 	                if (isAnimated) {
-	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
+	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).on('mouseover', function (d) {
+	                        handleMouseOver(this, d, chartWidth, chartHeight);
+	                    }).on('mousemove', function (d) {
+	                        handleMouseMove(this, d, chartWidth, chartHeight);
+	                    }).on('mouseout', function (d) {
+	                        handleMouseOut(this, d, chartWidth, chartHeight);
+	                    }).transition().ease(ease).duration(pieDrawingTransitionDuration).attrTween('d', tweenLoading);
 	                } else {
-	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', handleMouseOver).on('mouseout', handleMouseOut);
+	                    newSlices.merge(slices).append('path').attr('fill', getSliceFill).attr('d', shape).on('mouseover', function (d) {
+	                        handleMouseOver(this, d, chartWidth, chartHeight);
+	                    }).on('mousemove', function (d) {
+	                        handleMouseMove(this, d, chartWidth, chartHeight);
+	                    }).on('mouseout', function (d) {
+	                        handleMouseOut(this, d, chartWidth, chartHeight);
+	                    });
 	                }
 	            } else {
 	                slices = svg.select('.chart-group').selectAll('path').data(layout(data));
@@ -11571,14 +11588,23 @@ webpackJsonp([2,10],[
 	         * @return {void}
 	         * @private
 	         */
-	        function handleMouseOver(datum) {
-	            drawLegend(datum);
-	            dispatcher.call('customMouseOver', this, datum);
+	        function handleMouseOver(e, d, chartWidth, chartHeight) {
+	            drawLegend(d);
+	            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
 	
-	            if (highlightedSlice && this !== highlightedSlice) {
+	            if (highlightedSlice && e !== highlightedSlice) {
 	                tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
 	            }
-	            tweenGrowth(this, externalRadius);
+	            tweenGrowth(e, externalRadius);
+	        }
+	
+	        /**
+	         * Handles a path mouse move
+	         * @return {void}
+	         * @private
+	         */
+	        function handleMouseMove(e, d, chartWidth, chartHeight) {
+	            dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
 	        }
 	
 	        /**
@@ -11586,18 +11612,18 @@ webpackJsonp([2,10],[
 	         * @return {void}
 	         * @private
 	         */
-	        function handleMouseOut() {
+	        function handleMouseOut(e, d, chartWidth, chartHeight) {
 	            if (highlightedSlice && hasFixedHighlightedSlice) {
 	                drawLegend(highlightedSlice.__data__);
 	            } else {
 	                cleanLegend();
 	            }
-	            dispatcher.call('customMouseOut', this);
+	            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
 	
-	            if (highlightedSlice && hasFixedHighlightedSlice && this !== highlightedSlice) {
+	            if (highlightedSlice && hasFixedHighlightedSlice && e !== highlightedSlice) {
 	                tweenGrowth(highlightedSlice, externalRadius);
 	            }
-	            tweenGrowth(this, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+	            tweenGrowth(e, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
 	        }
 	
 	        /**
@@ -11975,12 +12001,12 @@ webpackJsonp([2,10],[
 	            numberLetterSpacing = 0.8,
 	            numberFormat = 's',
 	            isFadedClassName = 'is-faded',
-	            horizontal = false,
+	            isHorizontal = false,
 	
 	
 	        // colors
 	        colorScale = void 0,
-	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+	            colorSchema = colorHelper.colorSchemas.britecharts,
 	            getId = function getId(_ref) {
 	            var id = _ref.id;
 	            return id;
@@ -12017,7 +12043,7 @@ webpackJsonp([2,10],[
 	
 	                buildColorScale();
 	                buildSVG(this);
-	                if (horizontal) {
+	                if (isHorizontal) {
 	                    drawHorizontalLegend();
 	                } else {
 	                    drawVerticalLegend();
@@ -12111,11 +12137,13 @@ webpackJsonp([2,10],[
 	            entries = svg.select('.legend-line').selectAll('g.legend-entry').data(data);
 	
 	            // Enter
-	            entries.enter().append('g').classed('legend-entry', true).attr('data-item', getId).attr('transform', function (d, i) {
+	            entries.enter().append('g').classed('legend-entry', true).attr('data-item', getId).attr('transform', function (_ref5) {
+	                var name = _ref5.name;
+	
 	                var horizontalOffset = xOffset,
 	                    lineHeight = chartHeight / 2,
 	                    verticalOffset = lineHeight,
-	                    labelWidth = textHelper.getTextWidth(d.name, textSize);
+	                    labelWidth = textHelper.getTextWidth(name, textSize);
 	
 	                xOffset += markerSize + 2 * getLineElementMargin() + labelWidth;
 	
@@ -12183,10 +12211,9 @@ webpackJsonp([2,10],[
 	            var legendEntries = svg.selectAll('.legend-entry');
 	            var numberOfEntries = legendEntries.size();
 	            var lineHeight = chartHeight / 2 * 1.7;
-	
 	            var newLine = svg.select('.legend-group').append('g').classed('legend-line', true).attr('transform', 'translate(0, ' + lineHeight + ')');
-	
 	            var lastEntry = legendEntries.filter(':nth-child(' + numberOfEntries + ')');
+	
 	            lastEntry.attr('transform', 'translate(' + markerSize + ',0)');
 	            newLine.append(function () {
 	                return lastEntry.node();
@@ -12242,14 +12269,30 @@ webpackJsonp([2,10],[
 	        /**
 	         * Gets or Sets the horizontal mode on the legend
 	         * @param  {boolean} _x Desired horizontal mode for the graph
-	         * @return {horizontal | module} Current horizontal mode or Legend module to chain calls
+	         * @return {ishorizontal | module} If it is horizontal or Legend module to chain calls
 	         * @public
+	         */
+	        exports.isHorizontal = function (_x) {
+	            if (!arguments.length) {
+	                return isHorizontal;
+	            }
+	            isHorizontal = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the horizontal direction of the chart
+	         * @param  {number} _x Desired horizontal direction for the chart
+	         * @return { isHorizontal | module} If it is horizontal or module to chain calls
+	         * @deprecated
 	         */
 	        exports.horizontal = function (_x) {
 	            if (!arguments.length) {
-	                return horizontal;
+	                return isHorizontal;
 	            }
-	            horizontal = _x;
+	            isHorizontal = _x;
+	            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
 	
 	            return this;
 	        };
@@ -12419,20 +12462,21 @@ webpackJsonp([2,10],[
 	     * @return {void}
 	     */
 	    function createColorSelector(selectContainerSelector, chartSelector, callback) {
-	        var colorKeys = Object.keys(colors.colorSchemas);
-	        var containerSelector = document.querySelector(selectContainerSelector);
+	        var colorKeys = Object.keys(colors.colorSchemas),
+	            containerSelector = document.querySelector(selectContainerSelector);
 	
 	        if (!containerSelector) {
 	            return;
 	        }
 	
 	        // Create Select
-	        var sel = document.createElement("select");
+	        var sel = document.createElement('select');
+	
 	        sel.className += ' ' + selectClass;
 	
 	        // And fill with options
-	        colorKeys.forEach(function (key, i) {
-	            var opt = document.createElement("option");
+	        colorKeys.forEach(function (key) {
+	            var opt = document.createElement('option');
 	
 	            opt.value = key;
 	            opt.text = colors.colorSchemasHuman[key];

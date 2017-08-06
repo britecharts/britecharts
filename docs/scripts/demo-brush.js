@@ -4,35 +4,37 @@ webpackJsonp([1,10],[
 
 	'use strict';
 	
-	var d3Selection = __webpack_require__(1),
-	    d3TimeFormat = __webpack_require__(14),
-	    PubSub = __webpack_require__(2),
-	    brush = __webpack_require__(30),
-	    dataBuilder = __webpack_require__(36);
-	__webpack_require__(29);
+	var d3Selection = __webpack_require__(1);
+	var d3TimeFormat = __webpack_require__(14);
+	var PubSub = __webpack_require__(2);
+	
+	var brush = __webpack_require__(30);
+	var dataBuilder = __webpack_require__(36);
 	
 	function createBrushChart() {
 	    var brushChart = brush(),
 	        testDataSet = new dataBuilder.BrushDataBuilder(),
 	        brushContainer = d3Selection.select('.js-brush-chart-container'),
 	        containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
-	        dataset;
+	        dataset = void 0;
 	
 	    if (containerWidth) {
 	        dataset = testDataSet.withSimpleData().build();
 	
-	        brushChart.width(containerWidth).height(125).onBrush(function (brushExtent) {
+	        brushChart.width(containerWidth).height(125).on('customBrushStart', function (brushExtent) {
 	            var format = d3TimeFormat.timeFormat('%m/%d/%Y');
 	
 	            d3Selection.select('.js-start-date').text(format(brushExtent[0]));
 	            d3Selection.select('.js-end-date').text(format(brushExtent[1]));
 	
 	            d3Selection.select('.js-date-range').classed('is-hidden', false);
+	        }).on('customBrushEnd', function (brushExtent) {
+	            console.log('rounded extent', brushExtent);
 	        });
 	
 	        brushContainer.datum(dataset).call(brushChart);
 	
-	        brushChart.dateRange(["9/15/2015", "1/25/2016"]);
+	        brushChart.dateRange(['9/15/2015', '1/25/2016']);
 	    }
 	}
 	
@@ -6968,18 +6970,18 @@ webpackJsonp([1,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
 	
 	    // Color Gradients
 	    var britechartGradients = {
-	        greenBlueGradient: ['#39C7EA', '#4CDCBA'],
-	        orangePinkGradient: ['#FBC670', '#F766B8'],
-	        bluePurpleGradient: ['#3DC3C9', '#824a9e']
+	        greenBlue: ['#39C7EA', '#4CDCBA'],
+	        orangePink: ['#FBC670', '#F766B8'],
+	        bluePurple: ['#3DC3C9', '#824a9e']
 	    };
 	
 	    // Color Schemas
 	    // Standard Color Schema for Britecharts
-	    var britechartsColorSchema = ['#6aedc7', //green
+	    var britecharts = ['#6aedc7', //green
 	    '#39c2c9', //blue
 	    '#ffce00', //yellow
 	    '#ffa71a', //orange
@@ -6988,60 +6990,60 @@ webpackJsonp([1,10],[
 	    ];
 	
 	    // Grey Schema for Britecharts
-	    var britechartsGreySchema = ['#F8F8FA', '#EFF2F5', '#D2D6DF', '#C3C6CF', '#ADB0B6', '#666A73', '#45494E', '#363A43', '#282C35'];
+	    var grey = ['#F8F8FA', '#EFF2F5', '#D2D6DF', '#C3C6CF', '#ADB0B6', '#666A73', '#45494E', '#363A43', '#282C35'];
 	
-	    // Extended Orange Palette
-	    var extendedOrangeColorSchema = ['#fcc870', '#ffa71a', '#fb8825', '#f6682f', '#db5a2c', '#bf4c28', '#a43b1c', '#892a10', '#f9e9c5'];
-	    // Extended Blue Palette
-	    var extendedBlueColorSchema = ['#ccf7f6', '#70e4e0', '#00d8d2', '#00acaf', '#007f8c', '#005e66', '#003c3f', '#002d2f', '#0d2223'];
-	    // Extended LightBlue Palette
-	    var extendedLightBlueColorSchema = ['#ccfffe', '#94f7f4', '#00fff8', '#1de1e1', '#39c2c9', '#2e9a9d', '#227270', '#1a5957', '#133f3e'];
-	    // Extended Green Palette
-	    var extendedGreenColorSchema = ['#edfff7', '#d7ffef', '#c0ffe7', '#95f5d7', '#6aedc7', '#59c3a3', '#479980', '#34816a', '#206953'];
-	    // Extended Yellow Palette
-	    var extendedYellowColorSchema = ['#f9f2b3', '#fbe986', '#fce05a', '#fed72d', '#ffce00', '#fcc11c', '#f9b438', '#eda629', '#e09819'];
-	    // Extended Pink Palette
-	    var extendedPinkColorSchema = ['#fdd1ea', '#fb9cd2', '#f866b9', '#fc40b6', '#ff1ab3', '#e3239d', '#c62c86', '#a62073', '#85135f'];
-	    // Extended Purple Palette
-	    var extendedPurpleColorSchema = ['#ddd6fc', '#bbb1f0', '#998ce3', '#8e6bc1', '#824a9e', '#77337f', '#6b1c60', '#591650', '#470f3f'];
-	    // Extended Red Palette
-	    var extendedRedColorSchema = ['#ffd8d4', '#ffb5b0', '#ff938c', '#ff766c', '#ff584c', '#f04b42', '#e03d38', '#be2e29', '#9c1e19'];
+	    // Orange Palette
+	    var orange = ['#fcc870', '#ffa71a', '#fb8825', '#f6682f', '#db5a2c', '#bf4c28', '#a43b1c', '#892a10', '#f9e9c5'];
+	    // Blue Palette
+	    var blueGreen = ['#ccf7f6', '#70e4e0', '#00d8d2', '#00acaf', '#007f8c', '#005e66', '#003c3f', '#002d2f', '#0d2223'];
+	    // LightBlue Palette
+	    var teal = ['#ccfffe', '#94f7f4', '#00fff8', '#1de1e1', '#39c2c9', '#2e9a9d', '#227270', '#1a5957', '#133f3e'];
+	    // Green Palette
+	    var green = ['#edfff7', '#d7ffef', '#c0ffe7', '#95f5d7', '#6aedc7', '#59c3a3', '#479980', '#34816a', '#206953'];
+	    // Yellow Palette
+	    var yellow = ['#f9f2b3', '#fbe986', '#fce05a', '#fed72d', '#ffce00', '#fcc11c', '#f9b438', '#eda629', '#e09819'];
+	    // Pink Palette
+	    var pink = ['#fdd1ea', '#fb9cd2', '#f866b9', '#fc40b6', '#ff1ab3', '#e3239d', '#c62c86', '#a62073', '#85135f'];
+	    // Purple Palette
+	    var purple = ['#ddd6fc', '#bbb1f0', '#998ce3', '#8e6bc1', '#824a9e', '#77337f', '#6b1c60', '#591650', '#470f3f'];
+	    // Red Palette
+	    var red = ['#ffd8d4', '#ffb5b0', '#ff938c', '#ff766c', '#ff584c', '#f04b42', '#e03d38', '#be2e29', '#9c1e19'];
 	
 	    var aloeGreen = ['#7bdcc0'];
 	
 	    return {
 	        colorSchemas: {
-	            britechartsColorSchema: britechartsColorSchema,
-	            britechartsGreySchema: britechartsGreySchema,
-	            extendedOrangeColorSchema: extendedOrangeColorSchema,
-	            extendedBlueColorSchema: extendedBlueColorSchema,
-	            extendedLightBlueColorSchema: extendedLightBlueColorSchema,
-	            extendedGreenColorSchema: extendedGreenColorSchema,
-	            extendedYellowColorSchema: extendedYellowColorSchema,
-	            extendedPinkColorSchema: extendedPinkColorSchema,
-	            extendedPurpleColorSchema: extendedPurpleColorSchema,
-	            extendedRedColorSchema: extendedRedColorSchema
+	            britecharts: britecharts,
+	            grey: grey,
+	            orange: orange,
+	            blueGreen: blueGreen,
+	            teal: teal,
+	            green: green,
+	            yellow: yellow,
+	            pink: pink,
+	            purple: purple,
+	            red: red
 	        },
 	        colorSchemasHuman: {
-	            'britechartsColorSchema': 'Britecharts Default',
-	            'britechartsGreySchema': 'Britecharts Grey',
-	            'extendedOrangeColorSchema': 'Orange',
-	            'extendedBlueColorSchema': 'Blue',
-	            'extendedLightBlueColorSchema': 'Light Blue',
-	            'extendedGreenColorSchema': 'Green',
-	            'extendedYellowColorSchema': 'Yellow',
-	            'extendedPinkColorSchema': 'Pink',
-	            'extendedPurpleColorSchema': 'Purple',
-	            'extendedRedColorSchema': 'Red'
+	            'britecharts': 'Britecharts Default',
+	            'grey': 'Britecharts Grey',
+	            'orange': 'Orange',
+	            'blueGreen': 'Blue',
+	            'teal': 'Light Blue',
+	            'green': 'Green',
+	            'yellow': 'Yellow',
+	            'pink': 'Pink',
+	            'purple': 'Purple',
+	            'red': 'Red'
 	        },
 	        singleColors: {
 	            aloeGreen: aloeGreen
 	        },
 	        colorGradients: britechartGradients,
 	        colorGradientsHuman: {
-	            greenBlueGradient: 'Green To Blue',
-	            orangePinkGradient: 'Orange to Pink',
-	            bluePurpleGradient: 'Blue to Purple'
+	            greenBlue: 'Green To Blue',
+	            orangePink: 'Orange to Pink',
+	            bluePurple: 'Blue to Purple'
 	        }
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -7052,7 +7054,8 @@ webpackJsonp([1,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	
 	    var axisTimeCombinations = {
 	        MINUTE_HOUR: 'minute-hour',
 	        HOUR_DAY: 'hour-daymonth',
@@ -8635,27 +8638,7 @@ webpackJsonp([1,10],[
 /***/ }),
 /* 27 */,
 /* 28 */,
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _ = __webpack_require__(26),
-	    d3Selection = __webpack_require__(1),
-	    PubSub = __webpack_require__(2),
-	    debounceDelay = 200,
-	    cachedWidth = window.innerWidth;
-	
-	d3Selection.select(window).on('resize', _.debounce(function () {
-	    var newWidth = window.innerWidth;
-	
-	    if (cachedWidth !== newWidth) {
-	        cachedWidth = newWidth;
-	        PubSub.publish('resize');
-	    }
-	}, debounceDelay));
-
-/***/ }),
+/* 29 */,
 /* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8672,6 +8655,7 @@ webpackJsonp([1,10],[
 	    var d3Ease = __webpack_require__(5);
 	    var d3Scale = __webpack_require__(10);
 	    var d3Shape = __webpack_require__(33);
+	    var d3Dispatch = __webpack_require__(8);
 	    var d3Selection = __webpack_require__(1);
 	    var d3Time = __webpack_require__(13);
 	    var d3Transition = __webpack_require__(15);
@@ -8744,15 +8728,19 @@ webpackJsonp([1,10],[
 	            xScale = void 0,
 	            yScale = void 0,
 	            xAxis = void 0,
-	            forceAxisSettings = null,
-	            forcedXTicks = null,
-	            forcedXFormat = null,
+	            xAxisFormat = null,
+	            xTicks = null,
+	            xAxisCustomFormat = null,
 	            brush = void 0,
 	            chartBrush = void 0,
 	            handle = void 0,
 	            tickPadding = 5,
-	            onBrush = null,
-	            gradient = colorHelper.colorGradients.greenBlueGradient,
+	            gradient = colorHelper.colorGradients.greenBlue,
+	
+	
+	        // Dispatcher object to broadcast the mouse events
+	        // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
+	        dispatcher = d3Dispatch.dispatch('customBrushStart', 'customBrushEnd'),
 	
 	
 	        // extractors
@@ -8797,13 +8785,13 @@ webpackJsonp([1,10],[
 	            var minor = void 0,
 	                major = void 0;
 	
-	            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+	            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
 	                minor = {
-	                    tick: forcedXTicks,
-	                    format: d3TimeFormat.timeFormat(forcedXFormat)
+	                    tick: xTicks,
+	                    format: d3TimeFormat.timeFormat(xAxisCustomFormat)
 	                };
 	            } else {
-	                var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(data, width, forceAxisSettings);
+	                var _timeAxisHelper$getXA = timeAxisHelper.getXAxisSettings(data, width, xAxisFormat);
 	
 	                minor = _timeAxisHelper$getXA.minor;
 	                major = _timeAxisHelper$getXA.major;
@@ -8817,7 +8805,7 @@ webpackJsonp([1,10],[
 	         * @return {void}
 	         */
 	        function buildBrush() {
-	            brush = d3Brush.brushX().extent([[0, 0], [chartWidth, chartHeight]]).on('brush', handleBrush).on('end', handleBrushEnded);
+	            brush = d3Brush.brushX().extent([[0, 0], [chartWidth, chartHeight]]).on('brush', handleBrushStart).on('end', handleBrushEnd);
 	        }
 	
 	        /**
@@ -8942,26 +8930,23 @@ webpackJsonp([1,10],[
 	         * @return {void}
 	         */
 	        function drawHandles() {
-	            var handleFillColor = colorHelper.colorSchemasHuman.britechartsGreySchema[1];
+	            var handleFillColor = colorHelper.colorSchemasHuman.grey[1];
 	
 	            // Styling
 	            handle = chartBrush.selectAll('.handle.brush-rect').style('fill', handleFillColor);
 	        }
 	
 	        /**
-	         * When a brush event happens, we can extract info from the extension
+	         * When a brush event starts, we can extract info from the extension
 	         * of the brush.
 	         *
 	         * @return {void}
 	         */
-	        function handleBrush() {
+	        function handleBrushStart() {
 	            var s = d3Selection.event.selection,
 	                dateExtent = s.map(xScale.invert);
 	
-	            if (typeof onBrush === 'function') {
-	                onBrush.call(null, dateExtent);
-	            }
-	
+	            dispatcher.call('customBrushStart', this, dateExtent);
 	            // updateHandlers(dateExtent);
 	        }
 	
@@ -8971,20 +8956,23 @@ webpackJsonp([1,10],[
 	         * @return {void}
 	         * @private
 	         */
-	        function handleBrushEnded() {
+	        function handleBrushEnd() {
 	            if (!d3Selection.event.sourceEvent) return; // Only transition after input.
 	            if (!d3Selection.event.selection) return; // Ignore empty selections.
 	
-	            var d0 = d3Selection.event.selection.map(xScale.invert),
-	                d1 = d0.map(d3Time.timeDay.round);
+	            var s = d3Selection.event.selection,
+	                dateExtent = s.map(xScale.invert),
+	                dateExtentRounded = dateExtent.map(d3Time.timeDay.round);
 	
 	            // If empty when rounded, use floor & ceil instead.
-	            if (d1[0] >= d1[1]) {
-	                d1[0] = d3Time.timeDay.floor(d0[0]);
-	                d1[1] = d3Time.timeDay.offset(d1[0]);
+	            if (dateExtentRounded[0] >= dateExtentRounded[1]) {
+	                dateExtentRounded[0] = d3Time.timeDay.floor(dateExtent[0]);
+	                dateExtentRounded[1] = d3Time.timeDay.offset(dateExtentRounded[0]);
 	            }
 	
-	            d3Selection.select(this).transition().call(d3Selection.event.target.move, d1.map(xScale));
+	            d3Selection.select(this).transition().call(d3Selection.event.target.move, dateExtentRounded.map(xScale));
+	
+	            dispatcher.call('customBrushEnd', this, dateExtentRounded);
 	        }
 	
 	        /**
@@ -9019,7 +9007,7 @@ webpackJsonp([1,10],[
 	         * @return {void}
 	         */
 	        function updateHandlers(dateExtent) {
-	            if (dateExtent == null) {
+	            if (dateExtent === null) {
 	                handle.attr('display', 'none');
 	            } else {
 	                handle.attr('display', null).attr('transform', function (d, i) {
@@ -9029,6 +9017,14 @@ webpackJsonp([1,10],[
 	        }
 	
 	        // API
+	
+	        /**
+	         * Exposes the constants to be used to force the x axis to respect a certain granularity
+	         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+	         * @example
+	         *     brush.xAxisCustomFormat(brush.axisTimeCombinations.HOUR_DAY)
+	         */
+	        exports.axisTimeCombinations = axisTimeCombinations;
 	
 	        /**
 	         * Gets or Sets the dateRange for the selected part of the brush
@@ -9050,65 +9046,9 @@ webpackJsonp([1,10],[
 	        };
 	
 	        /**
-	         * Exposes the ability to force the chart to show a certain x axis grouping
-	         * @param  {String} _x Desired format
-	         * @return { (String|Module) }    Current format or module to chain calls
-	         * @example
-	         *     brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
-	         */
-	        exports.forceAxisFormat = function (_x) {
-	            if (!arguments.length) {
-	                return forceAxisSettings;
-	            }
-	            forceAxisSettings = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the ability to force the chart to show a certain x format
-	         * It requires a `forceAxisFormat` of 'custom' in order to work.
-	         * @param  {String} _x              Desired format for x axis
-	         * @return { (String|Module) }      Current format or module to chain calls
-	         */
-	        exports.forcedXFormat = function (_x) {
-	            if (!arguments.length) {
-	                return forcedXFormat;
-	            }
-	            forcedXFormat = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
-	         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
-	         * how many and where the ticks will appear.
-	         *
-	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
-	         * @return { (Number|Module) }      Current number or ticks or module to chain calls
-	         */
-	        exports.forcedXTicks = function (_x) {
-	            if (!arguments.length) {
-	                return forcedXTicks;
-	            }
-	            forcedXTicks = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the constants to be used to force the x axis to respect a certain granularity
-	         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
-	         * @example
-	         *     brush.forceAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
-	         */
-	        exports.axisTimeCombinations = axisTimeCombinations;
-	
-	        /**
 	         * Gets or Sets the gradient of the chart
-	         * @param  {String[]} _x Desired gradient for the graph
-	         * @return { gradient | module} Current gradient or Chart module to chain calls
+	         * @param  {String[]} _x        Desired gradient for the graph
+	         * @return {String | Module}    Current gradient or Chart module to chain calls
 	         * @public
 	         */
 	        exports.gradient = function (_x) {
@@ -9122,8 +9062,8 @@ webpackJsonp([1,10],[
 	
 	        /**
 	         * Gets or Sets the height of the chart
-	         * @param  {number} _x Desired width for the graph
-	         * @return { height | module} Current height or Chart module to chain calls
+	         * @param  {Number} _x          Desired width for the graph
+	         * @return {Number | Module}    Current height or Chart module to chain calls
 	         * @public
 	         */
 	        exports.height = function (_x) {
@@ -9137,8 +9077,8 @@ webpackJsonp([1,10],[
 	
 	        /**
 	         * Gets or Sets the margin of the chart
-	         * @param  {object} _x Margin object to get/set
-	         * @return { margin | module} Current margin or Chart module to chain calls
+	         * @param  {Object} _x          Margin object to get/set
+	         * @return {Object | Module}    Current margin or Chart module to chain calls
 	         * @public
 	         */
 	        exports.margin = function (_x) {
@@ -9151,21 +9091,23 @@ webpackJsonp([1,10],[
 	        };
 	
 	        /**
-	         * Gets or Sets the callback that will be called when the user brushes over the area
-	         * @param  {Function} _x Callback to call
-	         * @return {Function | module}    Current callback function or the Chart Module
+	         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+	         * We are going to expose this events:
+	         * customMouseOver, customMouseMove and customMouseOut
+	         *
+	         * @return {module} Bar Chart
+	         * @public
 	         */
-	        exports.onBrush = function (_x) {
-	            if (!arguments.length) return onBrush;
-	            onBrush = _x;
+	        exports.on = function () {
+	            var value = dispatcher.on.apply(dispatcher, arguments);
 	
-	            return this;
+	            return value === dispatcher ? exports : value;
 	        };
 	
 	        /**
 	         * Gets or Sets the width of the chart
-	         * @param  {number} _x Desired width for the graph
-	         * @return { width | module} Current width or Chart module to chain calls
+	         * @param  {Number} _x          Desired width for the graph
+	         * @return {Number | Module}    Current width or Chart module to chain calls
 	         * @public
 	         */
 	        exports.width = function (_x) {
@@ -9173,6 +9115,54 @@ webpackJsonp([1,10],[
 	                return width;
 	            }
 	            width = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x format
+	         * It requires a `xAxisFormat` of 'custom' in order to work.
+	         * @param  {String} _x              Desired format for x axis
+	         * @return {String | Module}        Current format or module to chain calls
+	         */
+	        exports.xAxisCustomFormat = function (_x) {
+	            if (!arguments.length) {
+	                return xAxisCustomFormat;
+	            }
+	            xAxisCustomFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x axis grouping
+	         * @param  {String} _x          Desired format
+	         * @return {String | Module}    Current format or module to chain calls
+	         * @example
+	         *     brush.xAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
+	         */
+	        exports.xAxisFormat = function (_x) {
+	            if (!arguments.length) {
+	                return xAxisFormat;
+	            }
+	            xAxisFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisCustomFormat` of 'custom' in order to work.
+	         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
+	         * how many and where the ticks will appear.
+	         *
+	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
+	         * @return {Number | Module}        Current number or ticks or module to chain calls
+	         */
+	        exports.xTicks = function (_x) {
+	            if (!arguments.length) {
+	                return xTicks;
+	            }
+	            xTicks = _x;
 	
 	            return this;
 	        };

@@ -94,10 +94,9 @@ define(function(require){
          * This function creates the graph using the selection as container
          * @param {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
-         * @param {Array} _data The data to attach and generate the chart (usually an empty array)
          */
         function exports(_selection) {
-            _selection.each(function(_data){
+            _selection.each(function(){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
 

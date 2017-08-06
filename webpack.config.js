@@ -1,6 +1,5 @@
 var webpack = require('webpack'),
     path = require('path'),
-    _ = require('underscore'),
     LiveReloadPlugin = require('webpack-livereload-plugin'),
     UglifyJsPlugin = webpack.optimize.UglifyJsPlugin,
     BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin,
@@ -14,21 +13,34 @@ var webpack = require('webpack'),
     bundleIndexPath = path.resolve('./src/bundle.js'),
 
     projectName = 'britecharts',
+
     currentCharts = {
         'bar': './src/charts/bar.js',
         'donut': './src/charts/donut.js',
         'legend': './src/charts/legend.js',
         'line': './src/charts/line.js',
         'tooltip': './src/charts/tooltip.js',
-        'mini-tooltip': './src/charts/mini-tooltip.js',
+        'miniTooltip': './src/charts/mini-tooltip.js',
         'sparkline': './src/charts/sparkline.js',
-        'stacked-area': './src/charts/stacked-area.js',
-        'stacked-bar': './src/charts/stacked-bar.js',
-        'grouped-bar': './src/charts/grouped-bar.js',
+        'stackedArea': './src/charts/stacked-area.js',
+        'stackedBar': './src/charts/stacked-bar.js',
+        'groupedBar': './src/charts/grouped-bar.js',
         'step': './src/charts/step.js',
         'brush': './src/charts/brush.js',
         // hack to make webpack use colors as an entry point while its also a dependency of the charts above
         'colors': ['./src/charts/helpers/colors.js']
+    },
+    currentDemos = {
+        'demo-line': './demos/demo-line.js',
+        'demo-stacked-area': './demos/demo-stacked-area.js',
+        'demo-bar': './demos/demo-bar.js',
+        'demo-grouped-bar': './demos/demo-grouped-bar.js',
+        'demo-stacked-bar': './demos/demo-stacked-bar.js',
+        'demo-donut': './demos/demo-donut.js',
+        'demo-sparkline': './demos/demo-sparkline.js',
+        'demo-step': './demos/demo-step.js',
+        'demo-brush': './demos/demo-brush.js',
+        'demo-kitchen-sink': './demos/demo-kitchen-sink.js'
     },
 
     defaultJSLoader = {
@@ -38,6 +50,26 @@ var webpack = require('webpack'),
         query: {
             presets : ['es2015', 'stage-0']
         }
+    },
+    babelLoader = {
+        test: /\.js$/,
+        include: /src/,
+        exclude: /(node_modules)/,
+        loader: 'babel',
+        query: {
+            presets: ['es2015', 'stage-0'],
+            cacheDirectory: true
+        },
+    },
+    babelIstambulLoader = {
+        test: /\.js?$/,
+        include: /src/,
+        exclude: /(node_modules|__tests__|tests_index.js)/,
+        loader: 'babel-istanbul',
+        query: {
+            presets: ['es2015', 'stage-0'],
+            cacheDirectory: true
+        },
     },
 
     plugins = [
@@ -61,18 +93,7 @@ config = {
     // Add here listener to sccs files?
     demos : {
         devtool: 'source-map',
-        entry: {
-            'demo-line': './demos/demo-line.js',
-            'demo-stacked-area': './demos/demo-stacked-area.js',
-            'demo-bar': './demos/demo-bar.js',
-            'demo-grouped-bar': './demos/demo-grouped-bar.js',
-            'demo-stacked-bar': './demos/demo-stacked-bar.js',
-            'demo-donut': './demos/demo-donut.js',
-            'demo-sparkline': './demos/demo-sparkline.js',
-            'demo-step': './demos/demo-step.js',
-            'demo-brush': './demos/demo-brush.js',
-            'demo-kitchen-sink': './demos/demo-kitchen-sink.js'
-        },
+        entry: currentDemos,
         output: {
             path: './demos/build/',
             publicPath: '/assets/',
@@ -124,28 +145,7 @@ config = {
             }
         },
         module: {
-            preLoaders: [
-                {
-                    test: /\.js$/,
-                    include: /src/,
-                    exclude: /(node_modules)/,
-                    loader: 'babel',
-                    query: {
-                        presets: ['es2015', 'stage-0'],
-                        cacheDirectory: true
-                    },
-                },
-                {
-                    test: /\.js?$/,
-                    include: /src/,
-                    exclude: /(node_modules|__tests__|tests_index.js)/,
-                    loader: 'babel-istanbul',
-                    query: {
-                        presets: ['es2015', 'stage-0'],
-                        cacheDirectory: true
-                    },
-                }
-            ],
+            preLoaders: [ babelLoader, babelIstambulLoader ],
 
             loaders: [ defaultJSLoader ]
         },

@@ -131,12 +131,12 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
             });
 
             it('should provide horizontal direction getter and setter', () => {
-                let previous = stackedBarChart.horizontal(),
+                let previous = stackedBarChart.isHorizontal(),
                     expected = true,
                     actual;
 
-                stackedBarChart.horizontal(expected);
-                actual = stackedBarChart.horizontal();
+                stackedBarChart.isHorizontal(expected);
+                actual = stackedBarChart.isHorizontal();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
@@ -178,25 +178,25 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 expect(actual).toBe(expected);
             });
 
-            it('should provide numOfHorizontalTicks getter and setter', () => {
-                let previous = stackedBarChart.numOfHorizontalTicks(),
+            it('should provide xTicks getter and setter', () => {
+                let previous = stackedBarChart.xTicks(),
                     expected = 4,
                     actual;
 
-                stackedBarChart.numOfHorizontalTicks(expected);
-                actual = stackedBarChart.numOfHorizontalTicks();
+                stackedBarChart.xTicks(expected);
+                actual = stackedBarChart.xTicks();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
 
-            it('should provide numOfVerticalTicks getter and setter', () => {
-                let previous = stackedBarChart.numOfVerticalTicks(),
+            it('should provide yTicks getter and setter', () => {
+                let previous = stackedBarChart.yTicks(),
                     expected = 4,
                     actual;
 
-                stackedBarChart.numOfVerticalTicks(expected);
-                actual = stackedBarChart.numOfVerticalTicks();
+                stackedBarChart.yTicks(expected);
+                actual = stackedBarChart.yTicks();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);

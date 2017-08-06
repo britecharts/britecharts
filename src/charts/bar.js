@@ -76,8 +76,8 @@ define(function(require) {
             colorSchema = colorHelper.singleColors.aloeGreen,
             colorList,
             colorMap,
-            numOfVerticalTicks = 5,
-            numOfHorizontalTicks = 5,
+            yTicks = 5,
+            xTicks = 5,
             percentageAxisToMaxRatio = 1,
             enablePercentageLabels = false,
             percentageLabelMargin = 7,
@@ -94,20 +94,21 @@ define(function(require) {
             },
             yAxisPaddingBetweenChart = 10,
             yAxisLineWrapLimit = 1,
-            horizontal = false,
+            isHorizontal = false,
             svg,
 
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
             animationDuration = 800,
-            interBarDelay = function(d, i) {return 70 * i},
+            animationStepRatio = 70,
+            interBarDelay = (d, i) => animationStepRatio * i,
 
             valueLabel = 'value',
             nameLabel = 'name',
 
-            maskGridLines,
             baseLine,
-            reverseColorList = true,
+            maskGridLines,
+            shouldReverseColorList = true,
 
             // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
@@ -155,9 +156,9 @@ define(function(require) {
          * @private
          */
         function buildAxis() {
-            if (horizontal) {
+            if (isHorizontal) {
                 xAxis = d3Axis.axisBottom(xScale)
-                    .ticks(numOfHorizontalTicks, valueLabelFormat)
+                    .ticks(xTicks, valueLabelFormat)
                     .tickSizeInner([-chartHeight]);
 
                 yAxis = d3Axis.axisLeft(yScale);
@@ -165,7 +166,7 @@ define(function(require) {
                 xAxis = d3Axis.axisBottom(xScale);
 
                 yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(numOfVerticalTicks, valueLabelFormat)
+                    .ticks(yTicks, valueLabelFormat)
             }
         }
 
@@ -201,7 +202,7 @@ define(function(require) {
         function buildScales() {
             let percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue))
 
-            if (horizontal) {
+            if (isHorizontal) {
                 xScale = d3Scale.scaleLinear()
                     .domain([0, percentageAxis])
                     .rangeRound([0, chartWidth]);
@@ -221,7 +222,7 @@ define(function(require) {
                     .rangeRound([chartHeight, 0]);
             }
 
-            if (reverseColorList) {
+            if (shouldReverseColorList) {
                 colorList = data.map(d => d)
                                 .reverse()
                                 .map(({name}, i) => ({
@@ -442,9 +443,9 @@ define(function(require) {
          * @return {void}
          */
         function drawPercentageLabels() {
-            let labelXPosition = horizontal ? _percentageLabelHorizontalX : _percentageLabelVerticalX;
-            let labelYPosition = horizontal ? _percentageLabelHorizontalY : _percentageLabelVerticalY;
-            let text = horizontal ? _percentageLabelHorizontalFormatValue : _percentageLabelVerticalFormatValue;
+            let labelXPosition = isHorizontal ? _percentageLabelHorizontalX : _percentageLabelVerticalX;
+            let labelYPosition = isHorizontal ? _percentageLabelHorizontalY : _percentageLabelVerticalY;
+            let text = isHorizontal ? _percentageLabelHorizontalFormatValue : _percentageLabelVerticalFormatValue;
 
             let percentageLabels = svg.select('.metadata-group')
               .append('g')
@@ -473,28 +474,28 @@ define(function(require) {
                 bars = svg.select('.chart-group').selectAll('.bar')
                     .data(dataZeroed);
 
-                if (!horizontal) {
-                    drawVerticalBars(bars);
-                } else {
+                if (isHorizontal) {
                     drawHorizontalBars(bars);
+                } else {
+                    drawVerticalBars(bars);
                 }
 
                 bars = svg.select('.chart-group').selectAll('.bar')
                     .data(data);
 
-                if (!horizontal) {
-                    drawAnimatedVerticalBars(bars);
-                } else {
+                if (isHorizontal) {
                     drawAnimatedHorizontalBars(bars);
+                } else {
+                    drawAnimatedVerticalBars(bars);
                 }
             } else {
                 bars = svg.select('.chart-group').selectAll('.bar')
                     .data(data);
 
-                if (!horizontal) {
-                    drawVerticalBars(bars);
-                } else {
+                if (isHorizontal) {
                     drawHorizontalBars(bars);
+                } else {
+                    drawVerticalBars(bars);
                 }
             }
 
@@ -510,10 +511,10 @@ define(function(require) {
          * @return void
          */
         function drawGridLines() {
-            if (!horizontal) {
-                drawVerticalGridLines();
-            } else {
+            if (isHorizontal) {
                 drawHorizontalGridLines();
+            } else {
+                drawVerticalGridLines();
             }
         }
 
@@ -638,7 +639,7 @@ define(function(require) {
         /**
          * Default false. If true, adds percentage labels at the end of the bars
          * @param  {Boolean} _x
-         * @return {Boolean | module}    Current value of enablePercentageLables or Bar Chart module to chain calls
+         * @return {Boolean | module}    Current value of enablePercentageLables or Chart module to chain calls
          */
         exports.enablePercentageLabels = function(_x) {
             if (!arguments.length) {
@@ -660,7 +661,7 @@ define(function(require) {
         /**
          * Gets or Sets the height of the chart
          * @param  {number} _x Desired width for the graph
-         * @return { height | module} Current height or Bar Chart module to chain calls
+         * @return { height | module} Current height or Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -674,15 +675,16 @@ define(function(require) {
 
         /**
          * Gets or Sets the horizontal direction of the chart
-         * @param  {number} _x Desired horizontal direction for the graph
-         * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
-         * @public
-         */
-        exports.horizontal = function(_x) {
+         * @param  {number} _x Desired horizontal direction for the chart
+         * @return { isHorizontal | module} If it is horizontal or module to chain calls
+         * @deprecated
+         */        
+        exports.horizontal = function (_x) {
             if (!arguments.length) {
-                return horizontal;
+                return isHorizontal;
             }
-            horizontal = _x;
+            isHorizontal = _x;
+            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
 
             return this;
         };
@@ -705,9 +707,24 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the horizontal direction of the chart
+         * @param  {number} _x Desired horizontal direction for the graph
+         * @return { isHorizontal | module} If it is horizontal or Chart module to chain calls
+         * @public
+         */
+        exports.isHorizontal = function(_x) {
+            if (!arguments.length) {
+                return isHorizontal;
+            }
+            isHorizontal = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the margin of the chart
          * @param  {object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Bar Chart module to chain calls
+         * @return { margin | module} Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -752,7 +769,7 @@ define(function(require) {
          * Configurable extension of the x axis
          * if your max point was 50% you might want to show x axis to 60%, pass 1.2
          * @param  {number} _x ratio to max data point to add to the x axis
-         * @return { ratio | module} Current ratio or Bar Chart module to chain calls
+         * @return { ratio | module} Current ratio or Chart module to chain calls
          * @public
          */
         exports.percentageAxisToMaxRatio = function(_x) {
@@ -767,7 +784,7 @@ define(function(require) {
         /**
          * Default 10px. Offset between end of bar and start of the percentage bars
          * @param  {number} _x percentage margin offset from end of bar
-         * @return {number | module}    Currnet offset or Bar Chart module to chain calls
+         * @return {number | module}    Currnet offset or Chart module to chain calls
          */
         exports.percentageLabelMargin = function(_x) {
             if (!arguments.length) {
@@ -784,11 +801,46 @@ define(function(require) {
          * @return { boolean | module} Is color list being reversed
          * @public
          */
+        exports.shouldReverseColorList = function(_x) {
+            if (!arguments.length) {
+                return shouldReverseColorList;
+            }
+            shouldReverseColorList = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets whether the color list should be reversed or not
+         * @param  {boolean} _x     Should reverse the color list
+         * @return { boolean | module} Is color list being reversed
+         * @deprecated
+         */
         exports.reverseColorList = function(_x) {
             if (!arguments.length) {
-                return reverseColorList;
+                return shouldReverseColorList;
             }
-            reverseColorList = _x;
+            shouldReverseColorList = _x;
+            console.log('We are deprecating the .reverseColorList() accessor, use .shouldReverseColorList() instead');
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the hasPercentage status
+         * @param  {boolean} _x     Should use percentage as value format
+         * @return { boolean | module} Is percentage used or Chart module to chain calls
+         * @public
+         */
+        exports.hasPercentage = function(_x) {
+            if (!arguments.length) {
+                return valueLabelFormat === PERCENTAGE_FORMAT;
+            }
+            if (_x) {
+                valueLabelFormat = PERCENTAGE_FORMAT;
+            } else {
+                valueLabelFormat = NUMBER_FORMAT;
+            }
 
             return this;
         };
@@ -796,7 +848,7 @@ define(function(require) {
         /**
          * Gets or Sets the valueLabelFormat to a percentage format if true (default false)
          * @param  {boolean} _x     Should use percentage as value format
-         * @return { valueLabelFormat | module} Is percentage value format used or Chart module to chain calls
+         * @return { boolean | module} Is percentage the value format used or Chart module to chain calls
          * @public
          */
         exports.usePercentage = function(_x) {
@@ -830,7 +882,7 @@ define(function(require) {
         /**
          * Gets or Sets the width of the chart
          * @param  {number} _x Desired width for the graph
-         * @return { width | module} Current width or Bar Chart module to chain calls
+         * @return { width | module} Current width or Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
@@ -843,9 +895,26 @@ define(function(require) {
         };
 
         /**
-         * Default 10. Space between y axis and chart
-         * @param  {number} _x space between y axis and chart
-         * @return {number| module}    Current value of yAxisPaddingBetweenChart or Bar Chart module to chain calls
+         * Gets or Sets the number of ticks of the x axis on the chart
+         * (Default is 5)
+         * @param  {Number} _x          Desired horizontal ticks
+         * @return {Number | module}    Current xTicks or Chart module to chain calls
+         * @public
+         */
+        exports.xTicks = function (_x) {
+            if (!arguments.length) {
+                return xTicks;
+            }
+            xTicks = _x;
+
+            return this;
+        };
+
+        /**
+         * Space between y axis and chart
+         * (Default 10)
+         * @param  {Number} _x          Space between y axis and chart
+         * @return {Number| module}     Current value of yAxisPaddingBetweenChart or Chart module to chain calls
          */
         exports.yAxisPaddingBetweenChart = function(_x) {
             if (!arguments.length) {
@@ -853,6 +922,21 @@ define(function(require) {
             }
             yAxisPaddingBetweenChart = _x;
 
+            return this;
+        };
+
+        /**
+         * Gets or Sets the number of vertical ticks on the chart
+         * (Default is 6)
+         * @param  {Number} _x          Desired number of vertical ticks for the graph
+         * @return {Number | module}    Current yTicks or Chart module to chain calls
+         * @public
+         */
+        exports.yTicks = function(_x) {
+            if (!arguments.length) {
+                return yTicks;
+            }
+            yTicks = _x;
             return this;
         };
 

@@ -82,15 +82,14 @@ define(function(require){
 
             aspectRatio = null,
 
-            verticalTicks = 5,
             yTickTextYOffset = -8,
             yTickTextXOffset = -20,
 
-            numOfVerticalTicks = 5,
-            numOfHorizontalTicks = 5,
+            yTicks = 5,
+            xTicks = 5,
             percentageAxisToMaxRatio = 1,
 
-            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+            colorSchema = colorHelper.colorSchemas.britecharts,
 
             colorScale,
             categoryColorMap,
@@ -98,7 +97,7 @@ define(function(require){
             layers,
 
             ease = d3Ease.easeQuadInOut,
-            horizontal = false,
+            isHorizontal = false,
 
             svg,
             chartWidth, chartHeight,
@@ -200,14 +199,14 @@ define(function(require){
          * @private
          */
         function buildAxis() {
-            if (!horizontal) {
+            if (isHorizontal) {
                 xAxis = d3Axis.axisBottom(xScale)
+                    .ticks(xTicks, valueLabelFormat);
                 yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(numOfVerticalTicks, valueLabelFormat)
             } else {
                 xAxis = d3Axis.axisBottom(xScale)
-                .ticks(numOfHorizontalTicks, valueLabelFormat);
                 yAxis = d3Axis.axisLeft(yScale)
+                    .ticks(yTicks, valueLabelFormat)
             }
         }
 
@@ -267,17 +266,7 @@ define(function(require){
                 return d.total;
             }));
 
-            if (!horizontal) {
-                xScale = d3Scale.scaleBand()
-                    .domain(data.map(getName))
-                    .rangeRound([0, chartWidth ])
-                    .padding(0.1);
-
-                yScale = d3Scale.scaleLinear()
-                    .domain([0,yMax])
-                    .rangeRound([chartHeight, 0])
-                    .nice();
-            } else {
+            if (isHorizontal) {
                 xScale = d3Scale.scaleLinear()
                     .domain([0, yMax])
                     .rangeRound([0, chartWidth - 1]);
@@ -287,6 +276,16 @@ define(function(require){
                     .domain(data.map(getName))
                     .rangeRound([chartHeight, 0])
                     .padding(0.1);
+            } else {
+                xScale = d3Scale.scaleBand()
+                    .domain(data.map(getName))
+                    .rangeRound([0, chartWidth ])
+                    .padding(0.1);
+
+                yScale = d3Scale.scaleLinear()
+                    .domain([0,yMax])
+                    .rangeRound([chartHeight, 0])
+                    .nice();
             }
 
             colorScale = d3Scale.scaleOrdinal()
@@ -295,9 +294,9 @@ define(function(require){
 
             categoryColorMap = colorScale
                 .domain(data.map(getName)).domain()
-                .reduce((memo, item, i) => {
+                .reduce((memo, item) => {
                     data.forEach(function(v){
-                        if (getName(v)==item){
+                        if (getName(v) === item){
                            memo[v.name] = colorScale(v.stack)
                            memo[v.stack] = colorScale(v.stack)
                            memo[v.stack + item] = colorScale(v.stack)
@@ -347,7 +346,15 @@ define(function(require){
          * @private
          */
         function drawAxis(){
-            if (!horizontal) {
+            if (isHorizontal) {
+                svg.select('.x-axis-group .axis.x')
+                    .attr('transform', `translate( 0, ${chartHeight} )`)
+                    .call(xAxis);
+
+                svg.select('.y-axis-group.axis')
+                    .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
+                    .call(yAxis);
+            } else {
                 svg.select('.x-axis-group .axis.x')
                     .attr('transform', `translate( 0, ${chartHeight} )`)
                     .call(xAxis);
@@ -356,14 +363,6 @@ define(function(require){
                     .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
                     .call(yAxis)
                     .call(adjustYTickLabels);
-            } else {
-                svg.select('.x-axis-group .axis.x')
-                    .attr('transform', `translate( 0, ${chartHeight} )`)
-                    .call(xAxis);
-
-                svg.select('.y-axis-group.axis')
-                    .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
-                    .call(yAxis);
             }
         }
 
@@ -372,12 +371,12 @@ define(function(require){
          * @return void
          */
         function drawGridLines() {
-            let scale = horizontal ? xScale : yScale;
+            let scale = isHorizontal ? xScale : yScale;
 
             if (grid === 'horizontal' || grid === 'full') {
                 svg.select('.grid-lines-group')
                     .selectAll('line.horizontal-grid-line')
-                    .data(scale.ticks(numOfVerticalTicks).slice(1))
+                    .data(scale.ticks(yTicks).slice(1))
                     .enter()
                       .append('line')
                         .attr('class', 'horizontal-grid-line')
@@ -390,7 +389,7 @@ define(function(require){
             if (grid === 'vertical' || grid === 'full') {
                 svg.select('.grid-lines-group')
                     .selectAll('line.vertical-grid-line')
-                    .data(scale.ticks(numOfHorizontalTicks).slice(1))
+                    .data(scale.ticks(xTicks).slice(1))
                     .enter()
                       .append('line')
                         .attr('class', 'vertical-grid-line')
@@ -400,7 +399,7 @@ define(function(require){
                         .attr('x2', (d) => xScale(d));
             }
 
-            if (horizontal) {
+            if (isHorizontal) {
                 drawVerticalExtendedLine();
             } else {
                 drawHorizontalExtendedLine();
@@ -431,22 +430,21 @@ define(function(require){
                             .attr('height', yScale.bandwidth())
                             .attr('fill', (({data}) => categoryColorMap[data.stack+data.key]));
 
-            if (isAnimated){
+            if (isAnimated) {
                 bars.style('opacity', 0.24)
                     .transition()
                     .delay((_, i) => animationDelays[i])
                     .duration(animationDuration)
                     .ease(ease)
-                    .tween('attr.width', function(d ){
+                    .tween('attr.width', function(d) {
                         let node = d3Selection.select(this),
-                        i = d3Interpolate.interpolateRound(0,xScale(d[1] - d[0] )),
-                        j = d3Interpolate.interpolateNumber(0,1)
-                        ;
+                            i = d3Interpolate.interpolateRound(0, xScale(d[1] - d[0])),
+                            j = d3Interpolate.interpolateNumber(0,1);
 
-                        return function(t){
+                        return function(t) {
                             node.attr('width',  i(t) );
                             node.style('opacity', j(t) );
-                        }
+                        };
                     });
             } else {
                 bars.attr('width', (d) => xScale(d[1] - d[0] ) )
@@ -493,21 +491,20 @@ define(function(require){
                         .attr('width', xScale.bandwidth )
                         .attr('fill', (({data}) => categoryColorMap[data.stack+data.key])),context;
 
-            if (isAnimated){
+            if (isAnimated) {
                 bars.style('opacity', 0.24).transition()
                     .delay( (_, i) => animationDelays[i])
                     .duration(animationDuration)
                     .ease(ease)
-                    .tween('attr.height', function(d ){
+                    .tween('attr.height', function(d) {
                         let node = d3Selection.select(this),
-                        i = d3Interpolate.interpolateRound(0, yScale(d[0]) - yScale(d[1])),
-                        j = d3Interpolate.interpolateNumber(0,1)
-                        ;
+                            i = d3Interpolate.interpolateRound(0, yScale(d[0]) - yScale(d[1])),
+                            j = d3Interpolate.interpolateNumber(0,1);
 
-                        return function(t){
+                        return function(t) {
                             node.attr('height',  i(t) );
                             node.style('opacity', j(t) );
-                        }
+                        };
                     });
             } else {
                 bars.attr('height', (d) => yScale(d[0]) - yScale(d[1]) );
@@ -538,10 +535,10 @@ define(function(require){
         function drawStackedBar(){
             let series = svg.select('.chart-group').selectAll('.layer')
 
-            if (!horizontal) {
-                drawVerticalBars(series)
-            } else {
+            if (isHorizontal) {
                 drawHorizontalBars(series)
+            } else {
+                drawVerticalBars(series)
             }
             // Exit
             series.exit()
@@ -594,6 +591,7 @@ define(function(require){
             nearest = layers.map(function(stackedArray){
                 return stackedArray.map(function(d1){
                    let found = d1.data.values.find((d2) => Math.abs(adjustedMouseY >= yScale(d2[nameLabel])) && Math.abs(adjustedMouseY - yScale(d2[nameLabel]) <= epsilon*2) );
+
                    return found ? d1.data :undefined;
                })
             });
@@ -604,20 +602,18 @@ define(function(require){
 
         /**
          * Handles a mouseover event on top of a bar
-         * @param  {obj} d data of bar
          * @return {void}
          */
-        function handleBarsMouseOver(d) {
+        function handleBarsMouseOver() {
             d3Selection.select(this)
                 .attr('fill', () => d3Color.color(d3Selection.select(this.parentNode).attr('fill')).darker())
         }
 
         /**
          * Handles a mouseout event out of a bar
-         * @param  {obj} d data of bar
          * @return {void}
          */
-        function handleBarsMouseOut(d) {
+        function handleBarsMouseOut() {
             d3Selection
                 .select(this).attr('fill', () => d3Selection.select(this.parentNode).attr('fill'))
         }
@@ -629,13 +625,13 @@ define(function(require){
          */
         function handleMouseMove(e, d){
             let [mouseX, mouseY] = getMousePosition(e),
-                dataPoint = !horizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
+                dataPoint = isHorizontal ? getNearestDataPoint2(mouseY) : getNearestDataPoint(mouseX),
                 x,
                 y;
 
             if (dataPoint) {
                 // Move verticalMarker to that datapoint
-                if (horizontal) {
+                if (isHorizontal) {
                     x = mouseX - margin.left;
                     y = yScale(dataPoint.key) + yScale.bandwidth()/2;
                 } else {
@@ -792,14 +788,30 @@ define(function(require){
         /**
          * Gets or Sets the horizontal direction of the chart
          * @param  {number} _x Desired horizontal direction for the graph
-         * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
+         * @return { isHorizontal | module} If it is horizontal or Bar Chart module to chain calls
          * @public
          */
-        exports.horizontal = function(_x) {
+        exports.isHorizontal = function(_x) {
             if (!arguments.length) {
-                return horizontal;
+                return isHorizontal;
             }
-            horizontal = _x;
+            isHorizontal = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the horizontal direction of the chart
+         * @param  {number} _x Desired horizontal direction for the chart
+         * @return { isHorizontal | module} If it is horizontal or module to chain calls
+         * @deprecated
+         */
+        exports.horizontal = function (_x) {
+            if (!arguments.length) {
+                return isHorizontal;
+            }
+            isHorizontal = _x;
+            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
 
             return this;
         };
@@ -867,31 +879,32 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the number of verticalTicks of the axis on the chart
-         * @param  {Number} _x Desired verticalTicks
-         * @return { numOfHorizontalTicks | module} Current numOfHorizontalTicks or Chart module to chain calls
+         * Gets or Sets the number of ticks of the x axis on the chart
+         * (Default is 5)
+         * @param  {Number} _x Desired horizontal ticks
+         * @return {Number | module} Current xTicks or Chart module to chain calls
          * @public
          */
-        exports.numOfHorizontalTicks = function (_x) {
+        exports.xTicks = function (_x) {
             if (!arguments.length) {
-                return numOfHorizontalTicks;
+                return xTicks;
             }
-            numOfHorizontalTicks = _x;
+            xTicks = _x;
 
             return this;
         };
 
         /**
-         * Gets or Sets the number of verticalTicks of the axis on the chart
-         * @param  {Number} _x Desired verticalTicks
-         * @return { numOfVerticalTicks | module} Current numOfVerticalTicks or Chart module to chain calls
+         * Gets or Sets the number of vertical ticks of the axis on the chart
+         * @param  {Number} _x          Desired vertical ticks
+         * @return {Number | module}    Current yTicks or Chart module to chain calls
          * @public
          */
-        exports.numOfVerticalTicks = function (_x) {
+        exports.yTicks = function (_x) {
             if (!arguments.length) {
-                return numOfVerticalTicks;
+                return yTicks;
             }
-            numOfVerticalTicks = _x;
+            yTicks = _x;
 
             return this;
         };

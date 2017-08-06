@@ -15,7 +15,7 @@
 brushChart
     .width(containerWidth)
     .height(300)
-    .onBrush(function(brushExtent) {
+    .on('customBrushStart', function(brushExtent) {
         // Do something with the brushExtent
     });
 

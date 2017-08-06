@@ -1,16 +1,15 @@
 'use strict';
 
-var d3Selection = require('d3-selection'),
-    d3TimeFormat = require('d3-time-format'),
+const d3Selection = require('d3-selection');
+const d3TimeFormat = require('d3-time-format');
+const PubSub = require('pubsub-js');
 
-    PubSub = require('pubsub-js'),
+const brush = require('./../src/charts/brush');
+const dataBuilder = require('./../test/fixtures/brushChartDataBuilder');
 
-    brush = require('./../src/charts/brush'),
-    dataBuilder = require('./../test/fixtures/brushChartDataBuilder');
-    require('./helpers/resizeHelper');
 
 function createBrushChart() {
-    var brushChart = brush(),
+    let brushChart = brush(),
         testDataSet = new dataBuilder.BrushDataBuilder(),
         brushContainer = d3Selection.select('.js-brush-chart-container'),
         containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
@@ -22,18 +21,21 @@ function createBrushChart() {
         brushChart
             .width(containerWidth)
             .height(125)
-            .onBrush(function(brushExtent) {
-                var format = d3TimeFormat.timeFormat('%m/%d/%Y');
+            .on('customBrushStart', function(brushExtent) {
+                let format = d3TimeFormat.timeFormat('%m/%d/%Y');
 
                 d3Selection.select('.js-start-date').text(format(brushExtent[0]));
                 d3Selection.select('.js-end-date').text(format(brushExtent[1]));
 
                 d3Selection.select('.js-date-range').classed('is-hidden', false);
+            })
+            .on('customBrushEnd', function(brushExtent) {
+                console.log('rounded extent', brushExtent);
             });
 
         brushContainer.datum(dataset).call(brushChart);
 
-        brushChart.dateRange(["9/15/2015", "1/25/2016"])
+        brushChart.dateRange(['9/15/2015', '1/25/2016'])
     }
 }
 
@@ -41,7 +43,7 @@ function createBrushChart() {
 if (d3Selection.select('.js-brush-chart-container').node()){
     createBrushChart();
 
-    var redrawCharts = function(){
+    let redrawCharts = function(){
         d3Selection.select('.brush-chart').remove();
 
         createBrushChart();

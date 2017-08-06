@@ -86,11 +86,11 @@ define(function (require) {
             yTickTextYOffset = -8,
             yTickTextXOffset = -20,
 
-            numOfVerticalTicks = 5,
-            numOfHorizontalTicks = 5,
+            yTicks = 5,
+            xTicks = 5,
             baseLine,
 
-            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+            colorSchema = colorHelper.colorSchemas.britecharts,
 
             colorScale,
             categoryColorMap,
@@ -98,7 +98,7 @@ define(function (require) {
             layers,
 
             ease = d3Ease.easeQuadInOut,
-            horizontal = false,
+            isHorizontal = false,
 
             svg,
             chartWidth, chartHeight,
@@ -203,14 +203,14 @@ define(function (require) {
          * @private
          */
         function buildAxis() {
-            if (horizontal) {
+            if (isHorizontal) {
                 xAxis = d3Axis.axisBottom(xScale)
-                    .ticks(numOfHorizontalTicks, valueLabelFormat);
+                    .ticks(xTicks, valueLabelFormat);
                 yAxis = d3Axis.axisLeft(yScale)
             } else {
                 xAxis = d3Axis.axisBottom(xScale)
                 yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(numOfVerticalTicks, valueLabelFormat)
+                    .ticks(yTicks, valueLabelFormat)
             }
         }
 
@@ -265,7 +265,7 @@ define(function (require) {
         function buildScales() {
             let yMax = d3Array.max(data.map(getValue));
 
-            if (horizontal) {
+            if (isHorizontal) {
                 xScale = d3Scale.scaleLinear()
                     .domain([0, yMax])
                     .rangeRound([0, chartWidth - 1]);
@@ -355,7 +355,7 @@ define(function (require) {
          * @private
          */
         function drawAxis() {
-            if (horizontal) {
+            if (isHorizontal) {
                 svg.select('.x-axis-group .axis.x')
                     .attr('transform', `translate( 0, ${chartHeight} )`)
                     .call(xAxis);
@@ -414,12 +414,12 @@ define(function (require) {
          * @return void
          */
         function drawGridLines() {
-            let scale = horizontal ? xScale : yScale;
+            let scale = isHorizontal ? xScale : yScale;
 
             if (grid === 'horizontal' || grid === 'full') {
                 svg.select('.grid-lines-group')
                     .selectAll('line.horizontal-grid-line')
-                    .data(scale.ticks(numOfVerticalTicks).slice(1))
+                    .data(scale.ticks(yTicks).slice(1))
                     .enter()
                       .append('line')
                         .attr('class', 'horizontal-grid-line')
@@ -432,7 +432,7 @@ define(function (require) {
             if (grid === 'vertical' || grid === 'full') {
                 svg.select('.grid-lines-group')
                     .selectAll('line.vertical-grid-line')
-                    .data(scale.ticks(numOfHorizontalTicks).slice(1))
+                    .data(scale.ticks(xTicks).slice(1))
                     .enter()
                       .append('line')
                         .attr('class', 'vertical-grid-line')
@@ -442,7 +442,7 @@ define(function (require) {
                         .attr('x2', (d) => xScale(d));
             }
 
-            if (horizontal) {
+            if (isHorizontal) {
                 drawVerticalExtendedLine();
             } else {
                 drawHorizontalExtendedLine();
@@ -525,10 +525,10 @@ define(function (require) {
         function drawGroupedBar() {
             let series = svg.select('.chart-group').selectAll('.layer');
 
-            if (!horizontal) {
-                drawVerticalBars(series);
-            } else {
+            if (isHorizontal) {
                 drawHorizontalBars(series);
+            } else {
+                drawVerticalBars(series);
             }
             // Exit
             series.exit()
@@ -625,13 +625,13 @@ define(function (require) {
          */
         function handleMouseMove(e, d) {
             let [mouseX, mouseY] = getMousePosition(e),
-                dataPoint = !horizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
+                dataPoint = isHorizontal ? getNearestDataPoint2(mouseY) : getNearestDataPoint(mouseX),
                 x,
                 y;
 
             if (dataPoint) {
                 // Move verticalMarker to that datapoint
-                if (horizontal) {
+                if (isHorizontal) {
                     x = mouseX - margin.left;
                     y = yScale(dataPoint.key) + yScale.bandwidth() / 2;
                 } else {
@@ -836,14 +836,30 @@ define(function (require) {
         /**
          * Gets or Sets the horizontal direction of the chart
          * @param  {number} _x Desired horizontal direction for the graph
-         * @return { horizontal | module} Current horizontal direction or Bar Chart module to chain calls
+         * @return { isHorizontal | module} If it is horizontal or Bar Chart module to chain calls
          * @public
+         */
+        exports.isHorizontal = function (_x) {
+            if (!arguments.length) {
+                return isHorizontal;
+            }
+            isHorizontal = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the horizontal direction of the chart
+         * @param  {number} _x Desired horizontal direction for the chart
+         * @return { isHorizontal | module} If it is horizontal or module to chain calls
+         * @deprecated
          */
         exports.horizontal = function (_x) {
             if (!arguments.length) {
-                return horizontal;
+                return isHorizontal;
             }
-            horizontal = _x;
+            isHorizontal = _x;
+            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
 
             return this;
         };
@@ -896,31 +912,16 @@ define(function (require) {
         };
 
         /**
-         * Gets or Sets the number of verticalTicks of the axis on the chart
-         * @param  {Number} _x Desired verticalTicks
-         * @return { numOfHorizontalTicks | module} Current numOfHorizontalTicks or Chart module to chain calls
+         * Gets or Sets the number of ticks of the y axis on the chart
+         * @param  {Number} _x          Desired vertical ticks
+         * @return {Number | module}    Current yTicks or Chart module to chain calls
          * @public
          */
-        exports.numOfHorizontalTicks = function (_x) {
+        exports.yTicks = function (_x) {
             if (!arguments.length) {
-                return numOfHorizontalTicks;
+                return yTicks;
             }
-            numOfHorizontalTicks = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets the number of verticalTicks of the axis on the chart
-         * @param  {Number} _x Desired verticalTicks
-         * @return { numOfVerticalTicks | module} Current numOfVerticalTicks or Chart module to chain calls
-         * @public
-         */
-        exports.numOfVerticalTicks = function (_x) {
-            if (!arguments.length) {
-                return numOfVerticalTicks;
-            }
-            numOfVerticalTicks = _x;
+            yTicks = _x;
 
             return this;
         };
@@ -1000,6 +1001,21 @@ define(function (require) {
                 height = Math.ceil(_x * aspectRatio);
             }
             width = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the number of ticks of the x axis on the chart
+         * @param  {Number} _x Desired xTicks
+         * @return {Number | module} Current xTicks or Chart module to chain calls
+         * @public
+         */
+        exports.xTicks = function (_x) {
+            if (!arguments.length) {
+                return xTicks;
+            }
+            xTicks = _x;
 
             return this;
         };

@@ -68,7 +68,7 @@ define(function(require) {
             data,
             chartWidth, chartHeight,
             xScale, yScale,
-            numOfVerticalTicks = 6,
+            yTicks = 6,
             xAxis, xAxisLabel,
             yAxis, yAxisLabel,
             xAxisLabelOffset = 45,
@@ -130,7 +130,7 @@ define(function(require) {
             xAxis = d3Axis.axisBottom(xScale);
 
             yAxis = d3Axis.axisLeft(yScale)
-                .ticks(numOfVerticalTicks)
+                .ticks(yTicks)
                 .tickPadding(yTickPadding)
                 .tickFormat(yAxisTickFormat);
         }
@@ -297,7 +297,7 @@ define(function(require) {
         function drawGridLines(){
             maskGridLines = svg.select('.grid-lines-group')
                 .selectAll('line.horizontal-grid-line')
-                .data(yScale.ticks(numOfVerticalTicks))
+                .data(yScale.ticks(yTicks))
                 .enter()
                   .append('line')
                     .attr('class', 'horizontal-grid-line')
@@ -318,6 +318,8 @@ define(function(require) {
                     .attr('y1', height - margin.bottom - margin.top)
                     .attr('y2', height - margin.bottom - margin.top);
         }
+
+        // API
 
         /**
          * Custom OnMouseOver event handler
@@ -357,7 +359,7 @@ define(function(require) {
         /**
          * Gets or Sets the margin of the chart
          * @param  {object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Step Chart module to chain calls
+         * @return { margin | module} Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -369,23 +371,24 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the width of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { width | module} Current width or step Chart module to chain calls
+         * Gets or Sets the number of vertical ticks on the chart
+         * (Default is 6)
+         * @param  {Number} _x          Desired number of vertical ticks for the graph
+         * @return {Number | module}    Current yTicks or Chart module to chain calls
          * @public
          */
-        exports.width = function(_x) {
+        exports.yTicks = function(_x) {
             if (!arguments.length) {
-                return width;
+                return yTicks;
             }
-            width = _x;
+            yTicks = _x;
             return this;
         };
 
-        /**
+       /**
          * Gets or Sets the height of the chart
          * @param  {number} _x Desired width for the graph
-         * @return { height | module} Current height or Step Chart module to chain calls
+         * @return { height | module} Current height or Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -397,23 +400,37 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the number of vertical ticks on the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { height | module} Current height or Step Chart module to chain calls
+         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+         * We are going to expose this events:
+         * customMouseOver, customMouseMove and customMouseOut
+         *
+         * @return {module} Bar Chart
          * @public
          */
-        exports.numOfVerticalTicks = function(_x) {
+        exports.on = function(...args) {
+            let value = dispatcher.on(...args);
+
+            return value === dispatcher ? exports : value;
+        };
+
+        /**
+         * Gets or Sets the width of the chart
+         * @param  {number} _x Desired width for the graph
+         * @return { width | module} Current width or Chart module to chain calls
+         * @public
+         */
+        exports.width = function(_x) {
             if (!arguments.length) {
-                return numOfVerticalTicks;
+                return width;
             }
-            numOfVerticalTicks = _x;
+            width = _x;
             return this;
         };
 
         /**
          * Gets or Sets the text of the xAxisLabel on the chart
          * @param  {text} _x Desired text for the label
-         * @return { text | module} label or Step Chart module to chain calls
+         * @return { text | module} label or Chart module to chain calls
          * @public
          */
         exports.xAxisLabel = function(_x) {
@@ -427,7 +444,7 @@ define(function(require) {
         /**
          * Gets or Sets the offset of the xAxisLabel on the chart
          * @param  {integer} _x Desired offset for the label
-         * @return { integer | module} label or Step Chart module to chain calls
+         * @return { integer | module} label or Chart module to chain calls
          * @public
          */
         exports.xAxisLabelOffset = function(_x) {
@@ -441,7 +458,7 @@ define(function(require) {
         /**
          * Gets or Sets the text of the yAxisLabel on the chart
          * @param  {text} _x Desired text for the label
-         * @return { text | module} label or Step Chart module to chain calls
+         * @return { text | module} label or Chart module to chain calls
          * @public
          */
         exports.yAxisLabel = function(_x) {
@@ -455,7 +472,7 @@ define(function(require) {
         /**
          * Gets or Sets the offset of the yAxisLabel on the chart
          * @param  {integer} _x Desired offset for the label
-         * @return { integer | module} label or Step Chart module to chain calls
+         * @return { integer | module} label or Chart module to chain calls
          * @public
          */
         exports.yAxisLabelOffset = function(_x) {
@@ -464,28 +481,6 @@ define(function(require) {
             }
             yAxisLabelOffset = _x;
             return this;
-        };
-
-        /**
-         * Exposes an 'on' method that acts as a bridge with the event dispatcher
-         * We are going to expose this events:
-         * customMouseOver, customMouseMove and customMouseOut
-         *
-         * @return {module} Bar Chart
-         * @public
-         */
-        exports.on = function() {
-            let value = dispatcher.on.apply(dispatcher, arguments);
-
-            return value === dispatcher ? exports : value;
-        };
-
-        /**
-         * Chart exported to png and a download action is fired
-         * @public
-         */
-        exports.exportChart = function(filename, title) {
-            exportChart.call(exports, svg, filename, title);
         };
 
         return exports;

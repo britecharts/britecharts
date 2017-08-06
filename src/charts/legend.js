@@ -85,11 +85,11 @@ define(function(require){
             numberFormat = 's',
 
             isFadedClassName = 'is-faded',
-            horizontal = false,
+            isHorizontal = false,
 
             // colors
             colorScale,
-            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+            colorSchema = colorHelper.colorSchemas.britecharts,
 
             getId = ({id}) => id,
             getName = ({name}) => name,
@@ -116,7 +116,7 @@ define(function(require){
 
                 buildColorScale();
                 buildSVG(this);
-                if (horizontal) {
+                if (isHorizontal) {
                     drawHorizontalLegend();
                 } else {
                     drawVerticalLegend();
@@ -230,11 +230,11 @@ define(function(require){
               .append('g')
                 .classed('legend-entry', true)
                 .attr('data-item', getId)
-                .attr('transform', function(d, i) {
+                .attr('transform', function({name}) {
                     let horizontalOffset = xOffset,
                         lineHeight = chartHeight / 2,
                         verticalOffset = lineHeight,
-                        labelWidth = textHelper.getTextWidth(d.name, textSize);
+                        labelWidth = textHelper.getTextWidth(name, textSize);
 
                     xOffset += markerSize + 2 * getLineElementMargin() + labelWidth;
 
@@ -364,13 +364,12 @@ define(function(require){
             let legendEntries = svg.selectAll('.legend-entry');
             let numberOfEntries = legendEntries.size();
             let lineHeight = (chartHeight / 2) * 1.7;
-
             let newLine = svg.select('.legend-group')
               .append('g')
                 .classed('legend-line', true)
                 .attr('transform', `translate(0, ${lineHeight})`);
-
             let lastEntry = legendEntries.filter(`:nth-child(${numberOfEntries})`);
+
             lastEntry.attr('transform', `translate(${markerSize},0)`);
             newLine.append(() => lastEntry.node());
         }
@@ -424,14 +423,30 @@ define(function(require){
         /**
          * Gets or Sets the horizontal mode on the legend
          * @param  {boolean} _x Desired horizontal mode for the graph
-         * @return {horizontal | module} Current horizontal mode or Legend module to chain calls
+         * @return {ishorizontal | module} If it is horizontal or Legend module to chain calls
          * @public
          */
-        exports.horizontal = function(_x) {
+        exports.isHorizontal = function(_x) {
             if (!arguments.length) {
-                return horizontal;
+                return isHorizontal;
             }
-            horizontal = _x;
+            isHorizontal = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the horizontal direction of the chart
+         * @param  {number} _x Desired horizontal direction for the chart
+         * @return { isHorizontal | module} If it is horizontal or module to chain calls
+         * @deprecated
+         */        
+        exports.horizontal = function (_x) {
+            if (!arguments.length) {
+                return isHorizontal;
+            }
+            isHorizontal = _x;
+            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
 
             return this;
         };

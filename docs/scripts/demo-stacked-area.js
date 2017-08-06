@@ -46,7 +46,7 @@ webpackJsonp([7,10],[
 	        container.datum(dataset.data).call(stackedArea);
 	
 	        // Tooltip Setup and start
-	        chartTooltip.topicLabel('values').title('Testing tooltip').forceOrder(uniq(dataset.data.map(function (d) {
+	        chartTooltip.topicLabel('values').title('Testing tooltip').topicsOrder(uniq(dataset.data.map(function (d) {
 	            return d.name;
 	        })));
 	
@@ -77,7 +77,7 @@ webpackJsonp([7,10],[
 	        // dataset = testDataSet.withLargeData().build();
 	
 	        // StackedAreChart Setup and start
-	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').forceAxisFormat('custom').forcedXFormat('%Y/%m/%d').forcedXTicks(2).width(containerWidth).dateLabel('date').valueLabel('views').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
+	        stackedArea.tooltipThreshold(600).aspectRatio(0.6).grid('full').xAxisFormat('custom').xAxisCustomFormat('%Y/%m/%d').xTicks(2).width(containerWidth).dateLabel('date').valueLabel('views').on('customMouseOver', chartTooltip.show).on('customMouseMove', chartTooltip.update).on('customMouseOut', chartTooltip.hide);
 	
 	        if (optionalColorSchema) {
 	            stackedArea.colorSchema(optionalColorSchema);
@@ -7102,8 +7102,9 @@ webpackJsonp([7,10],[
 	        d3svg.attr('version', 1.1).attr('xmlns', 'http://www.w3.org/2000/svg');
 	        var serializer = serializeWithStyles.initializeSerializer();
 	        var html = serializer(d3svg.node());
+	
 	        html = formatHtmlByBrowser(html);
-	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width')));
+	        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width'), 10));
 	        html = addBackground(html);
 	
 	        return html;
@@ -7206,9 +7207,10 @@ webpackJsonp([7,10],[
 	        if (!title || !svgWidth) {
 	            return html;
 	        }
-	        var britechartsGreySchema = colorSchemas.britechartsGreySchema;
+	        var grey = colorSchemas.grey;
 	
-	        html = html.replace(/<g/, '<text x="' + this.margin().left + '" y="' + config.titleTopOffset + '" font-family="' + config.titleFontFamily + '" font-size="' + config.titleFontSize + '" fill="' + britechartsGreySchema[6] + '"> ' + title + ' </text><g ');
+	
+	        html = html.replace(/<g/, '<text x="' + this.margin().left + '" y="' + config.titleTopOffset + '" font-family="' + config.titleFontFamily + '" font-size="' + config.titleFontSize + '" fill="' + grey[6] + '"> ' + title + ' </text><g ');
 	
 	        return html;
 	    }
@@ -7227,18 +7229,18 @@ webpackJsonp([7,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
 	
 	    // Color Gradients
 	    var britechartGradients = {
-	        greenBlueGradient: ['#39C7EA', '#4CDCBA'],
-	        orangePinkGradient: ['#FBC670', '#F766B8'],
-	        bluePurpleGradient: ['#3DC3C9', '#824a9e']
+	        greenBlue: ['#39C7EA', '#4CDCBA'],
+	        orangePink: ['#FBC670', '#F766B8'],
+	        bluePurple: ['#3DC3C9', '#824a9e']
 	    };
 	
 	    // Color Schemas
 	    // Standard Color Schema for Britecharts
-	    var britechartsColorSchema = ['#6aedc7', //green
+	    var britecharts = ['#6aedc7', //green
 	    '#39c2c9', //blue
 	    '#ffce00', //yellow
 	    '#ffa71a', //orange
@@ -7247,60 +7249,60 @@ webpackJsonp([7,10],[
 	    ];
 	
 	    // Grey Schema for Britecharts
-	    var britechartsGreySchema = ['#F8F8FA', '#EFF2F5', '#D2D6DF', '#C3C6CF', '#ADB0B6', '#666A73', '#45494E', '#363A43', '#282C35'];
+	    var grey = ['#F8F8FA', '#EFF2F5', '#D2D6DF', '#C3C6CF', '#ADB0B6', '#666A73', '#45494E', '#363A43', '#282C35'];
 	
-	    // Extended Orange Palette
-	    var extendedOrangeColorSchema = ['#fcc870', '#ffa71a', '#fb8825', '#f6682f', '#db5a2c', '#bf4c28', '#a43b1c', '#892a10', '#f9e9c5'];
-	    // Extended Blue Palette
-	    var extendedBlueColorSchema = ['#ccf7f6', '#70e4e0', '#00d8d2', '#00acaf', '#007f8c', '#005e66', '#003c3f', '#002d2f', '#0d2223'];
-	    // Extended LightBlue Palette
-	    var extendedLightBlueColorSchema = ['#ccfffe', '#94f7f4', '#00fff8', '#1de1e1', '#39c2c9', '#2e9a9d', '#227270', '#1a5957', '#133f3e'];
-	    // Extended Green Palette
-	    var extendedGreenColorSchema = ['#edfff7', '#d7ffef', '#c0ffe7', '#95f5d7', '#6aedc7', '#59c3a3', '#479980', '#34816a', '#206953'];
-	    // Extended Yellow Palette
-	    var extendedYellowColorSchema = ['#f9f2b3', '#fbe986', '#fce05a', '#fed72d', '#ffce00', '#fcc11c', '#f9b438', '#eda629', '#e09819'];
-	    // Extended Pink Palette
-	    var extendedPinkColorSchema = ['#fdd1ea', '#fb9cd2', '#f866b9', '#fc40b6', '#ff1ab3', '#e3239d', '#c62c86', '#a62073', '#85135f'];
-	    // Extended Purple Palette
-	    var extendedPurpleColorSchema = ['#ddd6fc', '#bbb1f0', '#998ce3', '#8e6bc1', '#824a9e', '#77337f', '#6b1c60', '#591650', '#470f3f'];
-	    // Extended Red Palette
-	    var extendedRedColorSchema = ['#ffd8d4', '#ffb5b0', '#ff938c', '#ff766c', '#ff584c', '#f04b42', '#e03d38', '#be2e29', '#9c1e19'];
+	    // Orange Palette
+	    var orange = ['#fcc870', '#ffa71a', '#fb8825', '#f6682f', '#db5a2c', '#bf4c28', '#a43b1c', '#892a10', '#f9e9c5'];
+	    // Blue Palette
+	    var blueGreen = ['#ccf7f6', '#70e4e0', '#00d8d2', '#00acaf', '#007f8c', '#005e66', '#003c3f', '#002d2f', '#0d2223'];
+	    // LightBlue Palette
+	    var teal = ['#ccfffe', '#94f7f4', '#00fff8', '#1de1e1', '#39c2c9', '#2e9a9d', '#227270', '#1a5957', '#133f3e'];
+	    // Green Palette
+	    var green = ['#edfff7', '#d7ffef', '#c0ffe7', '#95f5d7', '#6aedc7', '#59c3a3', '#479980', '#34816a', '#206953'];
+	    // Yellow Palette
+	    var yellow = ['#f9f2b3', '#fbe986', '#fce05a', '#fed72d', '#ffce00', '#fcc11c', '#f9b438', '#eda629', '#e09819'];
+	    // Pink Palette
+	    var pink = ['#fdd1ea', '#fb9cd2', '#f866b9', '#fc40b6', '#ff1ab3', '#e3239d', '#c62c86', '#a62073', '#85135f'];
+	    // Purple Palette
+	    var purple = ['#ddd6fc', '#bbb1f0', '#998ce3', '#8e6bc1', '#824a9e', '#77337f', '#6b1c60', '#591650', '#470f3f'];
+	    // Red Palette
+	    var red = ['#ffd8d4', '#ffb5b0', '#ff938c', '#ff766c', '#ff584c', '#f04b42', '#e03d38', '#be2e29', '#9c1e19'];
 	
 	    var aloeGreen = ['#7bdcc0'];
 	
 	    return {
 	        colorSchemas: {
-	            britechartsColorSchema: britechartsColorSchema,
-	            britechartsGreySchema: britechartsGreySchema,
-	            extendedOrangeColorSchema: extendedOrangeColorSchema,
-	            extendedBlueColorSchema: extendedBlueColorSchema,
-	            extendedLightBlueColorSchema: extendedLightBlueColorSchema,
-	            extendedGreenColorSchema: extendedGreenColorSchema,
-	            extendedYellowColorSchema: extendedYellowColorSchema,
-	            extendedPinkColorSchema: extendedPinkColorSchema,
-	            extendedPurpleColorSchema: extendedPurpleColorSchema,
-	            extendedRedColorSchema: extendedRedColorSchema
+	            britecharts: britecharts,
+	            grey: grey,
+	            orange: orange,
+	            blueGreen: blueGreen,
+	            teal: teal,
+	            green: green,
+	            yellow: yellow,
+	            pink: pink,
+	            purple: purple,
+	            red: red
 	        },
 	        colorSchemasHuman: {
-	            'britechartsColorSchema': 'Britecharts Default',
-	            'britechartsGreySchema': 'Britecharts Grey',
-	            'extendedOrangeColorSchema': 'Orange',
-	            'extendedBlueColorSchema': 'Blue',
-	            'extendedLightBlueColorSchema': 'Light Blue',
-	            'extendedGreenColorSchema': 'Green',
-	            'extendedYellowColorSchema': 'Yellow',
-	            'extendedPinkColorSchema': 'Pink',
-	            'extendedPurpleColorSchema': 'Purple',
-	            'extendedRedColorSchema': 'Red'
+	            'britecharts': 'Britecharts Default',
+	            'grey': 'Britecharts Grey',
+	            'orange': 'Orange',
+	            'blueGreen': 'Blue',
+	            'teal': 'Light Blue',
+	            'green': 'Green',
+	            'yellow': 'Yellow',
+	            'pink': 'Pink',
+	            'purple': 'Purple',
+	            'red': 'Red'
 	        },
 	        singleColors: {
 	            aloeGreen: aloeGreen
 	        },
 	        colorGradients: britechartGradients,
 	        colorGradientsHuman: {
-	            greenBlueGradient: 'Green To Blue',
-	            orangePinkGradient: 'Orange to Pink',
-	            bluePurpleGradient: 'Blue to Purple'
+	            greenBlue: 'Green To Blue',
+	            orangePink: 'Orange to Pink',
+	            bluePurple: 'Blue to Purple'
 	        }
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -7311,7 +7313,8 @@ webpackJsonp([7,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
-	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
+	!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	
 	    var axisTimeCombinations = {
 	        MINUTE_HOUR: 'minute-hour',
 	        HOUR_DAY: 'hour-daymonth',
@@ -7396,7 +7399,8 @@ webpackJsonp([7,10],[
 	                    result = void 0;
 	
 	                if (!elem || elem.nodeType !== Node.ELEMENT_NODE) {
-	                    console.error('Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE');
+	                    // 'Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE'
+	
 	                    return;
 	                }
 	
@@ -11497,20 +11501,21 @@ webpackJsonp([7,10],[
 	     * @return {void}
 	     */
 	    function createColorSelector(selectContainerSelector, chartSelector, callback) {
-	        var colorKeys = Object.keys(colors.colorSchemas);
-	        var containerSelector = document.querySelector(selectContainerSelector);
+	        var colorKeys = Object.keys(colors.colorSchemas),
+	            containerSelector = document.querySelector(selectContainerSelector);
 	
 	        if (!containerSelector) {
 	            return;
 	        }
 	
 	        // Create Select
-	        var sel = document.createElement("select");
+	        var sel = document.createElement('select');
+	
 	        sel.className += ' ' + selectClass;
 	
 	        // And fill with options
-	        colorKeys.forEach(function (key, i) {
-	            var opt = document.createElement("option");
+	        colorKeys.forEach(function (key) {
+	            var opt = document.createElement('option');
 	
 	            opt.value = key;
 	            opt.text = colors.colorSchemasHuman[key];
@@ -12262,6 +12267,7 @@ webpackJsonp([7,10],[
 	            width = 250,
 	            height = 45,
 	            title = 'Tooltip title',
+	            valueFormat = null,
 	
 	
 	        // tooltip
@@ -12299,8 +12305,8 @@ webpackJsonp([7,10],[
 	            nameLabel = 'name',
 	            topicLabel = 'topics',
 	            defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
-	            forceAxisSettings = null,
-	            forceOrder = [],
+	            dateFormat = null,
+	            topicsOrder = [],
 	
 	
 	        // formats
@@ -12388,17 +12394,18 @@ webpackJsonp([7,10],[
 	         * @return {Number}       Formatted value
 	         */
 	        function getFormattedValue(value) {
+	            var valueFormatter = formatDecimalValue;
+	
 	            if (!value) {
 	                return 0;
 	            }
-	
-	            if (isInteger(value)) {
-	                value = formatIntegerValue(value);
-	            } else {
-	                value = formatDecimalValue(value);
+	            if (valueFormat) {
+	                valueFormatter = d3Format.format(valueFormat);
+	            } else if (isInteger(value)) {
+	                valueFormatter = formatIntegerValue;
 	            }
 	
-	            return value;
+	            return valueFormatter(value);
 	        }
 	
 	        /**
@@ -12531,7 +12538,7 @@ webpackJsonp([7,10],[
 	         * @return {Function} The proper date formatting function
 	         */
 	        function formatDate(date) {
-	            var settings = forceAxisSettings || defaultAxisSettings;
+	            var settings = dateFormat || defaultAxisSettings;
 	            var format = null;
 	            var localeOptions = { month: 'short', day: 'numeric' };
 	
@@ -12558,10 +12565,10 @@ webpackJsonp([7,10],[
 	         * @param  {Object[]} order     Array of names in the order to sort topics by
 	         * @return {Object[]}           sorted topics object
 	         */
-	        function _sortByForceOrder(topics) {
-	            var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : forceOrder;
+	        function _sortByTopicsOrder(topics) {
+	            var order = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : topicsOrder;
 	
-	            return forceOrder.map(function (orderName) {
+	            return order.map(function (orderName) {
 	                return topics.filter(function (_ref3) {
 	                    var name = _ref3.name;
 	                    return name === orderName;
@@ -12645,9 +12652,9 @@ webpackJsonp([7,10],[
 	        function updateContent(dataPoint) {
 	            var topics = dataPoint[topicLabel];
 	
-	            // sort order by forceOrder array if passed
-	            if (forceOrder.length) {
-	                topics = _sortByForceOrder(topics);
+	            // sort order by topicsOrder array if passed
+	            if (topicsOrder.length) {
+	                topics = _sortByTopicsOrder(topics);
 	            } else if (topics.length && topics[0].name) {
 	                topics = _sortByAlpha(topics);
 	            }
@@ -12672,20 +12679,13 @@ webpackJsonp([7,10],[
 	        }
 	
 	        // API
-	        /**
-	        * Gets or Sets the nameLabel of the data
-	        * @param  {Number} _x Desired nameLabel
-	        * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
-	        * @public
-	        */
-	        exports.nameLabel = function (_x) {
-	            if (!arguments.length) {
-	                return nameLabel;
-	            }
-	            nameLabel = _x;
 	
-	            return this;
-	        };
+	        /**
+	         * constants to be used to force the x axis to respect a certain granularity
+	         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
+	         * @example tooltip.dateFormat(tooltip.axisTimeCombinations.HOUR_DAY)
+	         */
+	        exports.axisTimeCombinations = axisTimeCombinations;
 	
 	        /**
 	         * Gets or Sets the dateLabel of the data
@@ -12703,31 +12703,15 @@ webpackJsonp([7,10],[
 	        };
 	
 	        /**
-	         * Gets or Sets the valueLabel of the data
-	         * @param  {Number} _x Desired valueLabel
-	         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
-	         * @public
+	         * Exposes the ability to force the tooltip to use a certain date format
+	         * @param  {String} _x Desired format
+	         * @return { (String|Module) }    Current format or module to chain calls
 	         */
-	        exports.valueLabel = function (_x) {
+	        exports.dateFormat = function (_x) {
 	            if (!arguments.length) {
-	                return valueLabel;
+	                return dateFormat || defaultAxisSettings;
 	            }
-	            valueLabel = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the topicLabel of the data
-	         * @param  {Number} _x Desired topicLabel
-	         * @return { topicLabel | module} Current topicLabel or Chart module to chain calls
-	         * @public
-	         */
-	        exports.topicLabel = function (_x) {
-	            if (!arguments.length) {
-	                return topicLabel;
-	            }
-	            topicLabel = _x;
+	            dateFormat = _x;
 	
 	            return this;
 	        };
@@ -12744,12 +12728,56 @@ webpackJsonp([7,10],[
 	        };
 	
 	        /**
+	         * Pass locale for the tooltip to render the date in
+	         * @param  {String} _x  must be a locale tag like 'en-US' or 'fr-FR'
+	         * @return { (String|Module) }    Current locale or module to chain calls
+	         */
+	        exports.locale = function (_x) {
+	            if (!arguments.length) {
+	                return locale;
+	            }
+	            locale = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the nameLabel of the data
+	         * @param  {Number} _x Desired nameLabel
+	         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.nameLabel = function (_x) {
+	            if (!arguments.length) {
+	                return nameLabel;
+	            }
+	            nameLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
 	         * Shows the tooltip
 	         * @return {Module} Tooltip module to chain calls
 	         * @public
 	         */
 	        exports.show = function () {
 	            svg.style('display', 'block');
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Pass an override for the ordering of your tooltip
+	         * @param  {Object[]} _x    Array of the names of your tooltip items
+	         * @return { overrideOrder | module} Current overrideOrder or Chart module to chain calls
+	         * @public
+	         */
+	        exports.topicsOrder = function (_x) {
+	            if (!arguments.length) {
+	                return topicsOrder;
+	            }
+	            topicsOrder = _x;
 	
 	            return this;
 	        };
@@ -12770,16 +12798,16 @@ webpackJsonp([7,10],[
 	        };
 	
 	        /**
-	         * Pass an override for the ordering of your tooltip
-	         * @param  {Object[]} _x    Array of the names of your tooltip items
-	         * @return { overrideOrder | module} Current overrideOrder or Chart module to chain calls
+	         * Gets or Sets the topicLabel of the data
+	         * @param  {Number} _x Desired topicLabel
+	         * @return { topicLabel | module} Current topicLabel or Chart module to chain calls
 	         * @public
 	         */
-	        exports.forceOrder = function (_x) {
+	        exports.topicLabel = function (_x) {
 	            if (!arguments.length) {
-	                return forceOrder;
+	                return topicLabel;
 	            }
-	            forceOrder = _x;
+	            topicLabel = _x;
 	
 	            return this;
 	        };
@@ -12802,39 +12830,34 @@ webpackJsonp([7,10],[
 	        };
 	
 	        /**
-	         * Exposes the ability to force the tooltip to use a certain date format
-	         * @param  {String} _x Desired format
-	         * @return { (String|Module) }    Current format or module to chain calls
+	         * Gets or Sets the valueFormat of the tooltip
+	         * @param  {String} _x Desired valueFormat
+	         * @return { String | module} Current valueFormat or module to chain calls
+	         * @public
 	         */
-	        exports.forceDateRange = function (_x) {
+	        exports.valueFormat = function (_x) {
 	            if (!arguments.length) {
-	                return forceAxisSettings || defaultAxisSettings;
+	                return valueFormat;
 	            }
-	            forceAxisSettings = _x;
+	            valueFormat = _x;
 	
 	            return this;
 	        };
 	
 	        /**
-	         * Pass locale for the tooltip to render the date in
-	         * @param  {String} _x  must be a locale tag like 'en-US' or 'fr-FR'
-	         * @return { (String|Module) }    Current locale or module to chain calls
+	         * Gets or Sets the valueLabel of the data
+	         * @param  {Number} _x Desired valueLabel
+	         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+	         * @public
 	         */
-	        exports.locale = function (_x) {
+	        exports.valueLabel = function (_x) {
 	            if (!arguments.length) {
-	                return locale;
+	                return valueLabel;
 	            }
-	            locale = _x;
+	            valueLabel = _x;
 	
 	            return this;
 	        };
-	
-	        /**
-	         * constants to be used to force the x axis to respect a certain granularity
-	         * current options: HOUR_DAY, DAY_MONTH, MONTH_YEAR
-	         * @example tooltip.forceDateRange(tooltip.axisTimeCombinations.HOUR_DAY)
-	         */
-	        exports.axisTimeCombinations = axisTimeCombinations;
 	
 	        return exports;
 	    };
@@ -13045,17 +13068,17 @@ webpackJsonp([7,10],[
 	            yAxis = void 0,
 	            aspectRatio = null,
 	            monthAxisPadding = 30,
-	            verticalTicks = 5,
+	            yTicks = 5,
 	            yTickTextYOffset = -8,
 	            yTickTextXOffset = -20,
 	            tickPadding = 5,
-	            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+	            colorSchema = colorHelper.colorSchemas.britecharts,
 	            areaOpacity = 0.64,
 	            categoryColorMap = void 0,
 	            order = void 0,
-	            forceAxisSettings = null,
-	            forcedXTicks = null,
-	            forcedXFormat = null,
+	            xAxisFormat = null,
+	            xTicks = null,
+	            xAxisCustomFormat = null,
 	            locale = void 0,
 	            baseLine = void 0,
 	            layers = void 0,
@@ -13173,18 +13196,18 @@ webpackJsonp([7,10],[
 	         */
 	        function buildAxis() {
 	            var dataSpan = yScale.domain()[1] - yScale.domain()[0];
-	            var yTickNumber = dataSpan < verticalTicks - 1 ? dataSpan : verticalTicks;
+	            var yTickNumber = dataSpan < yTicks - 1 ? dataSpan : yTicks;
 	            var minor = void 0,
 	                major = void 0;
 	
-	            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+	            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
 	                minor = {
-	                    tick: forcedXTicks,
-	                    format: d3TimeFormat.timeFormat(forcedXFormat)
+	                    tick: xTicks,
+	                    format: d3TimeFormat.timeFormat(xAxisCustomFormat)
 	                };
 	                major = null;
 	            } else {
-	                var _getXAxisSettings = getXAxisSettings(dataByDate, width, forceAxisSettings, locale);
+	                var _getXAxisSettings = getXAxisSettings(dataByDate, width, xAxisFormat, locale);
 	
 	                minor = _getXAxisSettings.minor;
 	                major = _getXAxisSettings.major;
@@ -13351,7 +13374,7 @@ webpackJsonp([7,10],[
 	        function drawAxis() {
 	            svg.select('.x-axis-group .axis.x').attr('transform', 'translate( 0, ' + chartHeight + ' )').call(xAxis);
 	
-	            if (forceAxisSettings !== 'custom') {
+	            if (xAxisFormat !== 'custom') {
 	                svg.select('.x-axis-group .month-axis').attr('transform', 'translate(0, ' + (chartHeight + monthAxisPadding) + ')').call(xMonthAxis);
 	            }
 	
@@ -13404,6 +13427,7 @@ webpackJsonp([7,10],[
 	                var date = point.date,
 	                    y = point.y,
 	                    y0 = point.y0;
+	
 	
 	                return 'translate( ' + xScale(date) + ', ' + yScale(y + y0) + ' )';
 	            });
@@ -13693,7 +13717,7 @@ webpackJsonp([7,10],[
 	            return width > tooltipThreshold;
 	        }
 	
-	        // Accessors
+	        // API
 	
 	        /**
 	         * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
@@ -13751,55 +13775,6 @@ webpackJsonp([7,10],[
 	                return dateLabel;
 	            }
 	            dateLabel = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the ability to force the chart to show a certain x axis grouping
-	         * @param  {String} _x Desired format
-	         * @return { (String|Module) }    Current format or module to chain calls
-	         * @example
-	         *     area.forceAxisFormat(area.axisTimeCombinations.HOUR_DAY)
-	         */
-	        exports.forceAxisFormat = function (_x) {
-	            if (!arguments.length) {
-	                return forceAxisSettings;
-	            }
-	            forceAxisSettings = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the ability to force the chart to show a certain x format
-	         * It requires a `forceAxisFormat` of 'custom' in order to work.
-	         * NOTE: localization not supported
-	         * @param  {String} _x              Desired format for x axis
-	         * @return { (String|Module) }      Current format or module to chain calls
-	         */
-	        exports.forcedXFormat = function (_x) {
-	            if (!arguments.length) {
-	                return forcedXFormat;
-	            }
-	            forcedXFormat = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
-	         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
-	         * how many and where the ticks will appear.
-	         *
-	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
-	         * @return { (Number|Module) }      Current number or ticks or module to chain calls
-	         */
-	        exports.forcedXTicks = function (_x) {
-	            if (!arguments.length) {
-	                return forcedXTicks;
-	            }
-	            forcedXTicks = _x;
 	
 	            return this;
 	        };
@@ -13903,54 +13878,6 @@ webpackJsonp([7,10],[
 	        };
 	
 	        /**
-	         * Gets or Sets the valueLabel of the chart
-	         * @param  {Number} _x Desired valueLabel for the graph
-	         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
-	         * @public
-	         */
-	        exports.valueLabel = function (_x) {
-	            if (!arguments.length) {
-	                return valueLabel;
-	            }
-	            valueLabel = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the number of verticalTicks of the yAxis on the chart
-	         * @param  {Number} _x Desired verticalTicks
-	         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
-	         * @public
-	         */
-	        exports.verticalTicks = function (_x) {
-	            if (!arguments.length) {
-	                return verticalTicks;
-	            }
-	            verticalTicks = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets the width of the chart
-	         * @param  {Number} _x Desired width for the graph
-	         * @return { width | module} Current width or Area Chart module to chain calls
-	         * @public
-	         */
-	        exports.width = function (_x) {
-	            if (!arguments.length) {
-	                return width;
-	            }
-	            if (aspectRatio) {
-	                height = Math.ceil(_x * aspectRatio);
-	            }
-	            width = _x;
-	
-	            return this;
-	        };
-	
-	        /**
 	         * Pass language tag for the tooltip to localize the date.
 	         * Feature uses Intl.DateTimeFormat, for compatability and support, refer to
 	         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
@@ -13992,9 +13919,107 @@ webpackJsonp([7,10],[
 	         * Exposes the constants to be used to force the x axis to respect a certain granularity
 	         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
 	         * @example
-	         *     area.forceAxisFormat(area.axisTimeCombinations.HOUR_DAY)
+	         *     area.xAxisFormat(area.axisTimeCombinations.HOUR_DAY)
 	         */
 	        exports.axisTimeCombinations = axisTimeCombinations;
+	
+	        /**
+	         * Gets or Sets the valueLabel of the chart
+	         * @param  {Number} _x Desired valueLabel for the graph
+	         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+	         * @public
+	         */
+	        exports.valueLabel = function (_x) {
+	            if (!arguments.length) {
+	                return valueLabel;
+	            }
+	            valueLabel = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the width of the chart
+	         * @param  {Number} _x Desired width for the graph
+	         * @return {Number | module} Current width or Area Chart module to chain calls
+	         * @public
+	         */
+	        exports.width = function (_x) {
+	            if (!arguments.length) {
+	                return width;
+	            }
+	            if (aspectRatio) {
+	                height = Math.ceil(_x * aspectRatio);
+	            }
+	            width = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x format
+	         * It requires a `xAxisFormat` of 'custom' in order to work.
+	         * NOTE: localization not supported
+	         * @param  {String} _x              Desired format for x axis
+	         * @return {String | Module}      Current format or module to chain calls
+	         */
+	        exports.xAxisCustomFormat = function (_x) {
+	            if (!arguments.length) {
+	                return xAxisCustomFormat;
+	            }
+	            xAxisCustomFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x axis grouping
+	         * @param  {String} _x Desired format
+	         * @return {String | Module}    Current format or module to chain calls
+	         * @example
+	         *     area.xAxisFormat(area.axisTimeCombinations.HOUR_DAY)
+	         */
+	        exports.xAxisFormat = function (_x) {
+	            if (!arguments.length) {
+	                return xAxisFormat;
+	            }
+	            xAxisFormat = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisFormat` of 'custom' in order to work.
+	         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
+	         * how many and where the ticks will appear.
+	         *
+	         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
+	         * @return {Number | Module}      Current number or ticks or module to chain calls
+	         */
+	        exports.xTicks = function (_x) {
+	            if (!arguments.length) {
+	                return xTicks;
+	            }
+	            xTicks = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the number of ticks of the y axis on the chart
+	         * (Default is 5)
+	         * @param  {Number} _x          Desired vertical ticks
+	         * @return {Number | module}    Current vertical ticks or Chart module to chain calls
+	         * @public
+	         */
+	        exports.yTicks = function (_x) {
+	            if (!arguments.length) {
+	                return yTicks;
+	            }
+	            yTicks = _x;
+	
+	            return this;
+	        };
 	
 	        return exports;
 	    };
@@ -14047,6 +14072,7 @@ webpackJsonp([7,10],[
 	
 	        this.withLargeData = function () {
 	            var attributes = _.extend({}, this.config, jsonLargeService);
+	
 	            return new this.Klass(attributes);
 	        };
 	

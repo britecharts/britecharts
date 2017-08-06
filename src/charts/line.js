@@ -139,13 +139,13 @@ define(function(require){
             },
             monthAxisPadding = 28,
             tickPadding = 5,
-            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
-            singleLineGradientColors = colorHelper.colorGradients.greenBlueGradient,
+            colorSchema = colorHelper.colorSchemas.britecharts,
+            singleLineGradientColors = colorHelper.colorGradients.greenBlue,
             topicColorMap,
 
-            forceAxisSettings = null,
-            forcedXTicks = null,
-            forcedXFormat = null,
+            xAxisFormat = null,
+            xTicks = null,
+            xAxisCustomFormat = null,
             locale,
 
             isAnimated = false,
@@ -161,7 +161,7 @@ define(function(require){
             topicLabel = 'topic',
             topicNameLabel = 'topicName',
 
-            verticalTicks = 5,
+            yTicks = 5,
 
             overlay,
             overlayColor = 'rgba(0, 0, 0, 0)',
@@ -260,17 +260,17 @@ define(function(require){
          */
         function buildAxis() {
             let dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
-            let yTickNumber = dataTimeSpan < verticalTicks - 1 ? dataTimeSpan : verticalTicks;
+            let yTickNumber = dataTimeSpan < yTicks - 1 ? dataTimeSpan : yTicks;
             let minor, major;
 
-            if (forceAxisSettings === 'custom' && typeof forcedXFormat === 'string') {
+            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
                 minor = {
-                    tick: forcedXTicks,
-                    format: d3TimeFormat.timeFormat(forcedXFormat)
+                    tick: xTicks,
+                    format: d3TimeFormat.timeFormat(xAxisCustomFormat)
                 };
                 major = null;
             } else {
-                ({minor, major} = getXAxisSettings(dataByDate, width, forceAxisSettings, locale));
+                ({minor, major} = getXAxisSettings(dataByDate, width, xAxisFormat, locale));
 
                 xMonthAxis = d3Axis.axisBottom(xScale)
                     .ticks(major.tick)
@@ -368,6 +368,7 @@ define(function(require){
                 .domain(dataByTopic.map(getTopic));
 
             let range = colorScale.range();
+            
             topicColorMap = colorScale.domain().reduce((memo, item, i) => {
                 memo[item] = range[i];
 
@@ -489,7 +490,7 @@ define(function(require){
                 .attr('transform', `translate(0, ${chartHeight})`)
                 .call(xAxis);
 
-            if (forceAxisSettings !== 'custom') {
+            if (xAxisFormat !== 'custom') {
                 svg.select('.x-axis-group .month-axis')
                     .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
                     .call(xMonthAxis);
@@ -808,46 +809,46 @@ define(function(require){
          * @param  {String} _x Desired format
          * @return { (String|Module) }    Current format or module to chain calls
          * @example
-         *     line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
+         *     line.xAxisFormat(line.axisTimeCombinations.HOUR_DAY)
          */
-        exports.forceAxisFormat = function(_x) {
+        exports.xAxisFormat = function(_x) {
             if (!arguments.length) {
-              return forceAxisSettings;
+              return xAxisFormat;
             }
-            forceAxisSettings = _x;
+            xAxisFormat = _x;
 
             return this;
         };
 
         /**
          * Exposes the ability to force the chart to show a certain x format
-         * It requires a `forceAxisFormat` of 'custom' in order to work.
+         * It requires a `xAxisFormat` of 'custom' in order to work.
          * NOTE: localization not supported
          * @param  {String} _x              Desired format for x axis
          * @return { (String|Module) }      Current format or module to chain calls
          */
-        exports.forcedXFormat = function(_x) {
+        exports.xAxisCustomFormat = function(_x) {
             if (!arguments.length) {
-              return forcedXFormat;
+              return xAxisCustomFormat;
             }
-            forcedXFormat = _x;
+            xAxisCustomFormat = _x;
 
             return this;
         };
 
         /**
-         * Exposes the ability to force the chart to show a certain x ticks. It requires a `forceAxisFormat` of 'custom' in order to work.
+         * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisFormat` of 'custom' in order to work.
          * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
          * how many and where the ticks will appear.
          *
          * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
          * @return { (Number|Module) }      Current number or ticks or module to chain calls
          */
-        exports.forcedXTicks = function(_x) {
+        exports.xTicks = function(_x) {
             if (!arguments.length) {
-              return forcedXTicks;
+              return xTicks;
             }
-            forcedXTicks = _x;
+            xTicks = _x;
 
             return this;
         };
@@ -980,16 +981,17 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the number of verticalTicks of the yAxis on the chart
-         * @param  {Number} _x Desired verticalTicks
-         * @return { verticalTicks | module} Current verticalTicks or Chart module to chain calls
+         * Gets or Sets the number of ticks of the y axis on the chart
+         * (Default is 5)
+         * @param  {Number} _x          Desired yTicks
+         * @return {Number | module}   Current yTicks or Chart module to chain calls
          * @public
          */
-        exports.verticalTicks = function(_x) {
+        exports.yTicks = function(_x) {
             if (!arguments.length) {
-                return verticalTicks;
+                return yTicks;
             }
-            verticalTicks = _x;
+            yTicks = _x;
 
             return this;
         };
@@ -997,7 +999,7 @@ define(function(require){
         /**
          * Gets or Sets the width of the chart
          * @param  {Number} _x Desired width for the graph
-         * @return { (Number | Module) } Current width or Line Chart module to chain calls
+         * @return {Number | Module} Current width or Line Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
@@ -1054,7 +1056,7 @@ define(function(require){
          * Exposes the constants to be used to force the x axis to respect a certain granularity
          * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
          * @example
-         *     line.forceAxisFormat(line.axisTimeCombinations.HOUR_DAY)
+         *     line.xAxisCustomFormat(line.axisTimeCombinations.HOUR_DAY)
          */
         exports.axisTimeCombinations = axisTimeCombinations;
 

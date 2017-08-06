@@ -7,3 +7,12 @@ engines:
 ratings:
    paths:
    - "src/charts/**.js"
+
+exclude_paths:
+- "test"
+- "node_modules"
+- "docs"
+- "dist"
+- "demos"
+- "src/doc"
+- "src/tasks"

@@ -1,7 +1,6 @@
 'use strict';
 
-var _ = require('underscore'),
-    d3Selection = require('d3-selection'),
+var d3Selection = require('d3-selection'),
     d3TimeFormat = require('d3-time-format'),
 
     PubSub = require('pubsub-js'),
@@ -13,6 +12,7 @@ var _ = require('underscore'),
     colorSelectorHelper = require('./helpers/colorSelector'),
 
     lineMargin = {top:60, bottom: 50, left: 50, right: 30};
+    
     require('./helpers/resizeHelper');
 
 function createBrushChart(optionalColorSchema) {
@@ -30,12 +30,11 @@ function createBrushChart(optionalColorSchema) {
             .width(containerWidth)
             .height(100)
             .margin(brushMargin)
-            .onBrush(function(brushExtent) {
+            .on('customBrushEnd', function(brushExtent) {
                 var format = d3TimeFormat.timeFormat('%m/%d/%Y');
 
                 d3Selection.select('.js-start-date').text(format(brushExtent[0]));
                 d3Selection.select('.js-end-date').text(format(brushExtent[1]));
-
                 d3Selection.select('.js-date-range').classed('is-hidden', false);
 
                 // Filter
@@ -89,9 +88,8 @@ function createLineChart(optionalColorSchema, optionalData) {
         // Tooltip Setup and start
         chartTooltip
             // In order to change the date range on the tooltip title, uncomment this line
-            // .forceDateRange(chartTooltip.axisTimeCombinations.HOUR_DAY)
-            .title('Quantity Sold')
-            .forceOrder(dataset.dataByTopic.map(function(topic) {
+            // .dateFormat(chartTooltip.axisTimeCombinations.HOUR .title('Quantity Sold')
+            .topicsOrder(dataset.dataByTopic.map(function(topic) {
                 return topic.topic;
             }));
 
@@ -240,7 +238,7 @@ if (d3Selection.select('.js-line-chart-container').node()) {
     createLineChartWithSingleLine();
     createLineChartWithFixedHeight();
 
-    var redrawCharts = function(){
+    let redrawCharts = function(){
         d3Selection.selectAll('.line-chart').remove();
         d3Selection.selectAll('.brush-chart').remove();
 

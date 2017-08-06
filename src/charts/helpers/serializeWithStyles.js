@@ -56,7 +56,8 @@ module.exports = (function() {
                     result;
 
                 if (!elem || elem.nodeType !== Node.ELEMENT_NODE) {
-                    console.error('Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE');
+                    // 'Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE'
+                    
                     return;
                 }
 
