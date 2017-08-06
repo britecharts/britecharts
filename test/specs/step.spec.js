@@ -170,6 +170,26 @@ define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, 
 
                 expect(callbackSpy.calls.count()).toBe(1);
             });
+
+            it('should trigger a callback', () => {
+                let step = containerFixture.select('.step:nth-child(1)');
+                let callbackSpy = jasmine.createSpy('callback');
+
+                stepChart.on('customMouseMove', callbackSpy);
+                step.dispatch('mousemove');
+
+                expect(callbackSpy.calls.count()).toBe(1);
+            });
+
+            it('should trigger a callback', () => {
+                let step = containerFixture.select('.step:nth-child(1)');
+                let callbackSpy = jasmine.createSpy('callback');
+
+                stepChart.on('customMouseOut', callbackSpy);
+                step.dispatch('mouseout');
+
+                expect(callbackSpy.calls.count()).toBe(1);
+            });
         });
 
         describe('Export chart functionality', () => {
