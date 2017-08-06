@@ -1,6 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 1.7.2
 =======
+=======
+>>>>>>> upstream/master
 Upcoming Release:
 -----------------
 
@@ -18,7 +21,10 @@ Bug Fixes:
 * Update docs (thanks @nikkistonge)
 * Fixed tooltip rounding error
 
+<<<<<<< HEAD
 >>>>>>> e7c49683e1a51ef1ed5e23a7cfa1c8b5be33fcf0
+=======
+>>>>>>> upstream/master
 1.7.2 - Patch
 ---------------------
 * Updated dist with new changes

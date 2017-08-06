@@ -1070,7 +1070,7 @@ define(function(require){
             width = _x;
 
             return this;
-        };
+        };        
 
         /**
          * Exposes the ability to force the chart to show a certain x format
