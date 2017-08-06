@@ -169,9 +169,15 @@ define(function(require){
         function addMouseEvents() {
             if (shouldShowTooltip()){
                 svg
-                    .on('mouseover', handleMouseOver)
-                    .on('mouseout', handleMouseOut)
-                    .on('mousemove', handleMouseMove);
+                    .on('mouseover', function(d) {
+                        handleMouseOver(this, d);
+                    })
+                    .on('mouseout', function(d) {
+                        handleMouseOut(this, d);
+                    })
+                    .on('mousemove',  function(d) {
+                        handleMouseMove(this, d);
+                    });
             }
 
             svg.selectAll('.bar')
@@ -621,8 +627,8 @@ define(function(require){
          * and updates metadata related to it
          * @private
          */
-        function handleMouseMove(){
-            let [mouseX, mouseY] = getMousePosition(this),
+        function handleMouseMove(e, d){
+            let [mouseX, mouseY] = getMousePosition(e),
                 dataPoint = !horizontal ? getNearestDataPoint(mouseX) : getNearestDataPoint2(mouseY),
                 x,
                 y;
@@ -639,7 +645,7 @@ define(function(require){
                 moveTooltipOriginXY(x,y);
 
                 // Emit event with xPosition for tooltip or similar feature
-                dispatcher.call('customMouseMove', this, dataPoint, categoryColorMap, x,y);
+                dispatcher.call('customMouseMove', e, dataPoint, categoryColorMap, x, y);
             }
         }
 
@@ -648,18 +654,18 @@ define(function(require){
          * It also resets the container of the vertical marker
          * @private
          */
-        function handleMouseOut(d){
+        function handleMouseOut(e, d) {
             svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
-            dispatcher.call('customMouseOut', this, d);
+            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
         }
 
         /**
          * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
          * @private
          */
-        function handleMouseOver(d){
-            dispatcher.call('customMouseOver', this, d);
-        }
+         function handleMouseOver(e, d) {
+             dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
+         }
 
         /**
          * Helper method to update the x position of the vertical marker
