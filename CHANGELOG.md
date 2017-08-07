@@ -1,3 +1,4 @@
+2.0.0
 [2.0.0][https://github.com/eventbrite/britecharts/compare/1.7.2...2.0.0] - Major Release
 -----------------
 
