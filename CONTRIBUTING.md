@@ -84,7 +84,7 @@ For a TDD workflow, the process would look like this:
 1. Write a failing test for the API accessor or the feature you want to add
 1. On a new terminal, run ``npm run test``
 1. Check that the test fails
-1. Write the code that would make that test pass on the chart located in ``/src/charts/``
+1. Write the code that would make that test pass on the chart located in ``/src/charts/``. Please follow our code [styleguide][styleguide].
 1. Make the test pass by writing the less amount of code
 1. Refactor until you get a nice and clean code
 1. Add/update the JSDoc comments so that the proper documentation gets generated when you run ``npm run docs``
@@ -110,9 +110,10 @@ Adding a new chart is a bunch of work, but we hope that using the current code a
     2. add the new demo page to the ``currentDemos`` object, keeping the same format.
 8. Go to your test file ``ChartName.spec.js`` and, taking another test as an example, copy over pieces until you have the first test case.
 1. Add one test and make it fail callin ``npm run test``.
+1. Keep on coding according to our code [styleguide][styleguide].
 1. Once you think you are close to have something working, start adding JSDoc comments to your code
 1. Generate your docs with ``npm run docs`` and manually test the demos.
-1. Create a pull request with your branch and ping one of the core authors to get it reviewed
+1. Create a pull request with your branch and ping one of the core authors to get it reviewed.
 1. Once you have a shipit, merge it
 
 
@@ -260,3 +261,4 @@ britecharts
 
 
 [node]: http://nodejs.org
+[styleguide]: https://github.com/eventbrite/britecharts/blob/master/CODESTYLEGUIDE.md
