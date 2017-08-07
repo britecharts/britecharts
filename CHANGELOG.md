@@ -1,4 +1,4 @@
-Upcoming Release:
+[2.0.0][https://github.com/eventbrite/britecharts/compare/1.7.2...2.0.0] - Major Release
 -----------------
 
 Features:
@@ -6,14 +6,53 @@ Features:
 * Added reverseColorList accessor for bar chart (thanks @martinmanzo)
 * Added custom tooltip formatting option (thanks @harrisreynolds)
 
+API Changes:
+Boolean accessors
+* from horizontal to isHorizontal
+* from usePercentage to hasPercentage
+* from reverseColorList to shouldReverseColorList
+
+Removed ‘force’ prefixes
+* from forceAxisFormat to xAxisFormat
+* from forcedXFormat to xAxisFormat
+* from forceDateRange to dateFormat
+* from forceOrder to topicsOrder
+* from forcedXTicks to xTicks
+
+Renamed axis and tick related accessors
+* from numOfHorizontalTicks into xTicks
+* from numOfVerticalTicks to yTicks
+* from verticalTicks to yTicks
+
+Normalized callbacks with dispatchers
+* from onBrush callback to a .on(‘customBrushEnd’, fn) event
+
+Color schemas
+* from britechartsColorSchema to britecharts
+* from britechartsGreySchema to grey
+* from extendedOrangeColorSchema to orange
+* from extendedBlueColorSchema to blueGreen
+* from extendedLightBlueColorSchema to teal
+* from extendedGreenColorSchema to green
+* from extendedYellowColorSchema to yellow
+* from extendedPinkColorSchema to pink
+* from extendedPurpleColorSchema to purple
+* from extendedRedColorSchema to red
+
 Bug Fixes:
 * Normalized Chart names between bundle and UMD
 * Updated eslint configuration and cleaned all issues
 * Added tests to stacked and grouped bar charts
-* Updated Readme (thanks @perborgen)
 * Polished Grouped Bar Chart
-* Update docs (thanks @nikkistonge)
 * Fixed tooltip rounding error
+
+Docs
+* Updated Readme (thanks @perborgen)
+* Update docs (thanks @nikkistonge)
+* Added license badge to readme
+* Created Code Styleguide document with API Guidelines: https://github.com/eventbrite/britecharts/blob/master/CODESTYLEGUIDE.md
+* Updated the Contributing guide
+
 
 1.7.2 - Patch
 ---------------------
