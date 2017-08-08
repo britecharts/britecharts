@@ -12843,6 +12843,7 @@ webpackJsonp([8,10],[
 	    var d3Shape = __webpack_require__(33);
 	    var d3Selection = __webpack_require__(1);
 	    var assign = __webpack_require__(47);
+	    var d3Transition = __webpack_require__(15);
 	
 	    var _require = __webpack_require__(18),
 	        exportChart = _require.exportChart;
