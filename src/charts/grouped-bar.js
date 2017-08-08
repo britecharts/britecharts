@@ -11,6 +11,7 @@ define(function (require) {
     const d3Scale = require('d3-scale');
     const d3Selection = require('d3-selection');
     const assign = require('lodash.assign');
+    const d3Transition = require('d3-transition');
 
     const { exportChart } = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
