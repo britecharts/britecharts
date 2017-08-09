@@ -30,7 +30,9 @@
 
 2- Clone repository with `git clone https://github.com/<your handle>/britecharts.git`
 
-3- Navigate to the repository folder and install dependencies with: `npm install` (we are using node 6.9.x at the moment)
+3- Navigate to the repository folder and install dependencies with: `yarn install` (we are using node 6.9.x at the moment)
+
+4- If you don't have yarn installed, it can be easily installed with homebrew following the instruction in the [yarn docs][yarn]
 
 
 ### Creating feature branches
@@ -47,10 +49,9 @@
 
 In order to generate the demos and see the documentation for the library you would need to:
 
- + Download and install [node][node] (note we need npm version 2.X)
- + Install the grunt task runner (if you don't have it yet) with:
+ + Download and install node (note we need npm version 2.X)
 
-    `npm install -g grunt-cli`
+ + Ensure you have [yarn][yarn] installed as well
 
  + Clone the repository with:
 
@@ -58,15 +59,15 @@ In order to generate the demos and see the documentation for the library you wou
 
  + Change directory into the repository root and install its dependencies:
 
-    `npm install`
+    `yarn install`
 
  + In the root or the repository folder, run:
 
-    `npm run demos:serve`
+    `yarn run demos:serve`
 
  + In a second terminal window, run:
 
-    `npm run docs`
+    `yarn run docs`
 
 
 This process will generate the docs with its current contents and open the interface where you will be able to navigate the API of each chart. You can also see some use examples under the "Demos" dropdown section. Use this demos as your testing platform when modifying the charts.
@@ -79,15 +80,15 @@ We have created this charts with Tests First, and we encourage you to do the sam
 For a TDD workflow, the process would look like this:
 
 1. Create a new branch for your modification
-1. On a new terminal, run ``npm run demos:serve`` and navigate to the chart's demo
+1. On a new terminal, run ``yarn run demos:serve`` and navigate to the chart's demo
 1. Find the test of the chart you want to modify in ``/test/specs/*.spec.js``
 1. Write a failing test for the API accessor or the feature you want to add
-1. On a new terminal, run ``npm run test``
+1. On a new terminal, run ``yarn run test``
 1. Check that the test fails
 1. Write the code that would make that test pass on the chart located in ``/src/charts/``. Please follow our code [styleguide][styleguide].
 1. Make the test pass by writing the less amount of code
 1. Refactor until you get a nice and clean code
-1. Add/update the JSDoc comments so that the proper documentation gets generated when you run ``npm run docs``
+1. Add/update the JSDoc comments so that the proper documentation gets generated when you run ``yarn run docs``
 1. Check the demo to see the code in action (you can also add a new demo there if necessary)
 1. Create a pull request and ask people of the team to review it
 1. Once you have the OK, merge it!
@@ -98,7 +99,7 @@ For a TDD workflow, the process would look like this:
 Adding a new chart is a bunch of work, but we hope that using the current code and documentation will help in the process.
 
 1. Create a new branch for your new chart
-1. On a new terminal, run ``npm run demos:serve`` to get ready the docs and turn on the dev server.
+1. On a new terminal, run ``yarn run demos:serve`` to get ready the docs and turn on the dev server.
 1. Given that you new chart is ``ChartName``, create in ``/test/specs`` a new test file ``ChartName.spec.js``.
 2. Go to ``/test/fixtures`` and create a new data builder file. Name it something like ``chartNameChartDataBuilder.js``.
 3. Go to ``/test/json`` and create a JSON file for the test data of your new chart. You will load it with the previously created data builder.
@@ -109,10 +110,10 @@ Adding a new chart is a bunch of work, but we hope that using the current code a
     1. add the new chart to the ``currentCharts`` object, give it a camel case name.
     2. add the new demo page to the ``currentDemos`` object, keeping the same format.
 8. Go to your test file ``ChartName.spec.js`` and, taking another test as an example, copy over pieces until you have the first test case.
-1. Add one test and make it fail callin ``npm run test``.
+1. Add one test and make it fail callin ``yarn run test``.
 1. Keep on coding according to our code [styleguide][styleguide].
 1. Once you think you are close to have something working, start adding JSDoc comments to your code
-1. Generate your docs with ``npm run docs`` and manually test the demos.
+1. Generate your docs with ``yarn run docs`` and manually test the demos.
 1. Create a pull request with your branch and ping one of the core authors to get it reviewed.
 1. Once you have a shipit, merge it
 
@@ -166,11 +167,11 @@ To install Karma and start running test you would need to follow this steps:
 
 3- Get into the repository folder and install dependencies with:
 
-    npm install
+    yarn install
 
 4- Run the tests with:
 
-    npm run test
+    yarn run test
 
 This process will watch the test and spec files, re-running the tests when those change.
 
@@ -197,29 +198,29 @@ Britecharts modules are written in ES6, so we would need to create an ES5-compat
 
 In order to work with the development version of the charts, we just need to run:
 
-    npm run demos:serve
+    yarn run demos:serve
 
 However, if you want to create the production version of the charts, you should run:
 
-    npm run prod
+    yarn run prod
 
 
-### NPM Tasks
+### yarn Tasks
 
-The build sequence consists of a small set of [Node][node] tasks. While you'll probably only need `npm run test` and `npm run prod` most of the time, the other tasks can be called independently or combined in order to see the docs.
+The build sequence consists of a small set of [Node][node] tasks. While you'll probably only need `yarn run test` and `yarn run prod` most of the time, the other tasks can be called independently or combined in order to see the docs.
 
 | Task                      | Description
 | ---                       | ---
-| `npm run test`            | Start the Karma runner that will test the project and keep watching for changes.
-| `npm run demos:serve`     | Serves the demos for our tutorials.
-| `npm run docs`            | Compiles the docs with JSDoc and opens a browser showing them.
-| `npm run styles`          | Compiles the styles for the charts
-| `npm run prod`            | Build everything and generate the distribution version of the charts.
-| `npm run release`         | Create a new release of the library.
-| `npm run release:minor`   | Create a new release of the library by bumping the second number of the version (1.N.1)
-| `npm run release:major`   | Create a new release of the library by bumping the third number of the version (N.1.1)
+| `yarn run test`            | Start the Karma runner that will test the project and keep watching for changes.
+| `yarn run demos:serve`     | Serves the demos for our tutorials.
+| `yarn run docs`            | Compiles the docs with JSDoc and opens a browser showing them.
+| `yarn run styles`          | Compiles the styles for the charts
+| `yarn run prod`            | Build everything and generate the distribution version of the charts.
+| `yarn run release`         | Create a new release of the library.
+| `yarn run release:minor`   | Create a new release of the library by bumping the second number of the version (1.N.1)
+| `yarn run release:major`   | Create a new release of the library by bumping the third number of the version (N.1.1)
 
-**Note that for running `npm run docs`, you will need to first have `npm run demos:serve` in a different terminal.
+**Note that for running `yarn run docs`, you will need to first have `yarn run demos:serve` in a different terminal.
 
 ## Project Structure
 
@@ -262,3 +263,4 @@ britecharts
 
 [node]: http://nodejs.org
 [styleguide]: https://github.com/eventbrite/britecharts/blob/master/CODESTYLEGUIDE.md
+[yarn]: https://yarnpkg.com/lang/en/docs/install/
