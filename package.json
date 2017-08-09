@@ -32,7 +32,8 @@
     "test:travis": "karma start --single-run --browsers PhantomJS --mode=test",
     "_prod": "webpack --mode=prod",
     "_prodUMD": "webpack --mode=prodUMD",
-    "watch": "grunt watch"
+    "watch": "grunt watch",
+    "clean": "yarn cache clean && rm -rf node_modules"
   },
   "repository": {
     "type": "git",
@@ -100,7 +101,6 @@
     "moment": "^2.17.0",
     "prismjs": "^1.6.0",
     "pubsub-js": "^1.5.7",
-    "reggie": "~0.2.1",
     "requirejs-plugins": "^1.0.2",
     "sanitize-html": "^1.13.0",
     "shelljs": "^0.7.8",
