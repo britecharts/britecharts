@@ -1,9 +1,17 @@
 language: node_js
 node_js:
 - 6.9.2
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
 before_install: npm install -g grunt-cli
-install: npm install
-script: npm run test:travis
+install: yarn install
+script: yarn run test:travis
 deploy:
   provider: npm
   email: npmjs+eng@eventbrite.com
