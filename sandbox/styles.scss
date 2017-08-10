@@ -1,0 +1,19 @@
+#dataInput {
+    width: 300px;
+    height: 300px;
+    top: 0;
+    left: 0;
+}
+
+#chartConfigInput {
+   width: 200px;
+   height: 300px;
+   top: 0;
+   left: 0;
+   margin-right: 10px;
+}
+
+.main_display {
+    display: flex;
+    justify-content: space-between;
+}
