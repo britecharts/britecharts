@@ -5,6 +5,10 @@
     left: 0;
 }
 
+.display-container {
+    padding: 0 1rem 0 1rem;
+}
+
 #chartConfigInput {
    width: 300px;
    height: 300px;
@@ -16,4 +20,54 @@
 .main-display {
     display: flex;
     justify-content: space-between;
+}
+
+.select-box-container {
+    border: 2px solid lightskyblue;
+    border-radius: 5px;
+    width: 300px;
+    height: 30px;
+    display: flex;
+    margin: 5px 0 5px 0;
+
+    &:hover {
+        border: 2px solid #44BBFF;
+    }
+}
+
+.select-box {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    width:100%;
+    color: #555;
+    font-size: 15px;
+}
+html, body {
+    padding: 0;
+    margin: 0;
+    font-family: "Whitney SSm A", "Whitney SSm B", "Lato", "Lucida Grande", "Lucida Sans Unicode", Tahoma, Sans-Serif;
+}
+
+.notification__error {
+    margin: 0 -9999rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255,0,0,0.5);
+    border-bottom: red solid 3px;
+    height: 40px;
+    font-size: 15px;
+
+    &:hover .notification--stack-trace {
+        display: block;
+        position: absolute;
+        background: white;
+        z-index: 10;
+        left: 0;
+    }
+}
+
+.notification--stack-trace {
+    display: none;
 }

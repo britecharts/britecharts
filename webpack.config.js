@@ -194,11 +194,12 @@ config = {
     sandbox: {
         entry:  Object.assign(
             {},
-            {sandbox: path.resolve(__dirname, './sandbox/sandbox.js')},
+            {
+                sandbox: path.resolve(__dirname, './sandbox/sandbox.js')
+            },
             currentCharts
         ),
-        //Object.assign({}, {sandbox: './sandbox/index.js'}, currentCharts),
-        devtool: 'cheap-eval-source-map',
+        devtool: 'eval',
         output: {
             path: './sandbox/build',
             publicPath: '/assets/',

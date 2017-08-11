@@ -61,7 +61,6 @@ define(function(require) {
      *
      */
     return function module() {
-
         let margin = {
                 top: 0,
                 right: 0,

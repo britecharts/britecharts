@@ -38,42 +38,39 @@ const {
     prettifyJson
 } = require('./utils');
 
-let createEditors = require('./editors');
+let {createEditors} = require('./editors');
 let {
     dataEditor,
     configEditor
 } = createEditors({dataInputId, chartInputId});
 
-const dataEditorWidth = '300px';
-// const configEditorWidth = '300px';
-// const dataEditorHeight = '200px';
-
-
-require('./styles.scss');
-// require('./lib/aceEditor-1.2.8')
-require('./dataInputField')
-
-// remove
-window.d3 = d3;
-
-
 const charts = Object.keys(defaultConfig);
-const errors = []
 
 let state = {
     isDataInputExpanded: false
 }
+const errors = [];
 
-loadDependencies();
-setInitialData();
-domHelpers.initDomElements();
+require('./styles.scss');
 
-setDataInInputField();
-setConfigInInputField();
-setChartSelectorType()
-setNewChart();
-setHandlers();
+// move/remove
+const dataEditorWidth = '300px';
+window.d3 = d3;
 
+
+function main() {
+    loadDependencies();
+    setInitialData();
+    domHelpers.initDomElements();
+
+    setDataInInputField();
+    setConfigInInputField();
+    setChartSelectorType();
+    setNewChart();
+    setHandlers();
+
+}
+main();
 function setInitialData() {
     // always set type first
     getCurrentType();
@@ -209,7 +206,11 @@ function _safeLoadDependency(name) {
     try {
         window[name] = require(`../src/charts/${name}`);
     } catch(e) {
-        errors.push(e);
+        let error = {
+            error: e,
+            filePath: name
+        }
+        errors.push(error);
     }
 }
 
@@ -217,7 +218,7 @@ function loadDependencies() {
     charts.forEach(_safeLoadDependency);
 
     if (errors.length) {
-        d3.select('body').style('background','red');
+        domHelpers.showErrors(errors);
     }
 }
 
@@ -282,8 +283,7 @@ function setNewChart(chartData=getCurrentData(), chartInitString=getCurrentConfi
     try {
         eval(chartInitString);
     } catch (e) {
-
-        console.log(e);
+        console.error(e);
     }
 
     d3.select(`.${britechartContainerClass}`).datum(chartData).call(chart);

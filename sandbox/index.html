@@ -5,26 +5,29 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/britecharts/dist/css/britecharts.min.css" type="text/css" />
     </head>
     <body>
-        <h1>Sandbox!</h1>
-        <button onclick="(function(){localStorage.clear()})()">Clear local storage</button>
-        <script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js'></script>
-        <div class="main-display">
-            <div class="chart-panel">
-                <div class="chart-selector-container"></div>
-                <div class="chart-container-place-holder"></div>
+        <div class="notification-bar"></div>
+        <div class="display-container">
+            <h1>Sandbox!</h1>
+            <button onclick="(function(){localStorage.clear()})()">Clear local storage</button>
+
+            <div class="main-display">
+                <div class="chart-panel">
+                    <div class="chart-selector-container select-box-container"></div>
+                    <div class="chart-container-place-holder"></div>
+                </div>
+                <div class="config-panel">
+                    <div id="chartConfigInput"></div>
+                    <button class="config-display__submit">Update</button>
+                    <button class="config-display__reset">Reset</button>
+                </div>
             </div>
-            <div class="config-panel">
-                <div id="chartConfigInput"></div>
-                <button class="config-display__submit">Update</button>
-                <button class="config-display__reset">Reset</button>
+            <div class="data-display">
+                <button class="data-display__toggle-size">Toggle Expand</button>
+                <div class="data-selector-container select-box-container"></div>
+                <div id="dataInput"></div>
+                <button class="data-display__submit">Update</button>
+                <button class="data-display__reset">Reset</button>
             </div>
-        </div>
-        <div class="data-display">
-            <button class="data-display__toggle-size">Toggle Expand</button>
-            <div class="data-selector-container"></div>
-            <div id="dataInput"></div>
-            <button class="data-display__submit">Update</button>
-            <button class="data-display__reset">Reset</button>
         </div>
         <script src="/assets/sandbox.js"></script>
     </body>

@@ -14,7 +14,6 @@ module.exports = (function() {
         chartConfigs: {
             bar: {
                 chartConfig: {
-                    percentageAxisToMaxRatio: 1.3,
                     width: 400,
                     height: 300
                 },
@@ -59,7 +58,11 @@ module.exports = (function() {
             dataInputSizeToggleClass: 'data-display__toggle-size',
             // config inoput
             submitConfigButtonClass: 'config-display__submit',
-            resetConfigButtonClass: 'config-display__reset'
+            resetConfigButtonClass: 'config-display__reset',
+            // other
+            genericSelectBoxClass: 'select-box',
+            notificationBarClass: 'notification-bar',
+
         },
         domIdNames: {
            dataInputId: 'dataInput',

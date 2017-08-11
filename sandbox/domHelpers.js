@@ -8,7 +8,9 @@ const {
     chartSelectorContainerClass,
     chartSelectorClass,
     dataSelectorContainerClass,
-    dataSelectorClass
+    dataSelectorClass,
+    genericSelectBoxClass,
+    notificationBarClass,
 } = constants.domClassNames;
 const charts = Object.keys(constants.chartConfigs);
 
@@ -32,12 +34,34 @@ module.exports = (function() {
             let select = d3.select(selector)
                 .append('select')
                 .classed(selectClass, true)
+                .classed(genericSelectBoxClass, true)
 
             let options = select.selectAll('option').data(optionList)
 
             options.enter().append('option')
                 .attr('value', (d) => d)
                 .text((d) => d);
+        },
+        showErrors(errorList) {
+            let notifications = d3.select(`.${notificationBarClass}`).selectAll('div').data(errorList);
+
+            notifications.enter().append('div')
+                .text(d => `Could not load ${d.filePath}: ${d.error.message}`)
+                .classed('notification__error', true)
+                // cannot be bound to calling scope, weird d3 stuff
+                .each(function() {
+                    d3.select(this)
+                        .append('pre')
+                        .text(({error}) => error.stack)
+                        .classed('notification--stack-trace', true)
+                });
+
+
         }
     }
 }());
+
+
+
+
+
