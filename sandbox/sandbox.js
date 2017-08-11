@@ -245,8 +245,8 @@ function setNewDataTypes() {
         .data(dataTypes);
 
     dataSelector.enter().append('option')
-        .attr('value', (d) => d)
         .merge(dataSelector)
+            .attr('value', (d) => d)
             .text((d) => d);
 
     dataSelector.exit().remove();
