@@ -57,7 +57,7 @@ const errors = [];
 require('./styles.scss');
 
 // remove
-const dataEditorWidth = '300px';
+const dataEditorWidth = '400px';
 
 window.d3 = d3;
 
@@ -104,10 +104,10 @@ function _handleDataSelectorChange () {
 
 function _handleDataSizeToggle() {
     let {isDataInputExpanded} = state;
-    let size = isDataInputExpanded ? dataEditorWidth : '100%';
+    let width = isDataInputExpanded ? dataEditorWidth : '1000px';
 
     state.isDataInputExpanded = !isDataInputExpanded;
-    d3.select(`#${dataInputId}`).style('width', size);
+    d3.select(`#${dataInputId}`).style('width', width);
 }
 
 function getCurrentData() {

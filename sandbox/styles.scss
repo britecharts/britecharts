@@ -1,5 +1,5 @@
 #dataInput {
-    width: 300px;
+    width: 400px;
     height: 300px;
     top: 0;
     left: 0;
@@ -14,12 +14,14 @@
    height: 300px;
    top: 0;
    left: 0;
-   margin-right: 10px;
 }
 
 .main-display {
     display: flex;
     justify-content: space-between;
+}
+.data-display {
+    width: 400px;
 }
 
 .select-box-container {
@@ -34,7 +36,32 @@
         border: 2px solid #44BBFF;
     }
 }
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
 
+}
+
+
+.button__update {
+    width: 65%;
+    background-color: #39c2c9;
+}
+.button__reset {
+    width: 30%;
+    background-color: salmon;
+}
+.button-panel {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0 0 0;
+}
 .select-box {
     background: transparent;
     border: none;
