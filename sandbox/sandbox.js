@@ -1,26 +1,51 @@
 const d3 = require('d3');
 const path = require('path');
-const chartSelectorContainerClass = '.chartSelectorContainer';
+const chartSelectorContainerClass = 'chart-selector-container';
 
-const defaults = require('./defaults');
-const initialData = require('./data');
+const defaultData = require('./data');
+const storage = require('./localStorageManager');
 
-const chartSelectorClass = 'chartSelector';
-const britechartContainerClass = 'britechartContainer';
-const britechartPlaceHolder = 'chartContainerPlaceHolder';
-const submitDataButtonClass = 'submitDataButton';
-const resetDataButtonClass = 'resetDataButton';
-const dataInputSizeToggleClass = 'toggleDataInputSize';
+const constants = require('./constants');
+const {
+   chartSelectorClass,
+   // chart containers
+   britechartContainerClass,
+   britechartPlaceHolder,
+   // data input
+   submitDataButtonClass,
+   resetDataButtonClass,
+   dataInputSizeToggleClass,
+   // config inoput
+   submitConfigButtonClass,
+   resetConfigButtonClass,
+   configInputSizeToggleClass,
+} = constants.domClassNames;
+const {
+    rootSaveKey,
+    savedChartTypeKey,
+    savedDataKey,
+    savedConfigKey
+} = constants.saveKeys;
+const defaultConfig = constants.chartConfigs;
+const {
+    dataInputId,
+    chartInputId
+} = constants.domIdNames;
 
-const dataInputId = 'dataInput';
-const chartInputId = 'chartConfigInput';
+const {
+    prettifyInitString,
+    prettifyJson
+} = require('./utils');
 
-
-const savedDataKey = 'SAVED_CHART_DATA';
-const savedConfigKey = 'SAVED_CHART_CONFIG';
+let createEditors = require('./editors');
+let {
+    dataEditor,
+    configEditor
+} = createEditors({dataInputId, chartInputId});
 
 const dataEditorWidth = '300px';
-const dataEditorHeight = '200px';
+// const configEditorWidth = '300px';
+// const dataEditorHeight = '200px';
 
 
 require('./styles.scss');
@@ -30,109 +55,161 @@ require('./dataInputField')
 // remove
 window.d3 = d3;
 
-const charts = [
-    'bar',
-    'brush',
-    // 'donut',
-    // 'line',
-    // 'sparkline',
-    // 'stacked-area',
-    // 'step'
-];
+
+const charts = Object.keys(defaultConfig);
 const errors = []
 
 
-window.dataEditor = ace.edit(dataInputId);
-dataEditor.setTheme('ace/theme/monokai');
-dataEditor.getSession().setMode('ace/mode/javascript');
-// remove unwanted warning
-dataEditor.$blockScrolling = Infinity;
+// window.dataEditor = ace.edit(dataInputId);
+// dataEditor.setTheme('ace/theme/monokai');
+// dataEditor.getSession().setMode('ace/mode/javascript');
+// // remove unwanted warning
+// dataEditor.$blockScrolling = Infinity;
 
 
-window.chartConfigEditor = ace.edit(chartInputId);
-chartConfigEditor.setTheme('ace/theme/monokai');
-chartConfigEditor.renderer.setShowGutter(false);
-chartConfigEditor.getSession().setMode('ace/mode/javascript');
-// remove unwanted warning
-chartConfigEditor.$blockScrolling = Infinity;
+// window.configEditor = ace.edit(chartInputId);
+// configEditor.setTheme('ace/theme/monokai');
+// configEditor.renderer.setShowGutter(false);
+// configEditor.getSession().setMode('ace/mode/javascript');
+// // remove unwanted warning
+// configEditor.$blockScrolling = Infinity;
 
-
-let dataSizeExpanded = false;
+let state = {
+    isDataInputExpanded: false
+}
 
 loadDependencies();
 createSelectChartElement();
 setDataInInputField();
+setConfigInInputField();
+setChartSelectorType()
+// set handle chart change
+setInitialData();
 setNewChart();
 setHandlers();
+
+function setInitialData() {
+    getCurrentData();
+    getCurrentConfig();
+    getCurrentType();
+}
+
+
 
 function setHandlers() {
     d3.select(`.${submitDataButtonClass}`).on('click', _handleDataUpdate);
     d3.select(`.${resetDataButtonClass}`).on('click', _handleDataReset);
     d3.select(`.${dataInputSizeToggleClass}`).on('click', _handleDataSizeToggle);
+
+    d3.select(`.${submitConfigButtonClass}`).on('click', _handleConfigUpdate);
+    d3.select(`.${resetConfigButtonClass}`).on('click', _handleConfigReset);
 }
 
-
 function _handleDataSizeToggle() {
-    let size = dataSizeExpanded ? dataEditorWidth : '100%';
-    dataSizeExpanded =! dataSizeExpanded;
+    let {isDataInputExpanded} = state;
+    let size = isDataInputExpanded ? dataEditorWidth : '100%';
+
+    state.isDataInputExpanded = !isDataInputExpanded;
     d3.select(`#${dataInputId}`).style('width', size);
 }
 
-function getInitialData() {
-    let _data = getDataFromLocalStorage();
+function getCurrentData() {
+    let currentData = storage.getDataByKey(savedDataKey);
 
-    if (!_data) {
+    if (!currentData) {
         let chartType = d3.select(`.${chartSelectorClass}`).property('value');
+        let {initialDataType} = defaultConfig[chartType];
 
-        let {initialDataType} = defaults[chartType];
-        _data = initialData[chartType][initialDataType];
+        currentData = defaultData[chartType][initialDataType];
 
-        setDataInLocalStorage(_data);
+        storage.setDataByKey(savedDataKey, currentData);
     }
 
-    return _data;
+    return currentData;
+}
+
+function getCurrentConfig() {
+    let initString = storage.getDataByKey(savedConfigKey);
+
+    if (!initString) {
+
+        let chartType = d3.select(`.${chartSelectorClass}`).property('value');
+        let {chartConfig} = defaultConfig[chartType];
+
+        initString = formatParamsIntoChartInitString(chartConfig);
+        storage.setDataByKey(savedConfigKey, initString);
+    }
+
+    return initString;
+}
+
+function getCurrentType() {
+    let currentType = storage.getDataByKey(savedChartTypeKey);
+
+    if (!currentType) {
+        currentType = d3.select(`.${chartSelectorClass}`).property('value');
+        storage.setDataByKey(savedChartTypeKey, currentType);
+    }
+
+    return currentType;
 }
 
 function _handleDataReset() {
-    localStorage.removeItem(savedDataKey);
+    storage.removeDataByKey(savedDataKey);
 
-    let data = getInitialData();
+    let data = getCurrentData();
 
-    dataEditor.setValue(prettify(data));
+    dataEditor.setValue(prettifyJson(data));
 }
 
 function _handleDataUpdate() {
     const rawData = dataEditor.getValue();
-    let data = null;
+
+    let freshData = null;
     try {
-        data = eval(rawData);
+        freshData = eval(rawData);
     } catch(e) {
         errors.push(new Error('Could not parse the data from the input field', rawData));
     }
 
-    setDataInLocalStorage(data);
+    storage.setDataByKey(savedDataKey, freshData);
 
-    if (data) {
-        setNewChart(data);
+    if (freshData) {
+        setNewChart();
     }
 }
 
-function prettify(data) {
-    if (typeof data === 'string') {
-        data = JSON.parse(data);
-    }
+function _handleConfigUpdate() {
+    const rawData = configEditor.getValue();
 
-    return JSON.stringify(data, null, '\t');
+    storage.setDataByKey(savedConfigKey, rawData);
+    setNewChart();
+}
+function _handleConfigReset() {
+    storage.removeDataByKey(savedConfigKey);
+    let initString = getCurrentConfig();
+    configEditor.setValue(prettifyInitString(initString));
 }
 
 function setDataInInputField() {
-    let data = getInitialData();
+    let data = getCurrentData();
 
-    dataEditor.setValue(prettify(data));
+    dataEditor.setValue(prettifyJson(data));
 }
 
+function setConfigInInputField() {
+    let initString = getCurrentConfig();
 
-function safeLoadDependency(name) {
+    configEditor.setValue(prettifyInitString(initString));
+}
+
+function setChartSelectorType() {
+    let chartType = getCurrentType();
+
+    d3.select(`.${chartSelectorClass}`).property('value', chartType);
+}
+
+function _safeLoadDependency(name) {
     try {
         window[name] = require(`../src/charts/${name}`);
     } catch(e) {
@@ -141,7 +218,7 @@ function safeLoadDependency(name) {
 }
 
 function loadDependencies() {
-    charts.forEach(safeLoadDependency);
+    charts.forEach(_safeLoadDependency);
 
     if (errors.length) {
         d3.select('body').style('background','red');
@@ -149,7 +226,7 @@ function loadDependencies() {
 }
 
 function createSelectChartElement() {
-    let select = d3.select(chartSelectorContainerClass)
+    let select = d3.select(`.${chartSelectorContainerClass}`)
         .append('select')
         .classed(chartSelectorClass, true)
         .on('change', _handleChartSelectorChange)
@@ -162,50 +239,39 @@ function createSelectChartElement() {
 }
 
 function _handleChartSelectorChange() {
+    storage.clear()
     setNewChart();
+    setDataInInputField();
+    setConfigInInputField();
 }
 
-function removeBriteChartContainer() {
+function _removeBriteChartContainer() {
     d3.select(`.${britechartContainerClass}`).remove();
 }
 
-function addBritechartContainer() {
+function _addBritechartContainer() {
     d3.select(`.${britechartPlaceHolder}`)
         .append('div')
         .classed(britechartContainerClass, true);
 }
 
-function setDataInLocalStorage(data) {
-    localStorage.setItem(savedDataKey, JSON.stringify(data));
+function formatParamsIntoChartInitString(chartConfig=getCurentConfig()) {
+    return Object.keys(chartConfig).reduce((m, i) => m.concat(`.${i}(${chartConfig[i]})`), 'chart');
 }
 
-function getDataFromLocalStorage() {
-    let jsonData = localStorage.getItem(savedDataKey);
-    let data = null;
+function setNewChart(chartData=getCurrentData(), chartInitString=getCurrentConfig(), chartType=getCurrentType()) {
+    _removeBriteChartContainer();
+    _addBritechartContainer();
 
-    try {
-        data = JSON.parse(jsonData);
-    } catch(e) {
-        localStorage.removeItem(savedDataKey);
-        error.push(new Error('Trouble loading data', data));
-    }
-
-    return data;
-}
-
-function setNewChart(chartData=getInitialData()) {
-    removeBriteChartContainer();
-    addBritechartContainer();
-
-    let chartType = d3.select(`.${chartSelectorClass}`).property('value');
-
-    // extend options here
-    let defaultConfig = defaults[chartType].chartConfig;
+    console.log(storage.getData());
     let chart = window[chartType]();
 
-    Object.keys(defaultConfig).forEach((optionName) => {
-        chart[optionName](defaultConfig[optionName]);
-    });
+    try {
+        eval(chartInitString);
+    } catch (e) {
+
+        console.log(e);
+    }
 
     d3.select(`.${britechartContainerClass}`).datum(chartData).call(chart);
 }

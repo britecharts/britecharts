@@ -6,26 +6,26 @@
     </head>
     <body>
         <h1>Sandbox!</h1>
+        <button onclick="(function(){localStorage.clear()})()">Clear local storage</button>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js'></script>
-        <div class="main_display">
-            <div class="chart_panel">
-                <div class="chartSelectorContainer"></div>
-
-                <div class="chartContainerPlaceHolder"></div>
+        <div class="main-display">
+            <div class="chart-panel">
+                <div class="chart-selector-container"></div>
+                <div class="chart-container-place-holder"></div>
             </div>
-            <div class="config_panel">
-                <button class="toggleConfigInputSize">Toggle Expand</button>
+            <div class="config-panel">
+                <button class="config-display__toggle-size">Toggle Expand</button>
                 <div id="chartConfigInput"></div>
-                <button class="submitConfigButton">Update</button>
-                <button class="resetConfigButton">Reset</button>
+                <button class="config-display__submit">Update</button>
+                <button class="config-display__reset">Reset</button>
             </div>
         </div>
-
-        <button class="toggleDataInputSize">Toggle Expand</button>
-        <div id="dataInput"></div>
-        <button class="submitDataButton">Update</button>
-        <button class="resetDataButton">Reset</button>
-
+        <div class="data-display">
+            <button class="data-display__toggle-size">Toggle Expand</button>
+            <div id="dataInput"></div>
+            <button class="data-display__submit">Update</button>
+            <button class="data-display__reset">Reset</button>
+        </div>
         <script src="/assets/sandbox.js"></script>
     </body>
 </html>
