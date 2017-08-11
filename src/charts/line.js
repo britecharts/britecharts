@@ -29,7 +29,6 @@ define(function(require){
         formatIntegerValue,
         formatDecimalValue,
     } = require('./helpers/formatHelpers');
-
     /**
      * @typedef D3Selection
      * @type {Array[]}

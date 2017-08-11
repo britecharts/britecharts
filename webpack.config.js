@@ -197,7 +197,7 @@ config = {
             {
                 sandbox: path.resolve(__dirname, './sandbox/sandbox.js')
             },
-            currentCharts
+            // currentCharts
         ),
         devtool: 'eval',
         output: {

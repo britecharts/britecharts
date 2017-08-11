@@ -1,7 +1,7 @@
 const d3 = require('d3');
-const data = require('./data');
-const constants = require('./constants');
-const storage = require('./localStorageManager');
+const data = require('./constants/data');
+const constants = require('./constants/constants');
+const storage = require('./localStorageHelpers');
 
 const {savedChartTypeKey} = constants.saveKeys;
 const {
@@ -11,6 +11,7 @@ const {
     dataSelectorClass,
     genericSelectBoxClass,
     notificationBarClass,
+    notificationStackTraceClass
 } = constants.domClassNames;
 const charts = Object.keys(constants.chartConfigs);
 
@@ -53,7 +54,7 @@ module.exports = (function() {
                     d3.select(this)
                         .append('pre')
                         .text(({error}) => error.stack)
-                        .classed('notification--stack-trace', true)
+                        .classed(notificationStackTraceClass, true)
                 });
 
 

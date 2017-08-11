@@ -1,10 +1,12 @@
 const d3 = require('d3');
 const path = require('path');
 
-const constants = require('./constants');
-const defaultData = require('./data');
-const storage = require('./localStorageManager');
+const constants = require('./constants/constants');
+const defaultData = require('./constants/data');
+const storage = require('./localStorageHelpers');
 const domHelpers = require('./domHelpers');
+
+const colors = require('../src/charts/helpers/colors');
 
 const {
     dataSelectorClass,
@@ -13,12 +15,12 @@ const {
     britechartContainerClass,
     britechartPlaceHolder,
     // data input
-    submitDataButtonClass,
-    resetDataButtonClass,
+    dataSubmitButtonClass,
+    dataResetButtonClass,
     dataInputSizeToggleClass,
     // config inoput
-    submitConfigButtonClass,
-    resetConfigButtonClass
+    configSubmitButtonClass,
+    configResetButtonClass,
 } = constants.domClassNames;
 const {
     rootSaveKey,
@@ -28,6 +30,7 @@ const {
     savedConfigKey
 } = constants.saveKeys;
 const defaultConfig = constants.chartConfigs;
+const {chartDependencies} = constants;
 const {
     dataInputId,
     chartInputId
@@ -38,7 +41,7 @@ const {
     prettifyJson
 } = require('./utils');
 
-let {createEditors} = require('./editors');
+let {createEditors} = require('./editorHelpers');
 let {
     dataEditor,
     configEditor
@@ -53,10 +56,10 @@ const errors = [];
 
 require('./styles.scss');
 
-// move/remove
+// remove
 const dataEditorWidth = '300px';
-window.d3 = d3;
 
+window.d3 = d3;
 
 function main() {
     loadDependencies();
@@ -68,9 +71,10 @@ function main() {
     setChartSelectorType();
     setNewChart();
     setHandlers();
-
 }
+
 main();
+
 function setInitialData() {
     // always set type first
     getCurrentType();
@@ -82,12 +86,12 @@ function setHandlers() {
     d3.select(`.${chartSelectorClass}`).on('change', _handleChartSelectorChange);
     d3.select(`.${dataSelectorClass}`).on('change', _handleDataSelectorChange);
 
-    d3.select(`.${submitDataButtonClass}`).on('click', _handleDataUpdate);
-    d3.select(`.${resetDataButtonClass}`).on('click', _handleDataReset);
+    d3.select(`.${dataSubmitButtonClass}`).on('click', _handleDataUpdate);
+    d3.select(`.${dataResetButtonClass}`).on('click', _handleDataReset);
     d3.select(`.${dataInputSizeToggleClass}`).on('click', _handleDataSizeToggle);
 
-    d3.select(`.${submitConfigButtonClass}`).on('click', _handleConfigUpdate);
-    d3.select(`.${resetConfigButtonClass}`).on('click', _handleConfigReset);
+    d3.select(`.${configSubmitButtonClass}`).on('click', _handleConfigUpdate);
+    d3.select(`.${configResetButtonClass}`).on('click', _handleConfigReset);
 }
 function _handleDataSelectorChange () {
     let chartType = getCurrentType();
@@ -204,7 +208,7 @@ function setChartSelectorType() {
 
 function _safeLoadDependency(name) {
     try {
-        window[name] = require(`../src/charts/${name}`);
+        window[name.split('/').pop()] = require(`../src/charts/${name}`);
     } catch(e) {
         let error = {
             error: e,
@@ -215,7 +219,10 @@ function _safeLoadDependency(name) {
 }
 
 function loadDependencies() {
-    charts.forEach(_safeLoadDependency);
+    [
+        ...charts,
+        ...chartDependencies,
+    ].forEach(_safeLoadDependency);
 
     if (errors.length) {
         domHelpers.showErrors(errors);
@@ -280,11 +287,14 @@ function setNewChart(chartData=getCurrentData(), chartInitString=getCurrentConfi
     console.log(storage.getData());
     let chart = window[chartType]();
 
+
     try {
         eval(chartInitString);
     } catch (e) {
         console.error(e);
     }
+
+    // chart.colorSchema(colors.colorSchemas.britecharts)
 
     d3.select(`.${britechartContainerClass}`).datum(chartData).call(chart);
 }

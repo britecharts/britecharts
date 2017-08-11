@@ -11,6 +11,12 @@ module.exports = (function() {
             theme: 'ace/theme/monokai',
             mode: 'ace/mode/javascript'
         },
+        chartDependencies: [
+            'helpers/colors',
+            'legend',
+            'tooltip',
+            'mini-tooltip',
+        ],
         chartConfigs: {
             bar: {
                 chartConfig: {
@@ -53,15 +59,16 @@ module.exports = (function() {
             britechartContainerClass: 'britechart-container',
             britechartPlaceHolder: 'chart-container-place-holder',
             // data input
-            submitDataButtonClass: 'data-display__submit',
-            resetDataButtonClass: 'data-display__reset',
+            dataSubmitButtonClass: 'data-display__submit',
+            dataResetButtonClass: 'data-display__reset',
             dataInputSizeToggleClass: 'data-display__toggle-size',
             // config inoput
-            submitConfigButtonClass: 'config-display__submit',
-            resetConfigButtonClass: 'config-display__reset',
+            configSubmitButtonClass: 'config-display__submit',
+            configResetButtonClass: 'config-display__reset',
             // other
             genericSelectBoxClass: 'select-box',
             notificationBarClass: 'notification-bar',
+            notificationStackTraceClass: 'notification--stack-trace'
 
         },
         domIdNames: {

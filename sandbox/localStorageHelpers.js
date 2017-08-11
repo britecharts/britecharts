@@ -1,6 +1,6 @@
 module.exports = (function() {
 
-    let {rootSaveKey} = require('./constants').saveKeys;
+    let {rootSaveKey} = require('./constants/constants').saveKeys;
     let {throwUndefinedError} = require('./utils');
 
     return {

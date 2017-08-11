@@ -5,7 +5,7 @@ require('brace/theme/monokai');
 const {
     theme,
     mode
-} = require('./constants').editorConfig;
+} = require('./constants/constants').editorConfig;
 
 module.exports = (function() {
 
