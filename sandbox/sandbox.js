@@ -1,29 +1,30 @@
 const d3 = require('d3');
 const path = require('path');
-const chartSelectorContainerClass = 'chart-selector-container';
-
-const defaultData = require('./data');
-const storage = require('./localStorageManager');
 
 const constants = require('./constants');
+const defaultData = require('./data');
+const storage = require('./localStorageManager');
+const domHelpers = require('./domHelpers');
+
 const {
-   chartSelectorClass,
-   // chart containers
-   britechartContainerClass,
-   britechartPlaceHolder,
-   // data input
-   submitDataButtonClass,
-   resetDataButtonClass,
-   dataInputSizeToggleClass,
-   // config inoput
-   submitConfigButtonClass,
-   resetConfigButtonClass,
-   configInputSizeToggleClass,
+    dataSelectorClass,
+    chartSelectorClass,
+    // chart containers
+    britechartContainerClass,
+    britechartPlaceHolder,
+    // data input
+    submitDataButtonClass,
+    resetDataButtonClass,
+    dataInputSizeToggleClass,
+    // config inoput
+    submitConfigButtonClass,
+    resetConfigButtonClass
 } = constants.domClassNames;
 const {
     rootSaveKey,
-    savedChartTypeKey,
     savedDataKey,
+    // savedDataTypeKey,
+    savedChartTypeKey,
     savedConfigKey
 } = constants.saveKeys;
 const defaultConfig = constants.chartConfigs;
@@ -59,50 +60,45 @@ window.d3 = d3;
 const charts = Object.keys(defaultConfig);
 const errors = []
 
-
-// window.dataEditor = ace.edit(dataInputId);
-// dataEditor.setTheme('ace/theme/monokai');
-// dataEditor.getSession().setMode('ace/mode/javascript');
-// // remove unwanted warning
-// dataEditor.$blockScrolling = Infinity;
-
-
-// window.configEditor = ace.edit(chartInputId);
-// configEditor.setTheme('ace/theme/monokai');
-// configEditor.renderer.setShowGutter(false);
-// configEditor.getSession().setMode('ace/mode/javascript');
-// // remove unwanted warning
-// configEditor.$blockScrolling = Infinity;
-
 let state = {
     isDataInputExpanded: false
 }
 
 loadDependencies();
-createSelectChartElement();
+setInitialData();
+domHelpers.initDomElements();
+
 setDataInInputField();
 setConfigInInputField();
 setChartSelectorType()
-// set handle chart change
-setInitialData();
 setNewChart();
 setHandlers();
 
 function setInitialData() {
+    // always set type first
+    getCurrentType();
     getCurrentData();
     getCurrentConfig();
-    getCurrentType();
 }
 
-
-
 function setHandlers() {
+    d3.select(`.${chartSelectorClass}`).on('change', _handleChartSelectorChange);
+    d3.select(`.${dataSelectorClass}`).on('change', _handleDataSelectorChange);
+
     d3.select(`.${submitDataButtonClass}`).on('click', _handleDataUpdate);
     d3.select(`.${resetDataButtonClass}`).on('click', _handleDataReset);
     d3.select(`.${dataInputSizeToggleClass}`).on('click', _handleDataSizeToggle);
 
     d3.select(`.${submitConfigButtonClass}`).on('click', _handleConfigUpdate);
     d3.select(`.${resetConfigButtonClass}`).on('click', _handleConfigReset);
+}
+function _handleDataSelectorChange () {
+    let chartType = getCurrentType();
+    let dataType = d3.select(`.${dataSelectorClass}`).property('value');
+    let currentData = defaultData[chartType][dataType];
+
+    storage.setDataByKey(savedDataKey, currentData);
+    updateAllComponents()
 }
 
 function _handleDataSizeToggle() {
@@ -117,7 +113,7 @@ function getCurrentData() {
     let currentData = storage.getDataByKey(savedDataKey);
 
     if (!currentData) {
-        let chartType = d3.select(`.${chartSelectorClass}`).property('value');
+        let chartType = getCurrentType();
         let {initialDataType} = defaultConfig[chartType];
 
         currentData = defaultData[chartType][initialDataType];
@@ -133,7 +129,7 @@ function getCurrentConfig() {
 
     if (!initString) {
 
-        let chartType = d3.select(`.${chartSelectorClass}`).property('value');
+        let chartType = getCurrentType();
         let {chartConfig} = defaultConfig[chartType];
 
         initString = formatParamsIntoChartInitString(chartConfig);
@@ -147,7 +143,7 @@ function getCurrentType() {
     let currentType = storage.getDataByKey(savedChartTypeKey);
 
     if (!currentType) {
-        currentType = d3.select(`.${chartSelectorClass}`).property('value');
+        currentType = charts[0]
         storage.setDataByKey(savedChartTypeKey, currentType);
     }
 
@@ -225,24 +221,34 @@ function loadDependencies() {
     }
 }
 
-function createSelectChartElement() {
-    let select = d3.select(`.${chartSelectorContainerClass}`)
-        .append('select')
-        .classed(chartSelectorClass, true)
-        .on('change', _handleChartSelectorChange)
+function updateAllComponents() {
+    setNewChart()
+    setDataInInputField();
+    setConfigInInputField();
+    setNewDataTypes();
+}
 
-    let options = select.selectAll('option').data(charts)
+function setNewDataTypes() {
+    let chartType = getCurrentType();
+    let dataTypes = Object.keys(defaultData[chartType]);
 
-    options.enter().append('option')
+    let dataSelector = d3.select(`.${dataSelectorClass}`)
+        .selectAll('option')
+        .data(dataTypes);
+
+    dataSelector.enter().append('option')
         .attr('value', (d) => d)
-        .text((d) => d);
+        .merge(dataSelector)
+            .text((d) => d);
+
+    dataSelector.exit().remove();
 }
 
 function _handleChartSelectorChange() {
     storage.clear()
-    setNewChart();
-    setDataInInputField();
-    setConfigInInputField();
+    let chartType = d3.select(`.${chartSelectorClass}`).property('value');
+    storage.setDataByKey(savedChartTypeKey, chartType);
+    updateAllComponents();
 }
 
 function _removeBriteChartContainer() {
@@ -256,7 +262,14 @@ function _addBritechartContainer() {
 }
 
 function formatParamsIntoChartInitString(chartConfig=getCurentConfig()) {
-    return Object.keys(chartConfig).reduce((m, i) => m.concat(`.${i}(${chartConfig[i]})`), 'chart');
+    return Object.keys(chartConfig).reduce((m, i) => {
+        let value = chartConfig[i];
+
+        if (typeof value === 'object') {
+            value = prettifyJson(value);
+        }
+        return m.concat(`.${i}(${value})`);
+    }, 'chart');
 }
 
 function setNewChart(chartData=getCurrentData(), chartInitString=getCurrentConfig(), chartType=getCurrentType()) {
