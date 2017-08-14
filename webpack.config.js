@@ -192,13 +192,9 @@ config = {
     },
 
     sandbox: {
-        entry:  Object.assign(
-            {},
-            {
-                sandbox: path.resolve(__dirname, './sandbox/sandbox.js')
-            },
-            // currentCharts
-        ),
+        entry:  {
+            sandbox: path.resolve(__dirname, './sandbox/sandbox.js')
+        },
         devtool: 'eval',
         output: {
             path: './sandbox/build',
