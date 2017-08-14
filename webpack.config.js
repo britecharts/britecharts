@@ -193,13 +193,13 @@ config = {
 
     sandbox: {
         entry:  {
-            sandbox: path.resolve(__dirname, './sandbox/sandbox.js')
+            sandbox: path.resolve(__dirname, './sandbox/sandbox.js'),
         },
         devtool: 'eval',
         output: {
             path: './sandbox/build',
             publicPath: '/assets/',
-            filename: '[name].js'
+            filename: '[name].js',
         },
 
         module: {
@@ -208,34 +208,23 @@ config = {
                     test: /\.js$/,
                     loader: 'babel',
                     exclude: /(node_modules)/,
-                    // query: {
-                    //     presets : ['es2015', 'stage-0']
-                    // }
                 },
                 {
                     test:/\.scss$/,
                     loader: 'style!css!sass',
-                    include: /(sandbox)/
+                    include: /(sandbox)/,
                 }
             ],
             noParse: [
                 new RegExp(vendorsPath + '/d3/d3.js')
             ]
         },
-        // resolve: {
-        //     alias: {
-        //         d3: vendorsPath + '/d3'
-        //     }
-        // },
         devServer: {
             contentBase: path.resolve(__dirname, './sandbox'),
             port: 9000,
             inline: true,
             stats: 'errors-only',
-        },
-        // plugins: [webpack.HotModuleReplacementPlugin]
-
-
+        }
     },
 
     // Creates minified UMD versions of each chart
