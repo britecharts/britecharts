@@ -1,10 +1,12 @@
 const d3 = require('d3');
-const data = require('./constants/data');
-const constants = require('./constants/constants');
+const data = require('../constants/data');
+const constants = require('../constants/constants');
 const storage = require('./localStorageHelpers');
 
 const {savedChartTypeKey} = constants.saveKeys;
 const {
+    britechartContainerClass,
+    britechartPlaceHolderClass,
     chartSelectorContainerClass,
     chartSelectorClass,
     dataSelectorContainerClass,
@@ -18,8 +20,8 @@ const charts = Object.keys(constants.chartConfigs);
 module.exports = (function() {
     return {
         initDomElements() {
-            this.createChartSelector()
-            this.createDataSelector()
+            this.createChartSelector();
+            this.createDataSelector();
         },
         createChartSelector() {
             this.createSelectElement(`.${chartSelectorContainerClass}`, chartSelectorClass, charts);
@@ -35,9 +37,9 @@ module.exports = (function() {
             let select = d3.select(selector)
                 .append('select')
                 .classed(selectClass, true)
-                .classed(genericSelectBoxClass, true)
+                .classed(genericSelectBoxClass, true);
 
-            let options = select.selectAll('option').data(optionList)
+            let options = select.selectAll('option').data(optionList);
 
             options.enter().append('option')
                 .attr('value', (d) => d)
@@ -58,6 +60,15 @@ module.exports = (function() {
                 });
 
 
+        },
+        removeBriteChartContainer() {
+            d3.select(`.${britechartContainerClass}`).remove();
+        },
+
+        addBritechartContainer() {
+            d3.select(`.${britechartPlaceHolderClass}`)
+                .append('div')
+                .classed(britechartContainerClass, true);
         }
     }
 }());

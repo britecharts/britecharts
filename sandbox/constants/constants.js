@@ -57,7 +57,7 @@ module.exports = (function() {
 
             // chart containers
             britechartContainerClass: 'britechart-container',
-            britechartPlaceHolder: 'chart-container-place-holder',
+            britechartPlaceHolderClass: 'chart-container-place-holder',
             // data input
             dataSubmitButtonClass: 'data-display__submit',
             dataResetButtonClass: 'data-display__reset',
@@ -68,7 +68,9 @@ module.exports = (function() {
             // other
             genericSelectBoxClass: 'select-box',
             notificationBarClass: 'notification-bar',
-            notificationStackTraceClass: 'notification--stack-trace'
+            notificationStackTraceClass: 'notification--stack-trace',
+            tooltipMetaGroup: 'metadata-group',
+            tooltipHoverGroup: 'hover-marker',
 
         },
         domIdNames: {
