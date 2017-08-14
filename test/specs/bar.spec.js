@@ -72,6 +72,20 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
+            it('should update color', () => {
+                let previous = barChart.colorSchema(),
+                    expected = '#FFFFFF',
+                    actual;
+
+                barChart.colorSchema([expected]);
+
+                const barColor = containerFixture.select('rect.bar');
+
+                containerFixture.call(barChart);
+
+                expect(barColor.attr('fill')).toBe(expected);
+            });
+
             it('should provide enable percentage label getter and setter', () => {
                 let previous = barChart.enablePercentageLabels(),
                     expected = true,
