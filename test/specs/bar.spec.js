@@ -82,8 +82,9 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 const barColor = containerFixture.select('rect.bar');
 
                 containerFixture.call(barChart);
+                actual = barColor.attr('fill');
 
-                expect(barColor.attr('fill')).toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide enable percentage label getter and setter', () => {
