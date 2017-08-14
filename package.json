@@ -112,7 +112,6 @@
     "sinon": "^3.0.0",
     "style-loader": "^0.18.2",
     "text": "requirejs/text",
-    "try-catch-loader": "^1.0.2",
     "underscore": "~1.8.3",
     "webpack": "^1.13.3",
     "webpack-bundle-analyzer": "^2.9.0",
