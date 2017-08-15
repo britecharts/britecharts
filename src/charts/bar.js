@@ -678,7 +678,7 @@ define(function(require) {
          * @param  {number} _x Desired horizontal direction for the chart
          * @return { isHorizontal | module} If it is horizontal or module to chain calls
          * @deprecated
-         */        
+         */
         exports.horizontal = function (_x) {
             if (!arguments.length) {
                 return isHorizontal;
