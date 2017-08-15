@@ -1,7 +1,7 @@
 module.exports = (function() {
     const baseConfig = {
         tooltipSelector: '.metadata-group'
-    }
+    };
 
     return {
         chartDependencies: [
