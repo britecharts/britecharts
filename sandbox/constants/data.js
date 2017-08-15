@@ -16,6 +16,19 @@ module.exports = (function() {
                 {name: 'Firefox', value: 0.1926}
             ]
         },
+        brush: {
+            basicBrush: [
+                { value: 1, date: '2011-01-06T00:00:00' },
+                { value: 5, date: '2011-01-07T00:00:00' },
+                { value: 4, date: '2011-01-08T00:00:00' },
+                { value: 2, date: '2011-01-09T00:00:00' },
+                { value: 5, date: '2011-01-10T00:00:00' },
+                { value: 6, date: '2011-01-11T00:00:00' },
+                { value: 2, date: '2011-01-12T00:00:00' },
+                { value: 8, date: '2011-01-13T00:00:00' },
+                { value: 9, date: '2011-01-14T00:00:00' }
+            ]
+        },
         donut: {
             basicDonut: [
                 { name: 'Shiny', id: 1, quantity: 86, percentage: 5 },
@@ -91,6 +104,40 @@ module.exports = (function() {
                     ]
                 }]
             }
+        },
+        sparkline: {
+            basicSparkLine: [
+                { value: 1, date: '2011-01-06T00:00:00' },
+                { value: 5, date: '2011-01-07T00:00:00' },
+                { value: 4, date: '2011-01-08T00:00:00' },
+                { value: 7, date: '2011-01-09T00:00:00' },
+                { value: 5, date: '2011-01-10T00:00:00' },
+                { value: 6, date: '2011-01-11T00:00:00' },
+                { value: 7, date: '2011-01-12T00:00:00' },
+                { value: 8, date: '2011-01-13T00:00:00' },
+                { value: 1, date: '2011-01-14T00:00:00' }
+            ]
+        },
+        step: {
+            basicStep: [
+                {key: 'Ryan', value:10},
+                {key: 'Marcos', value: 7},
+                {key: 'Sun', value: 4}
+            ]
+        },
+        'stacked-area': {
+            basicStackedArea: [
+                { date: '2017-02-16T00:00:00', name: 'Organizer Driven', value: 5 },
+                { date: '2017-02-16T00:00:00', name: 'EB Driven', value: 0 },
+                { date: '2017-02-17T00:00:00', name: 'Organizer Driven', value: 13 },
+                { date: '2017-02-17T00:00:00', name: 'EB Driven', value: 1 },
+                { date: '2017-02-18T00:00:00', name: 'Organizer Driven', value: 15 },
+                { date: '2017-02-18T00:00:00', name: 'EB Driven', value: 1 },
+                { date: '2017-02-19T00:00:00', name: 'Organizer Driven', value: 15 },
+                { date: '2017-02-19T00:00:00', name: 'EB Driven', value: 1 },
+                { date: '2017-02-20T00:00:00', name: 'Organizer Driven', value: 18 },
+                { date: '2017-02-20T00:00:00', name: 'EB Driven', value: 1 }
+            ]
         }
     };
 }());

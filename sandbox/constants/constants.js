@@ -1,4 +1,8 @@
 module.exports = (function() {
+    const baseConfig = {
+        tooltipSelector: '.metadata-group'
+    }
+
     return {
         chartDependencies: [
             'helpers/colors',
@@ -8,20 +12,23 @@ module.exports = (function() {
         ],
         chartConfigs: {
             bar: {
+                ...baseConfig,
                 chartConfig: {
                     width: 400,
                     height: 300
                 },
-                initialDataType: 'basicBar'
+                initialDataType: 'basicBar',
             },
             donut: {
+                ...baseConfig,
                 chartConfig: {
                     width: 300,
                     height: 300,
                 },
-                initialDataType: 'basicDonut'
+                initialDataType: 'basicDonut',
             },
             line: {
+                ...baseConfig,
                 chartConfig: {
                     margin: {
                         top: 60,
@@ -32,7 +39,42 @@ module.exports = (function() {
                     width: 500,
                     height: 300
                 },
-                initialDataType: 'basicLine'
+                initialDataType: 'basicLine',
+                tooltipSelector: '.metadata-group .hover-marker'
+            },
+            sparkline: {
+                ...baseConfig,
+                chartConfig: {
+                    width: 300,
+                    height: 150
+                },
+                initialDataType: 'basicSparkLine'
+            },
+            brush: {
+                ...baseConfig,
+                chartConfig: {
+                    width: 300,
+                    height: 150
+                },
+                initialDataType: 'basicBrush'
+            },
+            step: {
+                ...baseConfig,
+                chartConfig: {
+                    width: 400,
+                    height: 275
+                },
+                initialDataType: 'basicStep',
+
+            },
+            'stacked-area': {
+                ...baseConfig,
+                chartConfig: {
+                    width: 500,
+                    height:300
+                },
+                initialDataType: 'basicStackedArea',
+                tooltipSelector: '.metadata-group .vertical-marker-container'
             }
         },
         domClassNames: {

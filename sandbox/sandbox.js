@@ -154,6 +154,11 @@ function setNewChart(chartData=getCurrentData(), chartInitString=getCurrentConfi
     let tip = window['tooltip']();
     let miniTip = window['mini-tooltip']();
 
+    // TODO investigate why we need this for the tooltip to work
+    if (chartType === 'stacked-area') {
+        tip.topicLabel('values');
+    }
+
     try {
         eval(chartInitString);
     } catch (e) {
@@ -161,7 +166,7 @@ function setNewChart(chartData=getCurrentData(), chartInitString=getCurrentConfi
     }
 
     d3.select(`.${britechartContainerClass}`).datum(chartData).call(chart);
-    d3.select(`.${britechartContainerClass} .${tooltipMetaGroup} .${tooltipHoverGroup}`).datum([]).call(tip);
+    d3.select(`.${britechartContainerClass} ${constants.chartConfigs[chartType].tooltipSelector}`).datum([]).call(tip);
     d3.select(`.${tooltipMetaGroup}`).datum([]).call(miniTip);
 }
 
