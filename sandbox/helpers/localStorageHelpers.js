@@ -1,7 +1,7 @@
-module.exports = (function() {
+const {rootSaveKey} = require('../constants/constants').saveKeys;
+const {throwUndefinedError} = require('./utils');
 
-    let {rootSaveKey} = require('../constants/constants').saveKeys;
-    let {throwUndefinedError} = require('./utils');
+module.exports = (function() {
 
     return {
         getDataByKey(key=throwUndefinedError('getDataByKey', 'key')) {

@@ -60,6 +60,7 @@ module.exports = (function() {
             genericSelectBoxClass: 'select-box',
             notificationBarClass: 'notification-bar',
             notificationStackTraceClass: 'notification--stack-trace',
+            notificationErrorClass: 'notification__error',
             tooltipMetaGroup: 'metadata-group',
             tooltipHoverGroup: 'hover-marker',
 
