@@ -191,6 +191,42 @@ config = {
         plugins
     },
 
+    sandbox: {
+        entry:  {
+            sandbox: path.resolve(__dirname, './sandbox/sandbox.js'),
+        },
+        devtool: 'eval',
+        output: {
+            path: './sandbox/build',
+            publicPath: '/assets/',
+            filename: '[name].js',
+        },
+
+        module: {
+            loaders: [
+                {
+                    test: /\.js$/,
+                    loader: 'babel',
+                    exclude: /(node_modules)/,
+                },
+                {
+                    test:/\.scss$/,
+                    loader: 'style!css!sass',
+                    include: /(sandbox)/,
+                }
+            ],
+            noParse: [
+                new RegExp(vendorsPath + '/d3/d3.js')
+            ]
+        },
+        devServer: {
+            contentBase: path.resolve(__dirname, './sandbox'),
+            port: 9000,
+            inline: true,
+            stats: 'errors-only',
+        }
+    },
+
     // Creates minified UMD versions of each chart
     prodUMD: {
         entry:  currentCharts,
