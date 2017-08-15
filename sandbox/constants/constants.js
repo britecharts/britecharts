@@ -1,16 +1,5 @@
 module.exports = (function() {
     return {
-        saveKeys: {
-            rootSaveKey: '__BRITECHARTS_SANDBOX_ROOT',
-            savedDataKey: '__SAVED_CHART_DATA',
-            // savedDataTypeKey: '__SAVED_DATA_TYPE',
-            savedChartTypeKey: '__SAVED_CHART_TYPE',
-            savedConfigKey: '__SAVED_CHART_CONFIG'
-        },
-        editorConfig: {
-            theme: 'ace/theme/monokai',
-            mode: 'ace/mode/javascript'
-        },
         chartDependencies: [
             'helpers/colors',
             'legend',
@@ -65,6 +54,8 @@ module.exports = (function() {
             // config inoput
             configSubmitButtonClass: 'config-display__submit',
             configResetButtonClass: 'config-display__reset',
+            configAddTooltipClass: 'config-panel__add-tooltip',
+            configAddMiniTooltipClass: 'config-panel__add-mini-tooltip',
             // other
             genericSelectBoxClass: 'select-box',
             notificationBarClass: 'notification-bar',
@@ -76,6 +67,29 @@ module.exports = (function() {
         domIdNames: {
            dataInputId: 'dataInput',
            chartInputId: 'chartConfigInput'
+        },
+        editorConfig: {
+            theme: 'ace/theme/monokai',
+            mode: 'ace/mode/javascript'
+        },
+        saveKeys: {
+            rootSaveKey: '__BRITECHARTS_SANDBOX_ROOT',
+            savedDataKey: '__SAVED_CHART_DATA',
+            // savedDataTypeKey: '__SAVED_DATA_TYPE',
+            savedChartTypeKey: '__SAVED_CHART_TYPE',
+            savedConfigKey: '__SAVED_CHART_CONFIG'
+        },
+        tooltipConfigs: {
+            basic: {
+                initString: `.on('customMouseOver', tip.show)
+                            .on('customMouseMove', tip.update)
+                            .on('customMouseOut', tip.hide)`,
+            },
+            mini: {
+                initString: `.on('customMouseOver', miniTip.show)
+                            .on('customMouseMove', miniTip.update)
+                            .on('customMouseOut', miniTip.hide)`
+            }
         }
     }
 }());

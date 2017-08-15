@@ -18,9 +18,12 @@ const {
     // config input
     configSubmitButtonClass,
     configResetButtonClass,
+    configAddTooltipClass,
+    configAddMiniTooltipClass,
     // tooltip
     tooltipMetaGroup,
     tooltipHoverGroup,
+
 } = constants.domClassNames;
 const {
     rootSaveKey,
@@ -31,6 +34,7 @@ const {
 } = constants.saveKeys;
 const defaultConfig = constants.chartConfigs;
 const {chartDependencies} = constants;
+const {tooltipConfigs} = constants;
 const {
     dataInputId,
     chartInputId
@@ -49,6 +53,7 @@ const {
 } = createEditors({dataInputId, chartInputId});
 
 const charts = Object.keys(defaultConfig);
+const tooltipTypes = Object.keys(tooltipConfigs).reduce((m,i) => ({...m, [i]:i}),{});
 
 const state = {
     isDataInputExpanded: false
@@ -100,6 +105,9 @@ function setHandlers() {
 
     d3.select(`.${configSubmitButtonClass}`).on('click', _handleConfigUpdate);
     d3.select(`.${configResetButtonClass}`).on('click', _handleConfigReset);
+
+    d3.select(`.${configAddTooltipClass}`).on('click', _handleAddTooltip.bind(null, tooltipTypes.basic))
+    d3.select(`.${configAddMiniTooltipClass}`).on('click', _handleAddTooltip.bind(null, tooltipTypes.mini))
 }
 
 /**
@@ -230,6 +238,18 @@ function getCurrentType() {
     }
 
     return currentType;
+}
+
+/**
+ * Adds tooltip code to the editor
+ * @param  {string} tooltipType Constant from constant file
+ */
+function _handleAddTooltip(tooltipType) {
+    let initString = getCurrentConfig();
+    let tooltipInitString = tooltipConfigs[tooltipType].initString;
+    initString = initString.concat(tooltipInitString);
+    configEditor.setValue(prettifyInitString(initString));
+    setNewChart();
 }
 
 /**
