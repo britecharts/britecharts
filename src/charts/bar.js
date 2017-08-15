@@ -318,7 +318,6 @@ define(function(require) {
                 .attr('x', 0)
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value))
-                .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function(d) {
                     handleMouseOver(this, d, chartWidth, chartHeight);
                 })
@@ -332,7 +331,8 @@ define(function(require) {
                 .attr('x', 0)
                 .attr('y', ({name}) => yScale(name))
                 .attr('height', yScale.bandwidth())
-                .attr('width', ({value}) => xScale(value));
+                .attr('width', ({value}) => xScale(value))
+                .attr('fill', ({name}) => colorMap(name));
         }
 
         /**
@@ -349,7 +349,6 @@ define(function(require) {
                 .attr('y', chartHeight)
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value))
-                .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function(d) {
                     handleMouseOver(this, d, chartWidth, chartHeight);
                 })
@@ -364,6 +363,7 @@ define(function(require) {
                 .attr('x', 0)
                 .attr('y', ({name}) => yScale(name))
                 .attr('height', yScale.bandwidth())
+                .attr('fill', ({name}) => colorMap(name))
                 .transition()
                 .duration(animationDuration)
                 .delay(interBarDelay)
@@ -385,7 +385,6 @@ define(function(require) {
                 .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
                 .attr('height', ({value}) => chartHeight - yScale(value))
-                .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function(d) {
                     handleMouseOver(this, d, chartWidth, chartHeight);
                 })
@@ -398,6 +397,7 @@ define(function(require) {
               .merge(bars)
                 .attr('x', ({name}) => xScale(name))
                 .attr('width', xScale.bandwidth())
+                .attr('fill', ({name}) => colorMap(name))
                 .transition()
                 .duration(animationDuration)
                 .delay(interBarDelay)
@@ -420,7 +420,6 @@ define(function(require) {
                 .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
                 .attr('height', ({value}) => chartHeight - yScale(value))
-                .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function(d) {
                     handleMouseOver(this, d, chartWidth, chartHeight);
                 })
@@ -434,7 +433,8 @@ define(function(require) {
                 .attr('x', ({name}) => xScale(name))
                 .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
-                .attr('height', ({value}) => chartHeight - yScale(value));
+                .attr('height', ({value}) => chartHeight - yScale(value))
+                .attr('fill', ({name}) => colorMap(name));
         }
 
         /**
