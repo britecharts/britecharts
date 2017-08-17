@@ -69,6 +69,7 @@ define(function(require){
             height = 45,
 
             title = 'Tooltip title',
+            shouldShowDateInTitle = true,
             valueFormat = null,
 
             // tooltip
@@ -388,10 +389,14 @@ define(function(require){
          * @return void
          */
         function updateTitle(dataPoint) {
-            var date = new Date(dataPoint[dateLabel]),
+            if (shouldShowDateInTitle) {
+                var date = new Date(dataPoint[dateLabel]),
                 tooltipTitleText = title + ' - ' + formatDate(date);
 
-            tooltipTitle.text(tooltipTitleText);
+                tooltipTitle.text(tooltipTitleText);
+            } else {
+                tooltipTitle.text(title);
+            }
         }
 
         /**
@@ -607,7 +612,7 @@ define(function(require){
             locale = _x;
 
             return this;
-        };        
+        };
 
         /**
          * Gets or Sets the nameLabel of the data
@@ -725,6 +730,20 @@ define(function(require){
             return this;
         };
 
+        /**
+         * Gets or Sets shouldShowDateInTitle
+         * @param  {Boolean} _x Desired value
+         * @return { shouldShowDateInTitle | module} Current shouldShowDateInTitle or Chart module to chain calls
+         * @public
+         */
+        exports.shouldShowDateInTitle = function(_x) {
+            if (!arguments.length) {
+                return shouldShowDateInTitle;
+            }
+            shouldShowDateInTitle = _x;
+
+            return this;
+        };
         return exports;
     };
 });
