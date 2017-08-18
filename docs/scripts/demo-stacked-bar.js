@@ -12124,6 +12124,7 @@ webpackJsonp([8,10],[
 	            width = 250,
 	            height = 45,
 	            title = 'Tooltip title',
+	            shouldShowDateInTitle = true,
 	            valueFormat = null,
 	
 	
@@ -12384,10 +12385,13 @@ webpackJsonp([8,10],[
 	         * @return void
 	         */
 	        function updateTitle(dataPoint) {
-	            var date = new Date(dataPoint[dateLabel]),
-	                tooltipTitleText = title + ' - ' + formatDate(date);
+	            var tTitle = title;
 	
-	            tooltipTitle.text(tooltipTitleText);
+	            if (shouldShowDateInTitle) {
+	                tTitle = tTitle + ' - ' + formatDate(new Date(dataPoint[dateLabel]));
+	            }
+	
+	            tooltipTitle.text(tTitle);
 	        }
 	
 	        /**
@@ -12716,6 +12720,20 @@ webpackJsonp([8,10],[
 	            return this;
 	        };
 	
+	        /**
+	         * Gets or Sets shouldShowDateInTitle
+	         * @param  {Boolean} _x Desired value
+	         * @return { shouldShowDateInTitle | module} Current shouldShowDateInTitle or Chart module to chain calls
+	         * @public
+	         */
+	        exports.shouldShowDateInTitle = function (_x) {
+	            if (!arguments.length) {
+	                return shouldShowDateInTitle;
+	            }
+	            shouldShowDateInTitle = _x;
+	
+	            return this;
+	        };
 	        return exports;
 	    };
 	}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
