@@ -12385,14 +12385,13 @@ webpackJsonp([8,10],[
 	         * @return void
 	         */
 	        function updateTitle(dataPoint) {
-	            if (shouldShowDateInTitle) {
-	                var date = new Date(dataPoint[dateLabel]),
-	                    tooltipTitleText = title + ' - ' + formatDate(date);
+	            var tTitle = title;
 	
-	                tooltipTitle.text(tooltipTitleText);
-	            } else {
-	                tooltipTitle.text(title);
+	            if (shouldShowDateInTitle) {
+	                tTitle = tTitle + ' - ' + formatDate(new Date(dataPoint[dateLabel]));
 	            }
+	
+	            tooltipTitle.text(tTitle);
 	        }
 	
 	        /**
