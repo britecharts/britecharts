@@ -339,6 +339,8 @@
             animationDuration = 1500,
             maskingRectangle,
 
+            lineCurve = d3Shape.curveLinear,
+
             dataByTopic,
             dataByDate,
 
@@ -705,6 +707,7 @@
                 topicLine;
 
             topicLine = d3Shape.line()
+                .curve(lineCurve)
                 .x(({date}) => xScale(date))
                 .y(({value}) => yScale(value));
 
@@ -1107,6 +1110,22 @@
                 return margin;
             }
             margin = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the curve of the line chart
+         * @param  {curve} _x Desired curve for the lines, default d3Shape.curveLinear. Visit
+         * https://github.com/d3/d3-shape#curves for more information.
+         * @return { (curve | Module) } Current line curve or Line Chart module to chain calls
+         * @public
+         */
+        exports.lineCurve = function(_x) {
+            if (!arguments.length) {
+                return lineCurve;
+            }
+            lineCurve = _x;
 
             return this;
         };

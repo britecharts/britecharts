@@ -2,6 +2,7 @@
 
 var d3Selection = require('d3-selection'),
     d3TimeFormat = require('d3-time-format'),
+    d3Shape = require('d3-shape'),
 
     PubSub = require('pubsub-js'),
 
@@ -12,7 +13,7 @@ var d3Selection = require('d3-selection'),
     colorSelectorHelper = require('./helpers/colorSelector'),
 
     lineMargin = {top:60, bottom: 50, left: 50, right: 30};
-    
+
     require('./helpers/resizeHelper');
 
 function createBrushChart(optionalColorSchema) {
@@ -120,6 +121,7 @@ function createLineChartWithSingleLine() {
             .tooltipThreshold(600)
             .height(300)
             .margin(lineMargin)
+            .lineCurve(d3Shape.curveBasis)
             .grid('vertical')
             .width(containerWidth)
             .dateLabel('fullDate')

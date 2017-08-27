@@ -127,6 +127,7 @@ define(function(require){
             aspectRatio = null,
             tooltipThreshold = 480,
             svg,
+            paths,
             chartWidth, chartHeight,
             xScale, yScale, colorScale,
             xAxis, xMonthAxis, yAxis,
@@ -152,6 +153,8 @@ define(function(require){
             animationDuration = 1500,
             maskingRectangle,
 
+            lineCurve = d3Shape.curveLinear,
+
             dataByTopic,
             dataByDate,
 
@@ -172,6 +175,8 @@ define(function(require){
             grid = null,
 
             baseLine,
+
+            pathYCache = {},
 
             // extractors
             getDate = ({date}) => date,
@@ -518,17 +523,19 @@ define(function(require){
                 topicLine;
 
             topicLine = d3Shape.line()
+                .curve(lineCurve)
                 .x(({date}) => xScale(date))
                 .y(({value}) => yScale(value));
 
             lines = svg.select('.chart-group').selectAll('.line')
                 .data(dataByTopic);
 
-            lines.enter()
+            paths = lines.enter()
               .append('g')
                 .attr('class', 'topic')
               .append('path')
                 .attr('class', 'line')
+                .attr('id', ({topic}) => topic)
                 .attr('d', ({dates}) => topicLine(dates))
                 .style('stroke', (d) => (
                     dataByTopic.length === 1 ? `url(#${lineGradientId})` : getLineColor(d)
@@ -721,11 +728,24 @@ define(function(require){
         function highlightDataPoints(dataPoint) {
             cleanDataPointHighlights();
 
+            const nodes = paths.nodes()
+            const nodesById = nodes.reduce((acc, node) => {
+                acc[node.id] = node
+                return acc
+            }, {});
+
+            // Group corresponding path node with its topic, and
             // sorting the topics based on the order of the colors,
             // so that the order always stays constant
-            dataPoint.topics = dataPoint.topics
-                                    .filter(t => !!t)
-                                    .sort((a, b) => topicColorMap[a.name] < topicColorMap[b.name]);
+            const topicsWithNode = dataPoint.topics
+                                        .map(topic => ({
+                                            topic,
+                                            node: nodesById[topic.name]
+                                        }))
+                                        .filter(({topic}) => !!topic)
+                                        .sort((a, b) => topicColorMap[a.topic.name] < topicColorMap[b.topic.name])
+
+            dataPoint.topics = topicsWithNode.map(({topic}) => topic)
 
             dataPoint.topics.forEach(({name}, index) => {
                 let marker = verticalMarkerContainer
@@ -740,9 +760,51 @@ define(function(require){
                     .attr('r', 5)
                     .style('stroke', topicColorMap[name]);
 
-                marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(dataPoint.topics[index].value))} )` );
+                const path = topicsWithNode[index].node;
+                const x = xScale(new Date(dataPoint.topics[index].date));
+                const key = `${name}-${x}`;
+                const y = key in pathYCache ? pathYCache[key] : (pathYCache[key] = findLineYatX(x, path));
+
+                marker.attr('transform', `translate( ${(- circleSize)}, ${y} )` );
             });
         }
+
+        /**
+         * Finds the y coordinate of a path given an x coordinate and the line's path node.
+         * @param  {number} x The x coordinate
+         * @param  {node} path The path node element
+         * @param  {number} error The margin of error from the actual x coordinate. Default 0.01
+         * @private
+         */
+        function findLineYatX(x, path, error) {
+            error = error || 0.01;
+
+            const maxIterations = 100;
+
+            let lengthStart = 0;
+            let lengthEnd = path.getTotalLength();
+            let point = path.getPointAtLength((lengthEnd + lengthStart) / 2);
+            let iterations = 0;
+
+            while (x < point.x - error || x > point.x + error) {
+                const midpoint = (lengthStart + lengthEnd) / 2;
+
+                point = path.getPointAtLength(midpoint);
+
+                if (x < point.x) {
+                    lengthEnd = midpoint;
+                } else {
+                    lengthStart = midpoint;
+                }
+
+                iterations += 1
+                if (maxIterations < iterations) {
+                    break;
+                }
+            }
+
+            return point.y
+          }
 
         /**
          * Helper method to update the x position of the vertical marker
@@ -920,6 +982,22 @@ define(function(require){
                 return margin;
             }
             margin = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the curve of the line chart
+         * @param  {curve} _x Desired curve for the lines, default d3Shape.curveLinear. Visit
+         * https://github.com/d3/d3-shape#curves for more information.
+         * @return { (curve | Module) } Current line curve or Line Chart module to chain calls
+         * @public
+         */
+        exports.lineCurve = function(_x) {
+            if (!arguments.length) {
+                return lineCurve;
+            }
+            lineCurve = _x;
 
             return this;
         };

@@ -409,6 +409,18 @@ define([
                     expect(actual).toBe(expected);
                 });
 
+                it('should provide lineCurve getter and setter', () => {
+                    let previous = lineChart.lineCurve(),
+                        expected = d3.curveBasis,
+                        actual;
+
+                    lineChart.lineGradient(expected);
+                    actual = lineChart.lineGradient();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
                 it('should provide lineGradient getter and setter', () => {
                     let previous = lineChart.lineGradient(),
                         expected = ['#ddd', '#ccc'],

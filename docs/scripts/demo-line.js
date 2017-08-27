@@ -6,6 +6,7 @@ webpackJsonp([5,10],[
 	
 	var d3Selection = __webpack_require__(1),
 	    d3TimeFormat = __webpack_require__(14),
+	    d3Shape = __webpack_require__(33),
 	    PubSub = __webpack_require__(2),
 	    brush = __webpack_require__(30),
 	    line = __webpack_require__(52),
@@ -103,7 +104,7 @@ webpackJsonp([5,10],[
 	            lineChart2.exportChart('linechart.png', 'Britecharts LÍne Chart');
 	        });
 	
-	        lineChart2.tooltipThreshold(600).height(300).margin(lineMargin).grid('vertical').width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
+	        lineChart2.tooltipThreshold(600).height(300).margin(lineMargin).lineCurve(d3Shape.curveBasis).grid('vertical').width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -13937,6 +13938,7 @@ webpackJsonp([5,10],[
 	            ease = d3Ease.easeQuadInOut,
 	            animationDuration = 1500,
 	            maskingRectangle = void 0,
+	            lineCurve = d3Shape.curveLinear,
 	            dataByTopic = void 0,
 	            dataByDate = void 0,
 	            dateLabel = 'date',
@@ -14267,7 +14269,7 @@ webpackJsonp([5,10],[
 	            var lines = void 0,
 	                topicLine = void 0;
 	
-	            topicLine = d3Shape.line().x(function (_ref12) {
+	            topicLine = d3Shape.line().curve(lineCurve).x(function (_ref12) {
 	                var date = _ref12.date;
 	                return xScale(date);
 	            }).y(function (_ref13) {
@@ -14628,6 +14630,22 @@ webpackJsonp([5,10],[
 	                return margin;
 	            }
 	            margin = _x;
+	
+	            return this;
+	        };
+	
+	        /**
+	         * Gets or Sets the curve of the line chart
+	         * @param  {curve} _x Desired curve for the lines, default d3Shape.curveLinear. Visit
+	         * https://github.com/d3/d3-shape#curves for more information.
+	         * @return { (curve | Module) } Current line curve or Line Chart module to chain calls
+	         * @public
+	         */
+	        exports.lineCurve = function (_x) {
+	            if (!arguments.length) {
+	                return lineCurve;
+	            }
+	            lineCurve = _x;
 	
 	            return this;
 	        };
