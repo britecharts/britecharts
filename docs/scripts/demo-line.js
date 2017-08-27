@@ -13911,6 +13911,7 @@ webpackJsonp([5,10],[
 	            aspectRatio = null,
 	            tooltipThreshold = 480,
 	            svg = void 0,
+	            paths = void 0,
 	            chartWidth = void 0,
 	            chartHeight = void 0,
 	            xScale = void 0,
@@ -13954,6 +13955,7 @@ webpackJsonp([5,10],[
 	            horizontalGridLines = void 0,
 	            grid = null,
 	            baseLine = void 0,
+	            pathYCache = {},
 	
 	
 	        // extractors
@@ -14279,8 +14281,11 @@ webpackJsonp([5,10],[
 	
 	            lines = svg.select('.chart-group').selectAll('.line').data(dataByTopic);
 	
-	            lines.enter().append('g').attr('class', 'topic').append('path').attr('class', 'line').attr('d', function (_ref14) {
-	                var dates = _ref14.dates;
+	            paths = lines.enter().append('g').attr('class', 'topic').append('path').attr('class', 'line').attr('id', function (_ref14) {
+	                var topic = _ref14.topic;
+	                return topic;
+	            }).attr('d', function (_ref15) {
+	                var dates = _ref15.dates;
 	                return topicLine(dates);
 	            }).style('stroke', function (d) {
 	                return dataByTopic.length === 1 ? 'url(#' + lineGradientId + ')' : getLineColor(d);
@@ -14434,24 +14439,84 @@ webpackJsonp([5,10],[
 	        function highlightDataPoints(dataPoint) {
 	            cleanDataPointHighlights();
 	
+	            var nodes = paths.nodes();
+	            var nodesById = nodes.reduce(function (acc, node) {
+	                acc[node.id] = node;
+	                return acc;
+	            }, {});
+	
+	            // Group corresponding path node with its topic, and
 	            // sorting the topics based on the order of the colors,
 	            // so that the order always stays constant
-	            dataPoint.topics = dataPoint.topics.filter(function (t) {
-	                return !!t;
+	            var topicsWithNode = dataPoint.topics.map(function (topic) {
+	                return {
+	                    topic: topic,
+	                    node: nodesById[topic.name]
+	                };
+	            }).filter(function (_ref16) {
+	                var topic = _ref16.topic;
+	                return !!topic;
 	            }).sort(function (a, b) {
-	                return topicColorMap[a.name] < topicColorMap[b.name];
+	                return topicColorMap[a.topic.name] < topicColorMap[b.topic.name];
 	            });
 	
-	            dataPoint.topics.forEach(function (_ref15, index) {
-	                var name = _ref15.name;
+	            dataPoint.topics = topicsWithNode.map(function (_ref17) {
+	                var topic = _ref17.topic;
+	                return topic;
+	            });
+	
+	            dataPoint.topics.forEach(function (_ref18, index) {
+	                var name = _ref18.name;
 	
 	                var marker = verticalMarkerContainer.append('g').classed('circle-container', true),
 	                    circleSize = 12;
 	
 	                marker.append('circle').classed('data-point-highlighter', true).attr('cx', circleSize).attr('cy', 0).attr('r', 5).style('stroke', topicColorMap[name]);
 	
-	                marker.attr('transform', 'translate( ' + -circleSize + ', ' + yScale(dataPoint.topics[index].value) + ' )');
+	                var path = topicsWithNode[index].node;
+	                var x = xScale(new Date(dataPoint.topics[index].date));
+	                var key = name + '-' + x;
+	                var y = key in pathYCache ? pathYCache[key] : pathYCache[key] = findLineYatX(x, path);
+	
+	                marker.attr('transform', 'translate( ' + -circleSize + ', ' + y + ' )');
 	            });
+	        }
+	
+	        /**
+	         * Finds the y coordinate of a path given an x coordinate and the line's path node.
+	         * @param  {number} x The x coordinate
+	         * @param  {node} path The path node element
+	         * @param  {number} error The margin of error from the actual x coordinate. Default 0.01
+	         * @private
+	         */
+	        function findLineYatX(x, path, error) {
+	            error = error || 0.01;
+	
+	            var maxIterations = 100;
+	
+	            var lengthStart = 0;
+	            var lengthEnd = path.getTotalLength();
+	            var point = path.getPointAtLength((lengthEnd + lengthStart) / 2);
+	            var iterations = 0;
+	
+	            while (x < point.x - error || x > point.x + error) {
+	                var midpoint = (lengthStart + lengthEnd) / 2;
+	
+	                point = path.getPointAtLength(midpoint);
+	
+	                if (x < point.x) {
+	                    lengthEnd = midpoint;
+	                } else {
+	                    lengthStart = midpoint;
+	                }
+	
+	                iterations += 1;
+	                if (maxIterations < iterations) {
+	                    break;
+	                }
+	            }
+	
+	            return point.y;
 	        }
 	
 	        /**
