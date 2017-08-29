@@ -11329,7 +11329,6 @@ webpackJsonp([2,10],[
 	
 	
 	    return function module() {
-	
 	        var margin = {
 	            top: 0,
 	            right: 0,

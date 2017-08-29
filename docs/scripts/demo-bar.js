@@ -1681,21 +1681,21 @@ webpackJsonp([0,10],[
 	            bars.enter().append('rect').classed('bar', true).attr('y', chartHeight).attr('x', 0).attr('height', yScale.bandwidth()).attr('width', function (_ref12) {
 	                var value = _ref12.value;
 	                return xScale(value);
-	            }).attr('fill', function (_ref13) {
-	                var name = _ref13.name;
-	                return colorMap(name);
 	            }).on('mouseover', function (d) {
 	                handleMouseOver(this, d, chartWidth, chartHeight);
 	            }).on('mousemove', function (d) {
 	                handleMouseMove(this, d, chartWidth, chartHeight);
 	            }).on('mouseout', function (d) {
 	                handleMouseOut(this, d, chartWidth, chartHeight);
-	            }).merge(bars).attr('x', 0).attr('y', function (_ref14) {
-	                var name = _ref14.name;
+	            }).merge(bars).attr('x', 0).attr('y', function (_ref13) {
+	                var name = _ref13.name;
 	                return yScale(name);
-	            }).attr('height', yScale.bandwidth()).attr('width', function (_ref15) {
-	                var value = _ref15.value;
+	            }).attr('height', yScale.bandwidth()).attr('width', function (_ref14) {
+	                var value = _ref14.value;
 	                return xScale(value);
+	            }).attr('fill', function (_ref15) {
+	                var name = _ref15.name;
+	                return colorMap(name);
 	            });
 	        }
 	
@@ -1709,9 +1709,6 @@ webpackJsonp([0,10],[
 	            bars.enter().append('rect').classed('bar', true).attr('x', 0).attr('y', chartHeight).attr('height', yScale.bandwidth()).attr('width', function (_ref16) {
 	                var value = _ref16.value;
 	                return xScale(value);
-	            }).attr('fill', function (_ref17) {
-	                var name = _ref17.name;
-	                return colorMap(name);
 	            }).on('mouseover', function (d) {
 	                handleMouseOver(this, d, chartWidth, chartHeight);
 	            }).on('mousemove', function (d) {
@@ -1720,10 +1717,13 @@ webpackJsonp([0,10],[
 	                handleMouseOut(this, d, chartWidth, chartHeight);
 	            });
 	
-	            bars.attr('x', 0).attr('y', function (_ref18) {
-	                var name = _ref18.name;
+	            bars.attr('x', 0).attr('y', function (_ref17) {
+	                var name = _ref17.name;
 	                return yScale(name);
-	            }).attr('height', yScale.bandwidth()).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('width', function (_ref19) {
+	            }).attr('height', yScale.bandwidth()).attr('fill', function (_ref18) {
+	                var name = _ref18.name;
+	                return colorMap(name);
+	            }).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('width', function (_ref19) {
 	                var value = _ref19.value;
 	                return xScale(value);
 	            });
@@ -1742,19 +1742,19 @@ webpackJsonp([0,10],[
 	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref21) {
 	                var value = _ref21.value;
 	                return chartHeight - yScale(value);
-	            }).attr('fill', function (_ref22) {
-	                var name = _ref22.name;
-	                return colorMap(name);
 	            }).on('mouseover', function (d) {
 	                handleMouseOver(this, d, chartWidth, chartHeight);
 	            }).on('mousemove', function (d) {
 	                handleMouseMove(this, d, chartWidth, chartHeight);
 	            }).on('mouseout', function (d) {
 	                handleMouseOut(this, d, chartWidth, chartHeight);
-	            }).merge(bars).attr('x', function (_ref23) {
-	                var name = _ref23.name;
+	            }).merge(bars).attr('x', function (_ref22) {
+	                var name = _ref22.name;
 	                return xScale(name);
-	            }).attr('width', xScale.bandwidth()).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('y', function (_ref24) {
+	            }).attr('width', xScale.bandwidth()).attr('fill', function (_ref23) {
+	                var name = _ref23.name;
+	                return colorMap(name);
+	            }).transition().duration(animationDuration).delay(interBarDelay).ease(ease).attr('y', function (_ref24) {
 	                var value = _ref24.value;
 	                return yScale(value);
 	            }).attr('height', function (_ref25) {
@@ -1776,24 +1776,24 @@ webpackJsonp([0,10],[
 	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref27) {
 	                var value = _ref27.value;
 	                return chartHeight - yScale(value);
-	            }).attr('fill', function (_ref28) {
-	                var name = _ref28.name;
-	                return colorMap(name);
 	            }).on('mouseover', function (d) {
 	                handleMouseOver(this, d, chartWidth, chartHeight);
 	            }).on('mousemove', function (d) {
 	                handleMouseMove(this, d, chartWidth, chartHeight);
 	            }).on('mouseout', function (d) {
 	                handleMouseOut(this, d, chartWidth, chartHeight);
-	            }).merge(bars).attr('x', function (_ref29) {
-	                var name = _ref29.name;
+	            }).merge(bars).attr('x', function (_ref28) {
+	                var name = _ref28.name;
 	                return xScale(name);
-	            }).attr('y', function (_ref30) {
-	                var value = _ref30.value;
+	            }).attr('y', function (_ref29) {
+	                var value = _ref29.value;
 	                return yScale(value);
-	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref31) {
-	                var value = _ref31.value;
+	            }).attr('width', xScale.bandwidth()).attr('height', function (_ref30) {
+	                var value = _ref30.value;
 	                return chartHeight - yScale(value);
+	            }).attr('fill', function (_ref31) {
+	                var name = _ref31.name;
+	                return colorMap(name);
 	            });
 	        }
 	
