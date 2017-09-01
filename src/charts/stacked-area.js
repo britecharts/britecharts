@@ -579,8 +579,8 @@ define(function(require){
                 series = svg.select('.chart-group').selectAll('.layer')
                     .data(layersInitial)
                     .enter()
-                  .append('g')
-                    .classed('layer-container', true);
+                      .append('g')
+                        .classed('layer-container', true);
 
                 series
                   .append('path')
@@ -602,8 +602,8 @@ define(function(require){
                 series = svg.select('.chart-group').selectAll('.layer')
                     .data(layers)
                     .enter()
-                  .append('g')
-                    .classed('layer-container', true);
+                      .append('g')
+                        .classed('layer-container', true);
 
                 series
                   .append('path')
