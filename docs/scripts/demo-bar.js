@@ -1351,6 +1351,8 @@ webpackJsonp([0,10],[
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
 	!(__WEBPACK_AMD_DEFINE_RESULT__ = function (require) {
 	    'use strict';
 	
@@ -1632,12 +1634,13 @@ webpackJsonp([0,10],[
 	         * @private
 	         */
 	        function cleanData(originalData) {
-	            var data = originalData.map(function (d) {
-	                return {
-	                    value: +d[valueLabel],
-	                    name: String(d[nameLabel])
-	                };
-	            });
+	            var data = originalData.reduce(function (acc, d) {
+	                d.value = +d[valueLabel];
+	                d.name = String(d[nameLabel]);
+	
+	                return [].concat(_toConsumableArray(acc), [d]);
+	            }, []);
+	
 	            var dataZeroed = data.map(function (d) {
 	                return {
 	                    value: 0,
@@ -1995,6 +1998,7 @@ webpackJsonp([0,10],[
 	        };
 	
 	        /**
+	        <<<<<<< HEAD
 	         * Gets or Sets the horizontal direction of the chart
 	         * @param  {number} _x Desired horizontal direction for the chart
 	         * @return { isHorizontal | module} If it is horizontal or module to chain calls
@@ -2011,6 +2015,8 @@ webpackJsonp([0,10],[
 	        };
 	
 	        /**
+	        =======
+	        >>>>>>> keep extra attributes in bar.js cleanData, delete unused functions
 	         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
 	         * By default this is 'false'
 	         *
@@ -2127,22 +2133,6 @@ webpackJsonp([0,10],[
 	                return shouldReverseColorList;
 	            }
 	            shouldReverseColorList = _x;
-	
-	            return this;
-	        };
-	
-	        /**
-	         * Gets or Sets whether the color list should be reversed or not
-	         * @param  {boolean} _x     Should reverse the color list
-	         * @return { boolean | module} Is color list being reversed
-	         * @deprecated
-	         */
-	        exports.reverseColorList = function (_x) {
-	            if (!arguments.length) {
-	                return shouldReverseColorList;
-	            }
-	            shouldReverseColorList = _x;
-	            console.log('We are deprecating the .reverseColorList() accessor, use .shouldReverseColorList() instead');
 	
 	            return this;
 	        };

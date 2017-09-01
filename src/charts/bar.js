@@ -265,16 +265,19 @@ define(function(require) {
          * @private
          */
         function cleanData(originalData) {
-            let data = originalData.map((d) => ({
-                    value: +d[valueLabel],
-                    name: String(d[nameLabel])
-                }));
-            let dataZeroed = data.map((d) => ({
-                    value: 0,
-                    name: String(d[nameLabel])
-                }));
+            let data = originalData.reduce((acc, d) => {
+                d.value = +d[valueLabel];
+                d.name = String(d[nameLabel]);
 
-            return {data, dataZeroed}
+                return [ ...acc, d];
+            }, []);
+
+            let dataZeroed = data.map((d) => ({
+                value: 0,
+                name: String(d[nameLabel])
+            }));
+
+            return { data, dataZeroed };
         }
 
         /**
@@ -674,6 +677,7 @@ define(function(require) {
         };
 
         /**
+<<<<<<< HEAD
          * Gets or Sets the horizontal direction of the chart
          * @param  {number} _x Desired horizontal direction for the chart
          * @return { isHorizontal | module} If it is horizontal or module to chain calls
@@ -690,6 +694,8 @@ define(function(require) {
         };
 
         /**
+=======
+>>>>>>> keep extra attributes in bar.js cleanData, delete unused functions
          * Gets or Sets the isAnimated property of the chart, making it to animate when render.
          * By default this is 'false'
          *
@@ -806,22 +812,6 @@ define(function(require) {
                 return shouldReverseColorList;
             }
             shouldReverseColorList = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets whether the color list should be reversed or not
-         * @param  {boolean} _x     Should reverse the color list
-         * @return { boolean | module} Is color list being reversed
-         * @deprecated
-         */
-        exports.reverseColorList = function(_x) {
-            if (!arguments.length) {
-                return shouldReverseColorList;
-            }
-            shouldReverseColorList = _x;
-            console.log('We are deprecating the .reverseColorList() accessor, use .shouldReverseColorList() instead');
 
             return this;
         };
