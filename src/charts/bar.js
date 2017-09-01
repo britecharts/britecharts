@@ -677,25 +677,6 @@ define(function(require) {
         };
 
         /**
-<<<<<<< HEAD
-         * Gets or Sets the horizontal direction of the chart
-         * @param  {number} _x Desired horizontal direction for the chart
-         * @return { isHorizontal | module} If it is horizontal or module to chain calls
-         * @deprecated
-         */
-        exports.horizontal = function (_x) {
-            if (!arguments.length) {
-                return isHorizontal;
-            }
-            isHorizontal = _x;
-            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
-
-            return this;
-        };
-
-        /**
-=======
->>>>>>> keep extra attributes in bar.js cleanData, delete unused functions
          * Gets or Sets the isAnimated property of the chart, making it to animate when render.
          * By default this is 'false'
          *
