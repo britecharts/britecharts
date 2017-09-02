@@ -731,7 +731,8 @@ define(function(require){
             const nodes = paths.nodes()
             const nodesById = nodes.reduce((acc, node) => {
                 acc[node.id] = node
-                return acc
+
+                return acc;
             }, {});
 
             // Group corresponding path node with its topic, and
@@ -745,7 +746,7 @@ define(function(require){
                                         .filter(({topic}) => !!topic)
                                         .sort((a, b) => topicColorMap[a.topic.name] < topicColorMap[b.topic.name])
 
-            dataPoint.topics = topicsWithNode.map(({topic}) => topic)
+            dataPoint.topics = topicsWithNode.map(({topic}) => topic);
 
             dataPoint.topics.forEach(({name}, index) => {
                 let marker = verticalMarkerContainer
@@ -762,10 +763,9 @@ define(function(require){
 
                 const path = topicsWithNode[index].node;
                 const x = xScale(new Date(dataPoint.topics[index].date));
-                const key = `${name}-${x}`;
-                const y = key in pathYCache ? pathYCache[key] : (pathYCache[key] = findLineYatX(x, path));
+                const y = getPathYFromX(x, path, name);
 
-                marker.attr('transform', `translate( ${(- circleSize)}, ${y} )` );
+                marker.attr('transform', `translate( ${(-circleSize)}, ${y} )` );
             });
         }
 
@@ -773,10 +773,17 @@ define(function(require){
          * Finds the y coordinate of a path given an x coordinate and the line's path node.
          * @param  {number} x The x coordinate
          * @param  {node} path The path node element
+         * @param {*} name - The name identifier of the topic
          * @param  {number} error The margin of error from the actual x coordinate. Default 0.01
          * @private
          */
-        function findLineYatX(x, path, error) {
+        function getPathYFromX(x, path, name, error) {
+            const key = `${name}-${x}`;
+
+            if (key in pathYCache) {
+                return pathYCache[key];
+            }
+
             error = error || 0.01;
 
             const maxIterations = 100;
@@ -797,13 +804,15 @@ define(function(require){
                     lengthStart = midpoint;
                 }
 
-                iterations += 1
+                iterations += 1;
                 if (maxIterations < iterations) {
                     break;
                 }
             }
 
-            return point.y
+            pathYCache[key] = point.y
+
+            return pathYCache[key]
           }
 
         /**
