@@ -6,7 +6,6 @@ webpackJsonp([5,10],[
 	
 	var d3Selection = __webpack_require__(1),
 	    d3TimeFormat = __webpack_require__(14),
-	    d3Shape = __webpack_require__(33),
 	    PubSub = __webpack_require__(2),
 	    brush = __webpack_require__(30),
 	    line = __webpack_require__(52),
@@ -104,7 +103,7 @@ webpackJsonp([5,10],[
 	            lineChart2.exportChart('linechart.png', 'Britecharts LÍne Chart');
 	        });
 	
-	        lineChart2.tooltipThreshold(600).height(300).margin(lineMargin).lineCurve(d3Shape.curveBasis).grid('vertical').width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
+	        lineChart2.tooltipThreshold(600).height(300).margin(lineMargin).lineCurve('basis').grid('vertical').width(containerWidth).dateLabel('fullDate').on('customMouseOver', function () {
 	            chartTooltip.show();
 	        }).on('customMouseMove', function (dataPoint, topicColorMap, dataPointXPosition) {
 	            chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -13939,7 +13938,19 @@ webpackJsonp([5,10],[
 	            ease = d3Ease.easeQuadInOut,
 	            animationDuration = 1500,
 	            maskingRectangle = void 0,
-	            lineCurve = d3Shape.curveLinear,
+	            lineCurve = 'linear',
+	            curveMap = {
+	            linear: d3Shape.curveLinear,
+	            basis: d3Shape.curveBasis,
+	            cardinal: d3Shape.curveCardinal,
+	            catmullRom: d3Shape.curveCatmullRom,
+	            monotoneX: d3Shape.curveMonotoneX,
+	            monotoneY: d3Shape.curveMonotoneY,
+	            natural: d3Shape.curveNatural,
+	            step: d3Shape.curveStep,
+	            stepAfter: d3Shape.curveStepAfter,
+	            stepBefore: d3Shape.curveStepBefore
+	        },
 	            dataByTopic = void 0,
 	            dataByDate = void 0,
 	            dateLabel = 'date',
@@ -14271,7 +14282,7 @@ webpackJsonp([5,10],[
 	            var lines = void 0,
 	                topicLine = void 0;
 	
-	            topicLine = d3Shape.line().curve(lineCurve).x(function (_ref12) {
+	            topicLine = d3Shape.line().curve(curveMap[lineCurve]).x(function (_ref12) {
 	                var date = _ref12.date;
 	                return xScale(date);
 	            }).y(function (_ref13) {
@@ -14442,6 +14453,7 @@ webpackJsonp([5,10],[
 	            var nodes = paths.nodes();
 	            var nodesById = nodes.reduce(function (acc, node) {
 	                acc[node.id] = node;
+	
 	                return acc;
 	            }, {});
 	
@@ -14475,8 +14487,7 @@ webpackJsonp([5,10],[
 	
 	                var path = topicsWithNode[index].node;
 	                var x = xScale(new Date(dataPoint.topics[index].date));
-	                var key = name + '-' + x;
-	                var y = key in pathYCache ? pathYCache[key] : pathYCache[key] = findLineYatX(x, path);
+	                var y = getPathYFromX(x, path, name);
 	
 	                marker.attr('transform', 'translate( ' + -circleSize + ', ' + y + ' )');
 	            });
@@ -14486,10 +14497,17 @@ webpackJsonp([5,10],[
 	         * Finds the y coordinate of a path given an x coordinate and the line's path node.
 	         * @param  {number} x The x coordinate
 	         * @param  {node} path The path node element
+	         * @param {*} name - The name identifier of the topic
 	         * @param  {number} error The margin of error from the actual x coordinate. Default 0.01
 	         * @private
 	         */
-	        function findLineYatX(x, path, error) {
+	        function getPathYFromX(x, path, name, error) {
+	            var key = name + '-' + x;
+	
+	            if (key in pathYCache) {
+	                return pathYCache[key];
+	            }
+	
 	            error = error || 0.01;
 	
 	            var maxIterations = 100;
@@ -14516,7 +14534,9 @@ webpackJsonp([5,10],[
 	                }
 	            }
 	
-	            return point.y;
+	            pathYCache[key] = point.y;
+	
+	            return pathYCache[key];
 	        }
 	
 	        /**
@@ -14701,8 +14721,9 @@ webpackJsonp([5,10],[
 	
 	        /**
 	         * Gets or Sets the curve of the line chart
-	         * @param  {curve} _x Desired curve for the lines, default d3Shape.curveLinear. Visit
-	         * https://github.com/d3/d3-shape#curves for more information.
+	         * @param  {curve} _x Desired curve for the lines, default 'linear'. Other options are:
+	         * basis, natural, monotoneX, monotoneY, step, stepAfter, stepBefore, cardinal, and
+	         * catmullRom. Visit https://github.com/d3/d3-shape#curves for more information.
 	         * @return { (curve | Module) } Current line curve or Line Chart module to chain calls
 	         * @public
 	         */

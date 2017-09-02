@@ -153,7 +153,19 @@ define(function(require){
             animationDuration = 1500,
             maskingRectangle,
 
-            lineCurve = d3Shape.curveLinear,
+            lineCurve = 'linear',
+            curveMap = {
+                linear: d3Shape.curveLinear,
+                basis: d3Shape.curveBasis,
+                cardinal: d3Shape.curveCardinal,
+                catmullRom: d3Shape.curveCatmullRom,
+                monotoneX: d3Shape.curveMonotoneX,
+                monotoneY: d3Shape.curveMonotoneY,
+                natural: d3Shape.curveNatural,
+                step: d3Shape.curveStep,
+                stepAfter: d3Shape.curveStepAfter,
+                stepBefore: d3Shape.curveStepBefore
+            },
 
             dataByTopic,
             dataByDate,
@@ -523,7 +535,7 @@ define(function(require){
                 topicLine;
 
             topicLine = d3Shape.line()
-                .curve(lineCurve)
+                .curve(curveMap[lineCurve])
                 .x(({date}) => xScale(date))
                 .y(({value}) => yScale(value));
 
@@ -997,8 +1009,9 @@ define(function(require){
 
         /**
          * Gets or Sets the curve of the line chart
-         * @param  {curve} _x Desired curve for the lines, default d3Shape.curveLinear. Visit
-         * https://github.com/d3/d3-shape#curves for more information.
+         * @param  {curve} _x Desired curve for the lines, default 'linear'. Other options are:
+         * basis, natural, monotoneX, monotoneY, step, stepAfter, stepBefore, cardinal, and
+         * catmullRom. Visit https://github.com/d3/d3-shape#curves for more information.
          * @return { (curve | Module) } Current line curve or Line Chart module to chain calls
          * @public
          */
