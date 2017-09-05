@@ -74,6 +74,20 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 expect(containerFixture.select('text.donut-text').empty()).toBeFalsy();
             });
 
+            describe('when reloading', () => {
+                it('should render in the same svg', function() {
+                    let actual;
+                    let expected = 1;
+                    let newDataset = [dataset[0]];
+
+                    containerFixture.datum(newDataset).call(donutChart);
+                    
+                    actual = containerFixture.select('.donut-chart').nodes().length;
+
+                    expect(actual).toEqual(expected);
+                });
+            })
+
             describe('API', function() {
 
                 it('should provide margin getter and setter', () => {

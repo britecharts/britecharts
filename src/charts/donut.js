@@ -199,8 +199,7 @@ define(function(require) {
             if (!svg) {
                 svg = d3Selection.select(container)
                   .append('svg')
-                    .classed('britechart donut-chart', true)
-                    .data([data]);  //TO REVIEW
+                    .classed('britechart donut-chart', true);
 
                 buildContainerGroups();
             }
@@ -313,6 +312,8 @@ define(function(require) {
                         })
                 }
             } else {
+                console.log('There are slices!');
+
                 slices = svg.select('.chart-group')
                     .selectAll('path')
                     .data(layout(data));
@@ -325,7 +326,55 @@ define(function(require) {
                     .transition()
                     .duration(arcTransitionDuration)
                     .attrTween('d', tweenArc);
+                
+                // slices = svg.select('.chart-group')
+                //     .selectAll('g.arc')
+                //     .data(layout(data));
+
+                slices.exit()
+                    .remove();
+
+                // let newSlices = slices.enter()
+                //   .append('g')
+                //     .each(storeAngle)
+                //     .each(reduceOuterRadius)
+                //     .classed('arc', true);
+
+                // if (isAnimated) {
+                //     newSlices.merge(slices)
+                //       .append('path')
+                //         .attr('fill', getSliceFill)
+                //         .on('mouseover', function(d) {
+                //             handleMouseOver(this, d, chartWidth, chartHeight);
+                //         })
+                //         .on('mousemove', function(d) {
+                //             handleMouseMove(this, d, chartWidth, chartHeight);
+                //         })
+                //         .on('mouseout', function(d) {
+                //             handleMouseOut(this, d, chartWidth, chartHeight);
+                //         })
+                //         .transition()
+                //         .ease(ease)
+                //         .duration(pieDrawingTransitionDuration)
+                //         .attrTween('d', tweenLoading);
+                // } else {
+                //     newSlices.merge(slices)
+                //       .append('path')
+                //         .attr('fill', getSliceFill)
+                //         .attr('d', shape)
+                //         .on('mouseover', function(d) {
+                //             handleMouseOver(this, d, chartWidth, chartHeight);
+                //         })
+                //         .on('mousemove', function(d) {
+                //             handleMouseMove(this, d, chartWidth, chartHeight);
+                //         })
+                //         .on('mouseout', function(d) {
+                //             handleMouseOut(this, d, chartWidth, chartHeight);
+                //         })
+                // }
+
             }
+            
         }
 
         /**

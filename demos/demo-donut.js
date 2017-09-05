@@ -15,8 +15,10 @@ var d3Selection = require('d3-selection'),
     datasetNoPercentages = new dataBuilder.DonutDataBuilder()
         .withFivePlusOtherNoPercent()
         .build(),
-    legendChart;
-    require('./helpers/resizeHelper');
+    legendChart,
+    redrawCharts;
+
+require('./helpers/resizeHelper');
 
 
 function createDonutChart(dataset, optionalColorSchema) {
@@ -53,6 +55,27 @@ function createDonutChart(dataset, optionalColorSchema) {
         d3Selection.select('#button').on('click', function() {
             donutChart.exportChart('donut.png', 'Britecharts Donut Chart');
         });
+    }
+
+    return donutChart;
+}
+
+function updateDonutChart(donutChart, newData, optionalColorSchema) {
+    var legendChart = getLegendChart(newData, optionalColorSchema),
+        donutContainer = d3Selection.select('.js-donut-chart-container'),
+        containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false;
+
+    if (containerWidth) {
+        donutChart
+            .width(containerWidth)
+            .externalRadius(containerWidth/2.5)
+            .internalRadius(containerWidth/5);
+
+        if (optionalColorSchema) {
+            donutChart.colorSchema(optionalColorSchema);
+        }
+
+        donutContainer.datum(newData).call(donutChart);
     }
 }
 
@@ -152,14 +175,22 @@ function createDonutWithHighlightSliceChart() {
 
 // Show charts if container available
 if (d3Selection.select('.js-donut-chart-container').node()) {
-    createDonutChart(dataset);
+    let donut = createDonutChart(dataset);
+
     createSmallDonutChart();
     createDonutWithHighlightSliceChart();
 
-    var redrawCharts = function(){
-        d3Selection.selectAll('.donut-chart').remove();
+    redrawCharts = function(){
+        // d3Selection.selectAll('.donut-chart').remove();
 
-        createDonutChart(dataset);
+        let n1 = {...dataset[0], percentage: 33, quantity: 50};
+        let n2 = {...dataset[1], percentage: 33, quantity: 50};
+        let n3 = {...dataset[2], percentage: 33, quantity: 50};
+        let newData = [n1, n2, n3];
+
+        // createDonutChart(dataset);
+        updateDonutChart(donut, newData);
+        
         createSmallDonutChart();
         createDonutWithHighlightSliceChart();
     };
