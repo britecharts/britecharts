@@ -17,7 +17,7 @@
         - [JSDoc](#jsdoc)
     - [The Workflow](#the-workflow)
         - [ES6 transpiling](#es6-transpiling)
-        - [NPM Tasks](#npm-tasks)
+        - [yarn Tasks](#yarn-tasks)
     - [Project Structure](#project-structure)
 
 <!-- /TOC -->
@@ -202,7 +202,7 @@ In order to work with the development version of the charts, we just need to run
 
 However, if you want to create the production version of the charts, you should run:
 
-    yarn run prod
+    yarn run build
 
 
 ### yarn Tasks
@@ -215,7 +215,7 @@ The build sequence consists of a small set of [Node][node] tasks. While you'll p
 | `yarn run demos:serve`     | Serves the demos for our tutorials.
 | `yarn run docs`            | Compiles the docs with JSDoc and opens a browser showing them.
 | `yarn run styles`          | Compiles the styles for the charts
-| `yarn run prod`            | Build everything and generate the distribution version of the charts.
+| `yarn run build`           | Build everything and generate the distribution version of the charts.
 | `yarn run release`         | Create a new release of the library.
 | `yarn run release:minor`   | Create a new release of the library by bumping the second number of the version (1.N.1)
 | `yarn run release:major`   | Create a new release of the library by bumping the third number of the version (N.1.1)
