@@ -737,7 +737,7 @@ define(function(require){
          * and updates metadata related to it
          * @private
          */
-        function handleMouseMove(e, d) {
+        function handleMouseMove(e) {
             epsilon || setEpsilon();
 
             let dataPoint = getNearestDataPoint(getMouseXPosition(e) - margin.left),

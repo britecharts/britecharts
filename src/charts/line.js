@@ -692,7 +692,7 @@ define(function(require){
          * and updates metadata related to it
          * @private
          */
-        function handleMouseMove(e, d){
+        function handleMouseMove(e){
             let xPositionOffset = -margin.left, //Arbitrary number, will love to know how to assess it
                 dataPoint = getNearestDataPoint(getMouseXPosition(e) + xPositionOffset),
                 dataPointXPosition;
