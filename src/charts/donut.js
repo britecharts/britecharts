@@ -339,14 +339,14 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseOver(e, d, chartWidth, chartHeight) {
+        function handleMouseOver(el, d, chartWidth, chartHeight) {
             drawLegend(d);
-            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+            dispatcher.call('customMouseOver', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
 
-            if (highlightedSlice && e !== highlightedSlice) {
+            if (highlightedSlice && el !== highlightedSlice) {
                 tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
             }
-            tweenGrowth(e, externalRadius);
+            tweenGrowth(el, externalRadius);
         }
 
         /**
@@ -354,8 +354,8 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseMove(e, d, chartWidth, chartHeight) {
-            dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        function handleMouseMove(el, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseMove', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
         }
 
         /**
@@ -363,18 +363,18 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseOut(e, d, chartWidth, chartHeight) {
+        function handleMouseOut(el, d, chartWidth, chartHeight) {
             if (highlightedSlice && hasFixedHighlightedSlice) {
                 drawLegend(highlightedSlice.__data__);
             } else {
                 cleanLegend();
             }
-            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+            dispatcher.call('customMouseOut', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
 
-            if (highlightedSlice && hasFixedHighlightedSlice && e !== highlightedSlice) {
+            if (highlightedSlice && hasFixedHighlightedSlice && el !== highlightedSlice) {
                 tweenGrowth(highlightedSlice, externalRadius);
             }
-            tweenGrowth(e, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+            tweenGrowth(el, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
         }
 
         /**
