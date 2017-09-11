@@ -103,6 +103,7 @@ define(function(require) {
 
             // utils
             storeAngle = function(d) {
+                console.log('storeAngle d', d)
                 this._current = d;
             },
             reduceOuterRadius = d => {
@@ -224,9 +225,8 @@ define(function(require) {
                 d.quantity = +d[quantityLabel];
                 d.name = String(d[nameLabel]);
                 d.percentage = d[percentageLabel] || null;
-                acc.push(d);
 
-                return acc;
+                return [...acc, d];
             }, []);
             let totalQuantity = sumValues(cleanData);
             let dataWithPercentages = cleanData.map((d) => {
@@ -269,6 +269,8 @@ define(function(require) {
          */
         function drawSlices() {
             if (!slices) {
+                console.log('There are no slices!', data);
+                
                 slices = svg.select('.chart-group')
                     .selectAll('g.arc')
                     .data(layout(data));
@@ -312,7 +314,7 @@ define(function(require) {
                 }
             } else {
                 console.log('There are slices!', data);
-
+                
                 slices = svg.select('.chart-group')
                     .selectAll('g.arc')
                     .data(layout(data));
@@ -322,9 +324,8 @@ define(function(require) {
                     .each(storeAngle)
                     .each(reduceOuterRadius)
                     .classed('arc', true)
-                    .append('path');                    
-
-
+                    .append('path');             
+                    
                 // slices
                 //     .attr('d', shape);
 
@@ -337,15 +338,6 @@ define(function(require) {
                 // slices = svg.select('.chart-group')
                 //     .selectAll('g.arc')
                 //     .data(layout(data));
-
-                // slices.exit()
-                //     .remove();
-
-                // let newSlices = slices.enter()
-                //   .append('g')
-                //     .each(storeAngle)
-                //     .each(reduceOuterRadius)
-                //     .classed('arc', true);
 
                 if (isAnimated) {
                     newSlices.merge(slices)
@@ -375,12 +367,11 @@ define(function(require) {
                         })
                         .on('mouseout', function(d) {
                             handleMouseOut(this, d, chartWidth, chartHeight);
-                        })
+                        });
                 }
 
                 slices.exit()
                     .remove();
-
             }
             
         }
@@ -476,6 +467,8 @@ define(function(require) {
 
             this._current = i(0);
 
+            console.log('this._current', this._current)
+
             return function(t) {
                 return shape(i(t));
             };
@@ -545,6 +538,7 @@ define(function(require) {
                 return colorSchema;
             }
             colorSchema = _x;
+
             return this;
         };
 
@@ -559,6 +553,7 @@ define(function(require) {
                 return externalRadius;
             }
             externalRadius = _x;
+
             return this;
         };
 
@@ -590,6 +585,7 @@ define(function(require) {
                 return height;
             }
             height = _x;
+
             return this;
         };
 

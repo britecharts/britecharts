@@ -15,6 +15,9 @@ var d3Selection = require('d3-selection'),
     datasetNoPercentages = new dataBuilder.DonutDataBuilder()
         .withFivePlusOtherNoPercent()
         .build(),
+    datasetWithThreeItems = new dataBuilder.DonutDataBuilder()
+        .withThreeCategories()
+        .build(),
     legendChart,
     redrawCharts;
 
@@ -33,7 +36,7 @@ function createDonutChart(dataset, optionalColorSchema) {
         });
 
         donutChart
-            .isAnimated(true)
+            .isAnimated(false)
             .highlightSliceById(2)
             .width(containerWidth)
             .height(containerWidth)
@@ -177,22 +180,17 @@ function createDonutWithHighlightSliceChart() {
 if (d3Selection.select('.js-donut-chart-container').node()) {
     let donut = createDonutChart(dataset);
 
-    createSmallDonutChart();
-    createDonutWithHighlightSliceChart();
+    // createSmallDonutChart();
+    // createDonutWithHighlightSliceChart();
 
     redrawCharts = function(){
         // d3Selection.selectAll('.donut-chart').remove();
 
-        let n1 = {...dataset[0], percentage: 33, quantity: 50};
-        let n2 = {...dataset[1], percentage: 33, quantity: 50};
-        let n3 = {...dataset[2], percentage: 33, quantity: 50};
-        let newData = [n1, n2, n3];
-
         // createDonutChart(dataset);
-        updateDonutChart(donut, newData);
+        updateDonutChart(donut, datasetWithThreeItems);
         
-        createSmallDonutChart();
-        createDonutWithHighlightSliceChart();
+        // createSmallDonutChart();
+        // createDonutWithHighlightSliceChart();
     };
 
     // Redraw charts on window resize

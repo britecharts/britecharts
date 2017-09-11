@@ -91,7 +91,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 it('should render in the same svg', function() {
                     let actual;
                     let expected = 1;
-                    let newDataset = [dataset[0]];
+                    let newDataset = buildDataSet('withThreeCategories');
 
                     containerFixture.datum(newDataset).call(donutChart);
                     
@@ -100,11 +100,11 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     expect(actual).toEqual(expected);
                 });
 
-                it('should render only one slice', function() {
+                it('should render only three slices', function() {
                     let actual;
-                    let expected = 1;
-                    let newDataset = [dataset[0]];
-
+                    let expected = 3;
+                    let newDataset = buildDataSet('withThreeCategories');
+                    
                     containerFixture.datum(newDataset).call(donutChart);
                     
                     actual = containerFixture.selectAll('.donut-chart .arc').nodes().length;
@@ -112,10 +112,10 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     expect(actual).toEqual(expected);
                 });
 
-                it('should render one path in each slice', () => {
+                it('should render one paths in each slice', () => {
                     let actual;
-                    let expected = 1;
-                    let newDataset = [dataset[0]];
+                    let expected = 3;
+                    let newDataset = buildDataSet('withThreeCategories');
                     
                     containerFixture.datum(newDataset).call(donutChart);
                     
