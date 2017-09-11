@@ -207,7 +207,7 @@ However, if you want to create the production version of the charts, you should 
 
 ### yarn Tasks
 
-The build sequence consists of a small set of [Node][node] tasks. While you'll probably only need `yarn run test` and `yarn run prod` most of the time, the other tasks can be called independently or combined in order to see the docs.
+The build sequence consists of a small set of [Node][node] tasks. While you'll probably only need `yarn run test` and `yarn run build` most of the time, the other tasks can be called independently or combined in order to see the docs.
 
 | Task                      | Description
 | ---                       | ---
