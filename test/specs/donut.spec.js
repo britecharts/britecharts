@@ -53,9 +53,21 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
             });
 
             it('should render a slice for each data entry', () => {
-                let numSlices = dataset.length;
+                let actual;
+                let expected = dataset.length;
+                
+                actual = containerFixture.selectAll('.donut-chart .arc').nodes().length;
 
-                expect(containerFixture.selectAll('.arc').size()).toEqual(numSlices);
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render one path in each slice', () => {
+                let actual;
+                let expected = dataset.length;
+                
+                actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
+
+                expect(actual).toEqual(expected);
             });
 
             it('should use percentage if declared in data, otherwise calculates value', () => {
@@ -74,7 +86,8 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 expect(containerFixture.select('text.donut-text').empty()).toBeFalsy();
             });
 
-            describe('when reloading', () => {
+            describe('when reloading with a one item dataset', () => {
+
                 it('should render in the same svg', function() {
                     let actual;
                     let expected = 1;
@@ -82,8 +95,32 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
                     containerFixture.datum(newDataset).call(donutChart);
                     
-                    actual = containerFixture.select('.donut-chart').nodes().length;
+                    actual = containerFixture.selectAll('.donut-chart').nodes().length;
 
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should render only one slice', function() {
+                    let actual;
+                    let expected = 1;
+                    let newDataset = [dataset[0]];
+
+                    containerFixture.datum(newDataset).call(donutChart);
+                    
+                    actual = containerFixture.selectAll('.donut-chart .arc').nodes().length;
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should render one path in each slice', () => {
+                    let actual;
+                    let expected = 1;
+                    let newDataset = [dataset[0]];
+                    
+                    containerFixture.datum(newDataset).call(donutChart);
+                    
+                    actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
+    
                     expect(actual).toEqual(expected);
                 });
             })

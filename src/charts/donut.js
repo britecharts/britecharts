@@ -315,24 +315,31 @@ define(function(require) {
                 console.log('There are slices!');
 
                 slices = svg.select('.chart-group')
-                    .selectAll('path')
+                    .selectAll('g.arc')
                     .data(layout(data));
 
-                slices
-                    .attr('d', shape);
+                let newSlices = slices.enter()
+                  .append('g')
+                    .each(storeAngle)
+                    .each(reduceOuterRadius)
+                    .classed('arc', true);
+
+
+                // slices
+                //     .attr('d', shape);
 
                 // Redraws the angles of the data
-                slices
-                    .transition()
-                    .duration(arcTransitionDuration)
-                    .attrTween('d', tweenArc);
+                // slices
+                //     .transition()
+                //     .duration(arcTransitionDuration)
+                //     .attrTween('d', tweenArc);
                 
                 // slices = svg.select('.chart-group')
                 //     .selectAll('g.arc')
                 //     .data(layout(data));
 
-                slices.exit()
-                    .remove();
+                // slices.exit()
+                //     .remove();
 
                 // let newSlices = slices.enter()
                 //   .append('g')
@@ -340,38 +347,41 @@ define(function(require) {
                 //     .each(reduceOuterRadius)
                 //     .classed('arc', true);
 
-                // if (isAnimated) {
-                //     newSlices.merge(slices)
-                //       .append('path')
-                //         .attr('fill', getSliceFill)
-                //         .on('mouseover', function(d) {
-                //             handleMouseOver(this, d, chartWidth, chartHeight);
-                //         })
-                //         .on('mousemove', function(d) {
-                //             handleMouseMove(this, d, chartWidth, chartHeight);
-                //         })
-                //         .on('mouseout', function(d) {
-                //             handleMouseOut(this, d, chartWidth, chartHeight);
-                //         })
-                //         .transition()
-                //         .ease(ease)
-                //         .duration(pieDrawingTransitionDuration)
-                //         .attrTween('d', tweenLoading);
-                // } else {
-                //     newSlices.merge(slices)
-                //       .append('path')
-                //         .attr('fill', getSliceFill)
-                //         .attr('d', shape)
-                //         .on('mouseover', function(d) {
-                //             handleMouseOver(this, d, chartWidth, chartHeight);
-                //         })
-                //         .on('mousemove', function(d) {
-                //             handleMouseMove(this, d, chartWidth, chartHeight);
-                //         })
-                //         .on('mouseout', function(d) {
-                //             handleMouseOut(this, d, chartWidth, chartHeight);
-                //         })
-                // }
+                if (isAnimated) {
+                    newSlices.merge(slices)
+                      .append('path')
+                        .attr('fill', getSliceFill)
+                        .on('mouseover', function(d) {
+                            handleMouseOver(this, d, chartWidth, chartHeight);
+                        })
+                        .on('mousemove', function(d) {
+                            handleMouseMove(this, d, chartWidth, chartHeight);
+                        })
+                        .on('mouseout', function(d) {
+                            handleMouseOut(this, d, chartWidth, chartHeight);
+                        })
+                        .transition()
+                        .ease(ease)
+                        .duration(pieDrawingTransitionDuration)
+                        .attrTween('d', tweenLoading);
+                } else {
+                    newSlices.merge(slices)
+                      .append('path')
+                        .attr('fill', getSliceFill)
+                        .attr('d', shape)
+                        .on('mouseover', function(d) {
+                            handleMouseOver(this, d, chartWidth, chartHeight);
+                        })
+                        .on('mousemove', function(d) {
+                            handleMouseMove(this, d, chartWidth, chartHeight);
+                        })
+                        .on('mouseout', function(d) {
+                            handleMouseOut(this, d, chartWidth, chartHeight);
+                        })
+                }
+
+                slices.exit()
+                    .remove();
 
             }
             
