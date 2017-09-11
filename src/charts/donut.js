@@ -161,8 +161,7 @@ define(function(require) {
         function buildContainerGroups() {
             let container = svg
               .append('g')
-                .classed('container-group', true)
-                .attr('transform', `translate(${width / 2}, ${height / 2})`);
+                .classed('container-group', true);
 
             container.append('g').classed('chart-group', true);
             container.append('g').classed('legend-group', true);
@@ -199,12 +198,17 @@ define(function(require) {
             if (!svg) {
                 svg = d3Selection.select(container)
                   .append('svg')
-                    .classed('britechart donut-chart', true)
-                    .data([data]);  //TO REVIEW
+                    .classed('britechart donut-chart', true);
 
                 buildContainerGroups();
             }
 
+            // Updates Container Group position
+            svg
+                .select('.container-group')
+                .attr('transform', `translate(${width / 2}, ${height / 2})`);
+            
+            // Updates SVG size
             svg
                 .attr('width', width)
                 .attr('height', height);
@@ -225,9 +229,8 @@ define(function(require) {
                 d.quantity = +d[quantityLabel];
                 d.name = String(d[nameLabel]);
                 d.percentage = d[percentageLabel] || null;
-                acc.push(d);
 
-                return acc;
+                return [...acc, d];
             }, []);
             let totalQuantity = sumValues(cleanData);
             let dataWithPercentages = cleanData.map((d) => {
@@ -269,63 +272,54 @@ define(function(require) {
          * @private
          */
         function drawSlices() {
-            if (!slices) {
-                slices = svg.select('.chart-group')
-                    .selectAll('g.arc')
-                    .data(layout(data));
-
-                let newSlices = slices.enter()
-                  .append('g')
-                    .each(storeAngle)
-                    .each(reduceOuterRadius)
-                    .classed('arc', true);
-
-                if (isAnimated) {
-                    newSlices.merge(slices)
-                      .append('path')
-                        .attr('fill', getSliceFill)
-                        .on('mouseover', function(d) {
-                            handleMouseOver(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mousemove', function(d) {
-                            handleMouseMove(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mouseout', function(d) {
-                            handleMouseOut(this, d, chartWidth, chartHeight);
-                        })
-                        .transition()
-                        .ease(ease)
-                        .duration(pieDrawingTransitionDuration)
-                        .attrTween('d', tweenLoading);
-                } else {
-                    newSlices.merge(slices)
-                      .append('path')
-                        .attr('fill', getSliceFill)
-                        .attr('d', shape)
-                        .on('mouseover', function(d) {
-                            handleMouseOver(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mousemove', function(d) {
-                            handleMouseMove(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mouseout', function(d) {
-                            handleMouseOut(this, d, chartWidth, chartHeight);
-                        })
-                }
-            } else {
-                slices = svg.select('.chart-group')
-                    .selectAll('path')
-                    .data(layout(data));
-
-                slices
-                    .attr('d', shape);
-
-                // Redraws the angles of the data
-                slices
-                    .transition()
-                    .duration(arcTransitionDuration)
-                    .attrTween('d', tweenArc);
+            // We clean all the previous arcs
+            if (slices) {
+                svg.selectAll('g.arc').remove();
             }
+
+            slices = svg.select('.chart-group')
+                .selectAll('g.arc')
+                .data(layout(data));
+
+            let newSlices = slices.enter()
+                .append('g')
+                  .each(storeAngle)
+                  .each(reduceOuterRadius)
+                  .classed('arc', true)
+                  .append('path');
+        
+            if (isAnimated) {
+                newSlices.merge(slices)
+                    .attr('fill', getSliceFill)
+                    .on('mouseover', function(d) {
+                        handleMouseOver(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mousemove', function(d) {
+                        handleMouseMove(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mouseout', function(d) {
+                        handleMouseOut(this, d, chartWidth, chartHeight);
+                    })
+                    .transition()
+                    .ease(ease)
+                    .duration(pieDrawingTransitionDuration)
+                    .attrTween('d', tweenLoading);
+            } else {
+                newSlices.merge(slices)
+                    .attr('fill', getSliceFill)
+                    .attr('d', shape)
+                    .on('mouseover', function(d) {
+                        handleMouseOver(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mousemove', function(d) {
+                        handleMouseMove(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mouseout', function(d) {
+                        handleMouseOut(this, d, chartWidth, chartHeight);
+                    })
+            }
+            
+            slices.exit().remove();
         }
 
         /**
@@ -345,14 +339,14 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseOver(e, d, chartWidth, chartHeight) {
+        function handleMouseOver(el, d, chartWidth, chartHeight) {
             drawLegend(d);
-            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+            dispatcher.call('customMouseOver', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
 
-            if (highlightedSlice && e !== highlightedSlice) {
+            if (highlightedSlice && el !== highlightedSlice) {
                 tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
             }
-            tweenGrowth(e, externalRadius);
+            tweenGrowth(el, externalRadius);
         }
 
         /**
@@ -360,8 +354,8 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseMove(e, d, chartWidth, chartHeight) {
-            dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        function handleMouseMove(el, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseMove', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
         }
 
         /**
@@ -369,18 +363,18 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseOut(e, d, chartWidth, chartHeight) {
+        function handleMouseOut(el, d, chartWidth, chartHeight) {
             if (highlightedSlice && hasFixedHighlightedSlice) {
                 drawLegend(highlightedSlice.__data__);
             } else {
                 cleanLegend();
             }
-            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+            dispatcher.call('customMouseOut', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
 
-            if (highlightedSlice && hasFixedHighlightedSlice && e !== highlightedSlice) {
+            if (highlightedSlice && hasFixedHighlightedSlice && el !== highlightedSlice) {
                 tweenGrowth(highlightedSlice, externalRadius);
             }
-            tweenGrowth(e, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+            tweenGrowth(el, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
         }
 
         /**
@@ -488,6 +482,7 @@ define(function(require) {
                 return colorSchema;
             }
             colorSchema = _x;
+
             return this;
         };
 
@@ -502,6 +497,7 @@ define(function(require) {
                 return externalRadius;
             }
             externalRadius = _x;
+
             return this;
         };
 
@@ -533,6 +529,7 @@ define(function(require) {
                 return height;
             }
             height = _x;
+
             return this;
         };
 
