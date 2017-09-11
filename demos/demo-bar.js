@@ -8,7 +8,7 @@ const miniTooltip = require('./../src/charts/mini-tooltip');
 const colors = require('./../src/charts/helpers/colors');
 const dataBuilder = require('./../test/fixtures/barChartDataBuilder');
 
-    require('./helpers/resizeHelper');
+require('./helpers/resizeHelper');
 
 function createSimpleBarChart() {
     let barChart = bar(),
@@ -102,10 +102,10 @@ if (d3Selection.select('.js-bar-chart-tooltip-container').node()){
     createBarChartWithTooltip();
     createHorizontalBarChart();
     createSimpleBarChart();
-
+    
     let redrawCharts = function(){
         d3Selection.selectAll('.bar-chart').remove();
-
+        
         createBarChartWithTooltip();
         createHorizontalBarChart();
         createSimpleBarChart();

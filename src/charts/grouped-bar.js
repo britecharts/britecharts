@@ -621,10 +621,9 @@ define(function (require) {
          * MouseMove handler, calculates the nearest dataPoint to the cursor
          * and updates metadata related to it
          * @param  {obj} e the fired event
-         * @param  {obj} d data of bar
          * @private
          */
-        function handleMouseMove(e, d) {
+        function handleMouseMove(e) {
             let [mouseX, mouseY] = getMousePosition(e),
                 dataPoint = isHorizontal ? getNearestDataPoint2(mouseY) : getNearestDataPoint(mouseX),
                 x,
@@ -845,22 +844,6 @@ define(function (require) {
                 return isHorizontal;
             }
             isHorizontal = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets the horizontal direction of the chart
-         * @param  {number} _x Desired horizontal direction for the chart
-         * @return { isHorizontal | module} If it is horizontal or module to chain calls
-         * @deprecated
-         */
-        exports.horizontal = function (_x) {
-            if (!arguments.length) {
-                return isHorizontal;
-            }
-            isHorizontal = _x;
-            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
 
             return this;
         };

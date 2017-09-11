@@ -7,6 +7,8 @@ const PubSub = require('pubsub-js');
 const brush = require('./../src/charts/brush');
 const dataBuilder = require('./../test/fixtures/brushChartDataBuilder');
 
+require('./helpers/resizeHelper');
+
 
 function createBrushChart() {
     let brushChart = brush(),
@@ -42,7 +44,7 @@ function createBrushChart() {
 // Show charts if container available
 if (d3Selection.select('.js-brush-chart-container').node()){
     createBrushChart();
-
+    
     let redrawCharts = function(){
         d3Selection.select('.brush-chart').remove();
 

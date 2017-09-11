@@ -15,11 +15,16 @@ var d3Selection = require('d3-selection'),
     datasetNoPercentages = new dataBuilder.DonutDataBuilder()
         .withFivePlusOtherNoPercent()
         .build(),
-    legendChart;
-    require('./helpers/resizeHelper');
+    datasetWithThreeItems = new dataBuilder.DonutDataBuilder()
+        .withThreeCategories()
+        .build(),
+    legendChart,
+    redrawCharts;
+
+require('./helpers/resizeHelper');
 
 
-function createDonutChart(dataset, optionalColorSchema) {
+function createDonutChart(optionalColorSchema) {
     var legendChart = getLegendChart(dataset, optionalColorSchema),
         donutChart = donut(),
         donutContainer = d3Selection.select('.js-donut-chart-container'),
@@ -152,14 +157,14 @@ function createDonutWithHighlightSliceChart() {
 
 // Show charts if container available
 if (d3Selection.select('.js-donut-chart-container').node()) {
-    createDonutChart(dataset);
+    createDonutChart();
     createSmallDonutChart();
     createDonutWithHighlightSliceChart();
 
-    var redrawCharts = function(){
+    redrawCharts = function(){
         d3Selection.selectAll('.donut-chart').remove();
 
-        createDonutChart(dataset);
+        createDonutChart();
         createSmallDonutChart();
         createDonutWithHighlightSliceChart();
     };

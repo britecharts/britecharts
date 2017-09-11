@@ -2,32 +2,7 @@ webpackJsonp([4,10],[
 /* 0 */
 /***/ (function(module, exports) {
 
-	'use strict';
-	
-	function loadScript(name, fn) {
-	    var head = document.getElementsByTagName('head')[0],
-	        script = document.createElement('script');
-	
-	    script.type = 'text/javascript';
-	    script.charset = 'utf-8';
-	    script.defer = true;
-	    script.src = name + '.js';
-	    head.appendChild(script);
-	    fn && fn();
-	}
-	window.onload = function () {
-	
-	    loadScript('/britecharts/scripts/demo-stacked-area');
-	    loadScript('/britecharts/scripts/demo-bar');
-	    loadScript('/britecharts/scripts/demo-stacked-bar');
-	    loadScript('/britecharts/scripts/demo-grouped-bar');
-	    loadScript('/britecharts/scripts/demo-donut');
-	    loadScript('/britecharts/scripts/demo-line');
-	    loadScript('/britecharts/scripts/demo-sparkline');
-	    loadScript('/britecharts/scripts/demo-step');
-	    loadScript('/britecharts/scripts/demo-brush');
-	};
+	eval("'use strict';\n\nfunction loadScript(name, fn) {\n    var head = document.getElementsByTagName('head')[0],\n        script = document.createElement('script');\n\n    script.type = 'text/javascript';\n    script.charset = 'utf-8';\n    script.defer = true;\n    script.src = name + '.js';\n    head.appendChild(script);\n    fn && fn();\n}\nwindow.onload = function () {\n\n    loadScript('/britecharts/scripts/demo-stacked-area');\n    loadScript('/britecharts/scripts/demo-bar');\n    loadScript('/britecharts/scripts/demo-stacked-bar');\n    loadScript('/britecharts/scripts/demo-grouped-bar');\n    loadScript('/britecharts/scripts/demo-donut');\n    loadScript('/britecharts/scripts/demo-line');\n    loadScript('/britecharts/scripts/demo-sparkline');\n    loadScript('/britecharts/scripts/demo-step');\n    loadScript('/britecharts/scripts/demo-brush');\n};//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMC5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy8uL2RlbW9zL2RlbW8ta2l0Y2hlbi1zaW5rLmpzPzVjNjgiXSwic291cmNlc0NvbnRlbnQiOlsiJ3VzZSBzdHJpY3QnO1xuXG5mdW5jdGlvbiBsb2FkU2NyaXB0KG5hbWUsIGZuKSB7XG4gICAgdmFyIGhlYWQgPSBkb2N1bWVudC5nZXRFbGVtZW50c0J5VGFnTmFtZSgnaGVhZCcpWzBdLFxuICAgICAgICBzY3JpcHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCdzY3JpcHQnKTtcblxuICAgIHNjcmlwdC50eXBlID0gJ3RleHQvamF2YXNjcmlwdCc7XG4gICAgc2NyaXB0LmNoYXJzZXQgPSAndXRmLTgnO1xuICAgIHNjcmlwdC5kZWZlciA9IHRydWU7XG4gICAgc2NyaXB0LnNyYyA9IG5hbWUgKyAnLmpzJztcbiAgICBoZWFkLmFwcGVuZENoaWxkKHNjcmlwdCk7XG4gICAgZm4gJiYgZm4oKTtcbn1cbndpbmRvdy5vbmxvYWQgPSBmdW5jdGlvbiAoKSB7XG5cbiAgICBsb2FkU2NyaXB0KCcvYnJpdGVjaGFydHMvc2NyaXB0cy9kZW1vLXN0YWNrZWQtYXJlYScpO1xuICAgIGxvYWRTY3JpcHQoJy9icml0ZWNoYXJ0cy9zY3JpcHRzL2RlbW8tYmFyJyk7XG4gICAgbG9hZFNjcmlwdCgnL2JyaXRlY2hhcnRzL3NjcmlwdHMvZGVtby1zdGFja2VkLWJhcicpO1xuICAgIGxvYWRTY3JpcHQoJy9icml0ZWNoYXJ0cy9zY3JpcHRzL2RlbW8tZ3JvdXBlZC1iYXInKTtcbiAgICBsb2FkU2NyaXB0KCcvYnJpdGVjaGFydHMvc2NyaXB0cy9kZW1vLWRvbnV0Jyk7XG4gICAgbG9hZFNjcmlwdCgnL2JyaXRlY2hhcnRzL3NjcmlwdHMvZGVtby1saW5lJyk7XG4gICAgbG9hZFNjcmlwdCgnL2JyaXRlY2hhcnRzL3NjcmlwdHMvZGVtby1zcGFya2xpbmUnKTtcbiAgICBsb2FkU2NyaXB0KCcvYnJpdGVjaGFydHMvc2NyaXB0cy9kZW1vLXN0ZXAnKTtcbiAgICBsb2FkU2NyaXB0KCcvYnJpdGVjaGFydHMvc2NyaXB0cy9kZW1vLWJydXNoJyk7XG59O1xuXG5cbi8vLy8vLy8vLy8vLy8vLy8vL1xuLy8gV0VCUEFDSyBGT09URVJcbi8vIC4vZGVtb3MvZGVtby1raXRjaGVuLXNpbmsuanNcbi8vIG1vZHVsZSBpZCA9IDBcbi8vIG1vZHVsZSBjaHVua3MgPSA0Il0sIm1hcHBpbmdzIjoiQUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQSIsInNvdXJjZVJvb3QiOiIifQ==");
 
 /***/ })
 ]);
-//# sourceMappingURL=demo-kitchen-sink.js.map

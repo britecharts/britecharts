@@ -92,7 +92,7 @@ config = {
 
     // Add here listener to sccs files?
     demos : {
-        devtool: 'source-map',
+        devtool: 'cheap-eval-source-map',
         entry: currentDemos,
         output: {
             path: './demos/build/',
