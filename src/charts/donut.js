@@ -277,11 +277,11 @@ define(function(require) {
                   .append('g')
                     .each(storeAngle)
                     .each(reduceOuterRadius)
-                    .classed('arc', true);
-
+                    .classed('arc', true)
+                    .append('path');
+                    
                 if (isAnimated) {
                     newSlices.merge(slices)
-                      .append('path')
                         .attr('fill', getSliceFill)
                         .on('mouseover', function(d) {
                             handleMouseOver(this, d, chartWidth, chartHeight);
@@ -298,7 +298,6 @@ define(function(require) {
                         .attrTween('d', tweenLoading);
                 } else {
                     newSlices.merge(slices)
-                      .append('path')
                         .attr('fill', getSliceFill)
                         .attr('d', shape)
                         .on('mouseover', function(d) {
@@ -312,7 +311,7 @@ define(function(require) {
                         })
                 }
             } else {
-                console.log('There are slices!');
+                console.log('There are slices!', data);
 
                 slices = svg.select('.chart-group')
                     .selectAll('g.arc')
@@ -322,7 +321,8 @@ define(function(require) {
                   .append('g')
                     .each(storeAngle)
                     .each(reduceOuterRadius)
-                    .classed('arc', true);
+                    .classed('arc', true)
+                    .append('path');                    
 
 
                 // slices
@@ -349,7 +349,6 @@ define(function(require) {
 
                 if (isAnimated) {
                     newSlices.merge(slices)
-                      .append('path')
                         .attr('fill', getSliceFill)
                         .on('mouseover', function(d) {
                             handleMouseOver(this, d, chartWidth, chartHeight);
@@ -366,7 +365,6 @@ define(function(require) {
                         .attrTween('d', tweenLoading);
                 } else {
                     newSlices.merge(slices)
-                      .append('path')
                         .attr('fill', getSliceFill)
                         .attr('d', shape)
                         .on('mouseover', function(d) {
