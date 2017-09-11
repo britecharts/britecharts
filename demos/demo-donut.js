@@ -71,6 +71,7 @@ function updateDonutChart(donutChart, newData, optionalColorSchema) {
     if (containerWidth) {
         donutChart
             .width(containerWidth)
+            .height(containerWidth)
             .externalRadius(containerWidth/2.5)
             .internalRadius(containerWidth/5);
 

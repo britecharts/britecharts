@@ -103,7 +103,6 @@ define(function(require) {
 
             // utils
             storeAngle = function(d) {
-                console.log('storeAngle d', d)
                 this._current = d;
             },
             reduceOuterRadius = d => {
@@ -162,8 +161,7 @@ define(function(require) {
         function buildContainerGroups() {
             let container = svg
               .append('g')
-                .classed('container-group', true)
-                .attr('transform', `translate(${width / 2}, ${height / 2})`);
+                .classed('container-group', true);
 
             container.append('g').classed('chart-group', true);
             container.append('g').classed('legend-group', true);
@@ -205,6 +203,12 @@ define(function(require) {
                 buildContainerGroups();
             }
 
+            // Updates Container Group position
+            svg
+                .select('.container-group')
+                .attr('transform', `translate(${width / 2}, ${height / 2})`);
+            
+            // Updates SVG size
             svg
                 .attr('width', width)
                 .attr('height', height);
@@ -268,65 +272,54 @@ define(function(require) {
          * @private
          */
         function drawSlices() {
-            if (!slices) {
-                console.log('There are no slices!', data);
-                
-                slices = svg.select('.chart-group')
-                    .selectAll('g.arc')
-                    .data(layout(data));
+            // We clean all the previous arcs
+            if (slices) {
+                svg.selectAll('g.arc').remove();
+            }
 
-                let newSlices = slices.enter()
-                  .append('g')
-                    .each(storeAngle)
-                    .each(reduceOuterRadius)
-                    .classed('arc', true)
-                    .append('path');
-                    
-                if (isAnimated) {
-                    newSlices.merge(slices)
-                        .attr('fill', getSliceFill)
-                        .on('mouseover', function(d) {
-                            handleMouseOver(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mousemove', function(d) {
-                            handleMouseMove(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mouseout', function(d) {
-                            handleMouseOut(this, d, chartWidth, chartHeight);
-                        })
-                        .transition()
-                        .ease(ease)
-                        .duration(pieDrawingTransitionDuration)
-                        .attrTween('d', tweenLoading);
-                } else {
-                    newSlices.merge(slices)
-                        .attr('fill', getSliceFill)
-                        .attr('d', shape)
-                        .on('mouseover', function(d) {
-                            handleMouseOver(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mousemove', function(d) {
-                            handleMouseMove(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mouseout', function(d) {
-                            handleMouseOut(this, d, chartWidth, chartHeight);
-                        })
-                }
+            slices = svg.select('.chart-group')
+                .selectAll('g.arc')
+                .data(layout(data));
+
+            let newSlices = slices.enter()
+                .append('g')
+                  .each(storeAngle)
+                  .each(reduceOuterRadius)
+                  .classed('arc', true)
+                  .append('path');
+        
+            if (isAnimated) {
+                newSlices.merge(slices)
+                    .attr('fill', getSliceFill)
+                    .on('mouseover', function(d) {
+                        handleMouseOver(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mousemove', function(d) {
+                        handleMouseMove(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mouseout', function(d) {
+                        handleMouseOut(this, d, chartWidth, chartHeight);
+                    })
+                    .transition()
+                    .ease(ease)
+                    .duration(pieDrawingTransitionDuration)
+                    .attrTween('d', tweenLoading);
             } else {
-                console.log('There are slices!', data);
-                
-                slices = svg.select('.chart-group')
-                    .selectAll('g.arc')
-                    .data(layout(data));
+                newSlices.merge(slices)
+                    .attr('fill', getSliceFill)
+                    .attr('d', shape)
+                    .on('mouseover', function(d) {
+                        handleMouseOver(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mousemove', function(d) {
+                        handleMouseMove(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mouseout', function(d) {
+                        handleMouseOut(this, d, chartWidth, chartHeight);
+                    })
+            }
 
-                let newSlices = slices.enter()
-                  .append('g')
-                    .each(storeAngle)
-                    .each(reduceOuterRadius)
-                    .classed('arc', true)
-                    .append('path');             
-                    
-                // slices
+            // slices
                 //     .attr('d', shape);
 
                 // Redraws the angles of the data
@@ -334,46 +327,8 @@ define(function(require) {
                 //     .transition()
                 //     .duration(arcTransitionDuration)
                 //     .attrTween('d', tweenArc);
-                
-                // slices = svg.select('.chart-group')
-                //     .selectAll('g.arc')
-                //     .data(layout(data));
 
-                if (isAnimated) {
-                    newSlices.merge(slices)
-                        .attr('fill', getSliceFill)
-                        .on('mouseover', function(d) {
-                            handleMouseOver(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mousemove', function(d) {
-                            handleMouseMove(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mouseout', function(d) {
-                            handleMouseOut(this, d, chartWidth, chartHeight);
-                        })
-                        .transition()
-                        .ease(ease)
-                        .duration(pieDrawingTransitionDuration)
-                        .attrTween('d', tweenLoading);
-                } else {
-                    newSlices.merge(slices)
-                        .attr('fill', getSliceFill)
-                        .attr('d', shape)
-                        .on('mouseover', function(d) {
-                            handleMouseOver(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mousemove', function(d) {
-                            handleMouseMove(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mouseout', function(d) {
-                            handleMouseOut(this, d, chartWidth, chartHeight);
-                        });
-                }
-
-                slices.exit()
-                    .remove();
-            }
-            
+            slices.exit().remove();
         }
 
         /**
@@ -466,8 +421,6 @@ define(function(require) {
             let i = d3Interpolate.interpolate(this._current, a);
 
             this._current = i(0);
-
-            console.log('this._current', this._current)
 
             return function(t) {
                 return shape(i(t));
