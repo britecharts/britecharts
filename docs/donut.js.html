@@ -351,8 +351,7 @@
         function buildContainerGroups() {
             let container = svg
               .append('g')
-                .classed('container-group', true)
-                .attr('transform', `translate(${width / 2}, ${height / 2})`);
+                .classed('container-group', true);
 
             container.append('g').classed('chart-group', true);
             container.append('g').classed('legend-group', true);
@@ -394,6 +393,12 @@
                 buildContainerGroups();
             }
 
+            // Updates Container Group position
+            svg
+                .select('.container-group')
+                .attr('transform', `translate(${width / 2}, ${height / 2})`);
+            
+            // Updates SVG size
             svg
                 .attr('width', width)
                 .attr('height', height);
@@ -414,9 +419,8 @@
                 d.quantity = +d[quantityLabel];
                 d.name = String(d[nameLabel]);
                 d.percentage = d[percentageLabel] || null;
-                acc.push(d);
 
-                return acc;
+                return [...acc, d];
             }, []);
             let totalQuantity = sumValues(cleanData);
             let dataWithPercentages = cleanData.map((d) => {
@@ -458,113 +462,54 @@
          * @private
          */
         function drawSlices() {
-            if (!slices) {
-                slices = svg.select('.chart-group')
-                    .selectAll('g.arc')
-                    .data(layout(data));
+            // We clean all the previous arcs
+            if (slices) {
+                svg.selectAll('g.arc').remove();
+            }
 
-                let newSlices = slices.enter()
-                  .append('g')
-                    .each(storeAngle)
-                    .each(reduceOuterRadius)
-                    .classed('arc', true);
+            slices = svg.select('.chart-group')
+                .selectAll('g.arc')
+                .data(layout(data));
 
-                if (isAnimated) {
-                    newSlices.merge(slices)
-                      .append('path')
-                        .attr('fill', getSliceFill)
-                        .on('mouseover', function(d) {
-                            handleMouseOver(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mousemove', function(d) {
-                            handleMouseMove(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mouseout', function(d) {
-                            handleMouseOut(this, d, chartWidth, chartHeight);
-                        })
-                        .transition()
-                        .ease(ease)
-                        .duration(pieDrawingTransitionDuration)
-                        .attrTween('d', tweenLoading);
-                } else {
-                    newSlices.merge(slices)
-                      .append('path')
-                        .attr('fill', getSliceFill)
-                        .attr('d', shape)
-                        .on('mouseover', function(d) {
-                            handleMouseOver(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mousemove', function(d) {
-                            handleMouseMove(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mouseout', function(d) {
-                            handleMouseOut(this, d, chartWidth, chartHeight);
-                        })
-                }
-            } else {
-                console.log('There are slices!');
-
-                slices = svg.select('.chart-group')
-                    .selectAll('path')
-                    .data(layout(data));
-
-                slices
-                    .attr('d', shape);
-
-                // Redraws the angles of the data
-                slices
+            let newSlices = slices.enter()
+                .append('g')
+                  .each(storeAngle)
+                  .each(reduceOuterRadius)
+                  .classed('arc', true)
+                  .append('path');
+        
+            if (isAnimated) {
+                newSlices.merge(slices)
+                    .attr('fill', getSliceFill)
+                    .on('mouseover', function(d) {
+                        handleMouseOver(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mousemove', function(d) {
+                        handleMouseMove(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mouseout', function(d) {
+                        handleMouseOut(this, d, chartWidth, chartHeight);
+                    })
                     .transition()
-                    .duration(arcTransitionDuration)
-                    .attrTween('d', tweenArc);
-                
-                // slices = svg.select('.chart-group')
-                //     .selectAll('g.arc')
-                //     .data(layout(data));
-
-                slices.exit()
-                    .remove();
-
-                // let newSlices = slices.enter()
-                //   .append('g')
-                //     .each(storeAngle)
-                //     .each(reduceOuterRadius)
-                //     .classed('arc', true);
-
-                // if (isAnimated) {
-                //     newSlices.merge(slices)
-                //       .append('path')
-                //         .attr('fill', getSliceFill)
-                //         .on('mouseover', function(d) {
-                //             handleMouseOver(this, d, chartWidth, chartHeight);
-                //         })
-                //         .on('mousemove', function(d) {
-                //             handleMouseMove(this, d, chartWidth, chartHeight);
-                //         })
-                //         .on('mouseout', function(d) {
-                //             handleMouseOut(this, d, chartWidth, chartHeight);
-                //         })
-                //         .transition()
-                //         .ease(ease)
-                //         .duration(pieDrawingTransitionDuration)
-                //         .attrTween('d', tweenLoading);
-                // } else {
-                //     newSlices.merge(slices)
-                //       .append('path')
-                //         .attr('fill', getSliceFill)
-                //         .attr('d', shape)
-                //         .on('mouseover', function(d) {
-                //             handleMouseOver(this, d, chartWidth, chartHeight);
-                //         })
-                //         .on('mousemove', function(d) {
-                //             handleMouseMove(this, d, chartWidth, chartHeight);
-                //         })
-                //         .on('mouseout', function(d) {
-                //             handleMouseOut(this, d, chartWidth, chartHeight);
-                //         })
-                // }
-
+                    .ease(ease)
+                    .duration(pieDrawingTransitionDuration)
+                    .attrTween('d', tweenLoading);
+            } else {
+                newSlices.merge(slices)
+                    .attr('fill', getSliceFill)
+                    .attr('d', shape)
+                    .on('mouseover', function(d) {
+                        handleMouseOver(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mousemove', function(d) {
+                        handleMouseMove(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mouseout', function(d) {
+                        handleMouseOut(this, d, chartWidth, chartHeight);
+                    })
             }
             
+            slices.exit().remove();
         }
 
         /**
@@ -727,6 +672,7 @@
                 return colorSchema;
             }
             colorSchema = _x;
+
             return this;
         };
 
@@ -741,6 +687,7 @@
                 return externalRadius;
             }
             externalRadius = _x;
+
             return this;
         };
 
@@ -772,6 +719,7 @@
                 return height;
             }
             height = _x;
+
             return this;
         };
 
