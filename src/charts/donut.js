@@ -318,16 +318,7 @@ define(function(require) {
                         handleMouseOut(this, d, chartWidth, chartHeight);
                     })
             }
-
-            // slices
-                //     .attr('d', shape);
-
-                // Redraws the angles of the data
-                // slices
-                //     .transition()
-                //     .duration(arcTransitionDuration)
-                //     .attrTween('d', tweenArc);
-
+            
             slices.exit().remove();
         }
 

@@ -24,7 +24,7 @@ var d3Selection = require('d3-selection'),
 require('./helpers/resizeHelper');
 
 
-function createDonutChart(dataset, optionalColorSchema) {
+function createDonutChart(optionalColorSchema) {
     var legendChart = getLegendChart(dataset, optionalColorSchema),
         donutChart = donut(),
         donutContainer = d3Selection.select('.js-donut-chart-container'),
@@ -36,7 +36,7 @@ function createDonutChart(dataset, optionalColorSchema) {
         });
 
         donutChart
-            .isAnimated(false)
+            .isAnimated(true)
             .highlightSliceById(2)
             .width(containerWidth)
             .height(containerWidth)
@@ -58,28 +58,6 @@ function createDonutChart(dataset, optionalColorSchema) {
         d3Selection.select('#button').on('click', function() {
             donutChart.exportChart('donut.png', 'Britecharts Donut Chart');
         });
-    }
-
-    return donutChart;
-}
-
-function updateDonutChart(donutChart, newData, optionalColorSchema) {
-    var legendChart = getLegendChart(newData, optionalColorSchema),
-        donutContainer = d3Selection.select('.js-donut-chart-container'),
-        containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false;
-
-    if (containerWidth) {
-        donutChart
-            .width(containerWidth)
-            .height(containerWidth)
-            .externalRadius(containerWidth/2.5)
-            .internalRadius(containerWidth/5);
-
-        if (optionalColorSchema) {
-            donutChart.colorSchema(optionalColorSchema);
-        }
-
-        donutContainer.datum(newData).call(donutChart);
     }
 }
 
@@ -179,19 +157,16 @@ function createDonutWithHighlightSliceChart() {
 
 // Show charts if container available
 if (d3Selection.select('.js-donut-chart-container').node()) {
-    let donut = createDonutChart(dataset);
-
-    // createSmallDonutChart();
-    // createDonutWithHighlightSliceChart();
+    createDonutChart();
+    createSmallDonutChart();
+    createDonutWithHighlightSliceChart();
 
     redrawCharts = function(){
-        // d3Selection.selectAll('.donut-chart').remove();
+        d3Selection.selectAll('.donut-chart').remove();
 
-        // createDonutChart(dataset);
-        updateDonutChart(donut, datasetWithThreeItems);
-        
-        // createSmallDonutChart();
-        // createDonutWithHighlightSliceChart();
+        createDonutChart();
+        createSmallDonutChart();
+        createDonutWithHighlightSliceChart();
     };
 
     // Redraw charts on window resize
