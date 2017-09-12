@@ -7,7 +7,9 @@ var d3Selection = require('d3-selection'),
     colors = require('./../src/charts/helpers/colors'),
 
     groupedBarChart = require('./../src/charts/grouped-bar'),
+    // groupedBarChart = require('./../dist/umd/grouped-bar.min'),
     tooltip = require('./../src/charts/tooltip'),
+    // tooltip = require('./../dist/umd/tooltip.min'),
     groupedDataBuilder = require('./../test/fixtures/groupedBarChartDataBuilder'),
     colorSelectorHelper = require('./helpers/colorSelector');
     require('./helpers/resizeHelper');
@@ -84,7 +86,7 @@ function createHorizontalgroupedBarChart(optionalColorSchema) {
             .tooltipThreshold(600)
             .grid('vertical')
             .width(containerWidth)
-            .horizontal(true)
+            .isHorizontal(true)
             .isAnimated(true)
             .margin({
                 left: 80,

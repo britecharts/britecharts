@@ -7,10 +7,12 @@ var d3Selection = require('d3-selection'),
     colors = require('./../src/charts/helpers/colors'),
 
     stackedAreaChart = require('./../src/charts/stacked-area'),
+    // stackedAreaChart = require('./../dist/umd/stacked-area.min'),
     tooltip = require('./../src/charts/tooltip'),
     stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder'),
     colorSelectorHelper = require('./helpers/colorSelector');
-    require('./helpers/resizeHelper');
+    
+require('./helpers/resizeHelper');
 
 const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 
