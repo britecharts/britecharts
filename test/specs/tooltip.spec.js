@@ -122,6 +122,24 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                         ).toBe('Tooltip title - Aug 05, 12 AM');
                     });
                 });
+
+                describe('when date must not be shown', function() {
+
+                    it('should only show the title of the tooltip', () =>  {
+                        tooltipChart.shouldShowDateInTitle(false);
+
+                        tooltipChart.update({
+                            date: '2015-08-05T07:00:00.000Z',
+                            topics: []
+                        }, topicColorMap, 0);
+
+                        expect(
+                            containerFixture.select('.britechart-tooltip')
+                                .selectAll('.tooltip-title')
+                                .text()
+                        ).toBe('Tooltip title');
+                    });
+                });
             });
 
             it('should add a line of text for each topic', () =>  {
@@ -428,6 +446,18 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
 
                 expect(defaultOrder).not.toBe(testOrder);
                 expect(newOrder).toBe(testOrder);
+            });
+
+            it('should provide shouldShowDateInTitle getter and setter', () => {
+                let current = tooltipChart.shouldShowDateInTitle(),
+                    expected = false,
+                    actual;
+
+                tooltipChart.shouldShowDateInTitle(expected);
+                actual = tooltipChart.shouldShowDateInTitle();
+
+                expect(current).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
         });
     });

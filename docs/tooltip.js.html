@@ -79,7 +79,7 @@
                     </button>
             	</div>
             	<div class="navbar-collapse collapse" id="topNavigation">
-            		<ul class="nav navbar-nav">
+            		<ul class="nav navbar-nav navbar-right">
             			
                         
             			<li class="">
@@ -154,20 +154,23 @@
                         <li class="dropdown">
                             <a class="github-link" href="https://github.com/eventbrite/britecharts/">Github</a>
                         </li>
+                        <li class="dropdown">
+                            <a class="github-link" href="https://twitter.com/britecharts">Twitter</a>
+                        </li>
             		</ul>
                     
-                    <div class="col-sm-12 col-md-4 no-gutter">
-                        <form class="navbar-form" role="search">
-                            <div class="input-group search-container clearfix">
-                                <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" id="search-submit">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="col-sm-12 col-md-3 no-gutter pull-right">
+                            <form class="navbar-form" role="search">
+                                <div class="input-group search-container clearfix">
+                                    <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" id="search-submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
                     
                 </div>
             </div>
@@ -256,6 +259,7 @@
             height = 45,
 
             title = 'Tooltip title',
+            shouldShowDateInTitle = true,
             valueFormat = null,
 
             // tooltip
@@ -575,10 +579,13 @@
          * @return void
          */
         function updateTitle(dataPoint) {
-            var date = new Date(dataPoint[dateLabel]),
-                tooltipTitleText = title + ' - ' + formatDate(date);
+            let tTitle = title;
 
-            tooltipTitle.text(tooltipTitleText);
+            if (shouldShowDateInTitle) {
+                tTitle = `${tTitle} - ${formatDate(new Date(dataPoint[dateLabel]))}`;
+            }
+
+            tooltipTitle.text(tTitle);
         }
 
         /**
@@ -794,7 +801,7 @@
             locale = _x;
 
             return this;
-        };        
+        };
 
         /**
          * Gets or Sets the nameLabel of the data
@@ -912,6 +919,20 @@
             return this;
         };
 
+        /**
+         * Gets or Sets shouldShowDateInTitle
+         * @param  {Boolean} _x Desired value
+         * @return { shouldShowDateInTitle | module} Current shouldShowDateInTitle or Chart module to chain calls
+         * @public
+         */
+        exports.shouldShowDateInTitle = function(_x) {
+            if (!arguments.length) {
+                return shouldShowDateInTitle;
+            }
+            shouldShowDateInTitle = _x;
+
+            return this;
+        };
         return exports;
     };
 });

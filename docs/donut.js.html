@@ -79,7 +79,7 @@
                     </button>
             	</div>
             	<div class="navbar-collapse collapse" id="topNavigation">
-            		<ul class="nav navbar-nav">
+            		<ul class="nav navbar-nav navbar-right">
             			
                         
             			<li class="">
@@ -154,20 +154,23 @@
                         <li class="dropdown">
                             <a class="github-link" href="https://github.com/eventbrite/britecharts/">Github</a>
                         </li>
+                        <li class="dropdown">
+                            <a class="github-link" href="https://twitter.com/britecharts">Twitter</a>
+                        </li>
             		</ul>
                     
-                    <div class="col-sm-12 col-md-4 no-gutter">
-                        <form class="navbar-form" role="search">
-                            <div class="input-group search-container clearfix">
-                                <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" id="search-submit">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="col-sm-12 col-md-3 no-gutter pull-right">
+                            <form class="navbar-form" role="search">
+                                <div class="input-group search-container clearfix">
+                                    <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" id="search-submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
                     
                 </div>
             </div>
@@ -248,7 +251,6 @@
      *
      */
     return function module() {
-
         let margin = {
                 top: 0,
                 right: 0,
@@ -349,8 +351,7 @@
         function buildContainerGroups() {
             let container = svg
               .append('g')
-                .classed('container-group', true)
-                .attr('transform', `translate(${width / 2}, ${height / 2})`);
+                .classed('container-group', true);
 
             container.append('g').classed('chart-group', true);
             container.append('g').classed('legend-group', true);
@@ -387,12 +388,17 @@
             if (!svg) {
                 svg = d3Selection.select(container)
                   .append('svg')
-                    .classed('britechart donut-chart', true)
-                    .data([data]);  //TO REVIEW
+                    .classed('britechart donut-chart', true);
 
                 buildContainerGroups();
             }
 
+            // Updates Container Group position
+            svg
+                .select('.container-group')
+                .attr('transform', `translate(${width / 2}, ${height / 2})`);
+            
+            // Updates SVG size
             svg
                 .attr('width', width)
                 .attr('height', height);
@@ -413,9 +419,8 @@
                 d.quantity = +d[quantityLabel];
                 d.name = String(d[nameLabel]);
                 d.percentage = d[percentageLabel] || null;
-                acc.push(d);
 
-                return acc;
+                return [...acc, d];
             }, []);
             let totalQuantity = sumValues(cleanData);
             let dataWithPercentages = cleanData.map((d) => {
@@ -457,63 +462,54 @@
          * @private
          */
         function drawSlices() {
-            if (!slices) {
-                slices = svg.select('.chart-group')
-                    .selectAll('g.arc')
-                    .data(layout(data));
-
-                let newSlices = slices.enter()
-                  .append('g')
-                    .each(storeAngle)
-                    .each(reduceOuterRadius)
-                    .classed('arc', true);
-
-                if (isAnimated) {
-                    newSlices.merge(slices)
-                      .append('path')
-                        .attr('fill', getSliceFill)
-                        .on('mouseover', function(d) {
-                            handleMouseOver(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mousemove', function(d) {
-                            handleMouseMove(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mouseout', function(d) {
-                            handleMouseOut(this, d, chartWidth, chartHeight);
-                        })
-                        .transition()
-                        .ease(ease)
-                        .duration(pieDrawingTransitionDuration)
-                        .attrTween('d', tweenLoading);
-                } else {
-                    newSlices.merge(slices)
-                      .append('path')
-                        .attr('fill', getSliceFill)
-                        .attr('d', shape)
-                        .on('mouseover', function(d) {
-                            handleMouseOver(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mousemove', function(d) {
-                            handleMouseMove(this, d, chartWidth, chartHeight);
-                        })
-                        .on('mouseout', function(d) {
-                            handleMouseOut(this, d, chartWidth, chartHeight);
-                        })
-                }
-            } else {
-                slices = svg.select('.chart-group')
-                    .selectAll('path')
-                    .data(layout(data));
-
-                slices
-                    .attr('d', shape);
-
-                // Redraws the angles of the data
-                slices
-                    .transition()
-                    .duration(arcTransitionDuration)
-                    .attrTween('d', tweenArc);
+            // We clean all the previous arcs
+            if (slices) {
+                svg.selectAll('g.arc').remove();
             }
+
+            slices = svg.select('.chart-group')
+                .selectAll('g.arc')
+                .data(layout(data));
+
+            let newSlices = slices.enter()
+                .append('g')
+                  .each(storeAngle)
+                  .each(reduceOuterRadius)
+                  .classed('arc', true)
+                  .append('path');
+        
+            if (isAnimated) {
+                newSlices.merge(slices)
+                    .attr('fill', getSliceFill)
+                    .on('mouseover', function(d) {
+                        handleMouseOver(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mousemove', function(d) {
+                        handleMouseMove(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mouseout', function(d) {
+                        handleMouseOut(this, d, chartWidth, chartHeight);
+                    })
+                    .transition()
+                    .ease(ease)
+                    .duration(pieDrawingTransitionDuration)
+                    .attrTween('d', tweenLoading);
+            } else {
+                newSlices.merge(slices)
+                    .attr('fill', getSliceFill)
+                    .attr('d', shape)
+                    .on('mouseover', function(d) {
+                        handleMouseOver(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mousemove', function(d) {
+                        handleMouseMove(this, d, chartWidth, chartHeight);
+                    })
+                    .on('mouseout', function(d) {
+                        handleMouseOut(this, d, chartWidth, chartHeight);
+                    })
+            }
+            
+            slices.exit().remove();
         }
 
         /**
@@ -533,14 +529,14 @@
          * @return {void}
          * @private
          */
-        function handleMouseOver(e, d, chartWidth, chartHeight) {
+        function handleMouseOver(el, d, chartWidth, chartHeight) {
             drawLegend(d);
-            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+            dispatcher.call('customMouseOver', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
 
-            if (highlightedSlice &amp;&amp; e !== highlightedSlice) {
+            if (highlightedSlice &amp;&amp; el !== highlightedSlice) {
                 tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
             }
-            tweenGrowth(e, externalRadius);
+            tweenGrowth(el, externalRadius);
         }
 
         /**
@@ -548,8 +544,8 @@
          * @return {void}
          * @private
          */
-        function handleMouseMove(e, d, chartWidth, chartHeight) {
-            dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        function handleMouseMove(el, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseMove', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
         }
 
         /**
@@ -557,18 +553,18 @@
          * @return {void}
          * @private
          */
-        function handleMouseOut(e, d, chartWidth, chartHeight) {
+        function handleMouseOut(el, d, chartWidth, chartHeight) {
             if (highlightedSlice &amp;&amp; hasFixedHighlightedSlice) {
                 drawLegend(highlightedSlice.__data__);
             } else {
                 cleanLegend();
             }
-            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+            dispatcher.call('customMouseOut', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
 
-            if (highlightedSlice &amp;&amp; hasFixedHighlightedSlice &amp;&amp; e !== highlightedSlice) {
+            if (highlightedSlice &amp;&amp; hasFixedHighlightedSlice &amp;&amp; el !== highlightedSlice) {
                 tweenGrowth(highlightedSlice, externalRadius);
             }
-            tweenGrowth(e, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+            tweenGrowth(el, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
         }
 
         /**
@@ -676,6 +672,7 @@
                 return colorSchema;
             }
             colorSchema = _x;
+
             return this;
         };
 
@@ -690,6 +687,7 @@
                 return externalRadius;
             }
             externalRadius = _x;
+
             return this;
         };
 
@@ -721,6 +719,7 @@
                 return height;
             }
             height = _x;
+
             return this;
         };
 

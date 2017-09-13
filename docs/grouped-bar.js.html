@@ -79,7 +79,7 @@
                     </button>
             	</div>
             	<div class="navbar-collapse collapse" id="topNavigation">
-            		<ul class="nav navbar-nav">
+            		<ul class="nav navbar-nav navbar-right">
             			
                         
             			<li class="">
@@ -154,20 +154,23 @@
                         <li class="dropdown">
                             <a class="github-link" href="https://github.com/eventbrite/britecharts/">Github</a>
                         </li>
+                        <li class="dropdown">
+                            <a class="github-link" href="https://twitter.com/britecharts">Twitter</a>
+                        </li>
             		</ul>
                     
-                    <div class="col-sm-12 col-md-4 no-gutter">
-                        <form class="navbar-form" role="search">
-                            <div class="input-group search-container clearfix">
-                                <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" id="search-submit">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="col-sm-12 col-md-3 no-gutter pull-right">
+                            <form class="navbar-form" role="search">
+                                <div class="input-group search-container clearfix">
+                                    <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" id="search-submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
                     
                 </div>
             </div>
@@ -304,6 +307,7 @@
                 right: 0
             },
             maxBarNumber = 8,
+            barOpacity = 0.24,
 
             animationDelayStep = 20,
             animationDelays = d3Array.range(animationDelayStep, maxBarNumber * animationDelayStep, animationDelayStep),
@@ -661,7 +665,7 @@
                         .attr('fill', ((data) => categoryColorMap[data.group]));
 
             if (isAnimated) {
-                bars.style('opacity', 0.24)
+                bars.style('opacity', barOpacity)
                     .transition()
                     .delay((_, i) => animationDelays[i])
                     .duration(animationDuration)
@@ -696,7 +700,8 @@
                       .attr('fill', ((data) => categoryColorMap[data.group]));
 
             if (isAnimated) {
-                bars.style('opacity', 0.24).transition()
+                bars.style('opacity', barOpacity)
+                    .transition()
                     .delay((_, i) => animationDelays[i])
                     .duration(animationDuration)
                     .ease(ease)
@@ -808,10 +813,9 @@
          * MouseMove handler, calculates the nearest dataPoint to the cursor
          * and updates metadata related to it
          * @param  {obj} e the fired event
-         * @param  {obj} d data of bar
          * @private
          */
-        function handleMouseMove(e, d) {
+        function handleMouseMove(e) {
             let [mouseX, mouseY] = getMousePosition(e),
                 dataPoint = isHorizontal ? getNearestDataPoint2(mouseY) : getNearestDataPoint(mouseX),
                 x,
@@ -1032,22 +1036,6 @@
                 return isHorizontal;
             }
             isHorizontal = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets the horizontal direction of the chart
-         * @param  {number} _x Desired horizontal direction for the chart
-         * @return { isHorizontal | module} If it is horizontal or module to chain calls
-         * @deprecated
-         */
-        exports.horizontal = function (_x) {
-            if (!arguments.length) {
-                return isHorizontal;
-            }
-            isHorizontal = _x;
-            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
 
             return this;
         };

@@ -82,7 +82,7 @@ var webpack = require('webpack'),
 
 // Set up minification for production
 if (isProduction) {
-    plugins.push(new UglifyJsPlugin({ minimize: false }));
+    plugins.push(new UglifyJsPlugin({ minimize: true }));
     // outputFile = projectName + '.min.js';
 }
 
@@ -92,7 +92,7 @@ config = {
 
     // Add here listener to sccs files?
     demos : {
-        devtool: 'source-map',
+        devtool: 'cheap-eval-source-map',
         entry: currentDemos,
         output: {
             path: './demos/build/',

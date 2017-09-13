@@ -1,4 +1,21 @@
-2.0.0
+2.0.1
+2.0.1 - Patch
+---------------------
+Bug Fixes:
+* Fixed missing transitions on grouped bar chart and stacked area (thanks @martinmanzo)
+* Moved into Yarn (thanks @rwholey)
+* Fixed color schema not being updated on bar charts (thanks @biovisualize)
+* Fixed object cleaning on bar chart (thanks @jaylumChen)
+* Fixed data reload on Donut charts
+* Fixed Firefox markup issues
+* Added Twitter link on docs
+* Fixed CDN demo page on docs
+
+Features:
+* Created first version of the Britecharts sandbox (thanks @rwholey)
+* Added curve interpolation attribute to line chart (thanks @dylanmoz)
+
+
 [2.0.0][https://github.com/eventbrite/britecharts/compare/1.7.2...2.0.0] - Major Release
 -----------------
 

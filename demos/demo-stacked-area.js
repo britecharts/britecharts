@@ -10,7 +10,8 @@ var d3Selection = require('d3-selection'),
     tooltip = require('./../src/charts/tooltip'),
     stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder'),
     colorSelectorHelper = require('./helpers/colorSelector');
-    require('./helpers/resizeHelper');
+    
+require('./helpers/resizeHelper');
 
 const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 

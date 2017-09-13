@@ -79,7 +79,7 @@
                     </button>
             	</div>
             	<div class="navbar-collapse collapse" id="topNavigation">
-            		<ul class="nav navbar-nav">
+            		<ul class="nav navbar-nav navbar-right">
             			
                         
             			<li class="">
@@ -154,20 +154,23 @@
                         <li class="dropdown">
                             <a class="github-link" href="https://github.com/eventbrite/britecharts/">Github</a>
                         </li>
+                        <li class="dropdown">
+                            <a class="github-link" href="https://twitter.com/britecharts">Twitter</a>
+                        </li>
             		</ul>
                     
-                    <div class="col-sm-12 col-md-4 no-gutter">
-                        <form class="navbar-form" role="search">
-                            <div class="input-group search-container clearfix">
-                                <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" id="search-submit">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
-                                </span>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="col-sm-12 col-md-3 no-gutter pull-right">
+                            <form class="navbar-form" role="search">
+                                <div class="input-group search-container clearfix">
+                                    <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" id="search-submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
                     
                 </div>
             </div>
@@ -452,16 +455,19 @@
          * @private
          */
         function cleanData(originalData) {
-            let data = originalData.map((d) => ({
-                    value: +d[valueLabel],
-                    name: String(d[nameLabel])
-                }));
-            let dataZeroed = data.map((d) => ({
-                    value: 0,
-                    name: String(d[nameLabel])
-                }));
+            let data = originalData.reduce((acc, d) => {
+                d.value = +d[valueLabel];
+                d.name = String(d[nameLabel]);
 
-            return {data, dataZeroed}
+                return [ ...acc, d];
+            }, []);
+
+            let dataZeroed = data.map((d) => ({
+                value: 0,
+                name: String(d[nameLabel])
+            }));
+
+            return { data, dataZeroed };
         }
 
         /**
@@ -505,7 +511,6 @@
                 .attr('x', 0)
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value))
-                .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function(d) {
                     handleMouseOver(this, d, chartWidth, chartHeight);
                 })
@@ -519,7 +524,8 @@
                 .attr('x', 0)
                 .attr('y', ({name}) => yScale(name))
                 .attr('height', yScale.bandwidth())
-                .attr('width', ({value}) => xScale(value));
+                .attr('width', ({value}) => xScale(value))
+                .attr('fill', ({name}) => colorMap(name));
         }
 
         /**
@@ -536,7 +542,6 @@
                 .attr('y', chartHeight)
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value))
-                .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function(d) {
                     handleMouseOver(this, d, chartWidth, chartHeight);
                 })
@@ -551,6 +556,7 @@
                 .attr('x', 0)
                 .attr('y', ({name}) => yScale(name))
                 .attr('height', yScale.bandwidth())
+                .attr('fill', ({name}) => colorMap(name))
                 .transition()
                 .duration(animationDuration)
                 .delay(interBarDelay)
@@ -572,7 +578,6 @@
                 .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
                 .attr('height', ({value}) => chartHeight - yScale(value))
-                .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function(d) {
                     handleMouseOver(this, d, chartWidth, chartHeight);
                 })
@@ -585,6 +590,7 @@
               .merge(bars)
                 .attr('x', ({name}) => xScale(name))
                 .attr('width', xScale.bandwidth())
+                .attr('fill', ({name}) => colorMap(name))
                 .transition()
                 .duration(animationDuration)
                 .delay(interBarDelay)
@@ -607,7 +613,6 @@
                 .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
                 .attr('height', ({value}) => chartHeight - yScale(value))
-                .attr('fill', ({name}) => colorMap(name))
                 .on('mouseover', function(d) {
                     handleMouseOver(this, d, chartWidth, chartHeight);
                 })
@@ -621,7 +626,8 @@
                 .attr('x', ({name}) => xScale(name))
                 .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
-                .attr('height', ({value}) => chartHeight - yScale(value));
+                .attr('height', ({value}) => chartHeight - yScale(value))
+                .attr('fill', ({name}) => colorMap(name));
         }
 
         /**
@@ -861,22 +867,6 @@
         };
 
         /**
-         * Gets or Sets the horizontal direction of the chart
-         * @param  {number} _x Desired horizontal direction for the chart
-         * @return { isHorizontal | module} If it is horizontal or module to chain calls
-         * @deprecated
-         */        
-        exports.horizontal = function (_x) {
-            if (!arguments.length) {
-                return isHorizontal;
-            }
-            isHorizontal = _x;
-            console.log('We are deprecating the .horizontal() accessor, use .isHorizontal() instead');
-
-            return this;
-        };
-
-        /**
          * Gets or Sets the isAnimated property of the chart, making it to animate when render.
          * By default this is 'false'
          *
@@ -993,22 +983,6 @@
                 return shouldReverseColorList;
             }
             shouldReverseColorList = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets whether the color list should be reversed or not
-         * @param  {boolean} _x     Should reverse the color list
-         * @return { boolean | module} Is color list being reversed
-         * @deprecated
-         */
-        exports.reverseColorList = function(_x) {
-            if (!arguments.length) {
-                return shouldReverseColorList;
-            }
-            shouldReverseColorList = _x;
-            console.log('We are deprecating the .reverseColorList() accessor, use .shouldReverseColorList() instead');
 
             return this;
         };

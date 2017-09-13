@@ -579,8 +579,8 @@ define(function(require){
                 series = svg.select('.chart-group').selectAll('.layer')
                     .data(layersInitial)
                     .enter()
-                  .append('g')
-                    .classed('layer-container', true);
+                      .append('g')
+                        .classed('layer-container', true);
 
                 series
                   .append('path')
@@ -602,8 +602,8 @@ define(function(require){
                 series = svg.select('.chart-group').selectAll('.layer')
                     .data(layers)
                     .enter()
-                  .append('g')
-                    .classed('layer-container', true);
+                      .append('g')
+                        .classed('layer-container', true);
 
                 series
                   .append('path')
@@ -737,7 +737,7 @@ define(function(require){
          * and updates metadata related to it
          * @private
          */
-        function handleMouseMove(e, d) {
+        function handleMouseMove(e) {
             epsilon || setEpsilon();
 
             let dataPoint = getNearestDataPoint(getMouseXPosition(e) - margin.left),
