@@ -117,6 +117,7 @@ define(function (require) {
                 right: 0
             },
             maxBarNumber = 8,
+            barOpacity = 0.24,
 
             animationDelayStep = 20,
             animationDelays = d3Array.range(animationDelayStep, maxBarNumber * animationDelayStep, animationDelayStep),
@@ -474,7 +475,7 @@ define(function (require) {
                         .attr('fill', ((data) => categoryColorMap[data.group]));
 
             if (isAnimated) {
-                bars.style('opacity', 0.24)
+                bars.style('opacity', barOpacity)
                     .transition()
                     .delay((_, i) => animationDelays[i])
                     .duration(animationDuration)
@@ -509,7 +510,8 @@ define(function (require) {
                       .attr('fill', ((data) => categoryColorMap[data.group]));
 
             if (isAnimated) {
-                bars.style('opacity', 0.24).transition()
+                bars.style('opacity', barOpacity)
+                    .transition()
                     .delay((_, i) => animationDelays[i])
                     .duration(animationDuration)
                     .ease(ease)

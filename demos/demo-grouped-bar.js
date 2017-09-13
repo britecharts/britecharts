@@ -84,7 +84,7 @@ function createHorizontalgroupedBarChart(optionalColorSchema) {
             .tooltipThreshold(600)
             .grid('vertical')
             .width(containerWidth)
-            .horizontal(true)
+            .isHorizontal(true)
             .isAnimated(true)
             .margin({
                 left: 80,
