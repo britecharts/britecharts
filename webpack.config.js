@@ -82,7 +82,7 @@ var webpack = require('webpack'),
 
 // Set up minification for production
 if (isProduction) {
-    plugins.push(new UglifyJsPlugin({ minimize: false }));
+    plugins.push(new UglifyJsPlugin({ minimize: true }));
     // outputFile = projectName + '.min.js';
 }
 
