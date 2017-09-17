@@ -3,6 +3,7 @@ define(function(require) {
 
     var _ = require('underscore'),
 
+        jsonTwoSources = require('json!../json/groupedbarDataTwoSources.json'),
         jsonThreeSources = require('json!../json/groupedbarDataThreeSources.json');
 
 
@@ -13,6 +14,12 @@ define(function(require) {
 
         this.with3Sources = function(){
             var attributes = _.extend({}, this.config, jsonThreeSources);
+
+            return new this.Klass(attributes);
+        };
+
+        this.with2Sources = function(){
+            var attributes = _.extend({}, this.config, jsonTwoSources);
 
             return new this.Klass(attributes);
         };

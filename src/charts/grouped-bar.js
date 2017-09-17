@@ -488,37 +488,55 @@ define(function (require) {
 
         /**
          * Draws the bars along the y axis
-         * @param  {D3Selection} bars Selection of bars
+         * @param  {D3Selection} seriesSelection Selection of layers
          * @return {void}
          */
-        function drawVerticalBars(series) {
+        function drawVerticalBars(seriesSelection) {
             // Enter + Update
-            let bars = series
-                .data(layers)
+            let layerJoin = seriesSelection
+                .data(layers);
+
+            let layersBis = layerJoin
                 .enter()
                 .append('g')
-                  .attr('transform', function (d) { return 'translate(' + xScale(d.key) + ',0)'; })
-                  .classed('layer', true)
+                  .attr('transform', ({key}) => `translate(${xScale(key)},0)`)
+                  .classed('layer', true);
+            
+            let barJoin = layersBis
                   .selectAll('.bar')
-                  .data((d) => d.values)
+                  .data(({values}) => values);
+debugger
+            let rects = barJoin
                   .enter()
                     .append('rect')
                       .classed('bar', true)
                       .attr('x', (d) => xScale2(getGroup(d)))
-                      .attr('y', (d) => yScale(d.value))
+                      .attr('y', ({value}) => yScale(value))
                       .attr('width', xScale2.bandwidth)
-                      .attr('fill', ((data) => categoryColorMap[data.group]));
+                      .attr('fill', (({group}) => categoryColorMap[group]));
 
             if (isAnimated) {
-                bars.style('opacity', barOpacity)
+                rects.style('opacity', barOpacity)
                     .transition()
                     .delay((_, i) => animationDelays[i])
                     .duration(animationDuration)
                     .ease(ease)
                     .tween('attr.height', verticalBarsTween);
             } else {
-                bars.attr('height', (d) => chartHeight - yScale(getValue(d)));
+                rects.attr('height', (d) => chartHeight - yScale(getValue(d)));
             }
+
+            // // Exit
+            // layerJoin
+            //     .exit()
+            //         .transition()
+            //         .style('opacity', 0)
+            //         .remove();
+            barJoin
+                .exit()
+                    .transition()
+                    .style('opacity', 0)
+                    .remove();
         }
 
         /**
@@ -533,6 +551,7 @@ define(function (require) {
             } else {
                 drawVerticalBars(series);
             }
+
             // Exit
             series.exit()
                 .transition()

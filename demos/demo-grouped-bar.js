@@ -65,6 +65,8 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
                 groupedBar.exportChart('grouped-bar.png', 'Britecharts Grouped Bar');
         });
     }
+
+    return groupedBar;
 }
 
 function createHorizontalgroupedBarChart(optionalColorSchema) {
@@ -127,16 +129,20 @@ function createHorizontalgroupedBarChart(optionalColorSchema) {
 
 if (d3Selection.select('.js-grouped-bar-chart-tooltip-container').node()){
     // Chart creation
-    creategroupedBarChartWithTooltip();
-    createHorizontalgroupedBarChart();
+    let gb = creategroupedBarChartWithTooltip();
+    // createHorizontalgroupedBarChart();
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
     function redrawCharts () {
-        d3Selection.selectAll('.grouped-bar').remove();
+        // d3Selection.selectAll('.grouped-bar').remove();
 
-        creategroupedBarChartWithTooltip();
-        createHorizontalgroupedBarChart();
+        // creategroupedBarChartWithTooltip();
+        // createHorizontalgroupedBarChart();
+
+        let newDataset = new groupedDataBuilder.GroupedBarChartDataBuilder().with2Sources().build();
+console.log('newDataset', newDataset)
+        d3Selection.select('.js-grouped-bar-chart-tooltip-container').datum(newDataset.data).call(gb);
     };
 
     // Redraw charts on window resize
