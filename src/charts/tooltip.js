@@ -161,7 +161,9 @@ define(function(require){
             if (!svg) {
                 svg = d3Selection.select(container)
                     .append('g')
-                    .classed('britechart britechart-tooltip', true);
+                    .classed('britechart britechart-tooltip', true)
+                    .style('display', 'none');
+                    
 
                 buildContainerGroups();
                 drawTooltip();
