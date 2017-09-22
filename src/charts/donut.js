@@ -272,7 +272,7 @@ define(function(require) {
          * @private
          */
         function drawSlices() {
-            // We clean all the previous arcs
+            // Not ideal, we need to figure out how to call exit for nested elements
             if (slices) {
                 svg.selectAll('g.arc').remove();
             }

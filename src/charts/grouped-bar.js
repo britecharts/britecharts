@@ -105,6 +105,7 @@ define(function (require) {
             chartWidth, chartHeight,
             data,
             groups,
+            layerElements,
 
             transformedData,
 
@@ -453,26 +454,32 @@ define(function (require) {
 
         /**
          * Draws the bars along the x axis
-         * @param  {D3Selection} bars Selection of bars
+         * @param  {D3Selection} layersSelection Selection of layers
          * @return {void}
          */
-        function drawHorizontalBars(series) {
-            // Enter + Update
-            let bars = series
-                .data(layers)
+        function drawHorizontalBars(layersSelection) {
+            let layerJoin = layersSelection
+                .data(layers);
+
+            layerElements = layerJoin
                 .enter()
                   .append('g')
-                    .attr('transform', function ({key}) { return `translate(0,${yScale(key)})`; })
-                    .classed('layer', true)
-                    .selectAll('.bar')
-                    .data(({values}) => values)
+                    .attr('transform', ({key}) => `translate(0,${yScale(key)})`)
+                    .classed('layer', true);
+            
+            let barJoin = layerElements
+                .selectAll('.bar')
+                .data(({values}) => values);
+
+            // Enter + Update
+            let bars = barJoin
                     .enter()
                       .append('rect')
                         .classed('bar', true)
                         .attr('x', 1)
                         .attr('y', (d) => yScale2(getGroup(d)))
                         .attr('height', yScale2.bandwidth())
-                        .attr('fill', ((data) => categoryColorMap[data.group]));
+                        .attr('fill', (({group}) => categoryColorMap[group]));
 
             if (isAnimated) {
                 bars.style('opacity', barOpacity)
@@ -488,26 +495,31 @@ define(function (require) {
 
         /**
          * Draws the bars along the y axis
-         * @param  {D3Selection} bars Selection of bars
+         * @param  {D3Selection} layersSelection Selection of layers
          * @return {void}
          */
-        function drawVerticalBars(series) {
-            // Enter + Update
-            let bars = series
-                .data(layers)
+        function drawVerticalBars(layersSelection) {
+            let layerJoin = layersSelection
+                .data(layers);
+
+            layerElements = layerJoin
                 .enter()
                 .append('g')
-                  .attr('transform', function (d) { return 'translate(' + xScale(d.key) + ',0)'; })
-                  .classed('layer', true)
+                  .attr('transform', ({key}) => `translate(${xScale(key)},0)`)
+                  .classed('layer', true);
+            
+            let barJoin = layerElements
                   .selectAll('.bar')
-                  .data((d) => d.values)
+                  .data(({values}) => values);
+
+            let bars = barJoin
                   .enter()
                     .append('rect')
                       .classed('bar', true)
                       .attr('x', (d) => xScale2(getGroup(d)))
-                      .attr('y', (d) => yScale(d.value))
+                      .attr('y', ({value}) => yScale(value))
                       .attr('width', xScale2.bandwidth)
-                      .attr('fill', ((data) => categoryColorMap[data.group]));
+                      .attr('fill', (({group}) => categoryColorMap[group]));
 
             if (isAnimated) {
                 bars.style('opacity', barOpacity)
@@ -526,6 +538,11 @@ define(function (require) {
          * @private
          */
         function drawGroupedBar() {
+            // Not ideal, we need to figure out how to call exit for nested elements
+            if (layerElements) {
+                svg.selectAll('.layer').remove();
+            }
+            
             let series = svg.select('.chart-group').selectAll('.layer');
 
             if (isHorizontal) {
@@ -533,6 +550,7 @@ define(function (require) {
             } else {
                 drawVerticalBars(series);
             }
+
             // Exit
             series.exit()
                 .transition()

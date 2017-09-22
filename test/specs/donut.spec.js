@@ -3,15 +3,13 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
     let donutDataSets = ['withFivePlusOther', 'withFivePlusOtherNoPercent'];
 
-    function aTestDataSet() {
-        return new dataBuilder.DonutDataBuilder();
-    }
+    const aTestDataSet = () => new dataBuilder.DonutDataBuilder();
 
-    function buildDataSet(dataSetName) {
+    const buildDataSet = (dataSetName) => {
         return aTestDataSet()
             [dataSetName]()
             .build();
-    }
+    };
 
     // loops over donutDataSets array and runs tests for each data-set
     donutDataSets.forEach((datasetName) => {
@@ -123,7 +121,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
     
                     expect(actual).toEqual(expected);
                 });
-            })
+            });
 
             describe('API', function() {
 

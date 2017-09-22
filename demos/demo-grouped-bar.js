@@ -62,7 +62,7 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
         tooltipContainer.datum([]).call(chartTooltip);
 
         d3Selection.select('#button').on('click', function() {
-                groupedBar.exportChart('grouped-bar.png', 'Britecharts Grouped Bar');
+            groupedBar.exportChart('grouped-bar.png', 'Britecharts Grouped Bar');
         });
     }
 }
