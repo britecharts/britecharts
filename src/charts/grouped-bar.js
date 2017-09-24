@@ -84,8 +84,6 @@ define(function (require) {
 
             aspectRatio = null,
 
-            //yTickTextYOffset = -8,
-            //yTickTextXOffset = -20,
             yTickTextOffset = {
                 y: -8,
                 x: -20
