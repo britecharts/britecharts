@@ -81,14 +81,14 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
         });
 
         describe('when reloading with a two sources dataset', () => {
-            
+
             it('should render in the same svg', function() {
                 let actual;
                 let expected = 1;
                 let newDataset = buildDataSet('with2Sources');
 
                 containerFixture.datum(newDataset.data).call(groupedBarChart);
-                
+
                 actual = containerFixture.selectAll('.grouped-bar').nodes().length;
 
                 expect(actual).toEqual(expected);
@@ -98,9 +98,9 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 let actual;
                 let expected = 4;
                 let newDataset = buildDataSet('with2Sources');
-                
+
                 containerFixture.datum(newDataset.data).call(groupedBarChart);
-                
+
                 actual = containerFixture.selectAll('.grouped-bar .layer').nodes().length;
 
                 expect(actual).toEqual(expected);
@@ -110,9 +110,9 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 let actual;
                 let expected = 8;
                 let newDataset = buildDataSet('with2Sources');
-                
+
                 containerFixture.datum(newDataset.data).call(groupedBarChart);
-                
+
                 actual = containerFixture.selectAll('.grouped-bar .bar').nodes().length;
 
                 expect(actual).toEqual(expected);
@@ -300,6 +300,22 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
 
                 groupedBarChart.width(expected);
                 actual = groupedBarChart.width();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide yTickTextOffset getter and setter', () => {
+                let previous = groupedBarChart.yTickTextOffset(),
+                    expected =
+                    {
+                        x: -20,
+                        y: -8
+                    },
+                    actual;
+
+                groupedBarChart.yTickTextOffset(expected);
+                actual = groupedBarChart.yTickTextOffset();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);

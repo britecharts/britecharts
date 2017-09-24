@@ -84,8 +84,10 @@ define(function (require) {
 
             aspectRatio = null,
 
-            yTickTextYOffset = -8,
-            yTickTextXOffset = -20,
+            yTickTextOffset = {
+                y: -8,
+                x: -20
+            },
 
             yTicks = 5,
             xTicks = 5,
@@ -198,7 +200,7 @@ define(function (require) {
          */
         function adjustYTickLabels(selection) {
             selection.selectAll('.tick text')
-                .attr('transform', `translate(${yTickTextXOffset}, ${yTickTextYOffset})`);
+                .attr('transform', `translate(${yTickTextOffset["x"]}, ${yTickTextOffset["y"]})`);
         }
 
         /**
@@ -466,7 +468,7 @@ define(function (require) {
                   .append('g')
                     .attr('transform', ({key}) => `translate(0,${yScale(key)})`)
                     .classed('layer', true);
-            
+
             let barJoin = layerElements
                 .selectAll('.bar')
                 .data(({values}) => values);
@@ -507,7 +509,7 @@ define(function (require) {
                 .append('g')
                   .attr('transform', ({key}) => `translate(${xScale(key)},0)`)
                   .classed('layer', true);
-            
+
             let barJoin = layerElements
                   .selectAll('.bar')
                   .data(({values}) => values);
@@ -542,7 +544,7 @@ define(function (require) {
             if (layerElements) {
                 svg.selectAll('.layer').remove();
             }
-            
+
             let series = svg.select('.chart-group').selectAll('.layer');
 
             if (isHorizontal) {
@@ -1020,6 +1022,21 @@ define(function (require) {
                 return xTicks;
             }
             xTicks = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the x and y offset of ticks of the y axis on the chart
+         * @param  {Object} _x Desired offset
+         * @return {Object | module} Current offset or Chart module to chain calls
+         * @public
+         */
+        exports.yTickTextOffset = function (_x) {
+            if (!arguments.length) {
+                return yTickTextOffset;
+            }
+            yTickTextOffset = _x;
 
             return this;
         };
