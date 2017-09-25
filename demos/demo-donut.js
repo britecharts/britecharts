@@ -173,5 +173,5 @@ if (d3Selection.select('.js-donut-chart-container').node()) {
     PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
-    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.donut-chart', createDonutChart.bind(null, dataset));
+    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.donut-chart', createDonutChart);
 }
