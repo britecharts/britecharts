@@ -637,12 +637,12 @@ define(function(require){
                     y2: 0
                 }])
                 .enter()
-              .append('line')
-                .classed('vertical-marker', true)
-                .attr('x1', 0)
-                .attr('y1', chartHeight)
-                .attr('x2', 0)
-                .attr('y2', 0);
+                  .append('line')
+                    .classed('vertical-marker', true)
+                    .attr('x1', 0)
+                    .attr('y1', chartHeight)
+                    .attr('x2', 0)
+                    .attr('y2', 0);
         }
 
         /**
@@ -654,15 +654,6 @@ define(function(require){
          */
         function findOutNearestDate(x0, d0, d1){
             return (new Date(x0).getTime() - new Date(d0.date).getTime()) > (new Date(d1.date).getTime() - new Date(x0).getTime()) ? d0 : d1;
-        }
-
-        /**
-         * Extract X position on the graph from a given mouse event
-         * @param  {Object} event D3 mouse event
-         * @return {Number}       Position on the x axis of the mouse
-         */
-        function getMouseXPosition(event) {
-            return d3Selection.mouse(event)[0];
         }
 
         /**
@@ -693,8 +684,9 @@ define(function(require){
          * @private
          */
         function handleMouseMove(e){
-            let xPositionOffset = -margin.left, //Arbitrary number, will love to know how to assess it
-                dataPoint = getNearestDataPoint(getMouseXPosition(e) + xPositionOffset),
+            let [xPosition, yPosition] = d3Selection.mouse(e),
+                xPositionOffset = -margin.left, //Arbitrary number, will love to know how to assess it
+                dataPoint = getNearestDataPoint(xPosition + xPositionOffset),
                 dataPointXPosition;
 
             if (dataPoint) {
@@ -704,7 +696,7 @@ define(function(require){
                 // Add data points highlighting
                 highlightDataPoints(dataPoint);
                 // Emit event with xPosition for tooltip or similar feature
-                dispatcher.call('customMouseMove', e, dataPoint, topicColorMap, dataPointXPosition);
+                dispatcher.call('customMouseMove', e, dataPoint, topicColorMap, dataPointXPosition, yPosition);
             }
         }
 
