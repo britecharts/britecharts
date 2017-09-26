@@ -130,9 +130,9 @@ define(function(require){
             areaAnimationDelays = d3Array.range(areaAnimationDelayStep, maxAreaNumber* areaAnimationDelayStep, areaAnimationDelayStep),
 
             overlay,
-
+            overlayColor = 'rgba(0, 0, 0, 0)',            
             verticalMarkerContainer,
-            verticalMarker,
+            verticalMarkerLine,
             epsilon,
 
             dataPoints            = {},
@@ -615,7 +615,7 @@ define(function(require){
                 .attr('y2', chartHeight)
                 .attr('height', chartHeight)
                 .attr('width', chartWidth)
-                .attr('fill', 'rgba(0,0,0,0)')
+                .attr('fill', overlayColor)
                 .style('display', 'none');
         }
 
@@ -778,7 +778,7 @@ define(function(require){
                 .attr('class', 'vertical-marker-container')
                 .attr('transform', 'translate(9999, 0)');
 
-            verticalMarker = verticalMarkerContainer.selectAll('path')
+            verticalMarkerLine = verticalMarkerContainer.selectAll('path')
                 .data([{
                     x1: 0,
                     y1: 0,
@@ -895,7 +895,7 @@ define(function(require){
          */
         function handleMouseOut(e, d) {
             overlay.style('display', 'none');
-            verticalMarker.classed('bc-is-active', false);
+            verticalMarkerLine.classed('bc-is-active', false);
             verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
 
             dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
@@ -907,7 +907,7 @@ define(function(require){
          */
         function handleMouseOver(e, d) {
             overlay.style('display', 'block');
-            verticalMarker.classed('bc-is-active', true);
+            verticalMarkerLine.classed('bc-is-active', true);
 
             dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
         }
@@ -934,26 +934,24 @@ define(function(require){
             // ensure order stays constant
             values = values
                 .filter(v => !!v)
-                .sort((a,b) => order.indexOf(a.name) > order.indexOf(b.name))
+                .sort((a,b) => order.indexOf(a.name) > order.indexOf(b.name));
 
             values.forEach((d, index) => {
                 let marker = verticalMarkerContainer
                               .append('g')
-                                .classed('circle-container', true);
+                                .classed('circle-container', true)
+                                  .append('circle')
+                                    .classed('data-point-highlighter', true)
+                                    .attr('cx', highlightCircleSize)
+                                    .attr('cy', 0)
+                                    .attr('r', 5)
+                                    .style('stroke-width', 2)
+                                    .style('stroke', categoryColorMap[d.name])
+                                    .on('touchstart click', function() {
+                                        handleHighlightClick(this, d);
+                                    });
 
                 accumulator = accumulator + values[index][valueLabel];
-
-                marker
-                  .append('circle')
-                    .classed('data-point-highlighter', true)
-                    .attr('cx', highlightCircleSize)
-                    .attr('cy', 0)
-                    .attr('r', 5)
-                    .style('stroke-width', 2)
-                    .style('stroke', categoryColorMap[d.name])
-                    .on('touchstart click', function() {
-                        handleHighlightClick(this, d);
-                    });
 
                 marker.attr('transform', `translate( ${(- highlightCircleSize)}, ${(yScale(accumulator))} )` );
             });

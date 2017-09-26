@@ -139,6 +139,7 @@ define(function(require){
             },
             monthAxisPadding = 28,
             tickPadding = 5,
+            highLightCircleSize = 12,
             colorSchema = colorHelper.colorSchemas.britecharts,
             singleLineGradientColors = colorHelper.colorGradients.greenBlue,
             topicColorMap,
@@ -197,7 +198,7 @@ define(function(require){
             getLineColor = ({topic}) => colorScale(topic),
 
             // events
-            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove', 'customDataEntryClick');
 
         /**
          * This function creates the graph using the selection and data provided
@@ -725,6 +726,15 @@ define(function(require){
         }
 
         /**
+         * Mouseclick handler over one of the highlight points
+         * It will only pass the information with the event
+         * @private
+         */
+        function handleHighlightClick(e, d) {
+            dispatcher.call('customDataEntryClick', e, d, d3Selection.mouse(e));
+        }
+
+        /**
          * Creates coloured circles marking where the exact data y value is for a given data point
          * @param  {Object} dataPoint Data point to extract info from
          * @private
@@ -752,24 +762,26 @@ define(function(require){
 
             dataPoint.topics = topicsWithNode.map(({topic}) => topic);
 
-            dataPoint.topics.forEach(({name}, index) => {
+            dataPoint.topics.forEach((d, index) => {
                 let marker = verticalMarkerContainer
-                                .append('g')
-                                .classed('circle-container', true),
-                    circleSize = 12;
-
-                marker.append('circle')
-                    .classed('data-point-highlighter', true)
-                    .attr('cx', circleSize)
-                    .attr('cy', 0)
-                    .attr('r', 5)
-                    .style('stroke', topicColorMap[name]);
-
+                              .append('g')
+                                .classed('circle-container', true)
+                                  .append('circle')
+                                    .classed('data-point-highlighter', true)
+                                    .attr('cx', highLightCircleSize)
+                                    .attr('cy', 0)
+                                    .attr('r', 5)
+                                    .style('stroke-width', 2)                    
+                                    .style('stroke', topicColorMap[d.name])
+                                    .on('touchstart click', function() {
+                                        handleHighlightClick(this, d);
+                                    });                
+                                    
                 const path = topicsWithNode[index].node;
                 const x = xScale(new Date(dataPoint.topics[index].date));
-                const y = getPathYFromX(x, path, name);
-
-                marker.attr('transform', `translate( ${(-circleSize)}, ${y} )` );
+                const y = getPathYFromX(x, path, d.name);
+                
+                marker.attr('transform', `translate( ${(-highLightCircleSize)}, ${y} )` );
             });
         }
 
@@ -817,7 +829,7 @@ define(function(require){
             pathYCache[key] = point.y
 
             return pathYCache[key]
-          }
+        }
 
         /**
          * Helper method to update the x position of the vertical marker
@@ -837,7 +849,7 @@ define(function(require){
             return width > tooltipThreshold;
         }
 
-        // API Methods
+        // API
 
         /**
          * Gets or Sets the aspect ratio of the chart
@@ -1138,7 +1150,7 @@ define(function(require){
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
          * We are going to expose this events:
-         * customMouseHover, customMouseMove and customMouseOut
+         * customMouseHover, customMouseMove, customMouseOut and customDataEntryClick
          *
          * @return {module} Bar Chart
          * @public
