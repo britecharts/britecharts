@@ -446,7 +446,7 @@ define([
                 });
 
                 it('should provide locale getter and setter', () => {
-                    let previous = lineChart.locale()
+                    let previous = lineChart.locale(),
                         expected = 'en-US',
                         actual;
 
