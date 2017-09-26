@@ -22,7 +22,7 @@ In order to use a Britecharts chart in your project you would need to install it
 
 ##### Directly from CDN
 ```
-https://cdn.jsdelivr.net/npm/britecharts@1/dist/bundled/britecharts.min.js (latest 1.x.x version)
+https://cdn.jsdelivr.net/npm/britecharts@2/dist/bundled/britecharts.min.js (latest 2.x.x version)
 ```
 Or [browse all CDN files](https://cdn.jsdelivr.net/npm/britecharts/dist/). Check also our [CDN demo page][cdnDemo] or our [JSBin][jsbinSandbox] and [CodePen][codepenSandbox] sandbox projects.
 
