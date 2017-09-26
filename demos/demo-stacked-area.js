@@ -38,8 +38,13 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
             .tooltipThreshold(600)
             .width(containerWidth)
             .grid('horizontal')
+            .on('customDataEntryClick', function(d, mousePosition) {
+                console.log('Data entry marker clicked', d);
+            })
             .on('customMouseOver', chartTooltip.show)
-            .on('customMouseMove', chartTooltip.update)
+            .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
+                chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+            })            
             .on('customMouseOut', chartTooltip.hide);
 
         if (optionalColorSchema) {
@@ -60,7 +65,7 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
         tooltipContainer.datum([]).call(chartTooltip);
 
         d3Selection.select('#button').on('click', function() {
-                stackedArea.exportChart('stacked-area.png', 'Britecharts Stacked Area');
+            stackedArea.exportChart('stacked-area.png', 'Britecharts Stacked Area');
         });
     }
 }

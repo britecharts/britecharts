@@ -100,6 +100,7 @@ define(function(require){
             colorSchema = colorHelper.colorSchemas.britecharts,
 
             areaOpacity = 0.64,
+            highlightCircleSize = 12,
             categoryColorMap,
             order,
 
@@ -120,9 +121,9 @@ define(function(require){
             areaAnimationDelays = d3Array.range(areaAnimationDelayStep, maxAreaNumber* areaAnimationDelayStep, areaAnimationDelayStep),
 
             overlay,
-
+            overlayColor = 'rgba(0, 0, 0, 0)',            
             verticalMarkerContainer,
-            verticalMarker,
+            verticalMarkerLine,
             epsilon,
 
             dataPoints            = {},
@@ -163,7 +164,7 @@ define(function(require){
             getDate = ({date}) => date,
 
             // events
-            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove', 'customDataEntryClick');
 
        /**
          * This function creates the graph using the selection and data provided
@@ -552,13 +553,13 @@ define(function(require){
          */
         function drawHoverOverlay() {
             overlay = svg.select('.metadata-group')
-                .append('rect')
+              .append('rect')
                 .attr('class', 'overlay')
                 .attr('y1', 0)
                 .attr('y2', chartHeight)
                 .attr('height', chartHeight)
                 .attr('width', chartWidth)
-                .attr('fill', 'rgba(0,0,0,0)')
+                .attr('fill', overlayColor)
                 .style('display', 'none');
         }
 
@@ -635,7 +636,7 @@ define(function(require){
                 .attr('class', 'vertical-marker-container')
                 .attr('transform', 'translate(9999, 0)');
 
-            verticalMarker = verticalMarkerContainer.selectAll('path')
+            verticalMarkerLine = verticalMarkerContainer.selectAll('path')
                 .data([{
                     x1: 0,
                     y1: 0,
@@ -643,12 +644,12 @@ define(function(require){
                     y2: 0
                 }])
                 .enter()
-              .append('line')
-                .classed('vertical-marker', true)
-                .attr('x1', 0)
-                .attr('y1', chartHeight)
-                .attr('x2', 0)
-                .attr('y2', 0);
+                  .append('line')
+                    .classed('vertical-marker', true)
+                    .attr('x1', 0)
+                    .attr('y1', chartHeight)
+                    .attr('x2', 0)
+                    .attr('y2', 0);
         }
 
         /**
@@ -761,7 +762,7 @@ define(function(require){
          */
         function handleMouseOut(e, d) {
             overlay.style('display', 'none');
-            verticalMarker.classed('bc-is-active', false);
+            verticalMarkerLine.classed('bc-is-active', false);
             verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
 
             dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
@@ -773,9 +774,18 @@ define(function(require){
          */
         function handleMouseOver(e, d) {
             overlay.style('display', 'block');
-            verticalMarker.classed('bc-is-active', true);
+            verticalMarkerLine.classed('bc-is-active', true);
 
             dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
+        }
+
+        /**
+         * Mouseclick handler over one of the highlight points
+         * It will only pass the information with the event
+         * @private
+         */
+        function handleHighlightClick(e, d) {
+            dispatcher.call('customDataEntryClick', e, d, d3Selection.mouse(e));
         }
 
         /**
@@ -790,26 +800,27 @@ define(function(require){
 
             // ensure order stays constant
             values = values
-                        .filter(v => !!v)
-                        .sort((a,b) => order.indexOf(a.name) > order.indexOf(b.name))
-
-            values.forEach(({name}, index) => {
+            .filter(v => !!v)
+            .sort((a,b) => order.indexOf(a.name) > order.indexOf(b.name))
+            
+            values.forEach((d, index) => {
                 let marker = verticalMarkerContainer
-                                .append('g')
-                                .classed('circle-container', true),
-                    circleSize = 12;
+                              .append('g')
+                                .classed('circle-container', true)
+                                  .append('circle')
+                                    .classed('data-point-highlighter', true)
+                                    .attr('cx', highlightCircleSize)
+                                    .attr('cy', 0)
+                                    .attr('r', 5)
+                                    .style('stroke-width', 2)
+                                    .style('stroke', categoryColorMap[d.name])
+                                    .on('touchstart click', function() {
+                                        handleHighlightClick(this, d);
+                                    });
 
                 accumulator = accumulator + values[index][valueLabel];
 
-                marker.append('circle')
-                    .classed('data-point-highlighter', true)
-                    .attr('cx', circleSize)
-                    .attr('cy', 0)
-                    .attr('r', 5)
-                    .style('stroke-width', 2)
-                    .style('stroke', categoryColorMap[name]);
-
-                marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(accumulator))} )` );
+                marker.attr('transform', `translate( ${(- highlightCircleSize)}, ${(yScale(accumulator))} )` );
             });
         }
 
@@ -1020,7 +1031,7 @@ define(function(require){
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
          * We are going to expose this events:
-         * customMouseOver, customMouseMove and customMouseOut
+         * customMouseOver, customMouseMove, customMouseOut and customDataEntryClick
          *
          * @return {module} Bar Chart
          * @public
