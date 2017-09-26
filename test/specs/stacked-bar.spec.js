@@ -261,6 +261,18 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide locale getter and setter', () => {
+                let defaultLocale = null,
+                    testValue = 'ru-RU',
+                    newLocale;
+
+                stackedBarChart.locale(testValue);
+                newLocale = stackedBarChart.locale();
+
+                expect(defaultLocale).not.toBe(testValue);
+                expect(newLocale).toBe(testValue);
+            });
         });
 
         describe('when hovering', function() {
