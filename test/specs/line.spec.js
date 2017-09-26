@@ -444,6 +444,18 @@ define([
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);
                 });
+
+                it('should provide locale getter and setter', () => {
+                    let previous = lineChart.locale()
+                        expected = 'en-US',
+                        actual;
+
+                    lineChart.locale(expected);
+                    actual = lineChart.locale();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
             });
 
             describe('Aspect Ratio', function() {
