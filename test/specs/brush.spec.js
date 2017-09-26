@@ -154,6 +154,18 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide locale getter and setter', () => {
+                let previous = brushChart.locale(),
+                    expected = 'en-US',
+                    actual;
+
+                brushChart.locale(expected);
+                actual = brushChart.locale();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
         });
     });
 });

@@ -68,10 +68,10 @@ define(function(require){
     return function module() {
 
         let margin = {
-            top: 40,
-            right: 30,
-            bottom: 60,
-            left: 70
+                top: 40,
+                right: 30,
+                bottom: 60,
+                left: 70
             },
             width = 960,
             height = 500,
@@ -85,6 +85,8 @@ define(function(require){
 
             yTickTextYOffset = -8,
             yTickTextXOffset = -20,
+
+            locale,
 
             yTicks = 5,
             xTicks = 5,
@@ -814,6 +816,22 @@ define(function(require){
                 return isAnimated;
             }
             isAnimated = _x;
+
+            return this;
+        };
+
+        /**
+         * Pass language tag for the tooltip to localize the date.
+         * Feature uses Intl.DateTimeFormat, for compatability and support, refer to
+         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+         * @param  {String} _x  must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
+         * @return { (String|Module) }    Current locale or module to chain calls
+         */
+        exports.locale = function(_x) {
+            if (!arguments.length) {
+                return locale;
+            }
+            locale = _x;
 
             return this;
         };
