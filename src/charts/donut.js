@@ -61,6 +61,7 @@ define(function(require) {
      *
      */
     return function module() {
+
         let margin = {
                 top: 0,
                 right: 0,
@@ -116,7 +117,7 @@ define(function(require) {
             getSliceFill = ({data}) => colorScale(data.name),
 
             // events
-            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove','customMouseClick');
 
         /**
          * This function creates the graph using the selection as container
@@ -161,7 +162,8 @@ define(function(require) {
         function buildContainerGroups() {
             let container = svg
               .append('g')
-                .classed('container-group', true);
+                .classed('container-group', true)
+                .attr('transform', `translate(${width / 2}, ${height / 2})`);
 
             container.append('g').classed('chart-group', true);
             container.append('g').classed('legend-group', true);
@@ -198,17 +200,12 @@ define(function(require) {
             if (!svg) {
                 svg = d3Selection.select(container)
                   .append('svg')
-                    .classed('britechart donut-chart', true);
+                    .classed('britechart donut-chart', true)
+                    .data([data]);  //TO REVIEW
 
                 buildContainerGroups();
             }
 
-            // Updates Container Group position
-            svg
-                .select('.container-group')
-                .attr('transform', `translate(${width / 2}, ${height / 2})`);
-            
-            // Updates SVG size
             svg
                 .attr('width', width)
                 .attr('height', height);
@@ -229,8 +226,9 @@ define(function(require) {
                 d.quantity = +d[quantityLabel];
                 d.name = String(d[nameLabel]);
                 d.percentage = d[percentageLabel] || null;
+                acc.push(d);
 
-                return [...acc, d];
+                return acc;
             }, []);
             let totalQuantity = sumValues(cleanData);
             let dataWithPercentages = cleanData.map((d) => {
@@ -272,54 +270,69 @@ define(function(require) {
          * @private
          */
         function drawSlices() {
-            // Not ideal, we need to figure out how to call exit for nested elements
-            if (slices) {
-                svg.selectAll('g.arc').remove();
-            }
+            if (!slices) {
+                slices = svg.select('.chart-group')
+                    .selectAll('g.arc')
+                    .data(layout(data));
 
-            slices = svg.select('.chart-group')
-                .selectAll('g.arc')
-                .data(layout(data));
+                let newSlices = slices.enter()
+                  .append('g')
+                    .each(storeAngle)
+                    .each(reduceOuterRadius)
+                    .classed('arc', true);
 
-            let newSlices = slices.enter()
-                .append('g')
-                  .each(storeAngle)
-                  .each(reduceOuterRadius)
-                  .classed('arc', true)
-                  .append('path');
-        
-            if (isAnimated) {
-                newSlices.merge(slices)
-                    .attr('fill', getSliceFill)
-                    .on('mouseover', function(d) {
-                        handleMouseOver(this, d, chartWidth, chartHeight);
-                    })
-                    .on('mousemove', function(d) {
-                        handleMouseMove(this, d, chartWidth, chartHeight);
-                    })
-                    .on('mouseout', function(d) {
-                        handleMouseOut(this, d, chartWidth, chartHeight);
-                    })
-                    .transition()
-                    .ease(ease)
-                    .duration(pieDrawingTransitionDuration)
-                    .attrTween('d', tweenLoading);
+                if (isAnimated) {
+                    newSlices.merge(slices)
+                      .append('path')
+                        .attr('fill', getSliceFill)
+                        .on('mouseover', function(d) {
+                            handleMouseOver(this, d, chartWidth, chartHeight);
+                        })
+                        .on('mousemove', function(d) {
+                            handleMouseMove(this, d, chartWidth, chartHeight);
+                        })
+                        .on('mouseout', function(d) {
+                            handleMouseOut(this, d, chartWidth, chartHeight);
+                        })
+                        .on('click', function(d) {
+                            handleMouseClick(this, d, chartWidth, chartHeight);
+                        })
+                        .transition()
+                        .ease(ease)
+                        .duration(pieDrawingTransitionDuration)
+                        .attrTween('d', tweenLoading);
+                } else {
+                    newSlices.merge(slices)
+                      .append('path')
+                        .attr('fill', getSliceFill)
+                        .attr('d', shape)
+                        .on('mouseover', function(d) {
+                            handleMouseOver(this, d, chartWidth, chartHeight);
+                        })
+                        .on('mousemove', function(d) {
+                            handleMouseMove(this, d, chartWidth, chartHeight);
+                        })
+                        .on('mouseout', function(d) {
+                            handleMouseOut(this, d, chartWidth, chartHeight);
+                        })
+                        .on('click', function(d) {
+                            handleMouseClick(this, d, chartWidth, chartHeight);
+                        })
+                }
             } else {
-                newSlices.merge(slices)
-                    .attr('fill', getSliceFill)
-                    .attr('d', shape)
-                    .on('mouseover', function(d) {
-                        handleMouseOver(this, d, chartWidth, chartHeight);
-                    })
-                    .on('mousemove', function(d) {
-                        handleMouseMove(this, d, chartWidth, chartHeight);
-                    })
-                    .on('mouseout', function(d) {
-                        handleMouseOut(this, d, chartWidth, chartHeight);
-                    })
+                slices = svg.select('.chart-group')
+                    .selectAll('path')
+                    .data(layout(data));
+
+                slices
+                    .attr('d', shape);
+
+                // Redraws the angles of the data
+                slices
+                    .transition()
+                    .duration(arcTransitionDuration)
+                    .attrTween('d', tweenArc);
             }
-            
-            slices.exit().remove();
         }
 
         /**
@@ -339,14 +352,14 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseOver(el, d, chartWidth, chartHeight) {
+        function handleMouseOver(e, d, chartWidth, chartHeight) {
             drawLegend(d);
-            dispatcher.call('customMouseOver', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
+            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
 
-            if (highlightedSlice && el !== highlightedSlice) {
+            if (highlightedSlice && e !== highlightedSlice) {
                 tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
             }
-            tweenGrowth(el, externalRadius);
+            tweenGrowth(e, externalRadius);
         }
 
         /**
@@ -354,8 +367,12 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseMove(el, d, chartWidth, chartHeight) {
-            dispatcher.call('customMouseMove', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
+        function handleMouseMove(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        }
+
+        function handleMouseClick(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseClick', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
         }
 
         /**
@@ -363,18 +380,18 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseOut(el, d, chartWidth, chartHeight) {
+        function handleMouseOut(e, d, chartWidth, chartHeight) {
             if (highlightedSlice && hasFixedHighlightedSlice) {
                 drawLegend(highlightedSlice.__data__);
             } else {
                 cleanLegend();
             }
-            dispatcher.call('customMouseOut', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
+            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
 
-            if (highlightedSlice && hasFixedHighlightedSlice && el !== highlightedSlice) {
+            if (highlightedSlice && hasFixedHighlightedSlice && e !== highlightedSlice) {
                 tweenGrowth(highlightedSlice, externalRadius);
             }
-            tweenGrowth(el, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+            tweenGrowth(e, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
         }
 
         /**
@@ -482,7 +499,6 @@ define(function(require) {
                 return colorSchema;
             }
             colorSchema = _x;
-
             return this;
         };
 
@@ -497,7 +513,6 @@ define(function(require) {
                 return externalRadius;
             }
             externalRadius = _x;
-
             return this;
         };
 
@@ -529,7 +544,6 @@ define(function(require) {
                 return height;
             }
             height = _x;
-
             return this;
         };
 
