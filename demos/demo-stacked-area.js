@@ -99,7 +99,7 @@ function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
             stackedArea.colorSchema(optionalColorSchema);
         }
 
-        container.datum(dataset.data).call(stackedArea);
+        container.datum([]).call(stackedArea);
 
         // Tooltip Setup and start
         chartTooltip

@@ -154,6 +154,14 @@ define(function(require){
                 right: 0
             },
 
+            emptyStateConfig = {
+                minDate: new Date(-86400000),
+                maxDate: new Date(),
+                name: '',
+                minValue: 0,
+                maxValue: 100
+            },
+
             dateLabel = 'date',
             valueLabel = 'value',
             keyLabel = 'name',
@@ -383,12 +391,19 @@ define(function(require){
          * @private
          */
         function buildScales() {
+            debugger
+            let domain = dataByDate.length === 0 ?
+                [emptyStateConfig.minDate, emptyStateConfig.maxDate] :
+                d3Array.extent(dataByDate, ({date}) => date);
+
+            let maxValueByDate = getMaxValueByDate() || emptyStateConfig.maxValue;
+
             xScale = d3Scale.scaleTime()
-                .domain(d3Array.extent(dataByDate, ({date}) => date))
+                .domain(domain)
                 .rangeRound([0, chartWidth]);
 
             yScale = d3Scale.scaleLinear()
-                .domain([0, getMaxValueByDate()])
+                .domain([0, maxValueByDate])
                 .rangeRound([chartHeight, 0])
                 .nice();
 
@@ -1136,6 +1151,22 @@ define(function(require){
 
             return this;
         };
+
+        /**
+         * Gets or Sets the number of ticks of the y axis on the chart
+         * (Default is 5)
+         * @param  {Number} _x          Desired vertical ticks
+         * @return {Number | module}    Current vertical ticks or Chart module to chain calls
+         * @public
+         */
+         exports.emptyState = function (_x) {
+            if (!arguments.length) {
+                return emptyStateConfig;
+            }
+            emptyStateConfig = _x;
+
+            return this;
+         }
 
         return exports;
     };

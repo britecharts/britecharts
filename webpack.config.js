@@ -159,7 +159,7 @@ config = {
             britecharts: bundleIndexPath
         },
 
-        devtool: 'source-map',
+        devtool: 'cheap-eval-source-map',
 
         output: {
             path: 'dist/bundled',
@@ -195,7 +195,7 @@ config = {
         entry:  {
             sandbox: path.resolve(__dirname, './sandbox/sandbox.js'),
         },
-        devtool: 'eval',
+        devtool: 'cheap-eval-source-map',
         output: {
             path: './sandbox/build',
             publicPath: '/assets/',
@@ -231,7 +231,7 @@ config = {
     prodUMD: {
         entry:  currentCharts,
 
-        devtool: 'source-map',
+        devtool: 'cheap-eval-source-map',
 
         output: {
             path:     'dist/umd',
