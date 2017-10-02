@@ -200,7 +200,7 @@ define(function (require) {
          */
         function adjustYTickLabels(selection) {
             selection.selectAll('.tick text')
-                .attr('transform', `translate(${yTickTextOffset["x"]}, ${yTickTextOffset["y"]})`);
+                .attr('transform', `translate(${yTickTextOffset['x']}, ${yTickTextOffset['y']})`);
         }
 
         /**
@@ -491,7 +491,7 @@ define(function (require) {
                     .ease(ease)
                     .tween('attr.width', horizontalBarsTween);
             } else {
-                bars.attr('width', (d) => xScale(getValue(d)))
+                bars.attr('width', (d) => xScale(getValue(d)));
             }
         }
 
@@ -696,7 +696,8 @@ define(function (require) {
                 j = d3Interpolate.interpolateNumber(0, 1);
 
             return function (t) {
-                node.attr('width', i(t)).style('opacity', j(t));
+                node.attr('width', i(t))
+                    .style('opacity', j(t));
             }
         }
 

@@ -2,6 +2,11 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
     'use strict';
 
     const aTestDataSet = () => new dataBuilder.StackedBarDataBuilder();
+    const buildDataSet = (dataSetName) => {
+        return aTestDataSet()
+            [dataSetName]()
+            .build();
+    };
     const differentStacksReducer = (acc, d) => {
                 if (acc.indexOf(d.stack) === -1) {
                     acc.push(d.stack);
@@ -74,6 +79,45 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
             let expected = dataset.data.length;
 
             expect(actual).toEqual(expected);
+        });
+
+        describe('when reloading with a two sources dataset', () => {
+            
+            it('should render in the same svg', function() {
+                let actual;
+                let expected = 1;
+                let newDataset = buildDataSet('with2Sources');
+
+                containerFixture.datum(newDataset.data).call(stackedBarChart);
+
+                actual = containerFixture.selectAll('.stacked-bar').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render two layers', function() {
+                let actual;
+                let expected = 2;
+                let newDataset = buildDataSet('with2Sources');
+
+                containerFixture.datum(newDataset.data).call(stackedBarChart);
+
+                actual = containerFixture.selectAll('.stacked-bar .layer').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render eight bars total', () => {
+                let actual;
+                let expected = 8;
+                let newDataset = buildDataSet('with2Sources');
+
+                containerFixture.datum(newDataset.data).call(stackedBarChart);
+
+                actual = containerFixture.selectAll('.stacked-bar .bar').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
         });
 
         describe('API', function() {
@@ -178,30 +222,6 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 expect(actual).toBe(expected);
             });
 
-            it('should provide xTicks getter and setter', () => {
-                let previous = stackedBarChart.xTicks(),
-                    expected = 4,
-                    actual;
-
-                stackedBarChart.xTicks(expected);
-                actual = stackedBarChart.xTicks();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide yTicks getter and setter', () => {
-                let previous = stackedBarChart.yTicks(),
-                    expected = 4,
-                    actual;
-
-                stackedBarChart.yTicks(expected);
-                actual = stackedBarChart.yTicks();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
             it('should provide stackLabel getter and setter', () => {
                 let previous = stackedBarChart.stackLabel(),
                     expected = 'testLabel',
@@ -272,6 +292,30 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
 
                 expect(defaultLocale).not.toBe(testValue);
                 expect(newLocale).toBe(testValue);
+            });
+            
+            it('should provide xTicks getter and setter', () => {
+                let previous = stackedBarChart.xTicks(),
+                    expected = 4,
+                    actual;
+
+                stackedBarChart.xTicks(expected);
+                actual = stackedBarChart.xTicks();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide yTicks getter and setter', () => {
+                let previous = stackedBarChart.yTicks(),
+                    expected = 4,
+                    actual;
+
+                stackedBarChart.yTicks(expected);
+                actual = stackedBarChart.yTicks();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
             });
         });
 
