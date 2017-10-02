@@ -438,7 +438,7 @@ define(function(require){
                         .attr('x', (d) => xScale(d[0]) )
                         .attr('y', (d) => yScale(d.data.key) )
                         .attr('height', yScale.bandwidth())
-                        .attr('fill', (({data}) => categoryColorMap[data.stack+data.key]));
+                        .attr('fill', (({data}) => categoryColorMap[`${data.stack}${data.key}`]));
 
             if (isAnimated) {
                 bars.style('opacity', barOpacity)
@@ -496,7 +496,7 @@ define(function(require){
                         .attr('x', (d) => xScale(d.data.key))
                         .attr('y', (d) => yScale(d[1]))
                         .attr('width', xScale.bandwidth )
-                        .attr('fill', (({data}) => categoryColorMap[data.stack+data.key]));
+                        .attr('fill', (({data}) => categoryColorMap[`${data.stack}${data.key}`]));
 
             if (isAnimated) {
                 bars.style('opacity', barOpacity)
