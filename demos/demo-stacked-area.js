@@ -79,27 +79,57 @@ function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
         dataset = testDataSet.with3Sources().build();
         // dataset = testDataSet.with6Sources().build();
         // dataset = testDataSet.withLargeData().build();
+        const emptyStateConfig = {
+            minDate: new Date(new Date().setDate(new Date().getDate()-30)),
+            maxDate: new Date(),
+            name: '',
+            minValue: 0,
+            maxValue: 100
+        },
+
+        emptyStateData = [
+            {
+                date: emptyStateConfig.minDate,
+                views: 10,
+                name: ''
+            },
+            {
+                date: new Date(new Date().setDate(new Date().getDate()-15)),
+                views: 10,
+                name: ''
+            },
+            {
+                date: new Date(new Date().setDate(new Date().getDate()-15)),
+                views: 10,
+                name: 't'
+            },
+            {
+                date: emptyStateConfig.maxDate,
+                views: 10,
+                name: 't'
+            }
+        ];
 
         // StackedAreChart Setup and start
         stackedArea
             .tooltipThreshold(600)
             .aspectRatio(0.6)
             .grid('full')
-            .xAxisFormat('custom')
-            .xAxisCustomFormat('%Y/%m/%d')
-            .xTicks(2)
+            // .xAxisFormat('custom')
+            // .xAxisCustomFormat('%Y/%m/%d')
+            // .xTicks(2)
             .width(containerWidth)
             .dateLabel('date')
             .valueLabel('views')
-            .on('customMouseOver', chartTooltip.show)
-            .on('customMouseMove', chartTooltip.update)
-            .on('customMouseOut', chartTooltip.hide);
+            // .on('customMouseOver', chartTooltip.show)
+            // .on('customMouseMove', chartTooltip.update)
+            // .on('customMouseOut', chartTooltip.hide);
 
         if (optionalColorSchema) {
             stackedArea.colorSchema(optionalColorSchema);
         }
 
-        container.datum([]).call(stackedArea);
+        container.datum(dataset.data).call(stackedArea);
 
         // Tooltip Setup and start
         chartTooltip

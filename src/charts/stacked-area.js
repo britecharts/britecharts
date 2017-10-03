@@ -99,7 +99,7 @@ define(function(require){
 
             colorSchema = colorHelper.colorSchemas.britecharts,
 
-            areaOpacity = 0.64,
+            areaOpacity = 0.24,
             categoryColorMap,
             order,
 
@@ -155,12 +155,23 @@ define(function(require){
             },
 
             emptyStateConfig = {
-                minDate: new Date(-86400000),
+                minDate: new Date(new Date().setDate(new Date().getDate()-30)),
                 maxDate: new Date(),
                 name: '',
                 minValue: 0,
                 maxValue: 100
             },
+
+            emptyStateData = [
+                {
+                    date: emptyStateConfig.minDate,
+                    views: 10
+                },
+                {
+                    date: emptyStateConfig.maxDate,
+                    views: 10
+                }
+            ],
 
             dateLabel = 'date',
             valueLabel = 'value',
@@ -251,7 +262,7 @@ define(function(require){
                 };
                 major = null;
             } else {
-                ({minor, major} = getXAxisSettings(dataByDate, width, xAxisFormat, locale));
+                ({minor, major} = getXAxisSettings(dataByDate.length === 0 ? [{date: new Date(new Date().setDate(new Date().getDate()-30))}, {date: new Date()}] : dataByDate, width, xAxisFormat, locale));
 
                 xMonthAxis = d3Axis.axisBottom(xScale)
                     .ticks(major.tick)
@@ -391,7 +402,7 @@ define(function(require){
          * @private
          */
         function buildScales() {
-            debugger
+
             let domain = dataByDate.length === 0 ?
                 [emptyStateConfig.minDate, emptyStateConfig.maxDate] :
                 d3Array.extent(dataByDate, ({date}) => date);
@@ -403,7 +414,7 @@ define(function(require){
                 .rangeRound([0, chartWidth]);
 
             yScale = d3Scale.scaleLinear()
-                .domain([0, maxValueByDate])
+                .domain([0, emptyStateConfig.maxValue])
                 .rangeRound([chartHeight, 0])
                 .nice();
 
@@ -436,6 +447,7 @@ define(function(require){
          * @return {obj}      Parsed data with values and dates
          */
         function cleanData(data) {
+            // data = emptyStateData;
             return data.map((d) => {
                 d.date = new Date(d[dateLabel]),
                 d.value = +d[valueLabel]
@@ -584,11 +596,117 @@ define(function(require){
         function drawStackedAreas() {
             let series;
 
-            area = d3Shape.area()
-                .curve(d3Shape.curveMonotoneX)
-                .x( ({data}) => xScale(data.date) )
-                .y0( (d) => yScale(d[0]) )
-                .y1( (d) => yScale(d[1]) );
+            let areaFn =d3Shape.area()
+                        .curve(d3Shape.curveMonotoneX)
+                        .x( ({data}) => {
+
+                            return xScale(data.date);
+                        } )
+                        .y0( (d) => {
+                            console.log('y0', yScale(d[0]))
+                            return yScale(d[0])
+                        } )
+                        .y1( (d) => {
+                            console.log('y1', yScale(d[1]))
+                            return yScale(d[1])
+                        } );
+
+            area = (...args) => {
+                // console.log(...args);
+                    return areaFn(...args);
+                };
+
+            const test = d3Collection.nest()
+                .key(getName)
+                // .key(getDate)
+                .entries(
+                    data.sort((a, b) => a.date - b.date)
+                )
+                // .map(d => {
+                //     return assign({}, d, {
+                //         date: new Date(d.date)
+                //     });
+                // });
+
+            var valueLine = (...args) => {
+                // const {key} = args[0];
+                console.log('args', args)
+                // debugger
+                const fn = d3Shape.line()
+                    .curve(areaFn.curve())
+                    .x( ({date}) => {
+                        console.log('key')
+                        return xScale(date)
+                    } )
+                    .y( ({value}) => {
+                        // const dataPoint = data.values[0];
+                        // const channel = dataPoint.name;
+                        console.log('yScale',yScale(value))
+                        return yScale(value)
+                    } );
+
+                console.log('fn', fn);
+                // debugger
+                const result = fn(args[0].values);
+
+                console.log(result);
+                return result;
+            }
+
+            var valueLine2 = (...args) => {
+                // const {key} = args[0];
+                console.log('args', args)
+                // debugger
+                const fn = d3Shape.line()
+                    .curve(areaFn.curve())
+                    .x( ({data}) => {
+                        console.log('key')
+                        return xScale(data.date)
+                    } )
+                    .y( (d) => {
+                        // const dataPoint = data.values[0];
+                        // const channel = dataPoint.name;
+                        // console.log('yScale',yScale(value))
+                        return yScale(d[1])
+                    } );
+
+                console.log('fn', fn);
+                // debugger
+                const result = fn(...args);
+
+                console.log(result);
+                return result;
+            }
+
+
+            console.log('test',test)
+
+            const valueLines = svg.select('.chart-group').selectAll('.layer')
+                .append('g')
+                .classed('valueLine-container', true);
+
+                // good
+            // valueLines
+            //     .data(test)
+            //     .enter()
+            //     .append('path')
+            //       .attr('class', 'valueLine')
+            //       .attr('d', valueLine)
+
+            valueLines
+                .data(layers)
+                .enter()
+                .append('path')
+                  .attr('class', 'valueLine')
+                  .attr('d', valueLine2)
+                  .style('shape-rendering', 'geometricPrecision')
+                  .style('fill', 'none')
+                  // .style('stroke', 'black')
+                  .style('stroke-width', '1.2px')
+                  .style('stroke', ({key}) => {
+                        console.log('fill key', key)
+                        return categoryColorMap[key]});
+
 
             if (isAnimated) {
                 series = svg.select('.chart-group').selectAll('.layer')
@@ -601,7 +719,16 @@ define(function(require){
                   .append('path')
                     .attr('class', 'layer')
                     .attr('d', area)
-                    .style('fill', ({key}) => categoryColorMap[key]);
+                    // .style('opacity', '0.32')
+                    .style('fill', ({key}) => {
+                        console.log('fill key', key)
+                        return categoryColorMap[key]});
+
+                // series
+                //   .append('path')
+                //     .attr('class', 'value-line')
+                //     .attr('d', valueLine)
+                //     .style('fill', ({key}) => categoryColorMap[key]);
 
                 // Update
                 svg.select('.chart-group').selectAll('.layer')
@@ -821,7 +948,7 @@ define(function(require){
                     .attr('cx', circleSize)
                     .attr('cy', 0)
                     .attr('r', 5)
-                    .style('stroke-width', 2)
+                    .style('stroke-width', 1.2)
                     .style('stroke', categoryColorMap[name]);
 
                 marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(accumulator))} )` );
