@@ -6,3 +6,8 @@
 
 .stacked-area .x-axis-group path {
   display: none; }
+
+.stacked-area .area-outline {
+  shape-rendering: geometricPrecision;
+  fill: none;
+  stroke-width: 1.2px; }

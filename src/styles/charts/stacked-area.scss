@@ -14,4 +14,10 @@
     .x-axis-group path {
         display: none;
     }
+
+    .area-outline {
+        shape-rendering: geometricPrecision;
+        fill: none;
+        stroke-width: 1.2px;
+    }
 }

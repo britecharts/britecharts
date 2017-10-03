@@ -289,7 +289,7 @@
 
             colorSchema = colorHelper.colorSchemas.britecharts,
 
-            areaOpacity = 0.64,
+            areaOpacity = 0.24,
             categoryColorMap,
             order,
 
@@ -343,6 +343,25 @@
                 bottom: 0,
                 right: 0
             },
+
+            emptyStateConfig = {
+                minDate: new Date(new Date().setDate(new Date().getDate()-30)),
+                maxDate: new Date(),
+                name: '',
+                minValue: 0,
+                maxValue: 100
+            },
+
+            emptyStateData = [
+                {
+                    date: emptyStateConfig.minDate,
+                    views: 10
+                },
+                {
+                    date: emptyStateConfig.maxDate,
+                    views: 10
+                }
+            ],
 
             dateLabel = 'date',
             valueLabel = 'value',
@@ -433,7 +452,7 @@
                 };
                 major = null;
             } else {
-                ({minor, major} = getXAxisSettings(dataByDate, width, xAxisFormat, locale));
+                ({minor, major} = getXAxisSettings(dataByDate.length === 0 ? [{date: new Date(new Date().setDate(new Date().getDate()-30))}, {date: new Date()}] : dataByDate, width, xAxisFormat, locale));
 
                 xMonthAxis = d3Axis.axisBottom(xScale)
                     .ticks(major.tick)
@@ -573,12 +592,19 @@
          * @private
          */
         function buildScales() {
+
+            let domain = dataByDate.length === 0 ?
+                [emptyStateConfig.minDate, emptyStateConfig.maxDate] :
+                d3Array.extent(dataByDate, ({date}) => date);
+
+            let maxValueByDate = getMaxValueByDate() || emptyStateConfig.maxValue;
+
             xScale = d3Scale.scaleTime()
-                .domain(d3Array.extent(dataByDate, ({date}) => date))
+                .domain(domain)
                 .rangeRound([0, chartWidth]);
 
             yScale = d3Scale.scaleLinear()
-                .domain([0, getMaxValueByDate()])
+                .domain([0, emptyStateConfig.maxValue])
                 .rangeRound([chartHeight, 0])
                 .nice();
 
@@ -611,6 +637,7 @@
          * @return {obj}      Parsed data with values and dates
          */
         function cleanData(data) {
+            // data = emptyStateData;
             return data.map((d) => {
                 d.date = new Date(d[dateLabel]),
                 d.value = +d[valueLabel]
@@ -765,18 +792,30 @@
                 .y0( (d) => yScale(d[0]) )
                 .y1( (d) => yScale(d[1]) );
 
+            const areaOutline = d3Shape.line()
+                .curve(area.curve())
+                .x( ({data}) => xScale(data.date) )
+                .y( (d) => yScale(d[1]) );
+
             if (isAnimated) {
                 series = svg.select('.chart-group').selectAll('.layer')
                     .data(layersInitial)
                     .enter()
-                      .append('g')
-                        .classed('layer-container', true);
 
                 series
+                  .append('g')
+                    .classed('layer-container', true)
                   .append('path')
                     .attr('class', 'layer')
                     .attr('d', area)
+                    .style('opacity', areaOpacity)
                     .style('fill', ({key}) => categoryColorMap[key]);
+
+                series
+                  .append('path')
+                    .attr('class', 'area-outline')
+                    .attr('d', areaOutline)
+                    .style('stroke', ({key}) => categoryColorMap[key]);
 
                 // Update
                 svg.select('.chart-group').selectAll('.layer')
@@ -788,6 +827,15 @@
                     .attr('d', area)
                     .style('opacity', areaOpacity)
                     .style('fill', ({key}) => categoryColorMap[key]);
+
+                svg.select('.chart-group').selectAll('.area-outline')
+                    .data(layers)
+                    .transition()
+                    .delay( (_, i) => areaAnimationDelays[i])
+                    .duration(areaAnimationDuration)
+                    .ease(ease)
+                    .attr('d', areaOutline);
+
             } else {
                 series = svg.select('.chart-group').selectAll('.layer')
                     .data(layers)
@@ -801,11 +849,20 @@
                     .attr('d', area)
                     .style('fill', ({key}) => categoryColorMap[key]);
 
+                series
+                    .append('path')
+                    .attr('class', 'area-outline')
+                    .attr('d', areaOutline)
+                    .style('stroke', ({key}) => categoryColorMap[key]);
+
+
                 // Update
                 series
                     .attr('d', area)
                     .style('opacity', areaOpacity)
                     .style('fill', ({key}) => categoryColorMap[key]);
+
+
             }
 
             // Exit
@@ -996,7 +1053,7 @@
                     .attr('cx', circleSize)
                     .attr('cy', 0)
                     .attr('r', 5)
-                    .style('stroke-width', 2)
+                    .style('stroke-width', 1.2)
                     .style('stroke', categoryColorMap[name]);
 
                 marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(accumulator))} )` );
@@ -1326,6 +1383,22 @@
 
             return this;
         };
+
+        /**
+         * Gets or Sets the number of ticks of the y axis on the chart
+         * (Default is 5)
+         * @param  {Number} _x          Desired vertical ticks
+         * @return {Number | module}    Current vertical ticks or Chart module to chain calls
+         * @public
+         */
+         exports.emptyState = function (_x) {
+            if (!arguments.length) {
+                return emptyStateConfig;
+            }
+            emptyStateConfig = _x;
+
+            return this;
+         }
 
         return exports;
     };

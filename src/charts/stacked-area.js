@@ -596,139 +596,36 @@ define(function(require){
         function drawStackedAreas() {
             let series;
 
-            let areaFn =d3Shape.area()
-                        .curve(d3Shape.curveMonotoneX)
-                        .x( ({data}) => {
+            area = d3Shape.area()
+                .curve(d3Shape.curveMonotoneX)
+                .x( ({data}) => xScale(data.date) )
+                .y0( (d) => yScale(d[0]) )
+                .y1( (d) => yScale(d[1]) );
 
-                            return xScale(data.date);
-                        } )
-                        .y0( (d) => {
-                            console.log('y0', yScale(d[0]))
-                            return yScale(d[0])
-                        } )
-                        .y1( (d) => {
-                            console.log('y1', yScale(d[1]))
-                            return yScale(d[1])
-                        } );
-
-            area = (...args) => {
-                // console.log(...args);
-                    return areaFn(...args);
-                };
-
-            const test = d3Collection.nest()
-                .key(getName)
-                // .key(getDate)
-                .entries(
-                    data.sort((a, b) => a.date - b.date)
-                )
-                // .map(d => {
-                //     return assign({}, d, {
-                //         date: new Date(d.date)
-                //     });
-                // });
-
-            var valueLine = (...args) => {
-                // const {key} = args[0];
-                console.log('args', args)
-                // debugger
-                const fn = d3Shape.line()
-                    .curve(areaFn.curve())
-                    .x( ({date}) => {
-                        console.log('key')
-                        return xScale(date)
-                    } )
-                    .y( ({value}) => {
-                        // const dataPoint = data.values[0];
-                        // const channel = dataPoint.name;
-                        console.log('yScale',yScale(value))
-                        return yScale(value)
-                    } );
-
-                console.log('fn', fn);
-                // debugger
-                const result = fn(args[0].values);
-
-                console.log(result);
-                return result;
-            }
-
-            var valueLine2 = (...args) => {
-                // const {key} = args[0];
-                console.log('args', args)
-                // debugger
-                const fn = d3Shape.line()
-                    .curve(areaFn.curve())
-                    .x( ({data}) => {
-                        console.log('key')
-                        return xScale(data.date)
-                    } )
-                    .y( (d) => {
-                        // const dataPoint = data.values[0];
-                        // const channel = dataPoint.name;
-                        // console.log('yScale',yScale(value))
-                        return yScale(d[1])
-                    } );
-
-                console.log('fn', fn);
-                // debugger
-                const result = fn(...args);
-
-                console.log(result);
-                return result;
-            }
-
-
-            console.log('test',test)
-
-            const valueLines = svg.select('.chart-group').selectAll('.layer')
-                .append('g')
-                .classed('valueLine-container', true);
-
-                // good
-            // valueLines
-            //     .data(test)
-            //     .enter()
-            //     .append('path')
-            //       .attr('class', 'valueLine')
-            //       .attr('d', valueLine)
-
-            valueLines
-                .data(layers)
-                .enter()
-                .append('path')
-                  .attr('class', 'valueLine')
-                  .attr('d', valueLine2)
-                  .style('shape-rendering', 'geometricPrecision')
-                  .style('fill', 'none')
-                  // .style('stroke', 'black')
-                  .style('stroke-width', '1.2px')
-                  .style('stroke', ({key}) => {
-                        console.log('fill key', key)
-                        return categoryColorMap[key]});
-
+            const areaOutline = d3Shape.line()
+                .curve(area.curve())
+                .x( ({data}) => xScale(data.date) )
+                .y( (d) => yScale(d[1]) );
 
             if (isAnimated) {
                 series = svg.select('.chart-group').selectAll('.layer')
                     .data(layersInitial)
                     .enter()
-                      .append('g')
-                        .classed('layer-container', true);
 
                 series
+                  .append('g')
+                    .classed('layer-container', true)
                   .append('path')
                     .attr('class', 'layer')
                     .attr('d', area)
-                    // .style('opacity', '0.32')
-                    .style('fill', ({key}) => {
-                        console.log('fill key', key)
-                        return categoryColorMap[key]});
+                    .style('opacity', areaOpacity)
+                    .style('fill', ({key}) => categoryColorMap[key]);
 
-                // series
-                //   .append('path')
-                //     .attr('class', 'value-line')
-                //     .attr('d', valueLine)
-                //     .style('fill', ({key}) => categoryColorMap[key]);
+                series
+                  .append('path')
+                    .attr('class', 'area-outline')
+                    .attr('d', areaOutline)
+                    .style('stroke', ({key}) => categoryColorMap[key]);
 
                 // Update
                 svg.select('.chart-group').selectAll('.layer')
@@ -740,24 +637,45 @@ define(function(require){
                     .attr('d', area)
                     .style('opacity', areaOpacity)
                     .style('fill', ({key}) => categoryColorMap[key]);
+
+                svg.select('.chart-group').selectAll('.area-outline')
+                    .data(layers)
+                    .transition()
+                    .delay( (_, i) => areaAnimationDelays[i])
+                    .duration(areaAnimationDuration)
+                    .ease(ease)
+                    .attr('d', areaOutline);
+
             } else {
                 series = svg.select('.chart-group').selectAll('.layer')
                     .data(layers)
                     .enter()
-                      .append('g')
-                        .classed('layer-container', true);
 
                 series
+                  .append('g')
+                    .classed('layer-container', true)
                   .append('path')
                     .attr('class', 'layer')
                     .attr('d', area)
-                    .style('fill', ({key}) => categoryColorMap[key]);
+                    .style('opacity', areaOpacity)
+                    .style('fill', ({key}) => categoryColorMap[key])
+                series
+                  .append('path')
+                    .attr('class', 'area-outline')
+                    .attr('d', areaOutline)
+                    .style('stroke', ({key}) => categoryColorMap[key]);
+
 
                 // Update
-                series
+                svg.select('.chart-group').selectAll('.layer')
                     .attr('d', area)
                     .style('opacity', areaOpacity)
                     .style('fill', ({key}) => categoryColorMap[key]);
+
+                svg.select('.chart-group').selectAll('.area-outline')
+                    .attr('class', 'area-outline')
+                    .attr('d', areaOutline)
+                    .style('stroke', ({key}) => categoryColorMap[key]);
             }
 
             // Exit
