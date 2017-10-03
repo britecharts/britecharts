@@ -1,5 +1,7 @@
 @import "../helpers/_variables.scss";
 
+$outline-stroke-width: 1.2;
+
 .stacked-area {
 
     // Data points
@@ -18,6 +20,10 @@
     .area-outline {
         shape-rendering: geometricPrecision;
         fill: none;
-        stroke-width: 1.2px;
+        stroke-width: $outline-stroke-width;
+    }
+
+    .data-point-highlighter {
+        stroke-width: $outline-stroke-width;
     }
 }

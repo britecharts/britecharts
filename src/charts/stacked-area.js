@@ -113,6 +113,7 @@ define(function(require){
             layers,
             layersInitial,
             area,
+            areaOutline,
 
             // Area Animation
             maxAreaNumber = 8,
@@ -153,25 +154,6 @@ define(function(require){
                 bottom: 0,
                 right: 0
             },
-
-            emptyStateConfig = {
-                minDate: new Date(new Date().setDate(new Date().getDate()-30)),
-                maxDate: new Date(),
-                name: '',
-                minValue: 0,
-                maxValue: 100
-            },
-
-            emptyStateData = [
-                {
-                    date: emptyStateConfig.minDate,
-                    views: 10
-                },
-                {
-                    date: emptyStateConfig.maxDate,
-                    views: 10
-                }
-            ],
 
             dateLabel = 'date',
             valueLabel = 'value',
@@ -262,7 +244,7 @@ define(function(require){
                 };
                 major = null;
             } else {
-                ({minor, major} = getXAxisSettings(dataByDate.length === 0 ? [{date: new Date(new Date().setDate(new Date().getDate()-30))}, {date: new Date()}] : dataByDate, width, xAxisFormat, locale));
+                ({minor, major} = getXAxisSettings(dataByDate, width, xAxisFormat, locale));
 
                 xMonthAxis = d3Axis.axisBottom(xScale)
                     .ticks(major.tick)
@@ -402,19 +384,12 @@ define(function(require){
          * @private
          */
         function buildScales() {
-
-            let domain = dataByDate.length === 0 ?
-                [emptyStateConfig.minDate, emptyStateConfig.maxDate] :
-                d3Array.extent(dataByDate, ({date}) => date);
-
-            let maxValueByDate = getMaxValueByDate() || emptyStateConfig.maxValue;
-
             xScale = d3Scale.scaleTime()
-                .domain(domain)
+                .domain(d3Array.extent(dataByDate, ({date}) => date))
                 .rangeRound([0, chartWidth]);
 
             yScale = d3Scale.scaleLinear()
-                .domain([0, emptyStateConfig.maxValue])
+                .domain([0, getMaxValueByDate()])
                 .rangeRound([chartHeight, 0])
                 .nice();
 
@@ -447,7 +422,6 @@ define(function(require){
          * @return {obj}      Parsed data with values and dates
          */
         function cleanData(data) {
-            // data = emptyStateData;
             return data.map((d) => {
                 d.date = new Date(d[dateLabel]),
                 d.value = +d[valueLabel]
@@ -602,7 +576,7 @@ define(function(require){
                 .y0( (d) => yScale(d[0]) )
                 .y1( (d) => yScale(d[1]) );
 
-            const areaOutline = d3Shape.line()
+            areaOutline = d3Shape.line()
                 .curve(area.curve())
                 .x( ({data}) => xScale(data.date) )
                 .y( (d) => yScale(d[1]) );
@@ -611,10 +585,10 @@ define(function(require){
                 series = svg.select('.chart-group').selectAll('.layer')
                     .data(layersInitial)
                     .enter()
+                      .append('g')
+                        .classed('layer-container', true);
 
                 series
-                  .append('g')
-                    .classed('layer-container', true)
                   .append('path')
                     .attr('class', 'layer')
                     .attr('d', area)
@@ -650,15 +624,16 @@ define(function(require){
                 series = svg.select('.chart-group').selectAll('.layer')
                     .data(layers)
                     .enter()
+                      .append('g')
+                        .classed('layer-container', true);
 
                 series
-                  .append('g')
-                    .classed('layer-container', true)
                   .append('path')
                     .attr('class', 'layer')
                     .attr('d', area)
                     .style('opacity', areaOpacity)
-                    .style('fill', ({key}) => categoryColorMap[key])
+                    .style('fill', ({key}) => categoryColorMap[key]);
+
                 series
                   .append('path')
                     .attr('class', 'area-outline')
@@ -866,7 +841,6 @@ define(function(require){
                     .attr('cx', circleSize)
                     .attr('cy', 0)
                     .attr('r', 5)
-                    .style('stroke-width', 1.2)
                     .style('stroke', categoryColorMap[name]);
 
                 marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(accumulator))} )` );
@@ -1196,22 +1170,6 @@ define(function(require){
 
             return this;
         };
-
-        /**
-         * Gets or Sets the number of ticks of the y axis on the chart
-         * (Default is 5)
-         * @param  {Number} _x          Desired vertical ticks
-         * @return {Number | module}    Current vertical ticks or Chart module to chain calls
-         * @public
-         */
-         exports.emptyState = function (_x) {
-            if (!arguments.length) {
-                return emptyStateConfig;
-            }
-            emptyStateConfig = _x;
-
-            return this;
-         }
 
         return exports;
     };

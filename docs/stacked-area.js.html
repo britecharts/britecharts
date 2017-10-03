@@ -840,29 +840,33 @@
                 series = svg.select('.chart-group').selectAll('.layer')
                     .data(layers)
                     .enter()
-                      .append('g')
-                        .classed('layer-container', true);
 
                 series
+                  .append('g')
+                    .classed('layer-container', true)
                   .append('path')
                     .attr('class', 'layer')
                     .attr('d', area)
-                    .style('fill', ({key}) => categoryColorMap[key]);
+                    .style('opacity', areaOpacity)
+                    .style('fill', ({key}) => categoryColorMap[key])
 
                 series
-                    .append('path')
+                  .append('path')
                     .attr('class', 'area-outline')
                     .attr('d', areaOutline)
                     .style('stroke', ({key}) => categoryColorMap[key]);
 
 
                 // Update
-                series
+                svg.select('.chart-group').selectAll('.layer')
                     .attr('d', area)
                     .style('opacity', areaOpacity)
                     .style('fill', ({key}) => categoryColorMap[key]);
 
-
+                svg.select('.chart-group').selectAll('.area-outline')
+                    .attr('class', 'area-outline')
+                    .attr('d', areaOutline)
+                    .style('stroke', ({key}) => categoryColorMap[key]);
             }
 
             // Exit
