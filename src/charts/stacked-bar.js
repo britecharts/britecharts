@@ -107,6 +107,7 @@ define(function(require){
             data,
             transformedData,
             stacks,
+            layerElements,            
 
             tooltipThreshold = 480,
 
@@ -118,6 +119,7 @@ define(function(require){
                 right: 0
             },
             maxBarNumber = 8,
+            barOpacity = 0.24,
 
             animationDelayStep = 20,
             animationDelays = d3Array.range(animationDelayStep, maxBarNumber* animationDelayStep, animationDelayStep),
@@ -411,46 +413,42 @@ define(function(require){
 
         /**
          * Draws the bars along the x axis
-         * @param  {D3Selection} bars Selection of bars
+         * @param  {D3Selection} layersSelection Selection of bars
          * @return {void}
          */
-        function drawHorizontalBars(series) {
+        function drawHorizontalBars(layersSelection) {
+            let layerJoin = layersSelection
+                .data(layers);
+
+            layerElements = layerJoin
+                .enter()
+                  .append('g')
+                    .attr('fill', (({key}) => categoryColorMap[key]))
+                    .classed('layer', true);
+
+            let barJoin = layerElements
+                .selectAll('.bar')
+                .data((d) => d);
+                    
             // Enter + Update
-            let context,
-                bars = series
-                    .data(layers)
+            let bars = barJoin
                     .enter()
-                      .append('g')
-                        .classed('layer', true)
-                        .attr('fill', (({key}) => categoryColorMap[key]))
-                        .selectAll('.bar')
-                        .data( (d)=> d)
-                        .enter()
-                          .append('rect')
-                            .classed('bar', true)
-                            .attr('x', (d) => xScale(d[0]) )
-                            .attr('y', (d) => yScale(d.data.key) )
-                            .attr('height', yScale.bandwidth())
-                            .attr('fill', (({data}) => categoryColorMap[data.stack+data.key]));
+                      .append('rect')
+                        .classed('bar', true)
+                        .attr('x', (d) => xScale(d[0]) )
+                        .attr('y', (d) => yScale(d.data.key) )
+                        .attr('height', yScale.bandwidth())
+                        .attr('fill', (({data}) => categoryColorMap[`${data.stack}${data.key}`]));
 
             if (isAnimated) {
-                bars.style('opacity', 0.24)
+                bars.style('opacity', barOpacity)
                     .transition()
                     .delay((_, i) => animationDelays[i])
                     .duration(animationDuration)
                     .ease(ease)
-                    .tween('attr.width', function(d) {
-                        let node = d3Selection.select(this),
-                            i = d3Interpolate.interpolateRound(0, xScale(d[1] - d[0])),
-                            j = d3Interpolate.interpolateNumber(0,1);
-
-                        return function(t) {
-                            node.attr('width',  i(t) );
-                            node.style('opacity', j(t) );
-                        };
-                    });
+                    .tween('attr.width', horizontalBarsTween);
             } else {
-                bars.attr('width', (d) => xScale(d[1] - d[0] ) )
+                bars.attr('width', (d) => xScale(d[1] - d[0]));
             }
         }
 
@@ -473,44 +471,42 @@ define(function(require){
 
         /**
          * Draws the bars along the y axis
-         * @param  {D3Selection} bars Selection of bars
+         * @param  {D3Selection} layersSelection Selection of bars
          * @return {void}
          */
-        function drawVerticalBars(series) {
-            // Enter + Update
-            let bars = series
-                .data(layers)
+        function drawVerticalBars(layersSelection) {
+            let layerJoin = layersSelection
+                .data(layers);
+
+            layerElements = layerJoin
                 .enter()
                   .append('g')
-                    .classed('layer', true)
                     .attr('fill', (({key}) => categoryColorMap[key]))
+                    .classed('layer', true);
+
+            let barJoin = layerElements
                     .selectAll('.bar')
-                    .data((d) => d)
+                    .data((d) => d);
+
+            // Enter + Update
+            let bars = barJoin
                     .enter()
                       .append('rect')
                         .classed('bar', true)
                         .attr('x', (d) => xScale(d.data.key))
                         .attr('y', (d) => yScale(d[1]))
                         .attr('width', xScale.bandwidth )
-                        .attr('fill', (({data}) => categoryColorMap[data.stack+data.key])),context;
+                        .attr('fill', (({data}) => categoryColorMap[`${data.stack}${data.key}`]));
 
             if (isAnimated) {
-                bars.style('opacity', 0.24).transition()
-                    .delay( (_, i) => animationDelays[i])
+                bars.style('opacity', barOpacity)
+                    .transition()
+                    .delay((_, i) => animationDelays[i])
                     .duration(animationDuration)
                     .ease(ease)
-                    .tween('attr.height', function(d) {
-                        let node = d3Selection.select(this),
-                            i = d3Interpolate.interpolateRound(0, yScale(d[0]) - yScale(d[1])),
-                            j = d3Interpolate.interpolateNumber(0,1);
-
-                        return function(t) {
-                            node.attr('height',  i(t) );
-                            node.style('opacity', j(t) );
-                        };
-                    });
+                    .tween('attr.height', verticalBarsTween);
             } else {
-                bars.attr('height', (d) => yScale(d[0]) - yScale(d[1]) );
+                bars.attr('height', (d) => yScale(d[0]) - yScale(d[1]));
             }
         }
 
@@ -536,6 +532,11 @@ define(function(require){
          * @private
          */
         function drawStackedBar(){
+            // Not ideal, we need to figure out how to call exit for nested elements
+            if (layerElements) {
+                svg.selectAll('.layer').remove();
+            }
+
             let series = svg.select('.chart-group').selectAll('.layer')
 
             if (isHorizontal) {
@@ -662,9 +663,25 @@ define(function(require){
          * Mouseover handler, shows overlay and adds active class to verticalMarkerLine
          * @private
          */
-         function handleMouseOver(e, d) {
-             dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
-         }
+        function handleMouseOver(e, d) {
+            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
+        }
+
+        /**
+         * Animation tween of horizontal bars
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function horizontalBarsTween(d) {
+            let node = d3Selection.select(this),
+                i = d3Interpolate.interpolateRound(0, xScale(d[1] - d[0])),
+                j = d3Interpolate.interpolateNumber(0, 1);
+
+            return function (t) {
+                node.attr('width', i(t))
+                    .style('opacity', j(t));
+            }
+        }
 
         /**
          * Helper method to update the x position of the vertical marker
@@ -713,6 +730,23 @@ define(function(require){
          */
         function shouldShowTooltip() {
             return width > tooltipThreshold;
+        }
+
+        /**
+         * Animation tween of vertical bars
+         * @param  {obj} d data of bar
+         * @return {void}
+         */
+        function verticalBarsTween(d) {
+            let node = d3Selection.select(this),
+                i = d3Interpolate.interpolateRound(0, yScale(d[0]) - yScale(d[1])),
+                j = d3Interpolate.interpolateNumber(0,1);
+
+            return function (t) {
+                node
+                    .attr('height', i(t))
+                    .style('opacity', j(t));
+            }
         }
 
         // API
