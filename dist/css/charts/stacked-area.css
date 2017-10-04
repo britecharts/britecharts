@@ -14,7 +14,3 @@
 
 .stacked-area .data-point-highlighter {
   stroke-width: 1.2; }
-
-.stacked-area .empty-data-line {
-  stroke-width: 2px;
-  stroke-linecap: round; }
