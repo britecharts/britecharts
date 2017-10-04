@@ -9,7 +9,8 @@ var d3Selection = require('d3-selection'),
     stackedAreaChart = require('./../src/charts/stacked-area'),
     tooltip = require('./../src/charts/tooltip'),
     stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder'),
-    colorSelectorHelper = require('./helpers/colorSelector');
+    colorSelectorHelper = require('./helpers/colorSelector'),
+    moment = require('moment')
     
 require('./helpers/resizeHelper');
 
@@ -40,13 +41,18 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
             .grid('horizontal')
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)
-            .on('customMouseOut', chartTooltip.hide);
+            .on('customMouseOut', chartTooltip.hide)
+            .emptyDataConfig({
+                minDate: moment().subtract(50, 'days').format(),
+                maxDate: moment().format(),
+                maxY: 50000
+            })
 
         if (optionalColorSchema) {
             stackedArea.colorSchema(optionalColorSchema);
         }
 
-        container.datum([]).call(stackedArea);
+        container.datum(dataset.data).call(stackedArea);
 
         // Tooltip Setup and start
         chartTooltip

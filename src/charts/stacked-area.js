@@ -99,6 +99,7 @@ define(function(require){
             tickPadding = 5,
 
             colorSchema = colorHelper.colorSchemas.britecharts,
+            lineGradient = colorHelper.colorGradients.greenBlue,
 
             areaOpacity = 0.24,
             categoryColorMap,
@@ -603,14 +604,31 @@ define(function(require){
 
             let emptyDataLine = d3Shape.line()
                 .x( (d) => xScale(d.date) )
-                .y( () => yScale(0) )
+                .y( () => yScale(0) - 1 )
 
-            svg.select('.chart-group')
+            let chartGroup = svg.select('.chart-group');
+            
+            chartGroup
                 .append('path')
                 .attr('class', 'empty-data-line')
                 .attr('d', emptyDataLine(dataByDateFormatted))
-                .style('stroke', 'black')
-                .style('stroke-width', '2px');
+                .style('stroke', 'url(#empty-data-line-gradient)');
+
+            chartGroup.append('linearGradient')
+                .attr('id', 'empty-data-line-gradient')
+                .attr('gradientUnits', 'userSpaceOnUse')
+                .attr('x1', 0)
+                .attr('x2', xScale(data[data.length - 1].date))
+                .attr('y1', 0)
+                .attr('y2', 0)
+              .selectAll('stop')
+                .data([
+                    {offset: '0%', color: lineGradient[0]},
+                    {offset: '100%', color: lineGradient[1]}
+                ])
+              .enter().append('stop')
+                .attr('offset', ({offset}) => offset)
+                .attr('stop-color', ({color}) => color);
         }
 
         /**
@@ -1225,6 +1243,21 @@ define(function(require){
 
             return this;
         };
+
+        /**
+         * Gets or Sets the emptyDataConfig of the chart
+         * @param  {Object} _x emptyDataConfig object to get/set
+         * @return { emptyDataConfig | module} Current config for when chart data is an empty array
+         * @public
+         */
+        exports.emptyDataConfig = function(_x) {
+            if (!arguments.length) {
+                return emptyDataConfig;
+            }
+            emptyDataConfig = _x;
+
+            return this;
+        }
 
         return exports;
     };
