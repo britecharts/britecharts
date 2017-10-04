@@ -14,5 +14,6 @@ exclude_paths:
 - "docs"
 - "dist"
 - "demos"
+- "sandbox"
 - "src/doc"
 - "src/tasks"

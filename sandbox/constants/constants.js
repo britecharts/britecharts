@@ -8,7 +8,7 @@ module.exports = (function() {
             'helpers/colors',
             'legend',
             'tooltip',
-            'mini-tooltip',
+            'mini-tooltip'
         ],
         chartConfigs: {
             bar: {

@@ -5,6 +5,7 @@ define(function(require) {
 
         jsonFivePlusOther = require('json!../json/donutDataFivePlusOther.json'),
         jsonFivePlusOtherNoPercent = require('json!../json/donutDataFivePlusOtherNoPercent.json'),
+        jsonOneZeroed = require('json!../json/donutDataOneZeroed.json'),
         jsonThreeCategories = require('json!../json/donutDataThreeCategories.json');
 
 
@@ -27,6 +28,12 @@ define(function(require) {
 
         this.withThreeCategories = function() {
             var attributes = _.extend({}, this.config, jsonThreeCategories);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withOneTopicAtZero = function() {
+            var attributes = _.extend({}, this.config, jsonOneZeroed);
 
             return new this.Klass(attributes);
         };
