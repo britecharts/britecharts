@@ -429,6 +429,10 @@ define(function(require){
                 .attr('height', height);
         }
 
+        /**
+         * Creates fake data for when data is an empty array
+         * @return {array}      Fake data built from emptyDataConfig settings
+         */
         function createFakeData() {
             const numDays = Math.abs(moment(emptyDataConfig.maxDate).diff(moment(emptyDataConfig.minDate), 'days'));
             const emptyArray = Array.apply(null, Array(numDays));

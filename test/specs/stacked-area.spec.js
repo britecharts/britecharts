@@ -164,6 +164,10 @@ define([
             expect(callback.calls.allArgs()[0].length).toBe(2);
         });
 
+        it('should be able to render even when data is length 0', () => {
+            expect(() => containerFixture.datum([]).call(stackedAreaChart)).not.toThrow();
+        });
+
         describe('API', function() {
 
             it('should provide margin getter and setter', () => {
