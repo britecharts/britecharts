@@ -580,6 +580,7 @@ define(function(require){
          * Exposes the ability to force the tooltip to use a certain date format
          * @param  {String} _x Desired format
          * @return { (String|Module) }    Current format or module to chain calls
+         * @public
          */
         exports.dateFormat = function(_x) {
             if (!arguments.length) {
@@ -605,6 +606,7 @@ define(function(require){
          * Pass locale for the tooltip to render the date in
          * @param  {String} _x  must be a locale tag like 'en-US' or 'fr-FR'
          * @return { (String|Module) }    Current locale or module to chain calls
+         * @public
          */
         exports.locale = function(_x) {
             if (!arguments.length) {
@@ -617,8 +619,8 @@ define(function(require){
 
         /**
          * Gets or Sets the nameLabel of the data
-         * @param  {Number} _x Desired nameLabel
-         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+         * @param  {Number} _x              Desired nameLabel
+         * @return { nameLabel | module}    Current nameLabel or Chart module to chain calls
          * @public
          */
         exports.nameLabel = function(_x) {
@@ -642,24 +644,24 @@ define(function(require){
         };
 
         /**
-         * Pass an override for the ordering of your tooltip
-         * @param  {Object[]} _x    Array of the names of your tooltip items
-         * @return { overrideOrder | module} Current overrideOrder or Chart module to chain calls
+         * Gets or Sets shouldShowDateInTitle
+         * @param  {Boolean} _x                         Desired value
+         * @return { shouldShowDateInTitle | module}    Current shouldShowDateInTitle or Chart module to chain calls
          * @public
          */
-        exports.topicsOrder = function(_x) {
+        exports.shouldShowDateInTitle = function(_x) {
             if (!arguments.length) {
-                return topicsOrder;
+                return shouldShowDateInTitle;
             }
-            topicsOrder = _x;
+            shouldShowDateInTitle = _x;
 
             return this;
         };
 
         /**
          * Gets or Sets the title of the tooltip
-         * @param  {string} _x Desired title
-         * @return { string | module} Current title or module to chain calls
+         * @param  {string} _x          Desired title
+         * @return { string | module}   Current title or module to chain calls
          * @public
          */
         exports.title = function(_x) {
@@ -672,9 +674,24 @@ define(function(require){
         };
 
         /**
+         * Pass an override for the ordering of your tooltip
+         * @param  {Object[]} _x                Array of the names of your tooltip items
+         * @return { overrideOrder | module}    Current overrideOrder or Chart module to chain calls
+         * @public
+         */
+        exports.topicsOrder = function(_x) {
+            if (!arguments.length) {
+                return topicsOrder;
+            }
+            topicsOrder = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the topicLabel of the data
-         * @param  {Number} _x Desired topicLabel
-         * @return { topicLabel | module} Current topicLabel or Chart module to chain calls
+         * @param  {Number} _x              Desired topicLabel
+         * @return { topicLabel | module}   Current topicLabel or Chart module to chain calls
          * @public
          */
         exports.topicLabel = function(_x) {
@@ -688,10 +705,10 @@ define(function(require){
 
         /**
          * Updates the position and content of the tooltip
-         * @param  {Object} dataPoint    Datapoint to represent
-         * @param  {Object} colorMapping Color scheme of the topics
-         * @param  {Number} position     X-scale position in pixels
-         * @return {Module} Tooltip module to chain calls
+         * @param  {Object} dataPoint       Datapoint to represent
+         * @param  {Object} colorMapping    Color scheme of the topics
+         * @param  {Number} position        X-scale position in pixels
+         * @return {Module}                 Tooltip module to chain calls
          * @public
          */
         exports.update = function(dataPoint, colorMapping, xPosition, yPosition = null) {
@@ -703,8 +720,8 @@ define(function(require){
 
         /**
          * Gets or Sets the valueFormat of the tooltip
-         * @param  {String} _x Desired valueFormat
-         * @return { String | module} Current valueFormat or module to chain calls
+         * @param  {String} _x          Desired valueFormat
+         * @return { String | module}   Current valueFormat or module to chain calls
          * @public
          */
         exports.valueFormat = function(_x) {
@@ -718,8 +735,8 @@ define(function(require){
 
         /**
          * Gets or Sets the valueLabel of the data
-         * @param  {Number} _x Desired valueLabel
-         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+         * @param  {Number} _x              Desired valueLabel
+         * @return { valueLabel | module}   Current valueLabel or Chart module to chain calls
          * @public
          */
         exports.valueLabel = function(_x) {
@@ -731,20 +748,6 @@ define(function(require){
             return this;
         };
 
-        /**
-         * Gets or Sets shouldShowDateInTitle
-         * @param  {Boolean} _x Desired value
-         * @return { shouldShowDateInTitle | module} Current shouldShowDateInTitle or Chart module to chain calls
-         * @public
-         */
-        exports.shouldShowDateInTitle = function(_x) {
-            if (!arguments.length) {
-                return shouldShowDateInTitle;
-            }
-            shouldShowDateInTitle = _x;
-
-            return this;
-        };
         return exports;
     };
 });

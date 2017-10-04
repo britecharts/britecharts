@@ -53,7 +53,7 @@ function createDonutChart(optionalColorSchema) {
             donutChart.colorSchema(optionalColorSchema);
         }
 
-        donutContainer.datum(datasetNoPercentages).call(donutChart);
+        donutContainer.datum(dataset).call(donutChart);
 
         d3Selection.select('#button').on('click', function() {
             donutChart.exportChart('donut.png', 'Britecharts Donut Chart');

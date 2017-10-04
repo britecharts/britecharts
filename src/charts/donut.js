@@ -222,7 +222,7 @@ define(function(require) {
         function cleanData(data) {
             let cleanData = data.reduce((acc, d) => {
                 // Skip data without quantity
-                if (!d[quantityLabel]) {
+                if (d[quantityLabel] === undefined || d[quantityLabel] === null) {
                     return acc;
                 }
 
@@ -471,6 +471,9 @@ define(function(require) {
             textHelper.wrapText.call(null, 0, fontSize, legendWidth, text.node());
         }
 
+
+        // API
+
         /**
          * Gets or Sets the colorSchema of the chart
          * @param  {String[]} _x Desired colorSchema for the graph
@@ -484,6 +487,14 @@ define(function(require) {
             colorSchema = _x;
 
             return this;
+        };
+
+        /**
+         * Chart exported to png and a download action is fired
+         * @public
+         */
+        exports.exportChart = function(filename, title) {
+            exportChart.call(exports, svg, filename, title);
         };
 
         /**
@@ -534,19 +545,16 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
-         * By default this is 'false'
-         *
-         * @param  {Boolean} _x Desired animation flag
-         * @return { isAnimated | module} Current isAnimated flag or Chart module
+         * Gets or Sets the id of the slice to highlight
+         * @param  {Number} _x Slice id
+         * @return { (Number | Module) } Current highlighted slice id or Donut Chart module to chain calls
          * @public
          */
-        exports.isAnimated = function(_x) {
+        exports.highlightSliceById = function(_x) {
             if (!arguments.length) {
-                return isAnimated;
+                return highlightedSliceId;
             }
-            isAnimated = _x;
-
+            highlightedSliceId = _x;
             return this;
         };
 
@@ -565,6 +573,23 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+         * By default this is 'false'
+         *
+         * @param  {Boolean} _x Desired animation flag
+         * @return { isAnimated | module} Current isAnimated flag or Chart module
+         * @public
+         */
+        exports.isAnimated = function(_x) {
+            if (!arguments.length) {
+                return isAnimated;
+            }
+            isAnimated = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the margin of the chart
          * @param  {Object} _x Margin object to get/set
          * @return { (Number | Module) } Current margin or Donut Chart module to chain calls
@@ -575,43 +600,6 @@ define(function(require) {
                 return margin;
             }
             margin = _x;
-            return this;
-        };
-
-        /**
-         * Gets or Sets the width of the chart
-         * @param  {Number} _x Desired width for the graph
-         * @return { (Number | Module) } Current width or Donut Chart module to chain calls
-         * @public
-         */
-        exports.width = function(_x) {
-            if (!arguments.length) {
-                return width;
-            }
-            width = _x;
-            return this;
-        };
-
-        /**
-         * Chart exported to png and a download action is fired
-         * @public
-         */
-        exports.exportChart = function(filename, title) {
-            exportChart.call(exports, svg, filename, title);
-        };
-
-
-        /**
-         * Gets or Sets the id of the slice to highlight
-         * @param  {Number} _x Slice id
-         * @return { (Number | Module) } Current highlighted slice id or Donut Chart module to chain calls
-         * @public
-         */
-        exports.highlightSliceById = function(_x) {
-            if (!arguments.length) {
-                return highlightedSliceId;
-            }
-            highlightedSliceId = _x;
             return this;
         };
 
@@ -627,6 +615,20 @@ define(function(require) {
             let value = dispatcher.on.apply(dispatcher, arguments);
 
             return value === dispatcher ? exports : value;
+        };
+
+        /**
+         * Gets or Sets the width of the chart
+         * @param  {Number} _x Desired width for the graph
+         * @return { (Number | Module) } Current width or Donut Chart module to chain calls
+         * @public
+         */
+        exports.width = function(_x) {
+            if (!arguments.length) {
+                return width;
+            }
+            width = _x;
+            return this;
         };
 
         return exports;
