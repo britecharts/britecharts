@@ -94,12 +94,12 @@ We want to keep a standard code structure that is based on the original Reusable
     }
 
     // Building block definitions
-    // API definitions  
+    // API definitions ordered alphabetically
   } 
 
 ```
 
-We like to do some light 'data cleaning' inside the `cleanData` method. That would usually include making sure that numbers are not strings.
+We like to do some light 'data cleaning' inside the `cleanData` method. That would usually include making sure that numbers are not strings. We also tend to use a reduce function, so we will create a copy of the original data and cast only the usual quantities or values we need for creating the chart.
 
 Note that most of the building blocks are dependant on the type of chart. For example, on the donut chart, we won't need to create axis or draw them, so those blocks won't be there.
 
