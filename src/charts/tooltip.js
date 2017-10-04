@@ -576,15 +576,9 @@ define(function(require){
         };
 
         /**
-<<<<<<< HEAD
-         * Exposes the ability to force the tooltip to use a certain date format
-         * @param  {String} _x Desired format
-         * @return { (String|Module) }    Current format or module to chain calls
-=======
          * Gets or Sets the dateLabel of the data
          * @param  {String} _x          Desired dateLabel
          * @return { String | module}   Current dateLabel or Chart module to chain calls
->>>>>>> Updating tooltip comments and docs
          * @public
          */
         exports.dateLabel = function(_x) {
@@ -609,13 +603,8 @@ define(function(require){
 
         /**
          * Pass locale for the tooltip to render the date in
-<<<<<<< HEAD
-         * @param  {String} _x  must be a locale tag like 'en-US' or 'fr-FR'
-         * @return { (String|Module) }    Current locale or module to chain calls
-=======
          * @param  {String} _x          Must be a locale tag like 'en-US' or 'fr-FR'
          * @return { (String|Module) }  Current locale or module to chain calls
->>>>>>> Updating tooltip comments and docs
          * @public
          */
         exports.locale = function(_x) {
@@ -629,13 +618,8 @@ define(function(require){
 
         /**
          * Gets or Sets the nameLabel of the data
-<<<<<<< HEAD
-         * @param  {Number} _x              Desired nameLabel
-         * @return { nameLabel | module}    Current nameLabel or Chart module to chain calls
-=======
          * @param  {String} _x           Desired nameLabel
          * @return { String | module}    Current nameLabel or Chart module to chain calls
->>>>>>> Updating tooltip comments and docs
          * @public
          */
         exports.nameLabel = function(_x) {
@@ -674,10 +658,9 @@ define(function(require){
         };
 
         /**
-<<<<<<< HEAD
          * Gets or Sets shouldShowDateInTitle
-         * @param  {Boolean} _x                         Desired value
-         * @return { shouldShowDateInTitle | module}    Current shouldShowDateInTitle or Chart module to chain calls
+         * @param  {Boolean} _x           Desired value
+         * @return { Boolean | module}    Current shouldShowDateInTitle or Chart module to chain calls
          * @public
          */
         exports.shouldShowDateInTitle = function(_x) {
@@ -685,32 +668,14 @@ define(function(require){
                 return shouldShowDateInTitle;
             }
             shouldShowDateInTitle = _x;
-=======
-         * Gets or Sets the title of the tooltip
-         * @param  {String} _x          Desired title
-         * @return { String | module}   Current title or module to chain calls
-         * @public
-         */
-        exports.title = function(_x) {
-            if (!arguments.length) {
-                return title;
-            }
-            title = _x;
->>>>>>> Updating tooltip comments and docs
 
             return this;
         };
 
         /**
-<<<<<<< HEAD
-         * Gets or Sets the title of the tooltip
-         * @param  {string} _x          Desired title
-         * @return { string | module}   Current title or module to chain calls
-=======
          * Pass an override for the ordering of your tooltip
-         * @param  {Object[]} _x    Array of the names of your tooltip items
-         * @return { overrideOrder | module} Current overrideOrder or Chart module to chain calls
->>>>>>> Updating tooltip comments and docs
+         * @param  {Object[]} _x        Array of the names of your tooltip items
+         * @return { Object[] | module} Current overrideOrder or Chart module to chain calls
          * @public
          */
         exports.topicsOrder = function(_x) {
@@ -739,13 +704,8 @@ define(function(require){
 
         /**
          * Gets or Sets the topicLabel of the data
-<<<<<<< HEAD
-         * @param  {Number} _x              Desired topicLabel
-         * @return { topicLabel | module}   Current topicLabel or Chart module to chain calls
-=======
-         * @param  {String} _x              Desired topicLabel
+         * @param  {String} _x          Desired topicLabel
          * @return { String | module}   Current topicLabel or Chart module to chain calls
->>>>>>> Updating tooltip comments and docs
          * @public
          */
         exports.topicLabel = function(_x) {
@@ -789,13 +749,8 @@ define(function(require){
 
         /**
          * Gets or Sets the valueLabel of the data
-<<<<<<< HEAD
-         * @param  {Number} _x              Desired valueLabel
-         * @return { valueLabel | module}   Current valueLabel or Chart module to chain calls
-=======
-         * @param  {String} _x              Desired valueLabel
+         * @param  {String} _x          Desired valueLabel
          * @return { String | module}   Current valueLabel or Chart module to chain calls
->>>>>>> Updating tooltip comments and docs
          * @public
          */
         exports.valueLabel = function(_x) {
@@ -807,10 +762,6 @@ define(function(require){
             return this;
         };
 
-<<<<<<< HEAD
-=======
-
->>>>>>> Updating tooltip comments and docs
         return exports;
     };
 });
