@@ -13,6 +13,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
     // loops over donutDataSets array and runs tests for each data-set
     donutDataSets.forEach((datasetName) => {
+
         describe('Donut Chart', () => {
             let donutChart, dataset, containerFixture, f;
 
@@ -28,8 +29,11 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 containerFixture = d3.select('.test-container');
 
                 donutChart
-                    .width(600).height(600)
-                    .externalRadius(250).internalRadius(50);
+                    .width(600)
+                    .height(600)
+                    .externalRadius(250)
+                    .internalRadius(50);
+
                 containerFixture.datum(dataset).call(donutChart);
             });
 
@@ -82,6 +86,29 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
             it('should append text to the legend container', () => {
                 expect(containerFixture.select('text.donut-text').empty()).toBeFalsy();
+            });
+
+            describe('when one section is zero', () => {
+
+                it('should keep the order of colors', () => {
+                    let dataset = aTestDataSet()
+                        .withOneTopicAtZero()
+                        .build();
+                    let expectedFills = ['#111111', '#222222', '#333333'];
+
+                    donutChart.colorSchema(expectedFills);
+
+                    containerFixture.datum(dataset).call(donutChart);
+                    
+                    let paths = containerFixture.selectAll('path').nodes();
+                    let actualFirstPathFill = d3.select(paths[0]).attr('fill');
+                    let actualSecondPathFill = d3.select(paths[1]).attr('fill');
+                    let actualThirdPathFill = d3.select(paths[2]).attr('fill');
+
+                    expect(actualFirstPathFill).toEqual(expectedFills[0]);
+                    expect(actualSecondPathFill).toEqual(expectedFills[1]);
+                    expect(actualThirdPathFill).toEqual(expectedFills[2]);
+                });
             });
 
             describe('when reloading with a one item dataset', () => {

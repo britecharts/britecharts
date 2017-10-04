@@ -9,8 +9,10 @@ var d3Selection = require('d3-selection'),
     stackedBarChart = require('./../src/charts/stacked-bar'),
     tooltip = require('./../src/charts/tooltip'),
     stackedDataBuilder = require('./../test/fixtures/stackedBarDataBuilder'),
-    colorSelectorHelper = require('./helpers/colorSelector');
-    require('./helpers/resizeHelper');
+    colorSelectorHelper = require('./helpers/colorSelector'),
+    redrawCharts;
+
+require('./helpers/resizeHelper');
 
 function createStackedBarChartWithTooltip(optionalColorSchema) {
     var stackedBar = stackedBarChart(),
@@ -132,7 +134,7 @@ if (d3Selection.select('.js-stacked-bar-chart-tooltip-container').node()){
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
-    var redrawCharts = function(){
+    redrawCharts = function(){
         d3Selection.selectAll('.stacked-bar').remove();
 
         createStackedBarChartWithTooltip();
