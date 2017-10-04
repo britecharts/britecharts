@@ -12,6 +12,7 @@ define(function(require){
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
 
+    const moment = require('moment');
     const assign = require('lodash.assign');
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
@@ -158,6 +159,14 @@ define(function(require){
             dateLabel = 'date',
             valueLabel = 'value',
             keyLabel = 'name',
+
+            emptyDataConfig = {
+                minDate: moment().subtract(30, 'days').format(),
+                maxDate: moment().format(),
+                maxY: 500
+            },
+
+            isUsingFakeData = false,
 
             // getters
             getName = ({name}) => name,
@@ -384,12 +393,15 @@ define(function(require){
          * @private
          */
         function buildScales() {
+            const maxValueByDate = isUsingFakeData ? emptyDataConfig.maxY : getMaxValueByDate();
+            const domain = false && data.length === 0 ? [emptyDataConfig.minDate, emptyDataConfig.maxDate] : d3Array.extent(dataByDate, ({date}) => date);
+
             xScale = d3Scale.scaleTime()
-                .domain(d3Array.extent(dataByDate, ({date}) => date))
+                .domain(domain)
                 .rangeRound([0, chartWidth]);
 
             yScale = d3Scale.scaleLinear()
-                .domain([0, getMaxValueByDate()])
+                .domain([0, maxValueByDate])
                 .rangeRound([chartHeight, 0])
                 .nice();
 
@@ -416,12 +428,35 @@ define(function(require){
                 .attr('height', height);
         }
 
+        function createFakeData() {
+            const numDays = Math.abs(moment(emptyDataConfig.maxDate).diff(moment(emptyDataConfig.minDate), 'days'));
+            const emptyArray = Array.apply(null, Array(numDays));
+
+            isUsingFakeData = true;
+
+            return [
+                ...emptyArray.map((el, i) => ({
+                    [dateLabel]: moment(emptyDataConfig.minDate).add(i, 'days').format(),
+                    [valueLabel]: 0,
+                    [keyLabel]: '1',
+                })),
+                ...emptyArray.map((el, i) => ({
+                    [dateLabel]: moment(emptyDataConfig.minDate).add(i, 'days').format(),
+                    [valueLabel]: 0,
+                    [keyLabel]: '2',
+                }))
+            ];
+
+        }
+
         /**
          * Parses dates and values into JS Date objects and numbers
          * @param  {obj} data Raw data from JSON file
          * @return {obj}      Parsed data with values and dates
          */
         function cleanData(data) {
+            data = data.length === 0 ? createFakeData() : data;
+
             return data.map((d) => {
                 d.date = new Date(d[dateLabel]),
                 d.value = +d[valueLabel]
@@ -563,11 +598,31 @@ define(function(require){
                 .style('display', 'none');
         }
 
+        function drawEmptyDataLine() {
+            let series;
+
+            let emptyDataLine = d3Shape.line()
+                .x( (d) => xScale(d.date) )
+                .y( () => yScale(0) )
+
+            svg.select('.chart-group')
+                .append('path')
+                .attr('class', 'empty-data-line')
+                .attr('d', emptyDataLine(dataByDateFormatted))
+                .style('stroke', 'black')
+                .style('stroke-width', '2px');
+        }
+
         /**
          * Draws the different areas into the chart-group element
          * @private
          */
         function drawStackedAreas() {
+            if (isUsingFakeData) {
+                drawEmptyDataLine();
+                return;
+            }
+
             let series;
 
             area = d3Shape.area()
@@ -863,7 +918,7 @@ define(function(require){
          * @private
          */
         function shouldShowTooltip() {
-            return width > tooltipThreshold;
+            return width > tooltipThreshold && !isUsingFakeData;
         }
 
 
