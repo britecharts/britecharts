@@ -42,17 +42,17 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', chartTooltip.hide)
-            .emptyDataConfig({
-                minDate: moment().subtract(50, 'days').format(),
-                maxDate: moment().format(),
-                maxY: 50000
-            })
+            // .emptyDataConfig({
+            //     minDate: moment().subtract(10, 'days').format(),
+            //     maxDate: moment().format(),
+            //     maxY: 5000
+            // })
 
         if (optionalColorSchema) {
             stackedArea.colorSchema(optionalColorSchema);
         }
 
-        container.datum(dataset.data).call(stackedArea);
+        container.datum([]).call(stackedArea);
 
         // Tooltip Setup and start
         chartTooltip

@@ -395,10 +395,9 @@ define(function(require){
          */
         function buildScales() {
             const maxValueByDate = isUsingFakeData ? emptyDataConfig.maxY : getMaxValueByDate();
-            const domain = false && data.length === 0 ? [emptyDataConfig.minDate, emptyDataConfig.maxDate] : d3Array.extent(dataByDate, ({date}) => date);
 
             xScale = d3Scale.scaleTime()
-                .domain(domain)
+                .domain(d3Array.extent(dataByDate, ({date}) => date))
                 .rangeRound([0, chartWidth]);
 
             yScale = d3Scale.scaleLinear()
@@ -611,7 +610,7 @@ define(function(require){
                 .y( () => yScale(0) - 1 )
 
             let chartGroup = svg.select('.chart-group');
-            
+
             chartGroup
                 .append('path')
                 .attr('class', 'empty-data-line')
