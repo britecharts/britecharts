@@ -231,7 +231,7 @@ config = {
     prodUMD: {
         entry:  currentCharts,
 
-        devtool: 'cheap-eval-source-map',
+        devtool: 'source-map',
 
         output: {
             path:     'dist/umd',
