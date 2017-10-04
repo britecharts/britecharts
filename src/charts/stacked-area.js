@@ -99,7 +99,7 @@ define(function(require){
 
             colorSchema = colorHelper.colorSchemas.britecharts,
 
-            areaOpacity = 0.64,
+            areaOpacity = 0.24,
             categoryColorMap,
             order,
 
@@ -113,6 +113,7 @@ define(function(require){
             layers,
             layersInitial,
             area,
+            areaOutline,
 
             // Area Animation
             maxAreaNumber = 8,
@@ -575,6 +576,11 @@ define(function(require){
                 .y0( (d) => yScale(d[0]) )
                 .y1( (d) => yScale(d[1]) );
 
+            areaOutline = d3Shape.line()
+                .curve(area.curve())
+                .x( ({data}) => xScale(data.date) )
+                .y( (d) => yScale(d[1]) );
+
             if (isAnimated) {
                 series = svg.select('.chart-group').selectAll('.layer')
                     .data(layersInitial)
@@ -586,7 +592,14 @@ define(function(require){
                   .append('path')
                     .attr('class', 'layer')
                     .attr('d', area)
+                    .style('opacity', areaOpacity)
                     .style('fill', ({key}) => categoryColorMap[key]);
+
+                series
+                  .append('path')
+                    .attr('class', 'area-outline')
+                    .attr('d', areaOutline)
+                    .style('stroke', ({key}) => categoryColorMap[key]);
 
                 // Update
                 svg.select('.chart-group').selectAll('.layer')
@@ -598,6 +611,15 @@ define(function(require){
                     .attr('d', area)
                     .style('opacity', areaOpacity)
                     .style('fill', ({key}) => categoryColorMap[key]);
+
+                svg.select('.chart-group').selectAll('.area-outline')
+                    .data(layers)
+                    .transition()
+                    .delay( (_, i) => areaAnimationDelays[i])
+                    .duration(areaAnimationDuration)
+                    .ease(ease)
+                    .attr('d', areaOutline);
+
             } else {
                 series = svg.select('.chart-group').selectAll('.layer')
                     .data(layers)
@@ -609,13 +631,26 @@ define(function(require){
                   .append('path')
                     .attr('class', 'layer')
                     .attr('d', area)
+                    .style('opacity', areaOpacity)
                     .style('fill', ({key}) => categoryColorMap[key]);
 
-                // Update
                 series
+                  .append('path')
+                    .attr('class', 'area-outline')
+                    .attr('d', areaOutline)
+                    .style('stroke', ({key}) => categoryColorMap[key]);
+
+
+                // Update
+                svg.select('.chart-group').selectAll('.layer')
                     .attr('d', area)
                     .style('opacity', areaOpacity)
                     .style('fill', ({key}) => categoryColorMap[key]);
+
+                svg.select('.chart-group').selectAll('.area-outline')
+                    .attr('class', 'area-outline')
+                    .attr('d', areaOutline)
+                    .style('stroke', ({key}) => categoryColorMap[key]);
             }
 
             // Exit
@@ -806,7 +841,6 @@ define(function(require){
                     .attr('cx', circleSize)
                     .attr('cy', 0)
                     .attr('r', 5)
-                    .style('stroke-width', 2)
                     .style('stroke', categoryColorMap[name]);
 
                 marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(accumulator))} )` );

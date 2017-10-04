@@ -81,6 +81,28 @@ define([
             expect(actual).toEqual(expected);
         });
 
+        it('should render an area-outline for each category', () => {
+            let expected = _.chain(dataset.data)
+                .pluck('name')
+                .unique()
+                .value()
+                .length,
+                actual = containerFixture.selectAll('.area-outline').nodes().length;
+
+            expect(actual).toEqual(expected);
+        });
+
+        it('should render areas and areas outlines that follow the same path', () => {
+            let layerContainerNodes = containerFixture.selectAll('.layer-container').nodes();
+
+            layerContainerNodes.forEach(layerContainerNode => {
+                let areaPath = layerContainerNode.childNodes[0].attributes.d.value;
+                let areaOutlinePath = layerContainerNode.childNodes[1].attributes.d.value;
+
+                expect(areaPath).toContain(areaOutlinePath);
+            });
+        });
+
         // Overlay
         it('should render an overlay to trigger the hover effect', () => {
             expect(containerFixture.select('.overlay').empty()).toBeFalsy();
