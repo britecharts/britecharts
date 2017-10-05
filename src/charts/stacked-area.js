@@ -12,7 +12,6 @@ define(function(require){
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
 
-    const moment = require('moment');
     const assign = require('lodash.assign');
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
@@ -27,6 +26,11 @@ define(function(require){
         formatIntegerValue,
         formatDecimalValue
     } = require('./helpers/formatHelpers');
+
+    const {
+        addDays,
+        diffDays
+    } = require('./helpers/common');
 
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 
@@ -162,8 +166,8 @@ define(function(require){
             keyLabel = 'name',
 
             emptyDataConfig = {
-                minDate: moment().subtract(30, 'days').format(),
-                maxDate: moment().format(),
+                minDate: new Date(new Date().setDate(new Date().getDate()-30)),
+                maxDate: new Date(),
                 maxY: 500
             },
 
@@ -433,19 +437,19 @@ define(function(require){
          * @return {array}      Fake data built from emptyDataConfig settings
          */
         function createFakeData() {
-            const numDays = Math.abs(moment(emptyDataConfig.maxDate).diff(moment(emptyDataConfig.minDate), 'days'));
+            const numDays = diffDays(emptyDataConfig.minDate, emptyDataConfig.maxDate)
             const emptyArray = Array.apply(null, Array(numDays));
 
             isUsingFakeData = true;
 
             return [
                 ...emptyArray.map((el, i) => ({
-                    [dateLabel]: moment(emptyDataConfig.minDate).add(i, 'days').format(),
+                    [dateLabel]: addDays(emptyDataConfig.minDate, i),
                     [valueLabel]: 0,
                     [keyLabel]: '1',
                 })),
                 ...emptyArray.map((el, i) => ({
-                    [dateLabel]: moment(emptyDataConfig.minDate).add(i, 'days').format(),
+                    [dateLabel]: addDays(emptyDataConfig.minDate, i),
                     [valueLabel]: 0,
                     [keyLabel]: '2',
                 }))
@@ -607,12 +611,12 @@ define(function(require){
 
             let emptyDataLine = d3Shape.line()
                 .x( (d) => xScale(d.date) )
-                .y( () => yScale(0) - 1 )
+                .y( () => yScale(0) - 1 );
 
             let chartGroup = svg.select('.chart-group');
 
             chartGroup
-                .append('path')
+              .append('path')
                 .attr('class', 'empty-data-line')
                 .attr('d', emptyDataLine(dataByDateFormatted))
                 .style('stroke', 'url(#empty-data-line-gradient)');
@@ -1006,6 +1010,21 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the emptyDataConfig of the chart
+         * @param  {Object} _x emptyDataConfig object to get/set
+         * @return { Object | module} Current config for when chart data is an empty array
+         * @public
+         */
+        exports.emptyDataConfig = function(_x) {
+            if (!arguments.length) {
+                return emptyDataConfig;
+            }
+            emptyDataConfig = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the grid mode.
          *
          * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
@@ -1247,20 +1266,6 @@ define(function(require){
             return this;
         };
 
-        /**
-         * Gets or Sets the emptyDataConfig of the chart
-         * @param  {Object} _x emptyDataConfig object to get/set
-         * @return { emptyDataConfig | module} Current config for when chart data is an empty array
-         * @public
-         */
-        exports.emptyDataConfig = function(_x) {
-            if (!arguments.length) {
-                return emptyDataConfig;
-            }
-            emptyDataConfig = _x;
-
-            return this;
-        }
 
         return exports;
     };
