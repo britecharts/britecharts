@@ -27,6 +27,11 @@ define(function(require){
         formatDecimalValue
     } = require('./helpers/formatHelpers');
 
+    const {
+        addDays,
+        diffDays
+    } = require('./helpers/common');
+
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 
 
@@ -98,6 +103,7 @@ define(function(require){
             tickPadding = 5,
 
             colorSchema = colorHelper.colorSchemas.britecharts,
+            lineGradient = colorHelper.colorGradients.greenBlue,
 
             areaOpacity = 0.24,
             categoryColorMap,
@@ -158,6 +164,14 @@ define(function(require){
             dateLabel = 'date',
             valueLabel = 'value',
             keyLabel = 'name',
+
+            emptyDataConfig = {
+                minDate: new Date(new Date().setDate(new Date().getDate()-30)),
+                maxDate: new Date(),
+                maxY: 500
+            },
+
+            isUsingFakeData = false,
 
             // getters
             getName = ({name}) => name,
@@ -384,12 +398,14 @@ define(function(require){
          * @private
          */
         function buildScales() {
+            const maxValueByDate = isUsingFakeData ? emptyDataConfig.maxY : getMaxValueByDate();
+
             xScale = d3Scale.scaleTime()
                 .domain(d3Array.extent(dataByDate, ({date}) => date))
                 .rangeRound([0, chartWidth]);
 
             yScale = d3Scale.scaleLinear()
-                .domain([0, getMaxValueByDate()])
+                .domain([0, maxValueByDate])
                 .rangeRound([chartHeight, 0])
                 .nice();
 
@@ -417,11 +433,38 @@ define(function(require){
         }
 
         /**
+         * Creates fake data for when data is an empty array
+         * @return {array}      Fake data built from emptyDataConfig settings
+         */
+        function createFakeData() {
+            const numDays = diffDays(emptyDataConfig.minDate, emptyDataConfig.maxDate)
+            const emptyArray = Array.apply(null, Array(numDays));
+
+            isUsingFakeData = true;
+
+            return [
+                ...emptyArray.map((el, i) => ({
+                    [dateLabel]: addDays(emptyDataConfig.minDate, i),
+                    [valueLabel]: 0,
+                    [keyLabel]: '1',
+                })),
+                ...emptyArray.map((el, i) => ({
+                    [dateLabel]: addDays(emptyDataConfig.minDate, i),
+                    [valueLabel]: 0,
+                    [keyLabel]: '2',
+                }))
+            ];
+
+        }
+
+        /**
          * Parses dates and values into JS Date objects and numbers
          * @param  {obj} data Raw data from JSON file
          * @return {obj}      Parsed data with values and dates
          */
         function cleanData(data) {
+            data = data.length === 0 ? createFakeData() : data;
+
             return data.map((d) => {
                 d.date = new Date(d[dateLabel]),
                 d.value = +d[valueLabel]
@@ -563,11 +606,48 @@ define(function(require){
                 .style('display', 'none');
         }
 
+        function drawEmptyDataLine() {
+            let series;
+
+            let emptyDataLine = d3Shape.line()
+                .x( (d) => xScale(d.date) )
+                .y( () => yScale(0) - 1 );
+
+            let chartGroup = svg.select('.chart-group');
+
+            chartGroup
+              .append('path')
+                .attr('class', 'empty-data-line')
+                .attr('d', emptyDataLine(dataByDateFormatted))
+                .style('stroke', 'url(#empty-data-line-gradient)');
+
+            chartGroup.append('linearGradient')
+                .attr('id', 'empty-data-line-gradient')
+                .attr('gradientUnits', 'userSpaceOnUse')
+                .attr('x1', 0)
+                .attr('x2', xScale(data[data.length - 1].date))
+                .attr('y1', 0)
+                .attr('y2', 0)
+              .selectAll('stop')
+                .data([
+                    {offset: '0%', color: lineGradient[0]},
+                    {offset: '100%', color: lineGradient[1]}
+                ])
+              .enter().append('stop')
+                .attr('offset', ({offset}) => offset)
+                .attr('stop-color', ({color}) => color);
+        }
+
         /**
          * Draws the different areas into the chart-group element
          * @private
          */
         function drawStackedAreas() {
+            if (isUsingFakeData) {
+                drawEmptyDataLine();
+                return;
+            }
+
             let series;
 
             area = d3Shape.area()
@@ -863,7 +943,7 @@ define(function(require){
          * @private
          */
         function shouldShowTooltip() {
-            return width > tooltipThreshold;
+            return width > tooltipThreshold && !isUsingFakeData;
         }
 
 
@@ -925,6 +1005,21 @@ define(function(require){
                 return dateLabel;
             }
             dateLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the emptyDataConfig of the chart
+         * @param  {Object} _x emptyDataConfig object to get/set
+         * @return { Object | module} Current config for when chart data is an empty array
+         * @public
+         */
+        exports.emptyDataConfig = function(_x) {
+            if (!arguments.length) {
+                return emptyDataConfig;
+            }
+            emptyDataConfig = _x;
 
             return this;
         };
@@ -1170,6 +1265,7 @@ define(function(require){
 
             return this;
         };
+
 
         return exports;
     };
