@@ -164,6 +164,10 @@ define([
             expect(callback.calls.allArgs()[0].length).toBe(2);
         });
 
+        it('should be able to render even when data is length 0', () => {
+            expect(() => containerFixture.datum([]).call(stackedAreaChart)).not.toThrow();
+        });
+
         describe('API', function() {
 
             it('should provide margin getter and setter', () => {
@@ -368,6 +372,22 @@ define([
 
                 expect(defaultAnimation).not.toBe(testAnimation);
                 expect(newAnimation).toBe(testAnimation);
+            });
+
+            it('should provide emptyDataConfig getter and setter', () => {
+                let defaultEmptyDataConfig = stackedAreaChart.emptyDataConfig(),
+                    testEmptyDataConfig = {
+                        minDate: Date.now(),
+                        maxDate: Date.now(),
+                        maxY: 100
+                    },
+                    newEmptyDataConfig;
+
+                stackedAreaChart.emptyDataConfig(testEmptyDataConfig);
+                newEmptyDataConfig = stackedAreaChart.emptyDataConfig();
+
+                expect(defaultEmptyDataConfig).not.toBe(testEmptyDataConfig);
+                expect(newEmptyDataConfig).toBe(testEmptyDataConfig);
             });
         });
 
