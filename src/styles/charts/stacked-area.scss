@@ -26,4 +26,9 @@ $outline-stroke-width: 1.2;
     .data-point-highlighter {
         stroke-width: $outline-stroke-width;
     }
+
+    .empty-data-line {
+        stroke-width: 2px;
+        stroke-linecap: round;
+    }
 }
