@@ -27,16 +27,18 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
     if (containerWidth) {
         // dataset = testDataSet.withReportData().build();
         // dataset = testDataSet.with3Sources().build();
-        // dataset = testDataSet.with6Sources().build();
+        dataset = testDataSet.with6Sources().build();
         // dataset = testDataSet.withLargeData().build();
         // dataset = testDataSet.withGeneratedData().build();
-        dataset = testDataSet.withSalesChannelData().build();
+        // dataset = testDataSet.withSalesChannelData().build();
 
         // StackedAreChart Setup and start
         stackedArea
             .isAnimated(true)
             .tooltipThreshold(600)
             .width(containerWidth)
+            .dateLabel('dateUTC')
+            .valueLabel('views')
             .grid('horizontal')
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)
@@ -51,8 +53,7 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
         // Tooltip Setup and start
         chartTooltip
             .topicLabel('values')
-            .title('Testing tooltip')
-            .topicsOrder(uniq(dataset.data.map((d) => d.name)));
+            .title('Testing tooltip');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
@@ -113,10 +114,64 @@ function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
     }
 }
 
+function createStackedAreaChartWithSyncedTooltip() {
+    var stackedArea = stackedAreaChart(),
+        chartTooltip = tooltip(),
+        testDataSet = new stackedDataBuilder.StackedAreaDataBuilder(),
+        container = d3Selection.select('.js-stacked-area-chart-tooltip-bis-container'),
+        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
+        tooltipContainer,
+        dataset;
+
+    if (containerWidth) {
+        dataset = testDataSet.withSalesChannelData().build();
+
+        // StackedAreChart Setup and start
+        stackedArea
+            .isAnimated(true)
+            .tooltipThreshold(600)
+            .width(containerWidth)
+            .grid('horizontal')
+            .topicsOrder([
+                'Other',
+                'Sunny',
+                'Blazing',
+                'Glittering',
+                'Flashing',
+                'Shining'
+            ])
+            .on('customMouseOver', chartTooltip.show)
+            .on('customMouseMove', chartTooltip.update)
+            .on('customMouseOut', chartTooltip.hide);
+
+        container.datum(dataset.data).call(stackedArea);
+
+        // Tooltip Setup and start
+        chartTooltip
+            .topicsOrder([
+                'Other',
+                'Sunny',
+                'Blazing',
+                'Glittering',
+                'Flashing',
+                'Shining'
+            ])
+            .topicLabel('values')
+            .title('Testing tooltip')
+            .topicsOrder(uniq(dataset.data.map((d) => d.name)));
+
+        // Note that if the viewport width is less than the tooltipThreshold value,
+        // this container won't exist, and the tooltip won't show up
+        tooltipContainer = d3Selection.select('.js-stacked-area-chart-tooltip-bis-container .metadata-group .vertical-marker-container');
+        tooltipContainer.datum([]).call(chartTooltip);
+    }
+}
+
 if (d3Selection.select('.js-stacked-area-chart-tooltip-container').node()){
     // Chart creation
     createStackedAreaChartWithTooltip();
     createStackedAreaChartWithFixedAspectRatio();
+    createStackedAreaChartWithSyncedTooltip();
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
@@ -124,6 +179,7 @@ if (d3Selection.select('.js-stacked-area-chart-tooltip-container').node()){
         d3Selection.selectAll('.stacked-area').remove();
         createStackedAreaChartWithTooltip();
         createStackedAreaChartWithFixedAspectRatio();
+        createStackedAreaChartWithSyncedTooltip();
     };
 
     // Redraw charts on window resize
