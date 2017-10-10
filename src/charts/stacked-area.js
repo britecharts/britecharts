@@ -360,7 +360,7 @@ define(function(require){
             order = topicsOrder || formatOrder(totals);
 
             let stack3 = d3Shape.stack()
-                .keys(order.reverse())
+                .keys(order)
                 .order(d3Shape.stackOrderNone)
                 .offset(d3Shape.stackOffsetNone);
 
