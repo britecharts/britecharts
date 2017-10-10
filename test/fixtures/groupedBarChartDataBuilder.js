@@ -3,8 +3,8 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonTwoSources = require('json!../json/groupedbarDataTwoSources.json'),
-        jsonThreeSources = require('json!../json/groupedbarDataThreeSources.json');
+        jsonTwoSources = require('json-loader!../json/groupedbarDataTwoSources.json'),
+        jsonThreeSources = require('json-loader!../json/groupedbarDataThreeSources.json');
 
 
     function GroupedBarChartDataBuilder(config){
