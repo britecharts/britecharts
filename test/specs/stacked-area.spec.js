@@ -170,160 +170,188 @@ define([
 
         describe('API', function() {
 
-            it('should provide margin getter and setter', () => {
-                let defaultMargin = stackedAreaChart.margin(),
-                    testMargin = {top: 4, right: 4, bottom: 4, left: 4},
-                    newMargin;
+            it('should provide areaOpacity getter and setter', () => {
+                let previous = stackedAreaChart.areaOpacity(),
+                    expected = 0.5,
+                    actual;
 
-                stackedAreaChart.margin(testMargin);
-                newMargin = stackedAreaChart.margin();
+                stackedAreaChart.areaOpacity(expected);
+                actual = stackedAreaChart.areaOpacity();
 
-                expect(defaultMargin).not.toBe(testMargin);
-                expect(newMargin).toBe(testMargin);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
+            
+            it('should provide an aspect ratio getter and setter', () => {
+                let previous = stackedAreaChart.aspectRatio(),
+                    expected = 600,
+                    actual;
 
-            it('should provide width getter and setter', () => {
-                let defaultWidth = stackedAreaChart.width(),
-                    testWidth = 200,
-                    newWidth;
+                stackedAreaChart.aspectRatio(expected);
+                actual = stackedAreaChart.aspectRatio();
 
-                stackedAreaChart.width(testWidth);
-                newWidth = stackedAreaChart.width();
-
-                expect(defaultWidth).not.toBe(testWidth);
-                expect(newWidth).toBe(testWidth);
-            });
-
-            it('should provide height getter and setter', () => {
-                let defaultHeight = stackedAreaChart.height(),
-                    testHeight = 200,
-                    newHeight;
-
-                stackedAreaChart.height(testHeight);
-                newHeight = stackedAreaChart.height();
-
-                expect(defaultHeight).not.toBe(testHeight);
-                expect(newHeight).toBe(testHeight);
-            });
-
-            it('should provide a tooltip threshold getter and setter', () => {
-                let defaultHeight = stackedAreaChart.tooltipThreshold(),
-                    testTooltipThreshold = 600,
-                    newTooltipThreshold;
-
-                stackedAreaChart.tooltipThreshold(testTooltipThreshold);
-                newTooltipThreshold = stackedAreaChart.tooltipThreshold();
-
-                expect(defaultHeight).not.toBe(testTooltipThreshold);
-                expect(newTooltipThreshold).toBe(testTooltipThreshold);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide a colorSchema getter and setter', () => {
-                let defaultSchema = stackedAreaChart.colorSchema(),
-                    testSchema = ['#ffffff', '#fafefc', '#000000'],
-                    newSchema;
+                let previous = stackedAreaChart.colorSchema(),
+                    expected = ['#ffffff', '#fafefc', '#000000'],
+                    actual;
 
-                stackedAreaChart.colorSchema(testSchema);
-                newSchema = stackedAreaChart.colorSchema();
+                stackedAreaChart.colorSchema(expected);
+                actual = stackedAreaChart.colorSchema();
 
-                expect(defaultSchema).not.toBe(testSchema);
-                expect(newSchema).toBe(testSchema);
-            });
-
-            it('should provide an aspect ratio getter and setter', () => {
-                let defaultAspectRatio = stackedAreaChart.aspectRatio(),
-                    testAspectRatio = 600,
-                    newAspectRatio;
-
-                stackedAreaChart.aspectRatio(testAspectRatio);
-                newAspectRatio = stackedAreaChart.aspectRatio();
-
-                expect(defaultAspectRatio).not.toBe(testAspectRatio);
-                expect(newAspectRatio).toBe(testAspectRatio);
-            });
-
-            it('should provide valueLabel getter and setter', () => {
-                let defaultValueLabel = stackedAreaChart.valueLabel(),
-                    testValueLabel = 'quantity',
-                    newValueLabel;
-
-                stackedAreaChart.valueLabel(testValueLabel);
-                newValueLabel = stackedAreaChart.valueLabel();
-
-                expect(defaultValueLabel).not.toBe(testValueLabel);
-                expect(newValueLabel).toBe(testValueLabel);
-            });
-
-            it('should provide keyLabel getter and setter', () => {
-                let defaultTopicLabel = stackedAreaChart.keyLabel(),
-                    testTopicLabel = 'val',
-                    newTopicLabel;
-
-                stackedAreaChart.keyLabel(testTopicLabel);
-                newTopicLabel = stackedAreaChart.keyLabel();
-
-                expect(defaultTopicLabel).not.toBe(testTopicLabel);
-                expect(newTopicLabel).toBe(testTopicLabel);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide dateLabel getter and setter', () => {
-                let defaultDateLabel = stackedAreaChart.dateLabel(),
-                    testDateLabel = 'dateFull',
-                    newDateLabel;
+                let previous = stackedAreaChart.dateLabel(),
+                    expected = 'dateFull',
+                    actual;
 
-                stackedAreaChart.dateLabel(testDateLabel);
-                newDateLabel = stackedAreaChart.dateLabel();
+                stackedAreaChart.dateLabel(expected);
+                actual = stackedAreaChart.dateLabel();
 
-                expect(defaultDateLabel).not.toBe(testDateLabel);
-                expect(newDateLabel).toBe(testDateLabel);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
-            it('should provide areaOpacity getter and setter', () => {
-                let defaultOpacity = stackedAreaChart.areaOpacity(),
-                    testOpacity = 0.5,
-                    newOpacity;
+            it('should provide emptyDataConfig getter and setter', () => {
+                let previous = stackedAreaChart.emptyDataConfig(),
+                    expected = {
+                        minDate: Date.now(),
+                        maxDate: Date.now(),
+                        maxY: 100
+                    },
+                    actual;
 
-                stackedAreaChart.areaOpacity(testOpacity);
-                newOpacity = stackedAreaChart.areaOpacity();
+                stackedAreaChart.emptyDataConfig(expected);
+                actual = stackedAreaChart.emptyDataConfig();
 
-                expect(defaultOpacity).not.toBe(testOpacity);
-                expect(newOpacity).toBe(testOpacity);
-            });
-
-            it('should provide a xAxisFormat getter and setter', () => {
-                let defaultSchema = stackedAreaChart.xAxisFormat(),
-                    testFormat = stackedAreaChart.axisTimeCombinations.HOUR_DAY,
-                    newSchema;
-
-                stackedAreaChart.xAxisFormat(testFormat);
-                newSchema = stackedAreaChart.xAxisFormat();
-
-                expect(defaultSchema).not.toBe(testFormat);
-                expect(newSchema).toBe(testFormat);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide grid mode getter and setter', () => {
-                let defaultGridMode = stackedAreaChart.grid(),
-                    testValue = 'vertical',
-                    newGridMode;
+                let previous = stackedAreaChart.grid(),
+                    expected = 'vertical',
+                    actual;
 
-                stackedAreaChart.grid(testValue);
-                newGridMode = stackedAreaChart.grid();
+                stackedAreaChart.grid(expected);
+                actual = stackedAreaChart.grid();
 
-                expect(defaultGridMode).not.toBe(testValue);
-                expect(newGridMode).toBe(testValue);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide height getter and setter', () => {
+                let previous = stackedAreaChart.height(),
+                    expected = 200,
+                    actual;
+
+                stackedAreaChart.height(expected);
+                actual = stackedAreaChart.height();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide isAnimated getter and setter', () => {
+                let previous = stackedAreaChart.isAnimated(),
+                    expected = true,
+                    actual;
+
+                stackedAreaChart.isAnimated(expected);
+                actual = stackedAreaChart.isAnimated();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide keyLabel getter and setter', () => {
+                let previous = stackedAreaChart.keyLabel(),
+                    expected = 'val',
+                    actual;
+
+                stackedAreaChart.keyLabel(expected);
+                actual = stackedAreaChart.keyLabel();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide locale getter and setter', () => {
-                let defaultLocale = null,
-                    testValue = 'ru-RU',
-                    newLocale;
+                let previous = null,
+                    expected = 'ru-RU',
+                    actual;
 
-                stackedAreaChart.locale(testValue);
-                newLocale = stackedAreaChart.locale();
+                stackedAreaChart.locale(expected);
+                actual = stackedAreaChart.locale();
 
-                expect(defaultLocale).not.toBe(testValue);
-                expect(newLocale).toBe(testValue);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide margin getter and setter', () => {
+                let previous = stackedAreaChart.margin(),
+                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    actual;
+
+                stackedAreaChart.margin(expected);
+                actual = stackedAreaChart.margin();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a tooltip threshold getter and setter', () => {
+                let previous = stackedAreaChart.tooltipThreshold(),
+                    expected = 600,
+                    actual;
+
+                stackedAreaChart.tooltipThreshold(expected);
+                actual = stackedAreaChart.tooltipThreshold();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a topicsOrder getter and setter', () => {
+                let previous = stackedAreaChart.topicsOrder(),
+                    expected = [ 'twitter', 'user_email', 'user_newsletter', 'unknown', 'google', 'facebook'],
+                    actual;
+
+                stackedAreaChart.topicsOrder(expected);
+                actual = stackedAreaChart.topicsOrder();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide valueLabel getter and setter', () => {
+                let previous = stackedAreaChart.valueLabel(),
+                    expected = 'quantity',
+                    actual;
+
+                stackedAreaChart.valueLabel(expected);
+                actual = stackedAreaChart.valueLabel();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide width getter and setter', () => {
+                let previous = stackedAreaChart.width(),
+                    expected = 200,
+                    actual;
+
+                stackedAreaChart.width(expected);
+                actual = stackedAreaChart.width();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide a xAxisCustomFormat getter and setter', () => {
@@ -333,6 +361,18 @@ define([
 
                 stackedAreaChart.xAxisCustomFormat(expected);
                 actual = stackedAreaChart.xAxisCustomFormat();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a xAxisFormat getter and setter', () => {
+                let previous = stackedAreaChart.xAxisFormat(),
+                    expected = stackedAreaChart.axisTimeCombinations.HOUR_DAY,
+                    actual;
+
+                stackedAreaChart.xAxisFormat(expected);
+                actual = stackedAreaChart.xAxisFormat();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
@@ -360,34 +400,6 @@ define([
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
-            });
-
-            it('should provide animation getter and setter', () => {
-                let defaultAnimation = stackedAreaChart.isAnimated(),
-                    testAnimation = true,
-                    newAnimation;
-
-                stackedAreaChart.isAnimated(testAnimation);
-                newAnimation = stackedAreaChart.isAnimated();
-
-                expect(defaultAnimation).not.toBe(testAnimation);
-                expect(newAnimation).toBe(testAnimation);
-            });
-
-            it('should provide emptyDataConfig getter and setter', () => {
-                let defaultEmptyDataConfig = stackedAreaChart.emptyDataConfig(),
-                    testEmptyDataConfig = {
-                        minDate: Date.now(),
-                        maxDate: Date.now(),
-                        maxY: 100
-                    },
-                    newEmptyDataConfig;
-
-                stackedAreaChart.emptyDataConfig(testEmptyDataConfig);
-                newEmptyDataConfig = stackedAreaChart.emptyDataConfig();
-
-                expect(defaultEmptyDataConfig).not.toBe(testEmptyDataConfig);
-                expect(newEmptyDataConfig).toBe(testEmptyDataConfig);
             });
         });
 
