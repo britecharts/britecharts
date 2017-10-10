@@ -45,39 +45,34 @@ var webpack = require('webpack'),
 
     defaultJSLoader = {
         test: /\.js$/,
-        loader: 'babel',
         exclude: /(node_modules)/,
-        query: {
-            presets : ['es2015', 'stage-0']
-        }
-    },
-    babelLoader = {
-        test: /\.js$/,
-        include: /src/,
-        exclude: /(node_modules)/,
-        loader: 'babel',
-        query: {
-            presets: ['es2015', 'stage-0'],
-            cacheDirectory: true
-        },
+        use: [{
+            loader: 'babel-loader',
+            options: {
+                presets: ['es2015', 'stage-0'],
+                cacheDirectory: true,
+            }
+        }],
+
     },
     babelIstambulLoader = {
         test: /\.js?$/,
         include: /src/,
         exclude: /(node_modules|__tests__|tests_index.js)/,
-        loader: 'babel-istanbul',
-        query: {
-            presets: ['es2015', 'stage-0'],
-            cacheDirectory: true
-        },
+        use: [{
+            loader: 'istanbul-instrumenter-loader',
+            options:  {
+                presets: ['es2015', 'stage-0'],
+                cacheDirectory: true,
+            },
+    }],
     },
 
     plugins = [
         // Uncomment this line to see bundle composition analysis
         // new BundleAnalyzerPlugin()
     ],
-    outputFile,
-    config;
+    outputFile;
 
 
 // Set up minification for production
@@ -86,182 +81,197 @@ if (isProduction) {
     // outputFile = projectName + '.min.js';
 }
 
-let commonsPlugin = new webpack.optimize.CommonsChunkPlugin('common.js');
+const commonsPlugin = new webpack.optimize.CommonsChunkPlugin({
+    name: 'common',
+    filename: 'common.js', 
+    minChunks: Infinity,
+});
 
-config = {
+const getConfig = (env) => {
 
-    // Add here listener to sccs files?
-    demos : {
-        devtool: 'cheap-eval-source-map',
-        entry: currentDemos,
-        output: {
-            path: './demos/build/',
-            publicPath: '/assets/',
-            filename: '[name].js'
-        },
-        externals: {
-            britecharts: 'britecharts'
-        },
-        resolve:{
-            root: [
-                __dirname
-            ],
-        },
-        module: {
-            loaders: [ defaultJSLoader ]
-        },
-        plugins : [
-            commonsPlugin
-            // new LiveReloadPlugin({appendScriptTag:true})
-        ] ,
-        devServer:{
-            proxy: {
-                '/britecharts/scripts/common.js': {
-                    target: 'http://localhost:8001/',
-                    pathRewrite: {'^/britecharts/scripts/' : '/assets/'}
+    console.log(env);
+
+    const configs = {
+        // Add here listener to sccs files?
+        demos : {
+            devtool: 'cheap-eval-source-map',
+            entry: currentDemos,
+            output: {
+                path: path.resolve(__dirname, './demos/build/'),
+                publicPath: '/assets/',
+                filename: '[name].js'
+            },
+            externals: {
+                britecharts: 'britecharts'
+            },
+            resolve:{
+                modules: [__dirname, 'node_modules'],
+            },
+            module: {
+                rules: [defaultJSLoader],
+            },
+            plugins : [
+                commonsPlugin
+                // new LiveReloadPlugin({appendScriptTag:true})
+            ] ,
+            devServer:{
+                proxy: {
+                    '/britecharts/scripts/common.js': {
+                        target: 'http://localhost:8001/',
+                        pathRewrite: {'^/britecharts/scripts/' : '/assets/'}
+                    },
+                    '/britecharts/scripts/demo-*.js': {
+                        target: 'http://localhost:8001/',
+                        pathRewrite: {'^/britecharts/scripts/' : '/assets/'}
+                    },
+                    '/britecharts/scripts/*.js': {
+                        target: 'http://localhost:8001/',
+                        pathRewrite: {'^/britecharts/scripts/' : 'scripts/'}
+                    },
+                    '/britecharts/': {
+                        target: 'http://localhost:8001/',
+                        pathRewrite: {'^/britecharts/' : ''}
+                    }
                 },
-                '/britecharts/scripts/demo-*.js': {
-                    target: 'http://localhost:8001/',
-                    pathRewrite: {'^/britecharts/scripts/' : '/assets/'}
-                },
-                '/britecharts/scripts/*.js': {
-                    target: 'http://localhost:8001/',
-                    pathRewrite: {'^/britecharts/scripts/' : 'scripts/'}
-                },
-                '/britecharts/': {
-                    target: 'http://localhost:8001/',
-                    pathRewrite: {'^/britecharts/' : ''}
+            }
+        },
+
+        // Test configuration for Karma runner
+        test: {
+            resolve: {
+                modules: [
+                    path.resolve(__dirname, './src/charts'),
+                    path.resolve(__dirname, './test/fixtures'),
+                    'node_modules',
+                ],
+                alias: {
+                    d3: vendorsPath + '/d3',
                 }
             },
-        }
-    },
+            module: {
+                rules: [
+                    defaultJSLoader,
+                    babelIstambulLoader,
+                ],
+            },
 
-    // Test configuration for Karma runner
-    test: {
-        resolve: {
-            root: [chartModulesPath, fixturesPath],
-            alias: {
-                d3: vendorsPath + '/d3'
-            }
-        },
-        module: {
-            preLoaders: [ babelLoader, babelIstambulLoader ],
-
-            loaders: [ defaultJSLoader ]
+            plugins
         },
 
-        plugins
-    },
+        // Creates a bundle with all britecharts
+        prod: {
+            entry:  {
+                britecharts: bundleIndexPath
+            },
 
-    // Creates a bundle with all britecharts
-    prod: {
-        entry:  {
-            britecharts: bundleIndexPath
-        },
+            devtool: 'cheap-eval-source-map',
 
-        devtool: 'cheap-eval-source-map',
+            output: {
+                path: path.resolve(__dirname, 'dist/bundled'),
+                filename: projectName + '.min.js',
+                library: ['britecharts'],
+                libraryTarget: 'umd'
+            },
 
-        output: {
-            path: 'dist/bundled',
-            filename: projectName + '.min.js',
-            library: ['britecharts'],
-            libraryTarget: 'umd'
-        },
+            externals: {
+                d3: 'd3'
+            },
 
-        externals: {
-            d3: 'd3'
-        },
+            module: {
+                rules: [defaultJSLoader],
 
-        module: {
+                // Tell Webpack not to parse certain modules.
+                noParse: [
+                    new RegExp(vendorsPath + '/d3/d3.js')
+                ]
+            },
 
-            loaders: [ defaultJSLoader ],
-
-            // Tell Webpack not to parse certain modules.
-            noParse: [
-                new RegExp(vendorsPath + '/d3/d3.js')
-            ]
-        },
-
-        resolve: {
-            alias: {
-                d3: vendorsPath + '/d3'
-            }
-        },
-
-        plugins
-    },
-
-    sandbox: {
-        entry:  {
-            sandbox: path.resolve(__dirname, './sandbox/sandbox.js'),
-        },
-        devtool: 'cheap-eval-source-map',
-        output: {
-            path: './sandbox/build',
-            publicPath: '/assets/',
-            filename: '[name].js',
-        },
-
-        module: {
-            loaders: [
-                {
-                    test: /\.js$/,
-                    loader: 'babel',
-                    exclude: /(node_modules)/,
-                },
-                {
-                    test:/\.scss$/,
-                    loader: 'style!css!sass',
-                    include: /(sandbox)/,
+            resolve: {
+                alias: {
+                    d3: vendorsPath + '/d3'
                 }
-            ],
-            noParse: [
-                new RegExp(vendorsPath + '/d3/d3.js')
-            ]
-        },
-        devServer: {
-            contentBase: path.resolve(__dirname, './sandbox'),
-            port: 9000,
-            inline: true,
-            stats: 'errors-only',
-        }
-    },
+            },
 
-    // Creates minified UMD versions of each chart
-    prodUMD: {
-        entry:  currentCharts,
-
-        devtool: 'source-map',
-
-        output: {
-            path:     'dist/umd',
-            filename: '[name].min.js',
-            library: ['britecharts', '[name]'],
-            libraryTarget: 'umd'
+            plugins
         },
 
-        externals: {
-            d3: 'd3'
-        },
+        sandbox: {
+            entry:  {
+                sandbox: path.resolve(__dirname, './sandbox/sandbox.js'),
+            },
+            devtool: 'cheap-eval-source-map',
+            output: {
+                path: path.resolve(__dirname, './sandbox/build'),
+                publicPath: '/assets/',
+                filename: '[name].js',
+            },
 
-        module: {
-
-            loaders: [ defaultJSLoader ],
-
-            // Tell Webpack not to parse certain modules.
-            noParse: [
-                new RegExp(vendorsPath + '/d3/d3.js')
-            ]
-        },
-
-        resolve: {
-            alias: {
-                d3: vendorsPath + '/d3'
+            module: {
+                rules: [
+                    {
+                        test: /\.js$/,
+                        use: ['babel-loader'],
+                        exclude: /(node_modules)/,
+                    },
+                    {
+                        test:/\.scss$/,
+                        use: [
+                            {loader: 'style-loader'},
+                            {loader: 'css-loader'},
+                            {loader: 'sass-loader'},
+                        ],
+                        include: /(sandbox)/,
+                        exclude: /node_modules/,
+                    }
+                ],
+                noParse: [
+                    new RegExp(vendorsPath + '/d3/d3.js')
+                ]
+            },
+            devServer: {
+                contentBase: path.resolve(__dirname, './sandbox'),
+                port: 9000,
+                inline: true,
+                stats: 'errors-only',
             }
         },
 
-        plugins
+        // Creates minified UMD versions of each chart
+        prodUMD: {
+            entry:  currentCharts,
+
+            devtool: 'source-map',
+
+            output: {
+                path: path.resolve(__dirname, './dist/umd'),
+                filename: '[name].min.js',
+                library: ['britecharts', '[name]'],
+                libraryTarget: 'umd'
+            },
+
+            externals: {
+                d3: 'd3'
+            },
+
+            module: {
+                rules: [defaultJSLoader],
+                // Tell Webpack not to parse certain modules.
+                noParse: [
+                    new RegExp(vendorsPath + '/d3/d3.js')
+                ]
+            },
+
+            resolve: {
+                alias: {
+                    d3: vendorsPath + '/d3'
+                }
+            },
+
+            plugins
+        }
     }
+
+    return configs[env];
 };
 
-module.exports = config[env];
+module.exports = getConfig;
