@@ -108,6 +108,7 @@ define(function(require){
             areaOpacity = 0.24,
             categoryColorMap,
             order,
+            topicsOrder,
 
             xAxisFormat = null,
             xTicks = null,
@@ -353,10 +354,10 @@ define(function(require){
                                         ), {});
 
             let totals = data.reduce((memo, item) => (
-                assign({}, memo, {[item.name]: memo[item.name]  += item.value})
+                assign({}, memo, {[item.name]: memo[item.name] += item.value})
             ), initialTotalsObject);
 
-            order = formatOrder(totals);
+            order = topicsOrder || formatOrder(totals);
 
             let stack3 = d3Shape.stack()
                 .keys(order)
@@ -379,6 +380,7 @@ define(function(require){
                 .sort((a, b) => {
                     if (totals[a] > totals[b]) return -1;
                     if (totals[a] === totals[b]) return 0;
+
                     return 1;
                 });
 
@@ -465,12 +467,14 @@ define(function(require){
         function cleanData(data) {
             data = data.length === 0 ? createFakeData() : data;
 
-            return data.map((d) => {
+            let cleanData = data.reduce((acc, d) => {
                 d.date = new Date(d[dateLabel]),
                 d.value = +d[valueLabel]
+    
+                return [...acc, d];
+            }, []);
 
-                return d;
-            });
+            return cleanData;
         }
 
         /**
@@ -517,33 +521,34 @@ define(function(require){
             // Creates Dots on Data points
             var points = svg.select('.chart-group').selectAll('.dots')
                 .data(layers)
-              .enter().append('g')
-                .attr('class', 'dots')
-                .attr('d', ({values}) => area(values))
-                .attr('clip-path', 'url(#clip)');
+                .enter()
+                  .append('g')
+                    .attr('class', 'dots')
+                    .attr('d', ({values}) => area(values))
+                    .attr('clip-path', 'url(#clip)');
 
             // Processes the points
             // TODO: Optimize this code
             points.selectAll('.dot')
                 .data(({values}, index) => values.map((point) => ({index, point})))
                 .enter()
-                .append('circle')
-                .attr('class','dot')
-                .attr('r', () => pointsSize)
-                .attr('fill', () => pointsColor)
-                .attr('stroke-width', '0')
-                .attr('stroke', pointsBorderColor)
-                .attr('transform', function(d) {
-                    let {point} = d;
-                    let key = xScale(point.date);
+                  .append('circle')
+                    .attr('class','dot')
+                    .attr('r', () => pointsSize)
+                    .attr('fill', () => pointsColor)
+                    .attr('stroke-width', '0')
+                    .attr('stroke', pointsBorderColor)
+                    .attr('transform', function(d) {
+                        let {point} = d;
+                        let key = xScale(point.date);
 
-                    dataPoints[key] = dataPoints[key] || [];
-                    dataPoints[key].push(d);
+                        dataPoints[key] = dataPoints[key] || [];
+                        dataPoints[key].push(d);
 
-                    let {date, y, y0} = point;
+                        let {date, y, y0} = point;
 
-                    return `translate( ${xScale(date)}, ${yScale(y + y0)} )`;
-                });
+                        return `translate( ${xScale(date)}, ${yScale(y + y0)} )`;
+                    });
         }
 
         /**
@@ -556,7 +561,7 @@ define(function(require){
                     .selectAll('line.horizontal-grid-line')
                     .data(yScale.ticks(yTicks))
                     .enter()
-                        .append('line')
+                      .append('line')
                         .attr('class', 'horizontal-grid-line')
                         .attr('x1', (-xAxisPadding.left - 30))
                         .attr('x2', chartWidth)
@@ -569,7 +574,7 @@ define(function(require){
                     .selectAll('line.vertical-grid-line')
                     .data(xScale.ticks(xTicks))
                     .enter()
-                        .append('line')
+                      .append('line')
                         .attr('class', 'vertical-grid-line')
                         .attr('y1', 0)
                         .attr('y2', chartHeight)
@@ -582,12 +587,12 @@ define(function(require){
                 .selectAll('line.extended-x-line')
                 .data([0])
                 .enter()
-              .append('line')
-                .attr('class', 'extended-x-line')
-                .attr('x1', (-xAxisPadding.left - 30))
-                .attr('x2', chartWidth)
-                .attr('y1', height - margin.bottom - margin.top)
-                .attr('y2', height - margin.bottom - margin.top);
+                  .append('line')
+                    .attr('class', 'extended-x-line')
+                    .attr('x1', (-xAxisPadding.left - 30))
+                    .attr('x2', chartWidth)
+                    .attr('y1', height - margin.bottom - margin.top)
+                    .attr('y2', height - margin.bottom - margin.top);
         }
 
         /**
@@ -596,7 +601,7 @@ define(function(require){
          */
         function drawHoverOverlay() {
             overlay = svg.select('.metadata-group')
-                .append('rect')
+              .append('rect')
                 .attr('class', 'overlay')
                 .attr('y1', 0)
                 .attr('y2', chartHeight)
@@ -621,21 +626,23 @@ define(function(require){
                 .attr('d', emptyDataLine(dataByDateFormatted))
                 .style('stroke', 'url(#empty-data-line-gradient)');
 
-            chartGroup.append('linearGradient')
+            chartGroup
+              .append('linearGradient')
                 .attr('id', 'empty-data-line-gradient')
                 .attr('gradientUnits', 'userSpaceOnUse')
                 .attr('x1', 0)
                 .attr('x2', xScale(data[data.length - 1].date))
                 .attr('y1', 0)
                 .attr('y2', 0)
-              .selectAll('stop')
+                .selectAll('stop')
                 .data([
                     {offset: '0%', color: lineGradient[0]},
                     {offset: '100%', color: lineGradient[1]}
                 ])
-              .enter().append('stop')
-                .attr('offset', ({offset}) => offset)
-                .attr('stop-color', ({color}) => color);
+                .enter()
+                  .append('stop')
+                    .attr('offset', ({offset}) => offset)
+                    .attr('stop-color', ({color}) => color);
         }
 
         /**
@@ -746,7 +753,7 @@ define(function(require){
          */
         function drawVerticalMarker() {
             verticalMarkerContainer = svg.select('.metadata-group')
-                .append('g')
+              .append('g')
                 .attr('class', 'vertical-marker-container')
                 .attr('transform', 'translate(9999, 0)');
 
@@ -758,12 +765,12 @@ define(function(require){
                     y2: 0
                 }])
                 .enter()
-              .append('line')
-                .classed('vertical-marker', true)
-                .attr('x1', 0)
-                .attr('y1', chartHeight)
-                .attr('x2', 0)
-                .attr('y2', 0);
+                  .append('line')
+                    .classed('vertical-marker', true)
+                    .attr('x1', 0)
+                    .attr('y1', chartHeight)
+                    .attr('x2', 0)
+                    .attr('y2', 0);
         }
 
         /**
@@ -782,15 +789,15 @@ define(function(require){
          */
         function getDataByDate(data) {
             return d3Collection.nest()
-                                .key(getDate)
-                                .entries(
-                                    data.sort((a, b) => a.date - b.date)
-                                )
-                                .map(d => {
-                                    return assign({}, d, {
-                                        date: new Date(d.key)
-                                    });
-                                });
+                .key(getDate)
+                .entries(
+                    data.sort((a, b) => a.date - b.date)
+                )
+                .map(d => {
+                    return assign({}, d, {
+                        date: new Date(d.key)
+                    });
+                });
 
             // let b =  d3Collection.nest()
             //                     .key(getDate).sortKeys(d3Array.ascending)
@@ -905,18 +912,19 @@ define(function(require){
 
             // ensure order stays constant
             values = values
-                        .filter(v => !!v)
-                        .sort((a,b) => order.indexOf(a.name) > order.indexOf(b.name))
+                .filter(v => !!v)
+                .sort((a,b) => order.indexOf(a.name) > order.indexOf(b.name))
 
             values.forEach(({name}, index) => {
                 let marker = verticalMarkerContainer
-                                .append('g')
+                              .append('g')
                                 .classed('circle-container', true),
                     circleSize = 12;
 
                 accumulator = accumulator + values[index][valueLabel];
 
-                marker.append('circle')
+                marker
+                  .append('circle')
                     .classed('data-point-highlighter', true)
                     .attr('cx', circleSize)
                     .attr('cy', 0)
@@ -1118,6 +1126,21 @@ define(function(require){
                 return tooltipThreshold;
             }
             tooltipThreshold = _x;
+
+            return this;
+        };
+
+        /**
+         * Pass an override for the ordering of the topics
+         * @param  {String[]} _x           Array of the names of your tooltip items
+         * @return { String[] | module}    Current override order or Chart module to chain calls
+         * @public
+         */
+        exports.topicsOrder = function(_x) {
+            if (!arguments.length) {
+                return topicsOrder;
+            }
+            topicsOrder = _x;
 
             return this;
         };
