@@ -3,10 +3,10 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonFivePlusOther = require('json!../json/donutDataFivePlusOther.json'),
-        jsonFivePlusOtherNoPercent = require('json!../json/donutDataFivePlusOtherNoPercent.json'),
-        jsonOneZeroed = require('json!../json/donutDataOneZeroed.json'),
-        jsonThreeCategories = require('json!../json/donutDataThreeCategories.json');
+        jsonFivePlusOther = require('json-loader!../json/donutDataFivePlusOther.json'),
+        jsonFivePlusOtherNoPercent = require('json-loader!../json/donutDataFivePlusOtherNoPercent.json'),
+        jsonOneZeroed = require('json-loader!../json/donutDataOneZeroed.json'),
+        jsonThreeCategories = require('json-loader!../json/donutDataThreeCategories.json');
 
 
     function DonutDataBuilder(config) {

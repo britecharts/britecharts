@@ -11,7 +11,6 @@ module.exports = function(config) {
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
 
-
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
         frameworks: ['jasmine-jquery', 'jasmine'],
@@ -29,7 +28,6 @@ module.exports = function(config) {
             'node_modules/**/*Spec*'
         ],
 
-
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
@@ -42,7 +40,7 @@ module.exports = function(config) {
             type: 'text'
         },
 
-        webpack: webpackConfig,
+        webpack: webpackConfig('test'),
 
         webpackMiddleware: {
             noInfo: true
