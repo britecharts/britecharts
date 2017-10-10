@@ -3,12 +3,12 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonAllDatas = require('json!../json/lineDataAllDatas.json'),
-        jsonFiveTopics = require('json!../json/lineDataFiveTopics.json'),
-        jsonOneSource = require('json!../json/lineDataOneSet.json'),
-        jsonMultiMonthValueRange = require('json!../json/multiMonthLineData'),
-        jsonHourDateRange = require('json!../json/lineDataOneSetHourly.json'),
-        jsonSmallValueRange = require('json!../json/lineDataSmallValueRange');
+        jsonAllDatas = require('json-loader!../json/lineDataAllDatas.json'),
+        jsonFiveTopics = require('json-loader!../json/lineDataFiveTopics.json'),
+        jsonOneSource = require('json-loader!../json/lineDataOneSet.json'),
+        jsonMultiMonthValueRange = require('json-loader!../json/multiMonthLineData'),
+        jsonHourDateRange = require('json-loader!../json/lineDataOneSetHourly.json'),
+        jsonSmallValueRange = require('json-loader!../json/lineDataSmallValueRange');
 
 
     function LineDataBuilder(config) {

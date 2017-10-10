@@ -3,7 +3,7 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonOneSource = require('json!../json/sparklineOneSource.json');
+        jsonOneSource = require('json-loader!../json/sparklineOneSource.json');
 
 
     function SparklineDataBuilder(config){

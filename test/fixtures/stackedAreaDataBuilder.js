@@ -3,11 +3,11 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonThreeSources = require('json!../json/areaDataThreeSources.json'),
-        jsonSixSources = require('json!../json/areaDataSixSources.json'),
-        jsonSalesChannel = require('json!../json/areaDataSalesChannel.json'),
-        jsonReportService = require('json!../json/areaDataReportService.json'),
-        jsonLargeService = require('json!../json/areaDataLarge.json');
+        jsonThreeSources = require('json-loader!../json/areaDataThreeSources.json'),
+        jsonSixSources = require('json-loader!../json/areaDataSixSources.json'),
+        jsonSalesChannel = require('json-loader!../json/areaDataSalesChannel.json'),
+        jsonReportService = require('json-loader!../json/areaDataReportService.json'),
+        jsonLargeService = require('json-loader!../json/areaDataLarge.json');
 
 
     function StackedAreaDataBuilder(config){
