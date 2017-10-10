@@ -1,3 +1,19 @@
+2.0.2
+2.0.2 - Patch
+---------------------
+Features:
+* Moved into Webpack 3 (thanks @rwholey)
+* Allow empty data on Stacked Area (thanks @jaylumChen)
+* Added Outline to Stacked Area Chart (thanks @jaylumChen)
+* Added locale to brush and stacked bar charts (thanks @martinmanzo)
+* Added Ytick text offset to grouped bar chart (thanks @martinmanzo)
+
+Bug Fixes:
+* Fixed Donut + Legend bug
+* Fixed data reload on stacked bar chart and grouped bar chart
+* Updated docs, Donut demo and CDN links
+
+
 2.0.1 - Patch
 ---------------------
 Bug Fixes:
