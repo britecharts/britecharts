@@ -21,8 +21,7 @@ container.datum(dataset.data).call(stackedArea);
 
 chartTooltip
     .topicLabel('values')
-    .title('Testing tooltip')
-    .topicsOrder(['Organizer Channels', 'Eventbrite Channels']);
+    .title('Testing tooltip');
 
 tooltipContainer = d3.select('.metadata-group .vertical-marker-container');
 tooltipContainer.datum([]).call(chartTooltip);
@@ -44,6 +43,46 @@ tooltipContainer.datum([]).call(chartTooltip);
             <div class="col-md-8">
                 <h2 class="tutorial__heading">Stacked Area Chart with fixed Aspect Ratio</h2>
                 <div class="britechart js-stacked-area-chart-fixed-container card--chart"></div>
+            </div>
+            <div class="col-md-4 sidebar">
+                <h3>The code</h3>
+                <pre><code class="language-javascript">
+stackedArea
+    .tooltipThreshold(600)
+    .aspectRatio(0.6)
+    .grid('full')
+    .xAxisFormat('custom')
+    .xAxisCustomFormat('%Y/%m/%d')
+    .xTicks(2)
+    .width(containerWidth)
+    .dateLabel('date')
+    .valueLabel('views')
+    .on('customMouseOver', chartTooltip.show)
+    .on('customMouseMove', chartTooltip.update)
+    .on('customMouseOut', chartTooltip.hide);
+
+container.datum(dataset.data).call(stackedArea);
+
+// Tooltip Setup and start
+chartTooltip
+    .topicLabel('values')
+    .title('Tooltip Title');
+
+// Note that if the viewport width is less than the tooltipThreshold value,
+// this container won't exist, and the tooltip won't show up
+tooltipContainer = d3Selection.select('.js-stacked-area-chart-fixed-container .metadata-group .vertical-marker-container');
+tooltipContainer.datum([]).call(chartTooltip);
+                </code></pre>
+                <h4>Demo Code</h4>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-stacked-area.js">in github</a></p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h2 class="tutorial__heading">Stacked Area Chart with custom stack order</h2>
+                <div class="britechart js-stacked-area-chart-tooltip-bis-container card--chart"></div>
             </div>
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>

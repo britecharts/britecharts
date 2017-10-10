@@ -160,11 +160,10 @@ define(function(require){
         function buildSVG(container) {
             if (!svg) {
                 svg = d3Selection.select(container)
-                    .append('g')
+                  .append('g')
                     .classed('britechart britechart-tooltip', true)
                     .style('display', 'none');
                     
-
                 buildContainerGroups();
                 drawTooltip();
             }
@@ -211,7 +210,7 @@ define(function(require){
             tooltipTitle = tooltipTextContainer
               .append('text')
                 .classed('tooltip-title', true)
-                .attr('x', -tooltipWidth / 4 + 17)
+                .attr('x', -tooltipWidth / 4 + 16)
                 .attr('dy', '.35em')
                 .attr('y', 16)
                 .style('fill', titleFillColor);
@@ -219,7 +218,7 @@ define(function(require){
             tooltipDivider = tooltipTextContainer
               .append('line')
                 .classed('tooltip-divider', true)
-                .attr('x1', -tooltipWidth / 4 + 15)
+                .attr('x1', -tooltipWidth / 4 + 16)
                 .attr('x2', 265)
                 .attr('y1', 31)
                 .attr('y2', 31)
@@ -447,6 +446,7 @@ define(function(require){
                 .sort((a, b) => {
                     if (a.name > b.name) return 1;
                     if (a.name === b.name) return 0;
+
                     return -1;
                 });
 
@@ -704,8 +704,8 @@ define(function(require){
 
         /**
          * Pass an override for the ordering of your tooltip
-         * @param  {Object[]} _x                Array of the names of your tooltip items
-         * @return { overrideOrder | module}    Current overrideOrder or Chart module to chain calls
+         * @param  {String[]} _x           Array of the names of your tooltip items
+         * @return { String[] | module}    Current overrideOrder or Chart module to chain calls
          * @public
          */
         exports.topicsOrder = function(_x) {

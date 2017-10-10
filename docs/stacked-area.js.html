@@ -217,6 +217,11 @@
         formatDecimalValue
     } = require('./helpers/formatHelpers');
 
+    const {
+        addDays,
+        diffDays
+    } = require('./helpers/common');
+
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 
 
@@ -288,10 +293,12 @@
             tickPadding = 5,
 
             colorSchema = colorHelper.colorSchemas.britecharts,
+            lineGradient = colorHelper.colorGradients.greenBlue,
 
             areaOpacity = 0.24,
             categoryColorMap,
             order,
+            topicsOrder,
 
             xAxisFormat = null,
             xTicks = null,
@@ -348,6 +355,14 @@
             dateLabel = 'date',
             valueLabel = 'value',
             keyLabel = 'name',
+
+            emptyDataConfig = {
+                minDate: new Date(new Date().setDate(new Date().getDate()-30)),
+                maxDate: new Date(),
+                maxY: 500
+            },
+
+            isUsingFakeData = false,
 
             // getters
             getName = ({name}) => name,
@@ -529,13 +544,13 @@
                                         ), {});
 
             let totals = data.reduce((memo, item) => (
-                assign({}, memo, {[item.name]: memo[item.name]  += item.value})
+                assign({}, memo, {[item.name]: memo[item.name] += item.value})
             ), initialTotalsObject);
 
-            order = formatOrder(totals);
+            order = topicsOrder || formatOrder(totals);
 
             let stack3 = d3Shape.stack()
-                .keys(order)
+                .keys(order.reverse())
                 .order(d3Shape.stackOrderNone)
                 .offset(d3Shape.stackOffsetNone);
 
@@ -555,6 +570,7 @@
                 .sort((a, b) => {
                     if (totals[a] > totals[b]) return -1;
                     if (totals[a] === totals[b]) return 0;
+
                     return 1;
                 });
 
@@ -574,12 +590,14 @@
          * @private
          */
         function buildScales() {
+            const maxValueByDate = isUsingFakeData ? emptyDataConfig.maxY : getMaxValueByDate();
+
             xScale = d3Scale.scaleTime()
                 .domain(d3Array.extent(dataByDate, ({date}) => date))
                 .rangeRound([0, chartWidth]);
 
             yScale = d3Scale.scaleLinear()
-                .domain([0, getMaxValueByDate()])
+                .domain([0, maxValueByDate])
                 .rangeRound([chartHeight, 0])
                 .nice();
 
@@ -607,17 +625,46 @@
         }
 
         /**
+         * Creates fake data for when data is an empty array
+         * @return {array}      Fake data built from emptyDataConfig settings
+         */
+        function createFakeData() {
+            const numDays = diffDays(emptyDataConfig.minDate, emptyDataConfig.maxDate)
+            const emptyArray = Array.apply(null, Array(numDays));
+
+            isUsingFakeData = true;
+
+            return [
+                ...emptyArray.map((el, i) => ({
+                    [dateLabel]: addDays(emptyDataConfig.minDate, i),
+                    [valueLabel]: 0,
+                    [keyLabel]: '1',
+                })),
+                ...emptyArray.map((el, i) => ({
+                    [dateLabel]: addDays(emptyDataConfig.minDate, i),
+                    [valueLabel]: 0,
+                    [keyLabel]: '2',
+                }))
+            ];
+
+        }
+
+        /**
          * Parses dates and values into JS Date objects and numbers
          * @param  {obj} data Raw data from JSON file
          * @return {obj}      Parsed data with values and dates
          */
         function cleanData(data) {
-            return data.map((d) => {
+            data = data.length === 0 ? createFakeData() : data;
+
+            let cleanData = data.reduce((acc, d) => {
                 d.date = new Date(d[dateLabel]),
                 d.value = +d[valueLabel]
+    
+                return [...acc, d];
+            }, []);
 
-                return d;
-            });
+            return cleanData;
         }
 
         /**
@@ -664,33 +711,34 @@
             // Creates Dots on Data points
             var points = svg.select('.chart-group').selectAll('.dots')
                 .data(layers)
-              .enter().append('g')
-                .attr('class', 'dots')
-                .attr('d', ({values}) => area(values))
-                .attr('clip-path', 'url(#clip)');
+                .enter()
+                  .append('g')
+                    .attr('class', 'dots')
+                    .attr('d', ({values}) => area(values))
+                    .attr('clip-path', 'url(#clip)');
 
             // Processes the points
             // TODO: Optimize this code
             points.selectAll('.dot')
                 .data(({values}, index) => values.map((point) => ({index, point})))
                 .enter()
-                .append('circle')
-                .attr('class','dot')
-                .attr('r', () => pointsSize)
-                .attr('fill', () => pointsColor)
-                .attr('stroke-width', '0')
-                .attr('stroke', pointsBorderColor)
-                .attr('transform', function(d) {
-                    let {point} = d;
-                    let key = xScale(point.date);
+                  .append('circle')
+                    .attr('class','dot')
+                    .attr('r', () => pointsSize)
+                    .attr('fill', () => pointsColor)
+                    .attr('stroke-width', '0')
+                    .attr('stroke', pointsBorderColor)
+                    .attr('transform', function(d) {
+                        let {point} = d;
+                        let key = xScale(point.date);
 
-                    dataPoints[key] = dataPoints[key] || [];
-                    dataPoints[key].push(d);
+                        dataPoints[key] = dataPoints[key] || [];
+                        dataPoints[key].push(d);
 
-                    let {date, y, y0} = point;
+                        let {date, y, y0} = point;
 
-                    return `translate( ${xScale(date)}, ${yScale(y + y0)} )`;
-                });
+                        return `translate( ${xScale(date)}, ${yScale(y + y0)} )`;
+                    });
         }
 
         /**
@@ -703,7 +751,7 @@
                     .selectAll('line.horizontal-grid-line')
                     .data(yScale.ticks(yTicks))
                     .enter()
-                        .append('line')
+                      .append('line')
                         .attr('class', 'horizontal-grid-line')
                         .attr('x1', (-xAxisPadding.left - 30))
                         .attr('x2', chartWidth)
@@ -716,7 +764,7 @@
                     .selectAll('line.vertical-grid-line')
                     .data(xScale.ticks(xTicks))
                     .enter()
-                        .append('line')
+                      .append('line')
                         .attr('class', 'vertical-grid-line')
                         .attr('y1', 0)
                         .attr('y2', chartHeight)
@@ -729,12 +777,12 @@
                 .selectAll('line.extended-x-line')
                 .data([0])
                 .enter()
-              .append('line')
-                .attr('class', 'extended-x-line')
-                .attr('x1', (-xAxisPadding.left - 30))
-                .attr('x2', chartWidth)
-                .attr('y1', height - margin.bottom - margin.top)
-                .attr('y2', height - margin.bottom - margin.top);
+                  .append('line')
+                    .attr('class', 'extended-x-line')
+                    .attr('x1', (-xAxisPadding.left - 30))
+                    .attr('x2', chartWidth)
+                    .attr('y1', height - margin.bottom - margin.top)
+                    .attr('y2', height - margin.bottom - margin.top);
         }
 
         /**
@@ -743,7 +791,7 @@
          */
         function drawHoverOverlay() {
             overlay = svg.select('.metadata-group')
-                .append('rect')
+              .append('rect')
                 .attr('class', 'overlay')
                 .attr('y1', 0)
                 .attr('y2', chartHeight)
@@ -753,11 +801,50 @@
                 .style('display', 'none');
         }
 
+        function drawEmptyDataLine() {
+            let series;
+
+            let emptyDataLine = d3Shape.line()
+                .x( (d) => xScale(d.date) )
+                .y( () => yScale(0) - 1 );
+
+            let chartGroup = svg.select('.chart-group');
+
+            chartGroup
+              .append('path')
+                .attr('class', 'empty-data-line')
+                .attr('d', emptyDataLine(dataByDateFormatted))
+                .style('stroke', 'url(#empty-data-line-gradient)');
+
+            chartGroup
+              .append('linearGradient')
+                .attr('id', 'empty-data-line-gradient')
+                .attr('gradientUnits', 'userSpaceOnUse')
+                .attr('x1', 0)
+                .attr('x2', xScale(data[data.length - 1].date))
+                .attr('y1', 0)
+                .attr('y2', 0)
+                .selectAll('stop')
+                .data([
+                    {offset: '0%', color: lineGradient[0]},
+                    {offset: '100%', color: lineGradient[1]}
+                ])
+                .enter()
+                  .append('stop')
+                    .attr('offset', ({offset}) => offset)
+                    .attr('stop-color', ({color}) => color);
+        }
+
         /**
          * Draws the different areas into the chart-group element
          * @private
          */
         function drawStackedAreas() {
+            if (isUsingFakeData) {
+                drawEmptyDataLine();
+                return;
+            }
+
             let series;
 
             area = d3Shape.area()
@@ -856,7 +943,7 @@
          */
         function drawVerticalMarker() {
             verticalMarkerContainer = svg.select('.metadata-group')
-                .append('g')
+              .append('g')
                 .attr('class', 'vertical-marker-container')
                 .attr('transform', 'translate(9999, 0)');
 
@@ -868,12 +955,12 @@
                     y2: 0
                 }])
                 .enter()
-              .append('line')
-                .classed('vertical-marker', true)
-                .attr('x1', 0)
-                .attr('y1', chartHeight)
-                .attr('x2', 0)
-                .attr('y2', 0);
+                  .append('line')
+                    .classed('vertical-marker', true)
+                    .attr('x1', 0)
+                    .attr('y1', chartHeight)
+                    .attr('x2', 0)
+                    .attr('y2', 0);
         }
 
         /**
@@ -892,15 +979,15 @@
          */
         function getDataByDate(data) {
             return d3Collection.nest()
-                                .key(getDate)
-                                .entries(
-                                    data.sort((a, b) => a.date - b.date)
-                                )
-                                .map(d => {
-                                    return assign({}, d, {
-                                        date: new Date(d.key)
-                                    });
-                                });
+                .key(getDate)
+                .entries(
+                    data.sort((a, b) => a.date - b.date)
+                )
+                .map(d => {
+                    return assign({}, d, {
+                        date: new Date(d.key)
+                    });
+                });
 
             // let b =  d3Collection.nest()
             //                     .key(getDate).sortKeys(d3Array.ascending)
@@ -1015,18 +1102,19 @@
 
             // ensure order stays constant
             values = values
-                        .filter(v => !!v)
-                        .sort((a,b) => order.indexOf(a.name) > order.indexOf(b.name))
+                .filter(v => !!v)
+                .sort((a,b) => order.indexOf(a.name) > order.indexOf(b.name))
 
             values.forEach(({name}, index) => {
                 let marker = verticalMarkerContainer
-                                .append('g')
+                              .append('g')
                                 .classed('circle-container', true),
                     circleSize = 12;
 
                 accumulator = accumulator + values[index][valueLabel];
 
-                marker.append('circle')
+                marker
+                  .append('circle')
                     .classed('data-point-highlighter', true)
                     .attr('cx', circleSize)
                     .attr('cy', 0)
@@ -1053,7 +1141,7 @@
          * @private
          */
         function shouldShowTooltip() {
-            return width > tooltipThreshold;
+            return width > tooltipThreshold &amp;&amp; !isUsingFakeData;
         }
 
 
@@ -1115,6 +1203,21 @@
                 return dateLabel;
             }
             dateLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the emptyDataConfig of the chart
+         * @param  {Object} _x emptyDataConfig object to get/set
+         * @return { Object | module} Current config for when chart data is an empty array
+         * @public
+         */
+        exports.emptyDataConfig = function(_x) {
+            if (!arguments.length) {
+                return emptyDataConfig;
+            }
+            emptyDataConfig = _x;
 
             return this;
         };
@@ -1213,6 +1316,21 @@
                 return tooltipThreshold;
             }
             tooltipThreshold = _x;
+
+            return this;
+        };
+
+        /**
+         * Pass an override for the ordering of the topics
+         * @param  {String[]} _x           Array of the names of your tooltip items
+         * @return { String[] | module}    Current override order or Chart module to chain calls
+         * @public
+         */
+        exports.topicsOrder = function(_x) {
+            if (!arguments.length) {
+                return topicsOrder;
+            }
+            topicsOrder = _x;
 
             return this;
         };
@@ -1360,6 +1478,7 @@
 
             return this;
         };
+
 
         return exports;
     };
