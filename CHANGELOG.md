@@ -1,6 +1,4 @@
-2.0.3
-2.0.2
-2.0.2 - Patch
+2.0.3 - Patch
 ---------------------
 Features:
 * Moved into Webpack 3 (thanks @rwholey)
@@ -14,6 +12,7 @@ Bug Fixes:
 * Fixed data reload on stacked bar chart and grouped bar chart
 * Updated docs, Donut demo and CDN links
 
+2.0.2 - Failed release
 
 2.0.1 - Patch
 ---------------------
