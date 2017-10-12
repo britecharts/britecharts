@@ -1,36 +1,37 @@
 'use strict';
 
-var d3Selection = require('d3-selection'),
+const d3Selection = require('d3-selection');
+const PubSub = require('pubsub-js');
 
-    PubSub = require('pubsub-js'),
+const stackedAreaChart = require('./../src/charts/stacked-area');
+const colors = require('./../src/charts/helpers/colors');
+const tooltip = require('./../src/charts/tooltip');
 
-    colors = require('./../src/charts/helpers/colors'),
-
-    stackedAreaChart = require('./../src/charts/stacked-area'),
-    tooltip = require('./../src/charts/tooltip'),
-    stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder'),
-    colorSelectorHelper = require('./helpers/colorSelector');
+const stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder');
+const colorSelectorHelper = require('./helpers/colorSelector');
+let redrawCharts;
     
 require('./helpers/resizeHelper');
+
+const aTestDataSet = () => new stackedDataBuilder.StackedAreaDataBuilder();
 
 const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 
 function createStackedAreaChartWithTooltip(optionalColorSchema) {
-    var stackedArea = stackedAreaChart(),
+    let stackedArea = stackedAreaChart(),
         chartTooltip = tooltip(),
-        testDataSet = new stackedDataBuilder.StackedAreaDataBuilder(),
         container = d3Selection.select('.js-stacked-area-chart-tooltip-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
 
     if (containerWidth) {
-        // dataset = testDataSet.withReportData().build();
-        // dataset = testDataSet.with3Sources().build();
-        dataset = testDataSet.with6Sources().build();
-        // dataset = testDataSet.withLargeData().build();
-        // dataset = testDataSet.withGeneratedData().build();
-        // dataset = testDataSet.withSalesChannelData().build();
+        // dataset = aTestDataSet().withReportData().build();
+        // dataset = aTestDataSet().with3Sources().build();
+        dataset = aTestDataSet().with6Sources().build();
+        // dataset = aTestDataSet().withLargeData().build();
+        // dataset = aTestDataSet().withGeneratedData().build();
+        // dataset = aTestDataSet().withSalesChannelData().build();
 
         // StackedAreChart Setup and start
         stackedArea
@@ -61,25 +62,26 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
         tooltipContainer.datum([]).call(chartTooltip);
 
         d3Selection.select('#button').on('click', function() {
-                stackedArea.exportChart('stacked-area.png', 'Britecharts Stacked Area');
+            stackedArea.exportChart('stacked-area.png', 'Britecharts Stacked Area');
         });
+
+        return stackedArea;
     }
 }
 
 function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
-    var stackedArea = stackedAreaChart(),
+    let stackedArea = stackedAreaChart(),
         chartTooltip = tooltip(),
-        testDataSet = new stackedDataBuilder.StackedAreaDataBuilder(),
         container = d3Selection.select('.js-stacked-area-chart-fixed-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
 
     if (containerWidth) {
-        // dataset = testDataSet.withReportData().build();
-        dataset = testDataSet.with3Sources().build();
-        // dataset = testDataSet.with6Sources().build();
-        // dataset = testDataSet.withLargeData().build();
+        // dataset = aTestDataSet().withReportData().build();
+        dataset = aTestDataSet().with3Sources().build();
+        // dataset = aTestDataSet().with6Sources().build();
+        // dataset = aTestDataSet().withLargeData().build();
 
         // StackedAreChart Setup and start
         stackedArea
@@ -115,16 +117,15 @@ function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
 }
 
 function createStackedAreaChartWithSyncedTooltip() {
-    var stackedArea = stackedAreaChart(),
+    let stackedArea = stackedAreaChart(),
         chartTooltip = tooltip(),
-        testDataSet = new stackedDataBuilder.StackedAreaDataBuilder(),
         container = d3Selection.select('.js-stacked-area-chart-tooltip-bis-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
 
     if (containerWidth) {
-        dataset = testDataSet.withSalesChannelData().build();
+        dataset = aTestDataSet().withSalesChannelData().build();
 
         // StackedAreChart Setup and start
         stackedArea
@@ -169,15 +170,24 @@ function createStackedAreaChartWithSyncedTooltip() {
 
 if (d3Selection.select('.js-stacked-area-chart-tooltip-container').node()){
     // Chart creation
-    createStackedAreaChartWithTooltip();
+    const chart = createStackedAreaChartWithTooltip();
     createStackedAreaChartWithFixedAspectRatio();
     createStackedAreaChartWithSyncedTooltip();
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
-    var redrawCharts = function(){
-        d3Selection.selectAll('.stacked-area').remove();
-        createStackedAreaChartWithTooltip();
+    redrawCharts = function(){
+        let container = d3Selection.select('.js-stacked-area-chart-tooltip-container');
+        let containerWidth = container.node() ? container.node().getBoundingClientRect().width : false;
+
+        chart
+            .width(containerWidth)
+            .dateLabel('date')
+            .valueLabel('views');
+
+        // d3Selection.selectAll('.stacked-area').remove();
+        container.datum(aTestDataSet().with3Sources().build().data).call(chart)
+        // createStackedAreaChartWithTooltip();
         createStackedAreaChartWithFixedAspectRatio();
         createStackedAreaChartWithSyncedTooltip();
     };
