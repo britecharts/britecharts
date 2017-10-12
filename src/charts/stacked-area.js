@@ -107,6 +107,8 @@ define(function(require){
 
             areaOpacity = 0.24,
             highlightCircleSize = 12,
+            highlightCircleRadius = 5,
+            highlightCircleStroke = 2,            
             categoryColorMap,
             order,
             topicsOrder,
@@ -944,8 +946,8 @@ define(function(require){
                                     .classed('data-point-highlighter', true)
                                     .attr('cx', highlightCircleSize)
                                     .attr('cy', 0)
-                                    .attr('r', 5)
-                                    .style('stroke-width', 2)
+                                    .attr('r', highlightCircleRadius)
+                                    .style('stroke-width', highlightCircleStroke)
                                     .style('stroke', categoryColorMap[d.name])
                                     .on('touchstart click', function() {
                                         handleHighlightClick(this, d);

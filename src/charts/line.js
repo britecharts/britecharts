@@ -139,7 +139,8 @@ define(function(require){
             },
             monthAxisPadding = 28,
             tickPadding = 5,
-            highLightCircleSize = 12,
+            highlightCircleSize = 12,
+            highlightCircleStroke = 2,
             colorSchema = colorHelper.colorSchemas.britecharts,
             singleLineGradientColors = colorHelper.colorGradients.greenBlue,
             topicColorMap,
@@ -768,10 +769,10 @@ define(function(require){
                                 .classed('circle-container', true)
                                   .append('circle')
                                     .classed('data-point-highlighter', true)
-                                    .attr('cx', highLightCircleSize)
+                                    .attr('cx', highlightCircleSize)
                                     .attr('cy', 0)
                                     .attr('r', 5)
-                                    .style('stroke-width', 2)                    
+                                    .style('stroke-width', highlightCircleStroke)                    
                                     .style('stroke', topicColorMap[d.name])
                                     .on('touchstart click', function() {
                                         handleHighlightClick(this, d);
@@ -781,7 +782,7 @@ define(function(require){
                 const x = xScale(new Date(dataPoint.topics[index].date));
                 const y = getPathYFromX(x, path, d.name);
                 
-                marker.attr('transform', `translate( ${(-highLightCircleSize)}, ${y} )` );
+                marker.attr('transform', `translate( ${(-highlightCircleSize)}, ${y} )` );
             });
         }
 
