@@ -64,7 +64,10 @@ define(function(require){
             yScale,
 
             areaGradient = ['#F5FDFF', '#F6FEFC'],
+            areaGradientEl,
             lineGradient = colorHelper.colorGradients.greenBlue,
+            lineGradientEl,
+            maskingClip,
 
             svg,
             chartWidth, chartHeight,
@@ -76,6 +79,8 @@ define(function(require){
             ease = d3Ease.easeQuadInOut,
 
             line,
+            area,
+            circle,
 
             markerSize = 1.5,
 
@@ -181,7 +186,12 @@ define(function(require){
         function createGradients() {
             let metadataGroup = svg.select('.metadata-group');
 
-            metadataGroup.append('linearGradient')
+            if (areaGradientEl || lineGradientEl) {
+                svg.selectAll('#sparkline-area-gradient').remove();
+                svg.selectAll('#sparkline-line-gradient').remove();
+            }
+
+            areaGradientEl = metadataGroup.append('linearGradient')
                 .attr('id', 'sparkline-area-gradient')
                 .attr('gradientUnits', 'userSpaceOnUse')
                 .attr('x1', 0)
@@ -197,7 +207,7 @@ define(function(require){
                 .attr('offset', ({offset}) => offset)
                 .attr('stop-color', ({color}) => color);
 
-            metadataGroup.append('linearGradient')
+            lineGradientEl = metadataGroup.append('linearGradient')
                 .attr('id', 'sparkline-line-gradient')
                 .attr('gradientUnits', 'userSpaceOnUse')
                 .attr('x1', 0)
@@ -221,13 +231,17 @@ define(function(require){
          * @return {void}
          */
         function createMaskingClip() {
+            if (maskingClip) {
+                svg.selectAll('#maskingClip').remove();
+            }
+
             if (isAnimated) {
-                svg.select('.metadata-group')
-                    .append('clipPath')
+                maskingClip = svg.select('.metadata-group')
+                  .append('clipPath')
                     .attr('id', 'maskingClip')
-                  .append('rect')
-                    .attr('width', 0)
-                    .attr('height', height);
+                      .append('rect')
+                        .attr('width', 0)
+                        .attr('height', height);
 
                 d3Selection.select('#maskingClip rect')
                     .transition()
@@ -242,7 +256,11 @@ define(function(require){
          * @private
          */
         function drawArea(){
-            let area = d3Shape.area()
+            if (area) {
+                svg.selectAll('.sparkline-area').remove();
+            }
+
+            area = d3Shape.area()
                 .x(({date}) => xScale(date))
                 .y0(() => yScale(0))
                 .y1(({value}) => yScale(value))
@@ -261,6 +279,10 @@ define(function(require){
          * @private
          */
         function drawLine(){
+            if (line) {
+                svg.selectAll('.line').remove();
+            }
+
             line = d3Shape.line()
                 .curve(d3Shape.curveBasis)
                 .x(({date}) => xScale(date))
@@ -278,7 +300,11 @@ define(function(require){
          * Draws a marker at the end of the sparkline
          */
         function drawEndMarker(){
-            svg.selectAll('.chart-group')
+            if (circle) {
+                svg.selectAll('.sparkline-circle').remove();
+            }
+
+            circle = svg.selectAll('.chart-group')
               .append('circle')
                 .attr('class', 'sparkline-circle')
                 .attr('cx', xScale(data[data.length - 1].date))
@@ -286,7 +312,22 @@ define(function(require){
                 .attr('r', markerSize);
         }
 
-        // Accessors
+        // API
+
+        /**
+         * Gets or Sets the areaGradient of the chart
+         * @param  {String[]} _x Desired areaGradient for the graph
+         * @return { areaGradient | module} Current areaGradient or Chart module to chain calls
+         * @public
+         */
+        exports.areaGradient = function(_x) {
+            if (!arguments.length) {
+                return areaGradient;
+            }
+            areaGradient = _x;
+            return this;
+        };
+    
         /**
          * Gets or Sets the dateLabel of the chart
          * @param  {Number} _x Desired dateLabel for the graph
@@ -318,31 +359,11 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the areaGradient of the chart
-         * @param  {String[]} _x Desired areaGradient for the graph
-         * @return { areaGradient | module} Current areaGradient or Chart module to chain calls
+         * Chart exported to png and a download action is fired
          * @public
          */
-        exports.areaGradient = function(_x) {
-            if (!arguments.length) {
-                return areaGradient;
-            }
-            areaGradient = _x;
-            return this;
-        };
-
-        /**
-         * Gets or Sets the lineGradient of the chart
-         * @param  {String[]} _x Desired lineGradient for the graph
-         * @return { lineGradient | module} Current lineGradient or Chart module to chain calls
-         * @public
-         */
-        exports.lineGradient = function(_x) {
-            if (!arguments.length) {
-                return lineGradient;
-            }
-            lineGradient = _x;
-            return this;
+        exports.exportChart = function(filename, title) {
+            exportChart.call(exports, svg, filename, title);
         };
 
         /**
@@ -378,6 +399,20 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the lineGradient of the chart
+         * @param  {String[]} _x Desired lineGradient for the graph
+         * @return { lineGradient | module} Current lineGradient or Chart module to chain calls
+         * @public
+         */
+        exports.lineGradient = function(_x) {
+            if (!arguments.length) {
+                return lineGradient;
+            }
+            lineGradient = _x;
+            return this;
+        };
+
+        /**
          * Gets or Sets the margin of the chart
          * @param  {Object} _x Margin object to get/set
          * @return { margin | module} Current margin or Chart module to chain calls
@@ -388,21 +423,6 @@ define(function(require){
                 return margin;
             }
             margin = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets the width of the chart
-         * @param  {Number} _x Desired width for the graph
-         * @return { width | module} Current width or Chart module to chain calls
-         * @public
-         */
-        exports.width = function(_x) {
-            if (!arguments.length) {
-                return width;
-            }
-            width = _x;
 
             return this;
         };
@@ -423,11 +443,18 @@ define(function(require){
         };
 
         /**
-         * Chart exported to png and a download action is fired
+         * Gets or Sets the width of the chart
+         * @param  {Number} _x Desired width for the graph
+         * @return { width | module} Current width or Chart module to chain calls
          * @public
          */
-        exports.exportChart = function(filename, title) {
-            exportChart.call(exports, svg, filename, title);
+        exports.width = function(_x) {
+            if (!arguments.length) {
+                return width;
+            }
+            width = _x;
+
+            return this;
         };
 
         return exports;

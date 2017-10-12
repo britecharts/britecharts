@@ -13,16 +13,19 @@ define([
     ) {
     'use strict';
 
+    const aTestDataSet = () => new dataBuilder.SparklineDataBuilder();    
+    const buildDataSet = (dataSetName) => {
+        return aTestDataSet()
+            [dataSetName]()
+            .build();
+    };
+
+    const hasClass = (element, className) => {
+        return _.contains(element[0][0].classList, className);
+    };
+
     describe('Sparkline Chart', () => {
         let dataset, containerFixture, f, sparklineChart;
-
-        function aTestDataSet() {
-            return new dataBuilder.SparklineDataBuilder();
-        }
-
-        function hasClass(element, className) {
-            return _.contains(element[0][0].classList, className);
-        }
 
         beforeEach(() => {
             dataset = aTestDataSet().with1Source().build();
@@ -68,6 +71,45 @@ define([
 
         it('should create a gradient for the line', () => {
             expect(containerFixture.selectAll('#sparkline-line-gradient').empty()).toEqual(false);
+        });
+
+        describe('when reloading with a different dataset', () => {
+            
+            it('should render in the same svg', function() {
+                let actual;
+                let expected = 1;
+                let newDataset = buildDataSet('withLowValues');
+
+                containerFixture.datum(newDataset.data).call(sparklineChart);
+
+                actual = containerFixture.selectAll('.sparkline').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render one line', function() {
+                let actual;
+                let expected = 1;
+                let newDataset = buildDataSet('withLowValues');
+
+                containerFixture.datum(newDataset.data).call(sparklineChart);
+
+                actual = containerFixture.selectAll('.sparkline .line').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render one area', function() {
+                let actual;
+                let expected = 1;
+                let newDataset = buildDataSet('withLowValues');
+
+                containerFixture.datum(newDataset.data).call(sparklineChart);
+
+                actual = containerFixture.selectAll('.sparkline .sparkline-area').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
         });
 
         describe('when isAnimated is true', () => {

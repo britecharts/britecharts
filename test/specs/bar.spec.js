@@ -60,7 +60,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             expect(containerFixture.selectAll('.bar').size()).toEqual(numBars);
         });
 
-        describe('when reloading with a three sources dataset', () => {
+        describe('when reloading with a different dataset', () => {
             
             it('should render in the same svg', function() {
                 let actual;
