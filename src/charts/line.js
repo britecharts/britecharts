@@ -226,8 +226,8 @@ define(function(require){
                 createMaskingClip();
 
                 if (shouldShowTooltip()) {
-                    drawVerticalMarker();
                     drawHoverOverlay();
+                    drawVerticalMarker();
                     addMouseEvents();
                 }
             });
