@@ -118,6 +118,7 @@ define(function(require){
             baseLine,
 
             layers,
+            series,
             layersInitial,
             area,
             areaOutline,
@@ -348,14 +349,15 @@ define(function(require){
                     });
                 });
 
-            let initialTotalsObject = uniq(data.map(({name}) => name))
+            let initialTotalsObject = uniq(data.map(getName))
                                         .reduce((memo, key) => (
                                             assign({}, memo, {[key]: 0})
                                         ), {});
 
-            let totals = data.reduce((memo, item) => (
-                assign({}, memo, {[item.name]: memo[item.name] += item.value})
-            ), initialTotalsObject);
+            let totals = data
+                .reduce((memo, item) => (
+                    assign({}, memo, {[item.name]: memo[item.name] += item.value})
+                ), initialTotalsObject);
 
             order = topicsOrder || formatOrder(totals);
 
@@ -611,9 +613,11 @@ define(function(require){
                 .style('display', 'none');
         }
 
+        /**
+         * Draws an empty line when the data is all zero
+         * @private
+         */
         function drawEmptyDataLine() {
-            let series;
-
             let emptyDataLine = d3Shape.line()
                 .x( (d) => xScale(d.date) )
                 .y( () => yScale(0) - 1 );
@@ -650,12 +654,17 @@ define(function(require){
          * @private
          */
         function drawStackedAreas() {
-            if (isUsingFakeData) {
-                drawEmptyDataLine();
-                return;
+            // Not ideal, we need to figure out how to call exit for nested elements
+            if (series) {
+                svg.selectAll('.layer').remove();
+                svg.selectAll('.area-outline').remove();
             }
 
-            let series;
+            if (isUsingFakeData) {
+                drawEmptyDataLine();
+                
+                return;
+            }
 
             area = d3Shape.area()
                 .curve(d3Shape.curveMonotoneX)
@@ -1151,6 +1160,7 @@ define(function(require){
          * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
          * @param  {String} _x  must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
          * @return { (String|Module) }    Current locale or module to chain calls
+         * @public
          */
         exports.locale = function(_x) {
             if (!arguments.length) {
@@ -1230,6 +1240,7 @@ define(function(require){
          * NOTE: localization not supported
          * @param  {String} _x              Desired format for x axis
          * @return {String | Module}      Current format or module to chain calls
+         * @public
          */
         exports.xAxisCustomFormat = function(_x) {
             if (!arguments.length) {
@@ -1244,6 +1255,7 @@ define(function(require){
          * Exposes the ability to force the chart to show a certain x axis grouping
          * @param  {String} _x Desired format
          * @return {String | Module}    Current format or module to chain calls
+         * @public
          * @example
          *     area.xAxisFormat(area.axisTimeCombinations.HOUR_DAY)
          */
@@ -1263,6 +1275,7 @@ define(function(require){
          *
          * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
          * @return {Number | Module}      Current number or ticks or module to chain calls
+         * @public
          */
         exports.xTicks = function(_x) {
             if (!arguments.length) {
