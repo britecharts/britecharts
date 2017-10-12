@@ -13,9 +13,12 @@ define([
     ) {
     'use strict';
 
-    function aTestDataSet() {
-        return new dataBuilder.StackedAreaDataBuilder();
-    }
+    const aTestDataSet = () => new dataBuilder.StackedAreaDataBuilder();    
+    const buildDataSet = (dataSetName) => {
+        return aTestDataSet()
+            [dataSetName]()
+            .build();
+    };
 
     function hasClass(element, className) {
         return _.contains(element.node().classList, className);
@@ -166,6 +169,45 @@ define([
 
         it('should be able to render even when data is length 0', () => {
             expect(() => containerFixture.datum([]).call(stackedAreaChart)).not.toThrow();
+        });
+
+        describe('when reloading with a three sources dataset', () => {
+            
+            it('should render in the same svg', function() {
+                let actual;
+                let expected = 1;
+                let newDataset = buildDataSet('with3Sources');
+
+                containerFixture.datum(newDataset.data).call(stackedAreaChart);
+
+                actual = containerFixture.selectAll('.stacked-area').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render three layers', function() {
+                let actual;
+                let expected = 3;
+                let newDataset = buildDataSet('with3Sources');
+
+                containerFixture.datum(newDataset.data).call(stackedAreaChart);
+
+                actual = containerFixture.selectAll('.stacked-area .layer').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render three area outlines', function() {
+                let actual;
+                let expected = 3;
+                let newDataset = buildDataSet('with3Sources');
+
+                containerFixture.datum(newDataset.data).call(stackedAreaChart);
+
+                actual = containerFixture.selectAll('.stacked-area .area-outline').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
         });
 
         describe('API', function() {
