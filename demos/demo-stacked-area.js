@@ -64,8 +64,6 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
         d3Selection.select('#button').on('click', function() {
             stackedArea.exportChart('stacked-area.png', 'Britecharts Stacked Area');
         });
-
-        return stackedArea;
     }
 }
 
@@ -170,24 +168,15 @@ function createStackedAreaChartWithSyncedTooltip() {
 
 if (d3Selection.select('.js-stacked-area-chart-tooltip-container').node()){
     // Chart creation
-    const chart = createStackedAreaChartWithTooltip();
+    createStackedAreaChartWithTooltip();
     createStackedAreaChartWithFixedAspectRatio();
     createStackedAreaChartWithSyncedTooltip();
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
     redrawCharts = function(){
-        let container = d3Selection.select('.js-stacked-area-chart-tooltip-container');
-        let containerWidth = container.node() ? container.node().getBoundingClientRect().width : false;
-
-        chart
-            .width(containerWidth)
-            .dateLabel('date')
-            .valueLabel('views');
-
-        // d3Selection.selectAll('.stacked-area').remove();
-        container.datum(aTestDataSet().with3Sources().build().data).call(chart)
-        // createStackedAreaChartWithTooltip();
+        d3Selection.selectAll('.stacked-area').remove();
+        createStackedAreaChartWithTooltip();
         createStackedAreaChartWithFixedAspectRatio();
         createStackedAreaChartWithSyncedTooltip();
     };
