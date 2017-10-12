@@ -602,6 +602,11 @@ define(function(require){
          * @private
          */
         function drawHoverOverlay() {
+            // Not ideal, we need to figure out how to call exit for nested elements
+            if (overlay) {
+                svg.selectAll('.overlay').remove();
+            }
+
             overlay = svg.select('.metadata-group')
               .append('rect')
                 .attr('class', 'overlay')
@@ -656,6 +661,7 @@ define(function(require){
         function drawStackedAreas() {
             // Not ideal, we need to figure out how to call exit for nested elements
             if (series) {
+                svg.selectAll('.layer-container').remove();
                 svg.selectAll('.layer').remove();
                 svg.selectAll('.area-outline').remove();
             }
@@ -761,6 +767,11 @@ define(function(require){
          * @return void
          */
         function drawVerticalMarker() {
+            // Not ideal, we need to figure out how to call exit for nested elements
+            if (verticalMarkerContainer) {
+                svg.selectAll('.vertical-marker-container').remove();
+            }
+
             verticalMarkerContainer = svg.select('.metadata-group')
               .append('g')
                 .attr('class', 'vertical-marker-container')
