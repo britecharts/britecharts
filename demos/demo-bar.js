@@ -8,17 +8,18 @@ const miniTooltip = require('./../src/charts/mini-tooltip');
 const colors = require('./../src/charts/helpers/colors');
 const dataBuilder = require('./../test/fixtures/barChartDataBuilder');
 
+const aTestDataSet = () => new dataBuilder.BarDataBuilder();
+
 require('./helpers/resizeHelper');
 
 function createSimpleBarChart() {
     let barChart = bar(),
-        testDataSet = new dataBuilder.BarDataBuilder(),
         barContainer = d3Selection.select('.js-bar-chart-container'),
         containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
         dataset;
 
     if (containerWidth) {
-        dataset = testDataSet.withLettersFrequency().build();
+        dataset = aTestDataSet().withLettersFrequency().build();
 
         barChart
             .width(containerWidth)
@@ -31,14 +32,13 @@ function createSimpleBarChart() {
 function createHorizontalBarChart() {
     let barChart = bar(),
         tooltip = miniTooltip(),
-        testDataSet = new dataBuilder.BarDataBuilder(),
         barContainer = d3Selection.select('.js-horizontal-bar-chart-container'),
         containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
 
     if (containerWidth) {
-        dataset = testDataSet.withColors().build();
+        dataset = aTestDataSet().withColors().build();
 
         barChart
             .isHorizontal(true)
@@ -68,7 +68,6 @@ function createHorizontalBarChart() {
 function createBarChartWithTooltip() {
     let barChart = bar(),
         tooltip = miniTooltip(),
-        testDataSet = new dataBuilder.BarDataBuilder(),
         barContainer = d3Selection.select('.js-bar-chart-tooltip-container'),
         containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
         tooltipContainer,
@@ -79,7 +78,7 @@ function createBarChartWithTooltip() {
             barChart.exportChart('barchart.png', 'Britecharts Bar Chart');
         });
 
-        dataset = testDataSet.withLettersFrequency().build();
+        dataset = aTestDataSet().withLettersFrequency().build();
 
         barChart
             .width(containerWidth)
@@ -105,7 +104,6 @@ if (d3Selection.select('.js-bar-chart-tooltip-container').node()){
     
     let redrawCharts = function(){
         d3Selection.selectAll('.bar-chart').remove();
-        
         createBarChartWithTooltip();
         createHorizontalBarChart();
         createSimpleBarChart();
