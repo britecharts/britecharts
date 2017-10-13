@@ -616,48 +616,48 @@
          * @return {obj}                Parsed data with dataByTopic and dataByDate
          */
         function cleanData({dataByTopic, dataByDate}) {
-
-            if (dataByTopic) {
-                let flatData = [];
-
-                dataByTopic.forEach((topic) => {
-                    topic.dates.forEach((date) => {
-                        flatData.push({
-                            topicName: topic[topicNameLabel],
-                            name: topic[topicLabel],
-                            date: date[dateLabel],
-                            value: date[valueLabel]
-                        });
-                    });
-                });
-
-                // Nest data by date and format
-                dataByDate = d3Collection.nest()
-                                .key( getDate )
-                                .entries(flatData)
-                                .map((d) => {
-                                    return {
-                                        date: new Date(d.key),
-                                        topics: d.values
-                                    }
-                                });
-
-                // Normalize dates in keys
-                dataByDate = dataByDate.map((d) => {
-                    d.date = new Date(d.date);
-
-                    return d;
-                });
-
-                // Normalize dataByTopic
-                dataByTopic.forEach(function(kv) {
-                    kv.dates.forEach(function(d) {
-                        d.date = new Date(d[dateLabel]);
-                        d.value = +d[valueLabel];
-                    });
-                });
-
+            if (!dataByTopic) {
+                throw new Error('Data needs to have a dataByTopic property');
             }
+
+            let flatData = [];
+
+            dataByTopic.forEach((topic) => {
+                topic.dates.forEach((date) => {
+                    flatData.push({
+                        topicName: topic[topicNameLabel],
+                        name: topic[topicLabel],
+                        date: date[dateLabel],
+                        value: date[valueLabel]
+                    });
+                });
+            });
+
+            // Nest data by date and format
+            dataByDate = d3Collection.nest()
+                            .key( getDate )
+                            .entries(flatData)
+                            .map((d) => {
+                                return {
+                                    date: new Date(d.key),
+                                    topics: d.values
+                                }
+                            });
+
+            // Normalize dates in keys
+            dataByDate = dataByDate.map((d) => {
+                d.date = new Date(d.date);
+
+                return d;
+            });
+
+            // Normalize dataByTopic
+            dataByTopic.forEach(function(kv) {
+                kv.dates.forEach(function(d) {
+                    d.date = new Date(d[dateLabel]);
+                    d.value = +d[valueLabel];
+                });
+            });
 
             return {dataByTopic, dataByDate};
         }

@@ -107,6 +107,7 @@ define(function(require){
          * @param  {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
          * @param {object} _data The data to attach and generate the chart
+         * @private
          */
         function exports(_selection) {
             _selection.each(function(_data){
@@ -116,6 +117,7 @@ define(function(require){
 
                 buildColorScale();
                 buildSVG(this);
+
                 if (isHorizontal) {
                     drawHorizontalLegend();
                 } else {
@@ -128,6 +130,7 @@ define(function(require){
          * Depending on the size of the horizontal legend, we are going to either
          * center the legend or add a new line with the last entry of the legend
          * @return {void}
+         * @private
          */
         function adjustLines() {
             let lineWidth = svg.select('.legend-line').node().getBoundingClientRect().width;
@@ -188,6 +191,7 @@ define(function(require){
         /**
          * Centers the legend on the chart given that is a single line of labels
          * @return {void}
+         * @private
          */
         function centerLegendOnSVG() {
             let legendGroupSize = svg.select('g.legend-container-group').node().getBoundingClientRect().width;
@@ -201,6 +205,7 @@ define(function(require){
 
         /**
          * Removes the faded class from all the entry lines
+         * @private
          */
         function cleanFadedLines() {
             svg.select('.legend-group')
@@ -335,6 +340,7 @@ define(function(require){
         /**
          * Applies the faded class to all lines but the one that has the given id
          * @param  {number} exceptionItemId Id of the line that needs to stay the same
+         * @private
          */
         function fadeLinesBut(exceptionItemId) {
             let classToFade = 'g.legend-entry';
@@ -350,6 +356,7 @@ define(function(require){
         /**
          * Calculates the margin between elements of the legend
          * @return {Number} Margin to apply between elements
+         * @private
          */
         function getLineElementMargin() {
             return marginRatio * markerSize;
@@ -374,8 +381,11 @@ define(function(require){
             newLine.append(() => lastEntry.node());
         }
 
+        // API
+
         /**
-         * Clears the highlighted line entry
+         * Clears all highlighted entries
+         * @public
          */
         exports.clearHighlight = function() {
             cleanFadedLines();
@@ -414,6 +424,7 @@ define(function(require){
         /**
          * Highlights a line entry by fading the rest of lines
          * @param  {number} entryId ID of the entry line
+         * @public
          */
         exports.highlight = function(entryId) {
             cleanFadedLines();
@@ -469,21 +480,6 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the width of the legend chart
-         * @param  {number} _x Desired width for the graph
-         * @return {width | module} Current width or Legend module to chain calls
-         * @public
-         */
-        exports.width = function(_x) {
-            if (!arguments.length) {
-                return width;
-            }
-            width = _x;
-
-            return this;
-        };
-
-        /**
          * Gets or Sets the number format of the legend chart
          * @param  {string} _x Desired number format for the legend chart
          * @return {numberFormat | module} Current number format or Legend module to chain calls
@@ -494,6 +490,21 @@ define(function(require){
                 return numberFormat;
             }
             numberFormat = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the width of the legend chart
+         * @param  {number} _x Desired width for the graph
+         * @return {width | module} Current width or Legend module to chain calls
+         * @public
+         */
+        exports.width = function(_x) {
+            if (!arguments.length) {
+                return width;
+            }
+            width = _x;
 
             return this;
         };

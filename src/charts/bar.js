@@ -260,8 +260,11 @@ define(function(require) {
         }
 
         /**
-         * Cleaning data adding the proper format
-         * @param  {BarChartData} originalData Data
+         * Cleaning data casting the values and names to the proper type while keeping 
+         * the rest of properties on the data
+         * It also creates a set of zeroed data (for animation purposes)
+         * @param  {BarChartData} originalData  Raw data as passed to the container
+         * @return  {BarChartData}              Clean data
          * @private
          */
         function cleanData(originalData) {
@@ -269,7 +272,7 @@ define(function(require) {
                 d.value = +d[valueLabel];
                 d.name = String(d[nameLabel]);
 
-                return [ ...acc, d];
+                return [...acc, d];
             }, []);
 
             let dataZeroed = data.map((d) => ({

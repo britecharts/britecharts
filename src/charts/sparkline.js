@@ -166,17 +166,19 @@ define(function(require){
         }
 
         /**
-         * Cleaning data adding the proper format
-         * @param  {array} data Data
+         * Cleaning data casting the values and dates to the proper type while keeping 
+         * the rest of properties on the data
+         * @param  {SparklineChartData} originalData    Raw data from the container
+         * @return {SparklineChartData}                 Clean data
          * @private
          */
-        function cleanData(data) {
-            return data.map((d) => {
+        function cleanData(originalData) {
+            return originalData.reduce((acc, d) => {
                 d.date = new Date(d[dateLabel]);
                 d.value = +d[valueLabel];
 
-                return d;
-            });
+                return [...acc, d];
+            }, []);
         }
 
         /**

@@ -205,7 +205,8 @@ define(function(require) {
         }
 
         /**
-         * Cleaning data adding the proper format
+         * Cleaning data casting the values and keys to the proper type while keeping 
+         * the rest of properties on the data
          * @param  {StepChartData} originalData Data as provided on the container
          * @private
          */
