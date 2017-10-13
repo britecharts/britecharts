@@ -465,21 +465,21 @@ define(function(require){
         }
 
         /**
-         * Parses dates and values into JS Date objects and numbers
-         * @param  {obj} data Raw data from JSON file
-         * @return {obj}      Parsed data with values and dates
+         * Cleaning data casting the values and dates to the proper type while keeping 
+         * the rest of properties on the data. It creates fake data is the data is empty.
+         * @param  {areaChartData} originalData   Raw data from the container
+         * @return {areaChartData}                Parsed data with values and dates
+         * @private
          */
-        function cleanData(data) {
-            data = data.length === 0 ? createFakeData() : data;
+        function cleanData(originalData) {
+            originalData = originalData.length === 0 ? createFakeData() : originalData;
 
-            let cleanData = data.reduce((acc, d) => {
+            return originalData.reduce((acc, d) => {
                 d.date = new Date(d[dateLabel]),
                 d.value = +d[valueLabel]
     
                 return [...acc, d];
             }, []);
-
-            return cleanData;
         }
 
         /**

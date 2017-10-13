@@ -330,19 +330,21 @@ define(function(require){
         }
 
         /**
-         * Parses dates and values into JS Date objects and numbers
-         * @param  {obj} data Raw data from JSON file
-         * @return {obj}      Parsed data with values and dates
+         * Cleaning data casting the values, stacks, names and topic names to the proper type while keeping 
+         * the rest of properties on the data
+         * @param  {stackedBarData} originalData   Raw data from the container
+         * @return {stackedBarData}                Parsed data with values and dates
+         * @private
          */
-        function cleanData(data) {
-            return data.map((d) => {
+        function cleanData(originalData) {
+            return originalData.reduce((acc, d) => {
                     d.value = +d[valueLabel];
                     d.stack = d[stackLabel];
                     d.topicName = getStack(d); // for tooltip
                     d.name = d[nameLabel];
 
-                    return d;
-                });
+                    return [...acc, d];
+                }, []);
         }
 
         /**

@@ -436,17 +436,19 @@
         }
 
         /**
-         * Cleaning data adding the proper format
-         *
-         * @param  {BrushChartData} data Data
+         * Cleaning data casting the values and dates to the proper type while keeping 
+         * the rest of properties on the data
+         * @param  {BrushChartData} originalData        Raw data from the container
+         * @return {BrushChartData}                     Clean data
+         * @private
          */
-        function cleanData(data) {
-            return data.map(function (d) {
+        function cleanData(originalData) {
+            return originalData.reduce((acc, d) => {
                 d.date = new Date(d[dateLabel]);
                 d.value = +d[valueLabel];
 
-                return d;
-            });
+                return [...acc, d];
+            }, []);
         }
 
         /**
