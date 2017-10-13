@@ -259,9 +259,13 @@
             chartWidth, chartHeight,
             xScale, yScale,
             yTicks = 6,
-            xAxis, xAxisLabel,
-            yAxis, yAxisLabel,
-            xAxisLabelOffset = 45,
+            xAxis, 
+            xAxisLabel,
+            xAxisLabelEl,
+            yAxis, 
+            yAxisLabel,
+            yAxisLabelEl,
+            xAxisLabelOffset = 80,
             yAxisLabelOffset = -20,
             xAxisPadding = {
                 top: 0,
@@ -392,16 +396,16 @@
 
         /**
          * Cleaning data adding the proper format
-         * @param  {StepChartData} data Data
+         * @param  {StepChartData} originalData Data as provided on the container
          * @private
          */
-        function cleanData(data) {
-            return data.map((d) => {
+        function cleanData(originalData) {
+            return originalData.reduce((acc, d) => {
                 d.value = +d[valueLabel];
                 d.key = String(d[nameLabel]);
 
-                return d;
-            });
+                return [...acc, d];
+            }, []);
         }
 
         /**
@@ -414,21 +418,33 @@
                 .attr('transform', `translate(0, ${chartHeight})`)
                 .call(xAxis);
 
+            svg.selectAll('.x-axis-group .tick text')
+                .style('text-anchor', 'start')        
+                .attr('transform', 'rotate(45 -1 10)');
+
             if (xAxisLabel) {
-                svg.select('.x-axis-label')
+                if (xAxisLabelEl) {
+                    svg.selectAll('.x-axis-label-text').remove();
+                }
+                xAxisLabelEl = svg.select('.x-axis-label')
                   .append('text')
-                    .attr('text-anchor', 'middle')
-                    .attr('x', chartWidth / 2)
                     .attr('y', xAxisLabelOffset)
+                    .attr('text-anchor', 'middle')
+                    .classed('x-axis-label-text', true)
+                    .attr('x', chartWidth / 2)
                     .text(xAxisLabel);
             }
-
+                
             svg.select('.y-axis-group.axis')
                 .call(yAxis);
-
+                
             if (yAxisLabel) {
-                svg.select('.y-axis-label')
+                if (yAxisLabelEl) {
+                    svg.selectAll('.y-axis-label-text').remove();
+                }
+                yAxisLabelEl = svg.select('.y-axis-label')
                   .append('text')
+                    .classed('y-axis-label-text', true)
                     .attr('x', -chartHeight / 2)
                     .attr('y', yAxisLabelOffset)
                     .attr('text-anchor', 'middle')
@@ -485,6 +501,13 @@
          * @return void
          */
         function drawGridLines(){
+            if (maskGridLines) {
+                svg.selectAll('.horizontal-grid-line').remove();
+            }
+            if (baseLine) {
+                svg.selectAll('.extended-x-line').remove();
+            }
+
             maskGridLines = svg.select('.grid-lines-group')
                 .selectAll('line.horizontal-grid-line')
                 .data(yScale.ticks(yTicks))
@@ -505,8 +528,8 @@
                     .attr('class', 'extended-x-line')
                     .attr('x1', (xAxisPadding.left))
                     .attr('x2', chartWidth)
-                    .attr('y1', height - margin.bottom - margin.top)
-                    .attr('y2', height - margin.bottom - margin.top);
+                    .attr('y1', chartHeight)
+                    .attr('y2', chartHeight);
         }
 
         // API
