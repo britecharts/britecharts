@@ -1,17 +1,19 @@
 define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
     'use strict';
 
-    function aTestDataSet() {
-        return new dataBuilder.BarDataBuilder();
-    }
+    const aTestDataSet = () => new dataBuilder.BarDataBuilder();    
+    const buildDataSet = (dataSetName) => {
+        return aTestDataSet()
+            [dataSetName]()
+            .build();
+    };
+
 
     describe('Bar Chart', () => {
         let barChart, dataset, containerFixture, f;
 
         beforeEach(() => {
-            dataset = aTestDataSet()
-                .withLettersFrequency()
-                .build();
+            dataset = buildDataSet('withLettersFrequency');
             barChart = chart();
 
             // DOM Fixture Setup
@@ -56,6 +58,34 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             let numBars = dataset.length;
 
             expect(containerFixture.selectAll('.bar').size()).toEqual(numBars);
+        });
+
+        describe('when reloading with a different dataset', () => {
+            
+            it('should render in the same svg', function() {
+                let actual;
+                let expected = 1;
+                let newDataset = buildDataSet('withColors');
+
+                containerFixture.datum(newDataset).call(barChart);
+
+                actual = containerFixture.selectAll('.bar-chart').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
+
+            // This test fails because of the transition on the exit
+            xit('should render six bars', function() {
+                let actual;
+                let expected = 6;
+                let newDataset = buildDataSet('withColors');
+
+                containerFixture.datum(newDataset).call(barChart);
+
+                actual = containerFixture.selectAll('.bar-chart .bar').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
         });
 
         describe('API', function() {

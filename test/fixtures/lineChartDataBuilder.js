@@ -52,19 +52,6 @@ define(function(require) {
             return new this.Klass(attributes);
         };
 
-        /**
-         * Sets the path for fetching the data
-         * @param  {string} path Desired path for test data
-         * @return {LineDataBuilder}      Builder object
-         */
-        this.withPath = function(path){
-            var attributes = _.extend({}, this.config, {
-                jsonURL: path
-            });
-
-            return new this.Klass(attributes);
-        };
-
         this.build = function() {
             return this.config;
         };
