@@ -73,7 +73,11 @@ function createLineChart(optionalColorSchema, optionalData) {
             .dateLabel('fullDate')
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)
-            .on('customMouseOut', chartTooltip.hide);
+            .on('customMouseOut', chartTooltip.hide)
+            .on('customDataEntryClick', function(d, mousePosition) {
+                console.log('Data entry marker clicked', d);
+            })
+
 
         if (optionalColorSchema) {
             lineChart1.colorSchema(optionalColorSchema);
@@ -112,10 +116,6 @@ function createLineChartWithSingleLine() {
     if (containerWidth) {
         dataset = testDataSet.withOneSource().build();
 
-        d3Selection.select('#button2').on('click', function() {
-            lineChart2.exportChart('linechart.png', 'Britecharts LÍne Chart');
-        });
-
         lineChart2
             .tooltipThreshold(600)
             .height(300)
@@ -124,15 +124,11 @@ function createLineChartWithSingleLine() {
             .grid('vertical')
             .width(containerWidth)
             .dateLabel('fullDate')
-            .on('customMouseOver', function() {
-                chartTooltip.show();
-            })
+            .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
                 chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
             })
-            .on('customMouseOut', function() {
-                chartTooltip.hide();
-            });
+            .on('customMouseOut', chartTooltip.hide);
 
         container.datum(dataset).call(lineChart2);
 
@@ -143,8 +139,12 @@ function createLineChartWithSingleLine() {
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = d3Selection.select('.js-single-line-chart-container .metadata-group .hover-marker');
+        tooltipContainer = d3Selection.select('.js-single-line-chart-container .metadata-group .vertical-marker-container');
         tooltipContainer.datum([]).call(chartTooltip);
+
+        d3Selection.select('#button2').on('click', function() {
+            lineChart2.exportChart('linechart.png', 'Britecharts LÍne Chart');
+        });
     }
 }
 
