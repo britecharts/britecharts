@@ -110,6 +110,18 @@ define([
 
                 expect(actual).toEqual(expected);
             });
+
+            it('should render one end circle', function() {
+                let actual;
+                let expected = 1;
+                let newDataset = buildDataSet('withLowValues');
+
+                containerFixture.datum(newDataset.data).call(sparklineChart);
+
+                actual = containerFixture.selectAll('.sparkline .sparkline-circle').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
         });
 
         describe('when isAnimated is true', () => {
