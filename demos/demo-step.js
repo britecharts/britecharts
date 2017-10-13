@@ -1,19 +1,21 @@
 'use strict';
 
-var d3Selection = require('d3-selection'),
+const d3Selection = require('d3-selection');
+const PubSub = require('pubsub-js');
 
-    PubSub = require('pubsub-js'),
+const step = require('./../src/charts/step');
+const miniTooltip = require('./../src/charts/mini-tooltip');
 
-    step = require('./../src/charts/step'),
-    miniTooltip = require('./../src/charts/mini-tooltip'),
+const dataBuilder = require('./../test/fixtures/stepChartDataBuilder');
+let redrawCharts;
+    
+const aTestDataSet = () => new dataBuilder.StepDataBuilder();
 
-    dataBuilder = require('./../test/fixtures/stepChartDataBuilder');
-    require('./helpers/resizeHelper');
+require('./helpers/resizeHelper');
 
 function createStepChart() {
-    var stepChart = step(),
+    let stepChart = step(),
         tooltip = miniTooltip(),
-        testDataSet = new dataBuilder.StepDataBuilder(),
         stepContainer = d3Selection.select('.js-step-chart-container'),
         containerWidth = stepContainer.node() ? stepContainer.node().getBoundingClientRect().width : false,
         tooltipContainer,
@@ -24,7 +26,7 @@ function createStepChart() {
             stepChart.exportChart('stepchart.png', 'Britecharts Step Chart');
         });
 
-        dataset = testDataSet.withSmallData().build();
+        dataset = aTestDataSet().withSmallData().build();
 
         stepChart
             .width(containerWidth)
@@ -59,7 +61,7 @@ if (d3Selection.select('.js-step-chart-container').node()){
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
-    var redrawCharts = function(){
+    redrawCharts = function(){
         d3Selection.select('.step-chart').remove();
 
         createStepChart();
