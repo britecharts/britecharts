@@ -41,8 +41,13 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
             .dateLabel('dateUTC')
             .valueLabel('views')
             .grid('horizontal')
+            .on('customDataEntryClick', function(d, mousePosition) {
+                // console.log('Data entry marker clicked', d);
+            })
             .on('customMouseOver', chartTooltip.show)
-            .on('customMouseMove', chartTooltip.update)
+            .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
+                chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+            })            
             .on('customMouseOut', chartTooltip.hide);
 
         if (optionalColorSchema) {

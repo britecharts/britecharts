@@ -106,6 +106,9 @@ define(function(require){
             lineGradient = colorHelper.colorGradients.greenBlue,
 
             areaOpacity = 0.24,
+            highlightCircleSize = 12,
+            highlightCircleRadius = 5,
+            highlightCircleStroke = 2,            
             categoryColorMap,
             order,
             topicsOrder,
@@ -129,9 +132,9 @@ define(function(require){
             areaAnimationDelays = d3Array.range(areaAnimationDelayStep, maxAreaNumber* areaAnimationDelayStep, areaAnimationDelayStep),
 
             overlay,
-
+            overlayColor = 'rgba(0, 0, 0, 0)',            
             verticalMarkerContainer,
-            verticalMarker,
+            verticalMarkerLine,
             epsilon,
 
             dataPoints            = {},
@@ -180,7 +183,7 @@ define(function(require){
             getDate = ({date}) => date,
 
             // events
-            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove', 'customDataEntryClick');
 
        /**
          * This function creates the graph using the selection and data provided
@@ -614,7 +617,7 @@ define(function(require){
                 .attr('y2', chartHeight)
                 .attr('height', chartHeight)
                 .attr('width', chartWidth)
-                .attr('fill', 'rgba(0,0,0,0)')
+                .attr('fill', overlayColor)
                 .style('display', 'none');
         }
 
@@ -777,7 +780,7 @@ define(function(require){
                 .attr('class', 'vertical-marker-container')
                 .attr('transform', 'translate(9999, 0)');
 
-            verticalMarker = verticalMarkerContainer.selectAll('path')
+            verticalMarkerLine = verticalMarkerContainer.selectAll('path')
                 .data([{
                     x1: 0,
                     y1: 0,
@@ -841,16 +844,6 @@ define(function(require){
         }
 
         /**
-         * Extract X position on the chart from a given mouse event
-         * @param  {obj} event D3 mouse event
-         * @return {Number}       Position on the x axis of the mouse
-         * @private
-         */
-        function getMouseXPosition(event) {
-            return d3Selection.mouse(event)[0];
-        }
-
-        /**
          * Finds out the data entry that is closer to the given position on pixels
          * @param  {Number} mouseX X position of the mouse
          * @return {obj}        Data entry that is closer to that x axis position
@@ -882,7 +875,8 @@ define(function(require){
         function handleMouseMove(e) {
             epsilon || setEpsilon();
 
-            let dataPoint = getNearestDataPoint(getMouseXPosition(e) - margin.left),
+            let [xPosition, yPosition] = d3Selection.mouse(e),
+                dataPoint = getNearestDataPoint(xPosition - margin.left),
                 dataPointXPosition;
 
             if (dataPoint) {
@@ -892,7 +886,7 @@ define(function(require){
                 // Add data points highlighting
                 highlightDataPoints(dataPoint);
                 // Emit event with xPosition for tooltip or similar feature
-                dispatcher.call('customMouseMove', e, dataPoint, categoryColorMap, dataPointXPosition);
+                dispatcher.call('customMouseMove', e, dataPoint, categoryColorMap, dataPointXPosition, yPosition);
             }
         }
 
@@ -903,7 +897,7 @@ define(function(require){
          */
         function handleMouseOut(e, d) {
             overlay.style('display', 'none');
-            verticalMarker.classed('bc-is-active', false);
+            verticalMarkerLine.classed('bc-is-active', false);
             verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
 
             dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
@@ -915,9 +909,18 @@ define(function(require){
          */
         function handleMouseOver(e, d) {
             overlay.style('display', 'block');
-            verticalMarker.classed('bc-is-active', true);
+            verticalMarkerLine.classed('bc-is-active', true);
 
             dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
+        }
+
+        /**
+         * Mouseclick handler over one of the highlight points
+         * It will only pass the information with the event
+         * @private
+         */
+        function handleHighlightClick(e, d) {
+            dispatcher.call('customDataEntryClick', e, d, d3Selection.mouse(e));
         }
 
         /**
@@ -933,25 +936,26 @@ define(function(require){
             // ensure order stays constant
             values = values
                 .filter(v => !!v)
-                .sort((a,b) => order.indexOf(a.name) > order.indexOf(b.name))
+                .sort((a,b) => order.indexOf(a.name) > order.indexOf(b.name));
 
-            values.forEach(({name}, index) => {
+            values.forEach((d, index) => {
                 let marker = verticalMarkerContainer
                               .append('g')
-                                .classed('circle-container', true),
-                    circleSize = 12;
+                                .classed('circle-container', true)
+                                  .append('circle')
+                                    .classed('data-point-highlighter', true)
+                                    .attr('cx', highlightCircleSize)
+                                    .attr('cy', 0)
+                                    .attr('r', highlightCircleRadius)
+                                    .style('stroke-width', highlightCircleStroke)
+                                    .style('stroke', categoryColorMap[d.name])
+                                    .on('touchstart click', function() {
+                                        handleHighlightClick(this, d);
+                                    });
 
                 accumulator = accumulator + values[index][valueLabel];
 
-                marker
-                  .append('circle')
-                    .classed('data-point-highlighter', true)
-                    .attr('cx', circleSize)
-                    .attr('cy', 0)
-                    .attr('r', 5)
-                    .style('stroke', categoryColorMap[name]);
-
-                marker.attr('transform', `translate( ${(- circleSize)}, ${(yScale(accumulator))} )` );
+                marker.attr('transform', `translate( ${(- highlightCircleSize)}, ${(yScale(accumulator))} )` );
             });
         }
 
@@ -1193,7 +1197,7 @@ define(function(require){
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
          * We are going to expose this events:
-         * customMouseOver, customMouseMove and customMouseOut
+         * customMouseOver, customMouseMove, customMouseOut and customDataEntryClick
          *
          * @return {module} Bar Chart
          * @public

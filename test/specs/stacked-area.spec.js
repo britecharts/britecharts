@@ -171,6 +171,21 @@ define([
             expect(() => containerFixture.datum([]).call(stackedAreaChart)).not.toThrow();
         });
 
+        // Add test for highlight circles events
+        // We will need to simulate a click on one of them after a mouse move
+        xit('should trigger an event on mouse click', () => {
+            let callback = jasmine.createSpy('mouseClickCallback'),
+                container = containerFixture.selectAll('svg');
+
+            stackedAreaChart.on('customDataEntryClick', callback);
+            container.dispatch('mousemove');
+
+            let nodes = container.selectAll('.data-point-highlighter').nodes().length;
+
+            expect(callback.calls.count()).toBe(1);
+            expect(callback.calls.allArgs()[0].length).toBe(2);
+        });
+
         describe('when reloading with a three sources dataset', () => {
             
             it('should render in the same svg', function() {
