@@ -139,6 +139,8 @@ define(function(require){
             },
             monthAxisPadding = 28,
             tickPadding = 5,
+            highlightCircleSize = 12,
+            highlightCircleStroke = 2,
             colorSchema = colorHelper.colorSchemas.britecharts,
             singleLineGradientColors = colorHelper.colorGradients.greenBlue,
             topicColorMap,
@@ -197,7 +199,7 @@ define(function(require){
             getLineColor = ({topic}) => colorScale(topic),
 
             // events
-            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove', 'customDataEntryClick');
 
         /**
          * This function creates the graph using the selection and data provided
@@ -225,8 +227,8 @@ define(function(require){
                 createMaskingClip();
 
                 if (shouldShowTooltip()) {
-                    drawVerticalMarker();
                     drawHoverOverlay();
+                    drawVerticalMarker();
                     addMouseEvents();
                 }
             });
@@ -637,12 +639,12 @@ define(function(require){
                     y2: 0
                 }])
                 .enter()
-              .append('line')
-                .classed('vertical-marker', true)
-                .attr('x1', 0)
-                .attr('y1', chartHeight)
-                .attr('x2', 0)
-                .attr('y2', 0);
+                  .append('line')
+                    .classed('vertical-marker', true)
+                    .attr('x1', 0)
+                    .attr('y1', chartHeight)
+                    .attr('x2', 0)
+                    .attr('y2', 0);
         }
 
         /**
@@ -654,15 +656,6 @@ define(function(require){
          */
         function findOutNearestDate(x0, d0, d1){
             return (new Date(x0).getTime() - new Date(d0.date).getTime()) > (new Date(d1.date).getTime() - new Date(x0).getTime()) ? d0 : d1;
-        }
-
-        /**
-         * Extract X position on the graph from a given mouse event
-         * @param  {Object} event D3 mouse event
-         * @return {Number}       Position on the x axis of the mouse
-         */
-        function getMouseXPosition(event) {
-            return d3Selection.mouse(event)[0];
         }
 
         /**
@@ -693,8 +686,9 @@ define(function(require){
          * @private
          */
         function handleMouseMove(e){
-            let xPositionOffset = -margin.left, //Arbitrary number, will love to know how to assess it
-                dataPoint = getNearestDataPoint(getMouseXPosition(e) + xPositionOffset),
+            let [xPosition, yPosition] = d3Selection.mouse(e),
+                xPositionOffset = -margin.left, //Arbitrary number, will love to know how to assess it
+                dataPoint = getNearestDataPoint(xPosition + xPositionOffset),
                 dataPointXPosition;
 
             if (dataPoint) {
@@ -704,7 +698,7 @@ define(function(require){
                 // Add data points highlighting
                 highlightDataPoints(dataPoint);
                 // Emit event with xPosition for tooltip or similar feature
-                dispatcher.call('customMouseMove', e, dataPoint, topicColorMap, dataPointXPosition);
+                dispatcher.call('customMouseMove', e, dataPoint, topicColorMap, dataPointXPosition, yPosition);
             }
         }
 
@@ -730,6 +724,15 @@ define(function(require){
             verticalMarkerLine.classed('bc-is-active', true);
 
             dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
+        }
+
+        /**
+         * Mouseclick handler over one of the highlight points
+         * It will only pass the information with the event
+         * @private
+         */
+        function handleHighlightClick(e, d) {
+            dispatcher.call('customDataEntryClick', e, d, d3Selection.mouse(e));
         }
 
         /**
@@ -760,24 +763,26 @@ define(function(require){
 
             dataPoint.topics = topicsWithNode.map(({topic}) => topic);
 
-            dataPoint.topics.forEach(({name}, index) => {
+            dataPoint.topics.forEach((d, index) => {
                 let marker = verticalMarkerContainer
-                                .append('g')
-                                .classed('circle-container', true),
-                    circleSize = 12;
-
-                marker.append('circle')
-                    .classed('data-point-highlighter', true)
-                    .attr('cx', circleSize)
-                    .attr('cy', 0)
-                    .attr('r', 5)
-                    .style('stroke', topicColorMap[name]);
-
+                              .append('g')
+                                .classed('circle-container', true)
+                                  .append('circle')
+                                    .classed('data-point-highlighter', true)
+                                    .attr('cx', highlightCircleSize)
+                                    .attr('cy', 0)
+                                    .attr('r', 5)
+                                    .style('stroke-width', highlightCircleStroke)                    
+                                    .style('stroke', topicColorMap[d.name])
+                                    .on('touchstart click', function() {
+                                        handleHighlightClick(this, d);
+                                    });                
+                                    
                 const path = topicsWithNode[index].node;
                 const x = xScale(new Date(dataPoint.topics[index].date));
-                const y = getPathYFromX(x, path, name);
-
-                marker.attr('transform', `translate( ${(-circleSize)}, ${y} )` );
+                const y = getPathYFromX(x, path, d.name);
+                
+                marker.attr('transform', `translate( ${(-highlightCircleSize)}, ${y} )` );
             });
         }
 
@@ -825,7 +830,7 @@ define(function(require){
             pathYCache[key] = point.y
 
             return pathYCache[key]
-          }
+        }
 
         /**
          * Helper method to update the x position of the vertical marker
@@ -845,7 +850,7 @@ define(function(require){
             return width > tooltipThreshold;
         }
 
-        // API Methods
+        // API
 
         /**
          * Gets or Sets the aspect ratio of the chart
@@ -1146,7 +1151,7 @@ define(function(require){
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
          * We are going to expose this events:
-         * customMouseHover, customMouseMove and customMouseOut
+         * customMouseHover, customMouseMove, customMouseOut and customDataEntryClick
          *
          * @return {module} Bar Chart
          * @public
