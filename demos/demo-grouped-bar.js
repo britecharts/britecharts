@@ -10,7 +10,8 @@ var d3Selection = require('d3-selection'),
     tooltip = require('./../src/charts/tooltip'),
     groupedDataBuilder = require('./../test/fixtures/groupedBarChartDataBuilder'),
     colorSelectorHelper = require('./helpers/colorSelector');
-    require('./helpers/resizeHelper');
+
+require('./helpers/resizeHelper');
 
 function creategroupedBarChartWithTooltip(optionalColorSchema) {
     var groupedBar = groupedBarChart(),
