@@ -215,8 +215,10 @@ define(function(require) {
         }
 
         /**
-         * Cleaning data adding the proper format
-         * @param  {DonutChartData} data Data
+         * Cleaning data casting the quantities, names and percentages to the proper type while keeping 
+         * the rest of properties on the data. It also calculates the percentages if not present.
+         * @param  {DonutChartData} data    Data as passed to the container
+         * @return {DonutChartData}         Clean data with percentages
          * @private
          */
         function cleanData(data) {
@@ -232,6 +234,7 @@ define(function(require) {
 
                 return [...acc, d];
             }, []);
+
             let totalQuantity = sumValues(cleanData);
             let dataWithPercentages = cleanData.map((d) => {
                 d.percentage = String(d.percentage || calculatePercent(d[quantityLabel], totalQuantity, percentageFormat));
