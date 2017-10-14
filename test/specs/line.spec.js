@@ -205,7 +205,7 @@ define([
                         let actual;
                         let expected = 1;
                         let newDataset = buildDataSet('withOneSource');
-        debugger
+
                         containerFixture.datum(newDataset).call(lineChart);
 
                         actual = containerFixture.selectAll('.line-chart .line').nodes().length;
