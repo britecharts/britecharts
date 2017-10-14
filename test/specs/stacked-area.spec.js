@@ -20,9 +20,9 @@ define([
             .build();
     };
 
-    function hasClass(element, className) {
+    const hasClass = (element, className) => {
         return _.contains(element.node().classList, className);
-    }
+    };
 
     describe('Stacked Area Chart', () => {
         let dataset, containerFixture, f, stackedAreaChart;

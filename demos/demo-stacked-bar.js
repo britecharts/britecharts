@@ -1,21 +1,21 @@
 'use strict';
 
-var d3Selection = require('d3-selection'),
+const d3Selection = require('d3-selection');
 
-    PubSub = require('pubsub-js'),
+const PubSub = require('pubsub-js');
 
-    colors = require('./../src/charts/helpers/colors'),
+const colors = require('./../src/charts/helpers/colors');
 
-    stackedBarChart = require('./../src/charts/stacked-bar'),
-    tooltip = require('./../src/charts/tooltip'),
-    stackedDataBuilder = require('./../test/fixtures/stackedBarDataBuilder'),
-    colorSelectorHelper = require('./helpers/colorSelector'),
-    redrawCharts;
+const stackedBarChart = require('./../src/charts/stacked-bar');
+const tooltip = require('./../src/charts/tooltip');
+const stackedDataBuilder = require('./../test/fixtures/stackedBarDataBuilder');
+const colorSelectorHelper = require('./helpers/colorSelector');
+let redrawCharts;
 
 require('./helpers/resizeHelper');
 
 function createStackedBarChartWithTooltip(optionalColorSchema) {
-    var stackedBar = stackedBarChart(),
+    let stackedBar = stackedBarChart(),
         chartTooltip = tooltip(),
         testDataSet = new stackedDataBuilder.StackedBarDataBuilder(),
         container = d3Selection.select('.js-stacked-bar-chart-tooltip-container'),
@@ -70,7 +70,7 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
 }
 
 function createHorizontalStackedBarChart(optionalColorSchema) {
-    var stackedBar = stackedBarChart(),
+    let stackedBar = stackedBarChart(),
         chartTooltip = tooltip(),
         testDataSet = new stackedDataBuilder.StackedBarDataBuilder(),
         container = d3Selection.select('.js-stacked-bar-chart-fixed-container'),
