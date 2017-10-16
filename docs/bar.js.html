@@ -270,15 +270,7 @@
             xTicks = 5,
             percentageAxisToMaxRatio = 1,
             enablePercentageLabels = false,
-<<<<<<< 5d5b946a91d79cbdf877e16eca3e740eae15181c
-<<<<<<< d021e3b428bb6673e33a79a3e70076bcc737c255
             betweenBarsPadding = 0.1,
-=======
-            padding = 0.1,
->>>>>>> Adds an option to add padding in barcharts
-=======
-            betweenBarsPadding = 0.1,
->>>>>>> Fixed comments and naming issues
             percentageLabelMargin = 7,
             percentageLabelSize = 12,
             horizontalLabelFormat = '.0%',
@@ -409,28 +401,12 @@
                 yScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([chartHeight, 0])
-<<<<<<< 5d5b946a91d79cbdf877e16eca3e740eae15181c
-<<<<<<< d021e3b428bb6673e33a79a3e70076bcc737c255
                     .padding(betweenBarsPadding);
-=======
-                    .padding(padding);
->>>>>>> Adds an option to add padding in barcharts
-=======
-                    .padding(betweenBarsPadding);
->>>>>>> Fixed comments and naming issues
             } else {
                 xScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([0, chartWidth])
-<<<<<<< 5d5b946a91d79cbdf877e16eca3e740eae15181c
-<<<<<<< d021e3b428bb6673e33a79a3e70076bcc737c255
                     .padding(betweenBarsPadding);
-=======
-                    .padding(padding);
->>>>>>> Adds an option to add padding in barcharts
-=======
-                    .padding(betweenBarsPadding);
->>>>>>> Fixed comments and naming issues
 
                 yScale = d3Scale.scaleLinear()
                     .domain([0, percentageAxis])
@@ -946,8 +922,6 @@
         /**
          * Gets or Sets the padding of the chart
          * Default is 0.1
-<<<<<<< 5d5b946a91d79cbdf877e16eca3e740eae15181c
-<<<<<<< d021e3b428bb6673e33a79a3e70076bcc737c255
          * @param  {Number | module} _x Padding value to get/set
          * @return { padding | module} Current padding or Chart module to chain calls
          * @public
@@ -957,24 +931,6 @@
                 return betweenBarsPadding;
             }
             betweenBarsPadding = _x;
-=======
-         * @param  {Number} _x Padding value to get/set
-=======
-         * @param  {Number | module} _x Padding value to get/set
->>>>>>> Fixed comments and naming issues
-         * @return { padding | module} Current padding or Chart module to chain calls
-         * @public
-         */
-        exports.betweenBarsPadding = function(_x) {
-            if (!arguments.length) {
-                return betweenBarsPadding;
-            }
-<<<<<<< 5d5b946a91d79cbdf877e16eca3e740eae15181c
-            padding = _x;
->>>>>>> Adds an option to add padding in barcharts
-=======
-            betweenBarsPadding = _x;
->>>>>>> Fixed comments and naming issues
 
             return this;
         };
