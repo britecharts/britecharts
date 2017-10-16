@@ -14,7 +14,7 @@ require('./helpers/resizeHelper');
 
 
 function createSparklineChart() {
-    var sparkline = sparklineChart(),
+    let sparkline = sparklineChart(),
         containerWidth = d3Selection.select('.js-sparkline-chart-container').node().getBoundingClientRect().width,
         container = d3Selection.select('.js-sparkline-chart-container'),
         dataset;
