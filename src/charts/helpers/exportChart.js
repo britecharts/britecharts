@@ -5,7 +5,9 @@ define(function(require) {
     const constants = require('./constants.js');
     const serializeWithStyles = require('./serializeWithStyles.js');
 
-    let encoder = typeof window === 'object' && window.btoa;
+    const isBrowser = (typeof window !== 'undefined');
+
+    let encoder = isBrowser && window.btoa;
 
     if (!encoder) {
         encoder = require('base-64').encode;

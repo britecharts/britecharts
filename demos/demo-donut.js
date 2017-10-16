@@ -1,31 +1,30 @@
 'use strict';
 
-var d3Selection = require('d3-selection'),
-    PubSub = require('pubsub-js'),
+const d3Selection = require('d3-selection');
+const PubSub = require('pubsub-js');
 
-    donut = require('./../src/charts/donut'),
-    legend = require('./../src/charts/legend'),
+const donut = require('./../src/charts/donut');
+const legend = require('./../src/charts/legend');
 
-    dataBuilder = require('./../test/fixtures/donutChartDataBuilder'),
-    colorSelectorHelper = require('./helpers/colorSelector'),
+const dataBuilder = require('./../test/fixtures/donutChartDataBuilder');
+const colorSelectorHelper = require('./helpers/colorSelector');
 
-    dataset = new dataBuilder.DonutDataBuilder()
+const dataset = new dataBuilder.DonutDataBuilder()
         .withFivePlusOther()
-        .build(),
-    datasetNoPercentages = new dataBuilder.DonutDataBuilder()
+        .build();
+const datasetNoPercentages = new dataBuilder.DonutDataBuilder()
         .withFivePlusOtherNoPercent()
-        .build(),
-    datasetWithThreeItems = new dataBuilder.DonutDataBuilder()
+        .build();
+const datasetWithThreeItems = new dataBuilder.DonutDataBuilder()
         .withThreeCategories()
-        .build(),
-    legendChart,
-    redrawCharts;
+        .build();
+let legendChart;
+let redrawCharts;
 
 require('./helpers/resizeHelper');
 
-
 function createDonutChart(optionalColorSchema) {
-    var legendChart = getLegendChart(dataset, optionalColorSchema),
+    let legendChart = getLegendChart(dataset, optionalColorSchema),
         donutChart = donut(),
         donutContainer = d3Selection.select('.js-donut-chart-container'),
         containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false;
@@ -62,7 +61,7 @@ function createDonutChart(optionalColorSchema) {
 }
 
 function getLegendChart(dataset, optionalColorSchema) {
-    var legendChart = legend(),
+    let legendChart = legend(),
         legendContainer = d3Selection.select('.js-legend-chart-container'),
         containerWidth = legendContainer.node() ? legendContainer.node().getBoundingClientRect().width : false;
 
@@ -85,7 +84,7 @@ function getLegendChart(dataset, optionalColorSchema) {
 }
 
 function getInlineLegendChart(dataset, optionalColorSchema) {
-    var legendChart = legend(),
+    let legendChart = legend(),
         legendContainer = d3Selection.select('.js-inline-legend-chart-container'),
         containerWidth = legendContainer.node() ? legendContainer.node().getBoundingClientRect().width : false;
 
@@ -109,13 +108,10 @@ function getInlineLegendChart(dataset, optionalColorSchema) {
 }
 
 function createSmallDonutChart() {
-    var donutChart = donut(),
+    let donutChart = donut(),
         donutContainer = d3Selection.select('.js-small-donut-chart-container'),
         containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false,
-        dataset = new dataBuilder.DonutDataBuilder()
-            .withThreeCategories()
-            .build(),
-        legendChart = getInlineLegendChart(dataset);
+        legendChart = getInlineLegendChart(datasetWithThreeItems);
 
     if (containerWidth) {
         donutChart
@@ -130,17 +126,14 @@ function createSmallDonutChart() {
                 legendChart.clearHighlight();
             });
 
-        donutContainer.datum(dataset).call(donutChart);
+        donutContainer.datum(datasetWithThreeItems).call(donutChart);
     }
 }
 
 function createDonutWithHighlightSliceChart() {
-    var donutChart = donut(),
+    let donutChart = donut(),
         donutContainer = d3Selection.select('.js-donut-highlight-slice-chart-container'),
-        containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false,
-        dataset = new dataBuilder.DonutDataBuilder()
-            .withThreeCategories()
-            .build();
+        containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false;
 
     if (containerWidth) {
         donutChart
@@ -151,7 +144,7 @@ function createDonutWithHighlightSliceChart() {
             .externalRadius(containerWidth/5)
             .internalRadius(containerWidth/10);
 
-        donutContainer.datum(dataset).call(donutChart);
+        donutContainer.datum(datasetWithThreeItems).call(donutChart);
     }
 }
 
