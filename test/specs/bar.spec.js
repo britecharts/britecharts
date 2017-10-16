@@ -145,6 +145,18 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
+            it('should provide padding getter and setter', () => {
+                let previous = barChart.padding(),
+                    expected = 0.5,
+                    actual;
+
+                barChart.padding(expected);
+                actual = barChart.padding();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide horizontal direction getter and setter', () => {
                 let previous = barChart.isHorizontal(),
                     expected = true,

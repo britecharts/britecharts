@@ -80,6 +80,7 @@ define(function(require) {
             xTicks = 5,
             percentageAxisToMaxRatio = 1,
             enablePercentageLabels = false,
+            padding = 0.1,
             percentageLabelMargin = 7,
             percentageLabelSize = 12,
             horizontalLabelFormat = '.0%',
@@ -200,7 +201,7 @@ define(function(require) {
          * @private
          */
         function buildScales() {
-            let percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue))
+            let percentageAxis = Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue));
 
             if (isHorizontal) {
                 xScale = d3Scale.scaleLinear()
@@ -210,12 +211,12 @@ define(function(require) {
                 yScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([chartHeight, 0])
-                    .padding(0.1);
+                    .padding(padding);
             } else {
                 xScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([0, chartWidth])
-                    .padding(0.1);
+                    .padding(padding);
 
                 yScale = d3Scale.scaleLinear()
                     .domain([0, percentageAxis])
@@ -722,6 +723,22 @@ define(function(require) {
                 return margin;
             }
             margin = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the padding of the chart
+         * Default is 0.1
+         * @param  {Number} _x Padding value to get/set
+         * @return { padding | module} Current padding or Chart module to chain calls
+         * @public
+         */
+        exports.padding = function(_x) {
+            if (!arguments.length) {
+                return padding;
+            }
+            padding = _x;
 
             return this;
         };
