@@ -270,7 +270,11 @@
             xTicks = 5,
             percentageAxisToMaxRatio = 1,
             enablePercentageLabels = false,
+<<<<<<< d021e3b428bb6673e33a79a3e70076bcc737c255
             betweenBarsPadding = 0.1,
+=======
+            padding = 0.1,
+>>>>>>> Adds an option to add padding in barcharts
             percentageLabelMargin = 7,
             percentageLabelSize = 12,
             horizontalLabelFormat = '.0%',
@@ -401,12 +405,20 @@
                 yScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([chartHeight, 0])
+<<<<<<< d021e3b428bb6673e33a79a3e70076bcc737c255
                     .padding(betweenBarsPadding);
+=======
+                    .padding(padding);
+>>>>>>> Adds an option to add padding in barcharts
             } else {
                 xScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([0, chartWidth])
+<<<<<<< d021e3b428bb6673e33a79a3e70076bcc737c255
                     .padding(betweenBarsPadding);
+=======
+                    .padding(padding);
+>>>>>>> Adds an option to add padding in barcharts
 
                 yScale = d3Scale.scaleLinear()
                     .domain([0, percentageAxis])
@@ -922,6 +934,7 @@
         /**
          * Gets or Sets the padding of the chart
          * Default is 0.1
+<<<<<<< d021e3b428bb6673e33a79a3e70076bcc737c255
          * @param  {Number | module} _x Padding value to get/set
          * @return { padding | module} Current padding or Chart module to chain calls
          * @public
@@ -931,6 +944,17 @@
                 return betweenBarsPadding;
             }
             betweenBarsPadding = _x;
+=======
+         * @param  {Number} _x Padding value to get/set
+         * @return { padding | module} Current padding or Chart module to chain calls
+         * @public
+         */
+        exports.padding = function(_x) {
+            if (!arguments.length) {
+                return padding;
+            }
+            padding = _x;
+>>>>>>> Adds an option to add padding in barcharts
 
             return this;
         };
