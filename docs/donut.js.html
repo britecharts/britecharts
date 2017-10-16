@@ -353,8 +353,12 @@
               .append('g')
                 .classed('container-group', true);
 
-            container.append('g').classed('chart-group', true);
-            container.append('g').classed('legend-group', true);
+            container
+              .append('g')
+                .classed('chart-group', true);
+            container
+              .append('g')
+                .classed('legend-group', true);
         }
 
         /**
@@ -557,17 +561,22 @@
          * @private
          */
         function handleMouseOut(el, d, chartWidth, chartHeight) {
+            cleanLegend();
+
+            // When there is a fixed highlighted slice, 
+            // we will always highlight it and render legend
             if (highlightedSlice &amp;&amp; hasFixedHighlightedSlice) {
                 drawLegend(highlightedSlice.__data__);
-            } else {
-                cleanLegend();
-            }
-            dispatcher.call('customMouseOut', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
-
-            if (highlightedSlice &amp;&amp; hasFixedHighlightedSlice &amp;&amp; el !== highlightedSlice) {
                 tweenGrowth(highlightedSlice, externalRadius);
             }
-            tweenGrowth(el, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+
+            // When the current slice is not the highlighted, or there isn't a fixed highlighted slice and it is the highlighted
+            // we will shrink the slice
+            if (el !== highlightedSlice || (!hasFixedHighlightedSlice &amp;&amp; el === highlightedSlice) ) {
+                tweenGrowth(el, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+            }
+
+            dispatcher.call('customMouseOut', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
         }
 
         /**
@@ -589,7 +598,7 @@
          */
         function initTooltip() {
             svg.select('.legend-group')
-                .append('text')
+              .append('text')
                 .attr('class', 'donut-text');
         }
 
@@ -669,8 +678,8 @@
 
         /**
          * Gets or Sets the colorSchema of the chart
-         * @param  {String[]} _x Desired colorSchema for the graph
-         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
+         * @param  {String[]} _x        Desired colorSchema for the graph
+         * @return { String | module}   Current colorSchema or Chart module to chain calls
          * @public
          */
         exports.colorSchema = function(_x) {
@@ -684,6 +693,8 @@
 
         /**
          * Chart exported to png and a download action is fired
+         * @param {String} filename     File title for the resulting picture
+         * @param {String} title        Title to add at the top of the exported picture
          * @public
          */
         exports.exportChart = function(filename, title) {
@@ -692,8 +703,8 @@
 
         /**
          * Gets or Sets the externalRadius of the chart
-         * @param  {Number} _x ExternalRadius number to get/set
-         * @return { (Number | Module) } Current externalRadius or Donut Chart module to chain calls
+         * @param  {Number} _x              ExternalRadius number to get/set
+         * @return { (Number | Module) }    Current externalRadius or Donut Chart module to chain calls
          * @public
          */
         exports.externalRadius = function(_x) {
@@ -709,8 +720,8 @@
          * Gets or Sets the hasFixedHighlightedSlice property of the chart, making it to
          * highlight the selected slice id set with `highlightSliceById` all the time.
          *
-         * @param  {Boolean} _x                         If we want to make the highlighted slice permanently highlighted
-         * @return { hasFixedHighlightedSlice | module} Current hasFixedHighlightedSlice flag or Chart module
+         * @param  {Boolean} _x         If we want to make the highlighted slice permanently highlighted
+         * @return { Boolean | module}  Current hasFixedHighlightedSlice flag or Chart module
          * @public
          */
         exports.hasFixedHighlightedSlice = function(_x) {
@@ -724,8 +735,8 @@
 
         /**
          * Gets or Sets the height of the chart
-         * @param  {Number} _x Desired width for the graph
-         * @return { (Number | Module) } Current height or Donut Chart module to chain calls
+         * @param  {Number} _x              Desired width for the graph
+         * @return { (Number | Module) }    Current height or Donut Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -739,8 +750,8 @@
 
         /**
          * Gets or Sets the id of the slice to highlight
-         * @param  {Number} _x Slice id
-         * @return { (Number | Module) } Current highlighted slice id or Donut Chart module to chain calls
+         * @param  {Number} _x              Slice id
+         * @return { (Number | Module) }    Current highlighted slice id or Donut Chart module to chain calls
          * @public
          */
         exports.highlightSliceById = function(_x) {
@@ -748,13 +759,14 @@
                 return highlightedSliceId;
             }
             highlightedSliceId = _x;
+
             return this;
         };
 
         /**
          * Gets or Sets the internalRadius of the chart
-         * @param  {Number} _x InternalRadius number to get/set
-         * @return { (Number | Module) } Current internalRadius or Donut Chart module to chain calls
+         * @param  {Number} _x              InternalRadius number to get/set
+         * @return { (Number | Module) }    Current internalRadius or Donut Chart module to chain calls
          * @public
          */
         exports.internalRadius = function(_x) {
@@ -762,6 +774,7 @@
                 return internalRadius;
             }
             internalRadius = _x;
+
             return this;
         };
 
@@ -769,8 +782,8 @@
          * Gets or Sets the isAnimated property of the chart, making it to animate when render.
          * By default this is 'false'
          *
-         * @param  {Boolean} _x Desired animation flag
-         * @return { isAnimated | module} Current isAnimated flag or Chart module
+         * @param  {Boolean} _x             Desired animation flag
+         * @return { Boolean | module}      Current isAnimated flag or Chart module
          * @public
          */
         exports.isAnimated = function(_x) {
@@ -784,8 +797,8 @@
 
         /**
          * Gets or Sets the margin of the chart
-         * @param  {Object} _x Margin object to get/set
-         * @return { (Number | Module) } Current margin or Donut Chart module to chain calls
+         * @param  {Object} _x              Margin object to get/set
+         * @return { (Object | Module) }    Current margin or Donut Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -793,6 +806,7 @@
                 return margin;
             }
             margin = _x;
+
             return this;
         };
 
@@ -812,8 +826,8 @@
 
         /**
          * Gets or Sets the width of the chart
-         * @param  {Number} _x Desired width for the graph
-         * @return { (Number | Module) } Current width or Donut Chart module to chain calls
+         * @param  {Number} _x              Desired width for the graph
+         * @return { (Number | Module) }    Current width or Donut Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
@@ -821,6 +835,7 @@
                 return width;
             }
             width = _x;
+
             return this;
         };
 
