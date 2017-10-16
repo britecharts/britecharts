@@ -330,6 +330,10 @@ define(function(require) {
                     .attr('y1', (d) => yScale(d))
                     .attr('y2', (d) => yScale(d));
 
+            if (baseLine) {
+                svg.selectAll('.extended-x-line').remove();
+            }
+        
             //draw a horizontal line to extend x-axis till the edges
             baseLine = svg.select('.grid-lines-group')
                 .selectAll('line.extended-x-line')

@@ -1,20 +1,19 @@
 'use strict';
 
-var d3Selection = require('d3-selection'),
+const d3Selection = require('d3-selection');
+const PubSub = require('pubsub-js');
 
-    PubSub = require('pubsub-js'),
-
-    colors = require('./../src/charts/helpers/colors'),
-
-    groupedBarChart = require('./../src/charts/grouped-bar'),
-    tooltip = require('./../src/charts/tooltip'),
-    groupedDataBuilder = require('./../test/fixtures/groupedBarChartDataBuilder'),
-    colorSelectorHelper = require('./helpers/colorSelector');
+const colors = require('./../src/charts/helpers/colors');
+const groupedBarChart = require('./../src/charts/grouped-bar');
+const tooltip = require('./../src/charts/tooltip');
+const groupedDataBuilder = require('./../test/fixtures/groupedBarChartDataBuilder');
+const colorSelectorHelper = require('./helpers/colorSelector');
+let redrawCharts;
 
 require('./helpers/resizeHelper');
 
 function creategroupedBarChartWithTooltip(optionalColorSchema) {
-    var groupedBar = groupedBarChart(),
+    let groupedBar = groupedBarChart(),
         chartTooltip = tooltip(),
         testDataSet = new groupedDataBuilder.GroupedBarChartDataBuilder(),
         container = d3Selection.select('.js-grouped-bar-chart-tooltip-container'),
@@ -69,7 +68,7 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
 }
 
 function createHorizontalgroupedBarChart(optionalColorSchema) {
-    var groupedBar = groupedBarChart(),
+    let groupedBar = groupedBarChart(),
         chartTooltip = tooltip(),
         testDataSet = new groupedDataBuilder.GroupedBarChartDataBuilder(),
         container = d3Selection.select('.js-grouped-bar-chart-fixed-container'),
@@ -133,7 +132,7 @@ if (d3Selection.select('.js-grouped-bar-chart-tooltip-container').node()){
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
-    function redrawCharts () {
+    redrawCharts = () => {
         d3Selection.selectAll('.grouped-bar').remove();
 
         creategroupedBarChartWithTooltip();

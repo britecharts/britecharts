@@ -688,7 +688,7 @@ define(function(require){
 
             if (isAnimated) {
                 series = svg.select('.chart-group').selectAll('.layer')
-                    .data(layersInitial)
+                    .data(layersInitial, getName)
                     .enter()
                       .append('g')
                         .classed('layer-container', true);
@@ -799,8 +799,9 @@ define(function(require){
         /**
          * Removes all the datapoints highlighter circles added to the marker container
          * @return void
+         * @private
          */
-        function eraseDataPointHighlights() {
+        function cleanDataPointHighlights() {
             verticalMarkerContainer.selectAll('.circle-container').remove();
         }
 
@@ -931,7 +932,7 @@ define(function(require){
         function highlightDataPoints({values}) {
             let accumulator = 0;
 
-            eraseDataPointHighlights();
+            cleanDataPointHighlights();
 
             // ensure order stays constant
             values = values

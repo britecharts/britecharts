@@ -234,7 +234,6 @@ britecharts
 ├── src
 │   ├── charts
 │   ├── doc
-│   ├── fonts
 │   └── tasks
 └── test
     ├── fixtures
