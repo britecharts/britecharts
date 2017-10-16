@@ -144,7 +144,7 @@ function createDonutWithHighlightSliceChart() {
 
     if (containerWidth) {
         donutChart
-            .highlightSliceById(1)
+            .highlightSliceById(11)
             .hasFixedHighlightedSlice(true)
             .width(containerWidth)
             .height(containerWidth/1.8)
