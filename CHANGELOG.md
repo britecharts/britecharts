@@ -1,4 +1,20 @@
-2.0.4
+2.1.0 - Minor
+---------------------
+Features:
+* Added interactivity to highlight points in line and area charts
+* Added skeleton for docs rework
+
+Bug fixes:
+* Fixed stacked area, ste, sparkline and line chart reload
+* Fixed step chart label rotation
+* Fixed donut slice highlighting
+* Updated cleanData functions to not override custom properties in data
+
+2.0.4 - Patch
+---------------------
+Bug Fixes:
+* Check for window in export chart file
+
 2.0.3 - Patch
 ---------------------
 Features:
