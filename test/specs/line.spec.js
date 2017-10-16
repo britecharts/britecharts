@@ -13,13 +13,16 @@ define([
     ) {
         'use strict';
 
-        function aTestDataSet() {
-            return new dataBuilder.LineDataBuilder();
-        }
-
-        function hasClass(element, className) {
+        const aTestDataSet = () => new dataBuilder.LineDataBuilder();    
+        const buildDataSet = (dataSetName) => {
+            return aTestDataSet()
+                [dataSetName]()
+                .build();
+        };
+    
+        const hasClass = (element, className) => {
             return _.contains(element.node().classList, className);
-        }
+        };
 
         describe('Line Chart', () => {
             let dataset, containerFixture, f, lineChart;
@@ -59,7 +62,7 @@ define([
             describe('when multiple lines', function() {
 
                 beforeEach(() => {
-                    dataset = aTestDataSet().with5Topics().build();
+                    dataset = buildDataSet('with5Topics');
                     lineChart = chart();
 
                     // DOM Fixture Setup
@@ -147,7 +150,6 @@ define([
                 //     expect(callback.calls.count()).toBe(1);
                 // });
 
-                // Overlay
                 it('should render an overlay to trigger the hover effect', () => {
                     expect(containerFixture.select('.overlay').empty()).toBeFalsy();
                 });
@@ -160,7 +162,6 @@ define([
                     expect(containerFixture.select('.overlay').style('display')).toBe('block');
                 });
 
-                // Vertical Marker
                 it('should render a vertical marker and its container', () => {
                     expect(containerFixture.select('.hover-marker').empty()).toBeFalsy();
                     expect(containerFixture.select('.vertical-marker').empty()).toBeFalsy();
@@ -184,6 +185,33 @@ define([
                     expect(hasClass(verticalLine, 'bc-is-active')).toBe(true);
                     container.dispatch('mouseout');
                     expect(hasClass(verticalLine, 'bc-is-active')).toBe(false);
+                });
+
+                describe('when reloading with a different dataset', () => {
+                    
+                    it('should render in the same svg', function() {
+                        let actual;
+                        let expected = 1;
+                        let newDataset = buildDataSet('withOneSource');
+        
+                        containerFixture.datum(newDataset).call(lineChart);
+        
+                        actual = containerFixture.selectAll('.line-chart').nodes().length;
+
+                        expect(actual).toEqual(expected);
+                    });
+        
+                    it('should render one line', function() {
+                        let actual;
+                        let expected = 1;
+                        let newDataset = buildDataSet('withOneSource');
+
+                        containerFixture.datum(newDataset).call(lineChart);
+
+                        actual = containerFixture.selectAll('.line-chart .line').nodes().length;
+        
+                        expect(actual).toEqual(expected);
+                    });
                 });
             });
 

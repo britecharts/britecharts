@@ -29,6 +29,7 @@ define(function(require){
         formatIntegerValue,
         formatDecimalValue,
     } = require('./helpers/formatHelpers');
+
     /**
      * @typedef D3Selection
      * @type {Array[]}
@@ -144,6 +145,7 @@ define(function(require){
             colorSchema = colorHelper.colorSchemas.britecharts,
             singleLineGradientColors = colorHelper.colorGradients.greenBlue,
             topicColorMap,
+            linearGradient,
 
             xAxisFormat = null,
             xTicks = null,
@@ -349,22 +351,24 @@ define(function(require){
          * @return {void}
          */
         function buildGradient() {
-            svg.select('.metadata-group')
-              .append('linearGradient')
-                .attr('id', lineGradientId)
-                .attr('x1', '0%')
-                .attr('y1', '0%')
-                .attr('x2', '100%')
-                .attr('y2', '0%')
-                .selectAll('stop')
-                .data([
-                    {offset:'0%', color: singleLineGradientColors[0]},
-                    {offset:'100%', color: singleLineGradientColors[1]}
-                ])
-                .enter()
-              .append('stop')
-                .attr('offset', ({offset}) => offset)
-                .attr('stop-color', ({color}) => color)
+            if(!linearGradient) {
+                linearGradient = svg.select('.metadata-group')
+                  .append('linearGradient')
+                    .attr('id', lineGradientId)
+                    .attr('x1', '0%')
+                    .attr('y1', '0%')
+                    .attr('x2', '100%')
+                    .attr('y2', '0%')
+                    .selectAll('stop')
+                    .data([
+                        {offset:'0%', color: singleLineGradientColors[0]},
+                        {offset:'100%', color: singleLineGradientColors[1]}
+                    ])
+                    .enter()
+                      .append('stop')
+                        .attr('offset', ({offset}) => offset)
+                        .attr('stop-color', ({color}) => color)
+            }
         }
 
         /**
@@ -542,18 +546,18 @@ define(function(require){
                 .y(({value}) => yScale(value));
 
             lines = svg.select('.chart-group').selectAll('.line')
-                .data(dataByTopic);
+                .data(dataByTopic, getTopic);
 
             paths = lines.enter()
               .append('g')
                 .attr('class', 'topic')
-              .append('path')
-                .attr('class', 'line')
-                .attr('id', ({topic}) => topic)
-                .attr('d', ({dates}) => topicLine(dates))
-                .style('stroke', (d) => (
-                    dataByTopic.length === 1 ? `url(#${lineGradientId})` : getLineColor(d)
-                ));
+                  .append('path')
+                    .attr('class', 'line')
+                    .attr('id', ({topic}) => topic)
+                    .attr('d', ({dates}) => topicLine(dates))
+                    .style('stroke', (d) => (
+                        dataByTopic.length === 1 ? `url(#${lineGradientId})` : getLineColor(d)
+                    ));
 
             lines
                 .exit()
@@ -570,7 +574,7 @@ define(function(require){
                     .selectAll('line.horizontal-grid-line')
                     .data(yScale.ticks(yTicks))
                     .enter()
-                        .append('line')
+                      .append('line')
                         .attr('class', 'horizontal-grid-line')
                         .attr('x1', (-xAxisPadding.left - 30))
                         .attr('x2', chartWidth)
@@ -583,7 +587,7 @@ define(function(require){
                     .selectAll('line.vertical-grid-line')
                     .data(xScale.ticks(xTicks))
                     .enter()
-                        .append('line')
+                      .append('line')
                         .attr('class', 'vertical-grid-line')
                         .attr('y1', 0)
                         .attr('y2', chartHeight)
@@ -591,17 +595,21 @@ define(function(require){
                         .attr('x2', (d) => xScale(d));
             }
 
+            if (baseLine) {
+                svg.selectAll('.extended-x-line').remove();
+            }
+
             //draw a horizontal line to extend x-axis till the edges
             baseLine = svg.select('.grid-lines-group')
                 .selectAll('line.extended-x-line')
                 .data([0])
                 .enter()
-              .append('line')
-                .attr('class', 'extended-x-line')
-                .attr('x1', (-xAxisPadding.left - 30))
-                .attr('x2', chartWidth)
-                .attr('y1', height - margin.bottom - margin.top)
-                .attr('y2', height - margin.bottom - margin.top);
+                  .append('line')
+                    .attr('class', 'extended-x-line')
+                    .attr('x1', (-xAxisPadding.left - 30))
+                    .attr('x2', chartWidth)
+                    .attr('y1', height - margin.bottom - margin.top)
+                    .attr('y2', height - margin.bottom - margin.top);
         }
 
         /**
@@ -610,15 +618,17 @@ define(function(require){
          * @return void
          */
         function drawHoverOverlay(){
-            overlay = svg.select('.metadata-group')
-              .append('rect')
-                .attr('class','overlay')
-                .attr('y1', 0)
-                .attr('y2', height)
-                .attr('height', chartHeight)
-                .attr('width', chartWidth)
-                .attr('fill', overlayColor)
-                .style('display', 'none');
+            if(!overlay) {
+                overlay = svg.select('.metadata-group')
+                  .append('rect')
+                    .attr('class','overlay')
+                    .attr('y1', 0)
+                    .attr('y2', height)
+                    .attr('height', chartHeight)
+                    .attr('width', chartWidth)
+                    .attr('fill', overlayColor)
+                    .style('display', 'none');
+            }
         }
 
         /**
@@ -626,25 +636,27 @@ define(function(require){
          * @return void
          */
         function drawVerticalMarker(){
-            verticalMarkerContainer = svg.select('.metadata-group')
-              .append('g')
-                .attr('class', 'hover-marker vertical-marker-container')
-                .attr('transform', 'translate(9999, 0)');
-
-            verticalMarkerLine = verticalMarkerContainer.selectAll('path')
-                .data([{
-                    x1: 0,
-                    y1: 0,
-                    x2: 0,
-                    y2: 0
-                }])
-                .enter()
-                  .append('line')
-                    .classed('vertical-marker', true)
-                    .attr('x1', 0)
-                    .attr('y1', chartHeight)
-                    .attr('x2', 0)
-                    .attr('y2', 0);
+            if (!verticalMarkerContainer) {
+                verticalMarkerContainer = svg.select('.metadata-group')
+                  .append('g')
+                    .attr('class', 'hover-marker vertical-marker-container')
+                    .attr('transform', 'translate(9999, 0)');
+    
+                verticalMarkerLine = verticalMarkerContainer.selectAll('path')
+                    .data([{
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 0
+                    }])
+                    .enter()
+                      .append('line')
+                        .classed('vertical-marker', true)
+                        .attr('x1', 0)
+                        .attr('y1', chartHeight)
+                        .attr('x2', 0)
+                        .attr('y2', 0);
+            }
         }
 
         /**
@@ -901,6 +913,7 @@ define(function(require){
          * Exposes the ability to force the chart to show a certain x axis grouping
          * @param  {String} _x Desired format
          * @return { (String|Module) }    Current format or module to chain calls
+         * @public
          * @example
          *     line.xAxisFormat(line.axisTimeCombinations.HOUR_DAY)
          */
@@ -919,6 +932,7 @@ define(function(require){
          * NOTE: localization not supported
          * @param  {String} _x              Desired format for x axis
          * @return { (String|Module) }      Current format or module to chain calls
+         * @public
          */
         exports.xAxisCustomFormat = function(_x) {
             if (!arguments.length) {
@@ -936,6 +950,7 @@ define(function(require){
          *
          * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
          * @return { (Number|Module) }      Current number or ticks or module to chain calls
+         * @public
          */
         exports.xTicks = function(_x) {
             if (!arguments.length) {
@@ -1130,6 +1145,7 @@ define(function(require){
          * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
          * @param  {String} _x  must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
          * @return { (String|Module) }    Current locale or module to chain calls
+         * @public
          */
         exports.locale = function(_x) {
             if (!arguments.length) {
