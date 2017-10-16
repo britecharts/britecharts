@@ -80,7 +80,7 @@ define(function(require) {
             xTicks = 5,
             percentageAxisToMaxRatio = 1,
             enablePercentageLabels = false,
-            padding = 0.1,
+            betweenBarsPadding = 0.1,
             percentageLabelMargin = 7,
             percentageLabelSize = 12,
             horizontalLabelFormat = '.0%',
@@ -211,12 +211,12 @@ define(function(require) {
                 yScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([chartHeight, 0])
-                    .padding(padding);
+                    .padding(betweenBarsPadding);
             } else {
                 xScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([0, chartWidth])
-                    .padding(padding);
+                    .padding(betweenBarsPadding);
 
                 yScale = d3Scale.scaleLinear()
                     .domain([0, percentageAxis])
@@ -732,15 +732,15 @@ define(function(require) {
         /**
          * Gets or Sets the padding of the chart
          * Default is 0.1
-         * @param  {Number} _x Padding value to get/set
+         * @param  {Number | module} _x Padding value to get/set
          * @return { padding | module} Current padding or Chart module to chain calls
          * @public
          */
-        exports.padding = function(_x) {
+        exports.betweenBarsPadding = function(_x) {
             if (!arguments.length) {
-                return padding;
+                return betweenBarsPadding;
             }
-            padding = _x;
+            betweenBarsPadding = _x;
 
             return this;
         };
