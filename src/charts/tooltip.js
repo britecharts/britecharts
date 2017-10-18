@@ -15,10 +15,7 @@ define(function(require){
         formatIntegerValue,
         formatDecimalValue
     } = require('./helpers/formatHelpers');
-
-    const {
-        isInteger
-    } = require('./helpers/common');
+    const { isInteger } = require('./helpers/common');
 
     /**
      * Tooltip Component reusable API class that renders a
@@ -90,6 +87,8 @@ define(function(require){
             ttTextY = 37,
             textSize,
             entryLineLimit = 3,
+            initialTooltipTextXPosition = -25,
+            tooltipTextLinePadding = 5,
 
             // Animations
             mouseChaseDuration = 100,
@@ -179,6 +178,7 @@ define(function(require){
         /**
          * Resets the tooltipBody content
          * @return void
+         * @private
          */
         function cleanContent(){
             tooltipBody.selectAll('text').remove();
@@ -188,6 +188,7 @@ define(function(require){
         /**
          * Draws the different elements of the Tooltip box
          * @return void
+         * @private
          */
         function drawTooltip(){
             tooltipTextContainer = svg.selectAll('.tooltip-group')
@@ -235,6 +236,7 @@ define(function(require){
          * Formats the value depending on its characteristics
          * @param  {Number} value Value to format
          * @return {Number}       Formatted value
+         * @private
          */
         function getFormattedValue(value) {
             let valueFormatter = formatDecimalValue;
@@ -256,6 +258,7 @@ define(function(require){
          * @param  {Number} mouseX             Current horizontal mouse position
          * @param  {Number} mouseY             Current vertical mouse position
          * @return {Number[]}                  X and Y position
+         * @private
          */
         function getTooltipPosition([mouseX, mouseY]) {
             let tooltipX, tooltipY;
@@ -311,9 +314,11 @@ define(function(require){
          * Draws the data entries inside the tooltip for a given topic
          * @param  {Object} topic Topic to extract data from
          * @return void
+         * @private
          */
         function updateTopicContent(topic){
             let name = topic[nameLabel],
+                textHeight,
                 tooltipRight,
                 tooltipLeftText,
                 tooltipRightText,
@@ -323,26 +328,32 @@ define(function(require){
             tooltipRightText = getValueText(topic);
 
             elementText = tooltipBody
-                .append('text')
+              .append('text')
                 .classed('tooltip-left-text', true)
                 .attr('dy', '1em')
-                .attr('x', ttTextX - 20)
+                .attr('x', ttTextX)
                 .attr('y', ttTextY)
                 .style('fill', tooltipTextColor)
                 .text(tooltipLeftText)
-                .call(textWrap, tooltipMaxTopicLength, -25);
+                .call(textWrap, tooltipMaxTopicLength, initialTooltipTextXPosition);
 
             tooltipRight = tooltipBody
-                .append('text')
+              .append('text')
                 .classed('tooltip-right-text', true)
                 .attr('dy', '1em')
-                .attr('x', ttTextX + 8)
+                .attr('x', ttTextX)
                 .attr('y', ttTextY)
                 .style('fill', tooltipTextColor)
                 .text(tooltipRightText);
 
             textSize = elementText.node().getBBox();
-            tooltipHeight += textSize.height + 5;
+            
+            // IE11 give us sometimes a height of 0 when hovering on top of the vertical marker
+            // This hack fixes it for some cases, but it doesn't work in multiline (they won't wrap)
+            // Let's remove this once we stop supporting IE11
+            textHeight = textSize.height ? textSize.height : 18.4;
+            
+            tooltipHeight += textHeight + tooltipTextLinePadding;
 
             // Not sure if necessary
             tooltipRight.attr('x', tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4)
@@ -356,7 +367,7 @@ define(function(require){
                 .style('fill', colorMap[name])
                 .style('stroke-width', 1);
 
-            ttTextY += textSize.height + 7;
+            ttTextY += textHeight + 7;
         }
 
         /**
@@ -367,6 +378,7 @@ define(function(require){
          * @param  {Number} xPosition DataPoint's x position in the chart
          * @param  {Number} xPosition DataPoint's y position in the chart
          * @return void
+         * @private
          */
         function updatePositionAndSize(dataPoint, xPosition, yPosition){
             let [tooltipX, tooltipY] = getTooltipPosition([xPosition, yPosition])
@@ -388,6 +400,7 @@ define(function(require){
          * Updates value of tooltipTitle with the data meaning and the date
          * @param  {Object} dataPoint Point of data to use as source
          * @return void
+         * @private
          */
         function updateTitle(dataPoint) {
             let tTitle = title;
@@ -401,7 +414,9 @@ define(function(require){
 
         /**
          * Figures out which date format to use when showing the date of the current data entry
-         * @return {Function} The proper date formatting function
+         * @param {Date} date   Date object to format
+         * @return {Function}   The proper date formatting function
+         * @private
          */
         function formatDate(date) {
             let settings = dateFormat || defaultAxisSettings;
@@ -430,6 +445,7 @@ define(function(require){
          * @param  {Object[]} topics    Topics data, retrieved from datapoint passed by line chart
          * @param  {Object[]} order     Array of names in the order to sort topics by
          * @return {Object[]}           sorted topics object
+         * @private
          */
         function _sortByTopicsOrder(topics, order=topicsOrder) {
             return order.map((orderName) => topics.filter(({name}) => name === orderName)[0]);
@@ -439,6 +455,7 @@ define(function(require){
          * Sorts topic by alphabetical order for arrays of objects with a name proeprty
          * @param  {Array} topics   List of topic objects
          * @return {Array}          List of topic name strings
+         * @private
          */
         function _sortByAlpha(topics) {
             return topics
@@ -450,7 +467,7 @@ define(function(require){
                     return -1;
                 });
 
-            let otherIndex = topics.map(({name}) => name).indexOf('Other');
+            let otherIndex = topics.map(({ name }) => name).indexOf('Other');
 
             if (otherIndex >= 0) {
                 let other = topics.splice(otherIndex, 1);
@@ -464,13 +481,12 @@ define(function(require){
          * @param  {D3Selection} text  Selection with the text to wrap inside
          * @param  {Number} width Desired max width for that line
          * @param  {Number} xpos  Initial x position of the text
+         * @private
          *
          * REF: http://bl.ocks.org/mbostock/7555321
          * More discussions on https://github.com/mbostock/d3/issues/1642
          */
-        function textWrap(text, width, xpos) {
-            xpos = xpos || 0;
-
+        function textWrap(text, width, xpos = 0) {
             text.each(function() {
                 var words,
                     word,
@@ -521,6 +537,7 @@ define(function(require){
          * Draws the data entries inside the tooltip
          * @param  {Object} dataPoint   Data entry from to take the info
          * @return void
+         * @private
          */
         function updateContent(dataPoint){
             var topics = dataPoint[topicLabel];
@@ -545,6 +562,7 @@ define(function(require){
          * @param  {lineChartPointByDate} dataPoint  Current datapoint to show info about
          * @param  {Number} xPosition           Position of the mouse on the X axis
          * @return void
+         * @private
          */
         function updateTooltip(dataPoint, xPosition, yPosition) {
             updateContent(dataPoint);
@@ -564,7 +582,8 @@ define(function(require){
         /**
          * Exposes the ability to force the tooltip to use a certain date format
          * @param  {String} _x          Desired format
-         * @return { (String|Module) }  Current format or module to chain calls
+         * @return {String | module}  Current format or module to chain calls
+         * @public 
          */
         exports.dateFormat = function(_x) {
             if (!arguments.length) {
@@ -578,7 +597,7 @@ define(function(require){
         /**
          * Gets or Sets the dateLabel of the data
          * @param  {String} _x          Desired dateLabel
-         * @return { String | module}   Current dateLabel or Chart module to chain calls
+         * @return {String | module}   Current dateLabel or Chart module to chain calls
          * @public
          */
         exports.dateLabel = function(_x) {
@@ -592,7 +611,7 @@ define(function(require){
 
         /**
          * Hides the tooltip
-         * @return {Module} Tooltip module to chain calls
+         * @return {module} Tooltip module to chain calls
          * @public
          */
         exports.hide = function() {
@@ -604,7 +623,7 @@ define(function(require){
         /**
          * Pass locale for the tooltip to render the date in
          * @param  {String} _x          Must be a locale tag like 'en-US' or 'fr-FR'
-         * @return { (String|Module) }  Current locale or module to chain calls
+         * @return {String | module}    Current locale or module to chain calls
          * @public
          */
         exports.locale = function(_x) {
@@ -619,7 +638,7 @@ define(function(require){
         /**
          * Gets or Sets the nameLabel of the data
          * @param  {String} _x           Desired nameLabel
-         * @return { String | module}    Current nameLabel or Chart module to chain calls
+         * @return {String | module}    Current nameLabel or Chart module to chain calls
          * @public
          */
         exports.nameLabel = function(_x) {
@@ -633,8 +652,8 @@ define(function(require){
 
         /**
          * Gets or Sets shouldShowDateInTitle
-         * @param  {Boolean} _x                         Desired value
-         * @return { shouldShowDateInTitle | module}    Current shouldShowDateInTitle or Chart module to chain calls
+         * @param  {Boolean} _x          Desired value
+         * @return {Boolean | module}    Current shouldShowDateInTitle or Chart module to chain calls
          * @public
          */
         exports.shouldShowDateInTitle = function(_x) {
@@ -648,7 +667,7 @@ define(function(require){
 
         /**
          * Shows the tooltip
-         * @return {Module} Tooltip module to chain calls
+         * @return {module} Tooltip module to chain calls
          * @public
          */
         exports.show = function() {
@@ -660,7 +679,7 @@ define(function(require){
         /**
          * Gets or Sets shouldShowDateInTitle
          * @param  {Boolean} _x           Desired value
-         * @return { Boolean | module}    Current shouldShowDateInTitle or Chart module to chain calls
+         * @return {Boolean | module}    Current shouldShowDateInTitle or Chart module to chain calls
          * @public
          */
         exports.shouldShowDateInTitle = function(_x) {
@@ -675,7 +694,7 @@ define(function(require){
         /**
          * Gets or Sets the title of the tooltip
          * @param  {String} _x          Desired title
-         * @return { String | module}   Current title or module to chain calls
+         * @return {String | module}   Current title or module to chain calls
          * @public
          */
         exports.title = function(_x) {
@@ -689,23 +708,8 @@ define(function(require){
 
         /**
          * Pass an override for the ordering of your tooltip
-         * @param  {Object[]} _x        Array of the names of your tooltip items
-         * @return { Object[] | module} Current overrideOrder or Chart module to chain calls
-         * @public
-         */
-        exports.topicsOrder = function(_x) {
-            if (!arguments.length) {
-                return topicsOrder;
-            }
-            topicsOrder = _x;
-
-            return this;
-        };
-
-        /**
-         * Pass an override for the ordering of your tooltip
          * @param  {String[]} _x           Array of the names of your tooltip items
-         * @return { String[] | module}    Current overrideOrder or Chart module to chain calls
+         * @return {String[] | module}    Current overrideOrder or Chart module to chain calls
          * @public
          */
         exports.topicsOrder = function(_x) {
@@ -720,7 +724,7 @@ define(function(require){
         /**
          * Gets or Sets the topicLabel of the data
          * @param  {String} _x          Desired topicLabel
-         * @return { String | module}   Current topicLabel or Chart module to chain calls
+         * @return {String | module}   Current topicLabel or Chart module to chain calls
          * @public
          */
         exports.topicLabel = function(_x) {
@@ -750,7 +754,7 @@ define(function(require){
         /**
          * Gets or Sets the valueFormat of the tooltip
          * @param  {String} _x          Desired valueFormat
-         * @return { String | module}   Current valueFormat or module to chain calls
+         * @return {String | module}   Current valueFormat or module to chain calls
          * @public
          */
         exports.valueFormat = function(_x) {
@@ -765,7 +769,7 @@ define(function(require){
         /**
          * Gets or Sets the valueLabel of the data
          * @param  {String} _x          Desired valueLabel
-         * @return { String | module}   Current valueLabel or Chart module to chain calls
+         * @return {String | module}   Current valueLabel or Chart module to chain calls
          * @public
          */
         exports.valueLabel = function(_x) {
