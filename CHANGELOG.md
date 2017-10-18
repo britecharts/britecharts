@@ -1,5 +1,11 @@
-2.1.1
-2.1.0
+2.1.1 - Patch
+--------------
+Features:
+* Added barchart padding
+
+Bug fixes:
+* Fixed IE11 tooltip bug
+
 2.1.0 - Minor
 ---------------------
 Features:
