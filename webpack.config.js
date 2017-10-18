@@ -115,6 +115,7 @@ const getConfig = (env) => {
                 // new LiveReloadPlugin({appendScriptTag:true})
             ] ,
             devServer:{
+                host: '0.0.0.0',
                 proxy: {
                     '/britecharts/scripts/common.js': {
                         target: 'http://localhost:8001/',

@@ -33,7 +33,7 @@ define(function(require) {
             });
 
         // Add it to the DOM
-        containerSelector.append(sel);
+        containerSelector.appendChild(sel);
 
         // Listen for changes
         d3Selection.select(sel)

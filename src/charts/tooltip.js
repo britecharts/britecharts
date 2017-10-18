@@ -15,10 +15,7 @@ define(function(require){
         formatIntegerValue,
         formatDecimalValue
     } = require('./helpers/formatHelpers');
-
-    const {
-        isInteger
-    } = require('./helpers/common');
+    const { isInteger } = require('./helpers/common');
 
     /**
      * Tooltip Component reusable API class that renders a
@@ -90,6 +87,8 @@ define(function(require){
             ttTextY = 37,
             textSize,
             entryLineLimit = 3,
+            initialTooltipTextXPosition = -25,
+            tooltipTextLinePadding = 5,
 
             // Animations
             mouseChaseDuration = 100,
@@ -319,6 +318,7 @@ define(function(require){
          */
         function updateTopicContent(topic){
             let name = topic[nameLabel],
+                textHeight,
                 tooltipRight,
                 tooltipLeftText,
                 tooltipRightText,
@@ -331,23 +331,29 @@ define(function(require){
               .append('text')
                 .classed('tooltip-left-text', true)
                 .attr('dy', '1em')
-                .attr('x', ttTextX - 20)
+                .attr('x', ttTextX)
                 .attr('y', ttTextY)
                 .style('fill', tooltipTextColor)
                 .text(tooltipLeftText)
-                .call(textWrap, tooltipMaxTopicLength, -25);
+                .call(textWrap, tooltipMaxTopicLength, initialTooltipTextXPosition);
 
             tooltipRight = tooltipBody
               .append('text')
                 .classed('tooltip-right-text', true)
                 .attr('dy', '1em')
-                .attr('x', ttTextX + 8)
+                .attr('x', ttTextX)
                 .attr('y', ttTextY)
                 .style('fill', tooltipTextColor)
                 .text(tooltipRightText);
 
             textSize = elementText.node().getBBox();
-            tooltipHeight += textSize.height + 5;
+            
+            // IE11 give us sometimes a height of 0 when hovering on top of the vertical marker
+            // This hack fixes it for some cases, but it doesn't work in multiline (they won't wrap)
+            // Let's remove this once we stop supporting IE11
+            textHeight = textSize.height ? textSize.height : 18.4;
+            
+            tooltipHeight += textHeight + tooltipTextLinePadding;
 
             // Not sure if necessary
             tooltipRight.attr('x', tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4)
@@ -361,7 +367,7 @@ define(function(require){
                 .style('fill', colorMap[name])
                 .style('stroke-width', 1);
 
-            ttTextY += textSize.height + 7;
+            ttTextY += textHeight + 7;
         }
 
         /**
@@ -461,7 +467,7 @@ define(function(require){
                     return -1;
                 });
 
-            let otherIndex = topics.map(({name}) => name).indexOf('Other');
+            let otherIndex = topics.map(({ name }) => name).indexOf('Other');
 
             if (otherIndex >= 0) {
                 let other = topics.splice(otherIndex, 1);
@@ -480,9 +486,7 @@ define(function(require){
          * REF: http://bl.ocks.org/mbostock/7555321
          * More discussions on https://github.com/mbostock/d3/issues/1642
          */
-        function textWrap(text, width, xpos) {
-            xpos = xpos || 0;
-
+        function textWrap(text, width, xpos = 0) {
             text.each(function() {
                 var words,
                     word,
