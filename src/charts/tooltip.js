@@ -405,8 +405,12 @@ define(function(require){
         function updateTitle(dataPoint) {
             let tTitle = title;
 
-            if (shouldAppendDateToTitle) {
-                tTitle = `${tTitle} - ${formatDate(new Date(dataPoint[dateLabel]))}`;
+            if (tTitle.length) {
+                if (shouldAppendDateToTitle) {
+                    tTitle = `${tTitle} - ${formatDate(new Date(dataPoint[dateLabel]))}`;
+                }
+            } else {
+                tTitle = formatDate(new Date(dataPoint[dateLabel]));
             }
 
             tooltipTitle.text(tTitle);
