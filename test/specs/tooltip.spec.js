@@ -157,7 +157,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                             containerFixture.select('.britechart-tooltip')
                                 .selectAll('.tooltip-title')
                                 .text()
-                        ).toBe('Aug 05, 03 AM');
+                        ).toBe('Aug 05, 07 AM');
                     });
                 });
 
@@ -178,7 +178,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                             containerFixture.select('.britechart-tooltip')
                                 .selectAll('.tooltip-title')
                                 .text()
-                        ).toBe('My Title - 08/05 @ 03:00 AM');
+                        ).toBe('My Title - 08/05 @ 07:00 AM');
                     });
                 });
             });
