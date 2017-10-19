@@ -612,7 +612,7 @@ define(function(require){
          */
         exports.dateCustomFormat = function(_x) {
             if (!arguments.length) {
-              return dateCustomFormat || '%m/%d/%Y @ %H:%M %p';
+                return dateCustomFormat;
             }
             dateCustomFormat = _x;
 
