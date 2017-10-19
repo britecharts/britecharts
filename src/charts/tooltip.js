@@ -66,7 +66,7 @@ define(function(require){
             height = 45,
 
             title = 'Tooltip title',
-            shouldShowDateInTitle = true,
+            shouldAppendDateToTitle = true,
             valueFormat = null,
 
             // tooltip
@@ -162,7 +162,7 @@ define(function(require){
                   .append('g')
                     .classed('britechart britechart-tooltip', true)
                     .style('display', 'none');
-                    
+
                 buildContainerGroups();
                 drawTooltip();
             }
@@ -347,12 +347,12 @@ define(function(require){
                 .text(tooltipRightText);
 
             textSize = elementText.node().getBBox();
-            
+
             // IE11 give us sometimes a height of 0 when hovering on top of the vertical marker
             // This hack fixes it for some cases, but it doesn't work in multiline (they won't wrap)
             // Let's remove this once we stop supporting IE11
             textHeight = textSize.height ? textSize.height : 18.4;
-            
+
             tooltipHeight += textHeight + tooltipTextLinePadding;
 
             // Not sure if necessary
@@ -405,7 +405,7 @@ define(function(require){
         function updateTitle(dataPoint) {
             let tTitle = title;
 
-            if (shouldShowDateInTitle) {
+            if (shouldAppendDateToTitle) {
                 tTitle = `${tTitle} - ${formatDate(new Date(dataPoint[dateLabel]))}`;
             }
 
@@ -583,7 +583,7 @@ define(function(require){
          * Exposes the ability to force the tooltip to use a certain date format
          * @param  {String} _x          Desired format
          * @return {String | module}  Current format or module to chain calls
-         * @public 
+         * @public
          */
         exports.dateFormat = function(_x) {
             if (!arguments.length) {
@@ -651,16 +651,16 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets shouldShowDateInTitle
+         * Gets or Sets shouldAppendDateToTitle
          * @param  {Boolean} _x          Desired value
-         * @return {Boolean | module}    Current shouldShowDateInTitle or Chart module to chain calls
+         * @return {Boolean | module}    Current shouldAppendDateToTitle or Chart module to chain calls
          * @public
          */
-        exports.shouldShowDateInTitle = function(_x) {
+        exports.shouldAppendDateToTitle = function(_x) {
             if (!arguments.length) {
-                return shouldShowDateInTitle;
+                return shouldAppendDateToTitle;
             }
-            shouldShowDateInTitle = _x;
+            shouldAppendDateToTitle = _x;
 
             return this;
         };
@@ -677,16 +677,16 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets shouldShowDateInTitle
+         * Gets or Sets shouldAppendDateToTitle
          * @param  {Boolean} _x           Desired value
-         * @return {Boolean | module}    Current shouldShowDateInTitle or Chart module to chain calls
+         * @return {Boolean | module}    Current shouldAppendDateToTitle or Chart module to chain calls
          * @public
          */
-        exports.shouldShowDateInTitle = function(_x) {
+        exports.shouldAppendDateToTitle = function(_x) {
             if (!arguments.length) {
-                return shouldShowDateInTitle;
+                return shouldAppendDateToTitle;
             }
-            shouldShowDateInTitle = _x;
+            shouldAppendDateToTitle = _x;
 
             return this;
         };
