@@ -66,7 +66,7 @@ define(function(require){
             height = 45,
 
             title = 'Tooltip title',
-            shouldAppendDateToTitle = true,
+            shouldShowDateInTitle = true,
             valueFormat = null,
 
             // tooltip
@@ -407,7 +407,7 @@ define(function(require){
             let tTitle = title;
 
             if (tTitle.length) {
-                if (shouldAppendDateToTitle) {
+                if (shouldShowDateInTitle) {
                     tTitle = `${tTitle} - ${formatDate(new Date(dataPoint[dateLabel]))}`;
                 }
             } else {
@@ -675,16 +675,16 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets shouldAppendDateToTitle
+         * Gets or Sets shouldShowDateInTitle
          * @param  {Boolean} _x          Desired value
-         * @return {Boolean | module}    Current shouldAppendDateToTitle or Chart module to chain calls
+         * @return {Boolean | module}    Current shouldShowDateInTitle or Chart module to chain calls
          * @public
          */
-        exports.shouldAppendDateToTitle = function(_x) {
+        exports.shouldShowDateInTitle = function(_x) {
             if (!arguments.length) {
-                return shouldAppendDateToTitle;
+                return shouldShowDateInTitle;
             }
-            shouldAppendDateToTitle = _x;
+            shouldShowDateInTitle = _x;
 
             return this;
         };
@@ -701,16 +701,16 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets shouldAppendDateToTitle
+         * Gets or Sets shouldShowDateInTitle
          * @param  {Boolean} _x           Desired value
-         * @return {Boolean | module}    Current shouldAppendDateToTitle or Chart module to chain calls
+         * @return {Boolean | module}    Current shouldShowDateInTitle or Chart module to chain calls
          * @public
          */
-        exports.shouldAppendDateToTitle = function(_x) {
+        exports.shouldShowDateInTitle = function(_x) {
             if (!arguments.length) {
-                return shouldAppendDateToTitle;
+                return shouldShowDateInTitle;
             }
-            shouldAppendDateToTitle = _x;
+            shouldShowDateInTitle = _x;
 
             return this;
         };

@@ -126,7 +126,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                 describe('when date must not be shown', function() {
 
                     it('should only show the title of the tooltip', () =>  {
-                        tooltipChart.shouldAppendDateToTitle(false);
+                        tooltipChart.shouldShowDateInTitle(false);
 
                         tooltipChart.update({
                             date: '2015-08-05T07:00:00.000Z',
@@ -490,13 +490,13 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                 expect(newOrder).toBe(testOrder);
             });
 
-            it('should provide shouldAppendDateToTitle getter and setter', () => {
-                let current = tooltipChart.shouldAppendDateToTitle(),
+            it('should provide shouldShowDateInTitle getter and setter', () => {
+                let current = tooltipChart.shouldShowDateInTitle(),
                     expected = false,
                     actual;
 
-                tooltipChart.shouldAppendDateToTitle(expected);
-                actual = tooltipChart.shouldAppendDateToTitle();
+                tooltipChart.shouldShowDateInTitle(expected);
+                actual = tooltipChart.shouldShowDateInTitle();
 
                 expect(current).not.toBe(expected);
                 expect(actual).toBe(expected);
