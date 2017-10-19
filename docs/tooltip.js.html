@@ -595,13 +595,14 @@
          */
         function updateTitle(dataPoint) {
             let tTitle = title;
+            let formattedDate = formatDate(new Date(dataPoint[dateLabel]));
 
             if (tTitle.length) {
                 if (shouldShowDateInTitle) {
-                    tTitle = `${tTitle} - ${formatDate(new Date(dataPoint[dateLabel]))}`;
+                    tTitle = `${tTitle} - ${formattedDate}`;
                 }
             } else {
-                tTitle = formatDate(new Date(dataPoint[dateLabel]));
+                tTitle = formattedDate;
             }
 
             tooltipTitle.text(tTitle);
@@ -801,7 +802,7 @@
          */
         exports.dateCustomFormat = function(_x) {
             if (!arguments.length) {
-              return dateCustomFormat || '%m/%d/%Y @ %H:%M %p';
+                return dateCustomFormat;
             }
             dateCustomFormat = _x;
 
@@ -886,21 +887,6 @@
          */
         exports.show = function() {
             svg.style('display', 'block');
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets shouldShowDateInTitle
-         * @param  {Boolean} _x           Desired value
-         * @return {Boolean | module}    Current shouldShowDateInTitle or Chart module to chain calls
-         * @public
-         */
-        exports.shouldShowDateInTitle = function(_x) {
-            if (!arguments.length) {
-                return shouldShowDateInTitle;
-            }
-            shouldShowDateInTitle = _x;
 
             return this;
         };

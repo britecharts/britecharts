@@ -702,21 +702,6 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets shouldShowDateInTitle
-         * @param  {Boolean} _x           Desired value
-         * @return {Boolean | module}    Current shouldShowDateInTitle or Chart module to chain calls
-         * @public
-         */
-        exports.shouldShowDateInTitle = function(_x) {
-            if (!arguments.length) {
-                return shouldShowDateInTitle;
-            }
-            shouldShowDateInTitle = _x;
-
-            return this;
-        };
-
-        /**
          * Gets or Sets the title of the tooltip (to only show the date, set a blank title)
          * @param  {String} _x          Desired title
          * @return {String | module}   Current title or module to chain calls
