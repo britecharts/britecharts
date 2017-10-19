@@ -140,6 +140,47 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                         ).toBe('Tooltip title');
                     });
                 });
+
+                describe('when title is set to blank', function() {
+
+                    it('should only show the date of the tooltip', () =>  {
+                        tooltipChart
+                            .title('')
+                            .dateFormat(tooltipChart.axisTimeCombinations.HOUR_DAY);
+
+                        tooltipChart.update({
+                            date: '2015-08-05T07:00:00.000Z',
+                            topics: []
+                        }, topicColorMap, 0);
+
+                        expect(
+                            containerFixture.select('.britechart-tooltip')
+                                .selectAll('.tooltip-title')
+                                .text()
+                        ).toBe('Aug 05, 03 AM');
+                    });
+                });
+
+                describe('when custom date is to be used', function() {
+
+                    it('should support a custom date format', () =>  {
+                        tooltipChart
+                            .title('My Title')
+                            .dateFormat(tooltipChart.axisTimeCombinations.CUSTOM)
+                            .customDateFormat('%m/%d @ %H:%M %p');
+
+                        tooltipChart.update({
+                            date: '2015-08-05T07:00:00.000Z',
+                            topics: []
+                        }, topicColorMap, 0);
+
+                        expect(
+                            containerFixture.select('.britechart-tooltip')
+                                .selectAll('.tooltip-title')
+                                .text()
+                        ).toBe('My Title - 08/05 @ 03:00 AM');
+                    });
+                });
             });
 
             it('should add a line of text for each topic', () =>  {
