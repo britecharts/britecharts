@@ -110,7 +110,7 @@ define(function(require){
 
             defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
             dateFormat = null,
-            customDateFormat = null,
+            dateCustomFormat = null,
             topicsOrder = [],
 
             // formats
@@ -434,8 +434,8 @@ define(function(require){
             } else if (settings === axisTimeCombinations.HOUR_DAY || settings === axisTimeCombinations.MINUTE_HOUR) {
                 format = monthDayHourFormat;
                 localeOptions.hour = 'numeric';
-            } else if (settings === axisTimeCombinations.CUSTOM && typeof customDateFormat === 'string') {
-                format = d3TimeFormat.timeFormat(customDateFormat);
+            } else if (settings === axisTimeCombinations.CUSTOM && typeof dateCustomFormat === 'string') {
+                format = d3TimeFormat.timeFormat(dateCustomFormat);
             }
 
             if (locale && ((typeof Intl !== 'undefined') && (typeof Intl === 'object' && Intl.DateTimeFormat))) {
@@ -607,13 +607,13 @@ define(function(require){
          * @return {String | module}  Current format or module to chain calls
          * @public
          * @example tooltip.dateFormat(tooltip.axisTimeCombinations.CUSTOM);
-         * tooltip.customDateFormat('%H:%M %p')
+         * tooltip.dateCustomFormat('%H:%M %p')
          */
-        exports.customDateFormat = function(_x) {
+        exports.dateCustomFormat = function(_x) {
             if (!arguments.length) {
-              return customDateFormat || '%m/%d/%Y @ %H:%M %p';
+              return dateCustomFormat || '%m/%d/%Y @ %H:%M %p';
             }
-            customDateFormat = _x;
+            dateCustomFormat = _x;
 
             return this;
         };

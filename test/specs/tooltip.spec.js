@@ -167,7 +167,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                         tooltipChart
                             .title('My Title')
                             .dateFormat(tooltipChart.axisTimeCombinations.CUSTOM)
-                            .customDateFormat('%m/%d @ %H:%M %p');
+                            .dateCustomFormat('%m/%d @ %H:%M %p');
 
                         tooltipChart.update({
                             date: '2015-08-05T07:00:00.000Z',
