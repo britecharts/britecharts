@@ -110,6 +110,7 @@ define(function(require){
 
             defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
             dateFormat = null,
+            customDateFormat = null,
             topicsOrder = [],
 
             // formats
@@ -433,6 +434,8 @@ define(function(require){
             } else if (settings === axisTimeCombinations.HOUR_DAY || settings === axisTimeCombinations.MINUTE_HOUR) {
                 format = monthDayHourFormat;
                 localeOptions.hour = 'numeric';
+            } else if (settings === axisTimeCombinations.CUSTOM && typeof customDateFormat === 'string') {
+                format = d3TimeFormat.timeFormat(customDateFormat);
             }
 
             if (locale && ((typeof Intl !== 'undefined') && (typeof Intl === 'object' && Intl.DateTimeFormat))) {
@@ -599,6 +602,23 @@ define(function(require){
         };
 
         /**
+         * Exposes the ability to use a custom date format
+         * @param  {String} _x          Desired custom format
+         * @return {String | module}  Current format or module to chain calls
+         * @public
+         * @example tooltip.dateFormat(tooltip.axisTimeCombinations.CUSTOM);
+         * tooltip.customDateFormat('%H:%M %p')
+         */
+        exports.customDateFormat = function(_x) {
+            if (!arguments.length) {
+              return customDateFormat || '%m/%d/%Y @ %H:%M %p';
+            }
+            customDateFormat = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the dateLabel of the data
          * @param  {String} _x          Desired dateLabel
          * @return {String | module}   Current dateLabel or Chart module to chain calls
@@ -696,7 +716,7 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the title of the tooltip
+         * Gets or Sets the title of the tooltip (to only show the date, set a blank title)
          * @param  {String} _x          Desired title
          * @return {String | module}   Current title or module to chain calls
          * @public
