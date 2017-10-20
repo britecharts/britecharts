@@ -1,32 +1,24 @@
 {
     "data": [
         {
-            "key": "Appetizer",
+            "key": "Radiating",
             "value": 400
         },
         {
-            "key": "Soup",
+            "key": "Reflecting",
             "value": 300
         },
         {
-            "key": "Salad",
+            "key": "Shining",
             "value": 300
         },
         {
-            "key": "Lunch",
+            "key": "Vivid",
             "value": 250
         },
         {
-            "key": "Dinner",
+            "key": "Brilliant",
             "value": 220
-        },
-        {
-            "key": "Dessert",
-            "value": 100
-        },
-        {
-            "key": "Midnight snack",
-            "value": 20
         }
     ]
 }

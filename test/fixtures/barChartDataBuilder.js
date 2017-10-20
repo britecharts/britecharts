@@ -3,8 +3,8 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonColors = require('json!../json/barColors.json'),
-        jsonLetters = require('json!../json/barDataLetters.json');
+        jsonColors = require('json-loader!../json/barColors.json'),
+        jsonLetters = require('json-loader!../json/barDataLetters.json');
 
 
     function BarDataBuilder(config){
@@ -20,19 +20,6 @@ define(function(require) {
 
         this.withColors = function(){
             var attributes = _.extend({}, this.config, jsonColors);
-
-            return new this.Klass(attributes);
-        };
-
-        /**
-         * Sets the path for fetching the data
-         * @param  {String} path Desired path for test data
-         * @return {BarDataBuilder}      Builder object
-         */
-        this.withPath = function(path){
-            var attributes = _.extend({}, this.config, {
-                jsonURL: path
-            });
 
             return new this.Klass(attributes);
         };

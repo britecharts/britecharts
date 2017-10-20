@@ -1,34 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Line Chart Demo - Britecharts</title>
-    <link type="text/css" rel="stylesheet" href="/demos/css/bundle.css" />
-</head>
-<body id="line">
-    <div class="container">
+
+    <div class="container" id="line">
         <div class="row">
             <div class="col-md-8">
                 <article>
                     <h2>Line Chart with fixed Aspect Ratio</h2>
-                    <div class="britechart js-line-chart-container card--chart"></div>
+                    <div class="britechart js-line-chart-container line-chart-container card--chart"></div>
+                    <div class="britechart js-line-brush-chart-container card--chart"></div>
+                    <p class="js-date-range date-range is-hidden">Selected from <span class="js-start-date"></span> to <span class="js-end-date"></span></p>
                 </article>
             </div>
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>
-                <pre>
+                <pre><code class="language-javascript">
 lineChart
+    .isAnimated(true)
     .aspectRatio(0.5)
+    .grid('horizontal')
     .tooltipThreshold(600)
-    .width(containerWidth);
+    .width(containerWidth)
+    .dateLabel('fullDate')
+    .on('customMouseOver', chartTooltip.show)
+    .on('customMouseMove', chartTooltip.update)
+    .on('customMouseOut', chartTooltip.hide);
 
 container.datum(dataset).call(lineChart);
-                </pre>
+                </code></pre>
                 <h4>Colors</h4>
                 <label class="control-label">You can also check other color schemas:</label>
                 <div class="js-color-selector-container card--chart"></div>
-                <h4>Download</h4>
-                <p>You can also export this chart by pressing <input id="button" class="btn" type="button" value="Download" /></p>
+                <h4>Data Input</h4>
+                <p>Check the <a href="/britecharts/global.html#LineChartData__anchor">data input schema</a> of this chart.</p>
+                <h4>Export Chart</h4>
+                <p>You can also export this chart by pressing: <input id="button" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
+                <h4>Demo Code</h4>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
             </div>
         </div>
 
@@ -43,16 +48,20 @@ container.datum(dataset).call(lineChart);
             </div>
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>
-                <pre>
+                <pre><code class="language-javascript">
 lineChart
     .tooltipThreshold(600)
     .height(300)
+    .lineCurve('basis')
+    .grid('vertical')
     .width(containerWidth);
 
 container.datum(dataset).call(lineChart);
-                </pre>
-                <h3>Download</h3>
-                <p>You can also export this chart by pressing: <input id="button2" type="button" value="Download" /></p>
+                </code></pre>
+                <h3>Export Chart</h3>
+                <p>You can also export this chart by pressing: <input id="button2" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
+                <h4>Demo Code</h4>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
             </div>
         </div>
 
@@ -66,16 +75,18 @@ container.datum(dataset).call(lineChart);
             </div>
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>
-                <pre>
+                <pre><code class="language-javascript">
 lineChart
     .tooltipThreshold(600)
     .height(300)
-    .width(containerWidth);
+    .width(containerWidth)
+    .grid('full');
 
 container.datum(dataset).call(lineChart);
-                </pre>
+                </code></pre>
+                <h4>Demo Code</h4>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
             </div>
         </div>
     </div>
-</body>
-</html>
+

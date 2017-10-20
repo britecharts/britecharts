@@ -1,0 +1,19 @@
+engines:
+  eslint:
+    enabled: true
+    config:
+        config: .eslintrc.json
+
+ratings:
+   paths:
+   - "src/charts/**.js"
+
+exclude_paths:
+- "test"
+- "node_modules"
+- "docs"
+- "dist"
+- "demos"
+- "sandbox"
+- "src/doc"
+- "src/tasks"

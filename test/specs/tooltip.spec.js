@@ -87,17 +87,101 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
 
         describe('Render', function() {
 
-            it('should update the title of the tooltip', () =>  {
-                tooltipChart.update({
-                    date: '2015-08-05T07:00:00.000Z',
-                    topics: []
-                }, topicColorMap, 0);
+            describe('title', function() {
 
-                expect(
-                    containerFixture.select('.britechart-tooltip')
-                        .selectAll('.tooltip-title')
-                        .text()
-                ).toBe('Tooltip title - Aug 05, 2015');
+                describe('when date has day granularity', function() {
+
+                    it('should update the title of the tooltip with a date with year', () =>  {
+                        tooltipChart.dateFormat(tooltipChart.axisTimeCombinations.DAY_MONTH);
+                        tooltipChart.update({
+                            date: '2015-08-05T07:00:00.000Z',
+                            topics: []
+                        }, topicColorMap, 0);
+
+                        expect(
+                            containerFixture.select('.britechart-tooltip')
+                                .selectAll('.tooltip-title')
+                                .text()
+                        ).toBe('Tooltip title - Aug 05, 2015');
+                    });
+                });
+
+                xdescribe('when date has hour granularity', function() {
+
+                    it('should update the title of the tooltip with a date with hours', () =>  {
+                        tooltipChart.dateFormat(tooltipChart.axisTimeCombinations.HOUR_DAY);
+                        tooltipChart.update({
+                            date: '2015-08-05T07:00:00.000Z',
+                            topics: []
+                        }, topicColorMap, 0);
+
+                        expect(
+                            containerFixture.select('.britechart-tooltip')
+                                .selectAll('.tooltip-title')
+                                .text()
+                        ).toBe('Tooltip title - Aug 05, 12 AM');
+                    });
+                });
+
+                describe('when date must not be shown', function() {
+
+                    it('should only show the title of the tooltip', () =>  {
+                        tooltipChart.shouldShowDateInTitle(false);
+
+                        tooltipChart.update({
+                            date: '2015-08-05T07:00:00.000Z',
+                            topics: []
+                        }, topicColorMap, 0);
+
+                        expect(
+                            containerFixture.select('.britechart-tooltip')
+                                .selectAll('.tooltip-title')
+                                .text()
+                        ).toBe('Tooltip title');
+                    });
+                });
+
+                // TODO: figure out how to avoid timezone issues
+                xdescribe('when title is set to blank', function() {
+
+                    it('should only show the date of the tooltip', () =>  {
+                        tooltipChart
+                            .title('')
+                            .dateFormat(tooltipChart.axisTimeCombinations.HOUR_DAY);
+
+                        tooltipChart.update({
+                            date: '2015-08-05T07:00:00.000Z',
+                            topics: []
+                        }, topicColorMap, 0);
+
+                        expect(
+                            containerFixture.select('.britechart-tooltip')
+                                .selectAll('.tooltip-title')
+                                .text()
+                        ).toBe('Aug 05, 07 AM');
+                    });
+                });
+
+                xdescribe('when custom date is to be used', function() {
+
+                    it('should support a custom date format', () =>  {
+                        tooltipChart
+                            .title('My Title')
+                            .dateFormat(tooltipChart.axisTimeCombinations.CUSTOM)
+                            .dateCustomFormat('%m/%d @ %H:%M %p');
+
+                        tooltipChart.update({
+                            date: '2015-08-05T07:00:00.000Z',
+                            topics: []
+                        }, topicColorMap, 0);
+
+                        expect(
+                            containerFixture.select('.britechart-tooltip')
+                                .selectAll('.tooltip-title')
+                                .text()
+                        ).toBe('My Title - 08/05 @ 07:00 AM');
+                    });
+                });
             });
 
             it('should add a line of text for each topic', () =>  {
@@ -188,7 +272,6 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                             }
                         ]
                     }, topicColorMap, 0);
-
                     actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
                                 .text()
 
@@ -241,7 +324,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                 });
 
                 it('should not format medium numbers', () =>  {
-                    var expected = '100',
+                    var expected = '103',
                         actual;
 
                     tooltipChart.update({
@@ -249,7 +332,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                         topics: [
                             {
                                 name: 103,
-                                value: 100,
+                                value: 103,
                                 topicName: 'San Francisco'
                             }
                         ]
@@ -282,6 +365,32 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                     expect(actual).toEqual(expected);
                 });
             });
+
+            describe('override default formatting', function() {
+
+                it('should respect format override', () =>  {
+                    var expected = '10,000',
+                        actual;
+
+                    tooltipChart.valueFormat(',');
+
+                    tooltipChart.update({
+                        date: '2015-08-05T07:00:00.000Z',
+                        topics: [
+                            {
+                                name: 103,
+                                value: 10000,
+                                topicName: 'San Francisco'
+                            }
+                        ]
+                    }, topicColorMap, 0);
+
+                    actual = containerFixture.select('.britechart-tooltip .tooltip-right-text')
+                        .text()
+
+                    expect(actual).toEqual(expected);
+                });
+            });
         });
 
         describe('API', function() {
@@ -293,6 +402,102 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
 
                 tooltipChart.title(expected);
                 actual = tooltipChart.title();
+
+                expect(current).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide valueLabel getter and setter', () => {
+                let defaultValueLabel = tooltipChart.valueLabel(),
+                    testValueLabel = 'quantity',
+                    newValueLabel;
+
+                tooltipChart.valueLabel(testValueLabel);
+                newValueLabel = tooltipChart.valueLabel();
+
+                expect(defaultValueLabel).not.toBe(testValueLabel);
+                expect(newValueLabel).toBe(testValueLabel);
+            });
+
+            it('should provide topicLabel getter and setter', () => {
+                let defaultTopicLabel = tooltipChart.topicLabel(),
+                    testTopicLabel = 'valueSet',
+                    newTopicLabel;
+
+                tooltipChart.topicLabel(testTopicLabel);
+                newTopicLabel = tooltipChart.topicLabel();
+
+                expect(defaultTopicLabel).not.toBe(testTopicLabel);
+                expect(newTopicLabel).toBe(testTopicLabel);
+            });
+
+            it('should provide dateLabel getter and setter', () => {
+                let defaultDateLabel = tooltipChart.dateLabel(),
+                    testDateLabel = 'dateUTC',
+                    newDateLabel;
+
+                tooltipChart.dateLabel(testDateLabel);
+                newDateLabel = tooltipChart.dateLabel();
+
+                expect(defaultDateLabel).not.toBe(testDateLabel);
+                expect(newDateLabel).toBe(testDateLabel);
+            });
+
+            it('should provide a dateFormat getter and setter', () => {
+                let defaultSchema = tooltipChart.dateFormat(),
+                    testFormat = tooltipChart.axisTimeCombinations.HOUR_DAY,
+                    newSchema;
+
+                tooltipChart.dateFormat(testFormat);
+                newSchema = tooltipChart.dateFormat();
+
+                expect(defaultSchema).not.toBe(testFormat);
+                expect(newSchema).toBe(testFormat);
+            });
+
+            it('should provide an axisTimeCombinations accessor', () => {
+                let axisTimeCombinations = tooltipChart.axisTimeCombinations;
+
+                expect(axisTimeCombinations).toEqual({
+                    MINUTE_HOUR: 'minute-hour',
+                    HOUR_DAY: 'hour-daymonth',
+                    DAY_MONTH: 'day-month',
+                    MONTH_YEAR: 'month-year',
+                    CUSTOM: 'custom'
+                });
+            });
+
+            it('should provide locale getter and setter', () => {
+                let current = tooltipChart.locale(),
+                    expected = 'fr-FR',
+                    actual;
+
+                tooltipChart.locale(expected);
+                actual = tooltipChart.locale();
+
+                expect(current).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a topicsOrder getter and setter', () => {
+                let defaultOrder = tooltipChart.topicsOrder(),
+                    testOrder = [1,2,3,4,5],
+                    newOrder;
+
+                tooltipChart.topicsOrder(testOrder);
+                newOrder = tooltipChart.topicsOrder();
+
+                expect(defaultOrder).not.toBe(testOrder);
+                expect(newOrder).toBe(testOrder);
+            });
+
+            it('should provide shouldShowDateInTitle getter and setter', () => {
+                let current = tooltipChart.shouldShowDateInTitle(),
+                    expected = false,
+                    actual;
+
+                tooltipChart.shouldShowDateInTitle(expected);
+                actual = tooltipChart.shouldShowDateInTitle();
 
                 expect(current).not.toBe(expected);
                 expect(actual).toBe(expected);

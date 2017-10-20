@@ -3,7 +3,8 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonOneSource = require('json!../json/sparklineOneSource.json');
+        jsonOneSource = require('json-loader!../json/sparklineOneSource.json'),
+        jsonLowValues = require('json-loader!../json/sparklineLowValues.json');
 
 
     function SparklineDataBuilder(config){
@@ -13,6 +14,12 @@ define(function(require) {
 
         this.with1Source = function(){
             var attributes = _.extend({}, this.config, jsonOneSource);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withLowValues = function(){
+            var attributes = _.extend({}, this.config, jsonLowValues);
 
             return new this.Klass(attributes);
         };

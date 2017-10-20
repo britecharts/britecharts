@@ -1,25 +1,29 @@
 'use strict';
 
-var d3 = require('d3'),
+const d3Selection = require('d3-selection');
 
-    PubSub = require('pubsub-js'),
+const PubSub = require('pubsub-js');
 
-    sparklineChart = require('./../src/charts/sparkline'),
-    sparklineDataBuilder = require('./../test/fixtures/sparklineDataBuilder');
+const sparklineChart = require('./../src/charts/sparkline');
+const dataBuilder = require('./../test/fixtures/sparklineDataBuilder');
+
+const aTestDataSet = () => new dataBuilder.SparklineDataBuilder();
+let redrawCharts;
+
+require('./helpers/resizeHelper');
 
 
 function createSparklineChart() {
-    var sparkline = sparklineChart(),
-        testDataSet = new sparklineDataBuilder.SparklineDataBuilder(),
-        containerWidth = d3.select('.js-sparkline-chart-container').node().getBoundingClientRect().width,
-        container = d3.select('.js-sparkline-chart-container'),
+    let sparkline = sparklineChart(),
+        containerWidth = d3Selection.select('.js-sparkline-chart-container').node().getBoundingClientRect().width,
+        container = d3Selection.select('.js-sparkline-chart-container'),
         dataset;
 
-    d3.select('#button').on('click', function() {
+    d3Selection.select('#button').on('click', function() {
         sparkline.exportChart('sparkline.png', 'Britechart Sparkline Chart');
     });
 
-    dataset = testDataSet.with1Source().build();
+    dataset = aTestDataSet().with1Source().build();
 
     // Sparkline Chart Setup and start
     sparkline
@@ -33,12 +37,11 @@ function createSparklineChart() {
 }
 
 // Show charts if container available
-if (d3.select('.js-sparkline-chart-container').node()){
+if (d3Selection.select('.js-sparkline-chart-container').node()){
     createSparklineChart();
 
-    var redrawCharts = function(){
-        d3.selectAll('.sparkline').remove();
-
+    redrawCharts = function(){
+        d3Selection.selectAll('.sparkline').remove();
         createSparklineChart();
     };
 

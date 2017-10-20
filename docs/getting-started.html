@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html lang="en" prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>Getting Started with Britecharts</title>
+
+        
+            <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+            
+                <meta name="keywords" content="Britecharts, D3.js" />
+            
+        
+
+        <!-- Disable tap highlight on IE -->
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="msapplication-config" content="img/icons/browserconfig.xml">
+
+        <!-- Web Application Manifest -->
+        <link rel="manifest" href="manifest.json">
+
+        <!-- Add to homescreen for Chrome on Android -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="application-name" content="Britecharts">
+        <link rel="icon" sizes="192x192" href="img/icons/chrome-touch-icon-192x192.png">
+
+        <!-- Add to homescreen for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#009FA1">
+        <meta name="apple-mobile-web-app-title" content="Britecharts">
+        <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png">
+
+        <!-- MacOS -->
+        <link rel="mask-icon" href="img/icons/safari-pinned-tab.svg" color="#5bbad5">
+
+        <!-- Color the status bar on mobile devices -->
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="img/icons/favicon.ico">
+        <link rel="icon" type="image/png" href="img/icons/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="img/icons/favicon-16x16.png" sizes="16x16">
+
+        
+            <meta property="og:title" content="Britecharts, a D3.js based charting library of reusable components"/>
+            <meta property="og:type" content="website"/>
+            <meta property="og:image" content="https://eventbrite.github.io/britecharts/img/logo-stripes-small.png"/>
+            <meta property="og:site_name" content="Britecharts"/>
+            <meta property="og:url" content=""/>
+
+            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:site" content="@britecharts" />
+            <meta name="twitter:description" content="Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+        
+
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <link type="text/css" rel="stylesheet" href="styles/custom.css">
+        <link type="text/css" rel="stylesheet" href="styles/demos.css">
+        <link type="text/css" rel="stylesheet" href="styles/prism.css"  />
+        <link type="text/css" rel="stylesheet" href="styles/britecharts.css" />
+        <script src="/britecharts/scripts/common.js"></script>
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top navbar-default">
+            <div class="container">
+            	<div class="navbar-header">
+            		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="img/britecharts-logo.svg"
+            		alt="Britecharts - D3.js based charting library of reusable components"/></a>
+            		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+                    </button>
+            	</div>
+            	<div class="navbar-collapse collapse" id="topNavigation">
+            		<ul class="nav navbar-nav navbar-right">
+            			
+                        
+            			<li class="">
+            				<a href="getting-started.html" >Getting started<b class=""></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="tutorials.list.html"  class="dropdown-toggle" data-toggle="dropdown" >Demos<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="tutorial-bar.html">Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-brush.html">Brush Chart</a></li>
+                                
+                                <li><a href="tutorial-donut.html">Donut Chart</a></li>
+                                
+                                <li><a href="tutorial-grouped-bar.html">Grouped Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li>
+                                
+                                <li><a href="tutorial-line.html">Line Chart</a></li>
+                                
+                                <li><a href="tutorial-sparkline.html">Sparkline Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-bar.html">Stacked Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-step.html">Step Chart</a></li>
+                                
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="modules.list.html"  class="dropdown-toggle" data-toggle="dropdown" >API<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="module-Bar.html">Bar</a></li>
+                                
+                                <li><a href="module-Brush.html">Brush</a></li>
+                                
+                                <li><a href="module-Donut.html">Donut</a></li>
+                                
+                                <li><a href="module-Grouped-bar.html">Grouped-bar</a></li>
+                                
+                                <li><a href="module-Legend.html">Legend</a></li>
+                                
+                                <li><a href="module-Line.html">Line</a></li>
+                                
+                                <li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li>
+                                
+                                <li><a href="module-Sparkline.html">Sparkline</a></li>
+                                
+                                <li><a href="module-Stacked-area.html">Stacked-area</a></li>
+                                
+                                <li><a href="module-Stacked-bar.html">Stacked-bar</a></li>
+                                
+                                <li><a href="module-Step.html">Step</a></li>
+                                
+                                <li><a href="module-Tooltip.html">Tooltip</a></li>
+                                
+                                <li><a href="global.html">Types</a></li>
+                                
+            				</ul>
+            			</li>
+            			
+                        <li class="dropdown">
+                            <a class="github-link" href="https://github.com/eventbrite/britecharts/">Github</a>
+                        </li>
+                        <li class="dropdown">
+                            <a class="github-link" href="https://twitter.com/britecharts">Twitter</a>
+                        </li>
+            		</ul>
+                    
+                        <div class="col-sm-12 col-md-3 no-gutter pull-right">
+                            <form class="navbar-form" role="search">
+                                <div class="input-group search-container clearfix">
+                                    <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" id="search-submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <main class="container" id="toc-content">
+            <div class="row">
+            	
+            	<div class="col-md-8 is-source">
+            	
+            		<div id="main">
+            			
+
+	
+	<!--h1 class="page-title">Getting Started with Britecharts</h1-->
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><h2>Getting Started with Britecharts</h2><p>Britecharts has been created to help users consume and create d3 charts. It leverages a reusable API, which produces chart objects that (after initialization) can be configured and then applied to a container with a data set to plot.</p>
+<h3>Installing Britecharts</h3><p>In order to use a Britecharts chart in your project you would need to install it using NPM, Bower or cloning it via Github:</p>
+<h5>Install with NPM</h5><pre class="prettyprint source"><code>   npm install --save britecharts d3-selection</code></pre><h5>Install with Bower</h5><pre class="prettyprint source"><code>   bower install --save britecharts d3-selection</code></pre><h5>Clone the git repository</h5><pre class="prettyprint source"><code>   git clone https://github.com/eventbrite/britecharts.git</code></pre><h5>Directly from CDN</h5><pre class="prettyprint source"><code>https://cdn.jsdelivr.net/npm/britecharts@2/dist/bundled/britecharts.min.js (latest 2.x.x version)</code></pre><p>Or <a href="https://cdn.jsdelivr.net/npm/britecharts/dist/">browse all CDN files</a>. Check also our <a href="cdn.html">CDN demo page</a> or our <a href="https://jsbin.com/wativun/1/edit?html,js,output">JSBin</a> and <a href="https://codepen.io/Golodhros/pen/PprGeP?editors=1010">CodePen</a> sandbox projects.</p>
+<h3>Using Britecharts</h3><p>In order to use a Britecharts chart in your project you would need to:</p>
+<ul>
+<li><p>Require the proper chart as a module, we can do:</p>
+<pre class="prettyprint source"><code>  // ES2015 Modules
+  import LineChart from 'britecharts/dist/umd/line.min';
+
+  // CommonJS or AMD modules
+  LineChart = require('britecharts/dist/umd/line.min');</code></pre></li>
+<li>Require d3-selection as a dependency, in order to select a container to execute the chart on.<pre class="prettyprint source"><code>  d3Selection = require('d3-selection');</code></pre></li>
+<li>Instantiate a new line chart and select the chart container with <code>d3-selection</code>:<pre class="prettyprint source"><code>  var container = d3Selection.select('.js-chart-container'),
+      lineChart = new LineChart();</code></pre></li>
+<li>Configure the default chart with attributes:<pre class="prettyprint source"><code>  if (container.node()) {
+      lineChart
+          .tooltipThreshold(tooltipShouldShowThreshold)
+          .margin(chartMargin)
+          .height(chartHeight)
+          .width(chartWidth);
+  }</code></pre></li>
+<li>And finally call the chart with a container and data attached to the container.<pre class="prettyprint source"><code>  // This line gets together container, data and chart
+  container.datum(data).call(lineChart);</code></pre>And that would generate your britechart!</li>
+</ul>
+<p>Here is the whole code:</p>
+<pre class="prettyprint source"><code>    var container = d3Selection.select('.js-chart-container'),
+        lineChart = new LineChart();
+
+    if (container.node()) {
+        lineChart
+            .tooltipThreshold(tooltipShouldShowThreshold)
+            .margin(chartMargin)
+            .height(chartHeight)
+            .width(chartWidth);
+    }
+
+    // This line gets together container, data and chart
+    container.datum(data).call(lineChart);</code></pre><p>It won't look perfect though, you will need to load a small CSS file in order to see it styled. You can load the whole bundle:</p>
+<pre class="prettyprint source lang-html"><code>&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;node_modules/britecharts/dist/css/britecharts.min.css&quot;></code></pre><p>or just load the styles for the current chart plus the common Britecharts styles:</p>
+<pre class="prettyprint source lang-html"><code>&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;node_modules/britecharts/dist/css/common/common.css&quot;>
+&lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;node_modules/britecharts/dist/css/charts/line.css&quot;></code></pre><h3>Making it Responsive</h3><p>You will probably want to set up a listener for the resize event to re-render the chart, and probably debounce it, so it doesn't render too many times.</p>
+<p>This code would probably look like this:</p>
+<pre class="prettyprint source"><code>const redrawChart = () => {
+    let container = d3.select(‘.js-chart-container’);
+    let newContainerWidth = container.node() ? container.node().getBoundingClientRect().width : false;
+
+    // Setting the new width on the chart
+    lineChart.width(newContainerWidth);
+
+    // Rendering the chart again
+    container.datum(data).call(lineChart);
+};
+const throttledRedraw =  _.throttle(redrawChart, 200);
+
+window.addEventListener(&quot;resize&quot;, throttledRedraw);</code></pre><h3>Learning More</h3><p>Check out our <a href="">Documentation Homepage</a> and our <a href="tutorial-kitchen-sink.html">kitchen sink</a> to see all the available charts.</p>
+<p>If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our <a href="https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md">Contributing Guide</a>. In it, we walk you through the development environment setup, run our docs and demos and create new Pull Requests.</p></article>
+    </section>
+
+
+
+
+
+
+
+            		</div>
+            	</div>
+            	<div class="clearfix"></div>
+            	
+            		<div class="col-md-3">
+            			<div id="toc" class="col-md-3 hidden-xs hidden-sm"></div>
+            		</div>
+            	
+            </div>
+        </main>
+
+        
+            <div class="modal fade" id="searchResults">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Search results</h4>
+                  </div>
+                  <div class="modal-body"></div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+
+        <footer class="footer">
+            
+            
+            	<span class="copyright">
+            	Eventbrite Copyright
+            	</span>
+            
+            <span class="jsdoc-message">
+            	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a>
+            	
+            	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+            </span>
+        </footer>
+
+        <script src="/britecharts/scripts/docstrap.lib.js"></script>
+        <script src="/britecharts/scripts/toc.js"></script>
+        
+            <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
+        
+
+        <script src="/britecharts/scripts/prism.js"></script>
+        <script>
+        $( function () {
+        	$( "[id*='$']" ).each( function () {
+        		var $this = $( this );
+
+        		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+        	} );
+
+            // Highlight with prism
+            $( "pre.prettyprint.source" )
+                .each( function () {
+                    var $this = $( this );
+                    var example = $this.find( "code" );
+
+                    $this
+                        .wrap("<pre class='language-javascript' ></pre>" )
+                        .wrap("<code class='language-javascript'></code>" )
+                        .addClass( "language-javascript" )
+                        .html( example.html() );
+                } );
+
+        	$.catchAnchorLinks( {
+                navbarOffset: 10
+        	} );
+        	$( "#toc" ).toc( {
+        		anchorName  : function ( i, heading, prefix ) {
+        			return $( heading ).attr( "id" ) || ( prefix + i );
+        		},
+        		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+        		showAndHide : false,
+        		smoothScrolling: true
+        	} );
+
+        	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+        	$( '.dropdown-toggle' ).dropdown();
+
+            $( "table" ).each( function () {
+              var $this = $( this );
+              $this.addClass('table');
+            } );
+        } );
+        </script>
+
+
+        <!--Navigation and Symbol Display-->
+        
+
+        <!--Google Analytics-->
+        
+            <script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+                ga( 'create', 'UA-141520-30', 'auto' );
+                ga( 'send', 'pageview' );
+            </script>
+        
+
+        <!-- Search Init -->
+        
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    SearcherDisplay.init();
+                });
+            </script>
+        
+    </body>
+</html>

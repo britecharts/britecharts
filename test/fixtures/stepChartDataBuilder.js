@@ -3,7 +3,8 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonStepDataSmall = require('json!../json/stepDataSmall.json');
+        jsonStepDataSmall = require('json-loader!../json/stepDataSmall.json'),
+        jsonStepDataMedium = require('json-loader!../json/stepDataMedium.json');
 
     function StepDataBuilder(config){
         this.Klass = StepDataBuilder;
@@ -16,6 +17,11 @@ define(function(require) {
             return new this.Klass(attributes);
         }
 
+        this.withMediumData = function() {
+            var attributes = _.extend({}, this.config, jsonStepDataMedium);
+
+            return new this.Klass(attributes);
+        }
 
         this.build = function() {
             return this.config;

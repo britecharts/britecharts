@@ -1,8 +1,12 @@
 define(function(require){
     'use strict';
 
-    const d3 = require('d3');
+    const d3Format = require('d3-format');
+    const d3Scale = require('d3-scale');
+    const d3Selection = require('d3-selection');
+    const d3Transition = require('d3-transition');
 
+    const textHelper = require('./helpers/text');
     const colorHelper = require('./helpers/colors');
 
     /**
@@ -45,11 +49,11 @@ define(function(require){
      *         legendBox.clearHighlight();
      *     });
      *
-     * d3.select('.css-selector')
+     * d3Selection.select('.css-selector')
      *     .datum(dataset)
      *     .call(donutChart);
      *
-     * d3.select('.other-css-selector')
+     * d3Selection.select('.other-css-selector')
      *     .datum(dataset)
      *     .call(legendBox);
      *
@@ -57,40 +61,40 @@ define(function(require){
      * @tutorial legend
      * @exports charts/legend
      * @requires d3
-     * @version 0.0.1
      */
     return function module() {
 
         let margin = {
-                top: 0,
-                right: 0,
-                bottom: 0,
-                left: 0
+                top: 5,
+                right: 5,
+                bottom: 5,
+                left: 5
             },
             width = 320,
             height = 180,
 
-            lineMargin = 10,
-
-            circleRadius = 8,
-            circleYOffset = -5,
-
             textSize = 12,
             textLetterSpacing = 0.5,
 
+            markerSize = 16,
+            markerYOffset = - (textSize - 2) / 2,
+            marginRatio = 1.5,
+
             valueReservedSpace = 40,
             numberLetterSpacing = 0.8,
-            numberFormat = d3.format('s'),
+            numberFormat = 's',
 
             isFadedClassName = 'is-faded',
+            isHorizontal = false,
 
             // colors
             colorScale,
-            colorSchema = colorHelper.colorSchemas.britechartsColorSchema,
+            colorSchema = colorHelper.colorSchemas.britecharts,
 
             getId = ({id}) => id,
             getName = ({name}) => name,
-            getFormattedQuantity = ({quantity}) => numberFormat(quantity),
+            getFormattedQuantity = ({quantity}) => d3Format.format(numberFormat)(quantity),
+            getCircleFill = ({name}) => colorScale(name),
 
             entries,
             chartWidth, chartHeight,
@@ -103,6 +107,7 @@ define(function(require){
          * @param  {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
          * @param {object} _data The data to attach and generate the chart
+         * @private
          */
         function exports(_selection) {
             _selection.each(function(_data){
@@ -112,8 +117,30 @@ define(function(require){
 
                 buildColorScale();
                 buildSVG(this);
-                drawEntries();
+
+                if (isHorizontal) {
+                    drawHorizontalLegend();
+                } else {
+                    drawVerticalLegend();
+                }
             });
+        }
+
+        /**
+         * Depending on the size of the horizontal legend, we are going to either
+         * center the legend or add a new line with the last entry of the legend
+         * @return {void}
+         * @private
+         */
+        function adjustLines() {
+            let lineWidth = svg.select('.legend-line').node().getBoundingClientRect().width;
+            let lineWidthSpace = chartWidth - lineWidth;
+
+            if (lineWidthSpace > 0) {
+                centerLegendOnSVG();
+            } else {
+                splitInLines();
+            }
         }
 
         /**
@@ -137,7 +164,9 @@ define(function(require){
          * @private
          */
         function buildColorScale() {
-            colorScale = d3.scaleOrdinal().range(colorSchema);
+            if (colorSchema) {
+                colorScale = d3Scale.scaleOrdinal().range(colorSchema);
+            }
         }
 
         /**
@@ -147,7 +176,7 @@ define(function(require){
          */
         function buildSVG(container) {
             if (!svg) {
-                svg = d3.select(container)
+                svg = d3Selection.select(container)
                   .append('svg')
                     .classed('britechart britechart-legend', true);
 
@@ -155,25 +184,101 @@ define(function(require){
             }
 
             svg
-                .transition()
-                .attr('width', width + margin.left + margin.right)
-                .attr('height', height + margin.top + margin.bottom);
+                .attr('width', width)
+                .attr('height', height);
+        }
+
+        /**
+         * Centers the legend on the chart given that is a single line of labels
+         * @return {void}
+         * @private
+         */
+        function centerLegendOnSVG() {
+            let legendGroupSize = svg.select('g.legend-container-group').node().getBoundingClientRect().width;
+            let emptySpace = width - legendGroupSize;
+
+            if (emptySpace > 0) {
+                svg.select('g.legend-container-group')
+                    .attr('transform', `translate(${emptySpace/2},0)`)
+            }
         }
 
         /**
          * Removes the faded class from all the entry lines
+         * @private
          */
         function cleanFadedLines() {
             svg.select('.legend-group')
-                .selectAll('g.legend-line')
+                .selectAll('g.legend-entry')
                 .classed(isFadedClassName, false);
+        }
+
+        /**
+         * Draws the entries of the legend within a single line
+         * @private
+         */
+        function drawHorizontalLegend() {
+            let xOffset = markerSize;
+
+            // We want a single line
+            svg.select('.legend-group')
+              .append('g')
+                .classed('legend-line', true);
+
+            // And one entry per data item
+            entries = svg.select('.legend-line')
+              .selectAll('g.legend-entry')
+              .data(data);
+
+            // Enter
+            entries.enter()
+              .append('g')
+                .classed('legend-entry', true)
+                .attr('data-item', getId)
+                .attr('transform', function({name}) {
+                    let horizontalOffset = xOffset,
+                        lineHeight = chartHeight / 2,
+                        verticalOffset = lineHeight,
+                        labelWidth = textHelper.getTextWidth(name, textSize);
+
+                    xOffset += markerSize + 2 * getLineElementMargin() + labelWidth;
+
+                    return `translate(${horizontalOffset},${verticalOffset})`;
+                })
+                .merge(entries)
+              .append('circle')
+                .classed('legend-circle', true)
+                .attr('cx', markerSize/2)
+                .attr('cy', markerYOffset)
+                .attr('r', markerSize / 2)
+                .style('fill', getCircleFill)
+                .style('stroke-width', 1);
+
+            svg.select('.legend-group')
+                .selectAll('g.legend-entry')
+              .append('text')
+                .classed('legend-entry-name', true)
+                .text(getName)
+                .attr('x', getLineElementMargin())
+                .style('font-size', `${textSize}px`)
+                .style('letter-spacing', `${textLetterSpacing}px`);
+
+            // Exit
+            svg.select('.legend-group')
+                .selectAll('g.legend-entry')
+                .exit()
+                .transition()
+                .style('opacity', 0)
+                .remove();
+
+            adjustLines();
         }
 
         /**
          * Draws the entries of the legend
          * @private
          */
-        function drawEntries() {
+        function drawVerticalLegend() {
             entries = svg.select('.legend-group')
                 .selectAll('g.legend-line')
                 .data(data);
@@ -182,36 +287,38 @@ define(function(require){
             entries.enter()
               .append('g')
                 .classed('legend-line', true)
-                .attr('data-item', getId)
-                .attr('transform', function(d, i) {
-                    let horizontalOffset = 2 * circleRadius + 10,
-                        lineHeight = chartHeight/ (data.length + 1),
-                        verticalOffset = (i + 1) * lineHeight;
+                  .append('g')
+                    .classed('legend-entry', true)
+                    .attr('data-item', getId)
+                    .attr('transform', function(d, i) {
+                        let horizontalOffset = markerSize + getLineElementMargin(),
+                            lineHeight = chartHeight/ (data.length + 1),
+                            verticalOffset = (i + 1) * lineHeight;
 
-                    return `translate(${horizontalOffset},${verticalOffset})`;
-                })
-                .merge(entries)
-              .append('circle')
-                .classed('legend-circle', true)
-                .attr('cx', 0)
-                .attr('cy', circleYOffset)
-                .attr('r', circleRadius)
-                .style('fill', function({quantity}) {
-                        return colorScale(quantity);
+                        return `translate(${horizontalOffset},${verticalOffset})`;
                     })
-                .style('stroke-width', 1);
+                    .merge(entries)
+                  .append('circle')
+                    .classed('legend-circle', true)
+                    .attr('cx', markerSize/2)
+                    .attr('cy', markerYOffset)
+                    .attr('r', markerSize/2 )
+                    .style('fill', getCircleFill)
+                    .style('stroke-width', 1);
 
             svg.select('.legend-group')
                 .selectAll('g.legend-line')
+                .selectAll('g.legend-entry')
               .append('text')
                 .classed('legend-entry-name', true)
                 .text(getName)
-                .attr('x', (2 * circleRadius) + lineMargin)
+                .attr('x', getLineElementMargin())
                 .style('font-size', `${textSize}px`)
                 .style('letter-spacing', `${textLetterSpacing}px`);
 
             svg.select('.legend-group')
                 .selectAll('g.legend-line')
+                .selectAll('g.legend-entry')
               .append('text')
                 .classed('legend-entry-value', true)
                 .text(getFormattedQuantity)
@@ -233,18 +340,52 @@ define(function(require){
         /**
          * Applies the faded class to all lines but the one that has the given id
          * @param  {number} exceptionItemId Id of the line that needs to stay the same
+         * @private
          */
         function fadeLinesBut(exceptionItemId) {
+            let classToFade = 'g.legend-entry';
+
             svg.select('.legend-group')
-                .selectAll('g.legend-line')
+                .selectAll(classToFade)
                 .classed(isFadedClassName, true);
 
-            d3.select(`[data-item="${exceptionItemId}"]`)
+            svg.select(`[data-item="${exceptionItemId}"]`)
                 .classed(isFadedClassName, false);
         }
 
         /**
-         * Clears the highlighted line entry
+         * Calculates the margin between elements of the legend
+         * @return {Number} Margin to apply between elements
+         * @private
+         */
+        function getLineElementMargin() {
+            return marginRatio * markerSize;
+        }
+
+        /**
+         * Simple method to move the last item of an overflowing legend into the next line
+         * @return {void}
+         * @private
+         */
+        function splitInLines() {
+            let legendEntries = svg.selectAll('.legend-entry');
+            let numberOfEntries = legendEntries.size();
+            let lineHeight = (chartHeight / 2) * 1.7;
+            let newLine = svg.select('.legend-group')
+              .append('g')
+                .classed('legend-line', true)
+                .attr('transform', `translate(0, ${lineHeight})`);
+            let lastEntry = legendEntries.filter(`:nth-child(${numberOfEntries})`);
+
+            lastEntry.attr('transform', `translate(${markerSize},0)`);
+            newLine.append(() => lastEntry.node());
+        }
+
+        // API
+
+        /**
+         * Clears all highlighted entries
+         * @public
          */
         exports.clearHighlight = function() {
             cleanFadedLines();
@@ -252,8 +393,8 @@ define(function(require){
 
         /**
          * Gets or Sets the colorSchema of the chart
-         * @param  {Array} _x Color scheme array to get/set
-         * @return { (Number | Module) } Current colorSchema or Donut Chart module to chain calls
+         * @param  {array} _x Color scheme array to get/set
+         * @return {number | module} Current colorSchema or Donut Chart module to chain calls
          * @public
          */
         exports.colorSchema = function(_x) {
@@ -268,7 +409,7 @@ define(function(require){
         /**
          * Gets or Sets the height of the legend chart
          * @param  {number} _x Desired width for the chart
-         * @return { height | module} Current height or Legend module to chain calls
+         * @return {height | module} Current height or Legend module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -283,6 +424,7 @@ define(function(require){
         /**
          * Highlights a line entry by fading the rest of lines
          * @param  {number} entryId ID of the entry line
+         * @public
          */
         exports.highlight = function(entryId) {
             cleanFadedLines();
@@ -290,9 +432,24 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the horizontal mode on the legend
+         * @param  {boolean} _x Desired horizontal mode for the graph
+         * @return {ishorizontal | module} If it is horizontal or Legend module to chain calls
+         * @public
+         */
+        exports.isHorizontal = function(_x) {
+            if (!arguments.length) {
+                return isHorizontal;
+            }
+            isHorizontal = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the margin of the legend chart
          * @param  {object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Legend module to chain calls
+         * @return {margin | module} Current margin or Legend module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -305,9 +462,42 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the markerSize of the legend chart.
+         * This markerSize will determine the horizontal and vertical size of the colored marks
+         * added as color identifiers for the chart's categories.
+         *
+         * @param  {object} _x Margin object to get/set
+         * @return {markerSize | module} Current markerSize or Legend module to chain calls
+         * @public
+         */
+        exports.markerSize = function(_x) {
+            if (!arguments.length) {
+                return markerSize;
+            }
+            markerSize = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the number format of the legend chart
+         * @param  {string} _x Desired number format for the legend chart
+         * @return {numberFormat | module} Current number format or Legend module to chain calls
+         * @public
+         */
+        exports.numberFormat = function(_x) {
+            if (!arguments.length) {
+                return numberFormat;
+            }
+            numberFormat = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the width of the legend chart
          * @param  {number} _x Desired width for the graph
-         * @return { width | module} Current width or Legend module to chain calls
+         * @return {width | module} Current width or Legend module to chain calls
          * @public
          */
         exports.width = function(_x) {

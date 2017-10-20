@@ -1,40 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Donut Chart Demo - Britecharts</title>
-    <link type="text/css" rel="stylesheet" href="/demos/css/bundle.css" />
-    <style type="text/css">
-        /*TODO: Do this with Bootstrap*/
-        .legend-chart-container {
-            text-align: center;
-        }
-        .legend-chart-container svg {
-            margin: 0 auto;
-        }
-    </style>
-</head>
-<body id="donut">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <article>
-                    <h2 class="tutorial__heading">Donut Chart with Legend</h2>
-                    <div class="card--chart">
-                        <div class="js-donut-chart-container donut-chart-container"></div>
-                        <div class="js-legend-chart-container legend-chart-container"></div>
-                    </div>
-                </article>
-            </div>
-            <div class="col-md-6 sidebar">
-                <h3>The code</h3>
-                <pre>
+<div class="container" id="donut">
+    <div class="row">
+        <div class="col-md-6">
+            <article>
+                <h2 class="tutorial__heading">Donut Chart with Legend</h2>
+                <div class="card--chart">
+                    <div class="js-donut-chart-container donut-chart-container"></div>
+                    <div class="js-legend-chart-container legend-chart-container"></div>
+                </div>
+            </article>
+        </div>
+        <div class="col-md-6 sidebar">
+            <h3>The code</h3>
+            <pre><code class="language-javascript">
 donutChart
+    .isAnimated(true)
+    .highlightSliceById(2)
     .width(containerWidth)
     .height(containerWidth)
     .externalRadius(containerWidth/2.5)
     .internalRadius(containerWidth/5)
-    .colorScheme(briteChartsColors)
     .on('customMouseOver', function(data) {
         legendChart.highlight(data.data.id);
     })
@@ -45,43 +29,90 @@ donutChart
 donutContainer.datum(dataset).call(donutChart);
 
 legendContainer.datum(dataset).call(legendChart);
-                </pre>
+            </code></pre>
 
-                <h4>Colors</h4>
-                <label class="control-label">You can also check other color schemas:</label>
-                <div class="js-color-selector-container"></div>
-                </p>
+            <h4>Colors</h4>
+            <label class="control-label">You can also check other color schemas:</label>
+            <div class="js-color-selector-container"></div>
+            </p>
 
-                <h4>Download</h4>
-                <p>You can also export this chart by pressing: <input id="button" type="button" value="Download" class="btn" /></p>
-            </div>
+            <h4>Data Input</h4>
+            <p>Check the <a href="/britecharts/global.html#DonutChartData__anchor">data input schema</a> of this chart.</p>
+
+            <h4>Export Chart</h4>
+            <p>You can also export this chart by pressing: <input id="button" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
+
+            <h4>Demo Code</h4>
+            <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-donut.js">in github</a></p>
         </div>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="
 col-md-6">
-                <section>
-                    <article>
-                        <h2>Simple Donut Chart</h2>
-                        <div class="js-small-donut-chart-container card--chart"></div>
-                    </article>
-                </section>
-            </div>
-            <div class="
+            <section>
+                <article>
+                    <h2>Small Donut Chart with Inline Legend</h2>
+                    <div class="js-small-donut-chart-container card--chart"></div>
+                    <div class="js-inline-legend-chart-container legend-chart-container"></div>
+                </article>
+            </section>
+        </div>
+        <div class="
 col-md-6 sidebar">
-                <h3>The code    </h3>
-                <pre>
+            <h3>The code</h3>
+            <pre><code class="language-javascript">
 donutChart
     .width(containerWidth)
-    .height(containerWidth)
-    .externalRadius(containerWidth/4)
-    .internalRadius(containerWidth/8);
+    .height(containerWidth/1.8)
+    .externalRadius(containerWidth/5)
+    .internalRadius(containerWidth/10)
+    .on('customMouseOver', function(data) {
+        legendChart.highlight(data.data.id);
+    })
+    .on('customMouseOut', function() {
+        legendChart.clearHighlight();
+    });
 
 donutContainer.datum(dataset).call(donutChart);
-                </pre>
-            </div>
+            </code></pre>
+
+            <h4>Demo Code</h4>
+            <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-donut.js">in github</a></p>
         </div>
     </div>
-</body>
-</html>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="
+col-md-6">
+            <section>
+                <article>
+                    <h2>Donut Chart with fixed higlighted slice</h2>
+                    <div class="js-donut-highlight-slice-chart-container card--chart"></div>
+                </article>
+            </section>
+        </div>
+        <div class="
+col-md-6 sidebar">
+            <h3>The code</h3>
+            <pre><code class="language-javascript">
+donutChart
+    .highlightSliceById(1)
+    .hasFixedHighlightedSlice(true)
+    .width(containerWidth)
+    .height(containerWidth/1.8)
+    .externalRadius(containerWidth/5)
+    .internalRadius(containerWidth/10);
+
+    donutContainer.datum(dataset).call(donutChart);
+            </code></pre>
+
+            <h4>Demo Code</h4>
+            <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-donut.js">in github</a></p>
+        </div>
+    </div>
+</div>

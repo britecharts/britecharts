@@ -1,7 +1,12 @@
 define(function(require){
     'use strict';
 
-    const d3 = require('d3');
+    const d3Array = require('d3-array');
+    const d3Ease = require('d3-ease');
+    const d3Format = require('d3-format');
+    const d3Selection = require('d3-selection');
+    const d3Transition = require('d3-transition');
+
 
     /**
      * Mini Tooltip Component reusable API class that renders a
@@ -9,7 +14,6 @@ define(function(require){
      * bar and step chart.
      *
      * @module Mini-tooltip
-     * @version 0.0.1
      * @tutorial bar
      * @requires d3
      *
@@ -24,11 +28,11 @@ define(function(require){
      *     .on('customMouseMove', miniTooltip.update)
      *     .on('customMouseOut', miniTooltip.hide);
      *
-     * d3.select('.css-selector')
+     * d3Selection.select('.css-selector')
      *     .datum(dataset)
      *     .call(barChart);
      *
-     * d3.select('.metadata-group .mini-tooltip-container')
+     * d3Selection.select('.metadata-group .mini-tooltip-container')
      *     .datum([])
      *     .call(miniTooltip);
      *
@@ -53,7 +57,7 @@ define(function(require){
 
             // Animations
             mouseChaseDuration = 100,
-            ease = d3.easeQuadInOut,
+            ease = d3Ease.easeQuadInOut,
 
             // tooltip
             tooltipBackground,
@@ -79,7 +83,7 @@ define(function(require){
             valueTextWeight = 200,
 
             // formats
-            tooltipValueFormat = d3.format('.2f'),
+            tooltipValueFormat = d3Format.format('.2f'),
 
             chartWidth,
             chartHeight,
@@ -90,10 +94,9 @@ define(function(require){
          * This function creates the graph using the selection as container
          * @param {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
-         * @param {Array} _data The data to attach and generate the chart (usually an empty array)
          */
         function exports(_selection) {
-            _selection.each(function(_data){
+            _selection.each(function(){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
 
@@ -108,7 +111,8 @@ define(function(require){
          * @private
          */
         function buildContainerGroups() {
-            let container = svg.append('g')
+            let container = svg
+              .append('g')
                 .classed('tooltip-container-group', true)
                 .attr('transform', `translate( ${margin.left}, ${margin.top})`);
 
@@ -122,7 +126,7 @@ define(function(require){
          */
         function buildSVG(container) {
             if (!svg) {
-                svg = d3.select(container)
+                svg = d3Selection.select(container)
                     .append('g')
                     .classed('britechart britechart-mini-tooltip', true);
 
@@ -130,9 +134,8 @@ define(function(require){
             }
             svg
                 .transition()
-                .ease(ease)
-                .attr('width', width + margin.left + margin.right)
-                .attr('height', height + margin.top + margin.bottom)
+                .attr('width', width)
+                .attr('height', height);
 
             // Hidden by default
             exports.hide();
@@ -172,7 +175,7 @@ define(function(require){
             let textSizes = texts.filter(x => !!x)
                 .map(x => x.node().getBBox().width);
 
-            return d3.max(textSizes);
+            return d3Array.max(textSizes);
         }
 
         /**
@@ -319,7 +322,6 @@ define(function(require){
                 .attr('transform', `translate(${tooltipX},${tooltipY})`);
 
             tooltipBackground
-                .transition()
                 .attr('height', chartHeight + margin.top + margin.bottom)
                 .attr('width', chartWidth + margin.left + margin.right);
         }

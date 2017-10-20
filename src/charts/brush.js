@@ -1,9 +1,22 @@
 define(function(require) {
     'use strict';
 
-    const d3 = require('d3');
+    const d3Array = require('d3-array');
+    const d3Axis = require('d3-axis');
+    const d3Brush = require('d3-brush');
+    const d3Ease = require('d3-ease');
+    const d3Scale = require('d3-scale');
+    const d3Shape = require('d3-shape');
+    const d3Dispatch = require('d3-dispatch');
+    const d3Selection = require('d3-selection');
+    const d3Time = require('d3-time');
+    const d3Transition = require('d3-transition');
+    const d3TimeFormat = require('d3-time-format');
 
     const colorHelper = require('./helpers/colors');
+    const timeAxisHelper = require('./helpers/timeAxis');
+
+    const {axisTimeCombinations} = require('./helpers/constants');
 
 
     /**
@@ -30,9 +43,8 @@ define(function(require) {
      * simple and configurable brush chart.
      *
      * @module Brush
-     * @version 0.0.1
      * @tutorial brush
-     * @requires d3
+     * @requires d3-array, d3-axis, d3-brush, d3-ease, d3-scale, d3-shape, d3-selection, d3-time, d3-time-format
      *
      * @example
      * let brushChart = brush();
@@ -41,11 +53,12 @@ define(function(require) {
      *     .height(500)
      *     .width(800);
      *
-     * d3.select('.css-selector')
+     * d3Selection.select('.css-selector')
      *     .datum(dataset)
      *     .call(brushChart);
      *
      */
+
     return function module() {
 
         let margin = {
@@ -59,26 +72,33 @@ define(function(require) {
             data,
             svg,
 
-            ease = d3.easeQuadOut,
+            ease = d3Ease.easeQuadOut,
 
             dateLabel = 'date',
             valueLabel = 'value',
+
+            dateRange = [null, null],
 
             chartWidth, chartHeight,
             xScale, yScale,
             xAxis,
 
+            xAxisFormat = null,
+            xTicks = null,
+            xAxisCustomFormat = null,
+            locale,
+
             brush,
             chartBrush,
             handle,
 
-            onBrush = null,
+            tickPadding = 5,
 
-            gradient = colorHelper.colorGradients.greenBlueGradient,
+            gradient = colorHelper.colorGradients.greenBlue,
 
-            // formats
-            defaultTimeFormat = '%m/%d/%Y',
-            xTickMonthFormat = d3.timeFormat('%b'),
+            // Dispatcher object to broadcast the mouse events
+            // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
+            dispatcher = d3Dispatch.dispatch('customBrushStart', 'customBrushEnd'),
 
             // extractors
             getValue = ({value}) => value,
@@ -106,10 +126,6 @@ define(function(require) {
                 drawAxis();
                 drawBrush();
                 drawHandles();
-
-                // This last step is optional, just needed when
-                // a given selection would need to be shown
-                setBrush(0.25, 0.5);
             });
         }
 
@@ -118,8 +134,22 @@ define(function(require) {
          * @private
          */
         function buildAxis(){
-            xAxis = d3.axisBottom(xScale)
-                .tickFormat(xTickMonthFormat);
+            let minor, major;
+
+            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
+                minor = {
+                    tick: xTicks,
+                    format: d3TimeFormat.timeFormat(xAxisCustomFormat)
+                };
+            } else {
+                ({minor, major} = timeAxisHelper.getXAxisSettings(data, width, xAxisFormat));
+            }
+
+            xAxis = d3Axis.axisBottom(xScale)
+                .ticks(minor.tick)
+                .tickSize(10, 0)
+                .tickPadding([tickPadding])
+                .tickFormat(minor.format);
         }
 
         /**
@@ -127,10 +157,10 @@ define(function(require) {
          * @return {void}
          */
         function buildBrush() {
-            brush = d3.brushX()
+            brush = d3Brush.brushX()
                 .extent([[0, 0], [chartWidth, chartHeight]])
-                .on('brush', handleBrush)
-                .on('end', handleBrushEnded);
+                .on('brush', handleBrushStart)
+                .on('end', handleBrushEnd);
         }
 
         /**
@@ -139,7 +169,8 @@ define(function(require) {
          * @private
          */
         function buildContainerGroups(){
-            let container = svg.append('g')
+            let container = svg
+              .append('g')
                 .classed('container-group', true)
                 .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
@@ -186,12 +217,12 @@ define(function(require) {
          * @private
          */
         function buildScales(){
-            xScale = d3.scaleTime()
-                .domain(d3.extent(data, getDate ))
+            xScale = d3Scale.scaleTime()
+                .domain(d3Array.extent(data, getDate ))
                 .range([0, chartWidth]);
 
-            yScale = d3.scaleLinear()
-                .domain([0, d3.max(data, getValue)])
+            yScale = d3Scale.scaleLinear()
+                .domain([0, d3Array.max(data, getValue)])
                 .range([chartHeight, 0]);
         }
 
@@ -202,34 +233,32 @@ define(function(require) {
          */
         function buildSVG(container){
             if (!svg) {
-                svg = d3.select(container)
-                    .append('svg')
+                svg = d3Selection.select(container)
+                  .append('svg')
                     .classed('britechart brush-chart', true);
 
                 buildContainerGroups();
             }
 
             svg
-                .transition()
-                .ease(ease)
                 .attr('width', width)
                 .attr('height', height);
         }
 
         /**
-         * Cleaning data adding the proper format
-         *
-         * @param  {BrushChartData} data Data
+         * Cleaning data casting the values and dates to the proper type while keeping 
+         * the rest of properties on the data
+         * @param  {BrushChartData} originalData        Raw data from the container
+         * @return {BrushChartData}                     Clean data
+         * @private
          */
-        function cleanData(data) {
-            let parseDate = d3.timeParse(defaultTimeFormat);
-
-            return data.map(function (d) {
-                d.date = parseDate(d[dateLabel]);
+        function cleanData(originalData) {
+            return originalData.reduce((acc, d) => {
+                d.date = new Date(d[dateLabel]);
                 d.value = +d[valueLabel];
 
-                return d;
-            });
+                return [...acc, d];
+            }, []);
         }
 
         /**
@@ -261,11 +290,11 @@ define(function(require) {
          */
         function drawArea() {
             // Create and configure the area generator
-            let area = d3.area()
+            let area = d3Shape.area()
                 .x(({date}) => xScale(date))
                 .y0(chartHeight)
                 .y1(({value}) => yScale(value))
-                .curve(d3.curveBasis);
+                .curve(d3Shape.curveBasis);
 
             // Create the area path
             svg.select('.chart-group')
@@ -294,7 +323,7 @@ define(function(require) {
          * @return {void}
          */
         function drawHandles() {
-            let handleFillColor = colorHelper.colorSchemasHuman.britechartsGreySchema[1];
+            let handleFillColor = colorHelper.colorSchemasHuman.grey[1];
 
             // Styling
             handle = chartBrush
@@ -303,19 +332,16 @@ define(function(require) {
         }
 
         /**
-         * When a brush event happens, we can extract info from the extension
+         * When a brush event starts, we can extract info from the extension
          * of the brush.
          *
          * @return {void}
          */
-        function handleBrush() {
-            let s = d3.event.selection,
+        function handleBrushStart() {
+            let s = d3Selection.event.selection,
                 dateExtent = s.map(xScale.invert);
 
-            if (typeof onBrush === 'function') {
-                onBrush.call(null, dateExtent);
-            }
-
+            dispatcher.call('customBrushStart', this, dateExtent);
             // updateHandlers(dateExtent);
         }
 
@@ -325,32 +351,50 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleBrushEnded() {
-            if (!d3.event.sourceEvent) return; // Only transition after input.
-            if (!d3.event.selection) return; // Ignore empty selections.
+        function handleBrushEnd() {
+            if (!d3Selection.event.sourceEvent) return; // Only transition after input.
+            if (!d3Selection.event.selection) return; // Ignore empty selections.
 
-            let d0 = d3.event.selection.map(xScale.invert),
-                d1 = d0.map(d3.timeDay.round);
+            let s = d3Selection.event.selection,
+                dateExtent = s.map(xScale.invert),
+                dateExtentRounded = dateExtent.map(d3Time.timeDay.round);
 
             // If empty when rounded, use floor & ceil instead.
-            if (d1[0] >= d1[1]) {
-                d1[0] = d3.timeDay.floor(d0[0]);
-                d1[1] = d3.timeDay.offset(d1[0]);
+            if (dateExtentRounded[0] >= dateExtentRounded[1]) {
+                dateExtentRounded[0] = d3Time.timeDay.floor(dateExtent[0]);
+                dateExtentRounded[1] = d3Time.timeDay.offset(dateExtentRounded[0]);
             }
 
-            d3.select(this)
+            d3Selection.select(this)
                 .transition()
-                .call(d3.event.target.move, d1.map(xScale));
+                .call(d3Selection.event.target.move, dateExtentRounded.map(xScale));
+
+            dispatcher.call('customBrushEnd', this, dateExtentRounded);
         }
 
         /**
          * Sets a new brush extent within the passed percentage positions
          * @param {Number} a Percentage of data that the brush start with
          * @param {Number} b Percentage of data that the brush ends with
+         * @example
+         *     setBrushByPercentages(0.25, 0.5)
          */
-        function setBrush(a, b) {
+        function setBrushByPercentages(a, b) {
             let x0 = a * chartWidth,
                 x1 = b * chartWidth;
+
+            brush
+                .move(chartBrush, [x0, x1]);
+        }
+
+        /**
+         * Sets a new brush extent within the passed dates
+         * @param {String | Date} dateA Initial Date
+         * @param {String | Date} dateB End Date
+         */
+        function setBrushByDates(dateA, dateB) {
+            let x0 = xScale(new Date(dateA)),
+                x1 = xScale(new Date(dateB));
 
             brush
                 .move(chartBrush, [x0, x1]);
@@ -362,7 +406,7 @@ define(function(require) {
          * @return {void}
          */
         function updateHandlers(dateExtent) {
-            if (dateExtent == null) {
+            if (dateExtent === null) {
                 handle.attr('display', 'none');
             } else {
                 handle
@@ -373,10 +417,39 @@ define(function(require) {
             }
         }
 
+        // API
+
+        /**
+         * Exposes the constants to be used to force the x axis to respect a certain granularity
+         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+         * @example
+         *     brush.xAxisCustomFormat(brush.axisTimeCombinations.HOUR_DAY)
+         */
+        exports.axisTimeCombinations = axisTimeCombinations;
+
+        /**
+         * Gets or Sets the dateRange for the selected part of the brush
+         * @param  {String[]} _x Desired dateRange for the graph
+         * @return { dateRange | module} Current dateRange or Chart module to chain calls
+         * @public
+         */
+        exports.dateRange = function(_x) {
+            if (!arguments.length) {
+                return dateRange;
+            }
+            dateRange = _x;
+
+            if (Array.isArray(dateRange)) {
+                setBrushByDates(...dateRange);
+            }
+
+            return this;
+        };
+
         /**
          * Gets or Sets the gradient of the chart
-         * @param  {String[]} _x Desired gradient for the graph
-         * @return { gradient | module} Current gradient or Chart module to chain calls
+         * @param  {String[]} _x        Desired gradient for the graph
+         * @return {String | Module}    Current gradient or Chart module to chain calls
          * @public
          */
         exports.gradient = function(_x) {
@@ -384,13 +457,14 @@ define(function(require) {
                 return gradient;
             }
             gradient = _x;
+
             return this;
         };
 
         /**
          * Gets or Sets the height of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { height | module} Current height or Chart module to chain calls
+         * @param  {Number} _x          Desired width for the graph
+         * @return {Number | Module}    Current height or Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -398,13 +472,30 @@ define(function(require) {
                 return height;
             }
             height = _x;
+
+            return this;
+        };
+
+        /**
+         * Pass language tag for the tooltip to localize the date.
+         * Feature uses Intl.DateTimeFormat, for compatability and support, refer to
+         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+         * @param  {String} _x  must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
+         * @return { (String|Module) }    Current locale or module to chain calls
+         */
+        exports.locale = function(_x) {
+            if (!arguments.length) {
+                return locale;
+            }
+            locale = _x;
+
             return this;
         };
 
         /**
          * Gets or Sets the margin of the chart
-         * @param  {object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Chart module to chain calls
+         * @param  {Object} _x          Margin object to get/set
+         * @return {Object | Module}    Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -412,25 +503,28 @@ define(function(require) {
                 return margin;
             }
             margin = _x;
+
             return this;
         };
 
         /**
-         * Gets or Sets the callback that will be called when the user brushes over the area
-         * @param  {Function} _x Callback to call
-         * @return {Function | module}    Current callback function or the Chart Module
+         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+         * We are going to expose this events:
+         * customMouseOver, customMouseMove and customMouseOut
+         *
+         * @return {module} Bar Chart
+         * @public
          */
-        exports.onBrush = function(_x) {
-            if (!arguments.length) return onBrush;
-            onBrush = _x;
+        exports.on = function() {
+            let value = dispatcher.on.apply(dispatcher, arguments);
 
-            return this;
+            return value === dispatcher ? exports : value;
         };
 
         /**
          * Gets or Sets the width of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return { width | module} Current width or Chart module to chain calls
+         * @param  {Number} _x          Desired width for the graph
+         * @return {Number | Module}    Current width or Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
@@ -438,6 +532,55 @@ define(function(require) {
                 return width;
             }
             width = _x;
+
+            return this;
+        };
+
+        /**
+         * Exposes the ability to force the chart to show a certain x format
+         * It requires a `xAxisFormat` of 'custom' in order to work.
+         * @param  {String} _x              Desired format for x axis
+         * @return {String | Module}        Current format or module to chain calls
+         */
+        exports.xAxisCustomFormat = function(_x) {
+            if (!arguments.length) {
+              return xAxisCustomFormat;
+            }
+            xAxisCustomFormat = _x;
+
+            return this;
+        };
+
+        /**
+         * Exposes the ability to force the chart to show a certain x axis grouping
+         * @param  {String} _x          Desired format
+         * @return {String | Module}    Current format or module to chain calls
+         * @example
+         *     brush.xAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
+         */
+        exports.xAxisFormat = function(_x) {
+            if (!arguments.length) {
+              return xAxisFormat;
+            }
+            xAxisFormat = _x;
+
+            return this;
+        };
+
+        /**
+         * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisCustomFormat` of 'custom' in order to work.
+         * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
+         * how many and where the ticks will appear.
+         *
+         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
+         * @return {Number | Module}        Current number or ticks or module to chain calls
+         */
+        exports.xTicks = function(_x) {
+            if (!arguments.length) {
+              return xTicks;
+            }
+            xTicks = _x;
+
             return this;
         };
 

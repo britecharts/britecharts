@@ -1,4 +1,5 @@
 var webpackConfig = require('./webpack.config');
+
 webpackConfig.devtool = 'inline-source-map';
 
 // Karma configuration
@@ -9,7 +10,6 @@ module.exports = function(config) {
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
-
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
@@ -28,7 +28,6 @@ module.exports = function(config) {
             'node_modules/**/*Spec*'
         ],
 
-
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
@@ -41,7 +40,7 @@ module.exports = function(config) {
             type: 'text'
         },
 
-        webpack: webpackConfig,
+        webpack: webpackConfig('test'),
 
         webpackMiddleware: {
             noInfo: true
@@ -53,6 +52,7 @@ module.exports = function(config) {
             require('karma-jasmine-jquery'),
             require('karma-coverage'),
             require('karma-chrome-launcher'),
+            require('karma-phantomjs-launcher'),
             require('karma-sourcemap-loader')
         ],
 
@@ -89,6 +89,7 @@ module.exports = function(config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+        // possible values: 'PhantomJS', 'Chrome'
         browsers: ['Chrome'],
 
 

@@ -7,7 +7,10 @@ module.exports = function(grunt) {
     grunt.renameTask('release', 'bump-version');
     grunt.config.set('bump-version', {
         'options': {
+            additionalFiles: ['bower.json'],
             commitMessage: 'Bumped Project to <%= version %>',
+            changelog: true, //default: false
+            changelogText: '<%= version %>\n',
             bump: true,
             file: 'package.json',
             add: true,
@@ -15,23 +18,9 @@ module.exports = function(grunt) {
             tag: true,
             push: true,
             pushTags: true,
-            npm: false
+            npm: false,
+            npmtag: false
         }
-    });
-
-    grunt.registerTask('publish', 'Publish package to reggie', function() {
-
-        var pkg = grunt.file.readJSON('package.json'),
-            cmd = './node_modules/reggie/client.js -u ' + pkg.publishConfig.registry + ' publish';
-
-        if (grunt.option('no-write')) {
-            grunt.log.ok('---DRY-RUN----');
-            grunt.log.ok(cmd);
-        } else {
-            grunt.log.ok(cmd);
-            shell.exec(cmd);
-        }
-        grunt.log.ok('Published to Reggie');
     });
 
     grunt.registerTask('release', function() {
@@ -40,7 +29,7 @@ module.exports = function(grunt) {
             return ':' + val;
         });
 
-        grunt.task.run(bumpTask, 'publish', 'bump-dist');
+        grunt.task.run(bumpTask);
     });
 
     grunt.registerTask('bump-dist', function() {

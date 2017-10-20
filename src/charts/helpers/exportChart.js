@@ -1,16 +1,25 @@
 define(function(require) {
     'use strict';
 
-    const bowser = require('bowser');
     const {colorSchemas} = require('./colors.js');
     const constants = require('./constants.js');
     const serializeWithStyles = require('./serializeWithStyles.js');
 
-    let encoder = window.btoa;
+    const isBrowser = (typeof window !== 'undefined');
+
+    let encoder = isBrowser && window.btoa;
 
     if (!encoder) {
         encoder = require('base-64').encode;
     }
+
+    // Base64 doesn't work really well with Unicode strings, so we need to use this function
+    // Ref: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
+    const b64EncodeUnicode = (str) => {
+        return encoder(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+            return String.fromCharCode('0x' + p1);
+        }));
+    };
 
     const config = {
         styleClass : 'britechartStyle',
@@ -18,7 +27,7 @@ define(function(require) {
         chartBackground: 'white',
         imageSourceBase: 'data:image/svg+xml;base64,',
         titleFontSize: '15px',
-        titleFontFamily: '\'Heebo-thin\', sans-serif',
+        titleFontFamily: '\'Benton Sans\', sans-serif',
         titleTopOffset: 30,
         get styleBackgroundString () {
             return `<style>svg{background:${this.chartBackground};}</style>`;
@@ -27,8 +36,9 @@ define(function(require) {
 
     /**
      * Main function to be used as a method by chart instances to export charts to png
-     * @param  {array} svgs (or an svg element) pass in both chart & legend as array or just chart as svg or in array
-     * @param  {string} filename [download to be called <filename>.png]
+     * @param  {array} svgs         (or an svg element) pass in both chart & legend as array or just chart as svg or in array
+     * @param  {string} filename    [download to be called <filename>.png]
+     * @param  {string} title       Title for the image
      */
     function exportChart(d3svg, filename, title) {
         let img = createImage(convertSvgToHtml.call(this, d3svg, title));
@@ -61,11 +71,11 @@ define(function(require) {
 
         d3svg.attr('version', 1.1)
             .attr('xmlns', 'http://www.w3.org/2000/svg');
-
         let serializer = serializeWithStyles.initializeSerializer();
         let html = serializer(d3svg.node());
+
         html = formatHtmlByBrowser(html);
-        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width')));
+        html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width'), 10));
         html = addBackground(html);
 
         return html;
@@ -82,6 +92,7 @@ define(function(require) {
 
         canvas.height = height;
         canvas.width = width;
+
         return canvas;
     }
 
@@ -93,7 +104,8 @@ define(function(require) {
     function createImage(svgHtml) {
         let img = new Image();
 
-        img.src = `${config.imageSourceBase}${encoder(svgHtml)}`;
+        img.src = `${config.imageSourceBase}${ b64EncodeUnicode(svgHtml) }`;
+
         return img;
     };
 
@@ -104,6 +116,8 @@ define(function(require) {
      */
     function drawImageOnCanvas(image, canvas) {
         canvas.getContext('2d').drawImage(image, 0, 0);
+
+        return canvas;
     }
 
     /**
@@ -114,7 +128,7 @@ define(function(require) {
      * @param  {string} filename
      * @param  {string} extensionType
      */
-    function downloadCanvas(canvas, filename='britechart.png', extensionType='image/png') {
+    function downloadCanvas(canvas, filename=config.defaultFilename, extensionType='image/png') {
         let url = canvas.toDataURL(extensionType);
         let link = document.createElement('a');
 
@@ -131,7 +145,7 @@ define(function(require) {
      * @return {string} string of svg html
      */
     function formatHtmlByBrowser(html) {
-        if (bowser.name === 'Firefox') {
+        if (navigator.userAgent.search('FireFox') > -1) {
             return html.replace(/url.*&quot;\)/, `url(&quot;#${constants.lineGradientId}&quot;);`);
         }
 
@@ -146,9 +160,8 @@ define(function(require) {
      */
     function handleImageLoad(canvas, filename, e) {
         e.preventDefault();
-        drawImageOnCanvas(this, canvas);
 
-        downloadCanvas(canvas, filename || config.defaultFilename);
+        downloadCanvas(drawImageOnCanvas(this, canvas), filename);
     }
 
     /**
@@ -162,11 +175,17 @@ define(function(require) {
         if (!title || !svgWidth) {
             return html;
         }
-        let {britechartsGreySchema} = colorSchemas;
+        let {grey} = colorSchemas;
+        
+        html =  html.replace(/<g/,`<text x="${this.margin().left}" y="${config.titleTopOffset}" font-family="${config.titleFontFamily}" font-size="${config.titleFontSize}" fill="${grey[6]}"> ${title} </text><g `);
 
-        html =  html.replace(/<g/,`<text x="${this.margin().left}" y="${config.titleTopOffset}" font-family="${config.titleFontFamily}" font-size="${config.titleFontSize}" fill="${britechartsGreySchema[6]}"> ${title} </text><g `);
         return html;
     }
 
-    return exportChart;
+    return {
+        exportChart,
+        convertSvgToHtml,
+        createImage,
+        drawImageOnCanvas
+    };
 });

@@ -3,14 +3,16 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonFiveTopics = require('json!../json/lineDataFiveTopics.json'),
-        jsonOneSource = require('json!../json/lineDataOneSet.json'),
-        jsonDataNDates = require('json!../json/lineDataForNDates.json'),
-        jsonSmallValueRange = require('json!../json/lineDataSmallValueRange');
+        jsonAllDatas = require('json-loader!../json/lineDataAllDatas.json'),
+        jsonFiveTopics = require('json-loader!../json/lineDataFiveTopics.json'),
+        jsonOneSource = require('json-loader!../json/lineDataOneSet.json'),
+        jsonMultiMonthValueRange = require('json-loader!../json/multiMonthLineData'),
+        jsonHourDateRange = require('json-loader!../json/lineDataOneSetHourly.json'),
+        jsonSmallValueRange = require('json-loader!../json/lineDataSmallValueRange');
 
 
-    function SalesDataBuilder(config) {
-        this.Klass = SalesDataBuilder;
+    function LineDataBuilder(config) {
+        this.Klass = LineDataBuilder;
 
         this.config = _.defaults({}, config);
 
@@ -26,60 +28,37 @@ define(function(require) {
             return new this.Klass(attributes);
         };
 
-        this.withNDates = function(n) {
-            var data = jsonDataNDates,
-                attributes;
-
-            if (n) {
-                data.data[0].Data = data.data[0].Data.slice(0, n);
-                data.dataByDate = data.dataByDate.slice(0, n);
-            }
-
-            attributes = _.extend({}, this.config, data);
-
-            return new this.Klass(attributes);
-        };
-
         this.withSmallValueRange = function() {
             var attributes = _.extend({}, this.config, jsonSmallValueRange);
 
             return new this.Klass(attributes);
-        }
+        };
 
-        /**
-         * Sets the path for fetching the data
-         * @param  {string} path Desired path for test data
-         * @return {SalesDataBuilder}      Builder object
-         */
-        this.withPath = function(path){
-            var attributes = _.extend({}, this.config, {
-                jsonURL: path
-            });
+        this.withMultiMonthValueRange = function() {
+            var attributes = _.extend({}, this.config, jsonMultiMonthValueRange);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withHourDateRange = function() {
+            var attributes = _.extend({}, this.config, jsonHourDateRange);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withAllDatas = function() {
+            var attributes = _.extend({}, this.config, jsonAllDatas);
 
             return new this.Klass(attributes);
         };
 
         this.build = function() {
-            return dataCleaning(this.config);
+            return this.config;
         };
     }
 
-    function dataCleaning(chartData) {
-        var _data = _.compact(chartData.data),
-            dataByDate = chartData.dataByDate;
-
-        _data.forEach(function(kv) {
-            kv.Data.forEach(function(d) {
-                d.date = new Date(d.fullDate);
-                d.date.setHours(0, 0, 0);
-            });
-        });
-
-        return { data: _data, dataByDate: dataByDate};
-    }
-
     return {
-        SalesDataBuilder: SalesDataBuilder
+        LineDataBuilder: LineDataBuilder
     };
 
 });

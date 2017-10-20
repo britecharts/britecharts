@@ -1,17 +1,19 @@
 define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
     'use strict';
 
-    function aTestDataSet() {
-        return new dataBuilder.BarDataBuilder();
-    }
+    const aTestDataSet = () => new dataBuilder.BarDataBuilder();    
+    const buildDataSet = (dataSetName) => {
+        return aTestDataSet()
+            [dataSetName]()
+            .build();
+    };
+
 
     describe('Bar Chart', () => {
         let barChart, dataset, containerFixture, f;
 
         beforeEach(() => {
-            dataset = aTestDataSet()
-                .withLettersFrequency()
-                .build();
+            dataset = buildDataSet('withLettersFrequency');
             barChart = chart();
 
             // DOM Fixture Setup
@@ -58,7 +60,114 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             expect(containerFixture.selectAll('.bar').size()).toEqual(numBars);
         });
 
+        describe('when reloading with a different dataset', () => {
+            
+            it('should render in the same svg', function() {
+                let actual;
+                let expected = 1;
+                let newDataset = buildDataSet('withColors');
+
+                containerFixture.datum(newDataset).call(barChart);
+
+                actual = containerFixture.selectAll('.bar-chart').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
+
+            // This test fails because of the transition on the exit
+            xit('should render six bars', function() {
+                let actual;
+                let expected = 6;
+                let newDataset = buildDataSet('withColors');
+
+                containerFixture.datum(newDataset).call(barChart);
+
+                actual = containerFixture.selectAll('.bar-chart .bar').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
         describe('API', function() {
+
+            it('should provide colorSchema getter and setter', () => {
+                let previous = barChart.colorSchema(),
+                    expected = ['#FFFFFF'],
+                    actual;
+
+                barChart.colorSchema(expected);
+                actual = barChart.colorSchema();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should update color', () => {
+                let previous = barChart.colorSchema(),
+                    expected = '#FFFFFF',
+                    actual;
+
+                barChart.colorSchema([expected]);
+
+                const barColor = containerFixture.select('rect.bar');
+
+                containerFixture.call(barChart);
+                actual = barColor.attr('fill');
+
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide enable percentage label getter and setter', () => {
+                let previous = barChart.enablePercentageLabels(),
+                    expected = true,
+                    actual;
+
+                barChart.enablePercentageLabels(expected);
+                actual = barChart.enablePercentageLabels();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should have exportChart defined', () => {
+                expect(barChart.exportChart).toBeDefined();
+            });
+
+            it('should provide height getter and setter', () => {
+                let previous = barChart.height(),
+                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    actual;
+
+                barChart.height(expected);
+                actual = barChart.height();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide horizontal direction getter and setter', () => {
+                let previous = barChart.isHorizontal(),
+                    expected = true,
+                    actual;
+
+                barChart.isHorizontal(expected);
+                actual = barChart.isHorizontal();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide isAnimated getter and setter', () => {
+                let previous = barChart.isAnimated(),
+                    expected = true,
+                    actual;
+
+                barChart.isAnimated(expected);
+                actual = barChart.isAnimated();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
 
             it('should provide margin getter and setter', () => {
                 let previous = barChart.margin(),
@@ -72,15 +181,87 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
-            it('should provide height getter and setter', () => {
-                let previous = barChart.height(),
-                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+            it('should provide padding getter and setter', () => {
+                let previous = barChart.betweenBarsPadding(),
+                    expected = 0.5,
+                    actual;
+                
+                barChart.betweenBarsPadding(expected);
+                actual = barChart.betweenBarsPadding();
+                
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide nameLabel getter and setter', () => {
+                let previous = barChart.nameLabel(),
+                    expected = 'key',
                     actual;
 
-                barChart.height(expected);
-                actual = barChart.height();
+                barChart.nameLabel(expected);
+                actual = barChart.nameLabel();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a percentageAxisToMaxRatio getter and setter', () => {
+                let previous = barChart.percentageAxisToMaxRatio(),
+                    expected = 1.5,
+                    actual;
+
+                barChart.percentageAxisToMaxRatio(expected);
+                actual = barChart.percentageAxisToMaxRatio();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide percentage label margin getter and setter', () => {
+                let previous = barChart.percentageLabelMargin(),
+                    expected = 10,
+                    actual;
+
+                barChart.percentageLabelMargin(expected);
+                actual = barChart.percentageLabelMargin();
 
                 expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a shouldReverseColorList getter and setter', () => {
+                let previous = barChart.shouldReverseColorList(),
+                    expected = false,
+                    actual;
+
+                barChart.shouldReverseColorList(expected);
+                actual = barChart.shouldReverseColorList();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide an usePercentage getter and setter', () => {
+                let previous = barChart.hasPercentage(),
+                    expected = true,
+                    actual;
+
+                barChart.hasPercentage(expected);
+                actual = barChart.hasPercentage();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide valueLabel getter and setter', () => {
+                let previous = barChart.valueLabel(),
+                    expected = 'quantity',
+                    actual;
+
+                barChart.valueLabel(expected);
+                actual = barChart.valueLabel();
+
+                expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
 
@@ -96,13 +277,37 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
-            it('should provide horizontal direction getter and setter', () => {
-                let previous = barChart.horizontal(),
-                    expected = true,
+            it('should provide xTicks getter and setter', () => {
+                let previous = barChart.xTicks(),
+                    expected = 4,
                     actual;
 
-                barChart.horizontal(expected);
-                actual = barChart.horizontal();
+                barChart.xTicks(expected);
+                actual = barChart.xTicks();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide yTicks getter and setter', () => {
+                let previous = barChart.yTicks(),
+                    expected = 20,
+                    actual;
+
+                barChart.yTicks(expected);
+                actual = barChart.yTicks();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide yAxisPaddingBetweenChart getter and setter', () => {
+                let previous = barChart.yAxisPaddingBetweenChart(),
+                    expected = 15,
+                    actual;
+
+                barChart.yAxisPaddingBetweenChart(expected);
+                actual = barChart.yAxisPaddingBetweenChart();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
@@ -111,7 +316,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
         describe('when hovering a bar', function() {
 
-            it('should trigger a callback', () => {
+            it('should trigger a callback on mouse over', () => {
                 let bar = containerFixture.selectAll('.bar:nth-child(1)');
                 let callbackSpy = jasmine.createSpy('callback');
 
@@ -119,13 +324,29 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 bar.dispatch('mouseover');
 
                 expect(callbackSpy.calls.count()).toBe(1);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
             });
-        });
 
-        describe('Export chart functionality', () => {
+            it('should trigger a callback on mouse move', () => {
+                let bar = containerFixture.selectAll('.bar:nth-child(1)');
+                let callbackSpy = jasmine.createSpy('callback');
 
-            it('should have exportChart defined', () => {
-                expect(barChart.exportChart).toBeDefined();
+                barChart.on('customMouseMove', callbackSpy);
+                bar.dispatch('mousemove');
+
+                expect(callbackSpy.calls.count()).toBe(1);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
+            });
+
+            it('should trigger a callback on mouse out', () => {
+                let bar = containerFixture.selectAll('.bar:nth-child(1)');
+                let callbackSpy = jasmine.createSpy('callback');
+
+                barChart.on('customMouseOut', callbackSpy);
+                bar.dispatch('mouseout');
+
+                expect(callbackSpy.calls.count()).toBe(1);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
             });
         });
     });

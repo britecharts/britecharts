@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sandbox</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/britecharts/dist/css/britecharts.min.css" type="text/css" />
+    </head>
+    <body>
+        <div class="notification-bar"></div>
+        <div class="display-container">
+            <h1>Sandbox!</h1>
+            <button onclick="(function(){localStorage.clear()})()">Clear local storage</button>
+
+            <div class="main-display">
+                <div class="chart-panel">
+                    <div class="chart-selector-container select-box-container"></div>
+                    <div class="chart-container-place-holder"></div>
+                </div>
+                <div class="config-panel">
+
+                    <div class="button-panel">
+                        <button class="button config-panel__add-tooltip">Tooltip</button>
+
+                        <button class="button config-panel__add-mini-tooltip">MiniTooltip</button>
+                    </div>
+                    <div id="chartConfigInput"></div>
+                    <div class="button-panel">
+                        <button class="button button__update config-display__submit">Update</button>
+                        <button class="button button__reset config-display__reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <div class="data-display">
+                <button class="data-display__toggle-size">Toggle Expand</button>
+                <div class="data-selector-container select-box-container"></div>
+                <div id="dataInput"></div>
+                <div class="button-panel">
+                    <button class="data-display__submit button button__update">Update</button>
+                    <button class="data-display__reset button button__reset">Reset</button>
+                </div>
+            </div>
+        </div>
+        <script src="/assets/sandbox.js"></script>
+    </body>
+</html>

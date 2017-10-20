@@ -6,7 +6,7 @@ module.exports = function (grunt) {
             {
                 expand: true,
                 cwd: 'src/styles/',
-                src: ['bundle.scss'],
+                src: ['britecharts.scss'],
                 dest: './dist/css',
                 ext: '.css'
             },
@@ -32,7 +32,7 @@ module.exports = function (grunt) {
             {
                 expand: true,
                 cwd: 'src/styles/',
-                src: ['bundle.scss'],
+                src: ['britecharts.scss'],
                 dest: './demos/css',
                 ext: '.css'
             }

@@ -1,17 +1,28 @@
-define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, dataBuilder) {
+define([
+    'jquery', 
+    'd3', 
+    'step', 
+    'stepChartDataBuilder'
+], function(
+    $, 
+    d3, 
+    chart, 
+    dataBuilder
+) {
     'use strict';
 
-    describe('Step Chart Test Suite', () => {
+    const aTestDataSet = () => new dataBuilder.StepDataBuilder();    
+    const buildDataSet = (dataSetName) => {
+        return aTestDataSet()
+            [dataSetName]()
+            .build();
+    };
+
+    describe('Step Chart', () => {
         let stepChart, dataset, containerFixture, f;
 
-        function aTestDataSet() {
-            return new dataBuilder.StepDataBuilder();
-        }
-
         beforeEach(() => {
-            dataset = aTestDataSet()
-                .withSmallData()
-                .build();
+            dataset = buildDataSet('withSmallData');
             stepChart = chart();
 
             // DOM Fixture Setup
@@ -60,6 +71,33 @@ define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, 
             expect(containerFixture.selectAll('.step').size()).toEqual(numSteps);
         });
 
+        describe('when reloading with a different dataset', () => {
+            
+            it('should render in the same svg', function() {
+                let actual;
+                let expected = 1;
+                let newDataset = buildDataSet('withMediumData');
+
+                containerFixture.datum(newDataset.data).call(stepChart);
+
+                actual = containerFixture.selectAll('.step-chart').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render nine steps', function() {
+                let actual;
+                let expected = 9;
+                let newDataset = buildDataSet('withMediumData');
+
+                containerFixture.datum(newDataset.data).call(stepChart);
+
+                actual = containerFixture.selectAll('.step-chart .step').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
         describe('API', function() {
 
             it('should provide margin getter and setter', () => {
@@ -86,16 +124,16 @@ define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, 
                 expect(newHeight).toBe(testHeight);
             });
 
-            it('should provide numOfVerticalTicks getter and setter', () => {
-                let defaultNumOfVerticalTicks = stepChart.numOfVerticalTicks(),
-                    testNumOfVerticalTicks = 20,
-                    newNumOfVerticalTicks;
+            it('should provide yTicks getter and setter', () => {
+                let previous = stepChart.yTicks(),
+                    expected = 20,
+                    actual;
 
-                stepChart.numOfVerticalTicks(testNumOfVerticalTicks);
-                newNumOfVerticalTicks = stepChart.numOfVerticalTicks();
+                stepChart.yTicks(expected);
+                actual = stepChart.yTicks();
 
-                expect(defaultNumOfVerticalTicks).not.toBe(newNumOfVerticalTicks);
-                expect(newNumOfVerticalTicks).toBe(testNumOfVerticalTicks);
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
             });
 
             it('should provide width getter and setter', () => {
@@ -169,6 +207,29 @@ define(['jquery', 'd3', 'step', 'stepChartDataBuilder'], function($, d3, chart, 
                 step.dispatch('mouseover');
 
                 expect(callbackSpy.calls.count()).toBe(1);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
+            });
+
+            it('should trigger a callback', () => {
+                let step = containerFixture.select('.step:nth-child(1)');
+                let callbackSpy = jasmine.createSpy('callback');
+
+                stepChart.on('customMouseMove', callbackSpy);
+                step.dispatch('mousemove');
+
+                expect(callbackSpy.calls.count()).toBe(1);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
+            });
+
+            it('should trigger a callback', () => {
+                let step = containerFixture.select('.step:nth-child(1)');
+                let callbackSpy = jasmine.createSpy('callback');
+
+                stepChart.on('customMouseOut', callbackSpy);
+                step.dispatch('mouseout');
+
+                expect(callbackSpy.calls.count()).toBe(1);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
             });
         });
 

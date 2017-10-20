@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Sparkline Chart Demo - Britecharts</title>
-    <link type="text/css" rel="stylesheet" href="/demos/css/bundle.css" />
-</head>
-<body id="sparkline">
-    <div class="container">
+
+    <div class="container" id="sparkline">
         <div class="row">
             <div class="
 col-md-6">
@@ -20,7 +13,7 @@ col-md-6">
             <div class="
 col-md-6 sidebar">
                 <h3>The code</h3>
-                <pre>
+                <pre><code class="language-javascript">
 sparklineChart
     .dateLabel('dateUTC')
     .isAnimated(true)
@@ -30,12 +23,14 @@ sparklineChart
 
 container.datum(dataset)
     .call(sparklineChart);
-                </pre>
-
-                <h4>Download</h4>
-                <p>You can also export this chart by pressing: <input id="button" type="button" value="download" class="btn" /></p>
+                </code></pre>
+                <h4>Data Input</h4>
+                <p>Check the <a href="/britecharts/global.html#SparklineChartData__anchor">data input schema</a> of this chart.</p>
+                <h4>Export Chart</h4>
+                <p>You can also export this chart by pressing: <input id="button" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
+                <h4>Demo Code</h4>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-sparkline.js">in github</a></p>
             </div>
         </div>
     </div>
-</body>
-</html>
+

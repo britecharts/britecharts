@@ -59,64 +59,112 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
 
         describe('the API', function() {
 
-            it('should provide margin getter and setter', function() {
-                var defaultMargin = brushChart.margin(),
-                    testMargin = {top: 4, right: 4, bottom: 4, left: 4},
-                    newMargin;
+            it('should provide a bush date range getter and setter', () => {
+                let previous = brushChart.dateRange(),
+                    expected = ['9/15/2015', '1/25/2016'],
+                    actual;
 
-                brushChart.margin(testMargin);
-                newMargin = brushChart.margin();
+                brushChart.dateRange(expected);
+                actual = brushChart.dateRange();
 
-                expect(defaultMargin).not.toBe(testMargin);
-                expect(newMargin).toBe(testMargin);
-            });
-
-            it('should provide width getter and setter', function() {
-                var defaultWidth = brushChart.width(),
-                    testWidth = 200,
-                    newWidth;
-
-                brushChart.width(testWidth);
-                newWidth = brushChart.width();
-
-                expect(defaultWidth).not.toBe(testWidth);
-                expect(newWidth).toBe(testWidth);
-            });
-
-            it('should provide height getter and setter', function() {
-                var defaultHeight = brushChart.height(),
-                    testHeight = 200,
-                    newHeight;
-
-                brushChart.height(testHeight);
-                newHeight = brushChart.height();
-
-                expect(defaultHeight).not.toBe(testHeight);
-                expect(newHeight).toBe(testHeight);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide a gradient getter and setter', () => {
-                let defaultGradient = brushChart.gradient(),
-                    testGradient = ['#ffffff', '#fafefc'],
-                    newGradient;
+                let previous = brushChart.gradient(),
+                    expected = ['#ffffff', '#fafefc'],
+                    actual;
 
-                brushChart.gradient(testGradient);
-                newGradient = brushChart.gradient();
+                brushChart.gradient(expected);
+                actual = brushChart.gradient();
 
-                expect(defaultGradient).not.toBe(testGradient);
-                expect(newGradient).toBe(testGradient);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
-            it('should provide onBrush getter and setter', function() {
-                var defaultCallback = brushChart.onBrush(),
-                    testCallback = function() {},
-                    newCallback;
+            it('should provide height getter and setter', function() {
+                var previous = brushChart.height(),
+                    expected = 200,
+                    actual;
 
-                brushChart.onBrush(testCallback);
-                newCallback = brushChart.onBrush();
+                brushChart.height(expected);
+                actual = brushChart.height();
 
-                expect(defaultCallback).not.toBe(testCallback);
-                expect(newCallback).toBe(testCallback);
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide margin getter and setter', function() {
+                var previous = brushChart.margin(),
+                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    actual;
+
+                brushChart.margin(expected);
+                actual = brushChart.margin();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide width getter and setter', function() {
+                var previous = brushChart.width(),
+                    expected = 200,
+                    actual;
+
+                brushChart.width(expected);
+                actual = brushChart.width();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a xAxisFormat getter and setter', () => {
+                let previous = brushChart.xAxisFormat(),
+                    expected = brushChart.axisTimeCombinations.HOUR_DAY,
+                    actual;
+
+                brushChart.xAxisFormat(expected);
+                actual = brushChart.xAxisFormat();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a xAxisCustomFormat getter and setter', () => {
+                let previous = brushChart.xAxisCustomFormat(),
+                    expected = '%d %b',
+                    actual;
+
+                brushChart.xAxisCustomFormat(expected);
+                actual = brushChart.xAxisCustomFormat();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a xTicks getter and setter', () => {
+                let previous = brushChart.xTicks(),
+                    expected = 2,
+                    actual;
+
+                brushChart.xTicks(expected);
+                actual = brushChart.xTicks();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide locale getter and setter', () => {
+                let previous = brushChart.locale(),
+                    expected = 'en-US',
+                    actual;
+
+                brushChart.locale(expected);
+                actual = brushChart.locale();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
         });
     });

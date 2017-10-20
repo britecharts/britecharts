@@ -1,8 +1,8 @@
 {
-  "data": [
+  "dataByTopic": [
     {
       "topic": 103,
-      "Data": [
+      "dates": [
             {
               "date": "27-Jun-15",
               "value": 1,
@@ -193,7 +193,7 @@
     },
     {
       "topic": 149,
-      "Data": [
+      "dates": [
         {
           "date": "27-Jun-15",
           "value": 0,
@@ -384,7 +384,7 @@
     },
     {
       "topic": 60,
-      "Data": [
+      "dates": [
         {
           "date": "27-Jun-15",
           "value": 0,
@@ -575,7 +575,7 @@
     },
     {
       "topic": 81,
-      "Data": [
+      "dates": [
         {
           "date": "27-Jun-15",
           "value": 0,
@@ -767,7 +767,7 @@
     {
       "topic": 0,
       "topicName": "Other",
-      "Data": [
+      "dates": [
         {
           "date": "27-Jun-15",
           "value": 3,

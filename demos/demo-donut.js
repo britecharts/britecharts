@@ -1,32 +1,42 @@
 'use strict';
 
-var d3 = require('d3'),
+const d3Selection = require('d3-selection');
+const PubSub = require('pubsub-js');
 
-    PubSub = require('pubsub-js'),
+const donut = require('./../src/charts/donut');
+const legend = require('./../src/charts/legend');
 
-    donut = require('./../src/charts/donut'),
-    legend = require('./../src/charts/legend'),
-    dataBuilder = require('./../test/fixtures/donutChartDataBuilder'),
-    colorSelectorHelper = require('./helpers/colorSelector'),
+const dataBuilder = require('./../test/fixtures/donutChartDataBuilder');
+const colorSelectorHelper = require('./helpers/colorSelector');
 
-    dataset = new dataBuilder.DonutDataBuilder()
+const dataset = new dataBuilder.DonutDataBuilder()
         .withFivePlusOther()
-        .build(),
-    legendChart;
+        .build();
+const datasetNoPercentages = new dataBuilder.DonutDataBuilder()
+        .withFivePlusOtherNoPercent()
+        .build();
+const datasetWithThreeItems = new dataBuilder.DonutDataBuilder()
+        .withThreeCategories()
+        .build();
+let legendChart;
+let redrawCharts;
 
+require('./helpers/resizeHelper');
 
-function createDonutChart(dataset, optionalColorSchema) {
-    var legendChart = getLegendChart(dataset, optionalColorSchema),
+function createDonutChart(optionalColorSchema) {
+    let legendChart = getLegendChart(dataset, optionalColorSchema),
         donutChart = donut(),
-        donutContainer = d3.select('.js-donut-chart-container'),
+        donutContainer = d3Selection.select('.js-donut-chart-container'),
         containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false;
 
     if (containerWidth) {
-        d3.select('#button').on('click', function() {
+        d3Selection.select('#button').on('click', function() {
             donutChart.exportChart();
         });
 
         donutChart
+            .isAnimated(true)
+            .highlightSliceById(2)
             .width(containerWidth)
             .height(containerWidth)
             .externalRadius(containerWidth/2.5)
@@ -44,23 +54,48 @@ function createDonutChart(dataset, optionalColorSchema) {
 
         donutContainer.datum(dataset).call(donutChart);
 
-        d3.select('#button').on('click', function() {
+        d3Selection.select('#button').on('click', function() {
             donutChart.exportChart('donut.png', 'Britecharts Donut Chart');
         });
     }
 }
 
 function getLegendChart(dataset, optionalColorSchema) {
-    var legendChart = legend(),
-        legendContainer = d3.select('.js-legend-chart-container'),
+    let legendChart = legend(),
+        legendContainer = d3Selection.select('.js-legend-chart-container'),
         containerWidth = legendContainer.node() ? legendContainer.node().getBoundingClientRect().width : false;
 
     if (containerWidth) {
-        d3.select('.js-legend-chart-container .britechart-legend').remove();
+        d3Selection.select('.js-legend-chart-container .britechart-legend').remove();
 
         legendChart
-            .width(containerWidth/2)
+            .width(containerWidth*0.8)
             .height(200)
+            .numberFormat('s');
+
+        if (optionalColorSchema) {
+            legendChart.colorSchema(optionalColorSchema);
+        }
+
+        legendContainer.datum(dataset).call(legendChart);
+
+        return legendChart;
+    }
+}
+
+function getInlineLegendChart(dataset, optionalColorSchema) {
+    let legendChart = legend(),
+        legendContainer = d3Selection.select('.js-inline-legend-chart-container'),
+        containerWidth = legendContainer.node() ? legendContainer.node().getBoundingClientRect().width : false;
+
+    if (containerWidth) {
+        d3Selection.select('.js-inline-legend-chart-container .britechart-legend').remove();
+
+        legendChart
+            .isHorizontal(true)
+            .width(containerWidth*0.6)
+            .markerSize(8)
+            .height(40)
 
         if (optionalColorSchema) {
             legendChart.colorSchema(optionalColorSchema);
@@ -73,35 +108,63 @@ function getLegendChart(dataset, optionalColorSchema) {
 }
 
 function createSmallDonutChart() {
-    var donutChart = donut(),
-        donutContainer = d3.select('.js-small-donut-chart-container'),
-        containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false;
+    let donutChart = donut(),
+        donutContainer = d3Selection.select('.js-small-donut-chart-container'),
+        containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false,
+        legendChart = getInlineLegendChart(datasetWithThreeItems);
 
     if (containerWidth) {
         donutChart
             .width(containerWidth)
-            .height(containerWidth/1.5)
+            .height(containerWidth/1.8)
+            .externalRadius(containerWidth/5)
+            .internalRadius(containerWidth/10)
+            .on('customMouseOver', function(data) {
+                legendChart.highlight(data.data.id);
+            })
+            .on('customMouseOut', function() {
+                legendChart.clearHighlight();
+            });
+
+        donutContainer.datum(datasetWithThreeItems).call(donutChart);
+    }
+}
+
+function createDonutWithHighlightSliceChart() {
+    let donutChart = donut(),
+        donutContainer = d3Selection.select('.js-donut-highlight-slice-chart-container'),
+        containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false;
+
+    if (containerWidth) {
+        donutChart
+            .highlightSliceById(11)
+            .hasFixedHighlightedSlice(true)
+            .width(containerWidth)
+            .height(containerWidth/1.8)
             .externalRadius(containerWidth/5)
             .internalRadius(containerWidth/10);
-        donutContainer.datum(dataset).call(donutChart);
+
+        donutContainer.datum(datasetWithThreeItems).call(donutChart);
     }
 }
 
 // Show charts if container available
-if (d3.select('.js-donut-chart-container').node()) {
-    createDonutChart(dataset);
+if (d3Selection.select('.js-donut-chart-container').node()) {
+    createDonutChart();
     createSmallDonutChart();
+    createDonutWithHighlightSliceChart();
 
-    var redrawCharts = function(){
-        d3.selectAll('.donut-chart').remove();
+    redrawCharts = function(){
+        d3Selection.selectAll('.donut-chart').remove();
 
-        createDonutChart(dataset);
+        createDonutChart();
         createSmallDonutChart();
+        createDonutWithHighlightSliceChart();
     };
 
     // Redraw charts on window resize
     PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
-    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.donut-chart', createDonutChart.bind(null, dataset));
+    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.donut-chart', createDonutChart);
 }
