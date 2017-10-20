@@ -215,46 +215,46 @@
 <a href="https://badge.fury.io/js/britecharts"><img src="https://badge.fury.io/js/britecharts.svg" alt="npm version"></a>
 <a href="https://badge.fury.io/bo/britecharts"><img src="https://badge.fury.io/bo/britecharts.svg" alt="Bower version"></a>
 <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a></p>
-<p>Britecharts <a href="tutorial-kitchen-sink.html">components</a> have been written in ES2015 with a Test Driven methodology so they are <strong>fully tested</strong>, and we are commited to keeping them that way.</p>
-<h2>Key Features</h2><p>The main characteristics of this library are:</p>
-<ul>
+<p>Britecharts <a href="tutorial-kitchen-sink.html">components</a> have been written in ES2016 with a Test Driven methodology so they are <strong>fully tested</strong>, and we are commited to keeping them that way.</p>
+<h2>Key Features</h2><ul>
 <li>Reusability</li>
 <li>Composability</li>
-<li>Fully tested</li>
-<li>ES2015 source code (transpiled with <a href="https://github.com/babel/babel">Babel</a>)</li>
+<li>Great design</li>
 </ul>
 <h2>Usage</h2><p>The typical use of Britecharts involves creating a chart using its simple API, then rendering it on a container which has previously had data applied to it. The code will look like this:</p>
 <pre class="prettyprint source"><code>barChart
     .width(500)
     .height(300);
 
-barContainer.datum(dataset).call(barChart);</code></pre><h2>API</h2><p>All the components expose some basic API methods like width, height and margin. Additionally, each chart or component can expose more methods. Those can be found in the documentation of the modules:</p>
+barContainer.datum(dataset).call(barChart);</code></pre><h2>API</h2><p>All the components expose some <strong>common API methods</strong> like width, height and margin. Additionally, each chart or component can expose specific methods. Those can be found in the documentation:</p>
 <ul>
-<li>Line Chart: <a href="module-Line.html">API</a> - <a href="tutorial-line.html">Demo</a></li>
-<li>Donut Chart: <a href="module-Donut.html">API</a> - <a href="tutorial-donut.html">Demo</a></li>
-<li>Bar Chart: <a href="module-Bar.html">API</a> - <a href="tutorial-bar.html">Demo</a></li>
-<li>Stacked Bar Chart: <a href="module-Stacked-bar.html">API</a> - <a href="tutorial-stacked-bar.html">Demo</a></li>
-<li>Grouped Bar Chart: <a href="module-Grouped-bar.html">API</a> - <a href="tutorial-Grouped-bar.html">Demo</a></li>
-<li>Brush Chart: <a href="module-Brush.html">API</a> - <a href="tutorial-brush.html">Demo</a></li>
-<li>Sparkline Chart: <a href="module-Sparkline.html">API</a> - <a href="tutorial-sparkline.html">Demo</a></li>
-<li>Stacked Area Chart: <a href="module-Stacked-area.html">API</a> - <a href="tutorial-stacked-area.html">Demo</a></li>
-<li>Tooltip Chart: <a href="module-Tooltip.html">API</a> - <a href="tutorial-line.html">Demo</a></li>
-<li>Mini Tooltip Chart: <a href="module-Mini-tooltip.html">API</a> - <a href="tutorial-bar.html">Demo</a></li>
-<li>Legend Chart: <a href="module-Legend.html">API</a> - <a href="tutorial-donut.html">Demo</a></li>
-<li>Step Chart: <a href="module-Step.html">API</a> - <a href="tutorial-step.html">Demo</a></li>
+<li><a href="module-Line.html">API</a>, <a href="tutorial-line.html">Demo</a> Line Chart</li>
+<li><a href="module-Bar.html">API</a>, <a href="tutorial-bar.html">Demo</a> Bar Chart</li>
+<li><a href="module-Donut.html">API</a>, <a href="tutorial-donut.html">Demo</a> Donut Chart</li>
+<li><a href="module-Stacked-bar.html">API</a>, <a href="tutorial-stacked-bar.html">Demo</a> Stacked Bar Chart</li>
+<li><a href="module-Grouped-bar.html">API</a>, <a href="tutorial-Grouped-bar.html">Demo</a> Grouped Bar Chart</li>
+<li><a href="module-Brush.html">API</a>, <a href="tutorial-brush.html">Demo</a> Brush Chart</li>
+<li><a href="module-Sparkline.html">API</a>, <a href="tutorial-sparkline.html">Demo</a> Sparkline Chart</li>
+<li><a href="module-Stacked-area.html">API</a>, <a href="tutorial-stacked-area.html">Demo</a> Stacked Area Chart</li>
+<li><a href="module-Step.html">API</a>, <a href="tutorial-step.html">Demo</a> Step Chart</li>
+<li><a href="module-Mini-tooltip.html">API</a>, <a href="tutorial-bar.html">Demo</a> Mini Tooltip </li>
+<li><a href="module-Tooltip.html">API</a>, <a href="tutorial-line.html">Demo</a> Tooltip </li>
+<li><a href="module-Legend.html">API</a>, <a href="tutorial-donut.html">Demo</a> Legend </li>
 </ul>
-<h2>Installation</h2><p>Britecharts components are distributed in <strong>UMD modules</strong>, each one exposing a D3.js component written with the <a href="https://bost.ocks.org/mike/chart/">Reusable API pattern</a>. In order to use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules or adding a script tag with the <code>src</code> pointing to the file. You would also need to load the <a href="https://github.com/d3/d3-selection">D3.js selection</a> library in order to select the chart container.</p>
-<pre class="prettyprint source"><code>   npm install britecharts d3-selection</code></pre><p>They also provide some minimal CSS styling, that can be loaded independently or as a bundle. Check out our <a href="cdn.html">CDN demo</a> page or our <a href="https://jsbin.com/wativun/1/edit?html,js,output">JSBin</a> and <a href="https://codepen.io/Golodhros/pen/PprGeP?editors=1010">CodePen</a> sandbox projects. You can also watch <a href="https://scrimba.com/casts/cZWm2tb">Per Borgen's screencast</a> to see Britecharts in action.</p>
-<h2>Roadmap</h2><p>This project is in active development, if you are interested on helping you can check the <a href="https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md">contributing</a> document. Review the <a href="https://github.com/eventbrite/britecharts/issues">issues page</a> for more info on what's coming, to give your feedback, and to vote for your favorite proposals.</p>
+<h2>Installation</h2><p>Britecharts components are distributed in <strong>UMD modules</strong>, each one exposing a D3.js component written with the <a href="https://bost.ocks.org/mike/chart/">Reusable API pattern</a>. To use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules or adding a script tag with the <code>src</code> pointing to the file. You would also need to load the <a href="https://github.com/d3/d3-selection">d3-selection</a> submodule to select the chart container.</p>
+<pre class="prettyprint source"><code>   npm install britecharts d3-selection</code></pre><p>They also provide some minimal CSS styling, that can be loaded independently or as a bundle. </p>
+<p>You can also load Britecharts from our <a href="https://cdn.jsdelivr.net/npm/britecharts/dist/">CDN</a> as we do in this <a href="cdn.html">demo</a> page or play around in our <a href="https://jsbin.com/wativun/3/edit?html,js,output">JSBin</a> and <a href="https://codepen.io/Britecharts/pens/forked/">CodePen</a> demo projects.</p>
 <h2>See Also</h2><ul>
 <li><a href="getting-started.html">Getting Started Guide</a></li>
-<li><a href="">Documentation</a></li>
+<li><a href="">Documentation Homepage</a></li>
 <li><a href="https://github.com/eventbrite/britecharts/releases">Release Notes</a></li>
 <li><a href="https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md">Contributing Guide</a></li>
 <li><a href="https://github.com/eventbrite/britecharts">Github Repo</a></li>
-<li><a href="https://scrimba.com/casts/cZWm2tb">Bar Chart Tutorial (Video)</a></li>
+<li><a href="https://scrimba.com/casts/cZWm2tb">Bar Chart Tutorial</a>[Video]</li>
 </ul>
-<h2>Acknowledgments</h2><p>Britecharts was inspired by two books, <a href="https://bleedingedgepress.com/our-books/developing-a-d3-js-edge/">Developing a D3.js Edge</a> and <a href="https://www.packtpub.com/web-development/mastering-d3js">Mastering D3.js</a>. It also leveraged a great number of examples and articles from the <a href="https://d3js.org/">D3.js</a> community overall.</p>
+<h2>Roadmap</h2><p>This project is in active development! If you want to help, you can check the <a href="https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md">contributing</a> guide. Also review the <a href="https://github.com/eventbrite/britecharts/issues">issues page</a> for more info on what's coming, to give your feedback, and to vote for your favorite <a href="https://github.com/eventbrite/britecharts/issues?q=is%3Aissue+is%3Aopen+label%3Aproposal">proposals</a>. You can also find us in the <a href="https://d3js.slack.com/">D3.js slack group</a>, in the <strong>#britecharts</strong> channel.</p>
+<p>If you work with Angular, check out <a href="https://github.com/colapdev/ngx-britecharts">ngx-britecharts</a> and their <a href="https://colapdev.github.io/ngx-britecharts/">demos</a>. We are also preparing a wrapper for React, and we will be talking about it on our <a href="https://twitter.com/britecharts">twitter</a>. </p>
+<h2>Acknowledgments</h2><p><a href="https://dribbble.com/sundai">Sun Dai</a> designs Britecharts, and two books inspired the code, <a href="https://bleedingedgepress.com/our-books/developing-a-d3-js-edge/">Developing a D3.js Edge</a> and <a href="https://www.packtpub.com/web-development/mastering-d3js">Mastering D3.js</a>. It also leveraged a significant number of examples and articles from the <a href="https://d3js.org/">D3.js</a> community overall.</p>
 <h2>License</h2><p>Copyright 2017 Eventbrite</p>
 <p>Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
 you may not use this file except in compliance with the License.
