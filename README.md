@@ -9,16 +9,13 @@
 [![Bower version](https://badge.fury.io/bo/britecharts.svg)](https://badge.fury.io/bo/britecharts)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Britecharts [components][32] have been written in ES2015 with a Test Driven methodology so they are **fully tested**, and we are commited to keeping them that way.
+Britecharts [components][32] have been written in ES2016 with a Test Driven methodology so they are **fully tested**, and we are commited to keeping them that way.
 
 ## Key Features
 
-The main characteristics of this library are:
-
 - Reusability
 - Composability
-- Fully tested
-- ES2015 source code (transpiled with [Babel][17])
+- Great design
 
 ## Usage
 
@@ -32,45 +29,51 @@ The typical use of Britecharts involves creating a chart using its simple API, t
 
 ## API
 
-All the components expose some basic API methods like width, height and margin. Additionally, each chart or component can expose more methods. Those can be found in the documentation of the modules:
+All the components expose some **common API methods** like width, height and margin. Additionally, each chart or component can expose specific methods. Those can be found in the documentation:
 
- - Line Chart: [API][25] - [Demo][5]
- - Donut Chart: [API][21] - [Demo][6]
- - Bar Chart: [API][22] - [Demo][4]
- - Stacked Bar Chart: [API][38] - [Demo][39]
- - Grouped Bar Chart: [API][40] - [Demo][41]
- - Brush Chart: [API][23] - [Demo][18]
- - Sparkline Chart: [API][29] - [Demo][7]
- - Stacked Area Chart: [API][30] - [Demo][8]
- - Tooltip Chart: [API][27] - [Demo][5]
- - Mini Tooltip Chart: [API][26] - [Demo][4]
- - Legend Chart: [API][24] - [Demo][6]
- - Step Chart: [API][28] - [Demo][11]
+ - [API][25], [Demo][5] Line Chart
+ - [API][22], [Demo][4] Bar Chart
+ - [API][21], [Demo][6] Donut Chart
+ - [API][38], [Demo][39] Stacked Bar Chart
+ - [API][40], [Demo][41] Grouped Bar Chart
+ - [API][23], [Demo][18] Brush Chart
+ - [API][29], [Demo][7] Sparkline Chart
+ - [API][30], [Demo][8] Stacked Area Chart
+ - [API][28], [Demo][11] Step Chart
+ - [API][26], [Demo][4] Mini Tooltip 
+ - [API][27], [Demo][5] Tooltip 
+ - [API][24], [Demo][6] Legend 
 
 ## Installation
 
-Britecharts components are distributed in **UMD modules**, each one exposing a D3.js component written with the [Reusable API pattern][3]. In order to use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules or adding a script tag with the `src` pointing to the file. You would also need to load the [D3.js selection][37] library in order to select the chart container.
+Britecharts components are distributed in **UMD modules**, each one exposing a D3.js component written with the [Reusable API pattern][3]. To use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules or adding a script tag with the `src` pointing to the file. You would also need to load the [d3-selection][37] submodule to select the chart container.
 
 ```
    npm install britecharts d3-selection
 ```
 
-They also provide some minimal CSS styling, that can be loaded independently or as a bundle. Check out our [CDN demo][cdnDemo] page or our [JSBin][jsbinSandbox] and [CodePen][codepenSandbox] sandbox projects. You can also watch [Per Borgen's screencast][screenCast] to see Britecharts in action.
+They also provide some minimal CSS styling, that can be loaded independently or as a bundle. 
 
-## Roadmap
-This project is in active development, if you are interested on helping you can check the [contributing][35] document. Review the [issues page][16] for more info on what's coming, to give your feedback, and to vote for your favorite proposals.
+You can also load Britecharts from our [CDN][cdnHome] as we do in this [demo][cdnDemo] page or play around in our [JSBin][jsbinSandbox] and [CodePen][codepenDemos] demo projects.
 
 ## See Also
 - [Getting Started Guide][34]
-- [Documentation][31]
+- [Documentation Homepage][31]
 - [Release Notes][13]
 - [Contributing Guide][35]
 - [Github Repo][33]
-- [Bar Chart Tutorial (Video)][42]
+- [Bar Chart Tutorial][screenCast][Video]
+
+## Roadmap
+This project is in active development! If you want to help, you can check the [contributing][35] guide. Also review the [issues page][16] for more info on what's coming, to give your feedback, and to vote for your favorite [proposals][proposals]. You can also find us in the [D3.js slack group][d3Slack], in the **#britecharts** channel.
+
+If you work with Angular, check out [ngx-britecharts][angularWrapper] and their [demos][angularWrapperDemos]. We are also preparing a wrapper for React, and we will be talking about it on our [twitter][twitter]. 
+
+
 
 ## Acknowledgments
 
-Britecharts was inspired by two books, [Developing a D3.js Edge][19] and [Mastering D3.js][20]. It also leveraged a great number of examples and articles from the [D3.js][1] community overall.
+[Sun Dai][sunsDribble] designs Britecharts, and two books inspired the code, [Developing a D3.js Edge][19] and [Mastering D3.js][20]. It also leveraged a significant number of examples and articles from the [D3.js][1] community overall.
 
 ## License
 
@@ -135,6 +138,16 @@ Read more in the [license document][15]
 [42]: https://scrimba.com/casts/cZWm2tb
 
 [cdnDemo]: https://eventbrite.github.io/britecharts/cdn.html
-[jsbinSandbox]: https://jsbin.com/wativun/1/edit?html,js,output
+[cdnHome]: https://cdn.jsdelivr.net/npm/britecharts/dist/
+[jsbinSandbox]: https://jsbin.com/wativun/3/edit?html,js,output
 [codepenSandbox]: https://codepen.io/Golodhros/pen/PprGeP?editors=1010
+[codepenDemos]: https://codepen.io/Britecharts/pens/forked/
 [screenCast]: https://scrimba.com/casts/cZWm2tb
+[angularWrapper]:  https://github.com/colapdev/ngx-britecharts
+[angularWrapperDemos]:  https://colapdev.github.io/ngx-britecharts/
+[twitter]: https://twitter.com/britecharts
+[sunsDribble]: https://dribbble.com/sundai
+[d3Slack]: https://d3js.slack.com/
+[proposals]: https://github.com/eventbrite/britecharts/issues?q=is%3Aissue+is%3Aopen+label%3Aproposal
+
+
