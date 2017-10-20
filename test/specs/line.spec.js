@@ -13,13 +13,13 @@ define([
     ) {
         'use strict';
 
-        const aTestDataSet = () => new dataBuilder.LineDataBuilder();    
+        const aTestDataSet = () => new dataBuilder.LineDataBuilder();
         const buildDataSet = (dataSetName) => {
             return aTestDataSet()
                 [dataSetName]()
                 .build();
         };
-    
+
         const hasClass = (element, className) => {
             return _.contains(element.node().classList, className);
         };
@@ -188,19 +188,19 @@ define([
                 });
 
                 describe('when reloading with a different dataset', () => {
-                    
+
                     it('should render in the same svg', function() {
                         let actual;
                         let expected = 1;
                         let newDataset = buildDataSet('withOneSource');
-        
+
                         containerFixture.datum(newDataset).call(lineChart);
-        
+
                         actual = containerFixture.selectAll('.line-chart').nodes().length;
 
                         expect(actual).toEqual(expected);
                     });
-        
+
                     it('should render one line', function() {
                         let actual;
                         let expected = 1;
@@ -209,7 +209,7 @@ define([
                         containerFixture.datum(newDataset).call(lineChart);
 
                         actual = containerFixture.selectAll('.line-chart .line').nodes().length;
-        
+
                         expect(actual).toEqual(expected);
                     });
                 });
@@ -260,7 +260,8 @@ define([
                         MINUTE_HOUR: 'minute-hour',
                         HOUR_DAY: 'hour-daymonth',
                         DAY_MONTH: 'day-month',
-                        MONTH_YEAR: 'month-year'
+                        MONTH_YEAR: 'month-year',
+                        CUSTOM: 'custom'
                     });
                 });
 

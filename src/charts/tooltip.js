@@ -110,6 +110,7 @@ define(function(require){
 
             defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
             dateFormat = null,
+            dateCustomFormat = null,
             topicsOrder = [],
 
             // formats
@@ -162,7 +163,7 @@ define(function(require){
                   .append('g')
                     .classed('britechart britechart-tooltip', true)
                     .style('display', 'none');
-                    
+
                 buildContainerGroups();
                 drawTooltip();
             }
@@ -347,12 +348,12 @@ define(function(require){
                 .text(tooltipRightText);
 
             textSize = elementText.node().getBBox();
-            
+
             // IE11 give us sometimes a height of 0 when hovering on top of the vertical marker
             // This hack fixes it for some cases, but it doesn't work in multiline (they won't wrap)
             // Let's remove this once we stop supporting IE11
             textHeight = textSize.height ? textSize.height : 18.4;
-            
+
             tooltipHeight += textHeight + tooltipTextLinePadding;
 
             // Not sure if necessary
@@ -404,9 +405,14 @@ define(function(require){
          */
         function updateTitle(dataPoint) {
             let tTitle = title;
+            let formattedDate = formatDate(new Date(dataPoint[dateLabel]));
 
-            if (shouldShowDateInTitle) {
-                tTitle = `${tTitle} - ${formatDate(new Date(dataPoint[dateLabel]))}`;
+            if (tTitle.length) {
+                if (shouldShowDateInTitle) {
+                    tTitle = `${tTitle} - ${formattedDate}`;
+                }
+            } else {
+                tTitle = formattedDate;
             }
 
             tooltipTitle.text(tTitle);
@@ -429,6 +435,8 @@ define(function(require){
             } else if (settings === axisTimeCombinations.HOUR_DAY || settings === axisTimeCombinations.MINUTE_HOUR) {
                 format = monthDayHourFormat;
                 localeOptions.hour = 'numeric';
+            } else if (settings === axisTimeCombinations.CUSTOM && typeof dateCustomFormat === 'string') {
+                format = d3TimeFormat.timeFormat(dateCustomFormat);
             }
 
             if (locale && ((typeof Intl !== 'undefined') && (typeof Intl === 'object' && Intl.DateTimeFormat))) {
@@ -583,13 +591,30 @@ define(function(require){
          * Exposes the ability to force the tooltip to use a certain date format
          * @param  {String} _x          Desired format
          * @return {String | module}  Current format or module to chain calls
-         * @public 
+         * @public
          */
         exports.dateFormat = function(_x) {
             if (!arguments.length) {
               return dateFormat || defaultAxisSettings;
             }
             dateFormat = _x;
+
+            return this;
+        };
+
+        /**
+         * Exposes the ability to use a custom date format
+         * @param  {String} _x          Desired custom format
+         * @return {String | module}  Current format or module to chain calls
+         * @public
+         * @example tooltip.dateFormat(tooltip.axisTimeCombinations.CUSTOM);
+         * tooltip.dateCustomFormat('%H:%M %p')
+         */
+        exports.dateCustomFormat = function(_x) {
+            if (!arguments.length) {
+                return dateCustomFormat;
+            }
+            dateCustomFormat = _x;
 
             return this;
         };
@@ -677,22 +702,7 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets shouldShowDateInTitle
-         * @param  {Boolean} _x           Desired value
-         * @return {Boolean | module}    Current shouldShowDateInTitle or Chart module to chain calls
-         * @public
-         */
-        exports.shouldShowDateInTitle = function(_x) {
-            if (!arguments.length) {
-                return shouldShowDateInTitle;
-            }
-            shouldShowDateInTitle = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets the title of the tooltip
+         * Gets or Sets the title of the tooltip (to only show the date, set a blank title)
          * @param  {String} _x          Desired title
          * @return {String | module}   Current title or module to chain calls
          * @public
