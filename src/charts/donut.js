@@ -100,7 +100,7 @@ define(function(require) {
             // colors
             colorScale,
             colorSchema = colorHelper.colorSchemas.britecharts,
-
+            
             // utils
             storeAngle = function(d) {
                 this._current = d;
@@ -108,7 +108,9 @@ define(function(require) {
             reduceOuterRadius = d => {
                 d.outerRadius = externalRadius - radiusHoverOffset;
             },
-            sortComparator = (a, b) => b.quantity - a.quantity,
+
+            orderingFunction = (a, b) => b.quantity - a.quantity,
+            
             sumValues = (data) => data.reduce((total, d) => d.quantity + total, 0),
 
             // extractors
@@ -179,7 +181,7 @@ define(function(require) {
             layout = d3Shape.pie()
                 .padAngle(paddingAngle)
                 .value(getQuantity)
-                .sort(sortComparator);
+                .sort(orderingFunction);
         }
 
         /**
@@ -525,6 +527,21 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Changes the order of items given custom function
+         * @param  {Function} _x              A custom function that sets logic for ordering
+         * @return { (Function | Module) }    Void function with no return
+         * @public
+         */
+        exports.orderingFunction = function(_x) {
+            if (!arguments.length) {
+                return orderingFunction; 
+            }
+            orderingFunction = _x; 
+
+            return this; 
+        }
 
         /**
          * Gets or Sets the hasFixedHighlightedSlice property of the chart, making it to
