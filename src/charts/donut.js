@@ -109,7 +109,6 @@ define(function(require) {
                 d.outerRadius = externalRadius - radiusHoverOffset;
             },
 
-            // Default sortComparator: (a, b) => b.quantity - a.quantity,
             orderingFunction = (a, b) => b.quantity - a.quantity,
             
             sumValues = (data) => data.reduce((total, d) => d.quantity + total, 0),
@@ -531,8 +530,8 @@ define(function(require) {
 
         /**
          * Changes the order of items given custom function
-         * @param  {Function | Module} _x   A custom function that sets logic for ordering
-         * @return { (void | Module) }      Void function with no return
+         * @param  {Function} _x              A custom function that sets logic for ordering
+         * @return { (Function | Module) }    Void function with no return
          * @public
          */
         exports.orderingFunction = function(_x) {
