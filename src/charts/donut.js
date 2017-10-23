@@ -100,8 +100,6 @@ define(function(require) {
             // colors
             colorScale,
             colorSchema = colorHelper.colorSchemas.britecharts,
-
-            // order function 
             
             // utils
             storeAngle = function(d) {
