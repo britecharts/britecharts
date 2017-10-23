@@ -150,6 +150,34 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 });
             });
 
+            describe('when orderingFunction is called', () => {
+
+                it('the default order function sorts properly', () => {
+                    // default: b.quantity - a.quantity (descending order)
+                    let actual,
+                        expected = 4; 
+
+                    donutChart.orderingFunction();
+                    containerFixture.call(donutChart)
+                    actual = containerFixture.selectAll('.chart-group .arc').nodes()[0].__data__.index;
+                    
+                    expect(actual).toBe(expected);
+                });
+
+                it('it accepts a custom sorting function', () => {
+                    // a.quantity - b.quantity (ascending order)
+                    let fn = (a, b) => a.quantity - b.quantity; 
+                    let actual,
+                        expected = 1; 
+
+                    donutChart.orderingFunction(fn);
+                    containerFixture.call(donutChart)
+                    actual = containerFixture.selectAll('.chart-group .arc').nodes()[0].__data__.index;
+    
+                    expect(actual).toBe(expected);
+                });
+            })
+
             describe('API', function() {
 
                 it('should provide margin getter and setter', () => {
