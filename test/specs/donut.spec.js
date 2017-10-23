@@ -165,7 +165,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 });
 
                 it('it accepts a custom sorting function', () => {
-                    // a.quantity - b.quantity ascending order
+                    // a.quantity - b.quantity (ascending order)
                     let fn = (a, b) => a.quantity - b.quantity; 
                     let actual,
                         expected = 1; 
