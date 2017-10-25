@@ -120,8 +120,8 @@ define(function(require){
         let margin = {
                 top: 60,
                 right: 30,
-                bottom: 40,
-                left: 70
+                bottom: 55, //40 -> 55 , modification of this margin to fit the axisLabelX but not working during the exports(_selections)
+                left: 85, //70 -> 85 , modification of this margin to fit the axisLabelY but not working during the exports(_selections)
             },
             width = 960,
             height = 500,
