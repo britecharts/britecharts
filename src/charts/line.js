@@ -139,6 +139,8 @@ define(function(require){
                 right: 0
             },
             monthAxisPadding = 28,
+            axisLabelPaddingX = 28,
+            axisLabelPaddingY = 28,
             tickPadding = 5,
             highlightCircleSize = 12,
             highlightCircleStroke = 2,
@@ -178,6 +180,8 @@ define(function(require){
             valueLabel = 'value',
             topicLabel = 'topic',
             topicNameLabel = 'topicName',
+            axisLabelX = null,
+            axisLabelY = null,
 
             yTicks = 5,
 
