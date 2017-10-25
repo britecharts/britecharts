@@ -587,6 +587,90 @@ define([
                     });
                 });
             });
+
+            describe('when axis labels aren\'t set', function() {
+
+                beforeEach(() => {
+                    dataset = aTestDataSet().withOneSource().build();
+                    lineChart = chart();
+                    // DOM Fixture Setup
+                    f = jasmine.getFixtures();
+                    f.fixturesPath = 'base/test/fixtures/';
+                    f.load('testContainer.html');
+
+                    containerFixture = d3.select('.test-container');
+                    containerFixture.datum(dataset).call(lineChart);
+                });
+
+                afterEach(() => {
+                    containerFixture.remove();
+                    f = jasmine.getFixtures();
+                    f.cleanUp();
+                    f.clearCache();
+                });
+
+                describe('on render', () => {
+
+                    it('should not render any axisLabel', () => {
+                        expect(containerFixture.selectAll('.axisLabel')["_groups"][0].length).toBe(0);
+                    });
+
+                    it('should provide axisLabelX getter and setter', () => {
+                        let previous = lineChart.axisLabelX(),
+                            expected = 'valueSet',
+                            actual;
+
+                        lineChart.axisLabelX(expected);
+                        actual = lineChart.axisLabelX();
+
+                        expect(previous).not.toBe(expected);
+                        expect(actual).toBe(expected);
+                    });
+
+                    it('should provide axisLabelY getter and setter', () => {
+                        let previous = lineChart.axisLabelY(),
+                            expected = 'valueSet',
+                            actual;
+
+                        lineChart.axisLabelY(expected);
+                        actual = lineChart.axisLabelY();
+
+                        expect(previous).not.toBe(expected);
+                        expect(actual).toBe(expected);
+                    });
+
+                });
+            });
+
+            describe('when axis labels are set', function() {
+
+                beforeEach(() => {
+                    dataset = aTestDataSet().withOneSource().build();
+                    lineChart = chart().axisLabelX("valueSetX").axisLabelY("valueSetY");
+
+                    // DOM Fixture Setup
+                    f = jasmine.getFixtures();
+                    f.fixturesPath = 'base/test/fixtures/';
+                    f.load('testContainer.html');
+
+                    containerFixture = d3.select('.test-container');
+                    containerFixture.datum(dataset).call(lineChart);
+                });
+
+                afterEach(() => {
+                    containerFixture.remove();
+                    f = jasmine.getFixtures();
+                    f.cleanUp();
+                    f.clearCache();
+                });
+
+                describe('on render', () => {
+
+                    it('should render 2 axis labels', () => {
+                        expect(containerFixture.selectAll('.axisLabel')["_groups"][0].length).toBe(2);
+                    });
+                });
+            });
         });
     });
 });
