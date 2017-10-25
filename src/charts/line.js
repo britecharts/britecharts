@@ -900,6 +900,36 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the label of the X axis of the chart
+         * @param  {String} _x Desired label for the X axis
+         * @return { (String | Module) } Current label of the X axis or Line Chart module to chain calls
+         * @public
+         */
+        exports.axisLabelX = function(_x) {
+            if (!arguments.length) {
+                return axisLabelX;
+            }
+            axisLabelX = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the label of the Y axis of the chart
+         * @param  {String} _x Desired label for the Y axis
+         * @return { (String | Module) } Current label of the Y axis or Line Chart module to chain calls
+         * @public
+         */
+        exports.axisLabelY = function(_x) {
+            if (!arguments.length) {
+                return axisLabelY;
+            }
+            axisLabelY = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the colorSchema of the chart
          * @param  {String[]} _x Desired colorSchema for the graph
          * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
