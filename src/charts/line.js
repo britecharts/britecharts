@@ -514,7 +514,7 @@ define(function(require){
 
         /**
          * Draws the x and y axis on the svg object within their
-         * respective groups
+         * respective groups along with the axis labels if given
          * @private
          */
         function drawAxis(){
@@ -528,12 +528,28 @@ define(function(require){
                     .call(xMonthAxis);
             }
 
+            if (axisLabelX) {
+                svg.select('.x-axis-group')
+                    .append("text")
+                    .attr("class", "axisLabel")
+                    .attr('transform', `translate(${(chartWidth/2)}, ${(chartHeight + monthAxisPadding + axisLabelPaddingX)})`)
+                    .text(axisLabelX);
+            }
+
             svg.select('.y-axis-group.axis.y')
                 .transition()
                 .ease(ease)
                 .attr('transform', `translate(${-xAxisPadding.left}, 0)`)
                 .call(yAxis)
                 .call(adjustYTickLabels);
+
+            if (axisLabelY) {
+                svg.select('.chart-group')
+                    .append("text")
+                    .attr("class", "axisLabel")
+                    .attr('transform', `translate(${-xAxisPadding.left - axisLabelPaddingY}, ${(chartHeight/2)}) rotate(-90)`)
+                    .text(axisLabelY);
+            }
         }
 
         /**
