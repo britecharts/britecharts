@@ -419,6 +419,18 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                 expect(newValueLabel).toBe(testValueLabel);
             });
 
+            it('should provide tooltipOffset getter and setter', () => {
+                let defaultTooltipOffset = tooltipChart.tooltipOffset(),
+                    testTooltipOffset = {x: 50, y: 50},
+                    newTooltipOffset;
+
+                tooltipChart.tooltipOffset(testTooltipOffset);
+                newTooltipOffset = tooltipChart.tooltipOffset();
+
+                expect(defaultTooltipOffset).not.toBe(testTooltipOffset);
+                expect(newTooltipOffset).toBe(testTooltipOffset);
+            });
+
             it('should provide topicLabel getter and setter', () => {
                 let defaultTopicLabel = tooltipChart.topicLabel(),
                     testTopicLabel = 'valueSet',
