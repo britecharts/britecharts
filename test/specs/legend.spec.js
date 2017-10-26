@@ -126,6 +126,18 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                     expect(actual).toBe(expected);
                 });
 
+                it('should provide margin ratio getter and setter', () =>{
+                    let previous = legendChart.marginRatio(),
+                        expected = 5,
+                        actual;
+
+                    legendChart.marginRatio(expected);
+                    actual = legendChart.marginRatio();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
                 it('should provide width getter and setter', () =>{
                     let previous = legendChart.width(),
                         expected = 200,
