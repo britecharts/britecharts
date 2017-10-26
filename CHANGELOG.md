@@ -1,4 +1,12 @@
+2.3.0
+--------------
+Features:
+* Ability to set sort order for donut (@dalerasrorov-eb)
+* Getter/setter for marginRatio-Legend and tooltipOffset-Stacked Area
+* Tooltip title improvements (@rpheath)
+
 2.2.0
+
 2.1.1 - Patch
 --------------
 Features:
