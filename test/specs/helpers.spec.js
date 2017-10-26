@@ -242,7 +242,7 @@ define([
                     });
 
                     it('should give back a minor hour format and 5 ticks', () => {
-                        expect(minor.tick).toEqual(5);
+                        expect(typeof minor.tick).toEqual('function');
                         expect(minor.format.toString()).toEqual(hourFormat);
                     });
 
@@ -296,7 +296,7 @@ define([
                     });
 
                     it('should give back a minor minute format and 5 ticks', () => {
-                        expect(minor.tick).toEqual(5);
+                        expect(typeof minor.tick).toEqual('function');
                         expect(minor.format.toString()).toEqual(minuteFormat);
                     });
 
@@ -313,7 +313,7 @@ define([
                     });
 
                     it('should give back a minor hour format and 5 ticks', () => {
-                        expect(minor.tick).toEqual(5);
+                        expect(typeof minor.tick).toEqual('function');
                         expect(minor.format.toString()).toEqual(hourFormat);
                     });
 
@@ -330,7 +330,7 @@ define([
                     });
 
                     it('should give back a minor day format and 5 ticks', () => {
-                        expect(minor.tick).toEqual(5);
+                        expect(typeof minor.tick).toEqual('function');
                         expect(minor.format.toString()).toEqual(dayFormat);
                     });
 
@@ -347,7 +347,7 @@ define([
                     });
 
                     it('should give back a minor day format and 5 ticks', () => {
-                        expect(minor.tick).toEqual(5);
+                        expect(typeof minor.tick).toEqual('function');
                         expect(minor.format.toString()).toEqual(monthFormat);
                     });
 
