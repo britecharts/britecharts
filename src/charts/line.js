@@ -120,8 +120,8 @@ define(function(require){
         let margin = {
                 top: 60,
                 right: 30,
-                bottom: 55, //40 -> 55 , modification of this margin to fit the axisLabelX but not working during the exports(_selections)
-                left: 85, //70 -> 85 , modification of this margin to fit the axisLabelY but not working during the exports(_selections)
+                bottom: 55, //40 -> 55 , modification of this margin to fit the xAxisLabel but not working during the exports(_selections)
+                left: 85, //70 -> 85 , modification of this margin to fit the yAxisLabel but not working during the exports(_selections)
             },
             width = 960,
             height = 500,
@@ -139,8 +139,8 @@ define(function(require){
                 right: 0
             },
             monthAxisPadding = 28,
-            axisLabelPaddingX = 28,
-            axisLabelPaddingY = 28,
+            xAxisLabelPadding = 28,
+            yAxisLabelPadding = 28,
             tickPadding = 5,
             highlightCircleSize = 12,
             highlightCircleStroke = 2,
@@ -180,8 +180,8 @@ define(function(require){
             valueLabel = 'value',
             topicLabel = 'topic',
             topicNameLabel = 'topicName',
-            axisLabelX = null,
-            axisLabelY = null,
+            xAxisLabel = null,
+            yAxisLabel = null,
 
             yTicks = 5,
 
@@ -528,12 +528,12 @@ define(function(require){
                     .call(xMonthAxis);
             }
 
-            if (axisLabelX) {
+            if (xAxisLabel) {
                 svg.select('.x-axis-group')
                     .append("text")
-                    .attr("class", "axisLabel")
-                    .attr('transform', `translate(${(chartWidth/2)}, ${(chartHeight + monthAxisPadding + axisLabelPaddingX)})`)
-                    .text(axisLabelX);
+                    .attr("class", "x-axis-label")
+                    .attr('transform', `translate(${(chartWidth/2)}, ${(chartHeight + monthAxisPadding + xAxisLabelPadding)})`)
+                    .text(xAxisLabel);
             }
 
             svg.select('.y-axis-group.axis.y')
@@ -543,12 +543,12 @@ define(function(require){
                 .call(yAxis)
                 .call(adjustYTickLabels);
 
-            if (axisLabelY) {
+            if (yAxisLabel) {
                 svg.select('.chart-group')
                     .append("text")
-                    .attr("class", "axisLabel")
-                    .attr('transform', `translate(${-xAxisPadding.left - axisLabelPaddingY}, ${(chartHeight/2)}) rotate(-90)`)
-                    .text(axisLabelY);
+                    .attr("class", "y-axis-label")
+                    .attr('transform', `translate(${-xAxisPadding.left - yAxisLabelPadding}, ${(chartHeight/2)}) rotate(-90)`)
+                    .text(yAxisLabel);
             }
         }
 
@@ -905,11 +905,11 @@ define(function(require){
          * @return { (String | Module) } Current label of the X axis or Line Chart module to chain calls
          * @public
          */
-        exports.axisLabelX = function(_x) {
+        exports.xAxisLabel = function(_x) {
             if (!arguments.length) {
-                return axisLabelX;
+                return xAxisLabel;
             }
-            axisLabelX = _x;
+            xAxisLabel = _x;
 
             return this;
         };
@@ -920,11 +920,11 @@ define(function(require){
          * @return { (String | Module) } Current label of the Y axis or Line Chart module to chain calls
          * @public
          */
-        exports.axisLabelY = function(_x) {
+        exports.yAxisLabel = function(_x) {
             if (!arguments.length) {
-                return axisLabelY;
+                return yAxisLabel;
             }
-            axisLabelY = _x;
+            yAxisLabel = _x;
 
             return this;
         };
