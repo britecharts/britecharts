@@ -485,6 +485,30 @@ define([
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);
                 });
+
+                it('should provide xAxisLabel getter and setter', () => {
+                    let previous = lineChart.xAxisLabel(),
+                        expected = 'valueSet',
+                        actual;
+
+                    lineChart.xAxisLabel(expected);
+                    actual = lineChart.xAxisLabel();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide yAxisLabel getter and setter', () => {
+                    let previous = lineChart.yAxisLabel(),
+                        expected = 'valueSet',
+                        actual;
+
+                    lineChart.yAxisLabel(expected);
+                    actual = lineChart.yAxisLabel();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
             });
 
             describe('Aspect Ratio', function() {
@@ -615,31 +639,6 @@ define([
                         expect(containerFixture.selectAll('.x-axis-label')["_groups"][0].length).toBe(0);
                         expect(containerFixture.selectAll('.y-axis-label')["_groups"][0].length).toBe(0);
                     });
-
-                    it('should provide xAxisLabel getter and setter', () => {
-                        let previous = lineChart.xAxisLabel(),
-                            expected = 'valueSet',
-                            actual;
-
-                        lineChart.xAxisLabel(expected);
-                        actual = lineChart.xAxisLabel();
-
-                        expect(previous).not.toBe(expected);
-                        expect(actual).toBe(expected);
-                    });
-
-                    it('should provide yAxisLabel getter and setter', () => {
-                        let previous = lineChart.yAxisLabel(),
-                            expected = 'valueSet',
-                            actual;
-
-                        lineChart.yAxisLabel(expected);
-                        actual = lineChart.yAxisLabel();
-
-                        expect(previous).not.toBe(expected);
-                        expect(actual).toBe(expected);
-                    });
-
                 });
             });
 
