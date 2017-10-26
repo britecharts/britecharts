@@ -612,28 +612,29 @@ define([
                 describe('on render', () => {
 
                     it('should not render any axisLabel', () => {
-                        expect(containerFixture.selectAll('.axisLabel')["_groups"][0].length).toBe(0);
+                        expect(containerFixture.selectAll('.x-axis-label')["_groups"][0].length).toBe(0);
+                        expect(containerFixture.selectAll('.y-axis-label')["_groups"][0].length).toBe(0);
                     });
 
-                    it('should provide axisLabelX getter and setter', () => {
-                        let previous = lineChart.axisLabelX(),
+                    it('should provide xAxisLabel getter and setter', () => {
+                        let previous = lineChart.xAxisLabel(),
                             expected = 'valueSet',
                             actual;
 
-                        lineChart.axisLabelX(expected);
-                        actual = lineChart.axisLabelX();
+                        lineChart.xAxisLabel(expected);
+                        actual = lineChart.xAxisLabel();
 
                         expect(previous).not.toBe(expected);
                         expect(actual).toBe(expected);
                     });
 
-                    it('should provide axisLabelY getter and setter', () => {
-                        let previous = lineChart.axisLabelY(),
+                    it('should provide yAxisLabel getter and setter', () => {
+                        let previous = lineChart.yAxisLabel(),
                             expected = 'valueSet',
                             actual;
 
-                        lineChart.axisLabelY(expected);
-                        actual = lineChart.axisLabelY();
+                        lineChart.yAxisLabel(expected);
+                        actual = lineChart.yAxisLabel();
 
                         expect(previous).not.toBe(expected);
                         expect(actual).toBe(expected);
@@ -646,7 +647,7 @@ define([
 
                 beforeEach(() => {
                     dataset = aTestDataSet().withOneSource().build();
-                    lineChart = chart().axisLabelX("valueSetX").axisLabelY("valueSetY");
+                    lineChart = chart().xAxisLabel("valueSetX").yAxisLabel("valueSetY");
 
                     // DOM Fixture Setup
                     f = jasmine.getFixtures();
@@ -667,7 +668,8 @@ define([
                 describe('on render', () => {
 
                     it('should render 2 axis labels', () => {
-                        expect(containerFixture.selectAll('.axisLabel')["_groups"][0].length).toBe(2);
+                        expect(containerFixture.selectAll('.x-axis-label')["_groups"][0].length).toBe(1);
+                        expect(containerFixture.selectAll('.y-axis-label')["_groups"][0].length).toBe(1);
                     });
                 });
             });
