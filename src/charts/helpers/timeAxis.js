@@ -86,6 +86,13 @@ define(function(require) {
     }
 
     /**
+     * Takes a number representing milliseconds and convert to days
+     * @param  {Number} milliseconds    Any number
+     * @return {Number}                 Number of days that the input represents
+     */
+    const convertMillisecondsToDays = (milliseconds) => Math.ceil(milliseconds/(24*60*60*1000));
+
+    /**
      * Returns tick object to be used when building the x axis
      * @param {dataByDate} dataByDate       Chart data ordered by Date
      * @param {Number} width                Chart width
@@ -108,7 +115,7 @@ define(function(require) {
         let [minor, major] = settings.split('-');
 
         let majorTickValue = settingsToMajorTickMap[settings];
-        let minorTickValue = getMaxNumOfHorizontalTicks(width, dataByDate.length);
+        let minorTickValue = getMaxNumOfHorizontalTicks(width, convertMillisecondsToDays(dateTimeSpan));
 
         return {
             minor: {
