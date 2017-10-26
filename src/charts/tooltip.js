@@ -717,6 +717,21 @@ define(function(require){
         };
 
         /**
+         * Pass an override for the offset of your tooltip
+         * @param  {Object} tooltipOffset  Object representing the X and Y offsets
+         * @return {Object | module}       Current tooltipOffset
+         * @public
+         */
+        exports.tooltipOffset = function(_x) {
+            if (!arguments.length) {
+                return tooltipOffset;
+            }
+            tooltipOffset = _x;
+
+            return this;
+        };
+
+        /**
          * Pass an override for the ordering of your tooltip
          * @param  {String[]} _x           Array of the names of your tooltip items
          * @return {String[] | module}    Current overrideOrder or Chart module to chain calls
