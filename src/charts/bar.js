@@ -823,8 +823,8 @@ define(function(require) {
         }
 
         /**
-         * Gets or Sets an ordering function to sort bars
-         * @param  {Function} _x     Should reverse the color list
+         * Gets or Sets whether the color list should be reversed or not
+         * @param  {boolean} _x     Should reverse the color list
          * @return { boolean | module} Is color list being reversed
          * @public
          */
