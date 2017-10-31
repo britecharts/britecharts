@@ -88,6 +88,41 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             });
         });
 
+        describe('when orderingFunction is called', () => {
+            
+            it('accepts custom descending order function', () => {
+                let fn = (a, b) => b.value - a.value; 
+                let actual,
+                    expected = {
+                        name: 'E', 
+                        value: 0.12702
+                    };
+
+                barChart.orderingFunction(fn);
+                containerFixture.call(barChart)
+                actual = containerFixture.selectAll('.bar-chart .bar').nodes()[0].__data__;
+
+                expect(actual.name).toBe(expected.name);
+                expect(actual.value).toBe(expected.value);
+            });
+
+            it('accepts a custom ascending sorting function', () => {
+                let fn = (a, b) => a.value - b.value; 
+                let actual,
+                    expected = {
+                        name: 'Z',
+                        value: 0.00074
+                    }; 
+
+                barChart.orderingFunction(fn);
+                containerFixture.call(barChart)
+                actual = containerFixture.selectAll('.bar-chart .bar').nodes()[0].__data__;
+
+                expect(actual.name).toBe(expected.name);
+                expect(actual.value).toBe(expected.value);
+            });
+        })
+
         describe('API', function() {
 
             it('should provide colorSchema getter and setter', () => {

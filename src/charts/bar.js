@@ -104,6 +104,8 @@ define(function(require) {
             animationStepRatio = 70,
             interBarDelay = (d, i) => animationStepRatio * i,
 
+            orderingFunction,
+
             valueLabel = 'value',
             nameLabel = 'name',
 
@@ -138,7 +140,7 @@ define(function(require) {
             _selection.each(function(_data) {
                 chartWidth = width - margin.left - margin.right - (yAxisPaddingBetweenChart * 1.2);
                 chartHeight = height - margin.top - margin.bottom;
-                ({data, dataZeroed} = cleanData(_data));
+                ({data, dataZeroed} = sortData(cleanData(_data)));
 
                 buildScales();
                 buildAxis();
@@ -281,6 +283,23 @@ define(function(require) {
                 name: String(d[nameLabel])
             }));
 
+            return { data, dataZeroed };
+        }
+
+        /**
+         * Sorts data if orderingFunction is specified
+         * @param  {BarChartData}     clean unordered data
+         * @return  {BarChartData}    clean ordered data
+         * @private
+         */
+        function sortData(unorderedData) {
+            let {data, dataZeroed} = unorderedData; 
+
+            if (orderingFunction) {
+                data = data.slice(0).sort(orderingFunction); 
+                dataZeroed = dataZeroed.slice(0).sort(orderingFunction)
+            }
+            
             return { data, dataZeroed };
         }
 
@@ -730,8 +749,7 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the padding of the chart
-         * Default is 0.1
+         * Gets or Sets the padding of the chart (Default is 0.1)
          * @param  { Number | module } _x Padding value to get/set
          * @return { padding | module} Current padding or Chart module to chain calls
          * @public
@@ -805,8 +823,8 @@ define(function(require) {
         }
 
         /**
-         * Gets or Sets whether the color list should be reversed or not
-         * @param  {boolean} _x     Should reverse the color list
+         * Gets or Sets an ordering function to sort bars
+         * @param  {Function} _x     Should reverse the color list
          * @return { boolean | module} Is color list being reversed
          * @public
          */
@@ -818,6 +836,22 @@ define(function(require) {
 
             return this;
         };
+
+
+        /**
+         * Gets or Sets whether the color list should be reversed or not
+         * @param  {Function} _x            A custom function that sets logic for ordering
+         * @return { (Function | Module) }  Updated module with ordering function applied
+         * @public
+         */
+        exports.orderingFunction = function(_x) {
+            if (!arguments.length) {
+                return orderingFunction;
+            }
+            orderingFunction = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the hasPercentage status
