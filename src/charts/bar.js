@@ -296,8 +296,8 @@ define(function(require) {
             let {data, dataZeroed} = unorderedData; 
 
             if (orderingFunction) {
-                data = data.slice(0).sort(orderingFunction); 
-                dataZeroed = dataZeroed.slice(0).sort(orderingFunction)
+                data = [...data].sort(orderingFunction); 
+                dataZeroed = [...dataZeroed].sort(orderingFunction)
             }
             
             return { data, dataZeroed };
