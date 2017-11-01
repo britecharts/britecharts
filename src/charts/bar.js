@@ -839,9 +839,9 @@ define(function(require) {
 
 
         /**
-         * Gets or Sets whether the color list should be reversed or not
-         * @param  {Function} _x            A custom function that sets logic for ordering
-         * @return { (Function | Module) }  Updated module with ordering function applied
+         * Changes the order of items given the custom function
+         * @param  {Function} _x             A custom function that sets logic for ordering
+         * @return { (Function | Module) }   Updated module with ordering function applied
          * @public
          */
         exports.orderingFunction = function(_x) {
