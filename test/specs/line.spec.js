@@ -485,6 +485,30 @@ define([
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);
                 });
+
+                it('should provide xAxisLabel getter and setter', () => {
+                    let previous = lineChart.xAxisLabel(),
+                        expected = 'valueSet',
+                        actual;
+
+                    lineChart.xAxisLabel(expected);
+                    actual = lineChart.xAxisLabel();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide yAxisLabel getter and setter', () => {
+                    let previous = lineChart.yAxisLabel(),
+                        expected = 'valueSet',
+                        actual;
+
+                    lineChart.yAxisLabel(expected);
+                    actual = lineChart.yAxisLabel();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
             });
 
             describe('Aspect Ratio', function() {
@@ -584,6 +608,67 @@ define([
                     it('should render the vertical grid lines', () => {
                         expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
                         expect(containerFixture.select('.vertical-grid-line').empty()).toBeFalsy();
+                    });
+                });
+            });
+
+            describe('when axis labels aren\'t set', function() {
+
+                beforeEach(() => {
+                    dataset = aTestDataSet().withOneSource().build();
+                    lineChart = chart();
+                    // DOM Fixture Setup
+                    f = jasmine.getFixtures();
+                    f.fixturesPath = 'base/test/fixtures/';
+                    f.load('testContainer.html');
+
+                    containerFixture = d3.select('.test-container');
+                    containerFixture.datum(dataset).call(lineChart);
+                });
+
+                afterEach(() => {
+                    containerFixture.remove();
+                    f = jasmine.getFixtures();
+                    f.cleanUp();
+                    f.clearCache();
+                });
+
+                describe('on render', () => {
+
+                    it('should not render any axisLabel', () => {
+                        expect(containerFixture.selectAll('.x-axis-label')["_groups"][0].length).toBe(0);
+                        expect(containerFixture.selectAll('.y-axis-label')["_groups"][0].length).toBe(0);
+                    });
+                });
+            });
+
+            describe('when axis labels are set', function() {
+
+                beforeEach(() => {
+                    dataset = aTestDataSet().withOneSource().build();
+                    lineChart = chart().xAxisLabel("valueSetX").yAxisLabel("valueSetY");
+
+                    // DOM Fixture Setup
+                    f = jasmine.getFixtures();
+                    f.fixturesPath = 'base/test/fixtures/';
+                    f.load('testContainer.html');
+
+                    containerFixture = d3.select('.test-container');
+                    containerFixture.datum(dataset).call(lineChart);
+                });
+
+                afterEach(() => {
+                    containerFixture.remove();
+                    f = jasmine.getFixtures();
+                    f.cleanUp();
+                    f.clearCache();
+                });
+
+                describe('on render', () => {
+
+                    it('should render 2 axis labels', () => {
+                        expect(containerFixture.selectAll('.x-axis-label')["_groups"][0].length).toBe(1);
+                        expect(containerFixture.selectAll('.y-axis-label')["_groups"][0].length).toBe(1);
                     });
                 });
             });

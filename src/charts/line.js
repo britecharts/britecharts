@@ -120,8 +120,8 @@ define(function(require){
         let margin = {
                 top: 60,
                 right: 30,
-                bottom: 40,
-                left: 70
+                bottom: 55, //40 -> 55 , modification of this margin to fit the xAxisLabel but not working during the exports(_selections)
+                left: 85, //70 -> 85 , modification of this margin to fit the yAxisLabel but not working during the exports(_selections)
             },
             width = 960,
             height = 500,
@@ -139,6 +139,8 @@ define(function(require){
                 right: 0
             },
             monthAxisPadding = 28,
+            xAxisLabelPadding = 28,
+            yAxisLabelPadding = 28,
             tickPadding = 5,
             highlightCircleSize = 12,
             highlightCircleStroke = 2,
@@ -178,6 +180,8 @@ define(function(require){
             valueLabel = 'value',
             topicLabel = 'topic',
             topicNameLabel = 'topicName',
+            xAxisLabel = null,
+            yAxisLabel = null,
 
             yTicks = 5,
 
@@ -510,7 +514,7 @@ define(function(require){
 
         /**
          * Draws the x and y axis on the svg object within their
-         * respective groups
+         * respective groups along with the axis labels if given
          * @private
          */
         function drawAxis(){
@@ -524,12 +528,28 @@ define(function(require){
                     .call(xMonthAxis);
             }
 
+            if (xAxisLabel) {
+                svg.select('.x-axis-group')
+                    .append("text")
+                    .attr("class", "x-axis-label")
+                    .attr('transform', `translate(${(chartWidth/2)}, ${(chartHeight + monthAxisPadding + xAxisLabelPadding)})`)
+                    .text(xAxisLabel);
+            }
+
             svg.select('.y-axis-group.axis.y')
                 .transition()
                 .ease(ease)
                 .attr('transform', `translate(${-xAxisPadding.left}, 0)`)
                 .call(yAxis)
                 .call(adjustYTickLabels);
+
+            if (yAxisLabel) {
+                svg.select('.chart-group')
+                    .append("text")
+                    .attr("class", "y-axis-label")
+                    .attr('transform', `translate(${-xAxisPadding.left - yAxisLabelPadding}, ${(chartHeight/2)}) rotate(-90)`)
+                    .text(yAxisLabel);
+            }
         }
 
         /**
@@ -875,6 +895,36 @@ define(function(require){
                 return aspectRatio;
             }
             aspectRatio = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the label of the X axis of the chart
+         * @param  {String} _x Desired label for the X axis
+         * @return { (String | Module) } Current label of the X axis or Line Chart module to chain calls
+         * @public
+         */
+        exports.xAxisLabel = function(_x) {
+            if (!arguments.length) {
+                return xAxisLabel;
+            }
+            xAxisLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the label of the Y axis of the chart
+         * @param  {String} _x Desired label for the Y axis
+         * @return { (String | Module) } Current label of the Y axis or Line Chart module to chain calls
+         * @public
+         */
+        exports.yAxisLabel = function(_x) {
+            if (!arguments.length) {
+                return yAxisLabel;
+            }
+            yAxisLabel = _x;
 
             return this;
         };
