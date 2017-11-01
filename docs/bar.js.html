@@ -294,6 +294,8 @@
             animationStepRatio = 70,
             interBarDelay = (d, i) => animationStepRatio * i,
 
+            orderingFunction,
+
             valueLabel = 'value',
             nameLabel = 'name',
 
@@ -328,7 +330,7 @@
             _selection.each(function(_data) {
                 chartWidth = width - margin.left - margin.right - (yAxisPaddingBetweenChart * 1.2);
                 chartHeight = height - margin.top - margin.bottom;
-                ({data, dataZeroed} = cleanData(_data));
+                ({data, dataZeroed} = sortData(cleanData(_data)));
 
                 buildScales();
                 buildAxis();
@@ -471,6 +473,23 @@
                 name: String(d[nameLabel])
             }));
 
+            return { data, dataZeroed };
+        }
+
+        /**
+         * Sorts data if orderingFunction is specified
+         * @param  {BarChartData}     clean unordered data
+         * @return  {BarChartData}    clean ordered data
+         * @private
+         */
+        function sortData(unorderedData) {
+            let {data, dataZeroed} = unorderedData; 
+
+            if (orderingFunction) {
+                data.sort(orderingFunction); 
+                dataZeroed.sort(orderingFunction)
+            }
+            
             return { data, dataZeroed };
         }
 
@@ -920,8 +939,7 @@
         };
 
         /**
-         * Gets or Sets the padding of the chart
-         * Default is 0.1
+         * Gets or Sets the padding of the chart (Default is 0.1)
          * @param  { Number | module } _x Padding value to get/set
          * @return { padding | module} Current padding or Chart module to chain calls
          * @public
@@ -1008,6 +1026,22 @@
 
             return this;
         };
+
+
+        /**
+         * Gets or Sets whether the color list should be reversed or not
+         * @param  {Function} _x            A custom function that sets logic for ordering
+         * @return { (Function | Module) }  Updated module with ordering function applied
+         * @public
+         */
+        exports.orderingFunction = function(_x) {
+            if (!arguments.length) {
+                return orderingFunction;
+            }
+            orderingFunction = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the hasPercentage status
