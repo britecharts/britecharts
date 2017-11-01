@@ -839,7 +839,7 @@ define(function(require) {
 
 
         /**
-         * Changes the order of items given custom function
+         * Changes the order of items given the custom function
          * @param  {Function} _x             A custom function that sets logic for ordering
          * @return { (Function | Module) }   Updated module with ordering function applied
          * @public
