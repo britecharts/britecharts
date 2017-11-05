@@ -231,7 +231,7 @@ const getConfig = (env) => {
             },
             devServer: {
                 contentBase: path.resolve(__dirname, './sandbox'),
-                port: 9000,
+                port: 8002,
                 inline: true,
                 stats: 'errors-only',
             }
