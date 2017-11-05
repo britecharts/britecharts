@@ -139,8 +139,10 @@ define(function(require){
                 right: 0
             },
             monthAxisPadding = 28,
-            xAxisLabelPadding = 28,
-            yAxisLabelPadding = 28,
+            xAxisLabelEl = null,
+            xAxisLabelPadding = 36,
+            yAxisLabelEl = null,
+            yAxisLabelPadding = 36,
             tickPadding = 5,
             highlightCircleSize = 12,
             highlightCircleStroke = 2,
@@ -341,7 +343,8 @@ define(function(require){
             container.selectAll('.x-axis-group')
               .append('g').classed('month-axis', true);
             container
-              .append('g').classed('y-axis-group axis y', true);
+              .append('g').classed('y-axis-group', true)
+              .append('g').classed('axis y', true);
             container
               .append('g').classed('grid-lines-group', true);
             container
@@ -529,14 +532,22 @@ define(function(require){
             }
 
             if (xAxisLabel) {
-                svg.select('.x-axis-group')
-                    .append("text")
-                    .attr("class", "x-axis-label")
-                    .attr('transform', `translate(${(chartWidth/2)}, ${(chartHeight + monthAxisPadding + xAxisLabelPadding)})`)
+                if (xAxisLabelEl) {
+                    svg.selectAll('.x-axis-label').remove();
+                }
+                let xLabelXPosition = chartWidth/2;
+                let xLabelYPosition = chartHeight + monthAxisPadding + xAxisLabelPadding;
+                
+                xAxisLabelEl = svg.select('.x-axis-group')
+                  .append('text')
+                    .attr('x', xLabelXPosition)
+                    .attr('y', xLabelYPosition)
+                    .attr('text-anchor', 'middle')                    
+                    .attr('class', 'x-axis-label')
                     .text(xAxisLabel);
             }
 
-            svg.select('.y-axis-group.axis.y')
+            svg.select('.y-axis-group .axis.y')
                 .transition()
                 .ease(ease)
                 .attr('transform', `translate(${-xAxisPadding.left}, 0)`)
@@ -544,10 +555,20 @@ define(function(require){
                 .call(adjustYTickLabels);
 
             if (yAxisLabel) {
-                svg.select('.chart-group')
-                    .append("text")
-                    .attr("class", "y-axis-label")
-                    .attr('transform', `translate(${-xAxisPadding.left - yAxisLabelPadding}, ${(chartHeight/2)}) rotate(-90)`)
+                if (yAxisLabelEl) {
+                    svg.selectAll('.y-axis-label').remove();
+                }
+                // Note this coordinates are rotated, so they are not what they look
+                let yLabelYPosition = -yAxisLabelPadding - xAxisPadding.left;
+                let yLabelXPosition = -chartHeight/2;
+
+                yAxisLabelEl = svg.select('.y-axis-group')
+                  .append('text')
+                    .attr('x', yLabelXPosition)
+                    .attr('y', yLabelYPosition)
+                    .attr('text-anchor', 'middle')                    
+                    .attr('transform', 'rotate(270)')
+                    .attr('class', 'y-axis-label')
                     .text(yAxisLabel);
             }
         }
