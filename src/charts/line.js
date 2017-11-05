@@ -120,8 +120,8 @@ define(function(require){
         let margin = {
                 top: 60,
                 right: 30,
-                bottom: 55, //40 -> 55 , modification of this margin to fit the xAxisLabel but not working during the exports(_selections)
-                left: 85, //70 -> 85 , modification of this margin to fit the yAxisLabel but not working during the exports(_selections)
+                bottom: 40,
+                left: 70,
             },
             width = 960,
             height = 500,
@@ -139,10 +139,6 @@ define(function(require){
                 right: 0
             },
             monthAxisPadding = 28,
-            xAxisLabelEl = null,
-            xAxisLabelPadding = 36,
-            yAxisLabelEl = null,
-            yAxisLabelPadding = 36,
             tickPadding = 5,
             highlightCircleSize = 12,
             highlightCircleStroke = 2,
@@ -150,17 +146,17 @@ define(function(require){
             singleLineGradientColors = colorHelper.colorGradients.greenBlue,
             topicColorMap,
             linearGradient,
-
+            
             xAxisFormat = null,
             xTicks = null,
             xAxisCustomFormat = null,
             locale,
-
+            
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
             animationDuration = 1500,
             maskingRectangle,
-
+            
             lineCurve = 'linear',
             curveMap = {
                 linear: d3Shape.curveLinear,
@@ -174,16 +170,21 @@ define(function(require){
                 stepAfter: d3Shape.curveStepAfter,
                 stepBefore: d3Shape.curveStepBefore
             },
-
+            
             dataByTopic,
             dataByDate,
-
+            
             dateLabel = 'date',
             valueLabel = 'value',
             topicLabel = 'topic',
             topicNameLabel = 'topicName',
+
             xAxisLabel = null,
+            xAxisLabelEl = null,
+            xAxisLabelPadding = 36,
             yAxisLabel = null,
+            yAxisLabelEl = null,
+            yAxisLabelPadding = 36,
 
             yTicks = 5,
 
