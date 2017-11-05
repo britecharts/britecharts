@@ -27,7 +27,7 @@ define([
         describe('Line Chart', () => {
             let dataset, containerFixture, f, lineChart;
 
-            xdescribe('when a single line', function() {
+            xdescribe('when a single line', () => {
 
                 beforeEach(() => {
                     dataset = aTestDataSet().withOneSource().build();
@@ -59,7 +59,7 @@ define([
                 });
             });
 
-            describe('when multiple lines', function() {
+            describe('when multiple lines', () => {
 
                 beforeEach(() => {
                     dataset = buildDataSet('with5Topics');
@@ -215,7 +215,7 @@ define([
                 });
             });
 
-            describe('when different date ranges', function() {
+            describe('when different date ranges', () => {
 
                 beforeEach(() => {
                     dataset = aTestDataSet().withHourDateRange().build();
@@ -251,7 +251,7 @@ define([
                 });
             });
 
-            describe('API', function() {
+            describe('API', () => {
 
                 it('should provide an axisTimeCombinations accessor', () => {
                     let axisTimeCombinations = lineChart.axisTimeCombinations;
@@ -485,9 +485,33 @@ define([
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);
                 });
+
+                it('should provide xAxisLabel getter and setter', () => {
+                    let previous = lineChart.xAxisLabel(),
+                        expected = 'valueSet',
+                        actual;
+
+                    lineChart.xAxisLabel(expected);
+                    actual = lineChart.xAxisLabel();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide yAxisLabel getter and setter', () => {
+                    let previous = lineChart.yAxisLabel(),
+                        expected = 'valueSet',
+                        actual;
+
+                    lineChart.yAxisLabel(expected);
+                    actual = lineChart.yAxisLabel();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
             });
 
-            describe('Aspect Ratio', function() {
+            describe('Aspect Ratio', () => {
 
                 describe('when an aspect ratio is set', function() {
 
@@ -524,7 +548,7 @@ define([
                 });
             });
 
-            describe('Grid', function() {
+            describe('Grid', () => {
 
                 beforeEach(() => {
                     dataset = aTestDataSet().with5Topics().build();
@@ -584,6 +608,83 @@ define([
                     it('should render the vertical grid lines', () => {
                         expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
                         expect(containerFixture.select('.vertical-grid-line').empty()).toBeFalsy();
+                    });
+                });
+            });
+
+            describe('Axis Labels', () => {
+                describe('when axis labels aren\'t set', () => {
+    
+                    beforeEach(() => {
+                        dataset = aTestDataSet().withOneSource().build();
+                        lineChart = chart();
+                        // DOM Fixture Setup
+                        f = jasmine.getFixtures();
+                        f.fixturesPath = 'base/test/fixtures/';
+                        f.load('testContainer.html');
+    
+                        containerFixture = d3.select('.test-container');
+                        containerFixture.datum(dataset).call(lineChart);
+                    });
+    
+                    afterEach(() => {
+                        containerFixture.remove();
+                        f = jasmine.getFixtures();
+                        f.cleanUp();
+                        f.clearCache();
+                    });
+    
+                    it('should not render the x-axis label', () => {
+                        let expected = 0,
+                            actual = containerFixture.selectAll('.x-axis-label')['_groups'][0].length;
+    
+                        expect(actual).toEqual(expected);
+                    });
+    
+                    it('should not render any axisLabel', () => {
+                        let expected = 0,
+                            actual = containerFixture.selectAll('.y-axis-label')['_groups'][0].length;
+    
+                        expect(actual).toEqual(expected);
+                    });
+                });
+    
+                describe('when axis labels are set', () => {
+    
+                    beforeEach(() => {
+                        dataset = aTestDataSet().withOneSource().build();
+                        lineChart = chart()
+                                        .xAxisLabel('valueSetX')
+                                        .yAxisLabel('valueSetY');
+    
+                        // DOM Fixture Setup
+                        f = jasmine.getFixtures();
+                        f.fixturesPath = 'base/test/fixtures/';
+                        f.load('testContainer.html');
+    
+                        containerFixture = d3.select('.test-container');
+                        containerFixture.datum(dataset).call(lineChart);
+                    });
+    
+                    afterEach(() => {
+                        containerFixture.remove();
+                        f = jasmine.getFixtures();
+                        f.cleanUp();
+                        f.clearCache();
+                    });
+    
+                    it('should render the x-axis label', () => {
+                        let expected = 1,
+                            actual = containerFixture.selectAll('.x-axis-label')['_groups'][0].length;
+    
+                        expect(actual).toEqual(expected);
+                    });
+    
+                    it('should render any axisLabel', () => {
+                        let expected = 1,
+                            actual = containerFixture.selectAll('.y-axis-label')['_groups'][0].length;
+    
+                        expect(actual).toEqual(expected);
                     });
                 });
             });
