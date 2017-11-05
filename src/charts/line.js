@@ -121,7 +121,7 @@ define(function(require){
                 top: 60,
                 right: 30,
                 bottom: 40,
-                left: 70
+                left: 70,
             },
             width = 960,
             height = 500,
@@ -146,17 +146,17 @@ define(function(require){
             singleLineGradientColors = colorHelper.colorGradients.greenBlue,
             topicColorMap,
             linearGradient,
-
+            
             xAxisFormat = null,
             xTicks = null,
             xAxisCustomFormat = null,
             locale,
-
+            
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
             animationDuration = 1500,
             maskingRectangle,
-
+            
             lineCurve = 'linear',
             curveMap = {
                 linear: d3Shape.curveLinear,
@@ -170,14 +170,21 @@ define(function(require){
                 stepAfter: d3Shape.curveStepAfter,
                 stepBefore: d3Shape.curveStepBefore
             },
-
+            
             dataByTopic,
             dataByDate,
-
+            
             dateLabel = 'date',
             valueLabel = 'value',
             topicLabel = 'topic',
             topicNameLabel = 'topicName',
+
+            xAxisLabel = null,
+            xAxisLabelEl = null,
+            xAxisLabelPadding = 36,
+            yAxisLabel = null,
+            yAxisLabelEl = null,
+            yAxisLabelPadding = 36,
 
             yTicks = 5,
 
@@ -337,7 +344,8 @@ define(function(require){
             container.selectAll('.x-axis-group')
               .append('g').classed('month-axis', true);
             container
-              .append('g').classed('y-axis-group axis y', true);
+              .append('g').classed('y-axis-group', true)
+              .append('g').classed('axis y', true);
             container
               .append('g').classed('grid-lines-group', true);
             container
@@ -510,7 +518,7 @@ define(function(require){
 
         /**
          * Draws the x and y axis on the svg object within their
-         * respective groups
+         * respective groups along with the axis labels if given
          * @private
          */
         function drawAxis(){
@@ -524,12 +532,46 @@ define(function(require){
                     .call(xMonthAxis);
             }
 
-            svg.select('.y-axis-group.axis.y')
+            if (xAxisLabel) {
+                if (xAxisLabelEl) {
+                    svg.selectAll('.x-axis-label').remove();
+                }
+                let xLabelXPosition = chartWidth/2;
+                let xLabelYPosition = chartHeight + monthAxisPadding + xAxisLabelPadding;
+                
+                xAxisLabelEl = svg.select('.x-axis-group')
+                  .append('text')
+                    .attr('x', xLabelXPosition)
+                    .attr('y', xLabelYPosition)
+                    .attr('text-anchor', 'middle')                    
+                    .attr('class', 'x-axis-label')
+                    .text(xAxisLabel);
+            }
+
+            svg.select('.y-axis-group .axis.y')
                 .transition()
                 .ease(ease)
                 .attr('transform', `translate(${-xAxisPadding.left}, 0)`)
                 .call(yAxis)
                 .call(adjustYTickLabels);
+
+            if (yAxisLabel) {
+                if (yAxisLabelEl) {
+                    svg.selectAll('.y-axis-label').remove();
+                }
+                // Note this coordinates are rotated, so they are not what they look
+                let yLabelYPosition = -yAxisLabelPadding - xAxisPadding.left;
+                let yLabelXPosition = -chartHeight/2;
+
+                yAxisLabelEl = svg.select('.y-axis-group')
+                  .append('text')
+                    .attr('x', yLabelXPosition)
+                    .attr('y', yLabelYPosition)
+                    .attr('text-anchor', 'middle')                    
+                    .attr('transform', 'rotate(270)')
+                    .attr('class', 'y-axis-label')
+                    .text(yAxisLabel);
+            }
         }
 
         /**
@@ -875,6 +917,36 @@ define(function(require){
                 return aspectRatio;
             }
             aspectRatio = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the label of the X axis of the chart
+         * @param  {String} _x Desired label for the X axis
+         * @return { (String | Module) } Current label of the X axis or Line Chart module to chain calls
+         * @public
+         */
+        exports.xAxisLabel = function(_x) {
+            if (!arguments.length) {
+                return xAxisLabel;
+            }
+            xAxisLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the label of the Y axis of the chart
+         * @param  {String} _x Desired label for the Y axis
+         * @return { (String | Module) } Current label of the Y axis or Line Chart module to chain calls
+         * @public
+         */
+        exports.yAxisLabel = function(_x) {
+            if (!arguments.length) {
+                return yAxisLabel;
+            }
+            yAxisLabel = _x;
 
             return this;
         };
