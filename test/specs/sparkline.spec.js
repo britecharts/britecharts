@@ -24,6 +24,10 @@ define([
         return _.contains(element[0][0].classList, className);
     };
 
+    const hasIdWithPrefix = (element, prefix) => {
+        return element['id'].includes(prefix);
+    };
+
     describe('Sparkline Chart', () => {
         let dataset, containerFixture, f, sparklineChart;
 
@@ -58,19 +62,31 @@ define([
         });
 
         it('should render a sparkline', () => {
-            expect(containerFixture.selectAll('.sparkline').empty()).toEqual(false);
+            let expected = 1;
+            let actual = containerFixture.selectAll('.sparkline').nodes().length;
+
+            expect(actual).toEqual(expected);
         });
 
         it('should create a gradient for the area', () => {
-            expect(containerFixture.selectAll('#sparkline-area-gradient').empty()).toEqual(false);
+            let expected = true;
+            let actual = _.any(containerFixture.selectAll('linearGradient').nodes(), f => f && hasIdWithPrefix(f, 'sparkline-area-gradient'));
+
+            expect(actual).toEqual(expected);
         });
 
         it('should render the sparkline area', () => {
-            expect(containerFixture.selectAll('.sparkline-area').empty()).toEqual(false);
+            let expected = 1;
+            let actual = containerFixture.selectAll('.sparkline-area').nodes().length;
+            
+            expect(actual).toEqual(expected);
         });
 
         it('should create a gradient for the line', () => {
-            expect(containerFixture.selectAll('#sparkline-line-gradient').empty()).toEqual(false);
+            let expected = true;
+            let actual = _.any(containerFixture.selectAll('linearGradient').nodes(), f => f && hasIdWithPrefix(f, 'sparkline-line-gradient'));
+
+            expect(actual).toEqual(expected);
         });
 
         describe('when reloading with a different dataset', () => {
