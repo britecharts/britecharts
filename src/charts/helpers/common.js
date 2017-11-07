@@ -53,7 +53,7 @@ define(function(require) {
     function uniqueId(prefix) {
         const id = ++idCounter;
         
-        return prefix.toString() + id;
+        return `${prefix.toString()}-${id}`;
     }
 
     return {
