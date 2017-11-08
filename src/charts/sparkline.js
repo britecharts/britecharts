@@ -202,6 +202,7 @@ define(function(require){
 
             areaGradientEl = metadataGroup.append('linearGradient')
                 .attr('id', areaGradientId)
+                .attr('class', 'area-gradient')
                 .attr('gradientUnits', 'userSpaceOnUse')
                 .attr('x1', 0)
                 .attr('x2', xScale(data[data.length - 1].date))
@@ -218,6 +219,7 @@ define(function(require){
 
             lineGradientEl = metadataGroup.append('linearGradient')
                 .attr('id', lineGradientId)
+                .attr('class', 'line-gradient')
                 .attr('gradientUnits', 'userSpaceOnUse')
                 .attr('x1', 0)
                 .attr('x2', xScale(data[data.length - 1].date))
@@ -248,6 +250,7 @@ define(function(require){
                 maskingClip = svg.select('.metadata-group')
                   .append('clipPath')
                     .attr('id', maskingClipId)
+                    .attr('class', 'clip-path')
                       .append('rect')
                         .attr('width', 0)
                         .attr('height', height);

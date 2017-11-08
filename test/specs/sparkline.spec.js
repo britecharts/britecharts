@@ -25,7 +25,7 @@ define([
     };
 
     const hasIdWithPrefix = (element, prefix) => {
-        return element.id.includes(prefix);
+        return element.id.match(prefix) !== null;
     };
 
     describe('Sparkline Chart', () => {
@@ -70,7 +70,7 @@ define([
 
         it('should create a gradient for the area', () => {
             let expected = 1;
-            let actual = _.filter(containerFixture.selectAll('linearGradient').nodes(), f => f && hasIdWithPrefix(f, 'sparkline-area-gradient')).length;
+            let actual = _.filter(containerFixture.selectAll('.area-gradient').nodes(), f => f && hasIdWithPrefix(f, 'sparkline-area-gradient')).length;
 
             expect(actual).toEqual(expected);
         });
@@ -84,7 +84,7 @@ define([
 
         it('should create a gradient for the line', () => {
             let expected = 1;
-            let actual = _.filter(containerFixture.selectAll('linearGradient').nodes(), f => f && hasIdWithPrefix(f, 'sparkline-line-gradient')).length;
+            let actual = _.filter(containerFixture.selectAll('.line-gradient').nodes(), f => f && hasIdWithPrefix(f, 'sparkline-line-gradient')).length;
 
             expect(actual).toEqual(expected);
         });
@@ -147,7 +147,7 @@ define([
                 containerFixture.datum(dataset.data).call(sparklineChart);
 
                 let expected = 1;
-                let actual = _.filter(containerFixture.selectAll('clipPath').nodes(), f => f && hasIdWithPrefix(f, 'maskingClip')).length;
+                let actual = _.filter(containerFixture.selectAll('.clip-path').nodes(), f => f && hasIdWithPrefix(f, 'maskingClip')).length;
 
                 expect(actual).toEqual(expected);
             });
