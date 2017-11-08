@@ -107,14 +107,12 @@
   stroke-linecap: round;
   stroke-linejoin: round; }
   .sparkline .line {
-    stroke: url(#sparkline-line-gradient);
     stroke-width: 4; }
   .sparkline .sparkline-circle {
     fill: #ff584c;
     stroke-width: 0;
     display: none; }
   .sparkline .sparkline-area {
-    fill: url(#sparkline-area-gradient);
     stroke: none; }
 
 .stacked-area .dot {
@@ -178,7 +176,6 @@
 
 .brush-chart rect.brush-rect.selection {
   fill-opacity: 0.08;
-  fill: url("#brush-area-gradient");
   stroke-linejoin: round; }
 
 .brush-chart rect.brush-rect.handle {
