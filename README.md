@@ -134,7 +134,7 @@ Read more in the [license document][15]
 [38]: https://eventbrite.github.io/britecharts/module-Stacked-bar.html
 [39]: https://eventbrite.github.io/britecharts/tutorial-stacked-bar.html
 [40]: https://eventbrite.github.io/britecharts/module-Grouped-bar.html
-[41]: https://eventbrite.github.io/britecharts/tutorial-Grouped-bar.html
+[41]: https://eventbrite.github.io/britecharts/tutorial-grouped-bar.html
 [42]: https://scrimba.com/casts/cZWm2tb
 
 [cdnDemo]: https://eventbrite.github.io/britecharts/cdn.html
