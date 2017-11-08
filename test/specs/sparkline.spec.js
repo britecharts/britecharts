@@ -24,6 +24,10 @@ define([
         return _.contains(element[0][0].classList, className);
     };
 
+    const hasIdWithPrefix = (element, prefix) => {
+        return element.id.match(prefix) !== null;
+    };
+
     describe('Sparkline Chart', () => {
         let dataset, containerFixture, f, sparklineChart;
 
@@ -58,19 +62,31 @@ define([
         });
 
         it('should render a sparkline', () => {
-            expect(containerFixture.selectAll('.sparkline').empty()).toEqual(false);
+            let expected = 1;
+            let actual = containerFixture.selectAll('.sparkline').nodes().length;
+
+            expect(actual).toEqual(expected);
         });
 
         it('should create a gradient for the area', () => {
-            expect(containerFixture.selectAll('#sparkline-area-gradient').empty()).toEqual(false);
+            let expected = 1;
+            let actual = _.filter(containerFixture.selectAll('.area-gradient').nodes(), f => f && hasIdWithPrefix(f, 'sparkline-area-gradient')).length;
+
+            expect(actual).toEqual(expected);
         });
 
         it('should render the sparkline area', () => {
-            expect(containerFixture.selectAll('.sparkline-area').empty()).toEqual(false);
+            let expected = 1;
+            let actual = containerFixture.selectAll('.sparkline-area').nodes().length;
+            
+            expect(actual).toEqual(expected);
         });
 
         it('should create a gradient for the line', () => {
-            expect(containerFixture.selectAll('#sparkline-line-gradient').empty()).toEqual(false);
+            let expected = 1;
+            let actual = _.filter(containerFixture.selectAll('.line-gradient').nodes(), f => f && hasIdWithPrefix(f, 'sparkline-line-gradient')).length;
+
+            expect(actual).toEqual(expected);
         });
 
         describe('when reloading with a different dataset', () => {
@@ -130,7 +146,10 @@ define([
                 sparklineChart.isAnimated(true);
                 containerFixture.datum(dataset.data).call(sparklineChart);
 
-                expect(containerFixture.selectAll('#maskingClip').empty()).toEqual(false);
+                let expected = 1;
+                let actual = _.filter(containerFixture.selectAll('.clip-path').nodes(), f => f && hasIdWithPrefix(f, 'maskingClip')).length;
+
+                expect(actual).toEqual(expected);
             });
         });
 
