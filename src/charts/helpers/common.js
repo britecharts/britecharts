@@ -2,6 +2,7 @@ define(function(require) {
     'use strict';
 
     const d3Format = require('d3-format');
+    let idCounter = 0;
 
     /**
      * Calculates percentage of value from total
@@ -11,6 +12,7 @@ define(function(require) {
      */
     function addDays(date, days) {
         const result = new Date(date);
+
         result.setDate(result.getDate() + days);
 
         return String(result);
@@ -48,11 +50,18 @@ define(function(require) {
         return value % 1 === 0;
     }
 
+    function uniqueId(prefix) {
+        const id = ++idCounter;
+        
+        return `${prefix.toString()}-${id}`;
+    }
+
     return {
         addDays,
         calculatePercent,
         diffDays,
-        isInteger
+        isInteger,
+        uniqueId
     };
 
 });

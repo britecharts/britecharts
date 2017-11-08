@@ -11,6 +11,8 @@ define(function(require){
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
 
+    const {uniqueId} = require('./helpers/common');
+
     /**
      * @typedef SparklineChartData
      * @type {Object[]}
@@ -65,9 +67,14 @@ define(function(require){
 
             areaGradient = ['#F5FDFF', '#F6FEFC'],
             areaGradientEl,
+            areaGradientId = uniqueId('sparkline-area-gradient'),
+
             lineGradient = colorHelper.colorGradients.greenBlue,
             lineGradientEl,
+            lineGradientId = uniqueId('sparkline-line-gradient'),
+
             maskingClip,
+            maskingClipId = uniqueId('maskingClip'),
 
             svg,
             chartWidth, chartHeight,
@@ -189,12 +196,13 @@ define(function(require){
             let metadataGroup = svg.select('.metadata-group');
 
             if (areaGradientEl || lineGradientEl) {
-                svg.selectAll('#sparkline-area-gradient').remove();
-                svg.selectAll('#sparkline-line-gradient').remove();
+                svg.selectAll(`#${areaGradientId}`).remove();
+                svg.selectAll(`#${lineGradientId}`).remove();
             }
 
             areaGradientEl = metadataGroup.append('linearGradient')
-                .attr('id', 'sparkline-area-gradient')
+                .attr('id', areaGradientId)
+                .attr('class', 'area-gradient')
                 .attr('gradientUnits', 'userSpaceOnUse')
                 .attr('x1', 0)
                 .attr('x2', xScale(data[data.length - 1].date))
@@ -210,7 +218,8 @@ define(function(require){
                 .attr('stop-color', ({color}) => color);
 
             lineGradientEl = metadataGroup.append('linearGradient')
-                .attr('id', 'sparkline-line-gradient')
+                .attr('id', lineGradientId)
+                .attr('class', 'line-gradient')
                 .attr('gradientUnits', 'userSpaceOnUse')
                 .attr('x1', 0)
                 .attr('x2', xScale(data[data.length - 1].date))
@@ -234,18 +243,19 @@ define(function(require){
          */
         function createMaskingClip() {
             if (maskingClip) {
-                svg.selectAll('#maskingClip').remove();
+                svg.selectAll(`#${maskingClipId}`).remove();
             }
 
             if (isAnimated) {
                 maskingClip = svg.select('.metadata-group')
                   .append('clipPath')
-                    .attr('id', 'maskingClip')
+                    .attr('id', maskingClipId)
+                    .attr('class', 'clip-path')
                       .append('rect')
                         .attr('width', 0)
                         .attr('height', height);
 
-                d3Selection.select('#maskingClip rect')
+                d3Selection.select(`#${maskingClipId} rect`)
                     .transition()
                     .ease(ease)
                     .duration(clipDuration)
@@ -272,8 +282,9 @@ define(function(require){
               .append('path')
                 .datum(data)
                 .attr('class', 'sparkline-area')
+                .attr('fill', `url(#${areaGradientId})`)
                 .attr('d', area)
-                .attr('clip-path', 'url(#maskingClip)');
+                .attr('clip-path', `url(#${maskingClipId})`);
         }
 
         /**
@@ -294,8 +305,9 @@ define(function(require){
               .append('path')
                 .datum(data)
                 .attr('class', 'line')
+                .attr('stroke', `url(#${lineGradientId})`)
                 .attr('d', line)
-                .attr('clip-path', 'url(#maskingClip)');
+                .attr('clip-path', `url(#${maskingClipId})`);
         }
 
         /**

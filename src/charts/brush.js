@@ -18,6 +18,8 @@ define(function(require) {
 
     const {axisTimeCombinations} = require('./helpers/constants');
 
+    const {uniqueId} = require('./helpers/common');
+
 
     /**
      * @typedef BrushChartData
@@ -95,6 +97,7 @@ define(function(require) {
             tickPadding = 5,
 
             gradient = colorHelper.colorGradients.greenBlue,
+            gradientId = uniqueId('brush-area-gradient'),
 
             // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
@@ -196,7 +199,7 @@ define(function(require) {
             let metadataGroup = svg.select('.metadata-group');
 
             metadataGroup.append('linearGradient')
-                .attr('id', 'brush-area-gradient')
+                .attr('id', gradientId)
                 .attr('gradientUnits', 'userSpaceOnUse')
                 .attr('x1', 0)
                 .attr('x2', xScale(data[data.length - 1].date))
@@ -316,6 +319,9 @@ define(function(require) {
             chartBrush.selectAll('rect')
                 .classed('brush-rect', true)
                 .attr('height', chartHeight);
+
+            chartBrush.select('.selection')
+                .attr('fill', `url(#${gradientId})`);
         }
 
         /**
