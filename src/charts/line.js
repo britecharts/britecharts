@@ -548,12 +548,16 @@ define(function(require){
                     .text(xAxisLabel);
             }
 
-            svg.select('.y-axis-group .axis.y')
-                .transition()
-                .ease(ease)
-                .attr('transform', `translate(${-xAxisPadding.left}, 0)`)
-                .call(yAxis)
-                .call(adjustYTickLabels);
+            let yAxisContainer = svg.select('.y-axis-group .axis.y');
+
+            if (!document.hidden) {
+              yAxisContainer = yAxisContainer.transition().ease(ease);
+            }
+
+            yAxisContainer
+              .attr('transform', `translate(${-xAxisPadding.left}, 0)`)
+              .call(yAxis)
+              .call(adjustYTickLabels);
 
             if (yAxisLabel) {
                 if (yAxisLabelEl) {
