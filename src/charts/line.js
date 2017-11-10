@@ -549,8 +549,6 @@ define(function(require){
             }
 
             svg.select('.y-axis-group .axis.y')
-                .transition()
-                .ease(ease)
                 .attr('transform', `translate(${-xAxisPadding.left}, 0)`)
                 .call(yAxis)
                 .call(adjustYTickLabels);
