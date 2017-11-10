@@ -146,17 +146,17 @@ define(function(require){
             singleLineGradientColors = colorHelper.colorGradients.greenBlue,
             topicColorMap,
             linearGradient,
-            
+
             xAxisFormat = null,
             xTicks = null,
             xAxisCustomFormat = null,
             locale,
-            
+
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
             animationDuration = 1500,
             maskingRectangle,
-            
+
             lineCurve = 'linear',
             curveMap = {
                 linear: d3Shape.curveLinear,
@@ -170,10 +170,10 @@ define(function(require){
                 stepAfter: d3Shape.curveStepAfter,
                 stepBefore: d3Shape.curveStepBefore
             },
-            
+
             dataByTopic,
             dataByDate,
-            
+
             dateLabel = 'date',
             valueLabel = 'value',
             topicLabel = 'topic',
@@ -538,19 +538,17 @@ define(function(require){
                 }
                 let xLabelXPosition = chartWidth/2;
                 let xLabelYPosition = chartHeight + monthAxisPadding + xAxisLabelPadding;
-                
+
                 xAxisLabelEl = svg.select('.x-axis-group')
                   .append('text')
                     .attr('x', xLabelXPosition)
                     .attr('y', xLabelYPosition)
-                    .attr('text-anchor', 'middle')                    
+                    .attr('text-anchor', 'middle')
                     .attr('class', 'x-axis-label')
                     .text(xAxisLabel);
             }
 
             svg.select('.y-axis-group .axis.y')
-                .transition()
-                .ease(ease)
                 .attr('transform', `translate(${-xAxisPadding.left}, 0)`)
                 .call(yAxis)
                 .call(adjustYTickLabels);
@@ -567,7 +565,7 @@ define(function(require){
                   .append('text')
                     .attr('x', yLabelXPosition)
                     .attr('y', yLabelYPosition)
-                    .attr('text-anchor', 'middle')                    
+                    .attr('text-anchor', 'middle')
                     .attr('transform', 'rotate(270)')
                     .attr('class', 'y-axis-label')
                     .text(yAxisLabel);
@@ -683,7 +681,7 @@ define(function(require){
                   .append('g')
                     .attr('class', 'hover-marker vertical-marker-container')
                     .attr('transform', 'translate(9999, 0)');
-    
+
                 verticalMarkerLine = verticalMarkerContainer.selectAll('path')
                     .data([{
                         x1: 0,
@@ -826,16 +824,16 @@ define(function(require){
                                     .attr('cx', highlightCircleSize)
                                     .attr('cy', 0)
                                     .attr('r', 5)
-                                    .style('stroke-width', highlightCircleStroke)                    
+                                    .style('stroke-width', highlightCircleStroke)
                                     .style('stroke', topicColorMap[d.name])
                                     .on('touchstart click', function() {
                                         handleHighlightClick(this, d);
-                                    });                
-                                    
+                                    });
+
                 const path = topicsWithNode[index].node;
                 const x = xScale(new Date(dataPoint.topics[index].date));
                 const y = getPathYFromX(x, path, d.name);
-                
+
                 marker.attr('transform', `translate( ${(-highlightCircleSize)}, ${y} )` );
             });
         }
