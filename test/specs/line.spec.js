@@ -27,10 +27,10 @@ define([
         describe('Line Chart', () => {
             let dataset, containerFixture, f, lineChart;
 
-            xdescribe('when a single line', () => {
+            describe('when a single line of zeroes', () => {
 
                 beforeEach(() => {
-                    dataset = aTestDataSet().withOneSource().build();
+                    dataset = aTestDataSet().withAllZeroes().build();
                     lineChart = chart();
 
                     // DOM Fixture Setup
@@ -51,10 +51,18 @@ define([
 
                 describe('on render', () => {
 
-                    it('should have a gradient stroke on the chart line', () => {
-                        let stroke = containerFixture.select('.chart-group').selectAll('path').node().style.stroke;
+                    it('should have one line on the chart line', () => {
+                        let expected = 1,
+                            actual = containerFixture.select('.chart-group').selectAll('path').nodes().length;
 
-                        expect(stroke).toEqual('url("#lineGradientId")')
+                        expect(actual).toEqual(expected);
+                    });
+
+                    it('should have a gradient stroke on the chart line', () => {
+                        let actual = containerFixture.select('.chart-group').selectAll('path').node().style.stroke.match('one-line-gradient').length,
+                            expected = 1;
+
+                        expect(actual).toEqual(expected);
                     });
                 });
             });
