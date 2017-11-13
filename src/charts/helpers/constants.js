@@ -16,8 +16,7 @@ define(function() {
 
     return {
         axisTimeCombinations,
-        timeBenchmarks,
-        lineGradientId: 'lineGradientId'
+        timeBenchmarks
     };
 });
 
