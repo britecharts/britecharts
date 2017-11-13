@@ -20,10 +20,9 @@ define(function(require){
         getLocaleDateFormatter
     } = require('./helpers/timeAxis');
 
-    const {
-        axisTimeCombinations,
-        lineGradientId
-    } = require('./helpers/constants');
+    const { axisTimeCombinations } = require('./helpers/constants');
+
+    const { uniqueId } = require('./helpers/common');
 
     const {
         formatIntegerValue,
@@ -146,6 +145,7 @@ define(function(require){
             singleLineGradientColors = colorHelper.colorGradients.greenBlue,
             topicColorMap,
             linearGradient,
+            lineGradientId = uniqueId('one-line-gradient'),
 
             xAxisFormat = null,
             xTicks = null,
@@ -359,7 +359,7 @@ define(function(require){
          * @return {void}
          */
         function buildGradient() {
-            if(!linearGradient) {
+            if (!linearGradient) {
                 linearGradient = svg.select('.metadata-group')
                   .append('linearGradient')
                     .attr('id', lineGradientId)
@@ -367,6 +367,7 @@ define(function(require){
                     .attr('y1', '0%')
                     .attr('x2', '100%')
                     .attr('y2', '0%')
+                    .attr('gradientUnits', 'userSpaceOnUse')
                     .selectAll('stop')
                     .data([
                         {offset:'0%', color: singleLineGradientColors[0]},
@@ -658,7 +659,7 @@ define(function(require){
          * @return void
          */
         function drawHoverOverlay(){
-            if(!overlay) {
+            if (!overlay) {
                 overlay = svg.select('.metadata-group')
                   .append('rect')
                     .attr('class','overlay')
