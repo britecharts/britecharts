@@ -104,6 +104,8 @@ define(function(require){
 
             colorSchema = colorHelper.colorSchemas.britecharts,
             lineGradient = colorHelper.colorGradients.greenBlue,
+            highlightFilter = null,
+            highlightFilterId = 'highlight-filter',
 
             areaOpacity = 0.24,
             highlightCircleSize = 12,
@@ -950,14 +952,77 @@ define(function(require){
                                     .attr('r', highlightCircleRadius)
                                     .style('stroke-width', highlightCircleStroke)
                                     .style('stroke', categoryColorMap[d.name])
-                                    .on('touchstart click', function() {
+                                    .on('click', function() {
+                                        blurPoint(this);
                                         handleHighlightClick(this, d);
+                                    })
+                                    .on('mouseout', function() {
+                                        unBlurPoint(this);
                                     });
 
                 accumulator = accumulator + values[index][valueLabel];
 
                 marker.attr('transform', `translate( ${(- highlightCircleSize)}, ${(yScale(accumulator))} )` );
             });
+        }
+
+        function unBlurPoint(point) {
+            d3Selection.select(point)
+                .attr('filter', 'none');
+        }
+
+        function blurPoint(point) {
+            if (!highlightFilter) {
+                highlightFilter = svg.select('.metadata-group')
+                  .append('defs')
+                    .append('filter')
+                      .attr('id', highlightFilterId);
+
+                highlightFilter
+                  .append('feGaussianBlur')
+                    .attr('stdDeviation', 1)
+                    .attr('result', 'coloredBlur');
+
+                // let merge = highlightFilter
+                //   .append('feMerge');
+                
+                // merge
+                //   .append('feMergeNode')
+                //     .attr('in', 'coloredBlur');
+                // merge
+                //   .append('feMergeNode')
+                //     .attr('in', 'SourceGraphic');
+                
+                    // <filter id="glow">
+                    //     <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
+                    //     <feMerge>
+                    //         <feMergeNode in="coloredBlur" />
+                    //         <feMergeNode in="SourceGraphic" />
+                    //     </feMerge>
+                    // </filter>
+
+                // <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur" />
+                //     <feColorMatrix in="blur" mode="matrix"
+                //         values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -7" result="goo" />
+                //     <feBlend in="SourceGraphic" in2="gblur" />
+            
+                // highlightFilter
+                //     .append('feColorMatrix')
+                //     .attr('mode', 'matrix')
+                //     .attr('in', 'blur')
+                //     .attr('values', '1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -7')
+                //     .attr('result', 'goo')
+
+                // highlightFilter
+                //     .append('feBlend')
+                //     .attr('in2', 'gblur')
+                //     .attr('in', 'SourceGraphic')
+
+                }
+            
+            d3Selection.select(point)
+                .attr('filter', `url(#${highlightFilterId})`);
+                // debugger
         }
 
         /**
