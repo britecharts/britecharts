@@ -19,15 +19,17 @@ define(function(require){
         getXAxisSettings,
         getLocaleDateFormatter
     } = require('./helpers/timeAxis');
-    const {isInteger} = require('./helpers/common');
     const {axisTimeCombinations} = require('./helpers/constants');
-
     const {
         formatIntegerValue,
         formatDecimalValue
     } = require('./helpers/formatHelpers');
-
     const {
+        createFilterContainer,
+        createGlow,
+    } = require('./helpers/filters');
+    const {
+        isInteger,
         addDays,
         diffDays
     } = require('./helpers/common');
@@ -104,13 +106,14 @@ define(function(require){
 
             colorSchema = colorHelper.colorSchemas.britecharts,
             lineGradient = colorHelper.colorGradients.greenBlue,
-            highlightFilter = null,
-            highlightFilterId = 'highlight-filter',
 
-            areaOpacity = 0.24,
+            highlightFilter = null,
+            highlightFilterId = null,
             highlightCircleSize = 12,
             highlightCircleRadius = 5,
             highlightCircleStroke = 2,            
+            
+            areaOpacity = 0.24,
             categoryColorMap,
             order,
             topicsOrder,
@@ -216,8 +219,24 @@ define(function(require){
         }
 
         /**
+         * Adds a filter to the element
+         * @param {DOMElement} el 
+         * @private
+         */
+        function addGlowFilter(el) {
+            if (!highlightFilter) {
+                highlightFilter = createFilterContainer(svg.select('.metadata-group'));
+                highlightFilterId = createGlow(highlightFilter);
+            }
+
+            d3Selection.select(el)
+                .attr('filter', `url(#${highlightFilterId})`);
+        }
+
+        /**
          * Adds events to the container group if the environment is not mobile
          * Adding: mouseover, mouseout and mousemove
+         * @private
          */
         function addMouseEvents() {
             svg
@@ -943,86 +962,27 @@ define(function(require){
 
             values.forEach((d, index) => {
                 let marker = verticalMarkerContainer
-                              .append('g')
-                                .classed('circle-container', true)
-                                  .append('circle')
-                                    .classed('data-point-highlighter', true)
-                                    .attr('cx', highlightCircleSize)
-                                    .attr('cy', 0)
-                                    .attr('r', highlightCircleRadius)
-                                    .style('stroke-width', highlightCircleStroke)
-                                    .style('stroke', categoryColorMap[d.name])
-                                    .on('click', function() {
-                                        blurPoint(this);
-                                        handleHighlightClick(this, d);
-                                    })
-                                    .on('mouseout', function() {
-                                        unBlurPoint(this);
-                                    });
+                    .append('g')
+                    .classed('circle-container', true)
+                        .append('circle')
+                        .classed('data-point-highlighter', true)
+                        .attr('cx', highlightCircleSize)
+                        .attr('cy', 0)
+                        .attr('r', highlightCircleRadius)
+                        .style('stroke-width', highlightCircleStroke)
+                        .style('stroke', categoryColorMap[d.name])
+                        .on('click', function() {
+                            addGlowFilter(this);
+                            handleHighlightClick(this, d);
+                        })
+                        .on('mouseout', function() {
+                            removeFilter(this);
+                        });
 
                 accumulator = accumulator + values[index][valueLabel];
 
                 marker.attr('transform', `translate( ${(- highlightCircleSize)}, ${(yScale(accumulator))} )` );
             });
-        }
-
-        function unBlurPoint(point) {
-            d3Selection.select(point)
-                .attr('filter', 'none');
-        }
-
-        function blurPoint(point) {
-            if (!highlightFilter) {
-                highlightFilter = svg.select('.metadata-group')
-                  .append('defs')
-                    .append('filter')
-                      .attr('id', highlightFilterId);
-
-                highlightFilter
-                  .append('feGaussianBlur')
-                    .attr('stdDeviation', 1)
-                    .attr('result', 'coloredBlur');
-
-                // let merge = highlightFilter
-                //   .append('feMerge');
-                
-                // merge
-                //   .append('feMergeNode')
-                //     .attr('in', 'coloredBlur');
-                // merge
-                //   .append('feMergeNode')
-                //     .attr('in', 'SourceGraphic');
-                
-                    // <filter id="glow">
-                    //     <feGaussianBlur stdDeviation="2.5" result="coloredBlur" />
-                    //     <feMerge>
-                    //         <feMergeNode in="coloredBlur" />
-                    //         <feMergeNode in="SourceGraphic" />
-                    //     </feMerge>
-                    // </filter>
-
-                // <feGaussianBlur in="SourceGraphic" stdDeviation="15" result="blur" />
-                //     <feColorMatrix in="blur" mode="matrix"
-                //         values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -7" result="goo" />
-                //     <feBlend in="SourceGraphic" in2="gblur" />
-            
-                // highlightFilter
-                //     .append('feColorMatrix')
-                //     .attr('mode', 'matrix')
-                //     .attr('in', 'blur')
-                //     .attr('values', '1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 30 -7')
-                //     .attr('result', 'goo')
-
-                // highlightFilter
-                //     .append('feBlend')
-                //     .attr('in2', 'gblur')
-                //     .attr('in', 'SourceGraphic')
-
-                }
-            
-            d3Selection.select(point)
-                .attr('filter', `url(#${highlightFilterId})`);
-                // debugger
         }
 
         /**
@@ -1032,6 +992,15 @@ define(function(require){
          */
         function moveVerticalMarker(verticalMarkerXPosition) {
             verticalMarkerContainer.attr('transform', `translate(${verticalMarkerXPosition},0)`);
+        }
+
+        /**
+         * Resets a point filter
+         * @param {DOMElement} point  Point to reset
+         */
+        function removeFilter(point) {
+            d3Selection.select(point)
+                .attr('filter', 'none');
         }
 
         /**
