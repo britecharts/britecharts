@@ -50,6 +50,40 @@ define(function (require) {
             .attr('in', 'glow');
 
         return filterId;
+    };
+
+    const createGlowWithMatrix = (filterSelector) => {
+        let colorMatrix = '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0';
+
+        filterSelector
+            .attr('x', '-500%')
+            .attr('y', '-500%')
+            .attr('width', '1800%')
+            .attr('height', '1800%');
+
+        filterSelector
+          .append('feColorMatrix')
+            .attr('type', 'matrix')
+            .attr('values', colorMatrix);
+
+        filterSelector
+          .append('feGaussianBlur')
+            .attr('stdDeviation', '1')
+            .attr('result', 'coloredBlur')
+            .attr('in', 'SourceGraphic');
+
+        let merge = filterSelector
+          .append('feMerge');
+
+        merge
+          .append('feMergeNode')
+            .attr('in', 'coloredBlur');
+
+        merge
+          .append('feMergeNode')
+            .attr('in', 'SourceGraphic');
+
+        return filterId;
     }
 
     const createWhiteGlow = (filterSelector) => {
@@ -104,5 +138,6 @@ define(function (require) {
         createGausianBlur,
         createWhiteGlow,
         createGlow,
+        createGlowWithMatrix,
     };
 });

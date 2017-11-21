@@ -21,7 +21,7 @@ define(function(require){
     const { axisTimeCombinations } = require('./helpers/constants');
     const {
         createFilterContainer,
-        createGlow,
+        createGlowWithMatrix,
     } = require('./helpers/filters');
     const {
         formatIntegerValue,
@@ -153,7 +153,10 @@ define(function(require){
             highlightCircleSize = 12,
             highlightCircleRadius = 5,
             highlightCircleStroke = 2,
-            
+            highlightCircleActiveRadius = highlightCircleRadius + 2,
+            highlightCircleActiveStrokeWidth = 5,
+            highlightCircleActiveStrokeOpacity = 0.6,     
+
             xAxisFormat = null,
             xTicks = null,
             xAxisCustomFormat = null,
@@ -258,10 +261,13 @@ define(function(require){
         function addGlowFilter(el) {
             if (!highlightFilter) {
                 highlightFilter = createFilterContainer(svg.select('.metadata-group'));
-                highlightFilterId = createGlow(highlightFilter);
+                highlightFilterId = createGlowWithMatrix(highlightFilter);
             }
 
             d3Selection.select(el)
+                .style('stroke-width', highlightCircleActiveStrokeWidth)
+                .style('r', highlightCircleActiveRadius)
+                .style('stroke-opacity', highlightCircleActiveStrokeOpacity)
                 .attr('filter', `url(#${highlightFilterId})`);
         }
 
@@ -849,6 +855,7 @@ define(function(require){
                                     .attr('r', highlightCircleRadius)
                                     .style('stroke-width', highlightCircleStroke)
                                     .style('stroke', topicColorMap[d.name])
+                                    .style('cursor', 'pointer')
                                     .on('click', function () {
                                         addGlowFilter(this);
                                         handleHighlightClick(this, d);
