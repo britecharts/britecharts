@@ -14,20 +14,23 @@ define(function(require){
 
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
-    const {isInteger} = require('./helpers/common');
     const {
         getXAxisSettings,
         getLocaleDateFormatter
     } = require('./helpers/timeAxis');
-
     const { axisTimeCombinations } = require('./helpers/constants');
-
-    const { uniqueId } = require('./helpers/common');
-
+    const {
+        createFilterContainer,
+        createGlowWithMatrix,
+    } = require('./helpers/filters');
     const {
         formatIntegerValue,
         formatDecimalValue,
     } = require('./helpers/formatHelpers');
+    const { 
+        isInteger,
+        uniqueId
+    } = require('./helpers/common');
 
     /**
      * @typedef D3Selection
@@ -139,13 +142,20 @@ define(function(require){
             },
             monthAxisPadding = 28,
             tickPadding = 5,
-            highlightCircleSize = 12,
-            highlightCircleStroke = 2,
             colorSchema = colorHelper.colorSchemas.britecharts,
             singleLineGradientColors = colorHelper.colorGradients.greenBlue,
             topicColorMap,
             linearGradient,
             lineGradientId = uniqueId('one-line-gradient'),
+
+            highlightFilter = null,
+            highlightFilterId = null,
+            highlightCircleSize = 12,
+            highlightCircleRadius = 5,
+            highlightCircleStroke = 2,
+            highlightCircleActiveRadius = highlightCircleRadius + 2,
+            highlightCircleActiveStrokeWidth = 5,
+            highlightCircleActiveStrokeOpacity = 0.6,     
 
             xAxisFormat = null,
             xTicks = null,
@@ -241,6 +251,24 @@ define(function(require){
                     addMouseEvents();
                 }
             });
+        }
+
+        /**
+         * Adds a filter to the element
+         * @param {DOMElement} el 
+         * @private
+         */
+        function addGlowFilter(el) {
+            if (!highlightFilter) {
+                highlightFilter = createFilterContainer(svg.select('.metadata-group'));
+                highlightFilterId = createGlowWithMatrix(highlightFilter);
+            }
+
+            d3Selection.select(el)
+                .style('stroke-width', highlightCircleActiveStrokeWidth)
+                .style('r', highlightCircleActiveRadius)
+                .style('stroke-opacity', highlightCircleActiveStrokeOpacity)
+                .attr('filter', `url(#${highlightFilterId})`);
         }
 
         /**
@@ -824,12 +852,18 @@ define(function(require){
                                     .classed('data-point-highlighter', true)
                                     .attr('cx', highlightCircleSize)
                                     .attr('cy', 0)
-                                    .attr('r', 5)
+                                    .attr('r', highlightCircleRadius)
                                     .style('stroke-width', highlightCircleStroke)
                                     .style('stroke', topicColorMap[d.name])
-                                    .on('touchstart click', function() {
+                                    .style('cursor', 'pointer')
+                                    .on('click', function () {
+                                        addGlowFilter(this);
                                         handleHighlightClick(this, d);
+                                    })
+                                    .on('mouseout', function () {
+                                        removeFilter(this);
                                     });
+
 
                 const path = topicsWithNode[index].node;
                 const x = xScale(new Date(dataPoint.topics[index].date));
@@ -892,6 +926,15 @@ define(function(require){
          */
         function moveVerticalMarker(verticalMarkerXPosition){
             verticalMarkerContainer.attr('transform', `translate(${verticalMarkerXPosition},0)`);
+        }
+
+        /**
+         * Resets a point filter
+         * @param {DOMElement} point  Point to reset
+         */
+        function removeFilter(point) {
+            d3Selection.select(point)
+                .attr('filter', 'none');
         }
 
         /**
