@@ -781,7 +781,7 @@ define(function(require) {
         /**
          * Gets or Sets the number format of the bar chart
          * @param  {string} _x Desired number format for the bar chart
-         * @return {numberFormat | module} Current number format or Chart module to chain calls
+         * @return {numberFormat | module} Current numberFormat or Chart module to chain calls
          * @public
          */
         exports.numberFormat = function(_x) {
