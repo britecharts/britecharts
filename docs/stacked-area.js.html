@@ -209,15 +209,17 @@
         getXAxisSettings,
         getLocaleDateFormatter
     } = require('./helpers/timeAxis');
-    const {isInteger} = require('./helpers/common');
     const {axisTimeCombinations} = require('./helpers/constants');
-
     const {
         formatIntegerValue,
         formatDecimalValue
     } = require('./helpers/formatHelpers');
-
     const {
+        createFilterContainer,
+        createGlowWithMatrix,
+    } = require('./helpers/filters');
+    const {
+        isInteger,
         addDays,
         diffDays
     } = require('./helpers/common');
@@ -295,10 +297,16 @@
             colorSchema = colorHelper.colorSchemas.britecharts,
             lineGradient = colorHelper.colorGradients.greenBlue,
 
-            areaOpacity = 0.24,
+            highlightFilter = null,
+            highlightFilterId = null,
             highlightCircleSize = 12,
             highlightCircleRadius = 5,
-            highlightCircleStroke = 2,            
+            highlightCircleStroke = 1.2,
+            highlightCircleActiveRadius = highlightCircleRadius + 2,       
+            highlightCircleActiveStrokeWidth = 5, 
+            highlightCircleActiveStrokeOpacity = 0.6,     
+            
+            areaOpacity = 0.24,
             categoryColorMap,
             order,
             topicsOrder,
@@ -404,8 +412,27 @@
         }
 
         /**
+         * Adds a filter to the element
+         * @param {DOMElement} el 
+         * @private
+         */
+        function addGlowFilter(el) {
+            if (!highlightFilter) {
+                highlightFilter = createFilterContainer(svg.select('.metadata-group'));
+                highlightFilterId = createGlowWithMatrix(highlightFilter);
+            }
+
+            d3Selection.select(el)
+                .style('stroke-width', highlightCircleActiveStrokeWidth)
+                .style('r', highlightCircleActiveRadius)
+                .style('stroke-opacity', highlightCircleActiveStrokeOpacity)
+                .attr('filter', `url(#${highlightFilterId})`);
+        }
+
+        /**
          * Adds events to the container group if the environment is not mobile
          * Adding: mouseover, mouseout and mousemove
+         * @private
          */
         function addMouseEvents() {
             svg
@@ -1131,18 +1158,23 @@
 
             values.forEach((d, index) => {
                 let marker = verticalMarkerContainer
-                              .append('g')
-                                .classed('circle-container', true)
-                                  .append('circle')
-                                    .classed('data-point-highlighter', true)
-                                    .attr('cx', highlightCircleSize)
-                                    .attr('cy', 0)
-                                    .attr('r', highlightCircleRadius)
-                                    .style('stroke-width', highlightCircleStroke)
-                                    .style('stroke', categoryColorMap[d.name])
-                                    .on('touchstart click', function() {
-                                        handleHighlightClick(this, d);
-                                    });
+                    .append('g')
+                    .classed('circle-container', true)
+                        .append('circle')
+                        .classed('data-point-highlighter', true)
+                        .attr('cx', highlightCircleSize)
+                        .attr('cy', 0)
+                        .attr('r', highlightCircleRadius)
+                        .style('stroke-width', highlightCircleStroke)
+                        .style('stroke', categoryColorMap[d.name])
+                        .style('cursor', 'pointer')
+                        .on('click', function() {
+                            addGlowFilter(this);
+                            handleHighlightClick(this, d);
+                        })
+                        .on('mouseout', function() {
+                            removeFilter(this);
+                        });
 
                 accumulator = accumulator + values[index][valueLabel];
 
@@ -1157,6 +1189,15 @@
          */
         function moveVerticalMarker(verticalMarkerXPosition) {
             verticalMarkerContainer.attr('transform', `translate(${verticalMarkerXPosition},0)`);
+        }
+
+        /**
+         * Resets a point filter
+         * @param {DOMElement} point  Point to reset
+         */
+        function removeFilter(point) {
+            d3Selection.select(point)
+                .attr('filter', 'none');
         }
 
         /**
