@@ -85,7 +85,7 @@ define(function(require) {
             percentageLabelSize = 12,
             horizontalLabelFormat = '.0%',
             verticalLabelFormat = '.0f',
-            valueLabelFormat = NUMBER_FORMAT,
+            numberFormat = NUMBER_FORMAT,
             xAxis, yAxis,
             xAxisPadding = {
                 top: 0,
@@ -161,7 +161,7 @@ define(function(require) {
         function buildAxis() {
             if (isHorizontal) {
                 xAxis = d3Axis.axisBottom(xScale)
-                    .ticks(xTicks, valueLabelFormat)
+                    .ticks(xTicks, numberFormat)
                     .tickSizeInner([-chartHeight]);
 
                 yAxis = d3Axis.axisLeft(yScale);
@@ -169,7 +169,7 @@ define(function(require) {
                 xAxis = d3Axis.axisBottom(xScale);
 
                 yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(yTicks, valueLabelFormat)
+                    .ticks(yTicks, numberFormat)
             }
         }
 
@@ -648,6 +648,21 @@ define(function(require) {
         // API
 
         /**
+         * Gets or Sets the padding of the chart (Default is 0.1)
+         * @param  { Number | module } _x Padding value to get/set
+         * @return { padding | module} Current padding or Chart module to chain calls
+         * @public
+         */
+        exports.betweenBarsPadding = function(_x) {
+            if (!arguments.length) {
+                return betweenBarsPadding;
+            }
+            betweenBarsPadding = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the colorSchema of the chart
          * @param  {String[]} _x Desired colorSchema for the graph
          * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
@@ -749,21 +764,6 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the padding of the chart (Default is 0.1)
-         * @param  { Number | module } _x Padding value to get/set
-         * @return { padding | module} Current padding or Chart module to chain calls
-         * @public
-         */
-        exports.betweenBarsPadding = function(_x) {
-            if (!arguments.length) {
-                return betweenBarsPadding;
-            }
-            betweenBarsPadding = _x;
-
-            return this;
-        };
-
-        /**
          * Gets or Sets the nameLabel of the chart
          * @param  {Number} _x Desired nameLabel for the graph
          * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
@@ -777,6 +777,21 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Gets or Sets the number format of the bar chart
+         * @param  {string} _x Desired number format for the bar chart
+         * @return {numberFormat | module} Current numberFormat or Chart module to chain calls
+         * @public
+         */
+        exports.numberFormat = function(_x) {
+            if (!arguments.length) {
+                return numberFormat;
+            }
+            numberFormat = _x;
+
+            return this;
+        }
 
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
@@ -861,31 +876,31 @@ define(function(require) {
          */
         exports.hasPercentage = function(_x) {
             if (!arguments.length) {
-                return valueLabelFormat === PERCENTAGE_FORMAT;
+                return numberFormat === PERCENTAGE_FORMAT;
             }
             if (_x) {
-                valueLabelFormat = PERCENTAGE_FORMAT;
+                numberFormat = PERCENTAGE_FORMAT;
             } else {
-                valueLabelFormat = NUMBER_FORMAT;
+                numberFormat = NUMBER_FORMAT;
             }
 
             return this;
         };
 
         /**
-         * Gets or Sets the valueLabelFormat to a percentage format if true (default false)
+         * Gets or Sets the numberFormat to a percentage format if true (default false)
          * @param  {boolean} _x     Should use percentage as value format
          * @return { boolean | module} Is percentage the value format used or Chart module to chain calls
          * @public
          */
         exports.usePercentage = function(_x) {
             if (!arguments.length) {
-                return valueLabelFormat === PERCENTAGE_FORMAT;
+                return numberFormat === PERCENTAGE_FORMAT;
             }
             if (_x) {
-                valueLabelFormat = PERCENTAGE_FORMAT;
+                numberFormat = PERCENTAGE_FORMAT;
             } else {
-                valueLabelFormat = NUMBER_FORMAT;
+                numberFormat = NUMBER_FORMAT;
             }
 
             return this;
