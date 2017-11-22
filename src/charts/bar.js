@@ -648,6 +648,21 @@ define(function(require) {
         // API
 
         /**
+         * Gets or Sets the padding of the chart (Default is 0.1)
+         * @param  { Number | module } _x Padding value to get/set
+         * @return { padding | module} Current padding or Chart module to chain calls
+         * @public
+         */
+        exports.betweenBarsPadding = function(_x) {
+            if (!arguments.length) {
+                return betweenBarsPadding;
+            }
+            betweenBarsPadding = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the colorSchema of the chart
          * @param  {String[]} _x Desired colorSchema for the graph
          * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
@@ -749,21 +764,6 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the padding of the chart (Default is 0.1)
-         * @param  { Number | module } _x Padding value to get/set
-         * @return { padding | module} Current padding or Chart module to chain calls
-         * @public
-         */
-        exports.betweenBarsPadding = function(_x) {
-            if (!arguments.length) {
-                return betweenBarsPadding;
-            }
-            betweenBarsPadding = _x;
-
-            return this;
-        };
-
-        /**
          * Gets or Sets the nameLabel of the chart
          * @param  {Number} _x Desired nameLabel for the graph
          * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
@@ -777,6 +777,21 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Gets or Sets the number format of the bar chart
+         * @param  {string} _x Desired number format for the bar chart
+         * @return {numberFormat | module} Current number format or Chart module to chain calls
+         * @public
+         */
+        exports.numberFormat = function(_x) {
+            if (!arguments.length) {
+                return numberFormat;
+            }
+            numberFormat = _x;
+
+            return this;
+        }
 
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
@@ -849,21 +864,6 @@ define(function(require) {
                 return orderingFunction;
             }
             orderingFunction = _x;
-
-            return this;
-        }
-
-        /**
-         * Gets or Sets the number format of the bar chart
-         * @param  {string} _x Desired number format for the bar chart
-         * @return {numberFormat | module} Current number format or Chart module to chain calls
-         * @public
-         */
-        exports.numberFormat = function(_x) {
-            if (!arguments.length) {
-                return numberFormat;
-            }
-            numberFormat = _x;
 
             return this;
         }
