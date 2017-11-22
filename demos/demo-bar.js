@@ -49,7 +49,6 @@ function createHorizontalBarChart() {
                 top: 20,
                 bottom: 30
             })
-            .numberFormat('.3f')
             .colorSchema(colors.colorSchemas.britecharts)
             .width(containerWidth)
             .yAxisPaddingBetweenChart(30)
