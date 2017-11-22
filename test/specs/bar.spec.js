@@ -347,6 +347,18 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide numberFormat getter and setter', () =>{
+                let previous = barChart.numberFormat(),
+                    expected = 'd',
+                    actual;
+
+                barChart.numberFormat(expected);
+                actual = barChart.numberFormat();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
         });
 
         describe('when hovering a bar', function() {
