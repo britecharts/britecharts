@@ -41,7 +41,6 @@ function createDonutChart(optionalColorSchema) {
             .height(containerWidth)
             .externalRadius(containerWidth/2.5)
             .internalRadius(containerWidth/5)
-            .numberFormat('.4f')
             .on('customMouseOver', function(data) {
                 legendChart.highlight(data.data.id);
             })
@@ -72,7 +71,6 @@ function getLegendChart(dataset, optionalColorSchema) {
         legendChart
             .width(containerWidth*0.8)
             .height(200)
-            .numberFormat('s');
 
         if (optionalColorSchema) {
             legendChart.colorSchema(optionalColorSchema);
@@ -120,7 +118,6 @@ function createSmallDonutChart() {
             .height(containerWidth/1.8)
             .externalRadius(containerWidth/5)
             .internalRadius(containerWidth/10)
-            .numberFormat('.2f')
             .on('customMouseOver', function(data) {
                 legendChart.highlight(data.data.id);
             })
