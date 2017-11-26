@@ -15,8 +15,6 @@ define(function(require) {
     const colorHelper = require('./helpers/colors');
     const {calculatePercent} = require('./helpers/common');
 
-    const CALCULATED_PERCENT_FORMAT = '.1f';
-
 
     /**
      * @typedef DonutChartData
