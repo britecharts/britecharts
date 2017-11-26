@@ -15,6 +15,8 @@ define(function(require) {
     const colorHelper = require('./helpers/colors');
     const {calculatePercent} = require('./helpers/common');
 
+    const CALCULATED_PERCENT_FORMAT = '.1f';
+
 
     /**
      * @typedef DonutChartData
@@ -96,7 +98,8 @@ define(function(require) {
             nameLabel = 'name',
             percentageLabel = 'percentage',
 
-            numberFormat = '.1f',
+            percentageFormat = '.1f',
+            numberFormat,
 
             // colors
             colorScale,
@@ -244,9 +247,13 @@ define(function(require) {
 
             let totalQuantity = sumValues(cleanData);
             let dataWithPercentages = cleanData.map((d) => {
-                d.percentage = d.percentage ?
-                                String(d3Format.format(numberFormat)(d.percentage))
-                                : String(calculatePercent(d[quantityLabel], totalQuantity, numberFormat));
+                let {percentage} = d;
+
+                if (numberFormat && percentage) {
+                    percentage = d3Format.format(numberFormat)(percentage);
+                }
+
+                d.percentage = String(percentage || calculatePercent(d[quantityLabel], totalQuantity, percentageFormat));
 
                 return d;
             });

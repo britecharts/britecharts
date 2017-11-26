@@ -120,6 +120,7 @@ function createSmallDonutChart() {
             .height(containerWidth/1.8)
             .externalRadius(containerWidth/5)
             .internalRadius(containerWidth/10)
+            .numberFormat('.2f')
             .on('customMouseOver', function(data) {
                 legendChart.highlight(data.data.id);
             })
