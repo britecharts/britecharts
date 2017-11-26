@@ -41,6 +41,7 @@ function createDonutChart(optionalColorSchema) {
             .height(containerWidth)
             .externalRadius(containerWidth/2.5)
             .internalRadius(containerWidth/5)
+            .numberFormat('.4f')
             .on('customMouseOver', function(data) {
                 legendChart.highlight(data.data.id);
             })
