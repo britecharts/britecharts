@@ -128,7 +128,7 @@ Read more in the [license document][15]
 [32]: https://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
 [33]: https://github.com/eventbrite/britecharts
 [34]: https://eventbrite.github.io/britecharts/getting-started.html
-[35]: https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md
+[35]: https://github.com/eventbrite/britecharts/blob/master/.github/CONTRIBUTING.md
 [36]: https://eventbrite.github.io/britecharts/img/logo-stripes-small.png
 [37]: https://github.com/d3/d3-selection
 [38]: https://eventbrite.github.io/britecharts/module-Stacked-bar.html
