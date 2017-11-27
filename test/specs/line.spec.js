@@ -261,6 +261,7 @@ define([
 
             describe('API', () => {
 
+
                 it('should provide an axisTimeCombinations accessor', () => {
                     let axisTimeCombinations = lineChart.axisTimeCombinations;
 
@@ -292,6 +293,27 @@ define([
 
                     lineChart.width(expected);
                     actual = lineChart.width();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should not have numberFormat by default', () => {
+                    let expected = undefined,
+                    actual;
+
+                    actual = lineChart.numberFormat();
+
+                    expect(expected).toBe(actual);
+                });
+
+                it('should provide numberFormat getter and setter', () =>{
+                    let previous = lineChart.numberFormat(),
+                        expected = 'd',
+                        actual;
+
+                    lineChart.numberFormat(expected);
+                    actual = lineChart.numberFormat();
 
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);

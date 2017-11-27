@@ -6,6 +6,7 @@ define(function(require){
     const d3Collection = require('d3-collection');
     const d3Dispatch = require('d3-dispatch');
     const d3Ease = require('d3-ease');
+    const d3Format = require('d3-format');    
     const d3Scale = require('d3-scale');
     const d3Shape = require('d3-shape');
     const d3Selection = require('d3-selection');
@@ -202,6 +203,7 @@ define(function(require){
             overlayColor = 'rgba(0, 0, 0, 0)',
             verticalMarkerContainer,
             verticalMarkerLine,
+            numberFormat,
 
             verticalGridLines,
             horizontalGridLines,
@@ -310,6 +312,10 @@ define(function(require){
                 format = formatIntegerValue;
             } else {
                 format = formatDecimalValue;
+            }
+
+            if (numberFormat) {
+                format = d3Format.format(numberFormat)
             }
 
             return format(value);
@@ -1140,6 +1146,21 @@ define(function(require){
 
             return this;
         };
+
+        /**
+         * Gets or Sets the number format of the line chart
+         * @param  {string} _x Desired number format for the line chart
+         * @return {numberFormat | module} Current numberFormat or Chart module to chain calls
+         * @public
+         */
+        exports.numberFormat = function(_x) {
+            if (!arguments.length) {
+                return numberFormat;
+            }
+            numberFormat = _x;
+
+            return this;
+        }        
 
         /**
          * Gets or Sets the curve of the line chart
