@@ -261,7 +261,6 @@ define([
 
             describe('API', () => {
 
-
                 it('should provide an axisTimeCombinations accessor', () => {
                     let axisTimeCombinations = lineChart.axisTimeCombinations;
 
