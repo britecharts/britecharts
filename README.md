@@ -2,14 +2,14 @@
 
 [![Britecharts Logo][36]][31]
 
-> Britecharts is a client-side **reusable Charting Library** based on [D3.js v4][1] that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.
+> Britecharts is a client-side **reusable Charting Library** based on [D3.js v4][1] that offers easy and intuitive use of charts and components that can be composed together to create amazing visualizations.
 
 [![Build Status](https://travis-ci.org/eventbrite/britecharts.svg?branch=master)](https://travis-ci.org/eventbrite/britecharts)
 [![npm version](https://badge.fury.io/js/britecharts.svg)](https://badge.fury.io/js/britecharts)
 [![Bower version](https://badge.fury.io/bo/britecharts.svg)](https://badge.fury.io/bo/britecharts)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Britecharts [components][32] have been written in ES2016 with a Test Driven methodology so they are **fully tested**, and we are commited to keeping them that way.
+Britecharts [components][32] have been written in ES2016 with a Test Driven methodology, so they are **fully tested**, and we are committed to keeping them that way.
 
 ## Key Features
 
@@ -29,7 +29,7 @@ The typical use of Britecharts involves creating a chart using its simple API, t
 
 ## API
 
-All the components expose some **common API methods** like width, height and margin. Additionally, each chart or component can expose specific methods. Those can be found in the documentation:
+All the components expose some **common API methods** like width, height, and margin. Additionally, each chart or component can expose specific methods you can find in the documentation:
 
  - [API][25], [Demo][5] Line Chart
  - [API][22], [Demo][4] Bar Chart
@@ -52,24 +52,24 @@ Britecharts components are distributed in **UMD modules**, each one exposing a D
    npm install britecharts d3-selection
 ```
 
-They also provide some minimal CSS styling, that can be loaded independently or as a bundle. 
-
 You can also load Britecharts from our [CDN][cdnHome] as we do in this [demo][cdnDemo] page or play around in our [JSBin][jsbinSandbox] and [CodePen][codepenDemos] demo projects.
 
+They also provide some minimal CSS styling, that can be loaded independently or as a bundle. Check our [Getting Started Guide][gettingStarted] to see more options.
+
 ## See Also
-- [Getting Started Guide][34]
 - [Documentation Homepage][31]
-- [Release Notes][13]
+- [Getting Started Guide][gettingStarted]
 - [Contributing Guide][35]
 - [Github Repo][33]
 - [Bar Chart Tutorial][screenCast][Video]
+- [Release Notes][13]
 
 ## Roadmap
-This project is in active development! If you want to help, you can check the [contributing][35] guide. Also review the [issues page][16] for more info on what's coming, to give your feedback, and to vote for your favorite [proposals][proposals]. You can also find us in the [D3.js slack group][d3Slack], in the **#britecharts** channel.
+This project is in active development. You can check our [plans for the next release][release3Project] to see what's coming, and vote for your favorite [proposals][proposals] on the issues page.
+
+To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3Slack], in the **#britecharts** channel. If you want to help, you can check the [contributing][35] guide. 
 
 If you work with Angular, check out [ngx-britecharts][angularWrapper] and their [demos][angularWrapperDemos]. We are also preparing a wrapper for React, and we will be talking about it on our [twitter][twitter]. 
-
-
 
 ## Acknowledgments
 
@@ -127,8 +127,8 @@ Read more in the [license document][15]
 [31]: https://eventbrite.github.io/britecharts/
 [32]: https://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
 [33]: https://github.com/eventbrite/britecharts
-[34]: https://eventbrite.github.io/britecharts/getting-started.html
-[35]: https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md
+[gettingStarted]: https://eventbrite.github.io/britecharts/getting-started.html
+[35]: https://github.com/eventbrite/britecharts/blob/master/.github/CONTRIBUTING.md
 [36]: https://eventbrite.github.io/britecharts/img/logo-stripes-small.png
 [37]: https://github.com/d3/d3-selection
 [38]: https://eventbrite.github.io/britecharts/module-Stacked-bar.html
@@ -149,5 +149,6 @@ Read more in the [license document][15]
 [sunsDribble]: https://dribbble.com/sundai
 [d3Slack]: https://d3js.slack.com/
 [proposals]: https://github.com/eventbrite/britecharts/issues?q=is%3Aissue+is%3Aopen+label%3Aproposal
+[release3Project]: https://github.com/eventbrite/britecharts/projects/2
 
 
