@@ -297,6 +297,27 @@ define([
                     expect(actual).toBe(expected);
                 });
 
+                it('should not have numberFormat by default', () => {
+                    let expected = undefined,
+                    actual;
+
+                    actual = lineChart.numberFormat();
+
+                    expect(expected).toBe(actual);
+                });
+
+                it('should provide numberFormat getter and setter', () =>{
+                    let previous = lineChart.numberFormat(),
+                        expected = 'd',
+                        actual;
+
+                    lineChart.numberFormat(expected);
+                    actual = lineChart.numberFormat();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
                 it('should provide height getter and setter', () => {
                     let previous = lineChart.height(),
                         expected = 200,
