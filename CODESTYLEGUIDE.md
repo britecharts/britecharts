@@ -109,7 +109,7 @@ Note that most of the building blocks are dependant on the type of chart. For ex
 ## Comments
 We enforce jsDoc comments in our review process, so all of the functions will need a comment. We need also to be mindful and when we change the code of a function, check if its comments need an update.
 
-This is really important as our documentation gets generated from this same comments. You can read more about it [on the Contributing document](https://github.com/eventbrite/britecharts/blob/master/CONTRIBUTING.md#jsdoc).
+This is really important as our documentation gets generated from these jsDoc comments. You can read more about it [on the Contributing document](https://github.com/eventbrite/britecharts/blob/master/.github/CONTRIBUTING.md#jsdoc).
 
 **[⬆ back to top](#table-of-contents)**
 
