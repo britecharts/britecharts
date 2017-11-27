@@ -3,6 +3,7 @@ define(function(require) {
 
     const d3Dispatch = require('d3-dispatch');
     const d3Ease = require('d3-ease');
+    const d3Format = require('d3-format');
     const d3Interpolate = require('d3-interpolate');
     const d3Scale = require('d3-scale');
     const d3Shape = require('d3-shape');
@@ -96,6 +97,7 @@ define(function(require) {
             percentageLabel = 'percentage',
 
             percentageFormat = '.1f',
+            numberFormat,
 
             // colors
             colorScale,
@@ -243,7 +245,13 @@ define(function(require) {
 
             let totalQuantity = sumValues(cleanData);
             let dataWithPercentages = cleanData.map((d) => {
-                d.percentage = String(d.percentage || calculatePercent(d[quantityLabel], totalQuantity, percentageFormat));
+                let {percentage} = d;
+
+                if (numberFormat && percentage) {
+                    percentage = d3Format.format(numberFormat)(percentage);
+                }
+
+                d.percentage = String(percentage || calculatePercent(d[quantityLabel], totalQuantity, percentageFormat));
 
                 return d;
             });
@@ -529,21 +537,6 @@ define(function(require) {
         };
 
         /**
-         * Changes the order of items given custom function
-         * @param  {Function} _x              A custom function that sets logic for ordering
-         * @return { (Function | Module) }    Void function with no return
-         * @public
-         */
-        exports.orderingFunction = function(_x) {
-            if (!arguments.length) {
-                return orderingFunction; 
-            }
-            orderingFunction = _x; 
-
-            return this; 
-        }
-
-        /**
          * Gets or Sets the hasFixedHighlightedSlice property of the chart, making it to
          * highlight the selected slice id set with `highlightSliceById` all the time.
          *
@@ -638,6 +631,21 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the number format of the donut chart
+         * @param  {string} _x Desired number format for the donut chart
+         * @return {numberFormat | module} Current numberFormat or Chart module to chain calls
+         * @public
+         */
+        exports.numberFormat = function(_x) {
+            if (!arguments.length) {
+                return numberFormat;
+            }
+            numberFormat = _x;
+
+            return this;
+        }
+
+        /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
          * We are going to expose this events:
          * customMouseOver, customMouseMove and customMouseOut
@@ -650,6 +658,21 @@ define(function(require) {
 
             return value === dispatcher ? exports : value;
         };
+
+        /**
+         * Changes the order of items given custom function
+         * @param  {Function} _x              A custom function that sets logic for ordering
+         * @return { (Function | Module) }    Void function with no return
+         * @public
+         */
+        exports.orderingFunction = function(_x) {
+            if (!arguments.length) {
+                return orderingFunction; 
+            }
+            orderingFunction = _x; 
+
+            return this; 
+        }
 
         /**
          * Gets or Sets the width of the chart
