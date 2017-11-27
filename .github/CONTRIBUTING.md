@@ -139,6 +139,8 @@ Adding a new chart is a bunch of work, but we hope that using the current code a
 
 7- be patient :)
 
+If you are new to Open Source, you can learn how to create [Pull Requests here](makeAPR).
+
 ---
 
 ## Reporting an Issue/Feature Requests
@@ -263,3 +265,4 @@ britecharts
 [node]: http://nodejs.org
 [styleguide]: https://github.com/eventbrite/britecharts/blob/master/CODESTYLEGUIDE.md
 [yarn]: https://yarnpkg.com/lang/en/docs/install/
+[makeAPR]: http://makeapullrequest.com/
