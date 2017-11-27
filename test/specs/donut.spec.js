@@ -287,6 +287,27 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     expect(defaultId).not.toBe(newValue);
                     expect(newValue).toBe(testValue);
                 });
+
+                it('should not have numberFormat by default', () =>{
+                    let expected = undefined,
+                        actual;
+    
+                    actual = donutChart.numberFormat();
+    
+                    expect(expected).toBe(actual);
+                });
+
+                it('should provide numberFormat getter and setter', () =>{
+                    let previous = donutChart.numberFormat(),
+                        expected = 'd',
+                        actual;
+
+                    donutChart.numberFormat(expected);
+                    actual = donutChart.numberFormat();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
             });
 
             describe('when mouse events are triggered', () => {
