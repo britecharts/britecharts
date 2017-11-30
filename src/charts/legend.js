@@ -127,20 +127,20 @@ define(function(require){
         }
 
         /**
-         * Depending on the size of the horizontal legend, we are going to either
-         * center the legend or add a new line with the last entry of the legend
+         * Depending on the size of the horizontal legend, we are going to add a new
+         * line with the last entry of the legend
          * @return {void}
          * @private
          */
         function adjustLines() {
-            let lineWidth = svg.select('.legend-line').node().getBoundingClientRect().width;
+            let lineWidth = svg.select('.legend-line').node().getBoundingClientRect().width + markerSize;
             let lineWidthSpace = chartWidth - lineWidth;
 
-            if (lineWidthSpace > 0) {
-                centerLegendOnSVG();
-            } else {
+            if (lineWidthSpace <= 0) {
                 splitInLines();
             }
+
+            centerLegendOnSVG();
         }
 
         /**
@@ -151,8 +151,7 @@ define(function(require){
         function buildContainerGroups() {
             let container = svg
               .append('g')
-                .classed('legend-container-group', true)
-                .attr('transform', `translate(${margin.left},${margin.top})`);
+                .classed('legend-container-group', true);
 
             container
               .append('g')
@@ -183,6 +182,9 @@ define(function(require){
                 buildContainerGroups();
             }
 
+            svg.select('g.legend-container-group')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+
             svg
                 .attr('width', width)
                 .attr('height', height);
@@ -194,7 +196,7 @@ define(function(require){
          * @private
          */
         function centerLegendOnSVG() {
-            let legendGroupSize = svg.select('g.legend-container-group').node().getBoundingClientRect().width;
+            let legendGroupSize = svg.select('g.legend-container-group').node().getBoundingClientRect().width + getLineElementMargin();
             let emptySpace = width - legendGroupSize;
 
             if (emptySpace > 0) {
@@ -219,6 +221,10 @@ define(function(require){
          */
         function drawHorizontalLegend() {
             let xOffset = markerSize;
+
+            svg.select('.legend-group')
+                .selectAll('g')
+                .remove()
 
             // We want a single line
             svg.select('.legend-group')
