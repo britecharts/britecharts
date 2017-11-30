@@ -588,6 +588,11 @@ define(function(require){
          * @return void
          */
         function drawGridLines(xTicks, yTicks) {
+
+            svg.select('.grid-lines-group')
+                .selectAll('line')
+                .remove();
+
             if (grid === 'horizontal' || grid === 'full') {
                 horizontalGridLines = svg.select('.grid-lines-group')
                     .selectAll('line.horizontal-grid-line')
