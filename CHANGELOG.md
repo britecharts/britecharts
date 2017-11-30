@@ -1,4 +1,5 @@
 2.4.0
+2.4.0
 --------------
 Features:
 * Added glow in highlight points of line and area charts 
