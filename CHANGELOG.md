@@ -1,6 +1,27 @@
+2.4.0
+--------------
+Features:
+* Added glow in highlight points of line and area charts 
+* Added Donut and line chart number formatting (@dalerasrorov-eb)
+* Legend adjustments (@jchen-eb)
+
+Bug fixes:
+* Removed transition from yAxis (@CoryDuncan)
+* Fixes line chart not rendering gradient on unique line constant values
+* Stacked Area x line fix (@jchen-eb)
+
 2.3.2
+--------------
+Features:
+* Added ordering in bar chart (@dalerasrorov-eb)
+* Added optional axis labels to line chart 
+
+Bug fixes:
+* Fixed Tick calculation (@jchen-eb)
+* Fixed Sparkline for multiple instances (@amber-eb)
+* Fixed broken link in docs
+
 2.3.1
-2.3.0
 --------------
 Features:
 * Ability to set sort order for donut (@dalerasrorov-eb)
