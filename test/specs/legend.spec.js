@@ -251,7 +251,9 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                             .build();
                 legendChart = legend();
 
-                legendChart.isHorizontal(true);
+                legendChart
+                    .width(500)
+                    .isHorizontal(true);
 
                 // DOM Fixture Setup
                 f = jasmine.getFixtures();

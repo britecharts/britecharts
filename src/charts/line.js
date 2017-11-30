@@ -644,6 +644,10 @@ define(function(require){
          * @return void
          */
         function drawGridLines(xTicks, yTicks){
+          svg.select('.grid-lines-group')
+              .selectAll('line')
+              .remove();
+
             if (grid === 'horizontal' || grid === 'full') {
                 horizontalGridLines = svg.select('.grid-lines-group')
                     .selectAll('line.horizontal-grid-line')
@@ -668,10 +672,6 @@ define(function(require){
                         .attr('y2', chartHeight)
                         .attr('x1', (d) => xScale(d))
                         .attr('x2', (d) => xScale(d));
-            }
-
-            if (baseLine) {
-                svg.selectAll('.extended-x-line').remove();
             }
 
             //draw a horizontal line to extend x-axis till the edges
