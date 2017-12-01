@@ -11,7 +11,9 @@ addons:
       - g++-4.8
 install: yarn install
 script: yarn run test:travis
+before_deploy: yarn run build
 deploy:
+  skip_cleanup: true
   provider: npm
   email: npmjs+eng@eventbrite.com
   api_key:
