@@ -53,7 +53,7 @@ define(function(require) {
         while (word = words.pop()) {
             line.push(word);
             tspan.text(line.join(' '));
-            if (tspan.node().getComputedTextLength() > availableWidth - 50) {
+            if (tspan.node() && tspan.node().getComputedTextLength() > availableWidth - 50) {
                 line.pop();
                 tspan.text(line.join(' '));
                 line = [word];
