@@ -23,7 +23,7 @@
     "demos:serve": "webpack-dev-server --content-base docs/ --inline --hot --port 8001 --open --env=demos",
     "styles": "grunt lint && grunt sass && grunt cssmin",
     "docs": "webpack --env=demos && yarn run styles && grunt docs",
-    "build": "yarn run _prod && yarn run _prodUMD",
+    "build": "yarn run _prod && yarn run _prodUMD && yarn run styles",
     "untrack": "grunt untrack",
     "release": "grunt release:patch",
     "release:minor": "grunt release:minor",
