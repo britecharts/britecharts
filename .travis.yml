@@ -9,7 +9,6 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
-install: yarn install
 script: yarn run test:travis
 before_deploy: yarn run build
 deploy:
@@ -21,3 +20,4 @@ deploy:
   on:
     tags: true
     repo: eventbrite/britecharts
+after_deploy: git remote add origin-pages https://${GITHUB_TOKEN_JAYLUM_CHEN}@github.com/eventbrite/britecharts.git > /dev/null 2>&1 && git rm .gitignore && git add docs && git commit -m 'Updating docs' && git push -fu origin-pages HEAD:gh-pages
