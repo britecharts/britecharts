@@ -10,7 +10,7 @@ addons:
     packages:
       - g++-4.8
 script: yarn run test:travis
-before_deploy: yarn run build
+before_deploy: yarn run build && yarn run docs
 deploy:
   skip_cleanup: true
   provider: npm
