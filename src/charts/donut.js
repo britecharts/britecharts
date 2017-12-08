@@ -551,10 +551,13 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the emptyDataConfig of the chart
+         * Gets or Sets the emptyDataConfig of the chart. If set and data is empty (quantity
+         * adds up to zero or there are no entries), the chart will render an empty slice
+         * with a given color (light gray by default)
          * @param  {Object} _x emptyDataConfig object to get/set
          * @return { Object | module} Current config for when chart data is an empty array
          * @public
+         * @example donutChart.emptyDataConfig({showEmptySlice: true, emptySliceColor: '#000000'})
          */
         exports.emptyDataConfig = function(_x) {
             if (!arguments.length) {

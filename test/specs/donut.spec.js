@@ -101,9 +101,9 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     containerFixture.datum(dataset).call(donutChart);
                     
                     let paths = containerFixture.selectAll('path').nodes();
-                    let actualFirstPathFill = d3.select(paths[0]).attr('fill');
-                    let actualSecondPathFill = d3.select(paths[1]).attr('fill');
-                    let actualThirdPathFill = d3.select(paths[2]).attr('fill');
+                    let actualFirstPathFill = paths[0].getAttribute('fill');
+                    let actualSecondPathFill = paths[1].getAttribute('fill');
+                    let actualThirdPathFill = paths[2].getAttribute('fill');
 
                     expect(actualFirstPathFill).toEqual(expectedFills[0]);
                     expect(actualSecondPathFill).toEqual(expectedFills[1]);
@@ -176,7 +176,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
                     let paths = containerFixture.selectAll('.donut-chart .arc path').nodes();
                    
-                    actual = d3.select(paths[0]).attr('fill');
+                    actual = paths[0].getAttribute('fill');
 
                     expect(actual).toEqual(expected);
 
@@ -214,14 +214,11 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     }
 
                     donutChart.emptyDataConfig(emptyDataConfig);
-
-                    let dataset = [];
-
-                    containerFixture.datum(dataset).call(donutChart);
+                    containerFixture.datum([]).call(donutChart);
 
                     let paths = containerFixture.selectAll('.donut-chart .arc path').nodes();
 
-                    actual = d3.select(paths[0]).attr('fill');
+                    actual = paths[0].getAttribute('fill');
 
                     expect(actual).toEqual(expected);
 
