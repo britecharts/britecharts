@@ -129,10 +129,10 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
                     donutChart.highlightSliceById(11)
                     donutChart.emptyDataConfig(emptyDataConfig);
-
                     containerFixture.datum(dataset).call(donutChart);
 
                     let textNodes = containerFixture.select('text.donut-text .value').nodes();
+                   
                     actual = d3.select(textNodes[0]).text();
   
                     expect(expected).toEqual(actual);
@@ -153,9 +153,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                         .build();
 
                     donutChart.emptyDataConfig(emptyDataConfig);
-                    
                     containerFixture.datum(dataset).call(donutChart);
-
                     actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
 
                     expect(actual).toEqual(expected);
@@ -165,22 +163,19 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 it('should fill the empty slice with emptyDataConfig.emptySliceColor', () => {
                     let actual;
                     let expected = '#000000';
-
                     let emptyDataConfig = {
                         emptySliceColor: expected,
                         showEmptySlice: true,
                     }
-
-                    donutChart.emptyDataConfig(emptyDataConfig);
-
                     let dataset = aTestDataSet()
                         .withAllTopicsAtZero()
                         .build();
 
+                    donutChart.emptyDataConfig(emptyDataConfig);
                     containerFixture.datum(dataset).call(donutChart);
 
                     let paths = containerFixture.selectAll('.donut-chart .arc path').nodes();
-
+                   
                     actual = d3.select(paths[0]).attr('fill');
 
                     expect(actual).toEqual(expected);
@@ -255,7 +250,6 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     let newDataset = buildDataSet('withThreeCategories');
                     
                     containerFixture.datum(newDataset).call(donutChart);
-                    
                     actual = containerFixture.selectAll('.donut-chart .arc').nodes().length;
 
                     expect(actual).toEqual(expected);
@@ -267,7 +261,6 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     let newDataset = buildDataSet('withThreeCategories');
                     
                     containerFixture.datum(newDataset).call(donutChart);
-                    
                     actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
     
                     expect(actual).toEqual(expected);
