@@ -101,14 +101,130 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     containerFixture.datum(dataset).call(donutChart);
                     
                     let paths = containerFixture.selectAll('path').nodes();
-                    let actualFirstPathFill = d3.select(paths[0]).attr('fill');
-                    let actualSecondPathFill = d3.select(paths[1]).attr('fill');
-                    let actualThirdPathFill = d3.select(paths[2]).attr('fill');
+                    let actualFirstPathFill = paths[0].getAttribute('fill');
+                    let actualSecondPathFill = paths[1].getAttribute('fill');
+                    let actualThirdPathFill = paths[2].getAttribute('fill');
 
                     expect(actualFirstPathFill).toEqual(expectedFills[0]);
                     expect(actualSecondPathFill).toEqual(expectedFills[1]);
                     expect(actualThirdPathFill).toEqual(expectedFills[2]);
                 });
+            });
+
+
+            describe('when all sections are zero and emptyDataConfig.showEmptySlice', () => {
+
+                it('percentage label should be 0%', () => {
+                    let actual;
+                    let expected = '0.0%';
+
+                    let emptyDataConfig = {
+                        emptySliceColor: '#EFF2F5',
+                        showEmptySlice: true,
+                    }
+
+                    let dataset = aTestDataSet()
+                        .withAllTopicsAtZero()
+                        .build();
+
+                    donutChart.highlightSliceById(11)
+                    donutChart.emptyDataConfig(emptyDataConfig);
+                    containerFixture.datum(dataset).call(donutChart);
+
+                    let textNodes = containerFixture.select('text.donut-text .value').nodes();
+                   
+                    actual = d3.select(textNodes[0]).text();
+  
+                    expect(expected).toEqual(actual);
+
+                });
+
+                it('should render a single filler slice', () => {
+                    let actual;
+                    let expected = 1;
+
+                    let emptyDataConfig = {
+                        emptySliceColor: '#EFF2F5',
+                        showEmptySlice: true,
+                    }
+
+                    let dataset = aTestDataSet()
+                        .withAllTopicsAtZero()
+                        .build();
+
+                    donutChart.emptyDataConfig(emptyDataConfig);
+                    containerFixture.datum(dataset).call(donutChart);
+                    actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
+
+                    expect(actual).toEqual(expected);
+
+                });
+
+                it('should fill the empty slice with emptyDataConfig.emptySliceColor', () => {
+                    let actual;
+                    let expected = '#000000';
+                    let emptyDataConfig = {
+                        emptySliceColor: expected,
+                        showEmptySlice: true,
+                    }
+                    let dataset = aTestDataSet()
+                        .withAllTopicsAtZero()
+                        .build();
+
+                    donutChart.emptyDataConfig(emptyDataConfig);
+                    containerFixture.datum(dataset).call(donutChart);
+
+                    let paths = containerFixture.selectAll('.donut-chart .arc path').nodes();
+                   
+                    actual = paths[0].getAttribute('fill');
+
+                    expect(actual).toEqual(expected);
+
+                });
+
+            });
+
+            describe('when data is empty and emptyDataConfig.showEmptySlice', () => {
+
+                it('should render a single filler slice', () => {
+                    let actual;
+                    let expected = 1;
+
+                    let emptyDataConfig = {
+                        emptySliceColor: '#000000',
+                        showEmptySlice: true,
+                    }
+
+                    donutChart.emptyDataConfig(emptyDataConfig);
+                    containerFixture.datum([]).call(donutChart);
+
+                    actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
+
+                    expect(actual).toEqual(expected);
+
+                });
+
+                it('should fill the empty slice with emptyDataConfig.emptySliceColor', () => {
+                    let actual;
+                    let expected = '#000000';
+
+                    let emptyDataConfig = {
+                        emptySliceColor: expected,
+                        showEmptySlice: true,
+                    }
+
+                    donutChart.emptyDataConfig(emptyDataConfig);
+                    containerFixture.datum([]).call(donutChart);
+
+                    let paths = containerFixture.selectAll('.donut-chart .arc path').nodes();
+
+                    actual = paths[0].getAttribute('fill');
+
+                    expect(actual).toEqual(expected);
+
+                });
+
+
             });
 
             describe('when reloading with a one item dataset', () => {
@@ -131,7 +247,6 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     let newDataset = buildDataSet('withThreeCategories');
                     
                     containerFixture.datum(newDataset).call(donutChart);
-                    
                     actual = containerFixture.selectAll('.donut-chart .arc').nodes().length;
 
                     expect(actual).toEqual(expected);
@@ -143,7 +258,6 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     let newDataset = buildDataSet('withThreeCategories');
                     
                     containerFixture.datum(newDataset).call(donutChart);
-                    
                     actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
     
                     expect(actual).toEqual(expected);
