@@ -6,6 +6,7 @@ define(function(require) {
         jsonFivePlusOther = require('json-loader!../json/donutDataFivePlusOther.json'),
         jsonFivePlusOtherNoPercent = require('json-loader!../json/donutDataFivePlusOtherNoPercent.json'),
         jsonOneZeroed = require('json-loader!../json/donutDataOneZeroed.json'),
+        jsonAllZeroed = require('json-loader!../json/donutDataAllZeroed.json'),
         jsonThreeCategories = require('json-loader!../json/donutDataThreeCategories.json');
 
 
@@ -34,6 +35,13 @@ define(function(require) {
 
         this.withOneTopicAtZero = function() {
             var attributes = _.extend({}, this.config, jsonOneZeroed);
+
+            return new this.Klass(attributes);
+        };
+
+
+        this.withAllTopicsAtZero = function() {
+            var attributes = _.extend({}, this.config, jsonAllZeroed);
 
             return new this.Klass(attributes);
         };

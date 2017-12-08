@@ -26,11 +26,13 @@ define(function(require) {
      * @return {String}           Percentage
      */
     function calculatePercent(value, total, decimals) {
-        return d3Format.format(decimals)(value / total * 100);
+        const percent = total ? (value / total * 100) : 0;
+
+        return d3Format.format(decimals)(percent);
     }
 
     /**
-     * Calculate diference between dates in days
+     * Calculate difference between dates in days
      * @param  {String}  date1 Date in string form
      * @param  {String}  date2 Date in string form
      * @return {Number}        Number of days between dates
