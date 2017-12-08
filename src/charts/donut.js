@@ -14,6 +14,7 @@ define(function(require) {
     const textHelper = require('./helpers/text');
     const colorHelper = require('./helpers/colors');
     const {calculatePercent} = require('./helpers/common');
+    const {emptyDonutData} =require('./helpers/constants');
 
 
     /**
@@ -87,10 +88,16 @@ define(function(require) {
             svg,
 
             isAnimated = false,
+            isEmpty = false,
 
             highlightedSliceId,
             highlightedSlice,
             hasFixedHighlightedSlice = false,
+
+            emptyDataConfig = {
+                emptySliceColor: '#EFF2F5',
+                showEmptySlice: false
+            },
 
             quantityLabel = 'quantity',
             nameLabel = 'name',
@@ -144,6 +151,9 @@ define(function(require) {
 
                 if (highlightedSliceId) {
                     initHighlightSlice();
+                }
+                if (isEmpty && emptyDataConfig.showEmptySlice) {
+                    drawEmptySlice();
                 }
             });
         }
@@ -230,6 +240,7 @@ define(function(require) {
          * @private
          */
         function cleanData(data) {
+            let dataWithPercentages;
             let cleanData = data.reduce((acc, d) => {
                 // Skip data without quantity
                 if (d[quantityLabel] === undefined || d[quantityLabel] === null) {
@@ -244,17 +255,17 @@ define(function(require) {
             }, []);
 
             let totalQuantity = sumValues(cleanData);
-            let dataWithPercentages = cleanData.map((d) => {
-                let {percentage} = d;
 
-                if (numberFormat && percentage) {
-                    percentage = d3Format.format(numberFormat)(percentage);
-                }
+            if (totalQuantity === 0 && emptyDataConfig.showEmptySlice) {
+                isEmpty = true;
+            }
 
-                d.percentage = String(percentage || calculatePercent(d[quantityLabel], totalQuantity, percentageFormat));
+            dataWithPercentages = cleanData.map((d) => {
+                d.percentage = String(d.percentage || calculatePercent(d[quantityLabel], totalQuantity, percentageFormat));
 
                 return d;
-            });
+            }); 
+
 
             return dataWithPercentages;
         }
@@ -268,6 +279,33 @@ define(function(require) {
         }
 
         /**
+         * Draw an empty slice
+         * @private
+         */
+        function drawEmptySlice() {
+
+            if (slices) {
+                svg.selectAll('g.arc').remove();
+            }
+            slices = svg.select('.chart-group')
+                .selectAll('g.arc')
+                .data(layout(emptyDonutData));
+
+            let newSlices = slices.enter()
+                .append('g')
+                  .each(storeAngle)
+                  .each(reduceOuterRadius)
+                  .classed('arc', true)
+                  .append('path');
+        
+            newSlices.merge(slices)
+                .attr('fill', emptyDataConfig.emptySliceColor)
+                .attr('d', shape)
+            
+            slices.exit().remove();
+        }
+
+        /**
          * Draws the values on the donut slice inside the text element
          *
          * @param  {Object} obj Data object
@@ -275,8 +313,9 @@ define(function(require) {
          */
         function drawLegend(obj) {
             if (obj.data) {
+
                 svg.select('.donut-text')
-                    .text(() => `${obj.data.percentage}% ${ obj.data.name}`)
+                    .text(() => `${obj.data.percentage}% ${obj.data.name}`)
                     .attr('dy', '.2em')
                     .attr('text-anchor', 'middle');
 
@@ -507,6 +546,24 @@ define(function(require) {
                 return colorSchema;
             }
             colorSchema = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the emptyDataConfig of the chart. If set and data is empty (quantity
+         * adds up to zero or there are no entries), the chart will render an empty slice
+         * with a given color (light gray by default)
+         * @param  {Object} _x emptyDataConfig object to get/set
+         * @return { Object | module} Current config for when chart data is an empty array
+         * @public
+         * @example donutChart.emptyDataConfig({showEmptySlice: true, emptySliceColor: '#000000'})
+         */
+        exports.emptyDataConfig = function(_x) {
+            if (!arguments.length) {
+                return emptyDataConfig;
+            }
+            emptyDataConfig = _x;
 
             return this;
         };

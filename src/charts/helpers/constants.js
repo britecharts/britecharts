@@ -14,9 +14,16 @@ define(function() {
         ONE_DAY: 86400001
     };
 
+    const emptyDonutData = [{
+        'quantity': 1,
+        'percentage': 100
+    }];
+
     return {
         axisTimeCombinations,
-        timeBenchmarks
+        emptyDonutData,
+        timeBenchmarks,
+        lineGradientId: 'lineGradientId'
     };
 });
 
