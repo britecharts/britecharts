@@ -301,6 +301,10 @@ define(function(require) {
             newSlices.merge(slices)
                 .attr('fill', emptyDataConfig.emptySliceColor)
                 .attr('d', shape)
+                .transition()
+                .ease(ease)
+                .duration(pieDrawingTransitionDuration)
+                .attrTween('d', tweenLoading);
             
             slices.exit().remove();
         }
@@ -730,6 +734,36 @@ define(function(require) {
 
             return this; 
         }
+
+       /**
+         * Gets or Sets the percentage format for the percentage label
+         * @param  {String} _x              Format for the percentage label (e.g. '.1f')
+         * @return { (Number | Module) }    Current format or Donut Chart module to chain calls
+         * @public
+         */
+        exports.percentageFormat = function(_x) {
+            if (!arguments.length) {
+                return percentageFormat;
+            }
+            percentageFormat = _x;
+
+            return this;
+        };
+
+     /**
+         * Gets or Sets the radiusHoverOffset of the chart
+         * @param  {Number} _x              Desired offset for the hovered slice
+         * @return { (Number | Module) }    Current offset or Donut Chart module to chain calls
+         * @public
+         */
+        exports.radiusHoverOffset = function(_x) {
+            if (!arguments.length) {
+                return radiusHoverOffset;
+            }
+            radiusHoverOffset = _x;
+
+            return this;
+        };
 
         /**
          * Gets or Sets the width of the chart
