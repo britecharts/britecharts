@@ -342,6 +342,31 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     expect(actual).toBe(expected);
                 });
 
+                it('should provide percentageFormat getter and setter', () => {
+                    let previous = donutChart.percentageFormat(),
+                        expected = '.0f',
+                        actual;
+
+                    donutChart.percentageFormat(expected);
+                    actual = donutChart.percentageFormat();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+
+                it('should provide radiusHoverOffset getter and setter', () => {
+                    let previous = donutChart.radiusHoverOffset(),
+                        expected = 15,
+                        actual;
+
+                    donutChart.radiusHoverOffset(expected);
+                    actual = donutChart.radiusHoverOffset();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
                 it('should provide height getter and setter', () => {
                     let previous = donutChart.height(),
                         expected = 20,
