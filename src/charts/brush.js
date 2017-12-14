@@ -249,7 +249,7 @@ define(function(require) {
         }
 
         /**
-         * Cleaning data casting the values and dates to the proper type while keeping 
+         * Cleaning data casting the values and dates to the proper type while keeping
          * the rest of properties on the data
          * @param  {BrushChartData} originalData        Raw data from the container
          * @return {BrushChartData}                     Clean data
@@ -320,7 +320,7 @@ define(function(require) {
                 .classed('brush-rect', true)
                 .attr('height', chartHeight);
 
-            chartBrush.select('.selection')
+            chartBrush.selectAll('.selection')
                 .attr('fill', `url(#${gradientId})`);
         }
 
