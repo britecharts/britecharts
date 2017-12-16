@@ -26,22 +26,19 @@ define(function (require) {
 
     /**
      * @typedef GroupedBarChartData
-     * @type {Object}
-     * @property {Object[]} data       All data entries
+     * @type {Object[]}
      * @property {String} name         Name of the entry
      * @property {String} group        group of the entry
      * @property {Number} value        Value of the entry
      *
      * @example
-     * {
-     *     'data': [
-     *         {
-     *             "name": "2011-01",
-     *             "group": "Direct",
-     *             "value": 0
-     *         }
-     *     ]
-     * }
+     * [
+     *     {
+     *         "name": "2011-01",
+     *         "group": "Direct",
+     *         "value": 0
+     *     }
+     * ]
      */
 
     /**
@@ -338,7 +335,7 @@ define(function (require) {
         }
 
         /**
-         * Cleaning data casting the values, groups, topic names and names to the proper type while keeping 
+         * Cleaning data casting the values, groups, topic names and names to the proper type while keeping
          * the rest of properties on the data
          * @param  {GroupedBarChartData} originalData   Raw data from the container
          * @return {GroupedBarChartData}                Parsed data with values and dates
