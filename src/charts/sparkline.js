@@ -29,6 +29,7 @@ define(function(require){
      *         value: 2,
      *         date: '2011-01-07T00:00:00Z'
      *     }
+     * ]
      */
 
     /**
@@ -173,7 +174,7 @@ define(function(require){
         }
 
         /**
-         * Cleaning data casting the values and dates to the proper type while keeping 
+         * Cleaning data casting the values and dates to the proper type while keeping
          * the rest of properties on the data
          * @param  {SparklineChartData} originalData    Raw data from the container
          * @return {SparklineChartData}                 Clean data
@@ -341,7 +342,7 @@ define(function(require){
             areaGradient = _x;
             return this;
         };
-    
+
         /**
          * Gets or Sets the dateLabel of the chart
          * @param  {Number} _x Desired dateLabel for the graph

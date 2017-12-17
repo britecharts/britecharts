@@ -44,22 +44,19 @@ define(function(require){
 
     /**
      * @typedef areaChartData
-     * @type {Object}
-     * @property {Object[]} data       All data entries
+     * @type {Object[]}
      * @property {String} date         Date of the entry
      * @property {String} name         Name of the entry
      * @property {Number} value        Value of the entry
      *
      * @example
-     * {
-     *     'data': [
-     *         {
-     *             "date": "2011-01-05T00:00:00Z",
-     *             "name": "Direct",
-     *             "value": 0
-     *         }
-     *     ]
-     * }
+     * [
+     *     {
+     *         "date": "2011-01-05T00:00:00Z",
+     *         "name": "Direct",
+     *         "value": 0
+     *     }
+     * ]
      */
 
     /**
@@ -112,10 +109,10 @@ define(function(require){
             highlightCircleSize = 12,
             highlightCircleRadius = 5,
             highlightCircleStroke = 1.2,
-            highlightCircleActiveRadius = highlightCircleRadius + 2,       
-            highlightCircleActiveStrokeWidth = 5, 
-            highlightCircleActiveStrokeOpacity = 0.6,     
-            
+            highlightCircleActiveRadius = highlightCircleRadius + 2,
+            highlightCircleActiveStrokeWidth = 5,
+            highlightCircleActiveStrokeOpacity = 0.6,
+
             areaOpacity = 0.24,
             categoryColorMap,
             order,
@@ -140,7 +137,7 @@ define(function(require){
             areaAnimationDelays = d3Array.range(areaAnimationDelayStep, maxAreaNumber* areaAnimationDelayStep, areaAnimationDelayStep),
 
             overlay,
-            overlayColor = 'rgba(0, 0, 0, 0)',            
+            overlayColor = 'rgba(0, 0, 0, 0)',
             verticalMarkerContainer,
             verticalMarkerLine,
             epsilon,
@@ -223,7 +220,7 @@ define(function(require){
 
         /**
          * Adds a filter to the element
-         * @param {DOMElement} el 
+         * @param {DOMElement} el
          * @private
          */
         function addGlowFilter(el) {
@@ -492,7 +489,7 @@ define(function(require){
         }
 
         /**
-         * Cleaning data casting the values and dates to the proper type while keeping 
+         * Cleaning data casting the values and dates to the proper type while keeping
          * the rest of properties on the data. It creates fake data is the data is empty.
          * @param  {areaChartData} originalData   Raw data from the container
          * @return {areaChartData}                Parsed data with values and dates
@@ -504,7 +501,7 @@ define(function(require){
             return originalData.reduce((acc, d) => {
                 d.date = new Date(d[dateLabel]),
                 d.value = +d[valueLabel]
-    
+
                 return [...acc, d];
             }, []);
         }
@@ -703,7 +700,7 @@ define(function(require){
 
             if (isUsingFakeData) {
                 drawEmptyDataLine();
-                
+
                 return;
             }
 
@@ -1296,7 +1293,7 @@ define(function(require){
             width = _x;
 
             return this;
-        };        
+        };
 
         /**
          * Exposes the ability to force the chart to show a certain x format
