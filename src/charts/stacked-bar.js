@@ -27,22 +27,19 @@ define(function(require){
 
     /**
      * @typedef stackedBarData
-     * @type {Object}
-     * @property {Object[]} data       All data entries
+     * @type {Object[]}
      * @property {String} name         Name of the entry
      * @property {String} stack        Stack of the entry
      * @property {Number} value        Value of the entry
      *
      * @example
-     * {
-     *     'data': [
-     *         {
-     *             "name": "2011-01",
-     *             "stack": "Direct",
-     *             "value": 0
-     *         }
-     *     ]
-     * }
+     * [
+     *     {
+     *         "name": "2011-01",
+     *         "stack": "Direct",
+     *         "value": 0
+     *     }
+     * ]
      */
 
     /**
@@ -107,7 +104,7 @@ define(function(require){
             data,
             transformedData,
             stacks,
-            layerElements,            
+            layerElements,
 
             tooltipThreshold = 480,
 
@@ -330,7 +327,7 @@ define(function(require){
         }
 
         /**
-         * Cleaning data casting the values, stacks, names and topic names to the proper type while keeping 
+         * Cleaning data casting the values, stacks, names and topic names to the proper type while keeping
          * the rest of properties on the data
          * @param  {stackedBarData} originalData   Raw data from the container
          * @return {stackedBarData}                Parsed data with values and dates
@@ -431,7 +428,7 @@ define(function(require){
             let barJoin = layerElements
                 .selectAll('.bar')
                 .data((d) => d);
-                    
+
             // Enter + Update
             let bars = barJoin
                     .enter()

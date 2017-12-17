@@ -28,6 +28,7 @@ define(function(require){
      *         quantity: 3,
      *         name: 'luminous'
      *     }
+     * ]
      */
 
 
