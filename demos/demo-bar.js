@@ -101,7 +101,7 @@ if (d3Selection.select('.js-bar-chart-tooltip-container').node()){
     createBarChartWithTooltip();
     createHorizontalBarChart();
     createSimpleBarChart();
-    
+
     let redrawCharts = function(){
         d3Selection.selectAll('.bar-chart').remove();
         createBarChartWithTooltip();

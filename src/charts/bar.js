@@ -115,7 +115,12 @@ define(function(require) {
 
             // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
-            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove'),
+            dispatcher = d3Dispatch.dispatch(
+                'customMouseOver',
+                'customMouseOut',
+                'customMouseMove',
+                'customClick'
+            ),
 
             // extractors
             getName = ({name}) => name,
@@ -353,6 +358,9 @@ define(function(require) {
                 .on('mouseout', function(d) {
                     handleMouseOut(this, d, chartWidth, chartHeight);
                 })
+                .on('click', function(d) {
+                    handleClick(this, d, chartWidth, chartHeight);
+                })
               .merge(bars)
                 .attr('x', 0)
                 .attr('y', ({name}) => yScale(name))
@@ -383,6 +391,9 @@ define(function(require) {
                 })
                 .on('mouseout', function(d) {
                     handleMouseOut(this, d, chartWidth, chartHeight);
+                })
+                .on('click', function(d) {
+                    handleClick(this, d, chartWidth, chartHeight);
                 });
 
             bars
@@ -420,6 +431,9 @@ define(function(require) {
                 .on('mouseout', function(d) {
                     handleMouseOut(this, d, chartWidth, chartHeight);
                 })
+                .on('click', function(d) {
+                    handleClick(this, d, chartWidth, chartHeight);
+                })
               .merge(bars)
                 .attr('x', ({name}) => xScale(name))
                 .attr('width', xScale.bandwidth())
@@ -454,6 +468,9 @@ define(function(require) {
                 })
                 .on('mouseout', function(d) {
                     handleMouseOut(this, d, chartWidth, chartHeight);
+                })
+                .on('click', function(d) {
+                    handleClick(this, d, chartWidth, chartHeight);
                 })
               .merge(bars)
                 .attr('x', ({name}) => xScale(name))
@@ -645,6 +662,15 @@ define(function(require) {
             d3Selection.select(e).attr('fill', ({name}) => colorMap(name));
         }
 
+        /**
+         * Custom onClick event handler
+         * @return {void}
+         * @private
+         */
+        function handleClick(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customClick', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        }
+
         // API
 
         /**
@@ -796,7 +822,7 @@ define(function(require) {
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
          * We are going to expose this events:
-         * customMouseOver, customMouseMove and customMouseOut
+         * customMouseOver, customMouseMove, customMouseOut, and customClick
          *
          * @return {module} Bar Chart
          * @public
