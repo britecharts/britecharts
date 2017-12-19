@@ -61,7 +61,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
         });
 
         describe('when reloading with a different dataset', () => {
-            
+
             it('should render in the same svg', function() {
                 let actual;
                 let expected = 1;
@@ -89,7 +89,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
         });
 
         describe('when orderingFunction is called', () => {
-            
+
             it('accepts custom descending order function', () => {
                 let fn = (a, b) => b.value - a.value; 
                 let actual,
@@ -112,7 +112,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                     expected = {
                         name: 'Z',
                         value: 0.00074
-                    }; 
+                    };
 
                 barChart.orderingFunction(fn);
                 containerFixture.call(barChart)
@@ -220,10 +220,10 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 let previous = barChart.betweenBarsPadding(),
                     expected = 0.5,
                     actual;
-                
+
                 barChart.betweenBarsPadding(expected);
                 actual = barChart.betweenBarsPadding();
-                
+
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
@@ -358,6 +358,20 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
+            });
+        });
+
+        describe('when clicking on a bar', function() {
+
+            it('should trigger a callback on mouse click', () => {
+                let bar = containerFixture.selectAll('.bar:nth-child(1)');
+                let callbackSpy = jasmine.createSpy('callback');
+
+                barChart.on('customClick', callbackSpy);
+                bar.dispatch('click');
+
+                expect(callbackSpy.calls.count()).toBe(1);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
             });
         });
 
