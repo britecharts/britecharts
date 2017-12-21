@@ -57,7 +57,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
             it('should render a slice for each data entry', () => {
                 let actual;
                 let expected = dataset.length;
-                
+
                 actual = containerFixture.selectAll('.donut-chart .arc').nodes().length;
 
                 expect(actual).toEqual(expected);
@@ -66,7 +66,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
             it('should render one path in each slice', () => {
                 let actual;
                 let expected = dataset.length;
-                
+
                 actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
 
                 expect(actual).toEqual(expected);
@@ -99,7 +99,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     donutChart.colorSchema(expectedFills);
 
                     containerFixture.datum(dataset).call(donutChart);
-                    
+
                     let paths = containerFixture.selectAll('path').nodes();
                     let actualFirstPathFill = paths[0].getAttribute('fill');
                     let actualSecondPathFill = paths[1].getAttribute('fill');
@@ -132,9 +132,9 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     containerFixture.datum(dataset).call(donutChart);
 
                     let textNodes = containerFixture.select('text.donut-text .value').nodes();
-                   
+
                     actual = d3.select(textNodes[0]).text();
-  
+
                     expect(expected).toEqual(actual);
 
                 });
@@ -175,7 +175,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     containerFixture.datum(dataset).call(donutChart);
 
                     let paths = containerFixture.selectAll('.donut-chart .arc path').nodes();
-                   
+
                     actual = paths[0].getAttribute('fill');
 
                     expect(actual).toEqual(expected);
@@ -235,7 +235,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     let newDataset = buildDataSet('withThreeCategories');
 
                     containerFixture.datum(newDataset).call(donutChart);
-                    
+
                     actual = containerFixture.selectAll('.donut-chart').nodes().length;
 
                     expect(actual).toEqual(expected);
@@ -245,7 +245,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     let actual;
                     let expected = 3;
                     let newDataset = buildDataSet('withThreeCategories');
-                    
+
                     containerFixture.datum(newDataset).call(donutChart);
                     actual = containerFixture.selectAll('.donut-chart .arc').nodes().length;
 
@@ -256,10 +256,10 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     let actual;
                     let expected = 3;
                     let newDataset = buildDataSet('withThreeCategories');
-                    
+
                     containerFixture.datum(newDataset).call(donutChart);
                     actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
-    
+
                     expect(actual).toEqual(expected);
                 });
             });
@@ -269,25 +269,25 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 it('the default order function sorts properly', () => {
                     // default: b.quantity - a.quantity (descending order)
                     let actual,
-                        expected = 4; 
+                        expected = 4;
 
                     donutChart.orderingFunction();
                     containerFixture.call(donutChart)
                     actual = containerFixture.selectAll('.chart-group .arc').nodes()[0].__data__.index;
-                    
+
                     expect(actual).toBe(expected);
                 });
 
                 it('it accepts a custom sorting function', () => {
                     // a.quantity - b.quantity (ascending order)
-                    let fn = (a, b) => a.quantity - b.quantity; 
+                    let fn = (a, b) => a.quantity - b.quantity;
                     let actual,
-                        expected = 1; 
+                        expected = 1;
 
                     donutChart.orderingFunction(fn);
                     containerFixture.call(donutChart)
                     actual = containerFixture.selectAll('.chart-group .arc').nodes()[0].__data__.index;
-    
+
                     expect(actual).toBe(expected);
                 });
             })
@@ -430,9 +430,9 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 it('should not have numberFormat by default', () =>{
                     let expected = undefined,
                         actual;
-    
+
                     actual = donutChart.numberFormat();
-    
+
                     expect(expected).toBe(actual);
                 });
 
@@ -450,6 +450,16 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
             });
 
             describe('when mouse events are triggered', () => {
+
+                it('should trigger an event on click', () => {
+                    let callback = jasmine.createSpy('clickCallback'),
+                        firstSlice = containerFixture.select('.chart-group .arc path');
+
+                    donutChart.on('customClick', callback);
+                    firstSlice.dispatch('click');
+                    expect(callback.calls.count()).toBe(1);
+                    expect(callback.calls.allArgs()[0].length).toBe(3);
+                });
 
                 it('should trigger an event on hover', () => {
                     let callback = jasmine.createSpy('hoverCallback'),
