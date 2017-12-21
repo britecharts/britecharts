@@ -109,7 +109,7 @@ define(function(require) {
             // colors
             colorScale,
             colorSchema = colorHelper.colorSchemas.britecharts,
-            
+
             // utils
             storeAngle = function(d) {
                 this._current = d;
@@ -119,7 +119,7 @@ define(function(require) {
             },
 
             orderingFunction = (a, b) => b.quantity - a.quantity,
-            
+
             sumValues = (data) => data.reduce((total, d) => d.quantity + total, 0),
 
             // extractors
@@ -127,7 +127,7 @@ define(function(require) {
             getSliceFill = ({data}) => colorScale(data.name),
 
             // events
-            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove', 'customClick');
 
         /**
          * This function creates the graph using the selection as container
@@ -225,7 +225,7 @@ define(function(require) {
             svg
                 .select('.container-group')
                 .attr('transform', `translate(${width / 2}, ${height / 2})`);
-            
+
             // Updates SVG size
             svg
                 .attr('width', width)
@@ -233,7 +233,7 @@ define(function(require) {
         }
 
         /**
-         * Cleaning data casting the quantities, names and percentages to the proper type while keeping 
+         * Cleaning data casting the quantities, names and percentages to the proper type while keeping
          * the rest of properties on the data. It also calculates the percentages if not present.
          * @param  {DonutChartData} data    Data as passed to the container
          * @return {DonutChartData}         Clean data with percentages
@@ -264,7 +264,7 @@ define(function(require) {
                 d.percentage = String(d.percentage || calculatePercent(d[quantityLabel], totalQuantity, percentageFormat));
 
                 return d;
-            }); 
+            });
 
 
             return dataWithPercentages;
@@ -297,7 +297,7 @@ define(function(require) {
                   .each(reduceOuterRadius)
                   .classed('arc', true)
                   .append('path');
-        
+
             newSlices.merge(slices)
                 .attr('fill', emptyDataConfig.emptySliceColor)
                 .attr('d', shape)
@@ -305,7 +305,7 @@ define(function(require) {
                 .ease(ease)
                 .duration(pieDrawingTransitionDuration)
                 .attrTween('d', tweenLoading);
-            
+
             slices.exit().remove();
         }
 
@@ -347,7 +347,7 @@ define(function(require) {
                   .each(reduceOuterRadius)
                   .classed('arc', true)
                   .append('path');
-        
+
             if (isAnimated) {
                 newSlices.merge(slices)
                     .attr('fill', getSliceFill)
@@ -359,6 +359,9 @@ define(function(require) {
                     })
                     .on('mouseout', function(d) {
                         handleMouseOut(this, d, chartWidth, chartHeight);
+                    })
+                    .on('click', function(d) {
+                        handleClick(this, d, chartWidth, chartHeight);
                     })
                     .transition()
                     .ease(ease)
@@ -377,8 +380,11 @@ define(function(require) {
                     .on('mouseout', function(d) {
                         handleMouseOut(this, d, chartWidth, chartHeight);
                     })
+                    .on('click', function(d) {
+                        handleClick(this, d, chartWidth, chartHeight);
+                    });
             }
-            
+
             slices.exit().remove();
         }
 
@@ -426,7 +432,7 @@ define(function(require) {
         function handleMouseOut(el, d, chartWidth, chartHeight) {
             cleanLegend();
 
-            // When there is a fixed highlighted slice, 
+            // When there is a fixed highlighted slice,
             // we will always highlight it and render legend
             if (highlightedSlice && hasFixedHighlightedSlice) {
                 drawLegend(highlightedSlice.__data__);
@@ -440,6 +446,15 @@ define(function(require) {
             }
 
             dispatcher.call('customMouseOut', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
+        }
+
+        /**
+         * Handles a path click
+         * @return {void}
+         * @private
+         */
+        function handleClick(el, d, chartWidth, chartHeight) {
+            dispatcher.call('customClick', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
         }
 
         /**
@@ -709,7 +724,7 @@ define(function(require) {
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
          * We are going to expose this events:
-         * customMouseOver, customMouseMove and customMouseOut
+         * customMouseOver, customMouseMove, customMouseOut and customClick
          *
          * @return {module} Bar Chart
          * @public
@@ -728,11 +743,11 @@ define(function(require) {
          */
         exports.orderingFunction = function(_x) {
             if (!arguments.length) {
-                return orderingFunction; 
+                return orderingFunction;
             }
-            orderingFunction = _x; 
+            orderingFunction = _x;
 
-            return this; 
+            return this;
         }
 
        /**
