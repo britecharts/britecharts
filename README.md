@@ -1,8 +1,11 @@
 # Britecharts
-
-[![Britecharts Logo][36]][31]
-
 > Britecharts is a client-side **reusable Charting Library** based on [D3.js v4][1] that offers easy and intuitive use of charts and components that can be composed together to create amazing visualizations.
+
+| [![Bar Chart][barChartImg]][barChartDemo] | [![Line Chart][lineChartImg]][lineChartDemo] | [![Donut Chart][donutChartImg]][donutChartDemo] |
+| ------ | ----- | ----- |
+| [![Stacked Bar Chart][stackedBarChartImg]][stackedBarChartDemo] | [![Grouped Bar Chart][groupedBarChartImg]][groupedBarChartDemo] | [![Step Chart][stepChartImg]][stepChartDemo] |
+| [![Sparkline Chart][sparklineChartImg]][sparklineChartDemo] | [![Stacked Area Chart][stackedAreaChartImg]][stackedAreaChartDemo] | [![Brush Chart][brushChartImg]][brushChartDemo] |
+
 
 [![Build Status](https://travis-ci.org/eventbrite/britecharts.svg?branch=master)](https://travis-ci.org/eventbrite/britecharts)
 [![npm version](https://badge.fury.io/js/britecharts.svg)](https://badge.fury.io/js/britecharts)
@@ -31,18 +34,18 @@ The typical use of Britecharts involves creating a chart using its simple API, t
 
 All the components expose some **common API methods** like width, height, and margin. Additionally, each chart or component can expose specific methods you can find in the documentation:
 
- - [API][25], [Demo][5] Line Chart
- - [API][22], [Demo][4] Bar Chart
- - [API][21], [Demo][6] Donut Chart
- - [API][38], [Demo][39] Stacked Bar Chart
- - [API][40], [Demo][41] Grouped Bar Chart
- - [API][23], [Demo][18] Brush Chart
- - [API][29], [Demo][7] Sparkline Chart
- - [API][30], [Demo][8] Stacked Area Chart
- - [API][28], [Demo][11] Step Chart
- - [API][26], [Demo][4] Mini Tooltip 
- - [API][27], [Demo][5] Tooltip 
- - [API][24], [Demo][6] Legend 
+ - [API][25], [Demo][lineChartDemo] Line Chart
+ - [API][22], [Demo][barChartDemo] Bar Chart
+ - [API][21], [Demo][donutChartDemo] Donut Chart
+ - [API][38], [Demo][stackedBarChartDemo] Stacked Bar Chart
+ - [API][40], [Demo][groupedBarChartDemo] Grouped Bar Chart
+ - [API][23], [Demo][brushChartDemo] Brush Chart
+ - [API][29], [Demo][sparklineChartDemo] Sparkline Chart
+ - [API][30], [Demo][stackedAreaChartDemo] Stacked Area Chart
+ - [API][28], [Demo][stepChartDemo] Step Chart
+ - [API][26], [Demo][barChartDemo] Mini Tooltip
+ - [API][27], [Demo][lineChartDemo] Tooltip
+ - [API][24], [Demo][6] Legend
 
 ## Installation
 
@@ -67,9 +70,9 @@ They also provide some minimal CSS styling, that can be loaded independently or 
 ## Roadmap
 This project is in active development. You can check our [plans for the next release][release3Project] to see what's coming, and vote for your favorite [proposals][proposals] on the issues page.
 
-To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3Slack], in the **#britecharts** channel. If you want to help, you can check the [contributing][35] guide. 
+To give your feedback, you can open a new issue. You can also find us in the [D3.js slack group][d3Slack], in the **#britecharts** channel. If you want to help, you can check the [contributing][35] guide.
 
-If you work with Angular, check out [ngx-britecharts][angularWrapper] and their [demos][angularWrapperDemos]. We are also preparing a wrapper for React, and we will be talking about it on our [twitter][twitter]. 
+If you work with Angular, check out [ngx-britecharts][angularWrapper] and their [demos][angularWrapperDemos]. We are also preparing a wrapper for React, and we will be talking about it on our [twitter][twitter].
 
 ## Acknowledgments
 
@@ -97,21 +100,12 @@ Read more in the [license document][15]
 [1]: https://d3js.org/
 [2]: https://webpack.github.io/
 [3]: https://bost.ocks.org/mike/chart/
-[4]: https://eventbrite.github.io/britecharts/tutorial-bar.html
-[5]: https://eventbrite.github.io/britecharts/tutorial-line.html
-[6]: https://eventbrite.github.io/britecharts/tutorial-donut.html
-[7]: https://eventbrite.github.io/britecharts/tutorial-sparkline.html
-[8]: https://eventbrite.github.io/britecharts/tutorial-stacked-area.html
-[9]: https://eventbrite.github.io/britecharts/tutorial-stacked-area.html
-[10]: https://eventbrite.github.io/britecharts/tutorial-donut.html
-[11]: https://eventbrite.github.io/britecharts/tutorial-step.html
 [12]: https://nodejs.org/en/download/
 [13]: https://github.com/eventbrite/britecharts/releases
 [14]: https://www.apache.org/licenses/LICENSE-2.0
 [15]: https://github.com/eventbrite/britecharts/blob/master/LICENSE.md
 [16]: https://github.com/eventbrite/britecharts/issues
 [17]: https://github.com/babel/babel
-[18]: https://eventbrite.github.io/britecharts/tutorial-brush.html
 [19]: https://bleedingedgepress.com/our-books/developing-a-d3-js-edge/
 [20]: https://www.packtpub.com/web-development/mastering-d3js
 [21]: https://eventbrite.github.io/britecharts/module-Donut.html
@@ -132,9 +126,7 @@ Read more in the [license document][15]
 [36]: https://eventbrite.github.io/britecharts/img/logo-stripes-small.png
 [37]: https://github.com/d3/d3-selection
 [38]: https://eventbrite.github.io/britecharts/module-Stacked-bar.html
-[39]: https://eventbrite.github.io/britecharts/tutorial-stacked-bar.html
 [40]: https://eventbrite.github.io/britecharts/module-Grouped-bar.html
-[41]: https://eventbrite.github.io/britecharts/tutorial-grouped-bar.html
 [42]: https://scrimba.com/casts/cZWm2tb
 
 [cdnDemo]: https://eventbrite.github.io/britecharts/cdn.html
@@ -151,4 +143,26 @@ Read more in the [license document][15]
 [proposals]: https://github.com/eventbrite/britecharts/issues?q=is%3Aissue+is%3Aopen+label%3Aproposal
 [release3Project]: https://github.com/eventbrite/britecharts/projects/2
 
+[barChartDemo]: https://eventbrite.github.io/britecharts/tutorial-bar.html "Check the Demo"
+[lineChartDemo]: https://eventbrite.github.io/britecharts/tutorial-line.html "Check the Demo"
+[donutChartDemo]: https://eventbrite.github.io/britecharts/tutorial-donut.html "Check the Demo"
+[sparklineChartDemo]: https://eventbrite.github.io/britecharts/tutorial-sparkline.html "Check the Demo"
+[stackedAreaChartDemo]: https://eventbrite.github.io/britecharts/tutorial-stacked-area.html "Check the Demo"
+[stepChartDemo]: https://eventbrite.github.io/britecharts/tutorial-step.html "Check the Demo"
+[brushChartDemo]: https://eventbrite.github.io/britecharts/tutorial-brush.html "Check the Demo"
+[stackedBarChartDemo]: https://eventbrite.github.io/britecharts/tutorial-stacked-bar.html "Check the Demo"
+[groupedBarChartDemo]: https://eventbrite.github.io/britecharts/tutorial-grouped-bar.html "Check the Demo"
+[stackedAreaDemo]: https://eventbrite.github.io/britecharts-react/#stacked-area-chart "Check the Demo"
+[stackedAreaImg]: https://raw.githubusercontent.com/eventbrite/britecharts-react/master/src/docs/images/thumbnails/stacked-area.png
+
+[barChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/bar-chart.png
+[lineChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/line-chart.png
+[donutChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/donut-chart.png
+[sparklineChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/sparkline-chart.png
+[stackedAreaChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/stacked-area-chart.png
+[stepChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/step-chart.png
+[brushChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/brush-chart.png
+[stackedBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/stacked-bar-chart.png
+[groupedBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/grouped-bar-chart.png
+[legendChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/legend-chart.png
 
