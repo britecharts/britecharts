@@ -67,7 +67,6 @@
 /* Footer */
 .footer {
     bottom: 0;
-    position: sticky;
     background-color: white;
     padding: 10px;
 }
@@ -110,6 +109,11 @@
     background-color: white;
     margin: 0 auto;
     text-align: center;
+    min-height: 32vw;
+
+    @media (min-width: 7682px) {
+        min-height: 22vw;
+    }
 }
 
 .is-hidden {

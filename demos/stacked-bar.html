@@ -9,21 +9,25 @@
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
 stackedBar
-    .tooltipThreshold(400)
+    .tooltipThreshold(600)
     .width(containerWidth)
+    .grid('horizontal')
     .isAnimated(true)
-    .valueLabel('views')
     .stackLabel('stack')
     .nameLabel('date')
+    .valueLabel('views')
+    .betweenBarsPadding(0.3)
     .on('customMouseOver', chartTooltip.show)
-    .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-        chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+    .on('customMouseMove', function(dataPoint, topicColorMap, x, y) {
+        chartTooltip.update(dataPoint, topicColorMap, x, y);
     })
     .on('customMouseOut', chartTooltip.hide);
+
 container.datum(dataset.data).call(stackedBar);
 
 chartTooltip
     .title('Testing tooltip');
+
 tooltipContainer = d3.select('.metadata-group');
 tooltipContainer.datum([]).call(chartTooltip);
                 </code></pre>

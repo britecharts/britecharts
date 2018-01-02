@@ -79,6 +79,7 @@ define(function(require){
             yAxis,
 
             aspectRatio = null,
+            betweenBarsPadding = 0.1,
 
             yTickTextYOffset = -8,
             yTickTextXOffset = -20,
@@ -277,12 +278,12 @@ define(function(require){
                 yScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([chartHeight, 0])
-                    .padding(0.1);
+                    .padding(betweenBarsPadding);
             } else {
                 xScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([0, chartWidth ])
-                    .padding(0.1);
+                    .padding(betweenBarsPadding);
 
                 yScale = d3Scale.scaleLinear()
                     .domain([0,yMax])
@@ -760,6 +761,22 @@ define(function(require){
                 return aspectRatio;
             }
             aspectRatio = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the padding of the stacked bar chart
+         * The default value is
+         * @param  { Number | module } _x Padding value to get/set
+         * @return { padding | module} Current padding or Chart module to chain calls
+         * @public
+         */
+        exports.betweenBarsPadding = function (_x) {
+            if (!arguments.length) {
+                return betweenBarsPadding;
+            }
+            betweenBarsPadding = _x;
 
             return this;
         };
