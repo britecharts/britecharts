@@ -15,7 +15,7 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 return acc;
             };
 
-    describe('Grouped Bar Chart', () => {
+    describe('Stacked Bar Chart', () => {
         let stackedBarChart, dataset, containerFixture, f;
 
         beforeEach(() => {
@@ -82,7 +82,7 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
         });
 
         describe('when reloading with a two sources dataset', () => {
-            
+
             it('should render in the same svg', function() {
                 let actual;
                 let expected = 1;
@@ -131,6 +131,18 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 actual = stackedBarChart.aspectRatio();
 
                 expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a betweenBarsPadding getter and setter', () => {
+                let previous = stackedBarChart.betweenBarsPadding(),
+                    expected = 0.5,
+                    actual;
+
+                stackedBarChart.betweenBarsPadding(expected);
+                actual = stackedBarChart.betweenBarsPadding();
+
+                expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
 
@@ -293,7 +305,7 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 expect(defaultLocale).not.toBe(testValue);
                 expect(newLocale).toBe(testValue);
             });
-            
+
             it('should provide xTicks getter and setter', () => {
                 let previous = stackedBarChart.xTicks(),
                     expected = 4,

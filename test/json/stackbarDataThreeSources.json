@@ -9,13 +9,13 @@
         {
             "stack": "vivid",
             "name": "Direct2",
-            "views": 10,
+            "views": 4,
             "date": "2011-01-06"
         },
         {
             "stack": "vivid",
             "name": "Direct3",
-            "views": 16,
+            "views": 12,
             "date": "2011-01-07"
         },
         {
@@ -27,7 +27,7 @@
         {
             "stack": "sparkling",
             "name": "Eventbrite1",
-            "views": 23,
+            "views": 18,
             "date": "2011-01-05"
         },
         {
@@ -63,13 +63,13 @@
         {
             "stack": "sunny",
             "name": "Email3",
-            "views": 26,
+            "views": 16,
             "date": "2011-01-07"
         },
         {
             "stack": "sunny",
             "name": "Email4",
-            "views": 33,
+            "views": 25,
             "date": "2011-01-08"
         }
     ]
