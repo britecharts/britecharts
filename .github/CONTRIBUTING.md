@@ -121,7 +121,7 @@ Adding a new chart is a bunch of work, but we hope that using the current code a
 ## Pull Requests
 Please use the [issue tracker](https://github.com/eventbrite/britecharts/issues) to discuss potential improvements you want to make before sending a Pull Request for larger changes.
 
-We always have tickets labelled 'help wanted' or 'good first issue'. They are a great starting point if you want to contribute. Don't hesitate to ask questions about the issue if you are not sure about the strategy to follow.
+We always have tickets labeled 'help wanted' or 'good first issue'. They are a great starting point if you want to contribute. Don't hesitate to ask questions about the issue if you are not sure about the strategy to follow.
 
 You may also take on any issues that don't currently have an assignee and are labeled as 'ready to go'.
 

@@ -114,7 +114,7 @@ This is really important as our documentation gets generated from these jsDoc co
 **[⬆ back to top](#table-of-contents)**
 
 ## Append Indentation
-It is a [usual pattern](https://bost.ocks.org/mike/d3/workshop/#35) in the D3.js world to apply a slightly different indentation to operations that change the selection, like the 'apply' method of a selection. We will apply two spaces instead of four:
+It is a [usual pattern](https://bost.ocks.org/mike/d3/workshop/#35) in the D3.js world to apply a slightly different indentation to operations that change the selection, like the 'apply' method of a selection. When the selection changes, we indent with two spaces instead of four:
 
 ```
 // good
