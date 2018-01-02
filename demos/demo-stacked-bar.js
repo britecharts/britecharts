@@ -35,7 +35,7 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
             .stackLabel('stack')
             .nameLabel('date')
             .valueLabel('views')
-            .colorSchema(colors.colorSchemas.britecharts.reverse())
+            .betweenBarsPadding(0.3)
             .on('customMouseOver', function() {
                 chartTooltip.show();
             })
@@ -98,6 +98,7 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
             .nameLabel('date')
             .valueLabel('views')
             .stackLabel('stack')
+            .colorSchema(colors.colorSchemas.teal.reverse())
             .on('customMouseOver', function() {
                 chartTooltip.show();
             })
