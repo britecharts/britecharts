@@ -3,9 +3,8 @@
 
 | [![Bar Chart][barChartImg]][barChartDemo] | [![Line Chart][lineChartImg]][lineChartDemo] | [![Donut Chart][donutChartImg]][donutChartDemo] |
 | ------ | ----- | ----- |
-| [![Stacked Bar Chart][stackedBarChartImg]][stackedBarChartDemo] | [![Grouped Bar Chart][groupedBarChartImg]][groupedBarChartDemo] | [![Step Chart][stepChartImg]][stepChartDemo] |
-| [![Sparkline Chart][sparklineChartImg]][sparklineChartDemo] | [![Stacked Area Chart][stackedAreaChartImg]][stackedAreaChartDemo] | [![Brush Chart][brushChartImg]][brushChartDemo] |
-
+| [![Stacked Bar Chart][stackedBarChartImg]][stackedBarChartDemo] | [![Stacked Area Chart][stackedAreaChartLargeImg]][stackedAreaChartDemo] | [![Grouped Bar Chart][groupedBarChartImg]][groupedBarChartDemo] |
+| [![Sparkline Chart][sparklineChartImg]][sparklineChartDemo] | [![Legend Chart][legendChartImg]][donutChartDemo] | [![Brush Chart][brushChartImg]][brushChartDemo] |
 
 [![Build Status](https://travis-ci.org/eventbrite/britecharts.svg?branch=master)](https://travis-ci.org/eventbrite/britecharts)
 [![npm version](https://badge.fury.io/js/britecharts.svg)](https://badge.fury.io/js/britecharts)
@@ -160,6 +159,7 @@ Read more in the [license document][15]
 [donutChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/donut-chart.png
 [sparklineChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/sparkline-chart.png
 [stackedAreaChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/stacked-area-chart.png
+[stackedAreaChartLargeImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/stacked-area-chart-large.png
 [stepChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/step-chart.png
 [brushChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/brush-chart.png
 [stackedBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/stacked-bar-chart.png
