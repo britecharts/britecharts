@@ -10,7 +10,7 @@ const tooltip = require('./../src/charts/tooltip');
 const stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder');
 const colorSelectorHelper = require('./helpers/colorSelector');
 let redrawCharts;
-    
+
 require('./helpers/resizeHelper');
 
 const aTestDataSet = () => new stackedDataBuilder.StackedAreaDataBuilder();
@@ -26,12 +26,7 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
         dataset;
 
     if (containerWidth) {
-        // dataset = aTestDataSet().withReportData().build();
-        // dataset = aTestDataSet().with3Sources().build();
         dataset = aTestDataSet().with6Sources().build();
-        // dataset = aTestDataSet().withLargeData().build();
-        // dataset = aTestDataSet().withGeneratedData().build();
-        // dataset = aTestDataSet().withSalesChannelData().build();
 
         // StackedAreChart Setup and start
         stackedArea
@@ -47,7 +42,7 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
                 chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
-            })            
+            })
             .on('customMouseOut', chartTooltip.hide);
 
         if (optionalColorSchema) {
@@ -81,10 +76,7 @@ function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
         dataset;
 
     if (containerWidth) {
-        // dataset = aTestDataSet().withReportData().build();
         dataset = aTestDataSet().with3Sources().build();
-        // dataset = aTestDataSet().with6Sources().build();
-        // dataset = aTestDataSet().withLargeData().build();
 
         // StackedAreChart Setup and start
         stackedArea
