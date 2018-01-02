@@ -47,6 +47,12 @@
 #main {
     padding-top: 80px;
 }
+@media (min-width: 767px) and (max-width: 976px) {
+    #main {
+        padding-top: 124px;
+    }
+}
+
 /* TOC Sidebar */
 #toc {
     position: fixed;
@@ -144,7 +150,6 @@
     display: block;
 }
 .readme-section table img {
-    max-width: 300px;
     vertical-align: middle;
 }
 .readme-section table td {
