@@ -44,7 +44,7 @@ All the components expose some **common API methods** like width, height, and ma
  - [API][28], [Demo][stepChartDemo] Step Chart
  - [API][26], [Demo][barChartDemo] Mini Tooltip
  - [API][27], [Demo][lineChartDemo] Tooltip
- - [API][24], [Demo][6] Legend
+ - [API][24], [Demo][donutChartDemo] Legend
 
 ## Installation
 
