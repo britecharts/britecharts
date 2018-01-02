@@ -8,7 +8,7 @@
   1. [Comments](#comments)
 
 ## API Guidelines
-It’s easy to create new features and charts for Britecharts. However, naming the API methods is hard. We have created this API guidelines to help our contributors choosing the right names for their accessors and variables. 
+It’s easy to create new features and charts for Britecharts. However, naming the API methods is hard. We have created this API guidelines to help our contributors choosing the right names for their accessors and variables.
 
 This guidelines will help developers and improve the consistency of the library and lower the entry barrier to start contributing on Britecharts. They will also help reviewers at the time of doing code reviews.
 
@@ -19,10 +19,10 @@ For example: _height, width, margin, title_.
 
 ### Variable and function names length
 We will usually follow the 'Scope Rule':
-* Variable names: 
+* Variable names:
   * short in small scopes (d)
   * long in large scopes (percentageLabelMargin)
-* Functions names: 
+* Functions names:
   * short in large scopes like public commands (hide, width)
   * long in small scopes (drawVerticalExtendedLine)
 
@@ -68,7 +68,7 @@ We want to keep a standard code structure that is based on the original Reusable
   // D3 module requires
   // helper requires
   // Constants
-  
+
   // Data definition JSDoc comment
   // Module definition JSDoc comment
 
@@ -95,21 +95,50 @@ We want to keep a standard code structure that is based on the original Reusable
 
     // Building block definitions
     // API definitions ordered alphabetically
-  } 
+  }
 
 ```
 
 We like to do some light 'data cleaning' inside the `cleanData` method. That would usually include making sure that numbers are not strings. We also tend to use a reduce function, so we will create a copy of the original data and cast only the usual quantities or values we need for creating the chart.
 
-Note that most of the building blocks are dependant on the type of chart. For example, on the donut chart, we won't need to create axis or draw them, so those blocks won't be there.
+Note that most of the building blocks depend on the chart type. For example, on the donut chart, we won't need to create axis or draw them, so those blocks won't be there.
 
 
 **[⬆ back to top](#table-of-contents)**
 
 ## Comments
-We enforce jsDoc comments in our review process, so all of the functions will need a comment. We need also to be mindful and when we change the code of a function, check if its comments need an update.
+We enforce jsDoc comments in our review process, so all the functions will need a comment. We need also to be mindful and when we change the code of a function, check if its comments need an update.
 
 This is really important as our documentation gets generated from these jsDoc comments. You can read more about it [on the Contributing document](https://github.com/eventbrite/britecharts/blob/master/.github/CONTRIBUTING.md#jsdoc).
+
+**[⬆ back to top](#table-of-contents)**
+
+## Append Indentation
+It is a [usual pattern](https://bost.ocks.org/mike/d3/workshop/#35) in the D3.js world to apply a slightly different indentation to operations that change the selection, like the 'apply' method of a selection. We will apply two spaces instead of four:
+
+```
+// good
+let elements = svg.select('.element')
+                .selectAll('rect.element')
+                .data(data)
+                .enter()
+                  .append('rect')
+                    .attr('class', 'element')
+                    .attr('fill', 'red');
+
+// bad (append is in the same level as other operations)
+let elements = svg.select('.element')
+                .selectAll('rect.element')
+                .data(data)
+                .enter()
+                    .append('rect')
+                    .attr('class', 'element')
+                    .attr('fill', 'red');
+
+
+```
+This special indentation of the `append` call is highlighting a modification on the selection. Essentially, is helping developers know that the content of the 'elements' variable will contain a selection of `rect` items.
+
 
 **[⬆ back to top](#table-of-contents)**
 
