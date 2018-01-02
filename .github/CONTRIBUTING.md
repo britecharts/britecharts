@@ -10,8 +10,8 @@
     - [Modifying a chart](#modifying-a-chart)
     - [Creating a new chart](#creating-a-new-chart)
     - [Pull Requests](#pull-requests)
+    - [Reporting an Issue](#reporting-an-issue)
         - [Making pull requests](#making-pull-requests)
-    - [Reporting an Issue/Feature Requests](#reporting-an-issuefeature-requests)
     - [Standards](#standards)
         - [Test Driven Development](#test-driven-development)
         - [JSDoc](#jsdoc)
@@ -119,9 +119,21 @@ Adding a new chart is a bunch of work, but we hope that using the current code a
 
 
 ## Pull Requests
+Please use the [issue tracker](https://github.com/eventbrite/britecharts/issues) to discuss potential improvements you want to make before sending a Pull Request for larger changes.
 
-*Disclaimer*
--> While it is true that Britecharts is currently live in Eventbrite production, this project is not being monitored closely for open source contributions. Please have patience and we will get to any issues and pull requests as soon as we can.
+We always have tickets labelled 'help wanted' or 'good first issue'. They are a great starting point if you want to contribute. Don't hesitate to ask questions about the issue if you are not sure about the strategy to follow.
+
+You may also take on any issues that don't currently have an assignee and are labeled as 'ready to go'.
+
+---
+
+## Reporting an Issue
+
+Please use the [issues](https://github.com/eventbrite/britecharts/issues) section of the Britecharts github profile to submit any bug, question, proposal or feature request.
+
+In the case of bugs, please be descriptive and, if possible, include a codepen with the issue happening or add a screenshot of the issue.
+
+
 
 ### Making pull requests
 
@@ -141,11 +153,6 @@ Adding a new chart is a bunch of work, but we hope that using the current code a
 
 If you are new to Open Source, you can learn how to create [Pull Requests here](makeAPR).
 
----
-
-## Reporting an Issue/Feature Requests
-
-Please use the [issues](https://github.com/eventbrite/britecharts/issues) section of the Britecharts github profile to submit any bugs found. Please be descriptive and feel free to add pictures or links to docs to make your point as clear as possible.
 
 ---
 ## Standards
