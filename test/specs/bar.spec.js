@@ -216,6 +216,18 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
+            it('should provide loadingState getter and setter', () => {
+                let previous = barChart.loadingState(),
+                    expected = 'test',
+                    actual;
+
+                barChart.loadingState(expected);
+                actual = barChart.loadingState();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide padding getter and setter', () => {
                 let previous = barChart.betweenBarsPadding(),
                     expected = 0.5,

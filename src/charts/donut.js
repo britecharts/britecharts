@@ -15,6 +15,7 @@ define(function(require) {
     const colorHelper = require('./helpers/colors');
     const {calculatePercent} = require('./helpers/common');
     const {emptyDonutData} =require('./helpers/constants');
+    const {donut} = require('./helpers/loading');
 
 
     /**
@@ -71,6 +72,7 @@ define(function(require) {
             },
             width = 300,
             height = 300,
+            loadingState = donut,
             ease = d3Ease.easeCubicInOut,
             arcTransitionDuration = 750,
             pieDrawingTransitionDuration = 1200,
@@ -692,6 +694,21 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the loading state of the chart
+         * @param  {string} markup Desired markup to show when null data
+         * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+         * @public
+         */
+        exports.loadingState = function(_markup) {
+            if (!arguments.length) {
+                return loadingState;
+            }
+            loadingState = _markup;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the margin of the chart
          * @param  {Object} _x              Margin object to get/set
          * @return { (Object | Module) }    Current margin or Donut Chart module to chain calls
@@ -748,7 +765,7 @@ define(function(require) {
             orderingFunction = _x;
 
             return this;
-        }
+        };
 
        /**
          * Gets or Sets the percentage format for the percentage label

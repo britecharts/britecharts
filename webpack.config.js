@@ -27,6 +27,7 @@ var webpack = require('webpack'),
         'groupedBar': './src/charts/grouped-bar.js',
         'step': './src/charts/step.js',
         'brush': './src/charts/brush.js',
+        'loading': ['./src/charts/helpers/loading.js'],
         // hack to make webpack use colors as an entry point while its also a dependency of the charts above
         'colors': ['./src/charts/helpers/colors.js']
     },

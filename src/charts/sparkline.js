@@ -10,7 +10,7 @@ define(function(require){
 
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
-
+    const {line} = require('./helpers/loading');
     const {uniqueId} = require('./helpers/common');
 
     /**
@@ -62,6 +62,7 @@ define(function(require){
             },
             width = 100,
             height = 30,
+            loadingState = line,
 
             xScale,
             yScale,
@@ -426,6 +427,21 @@ define(function(require){
                 return lineGradient;
             }
             lineGradient = _x;
+            return this;
+        };
+        
+        /**
+         * Gets or Sets the loading state of the chart
+         * @param  {string} markup Desired markup to show when null data
+         * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+         * @public
+         */
+        exports.loadingState = function(_markup) {
+            if (!arguments.length) {
+                return loadingState;
+            }
+            loadingState = _markup;
+
             return this;
         };
 

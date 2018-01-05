@@ -136,6 +136,18 @@ define([
                 expect(actual).toBe(expected);
             });
 
+            it('should provide loadingState getter and setter', () => {
+                let previous = stepChart.loadingState(),
+                    expected = 'test',
+                    actual;
+
+                stepChart.loadingState(expected);
+                actual = stepChart.loadingState();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide width getter and setter', () => {
                 let defaultWidth = stepChart.width(),
                     testWidth = 200,
