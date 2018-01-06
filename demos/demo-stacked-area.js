@@ -81,7 +81,7 @@ function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
         // StackedAreChart Setup and start
         stackedArea
             .tooltipThreshold(600)
-            .aspectRatio(0.6)
+            .aspectRatio(0.5)
             .grid('full')
             .xAxisFormat('custom')
             .xAxisCustomFormat('%Y/%m/%d')

@@ -109,10 +109,12 @@
     background-color: white;
     margin: 0 auto;
     text-align: center;
-    min-height: 32vw;
+    min-height: 22vw;
 
-    @media (min-width: 7682px) {
-        min-height: 22vw;
+}
+@media (min-width: 1400px) {
+    .card--chart {
+        min-height: 16vw;
     }
 }
 
