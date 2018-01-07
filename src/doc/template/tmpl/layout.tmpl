@@ -119,7 +119,7 @@
         <main class="container" id="toc-content">
             <div class="row">
             	<?js if(docs && docs[0].kind !== "source"){ ?>
-            	<div class="col-md-8 is-source">
+            	<div class="col-md-9 col-lg-6 col-lg-offset-2 is-source ">
             	<?js } else { ?>
             	<div class="col-md-12">
             	<?js } ?>
@@ -127,12 +127,12 @@
             			<?js= content ?>
             		</div>
             	</div>
-            	<div class="clearfix"></div>
             	<?js if(docs && docs[0].kind !== "source"){ ?>
-            		<div class="col-md-3">
-            			<div id="toc" class="col-md-3 hidden-xs hidden-sm"></div>
+            		<div class="col-md-3 col-lg-2">
+            			<div id="toc" class="col-md-3 col-lg-2 affix hidden-xs hidden-sm"></div>
             		</div>
             	<?js } ?>
+            	<div class="clearfix"></div>
             </div>
         </main>
 
