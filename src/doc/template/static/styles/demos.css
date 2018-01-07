@@ -53,17 +53,6 @@
     }
 }
 
-/* TOC Sidebar */
-#toc {
-    position: fixed;
-    top: 76px;
-    right: 10px;
-    max-height: 82%;
-    max-height: calc(100% - 72px);
-    overflow: auto;
-    padding: 5px;
-}
-
 /* Footer */
 .footer {
     bottom: 0;
@@ -160,4 +149,29 @@
 }
 .readme-section table td {
     text-align: center;
+}
+
+
+/* TOC Sidebar */
+#toc {
+    top: 76px;
+    max-height: 82%;
+    max-height: calc(100% - 72px);
+    overflow: auto;
+}
+.list-group-item {
+    border: none;
+}
+.list-group-item.active,
+.list-group-item.active:hover,
+.list-group-item.active:focus {
+    background-color: transparent;
+    color: #39c2c9;
+}
+a.list-group-item:hover,
+a.list-group-item:focus,
+button.list-group-item:hover,
+button.list-group-item:focus {
+    background-color: transparent;
+    color: #ffa71a;
 }
