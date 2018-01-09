@@ -3,7 +3,7 @@
             <div class="
 col-md-6">
                 <article>
-                    <h2 class="tutorial__heading">Bar Chart with Tooltip</h2>
+                    <h2 class="tutorial__heading">Bar Chart with Tooltip and Labels</h2>
                     <div class="js-bar-chart-tooltip-container bar-chart-tooltip-container card--chart"></div>
                 </article>
             </div>
@@ -14,6 +14,8 @@ barChart
     .width(containerWidth)
     .height(300)
     .hasPercentage(true)
+    .enableLabels(true)
+    .labelsNumberFormat('.0%')
     .isAnimated(true)
     .on('customMouseOver', tooltip.show)
     .on('customMouseMove', tooltip.update)
