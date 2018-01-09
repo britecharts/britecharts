@@ -91,6 +91,9 @@ function createBarChartWithTooltip() {
 
         barContainer.datum(dataset).call(barChart);
 
+        tooltip
+            .numberFormat('.2%')
+
         tooltipContainer = d3Selection.select('.bar-chart .metadata-group');
         tooltipContainer.datum([]).call(tooltip);
     }
