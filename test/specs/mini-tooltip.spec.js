@@ -129,6 +129,18 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
                 expect(actual).toBe(expected);
             });
 
+            it('should provide numberFormat getter and setter', () => {
+                let current = tooltipChart.numberFormat(),
+                    expected = '.2%',
+                    actual;
+
+                tooltipChart.numberFormat(expected);
+                actual = tooltipChart.numberFormat();
+
+                expect(current).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide nameLabel getter and setter', () => {
                 let defaultNameLabel = 'key',
                     testNameLabel = 'label',
