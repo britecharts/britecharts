@@ -7,6 +7,7 @@ define(function(require){
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
 
+    const NUMBER_FORMAT = '.2f';
 
     /**
      * Mini Tooltip Component reusable API class that renders a
@@ -83,7 +84,8 @@ define(function(require){
             valueTextWeight = 200,
 
             // formats
-            tooltipValueFormat = d3Format.format('.2f'),
+            numberFormat = NUMBER_FORMAT,
+            valueFormatter = (value) => d3Format.format(numberFormat)(value),
 
             chartWidth,
             chartHeight,
@@ -297,7 +299,7 @@ define(function(require){
                     .style('fill', valueTextFillColor)
                     .style('font-size', valueTextSize)
                     .style('font-weight', valueTextWeight)
-                    .text(tooltipValueFormat(value));
+                    .text(valueFormatter(value));
 
                 temporalHeight = valueLineHeight + temporalHeight;
             }
@@ -361,6 +363,20 @@ define(function(require){
             nameLabel = _x;
             return this;
         };
+
+        /**
+         * Gets or Sets the number format for the value displayed on the tooltip
+         * @param  {string} [_x=".2f"] Desired number format
+         * @return {string | module} Current numberFormat or Chart module to chain calls
+         * @public
+         */
+        exports.numberFormat = function(_x) {
+            if (!arguments.length) {
+                return numberFormat;
+            }
+            numberFormat = _x;
+            return this;
+        }
 
         /**
          * Shows the tooltip
