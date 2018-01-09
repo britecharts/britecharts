@@ -1,8 +1,6 @@
 define(function() {
 
-    var 
-
-        linearGradient = `
+    var linearGradient = `
             <defs>
                 <linearGradient id="lgrad" x1="0%" y1="50%" x2="100%" y2="50%" > 
                     <stop offset="0" stop-color="#ffffff" stop-opacity="0.8" />
@@ -13,9 +11,8 @@ define(function() {
                 </linearGradient>
             </defs>
         `,
-
         bar = `
-            <svg class="loading-state bar-load-state--css-wave" xmlns="http://www.w3.org/2000/svg" width="711" height="325" viewBox="0 0 711 325">
+            <svg class="load-state bar-load-state" xmlns="http://www.w3.org/2000/svg" width="711" height="325" viewBox="0 0 711 325">
               ${linearGradient}
                 <g fill="none" fill-rule="evenodd">
                     <g transform="translate(0 29)">
@@ -42,9 +39,8 @@ define(function() {
                 <rect class="chart-filter" fill="url(#lgrad)" x="0" y="0" width="300%" height="100%"></rect>
             </svg>
         `,
-
         donut = `
-            <svg class="loading-state donut-load-state--css-wave" xmlns="http://www.w3.org/2000/svg" width="376" height="331" viewBox="0 0 376 331">
+            <svg class="load-state donut-load-state" xmlns="http://www.w3.org/2000/svg" width="376" height="331" viewBox="0 0 376 331">
                 ${linearGradient}
                 <g fill="none" fill-rule="evenodd">
                     <g transform="translate(116 107)">
@@ -56,10 +52,9 @@ define(function() {
                 <rect class="chart-filter" fill="url(#lgrad)" x="0" y="0" width="300%" height="100%"></rect>
             </svg>
         `,
-
         line = `
             <svg 
-                class="loading-state line-load-state--css-wave" 
+                class="load-state line-load-state" 
                 xmlns="http://www.w3.org/2000/svg" 
                 width="376" height="331"
                 viewBox="0 0 711 325"
@@ -79,9 +74,7 @@ define(function() {
                 />
                 <rect class="chart-filter" fill="url(#lgrad)" x="0" y="0" width="300%" height="100%"></rect>
             </svg>
-        `
-
-    ;
+        `;
 
     return {
        bar,

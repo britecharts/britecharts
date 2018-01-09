@@ -3,9 +3,9 @@ $animation-duration: 1.5s;
 $animation-from: -66.66%;
 $animation-to: 0;
 
-.line-load-state--css-wave .chart-filter,
-.donut-load-state--css-wave .chart-filter,
-.bar-load-state--css-wave .chart-filter {
+.line-load-state .chart-filter,
+.donut-load-state .chart-filter,
+.bar-load-state .chart-filter {
     animation: swipe $animation-duration linear infinite forwards;
 }
 
