@@ -1,18 +1,47 @@
+
 2.4.11
-2.4.10
+--------------
+Features:
+* Added loading states (@amber-eb)
+* Added betweenBarsPadding option to bar charts
+* Docs update with demos in frontpage and more tweaks
+* Doc update for data format (@interdigitize)
+* Custom click handler in bar chart (@dalerasrorov-eb)
+* Custom click handler in donut chart (@dalerasrorov-eb)
+
+Bug fixes:
+* Fixed brush drag and drop (@brandon-vaughan)
+
 2.4.9
-2.4.8
-2.4.6
-2.4.5
+--------------
+Features:
+* Added donut chart empty state (@amber-eb)
+* Additional donut configurations (@amber-eb)
+
+2.4.7
+--------------
+Features:
+* Docs build on release
+
 2.4.4
+--------------
+Bug fixes:
+* Added style build to build process
+
 2.4.3
+--------------
+Bug fixes:
+* Defensive check on text helper
+
 2.4.2
-2.4.1
-2.4.0
+--------------
+Features:
+* Docs build on release
+
 2.4.0
 --------------
 Features:
-* Added glow in highlight points of line and area charts 
+* Added glow in highlight points of line and area charts
 * Added Donut and line chart number formatting (@dalerasrorov-eb)
 * Legend adjustments (@jchen-eb)
 
@@ -25,7 +54,7 @@ Bug fixes:
 --------------
 Features:
 * Added ordering in bar chart (@dalerasrorov-eb)
-* Added optional axis labels to line chart 
+* Added optional axis labels to line chart
 
 Bug fixes:
 * Fixed Tick calculation (@jchen-eb)
