@@ -491,6 +491,18 @@ define([
                     expect(actual).toBe(expected);
                 });
 
+                it('should provide loadingState getter and setter', () => {
+                    let previous = lineChart.loadingState(),
+                        expected = 'test',
+                        actual;
+
+                    lineChart.loadingState(expected);
+                    actual = lineChart.loadingState();
+
+                    expect(previous).not.toBe(actual);
+                    expect(actual).toBe(expected);
+                });
+
                 it('should provide animation getter and setter', () => {
                     let previous = lineChart.isAnimated(),
                         expected = true,

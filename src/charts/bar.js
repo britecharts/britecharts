@@ -14,7 +14,7 @@ define(function(require) {
     const textHelper = require('./helpers/text');
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
-
+    const {bar} = require('./helpers/loadingStates');
 
     const PERCENTAGE_FORMAT = '%';
     const NUMBER_FORMAT = ',f';
@@ -69,6 +69,7 @@ define(function(require) {
             },
             width = 960,
             height = 500,
+            loadingState = bar,
             data,
             dataZeroed,
             chartWidth, chartHeight,
@@ -770,6 +771,21 @@ define(function(require) {
                 return isHorizontal;
             }
             isHorizontal = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the loading state of the chart
+         * @param  {string} markup Desired markup to show when null data
+         * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+         * @public
+         */
+        exports.loadingState = function(_markup) {
+            if (!arguments.length) {
+                return loadingState;
+            }
+            loadingState = _markup;
 
             return this;
         };

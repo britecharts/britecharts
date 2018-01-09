@@ -1,0 +1,15 @@
+
+$animation-duration: 1.5s;
+$animation-from: -66.66%;
+$animation-to: 0;
+
+.line-load-state .chart-filter,
+.donut-load-state .chart-filter,
+.bar-load-state .chart-filter {
+    animation: swipe $animation-duration linear infinite forwards;
+}
+
+@keyframes swipe {
+    from { transform: translateX($animation-from); } 
+    to { transform: translateX($animation-to); } 
+}

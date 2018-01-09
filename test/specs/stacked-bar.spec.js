@@ -210,6 +210,18 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 expect(actual).toBe(expected);
             });
 
+            it('should provide loadingState getter and setter', () => {
+                let previous = stackedBarChart.loadingState(),
+                    expected = 'test',
+                    actual;
+
+                stackedBarChart.loadingState(expected);
+                actual = stackedBarChart.loadingState();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide margin getter and setter', () => {
                 let previous = stackedBarChart.margin(),
                     expected = {top: 4, right: 4, bottom: 4, left: 4},

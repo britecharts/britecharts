@@ -259,7 +259,7 @@ britecharts
 | **docs** | Where the generated documentation website lives
 | **src** | Where we will place the code we create
 | **src/charts** | Where our charts live
-| **src/styles** | Where our .sccs styles source code is
+| **src/styles** | Where our .scss styles source code is
 | **src/doc** | Where the templates and configuration for our docs are
 | **src/tasks** | Some of our grunt tasks configuration
 | **test** | Where our test related files live
