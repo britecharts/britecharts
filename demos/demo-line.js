@@ -188,6 +188,17 @@ function createLineChartWithFixedHeight() {
     }
 }
 
+function createLoadingState() {
+    let lineChart = line(),
+        lineContainer = d3Selection.select('.js-loading-container'),
+        containerWidth = lineContainer.node() ? lineContainer.node().getBoundingClientRect().width : false,
+        dataset = null;
+
+    if (containerWidth) {
+        lineContainer.html(lineChart.loadingState());
+    }
+}
+
 /*
  * The Brush chart wants an input like this one
  * @example
@@ -236,6 +247,7 @@ if (d3Selection.select('.js-line-chart-container').node()) {
     createBrushChart();
     createLineChartWithSingleLine();
     createLineChartWithFixedHeight();
+    createLoadingState();
 
     redrawCharts = function(){
         d3Selection.selectAll('.line-chart').remove();
@@ -244,6 +256,7 @@ if (d3Selection.select('.js-line-chart-container').node()) {
         createBrushChart();
         createLineChartWithSingleLine();
         createLineChartWithFixedHeight();
+        createLoadingState();
     };
 
     // Redraw charts on window resize

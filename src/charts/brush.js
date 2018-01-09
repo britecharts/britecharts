@@ -19,7 +19,7 @@ define(function(require) {
     const {axisTimeCombinations} = require('./helpers/constants');
 
     const {uniqueId} = require('./helpers/common');
-    const {line} = require('./helpers/loading');
+    const {line} = require('./helpers/loadingStates');
 
 
     /**

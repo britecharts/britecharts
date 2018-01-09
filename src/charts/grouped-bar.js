@@ -15,7 +15,7 @@ define(function (require) {
 
     const { exportChart } = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
-    const {bar} = require('./helpers/loading');
+    const {bar} = require('./helpers/loadingStates');
     
     const NUMBER_FORMAT = ',f';
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);

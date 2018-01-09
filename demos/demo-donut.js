@@ -148,11 +148,23 @@ function createDonutWithHighlightSliceChart() {
     }
 }
 
+function createLoadingState() {
+    let donutChart = donut(),
+        donutContainer = d3Selection.select('.js-loading-container'),
+        containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false,
+        dataset = null;
+
+    if (containerWidth) {
+        donutContainer.html(donutChart.loadingState());
+    }
+}
+
 // Show charts if container available
 if (d3Selection.select('.js-donut-chart-container').node()) {
     createDonutChart();
     createSmallDonutChart();
     createDonutWithHighlightSliceChart();
+    createLoadingState();
 
     redrawCharts = function(){
         d3Selection.selectAll('.donut-chart').remove();
@@ -160,6 +172,7 @@ if (d3Selection.select('.js-donut-chart-container').node()) {
         createDonutChart();
         createSmallDonutChart();
         createDonutWithHighlightSliceChart();
+        createLoadingState();
     };
 
     // Redraw charts on window resize

@@ -15,7 +15,7 @@ define(function(require){
 
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
-    const {line} = require('./helpers/loading');
+    const {line} = require('./helpers/loadingStates');
 
     const {
         getXAxisSettings,
@@ -120,7 +120,7 @@ define(function(require){
      *     .call(lineChart);
      *
      */
-    return function line() {
+    return function module() {
 
         let margin = {
                 top: 60,
@@ -224,7 +224,6 @@ define(function(require){
 
             // events
             dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove', 'customDataEntryClick');
-
         /**
          * This function creates the graph using the selection and data provided
          *

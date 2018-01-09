@@ -10,7 +10,7 @@ define(function(require){
 
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
-    const {line} = require('./helpers/loading');
+    const {line} = require('./helpers/loadingStates');
     const {uniqueId} = require('./helpers/common');
 
     /**

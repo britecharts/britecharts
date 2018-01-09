@@ -96,17 +96,30 @@ function createBarChartWithTooltip() {
     }
 }
 
+function createLoadingState() {
+    let barChart = bar(),
+        barContainer = d3Selection.select('.js-loading-container'),
+        containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
+        dataset = null;
+
+    if (containerWidth) {
+        barContainer.html(barChart.loadingState());
+    }
+}
+
 // Show charts if container available
 if (d3Selection.select('.js-bar-chart-tooltip-container').node()){
     createBarChartWithTooltip();
     createHorizontalBarChart();
     createSimpleBarChart();
+    createLoadingState();
 
     let redrawCharts = function(){
         d3Selection.selectAll('.bar-chart').remove();
         createBarChartWithTooltip();
         createHorizontalBarChart();
         createSimpleBarChart();
+        createLoadingState();
     };
 
     // Redraw charts on window resize

@@ -33,7 +33,7 @@ define(function(require){
         addDays,
         diffDays
     } = require('./helpers/common');
-    const {bar} = require('./helpers/loading');
+    const {bar} = require('./helpers/loadingStates');
 
 
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);

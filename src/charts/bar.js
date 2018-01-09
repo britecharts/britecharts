@@ -14,7 +14,7 @@ define(function(require) {
     const textHelper = require('./helpers/text');
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
-    const {bar} = require('./helpers/loading');
+    const {bar} = require('./helpers/loadingStates');
 
     const PERCENTAGE_FORMAT = '%';
     const NUMBER_FORMAT = ',f';
