@@ -21,6 +21,9 @@ barChart
 
 barContainer.datum(dataset).call(barChart);
 
+tooltip
+    .numberFormat('.2%');
+
 tooltipContainer = d3.select('.bar-chart .metadata-group');
 tooltipContainer.datum([]).call(tooltip);
                 </code></pre>
