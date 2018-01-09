@@ -11,6 +11,7 @@ define(function(require) {
     const d3Transition = require('d3-transition');
 
     const {exportChart} = require('./helpers/exportChart');
+    const {line} = require('./helpers/loadingStates');
 
 
     /**
@@ -64,6 +65,7 @@ define(function(require) {
             },
             width = 960,
             height = 500,
+            loadingState = line,
             ease = d3Ease.easeQuadInOut,
             data,
             chartWidth, chartHeight,
@@ -426,6 +428,21 @@ define(function(require) {
                 return height;
             }
             height = _x;
+            return this;
+        };
+
+        /**
+         * Gets or Sets the loading state of the chart
+         * @param  {string} markup Desired markup to show when null data
+         * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+         * @public
+         */
+        exports.loadingState = function(_markup) {
+            if (!arguments.length) {
+                return loadingState;
+            }
+            loadingState = _markup;
+
             return this;
         };
 

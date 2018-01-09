@@ -33,6 +33,8 @@ define(function(require){
         addDays,
         diffDays
     } = require('./helpers/common');
+    const {bar} = require('./helpers/loadingStates');
+
 
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 
@@ -89,6 +91,7 @@ define(function(require){
             },
             width = 960,
             height = 500,
+            loadingState = bar,
 
             xScale, xAxis, xMonthAxis,
             yScale, yAxis,
@@ -1209,6 +1212,21 @@ define(function(require){
                 return topicsOrder;
             }
             topicsOrder = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the loading state of the chart
+         * @param  {string} markup Desired markup to show when null data
+         * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+         * @public
+         */
+        exports.loadingState = function(_markup) {
+            if (!arguments.length) {
+                return loadingState;
+            }
+            loadingState = _markup;
 
             return this;
         };

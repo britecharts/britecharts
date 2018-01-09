@@ -15,6 +15,8 @@ define(function(require){
 
     const {exportChart} = require('./helpers/exportChart');
     const colorHelper = require('./helpers/colors');
+    const {line} = require('./helpers/loadingStates');
+
     const {
         getXAxisSettings,
         getLocaleDateFormatter
@@ -118,7 +120,7 @@ define(function(require){
      *     .call(lineChart);
      *
      */
-    return function line() {
+    return function module() {
 
         let margin = {
                 top: 60,
@@ -128,6 +130,7 @@ define(function(require){
             },
             width = 960,
             height = 500,
+            loadingState = line,
             aspectRatio = null,
             tooltipThreshold = 480,
             svg,
@@ -221,7 +224,6 @@ define(function(require){
 
             // events
             dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove', 'customDataEntryClick');
-
         /**
          * This function creates the graph using the selection and data provided
          *
@@ -1128,6 +1130,21 @@ define(function(require){
                 return isAnimated;
             }
             isAnimated = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the loading state of the chart
+         * @param  {string} markup Desired markup to show when null data
+         * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+         * @public
+         */
+        exports.loadingState = function(_markup) {
+            if (!arguments.length) {
+                return loadingState;
+            }
+            loadingState = _markup;
 
             return this;
         };

@@ -209,6 +209,18 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 expect(actual).toBe(expected);
             });
 
+            it('should provide loadingState getter and setter', () => {
+                let previous = groupedBarChart.loadingState(),
+                    expected = 'test',
+                    actual;
+
+                groupedBarChart.loadingState(expected);
+                actual = groupedBarChart.loadingState();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide margin getter and setter', () => {
                 let previous = groupedBarChart.margin(),
                     expected = {top: 4, right: 4, bottom: 4, left: 4},

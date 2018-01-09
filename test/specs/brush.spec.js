@@ -95,6 +95,18 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
                 expect(actual).toBe(expected);
             });
 
+            it('should provide loadingState getter and setter', () => {
+                let previous = brushChart.loadingState(),
+                    expected = 'test',
+                    actual;
+
+                brushChart.loadingState(expected);
+                actual = brushChart.loadingState();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide margin getter and setter', function() {
                 var previous = brushChart.margin(),
                     expected = {top: 4, right: 4, bottom: 4, left: 4},
