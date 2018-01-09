@@ -930,25 +930,6 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the numberFormat to a percentage format if true (default false)
-         * @param  {boolean} _x     Should use percentage as value format
-         * @return { boolean | module} Is percentage the value format used or Chart module to chain calls
-         * @public
-         */
-        exports.usePercentage = function(_x) {
-            if (!arguments.length) {
-                return numberFormat === PERCENTAGE_FORMAT;
-            }
-            if (_x) {
-                numberFormat = PERCENTAGE_FORMAT;
-            } else {
-                numberFormat = NUMBER_FORMAT;
-            }
-
-            return this;
-        };
-
-        /**
          * Gets or Sets the valueLabel of the chart
          * @param  {Number} _x Desired valueLabel for the graph
          * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
