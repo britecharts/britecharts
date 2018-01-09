@@ -1,5 +1,5 @@
 
-2.4.11
+2.4.11 - Minor
 --------------
 Features:
 * Added loading states (@amber-eb)
@@ -12,33 +12,28 @@ Features:
 Bug fixes:
 * Fixed brush drag and drop (@brandon-vaughan)
 
-2.4.9
+2.4.9 - Patch
 --------------
 Features:
 * Added donut chart empty state (@amber-eb)
 * Additional donut configurations (@amber-eb)
 
-2.4.7
+2.4.7 - Patch
 --------------
 Features:
 * Docs build on release
 
-2.4.4
+2.4.4 - Patch
 --------------
 Bug fixes:
 * Added style build to build process
 
-2.4.3
+2.4.3 - Patch
 --------------
 Bug fixes:
 * Defensive check on text helper
 
-2.4.2
---------------
-Features:
-* Docs build on release
-
-2.4.0
+2.4.0 - Minor
 --------------
 Features:
 * Added glow in highlight points of line and area charts
@@ -50,7 +45,7 @@ Bug fixes:
 * Fixes line chart not rendering gradient on unique line constant values
 * Stacked Area x line fix (@jchen-eb)
 
-2.3.2
+2.3.2 - Patch
 --------------
 Features:
 * Added ordering in bar chart (@dalerasrorov-eb)
@@ -61,7 +56,7 @@ Bug fixes:
 * Fixed Sparkline for multiple instances (@amber-eb)
 * Fixed broken link in docs
 
-2.3.1
+2.3.1 - Patch
 --------------
 Features:
 * Ability to set sort order for donut (@dalerasrorov-eb)
