@@ -167,6 +167,18 @@ define([
                 expect(newMargin).toBe(testMargin);
             });
 
+            it('should provide loadingState getter and setter', () => {
+                let previous = sparklineChart.loadingState(),
+                    expected = 'test',
+                    actual;
+
+                sparklineChart.loadingState(expected);
+                actual = sparklineChart.loadingState();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide width getter and setter', () => {
                 let defaultWidth = sparklineChart.width(),
                     testWidth = 200,

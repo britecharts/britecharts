@@ -427,6 +427,19 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     expect(newValue).toBe(testValue);
                 });
 
+
+                it('should provide loadingState getter and setter', () => {
+                    let previous = donutChart.loadingState(),
+                        expected = 'test',
+                        actual;
+
+                    donutChart.loadingState(expected);
+                    actual = donutChart.loadingState();
+
+                    expect(previous).not.toBe(actual);
+                    expect(actual).toBe(expected);
+                });
+
                 it('should not have numberFormat by default', () =>{
                     let expected = undefined,
                         actual;

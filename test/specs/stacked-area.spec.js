@@ -315,6 +315,18 @@ define([
                 expect(actual).toBe(expected);
             });
 
+            it('should provide loadingState getter and setter', () => {
+                let previous = stackedAreaChart.loadingState(),
+                    expected = 'test',
+                    actual;
+
+                stackedAreaChart.loadingState(expected);
+                actual = stackedAreaChart.loadingState();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide isAnimated getter and setter', () => {
                 let previous = stackedAreaChart.isAnimated(),
                     expected = true,
