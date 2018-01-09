@@ -80,13 +80,12 @@ define(function(require) {
             yTicks = 5,
             xTicks = 5,
             percentageAxisToMaxRatio = 1,
-            enablePercentageLabels = false,
-            betweenBarsPadding = 0.1,
-            percentageLabelMargin = 7,
-            percentageLabelSize = 12,
-            horizontalLabelFormat = '.0%',
-            verticalLabelFormat = '.0f',
             numberFormat = NUMBER_FORMAT,
+            enableLabels = false,
+            labelsMargin = 7,
+            labelsNumberFormat = NUMBER_FORMAT,
+            labelsSize = 12,
+            betweenBarsPadding = 0.1,
             xAxis, yAxis,
             xAxisPadding = {
                 top: 0,
@@ -127,14 +126,13 @@ define(function(require) {
             getName = ({name}) => name,
             getValue = ({value}) => value,
 
-            _percentageLabelHorizontalX = ({value}) => xScale(value) + percentageLabelMargin,
-            _percentageLabelHorizontalY= ({name}) => yScale(name) + (yScale.bandwidth() / 2) + (percentageLabelSize * (3/8)),
+            _labelsFormatValue = ({value}) => d3Format.format(labelsNumberFormat)(value),
 
-            _percentageLabelVerticalX = ({name}) => xScale(name),
-            _percentageLabelVerticalY = ({value}) => yScale(value) - percentageLabelMargin,
+            _labelsHorizontalX = ({value}) => xScale(value) + labelsMargin,
+            _labelsHorizontalY= ({name}) => yScale(name) + (yScale.bandwidth() / 2) + (labelsSize * (3/8)),
 
-            _percentageLabelHorizontalFormatValue = ({value}) => d3Format.format(horizontalLabelFormat)(value),
-            _percentageLabelVerticalFormatValue = ({value}) => d3Format.format(verticalLabelFormat)(parseFloat(value) * 100);
+            _labelsVerticalX = ({name}) => xScale(name),
+            _labelsVerticalY = ({value}) => yScale(value) - labelsMargin;
 
         /**
          * This function creates the graph using the selection as container
@@ -154,8 +152,8 @@ define(function(require) {
                 drawGridLines();
                 drawBars();
                 drawAxis();
-                if (enablePercentageLabels) {
-                    drawPercentageLabels();
+                if (enableLabels) {
+                    drawLabels();
                 }
             });
         }
@@ -269,7 +267,7 @@ define(function(require) {
         }
 
         /**
-         * Cleaning data casting the values and names to the proper type while keeping 
+         * Cleaning data casting the values and names to the proper type while keeping
          * the rest of properties on the data
          * It also creates a set of zeroed data (for animation purposes)
          * @param  {BarChartData} originalData  Raw data as passed to the container
@@ -299,13 +297,13 @@ define(function(require) {
          * @private
          */
         function sortData(unorderedData) {
-            let {data, dataZeroed} = unorderedData; 
+            let {data, dataZeroed} = unorderedData;
 
             if (orderingFunction) {
-                data.sort(orderingFunction); 
+                data.sort(orderingFunction);
                 dataZeroed.sort(orderingFunction)
             }
-            
+
             return { data, dataZeroed };
         }
 
@@ -482,16 +480,16 @@ define(function(require) {
         }
 
         /**
-         * Draws percentage labels at the end of each bar
+         * Draws labels at the end of each bar
          * @private
          * @return {void}
          */
-        function drawPercentageLabels() {
-            let labelXPosition = isHorizontal ? _percentageLabelHorizontalX : _percentageLabelVerticalX;
-            let labelYPosition = isHorizontal ? _percentageLabelHorizontalY : _percentageLabelVerticalY;
-            let text = isHorizontal ? _percentageLabelHorizontalFormatValue : _percentageLabelVerticalFormatValue;
+        function drawLabels() {
+            let labelXPosition = isHorizontal ? _labelsHorizontalX : _labelsVerticalX;
+            let labelYPosition = isHorizontal ? _labelsHorizontalY : _labelsVerticalY;
+            let text = _labelsFormatValue
 
-            let percentageLabels = svg.select('.metadata-group')
+            let labels = svg.select('.metadata-group')
               .append('g')
                 .classed('percentage-label-group', true)
                 .selectAll('text')
@@ -499,12 +497,12 @@ define(function(require) {
                 .enter()
               .append('text');
 
-            percentageLabels
+            labels
                 .classed('percentage-label', true)
                 .attr('x', labelXPosition)
                 .attr('y', labelYPosition)
                 .text(text)
-                .attr('font-size', percentageLabelSize + 'px')
+                .attr('font-size', labelsSize + 'px')
         }
 
         /**
@@ -705,15 +703,15 @@ define(function(require) {
         };
 
         /**
-         * Default false. If true, adds percentage labels at the end of the bars
-         * @param  {Boolean} _x
-         * @return {Boolean | module}    Current value of enablePercentageLables or Chart module to chain calls
+         * If true, adds labels at the end of the bars
+         * @param  {Boolean} [_x=false]
+         * @return {Boolean | module}    Current value of enableLabels or Chart module to chain calls
          */
-        exports.enablePercentageLabels = function(_x) {
+        exports.enableLabels = function(_x) {
             if (!arguments.length) {
-                return enablePercentageLabels;
+                return enableLabels;
             }
-            enablePercentageLabels = _x;
+            enableLabels = _x;
 
             return this;
         };
@@ -774,6 +772,49 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Offset between end of bar and start of the percentage bars
+         * @param  {number} [_x=7] margin offset from end of bar
+         * @return {number | module}    Current offset or Chart module to chain calls
+         */
+        exports.labelsMargin = function(_x) {
+            if (!arguments.length) {
+                return labelsMargin;
+            }
+            labelsMargin = _x;
+
+            return this;
+        }
+
+        /**
+         * Gets or Sets the labels number format
+         * @param  {string} [_x=",f"] desired label number format for the bar chart
+         * @return {string | module} Current labelsNumberFormat or Chart module to chain calls
+         * @public
+         */
+        exports.labelsNumberFormat = function(_x) {
+            if (!arguments.length) {
+                return labelsNumberFormat;
+            }
+            labelsNumberFormat = _x;
+
+            return this;
+        }
+
+        /**
+         * Get or Sets the labels text size
+         * @param  {number} [_x=12] label font size
+         * @return {number | module}    Current text size or Chart module to chain calls
+         */
+        exports.labelsSize = function(_x) {
+            if (!arguments.length) {
+                return labelsSize;
+            }
+            labelsSize = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the loading state of the chart
@@ -861,20 +902,6 @@ define(function(require) {
                 return percentageAxisToMaxRatio;
             }
             percentageAxisToMaxRatio = _x;
-
-            return this;
-        }
-
-        /**
-         * Default 10px. Offset between end of bar and start of the percentage bars
-         * @param  {number} _x percentage margin offset from end of bar
-         * @return {number | module}    Currnet offset or Chart module to chain calls
-         */
-        exports.percentageLabelMargin = function(_x) {
-            if (!arguments.length) {
-                return percentageLabelMargin;
-            }
-            percentageLabelMargin = _x;
 
             return this;
         }

@@ -152,13 +152,13 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
-            it('should provide enable percentage label getter and setter', () => {
-                let previous = barChart.enablePercentageLabels(),
+            it('should provide enable labels getter and setter', () => {
+                let previous = barChart.enableLabels(),
                     expected = true,
                     actual;
 
-                barChart.enablePercentageLabels(expected);
-                actual = barChart.enablePercentageLabels();
+                barChart.enableLabels(expected);
+                actual = barChart.enableLabels();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
@@ -201,6 +201,42 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 actual = barChart.isAnimated();
 
                 expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide labelsMargin getter and setter', () => {
+                let previous = barChart.labelsMargin(),
+                    expected = 10,
+                    actual;
+
+                barChart.labelsMargin(expected);
+                actual = barChart.labelsMargin();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide labelsNumberFormat getter and setter', () =>{
+                let previous = barChart.labelsNumberFormat(),
+                    expected = 'd',
+                    actual;
+
+                barChart.labelsNumberFormat(expected);
+                actual = barChart.labelsNumberFormat();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide labelsSize getter and setter', () => {
+                let previous = barChart.labelsSize(),
+                    expected = 10,
+                    actual;
+
+                barChart.labelsSize(expected);
+                actual = barChart.labelsSize();
+
+                expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
 
@@ -264,18 +300,6 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
-            it('should provide percentage label margin getter and setter', () => {
-                let previous = barChart.percentageLabelMargin(),
-                    expected = 10,
-                    actual;
-
-                barChart.percentageLabelMargin(expected);
-                actual = barChart.percentageLabelMargin();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
             it('should provide a shouldReverseColorList getter and setter', () => {
                 let previous = barChart.shouldReverseColorList(),
                     expected = false,
@@ -288,7 +312,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
-            it('should provide an usePercentage getter and setter', () => {
+            it('should provide an hasPercentage getter and setter', () => {
                 let previous = barChart.hasPercentage(),
                     expected = true,
                     actual;
