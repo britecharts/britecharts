@@ -74,7 +74,7 @@ barContainer.datum(dataset).call(barChart);
         <div class="row">
             <div class="col-md-6">
                 <article>
-                    <h2 class="tutorial__heading">Simple Bar Chart</h2>
+                    <h2 class="tutorial__heading">Simple Bar Chart with labels</h2>
                     <div class="js-bar-chart-container card--chart"></div>
                 </article>
             </div>
@@ -83,6 +83,9 @@ barContainer.datum(dataset).call(barChart);
                 <pre><code class="language-javascript">
 barChart
     .width(containerWidth)
+    .hasPercentage(true)
+    .enableLabels(true)
+    .labelsNumberFormat('.0%')
     .height(300);
 
 barContainer.datum(dataset).call(barChart);
@@ -95,6 +98,7 @@ barContainer.datum(dataset).call(barChart);
         <div class="row">
             <div class="col-md-6">
                 <article>
+                    <a name="loading-state"></a>
                     <h2 class="tutorial__heading">Loading State</h2>
                     <div class="js-loading-container"></div>
                 </article>
