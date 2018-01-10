@@ -23,6 +23,9 @@ function createSimpleBarChart() {
 
         barChart
             .width(containerWidth)
+            .hasPercentage(true)
+            .enableLabels(true)
+            .labelsNumberFormat('.0%')
             .height(300);
 
         barContainer.datum(dataset).call(barChart);
@@ -84,9 +87,6 @@ function createBarChartWithTooltip() {
             .width(containerWidth)
             .height(300)
             .isAnimated(true)
-            .hasPercentage(true)
-            .enableLabels(true)
-            .labelsNumberFormat('.0%')
             .on('customMouseOver', tooltip.show)
             .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);
