@@ -18,6 +18,7 @@ define(function(require){
     const colorHelper = require('./helpers/colors');
     const {bar} = require('./helpers/loadingStates');
 
+    const PERCENTAGE_FORMAT = '%';
     const NUMBER_FORMAT = ',f';
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
 
@@ -822,6 +823,25 @@ define(function(require){
                 return grid;
             }
             grid = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the hasPercentage status
+         * @param  {boolean} _x     Should use percentage as value format
+         * @return { boolean | module} Is percentage used or Chart module to chain calls
+         * @public
+         */
+        exports.hasPercentage = function(_x) {
+            if (!arguments.length) {
+                return valueLabelFormat === PERCENTAGE_FORMAT;
+            }
+            if (_x) {
+                valueLabelFormat = PERCENTAGE_FORMAT;
+            } else {
+                valueLabelFormat = NUMBER_FORMAT;
+            }
 
             return this;
         };
