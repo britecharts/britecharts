@@ -174,6 +174,18 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 expect(actual).toBe(expected);
             });
 
+            it('should provide an hasPercentage getter and setter', () => {
+                let previous = stackedBarChart.hasPercentage(),
+                    expected = true,
+                    actual;
+
+                stackedBarChart.hasPercentage(expected);
+                actual = stackedBarChart.hasPercentage();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide height getter and setter', () => {
                 let previous = stackedBarChart.height(),
                     expected = {top: 4, right: 4, bottom: 4, left: 4},
