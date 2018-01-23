@@ -494,7 +494,7 @@ define(function(require){
 
             // Nest data by date and format
             dataByDate = d3Collection.nest()
-                            .key( getDate )
+                            .key(getDate)
                             .entries(flatData)
                             .map((d) => {
                                 return {
@@ -510,15 +510,26 @@ define(function(require){
                 return d;
             });
 
-            // Normalize dataByTopic
-            dataByTopic.forEach(function(kv) {
-                kv.dates.forEach(function(d) {
-                    d.date = new Date(d[dateLabel]);
-                    d.value = +d[valueLabel];
-                });
-            });
+            let newDataByTopic = dataByTopic.reduce((accum, topic) => {
+                let {dates, ...restProps} = topic;
 
-            return {dataByTopic, dataByDate};
+                let newDates = dates.map(d => {
+                    return {
+                       date: new Date(d[dateLabel]),
+                       value: +d[valueLabel],
+                       [dateLabel]: d[dateLabel]
+                    }
+                })
+
+                accum.push({...restProps, dates: newDates});
+
+                return accum;
+             }, []);
+
+            return {
+                dataByTopic: newDataByTopic,
+                dataByDate
+            };
         }
 
         /**

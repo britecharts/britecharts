@@ -254,6 +254,8 @@ define([
                             actual = xAxisLabels.text(),
                             expected = '00 AM';
 
+                            console.log(actual, expected)
+
                         expect(actual).toEqual(expected)
                     });
                 });
