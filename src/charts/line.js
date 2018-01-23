@@ -513,13 +513,11 @@ define(function(require){
             let newDataByTopic = dataByTopic.reduce((accum, topic) => {
                 let {dates, ...restProps} = topic;
 
-                let newDates = dates.map(d => {
-                    return {
+                let newDates = dates.map(d => ({
                        date: new Date(d[dateLabel]),
                        value: +d[valueLabel],
                        [dateLabel]: d[dateLabel]
-                    }
-                })
+                }));
 
                 accum.push({...restProps, dates: newDates});
 
