@@ -519,7 +519,7 @@ define(function(require){
                        [dateLabel]: d[dateLabel]
                 }));
 
-                accum.push({...restProps, dates: newDates});
+                accum.push({ dates: newDates, ...restProps });
 
                 return accum;
              }, []);
