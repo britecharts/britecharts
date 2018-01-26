@@ -84,6 +84,7 @@ define(function(require){
             valueReservedSpace = 40,
             numberLetterSpacing = 0.8,
             numberFormat = 's',
+            unit = '',
 
             isFadedClassName = 'is-faded',
             isHorizontal = false,
@@ -94,7 +95,7 @@ define(function(require){
 
             getId = ({id}) => id,
             getName = ({name}) => name,
-            getFormattedQuantity = ({quantity}) => d3Format.format(numberFormat)(quantity),
+            getFormattedQuantity = ({quantity}) => d3Format.format(numberFormat)(quantity) + unit,
             getCircleFill = ({name}) => colorScale(name),
 
             entries,
@@ -498,6 +499,21 @@ define(function(require){
                 return markerSize;
             }
             markerSize = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the unit of the value
+         * @param  {boolean} _x Desired unit
+         * @return {boolean | module} Current unit or Legend module to chain calls
+         * @public
+         */
+        exports.unit = function(_x) {
+            if (!arguments.length) {
+                return unit;
+            }
+            suffix = _x;
 
             return this;
         };
