@@ -245,7 +245,7 @@ define(function(require){
             if (!value) {
                 return 0;
             }
-            if (valueFormat) {
+            if (valueFormat !== null) {
                 valueFormatter = d3Format.format(valueFormat);
             } else if (isInteger(value)) {
                 valueFormatter = formatIntegerValue;
