@@ -513,7 +513,7 @@ define(function(require){
             if (!arguments.length) {
                 return unit;
             }
-            suffix = _x;
+            unit = _x;
 
             return this;
         };
