@@ -433,11 +433,11 @@ define(function(require){
             // Enter + Update
             let bars = barJoin
                     .enter()
-                    .append('rect')
-                    .classed('bar', true)
-                    .attr('x', (d) => xScale(d[0]) )
-                    .attr('y', (d) => yScale(d.data.key) )
-                    .attr('height', yScale.bandwidth());
+                      .append('rect')
+                        .classed('bar', true)
+                        .attr('x', (d) => xScale(d[0]) )
+                        .attr('y', (d) => yScale(d.data.key) )
+                        .attr('height', yScale.bandwidth());
 
             if (isAnimated) {
                 bars.style('opacity', barOpacity)
@@ -490,11 +490,11 @@ define(function(require){
             // Enter + Update
             let bars = barJoin
                     .enter()
-                    .append('rect')
-                    .classed('bar', true)
-                    .attr('x', (d) => xScale(d.data.key))
-                    .attr('y', (d) => yScale(d[1]))
-                    .attr('width', xScale.bandwidth );
+                      .append('rect')
+                        .classed('bar', true)
+                        .attr('x', (d) => xScale(d.data.key))
+                        .attr('y', (d) => yScale(d[1]))
+                        .attr('width', xScale.bandwidth );
 
             if (isAnimated) {
                 bars.style('opacity', barOpacity)
