@@ -565,41 +565,36 @@ define(function(require){
          * @return {obj}            Data entry that is closer to that x axis position
          */
         function getNearestDataPoint(mouseX) {
-            let adjustedMouseX = mouseX - margin.left,
-                dataByValueParsed = transformedData.map((item) => {
-                    item.key = item.key
-                    return item;
-                }),
-                epsilon,
-                nearest;
+            const adjustedMouseX = mouseX - margin.left;
 
-            epsilon = (xScale(dataByValueParsed[1].key) - xScale(dataByValueParsed[0].key));
-            nearest = dataByValueParsed.find(({key}) => Math.abs(xScale(key) - adjustedMouseX) <= epsilon);
+            const nearest = transformedData.find(({key}) => {
+                const barStart = xScale(key);
+                const barEnd = barStart + xScale.bandwidth();
+
+                // If mouseX is between barStart & barEnd
+                return (adjustedMouseX >= barStart) && (adjustedMouseX < barEnd);
+            });
 
             return nearest;
         }
 
-         /**
-         * Finds out the data entry that is closer to the given position on pixels
+        /**
+         * Finds out the data entry that is closer to the given position on pixels (horizontal)
          * @param  {Number} mouseY  Y position of the mouse
          * @return {obj}            Data entry that is closer to that y axis position
          */
-
         function getNearestDataPoint2(mouseY) {
-            let adjustedMouseY = mouseY - margin.bottom,
-                epsilon = yScale.bandwidth(),
-                nearest;
+            const adjustedMouseY = mouseY - margin.top;
 
-            nearest = layers.map(function(stackedArray){
-                return stackedArray.map(function(d1){
-                   let found = d1.data.values.find((d2) => Math.abs(adjustedMouseY >= yScale(d2[nameLabel])) && Math.abs(adjustedMouseY - yScale(d2[nameLabel]) <= epsilon*2) );
+            const nearest = transformedData.find(({key}) => {
+                const barStart = yScale(key);
+                const barEnd = barStart + yScale.bandwidth();
 
-                   return found ? d1.data :undefined;
-               })
+                // If mouseY is between barStart & barEnd
+                return (adjustedMouseY >= barStart) && (adjustedMouseY < barEnd);
             });
-            nearest = d3Array.merge( nearest).filter(function(e){return e});
 
-            return nearest.length ? nearest[0] :undefined;
+            return nearest;
         }
 
         /**
