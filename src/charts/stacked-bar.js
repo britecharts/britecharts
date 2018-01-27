@@ -583,7 +583,7 @@ define(function(require){
                 const barEnd = barStart + xScale.bandwidth();
 
                 // If mouseX is between barStart & barEnd
-                return (adjustedMouseX >= barStart) && (adjustedMouseX < barEnd)
+                return (adjustedMouseX >= barStart) && (adjustedMouseX < barEnd);
             });
 
             return nearest;
@@ -605,7 +605,7 @@ define(function(require){
                 const barEnd = barStart + yScale.bandwidth();
 
                 // If mouseY is between barStart & barEnd
-                return (adjustedMouseY >= barStart) && (adjustedMouseY < barEnd)
+                return (adjustedMouseY >= barStart) && (adjustedMouseY < barEnd);
             });
 
             return nearest;
