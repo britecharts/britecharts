@@ -301,15 +301,10 @@ define(function(require){
                 .domain(data.map(getStack));
 
             categoryColorMap = colorScale
-                .domain(data.map(getName)).domain()
+                .domain(data.map(getStack))
+                .domain()
                 .reduce((memo, item) => {
-                    data.forEach(function(v){
-                        if (getName(v) === item){
-                           memo[v.name] = colorScale(v.stack)
-                           memo[v.stack] = colorScale(v.stack)
-                           memo[v.stack + item] = colorScale(v.stack)
-                       }
-                   })
+                    memo[item] = colorScale(item)
                     return memo;
                 }, {});
         }
@@ -442,8 +437,7 @@ define(function(require){
                         .classed('bar', true)
                         .attr('x', (d) => xScale(d[0]) )
                         .attr('y', (d) => yScale(d.data.key) )
-                        .attr('height', yScale.bandwidth())
-                        .attr('fill', (({data}) => categoryColorMap[`${data.stack}${data.key}`]));
+                        .attr('height', yScale.bandwidth());
 
             if (isAnimated) {
                 bars.style('opacity', barOpacity)
@@ -500,8 +494,7 @@ define(function(require){
                         .classed('bar', true)
                         .attr('x', (d) => xScale(d.data.key))
                         .attr('y', (d) => yScale(d[1]))
-                        .attr('width', xScale.bandwidth )
-                        .attr('fill', (({data}) => categoryColorMap[`${data.stack}${data.key}`]));
+                        .attr('width', xScale.bandwidth );
 
             if (isAnimated) {
                 bars.style('opacity', barOpacity)
