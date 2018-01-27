@@ -573,12 +573,8 @@ define(function(require){
          */
         function getNearestDataPoint(mouseX) {
             const adjustedMouseX = mouseX - margin.left;
-            const dataByValueParsed = transformedData.map((item) => {
-                    item.key = item.key
-                    return item;
-                });
 
-            const nearest = dataByValueParsed.find(({key}) => {
+            const nearest = transformedData.find(({key}) => {
                 const barStart = xScale(key);
                 const barEnd = barStart + xScale.bandwidth();
 
@@ -596,11 +592,8 @@ define(function(require){
          */
         function getNearestDataPoint2(mouseY) {
             const adjustedMouseY = mouseY - margin.top;
-            const dataByValueParsed = transformedData.map((item) => {
-                item.key = item.key
-                return item;
-            });
-            const nearest = dataByValueParsed.find(({key}) => {
+
+            const nearest = transformedData.find(({key}) => {
                 const barStart = yScale(key);
                 const barEnd = barStart + yScale.bandwidth();
 
