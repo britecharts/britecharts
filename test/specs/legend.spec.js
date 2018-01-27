@@ -240,6 +240,18 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);
                 });
+
+                it('should provide unit getter and setter', () =>{
+                    let previous = legendChart.unit(),
+                        expected = 'unit',
+                        actual;
+
+                    legendChart.unit(expected);
+                    actual = legendChart.unit();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
             });
         });
 
@@ -363,6 +375,46 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                             .size();
 
                     expect(actual).toEqual(expected);
+                });
+            });
+        });
+
+        describe('when legend has unit', () => {
+            let unit;
+
+            beforeEach(() =>{
+                unit = 'some unit';
+                dataset = aTestDataSet()
+                            .withFivePlusOther()
+                            .build();
+                legendChart = legend();
+
+                legendChart.unit(unit);
+
+                // DOM Fixture Setup
+                f = jasmine.getFixtures();
+                f.fixturesPath = 'base/test/fixtures/';
+                f.load('testContainer.html');
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(dataset).call(legendChart);
+            });
+
+            afterEach(() =>{
+                containerFixture.remove();
+                f = jasmine.getFixtures();
+                f.cleanUp();
+                f.clearCache();
+            });
+
+            it('should add the proper value with unit to each value element', () => {
+                let texts = containerFixture
+                        .select('.britechart-legend')
+                        .selectAll('.legend-entry-value text'),
+                    elements = texts[0];
+
+                texts.each(function(d, index) {
+                    expect(elements[index]).toEqual(dataset[index]['quantity'] + unit);
                 });
             });
         });
