@@ -228,7 +228,6 @@ define([
                 beforeEach(() => {
                     dataset = aTestDataSet().withHourDateRange().build();
                     lineChart = chart();
-                    lineChart.dateLabel('fullDate');
 
                     // DOM Fixture Setup
                     f = jasmine.getFixtures();
