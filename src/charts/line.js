@@ -479,18 +479,18 @@ define(function(require){
                 throw new Error('Data needs to have a dataByTopic property');
             }
 
-            let flatData = [];
-
-            dataByTopic.forEach((topic) => {
+            const flatData = dataByTopic.reduce((accum, topic) => {
                 topic.dates.forEach((date) => {
-                    flatData.push({
+                    accum.push({
                         topicName: topic[topicNameLabel],
                         name: topic[topicLabel],
                         date: date[dateLabel],
                         value: date[valueLabel]
                     });
                 });
-            });
+
+                return accum;
+            }, []);
 
             // Nest data by date and format
             dataByDate = d3Collection.nest()
@@ -510,7 +510,7 @@ define(function(require){
                 return d;
             });
 
-            let newDataByTopic = dataByTopic.reduce((accum, topic) => {
+            const newDataByTopic = dataByTopic.reduce((accum, topic) => {
                 let {dates, ...restProps} = topic;
 
                 let newDates = dates.map(d => ({
