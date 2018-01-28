@@ -228,6 +228,7 @@ define([
                 beforeEach(() => {
                     dataset = aTestDataSet().withHourDateRange().build();
                     lineChart = chart();
+                    lineChart.dateLabel('fullDate');
 
                     // DOM Fixture Setup
                     f = jasmine.getFixtures();
@@ -626,6 +627,7 @@ define([
 
                     beforeEach(function() {
                         lineChart = chart().grid('vertical');
+                        lineChart.dateLabel('fullDate');
 
                         containerFixture = d3.select('.test-container').append('svg');
                         containerFixture.datum(dataset).call(lineChart);
@@ -641,6 +643,7 @@ define([
 
                     beforeEach(function() {
                         lineChart = chart().grid('full');
+                        lineChart.dateLabel('fullDate');
 
                         containerFixture = d3.select('.test-container').append('svg');
                         containerFixture.datum(dataset).call(lineChart);
