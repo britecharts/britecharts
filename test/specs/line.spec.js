@@ -627,7 +627,6 @@ define([
 
                     beforeEach(function() {
                         lineChart = chart().grid('vertical');
-                        lineChart.dateLabel('fullDate');
 
                         containerFixture = d3.select('.test-container').append('svg');
                         containerFixture.datum(dataset).call(lineChart);
@@ -643,7 +642,6 @@ define([
 
                     beforeEach(function() {
                         lineChart = chart().grid('full');
-                        lineChart.dateLabel('fullDate');
 
                         containerFixture = d3.select('.test-container').append('svg');
                         containerFixture.datum(dataset).call(lineChart);

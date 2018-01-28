@@ -188,7 +188,7 @@ define(function(require){
             dataByTopic,
             dataByDate,
 
-            dateLabel = 'date',
+            dateLabel = 'fullDate',
             valueLabel = 'value',
             topicLabel = 'topic',
             topicNameLabel = 'topicName',
