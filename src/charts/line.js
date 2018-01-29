@@ -515,8 +515,7 @@ define(function(require){
 
                 let newDates = dates.map(d => ({
                        date: new Date(d[dateLabel]),
-                       value: +d[valueLabel],
-                    //    'fullDate': d[dateLabel]
+                       value: +d[valueLabel]
                 }));
 
                 accum.push({ dates: newDates, ...restProps });
