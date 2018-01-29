@@ -188,7 +188,7 @@ define(function(require){
             dataByTopic,
             dataByDate,
 
-            dateLabel = 'fullDate',
+            dateLabel = 'date',
             valueLabel = 'value',
             topicLabel = 'topic',
             topicNameLabel = 'topicName',
@@ -510,13 +510,13 @@ define(function(require){
                 return d;
             });
 
-            const newDataByTopic = dataByTopic.reduce((accum, topic) => {
+            const normalizedDataByTopic = dataByTopic.reduce((accum, topic) => {
                 let {dates, ...restProps} = topic;
 
                 let newDates = dates.map(d => ({
                        date: new Date(d[dateLabel]),
                        value: +d[valueLabel],
-                       [dateLabel]: d[dateLabel]
+                    //    'fullDate': d[dateLabel]
                 }));
 
                 accum.push({ dates: newDates, ...restProps });
@@ -525,7 +525,7 @@ define(function(require){
              }, []);
 
             return {
-                dataByTopic: newDataByTopic,
+                dataByTopic: normalizedDataByTopic,
                 dataByDate
             };
         }
