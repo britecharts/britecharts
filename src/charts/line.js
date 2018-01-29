@@ -6,7 +6,7 @@ define(function(require){
     const d3Collection = require('d3-collection');
     const d3Dispatch = require('d3-dispatch');
     const d3Ease = require('d3-ease');
-    const d3Format = require('d3-format');    
+    const d3Format = require('d3-format');
     const d3Scale = require('d3-scale');
     const d3Shape = require('d3-shape');
     const d3Selection = require('d3-selection');
@@ -30,7 +30,7 @@ define(function(require){
         formatIntegerValue,
         formatDecimalValue,
     } = require('./helpers/formatHelpers');
-    const { 
+    const {
         isInteger,
         uniqueId
     } = require('./helpers/common');
@@ -159,7 +159,7 @@ define(function(require){
             highlightCircleStroke = 2,
             highlightCircleActiveRadius = highlightCircleRadius + 2,
             highlightCircleActiveStrokeWidth = 5,
-            highlightCircleActiveStrokeOpacity = 0.6,     
+            highlightCircleActiveStrokeOpacity = 0.6,
 
             xAxisFormat = null,
             xTicks = null,
@@ -223,7 +223,12 @@ define(function(require){
             getLineColor = ({topic}) => colorScale(topic),
 
             // events
-            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove', 'customDataEntryClick');
+            dispatcher = d3Dispatch.dispatch(
+                'customMouseOver',
+                'customMouseOut',
+                'customMouseMove',
+                'customDataEntryClick'
+            );
         /**
          * This function creates the graph using the selection and data provided
          *
@@ -259,7 +264,7 @@ define(function(require){
 
         /**
          * Adds a filter to the element
-         * @param {DOMElement} el 
+         * @param {DOMElement} el
          * @private
          */
         function addGlowFilter(el) {
@@ -479,22 +484,22 @@ define(function(require){
                 throw new Error('Data needs to have a dataByTopic property');
             }
 
-            let flatData = [];
-
-            dataByTopic.forEach((topic) => {
+            const flatData = dataByTopic.reduce((accum, topic) => {
                 topic.dates.forEach((date) => {
-                    flatData.push({
+                    accum.push({
                         topicName: topic[topicNameLabel],
                         name: topic[topicLabel],
                         date: date[dateLabel],
                         value: date[valueLabel]
                     });
                 });
-            });
+
+                return accum;
+            }, []);
 
             // Nest data by date and format
             dataByDate = d3Collection.nest()
-                            .key( getDate )
+                            .key(getDate)
                             .entries(flatData)
                             .map((d) => {
                                 return {
@@ -510,15 +515,23 @@ define(function(require){
                 return d;
             });
 
-            // Normalize dataByTopic
-            dataByTopic.forEach(function(kv) {
-                kv.dates.forEach(function(d) {
-                    d.date = new Date(d[dateLabel]);
-                    d.value = +d[valueLabel];
-                });
-            });
+            const normalizedDataByTopic = dataByTopic.reduce((accum, topic) => {
+                let {dates, ...restProps} = topic;
 
-            return {dataByTopic, dataByDate};
+                let newDates = dates.map(d => ({
+                       date: new Date(d[dateLabel]),
+                       value: +d[valueLabel]
+                }));
+
+                accum.push({ dates: newDates, ...restProps });
+
+                return accum;
+             }, []);
+
+            return {
+                dataByTopic: normalizedDataByTopic,
+                dataByDate
+            };
         }
 
         /**
