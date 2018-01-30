@@ -146,7 +146,7 @@ define(function(require) {
      */
     function formatHtmlByBrowser(html) {
         if (navigator.userAgent.search('FireFox') > -1) {
-            return html.replace(/url.*&quot;\)/, `url(&quot;linearGradient[id*="-gradient-"]&quot;);`);
+            return html.replace(/url.*&quot;\)/, 'url(&quot;linearGradient[id*="-gradient-"]&quot;);');
         }
 
         return html;
