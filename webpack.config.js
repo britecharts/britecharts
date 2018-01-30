@@ -66,7 +66,14 @@ var webpack = require('webpack'),
                 presets: ['es2015', 'stage-0'],
                 cacheDirectory: true,
             },
-    }],
+        }],
+    },
+    lintJSLoader = {
+        test: /\.js?$/,
+        include: path.resolve(__dirname, './src/charts'),
+        exclude: /(node_modules)/,
+        enforce: 'pre',
+        loader: 'eslint-loader'
     },
 
     plugins = [
@@ -109,7 +116,10 @@ const getConfig = (env) => {
                 modules: [__dirname, 'node_modules'],
             },
             module: {
-                rules: [defaultJSLoader],
+                rules: [
+                    defaultJSLoader,
+                    lintJSLoader
+                ],
             },
             plugins : [
                 commonsPlugin
