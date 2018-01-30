@@ -61,6 +61,7 @@
   "dependencies": {
     "base-64": "^0.1.0",
     "d3": "^4.10.0",
+    "eslint-loader": "^1.9.0",
     "lodash.assign": "^4.2.0"
   },
   "devDependencies": {
