@@ -229,6 +229,7 @@ define(function(require){
                 'customMouseMove',
                 'customDataEntryClick'
             );
+
         /**
          * This function creates the graph using the selection and data provided
          *

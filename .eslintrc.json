@@ -42,6 +42,9 @@
         "wrap-iife": [2, "inside"]
     }, 
     "parserOptions": {
-       "sourceType": "module"
+       "sourceType": "module",
+       "ecmaFeatures": {
+           "experimentalObjectRestSpread": true
+        }
     }
 }
