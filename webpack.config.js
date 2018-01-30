@@ -71,7 +71,7 @@ var webpack = require('webpack'),
     lintJSLoader = {
         test: /\.js?$/,
         include: path.resolve(__dirname, './src/charts'),
-        exclude: /(node_modules|__tests__|tests_index.js)/,
+        exclude: /(node_modules)/,
         enforce: 'pre',
         loader: 'eslint-loader'
     },
