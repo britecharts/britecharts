@@ -293,6 +293,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
             });
 
             describe('when centeredTextFunction', () => {
+
                 it('is not called, the default function formats text properly', () => {
                     let actualLabel,
                         actualValue,

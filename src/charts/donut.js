@@ -558,6 +558,13 @@ define(function(require) {
 
         // API
 
+        /**
+         * Gets or Sets the centeredTextFunction of the chart. If function is provided
+         * the format will follow the custom function's value format.
+         * @param  {Function} _x        Custom function that returns a formatted string
+         * @return {Function | module}  Current centeredTextFunction or Chart module to chain calls
+         * @public
+         */
         exports.centeredTextFunction = function(_x) {
             if (!arguments.length) {
                 return centeredTextFunction;
