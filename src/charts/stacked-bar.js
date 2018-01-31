@@ -111,6 +111,7 @@ define(function(require){
             transformedData,
             stacks,
             layerElements,
+            reverseStacks = false,
 
             tooltipThreshold = 480,
 
@@ -692,6 +693,11 @@ define(function(require){
          */
         function prepareData(data) {
             stacks = uniq(data.map(({stack}) => stack));
+
+            if (reverseStacks) {
+                stacks = stacks.reverse();
+            }
+
             transformedData = d3Collection.nest()
                 .key(getName)
                 .rollup(function(values) {
@@ -863,6 +869,21 @@ define(function(require){
                 return isHorizontal;
             }
             isHorizontal = _x;
+
+            return this;
+        };
+
+        /**
+        * Gets or Sets the reverseStacks property of the chart, it reverse the stacks order.
+         * @param  {boolean} _x Desired horizontal direction for the graph
+         * @return { reverseStacks | module} If it is horizontal or Bar Chart module to chain calls
+         * @public
+         */
+        exports.reverseStacks = function(_x) {
+            if (!arguments.length) {
+                return reverseStacks;
+            }
+            reverseStacks = _x;
 
             return this;
         };
