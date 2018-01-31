@@ -112,6 +112,8 @@ define(function(require) {
             colorScale,
             colorSchema = colorHelper.colorSchemas.britecharts,
 
+            centeredTextFunction = (data) => `${data.percentage}% ${data.name}`,
+
             // utils
             storeAngle = function(d) {
                 this._current = d;
@@ -321,7 +323,7 @@ define(function(require) {
             if (obj.data) {
 
                 svg.select('.donut-text')
-                    .text(() => `${obj.data.percentage}% ${obj.data.name}`)
+                    .text(() => centeredTextFunction(obj.data))
                     .attr('dy', '.2em')
                     .attr('text-anchor', 'middle');
 
@@ -555,6 +557,15 @@ define(function(require) {
 
 
         // API
+
+        exports.centeredTextFunction = function(_x) {
+            if (!arguments.length) {
+                return centeredTextFunction;
+            }
+            centeredTextFunction = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the colorSchema of the chart
