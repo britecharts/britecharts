@@ -210,6 +210,18 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 expect(actual).toBe(expected);
             });
 
+            it('should provide reverseStacks getter and setter', () => {
+                let previous = stackedBarChart.reverseStacks(),
+                    expected = true,
+                    actual;
+
+                stackedBarChart.reverseStacks(expected);
+                actual = stackedBarChart.reverseStacks();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide isAnimated getter and setter', () => {
                 let previous = stackedBarChart.isAnimated(),
                     expected = true,
