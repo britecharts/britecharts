@@ -561,6 +561,8 @@ define(function(require) {
         /**
          * Gets or Sets the centeredTextFunction of the chart. If function is provided
          * the format will be changed by the custom function's value format.
+         * The default format function value is "${d.percentage}% ${d.name}"
+         * The callback will provide the data object with id, name, percentage, and quantity
          * @param  {Function} _x        Custom function that returns a formatted string
          * @return {Function | module}  Current centeredTextFunction or Chart module to chain calls
          * @public
