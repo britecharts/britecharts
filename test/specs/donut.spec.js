@@ -292,27 +292,46 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 });
             });
 
-            describe('when centeredTextFunction is called', () => {
-                it('the default function formats text properly', () => {
-                    let actual,
-                        expected = 'something something',
+            describe('when centeredTextFunction', () => {
+                it('is not called, the default function formats text properly', () => {
+                    let actualLabel,
+                        actualValue,
+                        expectedLabel = 'Shiny',
+                        expectedValue = '20%',
                         dataset = buildDataSet('withThreeCategories');
 
-                    donutChart.centeredTextFunction();
+                    donutChart.highlightSliceById(11);
                     containerFixture.datum(dataset).call(donutChart);
 
-                    let firstSlice = containerFixture.select('.chart-group .arc path');
+                    let valueNode = containerFixture.select('text.donut-text .value').nodes()[0];
+                    let labelNode = containerFixture.select('text.donut-text .label').nodes()[0];
 
-                    donutChart.on('customMouseOver', () => {});
-                    firstSlice.dispatch('mouseover');
+                    actualValue = d3.select(valueNode).text();
+                    actualLabel = d3.select(labelNode).text();
 
-                    console.log('**actual nodes', containerFixture);
+                    expect(actualValue).toBe(expectedValue);
+                    expect(actualLabel).toBe(expectedLabel);
+                });
 
-                    let nodes = containerFixture.select('text.donut-text').nodes();
+                it('is called, the custom function changes text format properly', () => {
+                    let actualLabel,
+                        actualValue,
+                        expectedLabel = '200',
+                        expectedValue = '11',
+                        dataset = buildDataSet('withThreeCategories');
 
-                    // actual = d3.select(textNodes[0].text());
+                    donutChart.centeredTextFunction((d) => `${d.id} ${d.quantity}`);
+                    donutChart.highlightSliceById(11);
+                    containerFixture.datum(dataset).call(donutChart);
 
-                    expect(false).toBe(true);
+                    let valueNode = containerFixture.select('text.donut-text .value').nodes()[0];
+                    let labelNode = containerFixture.select('text.donut-text .label').nodes()[0];
+
+                    actualValue = d3.select(valueNode).text();
+                    actualLabel = d3.select(labelNode).text();
+
+                    expect(actualValue).toBe(expectedValue);
+                    expect(actualLabel).toBe(expectedLabel);
                 });
             });
 
