@@ -112,7 +112,7 @@ define(function(require) {
             colorScale,
             colorSchema = colorHelper.colorSchemas.britecharts,
 
-            centeredTextFunction = (data) => `${data.percentage}% ${data.name}`,
+            centeredTextFunction = (d) => `${d.percentage}% ${d.name}`,
 
             // utils
             storeAngle = function(d) {

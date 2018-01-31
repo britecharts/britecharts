@@ -290,7 +290,31 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
                     expect(actual).toBe(expected);
                 });
-            })
+            });
+
+            describe('when centeredTextFunction is called', () => {
+                it('the default function formats text properly', () => {
+                    let actual,
+                        expected = 'something something',
+                        dataset = buildDataSet('withThreeCategories');
+
+                    donutChart.centeredTextFunction();
+                    containerFixture.datum(dataset).call(donutChart);
+
+                    let firstSlice = containerFixture.select('.chart-group .arc path');
+
+                    donutChart.on('customMouseOver', () => {});
+                    firstSlice.dispatch('mouseover');
+
+                    console.log('**actual nodes', containerFixture);
+
+                    let nodes = containerFixture.select('text.donut-text').nodes();
+
+                    // actual = d3.select(textNodes[0].text());
+
+                    expect(false).toBe(true);
+                });
+            });
 
             describe('API', function() {
 
@@ -440,7 +464,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     expect(actual).toBe(expected);
                 });
 
-                it('should not have numberFormat by default', () =>{
+                it('should not have numberFormat by default', () => {
                     let expected = undefined,
                         actual;
 
@@ -449,7 +473,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     expect(expected).toBe(actual);
                 });
 
-                it('should provide numberFormat getter and setter', () =>{
+                it('should provide numberFormat getter and setter', () => {
                     let previous = donutChart.numberFormat(),
                         expected = 'd',
                         actual;
