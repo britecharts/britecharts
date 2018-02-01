@@ -91,10 +91,10 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
         describe('when orderingFunction is called', () => {
 
             it('accepts custom descending order function', () => {
-                let fn = (a, b) => b.value - a.value; 
+                let fn = (a, b) => b.value - a.value;
                 let actual,
                     expected = {
-                        name: 'E', 
+                        name: 'E',
                         value: 0.12702
                     };
 
@@ -121,7 +121,45 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual.name).toBe(expected.name);
                 expect(actual.value).toBe(expected.value);
             });
-        })
+        });
+
+        describe('when hasSingleHover is called', () => {
+
+            it('should darken the original color of the hovered bar', () => {
+                let expectedHasHover = true;
+                let expectedColor = '#7bdcc0';
+                let expectedHoverColor = 'rgb(86, 154, 134)';
+
+                let actualHasHover = barChart.hasSingleHover();
+                let bar = containerFixture.selectAll('.bar:nth-child(1)');
+
+                let actualColor = bar.attr('fill');
+
+                bar.dispatch('mouseover');
+                let actualHoverColor = bar.attr('fill');
+
+                expect(actualHasHover).toBe(expectedHasHover);
+                expect(actualColor).toBe(expectedColor);
+                expect(actualHoverColor).toBe(expectedHoverColor);
+            });
+
+            it('should keep the same hover color of the hovered bar', () => {
+                let expectedHasHover = false;
+                let expectedColor = '#7bdcc0';
+
+                barChart.hasSingleHover(false);
+                let actualHasHover = barChart.hasSingleHover();
+                let bar = containerFixture.selectAll('.bar:nth-child(1)');
+                let actualColor = bar.attr('fill');
+
+                bar.dispatch('mouseover');
+                let hoverColor = bar.attr('fill');
+
+                expect(actualHasHover).toBe(expectedHasHover);
+                expect(actualColor).toBe(expectedColor);
+                expect(actualColor).toBe(hoverColor);
+            });
+        });
 
         describe('API', function() {
 
