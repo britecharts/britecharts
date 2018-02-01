@@ -431,11 +431,6 @@ define([
                         expected = 2,
                         actual;
 
-                it('should provide a xTicks getter and setter', () => {
-                    let previous = lineChart.xTicks(),
-                        expected = 2,
-                        actual;
-
                     lineChart.xTicks(expected);
                     actual = lineChart.xTicks();
 
@@ -731,4 +726,3 @@ define([
             });
         });
     });
-});
