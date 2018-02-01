@@ -98,7 +98,7 @@ define(function(require) {
             isHorizontal = false,
             svg,
 
-            hasSingleHover = true,
+            hasSingleBarHighlight = true,
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
             animationDuration = 800,
@@ -641,7 +641,7 @@ define(function(require) {
         function handleMouseOver(e, d, barList, chartWidth, chartHeight) {
             dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
 
-            if (hasSingleHover) {
+            if (hasSingleBarHighlight) {
                 d3Selection.select(e).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
                 return;
             }
@@ -761,19 +761,19 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the hasSingleHover status.
+         * Gets or Sets the hasSingleBarHighlight status.
          * If the value is true (default), the only the hovered bar
          * will switch to darker color. If the value is false, only the hovered bar will stay
          * the same while the rest of the bars will switch to darker colors.
-         * @param  {boolean} _x     Should darken the hovered bar
-         * @return { boolean | module} Is hasSingleHover used or Chart module to chain calls
+         * @param  {boolean} _x        Should darken the hovered bar
+         * @return { boolean | module} Is hasSingleBarHighlight used or Chart module to chain calls
          * @public
          */
-        exports.hasSingleHover = function(_x) {
+        exports.hasSingleBarHighlight = function(_x) {
             if (!arguments.length) {
-                return hasSingleHover;
+                return hasSingleBarHighlight;
             }
-            hasSingleHover = _x;
+            hasSingleBarHighlight = _x;
 
             return this;
         }
