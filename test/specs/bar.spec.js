@@ -91,10 +91,10 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
         describe('when orderingFunction is called', () => {
 
             it('accepts custom descending order function', () => {
-                let fn = (a, b) => b.value - a.value; 
+                let fn = (a, b) => b.value - a.value;
                 let actual,
                     expected = {
-                        name: 'E', 
+                        name: 'E',
                         value: 0.12702
                     };
 
@@ -121,7 +121,45 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual.name).toBe(expected.name);
                 expect(actual.value).toBe(expected.value);
             });
-        })
+        });
+
+        describe('when hasSingleBarHighlight is called', () => {
+
+            it('should darken the original color of the hovered bar', () => {
+                let expectedHasBarHighlight = true;
+                let expectedColor = '#7bdcc0';
+                let expectedHoverColor = 'rgb(86, 154, 134)';
+
+                let actualHasHover = barChart.hasSingleBarHighlight();
+                let bar = containerFixture.selectAll('.bar:nth-child(1)');
+
+                let actualColor = bar.attr('fill');
+
+                bar.dispatch('mouseover');
+                let actualHoverColor = bar.attr('fill');
+
+                expect(actualHasHover).toBe(expectedHasBarHighlight);
+                expect(actualColor).toBe(expectedColor);
+                expect(actualHoverColor).toBe(expectedHoverColor);
+            });
+
+            it('should keep the same hover color of the hovered bar', () => {
+                let expectedHasBarHighlight = false;
+                let expectedColor = '#7bdcc0';
+
+                barChart.hasSingleBarHighlight(false);
+                let actualHasHover = barChart.hasSingleBarHighlight();
+                let bar = containerFixture.selectAll('.bar:nth-child(1)');
+                let actualColor = bar.attr('fill');
+
+                bar.dispatch('mouseover');
+                let hoverColor = bar.attr('fill');
+
+                expect(actualHasHover).toBe(expectedHasBarHighlight);
+                expect(actualColor).toBe(expectedColor);
+                expect(actualColor).toBe(hoverColor);
+            });
+        });
 
         describe('API', function() {
 
@@ -391,6 +429,18 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
                 barChart.numberFormat(expected);
                 actual = barChart.numberFormat();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide hasSingleBarHighlight getter and setter', () =>{
+                let previous = barChart.hasSingleBarHighlight(),
+                    expected = false,
+                    actual;
+
+                barChart.hasSingleBarHighlight(expected);
+                actual = barChart.hasSingleBarHighlight();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
