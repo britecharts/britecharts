@@ -765,7 +765,7 @@ define(function(require) {
          * If the value is true (default), the only the hovered bar
          * will switch to darker color. If the value is false, only the hovered bar will stay
          * the same while the rest of the bars will switch to darker colors.
-         * @param  {boolean} _x        Should darken the hovered bar
+         * @param  {boolean} _x        Should highlight the hovered bar
          * @return { boolean | module} Is hasSingleBarHighlight used or Chart module to chain calls
          * @public
          */
