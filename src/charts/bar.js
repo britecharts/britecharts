@@ -98,6 +98,7 @@ define(function(require) {
             isHorizontal = false,
             svg,
 
+            hasSingleHover = true,
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
             animationDuration = 800,
@@ -348,14 +349,14 @@ define(function(require) {
                 .attr('x', 0)
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value))
-                .on('mouseover', function(d) {
-                    handleMouseOver(this, d, chartWidth, chartHeight);
+                .on('mouseover', function(d, index, barList) {
+                    handleMouseOver(this, d, barList, chartWidth, chartHeight);
                 })
                 .on('mousemove', function(d) {
                     handleMouseMove(this, d, chartWidth, chartHeight);
                 })
-                .on('mouseout', function(d) {
-                    handleMouseOut(this, d, chartWidth, chartHeight);
+                .on('mouseout', function(d, index, barList) {
+                    handleMouseOut(this, d, barList, chartWidth, chartHeight);
                 })
                 .on('click', function(d) {
                     handleClick(this, d, chartWidth, chartHeight);
@@ -382,14 +383,14 @@ define(function(require) {
                 .attr('y', chartHeight)
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value))
-                .on('mouseover', function(d) {
-                    handleMouseOver(this, d, chartWidth, chartHeight);
+                .on('mouseover', function(d, index, barList) {
+                    handleMouseOver(this, d, barList, chartWidth, chartHeight);
                 })
                 .on('mousemove', function(d) {
                     handleMouseMove(this, d, chartWidth, chartHeight);
                 })
-                .on('mouseout', function(d) {
-                    handleMouseOut(this, d, chartWidth, chartHeight);
+                .on('mouseout', function(d, index, barList) {
+                    handleMouseOut(this, d, barList, chartWidth, chartHeight);
                 })
                 .on('click', function(d) {
                     handleClick(this, d, chartWidth, chartHeight);
@@ -421,14 +422,14 @@ define(function(require) {
                 .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
                 .attr('height', ({value}) => chartHeight - yScale(value))
-                .on('mouseover', function(d) {
-                    handleMouseOver(this, d, chartWidth, chartHeight);
+                .on('mouseover', function(d, index, barList) {
+                    handleMouseOver(this, d, barList, chartWidth, chartHeight);
                 })
                 .on('mousemove', function(d) {
                     handleMouseMove(this, d, chartWidth, chartHeight);
                 })
-                .on('mouseout', function(d) {
-                    handleMouseOut(this, d, chartWidth, chartHeight);
+                .on('mouseout', function(d, index, barList) {
+                    handleMouseOut(this, d, barList, chartWidth, chartHeight);
                 })
                 .on('click', function(d) {
                     handleClick(this, d, chartWidth, chartHeight);
@@ -459,14 +460,14 @@ define(function(require) {
                 .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
                 .attr('height', ({value}) => chartHeight - yScale(value))
-                .on('mouseover', function(d) {
-                    handleMouseOver(this, d, chartWidth, chartHeight);
+                .on('mouseover', function(d, index, barList) {
+                    handleMouseOver(this, d, barList, chartWidth, chartHeight);
                 })
                 .on('mousemove', function(d) {
                     handleMouseMove(this, d, chartWidth, chartHeight);
                 })
-                .on('mouseout', function(d) {
-                    handleMouseOut(this, d, chartWidth, chartHeight);
+                .on('mouseout', function(d, index, barList) {
+                    handleMouseOut(this, d, barList, chartWidth, chartHeight);
                 })
                 .on('click', function(d) {
                     handleClick(this, d, chartWidth, chartHeight);
@@ -637,9 +638,20 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseOver(e, d, chartWidth, chartHeight) {
+        function handleMouseOver(e, d, barList, chartWidth, chartHeight) {
             dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
-            d3Selection.select(e).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+
+            if (hasSingleHover) {
+                d3Selection.select(e).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+                return;
+            }
+
+            barList.forEach(barRect => {
+                if (barRect === e) {
+                    return;
+                }
+                d3Selection.select(barRect).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+            });
         }
 
         /**
@@ -656,9 +668,12 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseOut(e, d, chartWidth, chartHeight) {
+        function handleMouseOut(e, d, barList, chartWidth, chartHeight) {
             dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
-            d3Selection.select(e).attr('fill', ({name}) => colorMap(name));
+
+            barList.forEach((barRect) => {
+                d3Selection.select(barRect).attr('fill', ({name}) => colorMap(name));
+            });
         }
 
         /**
@@ -933,6 +948,15 @@ define(function(require) {
                 return orderingFunction;
             }
             orderingFunction = _x;
+
+            return this;
+        }
+
+        exports.hasSingleHover = function(_x) {
+            if (!arguments.length) {
+                return hasSingleHover;
+            }
+            hasSingleHover = _x;
 
             return this;
         }
