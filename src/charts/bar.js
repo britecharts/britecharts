@@ -742,6 +742,43 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the hasPercentage status
+         * @param  {boolean} _x     Should use percentage as value format
+         * @return { boolean | module} Is percentage used or Chart module to chain calls
+         * @public
+         */
+        exports.hasPercentage = function(_x) {
+            if (!arguments.length) {
+                return numberFormat === PERCENTAGE_FORMAT;
+            }
+            if (_x) {
+                numberFormat = PERCENTAGE_FORMAT;
+            } else {
+                numberFormat = NUMBER_FORMAT;
+            }
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the hasSingleHover status.
+         * If the value is true (default), the only the hovered bar
+         * will switch to darker color. If the value is false, only the hovered bar will stay
+         * the same while the rest of the bars will switch to darker colors.
+         * @param  {boolean} _x     Should darken the hovered bar
+         * @return { boolean | module} Is hasSingleHover used or Chart module to chain calls
+         * @public
+         */
+        exports.hasSingleHover = function(_x) {
+            if (!arguments.length) {
+                return hasSingleHover;
+            }
+            hasSingleHover = _x;
+
+            return this;
+        }
+
+        /**
          * Gets or Sets the height of the chart
          * @param  {number} _x Desired width for the graph
          * @return { height | module} Current height or Chart module to chain calls
@@ -951,34 +988,6 @@ define(function(require) {
 
             return this;
         }
-
-        exports.hasSingleHover = function(_x) {
-            if (!arguments.length) {
-                return hasSingleHover;
-            }
-            hasSingleHover = _x;
-
-            return this;
-        }
-
-        /**
-         * Gets or Sets the hasPercentage status
-         * @param  {boolean} _x     Should use percentage as value format
-         * @return { boolean | module} Is percentage used or Chart module to chain calls
-         * @public
-         */
-        exports.hasPercentage = function(_x) {
-            if (!arguments.length) {
-                return numberFormat === PERCENTAGE_FORMAT;
-            }
-            if (_x) {
-                numberFormat = PERCENTAGE_FORMAT;
-            } else {
-                numberFormat = NUMBER_FORMAT;
-            }
-
-            return this;
-        };
 
         /**
          * Gets or Sets the valueLabel of the chart
