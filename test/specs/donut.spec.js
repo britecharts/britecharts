@@ -290,7 +290,51 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
                     expect(actual).toBe(expected);
                 });
-            })
+            });
+
+            describe('when centeredTextFunction', () => {
+
+                it('is not called, the default function formats text properly', () => {
+                    let actualLabel,
+                        actualValue,
+                        expectedLabel = 'Shiny',
+                        expectedValue = '20%',
+                        dataset = buildDataSet('withThreeCategories');
+
+                    donutChart.highlightSliceById(11);
+                    containerFixture.datum(dataset).call(donutChart);
+
+                    let valueNode = containerFixture.select('text.donut-text .value').nodes()[0];
+                    let labelNode = containerFixture.select('text.donut-text .label').nodes()[0];
+
+                    actualValue = d3.select(valueNode).text();
+                    actualLabel = d3.select(labelNode).text();
+
+                    expect(actualValue).toBe(expectedValue);
+                    expect(actualLabel).toBe(expectedLabel);
+                });
+
+                it('is called, the custom function changes text format properly', () => {
+                    let actualLabel,
+                        actualValue,
+                        expectedLabel = '200',
+                        expectedValue = '11',
+                        dataset = buildDataSet('withThreeCategories');
+
+                    donutChart.centeredTextFunction((d) => `${d.id} ${d.quantity}`);
+                    donutChart.highlightSliceById(11);
+                    containerFixture.datum(dataset).call(donutChart);
+
+                    let valueNode = containerFixture.select('text.donut-text .value').nodes()[0];
+                    let labelNode = containerFixture.select('text.donut-text .label').nodes()[0];
+
+                    actualValue = d3.select(valueNode).text();
+                    actualLabel = d3.select(labelNode).text();
+
+                    expect(actualValue).toBe(expectedValue);
+                    expect(actualLabel).toBe(expectedLabel);
+                });
+            });
 
             describe('API', function() {
 
@@ -440,7 +484,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     expect(actual).toBe(expected);
                 });
 
-                it('should not have numberFormat by default', () =>{
+                it('should not have numberFormat by default', () => {
                     let expected = undefined,
                         actual;
 
@@ -449,7 +493,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     expect(expected).toBe(actual);
                 });
 
-                it('should provide numberFormat getter and setter', () =>{
+                it('should provide numberFormat getter and setter', () => {
                     let previous = donutChart.numberFormat(),
                         expected = 'd',
                         actual;

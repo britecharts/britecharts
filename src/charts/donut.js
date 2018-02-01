@@ -112,6 +112,8 @@ define(function(require) {
             colorScale,
             colorSchema = colorHelper.colorSchemas.britecharts,
 
+            centeredTextFunction = (d) => `${d.percentage}% ${d.name}`,
+
             // utils
             storeAngle = function(d) {
                 this._current = d;
@@ -321,7 +323,7 @@ define(function(require) {
             if (obj.data) {
 
                 svg.select('.donut-text')
-                    .text(() => `${obj.data.percentage}% ${obj.data.name}`)
+                    .text(() => centeredTextFunction(obj.data))
                     .attr('dy', '.2em')
                     .attr('text-anchor', 'middle');
 
@@ -555,6 +557,26 @@ define(function(require) {
 
 
         // API
+
+        /**
+         * Gets or Sets the centeredTextFunction of the chart. If function is provided
+         * the format will be changed by the custom function's value format.
+         * The default format function value is "${d.percentage}% ${d.name}".
+         * The callback will provide the data object with id, name, percentage, and quantity.
+         * Also provides the component added by the user in each data entry.
+         * @param  {Function} _x        Custom function that returns a formatted string
+         * @return {Function | module}  Current centeredTextFunction or Chart module to chain calls
+         * @public
+         * @example donutChart.centeredTextFunction(d => `${d.id} ${d.quantity}`)
+         */
+        exports.centeredTextFunction = function(_x) {
+            if (!arguments.length) {
+                return centeredTextFunction;
+            }
+            centeredTextFunction = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the colorSchema of the chart
