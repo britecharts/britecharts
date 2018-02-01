@@ -73,7 +73,11 @@ var webpack = require('webpack'),
         include: path.resolve(__dirname, './src/charts'),
         exclude: /(node_modules)/,
         enforce: 'pre',
-        loader: 'eslint-loader'
+        loader: 'eslint-loader',
+        options: {
+            emitWarning: true,
+            failOnError: false,
+        }
     },
 
     plugins = [
@@ -91,7 +95,7 @@ if (isProduction) {
 
 const commonsPlugin = new webpack.optimize.CommonsChunkPlugin({
     name: 'common',
-    filename: 'common.js', 
+    filename: 'common.js',
     minChunks: Infinity,
 });
 
