@@ -395,6 +395,18 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide hasSingleHover getter and setter', () =>{
+                let previous = barChart.hasSingleHover(),
+                    expected = false,
+                    actual;
+
+                barChart.hasSingleHover(expected);
+                actual = barChart.hasSingleHover();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
         });
 
         describe('when clicking on a bar', function() {
