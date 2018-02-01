@@ -1,4 +1,17 @@
-2.4.12
+2.4.12 - Minor
+--------------
+* Added ESlint task to webpack for demos and added critical rules (dalerasrorov-eb)
+* Eliminated mutation of data in cleanData of the Line chart (dalerasrorov-eb)
+* Allow valueFormat to be an empty string  (sound-matt)
+* Feat: add possibility to precise the unit of the values in legend (sound-matt)
+* Fix: stackedbar get nearest datapoint (sound-matt)
+* Fix: stacked-bar no more choosing random color (sound-matt)
+* Stacked bar chart hasPercentage impl (dalerasrorov-eb)
+* Adding anchors to loading states and updating bar demo (Golodhros)
+* Updating changelog (Golodhros)
+* Replace .enablePercentageLabels with .enableLabels (mrbongiolo)
+* Removed .usePercentage for good from BarChart (mrbongiolo)
+* Feature - Added .numberFormat to MiniTooltip (mrbongiolo)
 
 2.4.11 - Minor
 --------------
