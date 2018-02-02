@@ -111,6 +111,7 @@ define(function(require){
             transformedData,
             stacks,
             layerElements,
+            hasReversedStacks = false,
 
             tooltipThreshold = 480,
 
@@ -692,6 +693,11 @@ define(function(require){
          */
         function prepareData(data) {
             stacks = uniq(data.map(({stack}) => stack));
+
+            if (hasReversedStacks) {
+                stacks = stacks.reverse();
+            }
+
             transformedData = d3Collection.nest()
                 .key(getName)
                 .rollup(function(values) {
@@ -863,6 +869,21 @@ define(function(require){
                 return isHorizontal;
             }
             isHorizontal = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the hasReversedStacks property of the chart, reversing the order of stacks.
+         * @param  {boolean} _x Desired hasReversedStacks flag
+         * @return { hasReversedStacks | module} Current hasReversedStacks or Chart module to chain calls
+         * @public
+         */
+        exports.hasReversedStacks = function(_x) {
+            if (!arguments.length) {
+                return hasReversedStacks;
+            }
+            hasReversedStacks = _x;
 
             return this;
         };
