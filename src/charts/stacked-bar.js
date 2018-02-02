@@ -874,9 +874,9 @@ define(function(require){
         };
 
         /**
-        * Gets or Sets the hasReversedStacks property of the chart, it reverse the stacks order.
-         * @param  {boolean} _x Desired horizontal direction for the graph
-         * @return { hasReversedStacks | module} If it is horizontal or Bar Chart module to chain calls
+         * Gets or Sets the hasReversedStacks property of the chart, reversing the order of stacks.
+         * @param  {boolean} _x Desired hasReversedStacks flag
+         * @return { hasReversedStacks | module} Current hasReversedStacks or Chart module to chain calls
          * @public
          */
         exports.hasReversedStacks = function(_x) {
