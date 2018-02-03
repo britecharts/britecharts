@@ -1,3 +1,4 @@
+2.5.0
 2.4.12 - Minor
 --------------
 * Added ESlint task to webpack for demos and added critical rules (dalerasrorov-eb)
