@@ -1,5 +1,11 @@
-2.5.0
-2.4.12 - Minor
+2.5.0 - MINOR
+--------------
+* Feature - ability to reverse stacks (sound-matt)
+* Feature - allow ability to switch Bar's hover behavior (dalerasrorov-eb)
+* Eased compilation requirement for ESlint and updated CHANGELOG (dalerasrorov-eb)
+* Feature - added text formatter function to Donut's API (dalerasrorov-eb)
+
+2.4.12 - PATCH
 --------------
 * Added ESlint task to webpack for demos and added critical rules (dalerasrorov-eb)
 * Eliminated mutation of data in cleanData of the Line chart (dalerasrorov-eb)
