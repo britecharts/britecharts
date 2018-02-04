@@ -763,9 +763,10 @@ define(function(require) {
 
         /**
          * Gets or Sets the hasSingleBarHighlight status.
-         * If the value is true (default), the only the hovered bar
-         * will switch to darker color. If the value is false, only the hovered bar will stay
-         * the same while the rest of the bars will switch to darker colors.
+         * If the value is true (default), only the hovered bar is considered to
+         * be highlighted and will be switch to darker color. If the value is false,
+         * all the bars but the hovered bar are considered to be highlighted
+         * and will switch to darker color.
          * @param  {boolean} _x        Should highlight the hovered bar
          * @return { boolean | module} Is hasSingleBarHighlight used or Chart module to chain calls
          * @public
@@ -806,6 +807,7 @@ define(function(require) {
          * @return {highlightBarFunction | module} Is highlightBarFunction used or Chart module to chain calls
          * @public
          * @example barChart.highlightBarFunction(e => d3.select(e).attr('fill', expectedHighlightColor))
+         * @example barChart.highlightBarFunction(e => null) // will disable the default highlight effect
          */
         exports.highlightBarFunction = function(_x) {
             if (!highlightBarFunction.length) {
