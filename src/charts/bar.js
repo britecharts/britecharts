@@ -795,10 +795,17 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the highlightBarFunction function.
+         * Gets or Sets the highlightBarFunction function. The callback passed to
+         * this function returns a bar component from the bar chart. Use this function
+         * if you want to apply a custom behavior to the highlighted bar on hover.
+         * When hasSingleBarHighlight is true the highlighted bar will be the
+         * one that was hovered by the user. When hasSingleBarHighlight is false
+         * the highlighted bars are all the bars but the hovered one. The default
+         * highlight effect on a bar is darkening the highlighted bar(s) color.
          * @param  {Function} _x        Desired operation operation on a hovered bar passed through callback
          * @return {highlightBarFunction | module} Is highlightBarFunction used or Chart module to chain calls
          * @public
+         * @example barChart.highlightBarFunction(e => d3.select(e).attr('fill', expectedHighlightColor))
          */
         exports.highlightBarFunction = function(_x) {
             if (!highlightBarFunction.length) {
