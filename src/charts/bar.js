@@ -745,7 +745,7 @@ define(function(require) {
         /**
          * Gets or Sets the hasPercentage status
          * @param  {boolean} _x     Should use percentage as value format
-         * @return { boolean | module} Is percentage used or Chart module to chain calls
+         * @return {boolean | module} Is percentage used or Chart module to chain calls
          * @public
          */
         exports.hasPercentage = function(_x) {
@@ -768,7 +768,7 @@ define(function(require) {
          * all the bars but the hovered bar are considered to be highlighted
          * and will switch to darker color.
          * @param  {boolean} _x        Should highlight the hovered bar
-         * @return { boolean | module} Is hasSingleBarHighlight used or Chart module to chain calls
+         * @return {boolean | module} Is hasSingleBarHighlight used or Chart module to chain calls
          * @public
          */
         exports.hasSingleBarHighlight = function(_x) {
@@ -783,7 +783,7 @@ define(function(require) {
         /**
          * Gets or Sets the height of the chart
          * @param  {number} _x Desired width for the graph
-         * @return { height | module} Current height or Chart module to chain calls
+         * @return {height | module} Current height or Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -806,8 +806,8 @@ define(function(require) {
          * @param  {Function} _x        Desired operation operation on a hovered bar passed through callback
          * @return {highlightBarFunction | module} Is highlightBarFunction used or Chart module to chain calls
          * @public
-         * @example barChart.highlightBarFunction(e => d3.select(e).attr('fill', blue))
-         * @example barChart.highlightBarFunction(e => null) // will disable the default highlight effect
+         * @example barChart.highlightBarFunction(e => d3.select(e).attr('fill', 'blue'))
+         * barChart.highlightBarFunction(e => null) // will disable the default highlight effect
          */
         exports.highlightBarFunction = function(_x) {
             if (!highlightBarFunction.length) {
@@ -823,7 +823,7 @@ define(function(require) {
          * By default this is 'false'
          *
          * @param  {Boolean} _x Desired animation flag
-         * @return { isAnimated | module} Current isAnimated flag or Chart module
+         * @return {isAnimated | module} Current isAnimated flag or Chart module
          * @public
          */
         exports.isAnimated = function(_x) {
@@ -896,7 +896,7 @@ define(function(require) {
         /**
          * Gets or Sets the loading state of the chart
          * @param  {string} markup Desired markup to show when null data
-         * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+         * @return {loadingState | module} Current loading state markup or Chart module to chain calls
          * @public
          */
         exports.loadingState = function(_markup) {
@@ -911,7 +911,7 @@ define(function(require) {
         /**
          * Gets or Sets the margin of the chart
          * @param  {object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Chart module to chain calls
+         * @return {margin | module} Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -926,7 +926,7 @@ define(function(require) {
         /**
          * Gets or Sets the nameLabel of the chart
          * @param  {Number} _x Desired nameLabel for the graph
-         * @return { nameLabel | module} Current nameLabel or Chart module to chain calls
+         * @return {nameLabel | module} Current nameLabel or Chart module to chain calls
          * @public
          */
         exports.nameLabel = function(_x) {
@@ -971,7 +971,7 @@ define(function(require) {
          * Configurable extension of the x axis
          * if your max point was 50% you might want to show x axis to 60%, pass 1.2
          * @param  {number} _x ratio to max data point to add to the x axis
-         * @return { ratio | module} Current ratio or Chart module to chain calls
+         * @return {ratio | module} Current ratio or Chart module to chain calls
          * @public
          */
         exports.percentageAxisToMaxRatio = function(_x) {
@@ -986,7 +986,7 @@ define(function(require) {
         /**
          * Gets or Sets whether the color list should be reversed or not
          * @param  {boolean} _x     Should reverse the color list
-         * @return { boolean | module} Is color list being reversed
+         * @return {boolean | module} Is color list being reversed
          * @public
          */
         exports.shouldReverseColorList = function(_x) {
@@ -1002,7 +1002,7 @@ define(function(require) {
         /**
          * Changes the order of items given the custom function
          * @param  {Function} _x             A custom function that sets logic for ordering
-         * @return { (Function | Module) }   Updated module with ordering function applied
+         * @return {(Function | Module)}   Updated module with ordering function applied
          * @public
          */
         exports.orderingFunction = function(_x) {
@@ -1032,7 +1032,7 @@ define(function(require) {
         /**
          * Gets or Sets the width of the chart
          * @param  {number} _x Desired width for the graph
-         * @return { width | module} Current width or Chart module to chain calls
+         * @return {width | module} Current width or Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
