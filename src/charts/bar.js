@@ -806,7 +806,7 @@ define(function(require) {
          * @param  {Function} _x        Desired operation operation on a hovered bar passed through callback
          * @return {highlightBarFunction | module} Is highlightBarFunction used or Chart module to chain calls
          * @public
-         * @example barChart.highlightBarFunction(e => d3.select(e).attr('fill', expectedHighlightColor))
+         * @example barChart.highlightBarFunction(e => d3.select(e).attr('fill', blue))
          * @example barChart.highlightBarFunction(e => null) // will disable the default highlight effect
          */
         exports.highlightBarFunction = function(_x) {
