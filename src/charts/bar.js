@@ -797,7 +797,7 @@ define(function(require) {
         /**
          * Gets or Sets the highlightBarFunction function.
          * @param  {Function} _x        Desired operation operation on a hovered bar passed through callback
-         * @return { highlightBarFunction | module} Is highlightBarFunction used or Chart module to chain calls
+         * @return {highlightBarFunction | module} Is highlightBarFunction used or Chart module to chain calls
          * @public
          */
         exports.highlightBarFunction = function(_x) {

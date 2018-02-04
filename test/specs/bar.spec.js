@@ -1,7 +1,7 @@
 define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
     'use strict';
 
-    const aTestDataSet = () => new dataBuilder.BarDataBuilder();    
+    const aTestDataSet = () => new dataBuilder.BarDataBuilder();
     const buildDataSet = (dataSetName) => {
         return aTestDataSet()
             [dataSetName]()
@@ -107,7 +107,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             });
 
             it('accepts a custom ascending sorting function', () => {
-                let fn = (a, b) => a.value - b.value; 
+                let fn = (a, b) => a.value - b.value;
                 let actual,
                     expected = {
                         name: 'Z',
@@ -158,6 +158,44 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actualHasHover).toBe(expectedHasBarHighlight);
                 expect(actualColor).toBe(expectedColor);
                 expect(actualColor).toBe(hoverColor);
+            });
+        });
+
+        describe('when highlightBarFunction is called', () => {
+
+            it('should change behavior of the hovered bar', () => {
+                let expectedHighlightColor = '#ffffff';
+                let customHighlightFunction = (e) => d3.select(e).attr('fill', expectedHighlightColor);
+
+                barChart.highlightBarFunction(customHighlightFunction);
+                let bar = containerFixture.selectAll('.bar:nth-child(1)');
+
+                let beforeHighlightColor = bar.attr('fill');
+
+                bar.dispatch('mouseover');
+                let actualHighlightColor = bar.attr('fill');
+
+                expect(actualHighlightColor).toBe(expectedHighlightColor);
+                expect(beforeHighlightColor).not.toBe(expectedHighlightColor);
+            });
+
+            it('should change the behavior of non-hovered bars when hasSingleBarHighlight is False', () => {
+                let expectedHighlightColor = '#ffffff';
+                let customHighlightFunction = (e) => d3.select(e).attr('fill', expectedHighlightColor);
+
+                barChart.hasSingleBarHighlight(false);
+                barChart.highlightBarFunction(customHighlightFunction);
+                let barNotHighlighted = containerFixture.selectAll('.bar:nth-child(1)');
+                let barHighlighted = containerFixture.selectAll('.bar:nth-child(2)');
+
+                let beforeHighlightColor = barNotHighlighted.attr('fill');
+
+                barNotHighlighted.dispatch('mouseover');
+                let actualNotHighlightColor = barNotHighlighted.attr('fill');
+                let actualHighlightColor = barHighlighted.attr('fill');
+
+                expect(actualHighlightColor).toBe(expectedHighlightColor);
+                expect(actualNotHighlightColor).toBe(beforeHighlightColor);
             });
         });
 
