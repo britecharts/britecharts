@@ -105,6 +105,7 @@ define(function(require) {
             animationStepRatio = 70,
             interBarDelay = (d, i) => animationStepRatio * i,
 
+            highlightBarFunction = (bar) => d3Selection.select(bar).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker()),
             orderingFunction,
 
             valueLabel = 'value',
@@ -642,7 +643,7 @@ define(function(require) {
             dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
 
             if (hasSingleBarHighlight) {
-                d3Selection.select(e).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+                highlightBarFunction(e);
                 return;
             }
 
@@ -650,7 +651,7 @@ define(function(require) {
                 if (barRect === e) {
                     return;
                 }
-                d3Selection.select(barRect).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker());
+                highlightBarFunction(barRect);
             });
         }
 
@@ -792,6 +793,21 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Gets or Sets the highlightBarFunction function.
+         * @param  {Function} _x        Desired operation operation on a hovered bar passed through callback
+         * @return { highlightBarFunction | module} Is highlightBarFunction used or Chart module to chain calls
+         * @public
+         */
+        exports.highlightBarFunction = function(_x) {
+            if (!highlightBarFunction.length) {
+                return highlightBarFunction;
+            }
+            highlightBarFunction = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the isAnimated property of the chart, making it to animate when render.
