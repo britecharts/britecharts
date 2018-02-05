@@ -1004,7 +1004,7 @@ define(function(require) {
         /**
          * Changes the order of items given the custom function
          * @param  {Function} _x             A custom function that sets logic for ordering
-         * @return {(Function | Module)}   Updated module with ordering function applied or Chart module to chain calls
+         * @return {(Function | Module)}   A custom ordering function or Chart module to chain calls
          * @public
          */
         exports.orderingFunction = function(_x) {
