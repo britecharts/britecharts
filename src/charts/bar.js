@@ -987,7 +987,7 @@ define(function(require) {
         /**
          * Gets or Sets whether the color list should be reversed or not
          * @param  {boolean} _x     Should reverse the color list
-         * @return {boolean | module} Is color list being reversed
+         * @return {boolean | module} Is color list being reversed or Chart module to chain calls
          * @public
          */
         exports.shouldReverseColorList = function(_x) {
@@ -1003,7 +1003,7 @@ define(function(require) {
         /**
          * Changes the order of items given the custom function
          * @param  {Function} _x             A custom function that sets logic for ordering
-         * @return {(Function | Module)}   Updated module with ordering function applied
+         * @return {(Function | Module)}   Updated module with ordering function applied or Chart module to chain calls
          * @public
          */
         exports.orderingFunction = function(_x) {
