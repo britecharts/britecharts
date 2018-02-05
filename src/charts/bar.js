@@ -105,7 +105,7 @@ define(function(require) {
             animationStepRatio = 70,
             interBarDelay = (d, i) => animationStepRatio * i,
 
-            highlightBarFunction = (bar) => d3Selection.select(bar).attr('fill', ({name}) => d3Color.color(colorMap(name)).darker()),
+            highlightBarFunction = (barSelection) => barSelection.attr('fill', ({name}) => d3Color.color(colorMap(name)).darker()),
             orderingFunction,
 
             valueLabel = 'value',
@@ -641,9 +641,10 @@ define(function(require) {
          */
         function handleMouseOver(e, d, barList, chartWidth, chartHeight) {
             dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+            highlightBarFunction = highlightBarFunction || function() {};
 
             if (hasSingleBarHighlight) {
-                highlightBarFunction(e);
+                highlightBarFunction(d3Selection.select(e));
                 return;
             }
 
@@ -651,7 +652,7 @@ define(function(require) {
                 if (barRect === e) {
                     return;
                 }
-                highlightBarFunction(barRect);
+                highlightBarFunction(d3Selection.select(barRect));
             });
         }
 
@@ -797,7 +798,7 @@ define(function(require) {
 
         /**
          * Gets or Sets the highlightBarFunction function. The callback passed to
-         * this function returns a bar component from the bar chart. Use this function
+         * this function returns a bar selection from the bar chart. Use this function
          * if you want to apply a custom behavior to the highlighted bar on hover.
          * When hasSingleBarHighlight is true the highlighted bar will be the
          * one that was hovered by the user. When hasSingleBarHighlight is false
@@ -806,8 +807,8 @@ define(function(require) {
          * @param  {Function} _x        Desired operation operation on a hovered bar passed through callback
          * @return {highlightBarFunction | module} Is highlightBarFunction used or Chart module to chain calls
          * @public
-         * @example barChart.highlightBarFunction(e => d3.select(e).attr('fill', 'blue'))
-         * barChart.highlightBarFunction(e => null) // will disable the default highlight effect
+         * @example barChart.highlightBarFunction(bar => bar.attr('fill', 'blue'))
+         * barChart.highlightBarFunction(null) // will disable the default highlight effect
          */
         exports.highlightBarFunction = function(_x) {
             if (!highlightBarFunction.length) {

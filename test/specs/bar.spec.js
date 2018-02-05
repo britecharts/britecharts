@@ -165,7 +165,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
             it('should change behavior of the hovered bar', () => {
                 let expectedHighlightColor = '#ffffff';
-                let customHighlightFunction = e => d3.select(e).attr('fill', expectedHighlightColor);
+                let customHighlightFunction = barSelection => barSelection.attr('fill', expectedHighlightColor);
 
                 barChart.highlightBarFunction(customHighlightFunction);
                 let bar = containerFixture.selectAll('.bar:nth-child(1)');
@@ -181,7 +181,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
             it('should change the behavior of non-hovered bars when hasSingleBarHighlight is False', () => {
                 let expectedHighlightColor = '#ffffff';
-                let customHighlightFunction = e => d3.select(e).attr('fill', expectedHighlightColor);
+                let customHighlightFunction = barSelection => barSelection.attr('fill', expectedHighlightColor);
 
                 barChart.hasSingleBarHighlight(false);
                 barChart.highlightBarFunction(customHighlightFunction);
