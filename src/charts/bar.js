@@ -765,9 +765,10 @@ define(function(require) {
         /**
          * Gets or Sets the hasSingleBarHighlight status.
          * If the value is true (default), only the hovered bar is considered to
-         * be highlighted and will be switch to darker color. If the value is false,
+         * be highlighted and will be darkened by default. If the value is false,
          * all the bars but the hovered bar are considered to be highlighted
-         * and will switch to darker color.
+         * and will be darkened (by default). To customize the bar highlight or
+         * remove it completely, use highlightBarFunction instead.
          * @param  {boolean} _x        Should highlight the hovered bar
          * @return {boolean | module} Is hasSingleBarHighlight used or Chart module to chain calls
          * @public
