@@ -52,8 +52,6 @@ function createHorizontalBarChart() {
                 top: 20,
                 bottom: 30
             })
-            .hasSingleBarHighlight(true)
-            .highlightBarFunction(null)
             .colorSchema(colors.colorSchemas.britecharts)
             .width(containerWidth)
             .yAxisPaddingBetweenChart(30)
