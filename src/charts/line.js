@@ -21,7 +21,7 @@ define(function(require){
         getXAxisSettings,
         getLocaleDateFormatter
     } = require('./helpers/timeAxis');
-    const { axisTimeCombinations } = require('./helpers/constants');
+    const { axisTimeCombinations, curveMap } = require('./helpers/constants');
     const {
         createFilterContainer,
         createGlowWithMatrix,
@@ -172,18 +172,6 @@ define(function(require){
             maskingRectangle,
 
             lineCurve = 'linear',
-            curveMap = {
-                linear: d3Shape.curveLinear,
-                basis: d3Shape.curveBasis,
-                cardinal: d3Shape.curveCardinal,
-                catmullRom: d3Shape.curveCatmullRom,
-                monotoneX: d3Shape.curveMonotoneX,
-                monotoneY: d3Shape.curveMonotoneY,
-                natural: d3Shape.curveNatural,
-                step: d3Shape.curveStep,
-                stepAfter: d3Shape.curveStepAfter,
-                stepBefore: d3Shape.curveStepBefore
-            },
 
             dataByTopic,
             dataByDate,

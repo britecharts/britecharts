@@ -13,7 +13,7 @@ define([
     ) {
     'use strict';
 
-    const aTestDataSet = () => new dataBuilder.StackedAreaDataBuilder();    
+    const aTestDataSet = () => new dataBuilder.StackedAreaDataBuilder();
     const buildDataSet = (dataSetName) => {
         return aTestDataSet()
             [dataSetName]()
@@ -187,7 +187,7 @@ define([
         });
 
         describe('when reloading with a three sources dataset', () => {
-            
+
             it('should render in the same svg', function() {
                 let actual;
                 let expected = 1;
@@ -238,7 +238,7 @@ define([
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
-            
+
             it('should provide an aspect ratio getter and setter', () => {
                 let previous = stackedAreaChart.aspectRatio(),
                     expected = 600,
@@ -466,6 +466,18 @@ define([
 
                 stackedAreaChart.yTicks(expected);
                 actual = stackedAreaChart.yTicks();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide areaCurve getter and setter', () => {
+                let previous = stackedAreaChart.areaCurve(),
+                    expected = 'step',
+                    actual;
+
+                stackedAreaChart.areaCurve(expected);
+                actual = stackedAreaChart.areaCurve();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);

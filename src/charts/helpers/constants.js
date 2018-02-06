@@ -1,5 +1,7 @@
 define(function() {
 
+    const d3Shape = require('d3-shape');
+
     const axisTimeCombinations = {
         MINUTE_HOUR: 'minute-hour',
         HOUR_DAY: 'hour-daymonth',
@@ -14,6 +16,19 @@ define(function() {
         ONE_DAY: 86400001
     };
 
+    const curveMap = {
+        linear: d3Shape.curveLinear,
+        basis: d3Shape.curveBasis,
+        cardinal: d3Shape.curveCardinal,
+        catmullRom: d3Shape.curveCatmullRom,
+        monotoneX: d3Shape.curveMonotoneX,
+        monotoneY: d3Shape.curveMonotoneY,
+        natural: d3Shape.curveNatural,
+        step: d3Shape.curveStep,
+        stepAfter: d3Shape.curveStepAfter,
+        stepBefore: d3Shape.curveStepBefore
+    };
+
     const emptyDonutData = [{
         'quantity': 1,
         'percentage': 100
@@ -21,6 +36,7 @@ define(function() {
 
     return {
         axisTimeCombinations,
+        curveMap,
         emptyDonutData,
         timeBenchmarks,
         lineGradientId: 'lineGradientId'
