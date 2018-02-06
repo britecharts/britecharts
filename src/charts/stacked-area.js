@@ -710,14 +710,14 @@ define(function(require){
 
             area = d3Shape.area()
                 .curve(curveMap[areaCurve])
-                .x( ({data}) => xScale(data.date) )
-                .y0( (d) => yScale(d[0]) )
-                .y1( (d) => yScale(d[1]) );
+                .x(({data})=> xScale(data.date))
+                .y0((d) => yScale(d[0]))
+                .y1((d) => yScale(d[1]));
 
             areaOutline = d3Shape.line()
                 .curve(area.curve())
-                .x( ({data}) => xScale(data.date) )
-                .y( (d) => yScale(d[1]) );
+                .x(({data}) => xScale(data.date))
+                .y((d) => yScale(d[1]));
 
             if (isAnimated) {
                 series = svg.select('.chart-group').selectAll('.layer')
@@ -743,7 +743,7 @@ define(function(require){
                 svg.select('.chart-group').selectAll('.layer')
                     .data(layers)
                     .transition()
-                    .delay( (_, i) => areaAnimationDelays[i])
+                    .delay((_, i) => areaAnimationDelays[i])
                     .duration(areaAnimationDuration)
                     .ease(ease)
                     .attr('d', area)
@@ -1033,6 +1033,7 @@ define(function(require){
          * @param {String} _x Desired setting for the area curve
          * @return { lineCurve | module } Current area curve setting or Chart module to chain calls
          * @public
+         * @example stackedArea.areaCurve('step')
          */
         exports.areaCurve = function(_x) {
             if (!arguments.length) {
