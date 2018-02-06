@@ -127,6 +127,7 @@ define(function(require){
             locale,
 
             baseLine,
+            areaCurve = d3Shape.curveStep,
 
             layers,
             series,
@@ -708,7 +709,7 @@ define(function(require){
             }
 
             area = d3Shape.area()
-                .curve(d3Shape.curveMonotoneX)
+                .curve(areaCurve)
                 .x( ({data}) => xScale(data.date) )
                 .y0( (d) => yScale(d[0]) )
                 .y1( (d) => yScale(d[1]) );
@@ -1027,6 +1028,20 @@ define(function(require){
 
 
         // API
+
+         /**
+         * @param {String} _x Desired setting for the area curve
+         * @return { lineCurve | module } Current area curve setting or Chart module to chain calls
+         * @public
+         */
+        exports.areaCurve = function(_x) {
+            if (!arguments.length) {
+                return areaCurve;
+            }
+            areaCurve = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
