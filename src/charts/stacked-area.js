@@ -19,7 +19,7 @@ define(function(require){
         getXAxisSettings,
         getLocaleDateFormatter
     } = require('./helpers/timeAxis');
-    const {axisTimeCombinations} = require('./helpers/constants');
+    const {axisTimeCombinations, curveMap} = require('./helpers/constants');
     const {
         formatIntegerValue,
         formatDecimalValue
@@ -127,7 +127,7 @@ define(function(require){
             locale,
 
             baseLine,
-            areaCurve = d3Shape.curveStep,
+            areaCurve = 'monotoneX',
 
             layers,
             series,
@@ -709,7 +709,7 @@ define(function(require){
             }
 
             area = d3Shape.area()
-                .curve(areaCurve)
+                .curve(curveMap[areaCurve])
                 .x( ({data}) => xScale(data.date) )
                 .y0( (d) => yScale(d[0]) )
                 .y1( (d) => yScale(d[1]) );
