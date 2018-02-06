@@ -812,7 +812,7 @@ define(function(require) {
          * barChart.highlightBarFunction(null) // will disable the default highlight effect
          */
         exports.highlightBarFunction = function(_x) {
-            if (!highlightBarFunction.length) {
+            if (!arguments.length) {
                 return highlightBarFunction;
             }
             highlightBarFunction = _x;
