@@ -8,4 +8,8 @@ require('./demo-line');
 require('./demo-sparkline');
 require('./demo-step');
 require('./demo-brush');
+<<<<<<< HEAD
 require('./demo-legend');
+=======
+require('./demo-scatter-plot');
+>>>>>>> Initial files added

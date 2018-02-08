@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const merge = require('webpack-merge');
 const parts = require('./webpack.parts');
 const path = require('path');
@@ -34,6 +35,77 @@ const demosConfig = merge([
                     target: 'http://localhost:8001/',
                     pathRewrite: {'^/britecharts/' : ''}
                 }
+=======
+var webpack = require('webpack'),
+    path = require('path'),
+    LiveReloadPlugin = require('webpack-livereload-plugin'),
+    UglifyJsPlugin = webpack.optimize.UglifyJsPlugin,
+    BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin,
+
+    env = require('yargs').argv.mode,
+    isProduction = env === 'prod' || env === 'prodUMD',
+
+    chartModulesPath = path.resolve('./src/charts'),
+    fixturesPath = path.resolve('./test/fixtures'),
+    vendorsPath = path.resolve('./node_modules'),
+    bundleIndexPath = path.resolve('./src/bundle.js'),
+
+    projectName = 'britecharts',
+
+    currentCharts = {
+        'bar': './src/charts/bar.js',
+        'donut': './src/charts/donut.js',
+        'legend': './src/charts/legend.js',
+        'line': './src/charts/line.js',
+        'tooltip': './src/charts/tooltip.js',
+        'miniTooltip': './src/charts/mini-tooltip.js',
+        'scatterPlot': './src/charts/scatter-plot.js',
+        'sparkline': './src/charts/sparkline.js',
+        'stackedArea': './src/charts/stacked-area.js',
+        'stackedBar': './src/charts/stacked-bar.js',
+        'groupedBar': './src/charts/grouped-bar.js',
+        'step': './src/charts/step.js',
+        'brush': './src/charts/brush.js',
+        'loading': ['./src/charts/helpers/load.js'],
+        // hack to make webpack use colors as an entry point while its also a dependency of the charts above
+        'colors': ['./src/charts/helpers/color.js']
+    },
+    currentDemos = {
+        'demo-line': './demos/demo-line.js',
+        'demo-stacked-area': './demos/demo-stacked-area.js',
+        'demo-bar': './demos/demo-bar.js',
+        'demo-grouped-bar': './demos/demo-grouped-bar.js',
+        'demo-scatter-plot': './demos/demo-scatter-plot.js',
+        'demo-stacked-bar': './demos/demo-stacked-bar.js',
+        'demo-donut': './demos/demo-donut.js',
+        'demo-sparkline': './demos/demo-sparkline.js',
+        'demo-step': './demos/demo-step.js',
+        'demo-brush': './demos/demo-brush.js',
+        'demo-kitchen-sink': './demos/demo-kitchen-sink.js'
+    },
+
+    defaultJSLoader = {
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: [{
+            loader: 'babel-loader',
+            options: {
+                presets: ['es2015', 'stage-0'],
+                cacheDirectory: true,
+            }
+        }],
+
+    },
+    babelIstambulLoader = {
+        test: /\.js?$/,
+        include: /src/,
+        exclude: /(node_modules|__tests__|tests_index.js)/,
+        use: [{
+            loader: 'istanbul-instrumenter-loader',
+            options:  {
+                presets: ['es2015', 'stage-0'],
+                cacheDirectory: true,
+>>>>>>> Initial files added
             },
         },
     },

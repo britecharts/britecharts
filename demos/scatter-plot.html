@@ -1,0 +1,37 @@
+
+    <div class="container" id="scatterPlot">
+        <div class="row">
+            <div class="col-md-8">
+                <article>
+                    <h2>Scatter Plot</h2>
+                    <div class="js-scatter-plot-chart-container scatter-plot-chart-container card--chart"></div>
+                </article>
+            </div>
+            <div class="col-md-4 sidebar">
+                <h3>The code</h3>
+                <pre><code class="language-javascript">
+                        lineChart
+                            .isAnimated(true)
+                            .aspectRatio(0.5)
+                            .grid('horizontal')
+                            .tooltipThreshold(600)
+                            .width(containerWidth)
+                            .dateLabel('fullDate')
+                            .on('customMouseOver', chartTooltip.show)
+                            .on('customMouseMove', chartTooltip.update)
+                            .on('customMouseOut', chartTooltip.hide);
+
+                        container.datum(dataset).call(lineChart);
+                </code></pre>
+                <h4>Colors</h4>
+                <label class="control-label">You can also check other color schemas:</label>
+                <div class="js-color-selector-container card--chart"></div>
+                <h4>Data Input</h4>
+                <p>Check the <a href="/britecharts/global.html#LineChartData__anchor">data input schema</a> of this chart.</p>
+                <h4>Export Chart</h4>
+                <p>You can also export this chart by pressing: <input id="button" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
+                <h4>Demo Code</h4>
+                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-line.js">in github</a></p>
+            </div>
+        </div>
+    </div>
