@@ -18,8 +18,8 @@ define(function(require) {
 
     const {axisTimeCombinations} = require('./helpers/constants');
 
-    const {uniqueId} = require('./helpers/common');
-    const {line} = require('./helpers/loadingStates');
+    const {uniqueId} = require('./helpers/number');
+    const {line} = require('./helpers/load');
 
 
     /**

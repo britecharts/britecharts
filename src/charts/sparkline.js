@@ -10,8 +10,8 @@ define(function(require){
 
     const {exportChart} = require('./helpers/export');
     const colorHelper = require('./helpers/color');
-    const {line} = require('./helpers/loadingStates');
-    const {uniqueId} = require('./helpers/common');
+    const {line} = require('./helpers/load');
+    const {uniqueId} = require('./helpers/number');
 
     /**
      * @typedef SparklineChartData

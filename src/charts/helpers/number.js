@@ -3,6 +3,8 @@ define(function(require) {
 
     const d3Format = require('d3-format');
 
+    let idCounter = 0;
+
     const integerValueFormats = {
                 small: {
                     limit: 10,
@@ -40,7 +42,42 @@ define(function(require) {
         } else if (value < limits.medium.limit) {
             size = 'medium';
         }
+
         return size;
+    }
+
+    /**
+     * Calculates percentage of value from total
+     * @param  {Number}  value    Value to check
+     * @param  {Number}  total    Sum of values
+     * @param  {String}  decimals Specifies number of decimals https://github.com/d3/d3-format
+     * @return {String}           Percentage
+     */
+    function calculatePercent(value, total, decimals) {
+        const percent = total ? (value / total * 100) : 0;
+
+        return d3Format.format(decimals)(percent);
+    }
+
+    /**
+     * Checks if a number is an integer of has decimal values
+     * @param  {Number}  value Value to check
+     * @return {Boolean}       If it is an iteger
+     */
+    function isInteger(value) {
+        return value % 1 === 0;
+    }
+
+    /**
+     * Formats a floating point value depending on its value range
+     * @param  {Number} value Decimal point value to format
+     * @return {Number}       Formatted value to show
+     */
+    function formatDecimalValue(value) {
+        let size = getValueSize(value, decimalValueFormats);
+        let format = decimalValueFormats[size].format;
+
+        return format(value);
     }
 
     /**
@@ -56,20 +93,22 @@ define(function(require) {
     }
 
     /**
-     * Formats a floating point value depending on its value range
-     * @param  {Number} value Decimal point value to format
-     * @return {Number}       Formatted value to show
+     * Generates a unique id with a prefix
+     * @param {String} prefix   Prefix to add before the id
+     * @return {String}         Unique id
      */
-    function formatDecimalValue(value) {
-        let size = getValueSize(value, decimalValueFormats);
-        let format = decimalValueFormats[size].format;
+    function uniqueId(prefix) {
+        const id = ++idCounter;
 
-        return format(value);
+        return `${prefix.toString()}-${id}`;
     }
 
     return {
+        calculatePercent,
+        isInteger,
         formatDecimalValue,
         formatIntegerValue,
+        uniqueId
     }
 
 });

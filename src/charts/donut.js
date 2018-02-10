@@ -13,9 +13,9 @@ define(function(require) {
     const {exportChart} = require('./helpers/export');
     const textHelper = require('./helpers/text');
     const colorHelper = require('./helpers/color');
-    const {calculatePercent} = require('./helpers/common');
+    const {calculatePercent} = require('./helpers/number');
     const {emptyDonutData} =require('./helpers/constants');
-    const {donut} = require('./helpers/loadingStates');
+    const {donut} = require('./helpers/load');
 
 
     /**

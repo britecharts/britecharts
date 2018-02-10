@@ -15,25 +15,26 @@ define(function(require){
 
     const {exportChart} = require('./helpers/export');
     const colorHelper = require('./helpers/color');
-    const {line} = require('./helpers/loadingStates');
+    const {line} = require('./helpers/load');
 
     const {
         getXAxisSettings,
         getLocaleDateFormatter
     } = require('./helpers/axis');
-    const { axisTimeCombinations, curveMap } = require('./helpers/constants');
+    const {
+        axisTimeCombinations,
+        curveMap
+    } = require('./helpers/constants');
     const {
         createFilterContainer,
-        createGlowWithMatrix,
+        createGlowWithMatrix
     } = require('./helpers/filter');
     const {
         formatIntegerValue,
         formatDecimalValue,
-    } = require('./helpers/formatHelpers');
-    const {
         isInteger,
         uniqueId
-    } = require('./helpers/common');
+    } = require('./helpers/number');
 
     /**
      * @typedef D3Selection

@@ -11,7 +11,7 @@ define(function(require) {
     const d3Transition = require('d3-transition');
 
     const {exportChart} = require('./helpers/export');
-    const {line} = require('./helpers/loadingStates');
+    const {line} = require('./helpers/load');
 
 
     /**

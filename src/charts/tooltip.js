@@ -13,9 +13,9 @@ define(function(require){
 
     const {
         formatIntegerValue,
-        formatDecimalValue
-    } = require('./helpers/formatHelpers');
-    const { isInteger } = require('./helpers/common');
+        formatDecimalValue,
+        isInteger
+    } = require('./helpers/number');
 
     /**
      * Tooltip Component reusable API class that renders a
