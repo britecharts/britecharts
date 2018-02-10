@@ -29,7 +29,7 @@ var webpack = require('webpack'),
         'brush': './src/charts/brush.js',
         'loading': ['./src/charts/helpers/loadingStates.js'],
         // hack to make webpack use colors as an entry point while its also a dependency of the charts above
-        'colors': ['./src/helpers/color.js']
+        'colors': ['./src/charts/helpers/color.js']
     },
     currentDemos = {
         'demo-line': './demos/demo-line.js',

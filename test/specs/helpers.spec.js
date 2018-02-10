@@ -5,10 +5,10 @@ define([
     'legend',
     'donutChartDataBuilder',
     'lineChartDataBuilder',
-    '../helpers/serialize',
+    'helpers/serialize',
     'helpers/text',
     'helpers/common',
-    '../helpers/export',
+    'helpers/export',
     'helpers/timeAxis'
     ], function (
         _,

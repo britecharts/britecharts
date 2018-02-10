@@ -13,13 +13,13 @@ define(function(require){
     const d3TimeFormat = require('d3-time-format');
 
     const assign = require('lodash.assign');
-    const {exportChart} = require('./../helpers/export');
-    const colorHelper = require('../helpers/color');
+    const {exportChart} = require('./helpers/export');
+    const colorHelper = require('./helpers/color');
     const {
         getXAxisSettings,
         getLocaleDateFormatter
     } = require('./helpers/timeAxis');
-    const {axisTimeCombinations, curveMap} = require('../helpers/constants');
+    const {axisTimeCombinations, curveMap} = require('./helpers/constants');
     const {
         formatIntegerValue,
         formatDecimalValue
@@ -27,7 +27,7 @@ define(function(require){
     const {
         createFilterContainer,
         createGlowWithMatrix,
-    } = require('./helpers/filters');
+    } = require('./helpers/filter');
     const {
         isInteger,
         addDays,

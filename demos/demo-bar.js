@@ -5,7 +5,7 @@ const PubSub = require('pubsub-js');
 
 const bar = require('./../src/charts/bar');
 const miniTooltip = require('./../src/charts/mini-tooltip');
-const colors = require('./../src/helpers/color');
+const colors = require('./../src/charts/helpers/color');
 const dataBuilder = require('./../test/fixtures/barChartDataBuilder');
 
 const aTestDataSet = () => new dataBuilder.BarDataBuilder();

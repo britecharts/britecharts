@@ -13,10 +13,10 @@ define(function(require) {
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
 
-    const colorHelper = require('../helpers/color');
+    const colorHelper = require('./helpers/color');
     const timeAxisHelper = require('./helpers/timeAxis');
 
-    const {axisTimeCombinations} = require('../helpers/constants');
+    const {axisTimeCombinations} = require('./helpers/constants');
 
     const {uniqueId} = require('./helpers/common');
     const {line} = require('./helpers/loadingStates');

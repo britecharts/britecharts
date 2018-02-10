@@ -4,7 +4,7 @@ const d3Selection = require('d3-selection');
 
 const PubSub = require('pubsub-js');
 
-const colors = require('./../src/helpers/color');
+const colors = require('./../src/charts/helpers/color');
 
 const stackedBarChart = require('./../src/charts/stacked-bar');
 const tooltip = require('./../src/charts/tooltip');

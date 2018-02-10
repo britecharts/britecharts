@@ -7,7 +7,7 @@ define(function(require) {
     const {
         axisTimeCombinations,
         timeBenchmarks
-    } = require('../../helpers/constants');
+    } = require('.././helpers/constants');
 
 
     const singleTickWidth = 20;

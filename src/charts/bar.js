@@ -12,8 +12,8 @@ define(function(require) {
     const d3Transition = require('d3-transition');
 
     const textHelper = require('./helpers/text');
-    const {exportChart} = require('./../helpers/export');
-    const colorHelper = require('../helpers/color');
+    const {exportChart} = require('./helpers/export');
+    const colorHelper = require('./helpers/color');
     const {bar} = require('./helpers/loadingStates');
 
     const PERCENTAGE_FORMAT = '%';

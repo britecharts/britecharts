@@ -13,19 +13,19 @@ define(function(require){
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
 
-    const {exportChart} = require('./../helpers/export');
-    const colorHelper = require('../helpers/color');
+    const {exportChart} = require('./helpers/export');
+    const colorHelper = require('./helpers/color');
     const {line} = require('./helpers/loadingStates');
 
     const {
         getXAxisSettings,
         getLocaleDateFormatter
     } = require('./helpers/timeAxis');
-    const { axisTimeCombinations, curveMap } = require('../helpers/constants');
+    const { axisTimeCombinations, curveMap } = require('./helpers/constants');
     const {
         createFilterContainer,
         createGlowWithMatrix,
-    } = require('./helpers/filters');
+    } = require('./helpers/filter');
     const {
         formatIntegerValue,
         formatDecimalValue,

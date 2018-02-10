@@ -1,7 +1,7 @@
 define(function(require) {
 
     const d3Selection = require('d3-selection');
-    const colors = require('./../../src/helpers/color');
+    const colors = require('./../../src/charts/helpers/color');
 
     const selectClass = 'form-control';
 
