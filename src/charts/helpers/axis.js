@@ -8,7 +8,10 @@ define(function(require) {
         axisTimeCombinations,
         timeBenchmarks
     } = require('./constants');
-
+    const {
+        convertMillisecondsToDays,
+        getLocaleDateFormatter
+    } = require('./date');
 
     const singleTickWidth = 20;
     const horizontalTickSpacing = 50;
@@ -73,26 +76,6 @@ define(function(require) {
     }
 
     /**
-     * Takes a locale (string) and the format to return and returns a function to format dates
-     * @param  {String} locale    locale tag eg. en-US, fr-FR, ru-RU
-     * @param  {string} timeUnit  minute, hour, day, dayMonth, month, year
-     * @return {function}         function that formats dates in the proper locale
-     */
-    const getLocaleDateFormatter = (locale, timeUnit='day') => {
-        let options = localeTimeMap[timeUnit];
-        let formatter = new Intl.DateTimeFormat(locale, options);
-
-        return (date) => formatter.format(date);
-    }
-
-    /**
-     * Takes a number representing milliseconds and convert to days
-     * @param  {Number} milliseconds    Any number
-     * @return {Number}                 Number of days that the input represents
-     */
-    const convertMillisecondsToDays = (milliseconds) => Math.ceil(milliseconds/(24*60*60*1000));
-
-    /**
      * Returns tick object to be used when building the x axis
      * @param {dataByDate} dataByDate       Chart data ordered by Date
      * @param {Number} width                Chart width
@@ -130,8 +113,7 @@ define(function(require) {
     };
 
     return {
-        getXAxisSettings,
-        getLocaleDateFormatter
+        getXAxisSettings
     };
 
 });

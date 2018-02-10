@@ -17,10 +17,7 @@ define(function(require){
     const colorHelper = require('./helpers/color');
     const {line} = require('./helpers/load');
 
-    const {
-        getXAxisSettings,
-        getLocaleDateFormatter
-    } = require('./helpers/axis');
+    const { getXAxisSettings } = require('./helpers/axis');
     const {
         axisTimeCombinations,
         curveMap
