@@ -13,7 +13,7 @@ define(function(require){
     const d3TimeFormat = require('d3-time-format');
 
     const assign = require('lodash.assign');
-    const {exportChart} = require('./helpers/exportChart');
+    const {exportChart} = require('./../helpers/export');
     const colorHelper = require('../helpers/color');
     const {
         getXAxisSettings,

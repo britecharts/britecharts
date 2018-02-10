@@ -13,7 +13,7 @@ define(function(require){
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
 
-    const {exportChart} = require('./helpers/exportChart');
+    const {exportChart} = require('./../helpers/export');
     const colorHelper = require('../helpers/color');
     const {line} = require('./helpers/loadingStates');
 

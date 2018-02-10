@@ -14,7 +14,7 @@ define(function(require){
     const assign = require('lodash.assign');
     const d3Transition = require('d3-transition');
 
-    const {exportChart} = require('./helpers/exportChart');
+    const {exportChart} = require('./../helpers/export');
     const colorHelper = require('../helpers/color');
     const {bar} = require('./helpers/loadingStates');
 

@@ -10,7 +10,7 @@ define(function(require) {
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
 
-    const {exportChart} = require('./helpers/exportChart');
+    const {exportChart} = require('./../helpers/export');
     const {line} = require('./helpers/loadingStates');
 
 
@@ -71,10 +71,10 @@ define(function(require) {
             chartWidth, chartHeight,
             xScale, yScale,
             yTicks = 6,
-            xAxis, 
+            xAxis,
             xAxisLabel,
             xAxisLabelEl,
-            yAxis, 
+            yAxis,
             yAxisLabel,
             yAxisLabelEl,
             xAxisLabelOffset = 80,
@@ -207,7 +207,7 @@ define(function(require) {
         }
 
         /**
-         * Cleaning data casting the values and keys to the proper type while keeping 
+         * Cleaning data casting the values and keys to the proper type while keeping
          * the rest of properties on the data
          * @param  {StepChartData} originalData Data as provided on the container
          * @private
@@ -232,7 +232,7 @@ define(function(require) {
                 .call(xAxis);
 
             svg.selectAll('.x-axis-group .tick text')
-                .style('text-anchor', 'start')        
+                .style('text-anchor', 'start')
                 .attr('transform', 'rotate(45 -1 10)');
 
             if (xAxisLabel) {
@@ -247,10 +247,10 @@ define(function(require) {
                     .attr('x', chartWidth / 2)
                     .text(xAxisLabel);
             }
-                
+
             svg.select('.y-axis-group.axis')
                 .call(yAxis);
-                
+
             if (yAxisLabel) {
                 if (yAxisLabelEl) {
                     svg.selectAll('.y-axis-label-text').remove();
@@ -335,7 +335,7 @@ define(function(require) {
             if (baseLine) {
                 svg.selectAll('.extended-x-line').remove();
             }
-        
+
             //draw a horizontal line to extend x-axis till the edges
             baseLine = svg.select('.grid-lines-group')
                 .selectAll('line.extended-x-line')
