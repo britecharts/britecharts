@@ -1179,7 +1179,7 @@ define(function(require){
             numberFormat = _x;
 
             return this;
-        }        
+        }
 
         /**
          * Gets or Sets the curve of the line chart

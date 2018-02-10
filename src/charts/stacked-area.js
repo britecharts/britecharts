@@ -1030,8 +1030,11 @@ define(function(require){
         // API
 
          /**
-         * @param {String} _x Desired setting for the area curve
-         * @return { lineCurve | module } Current area curve setting or Chart module to chain calls
+         * Gets or Sets the area curve of the stacked area.
+         * @param {String} _x Desired curve for the stacked area, default 'monotoneX'. Other options are:
+         * basis, natural, linear, monotoneY, step, stepAfter, stepBefore, cardinal, and
+         * catmullRom. Visit https://github.com/d3/d3-shape#curves for more information.
+         * @return { areaCurve | module } Current area curve setting or Chart module to chain calls
          * @public
          * @example stackedArea.areaCurve('step')
          */
