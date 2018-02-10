@@ -61,7 +61,6 @@
   "dependencies": {
     "base-64": "^0.1.0",
     "d3": "^4.10.0",
-    "eslint-loader": "^1.9.0",
     "lodash.assign": "^4.2.0"
   },
   "devDependencies": {
@@ -73,6 +72,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "brace": "^0.10.0",
     "css-loader": "^0.28.4",
+    "eslint-loader": "^1.9.0",
     "grunt": "^1.0.1",
     "grunt-babel": "^6.0.0",
     "grunt-contrib-cssmin": "^2.2.1",
