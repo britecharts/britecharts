@@ -34,7 +34,7 @@ define(function(require) {
                 }
             };
 
-    function getValueSize(value, limits) {
+    const getValueSize = (value, limits) => {
         let size = 'large';
 
         if (value < limits.small.limit) {
@@ -53,7 +53,7 @@ define(function(require) {
      * @param  {String}  decimals Specifies number of decimals https://github.com/d3/d3-format
      * @return {String}           Percentage
      */
-    function calculatePercent(value, total, decimals) {
+    const calculatePercent = (value, total, decimals) => {
         const percent = total ? (value / total * 100) : 0;
 
         return d3Format.format(decimals)(percent);
@@ -64,7 +64,7 @@ define(function(require) {
      * @param  {Number}  value Value to check
      * @return {Boolean}       If it is an iteger
      */
-    function isInteger(value) {
+    const isInteger = (value) => {
         return value % 1 === 0;
     }
 
@@ -73,7 +73,7 @@ define(function(require) {
      * @param  {Number} value Decimal point value to format
      * @return {Number}       Formatted value to show
      */
-    function formatDecimalValue(value) {
+    const formatDecimalValue = (value) => {
         let size = getValueSize(value, decimalValueFormats);
         let format = decimalValueFormats[size].format;
 
@@ -85,7 +85,7 @@ define(function(require) {
      * @param  {Number} value Decimal point value to format
      * @return {Number}       Formatted value to show
      */
-    function formatIntegerValue(value) {
+    const formatIntegerValue = (value) => {
         let size = getValueSize(value, integerValueFormats);
         let format = integerValueFormats[size].format;
 
@@ -97,7 +97,7 @@ define(function(require) {
      * @param {String} prefix   Prefix to add before the id
      * @return {String}         Unique id
      */
-    function uniqueId(prefix) {
+    const uniqueId = (prefix) => {
         const id = ++idCounter;
 
         return `${prefix.toString()}-${id}`;

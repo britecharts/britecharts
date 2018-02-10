@@ -48,7 +48,6 @@ module.exports = (function() {
             };
 
             function serializeWithStyles(elem) {
-
                 let cssTexts = [],
                     elements,
                     computedStyle,
@@ -57,7 +56,7 @@ module.exports = (function() {
 
                 if (!elem || elem.nodeType !== Node.ELEMENT_NODE) {
                     // 'Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE'
-                    
+
                     return;
                 }
 
