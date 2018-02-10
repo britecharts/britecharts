@@ -16,7 +16,7 @@ define(function(require) {
     const colorHelper = require('../helpers/color');
     const timeAxisHelper = require('./helpers/timeAxis');
 
-    const {axisTimeCombinations} = require('./helpers/constants');
+    const {axisTimeCombinations} = require('../helpers/constants');
 
     const {uniqueId} = require('./helpers/common');
     const {line} = require('./helpers/loadingStates');

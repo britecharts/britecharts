@@ -14,7 +14,7 @@ define(function(require) {
     const textHelper = require('./helpers/text');
     const colorHelper = require('../helpers/color');
     const {calculatePercent} = require('./helpers/common');
-    const {emptyDonutData} =require('./helpers/constants');
+    const {emptyDonutData} =require('../helpers/constants');
     const {donut} = require('./helpers/loadingStates');
 
 

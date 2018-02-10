@@ -2,7 +2,7 @@ define(function(require) {
     'use strict';
 
     const {colorSchemas} = require('../../helpers/color.js');
-    const constants = require('./constants.js');
+    const constants = require('../../helpers/constants.js');
     const serializeWithStyles = require('./serializeWithStyles.js');
 
     const isBrowser = (typeof window !== 'undefined');

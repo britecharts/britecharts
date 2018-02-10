@@ -21,7 +21,7 @@ define(function(require){
         getXAxisSettings,
         getLocaleDateFormatter
     } = require('./helpers/timeAxis');
-    const { axisTimeCombinations, curveMap } = require('./helpers/constants');
+    const { axisTimeCombinations, curveMap } = require('../helpers/constants');
     const {
         createFilterContainer,
         createGlowWithMatrix,

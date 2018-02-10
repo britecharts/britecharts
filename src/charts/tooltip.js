@@ -9,7 +9,7 @@ define(function(require){
 
     const {
         axisTimeCombinations
-    } = require('./helpers/constants');
+    } = require('../helpers/constants');
 
     const {
         formatIntegerValue,
