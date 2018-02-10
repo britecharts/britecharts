@@ -1,7 +1,7 @@
 define(function(require) {
     'use strict';
 
-    const {colorSchemas} = require('./colors.js');
+    const {colorSchemas} = require('../../helpers/color.js');
     const constants = require('./constants.js');
     const serializeWithStyles = require('./serializeWithStyles.js');
 
@@ -176,7 +176,7 @@ define(function(require) {
             return html;
         }
         let {grey} = colorSchemas;
-        
+
         html =  html.replace(/<g/,`<text x="${this.margin().left}" y="${config.titleTopOffset}" font-family="${config.titleFontFamily}" font-size="${config.titleFontSize}" fill="${grey[6]}"> ${title} </text><g `);
 
         return html;

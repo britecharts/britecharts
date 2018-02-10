@@ -14,7 +14,7 @@ define(function(require){
 
     const assign = require('lodash.assign');
     const {exportChart} = require('./helpers/exportChart');
-    const colorHelper = require('./helpers/colors');
+    const colorHelper = require('../helpers/color');
     const {
         getXAxisSettings,
         getLocaleDateFormatter

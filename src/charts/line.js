@@ -14,7 +14,7 @@ define(function(require){
     const d3TimeFormat = require('d3-time-format');
 
     const {exportChart} = require('./helpers/exportChart');
-    const colorHelper = require('./helpers/colors');
+    const colorHelper = require('../helpers/color');
     const {line} = require('./helpers/loadingStates');
 
     const {

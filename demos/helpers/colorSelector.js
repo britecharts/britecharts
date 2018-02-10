@@ -1,7 +1,7 @@
 define(function(require) {
 
     var d3Selection = require('d3-selection'),
-        colors = require('./../../src/charts/helpers/colors'),
+        colors = require('./../../src/helpers/color'),
 
         selectClass = 'form-control';
 
@@ -20,7 +20,7 @@ define(function(require) {
 
         // Create Select
         var sel = document.createElement('select');
-        
+
         sel.className += ' ' + selectClass;
 
         // And fill with options

@@ -9,7 +9,7 @@ define(function(require){
     const d3Transition = require('d3-transition');
 
     const {exportChart} = require('./helpers/exportChart');
-    const colorHelper = require('./helpers/colors');
+    const colorHelper = require('../helpers/color');
     const {line} = require('./helpers/loadingStates');
     const {uniqueId} = require('./helpers/common');
 
@@ -429,7 +429,7 @@ define(function(require){
             lineGradient = _x;
             return this;
         };
-        
+
         /**
          * Gets or Sets the loading state of the chart
          * @param  {string} markup Desired markup to show when null data

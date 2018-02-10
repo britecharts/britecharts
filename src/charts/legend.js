@@ -7,7 +7,7 @@ define(function(require){
     const d3Transition = require('d3-transition');
 
     const textHelper = require('./helpers/text');
-    const colorHelper = require('./helpers/colors');
+    const colorHelper = require('../helpers/color');
 
     /**
      * @typedef LegendChartData

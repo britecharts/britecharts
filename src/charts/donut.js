@@ -12,7 +12,7 @@ define(function(require) {
 
     const {exportChart} = require('./helpers/exportChart');
     const textHelper = require('./helpers/text');
-    const colorHelper = require('./helpers/colors');
+    const colorHelper = require('../helpers/color');
     const {calculatePercent} = require('./helpers/common');
     const {emptyDonutData} =require('./helpers/constants');
     const {donut} = require('./helpers/loadingStates');
