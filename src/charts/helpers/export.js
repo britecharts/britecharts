@@ -3,7 +3,7 @@ define(function(require) {
 
     const {colorSchemas} = require('./color');
     const constants = require('./constants');
-    const serializeWithStyles = require('./serialize');
+    const serializeWithStyles = require('./style');
 
     const isBrowser = (typeof window !== 'undefined');
 

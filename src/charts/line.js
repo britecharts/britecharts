@@ -20,7 +20,7 @@ define(function(require){
     const {
         getXAxisSettings,
         getLocaleDateFormatter
-    } = require('./helpers/timeAxis');
+    } = require('./helpers/axis');
     const { axisTimeCombinations, curveMap } = require('./helpers/constants');
     const {
         createFilterContainer,

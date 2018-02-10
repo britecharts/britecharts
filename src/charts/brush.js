@@ -14,7 +14,7 @@ define(function(require) {
     const d3TimeFormat = require('d3-time-format');
 
     const colorHelper = require('./helpers/color');
-    const timeAxisHelper = require('./helpers/timeAxis');
+    const timeAxisHelper = require('./helpers/axis');
 
     const {axisTimeCombinations} = require('./helpers/constants');
 
