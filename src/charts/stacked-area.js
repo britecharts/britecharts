@@ -15,7 +15,7 @@ define(function(require){
     const assign = require('lodash.assign');
     const {exportChart} = require('./helpers/export');
     const colorHelper = require('./helpers/color');
-    const {getXAxisSettings} = require('./helpers/axis');
+    const {getTimeSeriesAxis} = require('./helpers/axis');
     const {axisTimeCombinations, curveMap} = require('./helpers/constants');
     const {
         formatIntegerValue,
@@ -289,7 +289,7 @@ define(function(require){
                 };
                 major = null;
             } else {
-                ({minor, major} = getXAxisSettings(dataByDate, width, xAxisFormat, locale));
+                ({minor, major} = getTimeSeriesAxis(dataByDate, width, xAxisFormat, locale));
 
                 xMonthAxis = d3Axis.axisBottom(xScale)
                     .ticks(major.tick)

@@ -147,7 +147,7 @@ define(function(require) {
                     format: d3TimeFormat.timeFormat(xAxisCustomFormat)
                 };
             } else {
-                ({minor, major} = timeAxisHelper.getXAxisSettings(data, width, xAxisFormat));
+                ({minor, major} = timeAxisHelper.getTimeSeriesAxis(data, width, xAxisFormat));
             }
 
             xAxis = d3Axis.axisBottom(xScale)

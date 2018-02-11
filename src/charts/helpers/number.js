@@ -6,33 +6,34 @@ define(function(require) {
     let idCounter = 0;
 
     const integerValueFormats = {
-                small: {
-                    limit: 10,
-                    format: d3Format.format('')
-                },
-                medium: {
-                    limit: 1000,
-                    format: d3Format.format('')
-                },
-                large: {
-                    limit: null,
-                    format: d3Format.format('.2s')
-                }
-            };
+        small: {
+            limit: 10,
+            format: d3Format.format('')
+        },
+        medium: {
+            limit: 1000,
+            format: d3Format.format('')
+        },
+        large: {
+            limit: null,
+            format: d3Format.format('.2s')
+        }
+    };
+
     const decimalValueFormats = {
-                small: {
-                    limit: 10,
-                    format: d3Format.format('.3f')
-                },
-                medium: {
-                    limit: 100,
-                    format: d3Format.format('.1f')
-                },
-                large: {
-                    limit: null,
-                    format: d3Format.format('.2s')
-                }
-            };
+        small: {
+            limit: 10,
+            format: d3Format.format('.3f')
+        },
+        medium: {
+            limit: 100,
+            format: d3Format.format('.1f')
+        },
+        large: {
+            limit: null,
+            format: d3Format.format('.2s')
+        }
+    };
 
     const getValueSize = (value, limits) => {
         let size = 'large';
@@ -44,7 +45,7 @@ define(function(require) {
         }
 
         return size;
-    }
+    };
 
     /**
      * Calculates percentage of value from total
@@ -57,7 +58,7 @@ define(function(require) {
         const percent = total ? (value / total * 100) : 0;
 
         return d3Format.format(decimals)(percent);
-    }
+    };
 
     /**
      * Checks if a number is an integer of has decimal values
@@ -66,7 +67,7 @@ define(function(require) {
      */
     const isInteger = (value) => {
         return value % 1 === 0;
-    }
+    };
 
     /**
      * Formats a floating point value depending on its value range
@@ -78,7 +79,7 @@ define(function(require) {
         let format = decimalValueFormats[size].format;
 
         return format(value);
-    }
+    };
 
     /**
      * Formats an integer value depending on its value range
@@ -90,7 +91,7 @@ define(function(require) {
         let format = integerValueFormats[size].format;
 
         return format(value);
-    }
+    };
 
     /**
      * Generates a unique id with a prefix
@@ -101,7 +102,7 @@ define(function(require) {
         const id = ++idCounter;
 
         return `${prefix.toString()}-${id}`;
-    }
+    };
 
     return {
         calculatePercent,
@@ -109,6 +110,5 @@ define(function(require) {
         formatDecimalValue,
         formatIntegerValue,
         uniqueId
-    }
-
+    };
 });

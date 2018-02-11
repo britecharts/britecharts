@@ -2,6 +2,29 @@ module.exports = (function() {
 
     'use strict';
 
+    const computeDefaultStyleByTagName = (tagName) => {
+        let defaultStyle = {},
+            element = document.body.appendChild(document.createElement(tagName)),
+            computedStyle = window.getComputedStyle(element);
+
+        [].forEach.call(computedStyle, (style) => {
+            defaultStyle[style] = computedStyle[style];
+        });
+        document.body.removeChild(element);
+
+        return defaultStyle;
+    };
+
+    const getDefaultStyleByTagName = (tagName) => {
+        tagName = tagName.toUpperCase();
+
+        if (!defaultStylesByTagName[tagName]) {
+            defaultStylesByTagName[tagName] = computeDefaultStyleByTagName(tagName);
+        }
+
+        return defaultStylesByTagName[tagName];
+    };
+
     return {
 
         /**
@@ -26,26 +49,6 @@ module.exports = (function() {
                     defaultStylesByTagName[name] = computeDefaultStyleByTagName(name);
                 }
             });
-
-            function computeDefaultStyleByTagName(tagName) {
-                let defaultStyle = {},
-                    element = document.body.appendChild(document.createElement(tagName)),
-                    computedStyle = window.getComputedStyle(element);
-
-                [].forEach.call(computedStyle, (style) => {
-                    defaultStyle[style] = computedStyle[style];
-                });
-                document.body.removeChild(element);
-                return defaultStyle;
-            }
-
-            function getDefaultStyleByTagName (tagName) {
-                tagName = tagName.toUpperCase();
-                if (!defaultStylesByTagName[tagName]) {
-                    defaultStylesByTagName[tagName] = computeDefaultStyleByTagName(tagName);
-                }
-                return defaultStylesByTagName[tagName];
-            };
 
             function serializeWithStyles(elem) {
                 let cssTexts = [],
@@ -79,11 +82,11 @@ module.exports = (function() {
                 result = elem.outerHTML;
                 elements = [].map.call(elements, (el, i) => {
                     el.style.cssText = cssTexts[i];
+
                     return el;
                 });
 
                 return result;
-
             };
 
             return serializeWithStyles;

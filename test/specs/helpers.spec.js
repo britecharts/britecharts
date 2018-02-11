@@ -243,7 +243,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = timeAxis.getXAxisSettings(oneDayDataSet.dataByDate, 300));
+                        ({minor, major} = timeAxis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300));
                     });
 
                     it('should give back a minor hour format and 5 ticks', () => {
@@ -260,7 +260,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = timeAxis.getXAxisSettings(lessThanOneMonthDataSet.dataByDate, 300));
+                        ({minor, major} = timeAxis.getTimeSeriesAxis(lessThanOneMonthDataSet.dataByDate, 300));
                     });
 
                     it('should give back a minor day format and 5 ticks', () => {
@@ -277,7 +277,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = timeAxis.getXAxisSettings(twoYearsDataSet.dataByDate, 300));
+                        ({minor, major} = timeAxis.getTimeSeriesAxis(twoYearsDataSet.dataByDate, 300));
                     });
 
                     it('should give back a minor month format and 5 ticks', () => {
@@ -297,7 +297,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = timeAxis.getXAxisSettings(oneDayDataSet.dataByDate, 300, 'minute-hour'));
+                        ({minor, major} = timeAxis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'minute-hour'));
                     });
 
                     it('should give back a minor minute format and 5 ticks', () => {
@@ -314,7 +314,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = timeAxis.getXAxisSettings(oneDayDataSet.dataByDate, 300, 'hour-daymonth'));
+                        ({minor, major} = timeAxis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'hour-daymonth'));
                     });
 
                     it('should give back a minor hour format and 5 ticks', () => {
@@ -331,7 +331,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = timeAxis.getXAxisSettings(oneDayDataSet.dataByDate, 300, 'day-month'));
+                        ({minor, major} = timeAxis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'day-month'));
                     });
 
                     it('should give back a minor day format and 5 ticks', () => {
@@ -348,7 +348,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = timeAxis.getXAxisSettings(oneDayDataSet.dataByDate, 300, 'month-year'));
+                        ({minor, major} = timeAxis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'month-year'));
                     });
 
                     it('should give back a minor day format and 5 ticks', () => {

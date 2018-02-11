@@ -17,7 +17,7 @@ define(function(require){
     const colorHelper = require('./helpers/color');
     const {line} = require('./helpers/load');
 
-    const { getXAxisSettings } = require('./helpers/axis');
+    const { getTimeSeriesAxis } = require('./helpers/axis');
     const {
         axisTimeCombinations,
         curveMap
@@ -331,7 +331,7 @@ define(function(require){
                 };
                 major = null;
             } else {
-                ({minor, major} = getXAxisSettings(dataByDate, width, xAxisFormat, locale));
+                ({minor, major} = getTimeSeriesAxis(dataByDate, width, xAxisFormat, locale));
 
                 xMonthAxis = d3Axis.axisBottom(xScale)
                     .ticks(major.tick)

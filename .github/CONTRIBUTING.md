@@ -19,6 +19,7 @@
         - [ES6 transpiling](#es6-transpiling)
         - [yarn Tasks](#yarn-tasks)
     - [Project Structure](#project-structure)
+        - [Helpers](#helpers)
 
 <!-- /TOC -->
 
@@ -241,9 +242,10 @@ britecharts
 ├── dist
 ├── docs
 ├── src
-│   ├── charts
+│   ├── tasks
 │   ├── doc
-│   └── tasks
+│   └── charts
+│       └── helpers
 └── test
     ├── fixtures
     ├── json
@@ -259,6 +261,7 @@ britecharts
 | **docs** | Where the generated documentation website lives
 | **src** | Where we will place the code we create
 | **src/charts** | Where our charts live
+| **src/charts/helpers** | Where the helping functions are
 | **src/styles** | Where our .scss styles source code is
 | **src/doc** | Where the templates and configuration for our docs are
 | **src/tasks** | Some of our grunt tasks configuration
@@ -267,6 +270,38 @@ britecharts
 | **test/json** | Raw data for our charts
 | **test/specs** | Our tests for the charts
 | **test/tools** | Miscelaneous tools
+
+
+### Helpers
+**axis**
+Exposes `getTimeSeriesAxis`, the method that allows a conditional formatting depending on the time series values.
+
+**color**
+Contains the objects with the color schemas, the color gradients and their human friendly names.
+
+**constants**
+Constants for the project
+
+**date**
+Date related methods like addDays, diffDays, getLocaleDateFormatter and similar.
+
+**export**
+Methods that enable the chart export feature of Britecharts.
+
+**filter**
+Methods for creating SVG effects based on SVG filters. Includes blur and glows.
+
+**load**
+SVG components that render the different loading states Britecharts support. These are bar, donut and line loading states.
+
+**number**
+Methods that relate with numbers and number formatting. Includes a unique id generator, an integer checker and a method to calculate percentages.
+
+**style**
+Methods for serializing styles used in the export feature.
+
+**text**
+Functions to help with text related operantions like wrapping text on a given width, adding ellipsis when not enough space is available or measuring text length.
 
 
 [node]: http://nodejs.org
