@@ -15,16 +15,6 @@ module.exports = (function() {
         return defaultStyle;
     };
 
-    const getDefaultStyleByTagName = (tagName) => {
-        tagName = tagName.toUpperCase();
-
-        if (!defaultStylesByTagName[tagName]) {
-            defaultStylesByTagName[tagName] = computeDefaultStyleByTagName(tagName);
-        }
-
-        return defaultStylesByTagName[tagName];
-    };
-
     return {
 
         /**
@@ -34,7 +24,7 @@ module.exports = (function() {
         initializeSerializer() {
 
             // Mapping between tag names and css default values lookup tables. This allows to exclude default values in the result.
-            const defaultStylesByTagName = {};
+            var defaultStylesByTagName = {};
 
             // Styles inherited from style sheets will not be rendered for elements with these tag names
             const noStyleTags = {'BASE':true,'HEAD':true,'HTML':true,'META':true,'NOFRAME':true,'NOSCRIPT':true,'PARAM':true,'SCRIPT':true,'STYLE':true,'TITLE':true};
@@ -49,6 +39,16 @@ module.exports = (function() {
                     defaultStylesByTagName[name] = computeDefaultStyleByTagName(name);
                 }
             });
+
+            function getDefaultStyleByTagName(tagName) {
+                tagName = tagName.toUpperCase();
+
+                if (!defaultStylesByTagName[tagName]) {
+                    defaultStylesByTagName[tagName] = computeDefaultStyleByTagName(tagName);
+                }
+
+                return defaultStylesByTagName[tagName];
+            }
 
             function serializeWithStyles(elem) {
                 let cssTexts = [],
