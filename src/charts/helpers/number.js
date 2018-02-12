@@ -61,7 +61,7 @@ define(function(require) {
     };
 
     /**
-     * Checks if a number is an integer of has decimal values
+     * Checks if a number is an integer or a decimal value
      * @param  {Number}  value Value to check
      * @return {Boolean}       If it is an iteger
      */

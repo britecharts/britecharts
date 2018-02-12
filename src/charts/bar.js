@@ -1089,6 +1089,7 @@ define(function(require) {
                 return yTicks;
             }
             yTicks = _x;
+
             return this;
         };
 

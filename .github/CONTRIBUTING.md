@@ -280,7 +280,7 @@ Exposes `getTimeSeriesAxis`, the method that allows a conditional formatting dep
 Contains the objects with the color schemas, the color gradients and their human friendly names.
 
 **constants**
-Constants for the project
+Reusable constants that are used through-ought the project.
 
 **date**
 Date related methods like addDays, diffDays, getLocaleDateFormatter and similar.

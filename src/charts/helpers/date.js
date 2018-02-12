@@ -19,7 +19,7 @@ define(function (require) {
     }
 
     /**
-     * Calculate difference between dates in days
+     * Calculates difference between dates in days
      * @param  {String}  date1 Date in string form
      * @param  {String}  date2 Date in string form
      * @return {Number}        Number of days between dates

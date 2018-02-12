@@ -13,8 +13,8 @@ define(function(require) {
      * @return {void}
      */
     function createColorSelector(selectContainerSelector, chartSelector, callback) {
-        let colorKeys = Object.keys(colors.colorSchemas),
-            containerSelector = document.querySelector(selectContainerSelector);
+        const colorKeys = Object.keys(colors.colorSchemas);
+        const containerSelector = document.querySelector(selectContainerSelector);
 
         if (!containerSelector) { return; }
 
