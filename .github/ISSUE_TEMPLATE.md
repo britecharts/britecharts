@@ -20,6 +20,8 @@
 3.
 4.
 
+## Screenshots (if appropriate):
+
 ## Context
 <!--- How has this issue affected you? What are you trying to accomplish? -->
 <!--- Providing context helps us come up with a solution that is most useful in the real world -->
@@ -28,5 +30,5 @@
 <!--- Include as many relevant details about the environment you experienced the bug in -->
 * Version used:
 * Browser Name and version:
-* Operating System and version (desktop or mobile):
-* Link to your project:
+* Operating System and version:
+* Link to your project or codepen:
