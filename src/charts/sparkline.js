@@ -8,10 +8,10 @@ define(function(require){
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
 
-    const {exportChart} = require('./helpers/exportChart');
-    const colorHelper = require('./helpers/colors');
-    const {line} = require('./helpers/loadingStates');
-    const {uniqueId} = require('./helpers/common');
+    const {exportChart} = require('./helpers/export');
+    const colorHelper = require('./helpers/color');
+    const {line} = require('./helpers/load');
+    const {uniqueId} = require('./helpers/number');
 
     /**
      * @typedef SparklineChartData
@@ -429,7 +429,7 @@ define(function(require){
             lineGradient = _x;
             return this;
         };
-        
+
         /**
          * Gets or Sets the loading state of the chart
          * @param  {string} markup Desired markup to show when null data

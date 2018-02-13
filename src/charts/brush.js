@@ -13,13 +13,13 @@ define(function(require) {
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
 
-    const colorHelper = require('./helpers/colors');
-    const timeAxisHelper = require('./helpers/timeAxis');
+    const colorHelper = require('./helpers/color');
+    const timeAxisHelper = require('./helpers/axis');
 
     const {axisTimeCombinations} = require('./helpers/constants');
 
-    const {uniqueId} = require('./helpers/common');
-    const {line} = require('./helpers/loadingStates');
+    const {uniqueId} = require('./helpers/number');
+    const {line} = require('./helpers/load');
 
 
     /**
@@ -147,7 +147,7 @@ define(function(require) {
                     format: d3TimeFormat.timeFormat(xAxisCustomFormat)
                 };
             } else {
-                ({minor, major} = timeAxisHelper.getXAxisSettings(data, width, xAxisFormat));
+                ({minor, major} = timeAxisHelper.getTimeSeriesAxis(data, width, xAxisFormat));
             }
 
             xAxis = d3Axis.axisBottom(xScale)

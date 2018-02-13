@@ -7,15 +7,12 @@ define(function(require){
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
 
-    const {
-        axisTimeCombinations
-    } = require('./helpers/constants');
-
+    const {axisTimeCombinations} = require('./helpers/constants');
     const {
         formatIntegerValue,
-        formatDecimalValue
-    } = require('./helpers/formatHelpers');
-    const { isInteger } = require('./helpers/common');
+        formatDecimalValue,
+        isInteger
+    } = require('./helpers/number');
 
     /**
      * Tooltip Component reusable API class that renders a
