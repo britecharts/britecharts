@@ -82,7 +82,7 @@ define(function(require) {
      * @param {String} settings             Optional forced settings for axis
      * @return {object} tick settings for major and minr axis
      */
-    const getTimeSeriesAxis = (dataByDate, width, settings = null, locale=null) => {
+    const getTimeSeriesAxis = (dataByDate, width, settings = null, locale = null) => {
         let firstDate = new Date(dataByDate[0].date);
         let lastDate = new Date(dataByDate[dataByDate.length - 1].date);
         let dateTimeSpan = lastDate - firstDate;
