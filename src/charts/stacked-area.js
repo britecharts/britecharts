@@ -13,27 +13,25 @@ define(function(require){
     const d3TimeFormat = require('d3-time-format');
 
     const assign = require('lodash.assign');
-    const {exportChart} = require('./helpers/exportChart');
-    const colorHelper = require('./helpers/colors');
-    const {
-        getXAxisSettings,
-        getLocaleDateFormatter
-    } = require('./helpers/timeAxis');
+    const {exportChart} = require('./helpers/export');
+    const colorHelper = require('./helpers/color');
+    const {getTimeSeriesAxis} = require('./helpers/axis');
     const {axisTimeCombinations, curveMap} = require('./helpers/constants');
     const {
         formatIntegerValue,
-        formatDecimalValue
-    } = require('./helpers/formatHelpers');
+        formatDecimalValue,
+        isInteger
+    } = require('./helpers/number');
     const {
         createFilterContainer,
         createGlowWithMatrix,
-    } = require('./helpers/filters');
+    } = require('./helpers/filter');
     const {
-        isInteger,
         addDays,
         diffDays
-    } = require('./helpers/common');
-    const {bar} = require('./helpers/loadingStates');
+    } = require('./helpers/date');
+
+    const {bar} = require('./helpers/load');
 
 
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
@@ -291,7 +289,7 @@ define(function(require){
                 };
                 major = null;
             } else {
-                ({minor, major} = getXAxisSettings(dataByDate, width, xAxisFormat, locale));
+                ({minor, major} = getTimeSeriesAxis(dataByDate, width, xAxisFormat, locale));
 
                 xMonthAxis = d3Axis.axisBottom(xScale)
                     .ticks(major.tick)

@@ -10,12 +10,12 @@ define(function(require) {
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
 
-    const {exportChart} = require('./helpers/exportChart');
+    const {exportChart} = require('./helpers/export');
     const textHelper = require('./helpers/text');
-    const colorHelper = require('./helpers/colors');
-    const {calculatePercent} = require('./helpers/common');
+    const colorHelper = require('./helpers/color');
+    const {calculatePercent} = require('./helpers/number');
     const {emptyDonutData} =require('./helpers/constants');
-    const {donut} = require('./helpers/loadingStates');
+    const {donut} = require('./helpers/load');
 
 
     /**
