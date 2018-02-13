@@ -5,11 +5,12 @@ define([
     'legend',
     'donutChartDataBuilder',
     'lineChartDataBuilder',
-    'helpers/serializeWithStyles',
+    'helpers/style',
     'helpers/text',
-    'helpers/common',
-    'helpers/exportChart',
-    'helpers/timeAxis'
+    'helpers/number',
+    'helpers/date',
+    'helpers/export',
+    'helpers/axis'
     ], function (
         _,
         $,
@@ -19,7 +20,8 @@ define([
         lineDataBuilder,
         serializeWithStyles,
         textHelper,
-        common,
+        number,
+        date,
         exportChart,
         timeAxis
     ) {
@@ -103,30 +105,33 @@ define([
             });
         });
 
-        describe('common', () => {
+        describe('number', () => {
 
             it('should return true if its an integer', () => {
-                expect(common.isInteger(3)).toEqual(true);
+                expect(number.isInteger(3)).toEqual(true);
             });
 
             it('should return false passed a non integer', () => {
-                expect(common.isInteger(3.2)).toEqual(false);
+                expect(number.isInteger(3.2)).toEqual(false);
             });
 
             it('should calculate percent from value and total', () => {
-                expect(common.calculatePercent(10, 100, '.1f')).toEqual('10.0');
+                expect(number.calculatePercent(10, 100, '.1f')).toEqual('10.0');
             });
 
             it('should return specified number of decimal places', () => {
-                expect(common.calculatePercent(20, 100, '.2f')).toEqual('20.00');
+                expect(number.calculatePercent(20, 100, '.2f')).toEqual('20.00');
             });
+        });
+
+        describe('date', () => {
 
             it('should return difference between dates', () => {
-                expect(common.diffDays('Thu Oct 05 2017', 'Thu Oct 04 2017')).toEqual(1);
+                expect(date.diffDays('Thu Oct 05 2017', 'Thu Oct 04 2017')).toEqual(1);
             });
 
             it('should add a number of days to a date', () => {
-                expect(common.addDays('Thu Oct 05 2017', 1).slice(0, 15)).toEqual('Fri Oct 06 2017');
+                expect(date.addDays('Thu Oct 05 2017', 1).slice(0, 15)).toEqual('Fri Oct 06 2017');
             });
         });
 
@@ -215,7 +220,7 @@ define([
             });
         });
 
-        describe('time axis', () => {
+        describe('axis', () => {
             let lessThanOneMonthDataSet,
                 twoYearsDataSet,
                 oneDayDataSet,
@@ -238,7 +243,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = timeAxis.getXAxisSettings(oneDayDataSet.dataByDate, 300));
+                        ({minor, major} = timeAxis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300));
                     });
 
                     it('should give back a minor hour format and 5 ticks', () => {
@@ -255,7 +260,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = timeAxis.getXAxisSettings(lessThanOneMonthDataSet.dataByDate, 300));
+                        ({minor, major} = timeAxis.getTimeSeriesAxis(lessThanOneMonthDataSet.dataByDate, 300));
                     });
 
                     it('should give back a minor day format and 5 ticks', () => {
@@ -272,7 +277,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = timeAxis.getXAxisSettings(twoYearsDataSet.dataByDate, 300));
+                        ({minor, major} = timeAxis.getTimeSeriesAxis(twoYearsDataSet.dataByDate, 300));
                     });
 
                     it('should give back a minor month format and 5 ticks', () => {
@@ -292,7 +297,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = timeAxis.getXAxisSettings(oneDayDataSet.dataByDate, 300, 'minute-hour'));
+                        ({minor, major} = timeAxis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'minute-hour'));
                     });
 
                     it('should give back a minor minute format and 5 ticks', () => {
@@ -309,7 +314,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = timeAxis.getXAxisSettings(oneDayDataSet.dataByDate, 300, 'hour-daymonth'));
+                        ({minor, major} = timeAxis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'hour-daymonth'));
                     });
 
                     it('should give back a minor hour format and 5 ticks', () => {
@@ -326,7 +331,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = timeAxis.getXAxisSettings(oneDayDataSet.dataByDate, 300, 'day-month'));
+                        ({minor, major} = timeAxis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'day-month'));
                     });
 
                     it('should give back a minor day format and 5 ticks', () => {
@@ -343,7 +348,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = timeAxis.getXAxisSettings(oneDayDataSet.dataByDate, 300, 'month-year'));
+                        ({minor, major} = timeAxis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'month-year'));
                     });
 
                     it('should give back a minor day format and 5 ticks', () => {

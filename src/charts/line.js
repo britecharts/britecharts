@@ -13,27 +13,25 @@ define(function(require){
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
 
-    const {exportChart} = require('./helpers/exportChart');
-    const colorHelper = require('./helpers/colors');
-    const {line} = require('./helpers/loadingStates');
+    const {exportChart} = require('./helpers/export');
+    const colorHelper = require('./helpers/color');
+    const {line} = require('./helpers/load');
 
+    const { getTimeSeriesAxis } = require('./helpers/axis');
     const {
-        getXAxisSettings,
-        getLocaleDateFormatter
-    } = require('./helpers/timeAxis');
-    const { axisTimeCombinations, curveMap } = require('./helpers/constants');
+        axisTimeCombinations,
+        curveMap
+    } = require('./helpers/constants');
     const {
         createFilterContainer,
-        createGlowWithMatrix,
-    } = require('./helpers/filters');
+        createGlowWithMatrix
+    } = require('./helpers/filter');
     const {
         formatIntegerValue,
         formatDecimalValue,
-    } = require('./helpers/formatHelpers');
-    const {
         isInteger,
         uniqueId
-    } = require('./helpers/common');
+    } = require('./helpers/number');
 
     /**
      * @typedef D3Selection
@@ -333,7 +331,7 @@ define(function(require){
                 };
                 major = null;
             } else {
-                ({minor, major} = getXAxisSettings(dataByDate, width, xAxisFormat, locale));
+                ({minor, major} = getTimeSeriesAxis(dataByDate, width, xAxisFormat, locale));
 
                 xMonthAxis = d3Axis.axisBottom(xScale)
                     .ticks(major.tick)

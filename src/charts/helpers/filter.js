@@ -9,7 +9,7 @@ define(function (require) {
           .append('defs')
             .append('filter')
             .attr('id', filterId);
-        
+
         return highlightFilter;
     };
 
@@ -112,7 +112,7 @@ define(function (require) {
             .attr('operator', 'dilate')
             .attr('radius', '2')
             .attr('in', 'mask');
-        
+
         filterSelector
           .append('feGaussianBlur')
             .attr('result', 'blurred')
@@ -125,8 +125,8 @@ define(function (require) {
         merge
           .append('feMergeNode')
             .attr('in', 'blurred');
-        
-        merge 
+
+        merge
           .append('feMergeNode')
             .attr('in', 'SourceGraphic');
 

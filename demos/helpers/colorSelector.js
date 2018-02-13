@@ -1,9 +1,9 @@
 define(function(require) {
 
-    var d3Selection = require('d3-selection'),
-        colors = require('./../../src/charts/helpers/colors'),
+    const d3Selection = require('d3-selection');
+    const colors = require('./../../src/charts/helpers/color');
 
-        selectClass = 'form-control';
+    const selectClass = 'form-control';
 
     /**
      * Creates a color schema selector
@@ -13,19 +13,19 @@ define(function(require) {
      * @return {void}
      */
     function createColorSelector(selectContainerSelector, chartSelector, callback) {
-        var colorKeys = Object.keys(colors.colorSchemas),
-            containerSelector = document.querySelector(selectContainerSelector);
+        const colorKeys = Object.keys(colors.colorSchemas);
+        const containerSelector = document.querySelector(selectContainerSelector);
 
         if (!containerSelector) { return; }
 
         // Create Select
-        var sel = document.createElement('select');
-        
+        let sel = document.createElement('select');
+
         sel.className += ' ' + selectClass;
 
         // And fill with options
         colorKeys.forEach(function(key) {
-                var opt = document.createElement('option');
+                let opt = document.createElement('option');
 
                 opt.value = key;
                 opt.text = colors.colorSchemasHuman[key];
@@ -39,7 +39,7 @@ define(function(require) {
         d3Selection.select(sel)
             .on('change', function() {
                 // Get new color schema
-                var newSchema = colors.colorSchemas[this.value];
+                let newSchema = colors.colorSchemas[this.value];
 
                 d3Selection.select(chartSelector).remove();
 

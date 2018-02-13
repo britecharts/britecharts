@@ -3,7 +3,7 @@
 const d3Selection = require('d3-selection');
 const PubSub = require('pubsub-js');
 
-const colors = require('./../src/charts/helpers/colors');
+const colors = require('./../src/charts/helpers/color');
 const groupedBarChart = require('./../src/charts/grouped-bar');
 const tooltip = require('./../src/charts/tooltip');
 const groupedDataBuilder = require('./../test/fixtures/groupedBarChartDataBuilder');
