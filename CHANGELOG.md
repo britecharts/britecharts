@@ -1,4 +1,13 @@
-2.5.1
+2.5.1 - PATCH
+--------------
+* Updating bundle paths (Golodhros)
+* Refactoring Helpers (Golodhros)
+* Adding refactorings to PR options and polishing issue template (Golodhros)
+* Added API description, moved eslint to dev dep (dalerasrorov-eb)
+* Upgraded grunt-jsdoc and jsdoc (dalerasrorov-eb)
+* Feature - allow ability to configure stacked area curve (dalerasrorov-eb)
+* Feature - new Bar chart API method to highlight bars (dalerasrorov-eb)
+
 2.5.0 - MINOR
 --------------
 * Feature - ability to reverse stacks (sound-matt)
