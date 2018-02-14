@@ -1,3 +1,4 @@
+2.5.1
 2.5.0 - MINOR
 --------------
 * Feature - ability to reverse stacks (sound-matt)
