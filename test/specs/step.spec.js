@@ -1,17 +1,17 @@
 define([
-    'jquery', 
-    'd3', 
-    'step', 
+    'jquery',
+    'd3',
+    'step',
     'stepChartDataBuilder'
 ], function(
-    $, 
-    d3, 
-    chart, 
+    $,
+    d3,
+    chart,
     dataBuilder
 ) {
     'use strict';
 
-    const aTestDataSet = () => new dataBuilder.StepDataBuilder();    
+    const aTestDataSet = () => new dataBuilder.StepDataBuilder();
     const buildDataSet = (dataSetName) => {
         return aTestDataSet()
             [dataSetName]()
@@ -72,7 +72,7 @@ define([
         });
 
         describe('when reloading with a different dataset', () => {
-            
+
             it('should render in the same svg', function() {
                 let actual;
                 let expected = 1;

@@ -1071,8 +1071,9 @@ define(function (require) {
         /**
          * Gets or Sets the y-axis label of the chart
          * @param  {String} _x Desired label string
-         * @return {Object | module} Current yAxisLabel or Chart module to chain calls
+         * @return {String | module} Current yAxisLabel or Chart module to chain calls
          * @public
+         * @example groupedBar.yAxisLabel('Ticket Sales')
          */
         exports.yAxisLabel = function (_x) {
             if (!arguments.length) {
@@ -1083,6 +1084,15 @@ define(function (require) {
             return this;
         };
 
+        /**
+         * Gets or Sets the offset of the yAxisLabel of the chart.
+         * The method accepts both positive and negative values.
+         * The default value is -60
+         * @param  {Integer} _x Desired offset for the label
+         * @return {Integer | module} Current yAxisLabelOffset or Chart module to chain calls
+         * @public
+         * @example groupedBar.yAxisLabelOffset(-55)
+         */
         exports.yAxisLabelOffset = function (_x) {
             if (!arguments.length) {
                 return yAxisLabelOffset;
