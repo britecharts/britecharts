@@ -92,8 +92,6 @@ function createHorizontalgroupedBarChart(optionalColorSchema) {
                 right: 30,
                 bottom: 20
             })
-            .yAxisLabel('Tickets Sold')
-            .yAxisLabelOffset(-60)
             .nameLabel('date')
             .valueLabel('views')
             .groupLabel('stack')
