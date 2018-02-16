@@ -332,6 +332,30 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide yAxisLabel getter and setter', () => {
+                let defaultYAxisLabel = 'Hello',
+                    testYAxisLabel = 'World',
+                    newYAxisLabel;
+
+                groupedBarChart.yAxisLabel(testYAxisLabel);
+                newYAxisLabel = groupedBarChart.yAxisLabel();
+
+                expect(defaultYAxisLabel).not.toBe(newYAxisLabel);
+                expect(newYAxisLabel).toBe(testYAxisLabel);
+            });
+
+            it('should provide yAxisLabelOffset getter and setter', () => {
+                let defaultYAxisLabelOffset =  groupedBarChart.yAxisLabelOffset(),
+                    testYAxisLabelOffset = -30,
+                    newYAxisLabelOffset;
+
+                groupedBarChart.yAxisLabelOffset(testYAxisLabelOffset);
+                newYAxisLabelOffset = groupedBarChart.yAxisLabelOffset();
+
+                expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
+                expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
+            });
         });
 
         describe('when hovering', function() {
