@@ -295,7 +295,7 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
 
             it('should provide valueLabelFormat getter and setter', () => {
                 let previous = groupedBarChart.valueLabelFormat(),
-                    expected = 'something',
+                    expected = 's',
                     actual;
 
                 groupedBarChart.valueLabelFormat(expected);
