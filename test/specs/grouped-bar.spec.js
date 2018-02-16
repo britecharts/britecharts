@@ -346,7 +346,7 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
             });
 
             it('should provide yAxisLabelOffset getter and setter', () => {
-                let defaultYAxisLabelOffset = -40,
+                let defaultYAxisLabelOffset =  groupedBarChart.yAxisLabelOffset(),
                     testYAxisLabelOffset = -30,
                     newYAxisLabelOffset;
 
