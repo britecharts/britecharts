@@ -390,7 +390,7 @@ define(function (require) {
 
             if (yAxisLabel) {
                 if (yAxisLabelEl) {
-                    svg.selectAll('y.axis-label-text').remove();
+                    svg.selectAll('.y-axis-label-text').remove();
                 }
 
                 yAxisLabelEl = svg.select('.y-axis-label')
