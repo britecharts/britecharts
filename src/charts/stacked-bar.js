@@ -247,7 +247,7 @@ define(function(require){
             container
                 .append('g').classed('chart-group', true);
             container
-                .append('g').classed('y-axis-label', true)
+                .append('g').classed('y-axis-label', true);
             container
                 .append('g').classed('metadata-group', true);
         }
