@@ -115,6 +115,10 @@ define(function(require){
 
             tooltipThreshold = 480,
 
+            yAxisLabel,
+            yAxisLabelEl,
+            yAxisLabelOffset = -60,
+
             baseLine,
             xAxisPadding = {
                 top: 0,
@@ -243,6 +247,8 @@ define(function(require){
             container
                 .append('g').classed('chart-group', true);
             container
+                .append('g').classed('y-axis-label', true);
+            container
                 .append('g').classed('metadata-group', true);
         }
 
@@ -369,6 +375,21 @@ define(function(require){
                     .attr('transform', `translate( ${-xAxisPadding.left}, 0)`)
                     .call(yAxis)
                     .call(adjustYTickLabels);
+            }
+
+            if (yAxisLabel) {
+                if (yAxisLabelEl) {
+                    svg.selectAll('.y-axis-label-text').remove();
+                }
+
+                yAxisLabelEl = svg.select('.y-axis-label')
+                    .append('text')
+                        .classed('y-axis-label-text', true)
+                            .attr('x', -chartHeight / 2)
+                            .attr('y', yAxisLabelOffset)
+                            .attr('text-anchor', 'middle')
+                            .attr('transform', 'rotate(270 0 0)')
+                            .text(yAxisLabel)
             }
         }
 
@@ -1121,6 +1142,40 @@ define(function(require){
 
             return this;
         };
+
+        /**
+         * Gets or Sets the y-axis label of the chart
+         * @param  {String} _x Desired label string
+         * @return {String | module} Current yAxisLabel or Chart module to chain calls
+         * @public
+         * @example stackedBar.yAxisLabel('Ticket Sales')
+         */
+        exports.yAxisLabel = function (_x) {
+            if (!arguments.length) {
+                return yAxisLabel;
+            }
+            yAxisLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the offset of the yAxisLabel of the chart.
+         * The method accepts both positive and negative values.
+         * The default value is -60
+         * @param  {Integer} _x Desired offset for the label
+         * @return {Integer | module} Current yAxisLabelOffset or Chart module to chain calls
+         * @public
+         * @example stackedBar.yAxisLabelOffset(-55)
+         */
+        exports.yAxisLabelOffset = function (_x) {
+            if (!arguments.length) {
+                return yAxisLabelOffset;
+            }
+            yAxisLabelOffset = _x;
+
+            return this;
+        }
 
         return exports;
     };

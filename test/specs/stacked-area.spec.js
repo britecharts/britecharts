@@ -482,6 +482,30 @@ define([
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide yAxisLabel getter and setter', () => {
+                let defaultYAxisLabel = 'Hello',
+                    testYAxisLabel = 'World',
+                    newYAxisLabel;
+
+                stackedAreaChart.yAxisLabel(testYAxisLabel);
+                newYAxisLabel = stackedAreaChart.yAxisLabel();
+
+                expect(defaultYAxisLabel).not.toBe(newYAxisLabel);
+                expect(newYAxisLabel).toBe(testYAxisLabel);
+            });
+
+            it('should provide yAxisLabelOffset getter and setter', () => {
+                let defaultYAxisLabelOffset =  stackedAreaChart.yAxisLabelOffset(),
+                    testYAxisLabelOffset = -30,
+                    newYAxisLabelOffset;
+
+                stackedAreaChart.yAxisLabelOffset(testYAxisLabelOffset);
+                newYAxisLabelOffset = stackedAreaChart.yAxisLabelOffset();
+
+                expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
+                expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
+            });
         });
 
         describe('Aspect Ratio', function() {
