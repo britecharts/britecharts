@@ -365,6 +365,30 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide yAxisLabel getter and setter', () => {
+                let defaultYAxisLabel = 'Hello',
+                    testYAxisLabel = 'World',
+                    newYAxisLabel;
+
+                stackedBarChart.yAxisLabel(testYAxisLabel);
+                newYAxisLabel = stackedBarChart.yAxisLabel();
+
+                expect(defaultYAxisLabel).not.toBe(newYAxisLabel);
+                expect(newYAxisLabel).toBe(testYAxisLabel);
+            });
+
+            it('should provide yAxisLabelOffset getter and setter', () => {
+                let defaultYAxisLabelOffset =  stackedBarChart.yAxisLabelOffset(),
+                    testYAxisLabelOffset = -30,
+                    newYAxisLabelOffset;
+
+                stackedBarChart.yAxisLabelOffset(testYAxisLabelOffset);
+                newYAxisLabelOffset = stackedBarChart.yAxisLabelOffset();
+
+                expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
+                expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
+            });
         });
 
         describe('when hovering', function() {

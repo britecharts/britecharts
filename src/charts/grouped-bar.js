@@ -243,8 +243,7 @@ define(function (require) {
             container
                 .append('g').classed('y-axis-group axis', true);
             container
-                .append('g')
-                    .classed('y-axis-label', true)
+                .append('g').classed('y-axis-label', true);
             container
                 .append('g').classed('grid-lines-group', true);
             container
