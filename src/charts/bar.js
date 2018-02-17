@@ -110,6 +110,7 @@ define(function(require) {
 
             valueLabel = 'value',
             nameLabel = 'name',
+            labelEl,
 
             baseLine,
             maskGridLines,
@@ -491,7 +492,11 @@ define(function(require) {
             let labelYPosition = isHorizontal ? _labelsHorizontalY : _labelsVerticalY;
             let text = _labelsFormatValue
 
-            let labels = svg.select('.metadata-group')
+            if (labelEl) {
+                svg.selectAll('.percentage-label-group').remove();
+            }
+
+            labelEl = svg.select('.metadata-group')
               .append('g')
                 .classed('percentage-label-group', true)
                 .selectAll('text')
@@ -499,7 +504,7 @@ define(function(require) {
                 .enter()
               .append('text');
 
-            labels
+            labelEl
                 .classed('percentage-label', true)
                 .attr('x', labelXPosition)
                 .attr('y', labelYPosition)
