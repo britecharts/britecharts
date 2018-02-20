@@ -88,6 +88,7 @@ define(function(require){
 
             isFadedClassName = 'is-faded',
             isHorizontal = false,
+            highlightedEntryId = null,
 
             // colors
             colorScale,
@@ -125,6 +126,11 @@ define(function(require){
                 } else {
                     drawVerticalLegend();
                 }
+
+                if (highlightedEntryId) {
+                    cleanFadedLines();
+                    fadeLinesBut(highlightedEntryId);
+                }
             });
         }
 
@@ -153,7 +159,8 @@ define(function(require){
         function buildContainerGroups() {
             let container = svg
               .append('g')
-                .classed('legend-container-group', true);
+                .classed('legend-container-group', true)
+                .attr('transform', `translate(${margin.left},${margin.top})`);
 
             container
               .append('g')
@@ -183,9 +190,6 @@ define(function(require){
 
                 buildContainerGroups();
             }
-
-            svg.select('g.legend-container-group')
-                .attr('transform', `translate(${margin.left},${margin.top})`);
 
             svg
                 .attr('width', width)
@@ -226,7 +230,7 @@ define(function(require){
 
             svg.select('.legend-group')
                 .selectAll('g')
-                .remove()
+                .remove();
 
             // We want a single line
             svg.select('.legend-group')
@@ -287,6 +291,10 @@ define(function(require){
          * @private
          */
         function drawVerticalLegend() {
+            svg.select('.legend-group')
+                .selectAll('g')
+                .remove();
+
             entries = svg.select('.legend-group')
                 .selectAll('g.legend-line')
                 .data(data);
@@ -352,13 +360,15 @@ define(function(require){
          */
         function fadeLinesBut(exceptionItemId) {
             let classToFade = 'g.legend-entry';
+            let entryLine = svg.select(`[data-item="${exceptionItemId}"]`);
 
-            svg.select('.legend-group')
-                .selectAll(classToFade)
-                .classed(isFadedClassName, true);
+            if (entryLine.nodes().length){
+                svg.select('.legend-group')
+                    .selectAll(classToFade)
+                    .classed(isFadedClassName, true);
 
-            svg.select(`[data-item="${exceptionItemId}"]`)
-                .classed(isFadedClassName, false);
+                entryLine.classed(isFadedClassName, false);
+            }
         }
 
         /**
@@ -440,9 +450,24 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the id of the entry to highlight
+         * @param  {Number} _x              Entry id
+         * @return { (Number | Module) }    Current highlighted slice id or Donut Chart module to chain calls
+         * @public
+         */
+        exports.highlightEntryById = function (_x) {
+            if (!arguments.length) {
+                return highlightedEntryId;
+            }
+            highlightedEntryId = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the horizontal mode on the legend
-         * @param  {boolean} _x Desired horizontal mode for the graph
-         * @return {ishorizontal | module} If it is horizontal or Legend module to chain calls
+         * @param  {Boolean} _x Desired horizontal mode for the graph
+         * @return {Boolean | module} If it is horizontal or Legend module to chain calls
          * @public
          */
         exports.isHorizontal = function(_x) {
@@ -457,7 +482,7 @@ define(function(require){
         /**
          * Gets or Sets the margin of the legend chart
          * @param  {object} _x Margin object to get/set
-         * @return {margin | module} Current margin or Legend module to chain calls
+         * @return {object | module} Current margin or Legend module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -491,7 +516,7 @@ define(function(require){
          * added as color identifiers for the chart's categories.
          *
          * @param  {object} _x Margin object to get/set
-         * @return {markerSize | module} Current markerSize or Legend module to chain calls
+         * @return {object | module} Current markerSize or Legend module to chain calls
          * @public
          */
         exports.markerSize = function(_x) {
@@ -499,6 +524,21 @@ define(function(require){
                 return markerSize;
             }
             markerSize = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the number format of the legend chart
+         * @param  {string} _x Desired number format for the legend chart
+         * @return {string | module} Current number format or Legend module to chain calls
+         * @public
+         */
+        exports.numberFormat = function (_x) {
+            if (!arguments.length) {
+                return numberFormat;
+            }
+            numberFormat = _x;
 
             return this;
         };
@@ -519,24 +559,9 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the number format of the legend chart
-         * @param  {string} _x Desired number format for the legend chart
-         * @return {numberFormat | module} Current number format or Legend module to chain calls
-         * @public
-         */
-        exports.numberFormat = function(_x) {
-            if (!arguments.length) {
-                return numberFormat;
-            }
-            numberFormat = _x;
-
-            return this;
-        };
-
-        /**
          * Gets or Sets the width of the legend chart
          * @param  {number} _x Desired width for the graph
-         * @return {width | module} Current width or Legend module to chain calls
+         * @return {number | module} Current width or Legend module to chain calls
          * @public
          */
         exports.width = function(_x) {

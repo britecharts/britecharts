@@ -200,9 +200,9 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
 
                 it('should provide a highlight function', () => {
                     let lines = containerFixture
-                            .select('.britechart-legend')
-                            .selectAll('.legend-entry'),
-                        elements = lines.nodes();
+                    .select('.britechart-legend')
+                    .selectAll('.legend-entry'),
+                    elements = lines.nodes();
 
                     legendChart.highlight(dataset[0].id);
 
@@ -211,6 +211,18 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                     expect(d3.select(elements[2]).attr('class')).toEqual('legend-entry is-faded');
                     expect(d3.select(elements[3]).attr('class')).toEqual('legend-entry is-faded');
                     expect(d3.select(elements[4]).attr('class')).toEqual('legend-entry is-faded');
+                });
+
+                it('should provide highlightEntryById getter and setter', () =>{
+                    let previous = legendChart.highlightEntryById(),
+                        expected = 1,
+                        actual;
+
+                    legendChart.highlightEntryById(expected);
+                    actual = legendChart.highlightEntryById();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
                 });
 
                 it('should provide a clear highlight function', () => {
