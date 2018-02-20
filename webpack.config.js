@@ -11,21 +11,21 @@ const isProduction = env === 'prod' || env === 'prodUMD';
 const projectName = 'britecharts';
 
 const CHARTS = {
-    'bar': './src/charts/bar.js',
-    'donut': './src/charts/donut.js',
-    'legend': './src/charts/legend.js',
-    'line': './src/charts/line.js',
-    'tooltip': './src/charts/tooltip.js',
-    'miniTooltip': './src/charts/mini-tooltip.js',
-    'sparkline': './src/charts/sparkline.js',
-    'stackedArea': './src/charts/stacked-area.js',
-    'stackedBar': './src/charts/stacked-bar.js',
-    'groupedBar': './src/charts/grouped-bar.js',
-    'step': './src/charts/step.js',
-    'brush': './src/charts/brush.js',
-    'loading': ['./src/charts/helpers/load.js'],
+    bar: './src/charts/bar.js',
+    donut: './src/charts/donut.js',
+    legend: './src/charts/legend.js',
+    line: './src/charts/line.js',
+    tooltip: './src/charts/tooltip.js',
+    miniTooltip: './src/charts/mini-tooltip.js',
+    sparkline: './src/charts/sparkline.js',
+    stackedArea: './src/charts/stacked-area.js',
+    stackedBar: './src/charts/stacked-bar.js',
+    groupedBar: './src/charts/grouped-bar.js',
+    step: './src/charts/step.js',
+    brush: './src/charts/brush.js',
+    loading: ['./src/charts/helpers/load.js'],
     // hack to make webpack use colors as an entry point while its also a dependency of the charts above
-    'colors': ['./src/charts/helpers/color.js']
+    colors: ['./src/charts/helpers/color.js']
 };
 const DEMOS = {
     'demo-line': './demos/demo-line.js',
