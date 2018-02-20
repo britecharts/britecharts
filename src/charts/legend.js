@@ -153,7 +153,8 @@ define(function(require){
         function buildContainerGroups() {
             let container = svg
               .append('g')
-                .classed('legend-container-group', true);
+                .classed('legend-container-group', true)
+                .attr('transform', `translate(${margin.left},${margin.top})`);
 
             container
               .append('g')
@@ -183,9 +184,6 @@ define(function(require){
 
                 buildContainerGroups();
             }
-
-            svg.select('g.legend-container-group')
-                .attr('transform', `translate(${margin.left},${margin.top})`);
 
             svg
                 .attr('width', width)
