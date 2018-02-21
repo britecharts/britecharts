@@ -1,86 +1,88 @@
-var webpack = require('webpack'),
-    path = require('path'),
-    LiveReloadPlugin = require('webpack-livereload-plugin'),
-    UglifyJsPlugin = webpack.optimize.UglifyJsPlugin,
-    BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin,
+const webpack = require('webpack');
+const path = require('path');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
+const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const merge = require('webpack-merge');
 
-    env = require('yargs').argv.mode,
-    isProduction = env === 'prod' || env === 'prodUMD',
+const env = require('yargs').argv.mode;
+const isProduction = env === 'prod' || env === 'prodUMD';
 
-    chartModulesPath = path.resolve('./src/charts'),
-    fixturesPath = path.resolve('./test/fixtures'),
-    vendorsPath = path.resolve('./node_modules'),
-    bundleIndexPath = path.resolve('./src/bundle.js'),
+const projectName = 'britecharts';
 
-    projectName = 'britecharts',
+const CHARTS = {
+    bar: './src/charts/bar.js',
+    donut: './src/charts/donut.js',
+    legend: './src/charts/legend.js',
+    line: './src/charts/line.js',
+    tooltip: './src/charts/tooltip.js',
+    miniTooltip: './src/charts/mini-tooltip.js',
+    sparkline: './src/charts/sparkline.js',
+    stackedArea: './src/charts/stacked-area.js',
+    stackedBar: './src/charts/stacked-bar.js',
+    groupedBar: './src/charts/grouped-bar.js',
+    step: './src/charts/step.js',
+    brush: './src/charts/brush.js',
+    loading: ['./src/charts/helpers/load.js'],
+    // hack to make webpack use colors as an entry point while its also a dependency of the charts above
+    colors: ['./src/charts/helpers/color.js']
+};
+const DEMOS = {
+    'demo-line': './demos/demo-line.js',
+    'demo-stacked-area': './demos/demo-stacked-area.js',
+    'demo-bar': './demos/demo-bar.js',
+    'demo-grouped-bar': './demos/demo-grouped-bar.js',
+    'demo-stacked-bar': './demos/demo-stacked-bar.js',
+    'demo-donut': './demos/demo-donut.js',
+    'demo-sparkline': './demos/demo-sparkline.js',
+    'demo-step': './demos/demo-step.js',
+    'demo-brush': './demos/demo-brush.js',
+    'demo-kitchen-sink': './demos/demo-kitchen-sink.js'
+};
+const PATHS = {
+    vendor: path.resolve('./node_modules'),
+    bundleIndex: path.resolve('./src/bundle.js'),
+    charts: path.resolve('./src/charts'),
+};
 
-    currentCharts = {
-        'bar': './src/charts/bar.js',
-        'donut': './src/charts/donut.js',
-        'legend': './src/charts/legend.js',
-        'line': './src/charts/line.js',
-        'tooltip': './src/charts/tooltip.js',
-        'miniTooltip': './src/charts/mini-tooltip.js',
-        'sparkline': './src/charts/sparkline.js',
-        'stackedArea': './src/charts/stacked-area.js',
-        'stackedBar': './src/charts/stacked-bar.js',
-        'groupedBar': './src/charts/grouped-bar.js',
-        'step': './src/charts/step.js',
-        'brush': './src/charts/brush.js',
-        'loading': ['./src/charts/helpers/load.js'],
-        // hack to make webpack use colors as an entry point while its also a dependency of the charts above
-        'colors': ['./src/charts/helpers/color.js']
-    },
-    currentDemos = {
-        'demo-line': './demos/demo-line.js',
-        'demo-stacked-area': './demos/demo-stacked-area.js',
-        'demo-bar': './demos/demo-bar.js',
-        'demo-grouped-bar': './demos/demo-grouped-bar.js',
-        'demo-stacked-bar': './demos/demo-stacked-bar.js',
-        'demo-donut': './demos/demo-donut.js',
-        'demo-sparkline': './demos/demo-sparkline.js',
-        'demo-step': './demos/demo-step.js',
-        'demo-brush': './demos/demo-brush.js',
-        'demo-kitchen-sink': './demos/demo-kitchen-sink.js'
-    },
-
-    defaultJSLoader = {
-        test: /\.js$/,
-        exclude: /(node_modules)/,
-        use: [{
-            loader: 'babel-loader',
-            options: {
-                presets: ['es2015', 'stage-0'],
-                cacheDirectory: true,
-            }
-        }],
-
-    },
-    babelIstambulLoader = {
-        test: /\.js?$/,
-        include: /src/,
-        exclude: /(node_modules|__tests__|tests_index.js)/,
-        use: [{
-            loader: 'istanbul-instrumenter-loader',
-            options:  {
-                presets: ['es2015', 'stage-0'],
-                cacheDirectory: true,
-            },
-        }],
-    },
-    lintJSLoader = {
-        test: /\.js?$/,
-        include: path.resolve(__dirname, './src/charts'),
-        exclude: /(node_modules)/,
-        enforce: 'pre',
-        loader: 'eslint-loader',
+// Move to Parts
+const babelLoader = {
+    test: /\.js$/,
+    exclude: /(node_modules)/,
+    use: [{
+        loader: 'babel-loader',
         options: {
-            emitWarning: true,
-            failOnError: false,
+            presets: ['es2015', 'stage-0'],
+            cacheDirectory: true,
         }
-    },
+    }],
 
-    plugins = [
+};
+const babelIstambulLoader = {
+    test: /\.js?$/,
+    include: /src/,
+    exclude: /(node_modules|__tests__|tests_index.js)/,
+    use: [{
+        loader: 'istanbul-instrumenter-loader',
+        options:  {
+            presets: ['es2015', 'stage-0'],
+            cacheDirectory: true,
+        },
+    }],
+};
+const lintJSLoader = {
+    test: /\.js?$/,
+    include: PATHS.charts,
+    exclude: /(node_modules)/,
+    enforce: 'pre',
+    loader: 'eslint-loader',
+    options: {
+        emitWarning: true,
+        failOnError: false,
+    }
+};
+
+let plugins = [
         // Uncomment this line to see bundle composition analysis
         // new BundleAnalyzerPlugin()
     ],
@@ -107,7 +109,7 @@ const getConfig = (env) => {
         // Add here listener to sccs files?
         demos : {
             devtool: 'cheap-eval-source-map',
-            entry: currentDemos,
+            entry: DEMOS,
             output: {
                 path: path.resolve(__dirname, './demos/build/'),
                 publicPath: '/assets/',
@@ -121,7 +123,7 @@ const getConfig = (env) => {
             },
             module: {
                 rules: [
-                    defaultJSLoader,
+                    babelLoader,
                     lintJSLoader
                 ],
             },
@@ -161,12 +163,12 @@ const getConfig = (env) => {
                     'node_modules',
                 ],
                 alias: {
-                    d3: vendorsPath + '/d3',
+                    d3: PATHS.vendor + '/d3',
                 }
             },
             module: {
                 rules: [
-                    defaultJSLoader,
+                    babelLoader,
                     babelIstambulLoader,
                 ],
             },
@@ -177,7 +179,7 @@ const getConfig = (env) => {
         // Creates a bundle with all britecharts
         prod: {
             entry:  {
-                britecharts: bundleIndexPath
+                britecharts: PATHS.bundleIndex
             },
 
             devtool: 'cheap-eval-source-map',
@@ -194,17 +196,17 @@ const getConfig = (env) => {
             },
 
             module: {
-                rules: [defaultJSLoader],
+                rules: [babelLoader],
 
                 // Tell Webpack not to parse certain modules.
                 noParse: [
-                    new RegExp(vendorsPath + '/d3/d3.js')
+                    new RegExp(PATHS.vendor + '/d3/d3.js')
                 ]
             },
 
             resolve: {
                 alias: {
-                    d3: vendorsPath + '/d3'
+                    d3: PATHS.vendor + '/d3'
                 }
             },
 
@@ -241,7 +243,7 @@ const getConfig = (env) => {
                     }
                 ],
                 noParse: [
-                    new RegExp(vendorsPath + '/d3/d3.js')
+                    new RegExp(PATHS.vendor + '/d3/d3.js')
                 ]
             },
             devServer: {
@@ -254,7 +256,7 @@ const getConfig = (env) => {
 
         // Creates minified UMD versions of each chart
         prodUMD: {
-            entry:  currentCharts,
+            entry:  CHARTS,
 
             devtool: 'source-map',
 
@@ -270,16 +272,16 @@ const getConfig = (env) => {
             },
 
             module: {
-                rules: [defaultJSLoader],
+                rules: [babelLoader],
                 // Tell Webpack not to parse certain modules.
                 noParse: [
-                    new RegExp(vendorsPath + '/d3/d3.js')
+                    new RegExp(PATHS.vendor + '/d3/d3.js')
                 ]
             },
 
             resolve: {
                 alias: {
-                    d3: vendorsPath + '/d3'
+                    d3: PATHS.vendor + '/d3'
                 }
             },
 
