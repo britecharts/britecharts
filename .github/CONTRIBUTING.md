@@ -156,7 +156,7 @@ If you are new to Open Source, you can learn how to create [Pull Requests here](
 ---
 ## Standards
 
-We have followed a couple of standards outside of the regular Eventbrite workflow in this project: [JSDoc](http://usejsdoc.org) comments and Test Driven Development.
+We have followed a couple of standards outside of the regular Eventbrite workflow in this project: [JSDoc](http://usejsdoc.org) comments and Test Driven Development. You can also check other info in our code [styleguide][styleguide].
 
 
 ### Test Driven Development
