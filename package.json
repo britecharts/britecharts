@@ -15,6 +15,18 @@
     {
       "name": "Sun Dai",
       "email": "sundaisf@gmail.com"
+    },
+    {
+      "name": "Jaylum Chen",
+      "email": "jaylum@eventbrite.com"
+    },
+    {
+      "name": "Amber Rockwood",
+      "email": "arockwood@eventbrite.com"
+    },
+    {
+      "name": "Daler Asrorov",
+      "email": "daler.asrorov@eventbrite.com"
     }
   ],
   "scripts": {
@@ -45,12 +57,12 @@
   "keywords": [
     "d3",
     "chart",
-    "library",
-    "graph",
-    "reusable",
+    "javascript",
     "es6",
-    "es2015",
-    "visualization"
+    "visualizations",
+    "data-visualization",
+    "interactive-visualizations"
+
   ],
   "author": "Eventbrite",
   "license": "Apache-2.0",
