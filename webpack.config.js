@@ -37,6 +37,7 @@ const DEMOS = {
     'demo-sparkline': './demos/demo-sparkline.js',
     'demo-step': './demos/demo-step.js',
     'demo-brush': './demos/demo-brush.js',
+    'demo-legend': './demos/demo-legend.js',
     'demo-kitchen-sink': './demos/demo-kitchen-sink.js'
 };
 const PATHS = {

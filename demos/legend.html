@@ -1,0 +1,84 @@
+<div class="container" id="legend">
+    <div class="row">
+        <div class="col-md-6">
+            <article>
+                <h2 class="tutorial__heading">Legend with Donut Chart</h2>
+                <div class="card--chart">
+                    <div class="js-donut-chart-container donut-chart-container"></div>
+                    <div class="js-legend-chart-container legend-chart-container"></div>
+                </div>
+                <p>Legend chart to use with Donut charts to show definitions of color indicators, text labels, and their corresponding values.</p>
+            </article>
+        </div>
+        <div class="col-md-6 sidebar">
+            <h3>The code</h3>
+            <pre><code class="language-javascript">
+donutChart
+    .on('customMouseOver', function(data) {
+        legendChart.highlight(data.data.id);
+    })
+    .on('customMouseOut', function() {
+        legendChart.clearHighlight();
+    });
+
+legendChart
+    .height(legendContainerWidth / 3)
+    .width(legendContainerWidth / 2)
+    .numberFormat('s');
+
+donutContainer.datum(dataset).call(donutChart);
+legendContainer.datum(dataset).call(legendChart);
+            </code></pre>
+
+            <h4>Colors</h4>
+            <label class="control-label">You can also check other color schemas:</label>
+            <div class="js-color-selector-container"></div>
+
+            <h4>Data Input</h4>
+            <p>Check the <a href="/britecharts/global.html#LegendChartData__anchor">data input schema</a> of this chart.</p>
+            <h4>Export Chart</h4>
+            <p>You can also export this chart by pressing: <input id="button" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
+            <h4>Demo Code</h4>
+            <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-legend.js">in github</a></p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="
+col-md-6">
+            <section>
+                <article>
+                    <h2>Small Donut Chart with Inline Legend</h2>
+                    <div class="js-small-donut-chart-container card--chart"></div>
+                    <div class="js-inline-legend-chart-container legend-chart-container"></div>
+                </article>
+            </section>
+        </div>
+        <div class="col-md-6 sidebar">
+            <h3>The code</h3>
+            <pre><code class="language-javascript">
+donutChart
+    .on('customMouseOver', function(data) {
+        legendChart.highlight(data.data.id);
+    })
+    .on('customMouseOut', function() {
+        legendChart.clearHighlight();
+    });
+
+legendChart
+    .isHorizontal(true)
+    .markerSize(8)
+    .height(40)
+    .width(legendContainerWidth*0.6);
+
+donutContainer.datum(dataset).call(donutChart);
+legendContainer.datum(dataset).call(legendChart);
+            </code></pre>
+
+            <h4>Demo Code</h4>
+            <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/demo-legend.js">in github</a></p>
+        </div>
+    </div>
+</div>
