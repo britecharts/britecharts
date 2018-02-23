@@ -288,8 +288,9 @@ define(function(require){
         }
 
         /**
-         * Adds events to the container group for the mobile devices
-         * Adding: touch
+         * Adds events to the container group for the mobile environment
+         * Adding: touchmove
+         * @private
          */
         function addTouchEvents() {
             svg
@@ -839,7 +840,7 @@ define(function(require){
         }
 
         /**
-         * Mouseclick handler over one of the highlight points
+         * Touchmove highlighted points
          * It will only pass the information with the event
          * @private
          */
