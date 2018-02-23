@@ -126,17 +126,6 @@ define([
                 });
 
                 // Event Setting
-                it('should trigger an event on touchmove', () => {
-                    let callback = jasmine.createSpy('touchMoveCallback'),
-                        container = containerFixture.selectAll('svg');
-
-                    lineChart.on('customTouchMove', callback);
-                    container.dispatch('touchmove');
-
-                    expect(callback.calls.count()).toBe(1);
-                    expect(callback.calls.allArgs()[0].length).toBe(2);
-                });
-
                 it('should trigger an event on hover', () => {
                     let callback = jasmine.createSpy('hoverCallback'),
                         container = containerFixture.selectAll('svg');
@@ -154,6 +143,17 @@ define([
 
                     lineChart.on('customMouseOut', callback);
                     container.dispatch('mouseout');
+                    expect(callback.calls.count()).toBe(1);
+                    expect(callback.calls.allArgs()[0].length).toBe(2);
+                });
+
+                it('should trigger an event on touchmove', () => {
+                    let callback = jasmine.createSpy('touchMoveCallback'),
+                        container = containerFixture.selectAll('svg');
+
+                    lineChart.on('customTouchMove', callback);
+                    container.dispatch('touchmove');
+
                     expect(callback.calls.count()).toBe(1);
                     expect(callback.calls.allArgs()[0].length).toBe(2);
                 });
