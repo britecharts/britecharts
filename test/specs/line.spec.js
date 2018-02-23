@@ -147,6 +147,17 @@ define([
                     expect(callback.calls.allArgs()[0].length).toBe(2);
                 });
 
+                it('should trigger an event on touchmove', () => {
+                    let callback = jasmine.createSpy('touchMoveCallback'),
+                        container = containerFixture.selectAll('svg');
+
+                    lineChart.on('customTouchMove', callback);
+                    container.dispatch('touchmove');
+
+                    expect(callback.calls.count()).toBe(1);
+                    expect(callback.calls.allArgs()[0].length).toBe(2);
+                });
+
                 // We need to stub some code in order to be able to run this test
                 // it('should trigger an event on mouse move', () => {
                 //     let callback = jasmine.createSpy('mouseMoveCallback'),
