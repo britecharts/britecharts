@@ -213,7 +213,8 @@ define(function(require){
                 'customMouseOver',
                 'customMouseOut',
                 'customMouseMove',
-                'customDataEntryClick'
+                'customDataEntryClick',
+                'customTouchMove'
             );
 
         /**
@@ -246,6 +247,8 @@ define(function(require){
                     drawVerticalMarker();
                     addMouseEvents();
                 }
+
+                addTouchEvents();
             });
         }
 
@@ -281,6 +284,18 @@ define(function(require){
                 })
                 .on('mousemove',  function(d) {
                     handleMouseMove(this, d);
+                });
+        }
+
+        /**
+         * Adds events to the container group for the mobile environment
+         * Adding: touchmove
+         * @private
+         */
+        function addTouchEvents() {
+            svg
+                .on('touchmove', function(d) {
+                    handleTouchMove(this, d);
                 });
         }
 
@@ -825,6 +840,15 @@ define(function(require){
         }
 
         /**
+         * Touchmove highlighted points
+         * It will only pass the information with the event
+         * @private
+         */
+        function handleTouchMove(e, d) {
+            dispatcher.call('customTouchMove', e, d, d3Selection.touch(e));
+        }
+
+        /**
          * Creates coloured circles marking where the exact data y value is for a given data point
          * @param  {Object} dataPoint Data point to extract info from
          * @private
@@ -1321,7 +1345,8 @@ define(function(require){
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
          * We are going to expose this events:
-         * customMouseHover, customMouseMove, customMouseOut and customDataEntryClick
+         * customMouseHover, customMouseMove, customMouseOut, 
+         * customDataEntryClick, and customTouchMove
          *
          * @return {module} Bar Chart
          * @public

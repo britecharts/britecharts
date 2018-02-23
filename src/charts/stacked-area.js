@@ -193,7 +193,13 @@ define(function(require){
             getDate = ({date}) => date,
 
             // events
-            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove', 'customDataEntryClick');
+            dispatcher = d3Dispatch.dispatch(
+                'customMouseOver',
+                'customMouseOut',
+                'customMouseMove',
+                'customDataEntryClick',
+                'customTouchMove'
+            );
 
        /**
          * This function creates the graph using the selection and data provided
@@ -214,6 +220,8 @@ define(function(require){
                 buildAxis();
                 drawAxis();
                 drawStackedAreas();
+
+                addTouchEvents();
 
                 if (shouldShowTooltip()) {
                     drawHoverOverlay();
@@ -256,6 +264,18 @@ define(function(require){
                 })
                 .on('mousemove',  function(d) {
                     handleMouseMove(this, d);
+                });
+        }
+
+        /**
+         * Adds events to the container group for the mobile environment
+         * Adding: touchmove
+         * @private
+         */
+        function addTouchEvents() {
+            svg
+                .on('touchmove', function(d) {
+                    handleTouchMove(this, d);
                 });
         }
 
@@ -967,6 +987,15 @@ define(function(require){
         }
 
         /**
+         * Touchmove highlighted points
+         * It will only pass the information with the event
+         * @private
+         */
+        function handleTouchMove(e, d) {
+            dispatcher.call('customTouchMove', e, d, d3Selection.touch(e));
+        }
+
+        /**
          * Mouseclick handler over one of the highlight points
          * It will only pass the information with the event
          * @private
@@ -1298,9 +1327,9 @@ define(function(require){
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
          * We are going to expose this events:
-         * customMouseOver, customMouseMove, customMouseOut and customDataEntryClick
-         *
-         * @return {module} Bar Chart
+         * customMouseOver, customMouseMove, customMouseOut, 
+         * customDataEntryClick and customTouchMove
+         * @return {module} Stacked Area
          * @public
          */
         exports.on = function() {
