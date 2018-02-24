@@ -13,6 +13,13 @@ define(function(require){
     const {line} = require('./helpers/load');
     const {uniqueId} = require('./helpers/number');
 
+    const DEFAULT_TITLE_TEXT_STYLE = {
+        'font-size': '22px',
+        'font-family': 'sans-serif',
+        'font-style': 'normal',
+        'font-weight': 400
+    }
+
     /**
      * @typedef SparklineChartData
      * @type {Object[]}
@@ -344,11 +351,11 @@ define(function(require){
                 .attr('y', chartHeight / 6)
                 .attr('text-anchor', 'middle')
                 .attr('class', 'sparkline-text')
-                .style('font-size', titleTextStyle['font-size']) 
-                .style('fill',  titleTextStyle['fill'])
-                .style('font-family', titleTextStyle['font-family'])
-                .style('font-weight', titleTextStyle['font-weight'])
-                .style('font-style', titleTextStyle['font-style'])
+                .style('font-size', titleTextStyle['font-size'] || DEFAULT_TITLE_TEXT_STYLE['font-size']) 
+                .style('fill', titleTextStyle['fill'] || lineGradient[0])
+                .style('font-family', titleTextStyle['font-family'] || DEFAULT_TITLE_TEXT_STYLE['font-family'])
+                .style('font-weight', titleTextStyle['font-weight'] || DEFAULT_TITLE_TEXT_STYLE['font-weight'])
+                .style('font-style', titleTextStyle['font-style'] || DEFAULT_TITLE_TEXT_STYLE['font-style'])
                 .text(titleText)
         }
 
@@ -516,10 +523,19 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the text style and font of the title at the top of sparkline
+         * Gets or Sets the text style object of the title at the top of sparkline.
+         * Using this method, you can set font-family, font-size, font-
          * @param  {Object} _x String object to get/set
          * @return {Object | module} Current margin or Chart module to chain calls
          * @public
+         * @example 
+         * sparkline.titleTextStyle({
+         *    'font-family': 'Roboto',
+         *    'font-size': '1.5em',
+         *    'font-weight': 600,
+         *    'font-style': 'italic',
+         *    'fill': 'lightblue'
+         * })
          */
         exports.titleTextStyle = function(_x) {
             if (!arguments.length) {

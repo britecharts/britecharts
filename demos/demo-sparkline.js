@@ -32,7 +32,14 @@ function createSparklineChart() {
         .duration(1000)
         .height(containerWidth / 4)
         .width(containerWidth)
-        .titleText('Budget Growth');
+        .titleText('Budget Growth')
+        .titleTextStyle({
+            'font-size': '22px',
+            'fill': 'red',
+            'font-family': 'Roboto',
+            'font-style': 'italic',
+            'font-weight': 400
+        });
 
     container.datum(dataset.data).call(sparkline);
 }
