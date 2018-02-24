@@ -167,6 +167,18 @@ define([
             expect(callback.calls.allArgs()[0].length).toBe(2);
         });
 
+        it('should trigger an event on touchmove', () => {
+            let callback = jasmine.createSpy('touchMoveCallback'),
+                container = containerFixture.selectAll('svg');
+
+            stackedAreaChart.on('customTouchMove', callback);
+            container.dispatch('touchmove');
+
+            expect(callback.calls.count()).toBe(1);
+            expect(callback.calls.allArgs()[0].length).toBe(2);
+        });
+
+
         it('should be able to render even when data is length 0', () => {
             expect(() => containerFixture.datum([]).call(stackedAreaChart)).not.toThrow();
         });
