@@ -556,6 +556,18 @@ define([
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);
                 });
+
+                it('should provide yAxisLabelPadding getter and setter', () => {
+                    let previous = lineChart.yAxisLabelPadding(),
+                        expected = 100,
+                        actual;
+
+                    lineChart.yAxisLabelPadding(expected);
+                    actual = lineChart.yAxisLabelPadding();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
             });
 
             describe('Aspect Ratio', () => {
