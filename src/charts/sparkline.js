@@ -90,7 +90,9 @@ define(function(require){
             line,
             area,
             circle,
-            title,
+
+            titleEl,
+            titleText,
 
             markerSize = 1.5,
 
@@ -320,17 +322,17 @@ define(function(require){
         }
 
         function drawSparklineTitle() {
-            if (title) {
+            if (titleEl) {
                 svg.selectAll('.sparkline-text').remove();
             }
 
-            title = svg.selectAll('.text-group')
+            titleEl = svg.selectAll('.text-group')
               .append('text')
                 .attr('x', chartWidth / 2)
                 .attr('y', chartHeight / 6)
                 .attr('text-anchor', 'middle')
                 .attr('class', 'sparkline-text')
-                .text('Eventbrite growth')
+                .text(titleText)
         }
 
         /**
@@ -354,7 +356,7 @@ define(function(require){
         /**
          * Gets or Sets the areaGradient of the chart
          * @param  {String[]} _x Desired areaGradient for the graph
-         * @return { areaGradient | module} Current areaGradient or Chart module to chain calls
+         * @return {areaGradient | module} Current areaGradient or Chart module to chain calls
          * @public
          */
         exports.areaGradient = function(_x) {
@@ -368,7 +370,7 @@ define(function(require){
         /**
          * Gets or Sets the dateLabel of the chart
          * @param  {Number} _x Desired dateLabel for the graph
-         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+         * @return {dateLabel | module} Current dateLabel or Chart module to chain calls
          * @public
          */
         exports.dateLabel = function(_x) {
@@ -383,7 +385,7 @@ define(function(require){
         /**
          * Gets or Sets the duration of the animation
          * @param  {Number} _x Desired animation duration for the graph
-         * @return { dateLabel | module} Current animation duration or Chart module to chain calls
+         * @return {dateLabel | module} Current animation duration or Chart module to chain calls
          * @public
          */
         exports.duration = function(_x) {
@@ -425,7 +427,7 @@ define(function(require){
          * By default this is 'false'
          *
          * @param  {Boolean} _x Desired animation flag
-         * @return { isAnimated | module} Current isAnimated flag or Chart module
+         * @return {isAnimated | module} Current isAnimated flag or Chart module
          * @public
          */
         exports.isAnimated = function(_x) {
@@ -440,7 +442,7 @@ define(function(require){
         /**
          * Gets or Sets the lineGradient of the chart
          * @param  {String[]} _x Desired lineGradient for the graph
-         * @return { lineGradient | module} Current lineGradient or Chart module to chain calls
+         * @return {lineGradient | module} Current lineGradient or Chart module to chain calls
          * @public
          */
         exports.lineGradient = function(_x) {
@@ -454,7 +456,7 @@ define(function(require){
         /**
          * Gets or Sets the loading state of the chart
          * @param  {string} markup Desired markup to show when null data
-         * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+         * @return {loadingState | module} Current loading state markup or Chart module to chain calls
          * @public
          */
         exports.loadingState = function(_markup) {
@@ -469,7 +471,7 @@ define(function(require){
         /**
          * Gets or Sets the margin of the chart
          * @param  {Object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Chart module to chain calls
+         * @return {margin | module} Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -482,9 +484,24 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the text of the title at the top of sparkline
+         * @param  {String} _x String object to get/set
+         * @return {String | module} Current margin or Chart module to chain calls
+         * @public
+         */
+        exports.titleText = function(_x) {
+            if (!arguments.length) {
+                return titleText;
+            }
+            titleText = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the valueLabel of the chart
          * @param  {Number} _x Desired valueLabel for the graph
-         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+         * @return {valueLabel | module} Current valueLabel or Chart module to chain calls
          * @public
          */
         exports.valueLabel = function(_x) {
@@ -499,7 +516,7 @@ define(function(require){
         /**
          * Gets or Sets the width of the chart
          * @param  {Number} _x Desired width for the graph
-         * @return { width | module} Current width or Chart module to chain calls
+         * @return {width | module} Current width or Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {

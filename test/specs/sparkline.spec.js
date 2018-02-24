@@ -274,6 +274,18 @@ define([
                 expect(defaultGradient).not.toBe(testGradient);
                 expect(newGradient).toBe(testGradient);
             });
+
+            it('should provide a titleText getter and setter', () => {
+                let defaultTitleText = sparklineChart.titleText(),
+                testTitleText = 'Budget Growth',
+                newTitleText;
+
+                sparklineChart.titleText(testTitleText);
+                newTitleText = sparklineChart.titleText();
+
+                expect(defaultTitleText).not.toBe(testTitleText);
+                expect(newTitleText).toBe(testTitleText);
+            });
         });
 
         describe('Export chart functionality', () => {
