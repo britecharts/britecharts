@@ -5,7 +5,8 @@
 
 .britechart {
   font-family: 'Karla', sans-serif;
-  -webkit-font-smoothing: antialiased; }
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px; }
 
 .line-load-state .chart-filter,
 .donut-load-state .chart-filter,
@@ -40,14 +41,17 @@
   shape-rendering: crispEdges; }
 
 .tick text {
-  font-size: 1rem;
+  font-size: 14px;
   fill: #666A73;
   padding: 12px; }
 
 .y-axis-label,
 .x-axis-label {
-  font-size: 1rem;
+  font-size: 16.8px;
   fill: #ADB0B6; }
+
+.britechart-tooltip {
+  font-size: 16.8px; }
 
 .vertical-marker-container .vertical-marker {
   stroke: #D2D6DF;

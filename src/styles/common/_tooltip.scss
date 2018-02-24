@@ -1,7 +1,14 @@
+@import "../helpers/variables";
+
 $marker-width: 1;
 $tooltip-width: 1;
 
 // Tooltip Container
+.britechart-tooltip {
+    font-size: $text-size-medium;
+}
+
+// Vertical Marker Container
 .vertical-marker-container {
     .vertical-marker {
         stroke: $grey-300;
