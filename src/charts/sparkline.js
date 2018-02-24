@@ -321,6 +321,11 @@ define(function(require){
                 .attr('clip-path', `url(#${maskingClipId})`);
         }
 
+        /**
+         * Draws the text element within the text group
+         * Is displayed at the top of sparked area
+         * @private
+         */
         function drawSparklineTitle() {
             if (titleEl) {
                 svg.selectAll('.sparkline-text').remove();
