@@ -124,7 +124,7 @@ define(function(require){
                 drawArea();
                 drawEndMarker();
 
-                if (true) {
+                if (titleText) {
                     drawSparklineTitle();
                 }
             });
