@@ -70,7 +70,7 @@ define([
         it('should render an X and Y axis', () => {
             expect(containerFixture.select('.x-axis-group .x.axis').empty()).toBeFalsy();
             expect(containerFixture.select('.x-axis-group .month-axis').empty()).toBeFalsy();
-            expect(containerFixture.select('.y-axis-group.axis').empty()).toBeFalsy();
+            expect(containerFixture.select('.y-axis-group .y.axis').empty()).toBeFalsy();
         });
 
         it('should render an area for each category', () => {
