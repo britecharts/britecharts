@@ -93,6 +93,13 @@ define(function(require){
 
             titleEl,
             titleText,
+            titleTextStyle = {
+                'font-size': '22px',
+                'fill': lineGradient[0],
+                'font-family': 'sans-serif',
+                'font-style': 'normal',
+                'font-weight': 400
+            },
 
             markerSize = 1.5,
 
@@ -337,6 +344,11 @@ define(function(require){
                 .attr('y', chartHeight / 6)
                 .attr('text-anchor', 'middle')
                 .attr('class', 'sparkline-text')
+                .style('font-size', titleTextStyle['font-size']) 
+                .style('fill',  titleTextStyle['fill'])
+                .style('font-family', titleTextStyle['font-family'])
+                .style('font-weight', titleTextStyle['font-weight'])
+                .style('font-style', titleTextStyle['font-style'])
                 .text(titleText)
         }
 
@@ -502,6 +514,21 @@ define(function(require){
 
             return this;
         };
+
+        /**
+         * Gets or Sets the text style and font of the title at the top of sparkline
+         * @param  {Object} _x String object to get/set
+         * @return {Object | module} Current margin or Chart module to chain calls
+         * @public
+         */
+        exports.titleTextStyle = function(_x) {
+            if (!arguments.length) {
+                return titleTextStyle;
+            }
+            titleTextStyle = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the valueLabel of the chart
