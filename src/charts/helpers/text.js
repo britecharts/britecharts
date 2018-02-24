@@ -148,6 +148,20 @@ define(function(require) {
         b.font = fontSize + 'px ' + fontFace;
 
         return b.measureText(text).width;
+    };
+
+    /**
+     * Gets the font size of the passed node using getComputedStyle
+     * or falls back to the default font size
+     * @param {HTMLElement} node The node to get the computed font size for
+     * @return {number}
+     */
+    function getFontSize(node) {
+        if (typeof window.getComputedStyle === 'function') {
+          return parseFloat(window.getComputedStyle(node).fontSize);
+        }
+
+        return defaultTextSize;
     }
 
     /**
@@ -166,10 +180,11 @@ define(function(require) {
         let line = [],
             approximateLineNumber = 1;
 
-        for(let word of words) {
+        for (let word of words) {
             line.push(word);
 
             const textWidth = getTextWidth(line.join(' '), fontSize, 'Karla, sans-serif');
+
             if (textWidth > maxLength) {
                 line.pop();
                 line = [word];
@@ -184,6 +199,7 @@ define(function(require) {
         getTextWidth,
         wrapText,
         wrapTextWithEllipses,
-        getApproximateNumberOfLines
+        getApproximateNumberOfLines,
+        getFontSize
     };
 });
