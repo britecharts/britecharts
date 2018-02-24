@@ -108,7 +108,7 @@ define([
                 expect(titleTextNode).toHaveAttr('style');
             });
 
-            it('should properl set the text to the text group', () => {
+            it('should properly set the text inside of text node', () => {
                 let expected = 'Tickets Sale';
                 let actual;
                 
