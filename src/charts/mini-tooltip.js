@@ -7,6 +7,8 @@ define(function(require){
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
 
+    const textHelper = require('./helpers/text');
+
     const NUMBER_FORMAT = '.2f';
 
     /**
@@ -70,10 +72,8 @@ define(function(require){
                 x: 20
             },
 
-            // Fonts
-            textSize = 14,
+            // Font Line Heights
             textLineHeight = 1.5,
-            valueTextSize = 27,
             valueTextLineHeight = 1.18,
 
             // Colors
@@ -256,8 +256,6 @@ define(function(require){
         function updateContent(dataPoint = {}){
             let value = dataPoint[valueLabel] || '',
                 name = dataPoint[nameLabel] || '',
-                lineHeight = textSize * textLineHeight,
-                valueLineHeight = valueTextSize * valueTextLineHeight,
                 defaultDy = '1em',
                 temporalHeight = 0,
                 tooltipValue,
@@ -274,10 +272,9 @@ define(function(require){
                     .attr('dy', defaultDy)
                     .attr('y', 0)
                     .style('fill', titleFillColor)
-                    .style('font-size', textSize)
                     .text(title);
 
-                temporalHeight = lineHeight + temporalHeight;
+                temporalHeight += textHelper.getFontSize(tooltipTitle.node()) * textLineHeight;
             }
 
             if (name) {
@@ -287,10 +284,9 @@ define(function(require){
                     .attr('dy', defaultDy)
                     .attr('y', temporalHeight || 0)
                     .style('fill', nameTextFillColor)
-                    .style('font-size', textSize)
                     .text(name);
 
-                temporalHeight = lineHeight + temporalHeight;
+                temporalHeight += textHelper.getFontSize(tooltipName.node()) * textLineHeight;
             }
 
             if (value) {
@@ -300,11 +296,10 @@ define(function(require){
                     .attr('dy', defaultDy)
                     .attr('y', temporalHeight || 0)
                     .style('fill', valueTextFillColor)
-                    .style('font-size', valueTextSize)
                     .style('font-weight', valueTextWeight)
                     .text(valueFormatter(value));
 
-                temporalHeight = valueLineHeight + temporalHeight;
+                temporalHeight += textHelper.getFontSize(tooltipValue.node()) * valueTextLineHeight;
             }
 
             chartWidth = getMaxLengthLine(tooltipName, tooltipTitle, tooltipValue);
