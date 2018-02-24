@@ -98,11 +98,10 @@ define(function(require){
 
             monthAxisPadding = 30,
             yTicks = 5,
-            yTickTextYOffset = -8,
+            yAxisTickLabelYOffset = '-0.32em',
             yAxisLabel,
             yAxisLabelEl,
             yAxisLabelOffset = -60,
-            yTickTextXOffset = -20,
             tickPadding = 5,
 
             colorSchema = colorHelper.colorSchemas.britecharts,
@@ -335,8 +334,7 @@ define(function(require){
                 .tickPadding(tickPadding)
                 .tickFormat(minor.format);
 
-
-            yAxis = d3Axis.axisRight(yScale)
+            yAxis = d3Axis.axisLeft(yScale)
                 .ticks(yTicks)
                 .tickSize([0])
                 .tickPadding(tickPadding)
@@ -565,24 +563,20 @@ define(function(require){
                 .call(yAxis)
                 .call(adjustYTickLabels);
 
-                if (yAxisLabel) {
-                    if (yAxisLabelEl) {
-                        svg.selectAll('.y-axis-label-text').remove();
-                    }
-
-                    yAxisLabelEl = svg.select('.y-axis-label')
-                        .append('text')
-                            .classed('y-axis-label-text', true)
-                                .attr('x', -chartHeight / 2)
-                                .attr('y', yAxisLabelOffset)
-                                .attr('text-anchor', 'middle')
-                                .attr('transform', 'rotate(270 0 0)')
-                                .text(yAxisLabel)
+            if (yAxisLabel) {
+                if (yAxisLabelEl) {
+                    svg.selectAll('.y-axis-label-text').remove();
                 }
 
-            // Moving the YAxis tick labels to the right side
-            // d3Selection.selectAll('.y-axis-group .tick text')
-            //     .attr('transform', `translate( ${-chartWidth - yTickTextXOffset}, ${yTickTextYOffset})` );
+                yAxisLabelEl = svg.select('.y-axis-label')
+                    .append('text')
+                        .classed('y-axis-label-text', true)
+                            .attr('x', -chartHeight / 2)
+                            .attr('y', yAxisLabelOffset)
+                            .attr('text-anchor', 'middle')
+                            .attr('transform', 'rotate(270 0 0)')
+                            .text(yAxisLabel)
+            }
         }
 
         /**
@@ -592,7 +586,7 @@ define(function(require){
          */
         function adjustYTickLabels(selection) {
             selection.selectAll('.tick text')
-                .attr('transform', `translate(${yTickTextXOffset}, ${yTickTextYOffset})`);
+              .attr('dy', yAxisTickLabelYOffset);
         }
 
         /**
