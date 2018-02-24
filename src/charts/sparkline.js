@@ -504,8 +504,8 @@ define(function(require){
         /**
          * Gets or Sets the text of the title at the top of sparkline.
          * To style the title, use the titleTextStyle method below.
-         * @param  {String} _x String object to get/set
-         * @return {String | module} Current margin or Chart module to chain calls
+         * @param  {String} _x  String to set
+         * @return {String | module} Current titleText or Chart module to chain calls
          * @public
          */
         exports.titleText = function(_x) {
@@ -537,8 +537,8 @@ define(function(require){
          * You can set attributes individually. Setting just 'font-family'
          * within the object will set custom 'font-family` while the rest
          * of the attributes will have the default values provided above.
-         * @param  {Object} _x String object to get/set
-         * @return {Object | module} Current margin or Chart module to chain calls
+         * @param  {Object} _x  Object with text font configurations
+         * @return {Object | module} Current titleTextStyle or Chart module to chain calls
          * @public
          * @example 
          * sparkline.titleTextStyle({
