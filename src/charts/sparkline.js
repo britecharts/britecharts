@@ -90,6 +90,7 @@ define(function(require){
             line,
             area,
             circle,
+            title,
 
             markerSize = 1.5,
 
@@ -120,6 +121,10 @@ define(function(require){
                 drawLine();
                 drawArea();
                 drawEndMarker();
+
+                if (true) {
+                    drawSparklineTitle();
+                }
             });
         }
 
@@ -135,6 +140,8 @@ define(function(require){
                 .classed('container-group', true)
                 .attr('transform', `translate(${margin.left},${margin.top})`);
 
+            container
+                .append('g').classed('text-group', true);
             container
                 .append('g').classed('chart-group', true);
             container
@@ -310,6 +317,20 @@ define(function(require){
                 .attr('stroke', `url(#${lineGradientId})`)
                 .attr('d', line)
                 .attr('clip-path', `url(#${maskingClipId})`);
+        }
+
+        function drawSparklineTitle() {
+            if (title) {
+                svg.selectAll('.sparkline-text').remove();
+            }
+
+            title = svg.selectAll('.text-group')
+              .append('text')
+                .attr('x', chartWidth / 2)
+                .attr('y', chartHeight / 6)
+                .attr('text-anchor', 'middle')
+                .attr('class', 'sparkline-text')
+                .text('Eventbrite growth')
         }
 
         /**
