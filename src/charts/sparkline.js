@@ -14,7 +14,7 @@ define(function(require){
     const {uniqueId} = require('./helpers/number');
 
     const DEFAULT_TITLE_TEXT_STYLE = {
-        'font-size': '22px',
+        'font-size': '16px',
         'font-family': 'sans-serif',
         'font-style': 'normal',
         'font-weight': 400

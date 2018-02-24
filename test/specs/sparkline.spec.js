@@ -286,6 +286,24 @@ define([
                 expect(defaultTitleText).not.toBe(testTitleText);
                 expect(newTitleText).toBe(testTitleText);
             });
+
+            it('should provide a titleTextStyle getter and setter', () => {
+                let defaultTitleTextStyle = sparklineChart.titleTextStyle(),
+                testTitleTextStyle = {
+                    'font-family': 'Verdana',
+                    'font-size': '32px',
+                    'font-weight': 200,
+                    'font-style': 'italic',
+                    'fill': 'green',
+                },
+                newTitleTextStyle;
+
+                sparklineChart.titleTextStyle(testTitleTextStyle);
+                newTitleTextStyle = sparklineChart.titleTextStyle();
+
+                expect(defaultTitleTextStyle).not.toEqual(testTitleTextStyle);
+                expect(newTitleTextStyle).toEqual(testTitleTextStyle);
+            });
         });
 
         describe('Export chart functionality', () => {
