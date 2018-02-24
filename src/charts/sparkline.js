@@ -100,13 +100,7 @@ define(function(require){
 
             titleEl,
             titleText,
-            titleTextStyle = {
-                'font-size': '22px',
-                'fill': lineGradient[0],
-                'font-family': 'sans-serif',
-                'font-style': 'normal',
-                'font-weight': 400
-            },
+            titleTextStyle = DEFAULT_TITLE_TEXT_STYLE,
 
             markerSize = 1.5,
 
@@ -508,7 +502,8 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the text of the title at the top of sparkline
+         * Gets or Sets the text of the title at the top of sparkline.
+         * To style the title, use the titleTextStyle method below.
          * @param  {String} _x String object to get/set
          * @return {String | module} Current margin or Chart module to chain calls
          * @public
@@ -524,7 +519,24 @@ define(function(require){
 
         /**
          * Gets or Sets the text style object of the title at the top of sparkline.
-         * Using this method, you can set font-family, font-size, font-
+         * Using this method, you can set font-family, font-size, font-weight, font-style,
+         * and color (fill). The default text font settings:
+         * 
+         * <pre>
+         * <code>
+         * {
+         *    'font-family': 'sans-serif',
+         *    'font-size': '16px',
+         *    'font-weight': 400,
+         *    'font-style': 'normal',
+         *    'fill': linearGradient[0]
+         * }
+         * </code>
+         * </pre>
+         * 
+         * You can set attributes individually. Setting just 'font-family'
+         * within the object will set custom 'font-family` while the rest
+         * of the attributes will have the default values provided above.
          * @param  {Object} _x String object to get/set
          * @return {Object | module} Current margin or Chart module to chain calls
          * @public
