@@ -1,10 +1,16 @@
 
+// Text Sizes
+//
+$text-size-base: 10px;
+$text-size-small: $text-size-base;
+$text-size-medium: $text-size-base * 1.2;
+$text-size-large: $text-size-base * 1.4;
+
 // Basic Colors
 //
 $white: #ffffff;
 
-// Grey - Core Palette
-//
+// Grey
 $grey-100: #F8F8FA;
 $grey-200: #EFF2F5;
 $grey-300: #D2D6DF;

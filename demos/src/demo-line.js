@@ -11,7 +11,7 @@ const tooltip = require('./../../src/charts/tooltip');
 const dataBuilder = require('./../../test/fixtures/lineChartDataBuilder');
 const colorSelectorHelper = require('./helpers/colorSelector');
 
-const lineMargin = {top:60, bottom: 50, left: 50, right: 30};
+const lineMargin = {top:60, bottom: 50, left: 70, right: 30};
 let redrawCharts;
 
 require('./helpers/resizeHelper');
@@ -78,14 +78,14 @@ function createLineChart(optionalColorSchema, optionalData) {
             .width(containerWidth)
             .margin(lineMargin)
             .dateLabel('fullDate')
+            .yAxisLabel('Value Axis Label')
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', chartTooltip.hide)
             .on('customDataEntryClick', function(d, mousePosition) {
                 // eslint-disable-next-line no-console
                 console.log('Data entry marker clicked', d, mousePosition);
-            })
-
+            });
 
         if (optionalColorSchema) {
             lineChart1.colorSchema(optionalColorSchema);
