@@ -1254,7 +1254,7 @@ define(function(require){
         /**
          * Gets or Sets the topicLabel of the chart
          * @param  {Number} _x Desired topicLabel for the graph
-         * @return { topicLabel | module} Current topicLabel or Chart module to chain calls
+         * @return {topicLabel | module} Current topicLabel or Chart module to chain calls
          * @public
          */
         exports.topicLabel = function(_x) {
@@ -1269,7 +1269,7 @@ define(function(require){
         /**
          * Gets or Sets the valueLabel of the chart
          * @param  {Number} _x Desired valueLabel for the graph
-         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+         * @return {valueLabel | module} Current valueLabel or Chart module to chain calls
          * @public
          */
         exports.valueLabel = function(_x) {
@@ -1280,6 +1280,22 @@ define(function(require){
 
             return this;
         };
+
+        /**
+         * Gets or Sets the yAxisLabelPadding of the chart.
+         * The default value is -36
+         * @param  {Number} _x Desired yAxisLabelPadding for the graph
+         * @return {yAxisLabelPadding | module} Current yAxisLabelPadding or Chart module to chain calls
+         * @public
+         */
+        exports.yAxisLabelPadding = function(_x) {
+            if (!arguments.length) {
+                return yAxisLabelPadding;
+            }
+            yAxisLabelPadding = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the number of ticks of the y axis on the chart

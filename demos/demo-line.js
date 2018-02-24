@@ -68,6 +68,7 @@ function createLineChart(optionalColorSchema, optionalData) {
             .isAnimated(true)
             .aspectRatio(0.5)
             .grid('horizontal')
+            .yAxisLabel('Tickets')
             .tooltipThreshold(600)
             .width(containerWidth)
             .margin(lineMargin)
@@ -77,7 +78,7 @@ function createLineChart(optionalColorSchema, optionalData) {
             .on('customMouseOut', chartTooltip.hide)
             .on('customDataEntryClick', function(d, mousePosition) {
                 // console.log('Data entry marker clicked', d, mousePosition);
-            })
+            });
 
 
         if (optionalColorSchema) {
