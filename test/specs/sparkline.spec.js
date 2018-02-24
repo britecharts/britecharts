@@ -57,6 +57,7 @@ define([
 
         it('should render container and chart groups', () => {
             expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.text-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
         });
@@ -87,6 +88,36 @@ define([
             let actual = _.filter(containerFixture.selectAll('.line-gradient').nodes(), f => f && hasIdWithPrefix(f, 'sparkline-line-gradient')).length;
 
             expect(actual).toEqual(expected);
+        });
+
+        describe('when the title text is set to specified string', () => {
+            
+            it('should create a text node with proper attributes', () => {
+                let titleTextNode;
+                
+                sparklineChart.titleText('text');
+                containerFixture.datum(dataset.data).call(sparklineChart);
+
+                titleTextNode = containerFixture.selectAll('.sparkline-text').node();
+                
+                expect(titleTextNode).toBeInDOM();
+                expect(titleTextNode).toHaveAttr('x');
+                expect(titleTextNode).toHaveAttr('y');
+                expect(titleTextNode).toHaveAttr('text-anchor');
+                expect(titleTextNode).toHaveAttr('class');
+                expect(titleTextNode).toHaveAttr('style');
+            });
+
+            it('should properl set the text to the text group', () => {
+                let expected = 'Tickets Sale';
+                let actual;
+                
+                sparklineChart.titleText(expected);
+                containerFixture.datum(dataset.data).call(sparklineChart);
+                actual = containerFixture.selectAll('.sparkline-text').node().textContent;
+
+                expect(actual).toEqual(expected);
+            });
         });
 
         describe('when reloading with a different dataset', () => {
