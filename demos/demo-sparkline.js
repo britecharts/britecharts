@@ -31,8 +31,7 @@ function createSparklineChart() {
         .isAnimated(true)
         .duration(1000)
         .height(containerWidth / 4)
-        .width(containerWidth)
-        .titleText('Growth')
+        .width(containerWidth);
 
     container.datum(dataset.data).call(sparkline);
 }
