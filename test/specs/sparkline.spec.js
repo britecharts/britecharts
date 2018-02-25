@@ -57,6 +57,7 @@ define([
 
         it('should render container and chart groups', () => {
             expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.text-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
         });
@@ -87,6 +88,36 @@ define([
             let actual = _.filter(containerFixture.selectAll('.line-gradient').nodes(), f => f && hasIdWithPrefix(f, 'sparkline-line-gradient')).length;
 
             expect(actual).toEqual(expected);
+        });
+
+        describe('when the title text is set to specified string', () => {
+            
+            it('should create a text node with proper attributes', () => {
+                let titleTextNode;
+                
+                sparklineChart.titleText('text');
+                containerFixture.datum(dataset.data).call(sparklineChart);
+
+                titleTextNode = containerFixture.selectAll('.sparkline-text').node();
+                
+                expect(titleTextNode).toBeInDOM();
+                expect(titleTextNode).toHaveAttr('x');
+                expect(titleTextNode).toHaveAttr('y');
+                expect(titleTextNode).toHaveAttr('text-anchor');
+                expect(titleTextNode).toHaveAttr('class');
+                expect(titleTextNode).toHaveAttr('style');
+            });
+
+            it('should properly set the text inside of text node', () => {
+                let expected = 'Tickets Sale';
+                let actual;
+                
+                sparklineChart.titleText(expected);
+                containerFixture.datum(dataset.data).call(sparklineChart);
+                actual = containerFixture.selectAll('.sparkline-text').node().textContent;
+
+                expect(actual).toEqual(expected);
+            });
         });
 
         describe('when reloading with a different dataset', () => {
@@ -273,6 +304,36 @@ define([
 
                 expect(defaultGradient).not.toBe(testGradient);
                 expect(newGradient).toBe(testGradient);
+            });
+
+            it('should provide a titleText getter and setter', () => {
+                let defaultTitleText = sparklineChart.titleText(),
+                testTitleText = 'Budget Growth',
+                newTitleText;
+
+                sparklineChart.titleText(testTitleText);
+                newTitleText = sparklineChart.titleText();
+
+                expect(defaultTitleText).not.toBe(testTitleText);
+                expect(newTitleText).toBe(testTitleText);
+            });
+
+            it('should provide a titleTextStyle getter and setter', () => {
+                let defaultTitleTextStyle = sparklineChart.titleTextStyle(),
+                testTitleTextStyle = {
+                    'font-family': 'Verdana',
+                    'font-size': '32px',
+                    'font-weight': 200,
+                    'font-style': 'italic',
+                    'fill': 'green',
+                },
+                newTitleTextStyle;
+
+                sparklineChart.titleTextStyle(testTitleTextStyle);
+                newTitleTextStyle = sparklineChart.titleTextStyle();
+
+                expect(defaultTitleTextStyle).not.toEqual(testTitleTextStyle);
+                expect(newTitleTextStyle).toEqual(testTitleTextStyle);
             });
         });
 
