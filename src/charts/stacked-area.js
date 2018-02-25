@@ -301,8 +301,6 @@ define(function(require){
          * @private
          */
         function buildAxis() {
-            let dataSpan = yScale.domain()[1] - yScale.domain()[0];
-            let yTickNumber = dataSpan < yTicks - 1 ? dataSpan : yTicks;
             let minor, major;
 
             if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
@@ -328,12 +326,12 @@ define(function(require){
 
 
             yAxis = d3Axis.axisRight(yScale)
-                .ticks(yTickNumber)
+                .ticks(yTicks)
                 .tickSize([0])
                 .tickPadding(tickPadding)
                 .tickFormat(getFormattedValue);
 
-            drawGridLines(minor.tick, yTickNumber);
+            drawGridLines(minor.tick, yTicks);
         }
 
         /**
@@ -1327,7 +1325,7 @@ define(function(require){
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
          * We are going to expose this events:
-         * customMouseOver, customMouseMove, customMouseOut, 
+         * customMouseOver, customMouseMove, customMouseOut,
          * customDataEntryClick and customTouchMove
          * @return {module} Stacked Area
          * @public
