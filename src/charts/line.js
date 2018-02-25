@@ -335,8 +335,6 @@ define(function(require){
          * @private
          */
         function buildAxis() {
-            let dataTimeSpan = yScale.domain()[1] - yScale.domain()[0];
-            let yTickNumber = dataTimeSpan < yTicks - 1 ? dataTimeSpan : yTicks;
             let minor, major;
 
             if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
@@ -361,12 +359,12 @@ define(function(require){
                 .tickFormat(minor.format);
 
             yAxis = d3Axis.axisLeft(yScale)
-                .ticks(yTickNumber)
+                .ticks(yTicks)
                 .tickSize([0])
                 .tickPadding(tickPadding)
                 .tickFormat(getFormattedValue);
 
-            drawGridLines(minor.tick, yTickNumber);
+            drawGridLines(minor.tick, yTicks);
         }
 
         /**
@@ -1361,7 +1359,7 @@ define(function(require){
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
          * We are going to expose this events:
-         * customMouseHover, customMouseMove, customMouseOut, 
+         * customMouseHover, customMouseMove, customMouseOut,
          * customDataEntryClick, and customTouchMove
          *
          * @return {module} Bar Chart
