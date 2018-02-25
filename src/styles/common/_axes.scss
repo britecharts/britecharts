@@ -1,5 +1,6 @@
+@import "../helpers/variables";
+
 $text-padding: 12px;
-$text-size: 1rem;
 $tick-size: 1;
 
 .tick {
@@ -10,13 +11,13 @@ $tick-size: 1;
         shape-rendering: crispEdges;
     }
     text {
-        font-size: $text-size;
+        font-size: $text-size-small;
         fill: $grey-600;
         padding: $text-padding;
     }
 }
 .y-axis-label,
 .x-axis-label {
-    font-size: $text-size;
+    font-size: $text-size-medium;
     fill: $grey-500;
 }
