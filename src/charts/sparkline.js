@@ -13,6 +13,13 @@ define(function(require){
     const {line} = require('./helpers/load');
     const {uniqueId} = require('./helpers/number');
 
+    const DEFAULT_TITLE_TEXT_STYLE = {
+        'font-size': '22px',
+        'font-family': 'sans-serif',
+        'font-style': 'normal',
+        'font-weight': 0
+    }
+
     /**
      * @typedef SparklineChartData
      * @type {Object[]}
@@ -91,6 +98,10 @@ define(function(require){
             area,
             circle,
 
+            titleEl,
+            titleText,
+            titleTextStyle = DEFAULT_TITLE_TEXT_STYLE,
+
             markerSize = 1.5,
 
             valueLabel = 'value',
@@ -120,6 +131,10 @@ define(function(require){
                 drawLine();
                 drawArea();
                 drawEndMarker();
+
+                if (titleText) {
+                    drawSparklineTitle();
+                }
             });
         }
 
@@ -135,6 +150,8 @@ define(function(require){
                 .classed('container-group', true)
                 .attr('transform', `translate(${margin.left},${margin.top})`);
 
+            container
+                .append('g').classed('text-group', true);
             container
                 .append('g').classed('chart-group', true);
             container
@@ -313,6 +330,30 @@ define(function(require){
         }
 
         /**
+         * Draws the text element within the text group
+         * Is displayed at the top of sparked area
+         * @private
+         */
+        function drawSparklineTitle() {
+            if (titleEl) {
+                svg.selectAll('.sparkline-text').remove();
+            }
+
+            titleEl = svg.selectAll('.text-group')
+              .append('text')
+                .attr('x', chartWidth / 2)
+                .attr('y', chartHeight / 6)
+                .attr('text-anchor', 'middle')
+                .attr('class', 'sparkline-text')
+                .style('font-size', titleTextStyle['font-size'] || DEFAULT_TITLE_TEXT_STYLE['font-size']) 
+                .style('fill', titleTextStyle['fill'] || lineGradient[0])
+                .style('font-family', titleTextStyle['font-family'] || DEFAULT_TITLE_TEXT_STYLE['font-family'])
+                .style('font-weight', titleTextStyle['font-weight'] || DEFAULT_TITLE_TEXT_STYLE['font-weight'])
+                .style('font-style', titleTextStyle['font-style'] || DEFAULT_TITLE_TEXT_STYLE['font-style'])
+                .text(titleText)
+        }
+
+        /**
          * Draws a marker at the end of the sparkline
          */
         function drawEndMarker(){
@@ -333,7 +374,7 @@ define(function(require){
         /**
          * Gets or Sets the areaGradient of the chart
          * @param  {String[]} _x Desired areaGradient for the graph
-         * @return { areaGradient | module} Current areaGradient or Chart module to chain calls
+         * @return {areaGradient | module} Current areaGradient or Chart module to chain calls
          * @public
          */
         exports.areaGradient = function(_x) {
@@ -347,7 +388,7 @@ define(function(require){
         /**
          * Gets or Sets the dateLabel of the chart
          * @param  {Number} _x Desired dateLabel for the graph
-         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+         * @return {dateLabel | module} Current dateLabel or Chart module to chain calls
          * @public
          */
         exports.dateLabel = function(_x) {
@@ -362,7 +403,7 @@ define(function(require){
         /**
          * Gets or Sets the duration of the animation
          * @param  {Number} _x Desired animation duration for the graph
-         * @return { dateLabel | module} Current animation duration or Chart module to chain calls
+         * @return {dateLabel | module} Current animation duration or Chart module to chain calls
          * @public
          */
         exports.duration = function(_x) {
@@ -404,7 +445,7 @@ define(function(require){
          * By default this is 'false'
          *
          * @param  {Boolean} _x Desired animation flag
-         * @return { isAnimated | module} Current isAnimated flag or Chart module
+         * @return {isAnimated | module} Current isAnimated flag or Chart module
          * @public
          */
         exports.isAnimated = function(_x) {
@@ -419,7 +460,7 @@ define(function(require){
         /**
          * Gets or Sets the lineGradient of the chart
          * @param  {String[]} _x Desired lineGradient for the graph
-         * @return { lineGradient | module} Current lineGradient or Chart module to chain calls
+         * @return {lineGradient | module} Current lineGradient or Chart module to chain calls
          * @public
          */
         exports.lineGradient = function(_x) {
@@ -433,7 +474,7 @@ define(function(require){
         /**
          * Gets or Sets the loading state of the chart
          * @param  {string} markup Desired markup to show when null data
-         * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+         * @return {loadingState | module} Current loading state markup or Chart module to chain calls
          * @public
          */
         exports.loadingState = function(_markup) {
@@ -448,7 +489,7 @@ define(function(require){
         /**
          * Gets or Sets the margin of the chart
          * @param  {Object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Chart module to chain calls
+         * @return {margin | module} Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -461,9 +502,66 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the text of the title at the top of sparkline.
+         * To style the title, use the titleTextStyle method below.
+         * @param  {String} _x  String to set
+         * @return {String | module} Current titleText or Chart module to chain calls
+         * @public
+         */
+        exports.titleText = function(_x) {
+            if (!arguments.length) {
+                return titleText;
+            }
+            titleText = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the text style object of the title at the top of sparkline.
+         * Using this method, you can set font-family, font-size, font-weight, font-style,
+         * and color (fill). The default text font settings:
+         * 
+         * <pre>
+         * <code>
+         * {
+         *    'font-family': 'sans-serif',
+         *    'font-size': '22px',
+         *    'font-weight': 0,
+         *    'font-style': 'normal',
+         *    'fill': linearGradient[0]
+         * }
+         * </code>
+         * </pre>
+         * 
+         * You can set attributes individually. Setting just 'font-family'
+         * within the object will set custom 'font-family` while the rest
+         * of the attributes will have the default values provided above.
+         * @param  {Object} _x  Object with text font configurations
+         * @return {Object | module} Current titleTextStyle or Chart module to chain calls
+         * @public
+         * @example 
+         * sparkline.titleTextStyle({
+         *    'font-family': 'Roboto',
+         *    'font-size': '1.5em',
+         *    'font-weight': 600,
+         *    'font-style': 'italic',
+         *    'fill': 'lightblue'
+         * })
+         */
+        exports.titleTextStyle = function(_x) {
+            if (!arguments.length) {
+                return titleTextStyle;
+            }
+            titleTextStyle = _x;
+
+            return this;
+        }
+
+        /**
          * Gets or Sets the valueLabel of the chart
          * @param  {Number} _x Desired valueLabel for the graph
-         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+         * @return {valueLabel | module} Current valueLabel or Chart module to chain calls
          * @public
          */
         exports.valueLabel = function(_x) {
@@ -478,7 +576,7 @@ define(function(require){
         /**
          * Gets or Sets the width of the chart
          * @param  {Number} _x Desired width for the graph
-         * @return { width | module} Current width or Chart module to chain calls
+         * @return {width | module} Current width or Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
