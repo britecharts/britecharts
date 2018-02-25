@@ -306,7 +306,7 @@ define(function(require){
          */
         function adjustYTickLabels(selection) {
             selection.selectAll('.tick text')
-                .attr('transform', 'translate(0, -7)');
+                .attr('dy', '-0.32em');
         }
 
         /**
