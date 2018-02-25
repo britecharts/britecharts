@@ -1,6 +1,7 @@
 // TODO:
 // - Review the naming
 // - Create mixins for animation
+@import "../helpers/variables";
 
 $enter-opacity: 0.97;
 $exit-opacity: .2;
@@ -8,6 +9,21 @@ $exit-opacity: .2;
 .britechart-legend {
 
     .legend-entry {
+        font-size: $text-size-medium;
+
+        .legend-entry-name,
+        .legend-entry-value,
+        .legend-circle {
+            // Ensure font-size can't be set on child elements
+            // Allowing font-size on parent to be used in calculations
+            font-size: 1em !important;
+            letter-spacing: 0.5px;
+        }
+
+        .legend-entry-value {
+            text-anchor: end;
+            letter-spacing: 0.8px;
+        }
 
         &.is-faded {
 

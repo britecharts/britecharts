@@ -68,18 +68,34 @@
   stroke-width: 1;
   border-radius: 2px; }
 
-.britechart-legend .legend-entry.is-faded .legend-entry-name,
-.britechart-legend .legend-entry.is-faded .legend-entry-value,
-.britechart-legend .legend-entry.is-faded .legend-circle {
-  opacity: 0.97;
-  transition: opacity .2s ease-out;
-  -moz-transition: opacity .2s ease-out;
-  -webkit-transition: opacity .2s ease-out; }
+.britechart-mini-tooltip .mini-tooltip-title,
+.britechart-mini-tooltip .mini-tooltip-name {
+  font-size: 14px; }
 
-.britechart-legend .legend-entry.is-faded .legend-entry-name,
-.britechart-legend .legend-entry.is-faded .legend-entry-value,
-.britechart-legend .legend-entry.is-faded .legend-circle {
-  opacity: 0.2; }
+.britechart-mini-tooltip .mini-tooltip-value {
+  font-size: 27px; }
+
+.britechart-legend .legend-entry {
+  font-size: 12px; }
+  .britechart-legend .legend-entry .legend-entry-name,
+  .britechart-legend .legend-entry .legend-entry-value,
+  .britechart-legend .legend-entry .legend-circle {
+    font-size: 1em !important;
+    letter-spacing: 0.5px; }
+  .britechart-legend .legend-entry .legend-entry-value {
+    text-anchor: end;
+    letter-spacing: 0.8px; }
+  .britechart-legend .legend-entry.is-faded .legend-entry-name,
+  .britechart-legend .legend-entry.is-faded .legend-entry-value,
+  .britechart-legend .legend-entry.is-faded .legend-circle {
+    opacity: 0.97;
+    transition: opacity .2s ease-out;
+    -moz-transition: opacity .2s ease-out;
+    -webkit-transition: opacity .2s ease-out; }
+  .britechart-legend .legend-entry.is-faded .legend-entry-name,
+  .britechart-legend .legend-entry.is-faded .legend-entry-value,
+  .britechart-legend .legend-entry.is-faded .legend-circle {
+    opacity: 0.2; }
 
 .bar-chart .bar {
   shape-rendering: crispEdges; }

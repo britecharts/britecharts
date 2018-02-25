@@ -149,11 +149,21 @@ define(function(require) {
         b.font = fontSize + 'px ' + fontFace;
 
         return b.measureText(text).width;
+    };
+
+    /**
+     * Gets the font size of the passed node using getComputedStyle
+     * @param {HTMLElement} node The node to get the computed font size for
+     * @return {number}
+     */
+    function getFontSize(node) {
+        return parseFloat(window.getComputedStyle(node).fontSize);
     }
 
     return {
         getTextWidth,
         wrapText,
-        wrapTextWithEllipses
+        wrapTextWithEllipses,
+        getFontSize
     };
 });

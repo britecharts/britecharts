@@ -22,6 +22,7 @@ $tooltip-width: 1;
 }
 
 // Tooltip
+// TODO: Currently unused. Consider removing in refactoring for #113.
 .tooltip-background {
     fill: rgba($white, 0.97);
     stroke: $grey-300;
@@ -29,3 +30,14 @@ $tooltip-width: 1;
     border-radius: 2px;
 }
 
+// Mini-Tooltip
+.britechart-mini-tooltip {
+    .mini-tooltip-title,
+    .mini-tooltip-name {
+        font-size: $text-size-large;
+    }
+
+    .mini-tooltip-value {
+        font-size: 27px;
+    }
+}

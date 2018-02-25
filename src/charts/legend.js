@@ -74,11 +74,10 @@ define(function(require){
             width = 320,
             height = 180,
 
-            textSize = 12,
-            textLetterSpacing = 0.5,
-
             markerSize = 16,
-            markerYOffset = - (textSize - 2) / 2,
+            // Offset to middle of text using em as per d3.axis
+            // For marker positioning, 0.36 looks better than the 0.32 for tick labels
+            markerYOffset = '-0.36em',
             marginRatio = 1.5,
 
             valueReservedSpace = 40,
@@ -247,11 +246,11 @@ define(function(require){
               .append('g')
                 .classed('legend-entry', true)
                 .attr('data-item', getId)
-                .attr('transform', function({name}) {
+                .attr('transform', function({name}, i, nodes) {
                     let horizontalOffset = xOffset,
                         lineHeight = chartHeight / 2,
                         verticalOffset = lineHeight,
-                        labelWidth = textHelper.getTextWidth(name, textSize);
+                        labelWidth = textHelper.getTextWidth(name, textHelper.getFontSize(nodes[i]));
 
                     xOffset += markerSize + 2 * getLineElementMargin() + labelWidth;
 
@@ -260,20 +259,17 @@ define(function(require){
                 .merge(entries)
               .append('circle')
                 .classed('legend-circle', true)
-                .attr('cx', markerSize/2)
+                .attr('cx', markerSize / 2)
                 .attr('cy', markerYOffset)
                 .attr('r', markerSize / 2)
-                .style('fill', getCircleFill)
-                .style('stroke-width', 1);
+                .style('fill', getCircleFill);
 
             svg.select('.legend-group')
                 .selectAll('g.legend-entry')
               .append('text')
                 .classed('legend-entry-name', true)
                 .text(getName)
-                .attr('x', getLineElementMargin())
-                .style('font-size', `${textSize}px`)
-                .style('letter-spacing', `${textLetterSpacing}px`);
+                .attr('x', getLineElementMargin());
 
             // Exit
             svg.select('.legend-group')
@@ -308,7 +304,7 @@ define(function(require){
                     .attr('data-item', getId)
                     .attr('transform', function(d, i) {
                         let horizontalOffset = markerSize + getLineElementMargin(),
-                            lineHeight = chartHeight/ (data.length + 1),
+                            lineHeight = chartHeight / (data.length + 1),
                             verticalOffset = (i + 1) * lineHeight;
 
                         return `translate(${horizontalOffset},${verticalOffset})`;
@@ -316,11 +312,10 @@ define(function(require){
                     .merge(entries)
                   .append('circle')
                     .classed('legend-circle', true)
-                    .attr('cx', markerSize/2)
+                    .attr('cx', markerSize / 2)
                     .attr('cy', markerYOffset)
-                    .attr('r', markerSize/2 )
-                    .style('fill', getCircleFill)
-                    .style('stroke-width', 1);
+                    .attr('r', markerSize / 2 )
+                    .style('fill', getCircleFill);
 
             svg.select('.legend-group')
                 .selectAll('g.legend-line')
@@ -328,9 +323,7 @@ define(function(require){
               .append('text')
                 .classed('legend-entry-name', true)
                 .text(getName)
-                .attr('x', getLineElementMargin())
-                .style('font-size', `${textSize}px`)
-                .style('letter-spacing', `${textLetterSpacing}px`);
+                .attr('x', getLineElementMargin());
 
             svg.select('.legend-group')
                 .selectAll('g.legend-line')
@@ -338,11 +331,7 @@ define(function(require){
               .append('text')
                 .classed('legend-entry-value', true)
                 .text(getFormattedQuantity)
-                .attr('x', chartWidth - valueReservedSpace)
-                .style('font-size', `${textSize}px`)
-                .style('letter-spacing', `${numberLetterSpacing}px`)
-                .style('text-anchor', 'end')
-                .style('startOffset', '100%');
+                .attr('x', chartWidth - valueReservedSpace);
 
             // Exit
             svg.select('.legend-group')
