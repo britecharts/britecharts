@@ -139,7 +139,7 @@ define(function(require) {
      * This avoids having to actually render the text to measure it from the DOM itself
      * @param  {String} text     Text to measure
      * @param  {Number} fontSize Fontsize (or default)
-     * @param  {String} fontFace Font familty (or default)
+     * @param  {String} fontFace Font family (or default)
      * @return {String}          Approximate font size of the text
      */
     const getTextWidth = function(text, fontSize = defaultTextSize, fontFace = defaultFontFace) {
@@ -153,11 +153,16 @@ define(function(require) {
 
     /**
      * Gets the font size of the passed node using getComputedStyle
+     * or falls back to the default font size
      * @param {HTMLElement} node The node to get the computed font size for
      * @return {number}
      */
     function getFontSize(node) {
-        return parseFloat(window.getComputedStyle(node).fontSize);
+        if (typeof window.getComputedStyle === 'function') {
+          return parseFloat(window.getComputedStyle(node).fontSize);
+        }
+
+        return defaultTextSize;
     }
 
     return {

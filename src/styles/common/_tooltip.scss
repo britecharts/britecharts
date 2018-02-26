@@ -1,7 +1,11 @@
 @import "../helpers/variables";
 
-$marker-width: 1;
-$tooltip-width: 1;
+$marker-stroke-width: 1;
+$marker-stroke-width-highlight: 2;
+
+$tooltip-stroke-width: 1;
+$tooltip-border-radius: 2px;
+$tooltip-value-text-size: 27px;
 
 // Tooltip Container
 .britechart-tooltip {
@@ -12,12 +16,12 @@ $tooltip-width: 1;
 .vertical-marker-container {
     .vertical-marker {
         stroke: $grey-300;
-        stroke-width: $marker-width;
+        stroke-width: $marker-stroke-width;
         fill: none;
     }
     .data-point-highlighter {
         fill: $white;
-        stroke-width: 2;
+        stroke-width: $marker-stroke-width-highlight;
     }
 }
 
@@ -26,8 +30,8 @@ $tooltip-width: 1;
 .tooltip-background {
     fill: rgba($white, 0.97);
     stroke: $grey-300;
-    stroke-width: $tooltip-width;
-    border-radius: 2px;
+    stroke-width: $tooltip-stroke-width;
+    border-radius: $tooltip-border-radius;
 }
 
 // Mini-Tooltip
@@ -38,6 +42,6 @@ $tooltip-width: 1;
     }
 
     .mini-tooltip-value {
-        font-size: 27px;
+        font-size: $tooltip-value-text-size;
     }
 }

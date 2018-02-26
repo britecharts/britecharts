@@ -187,6 +187,7 @@ define(function(require){
             yAxisLabelPadding = 36,
 
             yTicks = 5,
+            yAxisTickLabelYOffset = '-0.32em',
 
             overlay,
             overlayColor = 'rgba(0, 0, 0, 0)',
@@ -306,7 +307,7 @@ define(function(require){
          */
         function adjustYTickLabels(selection) {
             selection.selectAll('.tick text')
-                .attr('dy', '-0.32em');
+                .attr('dy', yAxisTickLabelYOffset);
         }
 
         /**

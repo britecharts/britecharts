@@ -98,6 +98,7 @@ define(function(require){
 
             monthAxisPadding = 30,
             yTicks = 5,
+            yAxisTickLabelYOffset = '-0.32em',
             yAxisLabel,
             yAxisLabelEl,
             yAxisLabelOffset = -60,
@@ -574,7 +575,7 @@ define(function(require){
          */
         function adjustYTickLabels(selection) {
             selection.selectAll('.tick text')
-              .attr('dy', '-0.32em');
+              .attr('dy', yAxisTickLabelYOffset);
         }
 
         /**
