@@ -358,6 +358,20 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
             });
         });
 
+        describe('when clicking on a bar', () => {
+
+            it('should trigger a callback', function() {
+                let chart = containerFixture.select('.grouped-bar');
+                let callbackSpy = jasmine.createSpy('customClick');
+
+                groupedBarChart.on('customClick', callbackSpy);
+                chart.dispatch('click');
+
+                expect(callbackSpy.calls.count()).toBe(1);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
+            })
+        });
+
         describe('when hovering', function() {
 
             it('mouseover should trigger a callback', () => {
