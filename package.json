@@ -61,7 +61,6 @@
     "visualizations",
     "data-visualization",
     "interactive-visualizations"
-
   ],
   "author": "Eventbrite",
   "license": "Apache-2.0",
@@ -116,6 +115,7 @@
     "karma-webpack": "^2.0.5",
     "load-grunt-tasks": "^3.5.2",
     "moment": "^2.17.0",
+    "phantomjs-polyfill-find": "ptim/phantomjs-polyfill-find",
     "prismjs": "^1.6.0",
     "pubsub-js": "^1.5.7",
     "requirejs-plugins": "^1.0.2",

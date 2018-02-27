@@ -80,20 +80,6 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
             expect(actual).toEqual(expected);
         });
 
-        describe('when clicking on a bar', () => {
-
-            it('should trigger a callback', function() {
-                let chart = containerFixture.selectAll('.grouped-bar');
-                let callbackSpy = jasmine.createSpy('callback');
-
-                groupedBarChart.on('customClick', callbackSpy);
-                chart.dispatch('click');
-
-                expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
-            })
-        });
-
         describe('when reloading with a two sources dataset', () => {
 
             it('should render in the same svg', function() {
@@ -370,6 +356,20 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
                 expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
             });
+        });
+
+        describe('when clicking on a bar', () => {
+
+            it('should trigger a callback', function() {
+                let chart = containerFixture.select('.grouped-bar');
+                let callbackSpy = jasmine.createSpy('customClick');
+
+                groupedBarChart.on('customClick', callbackSpy);
+                chart.dispatch('click');
+
+                expect(callbackSpy.calls.count()).toBe(1);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
+            })
         });
 
         describe('when hovering', function() {
