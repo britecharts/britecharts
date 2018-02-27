@@ -144,7 +144,12 @@ define(function (require) {
             isAnimated = false,
 
             // events
-            dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove');
+            dispatcher = d3Dispatch.dispatch(
+                'customMouseOver',
+                'customMouseOut',
+                'customMouseMove',
+                'customClick'
+            );
 
         /**
          * This function creates the graph using the selection and data provided
@@ -185,7 +190,10 @@ define(function (require) {
                     })
                     .on('mousemove',  function(d) {
                         handleMouseMove(this, d);
-                    });
+                    })
+                    .on('click',  function(d) {
+                        handleCustomClick(this, d);
+                    });;
             }
 
             svg.selectAll('.bar')
@@ -691,6 +699,17 @@ define(function (require) {
         }
 
         /**
+         * Click handler, shows data that was clicked and passes to the user
+         * @private
+         */
+        function handleCustomClick (e, d) {
+            let [mouseX, mouseY] = getMousePosition(e);
+            let dataPoint = isHorizontal ? getNearestDataPoint2(mouseY) : getNearestDataPoint(mouseX);
+
+            dispatcher.call('customClick', e, dataPoint, d3Selection.mouse(e));
+        }
+
+        /**
          * MouseOut handler, hides overlay and removes active class on verticalMarkerLine
          * It also resets the container of the vertical marker
          * @private
@@ -976,7 +995,7 @@ define(function (require) {
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
          * We are going to expose this events:
-         * customMouseOver, customMouseMove and customMouseOut
+         * customMouseOver, customMouseMove, customMouseOut, and customClick
          *
          * @return {module} Bar Chart
          * @public
