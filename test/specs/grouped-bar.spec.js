@@ -362,7 +362,7 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
 
             it('should trigger a callback', function() {
                 let chart = containerFixture.select('.grouped-bar');
-                let callbackSpy = jasmine.createSpy('customClick');
+                let callbackSpy = jasmine.createSpy('callback');
 
                 groupedBarChart.on('customClick', callbackSpy);
                 chart.dispatch('click');
