@@ -7,6 +7,8 @@ define(function(require){
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
 
+    const NUMBER_FORMAT = null;
+
     const {axisTimeCombinations} = require('./helpers/constants');
     const {
         formatIntegerValue,
@@ -111,6 +113,7 @@ define(function(require){
             topicsOrder = [],
 
             // formats
+            numberFormat = NUMBER_FORMAT,
             monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
             monthDayHourFormat = d3TimeFormat.timeFormat('%b %d, %I %p'),
             locale,
@@ -242,8 +245,8 @@ define(function(require){
             if (!value) {
                 return 0;
             }
-            if (valueFormat !== null) {
-                valueFormatter = d3Format.format(valueFormat);
+            if (numberFormat !== null) {
+                valueFormatter = d3Format.format(numberFormat);
             } else if (isInteger(value)) {
                 valueFormatter = formatIntegerValue;
             }
@@ -673,6 +676,20 @@ define(function(require){
         };
 
         /**
+         * Gets or Sets the number format for the value displayed on the tooltip
+         * @param  {string} [_x=".2f"] Desired number format
+         * @return {string | module} Current numberFormat or Chart module to chain calls
+         * @public
+         */
+        exports.numberFormat = function(_x) {
+            if (!arguments.length) {
+                return numberFormat;
+            }
+            numberFormat = _x;
+            return this;
+        }
+
+        /**
          * Gets or Sets shouldShowDateInTitle
          * @param  {Boolean} _x          Desired value
          * @return {Boolean | module}    Current shouldShowDateInTitle or Chart module to chain calls
@@ -769,21 +786,6 @@ define(function(require){
         exports.update = function(dataPoint, colorMapping, xPosition, yPosition = null) {
             colorMap = colorMapping;
             updateTooltip(dataPoint, xPosition, yPosition);
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets the valueFormat of the tooltip
-         * @param  {String} _x          Desired valueFormat
-         * @return {String | module}   Current valueFormat or module to chain calls
-         * @public
-         */
-        exports.valueFormat = function(_x) {
-            if (!arguments.length) {
-                return valueFormat;
-            }
-            valueFormat = _x;
 
             return this;
         };
