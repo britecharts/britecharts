@@ -17,6 +17,10 @@ define(function(require) {
     const {emptyDonutData} =require('./helpers/constants');
     const {donut} = require('./helpers/load');
 
+    const DEFAULT_LEGEND_TEXT_PARAMS = {
+        percentage: '0',
+        name: ''
+    }
 
     /**
      * @typedef DonutChartData
@@ -109,7 +113,7 @@ define(function(require) {
             colorScale,
             colorSchema = colorHelper.colorSchemas.britecharts,
 
-            centeredTextFunction = (d) => `${d.percentage}% ${d.name}`,
+            centeredTextFunction = (d = DEFAULT_LEGEND_TEXT_PARAMS) => `${d.percentage}% ${d.name}`,
 
             // utils
             storeAngle = function(d) {
@@ -318,9 +322,14 @@ define(function(require) {
          */
         function drawLegend(obj) {
             if (obj.data) {
+                let centeredTextFunctionText = centeredTextFunction(obj.data);
+
+                if (shouldShowEmptyState) {
+                    centeredTextFunctionText = centeredTextFunction();
+                }
 
                 svg.select('.donut-text')
-                    .text(() => centeredTextFunction(obj.data))
+                    .text(centeredTextFunctionText)
                     .attr('dy', '.2em')
                     .attr('text-anchor', 'middle');
 

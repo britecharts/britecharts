@@ -116,7 +116,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
                 it('percentage label should be 0%', () => {
                     let actual;
-                    let expected = '0.0%';
+                    let expected = '0%';
 
                     let emptySliceColor = '#EFF2F5';
 
