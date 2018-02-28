@@ -163,6 +163,8 @@ define(function(require){
             dataByDateFormatted,
             dataByDateZeroed,
 
+            shouldShowEmptyState = false,
+
             verticalGridLines,
             horizontalGridLines,
             grid = null,
@@ -521,7 +523,10 @@ define(function(require){
          * @private
          */
         function cleanData(originalData) {
-            originalData = originalData.length === 0 ? createFakeData() : originalData;
+            originalData = 
+                originalData.length === 0 || shouldShowEmptyState
+                    ? createFakeData()
+                    : originalData;
 
             return originalData.reduce((acc, d) => {
                 d.date = new Date(d[dateLabel]),
@@ -1474,6 +1479,23 @@ define(function(require){
                 return yAxisLabelOffset;
             }
             yAxisLabelOffset = _x;
+
+            return this;
+        }
+
+        /**
+         * Gets or Sets the shouldShowEmptyState state of the chart
+         * The default value is -60
+         * @param  {Boolean} _x Whether or not to set chart to empty state
+         * @return {Boolean | module} Current shouldShowEmptyState or Chart module to chain calls
+         * @public
+         * @example stackedArea.shouldShowEmptyState(true)
+         */
+        exports.shouldShowEmptyState = function(_x) {
+            if (!arguments.length) {
+                return shouldShowEmptyState;
+            }
+            shouldShowEmptyState = _x;
 
             return this;
         }
