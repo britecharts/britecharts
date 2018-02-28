@@ -625,7 +625,6 @@ define(function(require){
          * @return void
          */
         function drawGridLines(xTicks, yTicks) {
-
             svg.select('.grid-lines-group')
                 .selectAll('line')
                 .remove();
