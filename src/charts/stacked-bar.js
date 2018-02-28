@@ -408,6 +408,10 @@ define(function(require){
         function drawGridLines() {
             let scale = isHorizontal ? xScale : yScale;
 
+            svg.select('.grid-lines-group')
+                .selectAll('line')
+                .remove();
+
             if (grid === 'horizontal' || grid === 'full') {
                 svg.select('.grid-lines-group')
                     .selectAll('line.horizontal-grid-line')
@@ -673,7 +677,7 @@ define(function(require){
         }
 
         /**
-         * Click handler, passes the data point of the clicked bar 
+         * Click handler, passes the data point of the clicked bar
          * (or it's nearest point)
          * @private
          */
