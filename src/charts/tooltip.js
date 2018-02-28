@@ -675,7 +675,7 @@ define(function(require){
 
         /**
          * Gets or Sets the number format for the value displayed on the tooltip
-         * @param  {string} [_x=".2f"] Desired number format
+         * @param  {string} Desired number format
          * @return {string | module} Current numberFormat or Chart module to chain calls
          * @public
          */
