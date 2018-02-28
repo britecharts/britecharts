@@ -523,10 +523,9 @@ define(function(require){
          * @private
          */
         function cleanData(originalData) {
-            originalData = 
-                originalData.length === 0 || shouldShowEmptyState
-                    ? createFakeData()
-                    : originalData;
+            originalData = shouldShowEmptyState
+                ? createFakeData()
+                : originalData;
 
             return originalData.reduce((acc, d) => {
                 d.date = new Date(d[dateLabel]),
