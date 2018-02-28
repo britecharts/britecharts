@@ -319,7 +319,7 @@ define(function(require) {
          * @private
          */
         function drawLegend(obj) {
-            if (obj.data) {
+            if (obj.data && !shouldShowEmptyState) {
 
                 svg.select('.donut-text')
                     .text(() => centeredTextFunction(obj.data))
