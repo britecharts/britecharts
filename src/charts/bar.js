@@ -560,6 +560,10 @@ define(function(require) {
          * @return void
          */
         function drawGridLines() {
+            svg.select('.grid-lines-group')
+                .selectAll('line')
+                .remove();
+
             if (isHorizontal) {
                 drawHorizontalGridLines();
             } else {

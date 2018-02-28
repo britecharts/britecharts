@@ -452,6 +452,10 @@ define(function (require) {
         function drawGridLines() {
             let scale = isHorizontal ? xScale : yScale;
 
+            svg.select('.grid-lines-group')
+                .selectAll('line')
+                .remove();
+
             if (grid === 'horizontal' || grid === 'full') {
                 svg.select('.grid-lines-group')
                     .selectAll('line.horizontal-grid-line')
