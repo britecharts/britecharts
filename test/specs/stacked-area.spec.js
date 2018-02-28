@@ -518,6 +518,18 @@ define([
                 expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
                 expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
             });
+
+            it('should provide shouldShowEmptyState getter and setter', () => {
+                let defaultShouldShowEmptyState =  stackedAreaChart.yAxisLabelOffset(),
+                    testShouldShowEmptyState = true,
+                    newShouldShowEmptyState;
+
+                stackedAreaChart.yAxisLabelOffset(testShouldShowEmptyState);
+                newShouldShowEmptyState = stackedAreaChart.yAxisLabelOffset();
+
+                expect(defaultShouldShowEmptyState).not.toBe(newShouldShowEmptyState);
+                expect(newShouldShowEmptyState).toBe(testShouldShowEmptyState);
+            });
         });
 
         describe('Aspect Ratio', function() {
