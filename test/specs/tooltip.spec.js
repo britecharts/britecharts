@@ -407,6 +407,18 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                 expect(actual).toBe(expected);
             });
 
+            it('should provide numberFormat getter and setter', () => {
+                let current = tooltipChart.numberFormat(),
+                    expected = '.2%',
+                    actual;
+
+                tooltipChart.numberFormat(expected);
+                actual = tooltipChart.numberFormat();
+
+                expect(current).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide valueLabel getter and setter', () => {
                 let defaultValueLabel = tooltipChart.valueLabel(),
                     testValueLabel = 'quantity',
