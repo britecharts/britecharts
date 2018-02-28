@@ -822,7 +822,6 @@ define(function(require) {
 
         /**
          * Gets or Sets the shouldShowEmptyState state of the chart
-         * The default value is -60
          * @param  {Boolean} _x Whether or not to set chart to empty state
          * @return {Boolean | module} Current shouldShowEmptyState or Chart module to chain calls
          * @public
