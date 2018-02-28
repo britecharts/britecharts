@@ -190,7 +190,6 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                         actual = paths[0].getAttribute('fill');
 
                         expect(actual).toEqual(expected);
-
                     });
                 });
 
