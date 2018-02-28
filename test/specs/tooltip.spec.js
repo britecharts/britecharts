@@ -372,7 +372,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                     var expected = '10,000',
                         actual;
 
-                    tooltipChart.valueFormat(',');
+                    tooltipChart.numberFormat(',');
 
                     tooltipChart.update({
                         date: '2015-08-05T07:00:00.000Z',
@@ -402,6 +402,18 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
 
                 tooltipChart.title(expected);
                 actual = tooltipChart.title();
+
+                expect(current).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide numberFormat getter and setter', () => {
+                let current = tooltipChart.numberFormat(),
+                    expected = '.2%',
+                    actual;
+
+                tooltipChart.numberFormat(expected);
+                actual = tooltipChart.numberFormat();
 
                 expect(current).not.toBe(expected);
                 expect(actual).toBe(expected);
