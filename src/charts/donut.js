@@ -96,7 +96,6 @@ define(function(require) {
             highlightedSlice,
             hasFixedHighlightedSlice = false,
 
-
             emptySliceColor = '#EFF2F5',
 
             quantityLabel = 'quantity',
