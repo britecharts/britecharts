@@ -7,8 +7,6 @@ define(function(require){
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
 
-    const NUMBER_FORMAT = null;
-
     const {axisTimeCombinations} = require('./helpers/constants');
     const {
         formatIntegerValue,
@@ -113,7 +111,7 @@ define(function(require){
             topicsOrder = [],
 
             // formats
-            numberFormat = NUMBER_FORMAT,
+            numberFormat = null,
             monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
             monthDayHourFormat = d3TimeFormat.timeFormat('%b %d, %I %p'),
             locale,

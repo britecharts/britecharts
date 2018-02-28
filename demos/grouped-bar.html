@@ -23,7 +23,6 @@ groupedBar
 container.datum(dataset.data).call(groupedBar);
 
 chartTooltip
-    .numberFormat('b') // format values to binary
     .title('Testing tooltip');
 tooltipContainer = d3.select('.metadata-group');
 tooltipContainer.datum([]).call(chartTooltip);
