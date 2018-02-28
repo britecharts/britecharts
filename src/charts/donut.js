@@ -257,7 +257,6 @@ define(function(require) {
 
             let totalQuantity = sumValues(cleanData);
 
-
             if (totalQuantity === 0) {
                 shouldShowEmptyState = true;
             }
@@ -593,7 +592,7 @@ define(function(require) {
 
         /**
          * Gets or Sets the emptySliceColor of the chart. 
-         * If shouldShowEmptyState is set to true, the chart will render 
+         * If data is mepty or shouldShowEmptyState is set to true, the chart will render 
          * an empty slice with a given color (light gray by default)
          * @param  {Object} _x emptyDataConfig object to get/set
          * @return {Object | module} Current config for when chart data is an empty array
@@ -621,7 +620,7 @@ define(function(require) {
 
         /**
          * Gets or Sets the externalRadius of the chart
-         * @param  {Number} _x              ExternalRadius number to get/set
+         * @param  {Number}                 ExternalRadius number to get/set
          * @return { (Number | Module) }    Current externalRadius or Donut Chart module to chain calls
          * @public
          */
