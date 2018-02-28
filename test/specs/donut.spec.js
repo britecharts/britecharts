@@ -174,18 +174,15 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
             });
 
-            describe('when data is empty and emptyDataConfig.showEmptySlice', () => {
+            describe('when data is empty', () => {
 
                 it('should render a single filler slice', () => {
                     let actual;
                     let expected = 1;
 
-                    let emptyDataConfig = {
-                        emptySliceColor: '#000000',
-                        showEmptySlice: true,
-                    }
+                    let emptySliceColor = '#000000';
 
-                    donutChart.emptyDataConfig(emptyDataConfig);
+                    donutChart.emptySliceColor(emptySliceColor);
                     containerFixture.datum([]).call(donutChart);
 
                     actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
@@ -198,12 +195,9 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     let actual;
                     let expected = '#000000';
 
-                    let emptyDataConfig = {
-                        emptySliceColor: expected,
-                        showEmptySlice: true,
-                    }
+                    let emptySliceColor = '#000000';
 
-                    donutChart.emptyDataConfig(emptyDataConfig);
+                    donutChart.emptySliceColor(emptySliceColor);
                     containerFixture.datum([]).call(donutChart);
 
                     let paths = containerFixture.selectAll('.donut-chart .arc path').nodes();
