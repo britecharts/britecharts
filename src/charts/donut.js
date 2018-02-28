@@ -91,6 +91,7 @@ define(function(require) {
 
             isAnimated = false,
             isEmpty = false,
+            shouldShowEmptyState = false,
 
             highlightedSliceId,
             highlightedSlice,
@@ -156,7 +157,7 @@ define(function(require) {
                 if (highlightedSliceId) {
                     initHighlightSlice();
                 }
-                if (isEmpty && emptyDataConfig.showEmptySlice) {
+                if ((isEmpty && emptyDataConfig.showEmptySlice) || shouldShowEmptyState) {
                     drawEmptySlice();
                 }
             });
@@ -818,6 +819,23 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Gets or Sets the shouldShowEmptyState state of the chart
+         * The default value is -60
+         * @param  {Boolean} _x Whether or not to set chart to empty state
+         * @return {Boolean | module} Current shouldShowEmptyState or Chart module to chain calls
+         * @public
+         * @example donutChart.shouldShowEmptyState(true)
+         */
+        exports.shouldShowEmptyState = function(_x) {
+            if (!arguments.length) {
+                return shouldShowEmptyState;
+            }
+            shouldShowEmptyState = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the width of the chart

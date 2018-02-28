@@ -1349,6 +1349,23 @@ define(function(require){
         exports.axisTimeCombinations = axisTimeCombinations;
 
         /**
+         * Gets or Sets the shouldShowEmptyState state of the chart
+         * The default value is -60
+         * @param  {Boolean} _x Whether or not to set chart to empty state
+         * @return {Boolean | module} Current shouldShowEmptyState or Chart module to chain calls
+         * @public
+         * @example stackedArea.shouldShowEmptyState(true)
+         */
+        exports.shouldShowEmptyState = function(_x) {
+            if (!arguments.length) {
+                return shouldShowEmptyState;
+            }
+            shouldShowEmptyState = _x;
+
+            return this;
+        }
+
+        /**
          * Gets or Sets the valueLabel of the chart
          * @param  {Number} _x Desired valueLabel for the graph
          * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
@@ -1482,24 +1499,6 @@ define(function(require){
 
             return this;
         }
-
-        /**
-         * Gets or Sets the shouldShowEmptyState state of the chart
-         * The default value is -60
-         * @param  {Boolean} _x Whether or not to set chart to empty state
-         * @return {Boolean | module} Current shouldShowEmptyState or Chart module to chain calls
-         * @public
-         * @example stackedArea.shouldShowEmptyState(true)
-         */
-        exports.shouldShowEmptyState = function(_x) {
-            if (!arguments.length) {
-                return shouldShowEmptyState;
-            }
-            shouldShowEmptyState = _x;
-
-            return this;
-        }
-
 
         return exports;
     };
