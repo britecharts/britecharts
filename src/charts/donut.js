@@ -17,6 +17,10 @@ define(function(require) {
     const {emptyDonutData} =require('./helpers/constants');
     const {donut} = require('./helpers/load');
 
+    const DEFAULT_LEGEND_TEXT_PARAMS = {
+        percentage: '0',
+        name: ''
+    }
 
     /**
      * @typedef DonutChartData
@@ -116,7 +120,7 @@ define(function(require) {
             colorScale,
             colorSchema = colorHelper.colorSchemas.britecharts,
 
-            centeredTextFunction = (d) => `${d.percentage}% ${d.name}`,
+            centeredTextFunction = (d = DEFAULT_LEGEND_TEXT_PARAMS) => `${d.percentage}% ${d.name}`,
 
             // utils
             storeAngle = function(d) {
@@ -325,6 +329,7 @@ define(function(require) {
          */
         function drawLegend(obj) {
             if (obj.data) {
+                let centeredTextFunctionText = centeredTextFunction(obj.data);
 
                 svg.select('.donut-text')
                     .text(() => centeredTextFunction(obj.data))
@@ -620,7 +625,7 @@ define(function(require) {
          * @public
          * @example donutChart.emptyDataConfig({showEmptySlice: true, emptySliceColor: '#000000'})
          */
-        exports.emptyDataConfig = function(_x) {
+        exports.emptyDataConfig = function (_x) {
             if (!arguments.length) {
                 return emptyDataConfig;
             }
@@ -641,7 +646,7 @@ define(function(require) {
 
         /**
          * Gets or Sets the externalRadius of the chart
-         * @param  {Number} _x              ExternalRadius number to get/set
+         * @param  {Number}                 ExternalRadius number to get/set
          * @return { (Number | Module) }    Current externalRadius or Donut Chart module to chain calls
          * @public
          */
