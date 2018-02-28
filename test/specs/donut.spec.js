@@ -504,6 +504,18 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);
                 });
+
+                it('should provide shouldShowEmptyState getter and setter', () => {
+                    let previous = donutChart.shouldShowEmptyState(),
+                        expected = true,
+                        actual;
+
+                    donutChart.shouldShowEmptyState(expected);
+                    actual = donutChart.shouldShowEmptyState();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
             });
 
             describe('when mouse events are triggered', () => {
