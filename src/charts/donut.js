@@ -265,7 +265,7 @@ define(function(require) {
                 isEmpty = true;
             }
 
-            dataWithPercentages = cleanData.map((d) => {
+            dataWithPercentages = shouldShowEmptyState ? [] : cleanData.map((d) => {
                 d.percentage = String(d.percentage || calculatePercent(d[quantityLabel], totalQuantity, percentageFormat));
 
                 return d;
