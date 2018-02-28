@@ -1,4 +1,25 @@
-2.5.1 - PATCH
+
+2.5.2 - Minor
+--------------
+Features:
+* Added customClick to Grouped and Stacked Bar Charts (dalerasrorov-eb)
+* Added title to Sparkline (dalerasrorov-eb)
+* Added yAxisLabelPadding to Line and Grouped bar charts (dalerasrorov-eb)
+* Added yAxisLabel to Stacked Area, Grouped Bar and Stacked Bar (dalerasrorov-eb)
+* Refactored Webpack configuration (amber-eb)
+* Added Touchmove events to Line and Stacked Area (dalerasrorov-eb)
+* Added Legend demo (violetlight)
+* Added highlightedEntryId to Legend chart
+
+Fixes:
+* Removed logic to figure out number of yTicks for small values on Line and Stacked Area
+* Added demo reference to demos (dalerasrorov-eb)
+* Fixed legend updates
+* Fixed Bar label updates (dalerasrorov-eb)
+* Fixed Gridlines updates on Bar, Grouped Bar and Stacked Bar charts
+
+
+2.5.1 - Patch
 --------------
 * Updating bundle paths (Golodhros)
 * Refactoring Helpers (Golodhros)
@@ -8,14 +29,14 @@
 * Feature - allow ability to configure stacked area curve (dalerasrorov-eb)
 * Feature - new Bar chart API method to highlight bars (dalerasrorov-eb)
 
-2.5.0 - MINOR
+2.5.0 - Minor
 --------------
 * Feature - ability to reverse stacks (sound-matt)
 * Feature - allow ability to switch Bar's hover behavior (dalerasrorov-eb)
 * Eased compilation requirement for ESlint and updated CHANGELOG (dalerasrorov-eb)
 * Feature - added text formatter function to Donut's API (dalerasrorov-eb)
 
-2.4.12 - PATCH
+2.4.12 - Patch
 --------------
 * Added ESlint task to webpack for demos and added critical rules (dalerasrorov-eb)
 * Eliminated mutation of data in cleanData of the Line chart (dalerasrorov-eb)
