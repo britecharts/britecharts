@@ -164,6 +164,7 @@ define(function(require){
             xAxisCustomFormat = null,
             locale,
 
+            shouldShowAllDataPoints = false,
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
             animationDuration = 1500,
@@ -246,6 +247,11 @@ define(function(require){
                     drawHoverOverlay();
                     drawVerticalMarker();
                     addMouseEvents();
+                }
+
+                shouldShowAllDataPoints = true;
+                if (shouldShowAllDataPoints) {
+                    drawAllDataPoints();
                 }
 
                 addTouchEvents();
@@ -720,6 +726,75 @@ define(function(require){
                     .attr('fill', overlayColor)
                     .style('display', 'none');
             }
+        }
+
+        function drawAllDataPoints() {
+            const nodes = paths.nodes()
+            const nodesById = nodes.reduce((acc, node) => {
+                acc[node.id] = node
+
+                return acc;
+            }, {});
+
+
+            let allTopics = dataByDate.reduce((accum, dataPoint) => {
+                const dataPointTopics = dataPoint.topics.map(topic => ({
+                    topic,
+                    node: nodesById[topic.name]
+                }));
+
+                accum = [...accum, ...dataPointTopics];
+
+                return accum;
+            }, []);
+
+            // dataPoint.topics.forEach((d, index) => {
+            //     let marker = verticalMarkerContainer
+            //                   .append('g')
+            //                     .classed('circle-container', true)
+            //                       .append('circle')
+            //                         .classed('data-point-highlighter', true)
+            //                         .attr('cx', highlightCircleSize)
+            //                         .attr('cy', 0)
+            //                         .attr('r', highlightCircleRadius)
+            //                         .style('stroke-width', highlightCircleStroke)
+            //                         .style('stroke', topicColorMap[d.name])
+            //                         .style('cursor', 'pointer')
+            //                         .on('click', function () {
+            //                             addGlowFilter(this);
+            //                             handleHighlightClick(this, d);
+            //                         })
+            //                         .on('mouseout', function () {
+            //                             removeFilter(this);
+            //                         });
+
+            let allDataPoints = svg.select('.chart-group')
+                .selectAll('circle')
+                .data(allTopics)
+                .enter()
+                  .append('circle')
+                  .classed('data-point-highlighter', true)
+                  .attr('cx', highlightCircleSize)
+                  .attr('cy', 0)
+                  .attr('r', highlightCircleRadius)
+                  .style('stroke-width', highlightCircleStroke)
+                  .style('stroke', d => topicColorMap[d.name])
+                  .style('cursor', 'pointer')
+                  .attr('transform', (d, index) => {
+                      const path = d.node;
+                      const x = xScale(new Date(d.topic.date));
+                      const y = getPathYFromX(x, path, d.name);
+
+                      return `translate(${x}, ${y})`;
+                  });
+            
+
+            
+                // const path = topicsWithNode[index].node;
+                // const x = xScale(new Date(dataPoint.topics[index].date));
+                // const y = getPathYFromX(x, path, d.name);
+
+                // allDataPoints.attr('transform', `translate( ${x}, ${y} )` );
         }
 
         /**
