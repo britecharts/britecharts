@@ -54,6 +54,7 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
             .topicLabel('values')
             .dateLabel('key')
             .nameLabel('stack')
+            .numberFormat('b')
             .title('Testing tooltip');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
