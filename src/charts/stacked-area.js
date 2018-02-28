@@ -169,6 +169,8 @@ define(function(require){
             dataSortedFormatted,
             dataSortedZeroed,
 
+            shouldShowEmptyState = false,
+
             verticalGridLines,
             horizontalGridLines,
             grid = null,
@@ -603,7 +605,9 @@ define(function(require){
          * @private
          */
         function cleanData(originalData) {
-            originalData = originalData.length === 0 ? createFakeData() : originalData;
+            originalData = shouldShowEmptyState
+                ? createFakeData()
+                : originalData;
 
             return originalData.reduce((acc, d) => {
                 d.date = castValueToType(d[dateLabel], xAxisValueType),
@@ -1495,6 +1499,39 @@ define(function(require){
 
             return value === dispatcher ? exports : value;
         };
+
+        /**
+         * Gets or Sets the shouldShowEmptyState state of the chart
+         * @param  {Boolean} _x Whether or not to set chart to empty state
+         * @return {Boolean | module} Current shouldShowEmptyState or Chart module to chain calls
+         * @public
+         * @example stackedArea.shouldShowEmptyState(true)
+         */
+        exports.shouldShowEmptyState = function (_x) {
+            if (!arguments.length) {
+                return shouldShowEmptyState;
+            }
+            shouldShowEmptyState = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the shouldShowEmptyState state of the chart
+         * The default value is -60
+         * @param  {Boolean} _x Whether or not to set chart to empty state
+         * @return {Boolean | module} Current shouldShowEmptyState or Chart module to chain calls
+         * @public
+         * @example stackedArea.shouldShowEmptyState(true)
+         */
+        exports.shouldShowEmptyState = function(_x) {
+            if (!arguments.length) {
+                return shouldShowEmptyState;
+            }
+            shouldShowEmptyState = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the valueLabel of the chart
