@@ -601,7 +601,7 @@ define(function(require) {
 
         /**
          * Gets or Sets the emptySliceColor of the chart. 
-         * If data is mepty or shouldShowEmptyState is set to true, the chart will render 
+         * If data is empty or shouldShowEmptyState is set to true, the chart will render 
          * an empty slice with a given color (light gray by default)
          * @param  {Object} _x emptyDataConfig object to get/set
          * @return {Object | module} Current config for when chart data is an empty array
