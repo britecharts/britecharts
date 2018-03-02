@@ -1,6 +1,4 @@
-2.6.0
-
-2.5.2 - Minor
+2.6.0 - Minor
 --------------
 Features:
 * Added customClick to Grouped and Stacked Bar Charts (dalerasrorov-eb)
