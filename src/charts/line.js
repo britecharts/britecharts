@@ -638,16 +638,17 @@ define(function(require){
             lines = svg.select('.chart-group').selectAll('.line')
                 .data(dataByTopic, getTopic);
 
-            paths = lines.enter()
+            paths = lines.merge(lines.enter()
               .append('g')
                 .attr('class', 'topic')
-                  .append('path')
-                    .attr('class', 'line')
-                    .attr('id', ({topic}) => topic)
-                    .attr('d', ({dates}) => topicLine(dates))
-                    .style('stroke', (d) => (
-                        dataByTopic.length === 1 ? `url(#${lineGradientId})` : getLineColor(d)
-                    ));
+              .append('path')
+                .attr('class', 'line')
+                .attr('id', ({topic}) => topic)
+                .attr('d', ({dates}) => topicLine(dates))
+                .style('stroke', (d) => (
+                    dataByTopic.length === 1 ? `url(#${lineGradientId})` : getLineColor(d)
+                ))
+            );
 
             lines
                 .exit()
