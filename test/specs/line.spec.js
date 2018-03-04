@@ -231,6 +231,16 @@ define([
 
                         expect(actual).toEqual(expected);
                     });
+
+                    it('should not throw error on mousemove', function() {
+                        let container = containerFixture.selectAll('svg'),
+                            newDataset = buildDataSet('withOneSource');
+
+                        // Need to refresh the data twice to get failure before fix
+                        containerFixture.datum(newDataset).call(lineChart);
+                        containerFixture.datum(newDataset).call(lineChart);
+                        container.dispatch('mousemove');
+                    })
                 });
             });
 
