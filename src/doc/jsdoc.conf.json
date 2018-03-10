@@ -42,7 +42,7 @@
             "type": "website",
             "image": "https://eventbrite.github.io/britecharts/img/logo-stripes-small.png",
             "site_name": "Britecharts",
-            "url": "",
+            "url": "http://eventbrite.github.io/britecharts/",
             "description": "Britecharts is a client-side reusable Charting Library based on D3.js v4 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations."
         },
         "meta": {
