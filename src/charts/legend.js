@@ -545,8 +545,8 @@ define(function(require){
 
         /**
          * Gets or Sets the unit of the value
-         * @param  {boolean} _x Desired unit
-         * @return {boolean | module} Current unit or Legend module to chain calls
+         * @param  {String} _x          Desired unit
+         * @return {String | module}    Current unit or Legend module to chain calls
          * @public
          */
         exports.unit = function(_x) {

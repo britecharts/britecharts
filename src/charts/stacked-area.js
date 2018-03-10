@@ -1075,10 +1075,10 @@ define(function(require){
 
          /**
          * Gets or Sets the area curve of the stacked area.
-         * @param {String} _x Desired curve for the stacked area, default 'monotoneX'. Other options are:
+         * @param {String} [_x='monotoneX'] Desired curve for the stacked area, default 'monotoneX'. Other options are:
          * basis, natural, linear, monotoneY, step, stepAfter, stepBefore, cardinal, and
          * catmullRom. Visit https://github.com/d3/d3-shape#curves for more information.
-         * @return { areaCurve | module } Current area curve setting or Chart module to chain calls
+         * @return {String | module} Current area curve setting or Chart module to chain calls
          * @public
          * @example stackedArea.areaCurve('step')
          */
@@ -1093,8 +1093,8 @@ define(function(require){
 
         /**
          * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
-         * @param  {Object} _x                  Opacity to get/set
-         * @return { opacity | module}          Current opacity or Area Chart module to chain calls
+         * @param  {Number} _x                  Opacity to get/set
+         * @return {Number | module}          Current opacity or Area Chart module to chain calls
          * @public
          */
         exports.areaOpacity = function(_x) {
@@ -1109,7 +1109,7 @@ define(function(require){
         /**
          * Gets or Sets the aspect ratio of the chart
          * @param  {Number} _x Desired aspect ratio for the graph
-         * @return { (Number | Module) } Current aspect ratio or Area Chart module to chain calls
+         * @return {Number | Module} Current aspect ratio or Area Chart module to chain calls
          * @public
          */
         exports.aspectRatio = function(_x) {
@@ -1122,9 +1122,17 @@ define(function(require){
         };
 
         /**
+         * Exposes the constants to be used to force the x axis to respect a certain granularity
+         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+         * @example
+         *     area.xAxisFormat(area.axisTimeCombinations.HOUR_DAY)
+         */
+        exports.axisTimeCombinations = axisTimeCombinations;
+
+        /**
          * Gets or Sets the colorSchema of the chart
          * @param  {String[]} _x Desired colorSchema for the graph
-         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
+         * @return {String[] | module} Current colorSchema or Chart module to chain calls
          * @public
          */
         exports.colorSchema = function(_x) {
@@ -1138,8 +1146,8 @@ define(function(require){
 
         /**
          * Gets or Sets the dateLabel of the chart
-         * @param  {Number} _x Desired dateLabel for the graph
-         * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
+         * @param  {String} _x Desired dateLabel for the graph
+         * @return {String | module} Current dateLabel or Chart module to chain calls
          * @public
          */
         exports.dateLabel = function(_x) {
@@ -1154,7 +1162,7 @@ define(function(require){
         /**
          * Gets or Sets the emptyDataConfig of the chart
          * @param  {Object} _x emptyDataConfig object to get/set
-         * @return { Object | module} Current config for when chart data is an empty array
+         * @return {Object | module} Current config for when chart data is an empty array
          * @public
          */
         exports.emptyDataConfig = function(_x) {
@@ -1170,7 +1178,7 @@ define(function(require){
          * Gets or Sets the grid mode.
          *
          * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
-         * @return { String | module} Current mode of the grid or Area Chart module to chain calls
+         * @return {String | module} Current mode of the grid or Area Chart module to chain calls
          * @public
          */
         exports.grid = function(_x) {
@@ -1185,7 +1193,7 @@ define(function(require){
         /**
          * Gets or Sets the height of the chart
          * @param  {Number} _x Desired width for the graph
-         * @return { height | module} Current height or Area Chart module to chain calls
+         * @return {Number | module} Current height or Area Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -1205,7 +1213,7 @@ define(function(require){
          * By default this is 'false'
          *
          * @param  {Boolean} _x Desired animation flag
-         * @return { isAnimated | module} Current isAnimated flag or Chart module
+         * @return {Boolean | module} Current isAnimated flag or Chart module
          * @public
          */
         exports.isAnimated = function(_x) {
@@ -1220,7 +1228,7 @@ define(function(require){
         /**
          * Gets or Sets the keyLabel of the chart
          * @param  {Number} _x Desired keyLabel for the graph
-         * @return { keyLabel | module} Current keyLabel or Chart module to chain calls
+         * @return {Number | module} Current keyLabel or Chart module to chain calls
          * @public
          */
         exports.keyLabel = function(_x) {
@@ -1235,7 +1243,7 @@ define(function(require){
         /**
          * Gets or Sets the margin of the chart
          * @param  {Object} _x Margin object to get/set
-         * @return { margin | module} Current margin or Area Chart module to chain calls
+         * @return {Object | module} Current margin or Area Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -1251,8 +1259,8 @@ define(function(require){
          * Gets or Sets the minimum width of the graph in order to show the tooltip
          * NOTE: This could also depend on the aspect ratio
          *
-         * @param  {Object} _x Margin object to get/set
-         * @return { tooltipThreshold | module} Current tooltipThreshold or Area Chart module to chain calls
+         * @param  {Number} _x          Minimum width of the graph
+         * @return {Number | module}    Current tooltipThreshold or Area Chart module to chain calls
          * @public
          */
         exports.tooltipThreshold = function(_x) {
@@ -1267,7 +1275,7 @@ define(function(require){
         /**
          * Pass an override for the ordering of the topics
          * @param  {String[]} _x           Array of the names of your tooltip items
-         * @return { String[] | module}    Current override order or Chart module to chain calls
+         * @return {String[] | module}    Current override order or Chart module to chain calls
          * @public
          */
         exports.topicsOrder = function(_x) {
@@ -1281,8 +1289,8 @@ define(function(require){
 
         /**
          * Gets or Sets the loading state of the chart
-         * @param  {string} markup Desired markup to show when null data
-         * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+         * @param  {String} markup Desired markup to show when null data
+         * @return {String | module} Current loading state markup or Chart module to chain calls
          * @public
          */
         exports.loadingState = function(_markup) {
@@ -1299,7 +1307,7 @@ define(function(require){
          * Feature uses Intl.DateTimeFormat, for compatability and support, refer to
          * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
          * @param  {String} _x  must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
-         * @return { (String|Module) }    Current locale or module to chain calls
+         * @return {String | Module}    Current locale or module to chain calls
          * @public
          */
         exports.locale = function(_x) {
@@ -1336,17 +1344,9 @@ define(function(require){
         };
 
         /**
-         * Exposes the constants to be used to force the x axis to respect a certain granularity
-         * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
-         * @example
-         *     area.xAxisFormat(area.axisTimeCombinations.HOUR_DAY)
-         */
-        exports.axisTimeCombinations = axisTimeCombinations;
-
-        /**
          * Gets or Sets the valueLabel of the chart
          * @param  {Number} _x Desired valueLabel for the graph
-         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+         * @return {Number | module} Current valueLabel or Chart module to chain calls
          * @public
          */
         exports.valueLabel = function(_x) {
@@ -1380,7 +1380,7 @@ define(function(require){
          * Exposes the ability to force the chart to show a certain x format
          * It requires a `xAxisFormat` of 'custom' in order to work.
          * NOTE: localization not supported
-         * @param  {String} _x              Desired format for x axis
+         * @param  {String} _x            Desired format for x axis
          * @return {String | Module}      Current format or module to chain calls
          * @public
          */
@@ -1395,7 +1395,7 @@ define(function(require){
 
         /**
          * Exposes the ability to force the chart to show a certain x axis grouping
-         * @param  {String} _x Desired format
+         * @param  {String} _x          Desired format
          * @return {String | Module}    Current format or module to chain calls
          * @public
          * @example
@@ -1415,7 +1415,7 @@ define(function(require){
          * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
          * how many and where the ticks will appear.
          *
-         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
+         * @param  {Number} _x            Desired number of x axis ticks (multiple of 2, 5 or 10)
          * @return {Number | Module}      Current number or ticks or module to chain calls
          * @public
          */
@@ -1424,22 +1424,6 @@ define(function(require){
               return xTicks;
             }
             xTicks = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets the number of ticks of the y axis on the chart
-         * (Default is 5)
-         * @param  {Number} _x          Desired vertical ticks
-         * @return {Number | module}    Current vertical ticks or Chart module to chain calls
-         * @public
-         */
-        exports.yTicks = function(_x) {
-            if (!arguments.length) {
-                return yTicks;
-            }
-            yTicks = _x;
 
             return this;
         };
@@ -1464,8 +1448,8 @@ define(function(require){
          * Gets or Sets the offset of the yAxisLabel of the chart.
          * The method accepts both positive and negative values.
          * The default value is -60
-         * @param  {Integer} _x Desired offset for the label
-         * @return {Integer | module} Current yAxisLabelOffset or Chart module to chain calls
+         * @param  {Number} [_x=-60] Desired offset for the label
+         * @return {Number | module} Current yAxisLabelOffset or Chart module to chain calls
          * @public
          * @example stackedArea.yAxisLabelOffset(-55)
          */
@@ -1476,8 +1460,23 @@ define(function(require){
             yAxisLabelOffset = _x;
 
             return this;
-        }
+        };
 
+        /**
+         * Gets or Sets the number of ticks of the y axis on the chart
+         * (Default is 5)
+         * @param  {Number} [_x=5]      Desired vertical ticks
+         * @return {Number | module}    Current vertical ticks or Chart module to chain calls
+         * @public
+         */
+        exports.yTicks = function (_x) {
+            if (!arguments.length) {
+                return yTicks;
+            }
+            yTicks = _x;
+
+            return this;
+        };
 
         return exports;
     };

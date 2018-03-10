@@ -1014,8 +1014,8 @@ define(function (require) {
          * Gets or Sets the minimum width of the graph in order to show the tooltip
          * NOTE: This could also depend on the aspect ratio
          *
-         * @param  {Object} _x Margin object to get/set
-         * @return { tooltipThreshold | module} Current tooltipThreshold or Area Chart module to chain calls
+         * @param  {Number} [_x=480] Minimum width of chart to show the tooltip
+         * @return {Number | module} Current tooltipThreshold or Area Chart module to chain calls
          * @public
          */
         exports.tooltipThreshold = function (_x) {
@@ -1030,7 +1030,7 @@ define(function (require) {
         /**
          * Gets or Sets the valueLabel of the chart
          * @param  {Number} _x Desired valueLabel for the graph
-         * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
+         * @return {Number | module} Current valueLabel or Chart module to chain calls
          * @public
          */
         exports.valueLabel = function (_x) {
@@ -1045,7 +1045,7 @@ define(function (require) {
         /**
          * Gets or Sets the valueLabelFormat of the chart
          * @param  {String[]} _x Desired valueLabelFormat for the graph
-         * @return { valueLabelFormat | module} Current valueLabelFormat or Chart module to chain calls
+         * @return {String[] | module} Current valueLabelFormat or Chart module to chain calls
          * @public
          */
         exports.valueLabelFormat = function (_x) {
@@ -1060,7 +1060,7 @@ define(function (require) {
         /**
          * Gets or Sets the width of the chart
          * @param  {Number} _x Desired width for the graph
-         * @return { width | module} Current width or Area Chart module to chain calls
+         * @return {Number | module} Current width or Area Chart module to chain calls
          * @public
          */
         exports.width = function (_x) {
@@ -1110,8 +1110,8 @@ define(function (require) {
          * Gets or Sets the offset of the yAxisLabel of the chart.
          * The method accepts both positive and negative values.
          * The default value is -60
-         * @param  {Integer} _x Desired offset for the label
-         * @return {Integer | module} Current yAxisLabelOffset or Chart module to chain calls
+         * @param  {Number} _x Desired offset for the label
+         * @return {Number | module} Current yAxisLabelOffset or Chart module to chain calls
          * @public
          * @example groupedBar.yAxisLabelOffset(-55)
          */
