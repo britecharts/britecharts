@@ -45,15 +45,25 @@
         <link rel="icon" type="image/png" href="img/icons/favicon-16x16.png" sizes="16x16">
 
         <?js if (env.conf.templates.openGraph) { ?>
+            <!-- Google / Search Engine Tags -->
+            <meta itemprop="name" content="<?js= env.conf.templates.openGraph.title ?>">
+            <meta itemprop="description" content="<?js= env.conf.templates.openGraph.description ?>">
+            <meta itemprop="image" content="<?js= env.conf.templates.openGraph.image ?>">
+
+            <!-- Facebook Meta Tags -->
             <meta property="og:title" content="<?js= env.conf.templates.openGraph.title ?>"/>
             <meta property="og:type" content="<?js= env.conf.templates.openGraph.type ?>"/>
             <meta property="og:image" content="<?js= env.conf.templates.openGraph.image ?>"/>
             <?js if (env.conf.templates.openGraph.site_name) { ?><meta property="og:site_name" content="<?js= env.conf.templates.openGraph.site_name ?>"/><?js } ?>
             <meta property="og:url" content="<?js= env.conf.templates.openGraph.url ?>"/>
+            <meta property="og:description" content="<?js= env.conf.templates.openGraph.description ?>">
 
-            <meta name="twitter:card" content="summary" />
+            <!-- Twitter Meta Tags -->
+            <meta name="twitter:card" content="summary_large_image">
             <meta name="twitter:site" content="@britecharts" />
+            <meta name="twitter:title" content="<?js= env.conf.templates.openGraph.title ?>">
             <meta name="twitter:description" content="<?js= env.conf.templates.openGraph.description ?>" />
+            <meta name="twitter:image" content="<?js= env.conf.templates.openGraph.image ?>">
         <?js } ?>
 
         <!--[if lt IE 9]>
