@@ -1,9 +1,7 @@
 define([
-    'underscore',
-    'jquery',
     'd3',
     'helpers/grid'
-], function(_, $, d3, grid) {
+], function(d3, grid) {
     'use strict';
 
     describe('Grid helper', () => {
@@ -34,11 +32,40 @@ define([
                 scale = d3.scaleLinear();
                 gridH = grid.gridHorizontal(scale);
             });
-
+            
             it('should return a generator function from the constructor', () => {
                 expect(typeof gridH === 'function').toBeTruthy();
             });
 
+            describe('on render with selection', () => {
+                beforeEach(() => {
+                    container.call(gridH);
+                });
+
+                it('should render a container group with the correct classes when passed a selection', () => {
+                    let expected = 1,
+                        actual = container.selectAll('g.grid.horizontal').nodes().length;
+    
+                    expect(actual).toBe(expected);
+                });
+            });
+
+            describe('on render with transition', () => {
+                let transition;
+
+                beforeEach(() => {
+                    transition = container.transition();
+                    transition.call(gridH);
+                });
+
+                it('should render the container when passed a transition', () => {
+                    let expected = 1,
+                        actual = container.selectAll('g.grid.horizontal').nodes().length;
+      
+                    expect(actual).toBe(expected);
+                });
+            });
+            
             describe('API', () => {
                 it('should have a scale accessor that returns undefined if nothing passed to constructor', () => {
                     expect(grid.gridHorizontal().scale()).toBe(undefined);
@@ -89,7 +116,6 @@ define([
                     expect(gridH.hideEdges()).toBe(next);
                 });
 
-                // TODO: What should default value be? >> null
                 it('should have a ticks accessor that defaults to null', () => {
                     let previous = null,
                         next = 5;
