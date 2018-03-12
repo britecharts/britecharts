@@ -2,6 +2,7 @@ define(function(require) {
     'use strict';
 
     const d3Scale = require('d3-scale');
+    const classArray = require('./classes').classArray;
 
     // Opacity for fade in/out
     const EPSILON = 1e-6;
@@ -33,10 +34,16 @@ define(function(require) {
             offsetEnd = 0,
             hideEdges = false,
             ticks = null,
-            tickValues = null;
+            tickValues = null,
+            
+            classArr = classArray('grid', orient);
 
         function gridBase(context) {
-            return 'gridBase';
+            let selection = context.selection ? context.selection() : context,
+                initContainer = selection.selectAll(classArr.asSelector()).data([null]),
+                container = initContainer.merge(
+                   initContainer.enter().append('g').attr('class', classArr.asList())
+                );
         }
 
         // API
