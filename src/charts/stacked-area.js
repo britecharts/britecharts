@@ -163,6 +163,8 @@ define(function(require){
             dataByDateFormatted,
             dataByDateZeroed,
 
+            shouldShowEmptyState = false,
+
             verticalGridLines,
             horizontalGridLines,
             grid = null,
@@ -521,7 +523,9 @@ define(function(require){
          * @private
          */
         function cleanData(originalData) {
-            originalData = originalData.length === 0 ? createFakeData() : originalData;
+            originalData = shouldShowEmptyState
+                ? createFakeData()
+                : originalData;
 
             return originalData.reduce((acc, d) => {
                 d.date = new Date(d[dateLabel]),
@@ -1344,6 +1348,22 @@ define(function(require){
         exports.axisTimeCombinations = axisTimeCombinations;
 
         /**
+         * Gets or Sets the shouldShowEmptyState state of the chart
+         * @param  {Boolean} _x Whether or not to set chart to empty state
+         * @return {Boolean | module} Current shouldShowEmptyState or Chart module to chain calls
+         * @public
+         * @example stackedArea.shouldShowEmptyState(true)
+         */
+        exports.shouldShowEmptyState = function(_x) {
+            if (!arguments.length) {
+                return shouldShowEmptyState;
+            }
+            shouldShowEmptyState = _x;
+
+            return this;
+        }
+
+        /**
          * Gets or Sets the valueLabel of the chart
          * @param  {Number} _x Desired valueLabel for the graph
          * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
@@ -1477,7 +1497,6 @@ define(function(require){
 
             return this;
         }
-
 
         return exports;
     };

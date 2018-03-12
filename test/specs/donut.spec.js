@@ -112,23 +112,20 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
             });
 
 
-            describe('when all sections are zero and emptyDataConfig.showEmptySlice', () => {
+            describe('when all sections are zero', () => {
 
                 it('percentage label should be 0%', () => {
                     let actual;
-                    let expected = '0.0%';
+                    let expected = '0%';
 
-                    let emptyDataConfig = {
-                        emptySliceColor: '#EFF2F5',
-                        showEmptySlice: true,
-                    }
+                    let emptySliceColor = '#EFF2F5';
 
                     let dataset = aTestDataSet()
                         .withAllTopicsAtZero()
                         .build();
 
-                    donutChart.highlightSliceById(11)
-                    donutChart.emptyDataConfig(emptyDataConfig);
+                    donutChart.highlightSliceById(11);
+                    donutChart.emptySliceColor(emptySliceColor);
                     containerFixture.datum(dataset).call(donutChart);
 
                     let textNodes = containerFixture.select('text.donut-text .value').nodes();
@@ -143,16 +140,13 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     let actual;
                     let expected = 1;
 
-                    let emptyDataConfig = {
-                        emptySliceColor: '#EFF2F5',
-                        showEmptySlice: true,
-                    }
+                    let emptySliceColor = '#EFF2F5';
 
                     let dataset = aTestDataSet()
                         .withAllTopicsAtZero()
                         .build();
 
-                    donutChart.emptyDataConfig(emptyDataConfig);
+                    donutChart.emptySliceColor(emptySliceColor);
                     containerFixture.datum(dataset).call(donutChart);
                     actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
 
@@ -160,18 +154,14 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
                 });
 
-                it('should fill the empty slice with emptyDataConfig.emptySliceColor', () => {
+                it('should fill the empty slice with emptySliceColor', () => {
                     let actual;
                     let expected = '#000000';
-                    let emptyDataConfig = {
-                        emptySliceColor: expected,
-                        showEmptySlice: true,
-                    }
                     let dataset = aTestDataSet()
                         .withAllTopicsAtZero()
                         .build();
 
-                    donutChart.emptyDataConfig(emptyDataConfig);
+                    donutChart.emptySliceColor(expected);
                     containerFixture.datum(dataset).call(donutChart);
 
                     let paths = containerFixture.selectAll('.donut-chart .arc path').nodes();
@@ -184,18 +174,15 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
             });
 
-            describe('when data is empty and emptyDataConfig.showEmptySlice', () => {
+            describe('when data is empty', () => {
 
                 it('should render a single filler slice', () => {
                     let actual;
                     let expected = 1;
 
-                    let emptyDataConfig = {
-                        emptySliceColor: '#000000',
-                        showEmptySlice: true,
-                    }
+                    let emptySliceColor = '#000000';
 
-                    donutChart.emptyDataConfig(emptyDataConfig);
+                    donutChart.emptySliceColor(emptySliceColor);
                     containerFixture.datum([]).call(donutChart);
 
                     actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
@@ -208,12 +195,9 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     let actual;
                     let expected = '#000000';
 
-                    let emptyDataConfig = {
-                        emptySliceColor: expected,
-                        showEmptySlice: true,
-                    }
+                    let emptySliceColor = '#000000';
 
-                    donutChart.emptyDataConfig(emptyDataConfig);
+                    donutChart.emptySliceColor(emptySliceColor);
                     containerFixture.datum([]).call(donutChart);
 
                     let paths = containerFixture.selectAll('.donut-chart .arc path').nodes();
@@ -500,6 +484,18 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
                     donutChart.numberFormat(expected);
                     actual = donutChart.numberFormat();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide shouldShowEmptyState getter and setter', () => {
+                    let previous = donutChart.shouldShowEmptyState(),
+                        expected = true,
+                        actual;
+
+                    donutChart.shouldShowEmptyState(expected);
+                    actual = donutChart.shouldShowEmptyState();
 
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);

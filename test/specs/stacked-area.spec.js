@@ -179,8 +179,8 @@ define([
         });
 
 
-        it('should be able to render even when data is length 0', () => {
-            expect(() => containerFixture.datum([]).call(stackedAreaChart)).not.toThrow();
+        it('should not be able to render when data is length 0', () => {
+            expect(() => containerFixture.datum([]).call(stackedAreaChart)).toThrow();
         });
 
         // Add test for highlight circles events
@@ -517,6 +517,18 @@ define([
 
                 expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
                 expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
+            });
+
+            it('should provide shouldShowEmptyState getter and setter', () => {
+                let defaultShouldShowEmptyState =  stackedAreaChart.yAxisLabelOffset(),
+                    testShouldShowEmptyState = true,
+                    newShouldShowEmptyState;
+
+                stackedAreaChart.yAxisLabelOffset(testShouldShowEmptyState);
+                newShouldShowEmptyState = stackedAreaChart.yAxisLabelOffset();
+
+                expect(defaultShouldShowEmptyState).not.toBe(newShouldShowEmptyState);
+                expect(newShouldShowEmptyState).toBe(testShouldShowEmptyState);
             });
         });
 

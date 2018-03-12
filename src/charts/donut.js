@@ -17,6 +17,10 @@ define(function(require) {
     const {emptyDonutData} =require('./helpers/constants');
     const {donut} = require('./helpers/load');
 
+    const DEFAULT_LEGEND_TEXT_PARAMS = {
+        percentage: '0',
+        name: ''
+    }
 
     /**
      * @typedef DonutChartData
@@ -90,16 +94,13 @@ define(function(require) {
             svg,
 
             isAnimated = false,
-            isEmpty = false,
+            shouldShowEmptyState = false,
 
             highlightedSliceId,
             highlightedSlice,
             hasFixedHighlightedSlice = false,
 
-            emptyDataConfig = {
-                emptySliceColor: '#EFF2F5',
-                showEmptySlice: false
-            },
+            emptySliceColor = '#EFF2F5',
 
             quantityLabel = 'quantity',
             nameLabel = 'name',
@@ -112,7 +113,7 @@ define(function(require) {
             colorScale,
             colorSchema = colorHelper.colorSchemas.britecharts,
 
-            centeredTextFunction = (d) => `${d.percentage}% ${d.name}`,
+            centeredTextFunction = (d = DEFAULT_LEGEND_TEXT_PARAMS) => `${d.percentage}% ${d.name}`,
 
             // utils
             storeAngle = function(d) {
@@ -156,7 +157,7 @@ define(function(require) {
                 if (highlightedSliceId) {
                     initHighlightSlice();
                 }
-                if (isEmpty && emptyDataConfig.showEmptySlice) {
+                if (shouldShowEmptyState) {
                     drawEmptySlice();
                 }
             });
@@ -260,8 +261,8 @@ define(function(require) {
 
             let totalQuantity = sumValues(cleanData);
 
-            if (totalQuantity === 0 && emptyDataConfig.showEmptySlice) {
-                isEmpty = true;
+            if (totalQuantity === 0) {
+                shouldShowEmptyState = true;
             }
 
             dataWithPercentages = cleanData.map((d) => {
@@ -303,7 +304,7 @@ define(function(require) {
                   .append('path');
 
             newSlices.merge(slices)
-                .attr('fill', emptyDataConfig.emptySliceColor)
+                .attr('fill', emptySliceColor)
                 .attr('d', shape)
                 .transition()
                 .ease(ease)
@@ -321,9 +322,14 @@ define(function(require) {
          */
         function drawLegend(obj) {
             if (obj.data) {
+                let centeredTextFunctionText = centeredTextFunction(obj.data);
+
+                if (shouldShowEmptyState) {
+                    centeredTextFunctionText = centeredTextFunction();
+                }
 
                 svg.select('.donut-text')
-                    .text(() => centeredTextFunction(obj.data))
+                    .text(centeredTextFunctionText)
                     .attr('dy', '.2em')
                     .attr('text-anchor', 'middle');
 
@@ -594,19 +600,19 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the emptyDataConfig of the chart. If set and data is empty (quantity
-         * adds up to zero or there are no entries), the chart will render an empty slice
-         * with a given color (light gray by default)
+         * Gets or Sets the emptySliceColor of the chart. 
+         * If data is empty or shouldShowEmptyState is set to true, the chart will render 
+         * an empty slice with a given color (light gray by default)
          * @param  {Object} _x emptyDataConfig object to get/set
-         * @return { Object | module} Current config for when chart data is an empty array
+         * @return {Object | module} Current config for when chart data is an empty array
          * @public
-         * @example donutChart.emptyDataConfig({showEmptySlice: true, emptySliceColor: '#000000'})
+         * @example donutChart.emptySliceColor('#000000')
          */
-        exports.emptyDataConfig = function(_x) {
+        exports.emptySliceColor = function(_x) {
             if (!arguments.length) {
-                return emptyDataConfig;
+                return emptySliceColor;
             }
-            emptyDataConfig = _x;
+            emptySliceColor = _x;
 
             return this;
         };
@@ -623,7 +629,7 @@ define(function(require) {
 
         /**
          * Gets or Sets the externalRadius of the chart
-         * @param  {Number} _x              ExternalRadius number to get/set
+         * @param  {Number}                 ExternalRadius number to get/set
          * @return { (Number | Module) }    Current externalRadius or Donut Chart module to chain calls
          * @public
          */
@@ -818,6 +824,22 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Gets or Sets the shouldShowEmptyState state of the chart
+         * @param  {Boolean} _x Whether or not to set chart to empty state
+         * @return {Boolean | module} Current shouldShowEmptyState or Chart module to chain calls
+         * @public
+         * @example donutChart.shouldShowEmptyState(true)
+         */
+        exports.shouldShowEmptyState = function(_x) {
+            if (!arguments.length) {
+                return shouldShowEmptyState;
+            }
+            shouldShowEmptyState = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the width of the chart
