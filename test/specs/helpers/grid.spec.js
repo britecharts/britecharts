@@ -234,20 +234,53 @@ define([
                 });
             });
 
-            // TODO: Consider adding tests to work out the positioning animation
+            // TODO: Consider adding tests to confirm correct positioning animation
             describe('on render with transition', () => {
                 let transition;
 
                 beforeEach(() => {
-                    transition = container.transition();
-                    transition.call(gridH);
+                    transition = container.transition().duration(1);
                 });
 
-                it('should render the container when passed a transition', () => {
-                    let expected = 1,
-                        actual = container.selectAll('g.grid.horizontal').nodes().length;
+                it('should render the container and lines when passed a transition', () => {
+                    let tickValues = [0, 1, 2],
+                        expectedContainer = 1;
+    
+                    transition.call(gridH.tickValues(tickValues));
       
-                    expect(actual).toBe(expected);
+                    expect(container.selectAll('g.grid.horizontal').nodes().length).toBe(expectedContainer);
+                    expect(lineNodes().length).toBe(tickValues.length);
+                });
+
+                it('should add new lines on animated re-render', done => {
+                    let newActual,
+                        oldTicks = [0, 1],
+                        newTicks = [0, 1, 2, 3];
+
+                    container.call(gridH.tickValues(oldTicks));
+                    transition.on('end', () => {
+                        // Timeout captures state after rendering is complete
+                        setTimeout(() => {
+                            newActual = lineNodes().length;
+                            expect(newActual).toEqual(newTicks.length);
+                            done();
+                        });
+                    }).call(gridH.tickValues(newTicks));
+                });
+
+                it('should remove unused lines on animated re-render', done => {
+                    let newActual,
+                        oldTicks = [0, 1, 2, 3],
+                        newTicks = [0, 1];
+
+                    container.call(gridH.tickValues(oldTicks));
+                    transition.on('end', () => {
+                        setTimeout(() => {
+                            newActual = lineNodes().length;
+                            expect(newActual).toEqual(newTicks.length);
+                            done();
+                        });
+                    }).call(gridH.tickValues(newTicks));
                 });
             });
             

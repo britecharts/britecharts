@@ -55,6 +55,20 @@ define(function(require) {
 
             line = line.merge(lineEnter);
 
+            if (context !== selection) {
+                line = line.transition(context);
+
+                lineExit = lineExit.transition(context)
+                    .attr('opacity', EPSILON)
+                    .attr(y + '1', function(d) { return isFinite(d = position(d)) ? d : this.getAttribute(y + '1') })
+                    .attr(y + '2', function(d) { return isFinite(d = position(d)) ? d : this.getAttribute(y + '2') });
+
+                lineEnter = lineEnter
+                    .attr('opacity', EPSILON)
+                    .attr(y + '1', function(d) { let p = this.parentNode.__grid; return p && isFinite(p = p(d)) ? p : position(d); })
+                    .attr(y + '2', function(d) { let p = this.parentNode.__grid; return p && isFinite(p = p(d)) ? p : position(d); });
+            }
+
             lineExit.remove();
 
             line
@@ -63,6 +77,11 @@ define(function(require) {
                 .attr(x + '2', +range[range.length - 1] + k * offsetEnd)
                 .attr(y + '1', d => position(d))
                 .attr(y + '2', d => position(d));
+
+            // Attach the positioning function to the container 
+            // so it can be referenced in future animations
+            // cannot use arrow function as this must be bound correctly
+            container.each(function() { this.__grid = position; });
         }
 
         // HELPERS
