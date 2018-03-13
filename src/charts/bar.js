@@ -732,6 +732,7 @@ define(function(require) {
          * If true, adds labels at the end of the bars
          * @param  {Boolean} [_x=false]
          * @return {Boolean | module}    Current value of enableLabels or Chart module to chain calls
+         * @public
          */
         exports.enableLabels = function(_x) {
             if (!arguments.length) {
@@ -865,6 +866,7 @@ define(function(require) {
          * Offset between end of bar and start of the percentage bars
          * @param  {number} [_x=7] margin offset from end of bar
          * @return {number | module}    Current offset or Chart module to chain calls
+         * @public
          */
         exports.labelsMargin = function(_x) {
             if (!arguments.length) {
@@ -894,6 +896,7 @@ define(function(require) {
          * Get or Sets the labels text size
          * @param  {number} [_x=12] label font size
          * @return {number | module}    Current text size or Chart module to chain calls
+         * @public
          */
         exports.labelsSize = function(_x) {
             if (!arguments.length) {
@@ -1076,6 +1079,7 @@ define(function(require) {
          * (Default 10)
          * @param  {Number} _x          Space between y axis and chart
          * @return {Number| module}     Current value of yAxisPaddingBetweenChart or Chart module to chain calls
+         * @public
          */
         exports.yAxisPaddingBetweenChart = function(_x) {
             if (!arguments.length) {
