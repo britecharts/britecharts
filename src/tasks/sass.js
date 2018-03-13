@@ -10,7 +10,7 @@ module.exports = function (grunt) {
                 dest: './dist/css',
                 ext: '.css'
             },
-            // Distributed bundle wit hall the styles
+            // Distributed bundle with all the styles
             // to allow quick set up for users
             {
                 expand: true,
