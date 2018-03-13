@@ -356,7 +356,36 @@ define([
 
         // TODO: Duplicate gridHorizontal tests for vertical
         describe('gridVertical', () => {
+            let scale, tickValues, range, expected, gridV;
+            
+            beforeEach(() => {
+                scale = d3.scaleLinear().domain([0, 2]).range([0, 100]);
+                tickValues = [0, 1, 2];
+                range = [0, 50];
+                expected = [
+                    { x1: 0.5, x2: 0.5, y1: 0, y2: 50 },
+                    { x1: 50.5, x2: 50.5, y1: 0, y2: 50 },
+                    { x1: 100.5, x2: 100.5, y1: 0, y2: 50 }
+                ];
+                gridV = grid.gridVertical(scale).tickValues(tickValues).range(range);
+            });
 
+            it('should render a container group with correct classes and lines', () => {
+                container.call(gridV);
+
+                let expectedContainer = 1,
+                    actualContainer = container.selectAll('g.grid.vertical').nodes().length,
+                    expectedLines = tickValues.length,
+                    actualLines = lineNodes().length;
+
+                expect(actualContainer).toBe(expectedContainer);
+                expect(actualLines).toBe(expectedLines);
+            });
+
+            it('should position the lines correctly', () => {
+                container.call(gridV);
+                expect(actualLineCoords()).toEqual(expected);
+            });
         });
 
         // TODO: Test 2d grid
