@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <script src="js/d3-selection.min.js"></script>
+    <script src="js/britecharts.js"></script>
+
+    <link rel="stylesheet" href="css/britecharts.css">
+    
+    <title>Britecharts Showcase</title>
+</head>
+<body>
+    <script>        
+        const container = d3.select('body');
+        const barChart = britecharts.bar();
+        const colors = britecharts.colors;
+        const dataset = [
+            {
+                "name": "A",
+                "value": 0.08167
+            },
+            {
+                "name": "B",
+                "value": 0.01492
+            },
+            {
+                "name": "C",
+                "value": 0.02782
+            },
+            {
+                "name": "D",
+                "value": 0.04253
+            },
+            {
+                "name": "E",
+                "value": 0.12702
+            },
+            {
+                "name": "F",
+                "value": 0.02288
+            }
+        ];
+
+        barChart
+            .width(500)
+            .height(300)
+            .margin({
+                left: 120,
+                right: 20,
+                top: 20,
+                bottom: 20
+            })
+            .percentageAxisToMaxRatio(1.3)
+            .isHorizontal(true)
+            .isAnimated(true)
+            .colorSchema(colors.colorSchemas.britecharts);
+
+
+        container.datum(dataset).call(barChart);
+
+    </script>
+
+</body>
+</html>

@@ -10,6 +10,15 @@ module.exports = function (grunt) {
                 dest: './dist/css',
                 ext: '.css'
             },
+            // Distributed bundle wit hall the styles
+            // to allow quick set up for users
+            {
+                expand: true,
+                cwd: 'src/styles/',
+                src: ['britecharts.scss'],
+                dest: './min/css',
+                ext: '.css'
+            },
             // Common bundle including axes and gridlines
             // specified on common.scss
             {
