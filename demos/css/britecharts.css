@@ -5,7 +5,8 @@
 
 .britechart {
   font-family: 'Karla', sans-serif;
-  -webkit-font-smoothing: antialiased; }
+  -webkit-font-smoothing: antialiased;
+  font-size: 10px; }
 
 .line-load-state .chart-filter,
 .donut-load-state .chart-filter,
@@ -40,14 +41,17 @@
   shape-rendering: crispEdges; }
 
 .tick text {
-  font-size: 1rem;
+  font-size: 10px;
   fill: #666A73;
   padding: 12px; }
 
 .y-axis-label,
 .x-axis-label {
-  font-size: 1rem;
+  font-size: 12px;
   fill: #ADB0B6; }
+
+.britechart-tooltip {
+  font-size: 12px; }
 
 .vertical-marker-container .vertical-marker {
   stroke: #D2D6DF;
@@ -64,18 +68,34 @@
   stroke-width: 1;
   border-radius: 2px; }
 
-.britechart-legend .legend-entry.is-faded .legend-entry-name,
-.britechart-legend .legend-entry.is-faded .legend-entry-value,
-.britechart-legend .legend-entry.is-faded .legend-circle {
-  opacity: 0.97;
-  transition: opacity .2s ease-out;
-  -moz-transition: opacity .2s ease-out;
-  -webkit-transition: opacity .2s ease-out; }
+.britechart-mini-tooltip .mini-tooltip-title,
+.britechart-mini-tooltip .mini-tooltip-name {
+  font-size: 14px; }
 
-.britechart-legend .legend-entry.is-faded .legend-entry-name,
-.britechart-legend .legend-entry.is-faded .legend-entry-value,
-.britechart-legend .legend-entry.is-faded .legend-circle {
-  opacity: 0.2; }
+.britechart-mini-tooltip .mini-tooltip-value {
+  font-size: 27px; }
+
+.britechart-legend .legend-entry {
+  font-size: 12px; }
+  .britechart-legend .legend-entry .legend-entry-name,
+  .britechart-legend .legend-entry .legend-entry-value,
+  .britechart-legend .legend-entry .legend-circle {
+    font-size: 1em !important;
+    letter-spacing: 0.5px; }
+  .britechart-legend .legend-entry .legend-entry-value {
+    text-anchor: end;
+    letter-spacing: 0.8px; }
+  .britechart-legend .legend-entry.is-faded .legend-entry-name,
+  .britechart-legend .legend-entry.is-faded .legend-entry-value,
+  .britechart-legend .legend-entry.is-faded .legend-circle {
+    opacity: 0.97;
+    transition: opacity .2s ease-out;
+    -moz-transition: opacity .2s ease-out;
+    -webkit-transition: opacity .2s ease-out; }
+  .britechart-legend .legend-entry.is-faded .legend-entry-name,
+  .britechart-legend .legend-entry.is-faded .legend-entry-value,
+  .britechart-legend .legend-entry.is-faded .legend-circle {
+    opacity: 0.2; }
 
 .bar-chart .bar {
   shape-rendering: crispEdges; }

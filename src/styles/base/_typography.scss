@@ -1,3 +1,5 @@
+@import "../helpers/variables";
+
 @font-face {
     font-family: 'Karla', sans-serif;
     src: url("https://fonts.googleapis.com/css?family=Karla") format("opentype");
@@ -7,4 +9,5 @@
 .britechart {
     font-family: 'Karla', sans-serif;
     -webkit-font-smoothing: antialiased;
+    font-size: $text-size-base;
 }

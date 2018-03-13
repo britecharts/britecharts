@@ -1,24 +1,47 @@
-$marker-width: 1;
-$tooltip-width: 1;
+@import "../helpers/variables";
+
+$marker-stroke-width: 1;
+$marker-stroke-width-highlight: 2;
+
+$tooltip-stroke-width: 1;
+$tooltip-border-radius: 2px;
+$tooltip-value-text-size: 27px;
 
 // Tooltip Container
+.britechart-tooltip {
+    font-size: $text-size-medium;
+}
+
+// Vertical Marker Container
 .vertical-marker-container {
     .vertical-marker {
         stroke: $grey-300;
-        stroke-width: $marker-width;
+        stroke-width: $marker-stroke-width;
         fill: none;
     }
     .data-point-highlighter {
         fill: $white;
-        stroke-width: 2;
+        stroke-width: $marker-stroke-width-highlight;
     }
 }
 
 // Tooltip
+// TODO: Currently unused. Consider removing in refactoring for #113.
 .tooltip-background {
     fill: rgba($white, 0.97);
     stroke: $grey-300;
-    stroke-width: $tooltip-width;
-    border-radius: 2px;
+    stroke-width: $tooltip-stroke-width;
+    border-radius: $tooltip-border-radius;
 }
 
+// Mini-Tooltip
+.britechart-mini-tooltip {
+    .mini-tooltip-title,
+    .mini-tooltip-name {
+        font-size: $text-size-large;
+    }
+
+    .mini-tooltip-value {
+        font-size: $tooltip-value-text-size;
+    }
+}

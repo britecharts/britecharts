@@ -105,6 +105,21 @@ define([
             });
         });
 
+        describe('font size', () => {
+
+            it('should return the font-size of a g element when set on parent', () => {
+                let fontSize = 20;
+
+                d3.select('.test-container')
+                    .style('font-size', `${fontSize}px`)
+                  .append('g');
+
+                let testNode = d3.select('.test-container g').node();
+
+                expect(textHelper.getFontSize(testNode)).toEqual(fontSize);
+            });
+        });
+
         describe('number', () => {
 
             it('should return true if its an integer', () => {
