@@ -1,8 +1,8 @@
 define(function(require) {
     'use strict';
 
-    const d3Scale = require('d3-scale');
-    const classArray = require('./classes').classArray;
+    const { scaleLinear } = require('d3-scale');
+    const { classArray } = require('./classes');
 
     // Opacity for fade in/out
     const EPSILON = 1e-6;
@@ -36,14 +36,53 @@ define(function(require) {
             ticks = null,
             tickValues = null,
             
-            classArr = classArray('grid', orient);
+            classArr = classArray('grid', orient),
+            x = orient === DIR.H ? 'x' : 'y',
+            y = orient === DIR.H ? 'y' : 'x';
 
         function gridBase(context) {
-            let selection = context.selection ? context.selection() : context,
+            let values = getValues(),
+                position = (scale.bandwidth ? center : number)(scale.copy()),
+                k = range[range.length - 1] >= range[0]? 1 : -1,
+                selection = context.selection ? context.selection() : context,
                 initContainer = selection.selectAll(classArr.asSelector()).data([null]),
                 container = initContainer.merge(
                    initContainer.enter().append('g').attr('class', classArr.asList())
-                );
+                ),
+                line = container.selectAll('line').data(values, scale).order(),
+                lineExit = line.exit(),
+                lineEnter = line.enter().append('line').attr('stroke', '#000');
+
+            line = line.merge(lineEnter);
+
+            lineExit.remove();
+
+            line
+                .attr('opacity', 1)
+                .attr(x + '1', +range[0] - k * offsetStart)
+                .attr(x + '2', +range[range.length - 1] + k * offsetEnd)
+                .attr(y + '1', d => position(d))
+                .attr(y + '2', d => position(d));
+        }
+
+        // HELPERS
+
+        function getValues() {
+            let hideFirst = hideEdges === true || hideEdges === 'both' || hideEdges === 'first',
+                hideLast = hideEdges === true || hideEdges === 'both' || hideEdges === 'last',
+                values = tickValues === null ? scaleTicks() : tickValues.slice();
+
+            if (hideFirst) values.shift();
+            if (hideLast) values.pop();
+
+            return values;
+        }
+
+        function scaleTicks() {
+            return (scale.ticks 
+                ? scale.ticks.apply(scale, ticks ? [ticks] : []) 
+                : scale.domain()
+            ).slice();
         }
 
         // API
