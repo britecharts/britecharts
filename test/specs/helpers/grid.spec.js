@@ -4,8 +4,22 @@ define([
 ], function(d3, grid) {
     'use strict';
 
+    function extractLineCoords(el) {
+        el = d3.select(el);
+
+        return {
+            x1: +el.attr('x1'),
+            x2: +el.attr('x2'),
+            y1: +el.attr('y1'),
+            y2: +el.attr('y2')
+        }; 
+    }
+
     describe('Grid helper', () => {
-        let f, container;
+        let f,
+            container,
+            lineNodes = () => container.selectAll('.grid line').nodes(),
+            actualLineCoords = () => lineNodes().map(extractLineCoords);
 
         beforeEach(() => {
             f = jasmine.getFixtures();
@@ -23,13 +37,12 @@ define([
             f.clearCache();
         });
 
-        // TODO: Behavior tests for rendering
-        //       Should create a spy that tests what tick arguments scale is called with 
         describe('gridHorizontal', () => {
-            let scale, gridH;
+            let scale, scaleOrdinal, gridH;
 
             beforeEach(() => {
-                scale = d3.scaleLinear();
+                scale = d3.scaleLinear().domain([0, 2]).range([0, 100]);
+                scaleOrdinal = d3.scaleOrdinal();
                 gridH = grid.gridHorizontal(scale);
             });
             
@@ -37,19 +50,191 @@ define([
                 expect(typeof gridH === 'function').toBeTruthy();
             });
 
+            // TODO: Consider testing that correct lines are added/kept/removed, not just that the count is correct
             describe('on render with selection', () => {
-                beforeEach(() => {
-                    container.call(gridH);
-                });
-
                 it('should render a container group with the correct classes when passed a selection', () => {
+                    container.call(gridH);
+
                     let expected = 1,
                         actual = container.selectAll('g.grid.horizontal').nodes().length;
     
                     expect(actual).toBe(expected);
                 });
+
+                it('should append lines using scale.ticks when scale has a ticks method', () => {
+                    spyOn(scale, 'ticks').and.callThrough();
+                    container.call(gridH);
+
+                    let expected = scale.ticks().length,
+                        actual = lineNodes().length;
+
+                    expect(scale.ticks).toHaveBeenCalledTimes(2);
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should append lines using scale.domain when ticks is not present', () => {
+                    let domain = [0, 1, 2, 3];
+
+                    spyOn(scaleOrdinal, 'domain').and.callThrough();
+                    scaleOrdinal.domain(domain);
+                    container.call(gridH.scale(scaleOrdinal));
+                    
+                    let expected = domain.length,
+                        actual = lineNodes().length;
+
+                    expect(scaleOrdinal.domain).toHaveBeenCalledTimes(2);
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should append lines using tickValues when tickValues is supplied', () => {
+                    let tickValues = [0, 1, 2];
+
+                    spyOn(scale, 'ticks').and.callThrough();
+                    spyOn(scale, 'domain').and.callThrough();
+                    container.call(gridH.tickValues(tickValues));
+
+                    let expected = tickValues.length,
+                        actual = lineNodes().length;
+
+                    // Domain is called by scale.copy, so needs to be called once to set the position function
+                    expect(scale.ticks).not.toHaveBeenCalled();
+                    expect(scale.domain).toHaveBeenCalledTimes(1);
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should add new lines on re-render', () => {
+                    let oldActual,
+                        newActual,
+                        oldTicks = [0, 1],
+                        newTicks = [0, 1, 2, 3];
+
+                    container.call(gridH.tickValues(oldTicks));
+                    oldActual = lineNodes().length;
+                    container.call(gridH.tickValues(newTicks));
+                    newActual = lineNodes().length;
+
+                    expect(oldActual).toEqual(oldTicks.length);
+                    expect(newActual).toEqual(newTicks.length);
+                });
+                
+                it('should remove unused lines on re-render', () => {
+                    let oldActual,
+                        newActual,
+                        oldTicks = [0, 1, 2, 3],
+                        newTicks = [0, 1];
+
+                    container.call(gridH.tickValues(oldTicks));
+                    oldActual = lineNodes().length;
+                    container.call(gridH.tickValues(newTicks));
+                    newActual = lineNodes().length;
+
+                    expect(oldActual).toEqual(oldTicks.length);
+                    expect(newActual).toEqual(newTicks.length);
+                });
+
+                describe('positioning', () => {
+                    let tickValues, range, expectedCoords;
+
+                    beforeEach(() => {
+                        tickValues = [0, 1, 2];
+                        range = [0, 50],
+                        expectedCoords = [
+                            { x1: 0, x2: 50, y1: 0.5, y2: 0.5 },
+                            { x1: 0, x2: 50, y1: 50.5, y2: 50.5 },
+                            { x1: 0, x2: 50, y1: 100.5, y2: 100.5 }
+                        ];
+
+                        gridH.tickValues(tickValues).range(range);
+                    });
+
+                    it('should render lines in the correct position with black stroke and full opacity', () => {
+                        container.call(gridH);
+
+                        let line = container.selectAll('.grid line'),
+                            expectedStroke = '#000',
+                            actualStroke = line.attr('stroke'),
+                            expectedOpacity = 1,
+                            actualOpacity = +line.attr('opacity');
+
+                        expect(actualStroke).toEqual(expectedStroke);
+                        expect(actualOpacity).toEqual(expectedOpacity);
+                        expect(actualLineCoords()).toEqual(expectedCoords);
+                    });
+
+                    // TODO: Check anti-aliasing behavior compared to d3.axis
+                    it('should render lines correctly with bandwidth scale', () => {
+                        let scaleBand = d3.scaleBand().domain(['a', 'b', 'c']).range([0, 120]),
+                            expected = [
+                                { x1: 0, x2: 50, y1: 20, y2: 20 },
+                                { x1: 0, x2: 50, y1: 60, y2: 60 },
+                                { x1: 0, x2: 50, y1: 100, y2: 100 }
+                            ];
+
+                        container.call(gridH.tickValues(null).scale(scaleBand));
+                        expect(actualLineCoords()).toEqual(expected);
+                    });
+                    
+                    it('should render lines correctly when offsetStart set', () => {
+                        let expected = expectedCoords.map(d => ({ ...d, x1: -10 }));
+                        
+                        container.call(gridH.offsetStart(10));
+                        expect(actualLineCoords()).toEqual(expected);
+                    });
+                    
+                    it('should render lines correctly when offsetStart set and range is reversed', () => {
+                        let expected = expectedCoords.map(d => ({ ...d, x1: 60, x2: 0 }));
+
+                        container.call(gridH.range([50, 0]).offsetStart(10));
+                        expect(actualLineCoords()).toEqual(expected);
+                    });
+                    
+                    it('should render lines correctly when offsetEnd set', () => {
+                        let expected = expectedCoords.map(d => ({ ...d, x2: 60 }));
+
+                        container.call(gridH.offsetEnd(10));
+                        expect(actualLineCoords()).toEqual(expected);
+                    });
+
+                    it('should render lines correctly when offsetEnd set and range is reversed', () => {
+                        let expected = expectedCoords.map(d => ({ ...d, x1: 50, x2: -10 }));
+
+                        container.call(gridH.range([50, 0]).offsetEnd(10));
+                        expect(actualLineCoords()).toEqual(expected);
+                    });
+
+                    it('should hide the first line when hideEdges is set to first', () => {
+                        container.call(gridH.hideEdges('first'));
+                        expectedCoords.shift();
+
+                        expect(actualLineCoords()).toEqual(expectedCoords);
+                    });
+                    
+                    it('should hide the last line when hideEdges is set to last', () => {
+                        container.call(gridH.hideEdges('last'));
+                        expectedCoords.pop();
+
+                        expect(actualLineCoords()).toEqual(expectedCoords);
+                    });
+                    
+                    it('should hide the first and last lines when hideEdges is set to both', () => {
+                        container.call(gridH.hideEdges('both'));
+                        expectedCoords.shift();
+                        expectedCoords.pop();
+
+                        expect(actualLineCoords()).toEqual(expectedCoords);
+                    });
+
+                    it('should hide the first and last lines when hideEdges is set to true', () => {
+                        container.call(gridH.hideEdges('both'));
+                        expectedCoords.shift();
+                        expectedCoords.pop();
+
+                        expect(actualLineCoords()).toEqual(expectedCoords);
+                    });
+                });
             });
 
+            // TODO: Consider adding tests to work out the positioning animation
             describe('on render with transition', () => {
                 let transition;
 
