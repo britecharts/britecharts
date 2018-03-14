@@ -137,6 +137,65 @@ define(function(require) {
         return gridBase;
     }
 
+    function grid(scaleX, scaleY) {
+        let gridH = gridHorizontal(scaleY || scaleLinear()),
+            gridV = gridVertical(scaleX || scaleLinear()),
+            direction = 'full',
+            tickValuesX = null,
+            tickValuesY = null;
+            
+        function grid(context) {
+            (direction === 'full' || direction === 'horizontal')
+                ? gridH.tickValues(tickValuesY).range(scaleX.range())
+                : gridH.tickValues([]);
+
+            (direction === 'full' || direction === 'vertical')
+                ? gridV.tickValues(tickValuesX).range(scaleY.range())
+                : gridV.tickValues([]);
+
+            context.call(gridH).call(gridV);
+        }
+
+        // API
+        // TODO: Determine API handling for shared H and V attributes
+        //       ticks and tickValues definitely need to be independently settable
+        // TODO: Finalizing naming convention: V & H or X & Y for these accessors
+
+        grid.scaleX = function(_) {
+            return arguments.length ? (scaleX = _, gridV.scale(scaleX), grid) : scaleX;
+        }
+    
+        grid.scaleY = function(_) {
+            return arguments.length ? (scaleY = _, gridH.scale(scaleY), grid) : scaleY;
+        }
+
+        grid.direction = function(_) {
+            return arguments.length ? (direction = _, grid) : direction;
+        }
+
+        grid.offsetStart = function(_) {
+            return arguments.length ? (gridH.offsetStart(_), gridV.offsetStart(_), grid) : gridH.offsetStart();
+        }
+    
+        grid.offsetEnd = function(_) {
+            return arguments.length ? (gridH.offsetEnd(_), gridV.offsetEnd(_), grid) : gridH.offsetEnd();
+        }
+
+        grid.hideEdges = function(_) {
+            return arguments.length ? (gridH.hideEdges(_), gridV.hideEdges(_), grid) : gridH.hideEdges();
+        }
+
+        grid.ticks = function(_) {
+            return arguments.length ? (gridH.ticks(_), gridV.ticks(_), grid) : gridH.ticks();
+        }
+
+        grid.tickValues = function(_) {
+            return arguments.length ? (tickValuesX = tickValuesY = _, grid) : tickValuesY;
+        }
+
+        return grid;
+    }
+
     function gridHorizontal(scale) {
         return gridBase(DIR.H, scale)
     }
@@ -147,6 +206,7 @@ define(function(require) {
 
     return {
         gridHorizontal,
-        gridVertical
+        gridVertical,
+        grid
     };
 });
