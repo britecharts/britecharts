@@ -325,7 +325,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 actual = barChart.margin();
 
                 expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
+                expect(actual).toEqual(expected);
             });
 
             it('should provide loadingState getter and setter', () => {
@@ -483,6 +483,25 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
+        });
+
+        describe('when margins are set partially', function() {
+            
+            it('should override the default values', () => {
+                let previous = barChart.margin(),
+                expected = {
+                    ...previous,
+                    top: 10,
+                    right: 20
+                },
+                actual;
+
+                barChart.width(expected);
+                actual = barChart.width();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toEqual(expected);
+            })
         });
 
         describe('when clicking on a bar', function() {
