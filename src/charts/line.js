@@ -1182,7 +1182,10 @@ define(function(require){
             if (!arguments.length) {
                 return margin;
             }
-            margin = _x;
+            margin = {
+                ...margin,
+                ..._x
+            };
 
             return this;
         };
