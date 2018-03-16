@@ -384,7 +384,7 @@ define([
                 actual = stackedAreaChart.margin();
 
                 expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
+                expect(actual).toEqual(expected);
             });
 
             it('should provide a tooltip threshold getter and setter', () => {
@@ -518,6 +518,25 @@ define([
                 expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
                 expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
             });
+        });
+
+        describe('when margins are set partially', function() {
+            
+            it('should override the default values', () => {
+                let previous = stackedAreaChart.margin(),
+                expected = {
+                    ...previous,
+                    top: 10,
+                    right: 20
+                },
+                actual;
+
+                stackedAreaChart.width(expected);
+                actual = stackedAreaChart.width();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toEqual(expected);
+            })
         });
 
         describe('Aspect Ratio', function() {
