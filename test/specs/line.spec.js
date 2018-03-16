@@ -303,7 +303,7 @@ define([
                     actual = lineChart.margin();
 
                     expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
+                    expect(actual).toEqual(expected);
                 });
 
                 it('should provide width getter and setter', () => {
@@ -609,6 +609,25 @@ define([
                     });
                 });
             });
+
+            describe('when margins are set partially', function() {
+            
+                it('should override the default values', () => {
+                    let previous = lineChart.margin(),
+                    expected = {
+                        ...previous,
+                        top: 10,
+                        right: 20
+                    },
+                    actual;
+    
+                    lineChart.width(expected);
+                    actual = lineChart.width();
+    
+                    expect(previous).not.toBe(actual);
+                    expect(actual).toEqual(expected);
+                })
+            });            
 
             describe('Export chart functionality', () => {
 

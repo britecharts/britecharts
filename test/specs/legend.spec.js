@@ -123,7 +123,7 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                     actual = legendChart.margin();
 
                     expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
+                    expect(actual).toEqual(expected);
                 });
 
                 it('should provide margin ratio getter and setter', () =>{
@@ -266,6 +266,25 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                 });
             });
         });
+
+        describe('when margins are set partially', function() {
+            
+            it('should override the default values', () => {
+                let previous = legendChart.margin(),
+                expected = {
+                    ...previous,
+                    top: 10,
+                    right: 20
+                },
+                actual;
+
+                legendChart.width(expected);
+                actual = legendChart.width();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toEqual(expected);
+            })
+        });  
 
         describe('when legend is horizontal', () => {
 

@@ -347,7 +347,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     actual = donutChart.margin();
 
                     expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
+                    expect(actual).toEqual(expected);
                 });
 
                 it('should provide externalRadius getter and setter', () => {
@@ -504,6 +504,25 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);
                 });
+            });
+
+            describe('when margins are set partially', function() {
+            
+                it('should override the default values', () => {
+                    let previous = donutChart.margin(),
+                    expected = {
+                        ...previous,
+                        top: 10,
+                        right: 20
+                    },
+                    actual;
+    
+                    donutChart.width(expected);
+                    actual = donutChart.width();
+    
+                    expect(previous).not.toBe(actual);
+                    expect(actual).toEqual(expected);
+                })
             });
 
             describe('when mouse events are triggered', () => {

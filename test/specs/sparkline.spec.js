@@ -195,7 +195,7 @@ define([
                 newMargin = sparklineChart.margin();
 
                 expect(defaultMargin).not.toBe(testMargin);
-                expect(newMargin).toBe(testMargin);
+                expect(newMargin).toEqual(testMargin);
             });
 
             it('should provide loadingState getter and setter', () => {
@@ -336,6 +336,25 @@ define([
                 expect(newTitleTextStyle).toEqual(testTitleTextStyle);
             });
         });
+
+        describe('when margins are set partially', function() {
+            
+            it('should override the default values', () => {
+                let previous = sparklineChart.margin(),
+                expected = {
+                    ...previous,
+                    top: 10,
+                    right: 20
+                },
+                actual;
+
+                sparklineChart.width(expected);
+                actual = sparklineChart.width();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toEqual(expected);
+            })
+        });   
 
         describe('Export chart functionality', () => {
 

@@ -57,6 +57,25 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
             expect(containerFixture.selectAll('.handle.handle--w.brush-rect').empty()).toEqual(false);
         });
 
+        describe('when margins are set partially', function() {
+            
+            it('should override the default values', () => {
+                let previous = brushChart.margin(),
+                expected = {
+                    ...previous,
+                    top: 10,
+                    right: 20
+                },
+                actual;
+
+                brushChart.width(expected);
+                actual = brushChart.width();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toEqual(expected);
+            })
+        });  
+
         describe('the API', function() {
 
             it('should provide a bush date range getter and setter', () => {
@@ -116,7 +135,7 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
                 actual = brushChart.margin();
 
                 expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
+                expect(actual).toEqual(expected);
             });
 
             it('should provide width getter and setter', function() {

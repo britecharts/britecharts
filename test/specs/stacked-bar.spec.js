@@ -255,7 +255,7 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 actual = stackedBarChart.margin();
 
                 expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
+                expect(actual).toEqual(expected);
             });
 
             it('should provide nameLabel getter and setter', () => {
@@ -404,6 +404,25 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
             })
         });
+
+        describe('when margins are set partially', function() {
+            
+            it('should override the default values', () => {
+                let previous = stackedBarChart.margin(),
+                expected = {
+                    ...previous,
+                    top: 10,
+                    right: 20
+                },
+                actual;
+
+                stackedBarChart.width(expected);
+                actual = stackedBarChart.width();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toEqual(expected);
+            })
+        });  
 
         describe('when hovering', function() {
 
