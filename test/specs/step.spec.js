@@ -109,7 +109,7 @@ define([
                 newMargin = stepChart.margin();
 
                 expect(defaultMargin).not.toBe(newMargin);
-                expect(newMargin).toBe(testMargin);
+                expect(newMargin).toEqual(testMargin);
             });
 
             it('should provide height getter and setter', () => {
@@ -208,6 +208,25 @@ define([
                 expect(newXAxisLabelOffset).toBe(testXAxisLabelOffset);
             });
         });
+
+        describe('when margins are set partially', function() {
+            
+            it('should override the default values', () => {
+                let previous = stepChart.margin(),
+                expected = {
+                    ...previous,
+                    top: 10,
+                    right: 20
+                },
+                actual;
+
+                stepChart.width(expected);
+                actual = stepChart.width();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toEqual(expected);
+            })
+        });   
 
         describe('when hovering a step', function() {
 

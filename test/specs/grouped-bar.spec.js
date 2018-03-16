@@ -230,7 +230,7 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 actual = groupedBarChart.margin();
 
                 expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
+                expect(actual).toEqual(expected);
             });
 
             it('should provide nameLabel getter and setter', () => {
@@ -357,6 +357,25 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
             });
         });
+
+        describe('when margins are set partially', function() {
+            
+            it('should override the default values', () => {
+                let previous = groupedBarChart.margin(),
+                expected = {
+                    ...previous,
+                    top: 10,
+                    right: 20
+                },
+                actual;
+
+                groupedBarChart.width(expected);
+                actual = groupedBarChart.width();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toEqual(expected);
+            })
+        });  
 
         describe('when clicking on a bar', () => {
 
