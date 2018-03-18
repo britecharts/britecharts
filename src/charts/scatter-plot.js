@@ -23,77 +23,104 @@ define(function(require) {
         uniqueId
     } = require('./helpers/number');
 
-     /**
-      * @typedef scatterPlotDataByTopic
-      * @type {Object}
-      * @property {String} topic    The name of the topic or category
-      * @property {Number} x        Position of the data point with respect to x-axis
-      * @property {Number} y        Position of the data point with respect to y-axis
-      * @property {Number} [size]   Relative size of the data point (optional)
-      *
-      * @example
-      * {
-      *     topic: 'topic',
-      *     x:  123,
-      *     y: 234,
-      *     size: 345
-      * }
-      */
+    /**
+     * @typedef ScatterPlotData
+     * @type {Object[]}
+     * @property {String} name         Name of the group (required)
+     * @property {Number} x     Quantity of the group (required)
+     * @property {Number} y   Percentage of the total (optional)
+     * @property {Number} [size]           Identifier for the group required for legend feature (optional)
+     *
+     * @example
+     * [
+     *     {
+     *         name: 'junior',
+     *         x: 123,
+     *         y: 24,
+     *         size: 95
+     *     },
+     *     {
+     *         name: 'sophomore',
+     *         x: 53,
+     *         y: 31,
+     *         size: 48
+     *     },
+     *     {
+     *         name: 'junior',
+     *         x: 631,
+     *         y: 321,
+     *         size: 234
+     *     }
+     * ]
+     */
 
-     /**
-      * @typedef ScatterPlotData
-      * @type {Array[]}
-      * @property {scatterPlotDataByTopic[]} dataByTopic   Data values to chart (required)
-      *
-      * @example
-      * [
-      *     {
-      *         topic: 'topic',
-      *         x:  123,
-      *         y: 234,
-      *         size: 345
-      *      },
-      *      {
-      *         topic: 'topic1',
-      *         x: 23,
-      *         y: 4,
-      *         size: 45
-      *      },
-      *      {
-      *         topic: 'topic',
-      *         x: 12,
-      *         y: 31,
-      *         size: 22
-      *      }
-      *  ]
-      */
-
-     /**
-      * Scatter Plot reusable API module that allows us to
-      * render a chart with data points and configurable chart.
-      * 
-      * @module Scatter-plot
-      * @tutorial scatter-plot
-      * @requires d3-array, d3-axis, d3-ease, d3-format, d3-scale, d3-shape, d3-selection
-      *
-      * @example
-      * let scatterPlot = scatterPlot();
-      * 
-      * scatterPlot
-      *     .width(500)
-      *     .height(500);
-      * 
-      * d3Selection.select('.css-selector)
-      *     .datum(dataset)
-      *     .call(scatterPlot);
-      */
+    /**
+     * Reusable Donut Chart API class that renders a
+     * simple and configurable donut chart.
+     *
+     * @module Scatter-plot
+     * @tutorial scatter-plot
+     * @requires d3-array, d3-dispatch, d3-ease, d3-scale, d3-selection
+     *
+     * @example
+     * let scatterPlot = scatterPlot();
+     *
+     * scatterPlot
+     *     .width(500)
+     *     .aspectRatio(1.5);
+     *
+     * d3Selection.select('.css-selector')
+     *     .datum(dataset)
+     *     .call(scatterPlot);
+     */
     return function module() {
+
+        let margin = {
+            top: 20,
+            right: 20,
+            bottom: 20,
+            left: 20
+        },
+        width = 960,
+        height = 500,
+        
+        dataPoints,
+        dataPointsZeroed,
+
+        xScale,
+        xAxis,
+        yScale,
+        yAxis
+        
+        isAnimated,
+        ease = d3Ease.easeQuadInOut,
+        areaAnimationDuration = 1000
+        
+        svg,
+        chartWidth, chartHeight;
+
         
         function exports(_selection) {
             _selection.each(function(_data) {
                 console.log('this data', _data);
             });    
         }
+
+
+        /**
+         * Gets or Sets the width of the chart
+         * @param  {Number} _x              Desired width for the graph
+         * @return {Number | module}    Current width or Donut Chart module to chain calls
+         * @public
+         */
+        exports.width = function(_x) {
+            if (!arguments.length) {
+                return width;
+            }
+            width = _x;
+
+            return this;
+        };
 
         return exports;
     };
