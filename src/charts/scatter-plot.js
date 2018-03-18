@@ -34,19 +34,19 @@ define(function(require) {
      * @example
      * [
      *     {
-     *         name: 'junior',
+     *         name: 'topic',
      *         x: 123,
      *         y: 24,
      *         size: 95
      *     },
      *     {
-     *         name: 'sophomore',
+     *         name: 'topic1',
      *         x: 53,
      *         y: 31,
      *         size: 48
      *     },
      *     {
-     *         name: 'junior',
+     *         name: 'topic',
      *         x: 631,
      *         y: 321,
      *         size: 234
