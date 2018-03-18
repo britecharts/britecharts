@@ -23,13 +23,6 @@ define(function(require) {
         uniqueId
     } = require('./helpers/number');
 
-    /**
-     * @typedef D3Selection
-     * @type {Array[]}
-     * @property {Number} length            Size of the selection
-     * @property {DOMElement} parentNode    Parent of the selection
-     */
-
      /**
       * @typedef scatterPlotDataByTopic
       * @type {Object}
@@ -78,6 +71,7 @@ define(function(require) {
      /**
       * Scatter Plot reusable API module that allows us to
       * render a chart with data points and configurable chart.
+      * 
       * @module Scatter-plot
       * @tutorial scatter-plot
       * @requires d3-array, d3-axis, d3-ease, d3-format, d3-scale, d3-shape, d3-selection
