@@ -40,6 +40,7 @@ All the components expose some **common API methods** like width, height, and ma
  - [API][38], [Demo][stackedBarChartDemo] Stacked Bar Chart
  - [API][40], [Demo][groupedBarChartDemo] Grouped Bar Chart
  - [API][23], [Demo][brushChartDemo] Brush Chart
+ - [API][41], [Demo][scatterPlotDemo] Scatter Plot
  - [API][29], [Demo][sparklineChartDemo] Sparkline Chart
  - [API][30], [Demo][stackedAreaChartDemo] Stacked Area Chart
  - [API][28], [Demo][stepChartDemo] Step Chart
@@ -127,6 +128,7 @@ Read more in the [license document][15]
 [37]: https://github.com/d3/d3-selection
 [38]: https://eventbrite.github.io/britecharts/module-Stacked-bar.html
 [40]: https://eventbrite.github.io/britecharts/module-Grouped-bar.html
+[41]: https://eventbrite.github.io/britecharts/module-Scatter-plot.html
 [42]: https://scrimba.com/casts/cZWm2tb
 
 [cdnDemo]: https://eventbrite.github.io/britecharts/cdn.html
@@ -146,6 +148,7 @@ Read more in the [license document][15]
 [barChartDemo]: https://eventbrite.github.io/britecharts/tutorial-bar.html "Check the Demo"
 [lineChartDemo]: https://eventbrite.github.io/britecharts/tutorial-line.html "Check the Demo"
 [donutChartDemo]: https://eventbrite.github.io/britecharts/tutorial-donut.html "Check the Demo"
+[scatterPlotDemo]: https://eventbrite.github.io/britecharts/tutorial-scatter-plot.html "Check the Demo"
 [sparklineChartDemo]: https://eventbrite.github.io/britecharts/tutorial-sparkline.html "Check the Demo"
 [stackedAreaChartDemo]: https://eventbrite.github.io/britecharts/tutorial-stacked-area.html "Check the Demo"
 [stepChartDemo]: https://eventbrite.github.io/britecharts/tutorial-step.html "Check the Demo"
