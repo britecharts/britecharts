@@ -26,10 +26,10 @@ define(function(require) {
     /**
      * @typedef ScatterPlotData
      * @type {Object[]}
-     * @property {String} name         Name of the group (required)
-     * @property {Number} x     Quantity of the group (required)
-     * @property {Number} y   Percentage of the total (optional)
-     * @property {Number} [size]           Identifier for the group required for legend feature (optional)
+     * @property {String} name      Name of the category or topic for data point        
+     * @property {Number} x         Data point's position value relative to x-axis
+     * @property {Number} y         Data point's position value relative to y-axis
+     * @property {Number} [size]    Data point's relative size
      *
      * @example
      * [
@@ -90,16 +90,23 @@ define(function(require) {
         xScale,
         xAxis,
         yScale,
-        yAxis
+        yAxis,
         
         isAnimated,
         ease = d3Ease.easeQuadInOut,
-        areaAnimationDuration = 1000
+        areaAnimationDuration = 1000,
         
         svg,
-        chartWidth, chartHeight;
+        chartWidth,
+        chartHeight;
 
         
+        /**
+         * This function creates the graph using the selection as container
+         * @param  {D3Selection} _selection A d3 selection that represents
+         *                                  the container(s) where the chart(s) will be rendered
+         * @param {ScatterPlotData} _data The data to attach and generate the chart
+         */
         function exports(_selection) {
             _selection.each(function(_data) {
                 console.log('this data', _data);
