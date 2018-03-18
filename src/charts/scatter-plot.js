@@ -161,7 +161,7 @@ define(function(require) {
                 .nice();
             
             yScale = d3Scale.scaleLinear()
-                .domain([0, maxY])
+                .domain([minY, maxY])
                 .rangeRound([chartHeight, 0])
                 .nice();
             
