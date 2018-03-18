@@ -78,8 +78,8 @@ define(function(require) {
      /**
       * Scatter Plot reusable API module that allows us to
       * render a chart with data points and configurable chart.
-      * @module ScatterPlot
-      * @tutorial scatterPlot
+      * @module Scatter-plot
+      * @tutorial scatter-plot
       * @requires d3-array, d3-axis, d3-ease, d3-format, d3-scale, d3-shape, d3-selection
       *
       * @example
