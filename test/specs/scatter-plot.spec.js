@@ -60,7 +60,38 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide margin getter and setter', () => {
+                let previous = scatterPlot.margin(),
+                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    actual;
+
+                scatterPlot.margin(expected);
+                actual = scatterPlot.margin();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toEqual(expected);
+            });
         });
+
+        describe('when margins are set partially', function() {
+            
+            it('should override the default values', () => {
+                let previous = scatterPlot.margin(),
+                expected = {
+                    ...previous,
+                    top: 10,
+                    right: 20
+                },
+                actual;
+
+                scatterPlot.margin(expected);
+                actual = scatterPlot.margin();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toEqual(expected);
+            })
+        }); 
 
     });
 });

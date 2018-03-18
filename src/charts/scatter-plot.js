@@ -209,6 +209,24 @@ define(function(require) {
         // API
 
         /**
+         * Gets or Sets the margin object of the chart
+         * @param  {Object} _x          Desired margin object properties for each side
+         * @return {Object | module}    Current height or Scatter Chart module to chain calls
+         * @public
+         */
+        exports.margin = function(_x) {
+            if (!arguments.length) {
+                return margin;
+            }
+            margin = {
+                ...margin,
+                ..._x,
+            };
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the height of the chart
          * @param  {Number} _x          Desired height for the chart
          * @return {Number | module}    Current height or Scatter Chart module to chain calls
