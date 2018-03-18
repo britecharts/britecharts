@@ -12,7 +12,7 @@ const aTestDataSet = () => new dataBuilder.ScatterPlotDataBuilder();
 require('./helpers/resizeHelper');
 
 function createSimpleScatterPlot() {
-        let simpleScatter = scatterPlot();
+        let scatter = scatterPlot();
         let scatterPlotContainer = d3Selection.select('.js-simple-scatter-plot-container');
         let containerWidth = scatterPlotContainer.node() ? scatterPlotContainer.node().getBoundingClientRect().width : false;
         let dataset;
@@ -20,11 +20,10 @@ function createSimpleScatterPlot() {
         if (containerWidth) {
             dataset = aTestDataSet().withFourNames().build();
 
-            console.log('dataset', dataset);
-
-            simpleScatter
+            scatter
                 .width(500);
                 
+            scatterPlotContainer.datum(dataset).call(scatter);
         }
 }
 
