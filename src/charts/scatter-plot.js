@@ -84,6 +84,8 @@ define(function(require) {
         width = 960,
         height = 500,
         
+        nameColorMap,
+
         dataPoints,
 
         xKey = 'x',
@@ -94,10 +96,10 @@ define(function(require) {
         xAxis,
         yScale,
         yAxis,
+        colorScale,
         
         isAnimated,
         ease = d3Ease.easeQuadInOut,
-        areaAnimationDuration = 1000,
         
         svg,
         chartWidth,
@@ -119,6 +121,8 @@ define(function(require) {
 
                 buildScales();
                 buildSVG(this);
+
+                // TODO: the rest of the functions
             });    
         }
 
@@ -138,6 +142,8 @@ define(function(require) {
             container
                 .append('g').classed('x-axis-group', true)
                 .append('g').classed('axis x', true);
+            
+            // TODO: build the rest of the container groups
 
         }
 
@@ -146,6 +152,21 @@ define(function(require) {
          * @private
          */
         function buildScales() {
+            const [minX, minY] = [d3Array.min(dataPoints, ({x}) => x), d3Array.min(dataPoints, ({y}) => y)];
+            const [maxX, maxY] = [d3Array.max(dataPoints, ({x}) => x), d3Array.max(dataPoints, ({y}) => y)];
+
+            xScale = d3Scale.scaleLinear()
+                .domain([minX, maxX])
+                .rangeRound([0, chartWidth])
+                .nice();
+            
+            yScale = d3Scale.scaleLinear()
+                .domain([0, maxY])
+                .rangeRound([chartHeight, 0])
+                .nice();
+            
+            // TODO: set up colorScale and colorMap
+            // Assign each color by "name" value
 
         }
 
@@ -178,9 +199,9 @@ define(function(require) {
          */
         function cleanData(originalData) {
             return originalData.reduce((acc, d) => {
+                d.name = String(d[nameKey]);
                 d.x = +d[xKey];
                 d.y = +d[yKey];
-                d.name = String(d[nameKey]);
 
                 return [...acc, d];
             }, []);
