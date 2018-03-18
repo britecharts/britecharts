@@ -10,18 +10,18 @@
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
-                        lineChart
-                            .isAnimated(true)
-                            .aspectRatio(0.5)
-                            .grid('horizontal')
-                            .tooltipThreshold(600)
-                            .width(containerWidth)
-                            .dateLabel('fullDate')
-                            .on('customMouseOver', chartTooltip.show)
-                            .on('customMouseMove', chartTooltip.update)
-                            .on('customMouseOut', chartTooltip.hide);
+lineChart
+    .isAnimated(true)
+    .aspectRatio(0.5)
+    .grid('horizontal')
+    .tooltipThreshold(600)
+    .width(containerWidth)
+    .dateLabel('fullDate')
+    .on('customMouseOver', chartTooltip.show)
+    .on('customMouseMove', chartTooltip.update)
+    .on('customMouseOut', chartTooltip.hide);
 
-                        container.datum(dataset).call(lineChart);
+container.datum(dataset).call(lineChart);
                 </code></pre>
                 <h4>Colors</h4>
                 <label class="control-label">You can also check other color schemas:</label>
