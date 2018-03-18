@@ -114,9 +114,59 @@ define(function(require) {
             _selection.each(function(_data) {
                 dataPoints = cleanData(_data);
 
+                chartWidth = width - margin.left - margin.right;
+                chartHeight = height - margin.top - margin.bottom;
 
-
+                buildScales();
+                buildSVG(this);
             });    
+        }
+
+        /** 
+         * Builds containers for the chart, including the chart axis,
+         * chart, and metadata groups.
+         * @private
+        */
+        function buildContainerGroups() {
+            console.log('Start building container groups');
+
+            let container = svg
+                .append('g')
+                .classed('container-group', true)
+                .attr('transfrom', `translate(${margin.left}, ${margin.top})`);
+            
+            container
+                .append('g').classed('x-axis-group', true)
+                .append('g').classed('axis x', true);
+
+        }
+
+        /**
+         * Creates the x and y scales of the chart
+         * @private
+         */
+        function buildScales() {
+
+        }
+
+        /**
+         * Builds the SVG element that will contain the chart
+         * @param {HTMLElement} container A DOM element that will work as
+         * the container of the chart
+         * @private
+         */
+        function buildSVG(container) {
+            if (!svg) {
+                svg = d3Selection.select(container)
+                  .append('svg')
+                    .classed('breitechart scatter-plot', true);
+                
+                buildContainerGroups();
+            }
+
+            svg
+                .attr('width', width)
+                .attr('height', height);
         }
 
         /**
@@ -136,10 +186,28 @@ define(function(require) {
             }, []);
         }
 
+
+        // API
+
         /**
-         * Gets or Sets the width of the chart
-         * @param  {Number} _x              Desired width for the graph
-         * @return {Number | module}    Current width or Donut Chart module to chain calls
+         * Gets or Sets the height of the chart
+         * @param  {Number} _x          Desired height for the chart
+         * @return {Number | module}    Current height or Scatter Chart module to chain calls
+         * @public
+         */
+        exports.height = function(_x) {
+            if (!arguments.length) {
+                return height;
+            }
+            height = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the height of the chart
+         * @param  {Number} _x          Desired height for the chart
+         * @return {Number | module}    Current width or Scatter Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {

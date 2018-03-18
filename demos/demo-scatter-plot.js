@@ -21,7 +21,8 @@ function createSimpleScatterPlot() {
             dataset = aTestDataSet().withFourNames().build();
             
             scatter
-                .width(500);
+                .width(500)
+                .height(350);
 
             scatterPlotContainer.datum(dataset).call(scatter);
         }
