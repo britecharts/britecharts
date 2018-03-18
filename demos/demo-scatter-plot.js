@@ -19,10 +19,10 @@ function createSimpleScatterPlot() {
 
         if (containerWidth) {
             dataset = aTestDataSet().withFourNames().build();
-
+            
             scatter
                 .width(500);
-                
+
             scatterPlotContainer.datum(dataset).call(scatter);
         }
 }

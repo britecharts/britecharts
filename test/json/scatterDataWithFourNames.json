@@ -1,42 +1,44 @@
-[
-    {
-        "name": "Nabisco",
-        "x": 112,
-        "y": 47
-    },
-    {
-        "name": "Kellogs",
-        "x": 374,
-        "y": 112
-    },
-    {
-        "name": "General Mills",
-        "x": 295,
-        "y": 250
-    },
-    {
-        "name": "Post",
-        "x": 195,
-        "y": 168
-    },
-    {
-        "name": "Kellogs",
-        "x": 195,
-        "y": 138
-    },
-    {
-        "name": "Nabisco",
-        "x": 197,
-        "y": 173
-    },
-    {
-        "name": "Nabisco",
-        "x": 137,
-        "y": 213
-    },
-    {
-        "name": "Nabisco",
-        "x": 317,
-        "y": 313
-    }
-]
+{
+    "data": [
+        {
+            "name": "Nabisco",
+            "x": 112,
+            "y": 47
+        },
+        {
+            "name": "Kellogs",
+            "x": 374,
+            "y": 112
+        },
+        {
+            "name": "General Mills",
+            "x": 295,
+            "y": 250
+        },
+        {
+            "name": "Post",
+            "x": 195,
+            "y": 168
+        },
+        {
+            "name": "Kellogs",
+            "x": 195,
+            "y": 138
+        },
+        {
+            "name": "Nabisco",
+            "x": 197,
+            "y": 173
+        },
+        {
+            "name": "Nabisco",
+            "x": 137,
+            "y": 213
+        },
+        {
+            "name": "Nabisco",
+            "x": 317,
+            "y": 313
+        }
+    ]
+}
