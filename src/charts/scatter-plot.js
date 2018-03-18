@@ -132,8 +132,6 @@ define(function(require) {
          * @private
         */
         function buildContainerGroups() {
-            console.log('Start building container groups');
-
             let container = svg
                 .append('g')
                 .classed('container-group', true)
