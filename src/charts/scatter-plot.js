@@ -85,7 +85,10 @@ define(function(require) {
         height = 500,
         
         dataPoints,
-        dataPointsZeroed,
+
+        xKey = 'x',
+        yKey = 'y',
+        nameKey = 'name',
 
         xScale,
         xAxis,
@@ -109,10 +112,8 @@ define(function(require) {
          */
         function exports(_selection) {
             _selection.each(function(_data) {
-                ({
-                    dataPoints,
-                    dataPointsZeroed
-                } = cleanData(_data));
+                dataPoints = cleanData(_data);
+
 
 
             });    
@@ -121,25 +122,18 @@ define(function(require) {
         /**
          * Cleaning data casting the values and names to the proper type while keeping
          * the rest of properties on the data
-         * It also creates a set of zeroed data
          * @param  {ScatterPlotData} originalData  Raw data as passed to the container
          * @return  {ScatterPlotData}              Clean data
          * @private
          */
         function cleanData(originalData) {
-            let data = originalData.reduce((acc, d) => {
-                d.value = +d[valueLabel];
-                d.name = String(d[nameLabel]);
+            return originalData.reduce((acc, d) => {
+                d.x = +d[xKey];
+                d.y = +d[yKey];
+                d.name = String(d[nameKey]);
 
                 return [...acc, d];
             }, []);
-
-            let dataZeroed = data.map((d) => ({
-                value: 0,
-                name: String(d[nameLabel])
-            }));
-
-            return { data, dataZeroed };
         }
 
         /**
