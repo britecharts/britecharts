@@ -7,6 +7,8 @@ const scatterPlot = require('./../src/charts/scatter-plot');
 const colors = require('./../src/charts/helpers/color');
 const dataBuilder = require('./../test/fixtures/scatterPlotDataBuilder');
 
+const aTestDataSet = () => new dataBuilder.ScatterPlotDataBuilder();
+
 require('./helpers/resizeHelper');
 
 function createSimpleScatterPlot() {
@@ -16,11 +18,13 @@ function createSimpleScatterPlot() {
         let dataset;
 
         if (containerWidth) {
-            console.log('hello');
+            dataset = aTestDataSet().withFourNames().build();
+
+            console.log('dataset', dataset);
+
             simpleScatter
                 .width(500);
-
-            console.log('simpleScatter', simpleScatter);
+                
         }
 }
 
