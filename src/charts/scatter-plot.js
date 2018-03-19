@@ -11,7 +11,6 @@ define(function(require) {
     const d3Ease = require('d3-ease');
     const d3Format = require('d3-format');
     const d3Scale = require('d3-scale');
-    const d3Shape = require('d3-shape');
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
@@ -127,7 +126,6 @@ define(function(require) {
         chartHeight,
         
         getName = ({name}) => name;
-
         
         /**
          * This function creates the graph using the selection as container
@@ -300,9 +298,6 @@ define(function(require) {
          * @private
         */
         function drawDataPoints() {
-            // TODO: check if isAnimated is true
-            // before applying the transition effect
-
             let circles = svg.select('.chart-group')
                 // TODO: .attr('clip-path', 'url(#chart-area')
                 .selectAll('circle')
