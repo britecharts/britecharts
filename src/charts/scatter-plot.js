@@ -306,7 +306,7 @@ define(function(require) {
 
             if (isAnimated) {
                 circles
-                    .append('circle')
+                  .append('circle')
                     .transition()
                     .delay(delay)
                     .duration(duration)
@@ -318,10 +318,10 @@ define(function(require) {
             } else {
                 circles
                     .append('circle')
-                    .attr('r', (d) => areaScale(d.y))
-                    .attr('cx', (d) => xScale(d.x))
-                    .attr('cy', (d) => yScale(d.y))
-                    .attr('fill', (d) => nameColorMap[d.name]);
+                      .attr('r', (d) => areaScale(d.y))
+                      .attr('cx', (d) => xScale(d.x))
+                      .attr('cy', (d) => yScale(d.y))
+                      .attr('fill', (d) => nameColorMap[d.name]);
             }
         }
 
