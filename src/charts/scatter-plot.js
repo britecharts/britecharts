@@ -28,7 +28,7 @@ define(function(require) {
     /**
      * @typedef ScatterPlotData
      * @type {Object[]}
-     * @property {String} name      Name of the category or topic for data point        
+     * @property {String} name      Name of the category or topic for data point
      * @property {Number} x         Data point's position value relative to x-axis
      * @property {Number} y         Data point's position value relative to y-axis
      * @property {Number} [size]    Data point's relative size
@@ -85,7 +85,7 @@ define(function(require) {
         },
         width = 960,
         height = 500,
-        
+
         nameColorMap,
 
         dataPoints,
@@ -115,18 +115,18 @@ define(function(require) {
         maxCircleArea = 10,
 
         colorSchema = colorHelper.colorSchemas.britecharts,
-        
+
         isAnimated = true,
         ease = d3Ease.easeCircleIn,
         delay = 500,
         duration = 500,
-        
+
         svg,
         chartWidth,
         chartHeight,
-        
+
         getName = ({name}) => name;
-        
+
         /**
          * This function creates the graph using the selection as container
          * @param  {D3Selection} _selection A d3 selection that represents
@@ -147,10 +147,10 @@ define(function(require) {
                 drawDataPoints();
 
                 // TODO: the rest of the functions
-            });    
+            });
         }
 
-        /** 
+        /**
          * Builds containers for the chart, including the chart axis,
          * chart, and metadata groups.
          * @private
@@ -160,7 +160,7 @@ define(function(require) {
               .append('g')
                 .classed('container-group', true)
                 .attr('transfrom', `translate(${margin.left}, ${margin.top})`);
-            
+
             container
                 .append('g').classed('chart-group', true);
             container
@@ -171,12 +171,12 @@ define(function(require) {
                 .append('g').classed('axis y', true);
             container
                 .append('g').classed('metadata-group', true);
-            
+
             // TODO: build the rest of the container groups
             // Build clip container for the inner chart part
         }
 
-        /** 
+        /**
          * Creates the x-axis and y-axis with proper orientations
          * @private
         */
@@ -184,7 +184,7 @@ define(function(require) {
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(xTicks)
                 .tickPadding(tickPadding);
-            
+
             yAxis = d3Axis.axisLeft(yScale)
                 .ticks(yTicks)
                 .tickPadding(tickPadding);
@@ -192,7 +192,7 @@ define(function(require) {
             // TODO: drawGridLines
         }
 
-        /** 
+        /**
          * Draws the x and y axis on the svg object within their
          * respective groups along with their axis labels
          * @private
@@ -221,20 +221,20 @@ define(function(require) {
                 .domain([minX, maxX])
                 .rangeRound([0, chartWidth])
                 .nice();
-            
+
             yScale = d3Scale.scaleLinear()
                 .domain([yScaleBottomValue, maxY])
                 .rangeRound([chartHeight, 0])
                 .nice();
-            
+
             colorScale = d3Scale.scaleOrdinal()
                 .domain(dataPoints.map(getName))
                 .range(colorSchema);
-            
+
             areaScale = d3Scale.scaleSqrt()
                 .domain([yScaleBottomValue, maxY])
                 .range([0, maxCircleArea]);
-                    
+
             const colorRange = colorScale.range();
 
             /**
@@ -265,7 +265,7 @@ define(function(require) {
                 svg = d3Selection.select(container)
                   .append('svg')
                     .classed('breitechart scatter-plot', true);
-                
+
                 buildContainerGroups();
             }
 
