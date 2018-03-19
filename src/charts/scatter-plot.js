@@ -1,3 +1,5 @@
+import { colorSchema } from './bar';
+
 define(function(require) {
     'use strict';
 
@@ -97,13 +99,17 @@ define(function(require) {
         yScale,
         yAxis,
         colorScale,
+
+        colorSchema = colorHelper.colorSchemas.britecharts,
         
         isAnimated,
         ease = d3Ease.easeQuadInOut,
         
         svg,
         chartWidth,
-        chartHeight;
+        chartHeight,
+        
+        getName = ({name}) => name;
 
         
         /**
@@ -163,9 +169,27 @@ define(function(require) {
                 .rangeRound([chartHeight, 0])
                 .nice();
             
-            // TODO: set up colorScale and colorMap
-            // Assign each color by "name" value
+            colorScale = d3Scale.scaleOrdinal()
+                .domain(dataPoints.map(getName))
+                .range(colorSchema);
+                    
+            const colorRange = colorScale.range();
 
+            /**
+             * Maps data point category name to 
+             * each color of the given color scheme
+             * {
+             *     name1: 'color1',
+             *     name2: 'color2',
+             *     name3: 'color3',
+             *     ...
+             * }
+             */
+            nameColorMap = colorScale.domain().reduce((accum, item, i) => {
+                accum[item] = colorRange[i];
+
+                return accum;
+            }, {});
         }
 
         /**
