@@ -35,6 +35,19 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             expect(containerFixture.select('.scatter-plot').empty()).toBeFalsy();
         });
 
+        it('should render container, axis and chart groups', () => {
+            expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.x-axis-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.y-axis-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
+        });
+
+        it('should render an X and Y axis', () => {
+            expect(containerFixture.select('.x-axis-group .axis.x').empty()).toBeFalsy();
+            expect(containerFixture.select('.y-axis-group .axis.y').empty()).toBeFalsy();
+        });
+
         describe('API', function() {
 
             it('should provide colorSchema getter and setter', () => {
