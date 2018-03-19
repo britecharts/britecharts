@@ -69,7 +69,7 @@ define(function(require) {
      *
      * scatterPlot
      *     .width(500)
-     *     .aspectRatio(1.5);
+     *     .aspectRatio(0.5);
      *
      * d3Selection.select('.css-selector')
      *     .datum(dataset)
@@ -233,9 +233,29 @@ define(function(require) {
         // API
 
         /**
+         * Gets or Sets the colorSchema of the chart
+         * @param  {String[]} _x            Desired colorSchema for the graph
+         * @return {colorSchema | module}  Current colorSchema or Chart module to chain calls
+         * @public
+         * @example
+         * scatterPlot.colorSchema(['#fff', '#bbb', '#ccc'])
+         */
+        exports.colorSchema = function(_x) {
+            if (!arguments.length) {
+                return margin;
+            }
+            margin = {
+                ...margin,
+                ..._x,
+            };
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the margin object of the chart
          * @param  {Object} _x          Desired margin object properties for each side
-         * @return {Object | module}    Current height or Scatter Chart module to chain calls
+         * @return {margin | module}    Current height or Scatter Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -253,7 +273,7 @@ define(function(require) {
         /**
          * Gets or Sets the height of the chart
          * @param  {Number} _x          Desired height for the chart
-         * @return {Number | module}    Current height or Scatter Chart module to chain calls
+         * @return {height | module}    Current height or Scatter Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -268,7 +288,7 @@ define(function(require) {
         /**
          * Gets or Sets the height of the chart
          * @param  {Number} _x          Desired height for the chart
-         * @return {Number | module}    Current width or Scatter Chart module to chain calls
+         * @return {width | module}    Current width or Scatter Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
