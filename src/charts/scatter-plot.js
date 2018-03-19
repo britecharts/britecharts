@@ -113,7 +113,7 @@ define(function(require) {
         areaScale,
         colorScale,
 
-        maxAreaRange = 10,
+        maxCircleArea = 10,
 
         colorSchema = colorHelper.colorSchemas.britecharts,
         
@@ -234,7 +234,7 @@ define(function(require) {
             
             areaScale = d3Scale.scaleSqrt()
                 .domain([yScaleBottomValue, maxY])
-                .range([0, maxAreaRange]);
+                .range([0, maxCircleArea]);
                     
             const colorRange = colorScale.range();
 
@@ -311,7 +311,6 @@ define(function(require) {
                 .attr('cy', (d) => yScale(d.y))
                 .attr('fill', (d) => nameColorMap[d.name])
                 .attr('r', (d) => areaScale(d.y));
-            
         }
 
 
@@ -351,6 +350,21 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Gets or Sets the maximum value of the chart area
+         * @param  {number} _x=10       Desired margin object properties for each side
+         * @return {maxCircleArea | module}    Current height or Scatter Chart module to chain calls
+         * @public
+         */
+        exports.maxCircleArea = function(_x) {
+            if (!arguments.length) {
+                return maxCircleArea;
+            }
+            maxCircleArea = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the height of the chart

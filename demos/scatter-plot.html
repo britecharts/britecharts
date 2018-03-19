@@ -10,16 +10,9 @@
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
-lineChart
-    .isAnimated(true)
-    .aspectRatio(0.5)
-    .grid('horizontal')
-    .tooltipThreshold(600)
-    .width(containerWidth)
-    .dateLabel('fullDate')
-    .on('customMouseOver', chartTooltip.show)
-    .on('customMouseMove', chartTooltip.update)
-    .on('customMouseOut', chartTooltip.hide);
+scatterPlot
+    .width(750)
+    .maxCircleArea(15);
 
 container.datum(dataset).call(lineChart);
                 </code></pre>

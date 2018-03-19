@@ -22,7 +22,7 @@ function createSimpleScatterPlot() {
             
             scatter
                 .width(750)
-                .height(375);
+                .maxCircleArea(15);
 
             scatterPlotContainer.datum(dataset).call(scatter);
         }

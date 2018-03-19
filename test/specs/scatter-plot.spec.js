@@ -73,6 +73,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(actual).toEqual(expected);
             });
 
+            it('should provide maxCircleArea getter and setter', () => {
+                let previous = scatterPlot.maxCircleArea(),
+                    expected = 25,
+                    actual;
+
+                scatterPlot.maxCircleArea(expected);
+                actual = scatterPlot.maxCircleArea();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toEqual(expected);
+            });
+
             it('should provide width getter and setter', () => {
                 let previous = scatterPlot.width(),
                     expected = 200,
