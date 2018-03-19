@@ -57,8 +57,8 @@ define(function(require) {
      */
 
     /**
-     * Reusable Donut Chart API class that renders a
-     * simple and configurable donut chart.
+     * Reusable Scatter Plot API class that renders a
+     * simple and configurable scatter chart.
      *
      * @module Scatter-plot
      * @tutorial scatter-plot
