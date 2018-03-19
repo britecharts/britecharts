@@ -157,18 +157,18 @@ define(function(require) {
         */
         function buildContainerGroups() {
             let container = svg
-                .append('g')
+              .append('g')
                 .classed('container-group', true)
                 .attr('transfrom', `translate(${margin.left}, ${margin.top})`);
             
+            container
+                .append('g').classed('chart-group', true);
             container
                 .append('g').classed('x-axis-group', true)
                 .append('g').classed('axis x', true);
             container
                 .append('g').classed('y-axis-group', true)
                 .append('g').classed('axis y', true);
-            container
-                .append('g').classed('chart-group', true);
             container
                 .append('g').classed('metadata-group', true);
             
@@ -203,7 +203,7 @@ define(function(require) {
                 .call(xAxis);
 
             svg.select('.y-axis-group .axis.y')
-                .attr('tramsform', `translate(${-xAxisPadding.left}, 0)`)
+                .attr('tramsform', `translate(${xAxisPadding.left}, 0)`)
                 .call(yAxis);
             // TODO: draw label axis
         }
@@ -230,7 +230,6 @@ define(function(require) {
             colorScale = d3Scale.scaleOrdinal()
                 .domain(dataPoints.map(getName))
                 .range(colorSchema);
-            
             
             areaScale = d3Scale.scaleSqrt()
                 .domain([yScaleBottomValue, maxY])
