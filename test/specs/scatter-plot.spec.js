@@ -37,16 +37,16 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
         describe('API', function() {
 
-            it('should provide width getter and setter', () => {
-                let previous = scatterPlot.width(),
-                    expected = 200,
+            it('should provide colorSchema getter and setter', () => {
+                let previous = scatterPlot.colorSchema(),
+                    expected = ['#aaa', '#bbb', '#ccc', '#fff'],
                     actual;
 
-                scatterPlot.width(expected);
-                actual = scatterPlot.width();
+                scatterPlot.colorSchema(expected);
+                actual = scatterPlot.colorSchema();
 
                 expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
+                expect(actual).toEqual(expected);
             });
 
             it('should provide height getter and setter', () => {
@@ -71,6 +71,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toEqual(expected);
+            });
+
+            it('should provide width getter and setter', () => {
+                let previous = scatterPlot.width(),
+                    expected = 200,
+                    actual;
+
+                scatterPlot.width(expected);
+                actual = scatterPlot.width();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
         });
 

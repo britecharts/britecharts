@@ -242,12 +242,9 @@ define(function(require) {
          */
         exports.colorSchema = function(_x) {
             if (!arguments.length) {
-                return margin;
+                return colorSchema;
             }
-            margin = {
-                ...margin,
-                ..._x,
-            };
+            colorSchema = _x;
 
             return this;
         };
