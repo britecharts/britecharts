@@ -97,6 +97,30 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(actual).toEqual(expected);
             });
 
+            it('should provide xTicks getter and setter', () => {
+                let previous = scatterPlot.xTicks(),
+                    expected = 48,
+                    actual;
+
+                scatterPlot.xTicks(expected);
+                actual = scatterPlot.xTicks();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide yTicks getter and setter', () => {
+                let previous = scatterPlot.yTicks(),
+                    expected = 48,
+                    actual;
+
+                scatterPlot.yTicks(expected);
+                actual = scatterPlot.yTicks();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide width getter and setter', () => {
                 let previous = scatterPlot.width(),
                     expected = 200,

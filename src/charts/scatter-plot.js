@@ -426,6 +426,36 @@ define(function(require) {
             return this;
         };
 
+        /**
+         * Gets or Sets the xTicks of the chart
+         * @param  {Number} _x         Desired height for the chart
+         * @return {xTicks | module}    Current width or Scatter Chart module to chain calls
+         * @public
+         */
+        exports.xTicks = function(_x) {
+            if (!arguments.length) {
+                return xTicks;
+            }
+            xTicks = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the xTicks of the chart
+         * @param  {Number} _x         Desired height for the chart
+         * @return {xTicks | module}    Current width or Scatter Chart module to chain calls
+         * @public
+         */
+        exports.yTicks = function(_x) {
+            if (!arguments.length) {
+                return yTicks;
+            }
+            yTicks = _x;
+
+            return this;
+        };
+
         return exports;
     };
 });
