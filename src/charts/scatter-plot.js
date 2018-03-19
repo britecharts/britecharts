@@ -1,4 +1,5 @@
-import { colorSchema } from './bar';
+import { colorSchema, nameLabel } from './bar';
+import { xAxisLabel } from './line';
 
 define(function(require) {
     'use strict';
@@ -299,6 +300,7 @@ define(function(require) {
                 .append('circle')
                 .attr('cx', (d) => xScale(d.x))
                 .attr('cy', (d) => yScale(d.y))
+                .attr('fill', (d) => nameColorMap[d.name])
                 // TODO: should get the area given that y value is
                 // the radius
                 .attr('r', 10);
