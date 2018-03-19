@@ -117,8 +117,10 @@ define(function(require) {
 
         colorSchema = colorHelper.colorSchemas.britecharts,
         
-        isAnimated,
-        ease = d3Ease.easeQuadInOut,
+        isAnimated = true,
+        ease = d3Ease.easeCircleIn,
+        delay = 500,
+        duration = 500,
         
         svg,
         chartWidth,
@@ -305,12 +307,27 @@ define(function(require) {
                 // TODO: .attr('clip-path', 'url(#chart-area')
                 .selectAll('circle')
                 .data(dataPoints)
-                .enter()
-                .append('circle')
-                .attr('cx', (d) => xScale(d.x))
-                .attr('cy', (d) => yScale(d.y))
-                .attr('fill', (d) => nameColorMap[d.name])
-                .attr('r', (d) => areaScale(d.y));
+                .enter();
+
+            if (isAnimated) {
+                circles
+                    .append('circle')
+                    .transition()
+                    .delay(delay)
+                    .duration(duration)
+                    .ease(ease)
+                    .attr('r', (d) => areaScale(d.y))
+                    .attr('cx', (d) => xScale(d.x))
+                    .attr('cy', (d) => yScale(d.y))
+                    .attr('fill', (d) => nameColorMap[d.name]);
+            } else {
+                circles
+                    .append('circle')
+                    .attr('r', (d) => areaScale(d.y))
+                    .attr('cx', (d) => xScale(d.x))
+                    .attr('cy', (d) => yScale(d.y))
+                    .attr('fill', (d) => nameColorMap[d.name]);
+            }
         }
 
 
@@ -332,6 +349,22 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Gets or Sets isAnimated value. If set to true,
+         * the chart will be initialized or updated with animation.
+         * @param  {boolean} _x=false       Desired margin object properties for each side
+         * @return {isAnimated | module}    Current height or Scatter Chart module to chain calls
+         * @public
+         */
+        exports.isAnimated = function(_x) {
+            if (!arguments.length) {
+                return isAnimated;
+            }
+            isAnimated = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the margin object of the chart

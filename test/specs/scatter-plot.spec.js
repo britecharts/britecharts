@@ -61,6 +61,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(actual).toBe(expected);
             });
 
+            it('should provide isAnimated getter and setter', () => {
+                let previous = scatterPlot.isAnimated(),
+                    expected = false,
+                    actual;
+
+                scatterPlot.isAnimated(expected);
+                actual = scatterPlot.isAnimated();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toEqual(expected);
+            });
+
             it('should provide margin getter and setter', () => {
                 let previous = scatterPlot.margin(),
                     expected = {top: 4, right: 4, bottom: 4, left: 4},
