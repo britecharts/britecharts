@@ -110,7 +110,10 @@ define(function(require) {
         xAxis,
         yScale,
         yAxis,
+        areaScale,
         colorScale,
+
+        maxAreaRange = 10,
 
         colorSchema = colorHelper.colorSchemas.britecharts,
         
@@ -212,6 +215,7 @@ define(function(require) {
         function buildScales() {
             const [minX, minY] = [d3Array.min(dataPoints, ({x}) => x), d3Array.min(dataPoints, ({y}) => y)];
             const [maxX, maxY] = [d3Array.max(dataPoints, ({x}) => x), d3Array.max(dataPoints, ({y}) => y)];
+            const yScaleBottomValue = Math.abs(minY) < 0 ? Math.abs(minY) : 0;
 
             xScale = d3Scale.scaleLinear()
                 .domain([minX, maxX])
@@ -219,13 +223,18 @@ define(function(require) {
                 .nice();
             
             yScale = d3Scale.scaleLinear()
-                .domain([minY, maxY])
+                .domain([yScaleBottomValue, maxY])
                 .rangeRound([chartHeight, 0])
                 .nice();
             
             colorScale = d3Scale.scaleOrdinal()
                 .domain(dataPoints.map(getName))
                 .range(colorSchema);
+            
+            
+            areaScale = d3Scale.scaleSqrt()
+                .domain([yScaleBottomValue, maxY])
+                .range([0, maxAreaRange]);
                     
             const colorRange = colorScale.range();
 
@@ -301,9 +310,7 @@ define(function(require) {
                 .attr('cx', (d) => xScale(d.x))
                 .attr('cy', (d) => yScale(d.y))
                 .attr('fill', (d) => nameColorMap[d.name])
-                // TODO: should get the area given that y value is
-                // the radius
-                .attr('r', 10);
+                .attr('r', (d) => areaScale(d.y));
             
         }
 
