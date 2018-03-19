@@ -90,9 +90,20 @@ define(function(require) {
 
         dataPoints,
 
+        xAxisPadding = {
+            top: 0,
+            left: 15,
+            bottom: 0,
+            right: 0
+        },
+
         xKey = 'x',
         yKey = 'y',
         nameKey = 'name',
+
+        xTicks = null,
+        yTicks = null,
+        tickPadding = 5,
 
         xScale,
         xAxis,
@@ -127,6 +138,8 @@ define(function(require) {
 
                 buildScales();
                 buildSVG(this);
+                buildAxis();
+                drawAxis();
 
                 // TODO: the rest of the functions
             });    
@@ -146,9 +159,48 @@ define(function(require) {
             container
                 .append('g').classed('x-axis-group', true)
                 .append('g').classed('axis x', true);
+            container
+                .append('g').classed('y-axis-group', true)
+                .append('g').classed('axis y', true);
+            container
+                .append('g').classed('chart-group', true);
+            container
+                .append('g').classed('metadata-group', true)
             
             // TODO: build the rest of the container groups
+            // Build clip container for the inner chart part
+        }
 
+        /** 
+         * Creates the x-axis and y-axis with proper orientations
+         * @private
+        */
+        function buildAxis() {
+            xAxis = d3Axis.axisBottom(xScale)
+                .ticks(xTicks)
+                .tickPadding(tickPadding);
+            
+            yAxis = d3Axis.axisLeft(yScale)
+                .ticks(yTicks)
+                .tickPadding(tickPadding);
+
+            // TODO: drawGridLines
+        }
+
+        /** 
+         * Draws the x and y axis on the svg object within their
+         * respective groups along with their axis labels
+         * @private
+        */
+        function drawAxis() {
+            svg.select('.x-axis-group .axis.x')
+                .attr('transform', `translate(0, ${chartHeight})`)
+                .call(xAxis);
+
+            svg.select('.y-axis-group .axis.y')
+                .attr('tramsform', `translate(${-xAxisPadding.left}, 0)`)
+                .call(yAxis);
+            // TODO: draw label axis
         }
 
         /**
@@ -235,7 +287,7 @@ define(function(require) {
         /**
          * Gets or Sets the colorSchema of the chart
          * @param  {String[]} _x            Desired colorSchema for the graph
-         * @return {colorSchema | module}  Current colorSchema or Chart module to chain calls
+         * @return {colorSchema | module}   Current colorSchema or Chart module to chain calls
          * @public
          * @example
          * scatterPlot.colorSchema(['#fff', '#bbb', '#ccc'])
