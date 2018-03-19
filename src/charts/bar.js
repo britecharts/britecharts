@@ -67,7 +67,7 @@ define(function(require) {
                 bottom: 30,
                 left: 40
             },
-            width = 960,
+            width = 500,
             height = 500,
             loadingState = bar,
             data,

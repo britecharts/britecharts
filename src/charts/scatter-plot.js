@@ -140,6 +140,7 @@ define(function(require) {
                 buildSVG(this);
                 buildAxis();
                 drawAxis();
+                drawDataPoints();
 
                 // TODO: the rest of the functions
             });    
@@ -165,7 +166,7 @@ define(function(require) {
             container
                 .append('g').classed('chart-group', true);
             container
-                .append('g').classed('metadata-group', true)
+                .append('g').classed('metadata-group', true);
             
             // TODO: build the rest of the container groups
             // Build clip container for the inner chart part
@@ -279,6 +280,29 @@ define(function(require) {
 
                 return [...acc, d];
             }, []);
+        }
+
+        /**
+         * Draws the points for each data element
+         * on the charg group
+         * @private
+        */
+        function drawDataPoints() {
+            // TODO: check if isAnimated is true
+            // before applying the transition effect
+
+            let circles = svg.select('.chart-group')
+                // TODO: .attr('clip-path', 'url(#chart-area')
+                .selectAll('circle')
+                .data(dataPoints)
+                .enter()
+                .append('circle')
+                .attr('cx', (d) => xScale(d.x))
+                .attr('cy', (d) => yScale(d.y))
+                // TODO: should get the area given that y value is
+                // the radius
+                .attr('r', 10);
+            
         }
 
 
