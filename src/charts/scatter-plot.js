@@ -314,14 +314,16 @@ define(function(require) {
                     .attr('r', (d) => areaScale(d.y))
                     .attr('cx', (d) => xScale(d.x))
                     .attr('cy', (d) => yScale(d.y))
-                    .attr('fill', (d) => nameColorMap[d.name]);
+                    .attr('fill', (d) => nameColorMap[d.name])
+                    .style('cursor', 'pointer');
             } else {
                 circles
                     .append('circle')
                       .attr('r', (d) => areaScale(d.y))
                       .attr('cx', (d) => xScale(d.x))
                       .attr('cy', (d) => yScale(d.y))
-                      .attr('fill', (d) => nameColorMap[d.name]);
+                      .attr('fill', (d) => nameColorMap[d.name])
+                      .style('cursor', 'pointer');
             }
         }
 
