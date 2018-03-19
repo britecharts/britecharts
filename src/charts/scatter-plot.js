@@ -198,8 +198,8 @@ define(function(require) {
         function cleanData(originalData) {
             return originalData.reduce((acc, d) => {
                 d.name = String(d[nameKey]);
-                d.x = +d[xKey];
-                d.y = +d[yKey];
+                d.x = d[xKey];
+                d.y = d[yKey];
 
                 return [...acc, d];
             }, []);
