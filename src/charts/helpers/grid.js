@@ -137,6 +137,13 @@ define(function(require) {
         return gridBase;
     }
 
+    /**
+     * Constructor for a reusable two-dimensional grid helper
+     * @param {*} scaleX - d3 scale for the grid's x direction
+     * @param {*} scaleY - d3 scale for the grid's y direction
+     * @return {grid}
+     * @todo Fix this docblock
+     */
     function grid(scaleX, scaleY) {
         let gridH = gridHorizontal(scaleY || scaleLinear()),
             gridV = gridVertical(scaleX || scaleLinear()),
@@ -144,6 +151,10 @@ define(function(require) {
             tickValuesX = null,
             tickValuesY = null;
             
+        /**
+         * Generator function for two-dimensional grid
+         * @param {selection|transition} context - d3 selection or transition to use as the container
+         */
         function grid(context) {
             (direction === 'full' || direction === 'horizontal')
                 ? gridH.tickValues(tickValuesY).range(scaleX.range())
@@ -169,26 +180,78 @@ define(function(require) {
             return arguments.length ? (scaleY = _, gridH.scale(scaleY), grid) : scaleY;
         }
 
+        /**
+         * Gets or sets the direction of the grid
+         * Direction of full will render both horizontal and vertical grid lines
+         * Either horizontal or vertical wil render the respective lines
+         * @param {string} [_] - Grid direction of full, vertical, or horizontal
+         * @return {string|grid}
+         * @public
+         */
         grid.direction = function(_) {
             return arguments.length ? (direction = _, grid) : direction;
         }
 
+        /**
+         * Gets or sets both the horizontal and vertical grid start offset 
+         * Convenience method that sets the start offset for both horizontal and vertical grids
+         * Returns the start offset of the horizontal grid if no argument is supplied
+         * Start offset is the distance before the start position of the scale's range that the grid will render
+         * @param {number} [_] - Offset in px
+         * @return {number|grid}
+         * @public
+         */
         grid.offsetStart = function(_) {
             return arguments.length ? (gridH.offsetStart(_), gridV.offsetStart(_), grid) : gridH.offsetStart();
         }
     
+        /**
+         * Gets or sets both the horizontal and vertical grid end offset 
+         * Convenience method that sets the end offset for both horizontal and vertical grids
+         * Returns the end offset of the horizontal grid if no argument is supplied
+         * End offset is the distance after the end position of the scale's range that the grid will render
+         * @param {number} [_] - Offset in px
+         * @return {number|grid}
+         * @public
+         */
         grid.offsetEnd = function(_) {
             return arguments.length ? (gridH.offsetEnd(_), gridV.offsetEnd(_), grid) : gridH.offsetEnd();
         }
 
+        /**
+         * Gets or sets the hideEdges parameter for both horizontal and vertical grids
+         * Returns the horizontal value if no argument specified
+         * Determines if the first and last grid line are suppressed
+         * True or 'both' suppress both edges, 'first' and 'last' suppress the grid line
+         * corresponding to the first and last tick value respectively
+         * @param {boolean|string} [_] - The hideEdges parameter
+         * @return {boolean|string|grid}
+         * @public
+         */
         grid.hideEdges = function(_) {
             return arguments.length ? (gridH.hideEdges(_), gridV.hideEdges(_), grid) : gridH.hideEdges();
         }
 
+        /**
+         * Gets or sets the tick count for both horizontal and vertical grids
+         * Returns the horizontal ticks if no argument specified
+         * Mirrors d3 axis' ticks API method
+         * @param {number} [_] - Approximate tick count
+         * @return {number|grid}
+         * @public
+         */
         grid.ticks = function(_) {
             return arguments.length ? (gridH.ticks(_), gridV.ticks(_), grid) : gridH.ticks();
         }
 
+        /**
+         * Gets or sets the tick value for both horizontal and vertical grids
+         * Returns the horizontal tick values if no argument specified
+         * Mirrors d3 axis' tickValues API method
+         * @param {number[]} [_] - Array of domain values to place ticks
+         * @return {number[]|grid}
+         * @public
+         */
         grid.tickValues = function(_) {
             return arguments.length ? (tickValuesX = tickValuesY = _, grid) : tickValuesY;
         }
