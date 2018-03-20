@@ -90,13 +90,6 @@ define(function(require) {
 
         dataPoints,
 
-        xAxisPadding = {
-            top: 0,
-            left: 15,
-            bottom: 0,
-            right: 0
-        },
-
         xKey = 'x',
         yKey = 'y',
         nameKey = 'name',
@@ -162,6 +155,8 @@ define(function(require) {
                 .attr('transfrom', `translate(${margin.left}, ${margin.top})`);
 
             container
+                .append('g').classed('grid-lines-group', true);
+            container
                 .append('g').classed('chart-group', true);
             container
                 .append('g').classed('x-axis-group', true)
@@ -203,8 +198,8 @@ define(function(require) {
                 .call(xAxis);
 
             svg.select('.y-axis-group .axis.y')
-                .attr('tramsform', `translate(${xAxisPadding.left}, 0)`)
                 .call(yAxis);
+
             // TODO: draw label axis
         }
 
@@ -264,7 +259,7 @@ define(function(require) {
             if (!svg) {
                 svg = d3Selection.select(container)
                   .append('svg')
-                    .classed('breitechart scatter-plot', true);
+                    .classed('britechart scatter-plot', true);
 
                 buildContainerGroups();
             }
