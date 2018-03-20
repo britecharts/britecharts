@@ -1,0 +1,22 @@
+
+.scatter-plot {
+    .y-axis-group {
+        .tick {
+            text {
+                font-size: 14px;
+            }
+        }
+    }
+
+    // Axes
+    .axis {
+        path {
+            display: none;
+        }
+    }
+    .tick {
+        line {
+            display: none;
+        }
+    }
+}
