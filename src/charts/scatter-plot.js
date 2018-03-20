@@ -99,6 +99,7 @@ define(function(require) {
         tickPadding = 5,
 
         baseLine,
+        maskGridLines,
 
         xScale,
         xAxis,
@@ -221,6 +222,7 @@ define(function(require) {
                 .selectAll('line')
                 .remove();
 
+            drawVerticalGridLines();
             drawHorizontalExtendedLine();
         }
 
@@ -239,6 +241,25 @@ define(function(require) {
                     .attr('x2', chartWidth)
                     .attr('y1', chartHeight)
                     .attr('y2', chartHeight);
+        }
+
+        /**
+         * Draws the grid lines of the chart
+         * @return {void}
+         */
+        function drawVerticalGridLines() {
+            maskGridLines = svg.select('.grid-lines-group')
+                .selectAll('line.horizontal-grid-line')
+                .data(yScale.ticks(yTicks))
+                .enter()
+                .append('line')
+                .attr('class', 'horizontal-grid-line')
+                .attr('x1', (xAxisPadding.left))
+                .attr('x2', chartWidth)
+                .attr('y1', (d) => yScale(d))
+                .attr('y2', (d) => yScale(d))
+
+            drawHorizontalExtendedLine();
         }
 
         /**
