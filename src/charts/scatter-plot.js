@@ -94,7 +94,7 @@ define(function(require) {
         yKey = 'y',
         nameKey = 'name',
 
-        xTicks = null,
+        xTicks = 6,
         yTicks = null,
         tickPadding = 5,
 
@@ -223,6 +223,7 @@ define(function(require) {
                 .remove();
 
             drawVerticalGridLines();
+            drawHorizontalGridLines();
             drawHorizontalExtendedLine();
         }
 
@@ -244,7 +245,25 @@ define(function(require) {
         }
 
         /**
-         * Draws the grid lines of the chart
+         * Draws the grid lines for an horizontal bar chart
+         * @return {void}
+         */
+        function drawHorizontalGridLines() {
+            maskGridLines = svg.select('.grid-lines-group')
+                .selectAll('line.vertical-grid-line')
+                .data(yScale.ticks(xTicks))
+                .enter()
+                .append('line')
+                .attr('class', 'vertical-grid-line')
+                .attr('y1', (xAxisPadding.left))
+                .attr('y2', chartHeight)
+                .attr('x1', (d) => xScale(d))
+                .attr('x2', (d) => xScale(d))
+        }
+
+        /**
+         * Draws vertical gridlines of the chart.
+         * These gridlines are parallel to x-axis.
          * @return {void}
          */
         function drawVerticalGridLines() {
