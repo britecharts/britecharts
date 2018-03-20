@@ -111,14 +111,12 @@
 .line-chart .masking-rectangle {
   fill: #ffffff; }
 
-.scatter-plot .y-axis-group .tick text {
-  font-size: 14px; }
-
-.scatter-plot .axis path {
-  display: none; }
-
-.scatter-plot .tick line {
-  display: none; }
+.scatter-plot .y-axis-group {
+  line-display: none; }
+  .scatter-plot .y-axis-group .axis path {
+    display: none; }
+  .scatter-plot .y-axis-group .tick text {
+    font-size: 14px; }
 
 .sparkline {
   stroke: #ADB0B6;

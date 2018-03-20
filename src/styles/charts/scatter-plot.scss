@@ -1,21 +1,19 @@
 
 .scatter-plot {
     .y-axis-group {
+        .axis {
+            path {
+                display: none;
+            }
+        }
+
         .tick {
             text {
                 font-size: 14px;
             }
         }
-    }
 
-    // Axes
-    .axis {
-        path {
-            display: none;
-        }
-    }
-    .tick {
-        line {
+        line: {
             display: none;
         }
     }
