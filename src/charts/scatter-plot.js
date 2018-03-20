@@ -81,7 +81,7 @@ define(function(require) {
             top: 20,
             right: 20,
             bottom: 20,
-            left: 20
+            left: 40
         },
         width = 960,
         height = 500,
