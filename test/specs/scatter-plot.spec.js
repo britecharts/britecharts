@@ -179,5 +179,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             })
         });
 
+        describe('when clicking on a point', function () {
+
+            it('should trigger a callback on mouse click', () => {
+                let scatterPlot = containerFixture.selectAll('.point:nth-child(1)');
+                let callbackSpy = jasmine.createSpy('callback');
+
+                scatterPlot.on('customClick', callbackSpy);
+                scatterPlot.dispatch('click');
+
+                expect(callbackSpy.calls.count()).toBe(1);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
+            });
+        });
     });
 });

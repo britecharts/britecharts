@@ -19,7 +19,7 @@ function createSimpleScatterPlot() {
 
         if (containerWidth) {
             dataset = aTestDataSet().withFourNames().build();
-            
+
             scatter
                 .width(750)
                 .maxCircleArea(15);

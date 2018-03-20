@@ -128,6 +128,10 @@ define(function(require) {
         chartWidth,
         chartHeight,
 
+        dispatcher = d3Dispatch.dispatch(
+            'customClick'
+        ),
+
         getName = ({name}) => name;
 
         /**
@@ -378,10 +382,14 @@ define(function(require) {
             if (isAnimated) {
                 circles
                   .append('circle')
+                    .on('click', function (d) {
+                        handleClick(this, d, chartWidth, chartHeight);
+                    })
                     .transition()
                     .delay(delay)
                     .duration(duration)
                     .ease(ease)
+                    .attr('class', 'point')
                     .attr('r', (d) => areaScale(d.y))
                     .attr('cx', (d) => xScale(d.x))
                     .attr('cy', (d) => yScale(d.y))
@@ -390,12 +398,25 @@ define(function(require) {
             } else {
                 circles
                     .append('circle')
+                      .on('click', function (d) {
+                          handleClick(this, d, chartWidth, chartHeight);
+                      })
+                      .attr('class', 'point')
                       .attr('r', (d) => areaScale(d.y))
                       .attr('cx', (d) => xScale(d.x))
                       .attr('cy', (d) => yScale(d.y))
                       .attr('fill', (d) => nameColorMap[d.name])
                       .style('cursor', 'pointer');
             }
+        }
+
+        /**
+         * Custom onClick event handler
+         * @return {void}
+         * @private
+         */
+        function handleClick(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customClick', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
         }
 
 
@@ -490,6 +511,20 @@ define(function(require) {
             height = _x;
 
             return this;
+        };
+
+        /**
+         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+         * We are going to expose this events:
+         * customClick
+         *
+         * @return {module} Scatter Plot
+         * @public
+         */
+        exports.on = function () {
+            let value = dispatcher.on.apply(dispatcher, arguments);
+
+            return value === dispatcher ? exports : value;
         };
 
         /**
