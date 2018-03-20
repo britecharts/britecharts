@@ -144,6 +144,22 @@ define(function(require) {
         }
 
         /**
+         * Creates the x-axis and y-axis with proper orientations
+         * @private
+        */
+        function buildAxis() {
+            xAxis = d3Axis.axisBottom(xScale)
+                .ticks(xTicks)
+                .tickPadding(tickPadding);
+
+            yAxis = d3Axis.axisLeft(yScale)
+                .ticks(yTicks)
+                .tickPadding(tickPadding);
+
+            // TODO: drawGridLines
+        }
+
+        /**
          * Builds containers for the chart, including the chart axis,
          * chart, and metadata groups.
          * @private
@@ -169,22 +185,6 @@ define(function(require) {
 
             // TODO: build the rest of the container groups
             // Build clip container for the inner chart part
-        }
-
-        /**
-         * Creates the x-axis and y-axis with proper orientations
-         * @private
-        */
-        function buildAxis() {
-            xAxis = d3Axis.axisBottom(xScale)
-                .ticks(xTicks)
-                .tickPadding(tickPadding);
-
-            yAxis = d3Axis.axisLeft(yScale)
-                .ticks(yTicks)
-                .tickPadding(tickPadding);
-
-            // TODO: drawGridLines
         }
 
         /**
