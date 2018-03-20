@@ -115,7 +115,6 @@ define(function(require) {
             right: 0
         },
 
-
         maxCircleArea = 10,
 
         colorSchema = colorHelper.colorSchemas.britecharts,
