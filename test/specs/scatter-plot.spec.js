@@ -40,12 +40,21 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.x-axis-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.y-axis-group').empty()).toBeFalsy();
+            expect(containerFixture.select('g.grid-lines-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
         });
 
         it('should render an X and Y axis', () => {
             expect(containerFixture.select('.x-axis-group .axis.x').empty()).toBeFalsy();
             expect(containerFixture.select('.y-axis-group .axis.y').empty()).toBeFalsy();
+        });
+
+        it('should render grid lines', () => {
+            expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
+        });
+
+        it('should render vertical lines', () => {
+            expect(containerFixture.select('.vertical-grid-line').empty()).toBeFalsy();
         });
 
         describe('API', function() {
