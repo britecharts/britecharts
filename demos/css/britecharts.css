@@ -111,8 +111,13 @@
 .line-chart .masking-rectangle {
   fill: #ffffff; }
 
-.scatter-plot .x.axis path,
-.scatter-plot .y.axis path {
+.scatter-plot .y-axis-group .tick line {
+  display: none; }
+
+.scatter-plot .y-axis-group .axis path {
+  display: none; }
+
+.scatter-plot .x.axis path {
   display: none; }
 
 .sparkline {

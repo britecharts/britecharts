@@ -79,7 +79,7 @@ define(function(require) {
 
         let margin = {
             top: 20,
-            right: 20,
+            right: 10,
             bottom: 20,
             left: 40
         },
@@ -98,12 +98,22 @@ define(function(require) {
         yTicks = null,
         tickPadding = 5,
 
+        baseLine,
+
         xScale,
         xAxis,
         yScale,
         yAxis,
         areaScale,
         colorScale,
+
+        xAxisPadding = {
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0
+        },
+
 
         maxCircleArea = 10,
 
@@ -137,6 +147,7 @@ define(function(require) {
                 buildSVG(this);
                 buildAxis();
                 drawAxis();
+                drawGridLines();
                 drawDataPoints();
 
                 // TODO: the rest of the functions
@@ -155,8 +166,6 @@ define(function(require) {
             yAxis = d3Axis.axisLeft(yScale)
                 .ticks(yTicks)
                 .tickPadding(tickPadding);
-
-            // TODO: drawGridLines
         }
 
         /**
@@ -169,7 +178,6 @@ define(function(require) {
               .append('g')
                 .classed('container-group', true)
                 .attr('transform', `translate(${margin.left}, ${margin.top})`);
-            window.container = container;
 
             container
                 .append('g').classed('grid-lines-group', true);
@@ -202,6 +210,35 @@ define(function(require) {
                 .call(yAxis);
 
             // TODO: draw label axis
+        }
+
+        /**
+         * Draws grid lines on the background of the chart
+         * @return void
+         */
+        function drawGridLines() {
+            svg.select('.grid-lines-group')
+                .selectAll('line')
+                .remove();
+
+            drawHorizontalExtendedLine();
+        }
+
+        /**
+         * Draws a vertical line to extend x-axis till the edges
+         * @return {void}
+         */
+        function drawHorizontalExtendedLine() {
+            baseLine = svg.select('.grid-lines-group')
+                .selectAll('line.extended-x-line')
+                .data([0])
+                .enter()
+                  .append('line')
+                    .attr('class', 'extended-x-line')
+                    .attr('x1', (xAxisPadding.left))
+                    .attr('x2', chartWidth)
+                    .attr('y1', chartHeight)
+                    .attr('y2', chartHeight);
         }
 
         /**
