@@ -62,6 +62,10 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(actual).toEqual(expected);
             });
 
+            it('should have exportChart defined', () => {
+                expect(scatterPlot.exportChart).toBeDefined();
+            });
+
             it('should provide height getter and setter', () => {
                 let previous = scatterPlot.width(),
                     expected = 200,
@@ -148,7 +152,7 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
         });
 
         describe('when margins are set partially', function() {
-            
+
             it('should override the default values', () => {
                 let previous = scatterPlot.margin(),
                 expected = {
@@ -164,7 +168,7 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(previous).not.toBe(actual);
                 expect(actual).toEqual(expected);
             })
-        }); 
+        });
 
     });
 });
