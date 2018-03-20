@@ -168,7 +168,8 @@ define(function(require) {
             let container = svg
               .append('g')
                 .classed('container-group', true)
-                .attr('transfrom', `translate(${margin.left}, ${margin.top})`);
+                .attr('transform', `translate(${margin.left}, ${margin.top})`);
+            window.container = container;
 
             container
                 .append('g').classed('grid-lines-group', true);
