@@ -49,11 +49,11 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             expect(containerFixture.select('.y-axis-group .axis.y').empty()).toBeFalsy();
         });
 
-        it('should render grid lines', () => {
+        it('should render horizontal grid lines', () => {
             expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
         });
 
-        it('should render vertical lines', () => {
+        it('should render vertical grid lines', () => {
             expect(containerFixture.select('.vertical-grid-line').empty()).toBeFalsy();
         });
 
