@@ -1,0 +1,20 @@
+
+.scatter-plot {
+    // Axes
+    .y-axis-group {
+        .tick {
+            line {
+                display: none;
+            }
+        }
+        .axis {
+            path {
+                display: none;
+            }
+        }
+    }
+
+    .x.axis path {
+        display: none;
+    }
+}

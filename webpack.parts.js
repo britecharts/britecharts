@@ -24,6 +24,9 @@ exports.babelIstambulLoader = () => ({
                 exclude: /(node_modules|__tests__|tests_index.js)/,
                 use: [{
                     loader: 'istanbul-instrumenter-loader',
+                    query: {
+                        esModules: true
+                    }
                 }],
             }
         ]
