@@ -151,7 +151,6 @@ define(function(require) {
                 drawGridLines();
                 drawDataPoints();
 
-                // TODO: the rest of the functions
             });
         }
 
@@ -192,9 +191,6 @@ define(function(require) {
                 .append('g').classed('axis y', true);
             container
                 .append('g').classed('metadata-group', true);
-
-            // TODO: build the rest of the container groups
-            // Build clip container for the inner chart part
         }
 
         /**
@@ -209,8 +205,6 @@ define(function(require) {
 
             svg.select('.y-axis-group .axis.y')
                 .call(yAxis);
-
-            // TODO: draw label axis
         }
 
         /**
@@ -371,7 +365,6 @@ define(function(require) {
         */
         function drawDataPoints() {
             let circles = svg.select('.chart-group')
-                // TODO: .attr('clip-path', 'url(#chart-area')
                 .selectAll('circle')
                 .data(dataPoints)
                 .enter();
