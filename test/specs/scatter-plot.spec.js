@@ -14,7 +14,8 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
         beforeEach(() => {
             dataset = buildDataSet('withFourNames');
-            scatterPlot = chart();
+            scatterPlot = chart()
+                    .grid('full');
 
             // DOM Fixture Setup
             f = jasmine.getFixtures();
@@ -74,6 +75,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
             it('should have exportChart defined', () => {
                 expect(scatterPlot.exportChart).toBeDefined();
+            });
+
+            it('should provide grid mode getter and setter', () => {
+                let previous = scatterPlot.grid(),
+                    expected = 'vertical',
+                    actual;
+
+                scatterPlot.grid(expected);
+                actual = scatterPlot.grid();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide height getter and setter', () => {

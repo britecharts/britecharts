@@ -219,7 +219,9 @@ define(function(require) {
 
             if (grid === 'horizontal' || grid === 'full') {
                 drawHorizontalGridLines();
-            } else if (grid === 'vertical' || grid === 'full') {
+            }
+
+            if (grid === 'vertical' || grid === 'full') {
                 drawVerticalGridLines();
             }
 
