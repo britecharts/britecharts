@@ -1175,7 +1175,7 @@ define(function(require){
         /**
          * Gets or Sets the margin of the chart
          * @param  {Object} _x Margin object to get/set
-         * @return { (Number | Module) } Current margin or Line Chart module to chain calls
+         * @return { (Object | Module) } Current margin or Line Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
