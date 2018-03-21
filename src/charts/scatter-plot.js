@@ -197,7 +197,7 @@ define(function(require) {
          * Draws the x and y axis on the svg object within their
          * respective groups along with their axis labels
          * @private
-        */
+         */
         function drawAxis() {
             svg.select('.x-axis-group .axis.x')
                 .attr('transform', `translate(0, ${chartHeight})`)
