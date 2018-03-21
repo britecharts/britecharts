@@ -1,6 +1,3 @@
-import { colorSchema, nameLabel } from './bar';
-import { xAxisLabel } from './line';
-
 define(function(require) {
     'use strict';
 
