@@ -95,6 +95,7 @@ define(function(require) {
         yTicks = null,
         tickPadding = 5,
 
+        grid = null,
         baseLine,
         maskGridLines,
 
@@ -216,8 +217,12 @@ define(function(require) {
                 .selectAll('line')
                 .remove();
 
-            drawVerticalGridLines();
-            drawHorizontalGridLines();
+            if (grid === 'horizontal' || grid === 'full') {
+                drawHorizontalGridLines();
+            } else if (grid === 'vertical' || grid === 'full') {
+                drawVerticalGridLines();
+            }
+
             drawHorizontalExtendedLine();
         }
 
@@ -425,6 +430,22 @@ define(function(require) {
                 return colorSchema;
             }
             colorSchema = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the grid mode.
+         *
+         * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
+         * @return {String | module} Current mode of the grid or Area Chart module to chain calls
+         * @public
+         */
+        exports.grid = function(_x) {
+            if (!arguments.length) {
+                return grid;
+            }
+            grid = _x;
 
             return this;
         };
