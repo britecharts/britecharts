@@ -34,7 +34,10 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
         });
 
         it('should render a chart with minimal requirements', () => {
-            expect(containerFixture.select('.scatter-plot').empty()).toBeFalsy();
+            let expected = 1;
+            let actual = containerFixture.select('.scatter-plot').nodes().length;
+
+            expect(actual).toEqual(expected);
         });
 
         it('should render container, axis and chart groups', () => {
