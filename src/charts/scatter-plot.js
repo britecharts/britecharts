@@ -114,7 +114,7 @@ define(function(require) {
             right: 0
         },
 
-        circleOpacity,
+        circleOpacity = 1,
         maxCircleArea = 10,
 
         colorSchema = colorHelper.colorSchemas.britecharts,
@@ -455,10 +455,14 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the circles opacity value of the chart
-         * @param  {number} _x                 Desired opacity of circles of the chart
+         * Gets or Sets the circles opacity value of the chart.
+         * Sets opacity of a circle for each data point of the chart and
+         * makes the area of each data point more transparent if it's less than 1.
+         * @param  {number} _x=1               Desired opacity of circles of the chart
          * @return {circleOpacity | module}    Current circleOpacity or Scatter Chart module to chain calls
          * @public
+         * @example
+         * scatterPlot.circleOpacity(0.6)
          */
         exports.circleOpacity = function (_x) {
             if (!arguments.length) {
