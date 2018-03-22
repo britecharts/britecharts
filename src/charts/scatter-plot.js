@@ -122,6 +122,8 @@ define(function(require) {
         delay = 500,
         duration = 500,
 
+        hasHollowCircles = false,
+
         svg,
         chartWidth,
         chartHeight,
@@ -387,10 +389,16 @@ define(function(require) {
                     .duration(duration)
                     .ease(ease)
                     .attr('class', 'point')
+                    .attr('class', 'data-point-highlighter')
+                    .style('stroke', (d) => (
+                        hasHollowCircles ? nameColorMap[d.name] : null
+                    ))
                     .attr('r', (d) => areaScale(d.y))
                     .attr('cx', (d) => xScale(d.x))
                     .attr('cy', (d) => yScale(d.y))
-                    .attr('fill', (d) => nameColorMap[d.name])
+                    .attr('fill', (d) => (
+                        hasHollowCircles ? '#fff' : nameColorMap[d.name]
+                    ))
                     .style('cursor', 'pointer');
             } else {
                 circles
@@ -399,10 +407,16 @@ define(function(require) {
                           handleClick(this, d, chartWidth, chartHeight);
                       })
                       .attr('class', 'point')
+                      .attr('class', 'data-point-highlighter')
+                      .style('stroke', (d) => (
+                          hasHollowCircles ? nameColorMap[d.name] : null
+                      ))
                       .attr('r', (d) => areaScale(d.y))
                       .attr('cx', (d) => xScale(d.x))
                       .attr('cy', (d) => yScale(d.y))
-                      .attr('fill', (d) => nameColorMap[d.name])
+                      .attr('fill', (d) => (
+                          hasHollowCircles ? '#fff' : nameColorMap[d.name]
+                      ))
                       .style('cursor', 'pointer');
             }
         }
@@ -507,6 +521,15 @@ define(function(require) {
                 return maxCircleArea;
             }
             maxCircleArea = _x;
+
+            return this;
+        }
+
+        exports.hasHollowCircles = function(_x) {
+            if (!arguments.length) {
+                return hasHollowCircles;
+            }
+            hasHollowCircles = _x;
 
             return this;
         }
