@@ -114,6 +114,7 @@ define(function(require) {
             right: 0
         },
 
+        circleOpacity,
         maxCircleArea = 10,
 
         colorSchema = colorHelper.colorSchemas.britecharts,
@@ -394,6 +395,7 @@ define(function(require) {
                     .style('stroke', (d) => (
                         hasHollowCircles ? nameColorMap[d.name] : null
                     ))
+                    .attr('opacity', circleOpacity)
                     .attr('r', (d) => areaScale(d.y))
                     .attr('cx', (d) => xScale(d.x))
                     .attr('cy', (d) => yScale(d.y))
@@ -412,6 +414,7 @@ define(function(require) {
                       .style('stroke', (d) => (
                           hasHollowCircles ? nameColorMap[d.name] : null
                       ))
+                      .attr('opacity', circleOpacity)
                       .attr('r', (d) => areaScale(d.y))
                       .attr('cx', (d) => xScale(d.x))
                       .attr('cy', (d) => yScale(d.y))
@@ -436,7 +439,7 @@ define(function(require) {
 
         /**
          * Gets or Sets the colorSchema of the chart
-         * @param  {String[]} _x            Desired colorSchema for the graph
+         * @param  {String[]} _x            Desired colorSchema for the chart
          * @return {colorSchema | module}   Current colorSchema or Chart module to chain calls
          * @public
          * @example
@@ -450,6 +453,21 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Gets or Sets the circles opacity value of the chart
+         * @param  {number} _x                 Desired opacity of circles of the chart
+         * @return {circleOpacity | module}    Current circleOpacity or Scatter Chart module to chain calls
+         * @public
+         */
+        exports.circleOpacity = function (_x) {
+            if (!arguments.length) {
+                return circleOpacity;
+            }
+            circleOpacity = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the grid mode.
