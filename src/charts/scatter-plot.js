@@ -114,6 +114,7 @@ define(function(require) {
             right: 0
         },
 
+        circleOpacity = 1,
         maxCircleArea = 10,
 
         colorSchema = colorHelper.colorSchemas.britecharts,
@@ -254,24 +255,6 @@ define(function(require) {
          */
         function drawHorizontalGridLines() {
             maskGridLines = svg.select('.grid-lines-group')
-                .selectAll('line.vertical-grid-line')
-                .data(yScale.ticks(xTicks))
-                .enter()
-                .append('line')
-                .attr('class', 'vertical-grid-line')
-                .attr('y1', (xAxisPadding.left))
-                .attr('y2', chartHeight)
-                .attr('x1', (d) => xScale(d))
-                .attr('x2', (d) => xScale(d))
-        }
-
-        /**
-         * Draws vertical gridlines of the chart.
-         * These gridlines are parallel to x-axis.
-         * @return {void}
-         */
-        function drawVerticalGridLines() {
-            maskGridLines = svg.select('.grid-lines-group')
                 .selectAll('line.horizontal-grid-line')
                 .data(yScale.ticks(yTicks))
                 .enter()
@@ -281,6 +264,24 @@ define(function(require) {
                 .attr('x2', chartWidth)
                 .attr('y1', (d) => yScale(d))
                 .attr('y2', (d) => yScale(d))
+        }
+
+        /**
+         * Draws vertical gridlines of the chart.
+         * These gridlines are parallel to x-axis.
+         * @return {void}
+         */
+        function drawVerticalGridLines() {
+            maskGridLines = svg.select('.grid-lines-group')
+                .selectAll('line.vertical-grid-line')
+                .data(yScale.ticks(xTicks))
+                .enter()
+                .append('line')
+                .attr('class', 'vertical-grid-line')
+                .attr('y1', (xAxisPadding.left))
+                .attr('y2', chartHeight)
+                .attr('x1', (d) => xScale(d))
+                .attr('x2', (d) => xScale(d));
 
             drawHorizontalExtendedLine();
         }
@@ -394,6 +395,7 @@ define(function(require) {
                     .style('stroke', (d) => (
                         hasHollowCircles ? nameColorMap[d.name] : null
                     ))
+                    .attr('opacity', circleOpacity)
                     .attr('r', (d) => areaScale(d.y))
                     .attr('cx', (d) => xScale(d.x))
                     .attr('cy', (d) => yScale(d.y))
@@ -412,6 +414,7 @@ define(function(require) {
                       .style('stroke', (d) => (
                           hasHollowCircles ? nameColorMap[d.name] : null
                       ))
+                      .attr('opacity', circleOpacity)
                       .attr('r', (d) => areaScale(d.y))
                       .attr('cx', (d) => xScale(d.x))
                       .attr('cy', (d) => yScale(d.y))
@@ -436,7 +439,7 @@ define(function(require) {
 
         /**
          * Gets or Sets the colorSchema of the chart
-         * @param  {String[]} _x            Desired colorSchema for the graph
+         * @param  {String[]} _x            Desired colorSchema for the chart
          * @return {colorSchema | module}   Current colorSchema or Chart module to chain calls
          * @public
          * @example
@@ -450,6 +453,25 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Gets or Sets the circles opacity value of the chart.
+         * Sets opacity of a circle for each data point of the chart and
+         * makes the area of each data point more transparent if it's less than 1.
+         * @param  {number} _x=1               Desired opacity of circles of the chart
+         * @return {circleOpacity | module}    Current circleOpacity or Scatter Chart module to chain calls
+         * @public
+         * @example
+         * scatterPlot.circleOpacity(0.6)
+         */
+        exports.circleOpacity = function (_x) {
+            if (!arguments.length) {
+                return circleOpacity;
+            }
+            circleOpacity = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the grid mode.
