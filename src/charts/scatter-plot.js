@@ -254,24 +254,6 @@ define(function(require) {
          */
         function drawHorizontalGridLines() {
             maskGridLines = svg.select('.grid-lines-group')
-                .selectAll('line.vertical-grid-line')
-                .data(yScale.ticks(xTicks))
-                .enter()
-                .append('line')
-                .attr('class', 'vertical-grid-line')
-                .attr('y1', (xAxisPadding.left))
-                .attr('y2', chartHeight)
-                .attr('x1', (d) => xScale(d))
-                .attr('x2', (d) => xScale(d))
-        }
-
-        /**
-         * Draws vertical gridlines of the chart.
-         * These gridlines are parallel to x-axis.
-         * @return {void}
-         */
-        function drawVerticalGridLines() {
-            maskGridLines = svg.select('.grid-lines-group')
                 .selectAll('line.horizontal-grid-line')
                 .data(yScale.ticks(yTicks))
                 .enter()
@@ -281,6 +263,24 @@ define(function(require) {
                 .attr('x2', chartWidth)
                 .attr('y1', (d) => yScale(d))
                 .attr('y2', (d) => yScale(d))
+        }
+
+        /**
+         * Draws vertical gridlines of the chart.
+         * These gridlines are parallel to x-axis.
+         * @return {void}
+         */
+        function drawVerticalGridLines() {
+            maskGridLines = svg.select('.grid-lines-group')
+                .selectAll('line.vertical-grid-line')
+                .data(yScale.ticks(xTicks))
+                .enter()
+                .append('line')
+                .attr('class', 'vertical-grid-line')
+                .attr('y1', (xAxisPadding.left))
+                .attr('y2', chartHeight)
+                .attr('x1', (d) => xScale(d))
+                .attr('x2', (d) => xScale(d));
 
             drawHorizontalExtendedLine();
         }
