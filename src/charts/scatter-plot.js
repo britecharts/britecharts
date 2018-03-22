@@ -525,6 +525,12 @@ define(function(require) {
             return this;
         }
 
+        /**
+         * Gets or Sets the maximum value of the chart area
+         * @param  {boolean} _x=false             Choose whether chart's data points/circles should be hollow
+         * @return {hasHollowCircles | module}    Current hasHollowCircles value or Scatter Chart module to chain calls
+         * @public
+         */
         exports.hasHollowCircles = function(_x) {
             if (!arguments.length) {
                 return hasHollowCircles;
