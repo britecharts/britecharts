@@ -94,6 +94,7 @@ define(function(require) {
         xTicks = 6,
         yTicks = null,
         tickPadding = 5,
+        hollowColor = '#fff',
 
         grid = null,
         baseLine,
@@ -121,6 +122,8 @@ define(function(require) {
         ease = d3Ease.easeCircleIn,
         delay = 500,
         duration = 500,
+
+        hasHollowCircles = false,
 
         svg,
         chartWidth,
@@ -387,10 +390,16 @@ define(function(require) {
                     .duration(duration)
                     .ease(ease)
                     .attr('class', 'point')
+                    .attr('class', 'data-point-highlighter')
+                    .style('stroke', (d) => (
+                        hasHollowCircles ? nameColorMap[d.name] : null
+                    ))
                     .attr('r', (d) => areaScale(d.y))
                     .attr('cx', (d) => xScale(d.x))
                     .attr('cy', (d) => yScale(d.y))
-                    .attr('fill', (d) => nameColorMap[d.name])
+                    .attr('fill', (d) => (
+                        hasHollowCircles ? hollowColor : nameColorMap[d.name]
+                    ))
                     .style('cursor', 'pointer');
             } else {
                 circles
@@ -399,10 +408,16 @@ define(function(require) {
                           handleClick(this, d, chartWidth, chartHeight);
                       })
                       .attr('class', 'point')
+                      .attr('class', 'data-point-highlighter')
+                      .style('stroke', (d) => (
+                          hasHollowCircles ? nameColorMap[d.name] : null
+                      ))
                       .attr('r', (d) => areaScale(d.y))
                       .attr('cx', (d) => xScale(d.x))
                       .attr('cy', (d) => yScale(d.y))
-                      .attr('fill', (d) => nameColorMap[d.name])
+                      .attr('fill', (d) => (
+                          hasHollowCircles ? hollowColor : nameColorMap[d.name]
+                      ))
                       .style('cursor', 'pointer');
             }
         }
@@ -461,6 +476,21 @@ define(function(require) {
         exports.exportChart = function (filename, title) {
             exportChart.call(exports, svg, filename, title);
         };
+
+        /**
+         * Gets or Sets the hasHollowCircles value of the chart area
+         * @param  {boolean} _x=false             Choose whether chart's data points/circles should be hollow
+         * @return {hasHollowCircles | module}    Current hasHollowCircles value or Scatter Chart module to chain calls
+         * @public
+         */
+        exports.hasHollowCircles = function (_x) {
+            if (!arguments.length) {
+                return hasHollowCircles;
+            }
+            hasHollowCircles = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets isAnimated value. If set to true,
