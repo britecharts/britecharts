@@ -92,6 +92,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(actual).toBe(expected);
             });
 
+            it('should provide hasHollowCircles getter and setter', () => {
+                let previous = scatterPlot.hasHollowCircles(),
+                    expected = true,
+                    actual;
+
+                scatterPlot.hasHollowCircles(expected);
+                actual = scatterPlot.hasHollowCircles();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toEqual(expected);
+            });
+
             it('should provide height getter and setter', () => {
                 let previous = scatterPlot.width(),
                     expected = 200,
