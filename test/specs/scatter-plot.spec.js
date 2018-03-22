@@ -92,7 +92,7 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(actual).toBe(expected);
             });
 
-            it('should provide maxCircleArea getter and setter', () => {
+            it('should provide hasHollowCircles getter and setter', () => {
                 let previous = scatterPlot.hasHollowCircles(),
                     expected = true,
                     actual;

@@ -478,6 +478,21 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the hasHollowCircles value of the chart area
+         * @param  {boolean} _x=false             Choose whether chart's data points/circles should be hollow
+         * @return {hasHollowCircles | module}    Current hasHollowCircles value or Scatter Chart module to chain calls
+         * @public
+         */
+        exports.hasHollowCircles = function (_x) {
+            if (!arguments.length) {
+                return hasHollowCircles;
+            }
+            hasHollowCircles = _x;
+
+            return this;
+        }
+
+        /**
          * Gets or Sets isAnimated value. If set to true,
          * the chart will be initialized or updated with animation.
          * @param  {boolean} _x=false       Desired margin object properties for each side
@@ -522,21 +537,6 @@ define(function(require) {
                 return maxCircleArea;
             }
             maxCircleArea = _x;
-
-            return this;
-        }
-
-        /**
-         * Gets or Sets the maximum value of the chart area
-         * @param  {boolean} _x=false             Choose whether chart's data points/circles should be hollow
-         * @return {hasHollowCircles | module}    Current hasHollowCircles value or Scatter Chart module to chain calls
-         * @public
-         */
-        exports.hasHollowCircles = function(_x) {
-            if (!arguments.length) {
-                return hasHollowCircles;
-            }
-            hasHollowCircles = _x;
 
             return this;
         }

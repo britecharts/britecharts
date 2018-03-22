@@ -22,7 +22,8 @@ function createSimpleScatterPlot() {
 
         scatter
             .width(750)
-            .maxCircleArea(15);
+            .maxCircleArea(15)
+            .hasHollowCircles(true);
 
         scatterPlotContainer.datum(dataset).call(scatter);
     }
