@@ -94,6 +94,7 @@ define(function(require) {
         xTicks = 6,
         yTicks = null,
         tickPadding = 5,
+        hollowColor = '#fff',
 
         grid = null,
         baseLine,
@@ -397,7 +398,7 @@ define(function(require) {
                     .attr('cx', (d) => xScale(d.x))
                     .attr('cy', (d) => yScale(d.y))
                     .attr('fill', (d) => (
-                        hasHollowCircles ? '#fff' : nameColorMap[d.name]
+                        hasHollowCircles ? hollowColor : nameColorMap[d.name]
                     ))
                     .style('cursor', 'pointer');
             } else {
@@ -415,7 +416,7 @@ define(function(require) {
                       .attr('cx', (d) => xScale(d.x))
                       .attr('cy', (d) => yScale(d.y))
                       .attr('fill', (d) => (
-                          hasHollowCircles ? '#fff' : nameColorMap[d.name]
+                          hasHollowCircles ? hollowColor : nameColorMap[d.name]
                       ))
                       .style('cursor', 'pointer');
             }
