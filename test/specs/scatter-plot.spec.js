@@ -64,6 +64,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
         describe('API', function() {
 
+            it('should provide circleOpacity getter and setter', () => {
+                let previous = scatterPlot.circleOpacity(),
+                    expected = 0.6,
+                    actual;
+
+                scatterPlot.circleOpacity(expected);
+                actual = scatterPlot.circleOpacity();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toEqual(expected);
+            });
+
             it('should provide colorSchema getter and setter', () => {
                 let previous = scatterPlot.colorSchema(),
                     expected = ['#aaa', '#bbb', '#ccc', '#fff'],
