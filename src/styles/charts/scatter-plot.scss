@@ -1,4 +1,6 @@
 
+$outline-stroke-width: 1.2;
+
 .scatter-plot {
     // Axes
     .y-axis-group {
@@ -16,5 +18,9 @@
 
     .x.axis path {
         display: none;
+    }
+
+    .data-point-highlighter {
+        stroke-width: $outline-stroke-width;
     }
 }

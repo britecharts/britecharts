@@ -120,6 +120,9 @@
 .scatter-plot .x.axis path {
   display: none; }
 
+.scatter-plot .data-point-highlighter {
+  stroke-width: 1.2; }
+
 .sparkline {
   stroke: #ADB0B6;
   stroke-width: 1;
