@@ -162,14 +162,15 @@ define(function(require) {
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
 
-                // buildScales();
+                buildScales();
+                debugger;
                 buildSVG(this);
-                // buildAxis();
-                // buildVoronoi();
-                // drawAxis();
+                buildAxis();
+                buildVoronoi();
+                drawAxis();
                 drawGridLines();
                 drawDataPoints();
-                // drawVoronoi();
+                drawVoronoi();
             });
         }
 
