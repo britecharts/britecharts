@@ -110,6 +110,26 @@ const prodChartsConfig = merge([
     parts.externals(),
 ]);
 
+const distChartsConfig = merge([
+    {
+        devtool: 'source-map',
+        entry: {
+            britecharts: constants.PATHS.bundleIndex
+        },
+        output: {
+            path: path.resolve(__dirname, 'min/js'),
+            filename: 'britecharts.js',
+            library: ['britecharts'],
+            libraryTarget: 'umd'
+        }
+    },
+
+    parts.babelLoader(),
+    parts.aliasD3ToVendorPath(),
+    parts.noParseD3Vendor(),
+    parts.externals(),
+])
+
 // module.exports = getConfig;
 
 module.exports = (env) => {
@@ -130,7 +150,8 @@ module.exports = (env) => {
     if (env === 'production') {
         return [
             prodBundleConfig,
-            prodChartsConfig
+            prodChartsConfig,
+            distChartsConfig
         ];
     }
 };
