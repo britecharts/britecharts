@@ -11,9 +11,29 @@ const aTestDataSet = () => new dataBuilder.ScatterPlotDataBuilder();
 
 require('./helpers/resizeHelper');
 
-function createSimpleScatterPlot() {
+function createScatterPlotWithSingleSource() {
     let scatter = scatterPlot();
-    let scatterPlotContainer = d3Selection.select('.js-simple-scatter-plot-container');
+    let scatterPlotContainer = d3Selection.select('.js-scatter-plot-with-single-source');
+    let containerWidth = scatterPlotContainer.node() ? scatterPlotContainer.node().getBoundingClientRect().width : false;
+    let dataset;
+
+    if (containerWidth) {
+        // data represents Ice Cream Sales (y) vs Temperature (x)
+        dataset = aTestDataSet().withOneSource().build();
+
+        scatter
+            .width(750)
+            .circleOpacity(0.6)
+            .grid('horizontal');
+            
+
+        scatterPlotContainer.datum(dataset).call(scatter);
+    }
+}
+
+function createScatterPlotWithIncreasedAreaAndHollowCircles() {
+    let scatter = scatterPlot();
+    let scatterPlotContainer = d3Selection.select('.js-scatter-plot-container-with-hollow-circles');
     let containerWidth = scatterPlotContainer.node() ? scatterPlotContainer.node().getBoundingClientRect().width : false;
     let dataset;
 
@@ -22,6 +42,7 @@ function createSimpleScatterPlot() {
 
         scatter
             .width(750)
+            .hasHollowCircles(true)
             .maxCircleArea(15);
 
         scatterPlotContainer.datum(dataset).call(scatter);
@@ -29,12 +50,14 @@ function createSimpleScatterPlot() {
 }
 
 // Show charts if container available
-if (d3Selection.select('.js-simple-scatter-plot-container').node()) {
-    createSimpleScatterPlot();
+if (d3Selection.select('.js-scatter-plot-with-single-source').node()) {
+    createScatterPlotWithSingleSource()
+    createScatterPlotWithIncreasedAreaAndHollowCircles();
 
     let redrawCharts = function(){
         d3Selection.selectAll('.scatter-plot').remove();
-        createSimpleScatterPlot();
+        createScatterPlotWithSingleSource();
+        createScatterPlotWithIncreasedAreaAndHollowCircles();
     };
 
     // Redraw charts on window resize
