@@ -23,7 +23,8 @@ function createScatterPlotWithSingleSource() {
 
         scatter
             .width(750)
-            .grid('vertical');
+            .circleOpacity(0.6)
+            .grid('horizontal');
             
 
         scatterPlotContainer.datum(dataset).call(scatter);
