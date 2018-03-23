@@ -11,6 +11,7 @@ define(function(require) {
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
+    const d3Voronoi = require('d3-voronoi');
 
     const {exportChart} = require('./helpers/export');
     const colorHelper = require('./helpers/color');
@@ -163,7 +164,6 @@ define(function(require) {
                 chartHeight = height - margin.top - margin.bottom;
 
                 buildScales();
-                debugger;
                 buildSVG(this);
                 buildAxis();
                 buildVoronoi();
@@ -224,11 +224,10 @@ define(function(require) {
          * @private
          */
         function buildVoronoi() {
-            voronoi = d3.geom.voronoi()
+            voronoi = d3Voronoi.voronoi()
                 .x((d) => xScale(d.x))
-                .x((d) => yScale(d.y))
-                .clipExtent([[0, 0], [width, height]]);
-            debugger;
+                .y((d) => yScale(d.y))
+                .extent([[0, 0], [width, height]]);
         }
 
         /**
