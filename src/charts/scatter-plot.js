@@ -101,6 +101,8 @@ define(function(require) {
         grid = null,
         baseLine,
         maskGridLines,
+        voronoi,
+        voronoiGroup,
 
         xAxis,
         xAxisFormat = '',
@@ -163,10 +165,11 @@ define(function(require) {
                 buildScales();
                 buildSVG(this);
                 buildAxis();
+                buildVoronoi();
                 drawAxis();
                 drawGridLines();
                 drawDataPoints();
-
+                drawVoronoi();
             });
         }
 
@@ -201,6 +204,8 @@ define(function(require) {
                 .append('g').classed('grid-lines-group', true);
             container
                 .append('g').classed('chart-group', true);
+            container.
+                .append('g').classed('voronoi-group');
             container
                 .append('g').classed('x-axis-group', true)
                 .append('g').classed('axis x', true);
@@ -211,6 +216,83 @@ define(function(require) {
                 .append('g').classed('axis-labels-group', true);
             container
                 .append('g').classed('metadata-group', true);
+        }
+
+        /**
+         * Draws the voronoi component in the chart.
+         * @private
+         */
+        function buildVoronoi() {
+            voronoi = d3.geom.voronoi()
+                .x((d) => xScale(d.x))
+                .x((d) => yScale(d.y))
+                .clipExtent([[0, 0], [width, height]]);
+        }
+
+        /**
+         * Creates the x and y scales of the chart
+         * @private
+         */
+        function buildScales() {
+            const [minX, minY] = [d3Array.min(dataPoints, ({ x }) => x), d3Array.min(dataPoints, ({ y }) => y)];
+            const [maxX, maxY] = [d3Array.max(dataPoints, ({ x }) => x), d3Array.max(dataPoints, ({ y }) => y)];
+            const yScaleBottomValue = Math.abs(minY) < 0 ? Math.abs(minY) : 0;
+
+            xScale = d3Scale.scaleLinear()
+                .domain([minX, maxX])
+                .rangeRound([0, chartWidth])
+                .nice();
+
+            yScale = d3Scale.scaleLinear()
+                .domain([yScaleBottomValue, maxY])
+                .rangeRound([chartHeight, 0])
+                .nice();
+
+            colorScale = d3Scale.scaleOrdinal()
+                .domain(dataPoints.map(getName))
+                .range(colorSchema);
+
+            areaScale = d3Scale.scaleSqrt()
+                .domain([yScaleBottomValue, maxY])
+                .range([0, maxCircleArea]);
+
+            const colorRange = colorScale.range();
+
+            /**
+             * Maps data point category name to 
+             * each color of the given color scheme
+             * {
+             *     name1: 'color1',
+             *     name2: 'color2',
+             *     name3: 'color3',
+             *     ...
+             * }
+             */
+            nameColorMap = colorScale.domain().reduce((accum, item, i) => {
+                accum[item] = colorRange[i];
+
+                return accum;
+            }, {});
+        }
+
+        /**
+         * Builds the SVG element that will contain the chart
+         * @param {HTMLElement} container A DOM element that will work as
+         * the container of the chart
+         * @private
+         */
+        function buildSVG(container) {
+            if (!svg) {
+                svg = d3Selection.select(container)
+                    .append('svg')
+                    .classed('britechart scatter-plot', true);
+
+                buildContainerGroups();
+            }
+
+            svg
+                .attr('width', width)
+                .attr('height', height);
         }
 
         /**
@@ -344,72 +426,26 @@ define(function(require) {
                 .attr('x2', (d) => xScale(d));
         }
 
-        /**
-         * Creates the x and y scales of the chart
-         * @private
-         */
-        function buildScales() {
-            const [minX, minY] = [d3Array.min(dataPoints, ({x}) => x), d3Array.min(dataPoints, ({y}) => y)];
-            const [maxX, maxY] = [d3Array.max(dataPoints, ({x}) => x), d3Array.max(dataPoints, ({y}) => y)];
-            const yScaleBottomValue = Math.abs(minY) < 0 ? Math.abs(minY) : 0;
-
-            xScale = d3Scale.scaleLinear()
-                .domain([minX, maxX])
-                .rangeRound([0, chartWidth])
-                .nice();
-
-            yScale = d3Scale.scaleLinear()
-                .domain([yScaleBottomValue, maxY])
-                .rangeRound([chartHeight, 0])
-                .nice();
-
-            colorScale = d3Scale.scaleOrdinal()
-                .domain(dataPoints.map(getName))
-                .range(colorSchema);
-
-            areaScale = d3Scale.scaleSqrt()
-                .domain([yScaleBottomValue, maxY])
-                .range([0, maxCircleArea]);
-
-            const colorRange = colorScale.range();
-
-            /**
-             * Maps data point category name to
-             * each color of the given color scheme
-             * {
-             *     name1: 'color1',
-             *     name2: 'color2',
-             *     name3: 'color3',
-             *     ...
-             * }
-             * @private
-             */
-            nameColorMap = colorScale.domain().reduce((accum, item, i) => {
-                accum[item] = colorRange[i];
-
-                return accum;
-            }, {});
+        function drawVoronoi() {
+            voronoiGroup = svg.select('.voronoi-group')
+                .selectAll('path')
+                .data(voronoi(dataPoints))
+                .enter().append('path')
+                .attr('d', function (d, i) {
+                    return 'M' + d.join('L') + 'Z';
+                })
+                .datum(function (d, i) {
+                    return d.point;
+                })
+                .attr('class', function (d, i) {
+                    return 'voronoi ' + d.name;
+                })
+                .style('fill', 'none')
+                .style('pointer-events', 'all')
+                .on('mouseover', showTooltip)
+                .on('mouseout', removeTooltip);
         }
 
-        /**
-         * Builds the SVG element that will contain the chart
-         * @param {HTMLElement} container A DOM element that will work as
-         * the container of the chart
-         * @private
-         */
-        function buildSVG(container) {
-            if (!svg) {
-                svg = d3Selection.select(container)
-                  .append('svg')
-                    .classed('britechart scatter-plot', true);
-
-                buildContainerGroups();
-            }
-
-            svg
-                .attr('width', width)
-                .attr('height', height);
-        }
 
         /**
          * Cleaning data casting the values and names to the proper type while keeping
