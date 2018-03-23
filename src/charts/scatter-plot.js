@@ -162,14 +162,14 @@ define(function(require) {
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
 
-                buildScales();
+                // buildScales();
                 buildSVG(this);
-                buildAxis();
-                buildVoronoi();
-                drawAxis();
+                // buildAxis();
+                // buildVoronoi();
+                // drawAxis();
                 drawGridLines();
                 drawDataPoints();
-                drawVoronoi();
+                // drawVoronoi();
             });
         }
 
@@ -204,8 +204,8 @@ define(function(require) {
                 .append('g').classed('grid-lines-group', true);
             container
                 .append('g').classed('chart-group', true);
-            container.
-                .append('g').classed('voronoi-group');
+            container
+                .append('g').classed('voronoi-group', true);
             container
                 .append('g').classed('x-axis-group', true)
                 .append('g').classed('axis x', true);
@@ -227,6 +227,7 @@ define(function(require) {
                 .x((d) => xScale(d.x))
                 .x((d) => yScale(d.y))
                 .clipExtent([[0, 0], [width, height]]);
+            debugger;
         }
 
         /**
@@ -400,12 +401,12 @@ define(function(require) {
                 .selectAll('line.horizontal-grid-line')
                 .data(yScale.ticks(yTicks))
                 .enter()
-                .append('line')
-                .attr('class', 'horizontal-grid-line')
-                .attr('x1', (xAxisPadding.left))
-                .attr('x2', chartWidth)
-                .attr('y1', (d) => yScale(d))
-                .attr('y2', (d) => yScale(d))
+                  .append('line')
+                  .attr('class', 'horizontal-grid-line')
+                  .attr('x1', (xAxisPadding.left))
+                  .attr('x2', chartWidth)
+                  .attr('y1', (d) => yScale(d))
+                  .attr('y2', (d) => yScale(d))
         }
 
         /**
@@ -418,32 +419,46 @@ define(function(require) {
                 .selectAll('line.vertical-grid-line')
                 .data(yScale.ticks(xTicks))
                 .enter()
-                .append('line')
-                .attr('class', 'vertical-grid-line')
-                .attr('y1', (xAxisPadding.left))
-                .attr('y2', chartHeight)
-                .attr('x1', (d) => xScale(d))
-                .attr('x2', (d) => xScale(d));
+                  .append('line')
+                  .attr('class', 'vertical-grid-line')
+                  .attr('y1', (xAxisPadding.left))
+                  .attr('y2', chartHeight)
+                  .attr('x1', (d) => xScale(d))
+                  .attr('x2', (d) => xScale(d));
         }
 
         function drawVoronoi() {
             voronoiGroup = svg.select('.voronoi-group')
                 .selectAll('path')
                 .data(voronoi(dataPoints))
-                .enter().append('path')
-                .attr('d', function (d, i) {
-                    return 'M' + d.join('L') + 'Z';
+                .enter()
+                .append('path')
+                  .attr('d', (d, i) =>'M' + d.join('L') + 'Z')
+                  .datum((d, i) => d.point)
+                  .attr('class', (d, i) => 'voronoi ' + d.name)
+                  .style('fill', 'none')
+                  .style('pointer-events', 'all')
+                  .on('mouseover', showTooltip)
+                  .on('mouseout', removeTooltip);
+
+            svg.selectAll('.voronoi')
+                .on('mouseover', function (d, i) {
+                    if (d.activity !== chosen) {
+                        return null;
+                    } else {
+                        return showTooltip.call(this, d, i);
+                    }
                 })
-                .datum(function (d, i) {
-                    return d.point;
-                })
-                .attr('class', function (d, i) {
-                    return 'voronoi ' + d.name;
-                })
-                .style('fill', 'none')
-                .style('pointer-events', 'all')
-                .on('mouseover', showTooltip)
-                .on('mouseout', removeTooltip);
+                .on('mouseout', function (d, i) {
+                    console.log('d, i', d, i);
+                    const chosen = nameColorMap.domain()[i];
+
+                    if (d.activity !== chosen) {
+                        return null;
+                    } else {
+                        return removeTooltip.call(this, d, i);
+                    }
+                });
         }
 
 
@@ -514,6 +529,28 @@ define(function(require) {
                       .attr('cy', (d) => yScale(d.y))
                       .style('cursor', 'pointer');
             }
+        }
+
+        /**
+         *  Show tooltip on mouse over
+         * @param {Number} x
+         * @param {Number} y
+         */
+        function showTooltip(x, y) {
+            svg.select('.metadata-group')
+                .attr('transform', `translate(${x},${y})`)
+                .append('text')
+                .attr('class', 'tooltip')
+                .text(x, y);
+        }
+
+        /**
+        * Show tooltip on mouse over
+        * @param {Number} x
+        * @param {Number} y
+        */
+        function removeTooltip(x, y) {
+            svg.selectAll('.tooltip').remove();
         }
 
         /**
