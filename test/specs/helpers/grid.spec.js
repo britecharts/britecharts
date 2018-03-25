@@ -354,7 +354,6 @@ define([
             });
         });
 
-        // TODO: Duplicate gridHorizontal tests for vertical
         describe('gridVertical', () => {
             let scale, tickValues, range, expected, gridV;
             

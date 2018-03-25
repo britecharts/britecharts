@@ -77,6 +77,12 @@
 .britechart-legend .legend-entry.is-faded .legend-circle {
   opacity: 0.2; }
 
+.grid line {
+  shape-rendering: crispEdges;
+  stroke: #D2D6DF;
+  stroke-width: 1;
+  stroke-dasharray: 4 4; }
+
 .bar-chart .bar {
   shape-rendering: crispEdges; }
 

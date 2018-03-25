@@ -1,0 +1,13 @@
+@import "../../helpers/variables";
+
+$stroke-width: 1;
+$stroke-dasharray: 4 4;
+
+.grid {
+    line {
+        shape-rendering: crispEdges;
+        stroke: $grey-300;
+        stroke-width: $stroke-width;
+        stroke-dasharray: $stroke-dasharray;
+    }
+}

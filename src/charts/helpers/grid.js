@@ -15,7 +15,7 @@ define(function(require) {
     const DIR = {
         H: 'horizontal',
         V: 'vertical'
-    }
+    };
 
     /**
      * Higher order function that returns the default positioning function for continuous scales
@@ -43,7 +43,7 @@ define(function(require) {
     /**
      * Constructor for a one-dimensional grid helper
      * @param {string} orient - orientation string to define the direction
-     * @param {*} scaleY - d3 scale for the grid's ticks
+     * @param {*} scale - d3 scale for the grid's ticks
      * @return {gridBaseGenerator}
      */
     function gridBase(orient, scale) {
@@ -94,17 +94,31 @@ define(function(require) {
 
             // Run animations only if grid was called on a transition
             if (context !== selection) {
+                // Higher-order function that returns a function to position the exiting grid lines
+                // Requires a HOF to pass the attribute name to the inner function
+                const exitPosition = (attr) => function(d) {
+                    return isFinite(d = position(d)) ? d : this.getAttribute(attr);
+                };
+
+                // Function to initially position the entering grid lines
+                // Pulls the previously saved positioning function from the parent node if it exists
+                const enterPosition = function(d) {
+                    let p = this.parentNode.__pos;
+
+                    return p && isFinite(p = p(d)) ? p : position(d);
+                };
+
                 line = line.transition(context);
 
                 lineExit = lineExit.transition(context)
                     .attr('opacity', EPSILON)
-                    .attr(y + '1', function(d) { return isFinite(d = position(d)) ? d : this.getAttribute(y + '1') })
-                    .attr(y + '2', function(d) { return isFinite(d = position(d)) ? d : this.getAttribute(y + '2') });
+                    .attr(y + '1', exitPosition(y + '1'))
+                    .attr(y + '2', exitPosition(y + '2'));
 
                 lineEnter = lineEnter
                     .attr('opacity', EPSILON)
-                    .attr(y + '1', function(d) { let p = this.parentNode.__pos; return p && isFinite(p = p(d)) ? p : position(d); })
-                    .attr(y + '2', function(d) { let p = this.parentNode.__pos; return p && isFinite(p = p(d)) ? p : position(d); });
+                    .attr(y + '1', enterPosition)
+                    .attr(y + '2', enterPosition);
             }
 
             lineExit.remove();
@@ -128,6 +142,7 @@ define(function(require) {
 
         /**
          * Extract the tick values and adjust for edge hiding
+         * @return {number[]}
          * @private
          */
         function getValues() {
@@ -143,6 +158,7 @@ define(function(require) {
 
         /**
          * Get the tick values from the underlying scales
+         * @return {number[]}
          * @private
          */
         function scaleTicks() {
@@ -190,7 +206,7 @@ define(function(require) {
             range = _;
 
             return gridBaseGenerator;
-        }
+        };
 
         /**
          * Gets or sets the start offset
@@ -206,7 +222,7 @@ define(function(require) {
             offsetStart = _;
 
             return gridBaseGenerator;
-        }
+        };
     
         /**
          * Gets or sets the end offset
@@ -222,7 +238,7 @@ define(function(require) {
             offsetEnd = _;
 
             return gridBaseGenerator;
-        }
+        };
 
         /**
          * Gets or sets the hideEdges parameter
@@ -240,7 +256,7 @@ define(function(require) {
             hideEdges = _;
 
             return gridBaseGenerator;
-        }
+        };
 
         /**
          * Gets or sets the tick count
@@ -269,7 +285,7 @@ define(function(require) {
             if (!arguments.length) {
                 return tickValues && tickValues.slice();
             }
-            tickValues = _ === null ? null : [..._].slice()
+            tickValues = _ === null ? null : [..._].slice();
 
             return gridBaseGenerator;
         };
@@ -323,7 +339,7 @@ define(function(require) {
             gridV.scale(_);
 
             return gridGenerator;
-        }
+        };
     
         /**
          * Gets or sets the y-scale
@@ -340,7 +356,7 @@ define(function(require) {
             gridH.scale(_);
 
             return gridGenerator;
-        }
+        };
 
         /**
          * Gets or sets the direction of the grid
@@ -357,7 +373,7 @@ define(function(require) {
             direction = _;
 
             return gridGenerator;
-        }
+        };
 
         /**
          * Gets or sets both the horizontal and vertical grid start offset 
@@ -376,7 +392,7 @@ define(function(require) {
             gridV.offsetStart(_);
 
             return gridGenerator;
-        }
+        };
     
         /**
          * Gets or sets both the horizontal and vertical grid end offset 
@@ -395,7 +411,7 @@ define(function(require) {
             gridV.offsetEnd(_);
 
             return gridGenerator;
-        }
+        };
 
         /**
          * Gets or sets the hideEdges parameter for both horizontal and vertical grids
@@ -415,7 +431,7 @@ define(function(require) {
             gridV.hideEdges(_);
 
             return gridGenerator;
-        }
+        };
 
         /**
          * Gets or sets the tick count for both horizontal and vertical grids
@@ -433,7 +449,7 @@ define(function(require) {
             gridV.ticks(_);
 
             return gridGenerator;
-        }
+        };
 
         /**
          * Gets or sets the tick values for both horizontal and vertical grids
@@ -450,7 +466,7 @@ define(function(require) {
             tickValuesX = tickValuesY = _;
 
             return gridGenerator;
-        }
+        };
 
         return gridGenerator;
     }
