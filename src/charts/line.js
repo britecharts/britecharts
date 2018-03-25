@@ -734,6 +734,10 @@ define(function(require){
          * @return void
          */
         function drawAllDataPoints() {
+            svg.select('.chart-group')
+                .selectAll('.data-points-container')
+                .remove();
+
             const nodes = paths.nodes()
             const nodesById = nodes.reduce((acc, node) => {
                 acc[node.id] = node
@@ -742,7 +746,7 @@ define(function(require){
             }, {});
 
 
-            let allTopics = dataByDate.reduce((accum, dataPoint) => {
+            const allTopics = dataByDate.reduce((accum, dataPoint) => {
                 const dataPointTopics = dataPoint.topics.map(topic => ({
                     topic,
                     node: nodesById[topic.name]
@@ -754,6 +758,8 @@ define(function(require){
             }, []);
 
             let allDataPoints = svg.select('.chart-group')
+                .append('g')
+                .classed('data-points-container', true)
                 .selectAll('circle')
                 .data(allTopics)
                 .enter()

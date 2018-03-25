@@ -70,6 +70,7 @@ function createLineChart(optionalColorSchema, optionalData) {
             .grid('horizontal')
             .tooltipThreshold(600)
             .width(containerWidth)
+            .shouldShowAllDataPoints(true)
             .margin(lineMargin)
             .dateLabel('fullDate')
             .on('customMouseOver', chartTooltip.show)
