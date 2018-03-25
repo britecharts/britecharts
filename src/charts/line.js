@@ -249,7 +249,6 @@ define(function(require){
                     addMouseEvents();
                 }
 
-                shouldShowAllDataPoints = true;
                 if (shouldShowAllDataPoints) {
                     drawAllDataPoints();
                 }
@@ -728,6 +727,12 @@ define(function(require){
             }
         }
 
+        /**
+         * Draws all data points of the chart
+         * if shouldShowAllDataPoints is set to true
+         * @inner
+         * @return void
+         */
         function drawAllDataPoints() {
             const nodes = paths.nodes()
             const nodesById = nodes.reduce((acc, node) => {
@@ -759,8 +764,8 @@ define(function(require){
                   .style('stroke', (d) => topicColorMap[d.topic.name])
                   .style('cursor', 'pointer')
                   .attr('cx', d => xScale(new Date(d.topic.date)))
-                  .attr('cy', d => getPathYFromX(xScale(new Date(d.topic.date)), d.node, d.name));            
-        }
+                  .attr('cy', d => getPathYFromX(xScale(new Date(d.topic.date)), d.node, d.topic.name));
+                }
 
         /**
          * Creates the vertical marker
