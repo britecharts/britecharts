@@ -1,6 +1,5 @@
 // TODO: Document d3 objects rather than using *
 // TODO: Add bi-directional accessors for 2d grid, and determine naming (H/V vs. X/Y)
-// TODO: Refactor positioning animation functions into helpers
 
 define(function(require) {
     'use strict';
@@ -393,6 +392,40 @@ define(function(require) {
 
             return gridGenerator;
         };
+
+        /**
+         * Gets or sets the horizontal grid start offset
+         * Returns the start offset of the horizontal grid if no argument is supplied
+         * Start offset is the distance before the start of the x-scale's range that the grid will render
+         * @param {number} [_] - Offset in px
+         * @return {number|gridGenerator}
+         * @public
+         */
+        gridGenerator.offsetStartH = function(_) {
+            if (!arguments.length) {
+                return gridH.offsetStart();
+            }
+            gridH.offsetStart(_);
+
+            return gridGenerator;
+        };
+
+        /**
+         * Gets or sets the vertical grid start offset
+         * Returns the start offset of the vertical grid if no argument is supplied
+         * Start offset is the distance before the start of the y-scale's range that the grid will render
+         * @param {number} [_] - Offset in px
+         * @return {number|gridGenerator}
+         * @public
+         */
+        gridGenerator.offsetStartV = function(_) {
+            if (!arguments.length) {
+                return gridV.offsetStart();
+            }
+            gridV.offsetStart(_);
+
+            return gridGenerator;
+        };
     
         /**
          * Gets or sets both the horizontal and vertical grid end offset 
@@ -408,6 +441,40 @@ define(function(require) {
                 return gridH.offsetEnd();
             }
             gridH.offsetEnd(_);
+            gridV.offsetEnd(_);
+
+            return gridGenerator;
+        };
+
+        /**
+         * Gets or sets the horizontal grid end offset
+         * Returns the end offset of the horizontal grid if no argument is supplied
+         * End offset is the distance after the end of the x-scale's range that the grid will render
+         * @param {number} [_] - Offset in px
+         * @return {number|gridGenerator}
+         * @public
+         */
+        gridGenerator.offsetEndH = function(_) {
+            if (!arguments.length) {
+                return gridH.offsetEnd();
+            }
+            gridH.offsetEnd(_);
+
+            return gridGenerator;
+        };
+
+        /**
+         * Gets or sets the vertical grid end offset
+         * Returns the end offset of the vertical grid if no argument is supplied
+         * End offset is the distance after the end of the y-scale's range that the grid will render
+         * @param {number} [_] - Offset in px
+         * @return {number|gridGenerator}
+         * @public
+         */
+        gridGenerator.offsetEndV = function(_) {
+            if (!arguments.length) {
+                return gridV.offsetEnd();
+            }
             gridV.offsetEnd(_);
 
             return gridGenerator;
@@ -434,6 +501,42 @@ define(function(require) {
         };
 
         /**
+         * Gets or sets the hideEdges parameter for the horizontal grid
+         * Determines if the first and last grid line are suppressed
+         * True or 'both' suppress both edges, 'first' and 'last' suppress the grid line
+         * corresponding to the first and last tick value respectively
+         * @param {boolean|string} [_] - hideEdges parameter, accepts boolean and 'both', 'first', or 'last' strings
+         * @return {boolean|string|gridGenerator}
+         * @public
+         */
+        gridGenerator.hideEdgesH = function(_) {
+            if (!arguments.length) {
+                return gridH.hideEdges();
+            }
+            gridH.hideEdges(_);
+
+            return gridGenerator;
+        };
+
+        /**
+         * Gets or sets the hideEdges parameter for the vertical grid
+         * Determines if the first and last grid line are suppressed
+         * True or 'both' suppress both edges, 'first' and 'last' suppress the grid line
+         * corresponding to the first and last tick value respectively
+         * @param {boolean|string} [_] - hideEdges parameter, accepts boolean and 'both', 'first', or 'last' strings
+         * @return {boolean|string|gridGenerator}
+         * @public
+         */
+        gridGenerator.hideEdgesV = function(_) {
+            if (!arguments.length) {
+                return gridV.hideEdges();
+            }
+            gridV.hideEdges(_);
+
+            return gridGenerator;
+        };
+
+        /**
          * Gets or sets the tick count for both horizontal and vertical grids
          * Returns the horizontal ticks if no argument specified
          * Mirrors d3 axis' ticks API method
@@ -452,6 +555,38 @@ define(function(require) {
         };
 
         /**
+         * Gets or sets the tick count for the horizontal grid
+         * Mirrors d3 axis' ticks API method
+         * @param {number} [_] - Approximate tick count
+         * @return {number|gridGenerator}
+         * @public
+         */
+        gridGenerator.ticksH = function(_) {
+            if (!arguments.length) {
+                return gridH.ticks();
+            }
+            gridH.ticks(_);
+
+            return gridGenerator;
+        };
+
+        /**
+         * Gets or sets the tick count for the vertical grid
+         * Mirrors d3 axis' ticks API method
+         * @param {number} [_] - Approximate tick count
+         * @return {number|gridGenerator}
+         * @public
+         */
+        gridGenerator.ticksV = function(_) {
+            if (!arguments.length) {
+                return gridV.ticks();
+            }
+            gridV.ticks(_);
+
+            return gridGenerator;
+        };
+
+        /**
          * Gets or sets the tick values for both horizontal and vertical grids
          * Returns the horizontal tick values if no argument specified
          * Mirrors d3 axis' tickValues API method
@@ -464,6 +599,38 @@ define(function(require) {
                 return tickValuesY; 
             }
             tickValuesX = tickValuesY = _;
+
+            return gridGenerator;
+        };
+
+        /**
+         * Gets or sets the tick values for the horizontal grid
+         * Mirrors d3 axis' tickValues API method
+         * @param {number[]} [_] - Array of domain values to place ticks
+         * @return {number[]|gridGenerator}
+         * @public
+         */
+        gridGenerator.tickValuesH = function(_) {
+            if (!arguments.length) {
+                return tickValuesY;
+            }
+            tickValuesY = _;
+
+            return gridGenerator;
+        };
+
+        /**
+         * Gets or sets the tick values for the vertical grid
+         * Mirrors d3 axis' tickValues API method
+         * @param {number[]} [_] - Array of domain values to place ticks
+         * @return {number[]|gridGenerator}
+         * @public
+         */
+        gridGenerator.tickValuesV = function(_) {
+            if (!arguments.length) {
+                return tickValuesX;
+            }
+            tickValuesX = _;
 
             return gridGenerator;
         };
@@ -489,6 +656,10 @@ define(function(require) {
         return gridBase(DIR.V, scale);
     }
 
+    /**
+     * @module Grid
+     * @requires d3-scale
+     */
     return {
         gridHorizontal,
         gridVertical,

@@ -461,6 +461,27 @@ define([
                 expect(lineNodes('vertical').length).toBe(1);
             });
 
+            it('should render the correct number of gridlines when hideEdgesH is used', () => {
+                container.call(grid2D.hideEdgesH('both'));
+                expect(lineNodes('horizontal').length).toBe(1);
+                expect(lineNodes('vertical').length).toBe(3);
+            });
+
+            it('should render the correct number of gridlines when hideEdgesV is used', () => {
+                container.call(grid2D.hideEdgesV('both'));
+                expect(lineNodes('horizontal').length).toBe(3);
+                expect(lineNodes('vertical').length).toBe(1);
+            });
+
+            it('should render tickValues properly', () => {
+                let ticksH = [0, 0.1],
+                    ticksV = [0.2, 0.3, 0,4];
+
+                container.call(grid2D.tickValuesH(ticksH).tickValuesV(ticksV));
+                expect(lineNodes('horizontal').length).toBe(ticksH.length);
+                expect(lineNodes('vertical').length).toBe(ticksV.length);
+            });
+
             describe('positioning', () => {
                 let expectedCoordsH, expectedCoordsV;
 
@@ -469,7 +490,7 @@ define([
                         { x1: 0, x2: 50, y1: 100.5, y2: 100.5 },
                         { x1: 0, x2: 50, y1: 125.5, y2: 125.5 },
                         { x1: 0, x2: 50, y1: 150.5, y2: 150.5 }
-                    ],
+                    ];
                     expectedCoordsV = [
                         { x1: 0.5, x2: 0.5, y1: 100, y2: 150 },
                         { x1: 25.5, x2: 25.5, y1: 100, y2: 150 },
@@ -497,6 +518,24 @@ define([
                         expectedV = expectedCoordsV.map(d => ({ ...d, y2: 160 }));
                     
                     container.call(grid2D.offsetEnd(10));
+                    expect(actualLineCoords('horizontal')).toEqual(expectedH);
+                    expect(actualLineCoords('vertical')).toEqual(expectedV);
+                });
+
+                it('should position the gridlines correctly when offsetStartH/V are used', () => {
+                    let expectedH = expectedCoordsH.map(d => ({ ...d, x1: -10 })),
+                        expectedV = expectedCoordsV.map(d => ({ ...d, y1: 95 }));
+
+                    container.call(grid2D.offsetStartH(10).offsetStartV(5));
+                    expect(actualLineCoords('horizontal')).toEqual(expectedH);
+                    expect(actualLineCoords('vertical')).toEqual(expectedV);
+                });
+
+                it('should position the gridlines correctly when offsetEndH/V are used', () => {
+                    let expectedH = expectedCoordsH.map(d => ({ ...d, x2: 60 })),
+                        expectedV = expectedCoordsV.map(d => ({ ...d, y2: 155 }));
+
+                    container.call(grid2D.offsetEndH(10).offsetEndV(5));
                     expect(actualLineCoords('horizontal')).toEqual(expectedH);
                     expect(actualLineCoords('vertical')).toEqual(expectedV);
                 });
@@ -542,6 +581,24 @@ define([
                     expect(grid2D.offsetStart()).toBe(next);
                 });
 
+                it('should have an offsetStartH accessor that defaults to 0', () => {
+                    let previous = 0,
+                        next = 10;
+
+                    expect(grid2D.offsetStartH()).toBe(previous);
+                    expect(grid2D.offsetStartH(next)).toBe(grid2D);
+                    expect(grid2D.offsetStartH()).toBe(next);
+                });
+
+                it('should have an offsetStartV accessor that defaults to 0', () => {
+                    let previous = 0,
+                        next = 10;
+
+                    expect(grid2D.offsetStartV()).toBe(previous);
+                    expect(grid2D.offsetStartV(next)).toBe(grid2D);
+                    expect(grid2D.offsetStartV()).toBe(next);
+                });
+
                 it('should have an offsetEnd accessor that defaults to 0', () => {
                     let previous = 0,
                         next = 10;
@@ -549,6 +606,24 @@ define([
                     expect(grid2D.offsetEnd()).toBe(previous);
                     expect(grid2D.offsetEnd(next)).toBe(grid2D);
                     expect(grid2D.offsetEnd()).toBe(next);
+                });
+
+                it('should have an offsetEndH accessor that defaults to 0', () => {
+                    let previous = 0,
+                        next = 10;
+
+                    expect(grid2D.offsetEndH()).toBe(previous);
+                    expect(grid2D.offsetEndH(next)).toBe(grid2D);
+                    expect(grid2D.offsetEndH()).toBe(next);
+                });
+
+                it('should have an offsetEndV accessor that defaults to 0', () => {
+                    let previous = 0,
+                        next = 10;
+
+                    expect(grid2D.offsetEndV()).toBe(previous);
+                    expect(grid2D.offsetEndV(next)).toBe(grid2D);
+                    expect(grid2D.offsetEndV()).toBe(next);
                 });
 
                 it('should have a hideEdges accessor that defaults to false', () => {
@@ -560,6 +635,33 @@ define([
                     expect(grid2D.hideEdges()).toBe(next);
                 });
 
+                it('should have a hideEdgesH accessor that defaults to false', () => {
+                    let previous = false,
+                        next = 'both';
+
+                    expect(grid2D.hideEdgesH()).toBe(previous);
+                    expect(grid2D.hideEdgesH(next)).toBe(grid2D);
+                    expect(grid2D.hideEdgesH()).toBe(next);
+                });
+
+                it('should have a hideEdgesH accessor that defaults to false', () => {
+                    let previous = false,
+                        next = 'both';
+
+                    expect(grid2D.hideEdgesH()).toBe(previous);
+                    expect(grid2D.hideEdgesH(next)).toBe(grid2D);
+                    expect(grid2D.hideEdgesH()).toBe(next);
+                });
+
+                it('should have a hideEdgesV accessor that defaults to false', () => {
+                    let previous = false,
+                        next = 'both';
+
+                    expect(grid2D.hideEdgesV()).toBe(previous);
+                    expect(grid2D.hideEdgesV(next)).toBe(grid2D);
+                    expect(grid2D.hideEdgesV()).toBe(next);
+                });
+
                 it('should have a ticks accessor that defaults to null', () => {
                     let previous = null,
                         next = 5;
@@ -569,6 +671,24 @@ define([
                     expect(grid2D.ticks()).toBe(next);
                 });
 
+                it('should have a ticksH accessor that defaults to null', () => {
+                    let previous = null,
+                        next = 5;
+
+                    expect(grid2D.ticksH()).toBe(previous);
+                    expect(grid2D.ticksH(next)).toBe(grid2D);
+                    expect(grid2D.ticksH()).toBe(next);
+                });
+
+                it('should have a ticksV accessor that defaults to null', () => {
+                    let previous = null,
+                        next = 5;
+
+                    expect(grid2D.ticksV()).toBe(previous);
+                    expect(grid2D.ticksV(next)).toBe(grid2D);
+                    expect(grid2D.ticksV()).toBe(next);
+                });
+
                 it('should have a tickValues accessor that defaults to null', () => {
                     let previous = null,
                         next = [0, 0.5, 1];
@@ -576,6 +696,24 @@ define([
                     expect(grid2D.tickValues()).toEqual(previous);
                     expect(grid2D.tickValues(next)).toBe(grid2D);
                     expect(grid2D.tickValues()).toEqual(next);
+                });
+
+                it('should have a tickValuesH accessor that defaults to null', () => {
+                    let previous = null,
+                        next = [0, 0.5, 1];
+
+                    expect(grid2D.tickValuesH()).toEqual(previous);
+                    expect(grid2D.tickValuesH(next)).toBe(grid2D);
+                    expect(grid2D.tickValuesH()).toEqual(next);
+                });
+
+                it('should have a tickValuesV accessor that defaults to null', () => {
+                    let previous = null,
+                        next = [0, 0.5, 1];
+
+                    expect(grid2D.tickValuesV()).toEqual(previous);
+                    expect(grid2D.tickValuesV(next)).toBe(grid2D);
+                    expect(grid2D.tickValuesV()).toEqual(next);
                 });
             });
         });
