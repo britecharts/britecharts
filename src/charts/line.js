@@ -759,15 +759,7 @@ define(function(require){
                   .style('stroke', (d) => topicColorMap[d.topic.name])
                   .style('cursor', 'pointer')
                   .attr('cx', d => xScale(new Date(d.topic.date)))
-                  .attr('cy', d => getPathYFromX(xScale(new Date(d.topic.date)), d.node, d.name));
-            
-
-            
-                // const path = topicsWithNode[index].node;
-                // const x = xScale(new Date(dataPoint.topics[index].date));
-                // const y = getPathYFromX(x, path, d.name);
-
-                // allDataPoints.attr('transform', `translate( ${x}, ${y} )` );
+                  .attr('cy', d => getPathYFromX(xScale(new Date(d.topic.date)), d.node, d.name));            
         }
 
         /**
