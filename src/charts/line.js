@@ -748,45 +748,18 @@ define(function(require){
                 return accum;
             }, []);
 
-            // dataPoint.topics.forEach((d, index) => {
-            //     let marker = verticalMarkerContainer
-            //                   .append('g')
-            //                     .classed('circle-container', true)
-            //                       .append('circle')
-            //                         .classed('data-point-highlighter', true)
-            //                         .attr('cx', highlightCircleSize)
-            //                         .attr('cy', 0)
-            //                         .attr('r', highlightCircleRadius)
-            //                         .style('stroke-width', highlightCircleStroke)
-            //                         .style('stroke', topicColorMap[d.name])
-            //                         .style('cursor', 'pointer')
-            //                         .on('click', function () {
-            //                             addGlowFilter(this);
-            //                             handleHighlightClick(this, d);
-            //                         })
-            //                         .on('mouseout', function () {
-            //                             removeFilter(this);
-            //                         });
-
             let allDataPoints = svg.select('.chart-group')
                 .selectAll('circle')
                 .data(allTopics)
                 .enter()
                   .append('circle')
-                  .classed('data-point-highlighter', true)
-                  .attr('cx', highlightCircleSize)
-                  .attr('cy', 0)
+                  .classed('data-point-marks', true)
                   .attr('r', highlightCircleRadius)
                   .style('stroke-width', highlightCircleStroke)
-                  .style('stroke', d => topicColorMap[d.name])
+                  .style('stroke', (d) => topicColorMap[d.topic.name])
                   .style('cursor', 'pointer')
-                  .attr('transform', (d, index) => {
-                      const path = d.node;
-                      const x = xScale(new Date(d.topic.date));
-                      const y = getPathYFromX(x, path, d.name);
-
-                      return `translate(${x}, ${y})`;
-                  });
+                  .attr('cx', d => xScale(new Date(d.topic.date)))
+                  .attr('cy', d => getPathYFromX(xScale(new Date(d.topic.date)), d.node, d.name));
             
 
             

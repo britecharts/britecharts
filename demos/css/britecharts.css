@@ -95,6 +95,9 @@
 .bar-chart .percentage-label {
   fill: #666A73; }
 
+.line-chart .data-point-marks {
+  fill: #ffffff; }
+
 .line-chart .topic .line {
   fill: none;
   stroke-width: 2;
