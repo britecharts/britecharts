@@ -738,8 +738,7 @@ define(function(require){
                 .selectAll('.data-points-container')
                 .remove();
 
-            const nodes = paths.nodes()
-            const nodesById = nodes.reduce((acc, node) => {
+            const nodesById = paths.nodes().nodes.reduce((acc, node) => {
                 acc[node.id] = node
 
                 return acc;
@@ -906,6 +905,7 @@ define(function(require){
         function highlightDataPoints(dataPoint) {
             cleanDataPointHighlights();
 
+            const nodes = paths.nodes()
             const nodesById = paths.nodes().reduce((acc, node) => {
                 acc[node.id] = node
 
