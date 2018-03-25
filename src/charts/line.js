@@ -730,7 +730,7 @@ define(function(require){
         /**
          * Draws all data points of the chart
          * if shouldShowAllDataPoints is set to true
-         * @inner
+         * @private
          * @return void
          */
         function drawAllDataPoints() {
@@ -758,19 +758,19 @@ define(function(require){
             }, []);
 
             let allDataPoints = svg.select('.chart-group')
-                .append('g')
-                .classed('data-points-container', true)
-                .selectAll('circle')
-                .data(allTopics)
-                .enter()
-                  .append('circle')
-                  .classed('data-point-marks', true)
-                  .attr('r', highlightCircleRadius)
-                  .style('stroke-width', highlightCircleStroke)
-                  .style('stroke', (d) => topicColorMap[d.topic.name])
-                  .style('cursor', 'pointer')
-                  .attr('cx', d => xScale(new Date(d.topic.date)))
-                  .attr('cy', d => getPathYFromX(xScale(new Date(d.topic.date)), d.node, d.topic.name));
+              .append('g')
+              .classed('data-points-container', true)
+              .selectAll('circle')
+              .data(allTopics)
+              .enter()
+                .append('circle')
+                .classed('data-point-mark', true)
+                .attr('r', highlightCircleRadius)
+                .style('stroke-width', highlightCircleStroke)
+                .style('stroke', (d) => topicColorMap[d.topic.name])
+                .style('cursor', 'pointer')
+                .attr('cx', d => xScale(new Date(d.topic.date)))
+                .attr('cy', d => getPathYFromX(xScale(new Date(d.topic.date)), d.node, d.topic.name));
         }
 
         /**
@@ -906,8 +906,7 @@ define(function(require){
         function highlightDataPoints(dataPoint) {
             cleanDataPointHighlights();
 
-            const nodes = paths.nodes()
-            const nodesById = nodes.reduce((acc, node) => {
+            const nodesById = paths.nodes().reduce((acc, node) => {
                 acc[node.id] = node
 
                 return acc;

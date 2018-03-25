@@ -674,7 +674,7 @@ define([
                                         .nodes();
 
                         circles.forEach((circle) => {
-                            expect(circle).toHaveAttr('class', 'data-point-marks');
+                            expect(circle).toHaveAttr('class', 'data-point-mark');
                             expect(circle).toHaveAttr('r', '5');
                             expect(circle).toHaveAttr('cx');
                             expect(circle).toHaveAttr('cy');
