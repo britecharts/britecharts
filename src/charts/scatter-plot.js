@@ -250,7 +250,8 @@ define(function(require) {
         }
 
         /**
-         * Draws the grid lines for an horizontal bar chart
+         * Draw horizontal gridles of the chart
+         * These gridlines are parallel to x-axis
          * @return {void}
          */
         function drawHorizontalGridLines() {
@@ -267,8 +268,8 @@ define(function(require) {
         }
 
         /**
-         * Draws vertical gridlines of the chart.
-         * These gridlines are parallel to x-axis.
+         * Draws vertical gridlines of the chart
+         * These gridlines are parallel to y-axis
          * @return {void}
          */
         function drawVerticalGridLines() {
@@ -314,7 +315,7 @@ define(function(require) {
             const colorRange = colorScale.range();
 
             /**
-             * Maps data point category name to 
+             * Maps data point category name to
              * each color of the given color scheme
              * {
              *     name1: 'color1',
@@ -370,7 +371,7 @@ define(function(require) {
 
         /**
          * Draws the points for each data element
-         * on the charg group
+         * on the chart group
          * @private
         */
         function drawDataPoints() {
