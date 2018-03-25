@@ -578,6 +578,18 @@ define([
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);
                 });
+
+                it ('should have shouldShowAllDataPoints getter and setter', () => {
+                    let previous = lineChart.shouldShowAllDataPoints(),
+                        expected = true,
+                        actual;
+
+                    lineChart.shouldShowAllDataPoints(expected);
+                    actual = lineChart.shouldShowAllDataPoints();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
             });
 
             describe('Aspect Ratio', () => {
@@ -610,8 +622,8 @@ define([
                 });
             });
 
-            describe('when margins are set partially', function() {
-            
+            describe('when shouldShowAllDataPoints is true', function() {
+
                 it('should override the default values', () => {
                     let previous = lineChart.margin(),
                     expected = {
@@ -620,14 +632,33 @@ define([
                         right: 20
                     },
                     actual;
-    
+
                     lineChart.width(expected);
                     actual = lineChart.width();
-    
+
                     expect(previous).not.toBe(actual);
                     expect(actual).toEqual(expected);
                 })
-            });            
+            });
+
+            describe('when margins are set partially', function() {
+
+                it('should override the default values', () => {
+                    let previous = lineChart.margin(),
+                    expected = {
+                        ...previous,
+                        top: 10,
+                        right: 20
+                    },
+                    actual;
+
+                    lineChart.width(expected);
+                    actual = lineChart.width();
+
+                    expect(previous).not.toBe(actual);
+                    expect(actual).toEqual(expected);
+                })
+            });
 
             describe('Export chart functionality', () => {
 

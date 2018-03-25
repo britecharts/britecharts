@@ -282,8 +282,6 @@ define(function(require) {
                 .attr('y2', chartHeight)
                 .attr('x1', (d) => xScale(d))
                 .attr('x2', (d) => xScale(d));
-
-            drawHorizontalExtendedLine();
         }
 
         /**
@@ -324,6 +322,7 @@ define(function(require) {
              *     name3: 'color3',
              *     ...
              * }
+             * @private
              */
             nameColorMap = colorScale.domain().reduce((accum, item, i) => {
                 accum[item] = colorRange[i];

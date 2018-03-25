@@ -765,7 +765,7 @@ define(function(require){
                   .style('cursor', 'pointer')
                   .attr('cx', d => xScale(new Date(d.topic.date)))
                   .attr('cy', d => getPathYFromX(xScale(new Date(d.topic.date)), d.node, d.topic.name));
-                }
+        }
 
         /**
          * Creates the vertical marker
@@ -1281,6 +1281,21 @@ define(function(require){
 
             return this;
         };
+
+        /**
+         * Gets or Sets the topicLabel of the chart
+         * @param  {Boolean} _x=false       Whether all data points should be drawn
+         * @return {shouldShowAllDataPoints | module}   Current shouldShowAllDataPoints or Chart module to chain calls
+         * @public
+         */
+        exports.shouldShowAllDataPoints = function(_x) {
+            if (!arguments.length) {
+                return shouldShowAllDataPoints;
+            }
+            shouldShowAllDataPoints = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the minimum width of the graph in order to show the tooltip
