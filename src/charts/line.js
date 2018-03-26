@@ -164,6 +164,7 @@ define(function(require){
             xAxisCustomFormat = null,
             locale,
 
+            shouldShowAllDataPoints = false,
             isAnimated = false,
             ease = d3Ease.easeQuadInOut,
             animationDuration = 1500,
@@ -246,6 +247,10 @@ define(function(require){
                     drawHoverOverlay();
                     drawVerticalMarker();
                     addMouseEvents();
+                }
+
+                if (shouldShowAllDataPoints) {
+                    drawAllDataPoints();
                 }
 
                 addTouchEvents();
@@ -720,6 +725,51 @@ define(function(require){
                     .attr('fill', overlayColor)
                     .style('display', 'none');
             }
+        }
+
+        /**
+         * Draws all data points of the chart
+         * if shouldShowAllDataPoints is set to true
+         * @private
+         * @return void
+         */
+        function drawAllDataPoints() {
+            svg.select('.chart-group')
+                .selectAll('.data-points-container')
+                .remove();
+
+            const nodesById = paths.nodes().reduce((acc, node) => {
+                acc[node.id] = node
+
+                return acc;
+            }, {});
+
+
+            const allTopics = dataByDate.reduce((accum, dataPoint) => {
+                const dataPointTopics = dataPoint.topics.map(topic => ({
+                    topic,
+                    node: nodesById[topic.name]
+                }));
+
+                accum = [...accum, ...dataPointTopics];
+
+                return accum;
+            }, []);
+
+            let allDataPoints = svg.select('.chart-group')
+              .append('g')
+              .classed('data-points-container', true)
+              .selectAll('circle')
+              .data(allTopics)
+              .enter()
+                .append('circle')
+                .classed('data-point-mark', true)
+                .attr('r', highlightCircleRadius)
+                .style('stroke-width', highlightCircleStroke)
+                .style('stroke', (d) => topicColorMap[d.topic.name])
+                .style('cursor', 'pointer')
+                .attr('cx', d => xScale(new Date(d.topic.date)))
+                .attr('cy', d => getPathYFromX(xScale(new Date(d.topic.date)), d.node, d.topic.name));
         }
 
         /**
@@ -1236,6 +1286,21 @@ define(function(require){
 
             return this;
         };
+
+        /**
+         * Gets or Sets the topicLabel of the chart
+         * @param  {Boolean} _x=false       Whether all data points should be drawn
+         * @return {shouldShowAllDataPoints | module}   Current shouldShowAllDataPoints or Chart module to chain calls
+         * @public
+         */
+        exports.shouldShowAllDataPoints = function(_x) {
+            if (!arguments.length) {
+                return shouldShowAllDataPoints;
+            }
+            shouldShowAllDataPoints = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the minimum width of the graph in order to show the tooltip
