@@ -47,7 +47,17 @@ define(function(require) {
      *
      * @module Brush
      * @tutorial brush
-     * @requires d3-array, d3-axis, d3-brush, d3-ease, d3-scale, d3-shape, d3-selection, d3-time, d3-time-format
+     * @requires d3-array
+     * @requires d3-axis
+     * @requires d3-brush
+     * @requires d3-ease
+     * @requires d3-scale
+     * @requires d3-shape
+     * @requires d3-dispatch
+     * @requires d3-selection
+     * @requires d3-time
+     * @requires d3-transition
+     * @requires d3-time-format
      *
      * @example
      * let brushChart = brush();
@@ -59,7 +69,6 @@ define(function(require) {
      * d3Selection.select('.css-selector')
      *     .datum(dataset)
      *     .call(brushChart);
-     *
      */
 
     return function module() {
@@ -102,7 +111,7 @@ define(function(require) {
             gradientId = uniqueId('brush-area-gradient'),
 
             // Dispatcher object to broadcast the mouse events
-            // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
+            // @see {@link https://github.com/d3/d3/blob/master/API.md#dispatches-d3-dispatch}
             dispatcher = d3Dispatch.dispatch('customBrushStart', 'customBrushEnd'),
 
             // extractors
@@ -534,11 +543,41 @@ define(function(require) {
         };
 
         /**
-         * Exposes an 'on' method that acts as a bridge with the event dispatcher
-         * We are going to expose this events:
-         * customMouseOver, customMouseMove and customMouseOut
-         *
-         * @return {module} Bar Chart
+         * Date range
+         * @typedef DateExtent
+         * @type {Date[]}
+         * @property {Date} 0 Lower bound date selection
+         * @property {Date} 1 Upper bound date selection
+         * @see {@link https://github.com/d3/d3-brush#brushSelection|d3-brush:brushSelection}
+         */
+
+        /**
+         * Event indicating when the brush moves
+         * @event customBrushStart
+         * @type {module:Brush~DateExtent}
+         * @see {@link https://github.com/d3/d3-brush#brush_on|d3-brush:on(brush)}
+         */
+        
+        /**
+         * Event indicating the end of a brush gesture
+         * @event customBrushEnd
+         * @type {module:Brush~DateExtent}
+         * @see {@link https://github.com/d3/d3-brush#brush_on|d3-brush:on(end)}
+         */
+        
+        /**
+         * @callback eventCallback
+         * @param {module:Brush~DateExtent} dateExtent Date range
+         */
+
+        /**
+         * Adds, removes, or gets the callback for the specified typenames.
+         * @param {String} typenames One or more event type names, delimited by a space
+         * @param {module:Brush~eventCallback} [callback] Callback to register
+         * @return {module:Brush}
+         * @listens customBrushStart
+         * @listens customBrushEnd
+         * @see {@link https://github.com/d3/d3-dispatch/blob/master/README.md#dispatch_on|d3-dispatch:on}
          * @public
          */
         exports.on = function() {
