@@ -4,6 +4,11 @@ $line-width: 2;
 
 .line-chart {
 
+    // Class for data point markers
+    .data-point-mark {
+        fill: $white;
+    }
+
     // Lines
     .topic .line {
         fill: none;
