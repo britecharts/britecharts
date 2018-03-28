@@ -107,6 +107,10 @@ define(function(require) {
         areaScale,
         colorScale,
 
+        yAxisLabel,
+        yAxisLabelEl,
+        yAxisLabelOffset = -40,
+
         xAxisPadding = {
             top: 0,
             left: 0,
@@ -195,6 +199,8 @@ define(function(require) {
                 .append('g').classed('y-axis-group', true)
                 .append('g').classed('axis y', true);
             container
+                .append('g').classed('axis-labels-group', true);
+            container
                 .append('g').classed('metadata-group', true);
         }
 
@@ -210,6 +216,31 @@ define(function(require) {
 
             svg.select('.y-axis-group .axis.y')
                 .call(yAxis);
+
+            drawAxisLabels();
+        }
+
+        /**
+         * Draws axis labels next to x and y axis to
+         * represent data value labels on the chart
+         * @private
+         */
+        function drawAxisLabels() {
+            // If y-axis label is given, draw it
+            if (yAxisLabel) {
+                if (yAxisLabelEl) {
+                    svg.selectAll('.y-axis-label-text').remove();
+                }
+
+                yAxisLabelEl = svg.select('.axis-labels-group')
+                    .append('text')
+                    .classed('y-axis-label-text', true)
+                    .attr('x', -chartHeight / 2)
+                    .attr('y', yAxisLabelOffset - xAxisPadding.left)
+                    .attr('text-anchor', 'middle')
+                    .attr('transform', 'rotate(270 0 0)')
+                    .text(yAxisLabel)
+            }
         }
 
         /**
@@ -621,6 +652,39 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Gets or Sets the y-axis label of the chart
+         * @param  {String} _x Desired label string
+         * @return {String | module} Current yAxisLabel or Chart module to chain calls
+         * @public
+         * @example scatterPlot.yAxisLabel('Ice Cream Consmuption Growth')
+         */
+        exports.yAxisLabel = function (_x) {
+            if (!arguments.length) {
+                return yAxisLabel;
+            }
+            yAxisLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the offset of the yAxisLabel of the chart.
+         * The method accepts both positive and negative values.
+         * @param  {Number} _x=-40      Desired offset for the label
+         * @return {Number | module}    Current yAxisLabelOffset or Chart module to chain calls
+         * @public
+         * @example scatterPlot.yAxisLabelOffset(-55)
+         */
+        exports.yAxisLabelOffset = function (_x) {
+            if (!arguments.length) {
+                return yAxisLabelOffset;
+            }
+            yAxisLabelOffset = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the xTicks of the chart
