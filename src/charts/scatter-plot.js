@@ -228,7 +228,6 @@ define(function(require) {
         function drawAxisLabels() {
             // If y-axis label is given, draw it
             if (yAxisLabel) {
-                console.log(yAxisLabel)
                 if (yAxisLabelEl) {
                     svg.selectAll('.y-axis-label-text').remove();
                 }
