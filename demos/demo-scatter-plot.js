@@ -22,12 +22,13 @@ function createScatterPlotWithSingleSource() {
         dataset = aTestDataSet().withOneSource().build();
 
         scatter
-            .width(750)
+            .width(containerWidth)
             .circleOpacity(0.6)
             .grid('horizontal')
             .margin({
                 left: 60
             })
+            .aspectRatio(0.1)
             .yAxisLabel('Ice Cream Sales');
 
         scatterPlotContainer.datum(dataset).call(scatter);
@@ -44,7 +45,7 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
         dataset = aTestDataSet().withFourNames().build();
 
         scatter
-            .width(750)
+            .width(containerWidth)
             .hasHollowCircles(true)
             .maxCircleArea(15);
 

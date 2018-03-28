@@ -66,7 +66,7 @@ function createLineChart(optionalColorSchema, optionalData) {
         // LineChart Setup and start
         lineChart1
             .isAnimated(true)
-            .aspectRatio(0.5)
+            .aspectRatio(0.4)
             .grid('horizontal')
             .tooltipThreshold(600)
             .width(containerWidth)
