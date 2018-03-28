@@ -222,7 +222,7 @@ define(function(require) {
 
         /**
          * Draws axis labels next to x and y axis to
-         * represent data value label on the chart
+         * represent data value labels on the chart
          * @private
          */
         function drawAxisLabels() {
