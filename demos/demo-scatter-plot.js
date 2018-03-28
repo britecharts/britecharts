@@ -24,13 +24,13 @@ function createScatterPlotWithSingleSource() {
         dataset = aTestDataSet().withOneSource().build();
 
         scatter
+            .aspectRatio(0.5)
             .width(containerWidth)
             .circleOpacity(0.6)
             .grid('horizontal')
             .margin({
                 left: 60
             })
-            .aspectRatio(0.3)
             .yAxisLabel('Ice Cream Sales');
 
 
@@ -48,7 +48,6 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
         dataset = aTestDataSet().withFourNames().build();
 
         scatter
-            .width(containerWidth)
             .hasHollowCircles(true)
             .maxCircleArea(15);
 
@@ -59,7 +58,7 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
 // Show charts if container available
 if (d3Selection.select('.js-scatter-plot-with-single-source').node()) {
     createScatterPlotWithSingleSource()
-    // createScatterPlotWithIncreasedAreaAndHollowCircles();
+    createScatterPlotWithIncreasedAreaAndHollowCircles();
 
     redrawCharts = function() {
         d3Selection.selectAll('.scatter-plot').remove();
