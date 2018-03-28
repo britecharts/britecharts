@@ -23,9 +23,13 @@ function createScatterPlotWithSingleSource() {
 
         scatter
             .width(750)
+            .margin({left: 50})
             .circleOpacity(0.6)
-            .grid('horizontal');
-            
+            .grid('horizontal')
+            .margin({
+                left: 60
+            })
+            .yAxisLabel('Ice Cream Sales');
 
         scatterPlotContainer.datum(dataset).call(scatter);
     }

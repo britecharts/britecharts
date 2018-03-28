@@ -40,6 +40,13 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             expect(actual).toEqual(expected);
         });
 
+        it('should render axis labels group', () => {
+            let expected = 1;
+            let actual = containerFixture.select('.axis-labels-group').nodes().length;
+
+            expect(actual).toEqual(expected);
+        });
+
         it('should render container, axis and chart groups', () => {
             expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
             expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
@@ -171,6 +178,30 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
                 scatterPlot.xTicks(expected);
                 actual = scatterPlot.xTicks();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide yAxisLabel getter and setter', () => {
+                let previous = scatterPlot.yAxisLabel(),
+                    expected = 'Ticket Sales',
+                    actual;
+
+                scatterPlot.yAxisLabel(expected);
+                actual = scatterPlot.yAxisLabel();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide yAxisLabelOffset getter and setter', () => {
+                let previous = scatterPlot.yAxisLabelOffset(-55),
+                    expected = 'Ticket Sales',
+                    actual;
+
+                scatterPlot.yAxisLabelOffset(expected);
+                actual = scatterPlot.yAxisLabelOffset();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
