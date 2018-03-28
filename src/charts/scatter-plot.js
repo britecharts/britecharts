@@ -65,8 +65,9 @@ define(function(require) {
      * let scatterPlot = scatterPlot();
      *
      * scatterPlot
-     *     .width(500)
-     *     .aspectRatio(0.5);
+     *     .aspectRatio(0.5)
+     *     .grid('horizontal')
+     *     .width(500);
      *
      * d3Selection.select('.css-selector')
      *     .datum(dataset)
@@ -82,6 +83,7 @@ define(function(require) {
         },
         width = 960,
         height = 500,
+        aspectRatio = null,
 
         nameColorMap,
 
@@ -469,6 +471,41 @@ define(function(require) {
         // API
 
         /**
+         * Gets or Sets the aspect ratio of the chart
+         * @param  {Number} _x            Desired aspect ratio for the graph
+         * @return {aspectRatio | module} Current aspect ratio or Chart module to chain calls
+         * @public
+         */
+        exports.aspectRatio = function (_x) {
+            if (!arguments.length) {
+                return aspectRatio;
+            }
+            aspectRatio = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the circles opacity value of the chart.
+         * Sets opacity of a circle for each data point of the chart and
+         * makes the area of each data point more transparent if it's less than 1.
+         * @param  {Number} _x=1               Desired opacity of circles of the chart
+         * @return {circleOpacity | module}    Current circleOpacity or Scatter Chart module to chain calls
+         * @public
+         * @example
+         * scatterPlot.circleOpacity(0.6)
+         */
+        exports.circleOpacity = function (_x) {
+            if (!arguments.length) {
+                return circleOpacity;
+            }
+            circleOpacity = _x;
+
+            return this;
+        }
+
+
+        /**
          * Gets or Sets the colorSchema of the chart
          * @param  {String[]} _x            Desired colorSchema for the chart
          * @return {colorSchema | module}   Current colorSchema or Chart module to chain calls
@@ -486,23 +523,14 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the circles opacity value of the chart.
-         * Sets opacity of a circle for each data point of the chart and
-         * makes the area of each data point more transparent if it's less than 1.
-         * @param  {number} _x=1               Desired opacity of circles of the chart
-         * @return {circleOpacity | module}    Current circleOpacity or Scatter Chart module to chain calls
+         * Chart exported to png and a download action is fired
+         * @param {String} filename     File title for the resulting picture
+         * @param {String} title        Title to add at the top of the exported picture
          * @public
-         * @example
-         * scatterPlot.circleOpacity(0.6)
          */
-        exports.circleOpacity = function (_x) {
-            if (!arguments.length) {
-                return circleOpacity;
-            }
-            circleOpacity = _x;
-
-            return this;
-        }
+        exports.exportChart = function (filename, title) {
+            exportChart.call(exports, svg, filename, title);
+        };
 
         /**
          * Gets or Sets the grid mode.
@@ -511,23 +539,13 @@ define(function(require) {
          * @return {String | module} Current mode of the grid or Area Chart module to chain calls
          * @public
          */
-        exports.grid = function(_x) {
+        exports.grid = function (_x) {
             if (!arguments.length) {
                 return grid;
             }
             grid = _x;
 
             return this;
-        };
-
-        /**
-         * Chart exported to png and a download action is fired
-         * @param {String} filename     File title for the resulting picture
-         * @param {String} title        Title to add at the top of the exported picture
-         * @public
-         */
-        exports.exportChart = function (filename, title) {
-            exportChart.call(exports, svg, filename, title);
         };
 
         /**
@@ -544,6 +562,24 @@ define(function(require) {
 
             return this;
         }
+
+        /**
+         * Gets or Sets the height of the chart
+         * @param  {Number} _x          Desired height for the chart
+         * @return {height | module}    Current height or Scatter Chart module to chain calls
+         * @public
+         */
+        exports.height = function (_x) {
+            if (!arguments.length) {
+                return height;
+            }
+            if (aspectRatio) {
+                width = Math.ceil(_x / aspectRatio);
+            }
+            height = _x;
+
+            return this;
+        };
 
         /**
          * Gets or Sets isAnimated value. If set to true,
@@ -581,7 +617,7 @@ define(function(require) {
 
         /**
          * Gets or Sets the maximum value of the chart area
-         * @param  {number} _x=10       Desired margin object properties for each side
+         * @param  {Number} _x=10       Desired margin object properties for each side
          * @return {maxCircleArea | module}    Current height or Scatter Chart module to chain calls
          * @public
          */
@@ -593,21 +629,6 @@ define(function(require) {
 
             return this;
         }
-
-        /**
-         * Gets or Sets the height of the chart
-         * @param  {Number} _x          Desired height for the chart
-         * @return {height | module}    Current height or Scatter Chart module to chain calls
-         * @public
-         */
-        exports.height = function(_x) {
-            if (!arguments.length) {
-                return height;
-            }
-            height = _x;
-
-            return this;
-        };
 
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
@@ -633,6 +654,9 @@ define(function(require) {
             if (!arguments.length) {
                 return width;
             }
+            if (aspectRatio) {
+                height = Math.ceil(_x * aspectRatio);
+            }
             width = _x;
 
             return this;
@@ -656,7 +680,7 @@ define(function(require) {
         /**
          * Gets or Sets the y-axis label of the chart
          * @param  {String} _x Desired label string
-         * @return {String | module} Current yAxisLabel or Chart module to chain calls
+         * @return {yAxisLabel | module} Current yAxisLabel or Chart module to chain calls
          * @public
          * @example scatterPlot.yAxisLabel('Ice Cream Consmuption Growth')
          */
@@ -673,7 +697,7 @@ define(function(require) {
          * Gets or Sets the offset of the yAxisLabel of the chart.
          * The method accepts both positive and negative values.
          * @param  {Number} _x=-40      Desired offset for the label
-         * @return {Number | module}    Current yAxisLabelOffset or Chart module to chain calls
+         * @return {yAxisLabelOffset | module}    Current yAxisLabelOffset or Chart module to chain calls
          * @public
          * @example scatterPlot.yAxisLabelOffset(-55)
          */

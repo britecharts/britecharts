@@ -71,6 +71,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
         describe('API', function() {
 
+            it('should provide an aspect ratio getter and setter', () => {
+                let previous = scatterPlot.aspectRatio(),
+                    expected = 600,
+                    actual;
+
+                scatterPlot.aspectRatio(expected);
+                actual = scatterPlot.aspectRatio();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide circleOpacity getter and setter', () => {
                 let previous = scatterPlot.circleOpacity(),
                     expected = 0.6,
@@ -229,6 +241,36 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
+            });
+        });
+
+        describe('Aspect Ratio', () => {
+
+            describe('when an aspect ratio is set', function () {
+
+                it('should modify the height depending on the width', () => {
+                    let testAspectRatio = 0.5,
+                        testWidth = 400,
+                        newHeight;
+
+                    scatterPlot.aspectRatio(testAspectRatio);
+                    scatterPlot.width(testWidth);
+                    newHeight = scatterPlot.height();
+
+                    expect(newHeight).toBe(Math.ceil(testWidth * testAspectRatio));
+                });
+
+                it('should modify the width depending on the height', () => {
+                    let testAspectRatio = 0.5,
+                        testHeight = 400,
+                        newWidth;
+
+                    scatterPlot.aspectRatio(testAspectRatio);
+                    scatterPlot.height(testHeight);
+                    newWidth = scatterPlot.width();
+
+                    expect(newWidth).toBe(Math.ceil(testHeight / testAspectRatio));
+                });
             });
         });
 
