@@ -48,6 +48,7 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
         dataset = aTestDataSet().withFourNames().build();
 
         scatter
+            .width(containerWidth)
             .hasHollowCircles(true)
             .maxCircleArea(15);
 
