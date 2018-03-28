@@ -221,7 +221,7 @@ define(function(require) {
         }
 
         /**
-         * Draws axis labels across axis to
+         * Draws axis labels next to x and y axis to
          * represent data value label on the chart
          * @private
          */
