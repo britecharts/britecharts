@@ -13,8 +13,11 @@
 scatter
     .width(750)
     .circleOpacity(0.6)
-    .grid('horizontal');
-                        
+    .grid('horizontal')
+    .margin({
+        left: 60
+    })
+    .yAxisLabel('Ice Cream Sales');
 
 container.datum(dataset).call(lineChart);
                 </code></pre>
