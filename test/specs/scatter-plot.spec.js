@@ -71,6 +71,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
         describe('API', function() {
 
+            it('should provide an aspect ratio getter and setter', () => {
+                let previous = scatterPlot.aspectRatio(),
+                    expected = 600,
+                    actual;
+
+                scatterPlot.aspectRatio(expected);
+                actual = scatterPlot.aspectRatio();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide circleOpacity getter and setter', () => {
                 let previous = scatterPlot.circleOpacity(),
                     expected = 0.6,
