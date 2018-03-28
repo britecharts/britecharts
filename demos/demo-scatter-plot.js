@@ -11,6 +11,8 @@ const aTestDataSet = () => new dataBuilder.ScatterPlotDataBuilder();
 
 require('./helpers/resizeHelper');
 
+let redrawCharts;
+
 function createScatterPlotWithSingleSource() {
     let scatter = scatterPlot();
     let scatterPlotContainer = d3Selection.select('.js-scatter-plot-with-single-source');
@@ -28,8 +30,9 @@ function createScatterPlotWithSingleSource() {
             .margin({
                 left: 60
             })
-            .aspectRatio(0.1)
+            .aspectRatio(0.3)
             .yAxisLabel('Ice Cream Sales');
+
 
         scatterPlotContainer.datum(dataset).call(scatter);
     }
@@ -56,9 +59,9 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
 // Show charts if container available
 if (d3Selection.select('.js-scatter-plot-with-single-source').node()) {
     createScatterPlotWithSingleSource()
-    createScatterPlotWithIncreasedAreaAndHollowCircles();
+    // createScatterPlotWithIncreasedAreaAndHollowCircles();
 
-    let redrawCharts = function(){
+    redrawCharts = function() {
         d3Selection.selectAll('.scatter-plot').remove();
         createScatterPlotWithSingleSource();
         createScatterPlotWithIncreasedAreaAndHollowCircles();
