@@ -244,6 +244,36 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             });
         });
 
+        describe('Aspect Ratio', () => {
+
+            describe('when an aspect ratio is set', function () {
+
+                it('should modify the height depending on the width', () => {
+                    let testAspectRatio = 0.5,
+                        testWidth = 400,
+                        newHeight;
+
+                    scatterPlot.aspectRatio(testAspectRatio);
+                    scatterPlot.width(testWidth);
+                    newHeight = scatterPlot.height();
+
+                    expect(newHeight).toBe(Math.ceil(testWidth * testAspectRatio));
+                });
+
+                it('should modify the width depending on the height', () => {
+                    let testAspectRatio = 0.5,
+                        testHeight = 400,
+                        newWidth;
+
+                    scatterPlot.aspectRatio(testAspectRatio);
+                    scatterPlot.height(testHeight);
+                    newWidth = scatterPlot.width();
+
+                    expect(newWidth).toBe(Math.ceil(testHeight / testAspectRatio));
+                });
+            });
+        });
+
         describe('when margins are set partially', function() {
 
             it('should override the default values', () => {
