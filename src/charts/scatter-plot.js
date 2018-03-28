@@ -65,8 +65,9 @@ define(function(require) {
      * let scatterPlot = scatterPlot();
      *
      * scatterPlot
-     *     .width(500)
-     *     .aspectRatio(0.5);
+     *     .aspectRatio(0.5)
+     *     .grid('horizontal')
+     *     .width(500);
      *
      * d3Selection.select('.css-selector')
      *     .datum(dataset)
