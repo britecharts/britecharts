@@ -24,7 +24,7 @@ function createScatterPlotWithSingleSource() {
         dataset = aTestDataSet().withOneSource().build();
 
         scatter
-            .aspectRatio(0.5)
+            .aspectRatio(0.7)
             .width(containerWidth)
             .circleOpacity(0.6)
             .grid('horizontal')
