@@ -722,6 +722,21 @@ define(function(require) {
         };
 
         /**
+         * Exposes ability to set the format of x-axis values
+         * @param  {String} _x               Desired height for the chart
+         * @return {yAxisFormat | module}    Current width or Scatter Chart module to chain calls
+         * @public
+         */
+        exports.xAxisFormat = function (_x) {
+            if (!arguments.length) {
+                return xAxisFormat;
+            }
+            xAxisFormat = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the xTicks of the chart
          * @param  {Number} _x         Desired height for the chart
          * @return {xTicks | module}    Current width or Scatter Chart module to chain calls
@@ -738,7 +753,7 @@ define(function(require) {
 
         /**
          * Exposes ability to set the format of y-axis values
-         * @param  {String} _x         Desired height for the chart
+         * @param  {String} _x               Desired height for the chart
          * @return {yAxisFormat | module}    Current width or Scatter Chart module to chain calls
          * @public
          */
