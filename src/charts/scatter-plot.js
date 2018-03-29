@@ -112,6 +112,9 @@ define(function(require) {
         yAxisLabel,
         yAxisLabelEl,
         yAxisLabelOffset = -40,
+        xAxisLabel,
+        xAxisLabelEl,
+        xAxisLabelOffset = -40,
 
         xAxisPadding = {
             top: 0,
@@ -242,6 +245,21 @@ define(function(require) {
                     .attr('text-anchor', 'middle')
                     .attr('transform', 'rotate(270 0 0)')
                     .text(yAxisLabel)
+            }
+
+            // If x-axis label is given, draw it
+            if (xAxisLabel) {
+                if (xAxisLabelEl) {
+                    svg.selectAll('.x-axis-label-text').remove();
+                }
+
+                xAxisLabelEl = svg.select('.axis-labels-group')
+                    .append('text')
+                    .classed('x-axis-label-text', true)
+                    .attr('x', chartWidth / 2)
+                    .attr('y', chartHeight - xAxisLabelOffset)
+                    .attr('text-anchor', 'middle')
+                    .text(xAxisLabel);
             }
         }
 
@@ -658,6 +676,22 @@ define(function(require) {
                 height = Math.ceil(_x * aspectRatio);
             }
             width = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the xAxisLabel of the chart. Adds a
+         * label bellow x-axis for better clarify of data representation.
+         * @param  {String} _x              Desired string for x-axis label of the chart
+         * @return {xAxisLabel | module}    Current width or Scatter Chart module to chain calls
+         * @public
+         */
+        exports.xAxisLabel = function(_x) {
+            if (!arguments.length) {
+                return xAxisLabel;
+            }
+            xAxisLabel = _x;
 
             return this;
         };

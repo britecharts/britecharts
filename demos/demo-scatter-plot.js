@@ -28,8 +28,10 @@ function createScatterPlotWithSingleSource() {
             .width(containerWidth)
             .circleOpacity(0.6)
             .grid('horizontal')
+            .xAxisLabel('Hello')
             .margin({
-                left: 60
+                left: 60,
+                bottom: 50
             })
             .yAxisLabel('Ice Cream Sales');
 
