@@ -28,7 +28,7 @@ function createScatterPlotWithSingleSource() {
             .width(containerWidth)
             .circleOpacity(0.6)
             .grid('horizontal')
-            .xAxisLabel('Hello')
+            .xAxisLabel('Temperature (C)')
             .margin({
                 left: 60,
                 bottom: 50
