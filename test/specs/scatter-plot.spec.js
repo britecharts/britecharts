@@ -195,6 +195,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(actual).toBe(expected);
             });
 
+            it('should provide xAxisFormat getter and setter', () => {
+                let previous = scatterPlot.xAxisFormat(),
+                    expected = '$',
+                    actual;
+
+                scatterPlot.xAxisFormat(expected);
+                actual = scatterPlot.xAxisFormat();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide xAxisLabelOffset getter and setter', () => {
                 let previous = scatterPlot.xAxisLabelOffset(),
                     expected = 40,
@@ -226,6 +238,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
                 scatterPlot.yAxisLabel(expected);
                 actual = scatterPlot.yAxisLabel();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide yAxisFormat getter and setter', () => {
+                let previous = scatterPlot.yAxisFormat(),
+                    expected = '$',
+                    actual;
+
+                scatterPlot.yAxisFormat(expected);
+                actual = scatterPlot.yAxisFormat();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
