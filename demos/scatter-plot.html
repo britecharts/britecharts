@@ -10,17 +10,22 @@
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
-scatter
+scatterChart
     .aspectRatio(0.7)
     .width(containerWidth)
     .circleOpacity(0.6)
     .grid('horizontal')
+    .xAxisLabel('Temperature (C)')
     .margin({
-        left: 60
+        left: 60,
+        bottom: 50
     })
     .yAxisLabel('Ice Cream Sales');
 
-container.datum(dataset).call(lineChart);
+
+scatterPlotContainer
+    .datum(dataset)
+    .call(scatterChart);
                 </code></pre>
                 <h4>Colors</h4>
                 <label class="control-label">You can also check other color schemas:</label>
@@ -43,12 +48,14 @@ container.datum(dataset).call(lineChart);
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
-scatter
+scatterChart
     .width(containerWidth)
     .hasHollowCircles(true)
     .maxCircleArea(15);
 
-container.datum(dataset).call(lineChart);
+container
+    .datum(dataset)
+    .call(scatterChart);
                 </code></pre>
                 <h4>Colors</h4>
                 <label class="control-label">You can also check other color schemas:</label>
