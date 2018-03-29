@@ -102,10 +102,11 @@ define(function(require) {
         baseLine,
         maskGridLines,
 
-        xScale,
         xAxis,
-        yScale,
+        xScale,
         yAxis,
+        yAxisFormat = null,
+        yScale,
         areaScale,
         colorScale,
 
@@ -179,7 +180,8 @@ define(function(require) {
 
             yAxis = d3Axis.axisLeft(yScale)
                 .ticks(yTicks)
-                .tickPadding(tickPadding);
+                .tickPadding(tickPadding)
+                .tickFormat(d3Format.format(yAxisFormat));
         }
 
         /**
@@ -731,6 +733,21 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Exposes ability to set the format of y-axis values
+         * @param  {String} _x         Desired height for the chart
+         * @return {yAxisFormat | module}    Current width or Scatter Chart module to chain calls
+         * @public
+         */
+        exports.yAxisFormat = function(_x) {
+            if (!arguments.length) {
+                return yAxisFormat;
+            }
+            yAxisFormat = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the y-axis label of the chart
