@@ -14,7 +14,7 @@ require('./helpers/resizeHelper');
 let redrawCharts;
 
 function createScatterPlotWithSingleSource() {
-    let scatter = scatterPlot();
+    let scatterChart = scatterPlot();
     let scatterPlotContainer = d3Selection.select('.js-scatter-plot-with-single-source');
     let containerWidth = scatterPlotContainer.node() ? scatterPlotContainer.node().getBoundingClientRect().width : false;
     let dataset;
@@ -23,7 +23,7 @@ function createScatterPlotWithSingleSource() {
         // data represents Ice Cream Sales (y) vs Temperature (x)
         dataset = aTestDataSet().withOneSource().build();
 
-        scatter
+        scatterChart
             .aspectRatio(0.7)
             .width(containerWidth)
             .circleOpacity(0.6)
@@ -36,7 +36,7 @@ function createScatterPlotWithSingleSource() {
             .yAxisLabel('Ice Cream Sales');
 
 
-        scatterPlotContainer.datum(dataset).call(scatter);
+        scatterPlotContainer.datum(dataset).call(scatterChart);
     }
 }
 
@@ -49,12 +49,12 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
     if (containerWidth) {
         dataset = aTestDataSet().withFourNames().build();
 
-        scatter
+        scatterChart
             .width(containerWidth)
             .hasHollowCircles(true)
             .maxCircleArea(15);
 
-        scatterPlotContainer.datum(dataset).call(scatter);
+        scatterPlotContainer.datum(dataset).call(scatterChart);
     }
 }
 
