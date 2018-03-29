@@ -210,7 +210,7 @@ define([
         });
 
         describe('when margins are set partially', function() {
-            
+
             it('should override the default values', () => {
                 let previous = stepChart.margin(),
                 expected = {
@@ -226,7 +226,7 @@ define([
                 expect(previous).not.toBe(actual);
                 expect(actual).toEqual(expected);
             })
-        });   
+        });
 
         describe('when hovering a step', function() {
 
