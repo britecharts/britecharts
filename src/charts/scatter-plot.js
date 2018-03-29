@@ -123,7 +123,7 @@ define(function(require) {
             right: 0
         },
 
-        circleOpacity = 1,
+        circleOpacity = 0.24,
         maxCircleArea = 10,
 
         colorSchema = colorHelper.colorSchemas.britecharts,
@@ -238,13 +238,15 @@ define(function(require) {
                 }
 
                 yAxisLabelEl = svg.select('.axis-labels-group')
-                    .append('text')
-                    .classed('y-axis-label-text', true)
-                    .attr('x', -chartHeight / 2)
-                    .attr('y', yAxisLabelOffset - xAxisPadding.left)
-                    .attr('text-anchor', 'middle')
-                    .attr('transform', 'rotate(270 0 0)')
-                    .text(yAxisLabel)
+                    .append('g')
+                    .attr('class', 'y-axis-label')
+                      .append('text')
+                      .classed('y-axis-label-text', true)
+                      .attr('x', -chartHeight / 2)
+                      .attr('y', yAxisLabelOffset - xAxisPadding.left)
+                      .attr('text-anchor', 'middle')
+                      .attr('transform', 'rotate(270 0 0)')
+                      .text(yAxisLabel)
             }
 
             // If x-axis label is given, draw it
@@ -253,13 +255,15 @@ define(function(require) {
                     svg.selectAll('.x-axis-label-text').remove();
                 }
 
-                xAxisLabelEl = svg.select('.axis-labels-group')
-                    .append('text')
-                    .classed('x-axis-label-text', true)
-                    .attr('x', chartWidth / 2)
-                    .attr('y', chartHeight - xAxisLabelOffset)
-                    .attr('text-anchor', 'middle')
-                    .text(xAxisLabel);
+                xAxisLabelEl = svg.selectAll('.axis-labels-group')
+                    .append('g')
+                    .attr('class', 'x-axis-label')
+                      .append('text')
+                      .classed('x-axis-label-text', true)
+                      .attr('x', chartWidth / 2)
+                      .attr('y', chartHeight - xAxisLabelOffset)
+                      .attr('text-anchor', 'middle')
+                      .text(xAxisLabel);
             }
         }
 
@@ -505,9 +509,9 @@ define(function(require) {
 
         /**
          * Gets or Sets the circles opacity value of the chart.
-         * Sets opacity of a circle for each data point of the chart and
-         * makes the area of each data point more transparent if it's less than 1.
-         * @param  {Number} _x=1               Desired opacity of circles of the chart
+         * Use this to set opacity of a circle for each data point of the chart.
+         * It makes the area of each data point more transparent if it's less than 1.
+         * @param  {Number} _x=0.24            Desired opacity of circles of the chart
          * @return {circleOpacity | module}    Current circleOpacity or Scatter Chart module to chain calls
          * @public
          * @example
