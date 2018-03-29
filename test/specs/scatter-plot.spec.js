@@ -330,5 +330,69 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
             });
         });
+
+        describe('when axis labels are set', () => {
+            let scatterPlot, dataset, containerFixture, f;
+
+            beforeEach(() => {
+                dataset = buildDataSet('withOneSource');
+                scatterPlot = chart()
+                    .xAxisLabel('Hello World')
+                    .yAxisLabel('Goodbye World');
+
+                // DOM Fixture Setup
+                f = jasmine.getFixtures();
+                f.fixturesPath = 'base/test/fixtures/';
+                f.load('testContainer.html');
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(dataset).call(scatterPlot);
+            });
+
+            afterEach(() => {
+                containerFixture.remove();
+                f = jasmine.getFixtures();
+                f.cleanUp();
+                f.clearCache();
+            });
+
+            describe('when x-axis label and offset are set', () => {
+
+                it('should render the x axis label', () => {
+                    let expected = 1;
+                    let actual = containerFixture.select('svg')
+                        .selectAll('.axis-labels-group .x-axis-label-text').nodes().length;
+
+                    expect(actual).toBe(expected);
+                })
+
+                it('label should have correct string', () => {
+                    let expected = 'Hello World';
+                    let actual = containerFixture.select('svg')
+                        .selectAll('.axis-labels-group .x-axis-label-text').text();
+
+                    expect(actual).toBe(expected);
+                })
+            });
+
+            describe('when y-axis label and offset are set', () => {
+
+                it('should render the x axis label', () => {
+                    let expected = 1;
+                    let actual = containerFixture.select('svg')
+                        .selectAll('.axis-labels-group .y-axis-label-text').nodes().length;
+
+                    expect(actual).toBe(expected);
+                })
+
+                it('label should have correct string', () => {
+                    let expected = 'Goodbye World';
+                    let actual = containerFixture.select('svg')
+                        .selectAll('.axis-labels-group .y-axis-label-text').text();
+
+                    expect(actual).toBe(expected);
+                })
+            });
+        });
     });
 });
