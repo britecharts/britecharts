@@ -41,7 +41,7 @@ function createScatterPlotWithSingleSource() {
 }
 
 function createScatterPlotWithIncreasedAreaAndHollowCircles() {
-    let scatter = scatterPlot();
+    let scatterChart = scatterPlot();
     let scatterPlotContainer = d3Selection.select('.js-scatter-plot-container-with-hollow-circles');
     let containerWidth = scatterPlotContainer.node() ? scatterPlotContainer.node().getBoundingClientRect().width : false;
     let dataset;

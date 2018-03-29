@@ -697,6 +697,23 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the offset of the xAxisLabel of the chart.
+         * The method accepts both positive and negative values.
+         * @param  {Number} _x=-40                Desired offset for the label
+         * @return {xAxisLabelOffset | module}    Current xAxisLabelOffset or Chart module to chain calls
+         * @public
+         * @example scatterPlot.xAxisLabelOffset(-55)
+         */
+        exports.xAxisLabelOffset = function (_x) {
+            if (!arguments.length) {
+                return xAxisLabelOffset;
+            }
+            xAxisLabelOffset = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the xTicks of the chart
          * @param  {Number} _x         Desired height for the chart
          * @return {xTicks | module}    Current width or Scatter Chart module to chain calls
