@@ -103,9 +103,10 @@ define(function(require) {
         maskGridLines,
 
         xAxis,
+        xAxisFormat = '',
         xScale,
         yAxis,
-        yAxisFormat = null,
+        yAxisFormat = '',
         yScale,
         areaScale,
         colorScale,
@@ -176,7 +177,8 @@ define(function(require) {
         function buildAxis() {
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(xTicks)
-                .tickPadding(tickPadding);
+                .tickPadding(tickPadding)
+                .tickFormat(d3Format.format(xAxisFormat));
 
             yAxis = d3Axis.axisLeft(yScale)
                 .ticks(yTicks)
