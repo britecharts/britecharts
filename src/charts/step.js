@@ -480,7 +480,7 @@ define(function(require) {
         /**
          * Gets or Sets the text of the xAxisLabel on the chart
          * @param  {String} _x Desired text for the label
-         * @return {xAxisLabel | module} label or Chart module to chain calls
+         * @return {String | module} label or Chart module to chain calls
          * @public
          */
         exports.xAxisLabel = function(_x) {
@@ -494,7 +494,7 @@ define(function(require) {
         /**
          * Gets or Sets the offset of the xAxisLabel on the chart
          * @param  {Number} _x Desired offset for the label
-         * @return {xAxisLabelOffset | module} label or Chart module to chain calls
+         * @return {Number | module} label or Chart module to chain calls
          * @public
          */
         exports.xAxisLabelOffset = function(_x) {
@@ -508,7 +508,7 @@ define(function(require) {
         /**
          * Gets or Sets the text of the yAxisLabel on the chart
          * @param  {String} _x Desired text for the label
-         * @return {yAxisLabel | module} label or Chart module to chain calls
+         * @return {String | module} label or Chart module to chain calls
          * @public
          */
         exports.yAxisLabel = function(_x) {
@@ -522,7 +522,7 @@ define(function(require) {
         /**
          * Gets or Sets the offset of the yAxisLabel on the chart
          * @param  {Number} _x Desired offset for the label
-         * @return {yAxisLabelOffset | module} label or Chart module to chain calls
+         * @return {Number | module} label or Chart module to chain calls
          * @public
          */
         exports.yAxisLabelOffset = function(_x) {
