@@ -183,6 +183,30 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(actual).toEqual(expected);
             });
 
+            it('should provide xAxisLabel getter and setter', () => {
+                let previous = scatterPlot.xAxisLabel(),
+                    expected = 'Great chart',
+                    actual;
+
+                scatterPlot.xAxisLabel(expected);
+                actual = scatterPlot.xAxisLabel();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide xAxisLabelOffset getter and setter', () => {
+                let previous = scatterPlot.xAxisLabelOffset(),
+                    expected = 40,
+                    actual;
+
+                scatterPlot.xAxisLabelOffset(expected);
+                actual = scatterPlot.xAxisLabelOffset();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide xTicks getter and setter', () => {
                 let previous = scatterPlot.xTicks(),
                     expected = 48,
