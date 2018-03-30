@@ -34,7 +34,8 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
                 left: 60,
                 bottom: 50
             })
-            .yAxisLabel('Ice Cream Sales');
+            .yAxisLabel('Ice Cream Sales')
+            .yAxisFormat('$');
 
         if (optionalColorSchema) {
             scatterChart.colorSchema(optionalColorSchema);
