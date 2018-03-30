@@ -6,6 +6,7 @@ const PubSub = require('pubsub-js');
 const scatterPlot = require('./../src/charts/scatter-plot');
 const colors = require('./../src/charts/helpers/color');
 const dataBuilder = require('./../test/fixtures/scatterPlotDataBuilder');
+const colorSelectorHelper = require('./helpers/colorSelector');
 
 const aTestDataSet = () => new dataBuilder.ScatterPlotDataBuilder();
 
@@ -13,7 +14,7 @@ require('./helpers/resizeHelper');
 
 let redrawCharts;
 
-function createScatterPlotWithSingleSource() {
+function createScatterPlotWithSingleSource(optionalColorSchema) {
     let scatterChart = scatterPlot();
     let scatterPlotContainer = d3Selection.select('.js-scatter-plot-with-single-source');
     let containerWidth = scatterPlotContainer.node() ? scatterPlotContainer.node().getBoundingClientRect().width : false;
@@ -35,6 +36,9 @@ function createScatterPlotWithSingleSource() {
             })
             .yAxisLabel('Ice Cream Sales');
 
+        if (optionalColorSchema) {
+            scatterChart.colorSchema(optionalColorSchema);
+        }
 
         scatterPlotContainer.datum(dataset).call(scatterChart);
     }
@@ -71,4 +75,9 @@ if (d3Selection.select('.js-scatter-plot-with-single-source').node()) {
 
     // Redraw charts on window resize
     PubSub.subscribe('resize', redrawCharts);
+
+    // Color schema selector
+    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.scatter-plot', function (newSchema) {
+        createScatterPlotWithSingleSource(newSchema);
+    });
 }
