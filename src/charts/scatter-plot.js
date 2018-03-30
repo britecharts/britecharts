@@ -451,16 +451,14 @@ define(function(require) {
                     .ease(ease)
                     .attr('class', 'point')
                     .attr('class', 'data-point-highlighter')
-                    .style('stroke', (d) => (
-                        hasHollowCircles ? nameColorMap[d.name] : null
-                    ))
-                    .attr('opacity', circleOpacity)
-                    .attr('r', (d) => areaScale(d.y))
-                    .attr('cx', (d) => xScale(d.x))
-                    .attr('cy', (d) => yScale(d.y))
+                    .style('stroke', (d) => nameColorMap[d.name])
                     .attr('fill', (d) => (
                         hasHollowCircles ? hollowColor : nameColorMap[d.name]
                     ))
+                    .attr('fill-opacity', circleOpacity)
+                    .attr('r', (d) => areaScale(d.y))
+                    .attr('cx', (d) => xScale(d.x))
+                    .attr('cy', (d) => yScale(d.y))
                     .style('cursor', 'pointer');
             } else {
                 circles
@@ -470,16 +468,14 @@ define(function(require) {
                       })
                       .attr('class', 'point')
                       .attr('class', 'data-point-highlighter')
-                      .style('stroke', (d) => (
-                          hasHollowCircles ? nameColorMap[d.name] : null
+                      .style('stroke', (d) => nameColorMap[d.name])
+                      .attr('fill', (d) => (
+                        hasHollowCircles ? hollowColor : nameColorMap[d.name]
                       ))
-                      .attr('opacity', circleOpacity)
+                      .attr('fill-opacity', circleOpacity)
                       .attr('r', (d) => areaScale(d.y))
                       .attr('cx', (d) => xScale(d.x))
                       .attr('cy', (d) => yScale(d.y))
-                      .attr('fill', (d) => (
-                          hasHollowCircles ? hollowColor : nameColorMap[d.name]
-                      ))
                       .style('cursor', 'pointer');
             }
         }

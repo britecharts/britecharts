@@ -292,6 +292,51 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             });
         });
 
+        describe('Plot data points(circles)', () => {
+
+            /**
+             * With animation, the chart is initialized without
+             * points. In order to render data points in tests,
+             * animations should be turned off.
+             */
+            beforeEach(() => {
+                dataset = buildDataSet('withOneSource');
+                scatterPlot = chart()
+                    .isAnimated(false);
+
+                // DOM Fixture Setup
+                f = jasmine.getFixtures();
+                f.fixturesPath = 'base/test/fixtures/';
+                f.load('testContainer.html');
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(dataset).call(scatterPlot);
+            });
+
+            afterEach(() => {
+                containerFixture.remove();
+                f = jasmine.getFixtures();
+                f.cleanUp();
+                f.clearCache();
+            });
+
+            it('should have proper default parameteres', () => {
+                scatterPlot.isAnimated(false);
+                containerFixture.datum(dataset).call(scatterPlot);
+
+                let circles = containerFixture.selectAll('.chart-group circle').nodes();
+
+                circles.forEach((circle) => {
+                    expect(circle).toHaveAttr('class', 'data-point-highlighter');
+                    expect(circle).toHaveAttr('fill-opacity', '0.24');
+                    expect(circle).toHaveAttr('fill');
+                    expect(circle).toHaveAttr('cx');
+                    expect(circle).toHaveAttr('cy');
+                    expect(circle).toHaveAttr('style');
+                });
+            });
+        });
+
         describe('Aspect Ratio', () => {
 
             describe('when an aspect ratio is set', function () {
