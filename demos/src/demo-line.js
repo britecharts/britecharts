@@ -5,10 +5,10 @@ const d3TimeFormat = require('d3-time-format');
 
 const PubSub = require('pubsub-js');
 
-const brush = require('./../src/charts/brush');
-const line = require('./../src/charts/line');
-const tooltip = require('./../src/charts/tooltip');
-const dataBuilder = require('./../test/fixtures/lineChartDataBuilder');
+const brush = require('./../../src/charts/brush');
+const line = require('./../../src/charts/line');
+const tooltip = require('./../../src/charts/tooltip');
+const dataBuilder = require('./../../test/fixtures/lineChartDataBuilder');
 const colorSelectorHelper = require('./helpers/colorSelector');
 
 const lineMargin = {top:60, bottom: 50, left: 50, right: 30};

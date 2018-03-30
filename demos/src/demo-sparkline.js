@@ -4,8 +4,8 @@ const d3Selection = require('d3-selection');
 
 const PubSub = require('pubsub-js');
 
-const sparklineChart = require('./../src/charts/sparkline');
-const dataBuilder = require('./../test/fixtures/sparklineDataBuilder');
+const sparklineChart = require('./../../src/charts/sparkline');
+const dataBuilder = require('./../../test/fixtures/sparklineDataBuilder');
 
 const aTestDataSet = () => new dataBuilder.SparklineDataBuilder();
 let redrawCharts;

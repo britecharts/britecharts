@@ -3,10 +3,10 @@
 const d3Selection = require('d3-selection');
 const PubSub = require('pubsub-js');
 
-const bar = require('./../src/charts/bar');
-const miniTooltip = require('./../src/charts/mini-tooltip');
-const colors = require('./../src/charts/helpers/color');
-const dataBuilder = require('./../test/fixtures/barChartDataBuilder');
+const bar = require('./../../src/charts/bar');
+const miniTooltip = require('./../../src/charts/mini-tooltip');
+const colors = require('./../../src/charts/helpers/color');
+const dataBuilder = require('./../../test/fixtures/barChartDataBuilder');
 
 const aTestDataSet = () => new dataBuilder.BarDataBuilder();
 

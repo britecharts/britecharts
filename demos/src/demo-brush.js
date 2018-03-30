@@ -4,8 +4,8 @@ const d3Selection = require('d3-selection');
 const d3TimeFormat = require('d3-time-format');
 const PubSub = require('pubsub-js');
 
-const brush = require('./../src/charts/brush');
-const dataBuilder = require('./../test/fixtures/brushChartDataBuilder');
+const brush = require('./../../src/charts/brush');
+const dataBuilder = require('./../../test/fixtures/brushChartDataBuilder');
 
 require('./helpers/resizeHelper');
 
@@ -44,7 +44,7 @@ function createBrushChart() {
 // Show charts if container available
 if (d3Selection.select('.js-brush-chart-container').node()){
     createBrushChart();
-    
+
     let redrawCharts = function(){
         d3Selection.select('.brush-chart').remove();
 
