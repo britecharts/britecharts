@@ -195,6 +195,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(actual).toBe(expected);
             });
 
+            it('should provide xAxisFormat getter and setter', () => {
+                let previous = scatterPlot.xAxisFormat(),
+                    expected = '$',
+                    actual;
+
+                scatterPlot.xAxisFormat(expected);
+                actual = scatterPlot.xAxisFormat();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide xAxisLabelOffset getter and setter', () => {
                 let previous = scatterPlot.xAxisLabelOffset(),
                     expected = 40,
@@ -226,6 +238,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
                 scatterPlot.yAxisLabel(expected);
                 actual = scatterPlot.yAxisLabel();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide yAxisFormat getter and setter', () => {
+                let previous = scatterPlot.yAxisFormat(),
+                    expected = '$',
+                    actual;
+
+                scatterPlot.yAxisFormat(expected);
+                actual = scatterPlot.yAxisFormat();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
@@ -265,6 +289,51 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
+            });
+        });
+
+        describe('Plot data points(circles)', () => {
+
+            /**
+             * With animation, the chart is initialized without
+             * points. In order to render data points in tests,
+             * animations should be turned off.
+             */
+            beforeEach(() => {
+                dataset = buildDataSet('withOneSource');
+                scatterPlot = chart()
+                    .isAnimated(false);
+
+                // DOM Fixture Setup
+                f = jasmine.getFixtures();
+                f.fixturesPath = 'base/test/fixtures/';
+                f.load('testContainer.html');
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(dataset).call(scatterPlot);
+            });
+
+            afterEach(() => {
+                containerFixture.remove();
+                f = jasmine.getFixtures();
+                f.cleanUp();
+                f.clearCache();
+            });
+
+            it('should have proper default parameteres', () => {
+                scatterPlot.isAnimated(false);
+                containerFixture.datum(dataset).call(scatterPlot);
+
+                let circles = containerFixture.selectAll('.chart-group circle').nodes();
+
+                circles.forEach((circle) => {
+                    expect(circle).toHaveAttr('class', 'data-point-highlighter');
+                    expect(circle).toHaveAttr('fill-opacity', '0.24');
+                    expect(circle).toHaveAttr('fill');
+                    expect(circle).toHaveAttr('cx');
+                    expect(circle).toHaveAttr('cy');
+                    expect(circle).toHaveAttr('style');
+                });
             });
         });
 
@@ -328,6 +397,41 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
                 expect(callbackSpy.calls.count()).toBe(1);
                 expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
+            });
+        });
+
+        describe('when formats of the axis values are set', () => {
+
+            it('should have correct x-axis values format', () => {
+                let format = '$';
+                let previous = scatterPlot.xAxisFormat();
+                let expected = '$100';
+
+                scatterPlot.xAxisFormat(format);
+                containerFixture.datum(dataset).call(scatterPlot);
+
+                let actual = containerFixture.select('svg')
+                    .selectAll('.x-axis-group .tick text')
+                    .text();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should have correct y-axis values format', () => {
+                let format = '$';
+                let previous = scatterPlot.yAxisFormat();
+                let expected = '$50';
+
+                scatterPlot.yAxisFormat(format);
+                containerFixture.datum(dataset).call(scatterPlot);
+
+                let actual = containerFixture.select('svg')
+                    .selectAll('.y-axis-group .tick:nth-child(3) text')
+                    .text();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
             });
         });
 
