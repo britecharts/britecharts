@@ -8,6 +8,7 @@
   -webkit-font-smoothing: antialiased; }
 
 .line-load-state .chart-filter,
+.stacked-area-load-state .chart-filter,
 .donut-load-state .chart-filter,
 .bar-load-state .chart-filter {
   animation: swipe 1.5s linear infinite forwards; }

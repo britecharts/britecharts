@@ -164,11 +164,23 @@ function createStackedAreaChartWithSyncedTooltip() {
     }
 }
 
+function createLoadingState() {
+    let stackedArea = stackedAreaChart(),
+        stackedAreaContainer = d3Selection.select('.js-loading-container'),
+        containerWidth = stackedAreaContainer.node() ? stackedAreaContainer.node().getBoundingClientRect().width : false,
+        dataset = null;
+
+    if (containerWidth) {
+        stackedAreaContainer.html(stackedArea.loadingState());
+    }
+}
+
 if (d3Selection.select('.js-stacked-area-chart-tooltip-container').node()){
     // Chart creation
     createStackedAreaChartWithTooltip();
     createStackedAreaChartWithFixedAspectRatio();
     createStackedAreaChartWithSyncedTooltip();
+    createLoadingState();
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
@@ -177,6 +189,7 @@ if (d3Selection.select('.js-stacked-area-chart-tooltip-container').node()){
         createStackedAreaChartWithTooltip();
         createStackedAreaChartWithFixedAspectRatio();
         createStackedAreaChartWithSyncedTooltip();
+        createLoadingState();
     };
 
     // Redraw charts on window resize
