@@ -355,6 +355,41 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             });
         });
 
+        describe('when formats of the axis values are set', () => {
+
+            it('should have correct x-axis values format', () => {
+                let format = '$';
+                let previous = scatterPlot.xAxisFormat();
+                let expected = '$100';
+
+                scatterPlot.xAxisFormat(format);
+                containerFixture.datum(dataset).call(scatterPlot);
+
+                let actual = containerFixture.select('svg')
+                    .selectAll('.x-axis-group .tick text')
+                    .text();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
+            it('should have correct y-axis values format', () => {
+                let format = '$';
+                let previous = scatterPlot.yAxisFormat();
+                let expected = '$50';
+
+                scatterPlot.yAxisFormat(format);
+                containerFixture.datum(dataset).call(scatterPlot);
+
+                let actual = containerFixture.select('svg')
+                    .selectAll('.y-axis-group .tick:nth-child(3) text')
+                    .text();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+        });
+
         describe('when axis labels are set', () => {
             let scatterPlot, dataset, containerFixture, f;
 
