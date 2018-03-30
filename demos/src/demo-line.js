@@ -76,7 +76,8 @@ function createLineChart(optionalColorSchema, optionalData) {
             .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', chartTooltip.hide)
             .on('customDataEntryClick', function(d, mousePosition) {
-                // console.log('Data entry marker clicked', d, mousePosition);
+                // eslint-disable-next-line no-console
+                console.log('Data entry marker clicked', d, mousePosition);
             })
 
 

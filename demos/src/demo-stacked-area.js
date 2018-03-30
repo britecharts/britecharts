@@ -37,7 +37,8 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
             .valueLabel('views')
             .grid('horizontal')
             .on('customDataEntryClick', function(d, mousePosition) {
-                // console.log('Data entry marker clicked', d);
+                // eslint-disable-next-line no-console
+                console.log('Data entry marker clicked', d, mousePosition);
             })
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {

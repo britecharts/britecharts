@@ -32,6 +32,7 @@ function createBrushChart() {
                 d3Selection.select('.js-date-range').classed('is-hidden', false);
             })
             .on('customBrushEnd', function(brushExtent) {
+                // eslint-disable-next-line no-console
                 console.log('rounded extent', brushExtent);
             });
 
