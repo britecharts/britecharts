@@ -102,10 +102,12 @@ define(function(require) {
         baseLine,
         maskGridLines,
 
-        xScale,
         xAxis,
-        yScale,
+        xAxisFormat = '',
+        xScale,
         yAxis,
+        yAxisFormat = '',
+        yScale,
         areaScale,
         colorScale,
 
@@ -123,7 +125,7 @@ define(function(require) {
             right: 0
         },
 
-        circleOpacity = 1,
+        circleOpacity = 0.24,
         maxCircleArea = 10,
 
         colorSchema = colorHelper.colorSchemas.britecharts,
@@ -175,11 +177,13 @@ define(function(require) {
         function buildAxis() {
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(xTicks)
-                .tickPadding(tickPadding);
+                .tickPadding(tickPadding)
+                .tickFormat(d3Format.format(xAxisFormat));
 
             yAxis = d3Axis.axisLeft(yScale)
                 .ticks(yTicks)
-                .tickPadding(tickPadding);
+                .tickPadding(tickPadding)
+                .tickFormat(d3Format.format(yAxisFormat));
         }
 
         /**
@@ -238,13 +242,15 @@ define(function(require) {
                 }
 
                 yAxisLabelEl = svg.select('.axis-labels-group')
-                    .append('text')
-                    .classed('y-axis-label-text', true)
-                    .attr('x', -chartHeight / 2)
-                    .attr('y', yAxisLabelOffset - xAxisPadding.left)
-                    .attr('text-anchor', 'middle')
-                    .attr('transform', 'rotate(270 0 0)')
-                    .text(yAxisLabel)
+                    .append('g')
+                    .attr('class', 'y-axis-label')
+                      .append('text')
+                      .classed('y-axis-label-text', true)
+                      .attr('x', -chartHeight / 2)
+                      .attr('y', yAxisLabelOffset - xAxisPadding.left)
+                      .attr('text-anchor', 'middle')
+                      .attr('transform', 'rotate(270 0 0)')
+                      .text(yAxisLabel)
             }
 
             // If x-axis label is given, draw it
@@ -253,13 +259,15 @@ define(function(require) {
                     svg.selectAll('.x-axis-label-text').remove();
                 }
 
-                xAxisLabelEl = svg.select('.axis-labels-group')
-                    .append('text')
-                    .classed('x-axis-label-text', true)
-                    .attr('x', chartWidth / 2)
-                    .attr('y', chartHeight - xAxisLabelOffset)
-                    .attr('text-anchor', 'middle')
-                    .text(xAxisLabel);
+                xAxisLabelEl = svg.selectAll('.axis-labels-group')
+                    .append('g')
+                    .attr('class', 'x-axis-label')
+                      .append('text')
+                      .classed('x-axis-label-text', true)
+                      .attr('x', chartWidth / 2)
+                      .attr('y', chartHeight - xAxisLabelOffset)
+                      .attr('text-anchor', 'middle')
+                      .text(xAxisLabel);
             }
         }
 
@@ -443,16 +451,14 @@ define(function(require) {
                     .ease(ease)
                     .attr('class', 'point')
                     .attr('class', 'data-point-highlighter')
-                    .style('stroke', (d) => (
-                        hasHollowCircles ? nameColorMap[d.name] : null
-                    ))
-                    .attr('opacity', circleOpacity)
-                    .attr('r', (d) => areaScale(d.y))
-                    .attr('cx', (d) => xScale(d.x))
-                    .attr('cy', (d) => yScale(d.y))
+                    .style('stroke', (d) => nameColorMap[d.name])
                     .attr('fill', (d) => (
                         hasHollowCircles ? hollowColor : nameColorMap[d.name]
                     ))
+                    .attr('fill-opacity', circleOpacity)
+                    .attr('r', (d) => areaScale(d.y))
+                    .attr('cx', (d) => xScale(d.x))
+                    .attr('cy', (d) => yScale(d.y))
                     .style('cursor', 'pointer');
             } else {
                 circles
@@ -462,16 +468,14 @@ define(function(require) {
                       })
                       .attr('class', 'point')
                       .attr('class', 'data-point-highlighter')
-                      .style('stroke', (d) => (
-                          hasHollowCircles ? nameColorMap[d.name] : null
+                      .style('stroke', (d) => nameColorMap[d.name])
+                      .attr('fill', (d) => (
+                        hasHollowCircles ? hollowColor : nameColorMap[d.name]
                       ))
-                      .attr('opacity', circleOpacity)
+                      .attr('fill-opacity', circleOpacity)
                       .attr('r', (d) => areaScale(d.y))
                       .attr('cx', (d) => xScale(d.x))
                       .attr('cy', (d) => yScale(d.y))
-                      .attr('fill', (d) => (
-                          hasHollowCircles ? hollowColor : nameColorMap[d.name]
-                      ))
                       .style('cursor', 'pointer');
             }
         }
@@ -505,9 +509,9 @@ define(function(require) {
 
         /**
          * Gets or Sets the circles opacity value of the chart.
-         * Sets opacity of a circle for each data point of the chart and
-         * makes the area of each data point more transparent if it's less than 1.
-         * @param  {Number} _x=1               Desired opacity of circles of the chart
+         * Use this to set opacity of a circle for each data point of the chart.
+         * It makes the area of each data point more transparent if it's less than 1.
+         * @param  {Number} _x=0.24            Desired opacity of circles of the chart
          * @return {circleOpacity | module}    Current circleOpacity or Scatter Chart module to chain calls
          * @public
          * @example
@@ -714,6 +718,21 @@ define(function(require) {
         };
 
         /**
+         * Exposes ability to set the format of x-axis values
+         * @param  {String} _x               Desired height for the chart
+         * @return {yAxisFormat | module}    Current width or Scatter Chart module to chain calls
+         * @public
+         */
+        exports.xAxisFormat = function (_x) {
+            if (!arguments.length) {
+                return xAxisFormat;
+            }
+            xAxisFormat = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the xTicks of the chart
          * @param  {Number} _x         Desired height for the chart
          * @return {xTicks | module}    Current width or Scatter Chart module to chain calls
@@ -727,6 +746,21 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Exposes ability to set the format of y-axis values
+         * @param  {String} _x               Desired height for the chart
+         * @return {yAxisFormat | module}    Current width or Scatter Chart module to chain calls
+         * @public
+         */
+        exports.yAxisFormat = function(_x) {
+            if (!arguments.length) {
+                return yAxisFormat;
+            }
+            yAxisFormat = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the y-axis label of the chart

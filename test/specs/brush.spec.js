@@ -58,7 +58,7 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
         });
 
         describe('when margins are set partially', function() {
-            
+
             it('should override the default values', () => {
                 let previous = brushChart.margin(),
                 expected = {
@@ -74,7 +74,7 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
                 expect(previous).not.toBe(actual);
                 expect(actual).toEqual(expected);
             })
-        });  
+        });
 
         describe('the API', function() {
 
