@@ -3,9 +3,9 @@
 const d3Selection = require('d3-selection');
 const PubSub = require('pubsub-js');
 
-const scatterPlot = require('./../src/charts/scatter-plot');
-const colors = require('./../src/charts/helpers/color');
-const dataBuilder = require('./../test/fixtures/scatterPlotDataBuilder');
+const scatterPlot = require('./../../src/charts/scatter-plot');
+const colors = require('./../../src/charts/helpers/color');
+const dataBuilder = require('./../../test/fixtures/scatterPlotDataBuilder');
 const colorSelectorHelper = require('./helpers/colorSelector');
 
 const aTestDataSet = () => new dataBuilder.ScatterPlotDataBuilder();
