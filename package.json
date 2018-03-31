@@ -70,7 +70,7 @@
   "homepage": "http://eventbrite.github.io/britecharts/",
   "dependencies": {
     "base-64": "^0.1.0",
-    "d3": "^4.10.0",
+    "d3": "^5.0.0",
     "lodash.assign": "^4.2.0"
   },
   "devDependencies": {
