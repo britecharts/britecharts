@@ -3,11 +3,11 @@
 const d3Selection = require('d3-selection');
 const PubSub = require('pubsub-js');
 
-const stackedAreaChart = require('./../src/charts/stacked-area');
-const colors = require('./../src/charts/helpers/color');
-const tooltip = require('./../src/charts/tooltip');
+const stackedAreaChart = require('./../../src/charts/stacked-area');
+const colors = require('./../../src/charts/helpers/color');
+const tooltip = require('./../../src/charts/tooltip');
 
-const stackedDataBuilder = require('./../test/fixtures/stackedAreaDataBuilder');
+const stackedDataBuilder = require('./../../test/fixtures/stackedAreaDataBuilder');
 const colorSelectorHelper = require('./helpers/colorSelector');
 let redrawCharts;
 
@@ -37,7 +37,8 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
             .valueLabel('views')
             .grid('horizontal')
             .on('customDataEntryClick', function(d, mousePosition) {
-                // console.log('Data entry marker clicked', d);
+                // eslint-disable-next-line no-console
+                console.log('Data entry marker clicked', d, mousePosition);
             })
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
@@ -163,11 +164,23 @@ function createStackedAreaChartWithSyncedTooltip() {
     }
 }
 
+function createLoadingState() {
+    let stackedArea = stackedAreaChart(),
+        stackedAreaContainer = d3Selection.select('.js-loading-container'),
+        containerWidth = stackedAreaContainer.node() ? stackedAreaContainer.node().getBoundingClientRect().width : false,
+        dataset = null;
+
+    if (containerWidth) {
+        stackedAreaContainer.html(stackedArea.loadingState());
+    }
+}
+
 if (d3Selection.select('.js-stacked-area-chart-tooltip-container').node()){
     // Chart creation
     createStackedAreaChartWithTooltip();
     createStackedAreaChartWithFixedAspectRatio();
     createStackedAreaChartWithSyncedTooltip();
+    createLoadingState();
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
@@ -176,6 +189,7 @@ if (d3Selection.select('.js-stacked-area-chart-tooltip-container').node()){
         createStackedAreaChartWithTooltip();
         createStackedAreaChartWithFixedAspectRatio();
         createStackedAreaChartWithSyncedTooltip();
+        createLoadingState();
     };
 
     // Redraw charts on window resize

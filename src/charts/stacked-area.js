@@ -11,8 +11,8 @@ define(function(require){
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
-
     const assign = require('lodash.assign');
+
     const {exportChart} = require('./helpers/export');
     const colorHelper = require('./helpers/color');
     const {getTimeSeriesAxis} = require('./helpers/axis');
@@ -30,8 +30,7 @@ define(function(require){
         addDays,
         diffDays
     } = require('./helpers/date');
-
-    const {bar} = require('./helpers/load');
+    const { stackedArea} = require('./helpers/load');
 
 
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
@@ -89,7 +88,7 @@ define(function(require){
             },
             width = 960,
             height = 500,
-            loadingState = bar,
+            loadingState = stackedArea,
 
             xScale, xAxis, xMonthAxis,
             yScale, yAxis,
