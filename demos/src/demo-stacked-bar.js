@@ -4,11 +4,11 @@ const d3Selection = require('d3-selection');
 
 const PubSub = require('pubsub-js');
 
-const colors = require('./../src/charts/helpers/color');
+const colors = require('./../../src/charts/helpers/color');
 
-const stackedBarChart = require('./../src/charts/stacked-bar');
-const tooltip = require('./../src/charts/tooltip');
-const stackedDataBuilder = require('./../test/fixtures/stackedBarDataBuilder');
+const stackedBarChart = require('./../../src/charts/stacked-bar');
+const tooltip = require('./../../src/charts/tooltip');
+const stackedDataBuilder = require('./../../test/fixtures/stackedBarDataBuilder');
 const colorSelectorHelper = require('./helpers/colorSelector');
 let redrawCharts;
 

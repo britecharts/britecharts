@@ -113,6 +113,7 @@ const prodChartsConfig = merge([
 // module.exports = getConfig;
 
 module.exports = (env) => {
+    // eslint-disable-next-line no-console
     console.log('%%%%%%%% env', env);
 
     if (env === 'demos') {

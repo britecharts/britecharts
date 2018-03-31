@@ -103,7 +103,7 @@ Adding a new chart is a bunch of work, but we hope that using the current code a
 2. Go to ``/test/fixtures`` and create a new data builder file. Name it something like ``chartNameChartDataBuilder.js``.
 3. Go to ``/test/json`` and create a JSON file for the test data of your new chart. You will load it with the previously created data builder.
 4. Go to ``/src/charts`` and create a new chart file called ``ChartName.js``.
-5. Go to ``/demos`` and create a new demo page for the new chart, add it to ``/demos/index.js``.
+5. Go to ``/demos/src`` and create a new demo script for the new chart, add it to ``/demos/src/index.js``.
 6. Also in ``/demos``, create a new html page called ``chartName.html`` and its .json file with the demo title.
 7. Go to ``webpack.config.js`` and:
     1. add the new chart to the ``currentCharts`` object, give it a camel case name.
