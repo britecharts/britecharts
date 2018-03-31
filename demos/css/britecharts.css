@@ -11,13 +11,14 @@
 .stacked-area-load-state .chart-filter,
 .donut-load-state .chart-filter,
 .bar-load-state .chart-filter {
+  will-change: transform;
   animation: swipe 1.5s linear infinite forwards; }
 
 @keyframes swipe {
   from {
-    transform: translateX(-66.66%); }
+    transform: translateX(-100%); }
   to {
-    transform: translateX(0); } }
+    transform: translateX(100%); } }
 
 .vertical-grid-line,
 .horizontal-grid-line {
