@@ -325,7 +325,8 @@ define(function(require) {
          * @private
          */
         function buildTooltip() {
-            tooltip = miniTooltip();
+            tooltip = miniTooltip()
+                .valueLabel(yKey);
 
             tooltipContainer = d3Selection.select('.metadata-group');
             tooltipContainer.datum([]).call(tooltip);
