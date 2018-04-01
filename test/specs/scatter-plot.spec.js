@@ -360,6 +360,9 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 f.fixturesPath = 'base/test/fixtures/';
                 f.load('testContainer.html');
 
+                scatterPlot = chart()
+                    .isAnimated(false)
+                    .hasHollowCircles(true);
                 containerFixture = d3.select('.test-container');
             });
 
@@ -373,9 +376,6 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             it('data points should have a fixed fill', () => {
                 let expected = '#fff';
 
-                scatterPlot = chart()
-                    .isAnimated(false)
-                    .hasHollowCircles(true);
                 containerFixture.datum(dataset).call(scatterPlot);
 
                 let circles = containerFixture.selectAll('.chart-group circle').nodes();
