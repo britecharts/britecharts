@@ -327,7 +327,7 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 f.clearCache();
             });
 
-            it('data points container renders a circle for each data point', () => {
+            it('container renders a circle for each data point', () => {
                 let expected = dataset.length;
                 let actual = containerFixture.select('.chart-group')
                     .selectAll('circle')
@@ -337,9 +337,6 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             });
 
             it('should have proper default parameteres', () => {
-                scatterPlot.isAnimated(false);
-                containerFixture.datum(dataset).call(scatterPlot);
-
                 let circles = containerFixture.selectAll('.chart-group circle').nodes();
 
                 circles.forEach((circle) => {
@@ -349,6 +346,42 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                     expect(circle).toHaveAttr('cx');
                     expect(circle).toHaveAttr('cy');
                     expect(circle).toHaveAttr('style');
+                });
+            });
+        });
+
+        describe('when hasHollowCircles is set to true', () => {
+
+            beforeEach(() => {
+                dataset = buildDataSet('withOneSource');
+
+                // DOM Fixture Setup
+                f = jasmine.getFixtures();
+                f.fixturesPath = 'base/test/fixtures/';
+                f.load('testContainer.html');
+
+                containerFixture = d3.select('.test-container');
+            });
+
+            afterEach(() => {
+                containerFixture.remove();
+                f = jasmine.getFixtures();
+                f.cleanUp();
+                f.clearCache();
+            });
+
+            it('data points should have a fixed fill', () => {
+                let expected = '#fff';
+
+                scatterPlot = chart()
+                    .isAnimated(false)
+                    .hasHollowCircles(true);
+                containerFixture.datum(dataset).call(scatterPlot);
+
+                let circles = containerFixture.selectAll('.chart-group circle').nodes();
+
+                circles.forEach((circle) => {
+                    expect(circle.getAttribute('fill')).toBe(expected);
                 });
             });
         });
