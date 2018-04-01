@@ -1,5 +1,27 @@
-2.8.0
-2.7.0
+2.8.0 - Minor
+--------------
+Features:
+* Added Stacked Area Chart Loading state
+* Scatter plot axis format and labels
+* Scatter plot hollow area, demo, opacity and aspect ratio
+* Highlight points in line chart
+
+Fixes:
+* Updated to D3 v5
+* Documentation fix and color selector in scatter plot demo
+* Brush documentation
+
+2.7.0 - Minor
+--------------
+Features:
+* Scatter plot
+* Margin accessor improved flexibility
+* Number format in tooltip
+
+Fixes:
+* Meta tags in docs
+* Data refresh bug 
+
 2.6.0 - Minor
 --------------
 Features:
