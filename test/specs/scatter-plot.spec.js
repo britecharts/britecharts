@@ -56,6 +56,13 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
         });
 
+        it('should render tooltip group container', () => {
+            let expected = 1;
+            let actual = containerFixture.select('.tooltip-group').nodes().length;
+
+            expect(actual).toEqual(expected);
+        });
+
         it('should render an X and Y axis', () => {
             expect(containerFixture.select('.x-axis-group .axis.x').empty()).toBeFalsy();
             expect(containerFixture.select('.y-axis-group .axis.y').empty()).toBeFalsy();
@@ -390,13 +397,38 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
             it('should trigger a callback on mouse click', () => {
                 let callbackSpy = jasmine.createSpy('callback');
-                let scatterDataPoint = containerFixture.select('.chart-group circle');
+                let scatterDataPoint = containerFixture.selectAll('.chart-group circle:nth-child(1)');
 
                 scatterPlot.on('customClick', callbackSpy);
                 scatterDataPoint.dispatch('click');
 
                 expect(callbackSpy.calls.count()).toBe(1);
                 expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
+            });
+        });
+
+        describe('mouse events', () => {
+
+            it('should dispatch customMouseOver event', () => {
+                let callback = jasmine.createSpy('hoverCallback');
+                let container = containerFixture.selectAll('svg');
+
+                scatterPlot.on('customMouseOver', callback);
+                container.dispatch('mouseover');
+
+                expect(callback.calls.count()).toBe(1);
+                expect(callback.calls.allArgs()[0].length).toBe(2);
+            });
+
+            it('should dispatch customMouseOut event', () => {
+                let callback = jasmine.createSpy('hoverCallback');
+                let container = containerFixture.selectAll('svg');
+
+                scatterPlot.on('customMouseOut', callback);
+                container.dispatch('mouseout');
+
+                expect(callback.calls.count()).toBe(1);
+                expect(callback.calls.allArgs()[0].length).toBe(2);
             });
         });
 

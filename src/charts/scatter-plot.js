@@ -15,6 +15,7 @@ define(function(require) {
 
     const {exportChart} = require('./helpers/export');
     const colorHelper = require('./helpers/color');
+    const miniTooltip = require('./mini-tooltip');
 
     const {
         formatIntegerValue,
@@ -120,6 +121,9 @@ define(function(require) {
         xAxisLabelEl,
         xAxisLabelOffset = -40,
 
+        tooltip,
+        tooltipContainer,
+
         xAxisPadding = {
             top: 0,
             left: 0,
@@ -146,7 +150,8 @@ define(function(require) {
 
         dispatcher = d3Dispatch.dispatch(
             'customClick',
-            'customMouseOver'
+            'customMouseOver',
+            'customMouseOut'
         ),
 
         getName = ({name}) => name;
@@ -168,6 +173,7 @@ define(function(require) {
                 buildSVG(this);
                 buildAxis();
                 buildVoronoi();
+                buildTooltip();
                 drawAxis();
                 drawGridLines();
                 drawDataPoints();
@@ -182,7 +188,13 @@ define(function(require) {
         function addMouseEvents() {
             svg
                 .on('mousemove', function (d) {
+                    handleMouseMove(this, d);
+                })
+                .on('mouseover', function (d) {
                     handleMouseOver(this, d);
+                })
+                .on('mouseout', function(d) {
+                    handleMouseOut(this, d);
                 });
         }
 
@@ -272,7 +284,7 @@ define(function(require) {
             const colorRange = colorScale.range();
 
             /**
-             * Maps data point category name to 
+             * Maps data point category name to
              * each color of the given color scheme
              * {
              *     name1: 'color1',
@@ -306,6 +318,17 @@ define(function(require) {
             svg
                 .attr('width', width)
                 .attr('height', height);
+        }
+
+        /**
+         * Sets up the tooltip for Scatter Plot
+         * @private
+         */
+        function buildTooltip() {
+            tooltip = miniTooltip();
+
+            tooltipContainer = d3Selection.select('.metadata-group');
+            tooltipContainer.datum([]).call(tooltip);
         }
 
         /**
@@ -510,18 +533,29 @@ define(function(require) {
         }
 
         /**
-         * Handler called on mouseover event
+         * Handler called on mousemove event
+         * @private
          */
-        function handleMouseOver(e, d) {
+        function handleMouseMove(e, d) {
             let svgRef = e;
+            let mousePos = d3Selection.mouse(svgRef);
+            let closestPoint = voronoi.find(mousePos[0], mousePos[1]);
 
-            let p = d3Selection.mouse(svgRef);
-            let closestPoint = voronoi.find(p[0], p[1]);
+            tooltip.update(closestPoint.data, mousePos, [chartWidth, chartHeight]);
+        }
 
-            // pass closest point data
-            // to mini tooltip
-
+        /**
+         * Handler called on mouseover event
+         * @private
+         */
+        function handleMouseOver (e, d) {
+            tooltip.show();
             dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
+        }
+
+        function handleMouseOut(e, d) {
+            tooltip.hide();
+            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
         }
 
         /**
@@ -721,7 +755,7 @@ define(function(require) {
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
          * We are going to expose this events:
-         * customClick
+         * customClick, customMouseOut, customMouseOver
          *
          * @return {module} Scatter Plot
          * @public
