@@ -103,7 +103,6 @@ define(function(require) {
         baseLine,
         maskGridLines,
         voronoi,
-        voronoiGroup,
 
         xAxis,
         xAxisFormat = '',
@@ -130,6 +129,7 @@ define(function(require) {
 
         circleOpacity = 0.24,
         maxCircleArea = 10,
+        maxDistanceFromPoint = 50,
 
         colorSchema = colorHelper.colorSchemas.britecharts,
 
@@ -145,7 +145,8 @@ define(function(require) {
         chartHeight,
 
         dispatcher = d3Dispatch.dispatch(
-            'customClick'
+            'customClick',
+            'customMouseOver'
         ),
 
         getName = ({name}) => name;
@@ -170,8 +171,19 @@ define(function(require) {
                 drawAxis();
                 drawGridLines();
                 drawDataPoints();
-                drawVoronoi();
+
+                addMouseEvents();
             });
+        }
+
+        /**
+         * Add mouse event handlers over svg
+         */
+        function addMouseEvents() {
+            svg
+                .on('mousemove', function (d) {
+                    handleMouseOver(this, d);
+                });
         }
 
         /**
@@ -227,7 +239,7 @@ define(function(require) {
             voronoi = d3Voronoi.voronoi()
                 .x((d) => xScale(d.x))
                 .y((d) => yScale(d.y))
-                .extent([[0, 0], [width, height]]);
+                .extent([[0, 0], [width, height]])(dataPoints);
         }
 
         /**
@@ -427,40 +439,6 @@ define(function(require) {
                   .attr('x2', (d) => xScale(d));
         }
 
-        function drawVoronoi() {
-            voronoiGroup = svg.select('.voronoi-group')
-                .selectAll('path')
-                .data(voronoi(dataPoints))
-                .enter()
-                .append('path')
-                  .attr('d', (d, i) =>'M' + d.join('L') + 'Z')
-                  .datum((d, i) => d.point)
-                  .attr('class', (d, i) => 'voronoi ' + d.name)
-                  .style('fill', 'none')
-                  .style('pointer-events', 'all')
-                  .on('mouseover', showTooltip)
-                  .on('mouseout', removeTooltip);
-
-            svg.selectAll('.voronoi')
-                .on('mouseover', function (d, i) {
-                    if (d.activity !== chosen) {
-                        return null;
-                    } else {
-                        return showTooltip.call(this, d, i);
-                    }
-                })
-                .on('mouseout', function (d, i) {
-                    console.log('d, i', d, i);
-                    const chosen = nameColorMap.domain()[i];
-
-                    if (d.activity !== chosen) {
-                        return null;
-                    } else {
-                        return removeTooltip.call(this, d, i);
-                    }
-                });
-        }
-
 
         /**
          * Cleaning data casting the values and names to the proper type while keeping
@@ -529,6 +507,21 @@ define(function(require) {
                       .attr('cy', (d) => yScale(d.y))
                       .style('cursor', 'pointer');
             }
+        }
+
+        /**
+         * Handler called on mouseover event
+         */
+        function handleMouseOver(e, d) {
+            let svgRef = e;
+
+            let p = d3Selection.mouse(svgRef);
+            let closestPoint = voronoi.find(p[0], p[1]);
+
+            // pass closest point data
+            // to mini tooltip
+
+            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
         }
 
         /**
