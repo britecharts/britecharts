@@ -560,28 +560,6 @@ define(function(require) {
         }
 
         /**
-         *  Show tooltip on mouse over
-         * @param {Number} x
-         * @param {Number} y
-         */
-        function showTooltip(x, y) {
-            svg.select('.metadata-group')
-                .attr('transform', `translate(${x},${y})`)
-                .append('text')
-                .attr('class', 'tooltip')
-                .text(x, y);
-        }
-
-        /**
-        * Show tooltip on mouse over
-        * @param {Number} x
-        * @param {Number} y
-        */
-        function removeTooltip(x, y) {
-            svg.selectAll('.tooltip').remove();
-        }
-
-        /**
          * Custom onClick event handler
          * @return {void}
          * @private
