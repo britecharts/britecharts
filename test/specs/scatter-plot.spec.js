@@ -327,6 +327,15 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 f.clearCache();
             });
 
+            it('data points container renders a circle for each data point', () => {
+                let expected = dataset.length;
+                let actual = containerFixture.select('.chart-group')
+                    .selectAll('circle')
+                    .nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
+
             it('should have proper default parameteres', () => {
                 scatterPlot.isAnimated(false);
                 containerFixture.datum(dataset).call(scatterPlot);
