@@ -18,6 +18,11 @@ define(function(require) {
     const miniTooltip = require('./mini-tooltip');
 
     const {
+        createFilterContainer,
+        createGlowWithMatrix
+    } = require('./helpers/filter');
+
+    const {
         formatIntegerValue,
         formatDecimalValue,
         isInteger,
@@ -124,6 +129,10 @@ define(function(require) {
         tooltip,
         tooltipContainer,
 
+        highlightFilter,
+        highlightFilterId,
+        highlightStrokeWidth = 10,
+
         xAxisPadding = {
             top: 0,
             left: 0,
@@ -132,6 +141,7 @@ define(function(require) {
         },
 
         circleOpacity = 0.24,
+        highlightCircleOpacity = circleOpacity,
         maxCircleArea = 10,
         maxDistanceFromPoint = 50,
 
@@ -155,7 +165,8 @@ define(function(require) {
             'customMouseOut'
         ),
 
-        getName = ({name}) => name;
+        getName = ({name}) => name,
+        getPointData = ({data}) => data;
 
         /**
          * This function creates the graph using the selection as container
@@ -542,7 +553,9 @@ define(function(require) {
         function handleMouseMove(svg, d) {
             let { mousePos, closestPoint } = getPointProps(svg);
 
-            tooltip.update(closestPoint.data, mousePos, [chartWidth, chartHeight]);
+            tooltip.update(getPointData(closestPoint), mousePos, [chartWidth, chartHeight]);
+            highlightDataPoint(getPointData(closestPoint));
+
             dispatcher.call('customMouseMove', svg, d, d3Selection.mouse(svg));
         }
 
@@ -574,6 +587,38 @@ define(function(require) {
          */
         function handleClick(e, d, chartWidth, chartHeight) {
             dispatcher.call('customClick', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        }
+
+        /**
+         * Applies glow to hovered data point
+         * @return {void}
+         * @private
+         */
+        function highlightDataPoint(data) {
+            svg.selectAll('circle.highlight-circle').remove();
+
+            if (!highlightFilter) {
+                highlightFilter = createFilterContainer(svg.select('.metadata-group'));
+                highlightFilterId = createGlowWithMatrix(highlightFilter);
+            }
+
+            let highlightCircle = svg.select('.metadata-group')
+                .selectAll('circle.highlight-circle')
+                .data([data])
+                .enter()
+                  .append('circle')
+                    .attr('class', 'highlight-circle')
+                    .attr('stroke', ({name}) => nameColorMap[name])
+                    .attr('fill', ({name}) => nameColorMap[name])
+                    .attr('fill-opacity', circleOpacity)
+                    .attr('cx', ({x}) => xScale(x))
+                    .attr('cy', ({y}) => yScale(y))
+                    .attr('r', ({y}) => areaScale(y))
+                    .style('stroke-width', highlightStrokeWidth)
+                    .style('stroke-opacity', highlightCircleOpacity);
+
+            highlightCircle
+                .attr('filter', `url(#${highlightFilterId})`);
         }
 
         /**
