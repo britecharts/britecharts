@@ -68,6 +68,7 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
 
         scatterChart
             .width(containerWidth)
+            .hasHighlightedValues(true)
             .hasHollowCircles(true)
             .margin({
                 left: 60,

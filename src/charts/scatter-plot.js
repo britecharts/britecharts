@@ -146,6 +146,7 @@ define(function(require) {
         colorSchema = colorHelper.colorSchemas.britecharts,
 
         isAnimated = true,
+        hasHighlightedValues = false,
         ease = d3Ease.easeCircleIn,
         delay = 500,
         duration = 500,
@@ -692,7 +693,9 @@ define(function(require) {
             highlightCircle
                 .attr('filter', `url(#${highlightFilterId})`);
 
-            drawDataPointsValueHighlights(data);
+            if (hasHighlightedValues) {
+                drawDataPointsValueHighlights(data);
+            }
         }
 
         /**
@@ -736,7 +739,7 @@ define(function(require) {
          * Use this to set opacity of a circle for each data point of the chart.
          * It makes the area of each data point more transparent if it's less than 1.
          * @param  {Number} _x=0.24            Desired opacity of circles of the chart
-         * @return {circleOpacity | module}    Current circleOpacity or Scatter Chart module to chain calls
+         * @return {circleOpacity | module}    Current circleOpacity or Chart module to chain calls
          * @public
          * @example
          * scatterPlot.circleOpacity(0.6)
@@ -782,7 +785,7 @@ define(function(require) {
          * Gets or Sets the grid mode.
          *
          * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
-         * @return {String | module} Current mode of the grid or Area Chart module to chain calls
+         * @return {String | module} Current mode of the grid or Chart module to chain calls
          * @public
          */
         exports.grid = function (_x) {
@@ -795,9 +798,28 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the hasHighlightedValues status. If true,
+         * the hovered data point will be highlighted with lines
+         * and legend from both x and y axis. The user will see
+         * values for x under x axis line and y under y axis. Lines
+         * will be drawn with respect to highlighted data point
+         * @param  {boolean} _x=false               Desired hasHighlightedValues status for chart
+         * @return {hasHighlightedValues | module}  Current hasHighlightedValues or Chart module to chain calls
+         * @public
+         */
+        exports.hasHighlightedValues = function(_x) {
+            if (!arguments.length) {
+                return hasHighlightedValues;
+            }
+            hasHighlightedValues = _x;
+
+            return this;
+        }
+
+        /**
          * Gets or Sets the hasHollowCircles value of the chart area
          * @param  {boolean} _x=false             Choose whether chart's data points/circles should be hollow
-         * @return {hasHollowCircles | module}    Current hasHollowCircles value or Scatter Chart module to chain calls
+         * @return {hasHollowCircles | module}    Current hasHollowCircles value or Chart module to chain calls
          * @public
          */
         exports.hasHollowCircles = function (_x) {
@@ -812,7 +834,7 @@ define(function(require) {
         /**
          * Gets or Sets the height of the chart
          * @param  {Number} _x          Desired height for the chart
-         * @return {height | module}    Current height or Scatter Chart module to chain calls
+         * @return {height | module}    Current height or Chart module to chain calls
          * @public
          */
         exports.height = function (_x) {
@@ -828,10 +850,29 @@ define(function(require) {
         };
 
         /**
+         * Sets a custom distance between legend
+         * values with respect to both axises. The legends
+         * show up when hasHighlightedValues is true.
+         * @param  {Number} _x          Desired height for the chart
+         * @return {height | module}    Current height or Chart module to chain calls
+         * @public
+         * @example
+         * scatterPlot.highlightTextLegendOffset(-55)
+         */
+        exports.highlightTextLegendOffset = function(_x) {
+            if (!arguments.length) {
+                return highlightTextLegendOffset;
+            }
+            highlightTextLegendOffset = _x;
+
+            return this;
+        }
+
+        /**
          * Gets or Sets isAnimated value. If set to true,
          * the chart will be initialized or updated with animation.
          * @param  {boolean} _x=false       Desired margin object properties for each side
-         * @return {isAnimated | module}    Current height or Scatter Chart module to chain calls
+         * @return {isAnimated | module}    Current height or Chart module to chain calls
          * @public
          */
         exports.isAnimated = function(_x) {
@@ -846,7 +887,7 @@ define(function(require) {
         /**
          * Gets or Sets the margin object of the chart
          * @param  {Object} _x          Desired margin object properties for each side
-         * @return {margin | module}    Current height or Scatter Chart module to chain calls
+         * @return {margin | module}    Current height or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -864,7 +905,7 @@ define(function(require) {
         /**
          * Gets or Sets the maximum value of the chart area
          * @param  {Number} _x=10       Desired margin object properties for each side
-         * @return {maxCircleArea | module}    Current height or Scatter Chart module to chain calls
+         * @return {maxCircleArea | module}    Current height or Chart module to chain calls
          * @public
          */
         exports.maxCircleArea = function(_x) {
@@ -892,7 +933,7 @@ define(function(require) {
         /**
          * Gets or Sets the height of the chart
          * @param  {Number} _x          Desired height for the chart
-         * @return {width | module}    Current width or Scatter Chart module to chain calls
+         * @return {width | module}    Current width or Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
@@ -911,7 +952,7 @@ define(function(require) {
          * Gets or Sets the xAxisLabel of the chart. Adds a
          * label bellow x-axis for better clarify of data representation.
          * @param  {String} _x              Desired string for x-axis label of the chart
-         * @return {xAxisLabel | module}    Current width or Scatter Chart module to chain calls
+         * @return {xAxisLabel | module}    Current width or Chart module to chain calls
          * @public
          */
         exports.xAxisLabel = function(_x) {
@@ -943,7 +984,7 @@ define(function(require) {
         /**
          * Exposes ability to set the format of x-axis values
          * @param  {String} _x               Desired height for the chart
-         * @return {yAxisFormat | module}    Current width or Scatter Chart module to chain calls
+         * @return {yAxisFormat | module}    Current width or Chart module to chain calls
          * @public
          */
         exports.xAxisFormat = function (_x) {
@@ -958,7 +999,7 @@ define(function(require) {
         /**
          * Gets or Sets the xTicks of the chart
          * @param  {Number} _x         Desired height for the chart
-         * @return {xTicks | module}    Current width or Scatter Chart module to chain calls
+         * @return {xTicks | module}    Current width or Chart module to chain calls
          * @public
          */
         exports.xTicks = function(_x) {
@@ -973,7 +1014,7 @@ define(function(require) {
         /**
          * Exposes ability to set the format of y-axis values
          * @param  {String} _x               Desired height for the chart
-         * @return {yAxisFormat | module}    Current width or Scatter Chart module to chain calls
+         * @return {yAxisFormat | module}    Current width or Chart module to chain calls
          * @public
          */
         exports.yAxisFormat = function(_x) {
@@ -1021,7 +1062,7 @@ define(function(require) {
         /**
          * Gets or Sets the xTicks of the chart
          * @param  {Number} _x         Desired height for the chart
-         * @return {xTicks | module}    Current width or Scatter Chart module to chain calls
+         * @return {xTicks | module}    Current width or Chart module to chain calls
          * @public
          */
         exports.yTicks = function(_x) {
