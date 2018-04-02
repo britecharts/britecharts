@@ -35,10 +35,7 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
                 bottom: 50
             })
             .yAxisLabel('Ice Cream Sales')
-            .yAxisFormat('$')
-            .on('customMouseOver', (d) => {
-                console.log('mouseover',d);
-            });
+            .yAxisFormat('$');
 
         if (optionalColorSchema) {
             scatterChart.colorSchema(optionalColorSchema);

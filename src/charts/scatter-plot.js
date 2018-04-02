@@ -333,6 +333,23 @@ define(function(require) {
         }
 
         /**
+         * Cleaning data casting the values and names to the proper type while keeping
+         * the rest of properties on the data
+         * @param  {ScatterPlotData} originalData  Raw data as passed to the container
+         * @return  {ScatterPlotData}              Clean data
+         * @private
+         */
+        function cleanData(originalData) {
+            return originalData.reduce((acc, d) => {
+                d.name = String(d[nameKey]);
+                d.x = d[xKey];
+                d.y = d[yKey];
+
+                return [...acc, d];
+            }, []);
+        }
+
+        /**
          * Draws the x and y axis on the svg object within their
          * respective groups along with their axis labels
          * @private
@@ -461,24 +478,6 @@ define(function(require) {
                   .attr('y2', chartHeight)
                   .attr('x1', (d) => xScale(d))
                   .attr('x2', (d) => xScale(d));
-        }
-
-
-        /**
-         * Cleaning data casting the values and names to the proper type while keeping
-         * the rest of properties on the data
-         * @param  {ScatterPlotData} originalData  Raw data as passed to the container
-         * @return  {ScatterPlotData}              Clean data
-         * @private
-         */
-        function cleanData(originalData) {
-            return originalData.reduce((acc, d) => {
-                d.name = String(d[nameKey]);
-                d.x = d[xKey];
-                d.y = d[yKey];
-
-                return [...acc, d];
-            }, []);
         }
 
         /**
