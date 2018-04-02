@@ -146,7 +146,7 @@ define(function(require) {
         colorSchema = colorHelper.colorSchemas.britecharts,
 
         isAnimated = true,
-        hasHighlightedValues = false,
+        hasCrossHairs = false,
         ease = d3Ease.easeCircleIn,
         delay = 500,
         duration = 500,
@@ -498,7 +498,7 @@ define(function(require) {
                 .data([data])
                 .enter()
                 .append('line')
-                  .attr('stroke', (d) => nameColorMap[d.name])
+                  .attr('stroke', ({name}) => nameColorMap[name])
                   .attr('class', 'highlight-y-line')
                   .attr('x1', (d) => (xScale(d.x) - areaScale(d.y)))
                   .attr('x2', (d) => 0)
@@ -511,7 +511,7 @@ define(function(require) {
                 .data([data])
                 .enter()
                 .append('line')
-                  .attr('stroke', (d) => nameColorMap[d.name])
+                  .attr('stroke', ({name}) => nameColorMap[name])
                   .attr('class', 'highlight-x-line')
                   .attr('x1', (d) => xScale(d.x))
                   .attr('x2', (d) => xScale(d.x))
@@ -524,7 +524,7 @@ define(function(require) {
                 .enter()
                 .append('text')
                   .attr('text-anchor', 'middle')
-                  .attr('fill', (d) => nameColorMap[d.name])
+                  .attr('fill', ({name}) => nameColorMap[name])
                   .attr('class', 'highlight-y-legend')
                   .attr('y', (d) => (yScale(d.y) + (areaScale(d.y) / 2)))
                   .attr('x', highlightTextLegendOffset)
@@ -536,7 +536,7 @@ define(function(require) {
                 .enter()
                 .append('text')
                   .attr('text-anchor', 'middle')
-                  .attr('fill', (d) => nameColorMap[d.name])
+                  .attr('fill', ({name}) => nameColorMap[name])
                   .attr('class', 'highlight-x-legend')
                   .attr('transform', `translate(0, ${chartHeight - highlightTextLegendOffset})`)
                   .attr('x', (d) => (xScale(d.x) - (areaScale(d.y) / 2)))
@@ -693,7 +693,7 @@ define(function(require) {
             highlightCircle
                 .attr('filter', `url(#${highlightFilterId})`);
 
-            if (hasHighlightedValues) {
+            if (hasCrossHairs) {
                 drawDataPointsValueHighlights(data);
             }
         }
@@ -798,20 +798,20 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the hasHighlightedValues status. If true,
+         * Gets or Sets the hasCrossHairs status. If true,
          * the hovered data point will be highlighted with lines
          * and legend from both x and y axis. The user will see
          * values for x under x axis line and y under y axis. Lines
          * will be drawn with respect to highlighted data point
-         * @param  {boolean} _x=false               Desired hasHighlightedValues status for chart
-         * @return {boolean | module}  Current hasHighlightedValues or Chart module to chain calls
+         * @param  {boolean} _x=false               Desired hasCrossHairs status for chart
+         * @return {boolean | module}  Current hasCrossHairs or Chart module to chain calls
          * @public
          */
-        exports.hasHighlightedValues = function(_x) {
+        exports.hasCrossHairs = function(_x) {
             if (!arguments.length) {
-                return hasHighlightedValues;
+                return hasCrossHairs;
             }
-            hasHighlightedValues = _x;
+            hasCrossHairs = _x;
 
             return this;
         }
@@ -852,7 +852,7 @@ define(function(require) {
         /**
          * Sets a custom distance between legend
          * values with respect to both axises. The legends
-         * show up when hasHighlightedValues is true.
+         * show up when hasCrossHairs is true.
          * @param  {Number} _x          Desired highlightTextLegendOffset for the chart
          * @return {Number | module}    Current highlightTextLegendOffset or Chart module to chain calls
          * @public

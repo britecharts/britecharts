@@ -123,13 +123,13 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(actual).toBe(expected);
             });
 
-            it('should provide hasHighlightedValues getter and setter', () => {
+            it('should provide hasCrossHairs getter and setter', () => {
                 let previous = scatterPlot.hasHollowCircles(),
                     expected = true,
                     actual;
 
-                scatterPlot.hasHighlightedValues(expected);
-                actual = scatterPlot.hasHighlightedValues();
+                scatterPlot.hasCrossHairs(expected);
+                actual = scatterPlot.hasCrossHairs();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toEqual(expected);
