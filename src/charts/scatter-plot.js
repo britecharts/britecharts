@@ -129,6 +129,7 @@ define(function(require) {
         highlightFilterId,
         highlightStrokeWidth = 10,
         highlightContainer,
+        highlightTextLegendOffset = -45,
 
         xAxisPadding = {
             top: 0,
@@ -497,7 +498,7 @@ define(function(require) {
                 .append('line')
                   .attr('stroke', (d) => nameColorMap[d.name])
                   .attr('class', 'highlight-y-line')
-                  .attr('x1', (d) => xScale(d.x))
+                  .attr('x1', (d) => (xScale(d.x) - areaScale(d.y)))
                   .attr('x2', (d) => 0)
                   .attr('y1', (d) => yScale(d.y))
                   .attr('y2', (d) => yScale(d.y));
@@ -512,8 +513,32 @@ define(function(require) {
                   .attr('class', 'highlight-x-line')
                   .attr('x1', (d) => xScale(d.x))
                   .attr('x2', (d) => xScale(d.x))
-                  .attr('y1', (d) => yScale(d.y))
+                  .attr('y1', (d) => (yScale(d.y) + areaScale(d.y)))
                   .attr('y2', (d) => chartHeight);
+
+            // Draw data label for y value
+            highlightContainer.selectAll('text.highlight-y-legend')
+                .data([data])
+                .enter()
+                .append('text')
+                  .attr('text-anchor', 'middle')
+                  .attr('fill', (d) => nameColorMap[d.name])
+                  .attr('class', 'highlight-y-legend')
+                  .attr('y', (d) => (yScale(d.y) + (areaScale(d.y) / 2)))
+                  .attr('x', highlightTextLegendOffset)
+                  .text((d) => `${d.y}`);
+
+            // Draw data label for x value
+            highlightContainer.selectAll('text.highlight-x-legend')
+                .data([data])
+                .enter()
+                .append('text')
+                  .attr('text-anchor', 'middle')
+                  .attr('fill', (d) => nameColorMap[d.name])
+                  .attr('class', 'highlight-x-legend')
+                  .attr('transform', `translate(0, ${chartHeight - highlightTextLegendOffset})`)
+                  .attr('x', (d) => (xScale(d.x) - (areaScale(d.y) / 2)))
+                  .text((d) => `${d.x}`);
         }
 
         /**

@@ -69,6 +69,10 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
         scatterChart
             .width(containerWidth)
             .hasHollowCircles(true)
+            .margin({
+                left: 60,
+                bottom: 45
+            })
             .maxCircleArea(15);
 
         scatterPlotContainer.datum(dataset).call(scatterChart);
