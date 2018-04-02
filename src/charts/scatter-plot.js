@@ -128,6 +128,8 @@ define(function(require) {
         highlightFilter,
         highlightFilterId,
         highlightStrokeWidth = 10,
+        highlightContainer,
+        highlightTextLegendOffset = -45,
 
         xAxisPadding = {
             top: 0,
@@ -144,6 +146,7 @@ define(function(require) {
         colorSchema = colorHelper.colorSchemas.britecharts,
 
         isAnimated = true,
+        hasCrossHairs = false,
         ease = d3Ease.easeCircleIn,
         delay = 500,
         duration = 500,
@@ -406,8 +409,143 @@ define(function(require) {
         }
 
         /**
+         * Draws vertical gridlines of the chart
+         * These gridlines are parallel to y-axis
+         * @return {void}
+         * @private
+         */
+        function drawVerticalGridLines() {
+            maskGridLines = svg.select('.grid-lines-group')
+                .selectAll('line.vertical-grid-line')
+                .data(yScale.ticks(xTicks))
+                .enter()
+                 .append('line')
+                  .attr('class', 'vertical-grid-line')
+                  .attr('y1', (xAxisPadding.left))
+                  .attr('y2', chartHeight)
+                  .attr('x1', (d) => xScale(d))
+                  .attr('x2', (d) => xScale(d));
+        }
+
+        /**
+         * Draws the points for each data element
+         * on the chart group
+         * @private
+        */
+        function drawDataPoints() {
+            let circles = svg.select('.chart-group')
+                .selectAll('circle')
+                .data(dataPoints)
+                .enter();
+
+            if (isAnimated) {
+                circles
+                    .append('circle')
+                    .on('click', function (d) {
+                        handleClick(this, d, chartWidth, chartHeight);
+                    })
+                    .transition()
+                    .delay(delay)
+                    .duration(duration)
+                    .ease(ease)
+                    .attr('class', 'point')
+                    .attr('class', 'data-point-highlighter')
+                    .style('stroke', (d) => nameColorMap[d.name])
+                    .attr('fill', (d) => (
+                        hasHollowCircles ? hollowColor : nameColorMap[d.name]
+                    ))
+                    .attr('fill-opacity', circleOpacity)
+                    .attr('r', (d) => areaScale(d.y))
+                    .attr('cx', (d) => xScale(d.x))
+                    .attr('cy', (d) => yScale(d.y))
+                    .style('cursor', 'pointer');
+            } else {
+                circles
+                    .append('circle')
+                    .on('click', function (d) {
+                        handleClick(this, d, chartWidth, chartHeight);
+                    })
+                    .attr('class', 'point')
+                    .attr('class', 'data-point-highlighter')
+                    .style('stroke', (d) => nameColorMap[d.name])
+                    .attr('fill', (d) => (
+                        hasHollowCircles ? hollowColor : nameColorMap[d.name]
+                    ))
+                    .attr('fill-opacity', circleOpacity)
+                    .attr('r', (d) => areaScale(d.y))
+                    .attr('cx', (d) => xScale(d.x))
+                    .attr('cy', (d) => yScale(d.y))
+                    .style('cursor', 'pointer');
+            }
+        }
+
+        /**
+         * Draws lines and labels for the
+         * highlighted data point value
+         * @private
+        */
+        function drawDataPointsValueHighlights(data) {
+            if (highlightContainer) {
+                removeDataPointsValueHighlights();
+            }
+
+            highlightContainer = svg.select('.metadata-group')
+                .append('g')
+                .classed('data-point-value-highlight', true);
+
+            // Draw line perpendicular to y-axis
+            highlightContainer.selectAll('line.highlight-y-line')
+                .data([data])
+                .enter()
+                .append('line')
+                  .attr('stroke', ({name}) => nameColorMap[name])
+                  .attr('class', 'highlight-y-line')
+                  .attr('x1', (d) => (xScale(d.x) - areaScale(d.y)))
+                  .attr('x2', (d) => 0)
+                  .attr('y1', (d) => yScale(d.y))
+                  .attr('y2', (d) => yScale(d.y));
+
+
+            // Draw line perpendicular to x-axis
+            highlightContainer.selectAll('line.highlight-x-line')
+                .data([data])
+                .enter()
+                .append('line')
+                  .attr('stroke', ({name}) => nameColorMap[name])
+                  .attr('class', 'highlight-x-line')
+                  .attr('x1', (d) => xScale(d.x))
+                  .attr('x2', (d) => xScale(d.x))
+                  .attr('y1', (d) => (yScale(d.y) + areaScale(d.y)))
+                  .attr('y2', (d) => chartHeight);
+
+            // Draw data label for y value
+            highlightContainer.selectAll('text.highlight-y-legend')
+                .data([data])
+                .enter()
+                .append('text')
+                  .attr('text-anchor', 'middle')
+                  .attr('fill', ({name}) => nameColorMap[name])
+                  .attr('class', 'highlight-y-legend')
+                  .attr('y', (d) => (yScale(d.y) + (areaScale(d.y) / 2)))
+                  .attr('x', highlightTextLegendOffset)
+                  .text((d) => `${d3Format.format(yAxisFormat)(d.y)}`);
+
+            // Draw data label for x value
+            highlightContainer.selectAll('text.highlight-x-legend')
+                .data([data])
+                .enter()
+                .append('text')
+                  .attr('text-anchor', 'middle')
+                  .attr('fill', ({name}) => nameColorMap[name])
+                  .attr('class', 'highlight-x-legend')
+                  .attr('transform', `translate(0, ${chartHeight - highlightTextLegendOffset})`)
+                  .attr('x', (d) => (xScale(d.x) - (areaScale(d.y) / 2)))
+                  .text((d) => `${d3Format.format(xAxisFormat)(d.x)}`);
+        }
+
+        /**
          * Draws grid lines on the background of the chart
-         * @return void
+         * @return {void}
          * @private
          */
         function drawGridLines() {
@@ -464,77 +602,6 @@ define(function(require) {
         }
 
         /**
-         * Draws vertical gridlines of the chart
-         * These gridlines are parallel to y-axis
-         * @return {void}
-         * @private
-         */
-        function drawVerticalGridLines() {
-            maskGridLines = svg.select('.grid-lines-group')
-                .selectAll('line.vertical-grid-line')
-                .data(yScale.ticks(xTicks))
-                .enter()
-                  .append('line')
-                    .attr('class', 'vertical-grid-line')
-                    .attr('y1', (xAxisPadding.left))
-                    .attr('y2', chartHeight)
-                    .attr('x1', (d) => xScale(d))
-                    .attr('x2', (d) => xScale(d));
-        }
-
-        /**
-         * Draws the points for each data element
-         * on the chart group
-         * @private
-        */
-        function drawDataPoints() {
-            let circles = svg.select('.chart-group')
-                .selectAll('circle')
-                .data(dataPoints)
-                .enter();
-
-            if (isAnimated) {
-                circles
-                  .append('circle')
-                    .on('click', function (d) {
-                        handleClick(this, d, chartWidth, chartHeight);
-                    })
-                    .transition()
-                    .delay(delay)
-                    .duration(duration)
-                    .ease(ease)
-                    .attr('class', 'point')
-                    .attr('class', 'data-point-highlighter')
-                    .style('stroke', (d) => nameColorMap[d.name])
-                    .attr('fill', (d) => (
-                        hasHollowCircles ? hollowColor : nameColorMap[d.name]
-                    ))
-                    .attr('fill-opacity', circleOpacity)
-                    .attr('r', (d) => areaScale(d.y))
-                    .attr('cx', (d) => xScale(d.x))
-                    .attr('cy', (d) => yScale(d.y))
-                    .style('cursor', 'pointer');
-            } else {
-                circles
-                    .append('circle')
-                      .on('click', function (d) {
-                          handleClick(this, d, chartWidth, chartHeight);
-                      })
-                      .attr('class', 'point')
-                      .attr('class', 'data-point-highlighter')
-                      .style('stroke', (d) => nameColorMap[d.name])
-                      .attr('fill', (d) => (
-                        hasHollowCircles ? hollowColor : nameColorMap[d.name]
-                      ))
-                      .attr('fill-opacity', circleOpacity)
-                      .attr('r', (d) => areaScale(d.y))
-                      .attr('cx', (d) => xScale(d.x))
-                      .attr('cy', (d) => yScale(d.y))
-                      .style('cursor', 'pointer');
-            }
-        }
-
-        /**
          * Calculates and returns
          * @return {Object}
          * @param {*} svg
@@ -581,6 +648,7 @@ define(function(require) {
          */
         function handleMouseOut(e, d) {
             removePointHighlight();
+            removeDataPointsValueHighlights();
             dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
         }
 
@@ -621,8 +689,13 @@ define(function(require) {
                     .style('stroke-width', highlightStrokeWidth)
                     .style('stroke-opacity', highlightCircleOpacity);
 
+            // apply glow container overlay
             highlightCircle
                 .attr('filter', `url(#${highlightFilterId})`);
+
+            if (hasCrossHairs) {
+                drawDataPointsValueHighlights(data);
+            }
         }
 
         /**
@@ -634,12 +707,22 @@ define(function(require) {
             svg.selectAll('circle.highlight-circle').remove();
         }
 
+        /**
+         * Removes the lines and labels for the
+         * highlighted data point value
+         * @return {void}
+         * @private
+         */
+        function removeDataPointsValueHighlights() {
+            svg.selectAll('.data-point-value-highlight').remove();
+        }
+
         // API
 
         /**
          * Gets or Sets the aspect ratio of the chart
          * @param  {Number} _x            Desired aspect ratio for the graph
-         * @return {aspectRatio | module} Current aspect ratio or Chart module to chain calls
+         * @return {Number | module} Current aspect ratio or Chart module to chain calls
          * @public
          */
         exports.aspectRatio = function (_x) {
@@ -656,7 +739,7 @@ define(function(require) {
          * Use this to set opacity of a circle for each data point of the chart.
          * It makes the area of each data point more transparent if it's less than 1.
          * @param  {Number} _x=0.24            Desired opacity of circles of the chart
-         * @return {circleOpacity | module}    Current circleOpacity or Scatter Chart module to chain calls
+         * @return {Number | module}    Current circleOpacity or Chart module to chain calls
          * @public
          * @example
          * scatterPlot.circleOpacity(0.6)
@@ -674,7 +757,7 @@ define(function(require) {
         /**
          * Gets or Sets the colorSchema of the chart
          * @param  {String[]} _x            Desired colorSchema for the chart
-         * @return {colorSchema | module}   Current colorSchema or Chart module to chain calls
+         * @return {String[] | module}   Current colorSchema or Chart module to chain calls
          * @public
          * @example
          * scatterPlot.colorSchema(['#fff', '#bbb', '#ccc'])
@@ -701,8 +784,8 @@ define(function(require) {
         /**
          * Gets or Sets the grid mode.
          *
-         * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
-         * @return {String | module} Current mode of the grid or Area Chart module to chain calls
+         * @param  {String} _x          Desired mode for the grid ('vertical'|'horizontal'|'full')
+         * @return {String | module}    Current mode of the grid or Chart module to chain calls
          * @public
          */
         exports.grid = function (_x) {
@@ -715,9 +798,28 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the hasCrossHairs status. If true,
+         * the hovered data point will be highlighted with lines
+         * and legend from both x and y axis. The user will see
+         * values for x under x axis line and y under y axis. Lines
+         * will be drawn with respect to highlighted data point
+         * @param  {boolean} _x=false               Desired hasCrossHairs status for chart
+         * @return {boolean | module}  Current hasCrossHairs or Chart module to chain calls
+         * @public
+         */
+        exports.hasCrossHairs = function(_x) {
+            if (!arguments.length) {
+                return hasCrossHairs;
+            }
+            hasCrossHairs = _x;
+
+            return this;
+        }
+
+        /**
          * Gets or Sets the hasHollowCircles value of the chart area
          * @param  {boolean} _x=false             Choose whether chart's data points/circles should be hollow
-         * @return {hasHollowCircles | module}    Current hasHollowCircles value or Scatter Chart module to chain calls
+         * @return {boolean | module}    Current hasHollowCircles value or Chart module to chain calls
          * @public
          */
         exports.hasHollowCircles = function (_x) {
@@ -732,7 +834,7 @@ define(function(require) {
         /**
          * Gets or Sets the height of the chart
          * @param  {Number} _x          Desired height for the chart
-         * @return {height | module}    Current height or Scatter Chart module to chain calls
+         * @return {Number | module}    Current height or Chart module to chain calls
          * @public
          */
         exports.height = function (_x) {
@@ -748,10 +850,29 @@ define(function(require) {
         };
 
         /**
+         * Sets a custom distance between legend
+         * values with respect to both axises. The legends
+         * show up when hasCrossHairs is true.
+         * @param  {Number} _x          Desired highlightTextLegendOffset for the chart
+         * @return {Number | module}    Current highlightTextLegendOffset or Chart module to chain calls
+         * @public
+         * @example
+         * scatterPlot.highlightTextLegendOffset(-55)
+         */
+        exports.highlightTextLegendOffset = function(_x) {
+            if (!arguments.length) {
+                return highlightTextLegendOffset;
+            }
+            highlightTextLegendOffset = _x;
+
+            return this;
+        }
+
+        /**
          * Gets or Sets isAnimated value. If set to true,
          * the chart will be initialized or updated with animation.
-         * @param  {boolean} _x=false       Desired margin object properties for each side
-         * @return {isAnimated | module}    Current height or Scatter Chart module to chain calls
+         * @param  {boolean} _x=false       Desired isAnimated properties for each side
+         * @return {boolean | module}    Current isAnimated or Chart module to chain calls
          * @public
          */
         exports.isAnimated = function(_x) {
@@ -766,7 +887,7 @@ define(function(require) {
         /**
          * Gets or Sets the margin object of the chart
          * @param  {Object} _x          Desired margin object properties for each side
-         * @return {margin | module}    Current height or Scatter Chart module to chain calls
+         * @return {Object | module}    Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -783,8 +904,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the maximum value of the chart area
-         * @param  {Number} _x=10       Desired margin object properties for each side
-         * @return {maxCircleArea | module}    Current height or Scatter Chart module to chain calls
+         * @param  {Number} _x=10              Desired margin object properties for each side
+         * @return {Number | module}    Current maxCircleArea or Chart module to chain calls
          * @public
          */
         exports.maxCircleArea = function(_x) {
@@ -811,8 +932,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the height of the chart
-         * @param  {Number} _x          Desired height for the chart
-         * @return {width | module}    Current width or Scatter Chart module to chain calls
+         * @param  {Number} _x           Desired height for the chart
+         * @return {Number | module}     Current width or Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
@@ -831,7 +952,7 @@ define(function(require) {
          * Gets or Sets the xAxisLabel of the chart. Adds a
          * label bellow x-axis for better clarify of data representation.
          * @param  {String} _x              Desired string for x-axis label of the chart
-         * @return {xAxisLabel | module}    Current width or Scatter Chart module to chain calls
+         * @return {String | module}        Current xAxisLabel or Chart module to chain calls
          * @public
          */
         exports.xAxisLabel = function(_x) {
@@ -846,8 +967,8 @@ define(function(require) {
         /**
          * Gets or Sets the offset of the xAxisLabel of the chart.
          * The method accepts both positive and negative values.
-         * @param  {Number} _x=-40                Desired offset for the label
-         * @return {xAxisLabelOffset | module}    Current xAxisLabelOffset or Chart module to chain calls
+         * @param  {Number} _x=-40          Desired offset for the label
+         * @return {Number | module}        Current xAxisLabelOffset or Chart module to chain calls
          * @public
          * @example scatterPlot.xAxisLabelOffset(-55)
          */
@@ -863,7 +984,7 @@ define(function(require) {
         /**
          * Exposes ability to set the format of x-axis values
          * @param  {String} _x               Desired height for the chart
-         * @return {yAxisFormat | module}    Current width or Scatter Chart module to chain calls
+         * @return {String | module}         Current xAxisFormat or Chart module to chain calls
          * @public
          */
         exports.xAxisFormat = function (_x) {
@@ -878,7 +999,7 @@ define(function(require) {
         /**
          * Gets or Sets the xTicks of the chart
          * @param  {Number} _x         Desired height for the chart
-         * @return {xTicks | module}    Current width or Scatter Chart module to chain calls
+         * @return {Number | module}   Current xTicks or Chart module to chain calls
          * @public
          */
         exports.xTicks = function(_x) {
@@ -893,7 +1014,7 @@ define(function(require) {
         /**
          * Exposes ability to set the format of y-axis values
          * @param  {String} _x               Desired height for the chart
-         * @return {yAxisFormat | module}    Current width or Scatter Chart module to chain calls
+         * @return {String | module}    Current yAxisFormat or Chart module to chain calls
          * @public
          */
         exports.yAxisFormat = function(_x) {
@@ -908,7 +1029,7 @@ define(function(require) {
         /**
          * Gets or Sets the y-axis label of the chart
          * @param  {String} _x Desired label string
-         * @return {yAxisLabel | module} Current yAxisLabel or Chart module to chain calls
+         * @return {String | module} Current yAxisLabel or Chart module to chain calls
          * @public
          * @example scatterPlot.yAxisLabel('Ice Cream Consmuption Growth')
          */
@@ -925,7 +1046,7 @@ define(function(require) {
          * Gets or Sets the offset of the yAxisLabel of the chart.
          * The method accepts both positive and negative values.
          * @param  {Number} _x=-40      Desired offset for the label
-         * @return {yAxisLabelOffset | module}    Current yAxisLabelOffset or Chart module to chain calls
+         * @return {Number | module}    Current yAxisLabelOffset or Chart module to chain calls
          * @public
          * @example scatterPlot.yAxisLabelOffset(-55)
          */
@@ -940,8 +1061,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the xTicks of the chart
-         * @param  {Number} _x         Desired height for the chart
-         * @return {xTicks | module}    Current width or Scatter Chart module to chain calls
+         * @param  {Number} _x          Desired height for the chart
+         * @return {Number | module}    Current yTicks or Chart module to chain calls
          * @public
          */
         exports.yTicks = function(_x) {
