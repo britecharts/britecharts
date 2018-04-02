@@ -410,6 +410,7 @@ define(function(require) {
         /**
          * Draws grid lines on the background of the chart
          * @return void
+         * @private
          */
         function drawGridLines() {
             svg.select('.grid-lines-group')
@@ -430,6 +431,7 @@ define(function(require) {
         /**
          * Draws a vertical line to extend x-axis till the edges
          * @return {void}
+         * @private
          */
         function drawHorizontalExtendedLine() {
             baseLine = svg.select('.grid-lines-group')
@@ -448,6 +450,7 @@ define(function(require) {
          * Draw horizontal gridles of the chart
          * These gridlines are parallel to x-axis
          * @return {void}
+         * @private
          */
         function drawHorizontalGridLines() {
             maskGridLines = svg.select('.grid-lines-group')
@@ -466,6 +469,7 @@ define(function(require) {
          * Draws vertical gridlines of the chart
          * These gridlines are parallel to y-axis
          * @return {void}
+         * @private
          */
         function drawVerticalGridLines() {
             maskGridLines = svg.select('.grid-lines-group')
@@ -536,6 +540,7 @@ define(function(require) {
          * Calculates and returns
          * @return {Object}
          * @param {*} svg
+         * @private
          */
         function getPointProps(svg) {
             let mousePos = d3Selection.mouse(svg);
