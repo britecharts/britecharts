@@ -123,6 +123,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(actual).toBe(expected);
             });
 
+            it('should provide hasCrossHairs getter and setter', () => {
+                let previous = scatterPlot.hasHollowCircles(),
+                    expected = true,
+                    actual;
+
+                scatterPlot.hasCrossHairs(expected);
+                actual = scatterPlot.hasCrossHairs();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toEqual(expected);
+            });
+
             it('should provide hasHollowCircles getter and setter', () => {
                 let previous = scatterPlot.hasHollowCircles(),
                     expected = true,
@@ -136,12 +148,24 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             });
 
             it('should provide height getter and setter', () => {
-                let previous = scatterPlot.width(),
+                let previous = scatterPlot.height(),
                     expected = 200,
                     actual;
 
                 scatterPlot.height(expected);
                 actual = scatterPlot.height();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide highlightTextLegendOffset getter and setter', () => {
+                let previous = scatterPlot.highlightTextLegendOffset(),
+                    expected = -55,
+                    actual;
+
+                scatterPlot.highlightTextLegendOffset(expected);
+                actual = scatterPlot.highlightTextLegendOffset();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
