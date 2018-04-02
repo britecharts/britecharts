@@ -56,13 +56,6 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
         });
 
-        it('should render tooltip group container', () => {
-            let expected = 1;
-            let actual = containerFixture.select('.tooltip-group').nodes().length;
-
-            expect(actual).toEqual(expected);
-        });
-
         it('should render an X and Y axis', () => {
             expect(containerFixture.select('.x-axis-group .axis.x').empty()).toBeFalsy();
             expect(containerFixture.select('.y-axis-group .axis.y').empty()).toBeFalsy();
@@ -481,7 +474,7 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 container.dispatch('mousemove');
 
                 expect(callback.calls.count()).toBe(1);
-                expect(callback.calls.allArgs()[0].length).toBe(2);
+                expect(callback.calls.allArgs()[0].length).toBe(3);
             });
         });
 

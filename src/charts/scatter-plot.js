@@ -15,7 +15,6 @@ define(function(require) {
 
     const {exportChart} = require('./helpers/export');
     const colorHelper = require('./helpers/color');
-    const miniTooltip = require('./mini-tooltip');
 
     const {
         createFilterContainer,
@@ -126,9 +125,6 @@ define(function(require) {
         xAxisLabelEl,
         xAxisLabelOffset = -40,
 
-        tooltip,
-        tooltipContainer,
-
         highlightFilter,
         highlightFilterId,
         highlightStrokeWidth = 10,
@@ -188,8 +184,6 @@ define(function(require) {
                 drawAxis();
                 drawGridLines();
                 drawDataPoints();
-
-                initTooltip();
 
                 addMouseEvents();
             });
@@ -560,14 +554,13 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseMove(svg, d) {
-            let { mousePos, closestPoint } = getPointProps(svg);
+        function handleMouseMove(e, d) {
+            let { mousePos, closestPoint } = getPointProps(e);
             let pointData = getPointData(closestPoint);
 
-            tooltip.update(pointData, mousePos, [chartWidth, chartHeight]);
             highlightDataPoint(pointData);
 
-            dispatcher.call('customMouseMove', svg, pointData, d3Selection.mouse(svg));
+            dispatcher.call('customMouseMove', e, pointData, d3Selection.mouse(e), [chartWidth, chartHeight]);
         }
 
         /**
@@ -576,8 +569,6 @@ define(function(require) {
          * @private
          */
         function handleMouseOver (e, d) {
-            tooltip.show();
-
             dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
         }
 
@@ -587,7 +578,6 @@ define(function(require) {
          * @private
          */
         function handleMouseOut(e, d) {
-            tooltip.hide();
             removePointHighlight();
             dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
         }
@@ -644,19 +634,6 @@ define(function(require) {
          */
         function highlightLabelsForDataPoint() {
             // TODO: implement line drawing
-        }
-
-        /**
-         * Sets up the tooltip for Scatter Plot
-         * @return {void}
-         * @private
-         */
-        function initTooltip() {
-            tooltip = miniTooltip()
-                .valueLabel(yKey);
-
-            tooltipContainer = svg.selectAll('.metadata-group');
-            tooltipContainer.datum([]).call(tooltip);
         }
 
         /**

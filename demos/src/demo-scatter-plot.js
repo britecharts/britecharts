@@ -8,6 +8,8 @@ const colors = require('./../../src/charts/helpers/color');
 const dataBuilder = require('./../../test/fixtures/scatterPlotDataBuilder');
 const colorSelectorHelper = require('./helpers/colorSelector');
 
+const miniTooltip = require('./../../src/charts/mini-tooltip');
+
 const aTestDataSet = () => new dataBuilder.ScatterPlotDataBuilder();
 
 require('./helpers/resizeHelper');
@@ -16,9 +18,10 @@ let redrawCharts;
 
 function createScatterPlotWithSingleSource(optionalColorSchema) {
     let scatterChart = scatterPlot();
+    let tooltip = miniTooltip();
     let scatterPlotContainer = d3Selection.select('.js-scatter-plot-with-single-source');
     let containerWidth = scatterPlotContainer.node() ? scatterPlotContainer.node().getBoundingClientRect().width : false;
-    let dataset;
+    let dataset, tooltipContainer;
 
     if (containerWidth) {
         // data represents Ice Cream Sales (y) vs Temperature (x)
@@ -35,13 +38,22 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
                 bottom: 50
             })
             .yAxisLabel('Ice Cream Sales')
-            .yAxisFormat('$');
+            .yAxisFormat('$')
+            .on('customMouseOver', tooltip.show)
+            .on('customMouseMove', tooltip.update)
+            .on('customMouseOut', tooltip.hide);
 
         if (optionalColorSchema) {
             scatterChart.colorSchema(optionalColorSchema);
         }
 
         scatterPlotContainer.datum(dataset).call(scatterChart);
+
+        // tooltip set up
+        tooltip.valueLabel('y');
+
+        tooltipContainer = d3Selection.select('.js-scatter-plot-with-single-source .scatter-plot .metadata-group');
+        tooltipContainer.datum([]).call(tooltip);
     }
 }
 
