@@ -623,19 +623,6 @@ define(function(require) {
 
             highlightCircle
                 .attr('filter', `url(#${highlightFilterId})`);
-
-            highlightLabelsForDataPoint(data);
-        }
-
-
-        /**
-         * Draws the perpendecular lines and labels
-         * for the highlighted data point
-         * @return {void}
-         * @private
-         */
-        function highlightLabelsForDataPoint() {
-            // TODO: implement line drawing
         }
 
         /**
