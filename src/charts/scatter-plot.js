@@ -544,6 +544,8 @@ define(function(require) {
          */
         function getPointProps(svg) {
             let mousePos = d3Selection.mouse(svg);
+            mousePos[0] -= margin.left;
+            mousePos[1] -= margin.top;
 
             return {
                 closestPoint: voronoi.find(mousePos[0], mousePos[1]),
