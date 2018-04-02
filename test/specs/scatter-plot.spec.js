@@ -49,7 +49,7 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
         it('should render clip-path container', () => {
             let expected = 1;
-            let actual = containerFixture.select('.scatter-clip-path').nodes().length;
+            let actual = containerFixture.select('#scatter-clip-path').nodes().length;
 
             expect(actual).toEqual(expected);
         });

@@ -421,7 +421,7 @@ define(function(require) {
         function drawMaskingClip() {
             maskingRectangle = svg.selectAll('.chart-group')
               .append('clipPath')
-              .attr('class', maskingRectangleId)
+              .attr('id', maskingRectangleId)
                 .append('rect')
                 .attr('width', chartWidth)
                 .attr('height', chartHeight)
@@ -455,7 +455,7 @@ define(function(require) {
         */
         function drawDataPoints() {
             let circles = svg.select('.chart-group')
-                .attr('clip-path', `url(${maskingRectangleId})`)
+                .attr('clip-path', `url(#${maskingRectangleId})`)
                 .selectAll('circle')
                 .data(dataPoints)
                 .enter();
@@ -697,7 +697,7 @@ define(function(require) {
             }
 
             let highlightCircle = svg.select('.chart-group')
-                .attr('clip-path', `url(${maskingRectangleId})`)
+                .attr('clip-path', `url(#${maskingRectangleId})`)
                 .selectAll('circle.highlight-circle')
                    .data([data])
                    .enter()
