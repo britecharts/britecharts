@@ -984,7 +984,7 @@ define(function(require) {
         /**
          * Exposes ability to set the format of x-axis values
          * @param  {String} _x               Desired height for the chart
-         * @return {yAxisFormat | module}    Current xAxisFormat or Chart module to chain calls
+         * @return {String | module}         Current xAxisFormat or Chart module to chain calls
          * @public
          */
         exports.xAxisFormat = function (_x) {
