@@ -521,17 +521,29 @@ define(function(require) {
         }
 
         /**
+         * Calculates and returns
+         * @return {Object}
+         * @param {*} svg
+         */
+        function getPointProps(svg) {
+            let mousePos = d3Selection.mouse(svg);
+
+            return {
+                closestPoint: voronoi.find(mousePos[0], mousePos[1]),
+                mousePos
+            }
+        }
+
+        /**
          * Handler called on mousemove event
          * @return {void}
          * @private
          */
-        function handleMouseMove(e, d) {
-            let svgRef = e;
-            let mousePos = d3Selection.mouse(svgRef);
-            let closestPoint = voronoi.find(mousePos[0], mousePos[1]);
+        function handleMouseMove(svg, d) {
+            let { mousePos, closestPoint } = getPointProps(svg);
 
             tooltip.update(closestPoint.data, mousePos, [chartWidth, chartHeight]);
-            dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e));
+            dispatcher.call('customMouseMove', svg, d, d3Selection.mouse(svg));
         }
 
         /**
@@ -541,6 +553,7 @@ define(function(require) {
          */
         function handleMouseOver (e, d) {
             tooltip.show();
+
             dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
         }
 
