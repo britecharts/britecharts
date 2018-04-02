@@ -577,6 +577,7 @@ define(function(require) {
          */
         function handleMouseOut(e, d) {
             tooltip.hide();
+            removePointHighlight();
             dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
         }
 
@@ -595,7 +596,7 @@ define(function(require) {
          * @private
          */
         function highlightDataPoint(data) {
-            svg.selectAll('circle.highlight-circle').remove();
+            removePointHighlight();
 
             if (!highlightFilter) {
                 highlightFilter = createFilterContainer(svg.select('.metadata-group'));
@@ -632,6 +633,15 @@ define(function(require) {
 
             tooltipContainer = svg.selectAll('.metadata-group');
             tooltipContainer.datum([]).call(tooltip);
+        }
+
+        /**
+         * Removes higlight data point from chart
+         * @return {void}
+         * @private
+         */
+        function removePointHighlight() {
+            svg.selectAll('circle.highlight-circle').remove();
         }
 
         // API
