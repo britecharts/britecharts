@@ -571,6 +571,39 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                     expect(actual).toBe(expected);
                 })
             });
+
+            describe('xTicks and yTicks', () => {
+
+                it('should change xTicks value if given', () => {
+                    let xTicks = 5;
+                    let expected = 4;
+
+                    let previous = containerFixture.selectAll('.x-axis-group .tick').nodes().length;
+
+                    scatterPlot.xTicks(xTicks);
+                    containerFixture.datum(dataset).call(scatterPlot);
+
+                    let next = containerFixture.selectAll('.x-axis-group .tick').nodes().length;
+
+                    expect(previous).not.toBe(next);
+                    expect(next).toBe(expected);
+                });
+
+                it('should change yTicks value if given', () => {
+                    let yTicks = 25;
+                    let expected = 33;
+
+                    let previous = containerFixture.selectAll('.y-axis-group .tick').nodes().length;
+
+                    scatterPlot.yTicks(yTicks);
+                    containerFixture.datum(dataset).call(scatterPlot);
+
+                    let next = containerFixture.selectAll('.y-axis-group .tick').nodes().length;
+
+                    expect(previous).not.toBe(next);
+                    expect(next).toBe(expected);
+                });
+            });
         });
     });
 });
