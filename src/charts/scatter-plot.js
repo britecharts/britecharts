@@ -479,12 +479,13 @@ define(function(require) {
         }
 
         /**
-         * Draws lines and labels for data point values
+         * Draws lines and labels for the
+         * highlighted data point value
          * @private
         */
         function drawDataPointsValueHighlights(data) {
             if (highlightContainer) {
-                svg.selectAll('.data-point-value-highlight').remove();
+                removeDataPointsValueHighlights();
             }
 
             highlightContainer = svg.select('.metadata-group')
@@ -543,7 +544,7 @@ define(function(require) {
 
         /**
          * Draws grid lines on the background of the chart
-         * @return void
+         * @return {void}
          * @private
          */
         function drawGridLines() {
@@ -646,6 +647,7 @@ define(function(require) {
          */
         function handleMouseOut(e, d) {
             removePointHighlight();
+            removeDataPointsValueHighlights();
             dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
         }
 
@@ -700,6 +702,16 @@ define(function(require) {
          */
         function removePointHighlight() {
             svg.selectAll('circle.highlight-circle').remove();
+        }
+
+        /**
+         * Removes the lines and labels for the
+         * highlighted data point value
+         * @return {void}
+         * @private
+         */
+        function removeDataPointsValueHighlights() {
+            svg.selectAll('.data-point-value-highlight').remove();
         }
 
         // API
