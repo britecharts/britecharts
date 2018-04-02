@@ -472,6 +472,17 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(callback.calls.count()).toBe(1);
                 expect(callback.calls.allArgs()[0].length).toBe(2);
             });
+
+            it('should dispatch customMouseMove event', () => {
+                let callback = jasmine.createSpy('hoverCallback');
+                let container = containerFixture.selectAll('svg');
+
+                scatterPlot.on('customMouseMove', callback);
+                container.dispatch('mousemove');
+
+                expect(callback.calls.count()).toBe(1);
+                expect(callback.calls.allArgs()[0].length).toBe(2);
+            });
         });
 
         describe('when formats of the axis values are set', () => {

@@ -150,6 +150,7 @@ define(function(require) {
 
         dispatcher = d3Dispatch.dispatch(
             'customClick',
+            'customMouseMove',
             'customMouseOver',
             'customMouseOut'
         ),
@@ -530,6 +531,7 @@ define(function(require) {
             let closestPoint = voronoi.find(mousePos[0], mousePos[1]);
 
             tooltip.update(closestPoint.data, mousePos, [chartWidth, chartHeight]);
+            dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e));
         }
 
         /**
@@ -739,8 +741,7 @@ define(function(require) {
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
          * We are going to expose this events:
-         * customClick, customMouseOut, customMouseOver
-         *
+         * customClick, customMouseOut, customMouseOver, and customMouseMove
          * @return {module} Scatter Plot
          * @public
          */
