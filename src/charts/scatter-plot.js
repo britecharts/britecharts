@@ -173,10 +173,11 @@ define(function(require) {
                 buildSVG(this);
                 buildAxis();
                 buildVoronoi();
-                buildTooltip();
                 drawAxis();
                 drawGridLines();
                 drawDataPoints();
+
+                initTooltip();
 
                 addMouseEvents();
             });
@@ -324,7 +325,7 @@ define(function(require) {
          * Sets up the tooltip for Scatter Plot
          * @private
          */
-        function buildTooltip() {
+        function initTooltip() {
             tooltip = miniTooltip()
                 .valueLabel(yKey);
 
