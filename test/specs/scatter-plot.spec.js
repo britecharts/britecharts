@@ -320,10 +320,16 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 f.clearCache();
             });
 
-            it('should have proper default parameteres', () => {
-                scatterPlot.isAnimated(false);
-                containerFixture.datum(dataset).call(scatterPlot);
+            it('container renders a circle for each data point', () => {
+                let expected = dataset.length;
+                let actual = containerFixture.select('.chart-group')
+                    .selectAll('circle')
+                    .nodes().length;
 
+                expect(actual).toEqual(expected);
+            });
+
+            it('should have proper default parameteres', () => {
                 let circles = containerFixture.selectAll('.chart-group circle').nodes();
 
                 circles.forEach((circle) => {
@@ -333,6 +339,42 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                     expect(circle).toHaveAttr('cx');
                     expect(circle).toHaveAttr('cy');
                     expect(circle).toHaveAttr('style');
+                });
+            });
+        });
+
+        describe('when hasHollowCircles is set to true', () => {
+
+            beforeEach(() => {
+                dataset = buildDataSet('withOneSource');
+
+                // DOM Fixture Setup
+                f = jasmine.getFixtures();
+                f.fixturesPath = 'base/test/fixtures/';
+                f.load('testContainer.html');
+
+                scatterPlot = chart()
+                    .isAnimated(false)
+                    .hasHollowCircles(true);
+                containerFixture = d3.select('.test-container');
+            });
+
+            afterEach(() => {
+                containerFixture.remove();
+                f = jasmine.getFixtures();
+                f.cleanUp();
+                f.clearCache();
+            });
+
+            it('data points should have a fixed fill', () => {
+                let expected = '#fff';
+
+                containerFixture.datum(dataset).call(scatterPlot);
+
+                let circles = containerFixture.selectAll('.chart-group circle').nodes();
+
+                circles.forEach((circle) => {
+                    expect(circle.getAttribute('fill')).toBe(expected);
                 });
             });
         });
@@ -390,13 +432,49 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
             it('should trigger a callback on mouse click', () => {
                 let callbackSpy = jasmine.createSpy('callback');
-                let scatterDataPoint = containerFixture.select('.chart-group circle');
+                let scatterDataPoint = containerFixture.selectAll('.chart-group circle:nth-child(1)');
 
                 scatterPlot.on('customClick', callbackSpy);
                 scatterDataPoint.dispatch('click');
 
                 expect(callbackSpy.calls.count()).toBe(1);
                 expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
+            });
+        });
+
+        describe('mouse events', () => {
+
+            it('should dispatch customMouseOver event', () => {
+                let callback = jasmine.createSpy('hoverCallback');
+                let container = containerFixture.selectAll('svg');
+
+                scatterPlot.on('customMouseOver', callback);
+                container.dispatch('mouseover');
+
+                expect(callback.calls.count()).toBe(1);
+                expect(callback.calls.allArgs()[0].length).toBe(2);
+            });
+
+            it('should dispatch customMouseOut event', () => {
+                let callback = jasmine.createSpy('hoverCallback');
+                let container = containerFixture.selectAll('svg');
+
+                scatterPlot.on('customMouseOut', callback);
+                container.dispatch('mouseout');
+
+                expect(callback.calls.count()).toBe(1);
+                expect(callback.calls.allArgs()[0].length).toBe(2);
+            });
+
+            it('should dispatch customMouseMove event', () => {
+                let callback = jasmine.createSpy('hoverCallback');
+                let container = containerFixture.selectAll('svg');
+
+                scatterPlot.on('customMouseMove', callback);
+                container.dispatch('mousemove');
+
+                expect(callback.calls.count()).toBe(1);
+                expect(callback.calls.allArgs()[0].length).toBe(3);
             });
         });
 
@@ -496,6 +574,39 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
                     expect(actual).toBe(expected);
                 })
+            });
+
+            describe('xTicks and yTicks', () => {
+
+                it('should change xTicks value if given', () => {
+                    let xTicks = 5;
+                    let expected = 4;
+
+                    let previous = containerFixture.selectAll('.x-axis-group .tick').nodes().length;
+
+                    scatterPlot.xTicks(xTicks);
+                    containerFixture.datum(dataset).call(scatterPlot);
+
+                    let next = containerFixture.selectAll('.x-axis-group .tick').nodes().length;
+
+                    expect(previous).not.toBe(next);
+                    expect(next).toBe(expected);
+                });
+
+                it('should change yTicks value if given', () => {
+                    let yTicks = 25;
+                    let expected = 33;
+
+                    let previous = containerFixture.selectAll('.y-axis-group .tick').nodes().length;
+
+                    scatterPlot.yTicks(yTicks);
+                    containerFixture.datum(dataset).call(scatterPlot);
+
+                    let next = containerFixture.selectAll('.y-axis-group .tick').nodes().length;
+
+                    expect(previous).not.toBe(next);
+                    expect(next).toBe(expected);
+                });
             });
         });
     });

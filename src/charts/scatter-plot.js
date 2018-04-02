@@ -11,9 +11,15 @@ define(function(require) {
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
+    const d3Voronoi = require('d3-voronoi');
 
     const {exportChart} = require('./helpers/export');
     const colorHelper = require('./helpers/color');
+
+    const {
+        createFilterContainer,
+        createGlowWithMatrix
+    } = require('./helpers/filter');
 
     const {
         formatIntegerValue,
@@ -101,6 +107,7 @@ define(function(require) {
         grid = null,
         baseLine,
         maskGridLines,
+        voronoi,
 
         xAxis,
         xAxisFormat = '',
@@ -118,6 +125,10 @@ define(function(require) {
         xAxisLabelEl,
         xAxisLabelOffset = -40,
 
+        highlightFilter,
+        highlightFilterId,
+        highlightStrokeWidth = 10,
+
         xAxisPadding = {
             top: 0,
             left: 0,
@@ -126,7 +137,9 @@ define(function(require) {
         },
 
         circleOpacity = 0.24,
+        highlightCircleOpacity = circleOpacity,
         maxCircleArea = 10,
+        maxDistanceFromPoint = 50,
 
         colorSchema = colorHelper.colorSchemas.britecharts,
 
@@ -142,10 +155,14 @@ define(function(require) {
         chartHeight,
 
         dispatcher = d3Dispatch.dispatch(
-            'customClick'
+            'customClick',
+            'customMouseMove',
+            'customMouseOver',
+            'customMouseOut'
         ),
 
-        getName = ({name}) => name;
+        getName = ({name}) => name,
+        getPointData = ({data}) => data;
 
         /**
          * This function creates the graph using the selection as container
@@ -163,11 +180,29 @@ define(function(require) {
                 buildScales();
                 buildSVG(this);
                 buildAxis();
+                buildVoronoi();
                 drawAxis();
                 drawGridLines();
                 drawDataPoints();
 
+                addMouseEvents();
             });
+        }
+
+        /**
+         * Add mouse event handlers over svg
+         */
+        function addMouseEvents() {
+            svg
+                .on('mousemove', function (d) {
+                    handleMouseMove(this, d);
+                })
+                .on('mouseover', function (d) {
+                    handleMouseOver(this, d);
+                })
+                .on('mouseout', function(d) {
+                    handleMouseOut(this, d);
+                });
         }
 
         /**
@@ -211,6 +246,105 @@ define(function(require) {
                 .append('g').classed('axis-labels-group', true);
             container
                 .append('g').classed('metadata-group', true);
+        }
+
+        /**
+         * Draws the voronoi component in the chart.
+         * @private
+         */
+        function buildVoronoi() {
+
+            voronoi = d3Voronoi.voronoi()
+                .x((d) => xScale(d.x))
+                .y((d) => yScale(d.y))
+                .extent([
+                    [0, 0],
+                    [chartWidth, chartHeight]
+                ])(dataPoints);
+        }
+
+        /**
+         * Creates the x and y scales of the chart
+         * @private
+         */
+        function buildScales() {
+            const [minX, minY] = [d3Array.min(dataPoints, ({ x }) => x), d3Array.min(dataPoints, ({ y }) => y)];
+            const [maxX, maxY] = [d3Array.max(dataPoints, ({ x }) => x), d3Array.max(dataPoints, ({ y }) => y)];
+            const yScaleBottomValue = Math.abs(minY) < 0 ? Math.abs(minY) : 0;
+
+            xScale = d3Scale.scaleLinear()
+                .domain([minX, maxX])
+                .rangeRound([0, chartWidth])
+                .nice();
+
+            yScale = d3Scale.scaleLinear()
+                .domain([yScaleBottomValue, maxY])
+                .rangeRound([chartHeight, 0])
+                .nice();
+
+            colorScale = d3Scale.scaleOrdinal()
+                .domain(dataPoints.map(getName))
+                .range(colorSchema);
+
+            areaScale = d3Scale.scaleSqrt()
+                .domain([yScaleBottomValue, maxY])
+                .range([0, maxCircleArea]);
+
+            const colorRange = colorScale.range();
+
+            /**
+             * Maps data point category name to
+             * each color of the given color scheme
+             * {
+             *     name1: 'color1',
+             *     name2: 'color2',
+             *     name3: 'color3',
+             *     ...
+             * }
+             * @private
+             */
+            nameColorMap = colorScale.domain().reduce((accum, item, i) => {
+                accum[item] = colorRange[i];
+
+                return accum;
+            }, {});
+        }
+
+        /**
+         * Builds the SVG element that will contain the chart
+         * @param {HTMLElement} container A DOM element that will work as
+         * the container of the chart
+         * @private
+         */
+        function buildSVG(container) {
+            if (!svg) {
+                svg = d3Selection.select(container)
+                    .append('svg')
+                    .classed('britechart scatter-plot', true);
+
+                buildContainerGroups();
+            }
+
+            svg
+                .attr('width', width)
+                .attr('height', height);
+        }
+
+        /**
+         * Cleaning data casting the values and names to the proper type while keeping
+         * the rest of properties on the data
+         * @param  {ScatterPlotData} originalData  Raw data as passed to the container
+         * @return  {ScatterPlotData}              Clean data
+         * @private
+         */
+        function cleanData(originalData) {
+            return originalData.reduce((acc, d) => {
+                d.name = String(d[nameKey]);
+                d.x = d[xKey];
+                d.y = d[yKey];
+
+                return [...acc, d];
+            }, []);
         }
 
         /**
@@ -274,6 +408,7 @@ define(function(require) {
         /**
          * Draws grid lines on the background of the chart
          * @return void
+         * @private
          */
         function drawGridLines() {
             svg.select('.grid-lines-group')
@@ -294,6 +429,7 @@ define(function(require) {
         /**
          * Draws a vertical line to extend x-axis till the edges
          * @return {void}
+         * @private
          */
         function drawHorizontalExtendedLine() {
             baseLine = svg.select('.grid-lines-group')
@@ -312,120 +448,38 @@ define(function(require) {
          * Draw horizontal gridles of the chart
          * These gridlines are parallel to x-axis
          * @return {void}
+         * @private
          */
         function drawHorizontalGridLines() {
             maskGridLines = svg.select('.grid-lines-group')
                 .selectAll('line.horizontal-grid-line')
                 .data(yScale.ticks(yTicks))
                 .enter()
-                .append('line')
-                .attr('class', 'horizontal-grid-line')
-                .attr('x1', (xAxisPadding.left))
-                .attr('x2', chartWidth)
-                .attr('y1', (d) => yScale(d))
-                .attr('y2', (d) => yScale(d))
+                  .append('line')
+                    .attr('class', 'horizontal-grid-line')
+                    .attr('x1', (xAxisPadding.left))
+                    .attr('x2', chartWidth)
+                    .attr('y1', (d) => yScale(d))
+                    .attr('y2', (d) => yScale(d))
         }
 
         /**
          * Draws vertical gridlines of the chart
          * These gridlines are parallel to y-axis
          * @return {void}
+         * @private
          */
         function drawVerticalGridLines() {
             maskGridLines = svg.select('.grid-lines-group')
                 .selectAll('line.vertical-grid-line')
                 .data(yScale.ticks(xTicks))
                 .enter()
-                .append('line')
-                .attr('class', 'vertical-grid-line')
-                .attr('y1', (xAxisPadding.left))
-                .attr('y2', chartHeight)
-                .attr('x1', (d) => xScale(d))
-                .attr('x2', (d) => xScale(d));
-        }
-
-        /**
-         * Creates the x and y scales of the chart
-         * @private
-         */
-        function buildScales() {
-            const [minX, minY] = [d3Array.min(dataPoints, ({x}) => x), d3Array.min(dataPoints, ({y}) => y)];
-            const [maxX, maxY] = [d3Array.max(dataPoints, ({x}) => x), d3Array.max(dataPoints, ({y}) => y)];
-            const yScaleBottomValue = Math.abs(minY) < 0 ? Math.abs(minY) : 0;
-
-            xScale = d3Scale.scaleLinear()
-                .domain([minX, maxX])
-                .rangeRound([0, chartWidth])
-                .nice();
-
-            yScale = d3Scale.scaleLinear()
-                .domain([yScaleBottomValue, maxY])
-                .rangeRound([chartHeight, 0])
-                .nice();
-
-            colorScale = d3Scale.scaleOrdinal()
-                .domain(dataPoints.map(getName))
-                .range(colorSchema);
-
-            areaScale = d3Scale.scaleSqrt()
-                .domain([yScaleBottomValue, maxY])
-                .range([0, maxCircleArea]);
-
-            const colorRange = colorScale.range();
-
-            /**
-             * Maps data point category name to
-             * each color of the given color scheme
-             * {
-             *     name1: 'color1',
-             *     name2: 'color2',
-             *     name3: 'color3',
-             *     ...
-             * }
-             * @private
-             */
-            nameColorMap = colorScale.domain().reduce((accum, item, i) => {
-                accum[item] = colorRange[i];
-
-                return accum;
-            }, {});
-        }
-
-        /**
-         * Builds the SVG element that will contain the chart
-         * @param {HTMLElement} container A DOM element that will work as
-         * the container of the chart
-         * @private
-         */
-        function buildSVG(container) {
-            if (!svg) {
-                svg = d3Selection.select(container)
-                  .append('svg')
-                    .classed('britechart scatter-plot', true);
-
-                buildContainerGroups();
-            }
-
-            svg
-                .attr('width', width)
-                .attr('height', height);
-        }
-
-        /**
-         * Cleaning data casting the values and names to the proper type while keeping
-         * the rest of properties on the data
-         * @param  {ScatterPlotData} originalData  Raw data as passed to the container
-         * @return  {ScatterPlotData}              Clean data
-         * @private
-         */
-        function cleanData(originalData) {
-            return originalData.reduce((acc, d) => {
-                d.name = String(d[nameKey]);
-                d.x = d[xKey];
-                d.y = d[yKey];
-
-                return [...acc, d];
-            }, []);
+                  .append('line')
+                    .attr('class', 'vertical-grid-line')
+                    .attr('y1', (xAxisPadding.left))
+                    .attr('y2', chartHeight)
+                    .attr('x1', (d) => xScale(d))
+                    .attr('x2', (d) => xScale(d));
         }
 
         /**
@@ -481,6 +535,56 @@ define(function(require) {
         }
 
         /**
+         * Calculates and returns
+         * @return {Object}
+         * @param {*} svg
+         * @private
+         */
+        function getPointProps(svg) {
+            let mousePos = d3Selection.mouse(svg);
+            mousePos[0] -= margin.left;
+            mousePos[1] -= margin.top;
+
+            return {
+                closestPoint: voronoi.find(mousePos[0], mousePos[1]),
+                mousePos
+            };
+        }
+
+        /**
+         * Handler called on mousemove event
+         * @return {void}
+         * @private
+         */
+        function handleMouseMove(e, d) {
+            let { mousePos, closestPoint } = getPointProps(e);
+            let pointData = getPointData(closestPoint);
+
+            highlightDataPoint(pointData);
+
+            dispatcher.call('customMouseMove', e, pointData, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        }
+
+        /**
+         * Handler called on mouseover event
+         * @return {void}
+         * @private
+         */
+        function handleMouseOver (e, d) {
+            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
+        }
+
+        /**
+         * Handler called on mouseout event
+         * @return {void}
+         * @private
+         */
+        function handleMouseOut(e, d) {
+            removePointHighlight();
+            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
+        }
+
+        /**
          * Custom onClick event handler
          * @return {void}
          * @private
@@ -489,6 +593,46 @@ define(function(require) {
             dispatcher.call('customClick', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
         }
 
+        /**
+         * Applies glow to hovered data point
+         * @return {void}
+         * @private
+         */
+        function highlightDataPoint(data) {
+            removePointHighlight();
+
+            if (!highlightFilter) {
+                highlightFilter = createFilterContainer(svg.select('.metadata-group'));
+                highlightFilterId = createGlowWithMatrix(highlightFilter);
+            }
+
+            let highlightCircle = svg.select('.metadata-group')
+                .selectAll('circle.highlight-circle')
+                .data([data])
+                .enter()
+                  .append('circle')
+                    .attr('class', 'highlight-circle')
+                    .attr('stroke', ({name}) => nameColorMap[name])
+                    .attr('fill', ({name}) => nameColorMap[name])
+                    .attr('fill-opacity', circleOpacity)
+                    .attr('cx', ({x}) => xScale(x))
+                    .attr('cy', ({y}) => yScale(y))
+                    .attr('r', ({y}) => areaScale(y))
+                    .style('stroke-width', highlightStrokeWidth)
+                    .style('stroke-opacity', highlightCircleOpacity);
+
+            highlightCircle
+                .attr('filter', `url(#${highlightFilterId})`);
+        }
+
+        /**
+         * Removes higlight data point from chart
+         * @return {void}
+         * @private
+         */
+        function removePointHighlight() {
+            svg.selectAll('circle.highlight-circle').remove();
+        }
 
         // API
 
@@ -655,8 +799,7 @@ define(function(require) {
         /**
          * Exposes an 'on' method that acts as a bridge with the event dispatcher
          * We are going to expose this events:
-         * customClick
-         *
+         * customClick, customMouseOut, customMouseOver, and customMouseMove
          * @return {module} Scatter Plot
          * @public
          */

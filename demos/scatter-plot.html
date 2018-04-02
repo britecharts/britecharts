@@ -21,7 +21,10 @@ scatterChart
         bottom: 50
     })
     .yAxisLabel('Ice Cream Sales')
-    .yAxisFormat('$');
+    .yAxisFormat('$')
+    .on('customMouseOver', tooltip.show)
+    .on('customMouseMove', tooltip.update)
+    .on('customMouseOut', tooltip.hide);
 
 
 scatterPlotContainer

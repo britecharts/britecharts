@@ -416,6 +416,20 @@ define(function(require){
             return this;
         };
 
+        /**
+         * Gets or Sets data's valueLabel
+         * @param  {text} _x        Desired valueLabel
+         * @return {text | module}  valueLabel or Step Chart module to chain calls
+         * @public
+         */
+        exports.valueLabel = function(_x) {
+            if (!arguments.length) {
+                return valueLabel;
+            }
+            valueLabel = _x;
+            return this;
+        }
+
         return exports;
     };
 });
