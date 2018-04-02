@@ -141,6 +141,8 @@ define(function(require) {
         circleOpacity = 0.24,
         highlightCircleOpacity = circleOpacity,
         maxCircleArea = 10,
+        maskingRectangle,
+        maskingRectangleId = 'scatter-clip-path',
         maxDistanceFromPoint = 50,
 
         colorSchema = colorHelper.colorSchemas.britecharts,
@@ -187,6 +189,7 @@ define(function(require) {
                 drawAxis();
                 drawGridLines();
                 drawDataPoints();
+                drawMaskingClip()
 
                 addMouseEvents();
             });
@@ -409,6 +412,24 @@ define(function(require) {
         }
 
         /**
+         * Draws a masking clip for data points/circles
+         * to refer to. This will allow dots to have lower priority
+         * in the DOM.
+         * @return {void}
+         * @private
+         */
+        function drawMaskingClip() {
+            maskingRectangle = svg.selectAll('.chart-group')
+              .append('clipPath')
+              .attr('class', maskingRectangleId)
+                .append('rect')
+                .attr('width', chartWidth)
+                .attr('height', chartHeight)
+                .attr('x', 0)
+                .attr('y', 0);
+        }
+
+        /**
          * Draws vertical gridlines of the chart
          * These gridlines are parallel to y-axis
          * @return {void}
@@ -434,6 +455,7 @@ define(function(require) {
         */
         function drawDataPoints() {
             let circles = svg.select('.chart-group')
+                .attr('clip-path', `url(${maskingRectangleId})`)
                 .selectAll('circle')
                 .data(dataPoints)
                 .enter();
@@ -674,20 +696,21 @@ define(function(require) {
                 highlightFilterId = createGlowWithMatrix(highlightFilter);
             }
 
-            let highlightCircle = svg.select('.metadata-group')
+            let highlightCircle = svg.select('.chart-group')
+                .attr('clip-path', `url(${maskingRectangleId})`)
                 .selectAll('circle.highlight-circle')
-                .data([data])
-                .enter()
-                  .append('circle')
-                    .attr('class', 'highlight-circle')
-                    .attr('stroke', ({name}) => nameColorMap[name])
-                    .attr('fill', ({name}) => nameColorMap[name])
-                    .attr('fill-opacity', circleOpacity)
-                    .attr('cx', ({x}) => xScale(x))
-                    .attr('cy', ({y}) => yScale(y))
-                    .attr('r', ({y}) => areaScale(y))
-                    .style('stroke-width', highlightStrokeWidth)
-                    .style('stroke-opacity', highlightCircleOpacity);
+                   .data([data])
+                   .enter()
+                     .append('circle')
+                       .attr('class', 'highlight-circle')
+                       .attr('stroke', ({name}) => nameColorMap[name])
+                       .attr('fill', ({name}) => nameColorMap[name])
+                       .attr('fill-opacity', circleOpacity)
+                       .attr('cx', ({x}) => xScale(x))
+                       .attr('cy', ({y}) => yScale(y))
+                       .attr('r', ({y}) => areaScale(y))
+                       .style('stroke-width', highlightStrokeWidth)
+                       .style('stroke-opacity', highlightCircleOpacity);
 
             // apply glow container overlay
             highlightCircle
