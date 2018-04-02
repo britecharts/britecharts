@@ -722,7 +722,7 @@ define(function(require) {
         /**
          * Gets or Sets the aspect ratio of the chart
          * @param  {Number} _x            Desired aspect ratio for the graph
-         * @return {aspectRatio | module} Current aspect ratio or Chart module to chain calls
+         * @return {Number | module} Current aspect ratio or Chart module to chain calls
          * @public
          */
         exports.aspectRatio = function (_x) {
@@ -739,7 +739,7 @@ define(function(require) {
          * Use this to set opacity of a circle for each data point of the chart.
          * It makes the area of each data point more transparent if it's less than 1.
          * @param  {Number} _x=0.24            Desired opacity of circles of the chart
-         * @return {circleOpacity | module}    Current circleOpacity or Chart module to chain calls
+         * @return {Number | module}    Current circleOpacity or Chart module to chain calls
          * @public
          * @example
          * scatterPlot.circleOpacity(0.6)
@@ -784,8 +784,8 @@ define(function(require) {
         /**
          * Gets or Sets the grid mode.
          *
-         * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
-         * @return {String | module} Current mode of the grid or Chart module to chain calls
+         * @param  {String} _x          Desired mode for the grid ('vertical'|'horizontal'|'full')
+         * @return {String | module}    Current mode of the grid or Chart module to chain calls
          * @public
          */
         exports.grid = function (_x) {
@@ -804,7 +804,7 @@ define(function(require) {
          * values for x under x axis line and y under y axis. Lines
          * will be drawn with respect to highlighted data point
          * @param  {boolean} _x=false               Desired hasHighlightedValues status for chart
-         * @return {hasHighlightedValues | module}  Current hasHighlightedValues or Chart module to chain calls
+         * @return {boolean | module}  Current hasHighlightedValues or Chart module to chain calls
          * @public
          */
         exports.hasHighlightedValues = function(_x) {
@@ -819,7 +819,7 @@ define(function(require) {
         /**
          * Gets or Sets the hasHollowCircles value of the chart area
          * @param  {boolean} _x=false             Choose whether chart's data points/circles should be hollow
-         * @return {hasHollowCircles | module}    Current hasHollowCircles value or Chart module to chain calls
+         * @return {boolean | module}    Current hasHollowCircles value or Chart module to chain calls
          * @public
          */
         exports.hasHollowCircles = function (_x) {
@@ -853,8 +853,8 @@ define(function(require) {
          * Sets a custom distance between legend
          * values with respect to both axises. The legends
          * show up when hasHighlightedValues is true.
-         * @param  {Number} _x          Desired height for the chart
-         * @return {height | module}    Current height or Chart module to chain calls
+         * @param  {Number} _x          Desired highlightTextLegendOffset for the chart
+         * @return {Number | module}    Current highlightTextLegendOffset or Chart module to chain calls
          * @public
          * @example
          * scatterPlot.highlightTextLegendOffset(-55)
@@ -871,8 +871,8 @@ define(function(require) {
         /**
          * Gets or Sets isAnimated value. If set to true,
          * the chart will be initialized or updated with animation.
-         * @param  {boolean} _x=false       Desired margin object properties for each side
-         * @return {isAnimated | module}    Current height or Chart module to chain calls
+         * @param  {boolean} _x=false       Desired isAnimated properties for each side
+         * @return {boolean | module}    Current isAnimated or Chart module to chain calls
          * @public
          */
         exports.isAnimated = function(_x) {
@@ -887,7 +887,7 @@ define(function(require) {
         /**
          * Gets or Sets the margin object of the chart
          * @param  {Object} _x          Desired margin object properties for each side
-         * @return {margin | module}    Current height or Chart module to chain calls
+         * @return {margin | module}    Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -904,8 +904,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the maximum value of the chart area
-         * @param  {Number} _x=10       Desired margin object properties for each side
-         * @return {maxCircleArea | module}    Current height or Chart module to chain calls
+         * @param  {Number} _x=10              Desired margin object properties for each side
+         * @return {Number | module}    Current maxCircleArea or Chart module to chain calls
          * @public
          */
         exports.maxCircleArea = function(_x) {
@@ -932,8 +932,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the height of the chart
-         * @param  {Number} _x          Desired height for the chart
-         * @return {width | module}    Current width or Chart module to chain calls
+         * @param  {Number} _x           Desired height for the chart
+         * @return {Number | module}     Current width or Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
@@ -952,7 +952,7 @@ define(function(require) {
          * Gets or Sets the xAxisLabel of the chart. Adds a
          * label bellow x-axis for better clarify of data representation.
          * @param  {String} _x              Desired string for x-axis label of the chart
-         * @return {xAxisLabel | module}    Current width or Chart module to chain calls
+         * @return {String | module}        Current xAxisLabel or Chart module to chain calls
          * @public
          */
         exports.xAxisLabel = function(_x) {
@@ -967,8 +967,8 @@ define(function(require) {
         /**
          * Gets or Sets the offset of the xAxisLabel of the chart.
          * The method accepts both positive and negative values.
-         * @param  {Number} _x=-40                Desired offset for the label
-         * @return {xAxisLabelOffset | module}    Current xAxisLabelOffset or Chart module to chain calls
+         * @param  {Number} _x=-40          Desired offset for the label
+         * @return {Number | module}        Current xAxisLabelOffset or Chart module to chain calls
          * @public
          * @example scatterPlot.xAxisLabelOffset(-55)
          */
@@ -984,7 +984,7 @@ define(function(require) {
         /**
          * Exposes ability to set the format of x-axis values
          * @param  {String} _x               Desired height for the chart
-         * @return {yAxisFormat | module}    Current width or Chart module to chain calls
+         * @return {yAxisFormat | module}    Current xAxisFormat or Chart module to chain calls
          * @public
          */
         exports.xAxisFormat = function (_x) {
@@ -999,7 +999,7 @@ define(function(require) {
         /**
          * Gets or Sets the xTicks of the chart
          * @param  {Number} _x         Desired height for the chart
-         * @return {xTicks | module}    Current width or Chart module to chain calls
+         * @return {xTicks | module}   Current xTicks or Chart module to chain calls
          * @public
          */
         exports.xTicks = function(_x) {
@@ -1014,7 +1014,7 @@ define(function(require) {
         /**
          * Exposes ability to set the format of y-axis values
          * @param  {String} _x               Desired height for the chart
-         * @return {yAxisFormat | module}    Current width or Chart module to chain calls
+         * @return {yAxisFormat | module}    Current yAxisFormat or Chart module to chain calls
          * @public
          */
         exports.yAxisFormat = function(_x) {
@@ -1046,7 +1046,7 @@ define(function(require) {
          * Gets or Sets the offset of the yAxisLabel of the chart.
          * The method accepts both positive and negative values.
          * @param  {Number} _x=-40      Desired offset for the label
-         * @return {yAxisLabelOffset | module}    Current yAxisLabelOffset or Chart module to chain calls
+         * @return {Number | module}    Current yAxisLabelOffset or Chart module to chain calls
          * @public
          * @example scatterPlot.yAxisLabelOffset(-55)
          */
@@ -1061,8 +1061,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the xTicks of the chart
-         * @param  {Number} _x         Desired height for the chart
-         * @return {xTicks | module}    Current width or Chart module to chain calls
+         * @param  {Number} _x          Desired height for the chart
+         * @return {Number | module}    Current yTicks or Chart module to chain calls
          * @public
          */
         exports.yTicks = function(_x) {
