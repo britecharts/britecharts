@@ -128,6 +128,7 @@ define(function(require) {
         highlightFilter,
         highlightFilterId,
         highlightStrokeWidth = 10,
+        highlightContainer,
 
         xAxisPadding = {
             top: 0,
@@ -406,17 +407,17 @@ define(function(require) {
         }
 
         /**
- * Draws vertical gridlines of the chart
- * These gridlines are parallel to y-axis
- * @return {void}
- * @private
- */
+         * Draws vertical gridlines of the chart
+         * These gridlines are parallel to y-axis
+         * @return {void}
+         * @private
+         */
         function drawVerticalGridLines() {
             maskGridLines = svg.select('.grid-lines-group')
                 .selectAll('line.vertical-grid-line')
                 .data(yScale.ticks(xTicks))
                 .enter()
-                .append('line')
+                 .append('line')
                 .attr('class', 'vertical-grid-line')
                 .attr('y1', (xAxisPadding.left))
                 .attr('y2', chartHeight)
@@ -474,6 +475,45 @@ define(function(require) {
                     .attr('cy', (d) => yScale(d.y))
                     .style('cursor', 'pointer');
             }
+        }
+
+        /**
+         * Draws lines and labels for data point values
+         * @private
+        */
+        function drawDataPointsValueHighlights(data) {
+            if (highlightContainer) {
+                svg.selectAll('.data-point-value-highlight').remove();
+            }
+
+            highlightContainer = svg.select('.metadata-group')
+                .append('g')
+                .classed('data-point-value-highlight', true);
+
+            // Draw line perpendicular to y-axis
+            highlightContainer.selectAll('line.highlight-y-line')
+                .data([data])
+                .enter()
+                .append('line')
+                  .attr('stroke', (d) => nameColorMap[d.name])
+                  .attr('class', 'highlight-y-line')
+                  .attr('x1', (d) => xScale(d.x))
+                  .attr('x2', (d) => 0)
+                  .attr('y1', (d) => yScale(d.y))
+                  .attr('y2', (d) => yScale(d.y));
+
+
+            // Draw line perpendicular to x-axis
+            highlightContainer.selectAll('line.highlight-x-line')
+                .data([data])
+                .enter()
+                .append('line')
+                  .attr('stroke', (d) => nameColorMap[d.name])
+                  .attr('class', 'highlight-x-line')
+                  .attr('x1', (d) => xScale(d.x))
+                  .attr('x2', (d) => xScale(d.x))
+                  .attr('y1', (d) => yScale(d.y))
+                  .attr('y2', (d) => chartHeight);
         }
 
         /**
@@ -621,8 +661,11 @@ define(function(require) {
                     .style('stroke-width', highlightStrokeWidth)
                     .style('stroke-opacity', highlightCircleOpacity);
 
+            // apply glow container overlay
             highlightCircle
                 .attr('filter', `url(#${highlightFilterId})`);
+
+            drawDataPointsValueHighlights(data);
         }
 
         /**
