@@ -259,15 +259,13 @@ define(function(require) {
          * @private
          */
         function buildVoronoi() {
-            let voronoiWidth = width - margin.left - margin.right;
-            let voronoiHeight = height - margin.bottom - margin.top;
 
             voronoi = d3Voronoi.voronoi()
                 .x((d) => xScale(d.x))
                 .y((d) => yScale(d.y))
                 .extent([
                     [0, 0],
-                    [voronoiWidth, voronoiHeight]
+                    [chartWidth, chartHeight]
                 ])(dataPoints);
         }
 
@@ -464,11 +462,11 @@ define(function(require) {
                 .data(yScale.ticks(yTicks))
                 .enter()
                   .append('line')
-                  .attr('class', 'horizontal-grid-line')
-                  .attr('x1', (xAxisPadding.left))
-                  .attr('x2', chartWidth)
-                  .attr('y1', (d) => yScale(d))
-                  .attr('y2', (d) => yScale(d))
+                    .attr('class', 'horizontal-grid-line')
+                    .attr('x1', (xAxisPadding.left))
+                    .attr('x2', chartWidth)
+                    .attr('y1', (d) => yScale(d))
+                    .attr('y2', (d) => yScale(d))
         }
 
         /**
@@ -483,11 +481,11 @@ define(function(require) {
                 .data(yScale.ticks(xTicks))
                 .enter()
                   .append('line')
-                  .attr('class', 'vertical-grid-line')
-                  .attr('y1', (xAxisPadding.left))
-                  .attr('y2', chartHeight)
-                  .attr('x1', (d) => xScale(d))
-                  .attr('x2', (d) => xScale(d));
+                    .attr('class', 'vertical-grid-line')
+                    .attr('y1', (xAxisPadding.left))
+                    .attr('y2', chartHeight)
+                    .attr('x1', (d) => xScale(d))
+                    .attr('x2', (d) => xScale(d));
         }
 
         /**
@@ -550,8 +548,6 @@ define(function(require) {
          */
         function getPointProps(svg) {
             let mousePos = d3Selection.mouse(svg);
-            mousePos[0] -= margin.left;
-            mousePos[1] -= margin.top;
 
             return {
                 closestPoint: voronoi.find(mousePos[0], mousePos[1]),
@@ -566,11 +562,12 @@ define(function(require) {
          */
         function handleMouseMove(svg, d) {
             let { mousePos, closestPoint } = getPointProps(svg);
+            let pointData = getPointData(closestPoint);
 
-            tooltip.update(getPointData(closestPoint), mousePos, [chartWidth, chartHeight]);
-            highlightDataPoint(getPointData(closestPoint));
+            tooltip.update(pointData, mousePos, [chartWidth, chartHeight]);
+            highlightDataPoint(pointData);
 
-            dispatcher.call('customMouseMove', svg, d, d3Selection.mouse(svg));
+            dispatcher.call('customMouseMove', svg, pointData, d3Selection.mouse(svg));
         }
 
         /**
@@ -634,6 +631,19 @@ define(function(require) {
 
             highlightCircle
                 .attr('filter', `url(#${highlightFilterId})`);
+
+            highlightLabelsForDataPoint(data);
+        }
+
+
+        /**
+         * Draws the perpendecular lines and labels
+         * for the highlighted data point
+         * @return {void}
+         * @private
+         */
+        function highlightLabelsForDataPoint() {
+            // TODO: implement line drawing
         }
 
         /**
