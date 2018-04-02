@@ -420,11 +420,11 @@ define(function(require) {
                 .data(yScale.ticks(xTicks))
                 .enter()
                  .append('line')
-                .attr('class', 'vertical-grid-line')
-                .attr('y1', (xAxisPadding.left))
-                .attr('y2', chartHeight)
-                .attr('x1', (d) => xScale(d))
-                .attr('x2', (d) => xScale(d));
+                  .attr('class', 'vertical-grid-line')
+                  .attr('y1', (xAxisPadding.left))
+                  .attr('y2', chartHeight)
+                  .attr('x1', (d) => xScale(d))
+                  .attr('x2', (d) => xScale(d));
         }
 
         /**
