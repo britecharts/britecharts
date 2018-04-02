@@ -528,7 +528,7 @@ define(function(require) {
                   .attr('class', 'highlight-y-legend')
                   .attr('y', (d) => (yScale(d.y) + (areaScale(d.y) / 2)))
                   .attr('x', highlightTextLegendOffset)
-                  .text((d) => `${d.y}`);
+                  .text((d) => `${d3Format.format(yAxisFormat)(d.y)}`);
 
             // Draw data label for x value
             highlightContainer.selectAll('text.highlight-x-legend')
@@ -540,7 +540,7 @@ define(function(require) {
                   .attr('class', 'highlight-x-legend')
                   .attr('transform', `translate(0, ${chartHeight - highlightTextLegendOffset})`)
                   .attr('x', (d) => (xScale(d.x) - (areaScale(d.y) / 2)))
-                  .text((d) => `${d.x}`);
+                  .text((d) => `${d3Format.format(xAxisFormat)(d.x)}`);
         }
 
         /**
