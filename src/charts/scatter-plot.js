@@ -406,6 +406,77 @@ define(function(require) {
         }
 
         /**
+ * Draws vertical gridlines of the chart
+ * These gridlines are parallel to y-axis
+ * @return {void}
+ * @private
+ */
+        function drawVerticalGridLines() {
+            maskGridLines = svg.select('.grid-lines-group')
+                .selectAll('line.vertical-grid-line')
+                .data(yScale.ticks(xTicks))
+                .enter()
+                .append('line')
+                .attr('class', 'vertical-grid-line')
+                .attr('y1', (xAxisPadding.left))
+                .attr('y2', chartHeight)
+                .attr('x1', (d) => xScale(d))
+                .attr('x2', (d) => xScale(d));
+        }
+
+        /**
+         * Draws the points for each data element
+         * on the chart group
+         * @private
+        */
+        function drawDataPoints() {
+            let circles = svg.select('.chart-group')
+                .selectAll('circle')
+                .data(dataPoints)
+                .enter();
+
+            if (isAnimated) {
+                circles
+                    .append('circle')
+                    .on('click', function (d) {
+                        handleClick(this, d, chartWidth, chartHeight);
+                    })
+                    .transition()
+                    .delay(delay)
+                    .duration(duration)
+                    .ease(ease)
+                    .attr('class', 'point')
+                    .attr('class', 'data-point-highlighter')
+                    .style('stroke', (d) => nameColorMap[d.name])
+                    .attr('fill', (d) => (
+                        hasHollowCircles ? hollowColor : nameColorMap[d.name]
+                    ))
+                    .attr('fill-opacity', circleOpacity)
+                    .attr('r', (d) => areaScale(d.y))
+                    .attr('cx', (d) => xScale(d.x))
+                    .attr('cy', (d) => yScale(d.y))
+                    .style('cursor', 'pointer');
+            } else {
+                circles
+                    .append('circle')
+                    .on('click', function (d) {
+                        handleClick(this, d, chartWidth, chartHeight);
+                    })
+                    .attr('class', 'point')
+                    .attr('class', 'data-point-highlighter')
+                    .style('stroke', (d) => nameColorMap[d.name])
+                    .attr('fill', (d) => (
+                        hasHollowCircles ? hollowColor : nameColorMap[d.name]
+                    ))
+                    .attr('fill-opacity', circleOpacity)
+                    .attr('r', (d) => areaScale(d.y))
+                    .attr('cx', (d) => xScale(d.x))
+                    .attr('cy', (d) => yScale(d.y))
+                    .style('cursor', 'pointer');
+            }
+        }
+
+        /**
          * Draws grid lines on the background of the chart
          * @return void
          * @private
@@ -461,77 +532,6 @@ define(function(require) {
                     .attr('x2', chartWidth)
                     .attr('y1', (d) => yScale(d))
                     .attr('y2', (d) => yScale(d))
-        }
-
-        /**
-         * Draws vertical gridlines of the chart
-         * These gridlines are parallel to y-axis
-         * @return {void}
-         * @private
-         */
-        function drawVerticalGridLines() {
-            maskGridLines = svg.select('.grid-lines-group')
-                .selectAll('line.vertical-grid-line')
-                .data(yScale.ticks(xTicks))
-                .enter()
-                  .append('line')
-                    .attr('class', 'vertical-grid-line')
-                    .attr('y1', (xAxisPadding.left))
-                    .attr('y2', chartHeight)
-                    .attr('x1', (d) => xScale(d))
-                    .attr('x2', (d) => xScale(d));
-        }
-
-        /**
-         * Draws the points for each data element
-         * on the chart group
-         * @private
-        */
-        function drawDataPoints() {
-            let circles = svg.select('.chart-group')
-                .selectAll('circle')
-                .data(dataPoints)
-                .enter();
-
-            if (isAnimated) {
-                circles
-                  .append('circle')
-                    .on('click', function (d) {
-                        handleClick(this, d, chartWidth, chartHeight);
-                    })
-                    .transition()
-                    .delay(delay)
-                    .duration(duration)
-                    .ease(ease)
-                    .attr('class', 'point')
-                    .attr('class', 'data-point-highlighter')
-                    .style('stroke', (d) => nameColorMap[d.name])
-                    .attr('fill', (d) => (
-                        hasHollowCircles ? hollowColor : nameColorMap[d.name]
-                    ))
-                    .attr('fill-opacity', circleOpacity)
-                    .attr('r', (d) => areaScale(d.y))
-                    .attr('cx', (d) => xScale(d.x))
-                    .attr('cy', (d) => yScale(d.y))
-                    .style('cursor', 'pointer');
-            } else {
-                circles
-                    .append('circle')
-                      .on('click', function (d) {
-                          handleClick(this, d, chartWidth, chartHeight);
-                      })
-                      .attr('class', 'point')
-                      .attr('class', 'data-point-highlighter')
-                      .style('stroke', (d) => nameColorMap[d.name])
-                      .attr('fill', (d) => (
-                        hasHollowCircles ? hollowColor : nameColorMap[d.name]
-                      ))
-                      .attr('fill-opacity', circleOpacity)
-                      .attr('r', (d) => areaScale(d.y))
-                      .attr('cx', (d) => xScale(d.x))
-                      .attr('cy', (d) => yScale(d.y))
-                      .style('cursor', 'pointer');
-            }
         }
 
         /**
