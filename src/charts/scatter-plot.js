@@ -328,7 +328,7 @@ define(function(require) {
             tooltip = miniTooltip()
                 .valueLabel(yKey);
 
-            tooltipContainer = d3Selection.selectAll('.metadata-group');
+            tooltipContainer = svg.selectAll('.metadata-group');
             tooltipContainer.datum([]).call(tooltip);
         }
 
