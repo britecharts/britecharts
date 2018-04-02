@@ -757,7 +757,7 @@ define(function(require) {
         /**
          * Gets or Sets the colorSchema of the chart
          * @param  {String[]} _x            Desired colorSchema for the chart
-         * @return {colorSchema | module}   Current colorSchema or Chart module to chain calls
+         * @return {String[] | module}   Current colorSchema or Chart module to chain calls
          * @public
          * @example
          * scatterPlot.colorSchema(['#fff', '#bbb', '#ccc'])
@@ -834,7 +834,7 @@ define(function(require) {
         /**
          * Gets or Sets the height of the chart
          * @param  {Number} _x          Desired height for the chart
-         * @return {height | module}    Current height or Chart module to chain calls
+         * @return {Number | module}    Current height or Chart module to chain calls
          * @public
          */
         exports.height = function (_x) {
@@ -887,7 +887,7 @@ define(function(require) {
         /**
          * Gets or Sets the margin object of the chart
          * @param  {Object} _x          Desired margin object properties for each side
-         * @return {margin | module}    Current margin or Chart module to chain calls
+         * @return {Object | module}    Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -999,7 +999,7 @@ define(function(require) {
         /**
          * Gets or Sets the xTicks of the chart
          * @param  {Number} _x         Desired height for the chart
-         * @return {xTicks | module}   Current xTicks or Chart module to chain calls
+         * @return {Number | module}   Current xTicks or Chart module to chain calls
          * @public
          */
         exports.xTicks = function(_x) {
@@ -1014,7 +1014,7 @@ define(function(require) {
         /**
          * Exposes ability to set the format of y-axis values
          * @param  {String} _x               Desired height for the chart
-         * @return {yAxisFormat | module}    Current yAxisFormat or Chart module to chain calls
+         * @return {String | module}    Current yAxisFormat or Chart module to chain calls
          * @public
          */
         exports.yAxisFormat = function(_x) {
@@ -1029,7 +1029,7 @@ define(function(require) {
         /**
          * Gets or Sets the y-axis label of the chart
          * @param  {String} _x Desired label string
-         * @return {yAxisLabel | module} Current yAxisLabel or Chart module to chain calls
+         * @return {String | module} Current yAxisLabel or Chart module to chain calls
          * @public
          * @example scatterPlot.yAxisLabel('Ice Cream Consmuption Growth')
          */
