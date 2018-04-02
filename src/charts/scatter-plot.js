@@ -532,11 +532,6 @@ define(function(require) {
                       .attr('cy', (d) => yScale(d.y))
                       .style('cursor', 'pointer');
             }
-
-            svg.selectAll('.metadata-group').selectAll("path")
-                .data(voronoi.polygons())
-                .enter().append("path")
-                .attr("d", function (d) { return d ? "M" + d.join("L") + "Z" : null; })
         }
 
         /**
