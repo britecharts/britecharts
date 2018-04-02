@@ -231,8 +231,6 @@ define(function(require) {
             container
                 .append('g').classed('chart-group', true);
             container
-                .append('g').classed('voronoi-group', true);
-            container
                 .append('g').classed('x-axis-group', true)
                 .append('g').classed('axis x', true);
             container
@@ -319,18 +317,6 @@ define(function(require) {
             svg
                 .attr('width', width)
                 .attr('height', height);
-        }
-
-        /**
-         * Sets up the tooltip for Scatter Plot
-         * @private
-         */
-        function initTooltip() {
-            tooltip = miniTooltip()
-                .valueLabel(yKey);
-
-            tooltipContainer = svg.selectAll('.metadata-group');
-            tooltipContainer.datum([]).call(tooltip);
         }
 
         /**
@@ -535,6 +521,7 @@ define(function(require) {
 
         /**
          * Handler called on mousemove event
+         * @return {void}
          * @private
          */
         function handleMouseMove(e, d) {
@@ -547,6 +534,7 @@ define(function(require) {
 
         /**
          * Handler called on mouseover event
+         * @return {void}
          * @private
          */
         function handleMouseOver (e, d) {
@@ -554,6 +542,11 @@ define(function(require) {
             dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
         }
 
+        /**
+         * Handler called on mouseout event
+         * @return {void}
+         * @private
+         */
         function handleMouseOut(e, d) {
             tooltip.hide();
             dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
@@ -568,6 +561,18 @@ define(function(require) {
             dispatcher.call('customClick', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
         }
 
+        /**
+         * Sets up the tooltip for Scatter Plot
+         * @return {void}
+         * @private
+         */
+        function initTooltip() {
+            tooltip = miniTooltip()
+                .valueLabel(yKey);
+
+            tooltipContainer = svg.selectAll('.metadata-group');
+            tooltipContainer.datum([]).call(tooltip);
+        }
 
         // API
 
