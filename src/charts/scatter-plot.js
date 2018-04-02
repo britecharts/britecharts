@@ -259,10 +259,16 @@ define(function(require) {
          * @private
          */
         function buildVoronoi() {
+            let voronoiWidth = width - margin.left - margin.right;
+            let voronoiHeight = height - margin.bottom - margin.top;
+
             voronoi = d3Voronoi.voronoi()
                 .x((d) => xScale(d.x))
                 .y((d) => yScale(d.y))
-                .extent([[0, 0], [width, height]])(dataPoints);
+                .extent([
+                    [0, 0],
+                    [voronoiWidth, voronoiHeight]
+                ])(dataPoints);
         }
 
         /**
@@ -550,7 +556,7 @@ define(function(require) {
             return {
                 closestPoint: voronoi.find(mousePos[0], mousePos[1]),
                 mousePos
-            }
+            };
         }
 
         /**
