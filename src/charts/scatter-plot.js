@@ -303,6 +303,7 @@ define(function(require) {
              *     name3: 'color3',
              *     ...
              * }
+             * @private
              */
             nameColorMap = colorScale.domain().reduce((accum, item, i) => {
                 accum[item] = colorRange[i];
