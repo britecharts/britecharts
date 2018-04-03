@@ -20,6 +20,10 @@ $outline-stroke-width: 1.2;
         display: none;
     }
 
+    .highlight-circle {
+        cursor: pointer;
+    }
+
     .data-point-highlighter {
         stroke-width: $outline-stroke-width;
     }
