@@ -198,6 +198,8 @@ define(function(require) {
 
         /**
          * Add mouse event handlers over svg
+         * @private
+         * @return {void}
          */
         function addMouseEvents() {
             svg
@@ -215,6 +217,7 @@ define(function(require) {
         /**
          * Creates the x-axis and y-axis with proper orientations
          * @private
+         * @return {void}
         */
         function buildAxis() {
             xAxis = d3Axis.axisBottom(xScale)
@@ -232,6 +235,7 @@ define(function(require) {
          * Builds containers for the chart, including the chart axis,
          * chart, and metadata groups.
          * @private
+         * @return {void}
         */
         function buildContainerGroups() {
             let container = svg
@@ -257,6 +261,7 @@ define(function(require) {
 
         /**
          * Draws the voronoi component in the chart.
+         * @return {void}
          * @private
          */
         function buildVoronoi() {
@@ -272,6 +277,7 @@ define(function(require) {
 
         /**
          * Creates the x and y scales of the chart
+         * @return {void}
          * @private
          */
         function buildScales() {
@@ -321,6 +327,7 @@ define(function(require) {
          * Builds the SVG element that will contain the chart
          * @param {HTMLElement} container A DOM element that will work as
          * the container of the chart
+         * @return {void}
          * @private
          */
         function buildSVG(container) {
@@ -357,6 +364,7 @@ define(function(require) {
         /**
          * Draws the x and y axis on the svg object within their
          * respective groups along with their axis labels
+         * @return {void}
          * @private
          */
         function drawAxis() {
@@ -373,6 +381,7 @@ define(function(require) {
         /**
          * Draws axis labels next to x and y axis to
          * represent data value labels on the chart
+         * @return {void}
          * @private
          */
         function drawAxisLabels() {
