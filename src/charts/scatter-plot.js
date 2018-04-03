@@ -34,7 +34,6 @@ define(function(require) {
      * @property {String} name      Name of the category or topic for data point
      * @property {Number} x         Data point's position value relative to x-axis
      * @property {Number} y         Data point's position value relative to y-axis
-     * @property {Number} [size]    Data point's relative size
      *
      * @example
      * [
@@ -42,19 +41,21 @@ define(function(require) {
      *         name: 'topic',
      *         x: 123,
      *         y: 24,
-     *         size: 95
      *     },
      *     {
      *         name: 'topic1',
      *         x: 53,
      *         y: 31,
-     *         size: 48
      *     },
      *     {
-     *         name: 'topic',
+     *         name: 'topic2',
      *         x: 631,
      *         y: 321,
-     *         size: 234
+     *     },
+     *     {
+     *         name: 'topic1',
+     *         x: 231,
+     *         y: 111,
      *     }
      * ]
      */
