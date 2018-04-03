@@ -200,8 +200,8 @@ define(function(require) {
 
         /**
          * Add mouse event handlers over svg
-         * @private
          * @return {void}
+         * @private
          */
         function addMouseEvents() {
             svg
@@ -218,8 +218,8 @@ define(function(require) {
 
         /**
          * Creates the x-axis and y-axis with proper orientations
-         * @private
          * @return {void}
+         * @private
         */
         function buildAxis() {
             xAxis = d3Axis.axisBottom(xScale)
@@ -236,8 +236,8 @@ define(function(require) {
         /**
          * Builds containers for the chart, including the chart axis,
          * chart, and metadata groups.
-         * @private
          * @return {void}
+         * @private
         */
         function buildContainerGroups() {
             let container = svg
