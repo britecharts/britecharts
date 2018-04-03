@@ -140,6 +140,7 @@ define(function(require) {
         },
 
         circleOpacity = 0.24,
+        highlightCircle = null,
         highlightCircleOpacity = circleOpacity,
         maxCircleArea = 10,
         maskingRectangle,
@@ -189,6 +190,7 @@ define(function(require) {
                 buildVoronoi();
                 drawAxis();
                 drawGridLines();
+                initHighlightPoint();
                 drawDataPoints();
                 drawMaskingClip()
 
@@ -198,8 +200,8 @@ define(function(require) {
 
         /**
          * Add mouse event handlers over svg
-         * @private
          * @return {void}
+         * @private
          */
         function addMouseEvents() {
             svg
@@ -216,8 +218,8 @@ define(function(require) {
 
         /**
          * Creates the x-axis and y-axis with proper orientations
-         * @private
          * @return {void}
+         * @private
         */
         function buildAxis() {
             xAxis = d3Axis.axisBottom(xScale)
@@ -234,8 +236,8 @@ define(function(require) {
         /**
          * Builds containers for the chart, including the chart axis,
          * chart, and metadata groups.
-         * @private
          * @return {void}
+         * @private
         */
         function buildContainerGroups() {
             let container = svg
@@ -660,6 +662,10 @@ define(function(require) {
             let { mousePos, closestPoint } = getPointProps(e);
             let pointData = getPointData(closestPoint);
 
+            if (hasCrossHairs) {
+                drawDataPointsValueHighlights(pointData);
+            }
+
             highlightDataPoint(pointData);
 
             dispatcher.call('customMouseMove', e, pointData, d3Selection.mouse(e), [chartWidth, chartHeight]);
@@ -707,29 +713,36 @@ define(function(require) {
                 highlightFilterId = createGlowWithMatrix(highlightFilter);
             }
 
-            let highlightCircle = svg.select('.chart-group')
-                .attr('clip-path', `url(#${maskingRectangleId})`)
-                .selectAll('circle.highlight-circle')
-                   .data([data])
-                   .enter()
-                     .append('circle')
-                       .attr('class', 'highlight-circle')
-                       .attr('stroke', ({name}) => nameColorMap[name])
-                       .attr('fill', ({name}) => nameColorMap[name])
-                       .attr('fill-opacity', circleOpacity)
-                       .attr('cx', ({x}) => xScale(x))
-                       .attr('cy', ({y}) => yScale(y))
-                       .attr('r', ({y}) => areaScale(y))
-                       .style('stroke-width', highlightStrokeWidth)
-                       .style('stroke-opacity', highlightCircleOpacity);
+            highlightCircle
+                .attr('opacity', 1)
+                .attr('stroke', () => nameColorMap[data.name])
+                .attr('fill', () => nameColorMap[data.name])
+                .attr('fill-opacity', circleOpacity)
+                .attr('cx', () => xScale(data.x))
+                .attr('cy', () => yScale(data.y))
+                .attr('r', () => areaScale(data.y))
+                .style('stroke-width', highlightStrokeWidth)
+                .style('stroke-opacity', highlightCircleOpacity);
 
             // apply glow container overlay
             highlightCircle
                 .attr('filter', `url(#${highlightFilterId})`);
+        }
 
-            if (hasCrossHairs) {
-                drawDataPointsValueHighlights(data);
-            }
+        /**
+         * Places the highlighter point to the DOM
+         * to be used once one of the data points is
+         * highlighted
+         * @return {void}
+         * @private
+        */
+        function initHighlightPoint() {
+            highlightCircle = svg.select('.metadata-group')
+                .selectAll('circle.highlight-circle')
+                .data([1])
+                .enter()
+                  .append('circle')
+                    .attr('class', 'highlight-circle');
         }
 
         /**
@@ -738,7 +751,7 @@ define(function(require) {
          * @private
          */
         function removePointHighlight() {
-            svg.selectAll('circle.highlight-circle').remove();
+            svg.selectAll('circle.highlight-circle').attr('opacity', 0);
         }
 
         /**
