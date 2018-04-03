@@ -514,6 +514,7 @@ define(function(require) {
         /**
          * Draws lines and labels for the
          * highlighted data point value
+         * @return {void}
          * @private
         */
         function drawDataPointsValueHighlights(data) {
