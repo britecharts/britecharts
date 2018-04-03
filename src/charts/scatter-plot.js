@@ -729,6 +729,13 @@ define(function(require) {
                 .attr('filter', `url(#${highlightFilterId})`);
         }
 
+        /**
+         * Places the highlighter point to the DOM
+         * to be used once one of the data points is
+         * highlighted
+         * @return {void}
+         * @private
+        */
         function initHighlightPoint() {
             highlightCircle = svg.select('.metadata-group')
                 .selectAll('circle.highlight-circle')
