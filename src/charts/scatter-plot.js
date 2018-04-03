@@ -660,6 +660,10 @@ define(function(require) {
             let { mousePos, closestPoint } = getPointProps(e);
             let pointData = getPointData(closestPoint);
 
+            if (hasCrossHairs) {
+                drawDataPointsValueHighlights(pointData);
+            }
+
             highlightDataPoint(pointData);
 
             dispatcher.call('customMouseMove', e, pointData, d3Selection.mouse(e), [chartWidth, chartHeight]);
@@ -726,10 +730,6 @@ define(function(require) {
             // apply glow container overlay
             highlightCircle
                 .attr('filter', `url(#${highlightFilterId})`);
-
-            if (hasCrossHairs) {
-                drawDataPointsValueHighlights(data);
-            }
         }
 
         /**
