@@ -51,6 +51,7 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
 
         // tooltip set up
         tooltip.valueLabel('y');
+        tooltip.numberFormat('$');
 
         tooltipContainer = d3Selection.select('.js-scatter-plot-with-single-source .scatter-plot .metadata-group');
         tooltipContainer.datum([]).call(tooltip);
