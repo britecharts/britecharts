@@ -730,14 +730,12 @@ define(function(require) {
         }
 
         function initHighlightPoint() {
-            highlightCircle = svg.select('.chart-group')
-                .attr('clip-path', `url(#${maskingRectangleId})`)
+            highlightCircle = svg.select('.metadata-group')
                 .selectAll('circle.highlight-circle')
                 .data([1])
                 .enter()
                   .append('circle')
-                    .attr('class', 'highlight-circle')
-                    .attr('opacity', 0);
+                    .attr('class', 'highlight-circle');
         }
 
         /**
