@@ -26,6 +26,9 @@ scatterChart
     .on('customMouseMove', tooltip.update)
     .on('customMouseOut', tooltip.hide);
 
+// setting up tooltip
+tooltip.valueLabel('y');
+tooltip.numberFormat('$');
 
 scatterPlotContainer
     .datum(dataset)
