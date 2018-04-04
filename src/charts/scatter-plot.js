@@ -524,6 +524,11 @@ define(function(require) {
 
             setCrossHairLinesStatus(1);
 
+            // initialize cross hair labels container
+            highlightCrossHairLabelsContainer = svg.select('.metadata-group')
+            .append('g')
+            .attr('class', 'crosshair-labels-container');
+
             // Draw line perpendicular to y-axis
             highlightCrossHairContainer.selectAll('line.highlight-y-line')
               .attr('stroke', nameColorMap[data.name])
@@ -756,11 +761,6 @@ define(function(require) {
                   .enter()
                     .append('line')
                     .attr('class', 'highlight-x-line');
-
-                // initialize cross hair labels container
-                highlightCrossHairLabelsContainer = svg.select('.metadata-group')
-                  .append('g')
-                  .attr('class', 'crosshair-labels-container');
             }
         }
 
@@ -786,8 +786,8 @@ define(function(require) {
          * Sets the visibility of cross hair lines
          * if 1, it sets lines to visible,
          * if 0, it hides lines
-         * @return
-         * @param {boolean}
+         * @return {void}
+         * @param {Number}
          * @private
          */
         function setCrossHairLinesStatus(status = 0) {
