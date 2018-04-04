@@ -73,10 +73,6 @@ scatterChart
     })
     .on('customMouseOut', tooltip.hide);
 
-// tooltip set up
-tooltip.valueLabel('y');
-tooltip.numberFormat('$');
-
 container
     .datum(dataset)
     .call(scatterChart);

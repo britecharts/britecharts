@@ -88,10 +88,6 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
 
         scatterPlotContainer.datum(dataset).call(scatterChart);
 
-        // tooltip set up
-        tooltip.valueLabel('y');
-        tooltip.numberFormat('$');
-
         tooltipContainer = d3Selection.select('.js-scatter-plot-container-with-hollow-circles .scatter-plot .metadata-group');
         tooltipContainer.datum([]).call(tooltip);
     }
