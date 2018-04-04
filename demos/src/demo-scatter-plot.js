@@ -60,9 +60,10 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
 
 function createScatterPlotWithIncreasedAreaAndHollowCircles() {
     let scatterChart = scatterPlot();
+    let tooltip = miniTooltip();
     let scatterPlotContainer = d3Selection.select('.js-scatter-plot-container-with-hollow-circles');
     let containerWidth = scatterPlotContainer.node() ? scatterPlotContainer.node().getBoundingClientRect().width : false;
-    let dataset;
+    let dataset, tooltipContainer;
 
     if (containerWidth) {
         dataset = aTestDataSet().withFourNames().build();
@@ -75,9 +76,20 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
                 left: 60,
                 bottom: 45
             })
-            .maxCircleArea(15);
+            .maxCircleArea(15)
+            .on('customMouseOver', tooltip.show)
+            .on('customMouseMove', function (dataPoint, pos, chartSize) {
+                tooltip.title(dataPoint.name);
+                // passing an empty object to not have any data
+                // in the tooltip - we want to only show the title
+                tooltip.update({}, pos, chartSize);
+            })
+            .on('customMouseOut', tooltip.hide);
 
         scatterPlotContainer.datum(dataset).call(scatterChart);
+
+        tooltipContainer = d3Selection.select('.js-scatter-plot-container-with-hollow-circles .scatter-plot .metadata-group');
+        tooltipContainer.datum([]).call(tooltip);
     }
 }
 

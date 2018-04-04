@@ -742,7 +742,8 @@ define(function(require) {
                 .data([1])
                 .enter()
                   .append('circle')
-                    .attr('class', 'highlight-circle');
+                    .attr('class', 'highlight-circle')
+                    .attr('cursor', 'pointer');
         }
 
         /**
