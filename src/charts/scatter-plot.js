@@ -475,6 +475,7 @@ define(function(require) {
             if (isAnimated) {
                 circles
                     .append('circle')
+                    .attr('class', 'data-point data-point-highlighter')
                     .on('click', function (d) {
                         handleClick(this, d, chartWidth, chartHeight);
                     })
@@ -482,8 +483,6 @@ define(function(require) {
                     .delay(delay)
                     .duration(duration)
                     .ease(ease)
-                    .attr('class', 'point')
-                    .attr('class', 'data-point-highlighter')
                     .style('stroke', (d) => nameColorMap[d.name])
                     .attr('fill', (d) => (
                         hasHollowCircles ? hollowColor : nameColorMap[d.name]
