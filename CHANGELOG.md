@@ -1,4 +1,11 @@
-2.8.1
+2.8.1 - Patch
+--------------
+* Fix - Fixed label drawing interruptions with mousemove (dalerasrorov-eb)
+* Fix - improved demos and polished Scatter chart code
+* Fix - Fixed crosshair and mouseover event interruptions
+* Feature - scatter plot data point value highlighter
+* Feature - Scatter Plot's voronoi tooltip
+
 2.8.0 - Minor
 --------------
 Features:
@@ -21,7 +28,7 @@ Features:
 
 Fixes:
 * Meta tags in docs
-* Data refresh bug 
+* Data refresh bug
 
 2.6.0 - Minor
 --------------
