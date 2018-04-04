@@ -81,7 +81,7 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
             .on('customMouseMove', function (dataPoint, pos, chartSize) {
                 tooltip.title(dataPoint.name);
                 // passing an empty object to not have any data
-                // we want to show only title
+                // in the tooltip - we want to only show the title
                 tooltip.update({}, pos, chartSize);
             })
             .on('customMouseOut', tooltip.hide);
