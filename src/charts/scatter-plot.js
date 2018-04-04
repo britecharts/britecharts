@@ -129,8 +129,8 @@ define(function(require) {
         highlightFilter,
         highlightFilterId,
         highlightStrokeWidth = 10,
-        highlightContainer,
         highlightCrossHairContainer,
+        highlightCrossHairLabelsContainer,
         highlightTextLegendOffset = -45,
 
         xAxisPadding = {
@@ -520,22 +520,22 @@ define(function(require) {
          * @private
         */
         function drawDataPointsValueHighlights(data) {
-            if (highlightContainer) {
+            if (highlightCrossHairContainer) {
                 removeDataPointsValueHighlights();
             }
 
-            highlightContainer = svg.select('.chart-group')
+            highlightCrossHairContainer= svg.select('.chart-group')
                 .append('g')
                 .classed('data-point-value-highlight', true);
 
             // the crosshair labels needs to be placed outside of
             // chart group, hence, metadata-group is used
-            highlightCrossHairContainer = svg.select('.metadata-group')
+            highlightCrossHairLabelsContainer = svg.select('.metadata-group')
                 .append('g')
                   .attr('class', 'crosshair-labels');
 
-            // Draw line perpendicular to y-axis
-            highlightContainer.selectAll('line.highlight-y-line')
+                // Draw line perpendicular to y-axis
+            highlightCrossHairContainer.selectAll('line.highlight-y-line')
                 .data([data])
                 .enter()
                 .append('line')
@@ -548,7 +548,7 @@ define(function(require) {
 
 
             // Draw line perpendicular to x-axis
-            highlightContainer.selectAll('line.highlight-x-line')
+            highlightCrossHairContainer.selectAll('line.highlight-x-line')
                 .data([data])
                 .enter()
                 .append('line')
@@ -560,7 +560,7 @@ define(function(require) {
                   .attr('y2', chartHeight);
 
             // Draw data label for y value
-            highlightCrossHairContainer.selectAll('text.highlight-y-legend')
+            highlightCrossHairLabelsContainer.selectAll('text.highlight-y-legend')
                 .data([data])
                 .enter()
                 .append('text')
@@ -572,7 +572,7 @@ define(function(require) {
                   .text((d) => `${d3Format.format(yAxisFormat)(d.y)}`);
 
             // Draw data label for x value
-            highlightCrossHairContainer.selectAll('text.highlight-x-legend')
+            highlightCrossHairLabelsContainer.selectAll('text.highlight-x-legend')
                 .data([data])
                 .enter()
                 .append('text')
@@ -750,6 +750,7 @@ define(function(require) {
                   .append('circle')
                     .attr('class', 'highlight-circle')
                     .attr('cursor', 'pointer');
+
         }
 
         /**
