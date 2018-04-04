@@ -494,11 +494,11 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
                 it('successfully initialized with container on render', () => {
                     let expected = 1;
-                    let textContainer = containerFixture.select('.crosshair-lines-container').nodes().length;
+                    let testContainer = containerFixture.select('.crosshair-lines-container').nodes().length;
                     let testXLine = containerFixture.select('line.highlight-x-line').nodes().length;
                     let testYLine = containerFixture.select('line.highlight-y-line').nodes().length;
 
-                    expect(textContainer).toEqual(expected);
+                    expect(testContainer).toEqual(expected);
                     expect(testXLine).toEqual(expected);
                     expect(testYLine).toEqual(expected);
                 });
@@ -529,16 +529,6 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                     expect(scatterPoint).toHaveAttr('x2');
                     expect(scatterPoint).toHaveAttr('y1');
                     expect(scatterPoint).toHaveAttr('y2');
-                });
-            });
-
-            describe('cross hair labels', () => {
-
-                it('successfully initialized with container on render', () => {
-                    let expected = 1;
-                    let textContainer = containerFixture.select('.crosshair-labels-container').nodes().length;
-
-                    expect(textContainer).toEqual(expected);
                 });
             });
         });
