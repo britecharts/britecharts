@@ -526,34 +526,28 @@ define(function(require) {
 
             // Draw line perpendicular to y-axis
             highlightCrossHairContainer.selectAll('line.highlight-y-line')
-                .attr('stroke', nameColorMap[data.name])
-                .attr('class', 'highlight-y-line')
-                .attr('x1', (xScale(data.x) - areaScale(data.y)))
-                .attr('x2', 0)
-                .attr('y1', yScale(data.y))
-                .attr('y2', yScale(data.y));
+              .attr('stroke', nameColorMap[data.name])
+              .attr('class', 'highlight-y-line')
+              .attr('x1', (xScale(data.x) - areaScale(data.y)))
+              .attr('x2', 0)
+              .attr('y1', yScale(data.y))
+              .attr('y2', yScale(data.y));
 
 
             // Draw line perpendicular to x-axis
             highlightCrossHairContainer.selectAll('line.highlight-x-line')
-                .attr('stroke', nameColorMap[data.name])
-                .attr('class', 'highlight-x-line')
-                .attr('x1', xScale(data.x))
-                .attr('x2', xScale(data.x))
-                .attr('y1', (yScale(data.y) + areaScale(data.y)))
-                .attr('y2', chartHeight);
-
-            // the crosshair labels needs to be placed outside of
-            // chart group, hence, metadata-group is used
-            highlightCrossHairLabelsContainer = svg.select('.metadata-group')
-                .append('g')
-                .attr('class', 'crosshair-labels');
+              .attr('stroke', nameColorMap[data.name])
+              .attr('class', 'highlight-x-line')
+              .attr('x1', xScale(data.x))
+              .attr('x2', xScale(data.x))
+              .attr('y1', (yScale(data.y) + areaScale(data.y)))
+              .attr('y2', chartHeight);
 
             // Draw data label for y value
             highlightCrossHairLabelsContainer.selectAll('text.highlight-y-legend')
-                .data([data])
-                .enter()
-                .append('text')
+            .data([data])
+            .enter()
+              .append('text')
                 .attr('text-anchor', 'middle')
                 .attr('fill', ({name}) => nameColorMap[name])
                 .attr('class', 'highlight-y-legend')
@@ -563,15 +557,15 @@ define(function(require) {
 
             // Draw data label for x value
             highlightCrossHairLabelsContainer.selectAll('text.highlight-x-legend')
-                .data([data])
-                .enter()
+            .data([data])
+              .enter()
                 .append('text')
-                .attr('text-anchor', 'middle')
-                .attr('fill', ({name}) => nameColorMap[name])
-                .attr('class', 'highlight-x-legend')
-                .attr('transform', `translate(0, ${chartHeight - highlightTextLegendOffset})`)
-                .attr('x', (d) => (xScale(d.x) - (areaScale(d.y) / 2)))
-                .text((d) => `${d3Format.format(xAxisFormat)(d.x)}`);
+                  .attr('text-anchor', 'middle')
+                  .attr('fill', ({name}) => nameColorMap[name])
+                  .attr('class', 'highlight-x-legend')
+                  .attr('transform', `translate(0, ${chartHeight - highlightTextLegendOffset})`)
+                  .attr('x', (d) => (xScale(d.x) - (areaScale(d.y) / 2)))
+                  .text((d) => `${d3Format.format(xAxisFormat)(d.x)}`);
         }
 
         /**
@@ -746,21 +740,27 @@ define(function(require) {
                     .attr('cursor', 'pointer');
 
             if (hasCrossHairs) {
+                // initialize cross hair lines container
                 highlightCrossHairContainer = svg.select('.chart-group')
-                .append('g')
-                .classed('data-point-value-highlight', true);
+                  .append('g')
+                  .attr('class', 'crosshair-lines-container');
 
-              highlightCrossHairContainer.selectAll('line.highlight-y-line')
-                .data([1])
-                .enter()
-                  .append('line')
+                highlightCrossHairContainer.selectAll('line.highlight-y-line')
+                  .data([1])
+                  .enter()
+                    .append('line')
                     .attr('class', 'highlight-y-line');
 
-              highlightCrossHairContainer.selectAll('line.highlight-x-line')
-                .data([1])
-                .enter()
+                highlightCrossHairContainer.selectAll('line.highlight-x-line')
+                  .data([1])
+                  .enter()
                     .append('line')
-                      .attr('class', 'highlight-x-line');
+                    .attr('class', 'highlight-x-line');
+
+                // initialize cross hair labels container
+                highlightCrossHairLabelsContainer = svg.select('.metadata-group')
+                  .append('g')
+                  .attr('class', 'crosshair-labels-container');
             }
         }
 
@@ -779,7 +779,7 @@ define(function(require) {
          * @private
          */
         function removeDataPointsValueHighlights() {
-            svg.selectAll('.crosshair-labels').remove();
+            svg.selectAll('.crosshair-labels-container').remove();
         }
 
         /**

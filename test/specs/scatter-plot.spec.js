@@ -483,6 +483,66 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             });
         });
 
+        describe('when hasCrossHairs is set to true', () => {
+
+            beforeEach(() => {
+                scatterPlot.hasCrossHairs(true);
+                containerFixture.datum(dataset).call(scatterPlot);
+            });
+
+            describe('cross hair lines', () => {
+
+                it('successfully initialized with container on render', () => {
+                    let expected = 1;
+                    let textContainer = containerFixture.select('.crosshair-lines-container').nodes().length;
+                    let testXLine = containerFixture.select('line.highlight-x-line').nodes().length;
+                    let testYLine = containerFixture.select('line.highlight-y-line').nodes().length;
+
+                    expect(textContainer).toEqual(expected);
+                    expect(testXLine).toEqual(expected);
+                    expect(testYLine).toEqual(expected);
+                });
+
+                it('crosshair line with respect to x changes attributes', () => {
+                    let container = containerFixture.select('svg');
+                    let expectedStroke = '#6aedc7';
+
+                    container.dispatch('mousemove');
+                    let scatterPoint = containerFixture.select('line.highlight-x-line').node();
+
+                    expect(scatterPoint).toHaveAttr('stroke', expectedStroke);
+                    expect(scatterPoint).toHaveAttr('x1');
+                    expect(scatterPoint).toHaveAttr('x2');
+                    expect(scatterPoint).toHaveAttr('y1');
+                    expect(scatterPoint).toHaveAttr('y2');
+                });
+
+                it('crosshair line with respect to y changes attributes', () => {
+                    let container = containerFixture.select('svg');
+                    let expectedStroke = '#6aedc7';
+
+                    container.dispatch('mousemove');
+                    let scatterPoint = containerFixture.select('line.highlight-y-line').node();
+
+                    expect(scatterPoint).toHaveAttr('stroke', expectedStroke);
+                    expect(scatterPoint).toHaveAttr('x1');
+                    expect(scatterPoint).toHaveAttr('x2');
+                    expect(scatterPoint).toHaveAttr('y1');
+                    expect(scatterPoint).toHaveAttr('y2');
+                });
+            });
+
+            describe('cross hair labels', () => {
+
+                it('successfully initialized with container on render', () => {
+                    let expected = 1;
+                    let textContainer = containerFixture.select('.crosshair-labels-container').nodes().length;
+
+                    expect(textContainer).toEqual(expected);
+                });
+            });
+        });
+
         describe('when margins are set partially', function() {
 
             it('should override the default values', () => {
