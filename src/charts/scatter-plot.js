@@ -130,6 +130,7 @@ define(function(require) {
         highlightFilterId,
         highlightStrokeWidth = 10,
         highlightContainer,
+        highlightCrossHairContainer,
         highlightTextLegendOffset = -45,
 
         xAxisPadding = {
@@ -527,6 +528,12 @@ define(function(require) {
                 .append('g')
                 .classed('data-point-value-highlight', true);
 
+            // the crosshair labels needs to be placed outside of
+            // chart group, hence, metadata-group is used
+            highlightCrossHairContainer = svg.select('.metadata-group')
+                .append('g')
+                  .attr('class', 'crosshair-labels');
+
             // Draw line perpendicular to y-axis
             highlightContainer.selectAll('line.highlight-y-line')
                 .data([data])
@@ -553,7 +560,7 @@ define(function(require) {
                   .attr('y2', chartHeight);
 
             // Draw data label for y value
-            highlightContainer.selectAll('text.highlight-y-legend')
+            highlightCrossHairContainer.selectAll('text.highlight-y-legend')
                 .data([data])
                 .enter()
                 .append('text')
@@ -565,7 +572,7 @@ define(function(require) {
                   .text((d) => `${d3Format.format(yAxisFormat)(d.y)}`);
 
             // Draw data label for x value
-            highlightContainer.selectAll('text.highlight-x-legend')
+            highlightCrossHairContainer.selectAll('text.highlight-x-legend')
                 .data([data])
                 .enter()
                 .append('text')
@@ -762,6 +769,7 @@ define(function(require) {
          */
         function removeDataPointsValueHighlights() {
             svg.selectAll('.data-point-value-highlight').remove();
+            svg.selectAll('.crosshair-labels').remove();
         }
 
         // API
