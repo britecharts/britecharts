@@ -441,6 +441,16 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             });
         });
 
+        describe('Point highlighter', () => {
+
+            it('is successfully initialized on render', () => {
+                let expected = 1;
+                let actual = containerFixture.select('.highlight-circle').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
         describe('when margins are set partially', function() {
 
             it('should override the default values', () => {

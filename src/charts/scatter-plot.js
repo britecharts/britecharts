@@ -524,7 +524,7 @@ define(function(require) {
                 removeDataPointsValueHighlights();
             }
 
-            highlightContainer = svg.select('.metadata-group')
+            highlightContainer = svg.select('.chart-group')
                 .append('g')
                 .classed('data-point-value-highlight', true);
 
@@ -536,7 +536,7 @@ define(function(require) {
                   .attr('stroke', ({name}) => nameColorMap[name])
                   .attr('class', 'highlight-y-line')
                   .attr('x1', (d) => (xScale(d.x) - areaScale(d.y)))
-                  .attr('x2', (d) => 0)
+                  .attr('x2', 0)
                   .attr('y1', (d) => yScale(d.y))
                   .attr('y2', (d) => yScale(d.y));
 
@@ -551,7 +551,7 @@ define(function(require) {
                   .attr('x1', (d) => xScale(d.x))
                   .attr('x2', (d) => xScale(d.x))
                   .attr('y1', (d) => (yScale(d.y) + areaScale(d.y)))
-                  .attr('y2', (d) => chartHeight);
+                  .attr('y2', chartHeight);
 
             // Draw data label for y value
             highlightContainer.selectAll('text.highlight-y-legend')
