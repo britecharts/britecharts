@@ -362,10 +362,10 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             });
 
             it('should have proper default parameteres', () => {
-                let circles = containerFixture.selectAll('.chart-group circle').nodes();
+                let circles = containerFixture.selectAll('.chart-group circle.data-point').nodes();
 
                 circles.forEach((circle) => {
-                    expect(circle).toHaveAttr('class', 'data-point-highlighter');
+                    expect(circle).toHaveAttr('class', 'data-point data-point-highlighter');
                     expect(circle).toHaveAttr('fill-opacity', '0.24');
                     expect(circle).toHaveAttr('fill');
                     expect(circle).toHaveAttr('cx');
@@ -438,6 +438,48 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
                     expect(newWidth).toBe(Math.ceil(testHeight / testAspectRatio));
                 });
+            });
+        });
+
+        describe('Point highlighter', () => {
+
+            it('is successfully initialized on render', () => {
+                let expected = 1;
+                let actual = containerFixture.select('.highlight-circle').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('initially has only class and cursor attributes', () => {
+                let expectedCursor = 'pointer';
+                let expectedClass = 'highlight-circle';
+                let scatterPoint = containerFixture.selectAll('.highlight-circle').node();
+
+                expect(scatterPoint).toHaveAttr('cursor', expectedCursor);
+                expect(scatterPoint).toHaveAttr('class', expectedClass);
+            });
+
+            it('should change attribute when a data point is hovered', () => {
+                let expectedCursor = 'pointer';
+                let expectedOpacity = '1';
+                let expectedStroke ='#6aedc7';
+                let expectedFillOpacity ='0.24';
+                let expectedCx='39';
+                let expectedCy='398';
+                let expectedFilter='url(#highlight-filter)';
+                let container = containerFixture.select('svg');
+
+                container.dispatch('mousemove');
+                let scatterPoint = containerFixture.selectAll('.highlight-circle').node();
+
+                expect(scatterPoint).toHaveAttr('cursor', expectedCursor);
+                expect(scatterPoint).toHaveAttr('opacity', expectedOpacity);
+                expect(scatterPoint).toHaveAttr('stroke', expectedStroke);
+                expect(scatterPoint).toHaveAttr('fill', expectedStroke);
+                expect(scatterPoint).toHaveAttr('fill-opacity', expectedFillOpacity);
+                expect(scatterPoint).toHaveAttr('cx', expectedCx);
+                expect(scatterPoint).toHaveAttr('cy', expectedCy);
+                expect(scatterPoint).toHaveAttr('filter', expectedFilter);
             });
         });
 

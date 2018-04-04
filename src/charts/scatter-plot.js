@@ -475,6 +475,7 @@ define(function(require) {
             if (isAnimated) {
                 circles
                     .append('circle')
+                    .attr('class', 'data-point data-point-highlighter')
                     .on('click', function (d) {
                         handleClick(this, d, chartWidth, chartHeight);
                     })
@@ -482,8 +483,6 @@ define(function(require) {
                     .delay(delay)
                     .duration(duration)
                     .ease(ease)
-                    .attr('class', 'point')
-                    .attr('class', 'data-point-highlighter')
                     .style('stroke', (d) => nameColorMap[d.name])
                     .attr('fill', (d) => (
                         hasHollowCircles ? hollowColor : nameColorMap[d.name]
@@ -524,7 +523,7 @@ define(function(require) {
                 removeDataPointsValueHighlights();
             }
 
-            highlightContainer = svg.select('.metadata-group')
+            highlightContainer = svg.select('.chart-group')
                 .append('g')
                 .classed('data-point-value-highlight', true);
 
@@ -536,7 +535,7 @@ define(function(require) {
                   .attr('stroke', ({name}) => nameColorMap[name])
                   .attr('class', 'highlight-y-line')
                   .attr('x1', (d) => (xScale(d.x) - areaScale(d.y)))
-                  .attr('x2', (d) => 0)
+                  .attr('x2', 0)
                   .attr('y1', (d) => yScale(d.y))
                   .attr('y2', (d) => yScale(d.y));
 
@@ -551,7 +550,7 @@ define(function(require) {
                   .attr('x1', (d) => xScale(d.x))
                   .attr('x2', (d) => xScale(d.x))
                   .attr('y1', (d) => (yScale(d.y) + areaScale(d.y)))
-                  .attr('y2', (d) => chartHeight);
+                  .attr('y2', chartHeight);
 
             // Draw data label for y value
             highlightContainer.selectAll('text.highlight-y-legend')
@@ -611,7 +610,7 @@ define(function(require) {
                 .enter()
                   .append('line')
                     .attr('class', 'extended-x-line')
-                    .attr('x1', (xAxisPadding.left))
+                    .attr('x1', xAxisPadding.left)
                     .attr('x2', chartWidth)
                     .attr('y1', chartHeight)
                     .attr('y2', chartHeight);
@@ -630,7 +629,7 @@ define(function(require) {
                 .enter()
                   .append('line')
                     .attr('class', 'horizontal-grid-line')
-                    .attr('x1', (xAxisPadding.left))
+                    .attr('x1', xAxisPadding.left)
                     .attr('x2', chartWidth)
                     .attr('y1', (d) => yScale(d))
                     .attr('y2', (d) => yScale(d))
@@ -658,7 +657,7 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseMove(e, d) {
+        function handleMouseMove(e) {
             let { mousePos, closestPoint } = getPointProps(e);
             let pointData = getPointData(closestPoint);
 
