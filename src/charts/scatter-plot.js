@@ -611,7 +611,7 @@ define(function(require) {
                 .enter()
                   .append('line')
                     .attr('class', 'extended-x-line')
-                    .attr('x1', (xAxisPadding.left))
+                    .attr('x1', xAxisPadding.left)
                     .attr('x2', chartWidth)
                     .attr('y1', chartHeight)
                     .attr('y2', chartHeight);
@@ -630,7 +630,7 @@ define(function(require) {
                 .enter()
                   .append('line')
                     .attr('class', 'horizontal-grid-line')
-                    .attr('x1', (xAxisPadding.left))
+                    .attr('x1', xAxisPadding.left)
                     .attr('x2', chartWidth)
                     .attr('y1', (d) => yScale(d))
                     .attr('y2', (d) => yScale(d))
@@ -658,7 +658,7 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleMouseMove(e, d) {
+        function handleMouseMove(e) {
             let { mousePos, closestPoint } = getPointProps(e);
             let pointData = getPointData(closestPoint);
 
