@@ -130,7 +130,7 @@ You may also take on any issues that don't currently have an assignee and are la
 
 Please use the [issues](https://github.com/eventbrite/britecharts/issues) section of the Britecharts github profile to submit any bug, question, proposal or feature request.
 
-In the case of bugs, please be descriptive and, if possible, include a codepen with the issue happening or add a screenshot of the issue.
+In the case of bugs, please be descriptive and, if possible, include a codepen with the issue happening or add a screenshot of the issue. You can use [this codepen bug template](https://codepen.io/Britecharts/pen/PRyZNy?editors=1010#0) as a jumping off point.
 
 
 
