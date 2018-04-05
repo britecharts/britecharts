@@ -37,7 +37,7 @@ function createBrushChart() {
                 // eslint-disable-next-line no-console
                 console.log('rounded extent', brushExtent);
 
-                if (null === brushExtent[0]) {
+                if (brushExtent[0] === null) {
                     elementDateRange.classed('is-hidden', true);
                 }
             });
