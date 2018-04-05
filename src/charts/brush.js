@@ -359,7 +359,6 @@ define(function(require) {
                 dateExtent = s.map(xScale.invert);
 
             dispatcher.call('customBrushStart', this, dateExtent);
-            // updateHandlers(dateExtent);
         }
 
         /**
@@ -369,39 +368,30 @@ define(function(require) {
          * @private
          */
         function handleBrushEnd() {
-            if (!d3Selection.event.sourceEvent) return; // Only transition after input.
-            if (!d3Selection.event.selection) return; // Ignore empty selections.
-
-            let s = d3Selection.event.selection,
-                dateExtent = s.map(xScale.invert),
-                dateExtentRounded = dateExtent.map(d3Time.timeDay.round);
-
-            // If empty when rounded, use floor & ceil instead.
-            if (dateExtentRounded[0] >= dateExtentRounded[1]) {
-                dateExtentRounded[0] = d3Time.timeDay.floor(dateExtent[0]);
-                dateExtentRounded[1] = d3Time.timeDay.offset(dateExtentRounded[0]);
+            if (!d3Selection.event.sourceEvent) {
+                return; // Only transition after input.
             }
 
-            d3Selection.select(this)
-                .transition()
-                .call(d3Selection.event.target.move, dateExtentRounded.map(xScale));
+            let dateExtentRounded = [null, null];
+
+            if (d3Selection.event.selection) {
+                let s = d3Selection.event.selection;
+                let dateExtent = s.map(xScale.invert);
+
+                dateExtentRounded = dateExtent.map(d3Time.timeDay.round);
+
+                // If empty when rounded, use floor & ceil instead.
+                if (dateExtentRounded[0] >= dateExtentRounded[1]) {
+                    dateExtentRounded[0] = d3Time.timeDay.floor(dateExtent[0]);
+                    dateExtentRounded[1] = d3Time.timeDay.offset(dateExtentRounded[0]);
+                }
+
+                d3Selection.select(this)
+                    .transition()
+                    .call(d3Selection.event.target.move, dateExtentRounded.map(xScale));
+            }
 
             dispatcher.call('customBrushEnd', this, dateExtentRounded);
-        }
-
-        /**
-         * Sets a new brush extent within the passed percentage positions
-         * @param {Number} a Percentage of data that the brush start with
-         * @param {Number} b Percentage of data that the brush ends with
-         * @example
-         *     setBrushByPercentages(0.25, 0.5)
-         */
-        function setBrushByPercentages(a, b) {
-            let x0 = a * chartWidth,
-                x1 = b * chartWidth;
-
-            brush
-                .move(chartBrush, [x0, x1]);
         }
 
         /**
@@ -415,23 +405,6 @@ define(function(require) {
 
             brush
                 .move(chartBrush, [x0, x1]);
-        }
-
-        /**
-         * Updates visibility and position of the brush handlers
-         * @param  {Number[]} dateExtent Date range
-         * @return {void}
-         */
-        function updateHandlers(dateExtent) {
-            if (dateExtent === null) {
-                handle.attr('display', 'none');
-            } else {
-                handle
-                    .attr('display', null)
-                    .attr('transform', function(d, i) {
-                        return `translate(${dateExtent[i]},${chartHeight / 2})`;
-                    });
-            }
         }
 
         // API
