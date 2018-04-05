@@ -406,18 +406,6 @@ function buildNav(members) {
 
   }
 
-  if (members.events.length) {
-
-    members.events.forEach(function(e) {
-      if (!hasOwnProp.call(seen, e.longname)) {
-
-        nav.event.members.push(linkto(e.longname, e.longname.replace("module:", "")));
-      }
-      seen[e.longname] = true;
-    });
-
-  }
-
   if (members.namespaces.length) {
 
     members.namespaces.forEach(function(n) {

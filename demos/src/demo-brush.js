@@ -11,11 +11,13 @@ require('./helpers/resizeHelper');
 
 
 function createBrushChart() {
-    let brushChart = brush(),
-        testDataSet = new dataBuilder.BrushDataBuilder(),
-        brushContainer = d3Selection.select('.js-brush-chart-container'),
-        containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
-        dataset;
+    const brushChart = brush();
+    const testDataSet = new dataBuilder.BrushDataBuilder();
+    const brushContainer = d3Selection.select('.js-brush-chart-container');
+    const containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false;
+    let dataset;
+
+    let elementDateRange = d3Selection.select('.js-date-range');
 
     if (containerWidth) {
         dataset = testDataSet.withSimpleData().build();
@@ -29,16 +31,20 @@ function createBrushChart() {
                 d3Selection.select('.js-start-date').text(format(brushExtent[0]));
                 d3Selection.select('.js-end-date').text(format(brushExtent[1]));
 
-                d3Selection.select('.js-date-range').classed('is-hidden', false);
+                elementDateRange.classed('is-hidden', false);
             })
             .on('customBrushEnd', function(brushExtent) {
                 // eslint-disable-next-line no-console
                 console.log('rounded extent', brushExtent);
+
+                if (brushExtent[0] === null) {
+                    elementDateRange.classed('is-hidden', true);
+                }
             });
 
         brushContainer.datum(dataset).call(brushChart);
 
-        brushChart.dateRange(['9/15/2015', '1/25/2016'])
+        brushChart.dateRange(['7/15/2015', '7/25/2015'])
     }
 }
 
