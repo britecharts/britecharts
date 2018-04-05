@@ -1,3 +1,4 @@
+2.8.2
 2.8.1 - Patch
 --------------
 * Fix - Fixed label drawing interruptions with mousemove (dalerasrorov-eb)
