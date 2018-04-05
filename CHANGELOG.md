@@ -1,4 +1,7 @@
-2.8.3
+2.8.3 - Patch
+--------------
+* Fix - crosshair lines have a lower priority than tooltip and overlays
+
 2.8.2 - Patch
 --------------
 * Fix - crosshair lines have a lower priority than tooltip and overlays
