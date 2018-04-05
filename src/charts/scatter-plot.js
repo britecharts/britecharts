@@ -451,7 +451,7 @@ define(function(require) {
         function drawVerticalGridLines() {
             maskGridLines = svg.select('.grid-lines-group')
                 .selectAll('line.vertical-grid-line')
-                .data(yScale.ticks(xTicks))
+                .data(xScale.ticks(xTicks))
                 .enter()
                  .append('line')
                   .attr('class', 'vertical-grid-line')
@@ -464,6 +464,7 @@ define(function(require) {
         /**
          * Draws the points for each data element
          * on the chart group
+         * @return {void}
          * @private
         */
         function drawDataPoints() {
@@ -628,7 +629,7 @@ define(function(require) {
                     .attr('x1', xAxisPadding.left)
                     .attr('x2', chartWidth)
                     .attr('y1', (d) => yScale(d))
-                    .attr('y2', (d) => yScale(d))
+                    .attr('y2', (d) => yScale(d));
         }
 
         /**
