@@ -324,6 +324,19 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             });
         });
 
+        describe('Grid lines', () => {
+
+            it('number of gridlines corresponds to number of ticks', () => {
+                let testVerticalN = containerFixture.selectAll('.grid-lines-group .vertical-grid-line').nodes().length;
+                let testHorizontalN = containerFixture.selectAll('.grid-lines-group .horizontal-grid-line').nodes().length;
+                let testXticks = containerFixture.selectAll('.x-axis-group .tick').nodes().length;
+                let testYticks = containerFixture.selectAll('.y-axis-group .tick').nodes().length;
+
+                expect(testVerticalN).toBe(testXticks);
+                expect(testHorizontalN).toBe(testYticks);
+            });
+        });
+
         describe('Plot data points(circles)', () => {
 
             /**
@@ -556,7 +569,7 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
             it('should trigger a callback on mouse click', () => {
                 let callbackSpy = jasmine.createSpy('callback');
-                let scatterDataPoint = containerFixture.selectAll('.chart-group circle:nth-child(1)');
+                let scatterDataPoint = containerFixture.select('svg');
 
                 scatterPlot.on('customClick', callbackSpy);
                 scatterDataPoint.dispatch('click');
