@@ -39,8 +39,12 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
             })
             .yAxisLabel('Ice Cream Sales')
             .yAxisFormat('$')
+            .xAxisFormat('.1f')
             .on('customMouseOver', tooltip.show)
-            .on('customMouseMove', tooltip.update)
+            .on('customMouseMove', function (dataPoint, mousePos, chartSize) {
+                tooltip.title('Temperature (C)');
+                tooltip.update(dataPoint, mousePos, chartSize);
+            })
             .on('customMouseOut', tooltip.hide);
 
         if (optionalColorSchema) {
@@ -51,6 +55,7 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
 
         // tooltip set up
         tooltip.valueLabel('y');
+        tooltip.nameLabel('x');
         tooltip.numberFormat('$');
 
         tooltipContainer = d3Selection.select('.js-scatter-plot-chart-tooltip-container .scatter-plot .metadata-group');
@@ -78,7 +83,7 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
             })
             .maxCircleArea(15)
             .on('customMouseOver', tooltip.show)
-            .on('customMouseMove', function (dataPoint, pos, chartSize) {
+            .on('customMouseMove', function (dataPoint, mousePos, chartSize) {
                 tooltip.title(dataPoint.name);
                 // passing an empty object to not have any data
                 // in the tooltip - we want to only show the title

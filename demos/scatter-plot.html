@@ -16,18 +16,19 @@ scatterChart
     .circleOpacity(0.6)
     .grid('horizontal')
     .xAxisLabel('Temperature (C)')
-    .margin({
-        left: 60,
-        bottom: 50
-    })
     .yAxisLabel('Ice Cream Sales')
+    .xAxisFormat('.1f')
     .yAxisFormat('$')
     .on('customMouseOver', tooltip.show)
-    .on('customMouseMove', tooltip.update)
+    .on('customMouseMove', function(dataPoint, mousePos, chartSize) {
+        tooltip.title('Temperature (C)');
+        tooltip.update(dataPoint, mousePos, chartSize);
+    })
     .on('customMouseOut', tooltip.hide);
 
-// setting up tooltip
+// tooltip set up
 tooltip.valueLabel('y');
+tooltip.nameLabel('x');
 tooltip.numberFormat('$');
 
 scatterPlotContainer
