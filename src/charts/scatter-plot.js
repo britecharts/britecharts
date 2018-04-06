@@ -214,6 +214,9 @@ define(function(require) {
                 })
                 .on('mouseout', function(d) {
                     handleMouseOut(this, d);
+                })
+                .on('click', function () {
+                    handleClick(this);
                 });
         }
 
@@ -478,9 +481,6 @@ define(function(require) {
                 circles
                     .append('circle')
                     .attr('class', 'data-point data-point-highlighter')
-                    .on('click', function (d) {
-                        handleClick(this, d, chartWidth, chartHeight);
-                    })
                     .transition()
                     .delay(delay)
                     .duration(duration)
@@ -497,9 +497,6 @@ define(function(require) {
             } else {
                 circles
                     .append('circle')
-                    .on('click', function (d) {
-                        handleClick(this, d, chartWidth, chartHeight);
-                    })
                     .attr('class', 'point')
                     .attr('class', 'data-point-highlighter')
                     .style('stroke', (d) => nameColorMap[d.name])
@@ -640,6 +637,7 @@ define(function(require) {
          */
         function getPointProps(svg) {
             let mousePos = d3Selection.mouse(svg);
+
             mousePos[0] -= margin.left;
             mousePos[1] -= margin.top;
 
@@ -696,7 +694,10 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function handleClick(e, d, chartWidth, chartHeight) {
+        function handleClick(e) {
+            let { closestPoint } = getPointProps(e);
+            let d = getPointData(closestPoint);
+
             dispatcher.call('customClick', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
         }
 
