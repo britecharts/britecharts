@@ -19,7 +19,7 @@ let redrawCharts;
 function createScatterPlotWithSingleSource(optionalColorSchema) {
     let scatterChart = scatterPlot();
     let tooltip = miniTooltip();
-    let scatterPlotContainer = d3Selection.select('.js-scatter-plot-with-single-source');
+    let scatterPlotContainer = d3Selection.select('.js-scatter-plot-chart-tooltip-container');
     let containerWidth = scatterPlotContainer.node() ? scatterPlotContainer.node().getBoundingClientRect().width : false;
     let dataset, tooltipContainer;
 
@@ -53,7 +53,7 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
         tooltip.valueLabel('y');
         tooltip.numberFormat('$');
 
-        tooltipContainer = d3Selection.select('.js-scatter-plot-with-single-source .scatter-plot .metadata-group');
+        tooltipContainer = d3Selection.select('.js-scatter-plot-chart-tooltip-container .scatter-plot .metadata-group');
         tooltipContainer.datum([]).call(tooltip);
     }
 }
@@ -94,7 +94,7 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
 }
 
 // Show charts if container available
-if (d3Selection.select('.js-scatter-plot-with-single-source').node()) {
+if (d3Selection.select('.js-scatter-plot-chart-tooltip-container').node()) {
     createScatterPlotWithSingleSource()
     createScatterPlotWithIncreasedAreaAndHollowCircles();
 
