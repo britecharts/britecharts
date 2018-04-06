@@ -69,6 +69,7 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
         dataset = aTestDataSet().withFourNames().build();
 
         scatterChart
+            .grid('full')
             .width(containerWidth)
             .hasCrossHairs(true)
             .hasHollowCircles(true)
