@@ -556,7 +556,7 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
             it('should trigger a callback on mouse click', () => {
                 let callbackSpy = jasmine.createSpy('callback');
-                let scatterDataPoint = containerFixture.selectAll('.chart-group circle:nth-child(1)');
+                let scatterDataPoint = containerFixture.select('svg');
 
                 scatterPlot.on('customClick', callbackSpy);
                 scatterDataPoint.dispatch('click');
