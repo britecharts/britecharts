@@ -46,18 +46,25 @@ function createBrushChart() {
 
         brushChart.dateRange(['7/15/2015', '7/25/2015'])
     }
+
+    return brushChart;
 }
 
 // Show charts if container available
 if (d3Selection.select('.js-brush-chart-container').node()){
-    createBrushChart();
+    let brushChart = createBrushChart();
 
-    let redrawCharts = function(){
+    const redrawCharts = function () {
         d3Selection.select('.brush-chart').remove();
 
-        createBrushChart();
+        brushChart = createBrushChart();
     };
 
     // Redraw charts on window resize
     PubSub.subscribe('resize', redrawCharts);
+
+    d3Selection.select('#clear-selection').on('click', function (event) {
+        brushChart.dateRange([null, null]);
+        d3Selection.event.preventDefault();
+    });
 }

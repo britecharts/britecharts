@@ -355,10 +355,13 @@ define(function(require) {
          * @return {void}
          */
         function handleBrushStart() {
-            let s = d3Selection.event.selection,
-                dateExtent = s.map(xScale.invert);
+            const selection = d3Selection.event.selection;
 
-            dispatcher.call('customBrushStart', this, dateExtent);
+            if (!selection) {
+                return;
+            }
+
+            dispatcher.call('customBrushStart', this, selection.map(xScale.invert));
         }
 
         /**
@@ -373,10 +376,10 @@ define(function(require) {
             }
 
             let dateExtentRounded = [null, null];
+            const selection = d3Selection.event.selection;
 
-            if (d3Selection.event.selection) {
-                let s = d3Selection.event.selection;
-                let dateExtent = s.map(xScale.invert);
+            if (selection) {
+                let dateExtent = selection.map(xScale.invert);
 
                 dateExtentRounded = dateExtent.map(d3Time.timeDay.round);
 
@@ -400,11 +403,16 @@ define(function(require) {
          * @param {String | Date} dateB End Date
          */
         function setBrushByDates(dateA, dateB) {
-            let x0 = xScale(new Date(dateA)),
-                x1 = xScale(new Date(dateB));
+            let selection = null;
 
-            brush
-                .move(chartBrush, [x0, x1]);
+            if (dateA !== null) {
+                selection = [
+                    xScale(new Date(dateA)),
+                    xScale(new Date(dateB))
+                ];
+            }
+
+            brush.move(chartBrush, selection);
         }
 
         // API
