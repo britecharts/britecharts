@@ -18,7 +18,7 @@ let redrawCharts;
 
 function createScatterPlotWithSingleSource(optionalColorSchema) {
     let scatterChart = scatterPlot();
-    let tooltip = miniTooltip();
+    let tooltip = miniTooltip().title('Temperature (C)');
     let scatterPlotContainer = d3Selection.select('.js-scatter-plot-chart-tooltip-container');
     let containerWidth = scatterPlotContainer.node() ? scatterPlotContainer.node().getBoundingClientRect().width : false;
     let dataset, tooltipContainer;
@@ -42,7 +42,6 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
             .xAxisFormat('.1f')
             .on('customMouseOver', tooltip.show)
             .on('customMouseMove', function (dataPoint, mousePos, chartSize) {
-                tooltip.title('Temperature (C)');
                 tooltip.update(dataPoint, mousePos, chartSize);
             })
             .on('customMouseOut', tooltip.hide);
@@ -54,9 +53,9 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
         scatterPlotContainer.datum(dataset).call(scatterChart);
 
         // tooltip set up
-        tooltip.valueLabel('y');
-        tooltip.nameLabel('x');
-        tooltip.numberFormat('$');
+        tooltip.valueLabel('y')
+            .nameLabel('x')
+            .numberFormat('$');
 
         tooltipContainer = d3Selection.select('.js-scatter-plot-chart-tooltip-container .scatter-plot .metadata-group');
         tooltipContainer.datum([]).call(tooltip);
@@ -87,7 +86,7 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
                 tooltip.title(dataPoint.name);
                 // passing an empty object to not have any data
                 // in the tooltip - we want to only show the title
-                tooltip.update({}, pos, chartSize);
+                tooltip.update({}, mousePos, chartSize);
             })
             .on('customMouseOut', tooltip.hide);
 
