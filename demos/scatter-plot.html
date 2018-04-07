@@ -4,7 +4,7 @@
             <div class="col-md-8">
                 <article>
                     <h2>Scatter Plot with single source and horizontal grid</h2>
-                    <div class="js-scatter-plot-with-single-source scatter-plot-container card--chart"></div>
+                    <div class="js-scatter-plot-chart-tooltip-container scatter-plot-container card--chart"></div>
                 </article>
             </div>
             <div class="col-md-4 sidebar">
@@ -16,19 +16,20 @@ scatterChart
     .circleOpacity(0.6)
     .grid('horizontal')
     .xAxisLabel('Temperature (C)')
-    .margin({
-        left: 60,
-        bottom: 50
-    })
     .yAxisLabel('Ice Cream Sales')
+    .xAxisFormat('.1f')
     .yAxisFormat('$')
     .on('customMouseOver', tooltip.show)
-    .on('customMouseMove', tooltip.update)
+    .on('customMouseMove', function(dataPoint, mousePos, chartSize) {
+        tooltip.title('Temperature (C)');
+        tooltip.update(dataPoint, mousePos, chartSize);
+    })
     .on('customMouseOut', tooltip.hide);
 
-// setting up tooltip
-tooltip.valueLabel('y');
-tooltip.numberFormat('$');
+// tooltip set up
+tooltip.valueLabel('y')
+    .nameLabel('x')
+    .numberFormat('$');
 
 scatterPlotContainer
     .datum(dataset)
@@ -65,11 +66,11 @@ scatterChart
     })
     .maxCircleArea(15)
     .on('customMouseOver', tooltip.show)
-    .on('customMouseMove', function (dataPoint, pos, chartSize) {
+    .on('customMouseMove', function (dataPoint, mousePos, chartSize) {
         tooltip.title(dataPoint.name);
         // passing an empty object to not have any data
         // in the tooltip - we want to only show the title
-        tooltip.update({}, pos, chartSize);
+        tooltip.update({}, mousePos, chartSize);
     })
     .on('customMouseOut', tooltip.hide);
 
