@@ -403,11 +403,16 @@ define(function(require) {
          * @param {String | Date} dateB End Date
          */
         function setBrushByDates(dateA, dateB) {
-            let x0 = xScale(new Date(dateA)),
-                x1 = xScale(new Date(dateB));
+            let selection = null;
 
-            brush
-                .move(chartBrush, [x0, x1]);
+            if (dateA !== null) {
+                selection = [
+                    xScale(new Date(dateA)),
+                    xScale(new Date(dateB))
+                ];
+            }
+
+            brush.move(chartBrush, selection);
         }
 
         // API
