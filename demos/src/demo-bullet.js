@@ -27,10 +27,17 @@ function createBulletChart() {
 }
 
 // Show charts if container available
+<<<<<<< HEAD
 if (d3Selection.select('.js-bullet-chart-container').node()) {
     createBulletChart();
 
     let redrawCharts = function() {
+=======
+if (d3Selection.select('.js bullet-chart-container').node()){
+    createBulletChart();
+
+    let redrawCharts = function(){
+>>>>>>> Added bullet scripts
         d3Selection.select('.bullet-chart').remove();
 
         createBulletChart();
