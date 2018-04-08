@@ -5,7 +5,7 @@
             "subtitle": "GHz",
             "ranges": [1500, 2100, 3500],
             "measures": [1800, 2200],
-            "markers": [1800]
+            "markers": [2600]
         },
         {
             "title": "CPU 2 Load",
