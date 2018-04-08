@@ -69,6 +69,10 @@ define(function(require) {
             data,
             chartWidth, chartHeight,
             xScale,
+
+            opacityScale,
+            opacityDiff = 0.2,
+
             colorSchema = colorHelper.singleColors.aloeGreen,
             colorList,
             colorMap,
@@ -77,6 +81,7 @@ define(function(require) {
             numberFormat = NUMBER_FORMAT,
 
             xAxis,
+            startMaxRangeOpacity = 0.6,
             w0,
 
             isHorizontal = false,
@@ -178,6 +183,9 @@ define(function(require) {
 
             // Derive width scales from x scales
             w0 = bulletWidth(xScale);
+
+            // set up opacity scale
+            opacityScale = ranges.map((d, i) => startMaxRangeOpacity - (i * opacityDiff)).reverse();
         }
 
         /**
@@ -244,6 +252,7 @@ define(function(require) {
                 .enter()
                 .append('rect')
                   .attr('fill', colorSchema[0])
+                  .attr('opacity', (d, i) => opacityScale[i])
                   .attr('class', (d, i) => `range r${i}`)
                   .attr('width', w0)
                   .attr('height', chartHeight)
@@ -631,6 +640,23 @@ define(function(require) {
 
             return this;
         };
+
+
+        /**
+         * Gets or Sets the starting point of the copacity
+         * range.
+         * @param  {Number} _x D        desired startMaxRangeOpacity for chart
+         * @return {Number | module}    current startMaxRangeOpacity or Chart module to chain calls
+         * @public
+         */
+        exports.startMaxRangeOpacity = function(_x) {
+            if (!arguments.length) {
+                return maxRangeOpacity;
+            }
+            maxRangeOpacity = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the margin of the chart
