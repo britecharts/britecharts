@@ -216,5 +216,5 @@
 .bullet-chart .marker-line {
   shape-rendering: crispEdges; }
 
-.bullet-chart .percentage-label {
-  fill: #666A73; }
+.bullet-chart .axis-group path {
+  display: none; }

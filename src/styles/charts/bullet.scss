@@ -6,11 +6,13 @@ $bar-stroke-width: 0;
 
 .bullet-chart {
 
+    // lines
     .marker-line {
         shape-rendering: crispEdges;
     }
 
-    .percentage-label {
-        fill: $grey-600;
+    // Axes
+    .axis-group path {
+        display: none;
     }
 }

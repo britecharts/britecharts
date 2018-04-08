@@ -78,6 +78,8 @@ define(function(require) {
             percentageAxisToMaxRatio = 1,
             numberFormat = '',
 
+            baseLine,
+
             xAxis,
             axisPaddingBetweenChart = 5,
             startMaxRangeOpacity = 0.6,
@@ -243,6 +245,8 @@ define(function(require) {
             svg.select('.axis-group')
                 .attr('transform', `translate(0, ${chartHeight + axisPaddingBetweenChart})`)
                 .call(xAxis);
+
+            drawHorizontalExtendedLine();
         }
 
         /**
@@ -354,56 +358,18 @@ define(function(require) {
         }
 
         /**
-         * Draws a vertical line to extend y-axis till the edges
-         * @return {void}
-         */
-        function drawVerticalExtendedLine() {
-            baseLine = svg.select('.grid-lines-group')
-                .selectAll('line.extended-y-line')
-                .data([0])
-                .enter()
-                  .append('line')
-                    .attr('class', 'extended-y-line')
-                    .attr('y1', (xAxisPadding.bottom))
-                    .attr('y2', chartHeight)
-                    .attr('x1', 0)
-                    .attr('x2', 0);
-        }
-
-        /**
-         * Draws the grid lines for a vertical bar chart
-         * @return {void}
-         */
-        function drawVerticalGridLines() {
-            maskGridLines = svg.select('.grid-lines-group')
-                .selectAll('line.horizontal-grid-line')
-                .data(yScale.ticks(4))
-                .enter()
-                  .append('line')
-                    .attr('class', 'horizontal-grid-line')
-                    .attr('x1', (xAxisPadding.left))
-                    .attr('x2', chartWidth)
-                    .attr('y1', (d) => yScale(d))
-                    .attr('y2', (d) => yScale(d))
-
-            drawHorizontalExtendedLine();
-        }
-
-        /**
          * Draws a vertical line to extend x-axis till the edges
          * @return {void}
          */
         function drawHorizontalExtendedLine() {
-            baseLine = svg.select('.grid-lines-group')
+            baseLine = svg.select('.axis-group')
                 .selectAll('line.extended-x-line')
                 .data([0])
                 .enter()
                   .append('line')
                     .attr('class', 'extended-x-line')
-                    .attr('x1', (xAxisPadding.left))
-                    .attr('x2', chartWidth)
-                    .attr('y1', chartHeight)
-                    .attr('y2', chartHeight);
+                    .attr('x1', 0)
+                    .attr('x2', chartWidth);
         }
 
         /**
