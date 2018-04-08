@@ -79,6 +79,7 @@ define(function(require) {
             numberFormat = '',
 
             xAxis,
+            axisPaddingBetweenChart = 5,
             startMaxRangeOpacity = 0.6,
             markerStrokeWidth = 5,
             w0,
@@ -240,7 +241,7 @@ define(function(require) {
          */
         function drawAxis() {
             svg.select('.axis-group')
-                .attr('transform', `translate(0, ${chartHeight})`)
+                .attr('transform', `translate(0, ${chartHeight + axisPaddingBetweenChart})`)
                 .call(xAxis);
         }
 
@@ -611,17 +612,16 @@ define(function(require) {
         };
 
         /**
-         * Space between y axis and chart
-         * (Default 10)
-         * @param  {Number} _x          Space between y axis and chart
-         * @return {Number| module}     Current value of yAxisPaddingBetweenChart or Chart module to chain calls
+         * Space between axis and chart
+         * @param  {Number} _x=5          Space between y axis and chart
+         * @return {Number| module}     Current value of axisPaddingBetweenChart or Chart module to chain calls
          * @public
          */
-        exports.yAxisPaddingBetweenChart = function(_x) {
+        exports.axisPaddingBetweenChart = function(_x) {
             if (!arguments.length) {
-                return yAxisPaddingBetweenChart;
+                return axisPaddingBetweenChart;
             }
-            yAxisPaddingBetweenChart = _x;
+            axisPaddingBetweenChart = _x;
 
             return this;
         };
