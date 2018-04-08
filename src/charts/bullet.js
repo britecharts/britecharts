@@ -14,9 +14,6 @@ define(function(require) {
     const {exportChart} = require('./helpers/export');
     const colorHelper = require('./helpers/color');
 
-    const PERCENTAGE_FORMAT = '%';
-    const NUMBER_FORMAT = ',f';
-
 
     /**
      * @typedef BulletChartData
@@ -76,9 +73,10 @@ define(function(require) {
             measureColor = colorHelper.colorSchemas.grey[4],
             colorList,
             colorMap,
-            xTicks = 5,
+            xTicks = 6,
+            tickPadding = 5,
             percentageAxisToMaxRatio = 1,
-            numberFormat = NUMBER_FORMAT,
+            numberFormat = '',
 
             xAxis,
             startMaxRangeOpacity = 0.6,
@@ -122,11 +120,9 @@ define(function(require) {
 
                 buildScales();
                 buildSVG(this);
+                buildAxis();
                 drawBullet();
-                // buildAxis();
-                // drawGridLines();
-                // drawBars();
-                // drawAxis();
+                drawAxis();
 
             });
         }
@@ -136,18 +132,10 @@ define(function(require) {
          * @private
          */
         function buildAxis() {
-            if (isHorizontal) {
-                xAxis = d3Axis.axisBottom(xScale)
-                    .ticks(xTicks, numberFormat)
-                    .tickSizeInner([-chartHeight]);
-
-                yAxis = d3Axis.axisLeft(yScale);
-            } else {
-                xAxis = d3Axis.axisBottom(xScale);
-
-                yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(yTicks, numberFormat)
-            }
+            xAxis = d3Axis.axisBottom(xScale)
+                .ticks(xTicks)
+                .tickPadding(tickPadding)
+                .tickFormat(d3Format.format(numberFormat));
         }
 
         /**
@@ -166,7 +154,7 @@ define(function(require) {
             container
                 .append('g').classed('chart-group', true);
             container
-                .append('g').classed('axis', true);
+                .append('g').classed('axis-group', true);
             container
                 .append('g').classed('metadata-group', true);
         }
@@ -242,6 +230,18 @@ define(function(require) {
             ({title, subtitle, ranges, measures, markers} = newData);
 
             return newData;
+        }
+
+        /**
+         * Draws the x and y axis on the svg object within their
+         * respective groups along with their axis labels
+         * @return {void}
+         * @private
+         */
+        function drawAxis() {
+            svg.select('.axis-group')
+                .attr('transform', `translate(0, ${chartHeight})`)
+                .call(xAxis);
         }
 
         /**
