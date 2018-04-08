@@ -20,8 +20,7 @@ function createBulletChart() {
         dataset = testDataSet.withCpuData().build();
 
         bulletChart
-            .width(containerWidth)
-            .height(400);
+            .width(containerWidth);
 
         bulletContainer.datum(dataset[0]).call(bulletChart);
     }
