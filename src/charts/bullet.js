@@ -386,6 +386,23 @@ define(function(require) {
             return this;
         }
 
+
+        /**
+         * Gets or Sets the starting point of the copacity
+         * range.
+         * @param  {Number} _x D        desired startMaxRangeOpacity for chart
+         * @return {Number | module}    current startMaxRangeOpacity or Chart module to chain calls
+         * @public
+         */
+        exports.startMaxRangeOpacity = function(_x) {
+            if (!arguments.length) {
+                return maxRangeOpacity;
+            }
+            maxRangeOpacity = _x;
+
+            return this;
+        }
+
         /**
          * Gets or Sets the margin of the chart
          * @param  {Object} _x Margin object to get/set
