@@ -4,24 +4,11 @@ $bar-color: desaturate($bc-green, 20%);
 $bar-color-hover: $bc-e-green-600;
 $bar-stroke-width: 0;
 
-.bar-chart {
-    // Bars
-    .bar {
+.bullet-chart {
+
+    .marker-line {
         shape-rendering: crispEdges;
     }
-
-    // Axes
-    // .axis {
-    //     path {
-    //         display: none;
-    //     }
-    // }
-
-    // .tick {
-    //     line {
-    //         display: none;
-    //     }
-    // }
 
     .percentage-label {
         fill: $grey-600;

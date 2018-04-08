@@ -64,9 +64,8 @@ define(function(require) {
                 bottom: 30,
                 left: 40
             },
-            width = 960,
-            height = 150,
             data,
+            width = 960, height = 150,
             chartWidth, chartHeight,
             xScale,
 
@@ -83,6 +82,7 @@ define(function(require) {
 
             xAxis,
             startMaxRangeOpacity = 0.6,
+            markerStrokeWidth = 5,
             w0,
 
             isHorizontal = false,
@@ -96,6 +96,8 @@ define(function(require) {
 
             svg,
             ease = d3Ease.easeQuadInOut,
+
+            getMeasureBarHeight = () => chartHeight / 3,
 
             // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
@@ -120,7 +122,7 @@ define(function(require) {
 
                 buildScales();
                 buildSVG(this);
-                drawRanges();
+                drawBullet();
                 // buildAxis();
                 // drawGridLines();
                 // drawBars();
@@ -246,8 +248,8 @@ define(function(require) {
          * Draws the measures of the bullet chart
          * @private
          */
-        function drawRanges() {
-            let range = svg.select('.chart-group')
+        function drawBullet() {
+            let rangesEl = svg.select('.chart-group')
                 .selectAll('rect.range')
                 .data(ranges)
                 .enter()
@@ -259,7 +261,7 @@ define(function(require) {
                   .attr('height', chartHeight)
                   .attr('x', isReverse ? xScale : 0);
 
-            let measure = svg.select('.chart-group')
+            let measuresEl = svg.select('.chart-group')
                 .selectAll('rect.measure')
                 .data(measures)
                 .enter()
@@ -267,122 +269,22 @@ define(function(require) {
                   .attr('fill', measureColor)
                   .attr('class', (d, i) => `measure m${i}`)
                   .attr('width', w0)
-                  .attr('height', chartHeight / 3)
+                  .attr('height', getMeasureBarHeight)
                   .attr('x', isReverse ? xScale : 0)
-                  .attr('y', chartHeight / 3);
+                  .attr('y', getMeasureBarHeight);
 
-
-        }
-
-        /**
-         * Draws and animates the bars along the x axis
-         * @param  {D3Selection} bars Selection of bars
-         * @return {void}
-         */
-        function drawAnimatedHorizontalBars(bars) {
-            // Enter + Update
-            bars.enter()
-              .append('rect')
-                .classed('bar', true)
-                .attr('x', 0)
-                .attr('y', chartHeight)
-                .attr('height', yScale.bandwidth())
-                .attr('width', ({value}) => xScale(value))
-                .on('mouseover', function(d, index, barList) {
-                    handleMouseOver(this, d, barList, chartWidth, chartHeight);
-                })
-                .on('mousemove', function(d) {
-                    handleMouseMove(this, d, chartWidth, chartHeight);
-                })
-                .on('mouseout', function(d, index, barList) {
-                    handleMouseOut(this, d, barList, chartWidth, chartHeight);
-                })
-                .on('click', function(d) {
-                    handleClick(this, d, chartWidth, chartHeight);
-                });
-
-            bars
-                .attr('x', 0)
-                .attr('y', ({name}) => yScale(name))
-                .attr('height', yScale.bandwidth())
-                .attr('fill', ({name}) => colorMap(name))
-                .transition()
-                .duration(animationDuration)
-                .delay(interBarDelay)
-                .ease(ease)
-                .attr('width', ({value}) => xScale(value));
-        }
-
-        /**
-         * Draws and animates the bars along the y axis
-         * @param  {D3Selection} bars Selection of bars
-         * @return {void}
-         */
-        function drawAnimatedVerticalBars(bars) {
-            // Enter + Update
-            bars.enter()
-              .append('rect')
-                .classed('bar', true)
-                .attr('x', chartWidth)
-                .attr('y', ({value}) => yScale(value))
-                .attr('width', xScale.bandwidth())
-                .attr('height', ({value}) => chartHeight - yScale(value))
-                .on('mouseover', function(d, index, barList) {
-                    handleMouseOver(this, d, barList, chartWidth, chartHeight);
-                })
-                .on('mousemove', function(d) {
-                    handleMouseMove(this, d, chartWidth, chartHeight);
-                })
-                .on('mouseout', function(d, index, barList) {
-                    handleMouseOut(this, d, barList, chartWidth, chartHeight);
-                })
-                .on('click', function(d) {
-                    handleClick(this, d, chartWidth, chartHeight);
-                })
-              .merge(bars)
-                .attr('x', ({name}) => xScale(name))
-                .attr('width', xScale.bandwidth())
-                .attr('fill', ({name}) => colorMap(name))
-                .transition()
-                .duration(animationDuration)
-                .delay(interBarDelay)
-                .ease(ease)
-                .attr('y', ({value}) => yScale(value))
-                .attr('height', ({value}) => chartHeight - yScale(value));
-        }
-
-        /**
-         * Draws the bars along the y axis
-         * @param  {D3Selection} bars Selection of bars
-         * @return {void}
-         */
-        function drawVerticalBars(bars) {
-            // Enter + Update
-            bars.enter()
-              .append('rect')
-                .classed('bar', true)
-                .attr('x', chartWidth)
-                .attr('y', ({value}) => yScale(value))
-                .attr('width', xScale.bandwidth())
-                .attr('height', ({value}) => chartHeight - yScale(value))
-                .on('mouseover', function(d, index, barList) {
-                    handleMouseOver(this, d, barList, chartWidth, chartHeight);
-                })
-                .on('mousemove', function(d) {
-                    handleMouseMove(this, d, chartWidth, chartHeight);
-                })
-                .on('mouseout', function(d, index, barList) {
-                    handleMouseOut(this, d, barList, chartWidth, chartHeight);
-                })
-                .on('click', function(d) {
-                    handleClick(this, d, chartWidth, chartHeight);
-                })
-              .merge(bars)
-                .attr('x', ({name}) => xScale(name))
-                .attr('y', ({value}) => yScale(value))
-                .attr('width', xScale.bandwidth())
-                .attr('height', ({value}) => chartHeight - yScale(value))
-                .attr('fill', ({name}) => colorMap(name));
+            let markersEl = svg.select('.chart-group')
+                .selectAll('line.marker-line')
+                .data(markers)
+                .enter()
+                .append('line')
+                  .attr('class', 'marker-line')
+                  .attr('stroke', measureColor)
+                  .attr('stroke-width', markerStrokeWidth)
+                  .attr('x1', xScale)
+                  .attr('x2', xScale)
+                  .attr('y1', 0)
+                  .attr('y2', chartHeight);
         }
 
         /**
@@ -413,49 +315,6 @@ define(function(require) {
                 .attr('y', labelYPosition)
                 .text(text)
                 .attr('font-size', labelsSize + 'px')
-        }
-
-        /**
-         * Draws the bar elements within the chart group
-         * @private
-         */
-        function drawBars() {
-            let bars;
-
-            if (isAnimated) {
-                bars = svg.select('.chart-group').selectAll('.bar')
-                    .data(dataZeroed);
-
-                if (isHorizontal) {
-                    drawHorizontalBars(bars);
-                } else {
-                    drawVerticalBars(bars);
-                }
-
-                bars = svg.select('.chart-group').selectAll('.bar')
-                    .data(data);
-
-                if (isHorizontal) {
-                    drawAnimatedHorizontalBars(bars);
-                } else {
-                    drawAnimatedVerticalBars(bars);
-                }
-            } else {
-                bars = svg.select('.chart-group').selectAll('.bar')
-                    .data(data);
-
-                if (isHorizontal) {
-                    drawHorizontalBars(bars);
-                } else {
-                    drawVerticalBars(bars);
-                }
-            }
-
-            // Exit
-            bars.exit()
-                .transition()
-                .style('opacity', 0)
-                .remove();
         }
 
         /**

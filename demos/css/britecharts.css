@@ -212,3 +212,9 @@
 
 .brush-chart .axis path {
   display: none; }
+
+.bullet-chart .marker-line {
+  shape-rendering: crispEdges; }
+
+.bullet-chart .percentage-label {
+  fill: #666A73; }
