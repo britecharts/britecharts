@@ -269,7 +269,9 @@ define(function(require) {
                   .attr('width', w0)
                   .attr('height', chartHeight / 3)
                   .attr('x', isReverse ? xScale : 0)
-                  .attr('y', chartHeight / 3)
+                  .attr('y', chartHeight / 3);
+
+
         }
 
         /**
