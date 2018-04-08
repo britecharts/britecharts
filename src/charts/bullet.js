@@ -74,6 +74,7 @@ define(function(require) {
             opacityDiff = 0.2,
 
             colorSchema = colorHelper.singleColors.aloeGreen,
+            measureColor = colorHelper.colorSchemas.grey[4],
             colorList,
             colorMap,
             xTicks = 5,
@@ -257,6 +258,18 @@ define(function(require) {
                   .attr('width', w0)
                   .attr('height', chartHeight)
                   .attr('x', isReverse ? xScale : 0);
+
+            let measure = svg.select('.chart-group')
+                .selectAll('rect.measure')
+                .data(measures)
+                .enter()
+                .append('rect')
+                  .attr('fill', measureColor)
+                  .attr('class', (d, i) => `measure m${i}`)
+                  .attr('width', w0)
+                  .attr('height', chartHeight / 3)
+                  .attr('x', isReverse ? xScale : 0)
+                  .attr('y', chartHeight / 3)
         }
 
         /**
