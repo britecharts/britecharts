@@ -76,7 +76,8 @@ define(function(require) {
             percentageAxisToMaxRatio = 1,
             numberFormat = NUMBER_FORMAT,
 
-            xAxis, yAxis,
+            xAxis,
+            w0,
 
             isHorizontal = false,
             isReverse = false,
@@ -112,8 +113,9 @@ define(function(require) {
                 data = cleanData(_data);
 
                 buildScales();
+                buildSVG(this);
+                drawRanges();
                 // buildAxis();
-                // buildSVG(this);
                 // drawGridLines();
                 // drawBars();
                 // drawAxis();
@@ -156,11 +158,7 @@ define(function(require) {
             container
                 .append('g').classed('chart-group', true);
             container
-                .append('g').classed('x-axis-group axis', true);
-            container
-                .append('g')
-                .attr('transform', `translate(${-1 * (yAxisPaddingBetweenChart)}, 0)`)
-                .classed('y-axis-group axis', true);
+                .append('g').classed('axis', true);
             container
                 .append('g').classed('metadata-group', true);
         }
@@ -176,7 +174,9 @@ define(function(require) {
             xScale = d3Scale.scaleLinear()
                 .domain([0, Math.max(ranges[0], markers[0], measures[0])])
                 .range(decidedRange);
-            debugger;
+
+            // calculate width for bullet
+            w0 = bulletWidth(xScale);
         }
 
         /**
@@ -196,6 +196,18 @@ define(function(require) {
             svg
                 .attr('width', width)
                 .attr('height', height);
+        }
+
+        /**
+         * Calculates bullet width
+         * @private
+         */
+        function bulletWidth(x) {
+            const x0 = x(0);
+
+            return function (d) {
+                return Math.abs(x(d) - x0);
+            }
         }
 
         /**
@@ -221,30 +233,19 @@ define(function(require) {
         }
 
         /**
-         * Utility function that wraps a text into the given width
-         * @param  {D3Selection} text         Text to write
-         * @param  {Number} containerWidth
+         * Draws the measures of the bullet chart
          * @private
          */
-        function wrapText(text, containerWidth) {
-            textHelper.wrapTextWithEllipses(text, containerWidth, 0, yAxisLineWrapLimit)
-        }
-
-        /**
-         * Draws the x and y axis on the svg object within their
-         * respective groups
-         * @private
-         */
-        function drawAxis() {
-            svg.select('.x-axis-group.axis')
-                .attr('transform', `translate(0, ${chartHeight})`)
-                .call(xAxis);
-
-            svg.select('.y-axis-group.axis')
-                .call(yAxis);
-
-            svg.selectAll('.y-axis-group .tick text')
-                .call(wrapText, margin.left - yAxisPaddingBetweenChart)
+        function drawRanges() {
+            let range = svg.select('.chart-group')
+                .selectAll('rect.range')
+                .data(ranges)
+                .enter()
+                  .append('rect')
+                  .attr('class', (d, i) => `range r${i}`)
+                  .attr('width', w0)
+                  .attr('height', height)
+                  .attr('x', isReverse ? xScale : 0);
         }
 
         /**
