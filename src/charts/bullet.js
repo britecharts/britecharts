@@ -176,7 +176,7 @@ define(function(require) {
                 .rangeRound(decidedRange)
                 .nice();
 
-            // calculate width for bullet
+            // Derive width scales from x scales
             w0 = bulletWidth(xScale);
         }
 
