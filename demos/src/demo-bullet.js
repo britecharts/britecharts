@@ -23,15 +23,15 @@ function createBulletChart() {
             .width(containerWidth)
             .height(400);
 
-        bulletContainer.datum(dataset).call(bulletChart);
+        bulletContainer.datum(dataset[0]).call(bulletChart);
     }
 }
 
 // Show charts if container available
-if (d3Selection.select('.js bullet-chart-container').node()){
+if (d3Selection.select('.js-bullet-chart-container').node()) {
     createBulletChart();
 
-    let redrawCharts = function(){
+    let redrawCharts = function() {
         d3Selection.select('.bullet-chart').remove();
 
         createBulletChart();

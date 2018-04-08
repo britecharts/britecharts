@@ -7,7 +7,7 @@ define(function(require) {
 
 
     function BulletChartDataBuilder(config){
-        this.Klass = BrushDataBuilder;
+        this.Klass = BulletChartDataBuilder;
 
         this.config = _.defaults({}, config);
 
