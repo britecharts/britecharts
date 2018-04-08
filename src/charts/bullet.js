@@ -169,11 +169,12 @@ define(function(require) {
          * @private
          */
         function buildScales() {
-            const decidedRange = isReverse ? [width, 0] : [0, width];
+            const decidedRange = isReverse ? [chartWidth, 0] : [0, chartWidth];
 
             xScale = d3Scale.scaleLinear()
                 .domain([0, Math.max(ranges[0], markers[0], measures[0])])
-                .range(decidedRange);
+                .rangeRound(decidedRange)
+                .nice();
 
             // calculate width for bullet
             w0 = bulletWidth(xScale);
@@ -219,15 +220,15 @@ define(function(require) {
          * @private
          */
         function cleanData(originalData) {
-            ({title, subtitle, ranges, measures, markers} = originalData);
-
             const newData = {
-                ranges: ranges.slice().sort(),
-                measures: measures.slice().sort(),
-                markers: markers.slice().sort(),
+                ranges: originalData.ranges.slice().sort().reverse(),
+                measures: originalData.measures.slice().sort().reverse(),
+                markers: originalData.markers.slice().sort().reverse(),
                 subtitle,
                 title
             };
+
+            ({title, subtitle, ranges, measures, markers} = newData);
 
             return newData;
         }
@@ -241,45 +242,12 @@ define(function(require) {
                 .selectAll('rect.range')
                 .data(ranges)
                 .enter()
-                  .append('rect')
+                .append('rect')
+                  .attr('fill', colorSchema[0])
                   .attr('class', (d, i) => `range r${i}`)
                   .attr('width', w0)
-                  .attr('height', height)
+                  .attr('height', chartHeight)
                   .attr('x', isReverse ? xScale : 0);
-        }
-
-        /**
-         * Draws the bars along the x axis
-         * @param  {D3Selection} bars Selection of bars
-         * @return {void}
-         */
-        function drawHorizontalBars(bars) {
-            // Enter + Update
-            bars.enter()
-              .append('rect')
-                .classed('bar', true)
-                .attr('y', chartHeight)
-                .attr('x', 0)
-                .attr('height', yScale.bandwidth())
-                .attr('width', ({value}) => xScale(value))
-                .on('mouseover', function(d, index, barList) {
-                    handleMouseOver(this, d, barList, chartWidth, chartHeight);
-                })
-                .on('mousemove', function(d) {
-                    handleMouseMove(this, d, chartWidth, chartHeight);
-                })
-                .on('mouseout', function(d, index, barList) {
-                    handleMouseOut(this, d, barList, chartWidth, chartHeight);
-                })
-                .on('click', function(d) {
-                    handleClick(this, d, chartWidth, chartHeight);
-                })
-              .merge(bars)
-                .attr('x', 0)
-                .attr('y', ({name}) => yScale(name))
-                .attr('height', yScale.bandwidth())
-                .attr('width', ({value}) => xScale(value))
-                .attr('fill', ({name}) => colorMap(name));
         }
 
         /**
