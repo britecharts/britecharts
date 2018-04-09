@@ -13,6 +13,7 @@ exports.CHARTS = {
     stackedBar: './src/charts/stacked-bar.js',
     groupedBar: './src/charts/grouped-bar.js',
     step: './src/charts/step.js',
+    bullet: './src/charts/bullet.js',
     brush: './src/charts/brush.js',
     loading: ['./src/charts/helpers/load.js'],
     // hack to make webpack use colors as an entry point while its also a dependency of the charts above
@@ -29,6 +30,7 @@ exports.DEMOS = {
     'demo-scatter-plot': './demos/src/demo-scatter-plot.js',
     'demo-sparkline': './demos/src/demo-sparkline.js',
     'demo-step': './demos/src/demo-step.js',
+    'demo-bullet': './demos/src/demo-bullet.js',
     'demo-brush': './demos/src/demo-brush.js',
     'demo-kitchen-sink': './demos/src/demo-kitchen-sink.js',
     'demo-legend': './demos/src/demo-legend.js'

@@ -10,3 +10,4 @@ require('./demo-step');
 require('./demo-brush');
 require('./demo-legend');
 require('./demo-scatter-plot');
+require('./demo-bullet');

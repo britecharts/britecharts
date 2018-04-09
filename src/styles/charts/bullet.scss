@@ -1,0 +1,14 @@
+@import "../helpers/_variables.scss";
+
+.bullet-chart {
+
+    // lines
+    .marker-line {
+        shape-rendering: crispEdges;
+    }
+
+    // Axes
+    .axis-group path {
+        display: none;
+    }
+}
