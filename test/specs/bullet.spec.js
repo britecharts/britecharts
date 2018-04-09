@@ -227,12 +227,11 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
 
             it('when render, should have proper attributes', () => {
                 let expectedClass = 'measure m';
-                let expectedFill = '#ADB0B6';
                 let measureBars = containerFixture.selectAll('rect.measure').nodes();
 
                 measureBars.forEach((measureBar, i) => {
                     expect(measureBar).toHaveAttr('class', `${expectedClass}${i}`);
-                    expect(measureBar).toHaveAttr('fill', expectedFill);
+                    expect(measureBar).toHaveAttr('fill');
                     expect(measureBar).toHaveAttr('x');
                     expect(measureBar).toHaveAttr('y');
                     expect(measureBar).toHaveAttr('width');
@@ -245,11 +244,9 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
 
             it('when render, should have proper attributes', () => {
                 let expectedClass = 'range r';
-                let expectedFill = '#7bdcc0';
                 let rangeBars = containerFixture.selectAll('rect.range').nodes();
 
                 rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar).toHaveAttr('fill', expectedFill);
                     expect(rangeBar).toHaveAttr('class', `${expectedClass}${i}`);
                     expect(rangeBar).toHaveAttr('opacity');
                     expect(rangeBar).toHaveAttr('x');
@@ -264,11 +261,9 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
 
             it('when render, should have proper attributes', () => {
                 let expectedClass = 'marker m';
-                let expectedFill = '#7bdcc0';
                 let markerLines = containerFixture.selectAll('line.marker').nodes();
 
                 markerLines.forEach((markerLine, i) => {
-                    expect(markerLine).toHaveAttr('fill', expectedFill);
                     expect(markerLine).toHaveAttr('class', `${expectedClass}${i}`);
                     expect(markerLine).toHaveAttr('opacity');
                     expect(markerLine).toHaveAttr('x');

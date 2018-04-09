@@ -81,7 +81,7 @@ define(function(require) {
             paddingBetweenAxisAndChart = 5,
             startMaxRangeOpacity = 0.6,
             markerStrokeWidth = 5,
-            w0,
+            barWidth,
 
             isReverse = false,
 
@@ -169,7 +169,7 @@ define(function(require) {
                 .nice();
 
             // Derive width scales from x scales
-            w0 = bulletWidth(xScale);
+            barWidth = bulletWidth(xScale);
 
             // set up opacity scale based on ranges
             opacityScale = ranges.map((d, i) => startMaxRangeOpacity - (i * opacityDiff)).reverse();
@@ -264,7 +264,7 @@ define(function(require) {
                   .attr('fill', colorSchema[0])
                   .attr('opacity', (d, i) => opacityScale[i])
                   .attr('class', (d, i) => `range r${i}`)
-                  .attr('width', w0)
+                  .attr('width', barWidth)
                   .attr('height', chartHeight)
                   .attr('x', isReverse ? xScale : 0);
 
@@ -275,7 +275,7 @@ define(function(require) {
                 .append('rect')
                   .attr('fill', measureColor)
                   .attr('class', (d, i) => `measure m${i}`)
-                  .attr('width', w0)
+                  .attr('width', barWidth)
                   .attr('height', getMeasureBarHeight)
                   .attr('x', isReverse ? xScale : 0)
                   .attr('y', getMeasureBarHeight);
