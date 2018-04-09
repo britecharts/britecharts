@@ -2,7 +2,7 @@
 
 .bullet-chart {
 
-    // lines
+    // Lines
     .marker-line {
         shape-rendering: crispEdges;
     }
@@ -10,5 +10,10 @@
     // Axes
     .axis-group path {
         display: none;
+    }
+
+    // Labels
+    .bullet-title {
+        font-size: 16px;
     }
 }
