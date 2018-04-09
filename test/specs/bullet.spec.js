@@ -270,6 +270,7 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
                 markerLines.forEach((markerLine, i) => {
                     expect(markerLine).toHaveAttr('fill', expectedFill);
                     expect(markerLine).toHaveAttr('class', `${expectedClass}${i}`);
+                    expect(markerLine).toHaveAttr('opacity');
                     expect(markerLine).toHaveAttr('x');
                     expect(markerLine).toHaveAttr('width');
                     expect(markerLine).toHaveAttr('height');
@@ -286,6 +287,18 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
 
                 rangeBars.forEach((rangeBar, i) => {
                     expect(rangeBar).toHaveAttr('opacity', `${expectedStartOpacity - (i * 0.2)}`);
+                });
+            });
+
+            it('can change the range for opacity', () => {
+                let expectedStartMaxOpacity = 1;
+
+                bulletChart.startMaxRangeOpacity(expectedStartMaxOpacity);
+                containerFixture.datum(dataset[1]).call(bulletChart);
+                let rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
+
+                rangeBars.forEach((rangeBar, i) => {
+                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartMaxOpacity - (i * 0.2)}`);
                 });
             });
         });
