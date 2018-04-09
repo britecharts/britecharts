@@ -250,6 +250,12 @@ define(function(require) {
          * @private
          */
         function drawBullet() {
+            if (rangesEl) {
+                rangesEl.remove();
+                measuresEl.remove();
+                markersEl.remove();
+            }
+
             rangesEl = svg.select('.chart-group')
                 .selectAll('rect.range')
                 .data(ranges)
