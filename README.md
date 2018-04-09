@@ -39,6 +39,7 @@ All the components expose some **common API methods** like width, height, and ma
  - [API][21], [Demo][donutChartDemo] Donut Chart
  - [API][38], [Demo][stackedBarChartDemo] Stacked Bar Chart
  - [API][40], [Demo][groupedBarChartDemo] Grouped Bar Chart
+ - [API][43], [Demo][bulletChartDemo] Bullet Chart
  - [API][23], [Demo][brushChartDemo] Brush Chart
  - [API][41], [Demo][scatterPlotDemo] Scatter Plot
  - [API][29], [Demo][sparklineChartDemo] Sparkline Chart
@@ -130,6 +131,7 @@ Read more in the [license document][15]
 [40]: https://eventbrite.github.io/britecharts/module-Grouped-bar.html
 [41]: https://eventbrite.github.io/britecharts/module-Scatter-plot.html
 [42]: https://scrimba.com/casts/cZWm2tb
+[43]: https://eventbrite.github.io/britecharts/module-Bullet.html
 
 [cdnDemo]: https://eventbrite.github.io/britecharts/cdn.html
 [cdnHome]: https://cdn.jsdelivr.net/npm/britecharts/dist/
@@ -153,6 +155,7 @@ Read more in the [license document][15]
 [stackedAreaChartDemo]: https://eventbrite.github.io/britecharts/tutorial-stacked-area.html "Check the Demo"
 [stepChartDemo]: https://eventbrite.github.io/britecharts/tutorial-step.html "Check the Demo"
 [brushChartDemo]: https://eventbrite.github.io/britecharts/tutorial-brush.html "Check the Demo"
+[bulletChartDemo]: https://eventbrite.github.io/britecharts/tutorial-bullet.html "Check the Demo"
 [stackedBarChartDemo]: https://eventbrite.github.io/britecharts/tutorial-stacked-bar.html "Check the Demo"
 [groupedBarChartDemo]: https://eventbrite.github.io/britecharts/tutorial-grouped-bar.html "Check the Demo"
 [stackedAreaDemo]: https://eventbrite.github.io/britecharts-react/#stacked-area-chart "Check the Demo"
@@ -169,4 +172,3 @@ Read more in the [license document][15]
 [stackedBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/stacked-bar-chart.png
 [groupedBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/grouped-bar-chart.png
 [legendChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/legend-chart.png
-
