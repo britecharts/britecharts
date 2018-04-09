@@ -224,7 +224,54 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
 
         describe('measures', () => {
 
+            it('when render, should have proper attributes', () => {
+                let expectedClass = 'measure m';
+                let expectedFill = '#ADB0B6';
+                let measureBars = containerFixture.selectAll('rect.measure').nodes();
 
+                measureBars.forEach((measureBar, i) => {
+                    expect(measureBar).toHaveAttr('class', `${expectedClass}${i}`);
+                    expect(measureBar).toHaveAttr('fill', expectedFill);
+                    expect(measureBar).toHaveAttr('x');
+                    expect(measureBar).toHaveAttr('y');
+                    expect(measureBar).toHaveAttr('width');
+                    expect(measureBar).toHaveAttr('height');
+                });
+            });
+        });
+
+        describe('ranges', () => {
+
+            it('when render, should have proper attributes', () => {
+                let expectedClass = 'range r';
+                let expectedFill = '#7bdcc0';
+                let expectedOpacity = 0.6;
+                let rangeBars = containerFixture.selectAll('rect.range').nodes();
+
+                rangeBars.forEach((rangeBar, i) => {
+                    expect(rangeBar).toHaveAttr('fill', expectedFill);
+                    expect(rangeBar).toHaveAttr('class', `${expectedClass}${i}`);
+                    expect(rangeBar).toHaveAttr('opacity');
+                    expect(rangeBar).toHaveAttr('x');
+                    expect(rangeBar).toHaveAttr('width');
+                    expect(rangeBar).toHaveAttr('height');
+                    expect(rangeBar).not.toHaveAttr('y');
+                });
+            });
+        });
+
+        describe('startMaxRangeOpacity', () => {
+
+            it('sets correct default range for range bars', () => {
+                let expectedStartOpacity = 0.6;
+
+                let rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
+
+                rangeBars.forEach((rangeBar, i) => {
+                    console.log('rangeBar', rangeBar);
+                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartOpacity - (i * 0.2)}`);
+                });
+            });
         });
     });
 });
