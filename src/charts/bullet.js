@@ -71,23 +71,23 @@ define(function(require) {
 
             colorSchema = colorHelper.singleColors.aloeGreen,
             measureColor = colorHelper.colorSchemas.grey[4],
-            colorList,
-            colorMap,
-            ticks = 6,
-            tickPadding = 5,
-            percentageAxisToMaxRatio = 1,
             numberFormat = '',
 
             baseLine,
 
+            ticks = 6,
+            tickPadding = 5,
             axis,
-            axisPaddingBetweenChart = 5,
+            paddingBetweenAxisAndChart = 5,
             startMaxRangeOpacity = 0.6,
             markerStrokeWidth = 5,
             w0,
 
-            isHorizontal = false,
             isReverse = false,
+
+            rangesEl,
+            measuresEl,
+            markersEl,
 
             title,
             subtitle,
@@ -98,16 +98,8 @@ define(function(require) {
             svg,
             ease = d3Ease.easeQuadInOut,
 
-            getMeasureBarHeight = () => chartHeight / 3,
+            getMeasureBarHeight = () => chartHeight / 3;
 
-            // Dispatcher object to broadcast the mouse events
-            // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
-            dispatcher = d3Dispatch.dispatch(
-                'customMouseOver',
-                'customMouseOut',
-                'customMouseMove',
-                'customClick'
-            );
 
         /**
          * This function creates the graph using the selection as container
@@ -135,7 +127,7 @@ define(function(require) {
          * @private
          */
         function buildAxis() {
-            xAxis = d3Axis.axisBottom(xScale)
+            axis = d3Axis.axisBottom(xScale)
                 .ticks(ticks)
                 .tickPadding(tickPadding)
                 .tickFormat(d3Format.format(numberFormat));
@@ -243,8 +235,8 @@ define(function(require) {
          */
         function drawAxis() {
             svg.select('.axis-group')
-                .attr('transform', `translate(0, ${chartHeight + axisPaddingBetweenChart})`)
-                .call(xAxis);
+                .attr('transform', `translate(0, ${chartHeight + paddingBetweenAxisAndChart})`)
+                .call(axis);
 
             drawHorizontalExtendedLine();
         }
@@ -254,7 +246,7 @@ define(function(require) {
          * @private
          */
         function drawBullet() {
-            let rangesEl = svg.select('.chart-group')
+            rangesEl = svg.select('.chart-group')
                 .selectAll('rect.range')
                 .data(ranges)
                 .enter()
@@ -266,7 +258,7 @@ define(function(require) {
                   .attr('height', chartHeight)
                   .attr('x', isReverse ? xScale : 0);
 
-            let measuresEl = svg.select('.chart-group')
+            measuresEl = svg.select('.chart-group')
                 .selectAll('rect.measure')
                 .data(measures)
                 .enter()
@@ -278,7 +270,7 @@ define(function(require) {
                   .attr('x', isReverse ? xScale : 0)
                   .attr('y', getMeasureBarHeight);
 
-            let markersEl = svg.select('.chart-group')
+            markersEl = svg.select('.chart-group')
                 .selectAll('line.marker-line')
                 .data(markers)
                 .enter()
@@ -290,71 +282,6 @@ define(function(require) {
                   .attr('x2', xScale)
                   .attr('y1', 0)
                   .attr('y2', chartHeight);
-        }
-
-        /**
-         * Draws labels at the end of each bar
-         * @private
-         * @return {void}
-         */
-        function drawLabels() {
-            let labelXPosition = isHorizontal ? _labelsHorizontalX : _labelsVerticalX;
-            let labelYPosition = isHorizontal ? _labelsHorizontalY : _labelsVerticalY;
-            let text = _labelsFormatValue
-
-            if (labelEl) {
-                svg.selectAll('.percentage-label-group').remove();
-            }
-
-            labelEl = svg.select('.metadata-group')
-              .append('g')
-                .classed('percentage-label-group', true)
-                .selectAll('text')
-                .data(data.reverse())
-                .enter()
-              .append('text');
-
-            labelEl
-                .classed('percentage-label', true)
-                .attr('x', labelXPosition)
-                .attr('y', labelYPosition)
-                .text(text)
-                .attr('font-size', labelsSize + 'px')
-        }
-
-        /**
-         * Draws grid lines on the background of the chart
-         * @return void
-         */
-        function drawGridLines() {
-            svg.select('.grid-lines-group')
-                .selectAll('line')
-                .remove();
-
-            if (isHorizontal) {
-                drawHorizontalGridLines();
-            } else {
-                drawVerticalGridLines();
-            }
-        }
-
-        /**
-         * Draws the grid lines for an horizontal bar chart
-         * @return {void}
-         */
-        function drawHorizontalGridLines() {
-            maskGridLines = svg.select('.grid-lines-group')
-                .selectAll('line.vertical-grid-line')
-                .data(xScale.ticks(4))
-                .enter()
-                  .append('line')
-                    .attr('class', 'vertical-grid-line')
-                    .attr('y1', (xAxisPadding.left))
-                    .attr('y2', chartHeight)
-                    .attr('x1', (d) => xScale(d))
-                    .attr('x2', (d) => xScale(d))
-
-            drawVerticalExtendedLine();
         }
 
         /**
@@ -372,65 +299,12 @@ define(function(require) {
                     .attr('x2', chartWidth);
         }
 
-        /**
-         * Custom OnMouseOver event handler
-         * @return {void}
-         * @private
-         */
-        function handleMouseOver(e, d, barList, chartWidth, chartHeight) {
-            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
-            highlightBarFunction = highlightBarFunction || function() {};
-
-            if (hasSingleBarHighlight) {
-                highlightBarFunction(d3Selection.select(e));
-                return;
-            }
-
-            barList.forEach(barRect => {
-                if (barRect === e) {
-                    return;
-                }
-                highlightBarFunction(d3Selection.select(barRect));
-            });
-        }
-
-        /**
-         * Custom OnMouseMove event handler
-         * @return {void}
-         * @private
-         */
-        function handleMouseMove(e, d, chartWidth, chartHeight) {
-            dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
-        }
-
-        /**
-         * Custom OnMouseOver event handler
-         * @return {void}
-         * @private
-         */
-        function handleMouseOut(e, d, barList, chartWidth, chartHeight) {
-            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
-
-            barList.forEach((barRect) => {
-                d3Selection.select(barRect).attr('fill', ({name}) => colorMap(name));
-            });
-        }
-
-        /**
-         * Custom onClick event handler
-         * @return {void}
-         * @private
-         */
-        function handleClick(e, d, chartWidth, chartHeight) {
-            dispatcher.call('customClick', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
-        }
-
         // API
 
         /**
          * Gets or Sets the colorSchema of the chart
-         * @param  {String[]} _x Desired colorSchema for the graph
-         * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
+         * @param  {String[]} _x        Desired colorSchema for the graph
+         * @return {String[] | module}  Current colorSchema or Chart module to chain calls
          * @public
          */
         exports.colorSchema = function(_x) {
@@ -454,8 +328,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the height of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return {height | module} Current height or Chart module to chain calls
+         * @param  {Number} _x Desired width for the graph
+         * @return {Number | module} Current height or Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -468,27 +342,12 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the horizontal direction of the chart
-         * @param  {number} _x Desired horizontal direction for the graph
-         * @return { isHorizontal | module} If it is horizontal or Chart module to chain calls
-         * @public
-         */
-        exports.isHorizontal = function(_x) {
-            if (!arguments.length) {
-                return isHorizontal;
-            }
-            isHorizontal = _x;
-
-            return this;
-        };
-
-
-        /**
          * Gets or Sets the starting point of the copacity
          * range.
          * @param  {Number} _x D        desired startMaxRangeOpacity for chart
          * @return {Number | module}    current startMaxRangeOpacity or Chart module to chain calls
          * @public
+         * @example bulletChart.startMaxRangeOpacity(0.8)
          */
         exports.startMaxRangeOpacity = function(_x) {
             if (!arguments.length) {
@@ -501,7 +360,7 @@ define(function(require) {
 
         /**
          * Gets or Sets the margin of the chart
-         * @param  {object} _x Margin object to get/set
+         * @param  {Object} _x Margin object to get/set
          * @return {margin | module} Current margin or Chart module to chain calls
          * @public
          */
@@ -531,20 +390,6 @@ define(function(require) {
 
             return this;
         }
-
-        /**
-         * Exposes an 'on' method that acts as a bridge with the event dispatcher
-         * We are going to expose this events:
-         * customMouseOver, customMouseMove, customMouseOut, and customClick
-         *
-         * @return {module} Bar Chart
-         * @public
-         */
-        exports.on = function() {
-            let value = dispatcher.on.apply(dispatcher, arguments);
-
-            return value === dispatcher ? exports : value;
-        };
 
         /**
          * Gets or Sets the width of the chart
@@ -580,14 +425,14 @@ define(function(require) {
         /**
          * Space between axis and chart
          * @param  {Number} _x=5          Space between y axis and chart
-         * @return {Number| module}     Current value of axisPaddingBetweenChart or Chart module to chain calls
+         * @return {Number| module}     Current value of paddingBetweenAxisAndChart or Chart module to chain calls
          * @public
          */
-        exports.axisPaddingBetweenChart = function(_x) {
+        exports.paddingBetweenAxisAndChart = function(_x) {
             if (!arguments.length) {
-                return axisPaddingBetweenChart;
+                return paddingBetweenAxisAndChart;
             }
-            axisPaddingBetweenChart = _x;
+            paddingBetweenAxisAndChart = _x;
 
             return this;
         };
