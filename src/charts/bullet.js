@@ -58,7 +58,7 @@ define(function(require) {
                 top: 20,
                 right: 20,
                 bottom: 30,
-                left: 40
+                left: 0
             },
             data,
             width = 960, height = 150,
@@ -84,13 +84,21 @@ define(function(require) {
             barWidth,
 
             isReverse = false,
+            shouldShowTitleOrSubtitle = false,
 
+            titleEl,
+            subtitleEl,
             rangesEl,
             measuresEl,
             markersEl,
 
+            legendSpacing = 100,
             title,
+            customTitle,
+
             subtitle,
+            customSubtitle,
+
             ranges = [],
             markers = [],
             measures = [],
@@ -117,6 +125,7 @@ define(function(require) {
                 buildSVG(this);
                 buildAxis();
                 drawBullet();
+                drawLegends();
                 drawAxis();
 
             });
@@ -153,6 +162,13 @@ define(function(require) {
                 .append('g').classed('axis-group', true);
             container
                 .append('g').classed('metadata-group', true);
+
+            if (title || subtitle || customSubtitle || customTitle) {
+                shouldShowTitleOrSubtitle = true;
+
+                container.selectAll('.chart-group')
+                  .attr('transform', `translate(${legendSpacing}, 0)`);
+            }
         }
 
         /**
@@ -221,8 +237,8 @@ define(function(require) {
                 ranges: originalData.ranges.slice().sort().reverse(),
                 measures: originalData.measures.slice().sort().reverse(),
                 markers: originalData.markers.slice().sort().reverse(),
-                subtitle,
-                title
+                subtitle: originalData.title,
+                title: originalData.title
             };
 
             ({title, subtitle, ranges, measures, markers} = newData);
@@ -237,8 +253,14 @@ define(function(require) {
          * @private
          */
         function drawAxis() {
+            let translateX = 0;
+
+            if (shouldShowTitleOrSubtitle) {
+                translateX = legendSpacing;
+            }
+
             svg.select('.axis-group')
-                .attr('transform', `translate(0, ${chartHeight + paddingBetweenAxisAndChart})`)
+                .attr('transform', `translate(${translateX}, ${chartHeight + paddingBetweenAxisAndChart})`)
                 .call(axis);
 
             drawHorizontalExtendedLine();
@@ -310,6 +332,50 @@ define(function(require) {
                     .attr('x2', chartWidth);
         }
 
+        /**
+         * Draws the title and subtitle components of chart
+         * @return {void}
+         * @private
+         */
+        function drawLegends() {
+            // either use title provided from the data
+            // or customTitle provided via API method call
+            if (title || customTitle) {
+                // remove existing elements before update
+                if (titleEl) {
+                    titleEl.remove();
+                }
+
+                // override title with customTitle if given
+                if (customTitle) {
+                    title = customTitle;
+                }
+
+                titleEl = svg.select('.metadata-group')
+                  .selectAll('text.bullet-title')
+                  .data([title])
+                  .enter()
+                    .append('text')
+                    .attr('class', 'bullet-title x-axis-label')
+                    .attr('transform', `translate(0, ${chartHeight / 2})`)
+                    .text(title);
+            }
+
+            // either use subtitle provided from the data
+            // or customSubtitle provided via API method call
+            if (subtitle || customSubtitle) {
+                // remove existing elements before update
+                if (subtitleEl) {
+                    subtitleEl.remove();
+                }
+
+                // override subtitle with customSubtitle if given
+                if (customTitle) {
+                    subtitle = customSubtitle;
+                }
+            }
+        }
+
         // API
 
         /**
@@ -341,6 +407,40 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Gets or Sets the title for measure identifier
+         * range.
+         * @param  {String} _x=0.6        desired customTitle for chart
+         * @return {String | module}      current customTitle or Chart module to chain calls
+         * @public
+         * @example bulletChart.customTitle('CPU Usage')
+         */
+        exports.customTitle = function(_x) {
+            if (!arguments.length) {
+                return startMaxRangeOpacity;
+            }
+            startMaxRangeOpacity = _x;
+
+            return this;
+        }
+
+        /**
+         * Gets or Sets the subtitle for measure identifier
+         * range.
+         * @param  {String} _x=0.6        desired customSubtitle for chart
+         * @return {String | module}      current customSubtitle or Chart module to chain calls
+         * @public
+         * @example bulletChart.customSubtitle('GHz')
+         */
+        exports.customSubtitle = function(_x) {
+            if (!arguments.length) {
+                return customSubtitle;
+            }
+            customSubtitle = _x;
+
+            return this;
+        }
 
         /**
          * Chart exported to png and a download action is fired

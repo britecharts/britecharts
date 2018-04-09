@@ -524,8 +524,8 @@ define(function(require) {
 
             // initialize cross hair labels container
             highlightCrossHairLabelsContainer = svg.select('.metadata-group')
-            .append('g')
-            .attr('class', 'crosshair-labels-container');
+              .append('g')
+                .attr('class', 'crosshair-labels-container');
 
             // Draw line perpendicular to y-axis
             highlightCrossHairContainer.selectAll('line.highlight-y-line')
@@ -548,19 +548,19 @@ define(function(require) {
 
             // Draw data label for y value
             highlightCrossHairLabelsContainer.selectAll('text.highlight-y-legend')
-            .data([data])
-            .enter()
-              .append('text')
-                .attr('text-anchor', 'middle')
-                .attr('fill', ({name}) => nameColorMap[name])
-                .attr('class', 'highlight-y-legend')
-                .attr('y', (d) => (yScale(d.y) + (areaScale(d.y) / 2)))
-                .attr('x', highlightTextLegendOffset)
-                .text((d) => `${d3Format.format(yAxisFormat)(d.y)}`);
+              .data([data])
+              .enter()
+                .append('text')
+                  .attr('text-anchor', 'middle')
+                  .attr('fill', ({name}) => nameColorMap[name])
+                  .attr('class', 'highlight-y-legend')
+                  .attr('y', (d) => (yScale(d.y) + (areaScale(d.y) / 2)))
+                  .attr('x', highlightTextLegendOffset)
+                  .text((d) => `${d3Format.format(yAxisFormat)(d.y)}`);
 
             // Draw data label for x value
             highlightCrossHairLabelsContainer.selectAll('text.highlight-x-legend')
-            .data([data])
+              .data([data])
               .enter()
                 .append('text')
                   .attr('text-anchor', 'middle')
