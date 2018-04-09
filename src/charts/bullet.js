@@ -84,7 +84,6 @@ define(function(require) {
             barWidth,
 
             isReverse = false,
-            shouldShowTitleOrSubtitle = false,
 
             legendGroup,
             titleEl,
@@ -108,6 +107,7 @@ define(function(require) {
             svg,
             ease = d3Ease.easeQuadInOut,
 
+            hasTitle = () => title || customTitle,
             getMeasureBarHeight = () => chartHeight / 3;
 
 
@@ -122,6 +122,10 @@ define(function(require) {
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
+
+                if (hasTitle()) {
+                    chartWidth -= legendSpacing;
+                }
 
                 buildScales();
                 buildSVG(this);
@@ -165,9 +169,7 @@ define(function(require) {
             container
                 .append('g').classed('metadata-group', true);
 
-            if (title || subtitle || customSubtitle || customTitle) {
-                shouldShowTitleOrSubtitle = true;
-
+            if (hasTitle()) {
                 container.selectAll('.chart-group')
                   .attr('transform', `translate(${legendSpacing}, 0)`);
             }
@@ -255,7 +257,7 @@ define(function(require) {
          * @private
          */
         function drawAxis() {
-            let translateX = shouldShowTitleOrSubtitle ? legendSpacing : 0;
+            let translateX = hasTitle() ? legendSpacing : 0;
 
             svg.select('.axis-group')
                 .attr('transform', `translate(${translateX}, ${chartHeight + paddingBetweenAxisAndChart})`)
