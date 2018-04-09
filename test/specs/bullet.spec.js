@@ -2,7 +2,7 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
     'use strict';
 
     describe('Bullet Chart', () => {
-        let bulletChart, dataset, containerFixture, f;
+        let bulletChart, dataset, containerFixture, f, dataPoint;
 
         function aTestDataSet() {
             return new dataBuilder.BulletChartDataBuilder();
@@ -13,6 +13,7 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
                 .withCpuData()
                 .build();
             bulletChart = chart();
+            dataPoint = dataset[0];
 
             // DOM Fixture Setup
             f = jasmine.getFixtures();
@@ -20,7 +21,7 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
             f.load('testContainer.html');
 
             containerFixture = d3.select('.test-container');
-            containerFixture.datum(dataset[0]).call(bulletChart);
+            containerFixture.datum(dataPoint).call(bulletChart);
         });
 
         afterEach(() => {
@@ -245,7 +246,6 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
             it('when render, should have proper attributes', () => {
                 let expectedClass = 'range r';
                 let expectedFill = '#7bdcc0';
-                let expectedOpacity = 0.6;
                 let rangeBars = containerFixture.selectAll('rect.range').nodes();
 
                 rangeBars.forEach((rangeBar, i) => {
@@ -260,15 +260,31 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
             });
         });
 
+        describe('markers', () => {
+
+            it('when render, should have proper attributes', () => {
+                let expectedClass = 'marker m';
+                let expectedFill = '#7bdcc0';
+                let markerLines = containerFixture.selectAll('line.marker').nodes();
+
+                markerLines.forEach((markerLine, i) => {
+                    expect(markerLine).toHaveAttr('fill', expectedFill);
+                    expect(markerLine).toHaveAttr('class', `${expectedClass}${i}`);
+                    expect(markerLine).toHaveAttr('x');
+                    expect(markerLine).toHaveAttr('width');
+                    expect(markerLine).toHaveAttr('height');
+                });
+            });
+        });
+
         describe('startMaxRangeOpacity', () => {
 
             it('sets correct default range for range bars', () => {
-                let expectedStartOpacity = 0.6;
+                let expectedStartOpacity =  bulletChart.startMaxRangeOpacity();
 
                 let rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
 
                 rangeBars.forEach((rangeBar, i) => {
-                    console.log('rangeBar', rangeBar);
                     expect(rangeBar).toHaveAttr('opacity', `${expectedStartOpacity - (i * 0.2)}`);
                 });
             });
