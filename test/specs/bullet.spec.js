@@ -297,6 +297,18 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
                     expect(rangeBar).toHaveAttr('opacity', `${expectedStartMaxOpacity - (i * diff)}`);
                 });
             });
+
+            it('can change the range for opacity', () => {
+                let expectedStartMaxOpacity = 1;
+
+                bulletChart.startMaxRangeOpacity(expectedStartMaxOpacity);
+                containerFixture.datum(dataset[1]).call(bulletChart);
+                let rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
+
+                rangeBars.forEach((rangeBar, i) => {
+                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartMaxOpacity - (i * 0.2)}`);
+                });
+            });
         });
     });
 });
