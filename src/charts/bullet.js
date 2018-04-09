@@ -346,7 +346,7 @@ define(function(require) {
                 }
 
                 legendGroup = svg.select('.metadata-group')
-                .append('g')
+                  .append('g')
                     .classed('legend-group', true)
                     .attr('transform', `translate(0, ${chartHeight / 2})`);
 
@@ -360,15 +360,15 @@ define(function(require) {
                 .data([1])
                 .enter()
                 .append('text')
-                    .attr('class', 'bullet-title x-axis-label')
-                    .text(title);
+                  .attr('class', 'bullet-title x-axis-label')
+                  .text(title);
 
                 // either use subtitle provided from the data
                 // or customSubtitle provided via API method call
                 if (subtitle || customSubtitle) {
 
                     // override subtitle with customSubtitle if given
-                    if (customTitle) {
+                    if (customSubtitle) {
                         subtitle = customSubtitle;
                     }
 
@@ -418,16 +418,16 @@ define(function(require) {
         /**
          * Gets or Sets the title for measure identifier
          * range.
-         * @param  {String} _x=0.6        desired customTitle for chart
-         * @return {String | module}      current customTitle or Chart module to chain calls
+         * @param  {String} _x              desired customTitle for chart
+         * @return {String | module}        current customTitle or Chart module to chain calls
          * @public
          * @example bulletChart.customTitle('CPU Usage')
          */
         exports.customTitle = function(_x) {
             if (!arguments.length) {
-                return startMaxRangeOpacity;
+                return customTitle;
             }
-            startMaxRangeOpacity = _x;
+            customTitle = _x;
 
             return this;
         }
@@ -493,24 +493,6 @@ define(function(require) {
             return this;
         }
 
-
-        /**
-         * Gets or Sets the starting point of the copacity
-         * range.
-         * @param  {Number} _x D        desired startMaxRangeOpacity for chart
-         * @return {Number | module}    current startMaxRangeOpacity or Chart module to chain calls
-         * @public
-         * @example bulletChart.startMaxRangeOpacity(0.8)
-         */
-        exports.startMaxRangeOpacity = function(_x) {
-            if (!arguments.length) {
-                return maxRangeOpacity;
-            }
-            maxRangeOpacity = _x;
-
-            return this;
-        }
-
         /**
          * Gets or Sets the margin of the chart
          * @param  {Object} _x Margin object to get/set
@@ -562,8 +544,8 @@ define(function(require) {
         /**
          * Gets or Sets the starting point of the copacity
          * range.
-         * @param  {Number} _x=0.6        desired startMaxRangeOpacity for chart
-         * @return {Number | module}    current startMaxRangeOpacity or Chart module to chain calls
+         * @param  {Number} _x=0.6          desired startMaxRangeOpacity for chart
+         * @return {Number | module}        current startMaxRangeOpacity or Chart module to chain calls
          * @public
          * @example bulletChart.startMaxRangeOpacity(0.8)
          */
