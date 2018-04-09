@@ -131,7 +131,7 @@ define(function(require) {
                 buildSVG(this);
                 buildAxis();
                 drawBullet();
-                drawLegends();
+                drawTitles();
                 drawAxis();
 
             });
@@ -337,7 +337,7 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function drawLegends() {
+        function drawTitles() {
             if (hasTitle()) {
                 // either use title provided from the data
                 // or customTitle provided via API method call
@@ -387,8 +387,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the aspect ratio of the chart
-         * @param  {Number} _x            Desired aspect ratio for the graph
-         * @return {Number | module} Current aspect ratio or Chart module to chain calls
+         * @param  {Number} _x              Desired aspect ratio for the graph
+         * @return {Number | module}        Current aspect ratio or Chart module to chain calls
          * @public
          */
         exports.aspectRatio = function (_x) {
@@ -418,8 +418,8 @@ define(function(require) {
         /**
          * Gets or Sets the title for measure identifier
          * range.
-         * @param  {String} _x              desired customTitle for chart
-         * @return {String | module}        current customTitle or Chart module to chain calls
+         * @param  {String} _x              Desired customTitle for chart
+         * @return {String | module}        Current customTitle or Chart module to chain calls
          * @public
          * @example bulletChart.customTitle('CPU Usage')
          */
@@ -435,8 +435,8 @@ define(function(require) {
         /**
          * Gets or Sets the subtitle for measure identifier
          * range.
-         * @param  {String} _x=0.6        desired customSubtitle for chart
-         * @return {String | module}      current customSubtitle or Chart module to chain calls
+         * @param  {String} _x              Desired customSubtitle for chart
+         * @return {String | module}        current customSubtitle or Chart module to chain calls
          * @public
          * @example bulletChart.customSubtitle('GHz')
          */
@@ -480,8 +480,8 @@ define(function(require) {
         /**
          * Gets or Sets the isReverse status of the chart. If true,
          * the elements will be rendered in reverse order.
-         * @param  {Boolean} _x=false          Desired height for the chart
-         * @return {Boolean | module}    Current height or Chart module to chain calls
+         * @param  {Boolean} _x=false       Desired height for the chart
+         * @return {Boolean | module}       Current height or Chart module to chain calls
          * @public
          */
         exports.isReverse = function (_x) {
@@ -495,8 +495,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the margin of the chart
-         * @param  {Object} _x Margin object to get/set
-         * @return {margin | module} Current margin or Chart module to chain calls
+         * @param  {Object} _x          Margin object to get/set
+         * @return {margin | module}    Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -513,8 +513,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the number format of the bar chart
-         * @param  {string} _x Desired number format for the bar chart
-         * @return {numberFormat | module} Current numberFormat or Chart module to chain calls
+         * @param  {string} _x                  Desired number format for the bar chart
+         * @return {numberFormat | module}      Current numberFormat or Chart module to chain calls
          * @public
          */
         exports.numberFormat = function(_x) {
@@ -528,8 +528,8 @@ define(function(require) {
 
         /**
          * Space between axis and chart
-         * @param  {Number} _x=5          Space between y axis and chart
-         * @return {Number| module}     Current value of paddingBetweenAxisAndChart or Chart module to chain calls
+         * @param  {Number} _x=5            Space between y axis and chart
+         * @return {Number| module}         Current value of paddingBetweenAxisAndChart or Chart module to chain calls
          * @public
          */
         exports.paddingBetweenAxisAndChart = function(_x) {
@@ -544,7 +544,7 @@ define(function(require) {
         /**
          * Gets or Sets the starting point of the capacity
          * range.
-         * @param  {Number} _x=0.6          desired startMaxRangeOpacity for chart
+         * @param  {Number} _x=0.6          Desired startMaxRangeOpacity for chart
          * @return {Number | module}        current startMaxRangeOpacity or Chart module to chain calls
          * @public
          * @example bulletChart.startMaxRangeOpacity(0.8)
@@ -575,8 +575,8 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the height of the chart
-         * @param  {Number} _x           Desired height for the chart
+         * Gets or Sets the width of the chart
+         * @param  {Number} _x           Desired width for the chart
          * @return {Number | module}     Current width or Chart module to chain calls
          * @public
          */
