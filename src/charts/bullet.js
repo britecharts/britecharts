@@ -18,40 +18,39 @@ define(function(require) {
     /**
      * @typedef BulletChartData
      * @type {Object}
-     * @property {String} title         Name for identification of the measure
-     * @property {String} subtitle      Measurement units or description for the measure
-     * @property {Array[]} ranges       Quantitative range
-     * @property {Array[]} measures     Comparative measures
-     * @property {Array[]} markers      Marked points in chart
+     * @property {Number[]} ranges      Range that encodes the qualitative measure
+     * @property {Number[]} measures    Range that encodes the performance measure
+     * @property {Number[]} markers     Marker lines that encode the comparative measure
+     * @property {String}   [title]     String that sets identification for the measure
+     * @property {String} [subtitle]  String that provides more details on measure identification
      *
      * @example
-     *      {
-     *          "title": "CPU 1 Load",
-     *          "subtitle": "GHz",
-     *          "ranges": [1500, 2100, 3500],
-     *          "measures": [1800, 2200],
-     *          "markers": [1800]
-     *      }
+     * {
+     *      ranges: [130, 160, 250],
+     *      measures: [150, 180],
+     *      markers: [175]
+     * }
      *
+     */
+
     /**
-     * Bullet Chart reusable API class that renders a
-     * simple and configurable bar chart.
+     * Reusable Bullet Chart API class that renders a
+     * simple and configurable Bullet Chart.
      *
      * @module Bullet
-     * @tutorial bullet
-     * @requires d3-array, d3-axis, d3-dispatch, d3-scale, d3-selection
+     * @tutorial bullet-chart
+     * @requires d3-array, d3-dispatch, d3-ease, d3-scale, d3-selection
      *
      * @example
-     * var bulletChart = bullet();
+     * let bulletChart = bullet();
      *
      * bulletChart
-     *     .height(500)
-     *     .width(800);
+     *     .aspectRatio(0.5)
+     *     .width(containerWidth);
      *
      * d3Selection.select('.css-selector')
      *     .datum(dataset)
      *     .call(bulletChart);
-     *
      */
     return function module() {
 
@@ -366,6 +365,22 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the isReverse status of the chart. If true,
+         * the elements will be rendered in reverse order.
+         * @param  {Boolean} _x=false          Desired height for the chart
+         * @return {Boolean | module}    Current height or Chart module to chain calls
+         * @public
+         */
+        exports.isReverse = function (_x) {
+            if (!arguments.length) {
+                return isReverse;
+            }
+            isReverse = _x;
+
+            return this;
+        }
+
+        /**
          * Gets or Sets the margin of the chart
          * @param  {Object} _x Margin object to get/set
          * @return {margin | module} Current margin or Chart module to chain calls
@@ -423,9 +438,9 @@ define(function(require) {
          */
         exports.startMaxRangeOpacity = function(_x) {
             if (!arguments.length) {
-                return maxRangeOpacity;
+                return startMaxRangeOpacity;
             }
-            maxRangeOpacity = _x;
+            startMaxRangeOpacity = _x;
 
             return this;
         }
