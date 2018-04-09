@@ -134,6 +134,30 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
                 expect(actual).toEqual(expected);
             });
 
+            it('should provide customTitle getter and setter', () => {
+                let previous = bulletChart.customTitle(),
+                    expected = 'Revenue',
+                    actual;
+
+                bulletChart.customTitle(expected);
+                actual = bulletChart.customTitle();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toEqual(expected);
+            });
+
+            it('should provide customSubtitle getter and setter', () => {
+                let previous = bulletChart.customSubtitle(),
+                    expected = '$',
+                    actual;
+
+                bulletChart.customSubtitle(expected);
+                actual = bulletChart.customSubtitle();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toEqual(expected);
+            });
+
             it('should have exportChart defined', () => {
                 expect(bulletChart.exportChart).toBeDefined();
             });
@@ -283,6 +307,18 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
 
                 rangeBars.forEach((rangeBar, i) => {
                     expect(rangeBar).toHaveAttr('opacity', `${expectedStartOpacity - (i * diff)}`);
+                });
+            });
+
+            it('can change the range for opacity', () => {
+                let expectedStartMaxOpacity = 1;
+
+                bulletChart.startMaxRangeOpacity(expectedStartMaxOpacity);
+                containerFixture.datum(dataset[1]).call(bulletChart);
+                let rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
+
+                rangeBars.forEach((rangeBar, i) => {
+                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartMaxOpacity - (i * diff)}`);
                 });
             });
 
