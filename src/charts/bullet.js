@@ -137,6 +137,7 @@ define(function(require) {
         /**
          * Builds containers for the chart, the axis and a wrapper for all of them
          * Also applies the Margin convention
+         * @return {void}
          * @private
          */
         function buildContainerGroups() {
@@ -171,13 +172,14 @@ define(function(require) {
             // Derive width scales from x scales
             w0 = bulletWidth(xScale);
 
-            // set up opacity scale
+            // set up opacity scale based on ranges
             opacityScale = ranges.map((d, i) => startMaxRangeOpacity - (i * opacityDiff)).reverse();
         }
 
         /**
          * Builds the SVG element that will contain the chart
          * @param  {HTMLElement} container DOM element that will work as the container of the graph
+         * @return {void}
          * @private
          */
         function buildSVG(container) {
@@ -195,7 +197,8 @@ define(function(require) {
         }
 
         /**
-         * Calculates bullet width
+         * Calculates width for each bullet using scale
+         * @return {void}
          * @private
          */
         function bulletWidth(x) {
@@ -207,11 +210,11 @@ define(function(require) {
         }
 
         /**
-         * Cleaning data casting the values and names to the proper type while keeping
-         * the rest of properties on the data
-         * It also creates a set of zeroed data (for animation purposes)
-         * @param  {BarChartData} originalData  Raw data as passed to the container
-         * @return  {BarChartData}              Clean data
+         * Cleaning data casting the values and names to the proper
+         * type while keeping the rest of properties on the data. It
+         * also creates a set of zeroed data (for animation purposes)
+         * @param   {BulletChartData} originalData  Raw data as passed to the container
+         * @return  {BulletChartData}               Clean data
          * @private
          */
         function cleanData(originalData) {
@@ -244,6 +247,7 @@ define(function(require) {
 
         /**
          * Draws the measures of the bullet chart
+         * @return {void}
          * @private
          */
         function drawBullet() {
@@ -288,6 +292,7 @@ define(function(require) {
         /**
          * Draws a vertical line to extend x-axis till the edges
          * @return {void}
+         * @private
          */
         function drawHorizontalExtendedLine() {
             baseLine = svg.select('.axis-group')
