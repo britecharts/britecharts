@@ -86,6 +86,7 @@ define(function(require) {
             isReverse = false,
             shouldShowTitleOrSubtitle = false,
 
+            legendGroup,
             titleEl,
             subtitleEl,
             rangesEl,
@@ -98,6 +99,7 @@ define(function(require) {
 
             subtitle,
             customSubtitle,
+            subtitleSpacing = 15,
 
             ranges = [],
             markers = [],
@@ -237,7 +239,7 @@ define(function(require) {
                 ranges: originalData.ranges.slice().sort().reverse(),
                 measures: originalData.measures.slice().sort().reverse(),
                 markers: originalData.markers.slice().sort().reverse(),
-                subtitle: originalData.title,
+                subtitle: originalData.subtitle,
                 title: originalData.title
             };
 
@@ -253,11 +255,7 @@ define(function(require) {
          * @private
          */
         function drawAxis() {
-            let translateX = 0;
-
-            if (shouldShowTitleOrSubtitle) {
-                translateX = legendSpacing;
-            }
+            let translateX = shouldShowTitleOrSubtitle ? legendSpacing : 0;
 
             svg.select('.axis-group')
                 .attr('transform', `translate(${translateX}, ${chartHeight + paddingBetweenAxisAndChart})`)
@@ -340,39 +338,46 @@ define(function(require) {
         function drawLegends() {
             // either use title provided from the data
             // or customTitle provided via API method call
+            if (legendGroup) {
+                legendGroup.remove();
+            }
+
+            legendGroup = svg.select('.metadata-group')
+              .append('g')
+                .classed('legend-group', true)
+                .attr('transform', `translate(0, ${chartHeight / 2})`);
+
             if (title || customTitle) {
-                // remove existing elements before update
-                if (titleEl) {
-                    titleEl.remove();
-                }
 
                 // override title with customTitle if given
                 if (customTitle) {
                     title = customTitle;
                 }
 
-                titleEl = svg.select('.metadata-group')
-                  .selectAll('text.bullet-title')
-                  .data([title])
+                titleEl = legendGroup.selectAll('text.bullet-title')
+                  .data([1])
                   .enter()
-                    .append('text')
+                  .append('text')
                     .attr('class', 'bullet-title x-axis-label')
-                    .attr('transform', `translate(0, ${chartHeight / 2})`)
                     .text(title);
             }
 
             // either use subtitle provided from the data
             // or customSubtitle provided via API method call
             if (subtitle || customSubtitle) {
-                // remove existing elements before update
-                if (subtitleEl) {
-                    subtitleEl.remove();
-                }
 
                 // override subtitle with customSubtitle if given
                 if (customTitle) {
                     subtitle = customSubtitle;
                 }
+
+                titleEl = legendGroup.selectAll('text.bullet-subtitle')
+                  .data([1])
+                  .enter()
+                  .append('text')
+                    .attr('class', 'bullet-subtitle x-axis-label')
+                    .attr('y', subtitleSpacing)
+                    .text(subtitle);
             }
         }
 
