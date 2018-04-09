@@ -73,14 +73,14 @@ define(function(require) {
             measureColor = colorHelper.colorSchemas.grey[4],
             colorList,
             colorMap,
-            xTicks = 6,
+            ticks = 6,
             tickPadding = 5,
             percentageAxisToMaxRatio = 1,
             numberFormat = '',
 
             baseLine,
 
-            xAxis,
+            axis,
             axisPaddingBetweenChart = 5,
             startMaxRangeOpacity = 0.6,
             markerStrokeWidth = 5,
@@ -136,7 +136,7 @@ define(function(require) {
          */
         function buildAxis() {
             xAxis = d3Axis.axisBottom(xScale)
-                .ticks(xTicks)
+                .ticks(ticks)
                 .tickPadding(tickPadding)
                 .tickFormat(d3Format.format(numberFormat));
         }
@@ -565,14 +565,14 @@ define(function(require) {
          * Gets or Sets the number of ticks of the x axis on the chart
          * (Default is 5)
          * @param  {Number} _x          Desired horizontal ticks
-         * @return {Number | module}    Current xTicks or Chart module to chain calls
+         * @return {Number | module}    Current ticks or Chart module to chain calls
          * @public
          */
-        exports.xTicks = function (_x) {
+        exports.ticks = function (_x) {
             if (!arguments.length) {
-                return xTicks;
+                return ticks;
             }
-            xTicks = _x;
+            ticks = _x;
 
             return this;
         };
