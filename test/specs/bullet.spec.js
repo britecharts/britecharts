@@ -134,6 +134,30 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
                 expect(actual).toEqual(expected);
             });
 
+            it('should provide customTitle getter and setter', () => {
+                let previous = bulletChart.customTitle(),
+                    expected = 'Revenue',
+                    actual;
+
+                bulletChart.customTitle(expected);
+                actual = bulletChart.customTitle();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toEqual(expected);
+            });
+
+            it('should provide customSubtitle getter and setter', () => {
+                let previous = bulletChart.customSubtitle(),
+                    expected = '$',
+                    actual;
+
+                bulletChart.customSubtitle(expected);
+                actual = bulletChart.customSubtitle();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toEqual(expected);
+            });
+
             it('should have exportChart defined', () => {
                 expect(bulletChart.exportChart).toBeDefined();
             });
