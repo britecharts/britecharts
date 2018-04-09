@@ -542,7 +542,7 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the starting point of the copacity
+         * Gets or Sets the starting point of the capacity
          * range.
          * @param  {Number} _x=0.6          desired startMaxRangeOpacity for chart
          * @return {Number | module}        current startMaxRangeOpacity or Chart module to chain calls
