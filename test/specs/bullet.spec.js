@@ -279,6 +279,7 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
         });
 
         describe('startMaxRangeOpacity', () => {
+            let diff = 0.2;
 
             it('sets correct default range for range bars', () => {
                 let expectedStartOpacity =  bulletChart.startMaxRangeOpacity();
@@ -286,7 +287,7 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
                 let rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
 
                 rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartOpacity - (i * 0.2)}`);
+                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartOpacity - (i * diff)}`);
                 });
             });
 
@@ -298,7 +299,7 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
                 let rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
 
                 rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartMaxOpacity - (i * 0.2)}`);
+                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartMaxOpacity - (i * diff)}`);
                 });
             });
         });
