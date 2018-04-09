@@ -338,18 +338,18 @@ define(function(require) {
          * @private
          */
         function drawLegends() {
-            // either use title provided from the data
-            // or customTitle provided via API method call
-            if (legendGroup) {
-                legendGroup.remove();
-            }
+            if (hasTitle()) {
+                // either use title provided from the data
+                // or customTitle provided via API method call
+                if (legendGroup) {
+                    legendGroup.remove();
+                }
 
-            legendGroup = svg.select('.metadata-group')
-              .append('g')
-                .classed('legend-group', true)
-                .attr('transform', `translate(0, ${chartHeight / 2})`);
+                legendGroup = svg.select('.metadata-group')
+                .append('g')
+                    .classed('legend-group', true)
+                    .attr('transform', `translate(0, ${chartHeight / 2})`);
 
-            if (title || customTitle) {
 
                 // override title with customTitle if given
                 if (customTitle) {
@@ -357,29 +357,29 @@ define(function(require) {
                 }
 
                 titleEl = legendGroup.selectAll('text.bullet-title')
-                  .data([1])
-                  .enter()
-                  .append('text')
+                .data([1])
+                .enter()
+                .append('text')
                     .attr('class', 'bullet-title x-axis-label')
                     .text(title);
-            }
 
-            // either use subtitle provided from the data
-            // or customSubtitle provided via API method call
-            if (subtitle || customSubtitle) {
+                // either use subtitle provided from the data
+                // or customSubtitle provided via API method call
+                if (subtitle || customSubtitle) {
 
-                // override subtitle with customSubtitle if given
-                if (customTitle) {
-                    subtitle = customSubtitle;
+                    // override subtitle with customSubtitle if given
+                    if (customTitle) {
+                        subtitle = customSubtitle;
+                    }
+
+                    titleEl = legendGroup.selectAll('text.bullet-subtitle')
+                    .data([1])
+                    .enter()
+                    .append('text')
+                        .attr('class', 'bullet-subtitle x-axis-label')
+                        .attr('y', subtitleSpacing)
+                        .text(subtitle);
                 }
-
-                titleEl = legendGroup.selectAll('text.bullet-subtitle')
-                  .data([1])
-                  .enter()
-                  .append('text')
-                    .attr('class', 'bullet-subtitle x-axis-label')
-                    .attr('y', subtitleSpacing)
-                    .text(subtitle);
             }
         }
 
