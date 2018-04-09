@@ -58,7 +58,7 @@ define(function(require) {
                 top: 20,
                 right: 20,
                 bottom: 30,
-                left: 40
+                left: 20
             },
             data,
             width = 960, height = 150,
@@ -85,12 +85,21 @@ define(function(require) {
 
             isReverse = false,
 
+            legendGroup,
+            titleEl,
+            subtitleEl,
             rangesEl,
             measuresEl,
             markersEl,
 
+            legendSpacing = 100,
             title,
+            customTitle,
+
             subtitle,
+            customSubtitle,
+            subtitleSpacing = 15,
+
             ranges = [],
             markers = [],
             measures = [],
@@ -98,6 +107,7 @@ define(function(require) {
             svg,
             ease = d3Ease.easeQuadInOut,
 
+            hasTitle = () => title || customTitle,
             getMeasureBarHeight = () => chartHeight / 3;
 
 
@@ -113,10 +123,15 @@ define(function(require) {
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
 
+                if (hasTitle()) {
+                    chartWidth -= legendSpacing;
+                }
+
                 buildScales();
                 buildSVG(this);
                 buildAxis();
                 drawBullet();
+                drawTitles();
                 drawAxis();
 
             });
@@ -153,6 +168,11 @@ define(function(require) {
                 .append('g').classed('axis-group', true);
             container
                 .append('g').classed('metadata-group', true);
+
+            if (hasTitle()) {
+                container.selectAll('.chart-group')
+                  .attr('transform', `translate(${legendSpacing}, 0)`);
+            }
         }
 
         /**
@@ -221,8 +241,8 @@ define(function(require) {
                 ranges: originalData.ranges.slice().sort().reverse(),
                 measures: originalData.measures.slice().sort().reverse(),
                 markers: originalData.markers.slice().sort().reverse(),
-                subtitle,
-                title
+                subtitle: originalData.subtitle,
+                title: originalData.title
             };
 
             ({title, subtitle, ranges, measures, markers} = newData);
@@ -237,8 +257,10 @@ define(function(require) {
          * @private
          */
         function drawAxis() {
+            let translateX = hasTitle() ? legendSpacing : 0;
+
             svg.select('.axis-group')
-                .attr('transform', `translate(0, ${chartHeight + paddingBetweenAxisAndChart})`)
+                .attr('transform', `translate(${translateX}, ${chartHeight + paddingBetweenAxisAndChart})`)
                 .call(axis);
 
             drawHorizontalExtendedLine();
@@ -310,12 +332,63 @@ define(function(require) {
                     .attr('x2', chartWidth);
         }
 
+        /**
+         * Draws the title and subtitle components of chart
+         * @return {void}
+         * @private
+         */
+        function drawTitles() {
+            if (hasTitle()) {
+                // either use title provided from the data
+                // or customTitle provided via API method call
+                if (legendGroup) {
+                    legendGroup.remove();
+                }
+
+                legendGroup = svg.select('.metadata-group')
+                  .append('g')
+                    .classed('legend-group', true)
+                    .attr('transform', `translate(0, ${chartHeight / 2})`);
+
+
+                // override title with customTitle if given
+                if (customTitle) {
+                    title = customTitle;
+                }
+
+                titleEl = legendGroup.selectAll('text.bullet-title')
+                .data([1])
+                .enter()
+                .append('text')
+                  .attr('class', 'bullet-title x-axis-label')
+                  .text(title);
+
+                // either use subtitle provided from the data
+                // or customSubtitle provided via API method call
+                if (subtitle || customSubtitle) {
+
+                    // override subtitle with customSubtitle if given
+                    if (customSubtitle) {
+                        subtitle = customSubtitle;
+                    }
+
+                    titleEl = legendGroup.selectAll('text.bullet-subtitle')
+                    .data([1])
+                    .enter()
+                    .append('text')
+                        .attr('class', 'bullet-subtitle x-axis-label')
+                        .attr('y', subtitleSpacing)
+                        .text(subtitle);
+                }
+            }
+        }
+
         // API
 
         /**
          * Gets or Sets the aspect ratio of the chart
-         * @param  {Number} _x            Desired aspect ratio for the graph
-         * @return {Number | module} Current aspect ratio or Chart module to chain calls
+         * @param  {Number} _x              Desired aspect ratio for the graph
+         * @return {Number | module}        Current aspect ratio or Chart module to chain calls
          * @public
          */
         exports.aspectRatio = function (_x) {
@@ -341,6 +414,40 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Gets or Sets the title for measure identifier
+         * range.
+         * @param  {String} _x              Desired customTitle for chart
+         * @return {String | module}        Current customTitle or Chart module to chain calls
+         * @public
+         * @example bulletChart.customTitle('CPU Usage')
+         */
+        exports.customTitle = function(_x) {
+            if (!arguments.length) {
+                return customTitle;
+            }
+            customTitle = _x;
+
+            return this;
+        }
+
+        /**
+         * Gets or Sets the subtitle for measure identifier
+         * range.
+         * @param  {String} _x              Desired customSubtitle for chart
+         * @return {String | module}        current customSubtitle or Chart module to chain calls
+         * @public
+         * @example bulletChart.customSubtitle('GHz')
+         */
+        exports.customSubtitle = function(_x) {
+            if (!arguments.length) {
+                return customSubtitle;
+            }
+            customSubtitle = _x;
+
+            return this;
+        }
 
         /**
          * Chart exported to png and a download action is fired
@@ -373,8 +480,8 @@ define(function(require) {
         /**
          * Gets or Sets the isReverse status of the chart. If true,
          * the elements will be rendered in reverse order.
-         * @param  {Boolean} _x=false          Desired height for the chart
-         * @return {Boolean | module}    Current height or Chart module to chain calls
+         * @param  {Boolean} _x=false       Desired height for the chart
+         * @return {Boolean | module}       Current height or Chart module to chain calls
          * @public
          */
         exports.isReverse = function (_x) {
@@ -388,8 +495,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the margin of the chart
-         * @param  {Object} _x Margin object to get/set
-         * @return {margin | module} Current margin or Chart module to chain calls
+         * @param  {Object} _x          Margin object to get/set
+         * @return {margin | module}    Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -406,8 +513,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the number format of the bar chart
-         * @param  {string} _x Desired number format for the bar chart
-         * @return {numberFormat | module} Current numberFormat or Chart module to chain calls
+         * @param  {string} _x                  Desired number format for the bar chart
+         * @return {numberFormat | module}      Current numberFormat or Chart module to chain calls
          * @public
          */
         exports.numberFormat = function(_x) {
@@ -421,8 +528,8 @@ define(function(require) {
 
         /**
          * Space between axis and chart
-         * @param  {Number} _x=5          Space between y axis and chart
-         * @return {Number| module}     Current value of paddingBetweenAxisAndChart or Chart module to chain calls
+         * @param  {Number} _x=5            Space between y axis and chart
+         * @return {Number| module}         Current value of paddingBetweenAxisAndChart or Chart module to chain calls
          * @public
          */
         exports.paddingBetweenAxisAndChart = function(_x) {
@@ -435,10 +542,10 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the starting point of the copacity
+         * Gets or Sets the starting point of the capacity
          * range.
-         * @param  {Number} _x=0.6        desired startMaxRangeOpacity for chart
-         * @return {Number | module}    current startMaxRangeOpacity or Chart module to chain calls
+         * @param  {Number} _x=0.6          Desired startMaxRangeOpacity for chart
+         * @return {Number | module}        current startMaxRangeOpacity or Chart module to chain calls
          * @public
          * @example bulletChart.startMaxRangeOpacity(0.8)
          */
@@ -468,8 +575,8 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the height of the chart
-         * @param  {Number} _x           Desired height for the chart
+         * Gets or Sets the width of the chart
+         * @param  {Number} _x           Desired width for the chart
          * @return {Number | module}     Current width or Chart module to chain calls
          * @public
          */
