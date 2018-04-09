@@ -393,6 +393,7 @@ define(function(require) {
          * @param  {Number} _x D        desired startMaxRangeOpacity for chart
          * @return {Number | module}    current startMaxRangeOpacity or Chart module to chain calls
          * @public
+         * @example bulletChart.startMaxRangeOpacity(0.8)
          */
         exports.startMaxRangeOpacity = function(_x) {
             if (!arguments.length) {
