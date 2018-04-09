@@ -306,7 +306,7 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
                 let rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
 
                 rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartMaxOpacity - (i * 0.2)}`);
+                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartMaxOpacity - (i * diff)}`);
                 });
             });
         });
