@@ -58,7 +58,7 @@ define(function(require) {
                 top: 20,
                 right: 20,
                 bottom: 30,
-                left: 0
+                left: 20
             },
             data,
             width = 960, height = 150,
