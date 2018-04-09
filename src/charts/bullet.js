@@ -75,6 +75,7 @@ define(function(require) {
 
             baseLine,
 
+            aspectRatio = null,
             ticks = 6,
             tickPadding = 5,
             axis,
@@ -302,6 +303,21 @@ define(function(require) {
         // API
 
         /**
+         * Gets or Sets the aspect ratio of the chart
+         * @param  {Number} _x            Desired aspect ratio for the graph
+         * @return {Number | module} Current aspect ratio or Chart module to chain calls
+         * @public
+         */
+        exports.aspectRatio = function (_x) {
+            if (!arguments.length) {
+                return aspectRatio;
+            }
+            aspectRatio = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the colorSchema of the chart
          * @param  {String[]} _x        Desired colorSchema for the graph
          * @return {String[] | module}  Current colorSchema or Chart module to chain calls
@@ -328,35 +344,21 @@ define(function(require) {
 
         /**
          * Gets or Sets the height of the chart
-         * @param  {Number} _x Desired width for the graph
-         * @return {Number | module} Current height or Chart module to chain calls
+         * @param  {Number} _x          Desired height for the chart
+         * @return {Number | module}    Current height or Chart module to chain calls
          * @public
          */
-        exports.height = function(_x) {
+        exports.height = function (_x) {
             if (!arguments.length) {
                 return height;
+            }
+            if (aspectRatio) {
+                width = Math.ceil(_x / aspectRatio);
             }
             height = _x;
 
             return this;
         };
-
-        /**
-         * Gets or Sets the starting point of the copacity
-         * range.
-         * @param  {Number} _x D        desired startMaxRangeOpacity for chart
-         * @return {Number | module}    current startMaxRangeOpacity or Chart module to chain calls
-         * @public
-         * @example bulletChart.startMaxRangeOpacity(0.8)
-         */
-        exports.startMaxRangeOpacity = function(_x) {
-            if (!arguments.length) {
-                return maxRangeOpacity;
-            }
-            maxRangeOpacity = _x;
-
-            return this;
-        }
 
         /**
          * Gets or Sets the margin of the chart
@@ -392,19 +394,36 @@ define(function(require) {
         }
 
         /**
-         * Gets or Sets the width of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return {width | module} Current width or Chart module to chain calls
+         * Space between axis and chart
+         * @param  {Number} _x=5          Space between y axis and chart
+         * @return {Number| module}     Current value of paddingBetweenAxisAndChart or Chart module to chain calls
          * @public
          */
-        exports.width = function(_x) {
+        exports.paddingBetweenAxisAndChart = function(_x) {
             if (!arguments.length) {
-                return width;
+                return paddingBetweenAxisAndChart;
             }
-            width = _x;
+            paddingBetweenAxisAndChart = _x;
 
             return this;
         };
+
+        /**
+         * Gets or Sets the starting point of the copacity
+         * range.
+         * @param  {Number} _x D        desired startMaxRangeOpacity for chart
+         * @return {Number | module}    current startMaxRangeOpacity or Chart module to chain calls
+         * @public
+         * @example bulletChart.startMaxRangeOpacity(0.8)
+         */
+        exports.startMaxRangeOpacity = function(_x) {
+            if (!arguments.length) {
+                return maxRangeOpacity;
+            }
+            maxRangeOpacity = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the number of ticks of the x axis on the chart
@@ -423,32 +442,19 @@ define(function(require) {
         };
 
         /**
-         * Space between axis and chart
-         * @param  {Number} _x=5          Space between y axis and chart
-         * @return {Number| module}     Current value of paddingBetweenAxisAndChart or Chart module to chain calls
+         * Gets or Sets the height of the chart
+         * @param  {Number} _x           Desired height for the chart
+         * @return {Number | module}     Current width or Chart module to chain calls
          * @public
          */
-        exports.paddingBetweenAxisAndChart = function(_x) {
+        exports.width = function(_x) {
             if (!arguments.length) {
-                return paddingBetweenAxisAndChart;
+                return width;
             }
-            paddingBetweenAxisAndChart = _x;
-
-            return this;
-        };
-
-        /**
-         * Gets or Sets the number of vertical ticks on the chart
-         * (Default is 6)
-         * @param  {Number} _x          Desired number of vertical ticks for the graph
-         * @return {Number | module}    Current yTicks or Chart module to chain calls
-         * @public
-         */
-        exports.yTicks = function(_x) {
-            if (!arguments.length) {
-                return yTicks;
+            if (aspectRatio) {
+                height = Math.ceil(_x * aspectRatio);
             }
-            yTicks = _x;
+            width = _x;
 
             return this;
         };
