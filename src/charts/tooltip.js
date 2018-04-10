@@ -112,6 +112,7 @@ define(function(require){
 
             // formats
             numberFormat = null,
+            valueFormatter = null,
             monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
             monthDayHourFormat = d3TimeFormat.timeFormat('%b %d, %I %p'),
             locale,
@@ -238,18 +239,22 @@ define(function(require){
          * @private
          */
         function getFormattedValue(value) {
-            let valueFormatter = formatDecimalValue;
+            if (valueFormatter !== null) {
+                return valueFormatter(value);
+            }
+
+            let chosenValueFormatter = formatDecimalValue;
 
             if (!value) {
                 return 0;
             }
             if (numberFormat !== null) {
-                valueFormatter = d3Format.format(numberFormat);
+                chosenValueFormatter = d3Format.format(numberFormat);
             } else if (isInteger(value)) {
-                valueFormatter = formatIntegerValue;
+                chosenValueFormatter = formatIntegerValue;
             }
 
-            return valueFormatter(value);
+            return chosenValueFormatter(value);
         }
 
         /**
@@ -684,6 +689,21 @@ define(function(require){
                 return numberFormat;
             }
             numberFormat = _x;
+            return this;
+        }
+
+        /**
+         * Gets or Sets the formatter function for the value displayed on the tooltip.
+         * Setting this property makes the tooltip ignore numberFormat.
+         * @param  {Function} _x Desired formatter function
+         * @return {Function | module} Current valueFormatter or Chart module to chain calls
+         * @public
+         */
+        exports.valueFormatter = function(_x) {
+            if (!arguments.length) {
+                return valueFormatter;
+            }
+            valueFormatter = _x;
             return this;
         }
 

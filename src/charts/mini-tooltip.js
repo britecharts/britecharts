@@ -379,6 +379,22 @@ define(function(require){
         }
 
         /**
+         * Gets or Sets the formatter function for the value displayed on the tooltip.
+         * Setting this property makes the tooltip ignore numberFormat. Set by default to
+         * d3-format formatter with numberFormat.
+         * @param  {Function} _x Desired formatter function
+         * @return {Function | module} Current valueFormatter or Chart module to chain calls
+         * @public
+         */
+        exports.valueFormatter = function(_x) {
+            if (!arguments.length) {
+                return valueFormatter;
+            }
+            valueFormatter = _x;
+            return this;
+        }
+
+        /**
          * Shows the tooltip
          * @return {Module} Tooltip module to chain calls
          * @public
