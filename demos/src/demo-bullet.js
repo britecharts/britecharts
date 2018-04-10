@@ -8,21 +8,26 @@ const dataBuilder = require('./../../test/fixtures/bulletChartDataBuilder');
 
 require('./helpers/resizeHelper');
 
-
 function createBulletChart() {
-    const bulletChart = bullet();
     const testDataSet = new dataBuilder.BulletChartDataBuilder();
     const bulletContainer = d3Selection.select('.js-bullet-chart-container');
-    const containerWidth = bulletContainer.node() ? bulletContainer.node().getBoundingClientRect().width : false;
-    let dataset;
+    const containerWidth = bulletContainer.node()
+        ? bulletContainer.node().getBoundingClientRect().width
+        : false;
+    let bulletChart, dataset;
 
     if (containerWidth) {
         dataset = testDataSet.withCpuData().build();
 
-        bulletChart
-            .width(containerWidth);
+        // remove all current list of children before
+        // appending the next one
+        bulletContainer.selectAll('*').remove();
 
-        bulletContainer.datum(dataset[0]).call(bulletChart);
+        dataset.forEach(data => {
+            bulletChart = new bullet();
+            bulletChart.width(containerWidth);
+            bulletContainer.datum(data).call(bulletChart);
+        });
     }
 }
 
