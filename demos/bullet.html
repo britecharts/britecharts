@@ -14,11 +14,13 @@ col-md-6">
 col-md-6 sidebar">
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
-bulletChart
-    .width(containerWidth);
+let bulletChart;
 
-container.datum(dataset)
-    .call(bulletChart);
+dataset.forEach(data => {
+    bulletChart = new bullet();
+    bulletChart.width(containerWidth);
+    bulletContainer.datum(data).call(bulletChart);
+});
                 </code></pre>
                 <h4>Data Input</h4>
                 <p>Check the <a href="/britecharts/global.html#BulletChartData__anchor">data input schema</a> of this chart.</p>
