@@ -65,8 +65,10 @@ define(function(require) {
             chartWidth, chartHeight,
             xScale,
 
-            opacityScale,
-            opacityDiff = 0.2,
+            rangeOpacityScale,
+            rangeOpacifyDiff = 0.4,
+            measureOpacityScale,
+            measureOpacifyDiff = 0.3,
 
             colorSchema = colorHelper.singleColors.aloeGreen,
             measureColor = colorHelper.colorSchemas.grey[4],
@@ -79,7 +81,7 @@ define(function(require) {
             tickPadding = 5,
             axis,
             paddingBetweenAxisAndChart = 5,
-            startMaxRangeOpacity = 0.6,
+            startMaxRangeOpacity = 0.35,
             markerStrokeWidth = 5,
             barWidth,
 
@@ -191,8 +193,9 @@ define(function(require) {
             // Derive width scales from x scales
             barWidth = bulletWidth(xScale);
 
-            // set up opacity scale based on ranges
-            opacityScale = ranges.map((d, i) => startMaxRangeOpacity - (i * opacityDiff)).reverse();
+            // set up opacity scale based on ranges and measures
+            rangeOpacityScale = ranges.map((d, i) => startMaxRangeOpacity - (i * rangeOpacifyDiff)).reverse();
+            measureOpacityScale = ranges.map((d, i) => 1.2 - (i * measureOpacifyDiff)).reverse();
         }
 
         /**
@@ -284,7 +287,7 @@ define(function(require) {
                 .enter()
                 .append('rect')
                   .attr('fill', colorSchema[0])
-                  .attr('opacity', (d, i) => opacityScale[i])
+                  .attr('opacity', (d, i) => rangeOpacityScale[i])
                   .attr('class', (d, i) => `range r${i}`)
                   .attr('width', barWidth)
                   .attr('height', chartHeight)
@@ -295,7 +298,8 @@ define(function(require) {
                 .data(measures)
                 .enter()
                 .append('rect')
-                  .attr('fill', measureColor)
+                  .attr('fill', colorSchema[0])
+                  .attr('fill-opacity', (d, i) => measureOpacityScale[i])
                   .attr('class', (d, i) => `measure m${i}`)
                   .attr('width', barWidth)
                   .attr('height', getMeasureBarHeight)
@@ -308,7 +312,7 @@ define(function(require) {
                 .enter()
                 .append('line')
                   .attr('class', 'marker-line')
-                  .attr('stroke', measureColor)
+                  .attr('stroke', colorSchema[0])
                   .attr('stroke-width', markerStrokeWidth)
                   .attr('x1', xScale)
                   .attr('x2', xScale)
