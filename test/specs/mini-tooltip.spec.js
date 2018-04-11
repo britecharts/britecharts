@@ -166,5 +166,23 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
                 expect(newNameLabel).toBe(testNameLabel);
             });
         });
+
+        it('should allow overriding the value formatting function', () => {
+            let expected = '8',
+                actual;
+
+            tooltipChart.valueFormatter(value => value.toString().length.toString());
+
+            tooltipChart.update({
+                name: 'radiating',
+                value: 10000000
+            }, [0, 0],[20, 20]);
+
+            actual = containerFixture.select('.britechart-mini-tooltip')
+                    .selectAll('.mini-tooltip-value')
+                    .text();
+
+            expect(actual).toEqual(expected);
+        })
     });
 });
