@@ -361,6 +361,7 @@ define(function(require){
                 return nameLabel;
             }
             nameLabel = _x;
+
             return this;
         };
 
@@ -375,6 +376,7 @@ define(function(require){
                 return numberFormat;
             }
             numberFormat = _x;
+
             return this;
         }
 
@@ -392,6 +394,7 @@ define(function(require){
                 return valueFormatter;
             }
             valueFormatter = _x;
+
             return this;
         }
 
@@ -417,6 +420,7 @@ define(function(require){
                 return title;
             }
             title = _x;
+
             return this;
         };
 
@@ -444,6 +448,7 @@ define(function(require){
                 return valueLabel;
             }
             valueLabel = _x;
+
             return this;
         }
 

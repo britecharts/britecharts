@@ -689,6 +689,7 @@ define(function(require){
                 return numberFormat;
             }
             numberFormat = _x;
+
             return this;
         }
 
@@ -705,6 +706,7 @@ define(function(require){
                 return valueFormatter;
             }
             valueFormatter = _x;
+
             return this;
         }
 
