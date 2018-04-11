@@ -698,6 +698,7 @@ define(function(require){
          * @param  {Function} _x Desired formatter function
          * @return {Function | module} Current valueFormatter or Chart module to chain calls
          * @public
+         * @example tooltipChart.valueFormatter(value => value.toString().length.toString())
          */
         exports.valueFormatter = function(_x) {
             if (!arguments.length) {
