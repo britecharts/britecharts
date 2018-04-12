@@ -65,11 +65,13 @@ define(function(require) {
             chartWidth, chartHeight,
             xScale,
 
-            opacityScale,
-            opacityDiff = 0.2,
+            rangeOpacityScale,
+            rangeOpacifyDiff = 0.2,
+            measureOpacityScale,
+            measureOpacifyDiff = 0.3,
 
             colorSchema = colorHelper.singleColors.aloeGreen,
-            measureColor = colorHelper.colorSchemas.grey[4],
+            measureColor = colorHelper.colorSchemas.green[5],
             numberFormat = '',
 
             baseLine,
@@ -79,7 +81,7 @@ define(function(require) {
             tickPadding = 5,
             axis,
             paddingBetweenAxisAndChart = 5,
-            startMaxRangeOpacity = 0.6,
+            startMaxRangeOpacity = 0.5,
             markerStrokeWidth = 5,
             barWidth,
 
@@ -191,8 +193,9 @@ define(function(require) {
             // Derive width scales from x scales
             barWidth = bulletWidth(xScale);
 
-            // set up opacity scale based on ranges
-            opacityScale = ranges.map((d, i) => startMaxRangeOpacity - (i * opacityDiff)).reverse();
+            // set up opacity scale based on ranges and measures
+            rangeOpacityScale = ranges.map((d, i) => startMaxRangeOpacity - (i * rangeOpacifyDiff)).reverse();
+            measureOpacityScale = ranges.map((d, i) => 0.9 - (i * measureOpacifyDiff)).reverse();
         }
 
         /**
@@ -284,7 +287,7 @@ define(function(require) {
                 .enter()
                 .append('rect')
                   .attr('fill', colorSchema[0])
-                  .attr('opacity', (d, i) => opacityScale[i])
+                  .attr('opacity', (d, i) => rangeOpacityScale[i])
                   .attr('class', (d, i) => `range r${i}`)
                   .attr('width', barWidth)
                   .attr('height', chartHeight)
@@ -296,6 +299,7 @@ define(function(require) {
                 .enter()
                 .append('rect')
                   .attr('fill', measureColor)
+                  .attr('fill-opacity', (d, i) => measureOpacityScale[i])
                   .attr('class', (d, i) => `measure m${i}`)
                   .attr('width', barWidth)
                   .attr('height', getMeasureBarHeight)
@@ -310,6 +314,7 @@ define(function(require) {
                   .attr('class', 'marker-line')
                   .attr('stroke', measureColor)
                   .attr('stroke-width', markerStrokeWidth)
+                  .attr('opacity', measureOpacityScale[0])
                   .attr('x1', xScale)
                   .attr('x2', xScale)
                   .attr('y1', 0)
@@ -544,7 +549,7 @@ define(function(require) {
         /**
          * Gets or Sets the starting point of the capacity
          * range.
-         * @param  {Number} _x=0.6          Desired startMaxRangeOpacity for chart
+         * @param  {Number} _x=0.5          Desired startMaxRangeOpacity for chart
          * @return {Number | module}        current startMaxRangeOpacity or Chart module to chain calls
          * @public
          * @example bulletChart.startMaxRangeOpacity(0.8)
