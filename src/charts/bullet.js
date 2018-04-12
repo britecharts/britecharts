@@ -66,12 +66,12 @@ define(function(require) {
             xScale,
 
             rangeOpacityScale,
-            rangeOpacifyDiff = 0.4,
+            rangeOpacifyDiff = 0.2,
             measureOpacityScale,
             measureOpacifyDiff = 0.3,
 
             colorSchema = colorHelper.singleColors.aloeGreen,
-            measureColor = colorHelper.colorSchemas.grey[4],
+            measureColor = colorHelper.colorSchemas.green[5],
             numberFormat = '',
 
             baseLine,
@@ -81,7 +81,7 @@ define(function(require) {
             tickPadding = 5,
             axis,
             paddingBetweenAxisAndChart = 5,
-            startMaxRangeOpacity = 0.35,
+            startMaxRangeOpacity = 0.6,
             markerStrokeWidth = 5,
             barWidth,
 
@@ -298,7 +298,7 @@ define(function(require) {
                 .data(measures)
                 .enter()
                 .append('rect')
-                  .attr('fill', colorSchema[0])
+                  .attr('fill', measureColor)
                   .attr('fill-opacity', (d, i) => measureOpacityScale[i])
                   .attr('class', (d, i) => `measure m${i}`)
                   .attr('width', barWidth)
@@ -312,7 +312,7 @@ define(function(require) {
                 .enter()
                 .append('line')
                   .attr('class', 'marker-line')
-                  .attr('stroke', colorSchema[0])
+                  .attr('stroke', measureColor)
                   .attr('stroke-width', markerStrokeWidth)
                   .attr('x1', xScale)
                   .attr('x2', xScale)
