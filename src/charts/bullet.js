@@ -81,7 +81,7 @@ define(function(require) {
             tickPadding = 5,
             axis,
             paddingBetweenAxisAndChart = 5,
-            startMaxRangeOpacity = 0.6,
+            startMaxRangeOpacity = 0.5,
             markerStrokeWidth = 5,
             barWidth,
 
@@ -195,7 +195,7 @@ define(function(require) {
 
             // set up opacity scale based on ranges and measures
             rangeOpacityScale = ranges.map((d, i) => startMaxRangeOpacity - (i * rangeOpacifyDiff)).reverse();
-            measureOpacityScale = ranges.map((d, i) => 1.2 - (i * measureOpacifyDiff)).reverse();
+            measureOpacityScale = ranges.map((d, i) => 0.9 - (i * measureOpacifyDiff)).reverse();
         }
 
         /**
@@ -314,6 +314,7 @@ define(function(require) {
                   .attr('class', 'marker-line')
                   .attr('stroke', measureColor)
                   .attr('stroke-width', markerStrokeWidth)
+                  .attr('opacity', measureOpacityScale[0])
                   .attr('x1', xScale)
                   .attr('x2', xScale)
                   .attr('y1', 0)
@@ -548,7 +549,7 @@ define(function(require) {
         /**
          * Gets or Sets the starting point of the capacity
          * range.
-         * @param  {Number} _x=0.6          Desired startMaxRangeOpacity for chart
+         * @param  {Number} _x=0.5          Desired startMaxRangeOpacity for chart
          * @return {Number | module}        current startMaxRangeOpacity or Chart module to chain calls
          * @public
          * @example bulletChart.startMaxRangeOpacity(0.8)
