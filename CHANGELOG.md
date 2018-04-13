@@ -1,5 +1,20 @@
-2.8.5
-2.8.4
+2.8.5 - Patch
+--------------
+* Bullet Chart - visual improvement based off design for measure bars (dalerasrorov-eb)
+* valueFormatter setter and getter in tooltip and mini-tooltip (adrm)
+* Bullet Chart custom title and subtitle via data and chart API (dalerasrorov-eb)
+* Bullet Chart - initial stage (dalerasrorov-eb)
+* Improved bullet chart demos with data (DalerAsrorov)
+* Fix programatic brush selection clear (namoscato)
+* Add scatter-plot to kitchen sink (dalerasrorov-eb)
+* Attached click handler to svg to react to voronoi polygon (dalerasrorov-eb)
+
+2.8.4 - Patch
+--------------
+- Fix - scatter plot vertical gridlines use xTicks (dalerasrorov-eb)
+- Update Contributing doc with Codepen bug template (Golodhros)
+- Dispatch customBrushEnd event when clearing selection (namoscato)
+
 2.8.3 - Patch
 --------------
 * Fix - crosshair lines have a lower priority than tooltip and overlays
