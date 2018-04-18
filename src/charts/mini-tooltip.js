@@ -174,7 +174,6 @@ define(function(require){
          * @return {Number}                 Max size of the lines
          */
         function getMaxLengthLine(...texts) {
-            console.log('texts', texts);
             let textSizes = texts.filter(x => !!x)
                 .map(x => x.node().getBBox().width);
 
