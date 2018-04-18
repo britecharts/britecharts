@@ -10,6 +10,9 @@
             <div class="col-md-4 sidebar">
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
+// add title to tooltip
+tooltip.title('Temperature (C)');
+
 scatterChart
     .aspectRatio(0.7)
     .width(containerWidth)
@@ -20,10 +23,7 @@ scatterChart
     .xAxisFormat('.1f')
     .yAxisFormat('$')
     .on('customMouseOver', tooltip.show)
-    .on('customMouseMove', function(dataPoint, mousePos, chartSize) {
-        tooltip.title('Temperature (C)');
-        tooltip.update(dataPoint, mousePos, chartSize);
-    })
+    .on('customMouseMove', tooltip.update)
     .on('customMouseOut', tooltip.hide);
 
 // tooltip set up
@@ -67,6 +67,7 @@ scatterChart
     .maxCircleArea(15)
     .on('customMouseOver', tooltip.show)
     .on('customMouseMove', function (dataPoint, mousePos, chartSize) {
+        // update tooltip title with changing data point name
         tooltip.title(dataPoint.name);
         // passing an empty object to not have any data
         // in the tooltip - we want to only show the title
