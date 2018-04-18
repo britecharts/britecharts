@@ -232,7 +232,7 @@ define(function(require){
          * @return {void}
          */
         function hideTooltip() {
-            svg.style('display', 'none');
+            svg.style('visibility', 'hidden');
         }
 
         /**
@@ -242,7 +242,7 @@ define(function(require){
          */
         function showTooltip(dataPoint) {
             updateContent(dataPoint);
-            svg.style('display', 'block');
+            svg.style('visibility', 'visible');
         }
 
         /**
