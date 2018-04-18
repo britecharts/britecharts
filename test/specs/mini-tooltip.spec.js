@@ -34,14 +34,14 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
         });
 
         it('should not be visible by default', () =>  {
-            expect(containerFixture.select('.britechart-mini-tooltip').style('display')).toBe('none');
+            expect(containerFixture.select('.britechart-mini-tooltip').style('visibility')).toBe('hidden');
         });
 
         it('should be visible when required', () =>  {
-            expect(containerFixture.select('.britechart-mini-tooltip').style('display')).toBe('none');
+            expect(containerFixture.select('.britechart-mini-tooltip').style('visibility')).toBe('hidden');
             tooltipChart.show();
-            expect(containerFixture.select('.britechart-mini-tooltip').style('display')).not.toBe('none');
-            expect(containerFixture.select('.britechart-mini-tooltip').style('display')).toBe('block');
+            expect(containerFixture.select('.britechart-mini-tooltip').style('visibility')).not.toBe('hidden');
+            expect(containerFixture.select('.britechart-mini-tooltip').style('visibility')).toBe('visible');
         });
 
         xit('should resize the tooltip depending of number of topics', () =>  {
