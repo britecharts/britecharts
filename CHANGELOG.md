@@ -1,3 +1,4 @@
+2.8.6
 2.8.5 - Patch
 --------------
 * Bullet Chart - visual improvement based off design for measure bars (dalerasrorov-eb)
