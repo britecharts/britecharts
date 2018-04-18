@@ -41,9 +41,7 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
             .yAxisFormat('$')
             .xAxisFormat('.1f')
             .on('customMouseOver', tooltip.show)
-            .on('customMouseMove', function (dataPoint, mousePos, chartSize) {
-                tooltip.update(dataPoint, mousePos, chartSize);
-            })
+            .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);
 
         if (optionalColorSchema) {

@@ -174,6 +174,7 @@ define(function(require){
          * @return {Number}                 Max size of the lines
          */
         function getMaxLengthLine(...texts) {
+            console.log('texts', texts);
             let textSizes = texts.filter(x => !!x)
                 .map(x => x.node().getBBox().width);
 
@@ -232,7 +233,7 @@ define(function(require){
          * @return {void}
          */
         function hideTooltip() {
-            svg.style('display', 'none');
+            svg.style('visibility', 'hidden');
         }
 
         /**
@@ -242,7 +243,7 @@ define(function(require){
          */
         function showTooltip(dataPoint) {
             updateContent(dataPoint);
-            svg.style('display', 'block');
+            svg.style('visibility', 'visible');
         }
 
         /**
