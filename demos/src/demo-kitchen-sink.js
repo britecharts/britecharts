@@ -22,5 +22,5 @@ window.onload = function(){
     loadScript('/britecharts/scripts/demo-step');
     loadScript('/britecharts/scripts/demo-brush');
     loadScript('/britecharts/scripts/demo-scatter-plot');
+    loadScript('/britecharts/scripts/demo-bullet');
 }
-

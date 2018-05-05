@@ -282,9 +282,9 @@ define(function(require) {
             }
 
             rangesEl = svg.select('.chart-group')
-                .selectAll('rect.range')
-                .data(ranges)
-                .enter()
+              .selectAll('rect.range')
+              .data(ranges)
+              .enter()
                 .append('rect')
                   .attr('fill', colorSchema[0])
                   .attr('opacity', (d, i) => rangeOpacityScale[i])
@@ -294,9 +294,9 @@ define(function(require) {
                   .attr('x', isReverse ? xScale : 0);
 
             measuresEl = svg.select('.chart-group')
-                .selectAll('rect.measure')
-                .data(measures)
-                .enter()
+              .selectAll('rect.measure')
+              .data(measures)
+              .enter()
                 .append('rect')
                   .attr('fill', measureColor)
                   .attr('fill-opacity', (d, i) => measureOpacityScale[i])
@@ -307,9 +307,9 @@ define(function(require) {
                   .attr('y', getMeasureBarHeight);
 
             markersEl = svg.select('.chart-group')
-                .selectAll('line.marker-line')
-                .data(markers)
-                .enter()
+              .selectAll('line.marker-line')
+              .data(markers)
+              .enter()
                 .append('line')
                   .attr('class', 'marker-line')
                   .attr('stroke', measureColor)
@@ -328,13 +328,13 @@ define(function(require) {
          */
         function drawHorizontalExtendedLine() {
             baseLine = svg.select('.axis-group')
-                .selectAll('line.extended-x-line')
-                .data([0])
-                .enter()
-                  .append('line')
-                    .attr('class', 'extended-x-line')
-                    .attr('x1', 0)
-                    .attr('x2', chartWidth);
+              .selectAll('line.extended-x-line')
+              .data([0])
+              .enter()
+                .append('line')
+                  .attr('class', 'extended-x-line')
+                  .attr('x1', 0)
+                  .attr('x2', chartWidth);
         }
 
         /**
@@ -362,11 +362,11 @@ define(function(require) {
                 }
 
                 titleEl = legendGroup.selectAll('text.bullet-title')
-                .data([1])
-                .enter()
-                .append('text')
-                  .attr('class', 'bullet-title x-axis-label')
-                  .text(title);
+                  .data([1])
+                  .enter()
+                    .append('text')
+                      .attr('class', 'bullet-title x-axis-label')
+                      .text(title);
 
                 // either use subtitle provided from the data
                 // or customSubtitle provided via API method call
@@ -378,12 +378,12 @@ define(function(require) {
                     }
 
                     titleEl = legendGroup.selectAll('text.bullet-subtitle')
-                    .data([1])
-                    .enter()
-                    .append('text')
-                        .attr('class', 'bullet-subtitle x-axis-label')
-                        .attr('y', subtitleSpacing)
-                        .text(subtitle);
+                      .data([1])
+                      .enter()
+                        .append('text')
+                          .attr('class', 'bullet-subtitle x-axis-label')
+                          .attr('y', subtitleSpacing)
+                          .text(subtitle);
                 }
             }
         }
