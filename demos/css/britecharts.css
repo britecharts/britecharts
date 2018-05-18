@@ -135,7 +135,7 @@
   stroke-linecap: round;
   stroke-linejoin: round; }
   .sparkline .line {
-    stroke-width: 4; }
+    stroke-width: 2; }
   .sparkline .sparkline-circle {
     fill: #ff584c;
     stroke-width: 0;

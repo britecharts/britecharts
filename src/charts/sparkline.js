@@ -78,6 +78,7 @@ define(function(require){
             areaGradientEl,
             areaGradientId = uniqueId('sparkline-area-gradient'),
 
+            lineStrokeWidth = 2,
             lineGradient = colorHelper.colorGradients.greenBlue,
             lineGradientEl,
             lineGradientId = uniqueId('sparkline-line-gradient'),
@@ -128,8 +129,8 @@ define(function(require){
                 buildSVG(this);
                 createGradients();
                 createMaskingClip();
-                drawLine();
                 drawArea();
+                drawLine();
                 drawEndMarker();
 
                 if (titleText) {
@@ -293,7 +294,7 @@ define(function(require){
 
             area = d3Shape.area()
                 .x(({date}) => xScale(date))
-                .y0(() => yScale(0))
+                .y0(() => yScale(0) + lineStrokeWidth / 2)
                 .y1(({value}) => yScale(value))
                 .curve(d3Shape.curveBasis);
 
