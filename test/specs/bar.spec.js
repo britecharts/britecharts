@@ -498,6 +498,23 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             });
         });
 
+        describe('when custom gradient color schem is applied', () => {
+
+            it('should build the gradient with given colors', () => {
+                let expectedGradientColors = ['#ddd', 'ccc'];
+                let expectedGradientRefStr = 'url(#bar-gradient';
+
+                barChart.barGradient(expectedGradientColors);
+                containerFixture.datum(dataset).call(barChart);
+                let bar = containerFixture.selectAll('.bar:nth-child(1)');
+                let gradientStopEl = containerFixture.selectAll('stop').nodes();
+
+                expect(bar.attr('fill')).toContain(expectedGradientRefStr);
+                expect(gradientStopEl[0]).toHaveAttr('stop-color', expectedGradientColors[0]);
+                expect(gradientStopEl[1]).toHaveAttr('stop-color', expectedGradientColors[1]);
+            });
+        });
+
         describe('when margins are set partially', function() {
 
             it('should override the default values', () => {
