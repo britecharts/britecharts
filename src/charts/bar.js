@@ -15,6 +15,7 @@ define(function(require) {
     const {exportChart} = require('./helpers/export');
     const colorHelper = require('./helpers/color');
     const {bar} = require('./helpers/load');
+    const {uniqueId} = require('./helpers/number');
 
     const PERCENTAGE_FORMAT = '%';
     const NUMBER_FORMAT = ',f';
@@ -77,6 +78,10 @@ define(function(require) {
             colorSchema = colorHelper.singleColors.aloeGreen,
             colorList,
             colorMap,
+            barGradientColors = colorHelper.colorGradients.greenBlue,
+            barGradient,
+            barGradientEl,
+            barGradientId = uniqueId('bar-gradient'),
             yTicks = 5,
             xTicks = 5,
             percentageAxisToMaxRatio = 1,
@@ -152,6 +157,7 @@ define(function(require) {
                 buildScales();
                 buildAxis();
                 buildSVG(this);
+                buildGradient();
                 drawGridLines();
                 drawBars();
                 drawAxis();
@@ -203,6 +209,33 @@ define(function(require) {
                 .classed('y-axis-group axis', true);
             container
                 .append('g').classed('metadata-group', true);
+        }
+
+        /**
+         * Builds the gradient element to be used later
+         * @return {void}
+         * @private
+         */
+        function buildGradient() {
+            if (!barGradientEl && barGradientColors) {
+                barGradientEl = svg.select('.metadata-group')
+                  .append('linearGradient')
+                    .attr('id', barGradientId)
+                    .attr('x1', '0%')
+                    .attr('y1', '0%')
+                    .attr('x2', '100%')
+                    .attr('y2', '100%')
+                    .attr('gradientUnits', 'userSpaceOnUse')
+                    .selectAll('stop')
+                     .data([
+                        {offset:'0%', color: barGradientColors[0]},
+                        {offset:'50%', color: barGradientColors[1]}
+                    ])
+                    .enter()
+                      .append('stop')
+                        .attr('offset', ({offset}) => offset)
+                        .attr('stop-color', ({color}) => color)
+            }
         }
 
         /**
@@ -294,6 +327,17 @@ define(function(require) {
         }
 
         /**
+         * A utility function that checks if custom gradient
+         * color map should be applied if specified by the user
+         * @param {String} name - bar's data point name
+         * @return {void}
+         * @private
+         */
+        function chooseColor(name) {
+            return barGradientColors ? `url(#${barGradientId})` : colorMap(name);
+        }
+
+        /**
          * Sorts data if orderingFunction is specified
          * @param  {BarChartData}     clean unordered data
          * @return  {BarChartData}    clean ordered data
@@ -368,7 +412,7 @@ define(function(require) {
                 .attr('y', ({name}) => yScale(name))
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value))
-                .attr('fill', ({name}) => colorMap(name));
+                .attr('fill', ({name}) => chooseColor(name));
         }
 
         /**
@@ -402,7 +446,7 @@ define(function(require) {
                 .attr('x', 0)
                 .attr('y', ({name}) => yScale(name))
                 .attr('height', yScale.bandwidth())
-                .attr('fill', ({name}) => colorMap(name))
+                .attr('fill', ({name}) => chooseColor(name))
                 .transition()
                 .duration(animationDuration)
                 .delay(interBarDelay)
@@ -439,7 +483,7 @@ define(function(require) {
               .merge(bars)
                 .attr('x', ({name}) => xScale(name))
                 .attr('width', xScale.bandwidth())
-                .attr('fill', ({name}) => colorMap(name))
+                .attr('fill', ({name}) => chooseColor(name))
                 .transition()
                 .duration(animationDuration)
                 .delay(interBarDelay)
@@ -479,7 +523,7 @@ define(function(require) {
                 .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
                 .attr('height', ({value}) => chartHeight - yScale(value))
-                .attr('fill', ({name}) => colorMap(name));
+                .attr('fill', ({name}) => chooseColor(name));
         }
 
         /**
@@ -699,9 +743,24 @@ define(function(require) {
         // API
 
         /**
+         * Gets or Sets the gradient colors of a bar in the chart
+         * @param  {String[]} _x Desired color gradient for the line (array of two hexadecimal numbers)
+         * @return {Number | module} Current color gradient or Line Chart module to chain calls
+         * @public
+         */
+        exports.barGradient = function(_x) {
+            if (!arguments.length) {
+                return barGradientColors;
+            }
+            barGradientColors = _x;
+
+            return this;
+        }
+
+        /**
          * Gets or Sets the padding of the chart (Default is 0.1)
          * @param  { Number | module } _x Padding value to get/set
-         * @return { padding | module} Current padding or Chart module to chain calls
+         * @return {padding | module} Current padding or Chart module to chain calls
          * @public
          */
         exports.betweenBarsPadding = function(_x) {
