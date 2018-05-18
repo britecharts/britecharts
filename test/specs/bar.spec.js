@@ -213,6 +213,19 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
+            it('should set chartGradient getter and setter', () => {
+                let previous = barChart.chartGradient(),
+                    expected = ['#fff', '#ddd'],
+                    actual;
+
+                barChart.colorSchema(expected);
+                actual = barChart.colorSchema();
+
+                expect(previous).toBe(null);
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
             it('should update color', () => {
                 let previous = barChart.colorSchema(),
                     expected = '#FFFFFF',
@@ -485,8 +498,25 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             });
         });
 
+        describe('when custom gradient color schem is applied', () => {
+
+            it('should build the gradient with given colors', () => {
+                let expectedGradientColors = ['#ddd', 'ccc'];
+                let expectedGradientRefStr = 'url(#bar-gradient';
+
+                barChart.chartGradient(expectedGradientColors);
+                containerFixture.datum(dataset).call(barChart);
+                let bar = containerFixture.selectAll('.bar:nth-child(1)');
+                let gradientStopEl = containerFixture.selectAll('stop').nodes();
+
+                expect(bar.attr('fill')).toContain(expectedGradientRefStr);
+                expect(gradientStopEl[0]).toHaveAttr('stop-color', expectedGradientColors[0]);
+                expect(gradientStopEl[1]).toHaveAttr('stop-color', expectedGradientColors[1]);
+            });
+        });
+
         describe('when margins are set partially', function() {
-            
+
             it('should override the default values', () => {
                 let previous = barChart.margin(),
                 expected = {
