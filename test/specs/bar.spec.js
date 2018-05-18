@@ -213,8 +213,8 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
-            it('should set barGradient getter and setter', () => {
-                let previous = barChart.barGradient(),
+            it('should set chartGradient getter and setter', () => {
+                let previous = barChart.chartGradient(),
                     expected = ['#fff', '#ddd'],
                     actual;
 
@@ -504,7 +504,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 let expectedGradientColors = ['#ddd', 'ccc'];
                 let expectedGradientRefStr = 'url(#bar-gradient';
 
-                barChart.barGradient(expectedGradientColors);
+                barChart.chartGradient(expectedGradientColors);
                 containerFixture.datum(dataset).call(barChart);
                 let bar = containerFixture.selectAll('.bar:nth-child(1)');
                 let gradientStopEl = containerFixture.selectAll('stop').nodes();

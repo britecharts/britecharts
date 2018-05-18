@@ -78,10 +78,10 @@ define(function(require) {
             colorSchema = colorHelper.singleColors.aloeGreen,
             colorList,
             colorMap,
-            barGradientColors = null,
-            barGradient = null,
-            barGradientEl,
-            barGradientId = uniqueId('bar-gradient'),
+            chartGradientColors = null,
+            chartGradient = null,
+            chartGradientEl,
+            chartGradientId = uniqueId('bar-gradient'),
             yTicks = 5,
             xTicks = 5,
             percentageAxisToMaxRatio = 1,
@@ -217,10 +217,10 @@ define(function(require) {
          * @private
          */
         function buildGradient() {
-            if (!barGradientEl && barGradientColors) {
-                barGradientEl = svg.select('.metadata-group')
+            if (!chartGradientEl && chartGradientColors) {
+                chartGradientEl = svg.select('.metadata-group')
                   .append('linearGradient')
-                    .attr('id', barGradientId)
+                    .attr('id', chartGradientId)
                     .attr('x1', '0%')
                     .attr('y1', '0%')
                     .attr('x2', '100%')
@@ -228,8 +228,8 @@ define(function(require) {
                     .attr('gradientUnits', 'userSpaceOnUse')
                     .selectAll('stop')
                      .data([
-                        {offset:'0%', color: barGradientColors[0]},
-                        {offset:'50%', color: barGradientColors[1]}
+                        {offset:'0%', color: chartGradientColors[0]},
+                        {offset:'50%', color: chartGradientColors[1]}
                     ])
                     .enter()
                       .append('stop')
@@ -333,8 +333,8 @@ define(function(require) {
          * @return {void}
          * @private
          */
-        function chooseColor(name) {
-            return barGradientColors ? `url(#${barGradientId})` : colorMap(name);
+        function computeColor(name) {
+            return chartGradientColors ? `url(#${chartGradientId})` : colorMap(name);
         }
 
         /**
@@ -412,7 +412,7 @@ define(function(require) {
                 .attr('y', ({name}) => yScale(name))
                 .attr('height', yScale.bandwidth())
                 .attr('width', ({value}) => xScale(value))
-                .attr('fill', ({name}) => chooseColor(name));
+                .attr('fill', ({name}) => computeColor(name));
         }
 
         /**
@@ -446,7 +446,7 @@ define(function(require) {
                 .attr('x', 0)
                 .attr('y', ({name}) => yScale(name))
                 .attr('height', yScale.bandwidth())
-                .attr('fill', ({name}) => chooseColor(name))
+                .attr('fill', ({name}) => computeColor(name))
                 .transition()
                 .duration(animationDuration)
                 .delay(interBarDelay)
@@ -483,7 +483,7 @@ define(function(require) {
               .merge(bars)
                 .attr('x', ({name}) => xScale(name))
                 .attr('width', xScale.bandwidth())
-                .attr('fill', ({name}) => chooseColor(name))
+                .attr('fill', ({name}) => computeColor(name))
                 .transition()
                 .duration(animationDuration)
                 .delay(interBarDelay)
@@ -523,7 +523,7 @@ define(function(require) {
                 .attr('y', ({value}) => yScale(value))
                 .attr('width', xScale.bandwidth())
                 .attr('height', ({value}) => chartHeight - yScale(value))
-                .attr('fill', ({name}) => chooseColor(name));
+                .attr('fill', ({name}) => computeColor(name));
         }
 
         /**
@@ -748,11 +748,11 @@ define(function(require) {
          * @return {String[] | module} Current color gradient or Line Chart module to chain calls
          * @public
          */
-        exports.barGradient = function(_x) {
+        exports.chartGradient = function(_x) {
             if (!arguments.length) {
-                return barGradientColors;
+                return chartGradientColors;
             }
-            barGradientColors = _x;
+            chartGradientColors = _x;
 
             return this;
         }
