@@ -213,6 +213,19 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
+            it('should set barGradient getter and setter', () => {
+                let previous = barChart.barGradient(),
+                    expected = ['#fff', '#ddd'],
+                    actual;
+
+                barChart.colorSchema(expected);
+                actual = barChart.colorSchema();
+
+                expect(previous).toBe(null);
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
             it('should update color', () => {
                 let previous = barChart.colorSchema(),
                     expected = '#FFFFFF',
@@ -486,7 +499,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
         });
 
         describe('when margins are set partially', function() {
-            
+
             it('should override the default values', () => {
                 let previous = barChart.margin(),
                 expected = {

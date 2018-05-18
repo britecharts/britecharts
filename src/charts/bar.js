@@ -78,8 +78,8 @@ define(function(require) {
             colorSchema = colorHelper.singleColors.aloeGreen,
             colorList,
             colorMap,
-            barGradientColors = colorHelper.colorGradients.greenBlue,
-            barGradient,
+            barGradientColors = null,
+            barGradient = null,
             barGradientEl,
             barGradientId = uniqueId('bar-gradient'),
             yTicks = 5,
@@ -745,7 +745,7 @@ define(function(require) {
         /**
          * Gets or Sets the gradient colors of a bar in the chart
          * @param  {String[]} _x Desired color gradient for the line (array of two hexadecimal numbers)
-         * @return {Number | module} Current color gradient or Line Chart module to chain calls
+         * @return {String[] | module} Current color gradient or Line Chart module to chain calls
          * @public
          */
         exports.barGradient = function(_x) {
