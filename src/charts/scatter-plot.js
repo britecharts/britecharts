@@ -695,7 +695,6 @@ define(function(require) {
          * @private
          */
         function handleClick(e) {
-            console.log('click')
             let { closestPoint } = getPointProps(e);
             let d = getPointData(closestPoint);
 
@@ -712,10 +711,14 @@ define(function(require) {
         function handleClickAnimation(data) {
             highlightCircle
                 .transition()
-                .delay(delay)
-                .duration(duration)
                 .ease(ease)
-                .attr('r', () => areaScale(data.y * 2));
+                .duration(100)
+                .attr('r', () => areaScale(data.y * 2))
+                .transition()
+                .ease(ease)
+                .delay(50)
+                .duration(100)
+                .attr('r', () => areaScale(data.y));
         }
 
         /**
