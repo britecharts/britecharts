@@ -150,7 +150,7 @@ define(function(require){
         function drawTooltip(){
             tooltipTextContainer = svg.selectAll('.tooltip-group')
                 .append('g')
-                .classed('tooltip-text', true);
+                .classed('tooltip-text select-disable', true);
 
             tooltipBackground = tooltipTextContainer
               .append('rect')

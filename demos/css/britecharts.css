@@ -66,6 +66,20 @@
   stroke-width: 1;
   border-radius: 2px; }
 
+.select-disable {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently supported by Chrome and Opera */ }
+
 .britechart-legend .legend-entry.is-faded .legend-entry-name,
 .britechart-legend .legend-entry.is-faded .legend-entry-value,
 .britechart-legend .legend-entry.is-faded .legend-circle {
