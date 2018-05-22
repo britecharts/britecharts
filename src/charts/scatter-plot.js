@@ -695,10 +695,27 @@ define(function(require) {
          * @private
          */
         function handleClick(e) {
+            console.log('click')
             let { closestPoint } = getPointProps(e);
             let d = getPointData(closestPoint);
 
+            handleClickAnimation(d);
+
             dispatcher.call('customClick', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        }
+
+        /**
+         * Applies animation on datap point click
+         * @return {void}
+         * @private
+         */
+        function handleClickAnimation(data) {
+            highlightCircle
+                .transition()
+                .delay(delay)
+                .duration(duration)
+                .ease(ease)
+                .attr('r', () => areaScale(data.y * 2));
         }
 
         /**
