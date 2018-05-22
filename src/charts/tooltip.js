@@ -145,7 +145,7 @@ define(function(require){
          */
         function buildContainerGroups() {
             var container = svg.append('g')
-                .classed('tooltip-container-group', true)
+                .classed('tooltip-container-group select-disable', true)
                 .attr('transform', `translate( ${margin.left}, ${margin.top})`);
 
             container.append('g').classed('tooltip-group', true);
