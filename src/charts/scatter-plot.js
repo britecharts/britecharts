@@ -155,6 +155,8 @@ define(function(require) {
         ease = d3Ease.easeCircleIn,
         delay = 500,
         duration = 500,
+        clickDuration = 100,
+        clickDelay = 50,
 
         hasHollowCircles = false,
 
@@ -698,7 +700,28 @@ define(function(require) {
             let { closestPoint } = getPointProps(e);
             let d = getPointData(closestPoint);
 
+            handleClickAnimation(d);
+
             dispatcher.call('customClick', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        }
+
+        /**
+         * Applies animation on data point click
+         * @param {Object} dataPoint
+         * @return {void}
+         * @private
+         */
+        function handleClickAnimation(dataPoint) {
+            highlightCircle
+                .transition()
+                  .ease(ease)
+                  .duration(clickDuration)
+                  .attr('r', () => areaScale(dataPoint.y * 2))
+                  .transition()
+                    .ease(ease)
+                    .delay(clickDelay)
+                    .duration(clickDuration)
+                    .attr('r', () => areaScale(dataPoint.y));
         }
 
         /**
