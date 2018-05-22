@@ -145,7 +145,7 @@ define(function(require){
          */
         function buildContainerGroups() {
             var container = svg.append('g')
-                .classed('tooltip-container-group', true)
+                .classed('tooltip-container-group select-disable', true)
                 .attr('transform', `translate( ${margin.left}, ${margin.top})`);
 
             container.append('g').classed('tooltip-group', true);
@@ -160,7 +160,7 @@ define(function(require){
             if (!svg) {
                 svg = d3Selection.select(container)
                   .append('g')
-                    .classed('britechart britechart-tooltip select-disable', true)
+                    .classed('britechart britechart-tooltip', true)
                     .style('display', 'none');
 
                 buildContainerGroups();
