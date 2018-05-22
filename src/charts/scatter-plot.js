@@ -704,21 +704,22 @@ define(function(require) {
         }
 
         /**
-         * Applies animation on datap point click
+         * Applies animation on data point click
+         * @param {Object} dataPoint
          * @return {void}
          * @private
          */
-        function handleClickAnimation(data) {
+        function handleClickAnimation(dataPoint) {
             highlightCircle
                 .transition()
                 .ease(ease)
                 .duration(100)
-                .attr('r', () => areaScale(data.y * 2))
+                .attr('r', () => areaScale(dataPoint.y * 2))
                 .transition()
                 .ease(ease)
                 .delay(50)
                 .duration(100)
-                .attr('r', () => areaScale(data.y));
+                .attr('r', () => areaScale(dataPoint.y));
         }
 
         /**
