@@ -155,6 +155,8 @@ define(function(require) {
         ease = d3Ease.easeCircleIn,
         delay = 500,
         duration = 500,
+        clickDuration = 100,
+        clickDelay = 50,
 
         hasHollowCircles = false,
 
@@ -712,14 +714,14 @@ define(function(require) {
         function handleClickAnimation(dataPoint) {
             highlightCircle
                 .transition()
-                .ease(ease)
-                .duration(100)
-                .attr('r', () => areaScale(dataPoint.y * 2))
-                .transition()
-                .ease(ease)
-                .delay(50)
-                .duration(100)
-                .attr('r', () => areaScale(dataPoint.y));
+                  .ease(ease)
+                  .duration(clickDuration)
+                  .attr('r', () => areaScale(dataPoint.y * 2))
+                  .transition()
+                    .ease(ease)
+                    .delay(clickDelay)
+                    .duration(clickDuration)
+                    .attr('r', () => areaScale(dataPoint.y));
         }
 
         /**
