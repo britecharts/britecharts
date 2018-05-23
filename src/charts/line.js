@@ -279,8 +279,7 @@ define(function(require){
             createCircleHighlight(
                 glowEl,
                 ease,
-                highlightCircleRadius,
-                highlightCircleRadius* 2
+                highlightCircleRadius
             );
         }
 
