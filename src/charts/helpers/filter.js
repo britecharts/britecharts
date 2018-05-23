@@ -133,7 +133,7 @@ define(function (require) {
         return filterId;
     };
 
-    const createCircleHighlight = (el, ease, radius, bounceRadius = 2) => {
+    const createCircleHighlight = (el, ease, radius, bounceRadius = radius * 2) => {
         const clickDuration = 100;
         const clickDelay = 50;
 
