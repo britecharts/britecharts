@@ -25,6 +25,7 @@ define(function(require){
     const {
         createFilterContainer,
         createGlowWithMatrix,
+        createCircleHighlight
     } = require('./helpers/filter');
     const {
         addDays,
@@ -241,11 +242,19 @@ define(function(require){
                 highlightFilterId = createGlowWithMatrix(highlightFilter);
             }
 
-            d3Selection.select(el)
+            let glowEl = d3Selection.select(el);
+
+            glowEl
                 .style('stroke-width', highlightCircleActiveStrokeWidth)
-                .style('r', highlightCircleActiveRadius)
                 .style('stroke-opacity', highlightCircleActiveStrokeOpacity)
                 .attr('filter', `url(#${highlightFilterId})`);
+
+            createCircleHighlight(
+                glowEl,
+                ease,
+                highlightCircleActiveRadius,
+                highlightCircleActiveRadius * 2
+            );
         }
 
         /**

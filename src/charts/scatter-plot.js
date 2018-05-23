@@ -18,7 +18,8 @@ define(function(require) {
 
     const {
         createFilterContainer,
-        createGlowWithMatrix
+        createGlowWithMatrix,
+        createCircleHighlight,
     } = require('./helpers/filter');
 
     const {
@@ -155,8 +156,6 @@ define(function(require) {
         ease = d3Ease.easeCircleIn,
         delay = 500,
         duration = 500,
-        clickDuration = 100,
-        clickDelay = 50,
 
         hasHollowCircles = false,
 
@@ -712,16 +711,12 @@ define(function(require) {
          * @private
          */
         function handleClickAnimation(dataPoint) {
-            highlightCircle
-                .transition()
-                  .ease(ease)
-                  .duration(clickDuration)
-                  .attr('r', () => areaScale(dataPoint.y * 2))
-                  .transition()
-                    .ease(ease)
-                    .delay(clickDelay)
-                    .duration(clickDuration)
-                    .attr('r', () => areaScale(dataPoint.y));
+            createCircleHighlight(
+                highlightCircle,
+                ease,
+                areaScale(dataPoint.y),
+                areaScale(dataPoint.y * 2)
+            );
         }
 
         /**
