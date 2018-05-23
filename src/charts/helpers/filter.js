@@ -133,7 +133,7 @@ define(function (require) {
         return filterId;
     };
 
-    const createCircleHighlight = (el, ease, radius, bounceRadius = radius * 2) => {
+    const bounceCircleHighlight = (el, ease, radius, bounceRadius = radius * 2) => {
         const duration = 100;
         const delay = 50;
 
@@ -150,7 +150,7 @@ define(function (require) {
     }
 
     return {
-        createCircleHighlight,
+        bounceCircleHighlight,
         createFilterContainer,
         createGausianBlur,
         createWhiteGlow,

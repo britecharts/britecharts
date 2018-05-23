@@ -19,7 +19,7 @@ define(function(require) {
     const {
         createFilterContainer,
         createGlowWithMatrix,
-        createCircleHighlight,
+        bounceCircleHighlight,
     } = require('./helpers/filter');
 
     const {
@@ -711,7 +711,7 @@ define(function(require) {
          * @private
          */
         function handleClickAnimation(dataPoint) {
-            createCircleHighlight(
+            bounceCircleHighlight(
                 highlightCircle,
                 ease,
                 areaScale(dataPoint.y),

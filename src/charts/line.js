@@ -25,7 +25,7 @@ define(function(require){
     const {
         createFilterContainer,
         createGlowWithMatrix,
-        createCircleHighlight
+        bounceCircleHighlight
     } = require('./helpers/filter');
     const {
         formatIntegerValue,
@@ -276,7 +276,7 @@ define(function(require){
                 .style('stroke-opacity', highlightCircleActiveStrokeOpacity)
                 .attr('filter', `url(#${highlightFilterId})`);
 
-            createCircleHighlight(
+            bounceCircleHighlight(
                 glowEl,
                 ease,
                 highlightCircleRadius
