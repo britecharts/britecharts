@@ -134,18 +134,18 @@ define(function (require) {
     };
 
     const createCircleHighlight = (el, ease, radius, bounceRadius = radius * 2) => {
-        const clickDuration = 100;
-        const clickDelay = 50;
+        const duration = 100;
+        const delay = 50;
 
         el
           .transition()
             .ease(ease)
-            .duration(clickDuration)
+            .duration(duration)
             .attr('r', bounceRadius)
             .transition()
               .ease(ease)
-              .delay(clickDelay)
-              .duration(clickDuration)
+              .delay(delay)
+              .duration(duration)
               .attr('r', radius);
     }
 
