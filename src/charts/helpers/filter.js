@@ -141,12 +141,12 @@ define(function (require) {
           .transition()
             .ease(ease)
             .duration(clickDuration)
-            .attr('r', () => bounceRadius)
+            .attr('r', bounceRadius)
             .transition()
               .ease(ease)
               .delay(clickDelay)
               .duration(clickDuration)
-              .attr('r', () => radius);
+              .attr('r', radius);
     }
 
     return {
