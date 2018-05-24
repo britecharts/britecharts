@@ -23,7 +23,8 @@ function createBrushChart(optionalColorSchema) {
         brushMargin = {top:0, bottom: 40, left: 50, right: 30},
         brushContainer = d3Selection.select('.js-line-brush-chart-container'),
         containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
-        dataset;
+        dataset,
+        colorSchema = optionalColorSchema ? optionalColorSchema : null;
 
     if (containerWidth) {
         dataset = aTestDataSet().with5Topics().build();
@@ -41,7 +42,12 @@ function createBrushChart(optionalColorSchema) {
 
                 // Filter
                 d3Selection.selectAll('.js-line-chart-container .line-chart').remove();
-                createLineChart(optionalColorSchema ? optionalColorSchema : null, filterData(brushExtent[0], brushExtent[1]));
+
+                if (brushExtent[0] && brushExtent[1]) {
+                    createLineChart(colorSchema, filterData(brushExtent[0], brushExtent[1]));
+                } else {
+                    createLineChart(colorSchema, dataset);
+                }
             });
 
         brushContainer.datum(brushDataAdapter(dataset)).call(brushChart);
