@@ -75,6 +75,15 @@ module.exports = (function() {
                 },
                 initialDataType: 'basicStackedArea',
                 tooltipSelector: '.metadata-group .vertical-marker-container'
+            },
+            'scatter-plot': {
+                ...baseConfig,
+                chartConfig: {
+                    width: 500,
+                    height:300
+                },
+                initialDataType: 'basicScatterPlot',
+                tooltipSelector: '.metadata-group .vertical-marker-container'
             }
         },
         domClassNames: {
