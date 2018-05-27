@@ -482,6 +482,7 @@ define(function(require) {
               .attr('stroke-dasharray', totalLength + ' ' + totalLength)
               .attr('stroke-dashoffset', totalLength)
               .transition()
+                .delay(1500)
                 .duration(2000)
                 .ease(ease)
                 .attr('stroke-dashoffset', 0);
