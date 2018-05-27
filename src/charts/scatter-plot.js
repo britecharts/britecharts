@@ -480,7 +480,7 @@ define(function(require) {
             trendLinePath = svg.selectAll('.chart-group')
               .append('path')
                 .attr('d', line(params))
-                .attr('stroke', 'steelblue')
+                .attr('stroke', colorSchema[0])
                 .attr('stroke-width', '2')
                 .attr('fill', 'none');
 
