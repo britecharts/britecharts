@@ -487,7 +487,7 @@ define(function(require) {
             const totalLength = trendLinePath.node().getTotalLength();
 
             trendLinePath
-              .attr('stroke-dasharray', totalLength + ' ' + totalLength)
+              .attr('stroke-dasharray', `${totalLength} ${totalLength}`)
               .attr('stroke-dashoffset', totalLength)
               .transition()
                 .delay(1500)
