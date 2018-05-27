@@ -705,8 +705,6 @@ define(function(require) {
             const slope = ((n * xy) - (x * y)) / denominator;
             const minX = d3Array.min(dataPoints, ({ x }) => x);
             const maxX = d3Array.max(dataPoints, ({ x }) => x);
-            const minY = d3Array.min(dataPoints, ({ y }) => y);
-            const maxY = d3Array.max(dataPoints, ({ y }) => y);
 
             return {
                 x1: minX,
