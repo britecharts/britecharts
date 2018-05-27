@@ -40,6 +40,7 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
             .yAxisLabel('Ice Cream Sales')
             .yAxisFormat('$')
             .xAxisFormat('.1f')
+            .hasTrendline(true)
             .on('customMouseOver', tooltip.show)
             .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);

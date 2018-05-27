@@ -466,6 +466,35 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
             });
         });
 
+        describe('when hasTrendline is true', () => {
+
+            it('should render a path node', () => {
+                let expected = 1;
+
+                scatterPlot.hasTrendline(true);
+                containerFixture.datum(dataset).call(scatterPlot);
+
+                let trendlineN = containerFixture.selectAll('.scatter-trendline').nodes().length;
+
+                expect(trendlineN).toBe(expected);
+            });
+
+            it('path node should have correct properties', () => {
+                scatterPlot.hasTrendline(true);
+                containerFixture.datum(dataset).call(scatterPlot);
+
+                let trendline = containerFixture.selectAll('.scatter-trendline').node();
+
+                expect(trendline).toHaveAttr('class');
+                expect(trendline).toHaveAttr('d');
+                expect(trendline).toHaveAttr('stroke');
+                expect(trendline).toHaveAttr('stroke-width');
+                expect(trendline).toHaveAttr('fill');
+                expect(trendline).toHaveAttr('stroke-dasharray');
+                expect(trendline).toHaveAttr('stroke-dashoffset');
+            });
+        });
+
         describe('Point highlighter', () => {
 
             it('is successfully initialized on render', () => {
