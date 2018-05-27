@@ -202,7 +202,7 @@ define(function(require) {
                 drawMaskingClip();
 
                 if (hasTrendline) {
-                    drawTrendline(calcLinear());
+                    drawTrendline(calcLinearRegression());
                 }
 
                 addMouseEvents();
@@ -454,6 +454,14 @@ define(function(require) {
                 .attr('y', 0);
         }
 
+        /**
+         * Draws a trend line given the data that
+         * contains x and y params from calculated
+         * y-intercept and slope linear regression formula.
+         * @param {Object} linearData
+         * @returns {void}
+         * @private
+         */
         function drawTrendline(linearData) {
             if (trendLinePath) {
                 trendLinePath.remove();
@@ -672,7 +680,15 @@ define(function(require) {
                     .attr('y2', (d) => yScale(d));
         }
 
-        function calcLinear() {
+        /**
+         * Returns an object that contains necessary
+         * coordinates for drawing the trendline. The
+         * calculation of slope and y-intercept uses
+         * basic accumulative linear regression formula.
+         * @returns {Object}
+         * @private
+         */
+        function calcLinearRegression() {
             let n = dataPoints.length, x = 0, y = 0, xy = 0, x2 = 0, y2 = 0;
 
             dataPoints.forEach(d => {
