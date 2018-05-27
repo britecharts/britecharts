@@ -322,6 +322,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide hasTrendline getter and setter', () => {
+                let previous = scatterPlot.width(),
+                    expected = true,
+                    actual;
+
+                scatterPlot.hasTrendline(expected);
+                actual = scatterPlot.hasTrendline();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
         });
 
         describe('Grid lines', () => {

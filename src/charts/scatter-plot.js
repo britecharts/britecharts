@@ -157,7 +157,7 @@ define(function(require) {
 
         isAnimated = true,
         hasCrossHairs = false,
-        hasTrendline = true,
+        hasTrendline = false,
         ease = d3Ease.easeCircleIn,
         delay = 500,
         duration = 500,
@@ -1009,6 +1009,23 @@ define(function(require) {
                 return hasHollowCircles;
             }
             hasHollowCircles = _x;
+
+            return this;
+        }
+
+        /**
+         * Gets or Sets the hasTrendline value of the chart area
+         * If true, the trendline calculated based off linear regression
+         * formula will be drawn
+         * @param  {boolean} _x=false       Choose whether chart's trendline should be drawn
+         * @return {boolean | module}       Current hasTrendline value or Chart module to chain calls
+         * @public
+         */
+        exports.hasTrendline = function (_x) {
+            if (!arguments.length) {
+                return hasTrendline;
+            }
+            hasTrendline = _x;
 
             return this;
         }
