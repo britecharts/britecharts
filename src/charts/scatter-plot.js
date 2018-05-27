@@ -8,6 +8,7 @@ define(function(require) {
     const d3Ease = require('d3-ease');
     const d3Format = require('d3-format');
     const d3Scale = require('d3-scale');
+    const d3Shape = require('d3-shape');
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
@@ -127,6 +128,9 @@ define(function(require) {
         xAxisLabelEl,
         xAxisLabelOffset = -40,
 
+        trendLinePath,
+        trendLineCurve = d3Shape.curveBasis,
+
         highlightFilter,
         highlightFilterId,
         highlightStrokeWidth = 10,
@@ -153,6 +157,7 @@ define(function(require) {
 
         isAnimated = true,
         hasCrossHairs = false,
+        hasTrendline = true,
         ease = d3Ease.easeCircleIn,
         delay = 500,
         duration = 500,
@@ -194,7 +199,11 @@ define(function(require) {
                 drawGridLines();
                 initHighlightComponents();
                 drawDataPoints();
-                drawMaskingClip()
+                drawMaskingClip();
+
+                if (hasTrendline) {
+                    drawTrendline(calcLinear());
+                }
 
                 addMouseEvents();
             });
@@ -272,7 +281,6 @@ define(function(require) {
          * @private
          */
         function buildVoronoi() {
-
             voronoi = d3Voronoi.voronoi()
                 .x((d) => xScale(d.x))
                 .y((d) => yScale(d.y))
@@ -444,6 +452,39 @@ define(function(require) {
                 .attr('height', chartHeight)
                 .attr('x', 0)
                 .attr('y', 0);
+        }
+
+        function drawTrendline(linearData) {
+            if (trendLinePath) {
+                trendLinePath.remove();
+            }
+
+            const params = [
+                {x: linearData.x1, y: linearData.y1},
+                {x: linearData.x2, y: linearData.y2}
+            ];
+
+            let line = d3Shape.line()
+              .curve(trendLineCurve)
+              .x(({x}) => xScale(x))
+              .y(({y}) => yScale(y));
+
+            trendLinePath = svg.selectAll('.chart-group')
+              .append('path')
+                .attr('d', line(params))
+                .attr('stroke', 'steelblue')
+                .attr('stroke-width', '2')
+                .attr('fill', 'none');
+
+            const totalLength = trendLinePath.node().getTotalLength();
+
+            trendLinePath
+              .attr('stroke-dasharray', totalLength + ' ' + totalLength)
+              .attr('stroke-dashoffset', totalLength)
+              .transition()
+                .duration(2000)
+                .ease(ease)
+                .attr('stroke-dashoffset', 0);
         }
 
         /**
@@ -628,6 +669,33 @@ define(function(require) {
                     .attr('x2', chartWidth)
                     .attr('y1', (d) => yScale(d))
                     .attr('y2', (d) => yScale(d));
+        }
+
+        function calcLinear() {
+            let n = dataPoints.length, x = 0, y = 0, xy = 0, x2 = 0, y2 = 0;
+
+            dataPoints.forEach(d => {
+                x += d.x;
+                y += d.y;
+                xy += d.x * d.y;
+                x2 += d.x * d.x;
+                y2 += d.y * d.y;
+            });
+
+            const denominator = (n * x2) - (x * x);
+            const intercept = ((y * x2) - (x * xy)) / denominator;
+            const slope = ((n * xy) - (x * y)) / denominator;
+            const minX = d3Array.min(dataPoints, ({ x }) => x);
+            const maxX = d3Array.max(dataPoints, ({ x }) => x);
+            const minY = d3Array.min(dataPoints, ({ y }) => y);
+            const maxY = d3Array.max(dataPoints, ({ y }) => y);
+
+            return {
+                x1: minX,
+                y1: slope * n + intercept,
+                x2: maxX,
+                y2: slope * maxX + intercept
+            }
         }
 
         /**
