@@ -31,6 +31,7 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
             .aspectRatio(0.7)
             .width(containerWidth)
             .circleOpacity(0.6)
+            .hasTrendline(true)
             .grid('horizontal')
             .xAxisLabel('Temperature (C)')
             .margin({
@@ -73,6 +74,7 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
         scatterChart
             .width(containerWidth)
             .hasCrossHairs(true)
+            .hasTrendline(true)
             .hasHollowCircles(true)
             .margin({
                 left: 60,
