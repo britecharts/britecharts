@@ -74,7 +74,6 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
         scatterChart
             .width(containerWidth)
             .hasCrossHairs(true)
-            .hasTrendline(true)
             .hasHollowCircles(true)
             .margin({
                 left: 60,
