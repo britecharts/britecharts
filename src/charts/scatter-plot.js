@@ -693,7 +693,12 @@ define(function(require) {
          * @private
          */
         function calcLinearRegression() {
-            let n = dataPoints.length, x = 0, y = 0, xy = 0, x2 = 0, y2 = 0;
+            let n = dataPoints.length,
+            x = 0,
+            y = 0,
+            xy = 0,
+            x2 = 0,
+            y2 = 0;
 
             dataPoints.forEach(d => {
                 x += d.x;
