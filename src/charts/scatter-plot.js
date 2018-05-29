@@ -130,6 +130,9 @@ define(function(require) {
 
         trendLinePath,
         trendLineCurve = d3Shape.curveBasis,
+        trendLineStrokWidth = '2',
+        trendLineDelay = 1500,
+        trendLineDuration = 2000,
 
         highlightFilter,
         highlightFilterId,
@@ -482,7 +485,7 @@ define(function(require) {
                 .attr('class', 'scatter-trendline')
                 .attr('d', line(params))
                 .attr('stroke', colorSchema[0])
-                .attr('stroke-width', '2')
+                .attr('stroke-width', trendLineStrokWidth)
                 .attr('fill', 'none');
 
             const totalLength = trendLinePath.node().getTotalLength();
@@ -491,8 +494,8 @@ define(function(require) {
               .attr('stroke-dasharray', `${totalLength} ${totalLength}`)
               .attr('stroke-dashoffset', totalLength)
               .transition()
-                .delay(1500)
-                .duration(2000)
+                .delay(trendLineDelay)
+                .duration(trendLineDuration)
                 .ease(ease)
                 .attr('stroke-dashoffset', 0);
         }
