@@ -599,7 +599,7 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                     expect(testYText).toEqual(expected);
                 });
 
-                it('crosshair labels with respect to x changes attributes', () => {
+                it('crosshair label with respect to x changes attributes', () => {
                     let container = containerFixture.select('svg');
                     let expectedFill = '#6aedc7';
 
@@ -612,7 +612,7 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                     expect(scatterText).not.toHaveAttr('y');
                 });
 
-                it('crosshair text with respect to y changes attributes', () => {
+                it('crosshair label with respect to y changes attributes', () => {
                     let container = containerFixture.select('svg');
                     let expectedFill = '#6aedc7';
 
