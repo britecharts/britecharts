@@ -573,14 +573,7 @@ define(function(require) {
          * @private
         */
         function drawDataPointsValueHighlights(data) {
-            removeDataPointsValueHighlights();
-
-            setCrossHairLinesStatus(1);
-
-            // initialize cross hair labels container
-            highlightCrossHairLabelsContainer = svg.select('.metadata-group')
-              .append('g')
-                .attr('class', 'crosshair-labels-container');
+            setCrossHairComponentStatus(1);
 
             // Draw line perpendicular to y-axis
             highlightCrossHairContainer.selectAll('line.highlight-y-line')
@@ -603,27 +596,21 @@ define(function(require) {
 
             // Draw data label for y value
             highlightCrossHairLabelsContainer.selectAll('text.highlight-y-legend')
-              .data([data])
-              .enter()
-                .append('text')
-                  .attr('text-anchor', 'middle')
-                  .attr('fill', ({name}) => nameColorMap[name])
-                  .attr('class', 'highlight-y-legend')
-                  .attr('y', (d) => (yScale(d.y) + (areaScale(d.y) / 2)))
-                  .attr('x', highlightTextLegendOffset)
-                  .text((d) => `${d3Format.format(yAxisFormat)(d.y)}`);
+              .attr('text-anchor', 'middle')
+              .attr('fill', nameColorMap[data.name])
+              .attr('class', 'highlight-y-legend')
+              .attr('y', (yScale(data.y) + (areaScale(data.y) / 2)))
+              .attr('x', highlightTextLegendOffset)
+              .text(`${d3Format.format(yAxisFormat)(data.y)}`);
 
             // Draw data label for x value
             highlightCrossHairLabelsContainer.selectAll('text.highlight-x-legend')
-              .data([data])
-              .enter()
-                .append('text')
-                  .attr('text-anchor', 'middle')
-                  .attr('fill', ({name}) => nameColorMap[name])
-                  .attr('class', 'highlight-x-legend')
-                  .attr('transform', `translate(0, ${chartHeight - highlightTextLegendOffset})`)
-                  .attr('x', (d) => (xScale(d.x) - (areaScale(d.y) / 2)))
-                  .text((d) => `${d3Format.format(xAxisFormat)(d.x)}`);
+              .attr('text-anchor', 'middle')
+              .attr('fill', nameColorMap[data.name])
+              .attr('class', 'highlight-x-legend')
+              .attr('transform', `translate(0, ${chartHeight - highlightTextLegendOffset})`)
+              .attr('x', (xScale(data.x) - (areaScale(data.y) / 2)))
+              .text(`${d3Format.format(xAxisFormat)(data.x)}`);
         }
 
         /**
@@ -774,10 +761,9 @@ define(function(require) {
          */
         function handleMouseOut(e, d) {
             removePointHighlight();
-            removeDataPointsValueHighlights();
 
             if (hasCrossHairs) {
-                setCrossHairLinesStatus(0);
+                setCrossHairComponentStatus(0);
             }
             dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
         }
@@ -860,19 +846,36 @@ define(function(require) {
                 // initialize cross hair lines container
                 highlightCrossHairContainer = svg.select('.chart-group')
                   .append('g')
-                  .attr('class', 'crosshair-lines-container');
+                    .attr('class', 'crosshair-lines-container');
+
+                // initialize corss hair labels container
+                highlightCrossHairLabelsContainer = svg.select('.metadata-group')
+                  .append('g')
+                    .attr('class', 'crosshair-labels-container');
 
                 highlightCrossHairContainer.selectAll('line.highlight-y-line')
                   .data([1])
                   .enter()
-                    .append('line')
+                  .append('line')
                     .attr('class', 'highlight-y-line');
 
                 highlightCrossHairContainer.selectAll('line.highlight-x-line')
                   .data([1])
                   .enter()
-                    .append('line')
+                  .append('line')
                     .attr('class', 'highlight-x-line');
+
+                highlightCrossHairLabelsContainer.selectAll('text.highlight-y-legend')
+                  .data([1])
+                  .enter()
+                  .append('text')
+                      .attr('class', 'highlight-y-legend');
+
+                highlightCrossHairLabelsContainer.selectAll('text.highlight-x-legend')
+                  .data([1])
+                  .enter()
+                  .append('text')
+                    .attr('class', 'highlight-x-legend');
             }
         }
 
@@ -886,15 +889,6 @@ define(function(require) {
         }
 
         /**
-         * Removes the labels for the highlighted data point value
-         * @return {void}
-         * @private
-         */
-        function removeDataPointsValueHighlights() {
-            svg.selectAll('.crosshair-labels-container').remove();
-        }
-
-        /**
          * Sets the visibility of cross hair lines
          * if 1, it sets lines to visible,
          * if 0, it hides lines
@@ -902,8 +896,9 @@ define(function(require) {
          * @param {Number}
          * @private
          */
-        function setCrossHairLinesStatus(status = 0) {
+        function setCrossHairComponentStatus(status = 0) {
             highlightCrossHairContainer.attr('opacity', status);
+            highlightCrossHairLabelsContainer.attr('opacity', status);
         }
 
         // API

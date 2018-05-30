@@ -546,7 +546,7 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
             describe('cross hair lines', () => {
 
-                it('successfully initialized with container on render', () => {
+                it('successfully initialize with container on render', () => {
                     let expected = 1;
                     let testContainer = containerFixture.select('.crosshair-lines-container').nodes().length;
                     let testXLine = containerFixture.select('line.highlight-x-line').nodes().length;
@@ -583,6 +583,46 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                     expect(scatterPoint).toHaveAttr('x2');
                     expect(scatterPoint).toHaveAttr('y1');
                     expect(scatterPoint).toHaveAttr('y2');
+                });
+            });
+
+            describe('crosshair labels', () => {
+
+                it('successfully initialize with container on render', () => {
+                    let expected = 1;
+                    let testContainer = containerFixture.select('.crosshair-labels-container').nodes().length;
+                    let testXText= containerFixture.select('text.highlight-x-legend').nodes().length;
+                    let testYText = containerFixture.select('text.highlight-y-legend').nodes().length;
+
+                    expect(testContainer).toEqual(expected);
+                    expect(testXText).toEqual(expected);
+                    expect(testYText).toEqual(expected);
+                });
+
+                it('crosshair label with respect to x changes attributes', () => {
+                    let container = containerFixture.select('svg');
+                    let expectedFill = '#6aedc7';
+
+                    container.dispatch('mousemove');
+                    let scatterText = containerFixture.select('text.highlight-x-legend').node();
+
+                    expect(scatterText).toHaveAttr('fill', expectedFill);
+                    expect(scatterText).toHaveAttr('text-anchor');
+                    expect(scatterText).toHaveAttr('x');
+                    expect(scatterText).not.toHaveAttr('y');
+                });
+
+                it('crosshair label with respect to y changes attributes', () => {
+                    let container = containerFixture.select('svg');
+                    let expectedFill = '#6aedc7';
+
+                    container.dispatch('mousemove');
+                    let scatterText = containerFixture.select('text.highlight-y-legend').node();
+
+                    expect(scatterText).toHaveAttr('fill', expectedFill);
+                    expect(scatterText).toHaveAttr('text-anchor');
+                    expect(scatterText).toHaveAttr('x');
+                    expect(scatterText).toHaveAttr('y');
                 });
             });
         });
