@@ -1,8 +1,31 @@
-2.9.0
-2.8.9
-2.8.8
-2.8.7
-2.8.6
+2.9.0 - Minor
+--------------
+* Fix - crosshair labels to be rendered on same level as lines (dalerasrorov-eb)
+* Feature - Scatter Plot trendline based off linear regression formula (dalerasrorov-eb)
+* Docs - added Scatter plot to sandbox (dalerasrorov-eb)
+* Fix - line chart demo if both brush extent range values are null (dalerasrorov-eb)
+
+2.8.9 - Patch
+--------------
+* Feature - Added filter helper that applies bounce effect to charts circles (dalerasrorov-eb)
+* Fix - do not select tooltip text on frequent click, new class (dalerasrorov-eb)
+
+2.8.8 - Patch
+--------------
+* Feature - Scatter Plot bounce on click animation (dalerasrorov-eb)
+
+2.8.7 - Patch
+--------------
+* Feature - custom gradient color schema function for Bar chart (dalerasrorov-eb)
+* Fix - Swap drawing order of area and line for sparkline charts (tobiasdierich)
+* Docs - Give max space to stacked and grouped bars (dalerasrorov-eb)
+* Docs - Allow stack area to take max space (dalerasrorov-eb)
+* Docs - Added bullet chart to Kitchen Sink (dalerasrorov-eb)
+
+2.8.6 - Patch
+--------------
+* Fix - mini-tooltip render bug in Firefox (dalerasrorov-eb)
+
 2.8.5 - Patch
 --------------
 * Bullet Chart - visual improvement based off design for measure bars (dalerasrorov-eb)
@@ -16,9 +39,9 @@
 
 2.8.4 - Patch
 --------------
-- Fix - scatter plot vertical gridlines use xTicks (dalerasrorov-eb)
-- Update Contributing doc with Codepen bug template (Golodhros)
-- Dispatch customBrushEnd event when clearing selection (namoscato)
+* Fix - scatter plot vertical gridlines use xTicks (dalerasrorov-eb)
+* Update Contributing doc with Codepen bug template (Golodhros)
+* Dispatch customBrushEnd event when clearing selection (namoscato)
 
 2.8.3 - Patch
 --------------
