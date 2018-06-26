@@ -458,9 +458,9 @@ define(function(require) {
         }
 
         /**
-         * Draws a trend line given the data that
-         * contains x and y params from calculated
-         * y-intercept and slope linear regression formula.
+         * Draws a trend line given the data that contains
+         * and y params from calculated y-intercept and slope
+         * using linear regression formula.
          * @param {Object} linearData
          * @returns {void}
          * @private
@@ -520,8 +520,7 @@ define(function(require) {
         }
 
         /**
-         * Draws the points for each data element
-         * on the chart group
+         * Draws the points for each data element on the chart group
          * @return {void}
          * @private
         */
@@ -567,13 +566,14 @@ define(function(require) {
         }
 
         /**
-         * Draws lines and labels for the
-         * highlighted data point value
+         * Draws the crosshair lines and label components
+         * given the coordinates and name of the data point
+         * @param {Object} dataPoint
          * @return {void}
          * @private
         */
         function drawDataPointsValueHighlights(data) {
-            setCrossHairComponentStatus(1);
+            showCrossHairComponentsWithLabels(true);
 
             // Draw line perpendicular to y-axis
             highlightCrossHairContainer.selectAll('line.highlight-y-line')
@@ -676,7 +676,7 @@ define(function(require) {
          * coordinates for drawing the trendline. The
          * calculation of slope and y-intercept uses
          * basic accumulative linear regression formula.
-         * @returns {Object}
+         * @return {Object}
          * @private
          */
         function calcLinearRegression() {
@@ -711,8 +711,8 @@ define(function(require) {
 
         /**
          * Calculates and returns
-         * @return {Object}
          * @param {*} svg
+         * @return {Object}
          * @private
          */
         function getPointProps(svg) {
@@ -763,7 +763,7 @@ define(function(require) {
             removePointHighlight();
 
             if (hasCrossHairs) {
-                setCrossHairComponentStatus(0);
+                showCrossHairComponentsWithLabels(false);
             }
             dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
         }
@@ -892,13 +892,15 @@ define(function(require) {
          * Sets the visibility of cross hair lines
          * if 1, it sets lines to visible,
          * if 0, it hides lines
+         * @param {boolean}
          * @return {void}
-         * @param {Number}
          * @private
          */
-        function setCrossHairComponentStatus(status = 0) {
-            highlightCrossHairContainer.attr('opacity', status);
-            highlightCrossHairLabelsContainer.attr('opacity', status);
+        function showCrossHairComponentsWithLabels(status = false) {
+            const opacityIndex = status ? 1 : 0;
+
+            highlightCrossHairContainer.attr('opacity', opacityIndex);
+            highlightCrossHairLabelsContainer.attr('opacity', opacityIndex);
         }
 
         // API
