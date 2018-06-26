@@ -156,6 +156,7 @@ define(function(require){
             highlightCircleSize = 12,
             highlightCircleRadius = 5,
             highlightCircleStroke = 2,
+            highlightCircleStrokeAll = 5,
             highlightCircleActiveRadius = highlightCircleRadius + 2,
             highlightCircleActiveStrokeWidth = 5,
             highlightCircleActiveStrokeOpacity = 0.6,
@@ -942,7 +943,9 @@ define(function(require){
                                     .attr('cx', highlightCircleSize)
                                     .attr('cy', 0)
                                     .attr('r', highlightCircleRadius)
-                                    .style('stroke-width', highlightCircleStroke)
+                                    .style('stroke-width', () => (
+                                        shouldShowAllDataPoints ? highlightCircleStrokeAll : highlightCircleStroke
+                                    ))
                                     .style('stroke', topicColorMap[d.name])
                                     .style('cursor', 'pointer')
                                     .on('click', function () {
@@ -952,7 +955,6 @@ define(function(require){
                                     .on('mouseout', function () {
                                         removeFilter(this);
                                     });
-
 
                 const path = topicsWithNode[index].node;
                 const x = xScale(new Date(dataPoint.topics[index].date));
