@@ -496,6 +496,54 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide xAxisLabel getter and setter', () => {
+                let defaultXAxisLabel = 'World',
+                    testXAxisLabel = 'Hello',
+                    newXAxisLabel;
+
+                barChart.xAxisLabel(testXAxisLabel);
+                newXAxisLabel = barChart.xAxisLabel();
+
+                expect(defaultXAxisLabel).not.toBe(newXAxisLabel);
+                expect(newXAxisLabel).toBe(testXAxisLabel);
+            });
+
+            it('should provide xAxisLabelOffset getter and setter', () => {
+                let defaultXAxisLabelOffset = 30,
+                    testXAxisLabelOffset = 40,
+                    newXAxisLabelOffset;
+
+                barChart.xAxisLabelOffset(testXAxisLabelOffset);
+                newXAxisLabelOffset = barChart.xAxisLabelOffset();
+
+                expect(defaultXAxisLabelOffset).not.toBe(newXAxisLabelOffset);
+                expect(newXAxisLabelOffset).toBe(testXAxisLabelOffset);
+            });
+
+            it('should provide yAxisLabel getter and setter', () => {
+                let defaultYAxisLabel = 'Hello',
+                    testYAxisLabel = 'World',
+                    newYAxisLabel;
+
+                barChart.yAxisLabel(testYAxisLabel);
+                newYAxisLabel = barChart.yAxisLabel();
+
+                expect(defaultYAxisLabel).not.toBe(newYAxisLabel);
+                expect(newYAxisLabel).toBe(testYAxisLabel);
+            });
+
+            it('should provide yAxisLabelOffset getter and setter', () => {
+                let defaultYAxisLabelOffset = -40,
+                    testYAxisLabelOffset = -30,
+                    newYAxisLabelOffset;
+
+                barChart.yAxisLabelOffset(testYAxisLabelOffset);
+                newYAxisLabelOffset = barChart.yAxisLabelOffset();
+
+                expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
+                expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
+            });
         });
 
         describe('when custom gradient color schem is applied', () => {

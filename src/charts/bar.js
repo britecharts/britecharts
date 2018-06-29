@@ -117,6 +117,14 @@ define(function(require) {
             nameLabel = 'name',
             labelEl,
 
+            xAxisLabelEl = null,
+            xAxisLabel = null,
+            xAxisLabelOffset = 30,
+            yAxisLabelEl = null,
+            yAxisLabel = null,
+            yAxisLabelOffset = -30,
+
+
             baseLine,
             maskGridLines,
             shouldReverseColorList = true,
@@ -161,6 +169,7 @@ define(function(require) {
                 drawGridLines();
                 drawBars();
                 drawAxis();
+
                 if (enableLabels) {
                     drawLabels();
                 }
@@ -202,11 +211,16 @@ define(function(require) {
             container
                 .append('g').classed('chart-group', true);
             container
-                .append('g').classed('x-axis-group axis', true);
+                .append('g')
+                  .classed('x-axis-group axis', true)
+                .append('g')
+                  .classed('x-axis-label', true);
             container
                 .append('g')
-                .attr('transform', `translate(${-1 * (yAxisPaddingBetweenChart)}, 0)`)
-                .classed('y-axis-group axis', true);
+                   .attr('transform', `translate(${-1 * (yAxisPaddingBetweenChart)}, 0)`)
+                   .classed('y-axis-group axis', true)
+                .append('g')
+                    .classed('y-axis-label', true);
             container
                 .append('g').classed('metadata-group', true);
         }
@@ -378,7 +392,42 @@ define(function(require) {
                 .call(yAxis);
 
             svg.selectAll('.y-axis-group .tick text')
-                .call(wrapText, margin.left - yAxisPaddingBetweenChart)
+                .call(wrapText, margin.left - yAxisPaddingBetweenChart);
+
+            drawAxisLabels();
+        }
+
+        /**
+         * Draws the x and y axis custom labels respective groups
+         * @private
+         */
+        function drawAxisLabels() {
+            if (yAxisLabel) {
+                if (yAxisLabelEl) {
+                    yAxisLabelEl.remove();
+                }
+                yAxisLabelEl = svg.select('.y-axis-label')
+                  .append('text')
+                    .classed('y-axis-label-text', true)
+                    .attr('x', -chartHeight / 2)
+                    .attr('y', yAxisLabelOffset)
+                    .attr('text-anchor', 'middle')
+                    .attr('transform', 'rotate(270 0 0)')
+                    .text(yAxisLabel);
+            }
+
+            if (xAxisLabel) {
+                if (xAxisLabelEl) {
+                    xAxisLabelEl.remove();
+                }
+                xAxisLabelEl = svg.select('.x-axis-label')
+                  .append('text')
+                    .attr('y', xAxisLabelOffset)
+                    .attr('text-anchor', 'middle')
+                    .classed('x-axis-label-text', true)
+                    .attr('x', chartWidth / 2)
+                    .text(xAxisLabel);
+            }
         }
 
         /**
@@ -1121,6 +1170,36 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the text of the xAxisLabel on the chart
+         * @param  {String} _x Desired text for the label
+         * @return {String | module} label or Chart module to chain calls
+         * @public
+         */
+        exports.xAxisLabel = function(_x) {
+            if (!arguments.length) {
+                return xAxisLabel;
+            }
+            xAxisLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the offset of the xAxisLabel on the chart
+         * @param  {Number} _x Desired offset for the label
+         * @return {Number | module} label or Chart module to chain calls
+         * @public
+         */
+        exports.xAxisLabelOffset = function(_x) {
+            if (!arguments.length) {
+                return xAxisLabelOffset;
+            }
+            xAxisLabelOffset = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the number of ticks of the x axis on the chart
          * (Default is 5)
          * @param  {Number} _x          Desired horizontal ticks
@@ -1132,6 +1211,36 @@ define(function(require) {
                 return xTicks;
             }
             xTicks = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the text of the yAxisLabel on the chart
+         * @param  {String} _x Desired text for the label
+         * @return {String | module} label or Chart module to chain calls
+         * @public
+         */
+        exports.yAxisLabel = function(_x) {
+            if (!arguments.length) {
+                return yAxisLabel;
+            }
+            yAxisLabel = _x;
+
+            return this;
+        }
+
+        /**
+         * Gets or Sets the offset of the yAxisLabel on the chart
+         * @param  {Number} _x Desired offset for the label
+         * @return {Number | module} label or Chart module to chain calls
+         * @public
+         */
+        exports.yAxisLabelOffset = function(_x) {
+            if (!arguments.length) {
+                return yAxisLabelOffset;
+            }
+            yAxisLabelOffset = _x;
 
             return this;
         };
