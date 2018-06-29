@@ -596,6 +596,43 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             });
         });
 
+        describe('Bar axis labels', () => {
+
+            it('should show custom x axis label and offset', () => {
+                let expectedValue = 'labelValue';
+                let expectedOffset = 20;
+
+                barChart
+                    .xAxisLabel(expectedValue)
+                    .xAxisLabelOffset(expectedOffset);
+                containerFixture.datum(dataset).call(barChart);
+
+                let selection = containerFixture.select('.x-axis-label-text');
+                let actualValue = selection.text();
+                let actualOffset = Number(selection.attr('y'));
+
+                expect(actualValue).toBe(expectedValue);
+                expect(actualOffset).toBe(expectedOffset);
+            });
+
+            it('should show custom y axis label and offset', () => {
+                let expectedValue = 'labelValue';
+                let expectedOffset = 20;
+
+                barChart
+                    .yAxisLabel(expectedValue)
+                    .yAxisLabelOffset(expectedOffset);
+                containerFixture.datum(dataset).call(barChart);
+
+                let selection = containerFixture.select('.y-axis-label-text');
+                let actualValue = selection.text();
+                let actualOffset = Number(selection.attr('y'));
+
+                expect(actualValue).toBe(expectedValue);
+                expect(actualOffset).toBe(expectedOffset);
+            });
+        });
+
         describe('when hovering a bar', function() {
 
             it('should trigger a callback on mouse over', () => {
