@@ -496,6 +496,54 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide xAxisLabel getter and setter', () => {
+                let defaultXAxisLabel = 'World',
+                    testXAxisLabel = 'Hello',
+                    newXAxisLabel;
+
+                barChart.xAxisLabel(testXAxisLabel);
+                newXAxisLabel = barChart.xAxisLabel();
+
+                expect(defaultXAxisLabel).not.toBe(newXAxisLabel);
+                expect(newXAxisLabel).toBe(testXAxisLabel);
+            });
+
+            it('should provide xAxisLabelOffset getter and setter', () => {
+                let defaultXAxisLabelOffset = 30,
+                    testXAxisLabelOffset = 40,
+                    newXAxisLabelOffset;
+
+                barChart.xAxisLabelOffset(testXAxisLabelOffset);
+                newXAxisLabelOffset = barChart.xAxisLabelOffset();
+
+                expect(defaultXAxisLabelOffset).not.toBe(newXAxisLabelOffset);
+                expect(newXAxisLabelOffset).toBe(testXAxisLabelOffset);
+            });
+
+            it('should provide yAxisLabel getter and setter', () => {
+                let defaultYAxisLabel = 'Hello',
+                    testYAxisLabel = 'World',
+                    newYAxisLabel;
+
+                barChart.yAxisLabel(testYAxisLabel);
+                newYAxisLabel = barChart.yAxisLabel();
+
+                expect(defaultYAxisLabel).not.toBe(newYAxisLabel);
+                expect(newYAxisLabel).toBe(testYAxisLabel);
+            });
+
+            it('should provide yAxisLabelOffset getter and setter', () => {
+                let defaultYAxisLabelOffset = -40,
+                    testYAxisLabelOffset = -30,
+                    newYAxisLabelOffset;
+
+                barChart.yAxisLabelOffset(testYAxisLabelOffset);
+                newYAxisLabelOffset = barChart.yAxisLabelOffset();
+
+                expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
+                expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
+            });
         });
 
         describe('when custom gradient color schem is applied', () => {
@@ -545,6 +593,43 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
                 expect(callbackSpy.calls.count()).toBe(1);
                 expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
+            });
+        });
+
+        describe('Bar axis labels', () => {
+
+            it('should show custom x axis label and offset', () => {
+                let expectedValue = 'labelValue';
+                let expectedOffset = 20;
+
+                barChart
+                    .xAxisLabel(expectedValue)
+                    .xAxisLabelOffset(expectedOffset);
+                containerFixture.datum(dataset).call(barChart);
+
+                let selection = containerFixture.select('.x-axis-label-text');
+                let actualValue = selection.text();
+                let actualOffset = Number(selection.attr('y'));
+
+                expect(actualValue).toBe(expectedValue);
+                expect(actualOffset).toBe(expectedOffset);
+            });
+
+            it('should show custom y axis label and offset', () => {
+                let expectedValue = 'labelValue';
+                let expectedOffset = 20;
+
+                barChart
+                    .yAxisLabel(expectedValue)
+                    .yAxisLabelOffset(expectedOffset);
+                containerFixture.datum(dataset).call(barChart);
+
+                let selection = containerFixture.select('.y-axis-label-text');
+                let actualValue = selection.text();
+                let actualOffset = Number(selection.attr('y'));
+
+                expect(actualValue).toBe(expectedValue);
+                expect(actualOffset).toBe(expectedOffset);
             });
         });
 
