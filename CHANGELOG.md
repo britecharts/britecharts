@@ -1,3 +1,4 @@
+2.9.1
 2.9.0 - Minor
 --------------
 * Fix - crosshair labels to be rendered on same level as lines (dalerasrorov-eb)
