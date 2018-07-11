@@ -126,7 +126,6 @@ define(function(require){
                 bottom: 0,
                 right: 0
             },
-            maxBarNumber = 8,
             barOpacity = 0.24,
 
             animationDelayStep = 20,
