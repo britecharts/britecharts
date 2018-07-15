@@ -63,6 +63,20 @@ define(['d3', 'heatmap', 'heatmapChartDataBuilder'], function (d3, chart, dataBu
 
                     expect(actual).toEqual(expected);
                 });
+
+                it('should render a day-labels-group', () => {
+                    let expected = 1;
+                    let actual = container.select('g.day-labels-group').nodes().length;
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should render a hour-labels-group', () => {
+                    let expected = 1;
+                    let actual = container.select('g.hour-labels-group').nodes().length;
+
+                    expect(actual).toEqual(expected);
+                });
             });
 
             it('should render a box for each hour in the week', () => {
@@ -72,14 +86,14 @@ define(['d3', 'heatmap', 'heatmapChartDataBuilder'], function (d3, chart, dataBu
                 expect(actual).toEqual(expected);
             });
 
-            xit('should render the day labels', () => {
+            it('should render the day labels', () => {
                 let expected = 7;
                 let actual = container.selectAll('.day-label').nodes().length;
 
                 expect(actual).toEqual(expected);
             });
 
-            xit('should render the hour labels', () => {
+            it('should render the hour labels', () => {
                 let expected = 24;
                 let actual = container.selectAll('.hour-label').nodes().length;
 
@@ -115,7 +129,19 @@ define(['d3', 'heatmap', 'heatmapChartDataBuilder'], function (d3, chart, dataBu
             });
         });
 
-        xdescribe('API', function () {
+        describe('API', function () {
+
+            it('should provide boxSize getter and setter', () => {
+                let previous = heatmapChart.boxSize(),
+                    expected = 10,
+                    actual;
+
+                heatmapChart.boxSize(expected);
+                actual = heatmapChart.boxSize();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
 
             it('should provide colorSchema getter and setter', () => {
                 let previous = heatmapChart.colorSchema(),
@@ -129,53 +155,13 @@ define(['d3', 'heatmap', 'heatmapChartDataBuilder'], function (d3, chart, dataBu
                 expect(actual).toBe(expected);
             });
 
-            it('should set chartGradient getter and setter', () => {
-                let previous = heatmapChart.chartGradient(),
-                    expected = ['#fff', '#ddd'],
-                    actual;
-
-                heatmapChart.colorSchema(expected);
-                actual = heatmapChart.colorSchema();
-
-                expect(previous).toBe(null);
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
-            it('should update color', () => {
-                let previous = heatmapChart.colorSchema(),
-                    expected = '#FFFFFF',
-                    actual;
-
-                heatmapChart.colorSchema([expected]);
-
-                const barColor = container.select('rect.bar');
-
-                container.call(heatmapChart);
-                actual = barColor.attr('fill');
-
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide enable labels getter and setter', () => {
-                let previous = heatmapChart.enableLabels(),
-                    expected = true,
-                    actual;
-
-                heatmapChart.enableLabels(expected);
-                actual = heatmapChart.enableLabels();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
             it('should have exportChart defined', () => {
                 expect(heatmapChart.exportChart).toBeDefined();
             });
 
             it('should provide height getter and setter', () => {
                 let previous = heatmapChart.height(),
-                    expected = { top: 4, right: 4, bottom: 4, left: 4 },
+                    expected = 50,
                     actual;
 
                 heatmapChart.height(expected);
@@ -185,61 +171,13 @@ define(['d3', 'heatmap', 'heatmapChartDataBuilder'], function (d3, chart, dataBu
                 expect(actual).toBe(expected);
             });
 
-            it('should provide horizontal direction getter and setter', () => {
-                let previous = heatmapChart.isHorizontal(),
-                    expected = true,
+            xit('should provide loadingState getter and setter', () => {
+                let previous = heatmapChart.loadingState(),
+                    expected = 'test',
                     actual;
 
-                heatmapChart.isHorizontal(expected);
-                actual = heatmapChart.isHorizontal();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide isAnimated getter and setter', () => {
-                let previous = heatmapChart.isAnimated(),
-                    expected = true,
-                    actual;
-
-                heatmapChart.isAnimated(expected);
-                actual = heatmapChart.isAnimated();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide labelsMargin getter and setter', () => {
-                let previous = heatmapChart.labelsMargin(),
-                    expected = 10,
-                    actual;
-
-                heatmapChart.labelsMargin(expected);
-                actual = heatmapChart.labelsMargin();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide labelsNumberFormat getter and setter', () => {
-                let previous = heatmapChart.labelsNumberFormat(),
-                    expected = 'd',
-                    actual;
-
-                heatmapChart.labelsNumberFormat(expected);
-                actual = heatmapChart.labelsNumberFormat();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide labelsSize getter and setter', () => {
-                let previous = heatmapChart.labelsSize(),
-                    expected = 10,
-                    actual;
-
-                heatmapChart.labelsSize(expected);
-                actual = heatmapChart.labelsSize();
+                heatmapChart.loadingState(expected);
+                actual = heatmapChart.loadingState();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
@@ -257,93 +195,9 @@ define(['d3', 'heatmap', 'heatmapChartDataBuilder'], function (d3, chart, dataBu
                 expect(actual).toEqual(expected);
             });
 
-            it('should provide loadingState getter and setter', () => {
-                let previous = heatmapChart.loadingState(),
-                    expected = 'test',
-                    actual;
-
-                heatmapChart.loadingState(expected);
-                actual = heatmapChart.loadingState();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide padding getter and setter', () => {
-                let previous = heatmapChart.betweenBarsPadding(),
-                    expected = 0.5,
-                    actual;
-
-                heatmapChart.betweenBarsPadding(expected);
-                actual = heatmapChart.betweenBarsPadding();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide nameLabel getter and setter', () => {
-                let previous = heatmapChart.nameLabel(),
-                    expected = 'key',
-                    actual;
-
-                heatmapChart.nameLabel(expected);
-                actual = heatmapChart.nameLabel();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide a percentageAxisToMaxRatio getter and setter', () => {
-                let previous = heatmapChart.percentageAxisToMaxRatio(),
-                    expected = 1.5,
-                    actual;
-
-                heatmapChart.percentageAxisToMaxRatio(expected);
-                actual = heatmapChart.percentageAxisToMaxRatio();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide a shouldReverseColorList getter and setter', () => {
-                let previous = heatmapChart.shouldReverseColorList(),
-                    expected = false,
-                    actual;
-
-                heatmapChart.shouldReverseColorList(expected);
-                actual = heatmapChart.shouldReverseColorList();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide an hasPercentage getter and setter', () => {
-                let previous = heatmapChart.hasPercentage(),
-                    expected = true,
-                    actual;
-
-                heatmapChart.hasPercentage(expected);
-                actual = heatmapChart.hasPercentage();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide valueLabel getter and setter', () => {
-                let previous = heatmapChart.valueLabel(),
-                    expected = 'quantity',
-                    actual;
-
-                heatmapChart.valueLabel(expected);
-                actual = heatmapChart.valueLabel();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
             it('should provide width getter and setter', () => {
                 let previous = heatmapChart.width(),
-                    expected = { top: 4, right: 4, bottom: 4, left: 4 },
+                    expected = 20,
                     actual;
 
                 heatmapChart.width(expected);
@@ -351,114 +205,6 @@ define(['d3', 'heatmap', 'heatmapChartDataBuilder'], function (d3, chart, dataBu
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
-            });
-
-            it('should provide xTicks getter and setter', () => {
-                let previous = heatmapChart.xTicks(),
-                    expected = 4,
-                    actual;
-
-                heatmapChart.xTicks(expected);
-                actual = heatmapChart.xTicks();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide yTicks getter and setter', () => {
-                let previous = heatmapChart.yTicks(),
-                    expected = 20,
-                    actual;
-
-                heatmapChart.yTicks(expected);
-                actual = heatmapChart.yTicks();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide yAxisPaddingBetweenChart getter and setter', () => {
-                let previous = heatmapChart.yAxisPaddingBetweenChart(),
-                    expected = 15,
-                    actual;
-
-                heatmapChart.yAxisPaddingBetweenChart(expected);
-                actual = heatmapChart.yAxisPaddingBetweenChart();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide numberFormat getter and setter', () => {
-                let previous = heatmapChart.numberFormat(),
-                    expected = 'd',
-                    actual;
-
-                heatmapChart.numberFormat(expected);
-                actual = heatmapChart.numberFormat();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide hasSingleBarHighlight getter and setter', () => {
-                let previous = heatmapChart.hasSingleBarHighlight(),
-                    expected = false,
-                    actual;
-
-                heatmapChart.hasSingleBarHighlight(expected);
-                actual = heatmapChart.hasSingleBarHighlight();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide xAxisLabel getter and setter', () => {
-                let defaultXAxisLabel = 'World',
-                    testXAxisLabel = 'Hello',
-                    newXAxisLabel;
-
-                heatmapChart.xAxisLabel(testXAxisLabel);
-                newXAxisLabel = heatmapChart.xAxisLabel();
-
-                expect(defaultXAxisLabel).not.toBe(newXAxisLabel);
-                expect(newXAxisLabel).toBe(testXAxisLabel);
-            });
-
-            it('should provide xAxisLabelOffset getter and setter', () => {
-                let defaultXAxisLabelOffset = 30,
-                    testXAxisLabelOffset = 40,
-                    newXAxisLabelOffset;
-
-                heatmapChart.xAxisLabelOffset(testXAxisLabelOffset);
-                newXAxisLabelOffset = heatmapChart.xAxisLabelOffset();
-
-                expect(defaultXAxisLabelOffset).not.toBe(newXAxisLabelOffset);
-                expect(newXAxisLabelOffset).toBe(testXAxisLabelOffset);
-            });
-
-            it('should provide yAxisLabel getter and setter', () => {
-                let defaultYAxisLabel = 'Hello',
-                    testYAxisLabel = 'World',
-                    newYAxisLabel;
-
-                heatmapChart.yAxisLabel(testYAxisLabel);
-                newYAxisLabel = heatmapChart.yAxisLabel();
-
-                expect(defaultYAxisLabel).not.toBe(newYAxisLabel);
-                expect(newYAxisLabel).toBe(testYAxisLabel);
-            });
-
-            it('should provide yAxisLabelOffset getter and setter', () => {
-                let defaultYAxisLabelOffset = -40,
-                    testYAxisLabelOffset = -30,
-                    newYAxisLabelOffset;
-
-                heatmapChart.yAxisLabelOffset(testYAxisLabelOffset);
-                newYAxisLabelOffset = heatmapChart.yAxisLabelOffset();
-
-                expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
-                expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
             });
         });
     });

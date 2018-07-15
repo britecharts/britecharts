@@ -7,6 +7,7 @@ define(function (require) {
     const d3Transition = require('d3-transition');
     const d3Interpolate = require('d3-interpolate');
 
+    const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
 
     /**
@@ -73,6 +74,18 @@ define(function (require) {
 
             animationDuration = 2000,
 
+            dayLabels,
+            daysHuman = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+            dayLabelWidth = 30,
+
+            hourLabels,
+            hoursHuman = [
+                '00h', '01h', '02h', '03h', '04h', '05h', '06h', '07h', '08h',
+                '09h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h',
+                '18h', '19h', '20h', '21h', '22h', '23h'
+            ],
+            hourLabelHeight = 20,
+
             getValue = ([week, day, value]) => value,
 
             toremove;
@@ -92,8 +105,8 @@ define(function (require) {
 
                 buildScales();
                 buildSVG(this);
-                // buildAxis();
-                // drawAxis();
+                drawDayLabels();
+                drawHourLabels();
                 drawBoxes();
             });
         }
@@ -134,6 +147,10 @@ define(function (require) {
                 .append('g').classed('chart-group', true);
             container
                 .append('g').classed('axis-group', true);
+            container
+                .append('g').classed('day-labels-group', true);
+            container
+                .append('g').classed('hour-labels-group', true);
             container
                 .append('g').classed('metadata-group', true);
         }
@@ -182,6 +199,132 @@ define(function (require) {
 
             boxes.exit().remove();
         }
+
+        function drawDayLabels() {
+            let dayLabelsGroup = svg.select('.day-labels-group');
+
+            dayLabels = svg.select('.day-labels-group').selectAll('.day-label')
+                .data(daysHuman);
+
+            dayLabels.enter()
+              .append('text')
+                .text((label) => label)
+                .attr('x', 0)
+                .attr('y', (d, i) => i * boxSize)
+                .style('text-anchor', 'start')
+                .style('dominant-baseline', 'central')
+                .attr('class', 'day-label');
+
+            dayLabelsGroup.attr('transform', `translate(-${dayLabelWidth}, ${boxSize / 2})`);
+        }
+
+        function drawHourLabels() {
+            let hourLabelsGroup = svg.select('.hour-labels-group');
+
+            hourLabels = svg.select('.hour-labels-group').selectAll('.hour-label')
+                .data(hoursHuman);
+
+            hourLabels.enter()
+              .append('text')
+                .text((label) => label)
+                .attr('y', 0)
+                .attr('x', (d, i) => i * boxSize)
+                .style('text-anchor', 'middle')
+                .style('dominant-baseline', 'central')
+                .attr('class', 'hour-label');
+
+            hourLabelsGroup.attr('transform', `translate(${boxSize / 2}, -${hourLabelHeight})`);
+        }
+
+        // API
+
+        /**
+         * Gets or Sets the boxSize of the chart
+         * @param  {Number} _x=30       Desired boxSize for the heatmap boxes
+         * @return {Number | module}    Current boxSize or Chart module to chain calls
+         * @public
+         */
+        exports.boxSize = function (_x) {
+            if (!arguments.length) {
+                return boxSize;
+            }
+            boxSize = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the colorSchema of the chart
+         * @param  {String[]} _x        Desired colorSchema for the heatma boxes
+         * @return {String[] | module}  Current colorSchema or Chart module to chain calls
+         * @public
+         */
+        exports.colorSchema = function (_x) {
+            if (!arguments.length) {
+                return colorSchema;
+            }
+            colorSchema = _x;
+
+            return this;
+        };
+
+        /**
+         * Chart exported to png and a download action is fired
+         * @param {String} filename     File title for the resulting picture
+         * @param {String} title        Title to add at the top of the exported picture
+         * @public
+         */
+        exports.exportChart = function (filename, title) {
+            exportChart.call(exports, svg, filename, title);
+        };
+
+        /**
+         * Gets or Sets the height of the chart
+         * @param  {Number} _x          Desired height for the chart
+         * @return {Number | module}    Current height or Chart module to chain calls
+         * @public
+         */
+        exports.height = function (_x) {
+            if (!arguments.length) {
+                return height;
+            }
+            height = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the margin of the chart
+         * @param  {Object} _x          Margin object to get/set
+         * @return {margin | module}    Current margin or Chart module to chain calls
+         * @public
+         */
+        exports.margin = function (_x) {
+            if (!arguments.length) {
+                return margin;
+            }
+            margin = {
+                ...margin,
+                ..._x
+            };
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the width of the chart
+         * @param  {Number} _x           Desired width for the chart
+         * @return {Number | module}     Current width or Chart module to chain calls
+         * @public
+         */
+        exports.width = function (_x) {
+            if (!arguments.length) {
+                return width;
+            }
+            width = _x;
+
+            return this;
+        };
 
         return exports;
     };
