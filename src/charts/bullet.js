@@ -70,8 +70,8 @@ define(function(require) {
             measureOpacityScale,
             measureOpacifyDiff = 0.3,
 
-            colorSchema = colorHelper.singleColors.aloeGreen,
-            measureColor = colorHelper.colorSchemas.green[5],
+            colorSchema = colorHelper.colorSchemas.britecharts,
+            measureColor,
             numberFormat = '',
 
             baseLine,
@@ -196,6 +196,9 @@ define(function(require) {
             // set up opacity scale based on ranges and measures
             rangeOpacityScale = ranges.map((d, i) => startMaxRangeOpacity - (i * rangeOpacifyDiff)).reverse();
             measureOpacityScale = ranges.map((d, i) => 0.9 - (i * measureOpacifyDiff)).reverse();
+
+            // initialize measure bar colors
+            measureColor = colorSchema[1];
         }
 
         /**

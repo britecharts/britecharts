@@ -6,9 +6,12 @@ const PubSub = require('pubsub-js');
 const bullet = require('./../../src/charts/bullet');
 const dataBuilder = require('./../../test/fixtures/bulletChartDataBuilder');
 
+const colorSelectorHelper = require('./helpers/colorSelector');
+const colors = require('./../../src/charts/helpers/color');
+
 require('./helpers/resizeHelper');
 
-function createBulletChart() {
+function createBulletChart(optionalColorSchema) {
     const testDataSet = new dataBuilder.BulletChartDataBuilder();
     const bulletContainer = d3Selection.select('.js-bullet-chart-container');
     const containerWidth = bulletContainer.node()
@@ -26,6 +29,11 @@ function createBulletChart() {
         dataset.forEach(data => {
             bulletChart = new bullet();
             bulletChart.width(containerWidth);
+
+            if (optionalColorSchema) {
+                bulletChart.colorSchema(optionalColorSchema);
+            }
+
             bulletContainer.datum(data).call(bulletChart);
         });
     }
@@ -43,4 +51,9 @@ if (d3Selection.select('.js-bullet-chart-container').node()) {
 
     // Redraw charts on window resize
     PubSub.subscribe('resize', redrawCharts);
+
+    // Color schema selector
+    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.bullet-chart', function (newSchema) {
+        createBulletChart(newSchema);
+    });
 }
