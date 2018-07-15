@@ -19,12 +19,16 @@ define(function (require) {
      *
      * @example
      * [
-     *     [
-     *         0, 0, 7
-     *     ],
-     *     [
-     *         0, 1, 0
-     *     ],
+     *     {
+     *         day: 0,
+     *         hour: 0,
+     *         value: 7
+     *     },
+     *     {
+     *         day: 0,
+     *         hour: 1,
+     *         value: 10
+     *     }
      * ]
      */
 
@@ -86,7 +90,7 @@ define(function (require) {
             ],
             hourLabelHeight = 20,
 
-            getValue = ([week, day, value]) => value,
+            getValue = ({value}) => value,
 
             toremove;
 
@@ -146,8 +150,6 @@ define(function (require) {
             container
                 .append('g').classed('chart-group', true);
             container
-                .append('g').classed('axis-group', true);
-            container
                 .append('g').classed('day-labels-group', true);
             container
                 .append('g').classed('hour-labels-group', true);
@@ -164,8 +166,15 @@ define(function (require) {
          * @private
          */
         function cleanData(originalData) {
-            return originalData.reduce((acc, [week, day, value]) => {
-                return [...acc, [+week, +day, +value]];
+            return originalData.reduce((acc, {day, hour, value}) => {
+                return [
+                    ...acc,
+                    {
+                        day: +day,
+                        hour: +hour,
+                        value: +value
+                    }
+                ];
             }, []);
         }
 
@@ -191,15 +200,15 @@ define(function (require) {
                 .classed('box', true)
                 .attr('width', boxSize)
                 .attr('height', boxSize)
-                .attr('x', ([week, day, value]) => day * boxSize)
-                .attr('y', ([week, day, value]) => week * boxSize)
+                .attr('x', ({hour}) => hour * boxSize)
+                .attr('y', ({day}) => day * boxSize)
                 .style('opacity', boxInitialOpacity)
                 .style('fill', boxInitialColor)
                 .style('stroke', boxBorderColor)
                 .style('stroke-width', boxBorderSize)
                 .transition()
                     .duration(animationDuration)
-                    .style('fill', ([week, day, value]) => colorScale(value))
+                    .style('fill', ({value}) => colorScale(value))
                     .style('opacity', boxFinalOpacity);
 
             boxes.exit().remove();

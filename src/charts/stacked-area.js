@@ -52,9 +52,9 @@ define(function(require){
      * @example
      * [
      *     {
-     *         "date": "2011-01-05T00:00:00Z",
-     *         "name": "Direct",
-     *         "value": 0
+     *         date: "2011-01-05T00:00:00Z",
+     *         name: "Direct",
+     *         value: 0
      *     }
      * ]
      */
