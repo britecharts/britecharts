@@ -197,7 +197,7 @@ define(function(require) {
             rangeOpacityScale = ranges.map((d, i) => startMaxRangeOpacity - (i * rangeOpacifyDiff)).reverse();
             measureOpacityScale = ranges.map((d, i) => 0.9 - (i * measureOpacifyDiff)).reverse();
 
-            // initialize measure bar colors
+            // initialize measure bar and marker line colors
             measureColor = colorSchema[1];
         }
 
