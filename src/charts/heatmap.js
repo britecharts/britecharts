@@ -34,7 +34,7 @@ define(function (require) {
      *
      * @module Heatmap
      * @tutorial heatmap
-     * @requires *TOFILL
+     * @requires d3-array, d3-selection, d3-scale, d3-interpolate, d3-transition
      *
      * @example
      * let heatmap = heatmap();
@@ -49,13 +49,13 @@ define(function (require) {
     return function module() {
 
         let margin = {
-                top: 30,
-                right: 10,
-                bottom: 10,
-                left: 30
+                top: 40,
+                right: 20,
+                bottom: 20,
+                left: 40
             },
-            width = 960,
-            height = 500,
+            width = 780,
+            height = 270,
             svg,
             data,
             chartWidth,
@@ -164,7 +164,9 @@ define(function (require) {
          * @private
          */
         function cleanData(originalData) {
-            return originalData;
+            return originalData.reduce((acc, [week, day, value]) => {
+                return [...acc, [+week, +day, +value]];
+            }, []);
         }
 
         /**
@@ -178,6 +180,9 @@ define(function (require) {
                 .interpolate(d3Interpolate.interpolateHcl);
         }
 
+        /**
+         * Draws the boxes of the heatmap
+         */
         function drawBoxes() {
             boxes = svg.select('.chart-group').selectAll('.box').data(data);
 
@@ -200,6 +205,9 @@ define(function (require) {
             boxes.exit().remove();
         }
 
+        /**
+         * Draws the day labels
+         */
         function drawDayLabels() {
             let dayLabelsGroup = svg.select('.day-labels-group');
 
@@ -218,6 +226,9 @@ define(function (require) {
             dayLabelsGroup.attr('transform', `translate(-${dayLabelWidth}, ${boxSize / 2})`);
         }
 
+        /**
+         * Draws the hour labels
+         */
         function drawHourLabels() {
             let hourLabelsGroup = svg.select('.hour-labels-group');
 
@@ -237,7 +248,6 @@ define(function (require) {
         }
 
         // API
-
         /**
          * Gets or Sets the boxSize of the chart
          * @param  {Number} _x=30       Desired boxSize for the heatmap boxes
@@ -255,8 +265,8 @@ define(function (require) {
 
         /**
          * Gets or Sets the colorSchema of the chart
-         * @param  {String[]} _x        Desired colorSchema for the heatma boxes
-         * @return {String[] | module}  Current colorSchema or Chart module to chain calls
+         * @param  {String[]} _x=britecharts-red  Desired colorSchema for the heatma boxes
+         * @return {String[] | module}            Current colorSchema or Chart module to chain calls
          * @public
          */
         exports.colorSchema = function (_x) {

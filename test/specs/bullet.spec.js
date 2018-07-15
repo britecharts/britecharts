@@ -95,7 +95,6 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
             });
         });
 
-
         describe('API', () => {
 
             it('should provide an aspect ratio getter and setter', () => {

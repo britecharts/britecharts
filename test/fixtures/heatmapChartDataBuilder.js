@@ -3,6 +3,7 @@ define(function (require) {
 
     var _ = require('underscore'),
 
+        jsonWeeklyBis = require('json-loader!../json/heatmapWeeklyBis.json'),
         jsonWeekly = require('json-loader!../json/heatmapWeekly.json');
 
 
@@ -13,6 +14,12 @@ define(function (require) {
 
         this.withWeeklyData = function () {
             var attributes = _.extend({}, this.config, jsonWeekly);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withAlternativeWeeklyData = function () {
+            var attributes = _.extend({}, this.config, jsonWeeklyBis);
 
             return new this.Klass(attributes);
         };

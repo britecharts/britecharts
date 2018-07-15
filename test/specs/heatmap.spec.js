@@ -100,29 +100,16 @@ define(['d3', 'heatmap', 'heatmapChartDataBuilder'], function (d3, chart, dataBu
                 expect(actual).toEqual(expected);
             });
 
-            xdescribe('when reloading with a different dataset', () => {
+            describe('when reloading with a different dataset', () => {
 
                 it('should render in the same svg', function () {
                     let actual;
                     let expected = 1;
-                    let newDataset = buildDataSet('withColors');
+                    let newDataset = buildDataSet('withAlternativeWeeklyData');
 
                     container.datum(newDataset).call(heatmapChart);
 
-                    actual = container.selectAll('.bar-chart').nodes().length;
-
-                    expect(actual).toEqual(expected);
-                });
-
-                // This test fails because of the transition on the exit
-                xit('should render six bars', function () {
-                    let actual;
-                    let expected = 6;
-                    let newDataset = buildDataSet('withColors');
-
-                    container.datum(newDataset).call(heatmapChart);
-
-                    actual = container.selectAll('.bar-chart .bar').nodes().length;
+                    actual = container.selectAll('.heatmap').nodes().length;
 
                     expect(actual).toEqual(expected);
                 });
