@@ -581,7 +581,7 @@ define(function (require) {
 
             let series = svg.select('.chart-group').selectAll('.layer');
 
-            animationDelays = d3Array.range(animationDelayStep, (layers[0].length + 1) * animationDelayStep, animationDelayStep)
+            animationDelays = d3Array.range(animationDelayStep, (layers.length + 1) * animationDelayStep, animationDelayStep)
             if (isHorizontal) {
                 drawHorizontalBars(series);
             } else {
