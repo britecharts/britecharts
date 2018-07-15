@@ -359,7 +359,7 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
         });
 
         describe('when margins are set partially', function() {
-            
+
             it('should override the default values', () => {
                 let previous = groupedBarChart.margin(),
                 expected = {
@@ -375,7 +375,7 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 expect(previous).not.toBe(actual);
                 expect(actual).toEqual(expected);
             })
-        });  
+        });
 
         describe('when clicking on a bar', () => {
 
@@ -416,5 +416,21 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
             });
         });
 
+
+        describe('when grouped bar is animated', () => {
+
+            it('it renders correct number of layers and bars', () => {
+                const expectedNLayers = 4;
+                const nBarsPerLayer = 3;
+                const actualNLayers = containerFixture.selectAll('.chart-group .layer').nodes().length;
+                const actualNBars = containerFixture.selectAll('.chart-group .bar').nodes().length;
+
+                groupedBarChart.isAnimated(true);
+                containerFixture.datum(dataset.data).call(groupedBarChart);
+
+                expect(actualNLayers).toEqual(expectedNLayers);
+                expect(actualNBars).toEqual(expectedNLayers * nBarsPerLayer);
+            });
+        });
     });
 });

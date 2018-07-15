@@ -406,7 +406,7 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
         });
 
         describe('when margins are set partially', function() {
-            
+
             it('should override the default values', () => {
                 let previous = stackedBarChart.margin(),
                 expected = {
@@ -422,7 +422,7 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 expect(previous).not.toBe(actual);
                 expect(actual).toEqual(expected);
             })
-        });  
+        });
 
         describe('when hovering', function() {
 
@@ -446,6 +446,22 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
 
                 expect(callbackSpy.calls.count()).toBe(1);
                 expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
+            });
+        });
+
+        describe('when stacked bar is animated', () => {
+
+            it('it renders correct number of layers and bars', () => {
+                const expectedNLayers = 3;
+                const nBarsPerLayer = 4;
+                const actualNLayers = containerFixture.selectAll('.chart-group .layer').nodes().length;
+                const actualNBars = containerFixture.selectAll('.chart-group .bar').nodes().length;
+
+                stackedBarChart.isAnimated(true);
+                containerFixture.datum(dataset.data).call(stackedBarChart);
+
+                expect(actualNLayers).toEqual(expectedNLayers);
+                expect(actualNBars).toEqual(expectedNLayers * nBarsPerLayer);
             });
         });
     });
