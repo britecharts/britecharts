@@ -1,7 +1,13 @@
 define(function (require) {
     'use strict';
 
+    const d3Array = require('d3-array');
     const d3Selection = require('d3-selection');
+    const d3Scale = require('d3-scale');
+    const d3Transition = require('d3-transition');
+    const d3Interpolate = require('d3-interpolate');
+
+    const colorHelper = require('./helpers/color');
 
     /**
      * @typedef HeatmapData
@@ -52,7 +58,24 @@ define(function (require) {
             svg,
             data,
             chartWidth,
-            chartHeight;
+            chartHeight,
+
+            boxes,
+            boxSize = 30,
+            boxBorderSize = 2,
+            boxInitialOpacity = 0.2,
+            boxFinalOpacity = 1,
+            boxInitialColor = '#BBBBBB',
+            boxBorderColor = '#FFFFFF',
+
+            colorScale,
+            colorSchema = colorHelper.colorSchemas.red,
+
+            animationDuration = 2000,
+
+            getValue = ([week, day, value]) => value,
+
+            toremove;
 
         /**
          * This function creates the graph using the selection as container
@@ -67,10 +90,11 @@ define(function (require) {
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
 
-                // buildScales();
+                buildScales();
                 buildSVG(this);
                 // buildAxis();
                 // drawAxis();
+                drawBoxes();
             });
         }
 
@@ -102,7 +126,7 @@ define(function (require) {
          */
         function buildContainerGroups() {
             let container = svg
-                .append('g')
+              .append('g')
                 .classed('container-group', true)
                 .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
@@ -124,6 +148,39 @@ define(function (require) {
          */
         function cleanData(originalData) {
             return originalData;
+        }
+
+        /**
+         * Creates the scales for the heatmap chart
+         * @return void
+         */
+        function buildScales() {
+            colorScale = d3Scale.scaleLinear()
+                .range([colorSchema[0], colorSchema[colorSchema.length - 1]])
+                .domain(d3Array.extent(data, getValue))
+                .interpolate(d3Interpolate.interpolateHcl);
+        }
+
+        function drawBoxes() {
+            boxes = svg.select('.chart-group').selectAll('.box').data(data);
+
+            boxes.enter()
+              .append('rect')
+                .classed('box', true)
+                .attr('width', boxSize)
+                .attr('height', boxSize)
+                .attr('x', ([week, day, value]) => day * boxSize)
+                .attr('y', ([week, day, value]) => week * boxSize)
+                .style('opacity', boxInitialOpacity)
+                .style('fill', boxInitialColor)
+                .style('stroke', boxBorderColor)
+                .style('stroke-width', boxBorderSize)
+                .transition()
+                    .duration(animationDuration)
+                    .style('fill', ([week, day, value]) => colorScale(value))
+                    .style('opacity', boxFinalOpacity);
+
+            boxes.exit().remove();
         }
 
         return exports;

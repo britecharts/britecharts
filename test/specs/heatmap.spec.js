@@ -41,28 +41,49 @@ define(['d3', 'heatmap', 'heatmapChartDataBuilder'], function (d3, chart, dataBu
                 expect(actual).toEqual(expected);
             });
 
-            xit('should render container, axis and chart groups', () => {
-                expect(container.select('g.container-group').empty()).toBeFalsy();
-                expect(container.select('g.chart-group').empty()).toBeFalsy();
-                expect(container.select('g.x-axis-group').empty()).toBeFalsy();
-                expect(container.select('g.y-axis-group').empty()).toBeFalsy();
-                expect(container.select('g.grid-lines-group').empty()).toBeFalsy();
-                expect(container.select('g.metadata-group').empty()).toBeFalsy();
+            describe('group elements', () => {
+
+                it('should render a container-group', () => {
+                    let expected = 1;
+                    let actual = container.select('g.container-group').nodes().length;
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should render a chart-group', () => {
+                    let expected = 1;
+                    let actual = container.select('g.chart-group').nodes().length;
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should render a metadata-group', () => {
+                    let expected = 1;
+                    let actual = container.select('g.metadata-group').nodes().length;
+
+                    expect(actual).toEqual(expected);
+                });
             });
 
-            xit('should render grid lines', () => {
-                expect(container.select('.horizontal-grid-line').empty()).toBeFalsy();
+            it('should render a box for each hour in the week', () => {
+                let expected = 24 * 7;
+                let actual = container.selectAll('.box').nodes().length;
+
+                expect(actual).toEqual(expected);
             });
 
-            xit('should render an X and Y axis', () => {
-                expect(container.select('.x-axis-group.axis').empty()).toBeFalsy();
-                expect(container.select('.y-axis-group.axis').empty()).toBeFalsy();
+            xit('should render the day labels', () => {
+                let expected = 7;
+                let actual = container.selectAll('.day-label').nodes().length;
+
+                expect(actual).toEqual(expected);
             });
 
-            xit('should render a bar for each data entry', () => {
-                let numBars = dataset.length;
+            xit('should render the hour labels', () => {
+                let expected = 24;
+                let actual = container.selectAll('.hour-label').nodes().length;
 
-                expect(container.selectAll('.bar').size()).toEqual(numBars);
+                expect(actual).toEqual(expected);
             });
 
             xdescribe('when reloading with a different dataset', () => {
