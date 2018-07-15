@@ -1,5 +1,14 @@
 2.9.2
+--------------
+* fix for animationDelays for each group of data in Grouped Bar chart (ConstantinoSchillebeeckx)
+* Stacked bar chart not rendering all bars when `isAnimated(true)` (ConstantinoSchillebeeckx)
+
 2.9.1
+--------------
+* Feature - implemented x and y axis labels with offsets for Bar (dalerasrorov-eb)
+* Feat - Line chart data points highlight on all data shown (dalerasrorov-eb)
+* Fix - scatter plot crosshair function set status with boolean (dalerasrorov-eb)
+
 2.9.0 - Minor
 --------------
 * Fix - crosshair labels to be rendered on same level as lines (dalerasrorov-eb)
