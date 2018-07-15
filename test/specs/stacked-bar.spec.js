@@ -454,11 +454,12 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
             it('it renders correct number of layers and bars', () => {
                 const expectedNLayers = 3;
                 const nBarsPerLayer = 4;
-                const actualNLayers = containerFixture.selectAll('.chart-group .layer').nodes().length;
-                const actualNBars = containerFixture.selectAll('.chart-group .bar').nodes().length;
 
                 stackedBarChart.isAnimated(true);
                 containerFixture.datum(dataset.data).call(stackedBarChart);
+
+                const actualNLayers = containerFixture.selectAll('.chart-group .layer').nodes().length;
+                const actualNBars = containerFixture.selectAll('.chart-group .bar').nodes().length;
 
                 expect(actualNLayers).toEqual(expectedNLayers);
                 expect(actualNBars).toEqual(expectedNLayers * nBarsPerLayer);

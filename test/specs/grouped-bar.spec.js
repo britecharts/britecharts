@@ -422,11 +422,12 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
             it('it renders correct number of layers and bars', () => {
                 const expectedNLayers = 4;
                 const nBarsPerLayer = 3;
-                const actualNLayers = containerFixture.selectAll('.chart-group .layer').nodes().length;
-                const actualNBars = containerFixture.selectAll('.chart-group .bar').nodes().length;
 
                 groupedBarChart.isAnimated(true);
                 containerFixture.datum(dataset.data).call(groupedBarChart);
+
+                const actualNLayers = containerFixture.selectAll('.chart-group .layer').nodes().length;
+                const actualNBars = containerFixture.selectAll('.chart-group .bar').nodes().length;
 
                 expect(actualNLayers).toEqual(expectedNLayers);
                 expect(actualNBars).toEqual(expectedNLayers * nBarsPerLayer);
