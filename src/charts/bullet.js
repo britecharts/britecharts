@@ -71,6 +71,7 @@ define(function(require) {
             measureOpacifyDiff = 0.3,
 
             colorSchema = colorHelper.colorSchemas.britecharts,
+            rangeColor,
             measureColor,
             numberFormat = '',
 
@@ -197,7 +198,8 @@ define(function(require) {
             rangeOpacityScale = ranges.map((d, i) => startMaxRangeOpacity - (i * rangeOpacifyDiff)).reverse();
             measureOpacityScale = ranges.map((d, i) => 0.9 - (i * measureOpacifyDiff)).reverse();
 
-            // initialize measure bar and marker line colors
+            // initialize range and measure bars and marker line colors
+            rangeColor = colorSchema[0];
             measureColor = colorSchema[1];
         }
 
@@ -289,7 +291,7 @@ define(function(require) {
               .data(ranges)
               .enter()
                 .append('rect')
-                  .attr('fill', colorSchema[0])
+                  .attr('fill', rangeColor)
                   .attr('opacity', (d, i) => rangeOpacityScale[i])
                   .attr('class', (d, i) => `range r${i}`)
                   .attr('width', barWidth)
