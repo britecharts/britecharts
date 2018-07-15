@@ -409,7 +409,9 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the colorSchema of the chart
+         * Gets or Sets the colorSchema of the chart.
+         * The first color from the array will be applied to range bars (the wider bars).
+         * The second color from the array will be applied to measure bars (the narrow bars) and marker lines.
          * @param  {String[]} _x        Desired colorSchema for the graph
          * @return {String[] | module}  Current colorSchema or Chart module to chain calls
          * @public
