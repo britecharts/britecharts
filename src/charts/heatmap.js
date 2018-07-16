@@ -90,9 +90,7 @@ define(function (require) {
             ],
             hourLabelHeight = 20,
 
-            getValue = ({value}) => value,
-
-            toremove;
+            getValue = ({value}) => value;
 
         /**
          * This function creates the graph using the selection as container
