@@ -462,14 +462,7 @@ define(function(require){
 
             let barJoin = layerElements
                 .selectAll('.bar')
-                .data((d) => (
-                    d.map(layerEls => {
-                        for (let i = 0; i < layerEls.length; i++) {
-                            layerEls[i] = getValOrDefaultToZero(layerEls[i]);
-                        }
-                        return layerEls;
-                    })
-                ));
+                .data((d) => filterOutUnkownValues(d));
 
             // Enter + Update
             let bars = barJoin
@@ -526,14 +519,7 @@ define(function(require){
 
             let barJoin = layerElements
                     .selectAll('.bar')
-                    .data((d) => (
-                        d.map(layerEls => {
-                            for (let i = 0; i < layerEls.length; i++) {
-                                layerEls[i] = getValOrDefaultToZero(layerEls[i]);
-                            }
-                            return layerEls;
-                        })
-                    ));
+                    .data((d) => filterOutUnkownValues(d));
 
             // Enter + Update
             let bars = barJoin
@@ -597,6 +583,21 @@ define(function(require){
                 .transition()
                 .style('opacity', 0)
                 .remove();
+        }
+
+        /**
+         * Filter out unkown stacks/values in the bar layers
+         * @param {Object[]} d
+         * @return {Object[]} filteredData
+         * @private
+         */
+        function filterOutUnkownValues(d) {
+            return d.map(layerEls => {
+                for (let i = 0; i < layerEls.length; i++) {
+                    layerEls[i] = getValOrDefaultToZero(layerEls[i]);
+                }
+                return layerEls;
+            });
         }
 
         /**
