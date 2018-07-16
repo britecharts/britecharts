@@ -462,7 +462,14 @@ define(function(require){
 
             let barJoin = layerElements
                 .selectAll('.bar')
-                .data((d) => d);
+                .data((d) => (
+                    d.map(layerEls => {
+                        for (let i = 0; i < layerEls.length; i++) {
+                            layerEls[i] = getValOrDefaultToZero(layerEls[i]);
+                        }
+                        return layerEls;
+                    })
+                ));
 
             // Enter + Update
             let bars = barJoin
@@ -519,13 +526,14 @@ define(function(require){
 
             let barJoin = layerElements
                     .selectAll('.bar')
-                    .data((d) => {
-                        return d.map(item => {
-                            item[0] = getValOrDefaultToZero(item[0]);
-                            item[1] = getValOrDefaultToZero(item[1]);
-                            return item;
-                        });
-                    });
+                    .data((d) => (
+                        d.map(layerEls => {
+                            for (let i = 0; i < layerEls.length; i++) {
+                                layerEls[i] = getValOrDefaultToZero(layerEls[i]);
+                            }
+                            return layerEls;
+                        })
+                    ));
 
             // Enter + Update
             let bars = barJoin
@@ -569,7 +577,7 @@ define(function(require){
          * Draws the different areas into the chart-group element
          * @private
          */
-        function drawStackedBar(){
+        function drawStackedBar() {
             // Not ideal, we need to figure out how to call exit for nested elements
             if (layerElements) {
                 svg.selectAll('.layer').remove();
