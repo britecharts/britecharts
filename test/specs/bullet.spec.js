@@ -334,5 +334,25 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
                 });
             });
         });
+
+        describe('when custom colorSchema is passed', () => {
+
+            it('should assign first two indexed colors for range and measure/markers in order', () => {
+                const expectedRangeColor = '#bbb';
+                const expectedMeasureColor = '#ccc';
+                const expectedMarkerColor = expectedMeasureColor;
+
+                bulletChart.colorSchema([expectedRangeColor, expectedMeasureColor]);
+                containerFixture.datum(dataset[1]).call(bulletChart);
+
+                const rangeBar = containerFixture.selectAll('rect.range').node();
+                const measureBar = containerFixture.selectAll('rect.measure').node();
+                const markerLine = containerFixture.selectAll('line.marker-line').node();
+
+                expect(rangeBar).toHaveAttr('fill', expectedRangeColor);
+                expect(measureBar).toHaveAttr('fill', expectedMeasureColor);
+                expect(markerLine).toHaveAttr('stroke', expectedMarkerColor);
+            });
+        });
     });
 });
