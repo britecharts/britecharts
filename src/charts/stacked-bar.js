@@ -144,6 +144,7 @@ define(function(require){
             getName = (data) =>  data[nameLabel],
             getValue = (data) => data[valueLabel],
             getStack = (data) => data[stackLabel],
+            getValOrDefaultToZero = (val) => (isNaN(val) || val < 0) ? 0 : val,
             isAnimated = false,
 
             // events
@@ -518,7 +519,13 @@ define(function(require){
 
             let barJoin = layerElements
                     .selectAll('.bar')
-                    .data((d) => d);
+                    .data((d) => {
+                        return d.map(item => {
+                            item[0] = getValOrDefaultToZero(item[0]);
+                            item[1] = getValOrDefaultToZero(item[1]);
+                            return item;
+                        });
+                    });
 
             // Enter + Update
             let bars = barJoin
@@ -784,8 +791,10 @@ define(function(require){
          * @return {void}
          */
         function verticalBarsTween(d) {
+            const vertDiff = yScale(d[0]) - yScale(d[1]);
+
             let node = d3Selection.select(this),
-                i = d3Interpolate.interpolateRound(0, yScale(d[0]) - yScale(d[1])),
+                i = d3Interpolate.interpolateRound(0, getValOrDefaultToZero(vertDiff)),
                 j = d3Interpolate.interpolateNumber(0,1);
 
             return function (t) {

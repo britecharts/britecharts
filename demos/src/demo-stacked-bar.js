@@ -23,6 +23,16 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
         tooltipContainer,
         dataset;
 
+        let barData = {
+            data:[
+              {name: "A", value: 0.12, stack:"stack1"},
+              {name: "A", value: 0.32, stack:"stack2"},
+              {name: "B", value: 0.22, stack:"stack2"},
+              {name: "C", value: 0.45,stack:"stack1"},
+              {name: "D", value: 0.55,stack:"stack2"},
+            ]
+          };
+
     if (containerWidth) {
         dataset = testDataSet.with3Sources().build();
 
@@ -33,8 +43,8 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
             .grid('horizontal')
             .isAnimated(true)
             .stackLabel('stack')
-            .nameLabel('date')
-            .valueLabel('views')
+            .nameLabel('name')
+            .valueLabel('value')
             .betweenBarsPadding(0.3)
             .on('customMouseOver', function() {
                 chartTooltip.show();
@@ -50,7 +60,7 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
             stackedBar.colorSchema(optionalColorSchema);
         }
 
-        container.datum(dataset.data).call(stackedBar);
+        container.datum(barData.data).call(stackedBar);
 
         // Tooltip Setup and start
         chartTooltip
@@ -132,7 +142,7 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
 if (d3Selection.select('.js-stacked-bar-chart-tooltip-container').node()){
     // Chart creation
     createStackedBarChartWithTooltip();
-    createHorizontalStackedBarChart();
+    // createHorizontalStackedBarChart();
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
@@ -140,7 +150,7 @@ if (d3Selection.select('.js-stacked-bar-chart-tooltip-container').node()){
         d3Selection.selectAll('.stacked-bar').remove();
 
         createStackedBarChartWithTooltip();
-        createHorizontalStackedBarChart();
+        // createHorizontalStackedBarChart();
     };
 
     // Redraw charts on window resize
