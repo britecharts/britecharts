@@ -1,0 +1,39 @@
+<div class="container" id="heatmap">
+    <div class="row">
+        <div class="
+col-md-12">
+            <article>
+                <h2 class="tutorial__heading">Heatmap Chart</h2>
+                <div class="js-heatmap-chart-container heatmap-chart-container card--chart"></div>
+            </article>
+        </div>
+        <div class="col-md-12 sidebar">
+            <h3>The code</h3>
+            <pre><code class="language-javascript">
+heatmapChart
+    .boxSize(30);
+
+barContainer.datum(dataset).call(heatmapChart);
+            </code></pre>
+
+            <h4>Colors</h4>
+            <label class="control-label">You can also check other color schemas:</label>
+            <div class="js-color-selector-container"></div>
+
+            <h4>Data Input</h4>
+            <p>Check the
+                <a href="/britecharts/global.html#HeatmapData__anchor">data input schema</a> of this chart.</p>
+
+            <h4>Export Chart</h4>
+            <p>Export this chart by pressing
+                <input class="js-download-button btn-sm btn btn-primary" type="button" value="Export"
+                />
+            </p>
+
+            <h4>Demo Code</h4>
+            <p>Read the whole code of this demo
+                <a href="https://github.com/eventbrite/britecharts/blob/master/demos/src/demo-heatmap.js">in github</a>
+            </p>
+        </div>
+    </div>
+</div>
