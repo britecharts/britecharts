@@ -38,9 +38,9 @@ define(function(require){
      * @example
      * [
      *     {
-     *         "name": "2011-01",
-     *         "stack": "Direct",
-     *         "value": 0
+     *         name: "2011-01",
+     *         stack: "Direct",
+     *         value: 0
      *     }
      * ]
      */
