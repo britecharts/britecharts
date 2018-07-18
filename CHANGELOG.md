@@ -1,3 +1,4 @@
+2.9.3
 2.9.2
 --------------
 * fix for animationDelays for each group of data in Grouped Bar chart (ConstantinoSchillebeeckx)
