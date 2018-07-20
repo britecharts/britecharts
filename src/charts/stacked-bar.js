@@ -114,6 +114,7 @@ define(function(require){
             hasReversedStacks = false,
 
             tooltipThreshold = 480,
+            excludeMutedEvents = [],
 
             yAxisLabel,
             yAxisLabelEl,
@@ -198,6 +199,23 @@ define(function(require){
                     .on('click',  function(d) {
                         handleClick(this, d);
                     });
+            } else {
+                for (let i = 0; i < excludeMutedEvents.length; i++) {
+
+                    let eventName = excludeMutedEvents[i];
+
+                    svg.on(eventName, function(d) {
+                        if (eventName === 'mouseover') {
+                            handleMouseOver(this, d);
+                        } else if (eventName === 'mouseout') {
+                            handleMouseOut(this, d);
+                        } else if (eventName === 'mousevove') {
+                            handleMouseMove(this, d);
+                        } else if (eventName === 'click') {
+                            handleClick(this, d);
+                        }
+                    })
+                }
             }
 
             svg.selectAll('.bar')
@@ -1141,6 +1159,25 @@ define(function(require){
 
             return this;
         };
+
+        /**
+         * Excludes the given events from being muted when tooltipThreshold is reached.
+         * For example, if ['click'] is provided, the onclick events will be fired
+         * regardless of whether width > tooltipThreshold
+         *
+         * @param {String[]} List of events to exclude from being muted
+         * @return {String[] | modelu} Current excludeMutedEvents or Chart module to chain calls
+         * @public
+         *
+         */
+        exports.excludeMutedEvents = function(_x) {
+            if (!arguments.length) {
+                return excludeMutedEvents;
+            }
+            excludeMutedEvents = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the valueLabel of the chart
