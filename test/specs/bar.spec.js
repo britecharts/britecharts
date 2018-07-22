@@ -544,6 +544,30 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
                 expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
             });
+
+            it('should provide xTicksLabel getter and setter', () => {
+                let previous = barChart.xTicksLabel(),
+                    expected = 'GB',
+                    actual;
+
+                barChart.xTicksLabel(expected);
+                actual = barChart.xTicksLabel();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide yTicksLabel getter and setter', () => {
+                let previous = barChart.yTicksLabel(),
+                    expected = 'GB',
+                    actual;
+
+                barChart.yTicksLabel(expected);
+                actual = barChart.yTicksLabel();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
         });
 
         describe('when custom gradient color schem is applied', () => {
@@ -666,6 +690,41 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
                 expect(callbackSpy.calls.count()).toBe(1);
                 expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
+            });
+        });
+
+        describe('when tick labels are set', () => {
+
+            it('x-axis ticks should contain label character', () => {
+                const expected = 'GB';
+
+                barChart.xTicksLabel(expected);
+                containerFixture.datum(dataset).call(barChart);
+
+                const tickNodes = containerFixture.selectAll('.x-axis-group .tick text').nodes();
+
+                tickNodes.forEach(({textContent}) => {
+                    // label character is a second value after space
+                    const actual = textContent.split(' ')[1];
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            it('y-axis ticks should contain label character', () => {
+                const expected = 'L';
+
+                barChart.yTicksLabel(expected);
+                containerFixture.datum(dataset).call(barChart);
+
+                const tickNodes = containerFixture.selectAll('.y-axis-group .tick text').nodes();
+
+                tickNodes.forEach(({textContent}) => {
+                    // label character is a second value after space
+                    const actual = textContent.split(' ')[1];
+
+                    expect(actual).toEqual(expected);
+                });
             });
         });
     });

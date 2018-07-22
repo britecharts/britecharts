@@ -117,6 +117,9 @@ define(function(require) {
             nameLabel = 'name',
             labelEl,
 
+            xTicksLabel,
+            yTicksLabel,
+
             xAxisLabelEl = null,
             xAxisLabel = null,
             xAxisLabelOffset = 30,
@@ -191,8 +194,10 @@ define(function(require) {
                 xAxis = d3Axis.axisBottom(xScale);
 
                 yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(yTicks, numberFormat)
+                    .ticks(yTicks, numberFormat);
             }
+
+            drawTickLabels();
         }
 
         /**
@@ -351,34 +356,7 @@ define(function(require) {
             return chartGradientColors ? `url(#${chartGradientId})` : colorMap(name);
         }
 
-        /**
-         * Sorts data if orderingFunction is specified
-         * @param  {BarChartData}     clean unordered data
-         * @return  {BarChartData}    clean ordered data
-         * @private
-         */
-        function sortData(unorderedData) {
-            let {data, dataZeroed} = unorderedData;
-
-            if (orderingFunction) {
-                data.sort(orderingFunction);
-                dataZeroed.sort(orderingFunction)
-            }
-
-            return { data, dataZeroed };
-        }
-
-        /**
-         * Utility function that wraps a text into the given width
-         * @param  {D3Selection} text         Text to write
-         * @param  {Number} containerWidth
-         * @private
-         */
-        function wrapText(text, containerWidth) {
-            textHelper.wrapTextWithEllipses(text, containerWidth, 0, yAxisLineWrapLimit)
-        }
-
-        /**
+                /**
          * Draws the x and y axis on the svg object within their
          * respective groups
          * @private
@@ -665,6 +643,23 @@ define(function(require) {
         }
 
         /**
+         * Draws a vertical line to extend x-axis till the edges
+         * @return {void}
+         */
+        function drawHorizontalExtendedLine() {
+            baseLine = svg.select('.grid-lines-group')
+                .selectAll('line.extended-x-line')
+                .data([0])
+                .enter()
+                  .append('line')
+                    .attr('class', 'extended-x-line')
+                    .attr('x1', (xAxisPadding.left))
+                    .attr('x2', chartWidth)
+                    .attr('y1', chartHeight)
+                    .attr('y2', chartHeight);
+        }
+
+        /**
          * Draws the grid lines for an horizontal bar chart
          * @return {void}
          */
@@ -720,20 +715,58 @@ define(function(require) {
         }
 
         /**
-         * Draws a vertical line to extend x-axis till the edges
-         * @return {void}
+         * Draws labels ti tick values
+         * for either x or/and y axis.
+         * @returns {void}
+         * @private
          */
-        function drawHorizontalExtendedLine() {
-            baseLine = svg.select('.grid-lines-group')
-                .selectAll('line.extended-x-line')
-                .data([0])
-                .enter()
-                  .append('line')
-                    .attr('class', 'extended-x-line')
-                    .attr('x1', (xAxisPadding.left))
-                    .attr('x2', chartWidth)
-                    .attr('y1', chartHeight)
-                    .attr('y2', chartHeight);
+        function drawTickLabels() {
+            if (yTicksLabel) {
+                formatAxis(yAxis, yTicksLabel);
+            }
+            if (xTicksLabel) {
+                formatAxis(xAxis, xTicksLabel);
+            }
+        }
+
+        /**
+         * Adds custom tickFormat  and adds a char
+         * to the right of the value
+         * @param {Function} axis
+         * @returns {void}
+         * @private
+         */
+        function formatAxis(axis, label) {
+            axis.tickFormat((d) => {
+                return `${d} ${label}`;
+            });
+        }
+
+        /**
+         * Sorts data if orderingFunction is specified
+         * @param  {BarChartData}     clean unordered data
+         * @return  {BarChartData}    clean ordered data
+         * @private
+         */
+        function sortData(unorderedData) {
+            let {data, dataZeroed} = unorderedData;
+
+            if (orderingFunction) {
+                data.sort(orderingFunction);
+                dataZeroed.sort(orderingFunction)
+            }
+
+            return { data, dataZeroed };
+        }
+
+        /**
+         * Utility function that wraps a text into the given width
+         * @param  {D3Selection} text         Text to write
+         * @param  {Number} containerWidth
+         * @private
+         */
+        function wrapText(text, containerWidth) {
+            textHelper.wrapTextWithEllipses(text, containerWidth, 0, yAxisLineWrapLimit)
         }
 
         /**
@@ -1216,6 +1249,25 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the text of the xTicksLabel on the chart.
+         * Adds a character to the right of each tick value of x-axis
+         * to represent the category representation of a given value.
+         * Note: if you see '...' next to the tick value instead of the
+         * tick label assigned, you can fix that by adding left margins.
+         * @param  {String} _x Desired text for the label
+         * @return {String | module} label or Chart module to chain calls
+         * @public
+         */
+        exports.xTicksLabel = function(_x) {
+            if (!arguments.length) {
+                return xTicksLabel;
+            }
+            xTicksLabel = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the text of the yAxisLabel on the chart
          * @param  {String} _x Desired text for the label
          * @return {String | module} label or Chart module to chain calls
@@ -1261,7 +1313,7 @@ define(function(require) {
             return this;
         };
 
-        /**
+          /**
          * Gets or Sets the number of vertical ticks on the chart
          * (Default is 6)
          * @param  {Number} _x          Desired number of vertical ticks for the graph
@@ -1273,6 +1325,25 @@ define(function(require) {
                 return yTicks;
             }
             yTicks = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the text of the xTicksLyTicksLabelabel on the chart.
+         * Adds a character to the right of each tick value of y-axis
+         * to represent the category representation of a given value.
+         * Note: if you see '...' next to the tick value instead of the
+         * tick label assigned, you can fix that by adding left margins.
+         * @param  {String} _x Desired text for the label
+         * @return {String | module} label or Chart module to chain calls
+         * @public
+         */
+        exports.yTicksLabel = function(_x) {
+            if (!arguments.length) {
+                return yTicksLabel;
+            }
+            yTicksLabel = _x;
 
             return this;
         };
