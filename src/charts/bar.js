@@ -187,7 +187,7 @@ define(function(require) {
          * @private
          */
         function formatAxis(axis, label) {
-            axis.tickFormat((d, i) => {
+            axis.tickFormat((d) => {
                 return `${d} ${label}`;
             });
         }
