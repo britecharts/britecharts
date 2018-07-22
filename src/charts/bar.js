@@ -1253,7 +1253,7 @@ define(function(require) {
          * Adds a character to the right of each tick value of x-axis
          * to represent the category representation of a given value.
          * Note: if you see '...' next to the tick value instead of the
-         * tick label assigned, you can fix that by adding a left margins.
+         * tick label assigned, you can fix that by adding left margins.
          * @param  {String} _x Desired text for the label
          * @return {String | module} label or Chart module to chain calls
          * @public
@@ -1313,7 +1313,7 @@ define(function(require) {
             return this;
         };
 
-        /**
+          /**
          * Gets or Sets the number of vertical ticks on the chart
          * (Default is 6)
          * @param  {Number} _x          Desired number of vertical ticks for the graph
@@ -1334,7 +1334,7 @@ define(function(require) {
          * Adds a character to the right of each tick value of y-axis
          * to represent the category representation of a given value.
          * Note: if you see '...' next to the tick value instead of the
-         * tick label assigned, you can fix that by adding a left margins.
+         * tick label assigned, you can fix that by adding left margins.
          * @param  {String} _x Desired text for the label
          * @return {String | module} label or Chart module to chain calls
          * @public
