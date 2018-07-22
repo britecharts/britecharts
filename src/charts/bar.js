@@ -117,6 +117,9 @@ define(function(require) {
             nameLabel = 'name',
             labelEl,
 
+            xTicksLabel,
+            yTicksLabel,
+
             xAxisLabelEl = null,
             xAxisLabel = null,
             xAxisLabelOffset = 30,
@@ -177,6 +180,34 @@ define(function(require) {
         }
 
         /**
+         * Adds custom tickFormat  and adds a char
+         * to the right of the value
+         * @param {Function} axis
+         * @returns {void}
+         * @private
+         */
+        function formatAxis(axis, label) {
+            axis.tickFormat((d, i) => {
+                return `${d} ${label}`;
+            });
+        }
+
+        /**
+         * Draws labels ti tick values
+         * for either x or/and y axis.
+         * @returns {void}
+         * @private
+         */
+        function drawTickLabels() {
+            if (yTicksLabel) {
+                formatAxis(yAxis, yTicksLabel);
+            }
+            if (xTicksLabel) {
+                formatAxis(xAxis, xTicksLabel);
+            }
+        }
+
+        /**
          * Creates the d3 x and y axis, setting orientations
          * @private
          */
@@ -191,8 +222,10 @@ define(function(require) {
                 xAxis = d3Axis.axisBottom(xScale);
 
                 yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(yTicks, numberFormat)
+                    .ticks(yTicks, numberFormat);
             }
+
+            drawTickLabels();
         }
 
         /**
@@ -1216,6 +1249,23 @@ define(function(require) {
         };
 
         /**
+         * Gets or Sets the text of the xTicksLabel on the chart.
+         * Adds a character to the right of each tick value of x-axis
+         * to represent the category representation of a given value.
+         * @param  {String} _x Desired text for the label
+         * @return {String | module} label or Chart module to chain calls
+         * @public
+         */
+        exports.xTicksLabel = function(_x) {
+            if (!arguments.length) {
+                return xTicksLabel;
+            }
+            xTicksLabel = _x;
+
+            return this;
+        };
+
+        /**
          * Gets or Sets the text of the yAxisLabel on the chart
          * @param  {String} _x Desired text for the label
          * @return {String | module} label or Chart module to chain calls
@@ -1273,6 +1323,23 @@ define(function(require) {
                 return yTicks;
             }
             yTicks = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the text of the xTicksLyTicksLabelabel on the chart.
+         * Adds a character to the right of each tick value of y-axis
+         * to represent the category representation of a given value.
+         * @param  {String} _x Desired text for the label
+         * @return {String | module} label or Chart module to chain calls
+         * @public
+         */
+        exports.yTicksLabel = function(_x) {
+            if (!arguments.length) {
+                return yTicksLabel;
+            }
+            yTicksLabel = _x;
 
             return this;
         };
