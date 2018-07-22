@@ -180,34 +180,6 @@ define(function(require) {
         }
 
         /**
-         * Adds custom tickFormat  and adds a char
-         * to the right of the value
-         * @param {Function} axis
-         * @returns {void}
-         * @private
-         */
-        function formatAxis(axis, label) {
-            axis.tickFormat((d) => {
-                return `${d} ${label}`;
-            });
-        }
-
-        /**
-         * Draws labels ti tick values
-         * for either x or/and y axis.
-         * @returns {void}
-         * @private
-         */
-        function drawTickLabels() {
-            if (yTicksLabel) {
-                formatAxis(yAxis, yTicksLabel);
-            }
-            if (xTicksLabel) {
-                formatAxis(xAxis, xTicksLabel);
-            }
-        }
-
-        /**
          * Creates the d3 x and y axis, setting orientations
          * @private
          */
@@ -384,34 +356,7 @@ define(function(require) {
             return chartGradientColors ? `url(#${chartGradientId})` : colorMap(name);
         }
 
-        /**
-         * Sorts data if orderingFunction is specified
-         * @param  {BarChartData}     clean unordered data
-         * @return  {BarChartData}    clean ordered data
-         * @private
-         */
-        function sortData(unorderedData) {
-            let {data, dataZeroed} = unorderedData;
-
-            if (orderingFunction) {
-                data.sort(orderingFunction);
-                dataZeroed.sort(orderingFunction)
-            }
-
-            return { data, dataZeroed };
-        }
-
-        /**
-         * Utility function that wraps a text into the given width
-         * @param  {D3Selection} text         Text to write
-         * @param  {Number} containerWidth
-         * @private
-         */
-        function wrapText(text, containerWidth) {
-            textHelper.wrapTextWithEllipses(text, containerWidth, 0, yAxisLineWrapLimit)
-        }
-
-        /**
+                /**
          * Draws the x and y axis on the svg object within their
          * respective groups
          * @private
@@ -698,6 +643,23 @@ define(function(require) {
         }
 
         /**
+         * Draws a vertical line to extend x-axis till the edges
+         * @return {void}
+         */
+        function drawHorizontalExtendedLine() {
+            baseLine = svg.select('.grid-lines-group')
+                .selectAll('line.extended-x-line')
+                .data([0])
+                .enter()
+                  .append('line')
+                    .attr('class', 'extended-x-line')
+                    .attr('x1', (xAxisPadding.left))
+                    .attr('x2', chartWidth)
+                    .attr('y1', chartHeight)
+                    .attr('y2', chartHeight);
+        }
+
+        /**
          * Draws the grid lines for an horizontal bar chart
          * @return {void}
          */
@@ -753,20 +715,58 @@ define(function(require) {
         }
 
         /**
-         * Draws a vertical line to extend x-axis till the edges
-         * @return {void}
+         * Draws labels ti tick values
+         * for either x or/and y axis.
+         * @returns {void}
+         * @private
          */
-        function drawHorizontalExtendedLine() {
-            baseLine = svg.select('.grid-lines-group')
-                .selectAll('line.extended-x-line')
-                .data([0])
-                .enter()
-                  .append('line')
-                    .attr('class', 'extended-x-line')
-                    .attr('x1', (xAxisPadding.left))
-                    .attr('x2', chartWidth)
-                    .attr('y1', chartHeight)
-                    .attr('y2', chartHeight);
+        function drawTickLabels() {
+            if (yTicksLabel) {
+                formatAxis(yAxis, yTicksLabel);
+            }
+            if (xTicksLabel) {
+                formatAxis(xAxis, xTicksLabel);
+            }
+        }
+
+        /**
+         * Adds custom tickFormat  and adds a char
+         * to the right of the value
+         * @param {Function} axis
+         * @returns {void}
+         * @private
+         */
+        function formatAxis(axis, label) {
+            axis.tickFormat((d) => {
+                return `${d} ${label}`;
+            });
+        }
+
+        /**
+         * Sorts data if orderingFunction is specified
+         * @param  {BarChartData}     clean unordered data
+         * @return  {BarChartData}    clean ordered data
+         * @private
+         */
+        function sortData(unorderedData) {
+            let {data, dataZeroed} = unorderedData;
+
+            if (orderingFunction) {
+                data.sort(orderingFunction);
+                dataZeroed.sort(orderingFunction)
+            }
+
+            return { data, dataZeroed };
+        }
+
+        /**
+         * Utility function that wraps a text into the given width
+         * @param  {D3Selection} text         Text to write
+         * @param  {Number} containerWidth
+         * @private
+         */
+        function wrapText(text, containerWidth) {
+            textHelper.wrapTextWithEllipses(text, containerWidth, 0, yAxisLineWrapLimit)
         }
 
         /**
