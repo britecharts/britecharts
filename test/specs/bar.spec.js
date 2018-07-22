@@ -712,7 +712,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             });
 
             it('y-axis ticks should contain label character', () => {
-                const expected = 'GB';
+                const expected = 'L';
 
                 barChart.yTicksLabel(expected);
                 containerFixture.datum(dataset).call(barChart);
