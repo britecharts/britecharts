@@ -1,6 +1,6 @@
 define(function(require) {
     'use strict';
-
+    const canvg = require('canvg-browser');
     const {colorSchemas} = require('./color');
     const constants = require('./constants');
     const serializeWithStyles = require('./style');
@@ -41,13 +41,25 @@ define(function(require) {
      * @param  {string} title       Title for the image
      */
     function exportChart(d3svg, filename, title) {
-        let img = createImage(convertSvgToHtml.call(this, d3svg, title));
+        let svgHtml = convertSvgToHtml.call(this, d3svg, title);
+        let canvas = createCanvas(this.width(), this.height());
 
-        img.onload = handleImageLoad.bind(
+        if(navigator.msSaveOrOpenBlob){
+            let options = {
+                log: false,
+                ignoreMouse: true
+            };
+
+            canvg(canvas, svgHtml, options);
+            return(navigator.msSaveOrOpenBlob && navigator.msSaveOrOpenBlob(canvas.msToBlob(), filename));
+        } else {
+            let img = createImage( svgHtml );
+            img.onload = handleImageLoad.bind(
                 img,
-                createCanvas(this.width(), this.height()),
+                canvas,
                 filename
             );
+        }
     }
 
     /**

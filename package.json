@@ -70,6 +70,7 @@
   "homepage": "http://eventbrite.github.io/britecharts/",
   "dependencies": {
     "base-64": "^0.1.0",
+    "canvg-browser": "^1.0.0",
     "d3": "^5.0.0",
     "lodash.assign": "^4.2.0"
   },
@@ -129,8 +130,8 @@
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
-    "webpack-merge": "^4.1.1",
     "webpack-livereload-plugin": "^0.9.0",
+    "webpack-merge": "^4.1.1",
     "yargs": "^8.0.2"
   }
 }
