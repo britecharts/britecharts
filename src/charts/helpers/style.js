@@ -96,7 +96,7 @@ module.exports = (function() {
                 });
 
                 // fix for IE 11 not supporting svg.outerHTML
-                result = $('<div>').append($(elem).clone()).html();
+                result = new XMLSerializer().serializeToString(elem);
 
                 elements = [].map.call(elements, (el, i) => {
                     el.style.cssText = cssTexts[i];
