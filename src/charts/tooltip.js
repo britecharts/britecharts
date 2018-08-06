@@ -86,7 +86,7 @@ define(function(require){
             entryLineLimit = 3,
             initialTooltipTextXPosition = -25,
             tooltipTextLinePadding = 5,
-
+            tooltipRightWidth,
             // Animations
             mouseChaseDuration = 100,
             ease = d3Ease.easeQuadInOut,
@@ -358,9 +358,10 @@ define(function(require){
             textHeight = textSize.height ? textSize.height : 18.4;
 
             tooltipHeight += textHeight + tooltipTextLinePadding;
-
-            // Not sure if necessary
-            tooltipRight.attr('x', tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4)
+            // update the width if it exists because IE renders the elements
+            // too slow and cant figure out the width?
+            tooltipRightWidth = tooltipRight.node().getBBox().width ? tooltipRight.node().getBBox().width : tooltipRightWidth;
+            tooltipRight.attr( 'x', tooltipWidth - tooltipRightWidth - 10 - tooltipWidth / 4 );
 
             tooltipBody
                 .append('circle')
