@@ -82,7 +82,7 @@ define(function(require){
             tooltipBorderRadius = 3,
             ttTextX = 0,
             ttTextY = 37,
-            textSize,
+            textHeight,
             entryLineLimit = 3,
             initialTooltipTextXPosition = -25,
             tooltipTextLinePadding = 5,
@@ -322,7 +322,6 @@ define(function(require){
          */
         function updateTopicContent(topic){
             let name = topic[nameLabel],
-                textHeight,
                 tooltipRight,
                 tooltipLeftText,
                 tooltipRightText,
@@ -350,12 +349,10 @@ define(function(require){
                 .style('fill', tooltipTextColor)
                 .text(tooltipRightText);
 
-            textSize = elementText.node().getBBox();
-
             // IE11 give us sometimes a height of 0 when hovering on top of the vertical marker
             // This hack fixes it for some cases, but it doesn't work in multiline (they won't wrap)
             // Let's remove this once we stop supporting IE11
-            textHeight = textSize.height ? textSize.height : 18.4;
+            textHeight = elementText.node().getBBox().height ? elementText.node().getBBox().height : textHeight;
 
             tooltipHeight += textHeight + tooltipTextLinePadding;
             // update the width if it exists because IE renders the elements
