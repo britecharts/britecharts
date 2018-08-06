@@ -528,7 +528,17 @@ define(function(require){
                     line.push(word);
                     tspan.text(line.join(' '));
 
-                    if (tspan.node().getComputedTextLength() > width) {
+                    // fixes for IE wrap text issue
+                    let temp;
+                    temp = document.createElementNS("http://www.w3.org/2000/svg","text");
+                    temp.appendChild(document.createTextNode(line.join(' ')));
+                    temp.setAttribute('id', 'tempnode');
+                    temp.setAttribute("x",38);
+                    temp.setAttribute("y",18);
+                    document.getElementsByTagName("svg")[0].appendChild(temp);
+                    const textWidth = document.getElementsByTagName("svg")[0].lastChild.getBBox().width;
+
+                    if (textWidth > width) {
                         line.pop();
                         tspan.text(line.join(' '));
 
@@ -541,8 +551,11 @@ define(function(require){
                                 .text(word);
                         }
                     }
+
+                    temp.parentNode.removeChild(temp);
                 }
             });
+
         }
 
         /**
