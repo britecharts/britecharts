@@ -28,7 +28,7 @@ define(function(require) {
         imageSourceBase: 'data:image/svg+xml;base64,',
         titleFontSize: '15px',
         titleFontFamily: '\'Benton Sans\', sans-serif',
-        titleTopOffset: 30,
+        titleTopOffset: 15,
         get styleBackgroundString () {
             return `<style>svg{background:${this.chartBackground};}</style>`;
         }
