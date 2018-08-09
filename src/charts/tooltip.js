@@ -543,8 +543,6 @@ define(function(require){
                                 .text(word);
                         }
                     }
-
-                    // temp.parentNode.removeChild(temp);
                 }
             });
 
