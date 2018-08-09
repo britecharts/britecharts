@@ -14,6 +14,8 @@ define(function(require){
         isInteger
     } = require('./helpers/number');
 
+    const {getTextWidth} = require('./helpers/text');
+
     /**
      * Tooltip Component reusable API class that renders a
      * simple and configurable tooltip element for Britechart's
@@ -82,11 +84,11 @@ define(function(require){
             tooltipBorderRadius = 3,
             ttTextX = 0,
             ttTextY = 37,
-            textSize,
+            textHeight,
             entryLineLimit = 3,
             initialTooltipTextXPosition = -25,
             tooltipTextLinePadding = 5,
-
+            tooltipRightWidth,
             // Animations
             mouseChaseDuration = 100,
             ease = d3Ease.easeQuadInOut,
@@ -322,7 +324,6 @@ define(function(require){
          */
         function updateTopicContent(topic){
             let name = topic[nameLabel],
-                textHeight,
                 tooltipRight,
                 tooltipLeftText,
                 tooltipRightText,
@@ -350,17 +351,16 @@ define(function(require){
                 .style('fill', tooltipTextColor)
                 .text(tooltipRightText);
 
-            textSize = elementText.node().getBBox();
-
             // IE11 give us sometimes a height of 0 when hovering on top of the vertical marker
             // This hack fixes it for some cases, but it doesn't work in multiline (they won't wrap)
             // Let's remove this once we stop supporting IE11
-            textHeight = textSize.height ? textSize.height : 18.4;
+            textHeight = elementText.node().getBBox().height ? elementText.node().getBBox().height : textHeight;
 
             tooltipHeight += textHeight + tooltipTextLinePadding;
-
-            // Not sure if necessary
-            tooltipRight.attr('x', tooltipWidth - tooltipRight.node().getBBox().width - 10 - tooltipWidth / 4)
+            // update the width if it exists because IE renders the elements
+            // too slow and cant figure out the width?
+            tooltipRightWidth = tooltipRight.node().getBBox().width ? tooltipRight.node().getBBox().width : tooltipRightWidth;
+            tooltipRight.attr( 'x', tooltipWidth - tooltipRightWidth - 10 - tooltipWidth / 4 );
 
             tooltipBody
                 .append('circle')
@@ -527,7 +527,10 @@ define(function(require){
                     line.push(word);
                     tspan.text(line.join(' '));
 
-                    if (tspan.node().getComputedTextLength() > width) {
+                    // fixes for IE wrap text issue
+                    const textWidth = getTextWidth(line.join(' '), 16, 'Karla, sans-serif');
+
+                    if (textWidth > width) {
                         line.pop();
                         tspan.text(line.join(' '));
 
@@ -542,6 +545,7 @@ define(function(require){
                     }
                 }
             });
+
         }
 
         /**
