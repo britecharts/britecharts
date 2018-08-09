@@ -14,6 +14,8 @@ define(function(require){
         isInteger
     } = require('./helpers/number');
 
+    const {getTextWidth} = require('./helpers/text');
+
     /**
      * Tooltip Component reusable API class that renders a
      * simple and configurable tooltip element for Britechart's
@@ -526,14 +528,7 @@ define(function(require){
                     tspan.text(line.join(' '));
 
                     // fixes for IE wrap text issue
-                    let temp;
-                    temp = document.createElementNS("http://www.w3.org/2000/svg","text");
-                    temp.appendChild(document.createTextNode(line.join(' ')));
-                    temp.setAttribute('id', 'tempnode');
-                    temp.setAttribute("x",38);
-                    temp.setAttribute("y",18);
-                    document.getElementsByTagName("svg")[0].appendChild(temp);
-                    const textWidth = document.getElementsByTagName("svg")[0].lastChild.getBBox().width;
+                    const textWidth = getTextWidth(line.join(' '), 16, 'Karla, sans-serif');
 
                     if (textWidth > width) {
                         line.pop();
@@ -549,7 +544,7 @@ define(function(require){
                         }
                     }
 
-                    temp.parentNode.removeChild(temp);
+                    // temp.parentNode.removeChild(temp);
                 }
             });
 
