@@ -652,17 +652,17 @@ define(function(require){
             lines = svg.select('.chart-group').selectAll('.line')
                 .data(dataByTopic, getTopic);
 
-            paths = lines.merge(lines.enter()
+            paths = lines.enter()
               .append('g')
                 .attr('class', 'topic')
               .append('path')
                 .attr('class', 'line')
+                .merge(lines)
                 .attr('id', ({topic}) => topic)
                 .attr('d', ({dates}) => topicLine(dates))
                 .style('stroke', (d) => (
                     dataByTopic.length === 1 ? `url(#${lineGradientId})` : getLineColor(d)
-                ))
-            );
+                ));
 
             lines
                 .exit()
