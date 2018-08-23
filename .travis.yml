@@ -16,7 +16,7 @@ deploy:
     skip_cleanup: true
     email: npmjs+eng@eventbrite.com
     api_key:
-      secure: wMUBDaHRvdJFPaJphyV9tLR1jYwZcViCqlO94Zid9G/9iH6IkA9c+CjCKjc6gi54rRCPcTVf3TMDIM8dV5pbqJUxR0ouXV7mxX3psO0O2yik+BdMDly1qmeet/96ohGy2Z0SaBSvoXqJ0m7IQ9Rpi3pTZRYjWiZ4uoWIj/18l71OfGAK5FzdhO/G/OS/HVlUwz2RcBHaZ6TQjY21BnBq2jqKEBssQz+UTmGKCZJJmzywcOIf+xgLU8BBjtSwXrHAD6opFs80kAxuxJw517mVYH+dvegsLVwOcoBZGTUewEoRsQ5nuqU1jC6n9jKKGPap8aFiEL5F3x0Z90Lm6yb9cJVwuzzkX8FHYEuFYWfyfO6a9pdJRyvXWUQZ5CfxE7kzFkX5H84pL6CMgUwB80WqaCEPKW0i0xxXWZxbhnlOMJ4yNOoSmwtpnaNnFWa6IwY0amYRXryEBUXUmzKRiUFA/9cfaoN2+Ly9L51E1837l05EE7c1LDDbsyG7G1MNVrh5pT7YTd05grg6E24nn/AwbOj7PxIyNM0FLKaESY6btBQMFazIpAaBi2qnYJrTNiki1M16klNewx0hx4cUuJShe8pmWXwJE3w5wV7sO9c0Fl5RXFurZPXfUfNZUr5dalVPeDo2Y1E9kao/Sw8272ijmKO1IwY52qm3tY3VnIPWNA8=
+      secure: $NPM_TOKEN
     on:
       tags: true
       repo: eventbrite/britecharts
