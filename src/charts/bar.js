@@ -776,7 +776,7 @@ define(function(require) {
             dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
 
             barList.forEach((barRect) => {
-                d3Selection.select(barRect).attr('fill', ({name}) => colorMap(name));
+                d3Selection.select(barRect).attr('fill', ({name}) => computeColor(name));
             });
         }
 
