@@ -110,7 +110,14 @@ define(function(require) {
             animationStepRatio = 70,
             interBarDelay = (d, i) => animationStepRatio * i,
 
-            highlightBarFunction = (barSelection) => barSelection.attr('fill', ({name}) => d3Color.color(colorMap(name)).darker()),
+            highlightBarFunction = (barSelection) => 
+                barSelection.attr('fill', ({name}) => 
+                    d3Color.color(
+                        chartGradientColors 
+                        ? chartGradientColors[1]
+                        : colorMap(name)
+                    ).darker()
+                ),
             orderingFunction,
 
             valueLabel = 'value',
