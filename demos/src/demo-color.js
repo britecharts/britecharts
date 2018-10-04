@@ -6,12 +6,12 @@ const colors = require('./../../src/charts/helpers/color');
 function createColors() {
     const { colorSchemas } = colors;
 
-    const colorPalettes = Object.keys(colorSchemas).map(colorPalette => {
+    Object.keys(colorSchemas).forEach(colorPalette => {
         const paletteDiv = document.getElementById(`js-palette-${colorPalette}`);
 
         paletteDiv.style.display = 'flex';
 
-        colorSchemas[colorPalette].map(color => {
+        colorSchemas[colorPalette].forEach(color => {
             const div = document.createElement('div');
 
             div.style.width = '100px';
@@ -20,8 +20,6 @@ function createColors() {
             paletteDiv.appendChild(div);
         });
     });
-
-    return colorPalettes;
 }
 
 if (d3Selection.select('.js-color-container').node()) {
