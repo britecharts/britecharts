@@ -1,0 +1,58 @@
+    <div class="container" id="colors">
+        <div class="row">
+            <div class="col-md-6">
+                <article>
+                    <h2 class="tutorial__heading">Color Palettes</h2>
+                    <div class="js-color-container">
+                        <h4>Britecharts</h4>
+                        <div id="js-palette-britecharts"></div>
+                        <h4>Grey</h4>
+                        <div id="js-palette-grey"></div>
+                        <h4>Orange</h4>
+                        <div id="js-palette-orange"></div>
+                        <h4>BlueGreen</h4>
+                        <div id="js-palette-blueGreen"></div>
+                        <h4>Teal</h4>
+                        <div id="js-palette-teal"></div>
+                        <h4>Green</h4>
+                        <div id="js-palette-green"></div>
+                        <h4>Yellow</h4>
+                        <div id="js-palette-yellow"></div>
+                        <h4>Pink</h4>
+                        <div id="js-palette-pink"></div>
+                        <h4>Purple</h4>
+                        <div id="js-palette-purple"></div>
+                        <h4>Red</h4>
+                        <div id="js-palette-red"></div>
+                    </div>
+                </article>
+            </div>
+            <div class="col-md-6 sidebar">
+                <h3>The code</h3>
+                <pre><code class="language-javascript">
+availableColorPalettes = [
+    britecharts,
+    grey,
+    orange,
+    blueGreen,
+    teal,
+    green,
+    yellow,
+    pink,
+    purple,
+    red,
+    aloeGreen,
+]
+
+// to use a color palette:
+
+let donutChart = new donut();
+
+donutChart
+    .colorSchema(colors.colorSchemas.orange)
+                </code></pre>
+                <h4>Demo Code</h4>
+                <p>See the colors in each palette <a href="https://github.com/eventbrite/britecharts/blob/master/src/charts/helpers/color.js">in github</a></p>
+            </div>
+        </div>
+    </div>

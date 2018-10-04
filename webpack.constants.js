@@ -18,7 +18,7 @@ exports.CHARTS = {
     tooltip: './src/charts/tooltip.js',
     loading: ['./src/charts/helpers/load.js'],
     // hack to make webpack use colors as an entry point while its also a dependency of the charts above
-    colors: ['./src/charts/helpers/color.js']
+    colors: ['./src/charts/helpers/color.js'],
 };
 
 exports.DEMOS = {
@@ -26,6 +26,7 @@ exports.DEMOS = {
     'demo-bullet': './demos/src/demo-bullet.js',
     'demo-brush': './demos/src/demo-brush.js',
     'demo-donut': './demos/src/demo-donut.js',
+    'demo-color': './demos/src/demo-color.js',
     'demo-grouped-bar': './demos/src/demo-grouped-bar.js',
     'demo-heatmap': './demos/src/demo-heatmap.js',
     'demo-kitchen-sink': './demos/src/demo-kitchen-sink.js',
@@ -35,7 +36,7 @@ exports.DEMOS = {
     'demo-stacked-area': './demos/src/demo-stacked-area.js',
     'demo-stacked-bar': './demos/src/demo-stacked-bar.js',
     'demo-step': './demos/src/demo-step.js',
-    'demo-sparkline': './demos/src/demo-sparkline.js'
+    'demo-sparkline': './demos/src/demo-sparkline.js',
 };
 
 exports.PATHS = {
