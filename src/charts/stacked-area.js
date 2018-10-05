@@ -153,6 +153,7 @@ define(function(require){
             pointsBorderColor     = '#ffffff',
 
             isAnimated = false,
+            showBorder = true,
             ease = d3Ease.easeQuadInOut,
             areaAnimationDuration = 1000,
 
@@ -201,7 +202,7 @@ define(function(require){
                 'customTouchMove'
             );
 
-       /**
+        /**
          * This function creates the graph using the selection and data provided
          * @param {D3Selection} _selection A d3 selection that represents
          * the container(s) where the chart(s) will be rendered
@@ -756,31 +757,20 @@ define(function(require){
                 .y0((d) => yScale(d[0]))
                 .y1((d) => yScale(d[1]));
 
-            areaOutline = d3Shape.line()
-                .curve(area.curve())
-                .x(({data}) => xScale(data.date))
-                .y((d) => yScale(d[1]));
+            series = svg.select('.chart-group').selectAll('.layer')
+                .data(layersInitial, getName)
+                .enter()
+                .append('g')
+                .classed('layer-container', true);
+
+            series
+                .append('path')
+                .attr('class', 'layer')
+                .attr('d', area)
+                .style('opacity', areaOpacity)
+                .style('fill', ({key}) => categoryColorMap[key]);
 
             if (isAnimated) {
-                series = svg.select('.chart-group').selectAll('.layer')
-                    .data(layersInitial, getName)
-                    .enter()
-                      .append('g')
-                        .classed('layer-container', true);
-
-                series
-                  .append('path')
-                    .attr('class', 'layer')
-                    .attr('d', area)
-                    .style('opacity', areaOpacity)
-                    .style('fill', ({key}) => categoryColorMap[key]);
-
-                series
-                  .append('path')
-                    .attr('class', 'area-outline')
-                    .attr('d', areaOutline)
-                    .style('stroke', ({key}) => categoryColorMap[key]);
-
                 // Update
                 svg.select('.chart-group').selectAll('.layer')
                     .data(layers)
@@ -792,6 +782,43 @@ define(function(require){
                     .style('opacity', areaOpacity)
                     .style('fill', ({key}) => categoryColorMap[key]);
 
+            } else {
+                // Update
+                svg.select('.chart-group').selectAll('.layer')
+                    .data(layers)
+                    .attr('d', area)
+                    .style('opacity', areaOpacity)
+                    .style('fill', ({key}) => categoryColorMap[key]);
+            }
+
+            drawBorder(series, area);
+
+            // Exit
+            series.exit()
+                .transition()
+                .style('opacity', 0)
+                .remove();
+        }
+
+        function drawBorder(series, area) {
+            if (!showBorder) {
+               return;
+            }
+
+            areaOutline = d3Shape.line()
+                .curve(area.curve())
+                .x(({data}) => xScale(data.date))
+                .y((d) => yScale(d[1]));
+
+            series
+                .append('path')
+                .attr('class', 'area-outline')
+                .attr('d', areaOutline)
+                .style('stroke', ({key}) => categoryColorMap[key]);
+
+
+            if (isAnimated) {
+                // Update
                 svg.select('.chart-group').selectAll('.area-outline')
                     .data(layers)
                     .transition()
@@ -799,45 +826,13 @@ define(function(require){
                     .duration(areaAnimationDuration)
                     .ease(ease)
                     .attr('d', areaOutline);
-
             } else {
-                series = svg.select('.chart-group').selectAll('.layer')
-                    .data(layers)
-                    .enter()
-                      .append('g')
-                        .classed('layer-container', true);
-
-                series
-                  .append('path')
-                    .attr('class', 'layer')
-                    .attr('d', area)
-                    .style('opacity', areaOpacity)
-                    .style('fill', ({key}) => categoryColorMap[key]);
-
-                series
-                  .append('path')
-                    .attr('class', 'area-outline')
-                    .attr('d', areaOutline)
-                    .style('stroke', ({key}) => categoryColorMap[key]);
-
-
-                // Update
-                svg.select('.chart-group').selectAll('.layer')
-                    .attr('d', area)
-                    .style('opacity', areaOpacity)
-                    .style('fill', ({key}) => categoryColorMap[key]);
-
                 svg.select('.chart-group').selectAll('.area-outline')
+                    .data(layers)
                     .attr('class', 'area-outline')
                     .attr('d', areaOutline)
                     .style('stroke', ({key}) => categoryColorMap[key]);
             }
-
-            // Exit
-            series.exit()
-                .transition()
-                .style('opacity', 0)
-                .remove();
         }
 
         /**
@@ -1228,6 +1223,23 @@ define(function(require){
                 return isAnimated;
             }
             isAnimated = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the showBorder property of the chart
+         * By default this is 'true'
+         *
+         * @param  {Boolean} _x Desired animation flag
+         * @return {Boolean | module} Current showBorder flag or Chart module
+         * @public
+         */
+        exports.showBorder = function(_x) {
+            if (!arguments.length) {
+                return showBorder;
+            }
+            showBorder = _x;
 
             return this;
         };
