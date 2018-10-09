@@ -110,10 +110,10 @@ define(function(require) {
             animationStepRatio = 70,
             interBarDelay = (d, i) => animationStepRatio * i,
 
-            highlightBarFunction = (barSelection) => 
-                barSelection.attr('fill', ({name}) => 
+            highlightBarFunction = (barSelection) =>
+                barSelection.attr('fill', ({name}) =>
                     d3Color.color(
-                        chartGradientColors 
+                        chartGradientColors
                         ? chartGradientColors[1]
                         : colorMap(name)
                     ).darker()
@@ -637,6 +637,12 @@ define(function(require) {
                 } else {
                     drawAnimatedVerticalBars(bars);
                 }
+
+                // Exit
+                bars.exit()
+                    .transition()
+                    .style('opacity', 0)
+                    .remove();
             } else {
                 bars = svg.select('.chart-group').selectAll('.bar')
                     .data(data);
@@ -646,13 +652,12 @@ define(function(require) {
                 } else {
                     drawVerticalBars(bars);
                 }
+
+                // Exit
+                bars.exit()
+                    .remove();
             }
 
-            // Exit
-            bars.exit()
-                .transition()
-                .style('opacity', 0)
-                .remove();
         }
 
         /**
