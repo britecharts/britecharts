@@ -658,8 +658,6 @@ define(function(require) {
                     .remove();
             }
 
-
-
         }
 
         /**
