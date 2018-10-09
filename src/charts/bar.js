@@ -637,6 +637,8 @@ define(function(require) {
                 } else {
                     drawAnimatedVerticalBars(bars);
                 }
+
+                // Exit
                 bars.exit()
                     .transition()
                     .style('opacity', 0)
@@ -651,11 +653,12 @@ define(function(require) {
                     drawVerticalBars(bars);
                 }
 
+                // Exit
                 bars.exit()
                     .remove();
             }
 
-            // Exit
+
 
         }
 
