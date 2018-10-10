@@ -683,7 +683,7 @@ define(function(require) {
         function drawHorizontalGridLines() {
             maskGridLines = svg.select('.grid-lines-group')
                 .selectAll('line.vertical-grid-line')
-                .data(xScale.ticks(4))
+                .data(xScale.ticks(xTicks).slice(1))
                 .enter()
                   .append('line')
                     .attr('class', 'vertical-grid-line')
@@ -719,7 +719,7 @@ define(function(require) {
         function drawVerticalGridLines() {
             maskGridLines = svg.select('.grid-lines-group')
                 .selectAll('line.horizontal-grid-line')
-                .data(yScale.ticks(4))
+                .data(yScale.ticks(yTicks).slice(1))
                 .enter()
                   .append('line')
                     .attr('class', 'horizontal-grid-line')
