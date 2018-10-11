@@ -8,7 +8,7 @@ COPY yarn.lock .
 RUN yarn install
 
 COPY .babelrc .
-COPY webpack.* /code/
+COPY webpack.* .
 
 COPY Gruntfile.js .
 COPY GETTINGSTARTED.md .
