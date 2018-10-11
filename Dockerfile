@@ -1,4 +1,4 @@
-FROM node:6.14
+FROM node:8
 
 RUN mkdir /code
 WORKDIR /code
@@ -10,7 +10,9 @@ RUN yarn install
 COPY .babelrc .
 COPY webpack.* /code/
 
+COPY Gruntfile.js .
+COPY GETTINGSTARTED.md .
+COPY READM.md .
 COPY src src
 COPY test test
-COPY docs docs
 COPY demos demos

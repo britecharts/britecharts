@@ -6,11 +6,11 @@ clean:
 build:
 	docker build . --tag=britecharts:latest
 
-shell: clean
-	docker run -p 1234:8001 -v $(pwd):/britecharts -it --name britecharts britecharts:latest bash
+shell:
+	docker run -p 1234:8001 -v $(PWD)/docs:/code/docs -it britecharts bash
 
 run:
-	docker run -p 1234:8001 -t --name britecharts britecharts:latest yarn demos:serve
+	docker run -p 1234:8001 -t -v $(PWD)/docs:/code/docs -v $(PWD)/src:/code/src britecharts:latest yarn demos:serve
 
 stop:
 	docker stop -t 0 britecharts
