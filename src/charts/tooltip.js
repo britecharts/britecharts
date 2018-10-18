@@ -163,7 +163,7 @@ define(function(require){
                 svg = d3Selection.select(container)
                   .append('g')
                     .classed('britechart britechart-tooltip', true)
-                    .style('display', 'none');
+                    .style('visibility', 'hidden');
 
                 buildContainerGroups();
                 drawTooltip();
@@ -647,7 +647,7 @@ define(function(require){
          * @public
          */
         exports.hide = function() {
-            svg.style('display', 'none');
+            svg.style('visibility', 'hidden');
 
             return this;
         };
@@ -735,7 +735,7 @@ define(function(require){
          * @public
          */
         exports.show = function() {
-            svg.style('display', 'block');
+            svg.style('visibility', 'visible');
 
             return this;
         };
