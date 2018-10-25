@@ -1019,12 +1019,9 @@ define(function(require){
             cleanDataPointHighlights();
 
             // ensure order stays constant
-            let sortedValues = [];
-            values = values.filter(v => !!v);
-
-            for(let i = 0; i< order.length; i++){
-                sortedValues.push(values.find(o=> o.name === order[i]));
-            }
+            let sortedValues = order.reduce((acc, current) => {
+                return [...acc, values.find(({name}) => name === current)];
+            },[]);
 
             sortedValues.forEach((d, index) => {
                 let marker = verticalMarkerContainer
