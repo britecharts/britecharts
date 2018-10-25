@@ -1019,11 +1019,14 @@ define(function(require){
             cleanDataPointHighlights();
 
             // ensure order stays constant
-            values = values
-                .filter(v => !!v)
-                .sort((a,b) => order.indexOf(a.name) > order.indexOf(b.name));
+            let sortedValues = [];
+            values = values.filter(v => !!v);
 
-            values.forEach((d, index) => {
+            for(let i = 0; i< order.length; i++){
+                sortedValues.push(values.find(o=> o.name === order[i]));
+            }
+
+            sortedValues.forEach((d, index) => {
                 let marker = verticalMarkerContainer
                     .append('g')
                     .classed('circle-container', true)
@@ -1043,7 +1046,7 @@ define(function(require){
                             removeFilter(this);
                         });
 
-                accumulator = accumulator + values[index][valueLabel];
+                accumulator = accumulator + sortedValues[index][valueLabel];
 
                 marker.attr('transform', `translate( ${(- highlightCircleSize)}, ${(yScale(accumulator))} )` );
             });
