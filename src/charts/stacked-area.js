@@ -1019,11 +1019,11 @@ define(function(require){
             cleanDataPointHighlights();
 
             // ensure order stays constant
-            values = values
-                .filter(v => !!v)
-                .sort((a,b) => order.indexOf(a.name) > order.indexOf(b.name));
+            let sortedValues = order.reduce((acc, current) => {
+                return [...acc, values.find(({name}) => name === current)];
+            },[]);
 
-            values.forEach((d, index) => {
+            sortedValues.forEach((d, index) => {
                 let marker = verticalMarkerContainer
                     .append('g')
                     .classed('circle-container', true)
@@ -1043,7 +1043,7 @@ define(function(require){
                             removeFilter(this);
                         });
 
-                accumulator = accumulator + values[index][valueLabel];
+                accumulator = accumulator + sortedValues[index][valueLabel];
 
                 marker.attr('transform', `translate( ${(- highlightCircleSize)}, ${(yScale(accumulator))} )` );
             });
