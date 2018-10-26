@@ -1,9 +1,38 @@
 2.9.8
+-----
+* Feature - added color palettes demo page (@snazbala)
+* Feature - added docker support for project mantainers (@eb-jorgemaroto)
+* Fix - Apply transitions to bars opacity if chart is animated (@mikerhyssmith)
+* Fix - Take into account ticks setting when building grid lines (@grayt0r)
+* Fix - Tooltip render error in Firefox (@davegomez)
+* Fix - Stacked Area Chart circle positions when more than 10 areas (@flacoman91)
+
 2.9.7
+-----
+* Feature - Increase max area limit to 10 (@dalerasrorov-eb)
+* Fix - Changed handleMouseOut to use computeColor instead of colorMap (@mhammo)
+* Fix - Replace fixture dates to ISO format (@matix-eb)
+
 2.9.6
+-----
+Maintentance and deployment fixes
+
 2.9.5
+-----
+* Fix - Drawlines update (@mhammo)
+
 2.9.4
+-----
+* Fix IE11 Tooltip text (@flacoman91)
+
 2.9.3
+-----
+* Feature - Heatmap
+* Feature - colorSchema in bullet charts (@dalerasrorov-eb)
+* Fix - Stacked Bar errors (@dalerasrorov-eb)
+* Fix - Grouped Bar errors (@dalerasrorov-eb)
+* Fix - Scatter plot demos link (@dalerasrorov-eb)
+
 2.9.2
 --------------
 * fix for animationDelays for each group of data in Grouped Bar chart (ConstantinoSchillebeeckx)
