@@ -96,6 +96,9 @@ define(function(require) {
             highlightedSlice,
             hasFixedHighlightedSlice = false,
 
+            hasLastHoverSliceHighlighted = false,
+            lastHighlightedSlice = null,
+
             emptyDataConfig = {
                 emptySliceColor: '#EFF2F5',
                 showEmptySlice: false
@@ -413,6 +416,10 @@ define(function(require) {
             drawLegend(d);
             dispatcher.call('customMouseOver', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
 
+            if (lastHighlightedSlice && el !== lastHighlightedSlice) {
+                tweenGrowth(lastHighlightedSlice, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+            }
+
             if (highlightedSlice && el !== highlightedSlice) {
                 tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
             }
@@ -447,6 +454,12 @@ define(function(require) {
             // we will shrink the slice
             if (el !== highlightedSlice || (!hasFixedHighlightedSlice && el === highlightedSlice) ) {
                 tweenGrowth(el, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+            }
+
+            if (hasLastHoverSliceHighlighted) {
+                drawLegend(el.__data__);
+                tweenGrowth(el, externalRadius);
+                lastHighlightedSlice = el;
             }
 
             dispatcher.call('customMouseOut', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
@@ -640,8 +653,8 @@ define(function(require) {
          * Gets or Sets the hasFixedHighlightedSlice property of the chart, making it to
          * highlight the selected slice id set with `highlightSliceById` all the time.
          *
-         * @param  {Boolean} _x         If we want to make the highlighted slice permanently highlighted
-         * @return { Boolean | module}  Current hasFixedHighlightedSlice flag or Chart module
+         * @param  {boolean} _x         If we want to make the highlighted slice permanently highlighted
+         * @return {boolean | module}   Current hasFixedHighlightedSlice flag or Chart module
          * @public
          */
         exports.hasFixedHighlightedSlice = function(_x) {
@@ -652,6 +665,24 @@ define(function(require) {
 
             return this;
         };
+
+        /**
+         * Gets or sets the hasLastHoverSliceHighlighted property.
+         * If property is true, the last hovered slice will be highlighted
+         * after 'mouseout` event is triggered. The last hovered slice will remain
+         * in highlight state.
+         * @param {boolean} _x          Decide whether the last hovered slice should be highlighted
+         * @return {boolean | module}   Current hasLastHoverSliceHighlighted value or Chart module
+         * @public
+         */
+        exports.hasLastHoverSliceHighlighted = function(_x) {
+            if (!arguments.length) {
+                return hasLastHoverSliceHighlighted;
+            }
+            hasLastHoverSliceHighlighted = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the height of the chart
