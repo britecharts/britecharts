@@ -416,6 +416,8 @@ define(function(require) {
             drawLegend(d);
             dispatcher.call('customMouseOver', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
 
+            // if the hovered slice is not the same as the last slice hovered
+            // after mouseout event, then shrink the last slice that was highlighted
             if (lastHighlightedSlice && el !== lastHighlightedSlice) {
                 tweenGrowth(lastHighlightedSlice, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
             }
