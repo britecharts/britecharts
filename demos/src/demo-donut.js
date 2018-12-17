@@ -36,7 +36,6 @@ function createDonutChart(optionalColorSchema) {
 
         donutChart
             .isAnimated(true)
-            .hasLastHoverSliceHighlighted(true)
             .highlightSliceById(2)
             .width(containerWidth)
             .height(containerWidth)

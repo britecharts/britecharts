@@ -445,7 +445,7 @@ define(function(require) {
 
             // When there is a fixed highlighted slice,
             // we will always highlight it and render legend
-            if (highlightedSlice && hasFixedHighlightedSlice) {
+            if (highlightedSlice && hasFixedHighlightedSlice && !hasLastHoverSliceHighlighted) {
                 drawLegend(highlightedSlice.__data__);
                 tweenGrowth(highlightedSlice, externalRadius);
             }
@@ -671,6 +671,8 @@ define(function(require) {
          * If property is true, the last hovered slice will be highlighted
          * after 'mouseout` event is triggered. The last hovered slice will remain
          * in highlight state.
+         * Note: if both hasFixedHighlightedSlice and hasLastHoverSliceHighlighted
+         * are true, the latter property will override the former.
          * @param {boolean} _x          Decide whether the last hovered slice should be highlighted
          * @return {boolean | module}   Current hasLastHoverSliceHighlighted value or Chart module
          * @public
