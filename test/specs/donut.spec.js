@@ -504,10 +504,22 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);
                 });
+
+                it('should provide hasLastHoverSliceHighlighted getter and setter', () => {
+                    let previous = donutChart.hasLastHoverSliceHighlighted(),
+                        expected = true,
+                        actual;
+
+                    donutChart.hasLastHoverSliceHighlighted(expected);
+                    actual = donutChart.hasLastHoverSliceHighlighted();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
             });
 
             describe('when margins are set partially', function() {
-            
+
                 it('should override the default values', () => {
                     let previous = donutChart.margin(),
                     expected = {
@@ -516,10 +528,10 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                         right: 20
                     },
                     actual;
-    
+
                     donutChart.width(expected);
                     actual = donutChart.width();
-    
+
                     expect(previous).not.toBe(actual);
                     expect(actual).toEqual(expected);
                 })
