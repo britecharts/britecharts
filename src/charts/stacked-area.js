@@ -156,6 +156,8 @@ define(function(require){
             ease = d3Ease.easeQuadInOut,
             areaAnimationDuration = 1000,
 
+            hasOutline = true,
+
             svg,
             chartWidth, chartHeight,
             data,
@@ -833,6 +835,12 @@ define(function(require){
                     .style('stroke', ({key}) => categoryColorMap[key]);
             }
 
+            if (!hasOutline) {
+                svg.select('.chart-group')
+                  .selectAll('.area-outline')
+                  .style('display', 'none');
+            }
+
             // Exit
             series.exit()
                 .transition()
@@ -1196,6 +1204,15 @@ define(function(require){
 
             return this;
         };
+
+        exports.hasOutline = function(_x) {
+            if (!arguments.length) {
+                return hasOutline;
+            }
+            hasOutline = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the height of the chart
