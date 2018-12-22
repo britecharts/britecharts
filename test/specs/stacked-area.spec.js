@@ -198,9 +198,9 @@ define([
             expect(callback.calls.allArgs()[0].length).toBe(2);
         });
 
-        describe('when reloading with a three sources dataset', () => {
+        describe('stacked area outline', () => {
 
-            it('should render in the same svg', function() {
+            it('should not render outline if hasOutline is false', () => {
                 let actual;
                 let expected = 1;
                 let newDataset = buildDataSet('with3Sources');
@@ -210,6 +210,18 @@ define([
                 actual = containerFixture.selectAll('.stacked-area').nodes().length;
 
                 expect(actual).toEqual(expected);
+            });
+        });
+
+        describe('when reloading with a three sources dataset', () => {
+
+            it('should render in the same svg', function() {
+                stackedAreaChart.hasOutline(false);
+                containerFixture.datum(dataset.data).call(stackedAreaChart);
+
+                const outlines = containerFixture.selectAll('.area-outline');
+
+                expect(outlines.style('display')).toBe('none');
             });
 
             it('should render three layers', function() {
@@ -483,6 +495,18 @@ define([
                 expect(actual).toBe(expected);
             });
 
+            it('should provide yTicks getter and setter', () => {
+                let previous = stackedAreaChart.hasOutline(),
+                    expected = false,
+                    actual;
+
+                stackedAreaChart.hasOutline(expected);
+                actual = stackedAreaChart.hasOutline();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide areaCurve getter and setter', () => {
                 let previous = stackedAreaChart.areaCurve(),
                     expected = 'step',
@@ -521,7 +545,7 @@ define([
         });
 
         describe('when margins are set partially', function() {
-            
+
             it('should override the default values', () => {
                 let previous = stackedAreaChart.margin(),
                 expected = {
