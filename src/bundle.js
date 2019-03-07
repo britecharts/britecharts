@@ -9,6 +9,7 @@ import sparkline from './charts/sparkline.js';
 import stackedArea from './charts/stacked-area.js';
 import groupedBar from './charts/grouped-bar.js';
 import stackedBar from './charts/stacked-bar.js';
+import heatmap from './charts/heatmap.js';
 import step from './charts/step.js';
 import brush from './charts/brush.js';
 import colors from './charts/helpers/color.js';
@@ -25,6 +26,7 @@ export {
         stackedArea,
         groupedBar,
         stackedBar,
+        heatmap,
         step,
         brush,
         colors
