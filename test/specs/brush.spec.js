@@ -197,6 +197,18 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide a roundingTimeInterval getter and setter', () => {
+                let previous = brushChart.roundingTimeInterval(),
+                    expected = 'timeMillisecond',
+                    actual;
+
+                brushChart.roundingTimeInterval(expected);
+                actual = brushChart.roundingTimeInterval();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
         });
     });
 });

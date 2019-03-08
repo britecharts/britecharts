@@ -16,7 +16,7 @@ define(function(require) {
     const colorHelper = require('./helpers/color');
     const timeAxisHelper = require('./helpers/axis');
 
-    const {axisTimeCombinations} = require('./helpers/constants');
+    const {axisTimeCombinations, timeIntervals} = require('./helpers/constants');
 
     const {uniqueId} = require('./helpers/number');
     const {line} = require('./helpers/load');
@@ -109,6 +109,8 @@ define(function(require) {
 
             gradient = colorHelper.colorGradients.greenBlue,
             gradientId = uniqueId('brush-area-gradient'),
+
+            roundingTimeInterval = 'timeDay',
 
             // Dispatcher object to broadcast the mouse events
             // @see {@link https://github.com/d3/d3/blob/master/API.md#dispatches-d3-dispatch}
@@ -381,12 +383,12 @@ define(function(require) {
             if (selection) {
                 let dateExtent = selection.map(xScale.invert);
 
-                dateExtentRounded = dateExtent.map(d3Time.timeDay.round);
+                dateExtentRounded = dateExtent.map(timeIntervals[roundingTimeInterval].round);
 
                 // If empty when rounded, use floor & ceil instead.
                 if (dateExtentRounded[0] >= dateExtentRounded[1]) {
-                    dateExtentRounded[0] = d3Time.timeDay.floor(dateExtent[0]);
-                    dateExtentRounded[1] = d3Time.timeDay.offset(dateExtentRounded[0]);
+                    dateExtentRounded[0] = timeIntervals[roundingTimeInterval].floor(dateExtent[0]);
+                    dateExtentRounded[1] = timeIntervals[roundingTimeInterval].offset(dateExtentRounded[0]);
                 }
 
                 d3Selection.select(this)
@@ -626,6 +628,25 @@ define(function(require) {
               return xTicks;
             }
             xTicks = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the rounding time interval of the selection boundary
+         * @param  {roundingTimeInterval} _x Desired time interval for the selection, default 'timeDay'. All options are:
+         * timeMillisecond, utcMillisecond, timeSecond, utcSecond, timeMinute, utcMinute, timeHour, utcHour, timeDay, utcDay
+         * timeWeek, utcWeek, timeSunday, utcSunday, timeMonday, utcMonday, timeTuesday, utcTuesday, timeWednesday,
+         * utcWednesday, timeThursday, utcThursday, timeFriday, utcFriday, timeSaturday, utcSaturday, timeMonth, utcMonth,
+         * timeYear and utcYear. Visit https://github.com/d3/d3-time#intervals for more information.
+         * @return { (roundingTimeInterval | Module) } Current time interval or module to chain calls
+         * @public
+         */
+        exports.roundingTimeInterval = function(_x) {
+            if (!arguments.length) {
+                return roundingTimeInterval;
+            }
+            roundingTimeInterval = _x;
 
             return this;
         };
