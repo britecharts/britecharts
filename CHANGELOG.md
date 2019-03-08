@@ -1,3 +1,11 @@
+
+2.10.0
+-----
+* Feature - added rounding time interval for brush chart (@danielbater247)
+* Feature - added hasLastHoverSliceHighlighted to donut chart (@DalerAsrorov)
+* Feature - made Stacked area outlines optional (@DalerAsrorov)
+
+
 2.9.8
 -----
 * Feature - added color palettes demo page (@snazbala)
@@ -9,7 +17,7 @@
 
 2.9.7
 -----
-* Feature - Increase max area limit to 10 (@dalerasrorov-eb)
+* Feature - Increase max area limit to 10 (@DalerAsrorov)
 * Fix - Changed handleMouseOut to use computeColor instead of colorMap (@mhammo)
 * Fix - Replace fixture dates to ISO format (@matix-eb)
 
@@ -28,10 +36,10 @@ Maintentance and deployment fixes
 2.9.3
 -----
 * Feature - Heatmap
-* Feature - colorSchema in bullet charts (@dalerasrorov-eb)
-* Fix - Stacked Bar errors (@dalerasrorov-eb)
-* Fix - Grouped Bar errors (@dalerasrorov-eb)
-* Fix - Scatter plot demos link (@dalerasrorov-eb)
+* Feature - colorSchema in bullet charts (@DalerAsrorov)
+* Fix - Stacked Bar errors (@DalerAsrorov)
+* Fix - Grouped Bar errors (@DalerAsrorov)
+* Fix - Scatter plot demos link (@DalerAsrorov)
 
 2.9.2
 --------------
@@ -188,8 +196,8 @@ Features:
 * Added betweenBarsPadding option to bar charts
 * Docs update with demos in frontpage and more tweaks
 * Doc update for data format (@interdigitize)
-* Custom click handler in bar chart (@dalerasrorov-eb)
-* Custom click handler in donut chart (@dalerasrorov-eb)
+* Custom click handler in bar chart (@DalerAsrorov)
+* Custom click handler in donut chart (@DalerAsrorov)
 
 Bug fixes:
 * Fixed brush drag and drop (@brandon-vaughan)
@@ -219,7 +227,7 @@ Bug fixes:
 --------------
 Features:
 * Added glow in highlight points of line and area charts
-* Added Donut and line chart number formatting (@dalerasrorov-eb)
+* Added Donut and line chart number formatting (@DalerAsrorov)
 * Legend adjustments (@jchen-eb)
 
 Bug fixes:
@@ -230,7 +238,7 @@ Bug fixes:
 2.3.2 - Patch
 --------------
 Features:
-* Added ordering in bar chart (@dalerasrorov-eb)
+* Added ordering in bar chart (@DalerAsrorov)
 * Added optional axis labels to line chart
 
 Bug fixes:
@@ -241,7 +249,7 @@ Bug fixes:
 2.3.1 - Patch
 --------------
 Features:
-* Ability to set sort order for donut (@dalerasrorov-eb)
+* Ability to set sort order for donut (@DalerAsrorov)
 * Getter/setter for marginRatio-Legend and tooltipOffset-Stacked Area
 * Tooltip title improvements (@rpheath)
 
