@@ -134,8 +134,7 @@ You can also check the full code [in this file][simpleBarChartTutorialHTML].
 To install Britecharts in your project you can to install it using different approaches:
 * Using the Node Package Manager (NPM) or Yarn
 * Using the CDN links
-* Cloning the project via Github
-* Downloading the Project from Github
+* Building the Source Code
 
 ### Install with NPM
 The recommended way of installing Britecharts is to use NPM or Yarn:
@@ -147,6 +146,27 @@ Or, using Yarn:
 yarn add britecharts d3-selection
 ```
 Notice this requires you to have in place a bundling system (Webpack, Parcel, Rollup, Gulp or Grunt). If you just want to drop a script in a HTML file and start working, use the CDN way below.
+
+To use the modules within your JavaScript code, you will follow a different approach depending on the type of modules you are using:
+```
+// For AMD and CommonJS modules
+const selection = require('d3-selection');
+const LineChart = require('britecharts/umd/line.min');
+
+// For ES modules
+import bar from 'britecharts/dist/umd/bar.min';
+```
+
+When loading the styles, you have two options, loading the whole stylesheet of the library:
+```html
+<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/css/britecharts.min.css">
+```
+
+Or loading only the styles for the current chart plus the common Britecharts styles:
+```html
+<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/css/common/common.min.css">
+<link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/css/charts/bar.min.css">
+```
 
 ### Download From the CDN
 To import the latest bundle (2.x.x version), use this URL:
@@ -162,8 +182,8 @@ You can see the CDN links in action in:
 * this [JSBin][jsbinSandbox] sandbox project
 * this [CodePen][codepenSandbox] pen
 
-### Clone or Download the Source Code
-You can clone the git repository:
+### Building the Source Code
+In order to build the Soure Code, you need to first get the code. You can do it by cloning or downloading it from Github.com. You can clone the git repository by running:
 ```
    git clone https://github.com/eventbrite/britecharts.git
 ```
