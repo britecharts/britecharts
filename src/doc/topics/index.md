@@ -1,5 +1,4 @@
 # Topics
-
 In this section we discuss important concepts for Britecharts, giving context to some of our code decisions and helping understand why we have created the library this way.
 
 <!-- TOC -->
@@ -9,6 +8,7 @@ In this section we discuss important concepts for Britecharts, giving context to
     - [Test Driven Development](#test-driven-development)
     - [JSDoc generated documentation](#jsdoc-generated-documentation)
     - [API Guidelines](#api-guidelines)
+    - [Understanding Britecharts Structure](#understanding-britecharts-structure)
 
 <!-- /TOC -->
 
@@ -20,3 +20,6 @@ In this section we discuss important concepts for Britecharts, giving context to
 
 ## API Guidelines
 
+## Understanding Britecharts Structure
+
+## The Build System
