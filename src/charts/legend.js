@@ -36,6 +36,11 @@ define(function(require){
      * @fileOverview Legend Component reusable API class that renders a
      * simple and configurable legend element.
      *
+     * @module Legend
+     * @tutorial legend
+     * @exports charts/legend
+     * @requires d3-format, d3-scale, d3-selection, d3-transition
+     *
      * @example
      * var donutChart = donut(),
      *     legendBox = legend();
@@ -58,10 +63,6 @@ define(function(require){
      *     .datum(dataset)
      *     .call(legendBox);
      *
-     * @module Legend
-     * @tutorial legend
-     * @exports charts/legend
-     * @requires d3
      */
     return function module() {
 
@@ -96,6 +97,7 @@ define(function(require){
 
             getId = ({id}) => id,
             getName = ({name}) => name,
+
             getFormattedQuantity = ({quantity}) => d3Format.format(numberFormat)(quantity) + unit,
             getCircleFill = ({name}) => colorScale(name),
 
@@ -109,8 +111,7 @@ define(function(require){
          * This function creates the graph using the selection as container
          * @param  {D3Selection} _selection A d3 selection that represents
          *                                  the container(s) where the chart(s) will be rendered
-         * @param {object} _data The data to attach and generate the chart
-         * @private
+         * @param {LegendChartData} _data The data to attach and generate the chart
          */
         function exports(_selection) {
             _selection.each(function(_data){
