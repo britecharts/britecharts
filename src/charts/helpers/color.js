@@ -162,7 +162,7 @@ define(function() {
         },
         colorGradients: britechartGradients,
         colorGradientsHuman: {
-            greenBlue: 'Green To Blue',
+            greenBlue: 'Green to Blue',
             orangePink: 'Orange to Pink',
             bluePurple: 'Blue to Purple'
         }

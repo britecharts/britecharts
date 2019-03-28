@@ -18,6 +18,7 @@
         <h1>Composing a Data Visualization</h1>
         <div class="line-container"></div>
         <div class="legend-container"></div>
+        <div class="brush-container"></div>
     </section>
 
     <script>
@@ -25,8 +26,12 @@
         const lineChart = britecharts.line();
         const chartTooltip = britecharts.tooltip();
         const chartLegend = britecharts.legend();
+        const chartBrush = britecharts.brush();
+
         const container = d3.select('.line-container');
         const legendContainer = d3.select('.legend-container');
+        const brushContainer = d3.select('.brush-container');
+
         const containerWidth = container.node().getBoundingClientRect().width;
 
         // Create Dataset with proper shape
@@ -286,6 +291,71 @@
             .isHorizontal(true);
 
         legendContainer.datum(legendData).call(chartLegend);
+
+        // Get the data format for the brush
+        const getDateAndValueReducer = (accum, topic) => {
+            topic.dates.forEach((date) => {
+                accum.push({
+                    date: date.date,
+                    value: date.value
+                });
+            });
+
+            return accum;
+        };
+        const consolidateDatesReducer = (accum, d) => {
+            let found;
+
+            accum.forEach((item) => {
+                if (item.date === d.date) {
+                    item.value = item.value + d.value;
+                    found = true;
+
+                    return;
+                }
+            });
+
+            if (found) {
+                return accum;
+            }
+
+            return [d, ...accum];
+        };
+        const brushData = lineData.dataByTopic
+            .reduce(getDateAndValueReducer, [])
+            .reduce(consolidateDatesReducer, []);
+        const isInRange = (startDate, endDate, {date}) => new Date(date) >= startDate && new Date(date) <= endDate;
+        const filterData = (brushStart, brushEnd) => {
+            // Copy the data
+            let data = JSON.parse(JSON.stringify(lineData));
+
+            // data.dataByDate = data.dataByDate.filter(isInRange.bind(null, brushStart, brushEnd));
+
+            data.dataByTopic = data.dataByTopic.map((topic) => {
+                topic.dates = topic.dates.filter(isInRange.bind(null, brushStart, brushEnd));
+
+                return topic;
+            });
+
+            return data;
+        };
+
+        // Configure the brush chart
+        chartBrush
+            .width(containerWidth)
+            .height(100)
+            .xAxisFormat(chartBrush.axisTimeCombinations.DAY_MONTH)
+            .margin({ top: 0, bottom: 40, left: 50, right: 30 })
+            .on('customBrushEnd', function ([brushStart, brushEnd]) {
+                if (brushStart && brushEnd) {
+                    let filteredLineData = filterData(brushStart, brushEnd);
+
+                    container.datum(filteredLineData).call(lineChart);
+                }
+            });
+
+        brushContainer.datum(brushData).call(chartBrush);
+
 
         const redrawChart = () => {
             const newContainerWidth = container.node() ? container.node().getBoundingClientRect().width : false;

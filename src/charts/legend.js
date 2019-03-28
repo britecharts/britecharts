@@ -412,8 +412,8 @@ define(function(require){
 
         /**
          * Gets or Sets the colorSchema of the chart
-         * @param  {array} _x Color scheme array to get/set
-         * @return {number | module} Current colorSchema or Donut Chart module to chain calls
+         * @param  {array} _x           Color scheme array to get/set
+         * @return {number | module}    Current colorSchema or Donut Chart module to chain calls
          * @public
          */
         exports.colorSchema = function(_x) {
@@ -427,8 +427,8 @@ define(function(require){
 
         /**
          * Gets or Sets the height of the legend chart
-         * @param  {number} _x Desired width for the chart
-         * @return {height | module} Current height or Legend module to chain calls
+         * @param  {number} _x          Desired width for the chart
+         * @return {height | module}    Current height or Legend module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -442,7 +442,7 @@ define(function(require){
 
         /**
          * Highlights a line entry by fading the rest of lines
-         * @param  {number} entryId ID of the entry line
+         * @param  {number} entryId     ID of the entry line
          * @public
          */
         exports.highlight = function(entryId) {
@@ -467,8 +467,8 @@ define(function(require){
 
         /**
          * Gets or Sets the horizontal mode on the legend
-         * @param  {Boolean} _x Desired horizontal mode for the graph
-         * @return {Boolean | module} If it is horizontal or Legend module to chain calls
+         * @param  {Boolean} _x         Desired horizontal mode for the graph
+         * @return {Boolean | module}   If it is horizontal or Legend module to chain calls
          * @public
          */
         exports.isHorizontal = function(_x) {
@@ -482,8 +482,8 @@ define(function(require){
 
         /**
          * Gets or Sets the margin of the legend chart
-         * @param  {object} _x Margin object to get/set
-         * @return {object | module} Current margin or Legend module to chain calls
+         * @param  {object} _x          Margin object to get/set
+         * @return {object | module}    Current margin or Legend module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -501,8 +501,8 @@ define(function(require){
         /**
          * Gets or Sets the margin ratio of the legend chart.
          * Used to determine spacing between legend elements.
-         * @param  {number} _x Margin Ratio to get/set
-         * @return {number | module} Current marginRatio or Legend module to chain calls
+         * @param  {number} _x          Margin Ratio to get/set
+         * @return {number | module}    Current marginRatio or Legend module to chain calls
          * @public
          */
         exports.marginRatio = function(_x) {
@@ -519,8 +519,8 @@ define(function(require){
          * This markerSize will determine the horizontal and vertical size of the colored marks
          * added as color identifiers for the chart's categories.
          *
-         * @param  {object} _x Margin object to get/set
-         * @return {object | module} Current markerSize or Legend module to chain calls
+         * @param  {object} _x          Margin object to get/set
+         * @return {object | module}    Current markerSize or Legend module to chain calls
          * @public
          */
         exports.markerSize = function(_x) {
@@ -534,8 +534,8 @@ define(function(require){
 
         /**
          * Gets or Sets the number format of the legend chart
-         * @param  {string} _x Desired number format for the legend chart
-         * @return {string | module} Current number format or Legend module to chain calls
+         * @param  {string} _x          Desired number format for the legend chart
+         * @return {string | module}    Current number format or Legend module to chain calls
          * @public
          */
         exports.numberFormat = function (_x) {
@@ -564,8 +564,8 @@ define(function(require){
 
         /**
          * Gets or Sets the width of the legend chart
-         * @param  {number} _x Desired width for the graph
-         * @return {number | module} Current width or Legend module to chain calls
+         * @param  {number} _x          Desired width for the graph
+         * @return {number | module}    Current width or Legend module to chain calls
          * @public
          */
         exports.width = function(_x) {

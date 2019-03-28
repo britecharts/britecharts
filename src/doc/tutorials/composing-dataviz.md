@@ -140,7 +140,104 @@ The resulting chart is:
 ![Line Chart with Legend][lineChartLegendImg]
 
 ## Filtering Data with a Brush
+Our current data is not that extensive, but we think that our line chart could render any length of data. This could be a problem as we could get into a position where the details of the trend fade away. One way of fixing this is by allowing to filter data, and the way we do it visually is by using a brush chart.
+
+In this section, we go over the process of adding a brush chart to our visualization, allowing to drag and drop a section of the data to zoom in that period.
+
+### Creating the brush chart
+Let's first instantiate the brush chart and its container:
+```js
+const chartBrush = britecharts.brush();
+const brushContainer = d3.select('.brush-container');
+```
+We would need to add the real container to the DOM:
+```html
+<div class="brush-container"></div>
+```
+
+Now, as we did before, we are going to check the [Brush Chart API][brushChartAPIReference] and its [data schema][brushChartDataSchema]. The data needs to look like this:
+```json
+[
+    {
+        value: 1,
+        date: "2011-01-06T00:00:00Z"
+    },
+    {
+        value: 2,
+        date: "2011-01-07T00:00:00Z"
+    }
+]
+```
+So, in order to get this data shape, we will need to do some modifications to our line chart data:
+```js
+const brushData = lineData.dataByTopic
+    .reduce(getDateAndValueReducer, [])
+    .reduce(consolidateDatesReducer, []);
+```
+In the first reducer we get the entries by date, keeping only date and values. On the second one, we remove duplicated dates and sum up the values to have an aggregate of them. You can check the details of this functions in the [final code][composingDatavizTutorialHTML].
+
+Now we are ready to configure and render our brush using the usual pattern:
+```js
+chartBrush
+    .width(containerWidth)
+    .height(100)
+    .xAxisFormat(chartBrush.axisTimeCombinations.DAY_MONTH)
+    .margin({top:0, bottom: 40, left: 50, right: 30});
+
+brushContainer.datum(brushData).call(chartBrush);
+```
+Notice that we are setting the x axis format to a setting called `DAY_MONTH` within the axisTimeCombinations object. This is a way for us to select a format that works for our data. In this case it is the day of the month, as the default one (hours) was showing the same hour for every day.
+
+This code renders a simple Brush chart:
+![Simple Brush Chart][brushChartImg]
+
+This only serves as a overview of the sum of data in our dataset. What we want to do is, when we drag and drop a section of the brush, select that portion of our dataset and re-render the line chart with it.
+
+For that, we listen to the `customBrushEnd` event on the brush, that returns the period of the brush selection. We take the begining and end of that period and filter our original data with them. Finally, we apply it to the linechart and re-render. Here is the code for it:
+```js
+chartBrush
+    .width(containerWidth)
+    .height(100)
+    .xAxisFormat(chartBrush.axisTimeCombinations.DAY_MONTH)
+    .margin({ top: 0, bottom: 40, left: 50, right: 30 })
+    .on('customBrushEnd', ([brushStart, brushEnd]) => {
+        if (brushStart && brushEnd) {
+            let filteredLineData = filterData(brushStart, brushEnd);
+
+            container.datum(filteredLineData).call(lineChart);
+        }
+    });
+```
+This results in a data visualization where we can focus on different sections of the data, and use our tooltip to see the values on those:
+![Line with Brush, Tooltip and Legend][lineBrushTooltipLegendImg]
+
+Here is the filtering logic for your reference:
+```js
+const isInRange = (startDate, endDate, {date}) => new Date(date) >= startDate && new Date(date) <= endDate;
+const filterData = (brushStart, brushEnd) => {
+    // Copy the original data
+    let data = JSON.parse(JSON.stringify(lineData));
+
+    // Filter the data that is within the given range
+    data.dataByTopic = data.dataByTopic.map((topic) => {
+        topic.dates = topic.dates.filter(isInRange.bind(null, brushStart, brushEnd));
+
+        return topic;
+    });
+
+    return data;
+};
+```
+
 ## Styling the charts
+Now lets briefly look at some customization options we have available for Britecharts. The first one is the color schemas and gradients. You can find some of them in our [Color Palettes demo page][colorPalettesDemo].
+
+### Applying a color palette
+
+### Using a color gradient
+
+### Overriding default styles
+
 ## Summary
 
 You can see the full code of this tutorial [in this file][composingDatavizTutorialHTML].
@@ -155,3 +252,9 @@ You can see the full code of this tutorial [in this file][composingDatavizTutori
 [lineChartTooltipImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/line-chart-tooltip.png
 [legendAPIReference]: http://eventbrite.github.io/britecharts/module-Legend.html
 [lineChartLegendImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/line-chart-legend.png
+[brushChartAPIReference]: http://eventbrite.github.io/britecharts/module-Brush.html
+[brushChartDataSchema]: http://eventbrite.github.io/britecharts/global.html#BrushChartData
+[brushAxisCombinations]: http://eventbrite.github.io/britecharts/module-Brush.html#.axisTimeCombinations__anchor
+[brushChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/simple-brush-chart.png
+[lineBrushTooltipLegendImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/line-chart-with-brush-tooltip-legend.png
+[colorPalettesDemo]: http://eventbrite.github.io/britecharts/tutorial-color.html
