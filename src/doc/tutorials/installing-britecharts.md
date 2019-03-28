@@ -1,5 +1,7 @@
 # Installing Britecharts
-To install Britecharts in your project you can to install it using different approaches:
+Britecharts allows developers to add the library in several ways.
+
+In this tutorial, you will learn to install Britecharts in your project by using different approaches:
 * Using the Node Package Manager (NPM) or Yarn
 * Using the CDN links
 * Building the Source Code
@@ -13,7 +15,7 @@ Or, using Yarn:
 ```
 yarn add britecharts d3-selection
 ```
-Notice this requires you to have in place a bundling system (Webpack, Parcel, Rollup, Gulp or Grunt). If you just want to drop a script in a HTML file and start working, use the CDN way below.
+Notice this requires you to have in place a bundling system (Webpack, Parcel, Rollup, Gulp or Grunt). If you want to drop a script in an HTML file and start working, use the CDN way below.
 
 To use the modules within your JavaScript code, you will follow a different approach depending on the type of modules you are using:
 ```js
@@ -36,7 +38,7 @@ Or loading only the styles for the current chart plus the common Britecharts sty
 <link type="text/css" rel="stylesheet" href="node_modules/britecharts/dist/css/charts/bar.min.css">
 ```
 
-## Download From the CDN
+## Download from the CDN
 To import the latest bundle (2.x.x version), use this URL:
 ```
 https://cdn.jsdelivr.net/npm/britecharts@2/dist/bundled/britecharts.min.js
@@ -50,8 +52,8 @@ You can see the CDN links in action in:
 * this [JSBin][jsbinSandbox] sandbox project
 * this [CodePen][codepenSandbox] pen
 
-## Building the Source Code
-In order to build the Soure Code, you need to first get the code. You can do it by cloning or downloading it from Github.com. You can clone the git repository by running:
+## Building the source code
+To build the soure code, you need first to get the code. You can do it by cloning or downloading it from Github.com. You can clone the git repository by running:
 ```
    git clone https://github.com/eventbrite/britecharts.git
 ```
@@ -59,9 +61,20 @@ Or download the source code by navigating to the [Release Page][githubReleases] 
 
 Then, you would need to install the dependencies and build the project. Check the [Contributing Guide][contributingGuide] to learn about this process.
 
+## Summary
+In this tutorial, you have seen three different ways of adding Britecharts to  your site or web application.
+
+To keep on learning more about Britecharts, you can follow our [Composing Your First Data Visualization tutorial][composingDatavizGuide]. You can also check out our [documentation Homepage][home] and our [kitchen sink][demos] to see all the available charts.
+
+If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
+
 [jsDelivrDist]: https://cdn.jsdelivr.net/npm/britecharts/dist/
 [cdnDemo]: https://eventbrite.github.io/britecharts/cdn.html
 [jsbinSandbox]: https://jsbin.com/wativun/1/edit?html,js,output
 [codepenSandbox]: https://codepen.io/Golodhros/pen/PprGeP?editors=1010
 [contributingGuide]: https://github.com/eventbrite/britecharts/blob/master/.github/CONTRIBUTING.md
 [githubReleases]: https://github.com/eventbrite/britecharts/releases
+[home]: http://eventbrite.github.io/britecharts/
+[demos]: http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
+[contribute]: https://github.com/eventbrite/britecharts/blob/master/.github/CONTRIBUTING.md
+[composingDatavizGuide]: Y
