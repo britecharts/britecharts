@@ -1,18 +1,18 @@
 # Composing Your First Data Visualization
-In the [Getting Started Guide][gettingStartedGuide] we saw how to set up a responsive Bar chart using Britecharts. This was easy, however, most of the times your real world requirements include other components to help communicate your data.
+In the [Getting Started Guide][gettingStartedGuide], we saw how to set up a responsive Bar chart using Britecharts. This tutorial was easy to follow; however, most of the times our real-world requirements include other components to help communicate our data.
 
-In this tutorial, we will create a more complex data visualization. You will learn how to draw a Line Chart with Tooltip, how to add a Legend and a data filtering tool using a Bursh chart. You will also learn how you can use Britechart's color schemas to change the charts colors or customize your own.
+In this tutorial, we will create a complex data visualization. You will learn how to draw a line chart with a tooltip, how to add a legend and a data filtering tool using a brush chart.
 
-## Rendering a Line Chart
-Let's build on top of the Bar Chart tutorial by using its code structure. The first change will be that we will be downloading the full library bundle instead of just one chart:
+## Rendering a line chart
+Let's build on top of the Bar Chart tutorial by using its code structure. This time, we download the full library bundle instead of just one chart:
 ```html
 <script src="https://cdn.jsdelivr.net/npm/britecharts@2.10.0/dist/bundled/britecharts.min.js"></script>
 ```
-Then, we will instantiate a Line Chart:
+Then, we will instantiate a line chart:
 ```js
 const lineChart = britecharts.line();
 ```
-The shape of our data will necessarily change as well. We need to check the [Line Chart API Refe2221021210201chema] for this chart. In our case, it will look like this:
+The shape of our data changed as well. We need to check the [line chart data schema][lineChartDataSchema] for this chart. In our case, it looks like this:
 ```js
 const lineData = {
     "dataByTopic": [
@@ -35,12 +35,12 @@ const lineData = {
 };
 ```
 
-Before configuring the chart, this time we will get the container's size to apply it as the chart width:
+Before configuring the chart, we figure out the container's size to apply it as the chart width:
 ```js
 const containerWidth = container.node().getBoundingClientRect().width;
 ```
 
-Configuring and rendering the Line Chart will follow an identical approach:
+Configuring and rendering the line chart follows an identical approach as with the bar chart:
 ```js
 lineChart
     .margin({bottom: 50})
@@ -50,13 +50,11 @@ lineChart
 container.datum(lineData).call(lineChart);
 ```
 
-That will render the following chart:
+That renders the following chart:
 ![Simple Line Chart][lineChartImg]
 
 ## Adding a Tooltip
-Now that we have a line chart working, we will add a tooltip to allow users to check the specific values on each date.
-
-We start by instantiating a new [Tooltip component][tooltipAPIReference]:
+Now that we have a line chart working, we are going to add a tooltip to allow users to check the specific values on each date. We start by instantiating a new [Tooltip component][tooltipAPIReference]:
 ```js
 const chartTooltip = tooltip();
 ```
@@ -73,7 +71,7 @@ lineChart
 ```
 Following the previous code, we expect the tooltip to appear whenever the user passes his mouse over the chart. It should hide when the mouse goes out of the area of the chart. Finally, the tooltip should update its values whenever the mouse moves within the limits of the chart.
 
-We still have to attach the tooltip to the rendered line chart. For that, and only after we render the line chart, we will render the tooltip inside the `metadata-group` within the line. Let's see it in code:
+We still have to attach the tooltip to the rendered line chart. For that, and *only after we render the line chart*, we draw the tooltip inside the `metadata-group` within the line. Let's see it in code:
 ```js
 const tooltipContainer = d3.select('.line-container .metadata-group .hover-marker');
 
@@ -83,24 +81,24 @@ After the previous code, we will see a tooltip like the following:
 ![Line Chart with Tooltip][lineChartTooltipImg]
 
 ## Drawing a Legend
-Up to now, we have been working with a dataset that contains only one topic. But what happens if we have two topics? In this section, we will update our data to contain another set of entries. We will add a Legend component to show our users which line corresponds to which topic.
+Up to now, we have been working with a dataset that contains only one topic. But what happens if we have two topics? In this section, we will update our data to contain another set of entries. We add a legend component to show our users which line corresponds to which topic.
 
-First, we make a copy of the topic we already have and change some values. We named the new topic "Radiant", and due to our default color schema, it shows as a dark green line.
+First, we make a copy of the topic we already have and change some values. We named the new topic "Radiant," and due to our default color schema, it shows as a dark green line.
 
-Now we will instantiate our new [Legend component][legendAPIReference]:
+Now we instantiate our new [legend component][legendAPIReference]:
 ```js
 const chartLegend = britecharts.legend();
 ```
-The same way as we needed a container for the chart, we will need another for the legend. For that, we first create a div:
+The same way as we needed a container for the chart, we require another for the legend. To do it, we first create a div:
 ```html
 <div class="legend-container"></div>
 ```
-And then select the container with a D3 selection and save the reference:
+And then select the container with a D3.js selection and save the reference:
 ```js
 const legendContainer = d3.select('.legend-container');
 ```
 
-The legend is a component that depends on the data and in a specific data shape. We check the Legend data schema and it needs to be:
+The legend is a component that depends on the data and in a specific data shape. We check the Legend data schema, and it needs to be:
 ```json
 [
     {
@@ -115,7 +113,7 @@ The legend is a component that depends on the data and in a specific data shape.
     }
 ]
 ```
-As we want to show an inline legend, which doesn't show the quantity, we only need to pass an array with our topic names, an id and a random quantity. Here is how we will create that data:
+As we want to show an inline legend, which doesn't show the quantity, we only need to pass an array with our topic names, an id, and a random quantity. Here is how we create that data:
 ```js
 const legendData = lineData.dataByTopic.map(
     ({topicName, topic}) => ({
@@ -134,13 +132,13 @@ chartLegend
 
 legendContainer.datum(legendData).call(chartLegend);
 ```
-Note how we have used the container width in order to position the legend centered. You can see the rest of options of the legend component in its [API reference page][legendAPIReference].
+Note how we have used the container width to position the legend in the center. You can see the rest of the options of the legend component in its [API reference page][legendAPIReference].
 
 The resulting chart is:
 ![Line Chart with Legend][lineChartLegendImg]
 
 ## Filtering Data with a Brush
-Our current data is not that extensive, but we think that our line chart could render any length of data. This could be a problem as we could get into a position where the details of the trend fade away. One way of fixing this is by allowing to filter data, and the way we do it visually is by using a brush chart.
+Our current data is not that extensive, but in theory, our line chart could render datasets of any size. This could be a problem as we could get into a position where the data points get too close, and our users can't see the details of the data. One way of fixing this is by allowing to filter data, and the way we do it visually is by using a brush chart.
 
 In this section, we go over the process of adding a brush chart to our visualization, allowing to drag and drop a section of the data to zoom in that period.
 
@@ -150,7 +148,7 @@ Let's first instantiate the brush chart and its container:
 const chartBrush = britecharts.brush();
 const brushContainer = d3.select('.brush-container');
 ```
-We would need to add the real container to the DOM:
+We would need to add the container to the DOM:
 ```html
 <div class="brush-container"></div>
 ```
@@ -174,7 +172,7 @@ const brushData = lineData.dataByTopic
     .reduce(getDateAndValueReducer, [])
     .reduce(consolidateDatesReducer, []);
 ```
-In the first reducer we get the entries by date, keeping only date and values. On the second one, we remove duplicated dates and sum up the values to have an aggregate of them. You can check the details of this functions in the [final code][composingDatavizTutorialHTML].
+In the first reducer function, we obtain the entries by date, keeping only date and values. On the second one, we remove duplicated dates and sum up the values to have an aggregate of them. You can check the details of these functions in the [final code][composingDatavizTutorialHTML].
 
 Now we are ready to configure and render our brush using the usual pattern:
 ```js
@@ -186,14 +184,14 @@ chartBrush
 
 brushContainer.datum(brushData).call(chartBrush);
 ```
-Notice that we are setting the x axis format to a setting called `DAY_MONTH` within the axisTimeCombinations object. This is a way for us to select a format that works for our data. In this case it is the day of the month, as the default one (hours) was showing the same hour for every day.
+Notice that we are setting the x-axis format to a constant called `DAY_MONTH` within the axisTimeCombinations object. This `xAxisFormat` option is a way for us to select a date format that works for our data. In this case, it is the day of the month, as the default one (hours) was showing the same hour every day.
 
 This code renders a simple Brush chart:
 ![Simple Brush Chart][brushChartImg]
 
-This only serves as a overview of the sum of data in our dataset. What we want to do is, when we drag and drop a section of the brush, select that portion of our dataset and re-render the line chart with it.
+This chart only serves as an overview of the sum of data in our dataset. What we want to do is, when we drag and drop a section of the brush, select that portion of our dataset and re-render the line chart with it.
 
-For that, we listen to the `customBrushEnd` event on the brush, that returns the period of the brush selection. We take the begining and end of that period and filter our original data with them. Finally, we apply it to the linechart and re-render. Here is the code for it:
+For that, we listen to the `customBrushEnd` event on the brush, that returns the period of the brush selection. We take the beginning and end of that period and filter our original data with them. Finally, we apply it to the line chart and re-render. Here is the code for it:
 ```js
 chartBrush
     .width(containerWidth)
@@ -229,21 +227,18 @@ const filterData = (brushStart, brushEnd) => {
 };
 ```
 
-## Styling the charts
-Now lets briefly look at some customization options we have available for Britecharts. The first one is the color schemas and gradients. You can find some of them in our [Color Palettes demo page][colorPalettesDemo].
-
-### Applying a color palette
-
-### Using a color gradient
-
-### Overriding default styles
-
-## Summary
-
 You can see the full code of this tutorial [in this file][composingDatavizTutorialHTML].
 
+## Summary
+In this tutorial, we have seen how we can use different support components like the legend and tooltip to provide information about our charts. We also saw how we could use the brush chart to provide a high-level view of our dataset. We saw how to configure the brush to filter the data and how to reload our main chart with this new data.
+
+To learn more, you can read our [Styling Britecharts tutorial][stylingBritechartsGuide] or check our demos and documentation. If you decided to use Britecharts in your project, you could follow the [Installing Britecharts tutorial][installingBritechartsGuide] to learn what's the better way to use Britecharts.
+
+If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
 
 [gettingStartedGuide]: X
+[stylingBritechartsGuide]: Y
+[installingBritechartsGuide]: Z
 [lineChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/simple-line-chart.png
 [composingDatavizTutorialHTML]: https://github.com/eventbrite/britecharts/blob/master/src/doc/html/tutorial-composing-dataviz.html
 [lineChartAPIReference]: http://eventbrite.github.io/britecharts/module-Line.html
@@ -257,4 +252,3 @@ You can see the full code of this tutorial [in this file][composingDatavizTutori
 [brushAxisCombinations]: http://eventbrite.github.io/britecharts/module-Brush.html#.axisTimeCombinations__anchor
 [brushChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/simple-brush-chart.png
 [lineBrushTooltipLegendImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/line-chart-with-brush-tooltip-legend.png
-[colorPalettesDemo]: http://eventbrite.github.io/britecharts/tutorial-color.html

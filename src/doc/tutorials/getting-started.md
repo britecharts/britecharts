@@ -4,14 +4,14 @@ Britecharts has been created to help users consume and create D3.js charts. It l
 In this tutorial, we will create a simple data visualization using Britecharts. You will learn how to load Britecharts, instantiate and configure a chart and plot it within a container with a data set.
 
 ## Downloading Britecharts
-To use a Britechart, we need to install the library. In this tutorial, we are going to use a simple CDN link to install it. For that, create a simple html file and add these script tags:
+To use a Britechart, we need to install the library. In this tutorial, we are going to use a simple CDN link to install it. For that, create a simple HTML file and add these script tags:
 
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/britecharts@2.10.0/dist/umd/bar.min.js"
         type="text/javascript"></script>
 ```
-We are going to create a Bar Chart, so we download the bundle for that individual chart. Note that we also require `d3-selection`. We use this module to create a selection and load the data in the container where we render the chart.
+We are going to create a bar chart, so we download the bundle for that individual chart. Note that we also require `d3-selection`. We use this module to create a selection and load the data in the container where we render the chart.
 
 We also need to load the styling of our chart, and we do it similarly by accesing the CDN link:
 ```html
@@ -29,11 +29,10 @@ const container = d3.select('.bar-container');
 ```
 
 We instantiate a new chart by calling the function bar() inside the britecharts object in the global namespace:
-
 ```js
 const barChart = britecharts.bar();
 ```
-We will need a simple dataset to render the bar chart. We can find the right format of the data by visiting the [API documentation][barChartAPI] for the Bar Chart component. Developers need to find the data definition at the top of the page, in this case, it is a link labeled [BarChartData][barChartDataSchema]. It looks like this:
+We need a simple dataset to render the bar chart. We can find the right format of the data by visiting the [API documentation][barChartAPI] for the bar chart component. Developers need to find the data definition at the top of the page; in this case, it is a link labeled [BarChartData][barChartDataSchema]. It looks like this:
 ```json
 [
     {
@@ -56,8 +55,8 @@ const barData = [
 ];
 ```
 
-## Configuring and Rendering the Bar Chart
-We only need to configure our bar chart by calling the accessors. These are described in the [Bar Chart API reference][barChartAPI] page. In this tutorial, we set it up as a horizontal bar chart with height of 400px and width of 600px:
+## Configuring and Rendering the bar chart
+We only need to configure our bar chart by calling the accessors. We describe these in the [bar chart API reference][barChartAPI] page. In this tutorial, we set it up as a horizontal bar chart with a height of 400px and a width of 600px:
 ```js
 barChart
     .margin({left: 100})
@@ -80,7 +79,7 @@ Here is all the code inside the `<body>` tag of our HTML file:
 <div class="bar-container"></div>
 
 <script>
-    // Instantiate Bar Chart and container
+    // Instantiate bar chart and container
     const barChart = britecharts.bar();
     const container = d3.select('.bar-container');
 
@@ -122,18 +121,20 @@ const throttledRedraw = _.throttle(redrawChart, 200);
 window.addEventListener("resize", throttledRedraw);
 
 ```
-We would need to load the Lodash or Underscore library, we could do it with a CDN link like:
+We would need to load the Lodash or Underscore library; we could do it with a CDN link like:
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"
             type="text/javascript"/></script>
 ```
 
-This is not the only way to do it. You could listen also to requestAnimationFrame to time the execution of the callback.
+This logic is not the only way to avoid multiple successive calls. You could also listen to requestAnimationFrame to time the execution of the callback.
 
-You can see the full code [in this file][simpleBarChartTutorialHTML].
+You can check the full code of this tutorial [in this file][simpleBarChartTutorialHTML].
 
-## What to Do From Here
-Check out our [Documentation Homepage][home] and our [kitchen sink][demos] to see all the available charts.
+## Summary
+In this tutorial, we have seen how to load Britecharts with a CDN link and how to draw a simple chart. We did this by checking the API Reference page for the chart and its data schema and by creating the elements needed in the HTML file.
+
+To keep on learning more about Britecharts, you can follow our [Composing Your First Data Visualization tutorial][composingDatavizGuide]. You can also check out our [Documentation Homepage][home] and our [kitchen sink][demos] to see all the available charts.
 
 If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
 
@@ -144,4 +145,6 @@ If you are excited about Britecharts, want to add more configurable properties o
 [barChartDataSchema]: http://eventbrite.github.io/britecharts/global.html#BarChartData
 [barChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/simple-bar-chart.png
 [simpleBarChartTutorialHTML]: https://github.com/eventbrite/britecharts/blob/master/src/doc/html/tutorial-simple-bar-chart.html
+[composingDatavizGuide]: Y
+
 
