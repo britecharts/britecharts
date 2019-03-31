@@ -1,5 +1,5 @@
 # Installing Britecharts
-Britecharts allows developers to add the library in several ways.
+In the [Getting Started Guide][gettingStarted] you saw how to use Britecharts using a CDN link. This is not the only way. Britecharts allows developers to add the library following several strategies.
 
 In this tutorial, you will learn to install Britecharts in your project by using different approaches:
 * Using the Node Package Manager (NPM) or Yarn
@@ -64,7 +64,7 @@ Then, you would need to install the dependencies and build the project. Check th
 ## Summary
 In this tutorial, you have seen three different ways of adding Britecharts to  your site or web application.
 
-To keep on learning more about Britecharts, you can follow our [Composing Your First Data Visualization tutorial][composingDatavizGuide]. You can also check out our [documentation Homepage][home] and our [kitchen sink][demos] to see all the available charts.
+To keep on learning more about Britecharts, you can follow our [Composing Your First Data Visualization][composingDataviz] or our [Styling Britecharts][stylingBritecharts] tutorials. You can also check out our [documentation Homepage][home] and our [kitchen sink][demos] to see all the available charts.
 
 If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
 
@@ -77,4 +77,6 @@ If you are excited about Britecharts, want to add more configurable properties o
 [home]: http://eventbrite.github.io/britecharts/
 [demos]: http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
 [contribute]: https://github.com/eventbrite/britecharts/blob/master/.github/CONTRIBUTING.md
-[composingDatavizGuide]: Y
+[gettingStarted]:
+[composingDataviz]:
+[stylingBritecharts]:

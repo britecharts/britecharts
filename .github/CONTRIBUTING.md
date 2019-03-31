@@ -56,7 +56,7 @@ To generate the demos and see the library' documentation you would need to:
 1. In a second terminal window, run:
     `yarn run docs`
 
-This process generates docs and opens the user interface in a new browser tab. There you can navigate the API of each chart and see some examples under the "Demos" dropdown section. We recommend you to use these demos as your testing platform when modifying the charts.
+This process generates docs and opens the user interface in a new browser tab. There you can navigate the API of each chart and see some examples under the “Demos” dropdown section. We recommend you to use these demos as your testing platform when modifying the charts.
 
 Once you have your environment set and ready to go, you can check our [Contributor How To Guides][contributorHowTo] to learn how to create a Pull Request, Modify or Create a chart.
 

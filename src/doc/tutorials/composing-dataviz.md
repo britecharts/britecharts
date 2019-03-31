@@ -1,5 +1,5 @@
 # Composing Your First Data Visualization
-In the [Getting Started Guide][gettingStartedGuide], we saw how to set up a responsive Bar chart using Britecharts. This tutorial was easy to follow; however, most of the times our real-world requirements include other components to help communicate our data.
+In the [Getting Started Guide][gettingStarted], we saw how to set up a responsive Bar chart using Britecharts. This tutorial was easy to follow; however, most of the times our real-world requirements include other components to help communicate our data.
 
 In this tutorial, we will create a complex data visualization. You will learn how to draw a line chart with a tooltip, how to add a legend and a data filtering tool using a brush chart.
 
@@ -232,13 +232,13 @@ You can see the full code of this tutorial [in this file][composingDatavizTutori
 ## Summary
 In this tutorial, we have seen how we can use different support components like the legend and tooltip to provide information about our charts. We also saw how we could use the brush chart to provide a high-level view of our dataset. We saw how to configure the brush to filter the data and how to reload our main chart with this new data.
 
-To learn more, you can read our [Styling Britecharts tutorial][stylingBritechartsGuide] or check our demos and documentation. If you decided to use Britecharts in your project, you could follow the [Installing Britecharts tutorial][installingBritechartsGuide] to learn what's the better way to use Britecharts.
+To learn more, you can read our [Styling Britecharts tutorial][stylingBritecharts] or check our demos and documentation. If you decided to use Britecharts in your project, you could follow the [Installing Britecharts tutorial][installingBritecharts] to learn what's the better way to use Britecharts.
 
 If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
 
-[gettingStartedGuide]: X
-[stylingBritechartsGuide]: Y
-[installingBritechartsGuide]: Z
+[gettingStarted]: X
+[stylingBritecharts]: Y
+[installingBritecharts]: Z
 [lineChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/simple-line-chart.png
 [composingDatavizTutorialHTML]: https://github.com/eventbrite/britecharts/blob/master/src/doc/html/tutorial-composing-dataviz.html
 [lineChartAPIReference]: http://eventbrite.github.io/britecharts/module-Line.html
