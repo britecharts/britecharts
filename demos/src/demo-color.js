@@ -41,7 +41,25 @@ function createGradients() {
     });
 }
 
+function createSingleColors() {
+    const { singleColors } = colors;
+    const colorsDiv = document.getElementsByClassName('js-single-color-container')[0];
+
+    colorsDiv.style.display = 'flex';
+
+    Object.keys(singleColors).forEach(singleColor => {
+        const div = document.createElement('div');
+
+        div.style.width = '100px';
+        div.style.height = '100px';
+        div.style.background = singleColors[singleColor];
+
+        colorsDiv.appendChild(div);
+    });
+}
+
 if (d3Selection.select('.js-color-container').node()) {
     createColors();
     createGradients();
+    createSingleColors();
 }
