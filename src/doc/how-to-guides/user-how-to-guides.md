@@ -1,7 +1,7 @@
 # User How-To Guides
 Our how-to guides are recipes to address specific and critical use cases when working with Britecharts. They assume some knowledge about Britecharts and the library structure. If this is the first time you work with Britecharts, we recommend you to read the [Getting Started Tutorial][gettingStarted] first.
 
-## How to customize the chart's colors
+## How to Customize the Chart's Colors
 Follow these steps to customize Britecharts' charts to use different color schemas:
 1. Find out if your chart supports `.colorSchema`, if so, keep on reading
 1. Check the [Color Palettes demo page][colorPalettesDemo] and find a palette you like
@@ -11,7 +11,7 @@ Follow these steps to customize Britecharts' charts to use different color schem
 
 Note that in some charts we can only configure a gradient. Use the `colorGradients` object instead of `colorSchemas` within the colors helper. You can explore other options in the source code of the [colors file][colorsHelper].
 
-## How to configure time scales
+## How to Configure Time Scales
 Britecharts has some logic to try guessing the best date format on time series charts from the time period of the dataset. As we haven't bulletproofed this algorithm, and sometimes users want specific formats, we also expose configuration options to set custom formats.
 
 The next steps apply to time series charts like the line chart, stacked area chart and brush chart:
@@ -34,9 +34,6 @@ console.log('combinations', line.axisTimeCombinations);
 1. Set the `xAxisFormat` parameter to the value `'custom'`
 1. Set the `xAxisCustomFormat` parameter to a valid [D3.js time format specifier string][timeFormatSpecifiers]. For example: `line.xAxisCustomFormat('%H')`
 1. Play around with different specifiers until finding something that works. You can experiment in [this block example][timeFormatsBlock].
-
-## How to use events
-TODO
 
 
 [gettingStarted]: x

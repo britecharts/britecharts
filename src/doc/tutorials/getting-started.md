@@ -129,7 +129,7 @@ We would need to load the Lodash or Underscore library; we could do it with a CD
 
 This logic is not the only way to avoid multiple successive calls. You could also listen to requestAnimationFrame to time the execution of the callback.
 
-You can check the full code of this tutorial [in this file][simpleBarChartTutorialHTML].
+You can check the full code of this tutorial [in this file][simpleBarChartTutorialHTML] and the [tutorial working here][simpleBarChartTutorial].
 
 ## Summary
 In this tutorial, we have seen how to load Britecharts with a CDN link and how to draw a simple chart. We did this by checking the API Reference page for the chart and its data schema and by creating the elements needed in the HTML file.
@@ -145,6 +145,7 @@ If you are excited about Britecharts, want to add more configurable properties o
 [barChartDataSchema]: http://eventbrite.github.io/britecharts/global.html#BarChartData
 [barChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/simple-bar-chart.png
 [simpleBarChartTutorialHTML]: https://github.com/eventbrite/britecharts/blob/master/src/doc/html/tutorial-simple-bar-chart.html
+[simpleBarChartTutorial]: https://github.com/eventbrite/britecharts/tutorial-simple-bar-chart.html
 [composingDatavizGuide]: Y
 
 

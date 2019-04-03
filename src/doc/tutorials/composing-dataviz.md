@@ -227,7 +227,7 @@ const filterData = (brushStart, brushEnd) => {
 };
 ```
 
-You can see the full code of this tutorial [in this file][composingDatavizTutorialHTML].
+You can see the full code of this tutorial [in this file][composingDatavizTutorialHTML] and the [tutorial working here][composingDatavizTutorial].
 
 ## Summary
 In this tutorial, we have seen how we can use different support components like the legend and tooltip to provide information about our charts. We also saw how we could use the brush chart to provide a high-level view of our dataset. We saw how to configure the brush to filter the data and how to reload our main chart with this new data.
@@ -241,6 +241,7 @@ If you are excited about Britecharts, want to add more configurable properties o
 [installingBritecharts]: Z
 [lineChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/simple-line-chart.png
 [composingDatavizTutorialHTML]: https://github.com/eventbrite/britecharts/blob/master/src/doc/html/tutorial-composing-dataviz.html
+[composingDatavizTutorial]: https://github.com/eventbrite/britecharts/tutorial-composing-dataviz.html
 [lineChartAPIReference]: http://eventbrite.github.io/britecharts/module-Line.html
 [lineChartDataSchema]: http://eventbrite.github.io/britecharts/global.html#LineChartData
 [tooltipAPIReference]: http://eventbrite.github.io/britecharts/module-Tooltip.html

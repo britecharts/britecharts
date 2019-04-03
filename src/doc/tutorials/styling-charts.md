@@ -86,7 +86,7 @@ This CSS code will override the `font-family` definition for both the whole char
 We could follow the same steps to style most of Britechart's styling. One caveat is that, given that Britecharts is an SVG based library, the styling of SVG elements is sometimes different. In those cases, check out this [SVG styling guide][svgReference] to make sure you are updating the right properties.
 
 ## Summary
-In this tutorial, you saw how you can use Britecharts' color helper to apply color palettes and color gradients to your charts. You also saw you can customize all the elments by using CSS style overrides.
+In this tutorial, you saw how you can use Britecharts' color helper to apply color palettes and color gradients to your charts. You also saw you can customize all the elments by using CSS style overrides. You can see the [tutorial code working here][stylingBritechartsTutorial].
 
 To learn more, you can follow our [Composing Your First Data Visualization tutorial][composingDataviz]. You can also check out our [Documentation Homepage][home] and our [kitchen sink][demos] to see all the available charts.
 
@@ -96,6 +96,7 @@ To learn more, you can follow our [Composing Your First Data Visualization tutor
 [composingDataviz]:
 [colorPalettesDemo]: http://eventbrite.github.io/britecharts/tutorial-color.html
 [stylingBritechartsHTML]: https://github.com/eventbrite/britecharts/blob/master/src/doc/html/tutorial-styling-britecharts.html
+[stylingBritechartsTutorial]: https://github.com/eventbrite/britecharts/tutorial-styling-britecharts.html
 [orangeBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/orange-bar-chart.png
 [redBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/red-bar-chart.png
 [gFonts]: https://fonts.google.com/
