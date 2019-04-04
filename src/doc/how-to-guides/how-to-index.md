@@ -1,4 +1,4 @@
-#How-To Guides
+# How-To Guides
 Britecharts' how-to guides provides step by step processes to perform typical tasks with the library.
 
 We have how to guides for different kinds of users:
@@ -6,5 +6,5 @@ We have how to guides for different kinds of users:
 * [Contributor How-To Guides][contributorHowTo]
 
 
-[userHowTo]: x
-[contributorHowTo]: y
+[userHowTo]: http://eventbrite.github.io/britecharts/user-how-to-guides.html
+[contributorHowTo]: http://eventbrite.github.io/britecharts/contributor-how-to-guides.html

@@ -39,6 +39,10 @@ var composingUrl = helper.getUniqueFilename('composing-dataviz');
 var installingUrl = helper.getUniqueFilename('installing-britecharts');
 var stylingUrl = helper.getUniqueFilename('styling-charts');
 
+// How-Tos
+var howtoIndexUrl = helper.getUniqueFilename('how-to-index');
+var contributorHowToUrl = helper.getUniqueFilename('contributor-how-to-guides');
+var userHowToUrl = helper.getUniqueFilename('user-how-to-guides');
 
 var navOptions = {
   includeDate: conf.includeDate !== false,
@@ -73,6 +77,11 @@ var navigationMaster = {
   customTutorials:{
     title:"Tutorials",
     link: tutorialIndexUrl,
+    members: []
+  },
+  customHowTos: {
+    title: "How-To Guides",
+    link: howtoIndexUrl,
     members: []
   },
   cdn:{
@@ -483,6 +492,7 @@ function buildNav(members) {
     }
   });
   topLevelNav.push(nav.customTutorials);
+  topLevelNav.push(nav.customHowTos);
   topLevelNav.push(nav.tutorial);
   // topLevelNav.push(nav.cdn);
   // topLevelNav.push(nav.customTutorials);
@@ -801,17 +811,54 @@ var markdown = require('jsdoc/util/markdown');
 var parser = markdown.getParser();
 
 
+var howToIndexContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/how-to-guides/how-to-index.md')).toString();
+var contributorHowToContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/how-to-guides/contributor-how-to-guides.md')).toString();
+var userHowToContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/how-to-guides/user-how-to-guides.md')).toString();
+var howToIndexhtml = parser(howToIndexContent);
+var contributorHowTohtml = parser(contributorHowToContent);
+var userHowTohtml = parser(userHowToContent);
+
+generate(
+    'how-to-index',
+    'How-To Guides',
+    [{
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: howToIndexhtml
+    }],
+    howtoIndexUrl
+);
+generate(
+    'contributor-how-to-guides',
+    'Contributor How-To Guides',
+    [{
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: contributorHowTohtml
+    }],
+    contributorHowToUrl
+);
+generate(
+    'user-how-to-guides',
+    'User How-To Guides',
+    [{
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: userHowTohtml
+    }],
+    userHowToUrl
+);
+
+var tutorialsIndexContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/tutorials-index.md')).toString();
 var gettingStartedContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/getting-started.md')).toString();
 var composingDatavizContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/composing-dataviz.md')).toString();
 var installingContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/installing-britecharts.md')).toString();
 var stylingContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/styling-charts.md')).toString();
-var tutorialsIndexContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/tutorials-index.md')).toString();
-
+var tutorialIndexhtml = parser(tutorialsIndexContent);
 var gettingStartedhtml = parser(gettingStartedContent);
 var composinghtml = parser(composingDatavizContent);
 var installinghtml = parser(installingContent);
 var stylinghtml = parser(stylingContent);
-var tutorialIndexhtml = parser(tutorialsIndexContent);
 
 generate(
     'tutorials-index',
