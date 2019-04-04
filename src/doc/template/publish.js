@@ -44,6 +44,10 @@ var howtoIndexUrl = helper.getUniqueFilename('how-to-index');
 var contributorHowToUrl = helper.getUniqueFilename('contributor-how-to-guides');
 var userHowToUrl = helper.getUniqueFilename('user-how-to-guides');
 
+// Topics
+var topicsIndexUrl = helper.getUniqueFilename('topics-index');
+
+
 var navOptions = {
   includeDate: conf.includeDate !== false,
   logoFile: conf.logoFile,
@@ -82,6 +86,11 @@ var navigationMaster = {
   customHowTos: {
     title: "How-To Guides",
     link: howtoIndexUrl,
+    members: []
+  },
+  customTopics: {
+    title: "Topics",
+    link: topicsIndexUrl,
     members: []
   },
   cdn:{
@@ -810,7 +819,7 @@ exports.publish = function(taffyData, opts, tutorials) {
 var markdown = require('jsdoc/util/markdown');
 var parser = markdown.getParser();
 
-
+// How To Guides
 var howToIndexContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/how-to-guides/how-to-index.md')).toString();
 var contributorHowToContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/how-to-guides/contributor-how-to-guides.md')).toString();
 var userHowToContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/how-to-guides/user-how-to-guides.md')).toString();
@@ -849,6 +858,7 @@ generate(
     userHowToUrl
 );
 
+// Tutorials
 var tutorialsIndexContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/tutorials-index.md')).toString();
 var gettingStartedContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/getting-started.md')).toString();
 var composingDatavizContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/composing-dataviz.md')).toString();
@@ -918,6 +928,21 @@ generate(
         readme:'<div class="embed-responsive embed-responsive-16by9" style="height:1833px;" ><iframe height="1833" scrolling="no" style="height:1833px;" class="embed-responsive-item" frameborder="0" src="cdn-iframe.html" allowfullscreen></iframe></div>'
     }],
     cdnUrl
+);
+
+// Topics
+var topicsIndexContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/topics-index.md')).toString();
+var topicsIndexhtml = parser(topicsIndexContent);
+
+generate(
+    'topics-index',
+    'Britecharts Topics',
+    [{
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: topicsIndexhtml
+    }],
+    topicsIndexUrl
 );
 
   // set up the lists that we'll use to generate pages

@@ -84,7 +84,6 @@ This piece of code returns a function that accepts a D3.js selection as input. T
 
 To learn more about this pattern you can read [this blog post][reusableAPI] on Eventbrite's Engineering Blog.
 
-**[⬆ back to top](#topics)**
 
 ## API Guidelines
 Creating new features and charts for Britecharts is easy. However, naming the API methods is hard. We have created these API guidelines to help our contributors choosing the right names for their accessors and variables.
@@ -138,7 +137,6 @@ We use the axis name and the 'axis' and ‘ticks’ suffix:
 
 As in: _xTicks, yTicks_
 
-**[⬆ back to top](#topics)**
 
 
 ## Code Structure
@@ -183,7 +181,6 @@ We like to do some light 'data cleaning' inside the `cleanData` method. That wou
 
 Note that most of the building blocks depend on the chart type. For example, on the donut chart, we won't need to create axis or draw them so that those blocks won't be there.
 
-**[⬆ back to top](#topics)**
 
 ## Project Structure
 
@@ -255,7 +252,6 @@ Methods for serializing styles used in the export feature.
 **text**
 Functions to help with text related operations like wrapping text on a given width, adding ellipsis when not enough space is available or measuring text length.
 
-**[⬆ back to top](#topics)**
 
 ## Append Indentation
 It is a [usual pattern](https://bost.ocks.org/mike/d3/workshop/#35) in the D3.js world to apply a slightly different indentation to operations that change the selection, like the 'apply' method of a selection. When the selection changes, we indent with two spaces instead of four:
@@ -282,7 +278,6 @@ let elements = svg.select('.element')
 ```
 This special indentation of the `append` call is highlighting a modification on the selection. Essentially, is helping developers know that the content of the 'elements' variable will contain a selection of `rect` items.
 
-**[⬆ back to top](#topics)**
 
 
 NOTE: This is still work in progress, don't hesitate to ask for more by opening a new [github issue](https://github.com/eventbrite/britecharts/issues).
@@ -314,7 +309,6 @@ The build sequence consists of a small set of [Node][node] tasks. While you'll p
 
 **Note that for running `yarn run docs`, you need first to have `yarn run demos:serve` in a different terminal.
 
-**[⬆ back to top](#topics)**
 
 [node]: http://nodejs.org
 [styleguide]: https://github.com/eventbrite/britecharts/blob/master/CODESTYLEGUIDE.md

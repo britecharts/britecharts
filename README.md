@@ -59,11 +59,14 @@ Britecharts components are distributed in **UMD modules**, each one exposing a D
 
 You can also load Britecharts from our [CDN][cdnHome] as we do in this [demo][cdnDemo] page or play around in our [JSBin][jsbinSandbox] and [CodePen][codepenDemos] demo projects.
 
-They also provide some minimal CSS styling, that can be loaded independently or as a bundle. Check our [Getting Started Guide][gettingStarted] to see more options.
+They also provide some minimal CSS styling, that can be loaded independently or as a bundle. Check our [Styling Britecharts tutorial][stylingBritecharts] to see more options.
 
 ## See Also
 - [Documentation Homepage][31]
 - [Getting Started Guide][gettingStarted]
+- [Tutorials][tutorialsIndex]
+- [How To Guides][howToIndex]
+- [About Britecharts][topicsIndex]
 - [Contributing Guide][35]
 - [Github Repo][33]
 - [Bar Chart Tutorial][screenCast][Video]
@@ -172,3 +175,8 @@ Read more in the [license document][15]
 [stackedBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/stacked-bar-chart.png
 [groupedBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/grouped-bar-chart.png
 [legendChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/legend-chart.png
+
+[tutorialsIndex]: http://eventbrite.github.io/britecharts/tutorials-index.html
+[howToIndex]: http://eventbrite.github.io/britecharts/how-to-index.html
+[topicsIndex]: http://eventbrite.github.io/britecharts/topics-index.html
+[stylingBritecharts]: http://eventbrite.github.io/britecharts/styling-charts.html
