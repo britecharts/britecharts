@@ -1,7 +1,7 @@
 # Getting Started Using Britecharts
-Britecharts has been created to help users consume and create D3.js charts. It leverages the Reusable API, a code pattern to encapsulate chart code. This pattern produces chart objects that can be configured, reused and composed to build data visualizations.
+Britecharts has been created to help users consume and create D3.js charts. It leverages the *Reusable API*, a code pattern to encapsulate D3.js charts. This pattern produces chart objects that can be configured, reused and composed to build data visualizations.
 
-In this tutorial, we will create a simple data visualization using Britecharts. You will learn how to load Britecharts, instantiate and configure a chart and plot it within a container with a data set.
+In this tutorial, we will *create a simple data visualization using Britecharts*. You will learn how to load Britecharts, instantiate and configure a chart and plot it within a container with a data set.
 
 ## Downloading Britecharts
 To use a Britechart, we need to install the library. In this tutorial, we are going to use a simple CDN link to install it. For that, create a simple HTML file and add these script tags:
@@ -134,7 +134,7 @@ You can check the full code of this tutorial [in this file][simpleBarChartTutori
 ## Summary
 In this tutorial, we have seen how to load Britecharts with a CDN link and how to draw a simple chart. We did this by checking the API Reference page for the chart and its data schema and by creating the elements needed in the HTML file.
 
-To keep on learning more about Britecharts, you can follow our [Composing Your First Data Visualization tutorial][composingDatavizGuide]. You can also check out our [Documentation Homepage][home] and our [kitchen sink][demos] to see all the available charts.
+To keep on learning more about Britecharts, you can follow our [Composing Your First Data Visualization tutorial][composingDataviz] or read abbout how to [install Britecharts in your project][installingBritecharts]. You can also check out our [Documentation Homepage][home] and our [kitchen sink][demos] to see all the available charts.
 
 If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
 
@@ -146,6 +146,7 @@ If you are excited about Britecharts, want to add more configurable properties o
 [barChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/simple-bar-chart.png
 [simpleBarChartTutorialHTML]: https://github.com/eventbrite/britecharts/blob/master/src/doc/html/tutorial-simple-bar-chart.html
 [simpleBarChartTutorial]: https://github.com/eventbrite/britecharts/tutorial-simple-bar-chart.html
-[composingDatavizGuide]: Y
+[composingDataviz]: http://eventbrite.github.io/britecharts/composing-dataviz.html
+[installingBritecharts]: http://eventbrite.github.io/britecharts/installing-britecharts.html
 
 

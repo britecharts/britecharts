@@ -92,8 +92,8 @@ To learn more, you can follow our [Composing Your First Data Visualization tutor
 
 [home]: http://eventbrite.github.io/britecharts/
 [demos]: http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
-[gettingStarted]:
-[composingDataviz]:
+[gettingStarted]: http://eventbrite.github.io/britecharts/getting-started.html
+[composingDataviz]: http://eventbrite.github.io/britecharts/composing-dataviz.html
 [colorPalettesDemo]: http://eventbrite.github.io/britecharts/tutorial-color.html
 [stylingBritechartsHTML]: https://github.com/eventbrite/britecharts/blob/master/src/doc/html/tutorial-styling-britecharts.html
 [stylingBritechartsTutorial]: https://github.com/eventbrite/britecharts/tutorial-styling-britecharts.html

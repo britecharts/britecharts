@@ -86,6 +86,9 @@
 .readme-section h1 {
     display: none;
 }
+.readme-section.tutorial h1 {
+    display: block;
+}
 .readme-section img {
     max-width: 100%;
 }

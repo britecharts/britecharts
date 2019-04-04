@@ -30,8 +30,16 @@ var template = require('jsdoc/template'),
 
 var globalUrl = helper.getUniqueFilename('global');
 var indexUrl = helper.getUniqueFilename('index');
-var gettingUrl = helper.getUniqueFilename('getting-started');
 var cdnUrl = helper.getUniqueFilename("cdn");
+
+// Tutorials
+var tutorialIndexUrl = helper.getUniqueFilename('tutorials-index');
+var gettingUrl = helper.getUniqueFilename('getting-started');
+var composingUrl = helper.getUniqueFilename('composing-dataviz');
+var installingUrl = helper.getUniqueFilename('installing-britecharts');
+var stylingUrl = helper.getUniqueFilename('styling-charts');
+
+
 var navOptions = {
   includeDate: conf.includeDate !== false,
   logoFile: conf.logoFile,
@@ -62,9 +70,9 @@ var navigationMaster = {
     link: indexUrl,
     members: []
   },
-  gettingStarted:{
-    title:"Getting started",
-    link:gettingUrl,
+  customTutorials:{
+    title:"Tutorials",
+    link: tutorialIndexUrl,
     members: []
   },
   cdn:{
@@ -474,10 +482,10 @@ function buildNav(members) {
       });
     }
   });
-  topLevelNav.push(nav.gettingStarted);
+  topLevelNav.push(nav.customTutorials);
   topLevelNav.push(nav.tutorial);
-    // topLevelNav.push(nav.cdn);
-  // topLevelNav.push(nav.gettingStarted);
+  // topLevelNav.push(nav.cdn);
+  // topLevelNav.push(nav.customTutorials);
     topLevelNav.push({
         title: "API",
         link: linkto("modules.list.html"),
@@ -507,7 +515,7 @@ exports.publish = function(taffyData, opts, tutorials) {
   //	var globalUrl = helper.getUniqueFilename( 'global' );
   helper.registerLink('global', globalUrl);
 
- 
+
 
   // set up templating
   // set up templating
@@ -793,25 +801,77 @@ var markdown = require('jsdoc/util/markdown');
 var parser = markdown.getParser();
 
 
-var content = fs.readFileSync((`${process.cwd()}/` + './GETTINGSTARTED.md')).toString();
-var html = parser(content);
-    generate('getting-started', 'Getting Started with Britecharts',
+var gettingStartedContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/getting-started.md')).toString();
+var composingDatavizContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/composing-dataviz.md')).toString();
+var installingContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/installing-britecharts.md')).toString();
+var stylingContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/styling-charts.md')).toString();
+var tutorialsIndexContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/tutorials-index.md')).toString();
+
+var gettingStartedhtml = parser(gettingStartedContent);
+var composinghtml = parser(composingDatavizContent);
+var installinghtml = parser(installingContent);
+var stylinghtml = parser(stylingContent);
+var tutorialIndexhtml = parser(tutorialsIndexContent);
+
+generate(
+    'tutorials-index',
+    'Tutorials',
     [{
-      kind:'mainpage',
-      readme:html
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: tutorialIndexhtml
     }],
-    gettingUrl);
-
-
-
-    generate('cdn', 'CDN Loading Demo - Britecharts',
+    tutorialIndexUrl
+);
+generate(
+    'getting-started',
+    'Getting Started with Britecharts',
     [{
-      kind:'mainpage',
-      readme:'<div class="embed-responsive embed-responsive-16by9" style="height:1833px;" ><iframe height="1833" scrolling="no" style="height:1833px;" class="embed-responsive-item" frameborder="0" src="cdn-iframe.html" allowfullscreen></iframe></div>'
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: gettingStartedhtml
     }],
-    cdnUrl);
-
-    
+    gettingUrl
+);
+generate(
+    'composing-dataviz',
+    'Composing Your First Data Visualization',
+    [{
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: composinghtml
+    }],
+    composingUrl
+);
+generate(
+    'installing-britecharts',
+    'Installing Britecharts',
+    [{
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: installinghtml
+    }],
+    installingUrl
+);
+generate(
+    'styling-britecharts',
+    'Styling Britecharts',
+    [{
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: stylinghtml
+    }],
+    stylingUrl
+);
+generate(
+    'cdn',
+    'CDN Loading Demo - Britecharts',
+    [{
+        kind:'mainpage',
+        readme:'<div class="embed-responsive embed-responsive-16by9" style="height:1833px;" ><iframe height="1833" scrolling="no" style="height:1833px;" class="embed-responsive-item" frameborder="0" src="cdn-iframe.html" allowfullscreen></iframe></div>'
+    }],
+    cdnUrl
+);
 
   // set up the lists that we'll use to generate pages
   var classes = taffy(members.classes);

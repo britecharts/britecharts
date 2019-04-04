@@ -7,7 +7,7 @@ Britechart tutorials allow new users to get started and learn the basic procedur
 	* [Composing Your First Data Visualization][composingDataviz]
     * [Styling Britecharts][stylingBritecharts]
 
-[gettingStarted]:
-[installingBritecharts]:
-[composingDataviz]:
-[stylingBritecharts]:
+[gettingStarted]: http://eventbrite.github.io/britecharts/getting-started.html
+[installingBritecharts]: http://eventbrite.github.io/britecharts/installing-britecharts.html
+[composingDataviz]: http://eventbrite.github.io/britecharts/composing-dataviz.html
+[stylingBritecharts]: http://eventbrite.github.io/britecharts/styling-charts.html

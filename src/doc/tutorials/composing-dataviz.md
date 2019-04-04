@@ -236,9 +236,9 @@ To learn more, you can read our [Styling Britecharts tutorial][stylingBritechart
 
 If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
 
-[gettingStarted]: X
-[stylingBritecharts]: Y
-[installingBritecharts]: Z
+[gettingStarted]: http://eventbrite.github.io/britecharts/getting-started.html
+[stylingBritecharts]: http://eventbrite.github.io/britecharts/styling-dataviz.html
+[installingBritecharts]: http://eventbrite.github.io/britecharts/installing-britecharts.html
 [lineChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/simple-line-chart.png
 [composingDatavizTutorialHTML]: https://github.com/eventbrite/britecharts/blob/master/src/doc/html/tutorial-composing-dataviz.html
 [composingDatavizTutorial]: https://github.com/eventbrite/britecharts/tutorial-composing-dataviz.html

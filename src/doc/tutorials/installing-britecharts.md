@@ -77,6 +77,6 @@ If you are excited about Britecharts, want to add more configurable properties o
 [home]: http://eventbrite.github.io/britecharts/
 [demos]: http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
 [contribute]: https://github.com/eventbrite/britecharts/blob/master/.github/CONTRIBUTING.md
-[gettingStarted]:
-[composingDataviz]:
-[stylingBritecharts]:
+[gettingStarted]: http://eventbrite.github.io/britecharts/getting-started.html
+[composingDataviz]: http://eventbrite.github.io/britecharts/composing-dataviz.html
+[stylingBritecharts]: http://eventbrite.github.io/britecharts/styling-dataviz.html
