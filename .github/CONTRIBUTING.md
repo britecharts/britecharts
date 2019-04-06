@@ -58,11 +58,15 @@ To generate the demos and see the library' documentation you would need to:
 
 This process generates docs and opens the user interface in a new browser tab. There you can navigate the API of each chart and see some examples under the “Demos” dropdown section. We recommend you to use these demos as your testing platform when modifying the charts.
 
+## Next Steps
 Once you have your environment set and ready to go, you can check our [Contributor How To Guides][contributorHowTo] to learn how to create a Pull Request, Modify or Create a chart.
 
 Check also our [Topics Page][topicsPage] to learn about our Code Standards, API Guidelines, the library structure and build system.
 
+You can add yourself or somebody else to the contributors list by using the [All Contributors bot][allContributorsBot].
+
 [yarn]: https://yarnpkg.com/lang/en/docs/install/
 [issues]: https://github.com/eventbrite/britecharts/issues
-[contributorHowTo]: X
-[topicsPage]: Y
+[contributorHowTo]: http://eventbrite.github.io/britecharts/contributor-how-to-guides.html
+[topicsPage]: http://eventbrite.github.io/britecharts/topics-index.html
+[allContributorsBot]: https://allcontributors.org/docs/en/bot/usage
