@@ -30,8 +30,24 @@ var template = require('jsdoc/template'),
 
 var globalUrl = helper.getUniqueFilename('global');
 var indexUrl = helper.getUniqueFilename('index');
-var gettingUrl = helper.getUniqueFilename('getting-started');
 var cdnUrl = helper.getUniqueFilename("cdn");
+
+// Tutorials
+var tutorialIndexUrl = helper.getUniqueFilename('tutorials-index');
+var gettingUrl = helper.getUniqueFilename('getting-started');
+var composingUrl = helper.getUniqueFilename('composing-dataviz');
+var installingUrl = helper.getUniqueFilename('installing-britecharts');
+var stylingUrl = helper.getUniqueFilename('styling-charts');
+
+// How-Tos
+var howtoIndexUrl = helper.getUniqueFilename('how-to-index');
+var contributorHowToUrl = helper.getUniqueFilename('contributor-how-to-guides');
+var userHowToUrl = helper.getUniqueFilename('user-how-to-guides');
+
+// Topics
+var topicsIndexUrl = helper.getUniqueFilename('topics-index');
+
+
 var navOptions = {
   includeDate: conf.includeDate !== false,
   logoFile: conf.logoFile,
@@ -62,9 +78,19 @@ var navigationMaster = {
     link: indexUrl,
     members: []
   },
-  gettingStarted:{
-    title:"Getting started",
-    link:gettingUrl,
+  customTutorials:{
+    title:"Tutorials",
+    link: tutorialIndexUrl,
+    members: []
+  },
+  customHowTos: {
+    title: "How-To Guides",
+    link: howtoIndexUrl,
+    members: []
+  },
+  customTopics: {
+    title: "Topics",
+    link: topicsIndexUrl,
     members: []
   },
   cdn:{
@@ -474,10 +500,11 @@ function buildNav(members) {
       });
     }
   });
-  topLevelNav.push(nav.gettingStarted);
+  topLevelNav.push(nav.customTutorials);
+  topLevelNav.push(nav.customHowTos);
   topLevelNav.push(nav.tutorial);
-    // topLevelNav.push(nav.cdn);
-  // topLevelNav.push(nav.gettingStarted);
+  // topLevelNav.push(nav.cdn);
+  // topLevelNav.push(nav.customTutorials);
     topLevelNav.push({
         title: "API",
         link: linkto("modules.list.html"),
@@ -507,7 +534,7 @@ exports.publish = function(taffyData, opts, tutorials) {
   //	var globalUrl = helper.getUniqueFilename( 'global' );
   helper.registerLink('global', globalUrl);
 
- 
+
 
   // set up templating
   // set up templating
@@ -792,26 +819,131 @@ exports.publish = function(taffyData, opts, tutorials) {
 var markdown = require('jsdoc/util/markdown');
 var parser = markdown.getParser();
 
+// How To Guides
+var howToIndexContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/how-to-guides/how-to-index.md')).toString();
+var contributorHowToContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/how-to-guides/contributor-how-to-guides.md')).toString();
+var userHowToContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/how-to-guides/user-how-to-guides.md')).toString();
+var howToIndexhtml = parser(howToIndexContent);
+var contributorHowTohtml = parser(contributorHowToContent);
+var userHowTohtml = parser(userHowToContent);
 
-var content = fs.readFileSync((`${process.cwd()}/` + './GETTINGSTARTED.md')).toString();
-var html = parser(content);
-    generate('getting-started', 'Getting Started with Britecharts',
+generate(
+    'how-to-index',
+    'How-To Guides',
     [{
-      kind:'mainpage',
-      readme:html
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: howToIndexhtml
     }],
-    gettingUrl);
-
-
-
-    generate('cdn', 'CDN Loading Demo - Britecharts',
+    howtoIndexUrl
+);
+generate(
+    'contributor-how-to-guides',
+    'Contributor How-To Guides',
     [{
-      kind:'mainpage',
-      readme:'<div class="embed-responsive embed-responsive-16by9" style="height:1833px;" ><iframe height="1833" scrolling="no" style="height:1833px;" class="embed-responsive-item" frameborder="0" src="cdn-iframe.html" allowfullscreen></iframe></div>'
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: contributorHowTohtml
     }],
-    cdnUrl);
+    contributorHowToUrl
+);
+generate(
+    'user-how-to-guides',
+    'User How-To Guides',
+    [{
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: userHowTohtml
+    }],
+    userHowToUrl
+);
 
-    
+// Tutorials
+var tutorialsIndexContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/tutorials-index.md')).toString();
+var gettingStartedContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/getting-started.md')).toString();
+var composingDatavizContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/composing-dataviz.md')).toString();
+var installingContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/installing-britecharts.md')).toString();
+var stylingContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/tutorials/styling-charts.md')).toString();
+var tutorialIndexhtml = parser(tutorialsIndexContent);
+var gettingStartedhtml = parser(gettingStartedContent);
+var composinghtml = parser(composingDatavizContent);
+var installinghtml = parser(installingContent);
+var stylinghtml = parser(stylingContent);
+
+generate(
+    'tutorials-index',
+    'Tutorials',
+    [{
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: tutorialIndexhtml
+    }],
+    tutorialIndexUrl
+);
+generate(
+    'getting-started',
+    'Getting Started with Britecharts',
+    [{
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: gettingStartedhtml
+    }],
+    gettingUrl
+);
+generate(
+    'composing-dataviz',
+    'Composing Your First Data Visualization',
+    [{
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: composinghtml
+    }],
+    composingUrl
+);
+generate(
+    'installing-britecharts',
+    'Installing Britecharts',
+    [{
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: installinghtml
+    }],
+    installingUrl
+);
+generate(
+    'styling-britecharts',
+    'Styling Britecharts',
+    [{
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: stylinghtml
+    }],
+    stylingUrl
+);
+generate(
+    'cdn',
+    'CDN Loading Demo - Britecharts',
+    [{
+        kind:'mainpage',
+        readme:'<div class="embed-responsive embed-responsive-16by9" style="height:1833px;" ><iframe height="1833" scrolling="no" style="height:1833px;" class="embed-responsive-item" frameborder="0" src="cdn-iframe.html" allowfullscreen></iframe></div>'
+    }],
+    cdnUrl
+);
+
+// Topics
+var topicsIndexContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/topics-index.md')).toString();
+var topicsIndexhtml = parser(topicsIndexContent);
+
+generate(
+    'topics-index',
+    'Britecharts Topics',
+    [{
+        kind: 'mainpage',
+        class: 'tutorial',
+        readme: topicsIndexhtml
+    }],
+    topicsIndexUrl
+);
 
   // set up the lists that we'll use to generate pages
   var classes = taffy(members.classes);

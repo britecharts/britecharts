@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tutorial - Styling Britecharts</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/britecharts/dist/css/britecharts.min.css"
+        type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Oswald:600" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/britecharts@2/dist/umd/bar.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/britecharts@2.10.0/dist/umd/colors.min.js"></script>
+
+    <style>
+        .britechart,
+        .tick text {
+            font-family: 'Oswald', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bar-container"></div>
+
+    <script>
+        // Instantiate Bar Chart
+        const barChart = britecharts.bar();
+        const container = d3.select('.bar-container');
+
+        // Create Dataset with proper shape
+        const barData = [
+            { name: 'Luminous', value: 2 },
+            { name: 'Glittering', value: 5 },
+            { name: 'Intense', value: 4 },
+            { name: 'Radiant', value: 3 }
+        ];
+
+        // Configure chart
+        barChart
+            .colorSchema(britecharts.colors.colorSchemas.red)
+            .margin({ left: 100 })
+            .isHorizontal(true)
+            .height(400)
+            .width(600);
+
+        container.datum(barData).call(barChart);
+    </script>
+</body>
+
+</html>

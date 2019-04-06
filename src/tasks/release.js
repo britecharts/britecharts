@@ -5,9 +5,9 @@ module.exports = function(grunt) {
     var path = require('path');
 
     grunt.renameTask('release', 'bump-version');
+
     grunt.config.set('bump-version', {
         'options': {
-            additionalFiles: ['bower.json'],
             commitMessage: 'Bumped Project to <%= version %>',
             changelog: true, //default: false
             changelogText: '<%= version %>\n',
@@ -24,7 +24,6 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('release', function() {
-
         var bumpTask = 'bump-version' + Array.prototype.slice.call(arguments).map(function(val) {
             return ':' + val;
         });

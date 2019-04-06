@@ -48,7 +48,7 @@
         "meta": {
             "title": "Britecharts - D3.js based charting library of reusable components",
             "description": "Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.",
-            "keyword": "Britecharts, D3.js"
+            "keyword": "Britecharts, D3.js, JavaScript"
         }
     }
 }

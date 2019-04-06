@@ -59,11 +59,14 @@ Britecharts components are distributed in **UMD modules**, each one exposing a D
 
 You can also load Britecharts from our [CDN][cdnHome] as we do in this [demo][cdnDemo] page or play around in our [JSBin][jsbinSandbox] and [CodePen][codepenDemos] demo projects.
 
-They also provide some minimal CSS styling, that can be loaded independently or as a bundle. Check our [Getting Started Guide][gettingStarted] to see more options.
+They also provide some minimal CSS styling, that can be loaded independently or as a bundle. Check our [Styling Britecharts tutorial][stylingBritecharts] to see more options.
 
 ## See Also
 - [Documentation Homepage][31]
 - [Getting Started Guide][gettingStarted]
+- [Tutorials][tutorialsIndex]
+- [How To Guides][howToIndex]
+- [About Britecharts][topicsIndex]
 - [Contributing Guide][35]
 - [Github Repo][33]
 - [Bar Chart Tutorial][screenCast][Video]
@@ -80,9 +83,17 @@ If you work with Angular, check out [ngx-britecharts][angularWrapper] and their 
 
 [Sun Dai][sunsDribble] designs Britecharts, and two books inspired the code, [Developing a D3.js Edge][19] and [Mastering D3.js][20]. It also leveraged a significant number of examples and articles from the [D3.js][1] community overall.
 
-## License
+## Contributors ✨
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
-Copyright 2017 Eventbrite
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://allcontributors.org) specification.
+Contributions of any kind are welcome!
+
+## License
+Copyright 2019 Eventbrite
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -172,3 +183,8 @@ Read more in the [license document][15]
 [stackedBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/stacked-bar-chart.png
 [groupedBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/grouped-bar-chart.png
 [legendChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/thumbnails/legend-chart.png
+
+[tutorialsIndex]: http://eventbrite.github.io/britecharts/tutorials-index.html
+[howToIndex]: http://eventbrite.github.io/britecharts/how-to-index.html
+[topicsIndex]: http://eventbrite.github.io/britecharts/topics-index.html
+[stylingBritecharts]: http://eventbrite.github.io/britecharts/styling-charts.html

@@ -429,8 +429,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the dateRange for the selected part of the brush
-         * @param  {String[]} _x Desired dateRange for the graph
-         * @return { dateRange | module} Current dateRange or Chart module to chain calls
+         * @param  {String[]} _x            Desired dateRange for the graph
+         * @return { dateRange | module}    Current dateRange or Chart module to chain calls
          * @public
          */
         exports.dateRange = function(_x) {
@@ -448,7 +448,7 @@ define(function(require) {
 
         /**
          * Gets or Sets the gradient of the chart
-         * @param  {String[]} _x        Desired gradient for the graph
+         * @param  {String[]} [_x=colorHelper.colorGradients.greenBlue]    Desired gradient for the graph
          * @return {String | Module}    Current gradient or Chart module to chain calls
          * @public
          */
@@ -478,8 +478,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the loading state of the chart
-         * @param  {string} markup Desired markup to show when null data
-         * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+         * @param  {string} markup              Desired markup to show when null data
+         * @return { loadingState | module}     Current loading state markup or Chart module to chain calls
          * @public
          */
         exports.loadingState = function(_markup) {
@@ -495,8 +495,8 @@ define(function(require) {
          * Pass language tag for the tooltip to localize the date.
          * Feature uses Intl.DateTimeFormat, for compatability and support, refer to
          * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-         * @param  {String} _x  must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
-         * @return { (String|Module) }    Current locale or module to chain calls
+         * @param  {String} _x              Must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
+         * @return { (String|Module) }      Current locale or module to chain calls
          */
         exports.locale = function(_x) {
             if (!arguments.length) {
@@ -540,14 +540,14 @@ define(function(require) {
          * @type {module:Brush~DateExtent}
          * @see {@link https://github.com/d3/d3-brush#brush_on|d3-brush:on(brush)}
          */
-        
+
         /**
          * Event indicating the end of a brush gesture
          * @event customBrushEnd
          * @type {module:Brush~DateExtent}
          * @see {@link https://github.com/d3/d3-brush#brush_on|d3-brush:on(end)}
          */
-        
+
         /**
          * @callback eventCallback
          * @param {module:Brush~DateExtent} dateExtent Date range
