@@ -954,8 +954,8 @@ define(function(require) {
          * Gets or Sets the isAnimated property of the chart, making it to animate when render.
          * By default this is 'false'
          *
-         * @param  {Boolean} _x Desired animation flag
-         * @return {isAnimated | module} Current isAnimated flag or Chart module
+         * @param  {Boolean} _x             Desired animation flag
+         * @return {isAnimated | module}    Current isAnimated flag or Chart module
          * @public
          */
         exports.isAnimated = function(_x) {
@@ -969,7 +969,7 @@ define(function(require) {
 
         /**
          * Gets or Sets the horizontal direction of the chart
-         * @param  {number} _x Desired horizontal direction for the graph
+         * @param  {number} _x              Desired horizontal direction for the graph
          * @return { isHorizontal | module} If it is horizontal or Chart module to chain calls
          * @public
          */
@@ -984,7 +984,7 @@ define(function(require) {
 
         /**
          * Offset between end of bar and start of the percentage bars
-         * @param  {number} [_x=7] margin offset from end of bar
+         * @param  {number} [_x=7]      Margin offset from end of bar
          * @return {number | module}    Current offset or Chart module to chain calls
          * @public
          */

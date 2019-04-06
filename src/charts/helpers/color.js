@@ -1,11 +1,16 @@
 define(function() {
 
     // Color Gradients
-    const britechartGradients = {
-            greenBlue: ['#39C7EA', '#4CDCBA'],
-            orangePink: ['#FBC670', '#F766B8'],
-            bluePurple: ['#3DC3C9', '#824a9e']
-        };
+    const colorGradients = {
+        greenBlue: ['#39C7EA', '#4CDCBA'],
+        orangePink: ['#FBC670', '#F766B8'],
+        bluePurple: ['#3DC3C9', '#824a9e']
+    };
+    const colorGradientsHuman = {
+        greenBlue: 'Green to Blue',
+        orangePink: 'Orange to Pink',
+        bluePurple: 'Blue to Purple'
+    };
 
     // Color Schemas
     // Standard Color Schema for Britecharts
@@ -17,8 +22,7 @@ define(function() {
             '#f866b9', //pink
             '#998ce3' //purple
         ];
-
-    // Grey Schema for Britecharts
+    // Grey Palette
     const grey = [
             '#F8F8FA',
             '#EFF2F5',
@@ -30,7 +34,6 @@ define(function() {
             '#363A43',
             '#282C35'
         ];
-
     // Orange Palette
     const orange = [
             '#fcc870',
@@ -128,43 +131,65 @@ define(function() {
             '#9c1e19'
         ];
 
-    const aloeGreen = [
-            '#7bdcc0'
-        ];
+    const colorSchemas = {
+        britecharts,
+        grey,
+        orange,
+        blueGreen,
+        teal,
+        green,
+        yellow,
+        pink,
+        purple,
+        red
+    };
+    const colorSchemasHuman = {
+        'britecharts': 'Britecharts Default',
+        'grey': 'Britecharts Grey',
+        'orange': 'Orange',
+        'blueGreen': 'Blue',
+        'teal': 'Light Blue',
+        'green': 'Green',
+        'yellow': 'Yellow',
+        'pink': 'Pink',
+        'purple': 'Purple',
+        'red': 'Red'
+    };
+
+    // Single Colors
+    const aloeGreen = ['#7bdcc0']; // To Deprecate
+    const greenColor = ['#6aedc7'];
+    const blueColor = ['#39c2c9'];
+    const yellowColor = ['#ffce00'];
+    const orangeColor = ['#ffa71a'];
+    const pinkColor = ['#f866b9'];
+    const purpleColor = ['#998ce3'];
+
+    const singleColors = {
+        aloeGreen,
+        greenColor,
+        blueColor,
+        yellowColor,
+        orangeColor,
+        pinkColor,
+        purpleColor,
+    };
+    const singleColorsHuman = {
+        aloeGreen: 'Aloe Green',
+        greenColor: 'Green',
+        blueColor: 'Blue',
+        yellowColor: 'Yellow',
+        orangeColor: 'Orange',
+        pinkColor: 'Pink',
+        purpleColor: 'Purple',
+    };
 
     return {
-        colorSchemas: {
-            britecharts,
-            grey,
-            orange,
-            blueGreen,
-            teal,
-            green,
-            yellow,
-            pink,
-            purple,
-            red
-        },
-        colorSchemasHuman: {
-            'britecharts': 'Britecharts Default',
-            'grey': 'Britecharts Grey',
-            'orange': 'Orange',
-            'blueGreen': 'Blue',
-            'teal': 'Light Blue',
-            'green': 'Green',
-            'yellow': 'Yellow',
-            'pink': 'Pink',
-            'purple': 'Purple',
-            'red': 'Red'
-        },
-        singleColors: {
-            aloeGreen
-        },
-        colorGradients: britechartGradients,
-        colorGradientsHuman: {
-            greenBlue: 'Green To Blue',
-            orangePink: 'Orange to Pink',
-            bluePurple: 'Blue to Purple'
-        }
+        colorSchemas,
+        colorSchemasHuman,
+        colorGradients,
+        colorGradientsHuman,
+        singleColors,
+        singleColorsHuman,
     };
 });
