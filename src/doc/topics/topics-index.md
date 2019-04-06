@@ -3,6 +3,33 @@ In this section we discuss important concepts for Britecharts, giving context to
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
 
+<!-- code_chunk_output -->
+
+* [Topics](#topics)
+	* [Code Standards](#code-standards)
+		* [Test Driven Development](#test-driven-development)
+		* [JSDoc Generated Documentation](#jsdoc-generated-documentation)
+	* [The Reusable Chart API](#the-reusable-chart-api)
+	* [API Guidelines](#api-guidelines)
+		* [General Considerations](#general-considerations)
+		* [Variable and function names length](#variable-and-function-names-length)
+		* [Event dispatchers](#event-dispatchers)
+		* [Booleans](#booleans)
+		* [Commands](#commands)
+		* [Data labels](#data-labels)
+		* [Formats](#formats)
+		* [Ticks and Axis](#ticks-and-axis)
+	* [Code Structure](#code-structure)
+	* [Project Structure](#project-structure)
+	* [Helpers](#helpers)
+	* [Append Indentation](#append-indentation)
+	* [The Build System](#the-build-system)
+		* [ES2015 transpiling](#es2015-transpiling)
+		* [The Tasks](#the-tasks)
+
+<!-- /code_chunk_output -->
+
+
 ## Code Standards
 We have followed a couple of standards in this project: [JSDoc](http://usejsdoc.org) comments and Test Driven Development. You can also check other info in our code [style guide][styleguide].
 
