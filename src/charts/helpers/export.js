@@ -6,6 +6,8 @@ define(function(require) {
     const serializeWithStyles = require('./style');
 
     const isBrowser = (typeof window !== 'undefined');
+    const isIE = navigator.msSaveOrOpenBlob;
+    const IE_ERROR_MSG = 'Sorry, this feature is not available for IE. If you require this to work, check this issue https://github.com/eventbrite/britecharts/pull/652';
 
     let encoder = isBrowser && window.btoa;
 
@@ -41,6 +43,12 @@ define(function(require) {
      * @param  {string} title       Title for the image
      */
     function exportChart(d3svg, filename, title) {
+        if (isIE) {
+            console.log(IE_ERROR_MSG);
+
+            return false;
+        }
+
         let img = createImage(convertSvgToHtml.call(this, d3svg, title));
 
         img.onload = handleImageLoad.bind(
