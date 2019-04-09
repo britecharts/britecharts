@@ -44,7 +44,7 @@ define(function(require) {
      */
     function exportChart(d3svg, filename, title) {
         if (isIE) {
-            console.log(IE_ERROR_MSG);
+            console.error(IE_ERROR_MSG);
 
             return false;
         }
