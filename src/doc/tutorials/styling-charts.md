@@ -96,7 +96,7 @@ To learn more, you can follow our [Composing Your First Data Visualization tutor
 [composingDataviz]: http://eventbrite.github.io/britecharts/composing-dataviz.html
 [colorPalettesDemo]: http://eventbrite.github.io/britecharts/tutorial-color.html
 [stylingBritechartsHTML]: https://github.com/eventbrite/britecharts/blob/master/src/doc/html/tutorial-styling-britecharts.html
-[stylingBritechartsTutorial]: https://github.com/eventbrite/britecharts/tutorial-styling-britecharts.html
+[stylingBritechartsTutorial]: http://eventbrite.github.io/britecharts/tutorial-styling-britecharts.html
 [orangeBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/orange-bar-chart.png
 [redBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/red-bar-chart.png
 [gFonts]: https://fonts.google.com/

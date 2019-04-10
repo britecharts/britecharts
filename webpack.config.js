@@ -106,11 +106,10 @@ const prodChartsConfig = merge([
     },
     parts.babelLoader(),
     parts.aliasD3ToVendorPath(),
+    // parts.bundleTreeChart(),
     parts.noParseD3Vendor(),
     parts.externals(),
 ]);
-
-// module.exports = getConfig;
 
 module.exports = (env) => {
     // eslint-disable-next-line no-console
