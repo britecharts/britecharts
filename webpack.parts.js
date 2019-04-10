@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const constants = require('./webpack.constants');
 
 exports.babelLoader = () => ({
@@ -31,6 +32,12 @@ exports.babelIstambulLoader = () => ({
             }
         ]
     }
+});
+
+exports.bundleTreeChart = () => ({
+    plugins: [
+        new BundleAnalyzerPlugin(),
+    ],
 });
 
 exports.sassLoader = () => ({
@@ -75,10 +82,11 @@ exports.aliasD3ToVendorPath = () => ({
 exports.commonsChunkPlugin = () => ({
     plugins: [
         new webpack.optimize.CommonsChunkPlugin({
-        name: 'common',
-        filename: 'common.js',
-        minChunks: Infinity,
-    })]
+            name: 'common',
+            filename: 'common.js',
+            minChunks: Infinity,
+        })
+    ]
 });
 
 exports.devServer = (port) => ({

@@ -145,8 +145,6 @@ If you are excited about Britecharts, want to add more configurable properties o
 [barChartDataSchema]: http://eventbrite.github.io/britecharts/global.html#BarChartData
 [barChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/simple-bar-chart.png
 [simpleBarChartTutorialHTML]: https://github.com/eventbrite/britecharts/blob/master/src/doc/html/tutorial-simple-bar-chart.html
-[simpleBarChartTutorial]: https://github.com/eventbrite/britecharts/tutorial-simple-bar-chart.html
+[simpleBarChartTutorial]: http://eventbrite.github.io/britecharts/tutorial-simple-bar-chart.html
 [composingDataviz]: http://eventbrite.github.io/britecharts/composing-dataviz.html
 [installingBritecharts]: http://eventbrite.github.io/britecharts/installing-britecharts.html
-
-

@@ -241,7 +241,7 @@ If you are excited about Britecharts, want to add more configurable properties o
 [installingBritecharts]: http://eventbrite.github.io/britecharts/installing-britecharts.html
 [lineChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/simple-line-chart.png
 [composingDatavizTutorialHTML]: https://github.com/eventbrite/britecharts/blob/master/src/doc/html/tutorial-composing-dataviz.html
-[composingDatavizTutorial]: https://github.com/eventbrite/britecharts/tutorial-composing-dataviz.html
+[composingDatavizTutorial]: http://eventbrite.github.io/britecharts/tutorial-composing-dataviz.html
 [lineChartAPIReference]: http://eventbrite.github.io/britecharts/module-Line.html
 [lineChartDataSchema]: http://eventbrite.github.io/britecharts/global.html#LineChartData
 [tooltipAPIReference]: http://eventbrite.github.io/britecharts/module-Tooltip.html
