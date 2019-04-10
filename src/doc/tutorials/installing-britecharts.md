@@ -66,7 +66,7 @@ In this tutorial, you have seen three different ways of adding Britecharts to  y
 
 To keep on learning more about Britecharts, you can follow our [Composing Your First Data Visualization][composingDataviz] or our [Styling Britecharts][stylingBritecharts] tutorials. You can also check out our [documentation Homepage][home] and our [kitchen sink][demos] to see all the available charts.
 
-If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
+If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contributingGuide]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
 
 [jsDelivrDist]: https://cdn.jsdelivr.net/npm/britecharts/dist/
 [cdnDemo]: https://eventbrite.github.io/britecharts/cdn.html
@@ -76,7 +76,6 @@ If you are excited about Britecharts, want to add more configurable properties o
 [githubReleases]: https://github.com/eventbrite/britecharts/releases
 [home]: http://eventbrite.github.io/britecharts/
 [demos]: http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
-[contribute]: https://github.com/eventbrite/britecharts/blob/master/.github/CONTRIBUTING.md
 [gettingStarted]: http://eventbrite.github.io/britecharts/getting-started.html
 [composingDataviz]: http://eventbrite.github.io/britecharts/composing-dataviz.html
 [stylingBritecharts]: http://eventbrite.github.io/britecharts/styling-dataviz.html
