@@ -26,7 +26,7 @@ define(function(require) {
      * @typedef BrushChartData
      * @type {Object[]}
      * @property {Number} value        Value to chart (required)
-     * @property {Date} date           Date of the value (required)
+     * @property {Date} date           Date of the value in ISO8601 format (required)
      *
      * @example
      * [

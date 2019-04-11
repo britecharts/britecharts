@@ -46,7 +46,7 @@ define(function(require){
       * @type {Object}
       * @property {String} topicName    Topic name (required)
       * @property {Number} topic        Topic identifier (required)
-      * @property {Object[]} dates      All date entries with values for that topic (required)
+      * @property {Object[]} dates      All date entries with values for that topic in ISO8601 format (required)
       *
       * @example
       * {
