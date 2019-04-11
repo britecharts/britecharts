@@ -45,9 +45,9 @@ define(function(require){
     /**
      * @typedef areaChartData
      * @type {Object[]}
-     * @property {String} date         Date of the entry
-     * @property {String} name         Name of the entry
-     * @property {Number} value        Value of the entry
+     * @property {String} date         Date of the entry in ISO8601 format (required)
+     * @property {String} name         Name of the entry (required)
+     * @property {Number} value        Value of the entry (required)
      *
      * @example
      * [
