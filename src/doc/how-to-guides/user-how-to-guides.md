@@ -35,11 +35,13 @@ console.log('combinations', line.axisTimeCombinations);
 1. Set the `xAxisCustomFormat` parameter to a valid [D3.js time format specifier string][timeFormatSpecifiers]. For example: `line.xAxisCustomFormat('%H')`
 1. Play around with different specifiers until finding something that works. You can experiment in [this block example][timeFormatsBlock].
 
+Remember that for increased accuracy, all date formats in Britecharts should be provided in [ISO 8601 Extended Format][ISOFormat].
 
-[gettingStarted]: x
+
+[gettingStarted]: http://eventbrite.github.io/britecharts/getting-started.html
 [colorPalettesDemo]: http://eventbrite.github.io/britecharts/tutorial-color.html
 [colorsHelper]: https://github.com/Golodhros/britecharts/blob/master/src/charts/helpers/color.js
-
+[ISOFormat]: http://www.ecma-international.org/ecma-262/5.1/#sec-15.9.1.15
 [lineChartAPI]: http://eventbrite.github.io/britecharts/module-Line.html
 [timeFormatSpecifiers]: https://github.com/d3/d3-time-format#locale_format
 [timeFormatsBlock]: https://bl.ocks.org/zanarmstrong/ca0adb7e426c12c06a95
