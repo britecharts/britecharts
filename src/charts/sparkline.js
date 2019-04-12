@@ -8,10 +8,10 @@ define(function(require){
     const d3Selection = require('d3-selection');
     const d3Transition = require('d3-transition');
 
-    const {exportChart} = require('./helpers/export');
+    const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
-    const {line} = require('./helpers/load');
-    const {uniqueId} = require('./helpers/number');
+    const { stackedArea: stackedAreaLoadingMarkup } = require('./helpers/load');
+    const { uniqueId } = require('./helpers/number');
 
     const DEFAULT_TITLE_TEXT_STYLE = {
         'font-size': '22px',
@@ -69,7 +69,7 @@ define(function(require){
             },
             width = 100,
             height = 30,
-            loadingState = line,
+            loadingState = stackedAreaLoadingMarkup,
 
             xScale,
             yScale,
@@ -95,7 +95,7 @@ define(function(require){
             clipDuration = 3000,
             ease = d3Ease.easeQuadInOut,
 
-            line,
+            topLine,
             area,
             circle,
 
@@ -312,11 +312,11 @@ define(function(require){
          * @private
          */
         function drawLine(){
-            if (line) {
+            if (topLine) {
                 svg.selectAll('.line').remove();
             }
 
-            line = d3Shape.line()
+            topLine = d3Shape.line()
                 .curve(d3Shape.curveBasis)
                 .x(({date}) => xScale(date))
                 .y(({value}) => yScale(value));
@@ -326,7 +326,7 @@ define(function(require){
                 .datum(data)
                 .attr('class', 'line')
                 .attr('stroke', `url(#${lineGradientId})`)
-                .attr('d', line)
+                .attr('d', topLine)
                 .attr('clip-path', `url(#${maskingClipId})`);
         }
 
@@ -346,7 +346,7 @@ define(function(require){
                 .attr('y', chartHeight / 6)
                 .attr('text-anchor', 'middle')
                 .attr('class', 'sparkline-text')
-                .style('font-size', titleTextStyle['font-size'] || DEFAULT_TITLE_TEXT_STYLE['font-size']) 
+                .style('font-size', titleTextStyle['font-size'] || DEFAULT_TITLE_TEXT_STYLE['font-size'])
                 .style('fill', titleTextStyle['fill'] || lineGradient[0])
                 .style('font-family', titleTextStyle['font-family'] || DEFAULT_TITLE_TEXT_STYLE['font-family'])
                 .style('font-weight', titleTextStyle['font-weight'] || DEFAULT_TITLE_TEXT_STYLE['font-weight'])
@@ -525,7 +525,7 @@ define(function(require){
          * Gets or Sets the text style object of the title at the top of sparkline.
          * Using this method, you can set font-family, font-size, font-weight, font-style,
          * and color (fill). The default text font settings:
-         * 
+         *
          * <pre>
          * <code>
          * {
@@ -537,14 +537,14 @@ define(function(require){
          * }
          * </code>
          * </pre>
-         * 
+         *
          * You can set attributes individually. Setting just 'font-family'
          * within the object will set custom 'font-family` while the rest
          * of the attributes will have the default values provided above.
          * @param  {Object} _x  Object with text font configurations
          * @return {Object | module} Current titleTextStyle or Chart module to chain calls
          * @public
-         * @example 
+         * @example
          * sparkline.titleTextStyle({
          *    'font-family': 'Roboto',
          *    'font-size': '1.5em',

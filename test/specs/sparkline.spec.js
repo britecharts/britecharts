@@ -13,7 +13,7 @@ define([
     ) {
     'use strict';
 
-    const aTestDataSet = () => new dataBuilder.SparklineDataBuilder();    
+    const aTestDataSet = () => new dataBuilder.SparklineDataBuilder();
     const buildDataSet = (dataSetName) => {
         return aTestDataSet()
             [dataSetName]()
@@ -79,7 +79,7 @@ define([
         it('should render the sparkline area', () => {
             let expected = 1;
             let actual = containerFixture.selectAll('.sparkline-area').nodes().length;
-            
+
             expect(actual).toEqual(expected);
         });
 
@@ -91,15 +91,15 @@ define([
         });
 
         describe('when the title text is set to specified string', () => {
-            
+
             it('should create a text node with proper attributes', () => {
                 let titleTextNode;
-                
+
                 sparklineChart.titleText('text');
                 containerFixture.datum(dataset.data).call(sparklineChart);
 
                 titleTextNode = containerFixture.selectAll('.sparkline-text').node();
-                
+
                 expect(titleTextNode).toBeInDOM();
                 expect(titleTextNode).toHaveAttr('x');
                 expect(titleTextNode).toHaveAttr('y');
@@ -111,7 +111,7 @@ define([
             it('should properly set the text inside of text node', () => {
                 let expected = 'Tickets Sale';
                 let actual;
-                
+
                 sparklineChart.titleText(expected);
                 containerFixture.datum(dataset.data).call(sparklineChart);
                 actual = containerFixture.selectAll('.sparkline-text').node().textContent;
@@ -121,7 +121,7 @@ define([
         });
 
         describe('when reloading with a different dataset', () => {
-            
+
             it('should render in the same svg', function() {
                 let actual;
                 let expected = 1;
@@ -186,28 +186,16 @@ define([
 
         describe('API', () => {
 
-            it('should provide margin getter and setter', () => {
-                let defaultMargin = sparklineChart.margin(),
-                    testMargin = {top: 4, right: 4, bottom: 4, left: 4},
-                    newMargin;
+            it('should provide an areaGradient getter and setter', () => {
+                let defaultGradient = sparklineChart.areaGradient(),
+                    testGradient = ['#ffffff', '#fafefc'],
+                    newGradient;
 
-                sparklineChart.margin(testMargin);
-                newMargin = sparklineChart.margin();
+                sparklineChart.areaGradient(testGradient);
+                newGradient = sparklineChart.areaGradient();
 
-                expect(defaultMargin).not.toBe(testMargin);
-                expect(newMargin).toEqual(testMargin);
-            });
-
-            it('should provide loadingState getter and setter', () => {
-                let previous = sparklineChart.loadingState(),
-                    expected = 'test',
-                    actual;
-
-                sparklineChart.loadingState(expected);
-                actual = sparklineChart.loadingState();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
+                expect(defaultGradient).not.toBe(testGradient);
+                expect(newGradient).toBe(testGradient);
             });
 
             it('should provide width getter and setter', () => {
@@ -234,18 +222,6 @@ define([
                 expect(newHeight).toBe(testHeight);
             });
 
-            it('should provide valueLabel getter and setter', () => {
-                let defaultValueLabel = sparklineChart.valueLabel(),
-                    testValueLabel = 'quantity',
-                    newValueLabel;
-
-                sparklineChart.valueLabel(testValueLabel);
-                newValueLabel = sparklineChart.valueLabel();
-
-                expect(defaultValueLabel).not.toBe(testValueLabel);
-                expect(newValueLabel).toBe(testValueLabel);
-            });
-
             it('should provide dateLabel getter and setter', () => {
                 let defaultDateLabel = sparklineChart.dateLabel(),
                     testDateLabel = 'date',
@@ -256,18 +232,6 @@ define([
 
                 expect(defaultDateLabel).not.toBe(testDateLabel);
                 expect(newDateLabel).toBe(testDateLabel);
-            });
-
-            it('should provide animation getter and setter', () => {
-                let defaultAnimation = sparklineChart.isAnimated(),
-                    testAnimation = true,
-                    newAnimation;
-
-                sparklineChart.isAnimated(testAnimation);
-                newAnimation = sparklineChart.isAnimated();
-
-                expect(defaultAnimation).not.toBe(testAnimation);
-                expect(newAnimation).toBe(testAnimation);
             });
 
             it('should provide animation duration getter and setter', () => {
@@ -282,6 +246,45 @@ define([
                 expect(newAnimationDuration).toBe(testAnimationDuration);
             });
 
+            it('should provide isAnimated getter and setter', () => {
+                let defaultAnimation = sparklineChart.isAnimated(),
+                    testAnimation = true,
+                    newAnimation;
+
+                sparklineChart.isAnimated(testAnimation);
+                newAnimation = sparklineChart.isAnimated();
+
+                expect(defaultAnimation).not.toBe(testAnimation);
+                expect(newAnimation).toBe(testAnimation);
+            });
+
+            describe('loadingState', () => {
+
+                it('should provide a loading state getter and setter', () => {
+                    let previous = sparklineChart.loadingState(),
+                        expected = '<svg></svg>',
+                        actual;
+
+                    sparklineChart.loadingState(expected);
+                    actual = sparklineChart.loadingState();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                describe('when getting a loadingState', () => {
+                    it('should return an SVG element', () => {
+                        let expected = 1,
+                            actual;
+
+                        sparklineChart = sparkline();
+                        actual = sparklineChart.loadingState().match('stacked-area-load-state').length;
+
+                        expect(actual).toEqual(expected);
+                    });
+                });
+            });
+
             it('should provide a lineGradient getter and setter', () => {
                 let defaultGradient = sparklineChart.lineGradient(),
                     testGradient = ['#ffffff', '#fafefc'],
@@ -294,16 +297,37 @@ define([
                 expect(newGradient).toBe(testGradient);
             });
 
-            it('should provide an areaGradient getter and setter', () => {
-                let defaultGradient = sparklineChart.areaGradient(),
-                    testGradient = ['#ffffff', '#fafefc'],
-                    newGradient;
+            describe('margin', () => {
+                it('should provide margin getter and setter', () => {
+                    let defaultMargin = sparklineChart.margin(),
+                        testMargin = { top: 4, right: 4, bottom: 4, left: 4 },
+                        newMargin;
 
-                sparklineChart.areaGradient(testGradient);
-                newGradient = sparklineChart.areaGradient();
+                    sparklineChart.margin(testMargin);
+                    newMargin = sparklineChart.margin();
 
-                expect(defaultGradient).not.toBe(testGradient);
-                expect(newGradient).toBe(testGradient);
+                    expect(defaultMargin).not.toBe(testMargin);
+                    expect(newMargin).toEqual(testMargin);
+                });
+
+                describe('when margins are set partially', function () {
+
+                    it('should override the default values', () => {
+                        let previous = sparklineChart.margin(),
+                            expected = {
+                                ...previous,
+                                top: 10,
+                                right: 20
+                            },
+                            actual;
+
+                        sparklineChart.width(expected);
+                        actual = sparklineChart.width();
+
+                        expect(previous).not.toBe(actual);
+                        expect(actual).toEqual(expected);
+                    });
+                });
             });
 
             it('should provide a titleText getter and setter', () => {
@@ -335,26 +359,19 @@ define([
                 expect(defaultTitleTextStyle).not.toEqual(testTitleTextStyle);
                 expect(newTitleTextStyle).toEqual(testTitleTextStyle);
             });
+
+            it('should provide valueLabel getter and setter', () => {
+                let defaultValueLabel = sparklineChart.valueLabel(),
+                    testValueLabel = 'quantity',
+                    newValueLabel;
+
+                sparklineChart.valueLabel(testValueLabel);
+                newValueLabel = sparklineChart.valueLabel();
+
+                expect(defaultValueLabel).not.toBe(testValueLabel);
+                expect(newValueLabel).toBe(testValueLabel);
+            });
         });
-
-        describe('when margins are set partially', function() {
-            
-            it('should override the default values', () => {
-                let previous = sparklineChart.margin(),
-                expected = {
-                    ...previous,
-                    top: 10,
-                    right: 20
-                },
-                actual;
-
-                sparklineChart.width(expected);
-                actual = sparklineChart.width();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toEqual(expected);
-            })
-        });   
 
         describe('Export chart functionality', () => {
 
