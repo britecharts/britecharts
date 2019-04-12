@@ -282,6 +282,36 @@ define([
 
             describe('API', () => {
 
+                describe('Aspect Ratio', () => {
+
+                    describe('when an aspect ratio is set', function () {
+
+                        it('should modify the height depending on the width', () => {
+                            let testAspectRatio = 0.5,
+                                testWidth = 400,
+                                newHeight;
+
+                            lineChart.aspectRatio(testAspectRatio);
+                            lineChart.width(testWidth);
+                            newHeight = lineChart.height();
+
+                            expect(newHeight).toBe(Math.ceil(testWidth * testAspectRatio));
+                        });
+
+                        it('should modify the width depending on the height', () => {
+                            let testAspectRatio = 0.5,
+                                testHeight = 400,
+                                newWidth;
+
+                            lineChart.aspectRatio(testAspectRatio);
+                            lineChart.height(testHeight);
+                            newWidth = lineChart.width();
+
+                            expect(newWidth).toBe(Math.ceil(testHeight / testAspectRatio));
+                        });
+                    });
+                });
+
                 it('should provide an axisTimeCombinations accessor', () => {
                     let axisTimeCombinations = lineChart.axisTimeCombinations;
 
@@ -294,17 +324,38 @@ define([
                     });
                 });
 
-                it('should provide margin getter and setter', () => {
-                    let previous = lineChart.margin(),
-                        expected = {top: 4, right: 4, bottom: 4, left: 4},
-                        actual;
+                describe('margin', () => {
+                    it('should provide margin getter and setter', () => {
+                        let previous = lineChart.margin(),
+                            expected = { top: 4, right: 4, bottom: 4, left: 4 },
+                            actual;
 
-                    lineChart.margin(expected);
-                    actual = lineChart.margin();
+                        lineChart.margin(expected);
+                        actual = lineChart.margin();
 
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toEqual(expected);
-                });
+                        expect(previous).not.toBe(expected);
+                        expect(actual).toEqual(expected);
+                    });
+
+                    describe('when margins are set partially', function () {
+
+                        it('should override the default values', () => {
+                            let previous = lineChart.margin(),
+                                expected = {
+                                    ...previous,
+                                    top: 10,
+                                    right: 20
+                                },
+                                actual;
+
+                            lineChart.width(expected);
+                            actual = lineChart.width();
+
+                            expect(previous).not.toBe(actual);
+                            expect(actual).toEqual(expected);
+                        })
+                    });
+                })
 
                 it('should provide width getter and setter', () => {
                     let previous = lineChart.width(),
@@ -543,6 +594,33 @@ define([
                     expect(actual).toBe(expected);
                 });
 
+                describe('loadingState', () => {
+
+                    it('should provide a loading state getter and setter', () => {
+                        let previous = lineChart.loadingState(),
+                            expected = '<svg></svg>',
+                            actual;
+
+                        lineChart.loadingState(expected);
+                        actual = lineChart.loadingState();
+
+                        expect(previous).not.toBe(expected);
+                        expect(actual).toBe(expected);
+                    });
+
+                    describe('when getting a loadingState', () => {
+                        it('should return an SVG element', () => {
+                            let expected = 1,
+                            actual;
+
+                            lineChart = chart();
+                            actual = lineChart.loadingState().match('line-load-state').length;
+
+                            expect(actual).toEqual(expected);
+                        });
+                    });
+                });
+
                 it('should provide xAxisLabel getter and setter', () => {
                     let previous = lineChart.xAxisLabel(),
                         expected = 'valueSet',
@@ -591,37 +669,6 @@ define([
                     expect(actual).toBe(expected);
                 });
             });
-
-            describe('Aspect Ratio', () => {
-
-                describe('when an aspect ratio is set', function() {
-
-                    it('should modify the height depending on the width', () => {
-                        let testAspectRatio = 0.5,
-                            testWidth = 400,
-                            newHeight;
-
-                        lineChart.aspectRatio(testAspectRatio);
-                        lineChart.width(testWidth);
-                        newHeight = lineChart.height();
-
-                        expect(newHeight).toBe(Math.ceil(testWidth*testAspectRatio));
-                    });
-
-                    it('should modify the width depending on the height', () => {
-                        let testAspectRatio = 0.5,
-                            testHeight = 400,
-                            newWidth;
-
-                        lineChart.aspectRatio(testAspectRatio);
-                        lineChart.height(testHeight);
-                        newWidth = lineChart.width();
-
-                        expect(newWidth).toBe(Math.ceil(testHeight/testAspectRatio));
-                    });
-                });
-            });
-
 
             describe('Chart data points', () => {
 
@@ -683,25 +730,6 @@ define([
 
                     });
                 });
-            });
-
-            describe('when margins are set partially', function() {
-
-                it('should override the default values', () => {
-                    let previous = lineChart.margin(),
-                    expected = {
-                        ...previous,
-                        top: 10,
-                        right: 20
-                    },
-                    actual;
-
-                    lineChart.width(expected);
-                    actual = lineChart.width();
-
-                    expect(previous).not.toBe(actual);
-                    expect(actual).toEqual(expected);
-                })
             });
 
             describe('Export chart functionality', () => {
