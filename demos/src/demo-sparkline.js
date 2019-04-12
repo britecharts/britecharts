@@ -36,13 +36,26 @@ function createSparklineChart() {
     container.datum(dataset.data).call(sparkline);
 }
 
+function createLoadingState() {
+    let sparkline = sparklineChart(),
+        containerWidth = d3Selection.select('.js-loading-container').node().getBoundingClientRect().width,
+        container = d3Selection.select('.js-loading-container'),
+        dataset = null;
+
+    if (containerWidth) {
+        container.html(sparkline.loadingState());
+    }
+}
+
 // Show charts if container available
 if (d3Selection.select('.js-sparkline-chart-container').node()){
     createSparklineChart();
+    createLoadingState();
 
     redrawCharts = function(){
         d3Selection.selectAll('.sparkline').remove();
         createSparklineChart();
+        createLoadingState();
     };
 
     // Redraw charts on window resize

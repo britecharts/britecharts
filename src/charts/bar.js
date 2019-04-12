@@ -14,7 +14,7 @@ define(function(require) {
     const textHelper = require('./helpers/text');
     const {exportChart} = require('./helpers/export');
     const colorHelper = require('./helpers/color');
-    const {bar} = require('./helpers/load');
+    const { bar: barChartLoadingMarkup } = require('./helpers/load');
     const {uniqueId} = require('./helpers/number');
 
     const PERCENTAGE_FORMAT = '%';
@@ -70,7 +70,7 @@ define(function(require) {
             },
             width = 960,
             height = 500,
-            loadingState = bar,
+            loadingState = barChartLoadingMarkup,
             data,
             dataZeroed,
             chartWidth, chartHeight,

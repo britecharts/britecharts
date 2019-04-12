@@ -339,16 +339,31 @@ define([
                 expect(actual).toBe(expected);
             });
 
-            it('should provide loadingState getter and setter', () => {
-                let previous = stackedAreaChart.loadingState(),
-                    expected = 'test',
-                    actual;
+            describe('loadingState', () => {
 
-                stackedAreaChart.loadingState(expected);
-                actual = stackedAreaChart.loadingState();
+                it('should provide loadingState getter and setter', () => {
+                    let previous = stackedAreaChart.loadingState(),
+                        expected = 'test',
+                        actual;
 
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
+                    stackedAreaChart.loadingState(expected);
+                    actual = stackedAreaChart.loadingState();
+
+                    expect(previous).not.toBe(actual);
+                    expect(actual).toBe(expected);
+                });
+
+                describe('when getting a loadingState', () => {
+                    it('should return an SVG element', () => {
+                        let expected = 1,
+                            actual;
+
+                        stackedAreaChart = stackedArea();
+                        actual = stackedAreaChart.loadingState().match('stacked-area-load-state').length;
+
+                        expect(actual).toEqual(expected);
+                    });
+                });
             });
 
             it('should provide isAnimated getter and setter', () => {

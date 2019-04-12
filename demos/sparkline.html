@@ -1,19 +1,19 @@
 
-    <div class="container" id="sparkline">
-        <div class="row">
-            <div class="
+<div class="container" id="sparkline">
+    <div class="row">
+        <div class="
 col-md-6">
-                <article>
-                    <h2 class="tutorial__heading">Sparkline Chart</h2>
-                    <div class="js-sparkline-chart-container card--chart"></div>
-                    <p>This is the sparkline chart used for showing trends in data over time.</p>
-                    <p>We have included a resize listener to show how the different charts respond to changes on the viewport.</p>
-                </article>
-            </div>
-            <div class="
+            <article>
+                <h2 class="tutorial__heading">Sparkline Chart</h2>
+                <div class="js-sparkline-chart-container card--chart"></div>
+                <p>This is the sparkline chart used for showing trends in data over time.</p>
+                <p>We have included a resize listener to show how the different charts respond to changes on the viewport.</p>
+            </article>
+        </div>
+        <div class="
 col-md-6 sidebar">
-                <h3>The code</h3>
-                <pre><code class="language-javascript">
+            <h3>The code</h3>
+            <pre><code class="language-javascript">
 sparklineChart
     .dateLabel('dateUTC')
     .isAnimated(true)
@@ -21,16 +21,33 @@ sparklineChart
     .height(containerWidth / 3)
     .width(containerWidth / 2);
 
-container.datum(dataset)
-    .call(sparklineChart);
-                </code></pre>
-                <h4>Data Input</h4>
-                <p>Check the <a href="/britecharts/global.html#SparklineChartData__anchor">data input schema</a> of this chart.</p>
-                <h4>Export Chart</h4>
-                <p>You can also export this chart by pressing: <input id="button" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
-                <h4>Demo Code</h4>
-                <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/src/demo-sparkline.js">in github</a></p>
-            </div>
+container.datum(dataset).call(sparklineChart);
+            </code></pre>
+            <h4>Data Input</h4>
+            <p>Check the <a href="/britecharts/global.html#SparklineChartData__anchor">data input schema</a> of this chart.</p>
+            <h4>Export Chart</h4>
+            <p>You can also export this chart by pressing: <input id="button" type="button" value="Export" class="btn btn-sm btn-primary" /></p>
+            <h4>Demo Code</h4>
+            <p>Read the whole code of this demo <a href="https://github.com/eventbrite/britecharts/blob/master/demos/src/demo-sparkline.js">in github</a></p>
         </div>
     </div>
+    <div class="row">
+        <div class="
+    col-md-6">
+            <article>
+                <h2 class="tutorial__heading">Loading State</h2>
+                <div class="js-loading-container card--chart"></div>
+            </article>
+        </div>
+        <div class="
+    col-md-6 sidebar">
+            <h3>The code</h3>
+            <pre><code class="language-javascript">
+if (containerWidth) {
+    container.html(sparkline.loadingState());
+}
+            </code></pre>
+        </div>
+    </div>
+</div>
 
