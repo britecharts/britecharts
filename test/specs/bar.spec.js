@@ -329,28 +329,64 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
-            it('should provide margin getter and setter', () => {
-                let previous = barChart.margin(),
-                    expected = {top: 4, right: 4, bottom: 4, left: 4},
-                    actual;
+            describe('loadingState', () => {
 
-                barChart.margin(expected);
-                actual = barChart.margin();
+                it('should provide loadingState getter and setter', () => {
+                    let previous = barChart.loadingState(),
+                        expected = 'test',
+                        actual;
 
-                expect(previous).not.toBe(actual);
-                expect(actual).toEqual(expected);
+                    barChart.loadingState(expected);
+                    actual = barChart.loadingState();
+
+                    expect(previous).not.toBe(actual);
+                    expect(actual).toBe(expected);
+                });
+
+                describe('when getting a loadingState', () => {
+                    it('should return an SVG element', () => {
+                        let expected = 1,
+                            actual;
+
+                        barChart = chart();
+                        actual = barChart.loadingState().match('bar-load-state').length;
+
+                        expect(actual).toEqual(expected);
+                    });
+                });
             });
 
-            it('should provide loadingState getter and setter', () => {
-                let previous = barChart.loadingState(),
-                    expected = 'test',
-                    actual;
+            describe('margin', () => {
+                it('should provide margin getter and setter', () => {
+                    let previous = barChart.margin(),
+                        expected = {top: 4, right: 4, bottom: 4, left: 4},
+                        actual;
 
-                barChart.loadingState(expected);
-                actual = barChart.loadingState();
+                    barChart.margin(expected);
+                    actual = barChart.margin();
 
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
+                    expect(previous).not.toBe(actual);
+                    expect(actual).toEqual(expected);
+                });
+
+                describe('when margins are set partially', function () {
+
+                    it('should override the default values', () => {
+                        let previous = barChart.margin(),
+                            expected = {
+                                ...previous,
+                                top: 10,
+                                right: 20
+                            },
+                            actual;
+
+                        barChart.width(expected);
+                        actual = barChart.width();
+
+                        expect(previous).not.toBe(actual);
+                        expect(actual).toEqual(expected);
+                    })
+                });
             });
 
             it('should provide padding getter and setter', () => {
@@ -561,25 +597,6 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(gradientStopEl[0]).toHaveAttr('stop-color', expectedGradientColors[0]);
                 expect(gradientStopEl[1]).toHaveAttr('stop-color', expectedGradientColors[1]);
             });
-        });
-
-        describe('when margins are set partially', function() {
-
-            it('should override the default values', () => {
-                let previous = barChart.margin(),
-                expected = {
-                    ...previous,
-                    top: 10,
-                    right: 20
-                },
-                actual;
-
-                barChart.width(expected);
-                actual = barChart.width();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toEqual(expected);
-            })
         });
 
         describe('when clicking on a bar', function() {

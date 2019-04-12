@@ -234,16 +234,31 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 expect(actual).toBe(expected);
             });
 
-            it('should provide loadingState getter and setter', () => {
-                let previous = stackedBarChart.loadingState(),
-                    expected = 'test',
-                    actual;
+            describe('loadingState', () => {
 
-                stackedBarChart.loadingState(expected);
-                actual = stackedBarChart.loadingState();
+                it('should provide loadingState getter and setter', () => {
+                    let previous = stackedBarChart.loadingState(),
+                        expected = 'test',
+                        actual;
 
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
+                    stackedBarChart.loadingState(expected);
+                    actual = stackedBarChart.loadingState();
+
+                    expect(previous).not.toBe(actual);
+                    expect(actual).toBe(expected);
+                });
+
+                describe('when getting a loadingState', () => {
+                    it('should return an SVG element', () => {
+                        let expected = 1,
+                            actual;
+
+                        stackedBarChart = chart();
+                        actual = stackedBarChart.loadingState().match('bar-load-state').length;
+
+                        expect(actual).toEqual(expected);
+                    });
+                });
             });
 
             it('should provide margin getter and setter', () => {

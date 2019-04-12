@@ -13,10 +13,10 @@ define(function(require){
     const d3TimeFormat = require('d3-time-format');
     const assign = require('lodash.assign');
 
-    const {exportChart} = require('./helpers/export');
+    const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
-    const {getTimeSeriesAxis} = require('./helpers/axis');
-    const {axisTimeCombinations, curveMap} = require('./helpers/constants');
+    const { getTimeSeriesAxis } = require('./helpers/axis');
+    const { axisTimeCombinations, curveMap } = require('./helpers/constants');
     const {
         formatIntegerValue,
         formatDecimalValue,
@@ -31,7 +31,7 @@ define(function(require){
         addDays,
         diffDays
     } = require('./helpers/date');
-    const { stackedArea} = require('./helpers/load');
+    const { stackedArea: stackedAreaLoadingMarkup } = require('./helpers/load');
 
 
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
@@ -89,7 +89,7 @@ define(function(require){
             },
             width = 960,
             height = 500,
-            loadingState = stackedArea,
+            loadingState = stackedAreaLoadingMarkup,
 
             xScale, xAxis, xMonthAxis,
             yScale, yAxis,

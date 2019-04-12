@@ -10,8 +10,8 @@ define(function(require){
 
     const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
-    const { stackedArea } = require('./helpers/load');
-    const {uniqueId} = require('./helpers/number');
+    const { stackedArea: stackedAreaLoadingMarkup } = require('./helpers/load');
+    const { uniqueId } = require('./helpers/number');
 
     const DEFAULT_TITLE_TEXT_STYLE = {
         'font-size': '22px',
@@ -69,7 +69,7 @@ define(function(require){
             },
             width = 100,
             height = 30,
-            loadingState = stackedArea,
+            loadingState = stackedAreaLoadingMarkup,
 
             xScale,
             yScale,
