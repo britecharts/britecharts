@@ -13,9 +13,9 @@ define(function(require){
     const d3Transition = require('d3-transition');
     const d3TimeFormat = require('d3-time-format');
 
-    const {exportChart} = require('./helpers/export');
+    const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
-    const {line} = require('./helpers/load');
+    const { line: lineChartLoadingMarkup } = require('./helpers/load');
 
     const { getTimeSeriesAxis } = require('./helpers/axis');
     const {
@@ -129,7 +129,7 @@ define(function(require){
             },
             width = 960,
             height = 500,
-            loadingState = line,
+            loadingState = lineChartLoadingMarkup,
             aspectRatio = null,
             tooltipThreshold = 480,
             svg,
