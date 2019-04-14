@@ -38,74 +38,74 @@ module.exports = (function() {
         return defaultStyle;
     };
 
-    return {
+    /**
+     * Returns a serializer function, only run it when you know you want to serialize your chart
+     * @return {func} serializer to add styles in line to dom string
+     */
+    const initializeSerializer = () => {
+        // Mapping between tag names and css default values lookup tables. This allows to exclude default values in the result.
+        var defaultStylesByTagName = {};
 
-        /**
-         * returns serializer function, only run it when you know you want to serialize your chart
-         * @return {func} serializer to add styles in line to dom string
-         */
-        initializeSerializer() {
+        // Precompute the lookup tables.
+        [].forEach.call(tagNames, (name) => {
+            if (!noStyleTags[name]) {
+                defaultStylesByTagName[name] = computeDefaultStyleByTagName(name);
+            }
+        });
 
-            // Mapping between tag names and css default values lookup tables. This allows to exclude default values in the result.
-            var defaultStylesByTagName = {};
+        function getDefaultStyleByTagName(tagName) {
+            tagName = tagName.toUpperCase();
 
-            // Precompute the lookup tables.
-            [].forEach.call(tagNames, (name) => {
-                if (!noStyleTags[name]) {
-                    defaultStylesByTagName[name] = computeDefaultStyleByTagName(name);
+            if (!defaultStylesByTagName[tagName]) {
+                defaultStylesByTagName[tagName] = computeDefaultStyleByTagName(tagName);
+            }
+
+            return defaultStylesByTagName[tagName];
+        }
+
+        function serializeWithStyles(elem) {
+            let cssTexts = [],
+                elements,
+                computedStyle,
+                defaultStyle,
+                result;
+
+            if (!elem || elem.nodeType !== Node.ELEMENT_NODE) {
+                // 'Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE'
+
+                return;
+            }
+
+            cssTexts = [];
+            elements = elem.querySelectorAll('*');
+
+            [].forEach.call(elements, (el, i) => {
+                if (!noStyleTags[el.tagName]) {
+                    computedStyle = window.getComputedStyle(el);
+                    defaultStyle = getDefaultStyleByTagName(el.tagName);
+                    cssTexts[i] = el.style.cssText;
+                    [].forEach.call(computedStyle, (cssPropName) => {
+                        if (computedStyle[cssPropName] !== defaultStyle[cssPropName]) {
+                            el.style[cssPropName] = computedStyle[cssPropName];
+                        }
+                    });
                 }
             });
 
-            function getDefaultStyleByTagName(tagName) {
-                tagName = tagName.toUpperCase();
+            result = elem.outerHTML;
+            elements = [].map.call(elements, (el, i) => {
+                el.style.cssText = cssTexts[i];
 
-                if (!defaultStylesByTagName[tagName]) {
-                    defaultStylesByTagName[tagName] = computeDefaultStyleByTagName(tagName);
-                }
+                return el;
+            });
 
-                return defaultStylesByTagName[tagName];
-            }
+            return result;
+        };
 
-            function serializeWithStyles(elem) {
-                let cssTexts = [],
-                    elements,
-                    computedStyle,
-                    defaultStyle,
-                    result;
+        return serializeWithStyles;
+    };
 
-                if (!elem || elem.nodeType !== Node.ELEMENT_NODE) {
-                    // 'Error: Object passed in to serializeWithSyles not of nodeType Node.ELEMENT_NODE'
-
-                    return;
-                }
-
-                cssTexts = [];
-                elements = elem.querySelectorAll('*');
-
-                [].forEach.call(elements, (el, i) => {
-                    if (!noStyleTags[el.tagName]) {
-                        computedStyle = window.getComputedStyle(el);
-                        defaultStyle = getDefaultStyleByTagName(el.tagName);
-                        cssTexts[i] = el.style.cssText;
-                        [].forEach.call(computedStyle, (cssPropName) => {
-                            if (computedStyle[cssPropName] !== defaultStyle[cssPropName]) {
-                                el.style[cssPropName] = computedStyle[cssPropName];
-                            }
-                        });
-                    }
-                });
-
-                result = elem.outerHTML;
-                elements = [].map.call(elements, (el, i) => {
-                    el.style.cssText = cssTexts[i];
-
-                    return el;
-                });
-
-                return result;
-            };
-
-            return serializeWithStyles;
-        }
+    return {
+        initializeSerializer
     }
 })();
