@@ -65,9 +65,9 @@ define(function(require) {
 
     /**
      * Calculates the maximum number of ticks for the x axis
-     * @param  {Number} width Chart width
-     * @param  {Number} dataPointNumber  Number of entries on the data
-     * @return {Number}       Number of ticks to render
+     * @param  {Number} width               Chart width
+     * @param  {Number} dataPointNumber     Number of entries on the data
+     * @return {Number}                     Number of ticks to render
      */
     const getMaxNumOfHorizontalTicks = (width, dataPointNumber) => {
         let ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
@@ -79,13 +79,14 @@ define(function(require) {
      * Returns tick object to be used when building the x axis
      * @param {dataByDate} dataByDate       Chart data ordered by Date
      * @param {Number} width                Chart width
-     * @param {String} settings             Optional forced settings for axis
+     * @param {String} [settings=null]      Optional forced settings for axis
+     * @param {String} [locale=null]        Optional forced locale
      * @return {object} tick settings for major and minr axis
      */
     const getTimeSeriesAxis = (dataByDate, width, settings = null, locale = null) => {
-        let firstDate = new Date(dataByDate[0].date);
-        let lastDate = new Date(dataByDate[dataByDate.length - 1].date);
-        let dateTimeSpan = lastDate - firstDate;
+        const firstDate = new Date(dataByDate[0].date);
+        const lastDate = new Date(dataByDate[dataByDate.length - 1].date);
+        const dateTimeSpan = lastDate - firstDate;
 
         if (locale && ((typeof Intl === 'undefined') || (typeof Intl === 'object' && !Intl.DateTimeFormat))) {
             locale = null;
@@ -95,10 +96,9 @@ define(function(require) {
             settings = getAxisSettingsFromTimeSpan(dateTimeSpan);
         }
 
-        let [minor, major] = settings.split('-');
-
-        let majorTickValue = settingsToMajorTickMap[settings];
-        let minorTickValue = getMaxNumOfHorizontalTicks(width, convertMillisecondsToDays(dateTimeSpan));
+        const [minor, major] = settings.split('-');
+        const majorTickValue = settingsToMajorTickMap[settings];
+        const minorTickValue = getMaxNumOfHorizontalTicks(width, convertMillisecondsToDays(dateTimeSpan));
 
         return {
             minor: {
