@@ -65,9 +65,41 @@ define(function(require){
       * }
       */
 
+    /**
+      * @typedef lineChartDataByDate
+      * @type {Object[]}
+      * @property {String} date         Date in ISO8601 format (required)
+      * @property {Object[]} topics     List of topics with values that date (required)
+      *
+      * @example
+      * [
+      *     {
+      *         date: "2015-06-27T07:00:00.000Z",
+      *         topics: [
+      *             {
+      *                 "name": 1,
+      *                 "value": 1,
+      *                 "topicName": "San Francisco"
+      *             },
+      *             {
+      *                 "name": 2,
+      *                 "value": 20,
+      *                 "topicName": "Los Angeles"
+      *             },
+      *             {
+      *                 "name": 3,
+      *                 "value": 10,
+      *                 "topicName": "Oakland"
+      *             }
+      *         ]
+      *     },
+      *     {...}
+      * ]
+      */
+
      /**
       * @typedef LineChartData
-      * @type {Object[]}
+      * @type {Object}
       * @property {lineChartDataByTopic[]} dataByTopic  Data values to chart (required)
       *
       * @example

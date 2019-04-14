@@ -35,6 +35,12 @@ define(function(require) {
         }
     };
 
+    /**
+     * Return a relative size for the value given, based in our decimal or integer tables
+     * @param {Number} value    Value to assess its relative size
+     * @param {Object} limits   Object stablishing the limits and formats
+     * to consider the value of a given size
+     */
     const getValueSize = (value, limits) => {
         let size = 'large';
 
@@ -95,8 +101,8 @@ define(function(require) {
 
     /**
      * Generates a unique id with a prefix
-     * @param {String} prefix   Prefix to add before the id
-     * @return {String}         Unique id
+     * @param  {String} prefix   Prefix to add before the id
+     * @return {String}          Unique id
      */
     const uniqueId = (prefix) => {
         const id = ++idCounter;
