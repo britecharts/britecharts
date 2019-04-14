@@ -5,6 +5,7 @@ define(function(require) {
 
         jsonAllDatas = require('json-loader!../json/lineDataAllDatas.json'),
         jsonFiveTopics = require('json-loader!../json/lineDataFiveTopics.json'),
+        jsonFourTopics = require('json-loader!../json/lineDataFourTopics.json'),
         jsonOneSource = require('json-loader!../json/lineDataOneSet.json'),
         jsonAllZeroes = require('json-loader!../json/lineDataAllZeroes.json'),
         jsonMultiMonthValueRange = require('json-loader!../json/multiMonthLineData'),
@@ -19,6 +20,12 @@ define(function(require) {
 
         this.with5Topics = function(){
             var attributes = _.extend({}, this.config, jsonFiveTopics);
+
+            return new this.Klass(attributes);
+        };
+
+        this.with4Topics = function(){
+            var attributes = _.extend({}, this.config, jsonFourTopics);
 
             return new this.Klass(attributes);
         };
@@ -52,7 +59,7 @@ define(function(require) {
 
             return new this.Klass(attributes);
         };
-        
+
         this.withAllZeroes = function() {
             var attributes = _.extend({}, this.config, jsonAllZeroes);
 
