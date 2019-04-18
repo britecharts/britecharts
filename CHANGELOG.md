@@ -1,4 +1,11 @@
-2.10.0
+2.10.1
+------
+* Fix - Added Heatmap to bundle
+* Fix - Added bundle analyzer option to the build pipeline
+* Fix - Removing unused nameLabelFormat from stacked bar
+* Fix - Fixed sparkline loading state and added to demo
+* Fix - Several Documentation tweaks
+
 
 2.10.0
 -----
