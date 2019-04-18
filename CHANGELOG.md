@@ -1,4 +1,5 @@
 2.10.1
+2.10.1
 ------
 * Fix - Added Heatmap to bundle
 * Fix - Added bundle analyzer option to the build pipeline
