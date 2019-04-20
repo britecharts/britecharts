@@ -654,6 +654,14 @@ define(function(require) {
             return this;
         };
 
+        /**
+         * Gets or Sets the hasHoverAnimation property of the chart. By default,
+         * donut chart highlights the hovered slice. This property explicitly
+         * disables this hover behavior.
+         * @param  {boolean} _x         Decide whether hover slice animation should be enabled
+         * @return {boolean | module}   Current hasHoverAnimation flag or Chart module
+         * @public
+         */
         exports.hasHoverAnimation = function(_x) {
             if (!arguments.length) {
                 return hasHoverAnimation;
