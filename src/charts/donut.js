@@ -95,6 +95,7 @@ define(function(require) {
             highlightedSliceId,
             highlightedSlice,
             hasFixedHighlightedSlice = false,
+            hasHoverAnimation = false,
 
             hasLastHoverSliceHighlighted = false,
             lastHighlightedSlice = null,
@@ -416,16 +417,18 @@ define(function(require) {
             drawLegend(d);
             dispatcher.call('customMouseOver', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
 
-            // if the hovered slice is not the same as the last slice hovered
-            // after mouseout event, then shrink the last slice that was highlighted
-            if (lastHighlightedSlice && el !== lastHighlightedSlice) {
-                tweenGrowth(lastHighlightedSlice, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+            if (hasHoverAnimation) {
+                // if the hovered slice is not the same as the last slice hovered
+                // after mouseout event, then shrink the last slice that was highlighted
+                if (lastHighlightedSlice && el !== lastHighlightedSlice) {
+                    tweenGrowth(lastHighlightedSlice, externalRadius - radiusHoverOffset, pieHoverTransitionDuration);
+                }
+                if (highlightedSlice && el !== highlightedSlice) {
+                    tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
+                }
+                tweenGrowth(el, externalRadius);
             }
 
-            if (highlightedSlice && el !== highlightedSlice) {
-                tweenGrowth(highlightedSlice, externalRadius - radiusHoverOffset);
-            }
-            tweenGrowth(el, externalRadius);
         }
 
         /**
@@ -650,6 +653,15 @@ define(function(require) {
 
             return this;
         };
+
+        exports.hasHoverAnimation = function(_x) {
+            if (!arguments.length) {
+                return hasHoverAnimation;
+            }
+            hasHoverAnimation = _x;
+
+            return this;
+        }
 
         /**
          * Gets or Sets the hasFixedHighlightedSlice property of the chart, making it to
