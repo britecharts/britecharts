@@ -516,6 +516,18 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);
                 });
+
+                it('should provide hasHoverAnimation getter and setter', () => {
+                    let previous = donutChart.hasHoverAnimation(),
+                        expected = false,
+                        actual;
+
+                    donutChart.hasHoverAnimation(expected);
+                    actual = donutChart.hasHoverAnimation();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
             });
 
             describe('when margins are set partially', function() {
