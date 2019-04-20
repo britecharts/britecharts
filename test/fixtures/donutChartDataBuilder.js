@@ -3,6 +3,7 @@ define(function(require) {
 
     var _ = require('underscore'),
 
+        jsonLegendNoQuantity = require('json-loader!../json/legendDataNoQuantity.json'),
         jsonFivePlusOther = require('json-loader!../json/donutDataFivePlusOther.json'),
         jsonFivePlusOtherNoPercent = require('json-loader!../json/donutDataFivePlusOtherNoPercent.json'),
         jsonOneZeroed = require('json-loader!../json/donutDataOneZeroed.json'),
@@ -39,9 +40,14 @@ define(function(require) {
             return new this.Klass(attributes);
         };
 
-
         this.withAllTopicsAtZero = function() {
             var attributes = _.extend({}, this.config, jsonAllZeroed);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withNoQuantity = function() {
+            var attributes = _.extend({}, this.config, jsonLegendNoQuantity);
 
             return new this.Klass(attributes);
         };
