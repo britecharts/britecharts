@@ -95,7 +95,7 @@ define(function(require) {
             highlightedSliceId,
             highlightedSlice,
             hasFixedHighlightedSlice = false,
-            hasHoverAnimation = false,
+            hasHoverAnimation = true,
 
             hasLastHoverSliceHighlighted = false,
             lastHighlightedSlice = null,
