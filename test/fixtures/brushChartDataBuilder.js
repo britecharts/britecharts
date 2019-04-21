@@ -3,6 +3,7 @@ define(function(require) {
 
     var _ = require('underscore'),
 
+        jsonShortData = require('json-loader!../json/brushDataBis.json'),
         jsonSimpleData = require('json-loader!../json/brushData.json');
 
 
@@ -13,6 +14,12 @@ define(function(require) {
 
         this.withSimpleData = function(){
             var attributes = _.extend({}, this.config, jsonSimpleData);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withShortData = function(){
+            var attributes = _.extend({}, this.config, jsonShortData);
 
             return new this.Klass(attributes);
         };

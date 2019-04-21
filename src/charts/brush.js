@@ -103,10 +103,12 @@ define(function(require) {
 
             brush,
             chartBrush,
+            brushArea,
             handle,
 
             tickPadding = 5,
 
+            chartGradientEl,
             gradient = colorHelper.colorGradients.greenBlue,
             gradientId = uniqueId('brush-area-gradient'),
 
@@ -195,13 +197,15 @@ define(function(require) {
                 .classed('chart-group', true);
             container
               .append('g')
-                .classed('metadata-group', true);
-            container
-              .append('g')
-                .classed('x-axis-group', true);
+                .classed('x-axis-group', true)
+                  .append('g')
+                    .classed('x axis', true);
             container
               .append('g')
                 .classed('brush-group', true);
+            container
+              .append('g')
+                .classed('metadata-group', true);
         }
 
         /**
@@ -209,23 +213,24 @@ define(function(require) {
          * @return {void}
          */
         function buildGradient() {
-            let metadataGroup = svg.select('.metadata-group');
-
-            metadataGroup.append('linearGradient')
-                .attr('id', gradientId)
-                .attr('gradientUnits', 'userSpaceOnUse')
-                .attr('x1', 0)
-                .attr('x2', xScale(data[data.length - 1].date))
-                .attr('y1', 0)
-                .attr('y2', 0)
-              .selectAll('stop')
-                .data([
-                    {offset: '0%', color: gradient[0]},
-                    {offset: '100%', color: gradient[1]}
-                ])
-              .enter().append('stop')
-                .attr('offset', ({offset}) => offset)
-                .attr('stop-color', ({color}) => color);
+            if (!chartGradientEl) {
+                chartGradientEl = svg.select('.metadata-group')
+                  .append('linearGradient')
+                    .attr('id', gradientId)
+                    .attr('gradientUnits', 'userSpaceOnUse')
+                    .attr('x1', 0)
+                    .attr('x2', xScale(data[data.length - 1].date))
+                    .attr('y1', 0)
+                    .attr('y2', 0)
+                  .selectAll('stop')
+                    .data([
+                        {offset: '0%', color: gradient[0]},
+                        {offset: '100%', color: gradient[1]}
+                    ])
+                  .enter().append('stop')
+                    .attr('offset', ({offset}) => offset)
+                    .attr('stop-color', ({color}) => color);
+            }
         }
 
         /**
@@ -291,10 +296,8 @@ define(function(require) {
          *
          * @private
          */
-        function drawAxis(){
-            svg.select('.x-axis-group')
-              .append('g')
-                .attr('class', 'x axis')
+        function drawAxis() {
+            svg.select('.x-axis-group .axis.x')
                 .attr('transform', `translate(0, ${chartHeight})`)
                 .call(xAxis);
         }
@@ -305,8 +308,12 @@ define(function(require) {
          * @return {void}
          */
         function drawArea() {
+            if (brushArea) {
+                svg.selectAll('.brush-area').remove();
+            }
+
             // Create and configure the area generator
-            let area = d3Shape.area()
+            brushArea = d3Shape.area()
                 .x(({date}) => xScale(date))
                 .y0(chartHeight)
                 .y1(({value}) => yScale(value))
@@ -317,7 +324,7 @@ define(function(require) {
               .append('path')
                 .datum(data)
                 .attr('class', 'brush-area')
-                .attr('d', area);
+                .attr('d', brushArea);
         }
 
         /**

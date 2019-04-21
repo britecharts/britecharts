@@ -214,22 +214,25 @@ define(function(require) {
                   .attr('transform', `translate(${margin.left + yAxisPaddingBetweenChart}, ${margin.top})`);
 
             container
-                .append('g').classed('grid-lines-group', true);
+              .append('g')
+                .classed('grid-lines-group', true);
             container
-                .append('g').classed('chart-group', true);
+              .append('g')
+                .classed('chart-group', true);
             container
-                .append('g')
-                  .classed('x-axis-group axis', true)
-                .append('g')
-                  .classed('x-axis-label', true);
+              .append('g')
+                .classed('x-axis-group axis', true)
+              .append('g')
+                .classed('x-axis-label', true);
             container
-                .append('g')
-                   .attr('transform', `translate(${-1 * (yAxisPaddingBetweenChart)}, 0)`)
-                   .classed('y-axis-group axis', true)
-                .append('g')
+              .append('g')
+                .attr('transform', `translate(${-1 * (yAxisPaddingBetweenChart)}, 0)`)
+                .classed('y-axis-group axis', true)
+                  .append('g')
                     .classed('y-axis-label', true);
             container
-                .append('g').classed('metadata-group', true);
+              .append('g')
+                .classed('metadata-group', true);
         }
 
         /**
