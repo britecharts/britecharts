@@ -57,26 +57,52 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
             expect(containerFixture.selectAll('.handle.handle--w.brush-rect').empty()).toEqual(false);
         });
 
-        describe('when margins are set partially', function() {
+        describe('when reloading with a different dataset', () => {
 
-            it('should override the default values', () => {
-                let previous = brushChart.margin(),
-                expected = {
-                    ...previous,
-                    top: 10,
-                    right: 20
-                },
-                actual;
+            it('should render in the same svg', function () {
+                let actual;
+                const expected = 1;
+                const newDataset = aTestDataSet()
+                    .withShortData()
+                    .build();
 
-                brushChart.width(expected);
-                actual = brushChart.width();
+                containerFixture.datum(newDataset).call(brushChart);
 
-                expect(previous).not.toBe(actual);
+                actual = containerFixture.selectAll('.brush-chart').nodes().length;
+
                 expect(actual).toEqual(expected);
-            })
+            });
+
+            it('should render one area', function () {
+                let actual;
+                const expected = 1;
+                const newDataset = aTestDataSet()
+                    .withShortData()
+                    .build();
+
+                containerFixture.datum(newDataset).call(brushChart);
+
+                actual = containerFixture.selectAll('.brush-chart .brush-area').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render one axis', function () {
+                let actual;
+                const expected = 1;
+                const newDataset = aTestDataSet()
+                    .withShortData()
+                    .build();
+
+                containerFixture.datum(newDataset).call(brushChart);
+
+                actual = containerFixture.selectAll('.brush-chart .x.axis').nodes().length;
+
+                expect(actual).toEqual(expected);
+            });
         });
 
-        describe('the API', function() {
+        describe('API', function() {
 
             it('should provide a bush date range getter and setter', () => {
                 let previous = brushChart.dateRange(),
@@ -126,16 +152,38 @@ define(['jquery', 'd3', 'brush', 'brushChartDataBuilder'], function($, d3, chart
                 expect(actual).toBe(expected);
             });
 
-            it('should provide margin getter and setter', function() {
-                var previous = brushChart.margin(),
-                    expected = {top: 4, right: 4, bottom: 4, left: 4},
-                    actual;
+            describe('margin', () => {
 
-                brushChart.margin(expected);
-                actual = brushChart.margin();
+                it('should provide margin getter and setter', function () {
+                    var previous = brushChart.margin(),
+                        expected = { top: 4, right: 4, bottom: 4, left: 4 },
+                        actual;
 
-                expect(previous).not.toBe(expected);
-                expect(actual).toEqual(expected);
+                    brushChart.margin(expected);
+                    actual = brushChart.margin();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toEqual(expected);
+                });
+
+                describe('when margins are set partially', function () {
+
+                    it('should override the default values', () => {
+                        let previous = brushChart.margin(),
+                            expected = {
+                                ...previous,
+                                top: 10,
+                                right: 20
+                            },
+                            actual;
+
+                        brushChart.width(expected);
+                        actual = brushChart.width();
+
+                        expect(previous).not.toBe(actual);
+                        expect(actual).toEqual(expected);
+                    })
+                });
             });
 
             it('should provide width getter and setter', function() {
