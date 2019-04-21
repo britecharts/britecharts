@@ -92,6 +92,7 @@ donutContainer.datum(dataset).call(donutChart);
                 <article>
                     <h2>Donut Chart with fixed highlighted slice</h2>
                     <div class="js-donut-highlight-slice-chart-container card--chart"></div>
+                    <div class="js-vertical-legend-no-quantity-container"></div>
                 </article>
             </section>
         </div>
@@ -100,14 +101,21 @@ col-md-6 sidebar">
             <h3>The code</h3>
             <pre><code class="language-javascript">
 donutChart
-    .highlightSliceById(1)
+    .highlightSliceById(11)
     .hasFixedHighlightedSlice(true)
     .width(containerWidth)
     .height(containerWidth/1.8)
     .externalRadius(containerWidth/5)
-    .internalRadius(containerWidth/10);
+    .internalRadius(containerWidth/10)
+    .on('customMouseOver', function (data) {
+        legendChart.highlight(data.data.id);
+    })
+    .on('customMouseOut', function () {
+        legendChart.highlight(11);
+    });
 
-    donutContainer.datum(dataset).call(donutChart);
+legendChart.highlight(11);
+donutContainer.datum(datasetWithThreeItems).call(donutChart);
             </code></pre>
 
             <h4>Demo Code</h4>

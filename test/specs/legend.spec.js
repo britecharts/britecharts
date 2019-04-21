@@ -112,6 +112,31 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                 });
             });
 
+            describe('when no quantities in our data', () => {
+                beforeEach(() => {
+                    dataset = aTestDataSet()
+                        .withNoQuantity()
+                        .build();
+
+                    containerFixture = d3.select('.test-container');
+                    containerFixture.datum(dataset).call(legendChart);
+                });
+
+                it('should render the legend', () => {
+                    const expected = false;
+                    const actual = containerFixture.select('svg.britechart-legend').empty();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should not draw any value', () => {
+                    const expected = 0;
+                    const actual = containerFixture.selectAll('.legend-entry-value').nodes().length;
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
             describe('API', function() {
 
                 it('should provide margin getter and setter', () =>{
@@ -200,8 +225,8 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
 
                 it('should provide a highlight function', () => {
                     let lines = containerFixture
-                    .select('.britechart-legend')
-                    .selectAll('.legend-entry'),
+                        .select('.britechart-legend')
+                        .selectAll('.legend-entry'),
                     elements = lines.nodes();
 
                     legendChart.highlight(dataset[0].id);
@@ -268,7 +293,7 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
         });
 
         describe('when margins are set partially', function() {
-            
+
             it('should override the default values', () => {
                 let previous = legendChart.margin(),
                 expected = {
@@ -284,7 +309,7 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                 expect(previous).not.toBe(actual);
                 expect(actual).toEqual(expected);
             })
-        });  
+        });
 
         describe('when legend is horizontal', () => {
 
