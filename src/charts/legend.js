@@ -13,8 +13,8 @@ define(function(require){
      * @typedef LegendChartData
      * @type {Object[]}
      * @property {Number} id        Id of the group (required)
-     * @property {Number} quantity  Quantity of the group (required)
      * @property {String} name      Name of the group (required)
+     * @property {Number} quantity  Quantity of the group (optional)
      *
      * @example
      * [
@@ -90,6 +90,7 @@ define(function(require){
             isFadedClassName = 'is-faded',
             isHorizontal = false,
             highlightedEntryId = null,
+            hasQuantities = true,
 
             // colors
             colorScale,
@@ -100,6 +101,7 @@ define(function(require){
 
             getFormattedQuantity = ({quantity}) => d3Format.format(numberFormat)(quantity) + unit,
             getCircleFill = ({name}) => colorScale(name),
+            hasQuantity = ({quantity}) => typeof quantity === 'number' || typeof quantity === 'string',
 
             entries,
             chartWidth, chartHeight,
@@ -117,7 +119,7 @@ define(function(require){
             _selection.each(function(_data){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
-                data = _data;
+                data = cleanData(_data);
 
                 buildColorScale();
                 buildSVG(this);
@@ -149,7 +151,7 @@ define(function(require){
                 splitInLines();
             }
 
-            centerLegendOnSVG();
+            centerInlineLegendOnSVG();
         }
 
         /**
@@ -202,14 +204,51 @@ define(function(require){
          * @return {void}
          * @private
          */
-        function centerLegendOnSVG() {
+        function centerInlineLegendOnSVG() {
             let legendGroupSize = svg.select('g.legend-container-group').node().getBoundingClientRect().width + getLineElementMargin();
             let emptySpace = width - legendGroupSize;
+            let newXPosition = (emptySpace/2);
 
             if (emptySpace > 0) {
                 svg.select('g.legend-container-group')
-                    .attr('transform', `translate(${emptySpace/2},0)`)
+                    .attr('transform', `translate(${newXPosition},0)`)
             }
+        }
+
+        /**
+         * Centers the legend on the chart given that is a stack of labels
+         * @return {void}
+         * @private
+         */
+        function centerVerticalLegendOnSVG() {
+            let legendGroupSize = svg.select('g.legend-container-group').node().getBoundingClientRect().width;
+            let emptySpace = width - legendGroupSize;
+            let newXPosition = (emptySpace / 2) - (legendGroupSize / 2);
+
+            if (emptySpace > 0) {
+                svg.select('g.legend-container-group')
+                    .attr('transform', `translate(${newXPosition},0)`)
+            }
+        }
+
+        /**
+         * Makes sure the types of the data are right and checks if it has quantities
+         * @param {LegendChartData} data
+         * @private
+         */
+        function cleanData(data) {
+            hasQuantities = data.filter(hasQuantity).length === data.length;
+
+            return data
+                .reduce((acc, d) => {
+                    if (d.quantity !== undefined && d.quantity !== null) {
+                        d.quantity = +d.quantity;
+                    }
+                    d.name = String(d.name);
+                    d.id = +d.id;
+
+                    return [...acc, d];
+                }, []);
         }
 
         /**
@@ -333,17 +372,11 @@ define(function(require){
                 .style('font-size', `${textSize}px`)
                 .style('letter-spacing', `${textLetterSpacing}px`);
 
-            svg.select('.legend-group')
-                .selectAll('g.legend-line')
-                .selectAll('g.legend-entry')
-              .append('text')
-                .classed('legend-entry-value', true)
-                .text(getFormattedQuantity)
-                .attr('x', chartWidth - valueReservedSpace)
-                .style('font-size', `${textSize}px`)
-                .style('letter-spacing', `${numberLetterSpacing}px`)
-                .style('text-anchor', 'end')
-                .style('startOffset', '100%');
+            if (hasQuantities) {
+                writeEntryValues();
+            } else {
+                centerVerticalLegendOnSVG();
+            }
 
             // Exit
             svg.select('.legend-group')
@@ -398,6 +431,25 @@ define(function(require){
 
             lastEntry.attr('transform', `translate(${markerSize},0)`);
             newLine.append(() => lastEntry.node());
+        }
+
+        /**
+         * Draws the data entry quantities within the legend-entry lines
+         * @return {void}
+         * @private
+         */
+        function writeEntryValues() {
+            svg.select('.legend-group')
+                .selectAll('g.legend-line')
+                .selectAll('g.legend-entry')
+              .append('text')
+                .classed('legend-entry-value', true)
+                .text(getFormattedQuantity)
+                .attr('x', chartWidth - valueReservedSpace)
+                .style('font-size', `${textSize}px`)
+                .style('letter-spacing', `${numberLetterSpacing}px`)
+                .style('text-anchor', 'end')
+                .style('startOffset', '100%');
         }
 
         // API
