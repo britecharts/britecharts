@@ -130,7 +130,6 @@ function createLineChartWithSingleLine() {
             .lineCurve('basis')
             .grid('vertical')
             .width(containerWidth)
-            .dateLabel('fullDate')
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
                 chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
@@ -141,7 +140,6 @@ function createLineChartWithSingleLine() {
 
         // Tooltip Setup and start
         chartTooltip
-            .valueLabel('value')
             .title('Quantity Sold');
 
         // Note that if the viewport width is less than the tooltipThreshold value,

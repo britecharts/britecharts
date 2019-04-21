@@ -280,393 +280,32 @@ define([
                 });
             });
 
-            describe('API', () => {
+            describe('when using flat data', () => {
+                beforeEach(() => {
+                    dataset = aTestDataSet().withTwoFlatTopics().build();
+                    lineChart = chart();
 
-                describe('Aspect Ratio', () => {
+                    // DOM Fixture Setup
+                    f = jasmine.getFixtures();
+                    f.fixturesPath = 'base/test/fixtures/';
+                    f.load('testContainer.html');
 
-                    describe('when an aspect ratio is set', function () {
-
-                        it('should modify the height depending on the width', () => {
-                            let testAspectRatio = 0.5,
-                                testWidth = 400,
-                                newHeight;
-
-                            lineChart.aspectRatio(testAspectRatio);
-                            lineChart.width(testWidth);
-                            newHeight = lineChart.height();
-
-                            expect(newHeight).toBe(Math.ceil(testWidth * testAspectRatio));
-                        });
-
-                        it('should modify the width depending on the height', () => {
-                            let testAspectRatio = 0.5,
-                                testHeight = 400,
-                                newWidth;
-
-                            lineChart.aspectRatio(testAspectRatio);
-                            lineChart.height(testHeight);
-                            newWidth = lineChart.width();
-
-                            expect(newWidth).toBe(Math.ceil(testHeight / testAspectRatio));
-                        });
-                    });
+                    containerFixture = d3.select('.test-container');
+                    containerFixture.datum(dataset).call(lineChart);
                 });
 
-                it('should provide an axisTimeCombinations accessor', () => {
-                    let axisTimeCombinations = lineChart.axisTimeCombinations;
-
-                    expect(axisTimeCombinations).toEqual({
-                        MINUTE_HOUR: 'minute-hour',
-                        HOUR_DAY: 'hour-daymonth',
-                        DAY_MONTH: 'day-month',
-                        MONTH_YEAR: 'month-year',
-                        CUSTOM: 'custom'
-                    });
+                afterEach(() => {
+                    containerFixture.remove();
+                    f = jasmine.getFixtures();
+                    f.cleanUp();
+                    f.clearCache();
                 });
 
-                describe('margin', () => {
-                    it('should provide margin getter and setter', () => {
-                        let previous = lineChart.margin(),
-                            expected = { top: 4, right: 4, bottom: 4, left: 4 },
-                            actual;
-
-                        lineChart.margin(expected);
-                        actual = lineChart.margin();
-
-                        expect(previous).not.toBe(expected);
-                        expect(actual).toEqual(expected);
-                    });
-
-                    describe('when margins are set partially', function () {
-
-                        it('should override the default values', () => {
-                            let previous = lineChart.margin(),
-                                expected = {
-                                    ...previous,
-                                    top: 10,
-                                    right: 20
-                                },
-                                actual;
-
-                            lineChart.width(expected);
-                            actual = lineChart.width();
-
-                            expect(previous).not.toBe(actual);
-                            expect(actual).toEqual(expected);
-                        })
-                    });
-                })
-
-                it('should provide width getter and setter', () => {
-                    let previous = lineChart.width(),
-                        expected = 200,
-                        actual;
-
-                    lineChart.width(expected);
-                    actual = lineChart.width();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should not have numberFormat by default', () => {
-                    let expected = undefined,
-                    actual;
-
-                    actual = lineChart.numberFormat();
-
-                    expect(expected).toBe(actual);
-                });
-
-                it('should provide numberFormat getter and setter', () =>{
-                    let previous = lineChart.numberFormat(),
-                        expected = 'd',
-                        actual;
-
-                    lineChart.numberFormat(expected);
-                    actual = lineChart.numberFormat();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide height getter and setter', () => {
-                    let previous = lineChart.height(),
-                        expected = 200,
-                        actual;
-
-                    lineChart.height(expected);
-                    actual = lineChart.height();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide a tooltip threshold getter and setter', () => {
-                    let previous = lineChart.tooltipThreshold(),
-                        expected = 600,
-                        actual;
-
-                    lineChart.tooltipThreshold(expected);
-                    actual = lineChart.tooltipThreshold();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide an aspect ratio getter and setter', () => {
-                    let previous = lineChart.aspectRatio(),
-                        expected = 600,
-                        actual;
-
-                    lineChart.aspectRatio(expected);
-                    actual = lineChart.aspectRatio();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide valueLabel getter and setter', () => {
-                    let previous = lineChart.valueLabel(),
-                        expected = 'quantity',
-                        actual;
-
-                    lineChart.valueLabel(expected);
-                    actual = lineChart.valueLabel();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide dateLabel getter and setter', () => {
-                    let previous = lineChart.dateLabel(),
-                        expected = 'dateUTC',
-                        actual;
-
-                    lineChart.dateLabel(expected);
-                    actual = lineChart.dateLabel();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide topicLabel getter and setter', () => {
-                    let previous = lineChart.topicLabel(),
-                        expected = 'valueSet',
-                        actual;
-
-                    lineChart.topicLabel(expected);
-                    actual = lineChart.topicLabel();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide a colorSchema getter and setter', () => {
-                    let previous = lineChart.colorSchema(),
-                        expected = ['#ffffff', '#fafefc', '#000000'],
-                        actual;
-
-                    lineChart.colorSchema(expected);
-                    actual = lineChart.colorSchema();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide a xAxisFormat getter and setter', () => {
-                    let previous = lineChart.xAxisFormat(),
-                        expected = lineChart.axisTimeCombinations.HOUR_DAY,
-                        actual;
-
-                    lineChart.xAxisFormat(expected);
-                    actual = lineChart.xAxisFormat();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide a xAxisCustomFormat getter and setter', () => {
-                    let previous = lineChart.xAxisCustomFormat(),
-                        expected = '%d %b',
-                        actual;
-
-                    lineChart.xAxisCustomFormat(expected);
-                    actual = lineChart.xAxisCustomFormat();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide a xTicks getter and setter', () => {
-                    let previous = lineChart.xTicks(),
-                        expected = 2,
-                        actual;
-
-                    lineChart.xTicks(expected);
-                    actual = lineChart.xTicks();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide yTicks getter and setter', () => {
-                    let previous = lineChart.yTicks(),
-                        expected = 3,
-                        actual;
-
-                    lineChart.yTicks(expected);
-                    actual = lineChart.yTicks();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide grid mode getter and setter', () => {
-                    let previous = lineChart.grid(),
-                        expected = 'vertical',
-                        actual;
-
-                    lineChart.grid(expected);
-                    actual = lineChart.grid();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide lineCurve getter and setter', () => {
-                    let previous = lineChart.lineCurve(),
-                        expected = 'basis',
-                        actual;
-
-                    lineChart.lineCurve(expected);
-                    actual = lineChart.lineCurve();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide lineGradient getter and setter', () => {
-                    let previous = lineChart.lineGradient(),
-                        expected = ['#ddd', '#ccc'],
-                        actual;
-
-                    lineChart.lineGradient(expected);
-                    actual = lineChart.lineGradient();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide loadingState getter and setter', () => {
-                    let previous = lineChart.loadingState(),
-                        expected = 'test',
-                        actual;
-
-                    lineChart.loadingState(expected);
-                    actual = lineChart.loadingState();
-
-                    expect(previous).not.toBe(actual);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide animation getter and setter', () => {
-                    let previous = lineChart.isAnimated(),
-                        expected = true,
-                        actual;
-
-                    lineChart.isAnimated(expected);
-                    actual = lineChart.isAnimated();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide locale getter and setter', () => {
-                    let previous = lineChart.locale(),
-                        expected = 'en-US',
-                        actual;
-
-                    lineChart.locale(expected);
-                    actual = lineChart.locale();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                describe('loadingState', () => {
-
-                    it('should provide a loading state getter and setter', () => {
-                        let previous = lineChart.loadingState(),
-                            expected = '<svg></svg>',
-                            actual;
-
-                        lineChart.loadingState(expected);
-                        actual = lineChart.loadingState();
-
-                        expect(previous).not.toBe(expected);
-                        expect(actual).toBe(expected);
-                    });
-
-                    describe('when getting a loadingState', () => {
-                        it('should return an SVG element', () => {
-                            let expected = 1,
-                            actual;
-
-                            lineChart = chart();
-                            actual = lineChart.loadingState().match('line-load-state').length;
-
-                            expect(actual).toEqual(expected);
-                        });
-                    });
-                });
-
-                it('should provide xAxisLabel getter and setter', () => {
-                    let previous = lineChart.xAxisLabel(),
-                        expected = 'valueSet',
-                        actual;
-
-                    lineChart.xAxisLabel(expected);
-                    actual = lineChart.xAxisLabel();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide yAxisLabel getter and setter', () => {
-                    let previous = lineChart.yAxisLabel(),
-                        expected = 'valueSet',
-                        actual;
-
-                    lineChart.yAxisLabel(expected);
-                    actual = lineChart.yAxisLabel();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it('should provide yAxisLabelPadding getter and setter', () => {
-                    let previous = lineChart.yAxisLabelPadding(),
-                        expected = 100,
-                        actual;
-
-                    lineChart.yAxisLabelPadding(expected);
-                    actual = lineChart.yAxisLabelPadding();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
-                });
-
-                it ('should have shouldShowAllDataPoints getter and setter', () => {
-                    let previous = lineChart.shouldShowAllDataPoints(),
-                        expected = true,
-                        actual;
-
-                    lineChart.shouldShowAllDataPoints(expected);
-                    actual = lineChart.shouldShowAllDataPoints();
-
-                    expect(previous).not.toBe(expected);
-                    expect(actual).toBe(expected);
+                it('should render a chart with two lines', () => {
+                    const expected = 2;
+                    const actual = containerFixture.select('.chart-group').selectAll('path').nodes().length;
+
+                    expect(actual).toEqual(expected);
                 });
             });
 
@@ -688,9 +327,9 @@ define([
                     f.clearCache();
                 });
 
-                describe('when shouldShowAllDataPoints is true', function() {
+                describe('when shouldShowAllDataPoints is true', function () {
 
-                    beforeEach(function() {
+                    beforeEach(function () {
                         lineChart = chart().shouldShowAllDataPoints(true);
 
                         containerFixture = d3.select('.test-container').append('svg');
@@ -709,16 +348,16 @@ define([
                             accum + dataPoint.topics.length
                         ), 0);
                         let actual = containerFixture.select('.data-points-container')
-                                       .selectAll('circle')
-                                       .nodes().length;
+                            .selectAll('circle')
+                            .nodes().length;
 
                         expect(actual).toEqual(expected);
                     });
 
                     it('each data circle has proper attributes', () => {
                         let circles = containerFixture.select('.data-points-container')
-                                        .selectAll('circle')
-                                        .nodes();
+                            .selectAll('circle')
+                            .nodes();
 
                         circles.forEach((circle) => {
                             expect(circle).toHaveAttr('class', 'data-point-mark');
@@ -729,13 +368,6 @@ define([
                         });
 
                     });
-                });
-            });
-
-            describe('Export chart functionality', () => {
-
-                it('should have exportChart defined', () => {
-                    expect(lineChart.exportChart).toBeDefined();
                 });
             });
 
@@ -757,9 +389,9 @@ define([
                     f.clearCache();
                 });
 
-                describe('when grid is horizontal', function() {
+                describe('when grid is horizontal', function () {
 
-                    beforeEach(function() {
+                    beforeEach(function () {
                         lineChart = chart().grid('horizontal');
 
                         containerFixture = d3.select('.test-container').append('svg');
@@ -772,9 +404,9 @@ define([
                     });
                 });
 
-                describe('when grid is vertical', function() {
+                describe('when grid is vertical', function () {
 
-                    beforeEach(function() {
+                    beforeEach(function () {
                         lineChart = chart().grid('vertical');
 
                         containerFixture = d3.select('.test-container').append('svg');
@@ -787,9 +419,9 @@ define([
                     });
                 });
 
-                describe('when grid is full', function() {
+                describe('when grid is full', function () {
 
-                    beforeEach(function() {
+                    beforeEach(function () {
                         lineChart = chart().grid('full');
 
                         containerFixture = d3.select('.test-container').append('svg');
@@ -845,8 +477,8 @@ define([
                     beforeEach(() => {
                         dataset = aTestDataSet().withOneSource().build();
                         lineChart = chart()
-                                        .xAxisLabel('valueSetX')
-                                        .yAxisLabel('valueSetY');
+                            .xAxisLabel('valueSetX')
+                            .yAxisLabel('valueSetY');
 
                         // DOM Fixture Setup
                         f = jasmine.getFixtures();
@@ -877,6 +509,403 @@ define([
 
                         expect(actual).toEqual(expected);
                     });
+                });
+            });
+
+            describe('API', () => {
+
+                describe('Aspect Ratio', () => {
+
+                    it('should provide an aspect ratio getter and setter', () => {
+                        let previous = lineChart.aspectRatio(),
+                            expected = 600,
+                            actual;
+
+                        lineChart.aspectRatio(expected);
+                        actual = lineChart.aspectRatio();
+
+                        expect(previous).not.toBe(expected);
+                        expect(actual).toBe(expected);
+                    });
+
+                    describe('when an aspect ratio is set', function () {
+
+                        it('should modify the height depending on the width', () => {
+                            let testAspectRatio = 0.5,
+                                testWidth = 400,
+                                newHeight;
+
+                            lineChart.aspectRatio(testAspectRatio);
+                            lineChart.width(testWidth);
+                            newHeight = lineChart.height();
+
+                            expect(newHeight).toBe(Math.ceil(testWidth * testAspectRatio));
+                        });
+
+                        it('should modify the width depending on the height', () => {
+                            let testAspectRatio = 0.5,
+                                testHeight = 400,
+                                newWidth;
+
+                            lineChart.aspectRatio(testAspectRatio);
+                            lineChart.height(testHeight);
+                            newWidth = lineChart.width();
+
+                            expect(newWidth).toBe(Math.ceil(testHeight / testAspectRatio));
+                        });
+                    });
+                });
+
+                it('should provide an axisTimeCombinations accessor', () => {
+                    let axisTimeCombinations = lineChart.axisTimeCombinations;
+
+                    expect(axisTimeCombinations).toEqual({
+                        MINUTE_HOUR: 'minute-hour',
+                        HOUR_DAY: 'hour-daymonth',
+                        DAY_MONTH: 'day-month',
+                        MONTH_YEAR: 'month-year',
+                        CUSTOM: 'custom'
+                    });
+                });
+
+                describe('Export', () => {
+
+                    it('should have exportChart defined', () => {
+                        expect(lineChart.exportChart).toBeDefined();
+                    });
+                });
+
+                it('should provide a colorSchema getter and setter', () => {
+                    let previous = lineChart.colorSchema(),
+                        expected = ['#ffffff', '#fafefc', '#000000'],
+                        actual;
+
+                    lineChart.colorSchema(expected);
+                    actual = lineChart.colorSchema();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide dateLabel getter and setter', () => {
+                    let previous = lineChart.dateLabel(),
+                        expected = 'dateUTC',
+                        actual;
+
+                    lineChart.dateLabel(expected);
+                    actual = lineChart.dateLabel();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide grid mode getter and setter', () => {
+                    let previous = lineChart.grid(),
+                        expected = 'vertical',
+                        actual;
+
+                    lineChart.grid(expected);
+                    actual = lineChart.grid();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide height getter and setter', () => {
+                    let previous = lineChart.height(),
+                        expected = 200,
+                        actual;
+
+                    lineChart.height(expected);
+                    actual = lineChart.height();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide animation getter and setter', () => {
+                    let previous = lineChart.isAnimated(),
+                        expected = true,
+                        actual;
+
+                    lineChart.isAnimated(expected);
+                    actual = lineChart.isAnimated();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                describe('margin', () => {
+                    it('should provide margin getter and setter', () => {
+                        let previous = lineChart.margin(),
+                            expected = { top: 4, right: 4, bottom: 4, left: 4 },
+                            actual;
+
+                        lineChart.margin(expected);
+                        actual = lineChart.margin();
+
+                        expect(previous).not.toBe(expected);
+                        expect(actual).toEqual(expected);
+                    });
+
+                    describe('when margins are set partially', function () {
+
+                        it('should override the default values', () => {
+                            let previous = lineChart.margin(),
+                                expected = {
+                                    ...previous,
+                                    top: 10,
+                                    right: 20
+                                },
+                                actual;
+
+                            lineChart.width(expected);
+                            actual = lineChart.width();
+
+                            expect(previous).not.toBe(actual);
+                            expect(actual).toEqual(expected);
+                        })
+                    });
+                });
+
+                it('should not have numberFormat by default', () => {
+                    let expected = undefined,
+                        actual;
+
+                    actual = lineChart.numberFormat();
+
+                    expect(expected).toBe(actual);
+                });
+
+                it('should provide numberFormat getter and setter', () => {
+                    let previous = lineChart.numberFormat(),
+                        expected = 'd',
+                        actual;
+
+                    lineChart.numberFormat(expected);
+                    actual = lineChart.numberFormat();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide lineCurve getter and setter', () => {
+                    let previous = lineChart.lineCurve(),
+                        expected = 'basis',
+                        actual;
+
+                    lineChart.lineCurve(expected);
+                    actual = lineChart.lineCurve();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide lineGradient getter and setter', () => {
+                    let previous = lineChart.lineGradient(),
+                        expected = ['#ddd', '#ccc'],
+                        actual;
+
+                    lineChart.lineGradient(expected);
+                    actual = lineChart.lineGradient();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide loadingState getter and setter', () => {
+                    let previous = lineChart.loadingState(),
+                        expected = 'test',
+                        actual;
+
+                    lineChart.loadingState(expected);
+                    actual = lineChart.loadingState();
+
+                    expect(previous).not.toBe(actual);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide locale getter and setter', () => {
+                    let previous = lineChart.locale(),
+                        expected = 'en-US',
+                        actual;
+
+                    lineChart.locale(expected);
+                    actual = lineChart.locale();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                describe('loadingState', () => {
+
+                    it('should provide a loading state getter and setter', () => {
+                        let previous = lineChart.loadingState(),
+                            expected = '<svg></svg>',
+                            actual;
+
+                        lineChart.loadingState(expected);
+                        actual = lineChart.loadingState();
+
+                        expect(previous).not.toBe(expected);
+                        expect(actual).toBe(expected);
+                    });
+
+                    describe('when getting a loadingState', () => {
+                        it('should return an SVG element', () => {
+                            let expected = 1,
+                            actual;
+
+                            lineChart = chart();
+                            actual = lineChart.loadingState().match('line-load-state').length;
+
+                            expect(actual).toEqual(expected);
+                        });
+                    });
+                });
+
+                it('should have shouldShowAllDataPoints getter and setter', () => {
+                    let previous = lineChart.shouldShowAllDataPoints(),
+                        expected = true,
+                        actual;
+
+                    lineChart.shouldShowAllDataPoints(expected);
+                    actual = lineChart.shouldShowAllDataPoints();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide a tooltip threshold getter and setter', () => {
+                    let previous = lineChart.tooltipThreshold(),
+                        expected = 600,
+                        actual;
+
+                    lineChart.tooltipThreshold(expected);
+                    actual = lineChart.tooltipThreshold();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide topicLabel getter and setter', () => {
+                    let previous = lineChart.topicLabel(),
+                        expected = 'valueSet',
+                        actual;
+
+                    lineChart.topicLabel(expected);
+                    actual = lineChart.topicLabel();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide valueLabel getter and setter', () => {
+                    let previous = lineChart.valueLabel(),
+                        expected = 'quantity',
+                        actual;
+
+                    lineChart.valueLabel(expected);
+                    actual = lineChart.valueLabel();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide width getter and setter', () => {
+                    let previous = lineChart.width(),
+                        expected = 200,
+                        actual;
+
+                    lineChart.width(expected);
+                    actual = lineChart.width();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide xAxisLabel getter and setter', () => {
+                    let previous = lineChart.xAxisLabel(),
+                        expected = 'valueSet',
+                        actual;
+
+                    lineChart.xAxisLabel(expected);
+                    actual = lineChart.xAxisLabel();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide a xTicks getter and setter', () => {
+                    let previous = lineChart.xTicks(),
+                        expected = 2,
+                        actual;
+
+                    lineChart.xTicks(expected);
+                    actual = lineChart.xTicks();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide a xAxisFormat getter and setter', () => {
+                    let previous = lineChart.xAxisFormat(),
+                        expected = lineChart.axisTimeCombinations.HOUR_DAY,
+                        actual;
+
+                    lineChart.xAxisFormat(expected);
+                    actual = lineChart.xAxisFormat();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide a xAxisCustomFormat getter and setter', () => {
+                    let previous = lineChart.xAxisCustomFormat(),
+                        expected = '%d %b',
+                        actual;
+
+                    lineChart.xAxisCustomFormat(expected);
+                    actual = lineChart.xAxisCustomFormat();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide yTicks getter and setter', () => {
+                    let previous = lineChart.yTicks(),
+                        expected = 3,
+                        actual;
+
+                    lineChart.yTicks(expected);
+                    actual = lineChart.yTicks();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide yAxisLabel getter and setter', () => {
+                    let previous = lineChart.yAxisLabel(),
+                        expected = 'valueSet',
+                        actual;
+
+                    lineChart.yAxisLabel(expected);
+                    actual = lineChart.yAxisLabel();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide yAxisLabelPadding getter and setter', () => {
+                    let previous = lineChart.yAxisLabelPadding(),
+                        expected = 100,
+                        actual;
+
+                    lineChart.yAxisLabelPadding(expected);
+                    actual = lineChart.yAxisLabelPadding();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
                 });
             });
         });
