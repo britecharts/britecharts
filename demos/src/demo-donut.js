@@ -107,6 +107,28 @@ function getInlineLegendChart(dataset, optionalColorSchema) {
     }
 }
 
+function getVerticalLegendChart(dataset, optionalColorSchema) {
+    let legendChart = legend(),
+        legendContainer = d3Selection.select('.js-vertical-legend-no-quantity-container'),
+        containerWidth = legendContainer.node() ? legendContainer.node().getBoundingClientRect().width : false;
+
+    if (containerWidth) {
+        d3Selection.select('.js-vertical-legend-no-quantity-container .britechart-legend').remove();
+
+        legendChart
+            .width(containerWidth)
+            .height(100);
+
+        if (optionalColorSchema) {
+            legendChart.colorSchema(optionalColorSchema);
+        }
+
+        legendContainer.datum(dataset).call(legendChart);
+
+        return legendChart;
+    }
+}
+
 function createSmallDonutChart() {
     let donutChart = donut(),
         donutContainer = d3Selection.select('.js-small-donut-chart-container'),
@@ -131,7 +153,14 @@ function createSmallDonutChart() {
 }
 
 function createDonutWithHighlightSliceChart() {
-    let donutChart = donut(),
+    let dataNoQuantity = JSON.parse(JSON.stringify(datasetWithThreeItems))
+        .map((item) => {
+            delete item.quantity;
+
+            return item;
+        }),
+        legendChart = getVerticalLegendChart(dataNoQuantity),
+        donutChart = donut(),
         donutContainer = d3Selection.select('.js-donut-highlight-slice-chart-container'),
         containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false;
 
@@ -142,8 +171,15 @@ function createDonutWithHighlightSliceChart() {
             .width(containerWidth)
             .height(containerWidth/1.8)
             .externalRadius(containerWidth/5)
-            .internalRadius(containerWidth/10);
+            .internalRadius(containerWidth/10)
+            .on('customMouseOver', function (slice) {
+                legendChart.highlight(slice.data.id);
+            })
+            .on('customMouseOut', function () {
+                legendChart.highlight(11);
+            });
 
+        legendChart.highlight(11);
         donutContainer.datum(datasetWithThreeItems).call(donutChart);
     }
 }
