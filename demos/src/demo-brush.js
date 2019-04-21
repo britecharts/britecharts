@@ -55,9 +55,14 @@ if (d3Selection.select('.js-brush-chart-container').node()){
     let brushChart = createBrushChart();
 
     const redrawCharts = function () {
-        d3Selection.select('.brush-chart').remove();
+        const brushContainer = d3Selection.select('.js-brush-chart-container');
+        const containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false;
 
-        brushChart = createBrushChart();
+        brushChart
+            .width(containerWidth)
+            .dateRange([null, null]);
+
+        brushContainer.call(brushChart);
     };
 
     // Redraw charts on window resize
