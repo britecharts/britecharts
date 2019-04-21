@@ -172,8 +172,8 @@ function createDonutWithHighlightSliceChart() {
             .height(containerWidth/1.8)
             .externalRadius(containerWidth/5)
             .internalRadius(containerWidth/10)
-            .on('customMouseOver', function (data) {
-                legendChart.highlight(data.data.id);
+            .on('customMouseOver', function (slice) {
+                legendChart.highlight(slice.data.id);
             })
             .on('customMouseOut', function () {
                 legendChart.highlight(11);

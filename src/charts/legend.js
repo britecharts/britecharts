@@ -241,7 +241,7 @@ define(function(require){
 
             return data
                 .reduce((acc, d) => {
-                    if (d.quantity !== undefined) {
+                    if (d.quantity !== undefined && d.quantity !== null) {
                         d.quantity = +d.quantity;
                     }
                     d.name = String(d.name);
@@ -373,17 +373,7 @@ define(function(require){
                 .style('letter-spacing', `${textLetterSpacing}px`);
 
             if (hasQuantities) {
-                svg.select('.legend-group')
-                    .selectAll('g.legend-line')
-                    .selectAll('g.legend-entry')
-                  .append('text')
-                    .classed('legend-entry-value', true)
-                    .text(getFormattedQuantity)
-                    .attr('x', chartWidth - valueReservedSpace)
-                    .style('font-size', `${textSize}px`)
-                    .style('letter-spacing', `${numberLetterSpacing}px`)
-                    .style('text-anchor', 'end')
-                    .style('startOffset', '100%');
+                writeEntryValues();
             } else {
                 centerVerticalLegendOnSVG();
             }
@@ -441,6 +431,25 @@ define(function(require){
 
             lastEntry.attr('transform', `translate(${markerSize},0)`);
             newLine.append(() => lastEntry.node());
+        }
+
+        /**
+         * Draws the data entry quantities within the legend-entry lines
+         * @return {void}
+         * @private
+         */
+        function writeEntryValues() {
+            svg.select('.legend-group')
+                .selectAll('g.legend-line')
+                .selectAll('g.legend-entry')
+              .append('text')
+                .classed('legend-entry-value', true)
+                .text(getFormattedQuantity)
+                .attr('x', chartWidth - valueReservedSpace)
+                .style('font-size', `${textSize}px`)
+                .style('letter-spacing', `${numberLetterSpacing}px`)
+                .style('text-anchor', 'end')
+                .style('startOffset', '100%');
         }
 
         // API
