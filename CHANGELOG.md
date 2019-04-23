@@ -1,4 +1,10 @@
-2.10.1
+2.11.0
+------
+* Feature - Disable donut hover effect with hasHoverAnimation. Thanks @DalerAsrorov!
+* Feature - Vertical legend with optional quantities + demo
+* Feature - Changing default Line chart data schema to a flat list. Keeps compatibility with previous "dataByTopic" schema
+* Fix - Fixed Brush chart reload issue
+
 2.10.1
 ------
 * Fix - Added Heatmap to bundle
