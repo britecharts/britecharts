@@ -332,8 +332,7 @@ define(function(require) {
          * @return {void}
          */
         function drawBrush() {
-            chartBrush = svg.select('.brush-group')
-                                .call(brush);
+            chartBrush = svg.select('.brush-group').call(brush);
 
             // Update the height of the brushing rectangle
             chartBrush.selectAll('rect')
