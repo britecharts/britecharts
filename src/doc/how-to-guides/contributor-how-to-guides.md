@@ -69,8 +69,19 @@ Adding a new chart is a bunch of work, but we hope that using the current code a
 1. Once you have addressed all the comments and got the green light, the maintainers will merge the PR
 
 
+## How to Setup your environment with Docker
+Docker makes it easier to get started contributing to Britecharts. In this how to, we describe the process to set up the developer environment using a Docker container. To use this approach, you will need to have [Docker][docker] running in your machine.
+
+1. Go to the root of the repository, and with Docker running, type `make build`. This will install the dependencies inside a Docker container (disregard `fsevents` related warnings)
+1. Run `make run` in the console to start the project
+1. You should be able to open `http://localhost:1234` and see Britecharts working
+
+You can check the rest of make commands on the `Makefile` in the root of the repository.
+
+
 [styleguide]: https://github.com/eventbrite/britecharts/blob/master/CODESTYLEGUIDE.md
 [contributing]: https://github.com/eventbrite/britecharts/blob/master/.github/CONTRIBUTING.md
 [issues]: https://github.com/eventbrite/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc
 [PRTemplate]: https://github.com/eventbrite/britecharts/blob/master/.github/PULL_REQUEST_TEMPLATE.md
 [makeAPR]: http://makeapullrequest.com/
+[docker]: https://docs.docker.com/
