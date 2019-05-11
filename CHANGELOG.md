@@ -1,5 +1,4 @@
 2.11.0
-2.11.0
 ------
 * Feature - Disable donut hover effect with hasHoverAnimation. Thanks @DalerAsrorov!
 * Feature - Vertical legend with optional quantities + demo
