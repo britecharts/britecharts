@@ -5,7 +5,7 @@ module.exports = (function() {
 
     return {
         chartDependencies: [
-            'helpers/colors',
+            'helpers/color',
             'legend',
             'tooltip',
             'mini-tooltip'

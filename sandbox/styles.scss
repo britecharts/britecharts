@@ -1,3 +1,10 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: "Whitney SSm A", "Whitney SSm B", "Lato", "Lucida Grande", "Lucida Sans Unicode", Tahoma, Sans-Serif;
+}
+
 #dataInput {
     width: 400px;
     height: 300px;
@@ -75,11 +82,7 @@
     color: #555;
     font-size: 15px;
 }
-html, body {
-    padding: 0;
-    margin: 0;
-    font-family: "Whitney SSm A", "Whitney SSm B", "Lato", "Lucida Grande", "Lucida Sans Unicode", Tahoma, Sans-Serif;
-}
+
 
 .notification__error {
     margin: 0 -9999rem;
