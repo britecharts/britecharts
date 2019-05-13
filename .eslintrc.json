@@ -40,7 +40,7 @@
         "radix": 1,
         "vars-on-top" : 1,
         "wrap-iife": [2, "inside"]
-    }, 
+    },
     "parserOptions": {
        "sourceType": "module",
        "ecmaFeatures": {
