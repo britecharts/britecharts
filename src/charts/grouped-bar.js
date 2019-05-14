@@ -706,7 +706,7 @@ define(function (require) {
          * Click handler, shows data that was clicked and passes to the user
          * @private
          */
-        function handleCustomClick (e, d) {
+        function handleCustomClick (e) {
             let [mouseX, mouseY] = getMousePosition(e);
             let dataPoint = isHorizontal ? getNearestDataPoint2(mouseY) : getNearestDataPoint(mouseX);
 
