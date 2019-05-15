@@ -44,6 +44,7 @@ define(function(require) {
      */
     function exportChart(d3svg, filename, title) {
         if (isIE) {
+            // eslint-disable-next-line no-console
             console.error(IE_ERROR_MSG);
 
             return false;
