@@ -22,10 +22,13 @@
 - [ ] Breaking change (fix or feature that would cause existing functionality to change)
 
 ## Checklist:
-<!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
-<!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
-- [ ] I have read the **CONTRIBUTING** document.
-- [ ] My code follows the [code style guide](https://github.com/eventbrite/britecharts/blob/master/CODESTYLEGUIDE.md) of this project.
-- [ ] I have updated the documentation accordingly.
-- [ ] I have added tests to cover my changes.
-- [ ] All new and existing tests passed.
+<!--- Review the list before submitting your pull request -->
+<!--- Leave the list intact for the code reviewer's use -->
+- [ ] Latest master code has been merged into this branch
+- [ ] No commented out code (if required, place // TODO above with explanation)
+- [ ] No linting issues
+- [ ] Build is successful
+- [ ] Code follows the [code style guide](https://github.com/eventbrite/britecharts/blob/master/CODESTYLEGUIDE.md)
+- [ ] Updated the documentation
+- [ ] Added tests to cover changes
+- [ ] All new and existing tests passed

@@ -1,4 +1,5 @@
 <!--- Provide a general summary of the issue in the Title above -->
+<!--- Look through existing open and closed issues to see if someone has reported the issue before -->
 
 ## Expected Behavior
 <!--- If you're describing a bug, tell us what should happen -->
@@ -28,7 +29,7 @@
 
 ## Your Environment
 <!--- Include as many relevant details about the environment you experienced the bug in -->
-* Version used:
+* Britecharts version used:
 * Browser Name and version:
 * Operating System and version:
 * Link to your project or codepen:
