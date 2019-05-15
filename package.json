@@ -72,8 +72,7 @@
   "dependencies": {
     "base-64": "^0.1.0",
     "d3": "^5.9.2",
-    "lodash.assign": "^4.2.0",
-    "rimraf": "^2.6.3"
+    "lodash.assign": "^4.2.0"
   },
   "devDependencies": {
     "babel-core": "6.26.3",
@@ -121,6 +120,7 @@
     "moment": "2.24.0",
     "node-gyp": "4.0.0",
     "node-sass": "4.12.0",
+    "rimraf": "^2.6.3",
     "phantomjs-polyfill-find": "ptim/phantomjs-polyfill-find",
     "prismjs": "1.16.0",
     "pubsub-js": "1.7.0",
