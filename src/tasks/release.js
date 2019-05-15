@@ -30,12 +30,4 @@ module.exports = function(grunt) {
 
         grunt.task.run(bumpTask);
     });
-
-    grunt.registerTask('bump-dist', function() {
-        shell.exec(path.resolve(__dirname, './helpers/push_dist.sh'));
-    });
-
-    grunt.registerTask('untrack', function() {
-        shell.exec(path.resolve(__dirname, './helpers/untrack.sh'));
-    });
 };

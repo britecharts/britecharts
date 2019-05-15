@@ -2,7 +2,7 @@ engines:
   eslint:
     enabled: true
     config:
-        config: .eslintrc.json
+        config: .eslintrc.js
 
 ratings:
    paths:
