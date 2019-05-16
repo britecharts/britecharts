@@ -64,7 +64,6 @@ exports.noParseD3Vendor = () => ({
     }
 });
 
-
 exports.externals = () => ({
     externals: {
         d3: 'd3'

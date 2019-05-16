@@ -62,9 +62,9 @@ const errors = [];
 // move to constants
 const dataEditorWidth = '400px';
 
-require('./styles.scss');
-window.d3 = d3;
+require('./styles/styles.scss');
 
+window.d3 = d3;
 
 // start the sandbox
 main();
