@@ -5,7 +5,7 @@ module.exports = (function() {
 
     return {
         chartDependencies: [
-            'helpers/colors',
+            'helpers/color',
             'legend',
             'tooltip',
             'mini-tooltip'
@@ -88,25 +88,24 @@ module.exports = (function() {
         },
         domClassNames: {
             // chart selector
-            chartSelectorContainerClass: 'chart-selector-container',
+            chartSelectorContainerClass: 'js-chart-selector-container',
             chartSelectorClass: 'chart-selector',
 
             // data selector
-            dataSelectorContainerClass: 'data-selector-container',
+            dataSelectorContainerClass: 'js-data-selector-container',
             dataSelectorClass: 'data-selector',
 
             // chart containers
             britechartContainerClass: 'britechart-container',
-            britechartPlaceHolderClass: 'chart-container-place-holder',
+            britechartPlaceHolderClass: 'js-chart-container-placeholder',
             // data input
-            dataSubmitButtonClass: 'data-display__submit',
-            dataResetButtonClass: 'data-display__reset',
-            dataInputSizeToggleClass: 'data-display__toggle-size',
+            dataSubmitButtonClass: 'js-data-display__submit',
+            dataResetButtonClass: 'js-data-display__reset',
             // config inoput
-            configSubmitButtonClass: 'config-display__submit',
-            configResetButtonClass: 'config-display__reset',
-            configAddTooltipClass: 'config-panel__add-tooltip',
-            configAddMiniTooltipClass: 'config-panel__add-mini-tooltip',
+            configSubmitButtonClass: 'js-config-display__submit',
+            configResetButtonClass: 'js-config-display__reset',
+            configAddTooltipClass: 'js-config-panel__add-tooltip',
+            configAddMiniTooltipClass: 'js-config-panel__add-mini-tooltip',
             // other
             genericSelectBoxClass: 'select-box',
             notificationBarClass: 'notification-bar',

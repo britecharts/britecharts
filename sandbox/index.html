@@ -1,44 +1,48 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Sandbox</title>
+        <title>Britecharts Sandbox</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/britecharts/dist/css/britecharts.min.css" type="text/css" />
     </head>
     <body>
-        <div class="notification-bar"></div>
-        <div class="display-container">
-            <h1>Sandbox!</h1>
-            <button onclick="(function(){localStorage.clear()})()">Clear local storage</button>
-
-            <div class="main-display">
-                <div class="chart-panel">
-                    <div class="chart-selector-container select-box-container"></div>
-                    <div class="chart-container-place-holder"></div>
-                </div>
-                <div class="config-panel">
-
-                    <div class="button-panel">
-                        <button class="button config-panel__add-tooltip">Tooltip</button>
-
-                        <button class="button config-panel__add-mini-tooltip">MiniTooltip</button>
+        <main class="sandbox">
+            <section class="sandbox__container">
+                <div class="notification-bar"></div>
+                <header class="sandbox__header">
+                    <h1 class="sandbox__title">Britecharts Sandbox</h1>
+                    <button class="sandbox__button sandbox__button--reset" onclick="(function(){localStorage.clear()})()">Clear local storage</button>
+                </header>
+                <div class="sandbox__body">
+                    <div class="sandbox__panel sandbox__panel--chart">
+                        <h2>Chart</h2>
+                        <div class="js-chart-selector-container sandbox__select-box-container"></div>
+                        <div class="js-chart-container-placeholder"></div>
                     </div>
-                    <div id="chartConfigInput"></div>
-                    <div class="button-panel">
-                        <button class="button button__update config-display__submit">Update</button>
-                        <button class="button button__reset config-display__reset">Reset</button>
+                    <div class="sandbox__panel sandbox__panel--config">
+                        <h2>Configuration</h2>
+                        <div class="sandbox__button-panel">
+                            <button class="sandbox__button js-config-panel__add-tooltip">Add Tooltip</button>
+                            <button class="sandbox__button js-config-panel__add-mini-tooltip">Add Mini-Tooltip</button>
+                        </div>
+                        <div class="sandbox__config-input" id="chartConfigInput"></div>
+                        <div class="sandbox__button-panel">
+                            <button class="sandbox__button sandbox__button--update js-config-display__submit">Update Chart</button>
+                            <button class="sandbox__button sandbox__button--reset js-config-display__reset">Reset Config</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="data-display">
-                <button class="data-display__toggle-size">Toggle Expand</button>
-                <div class="data-selector-container select-box-container"></div>
-                <div id="dataInput"></div>
-                <div class="button-panel">
-                    <button class="data-display__submit button button__update">Update</button>
-                    <button class="data-display__reset button button__reset">Reset</button>
-                </div>
-            </div>
-        </div>
+                <aside class="sandbox__panel sandbox__panel--data">
+                    <h2>Data</h2>
+                    <div class="js-data-selector-container sandbox__select-box-container"></div>
+                    <div class="sandbox__data-input" id="dataInput"></div>
+                    <div class="sandbox__button-panel">
+                        <button class="js-data-display__submit sandbox__button sandbox__button--update">Update Chart</button>
+                        <button class="js-data-display__reset sandbox__button sandbox__button--reset">Reset Data</button>
+                    </div>
+                </aside>
+            </section>
+        </main>
         <script src="/assets/sandbox.js"></script>
     </body>
 </html>
+
