@@ -514,6 +514,25 @@ define([
 
             describe('API', () => {
 
+                beforeEach(() => {
+                    dataset = aTestDataSet().withOneSource().build();
+                    lineChart = chart();
+                    // DOM Fixture Setup
+                    f = jasmine.getFixtures();
+                    f.fixturesPath = 'base/test/fixtures/';
+                    f.load('testContainer.html');
+
+                    containerFixture = d3.select('.test-container');
+                    containerFixture.datum(dataset).call(lineChart);
+                });
+
+                afterEach(() => {
+                    containerFixture.remove();
+                    f = jasmine.getFixtures();
+                    f.cleanUp();
+                    f.clearCache();
+                });
+
                 describe('Aspect Ratio', () => {
 
                     it('should provide an aspect ratio getter and setter', () => {
@@ -528,7 +547,7 @@ define([
                         expect(actual).toBe(expected);
                     });
 
-                    describe('when an aspect ratio is set', function () {
+                    describe('when an aspect ratio is set', () => {
 
                         it('should modify the height depending on the width', () => {
                             let testAspectRatio = 0.5,
@@ -648,7 +667,7 @@ define([
                         expect(actual).toEqual(expected);
                     });
 
-                    describe('when margins are set partially', function () {
+                    describe('when margins are set partially', () => {
 
                         it('should override the default values', () => {
                             let previous = lineChart.margin(),
