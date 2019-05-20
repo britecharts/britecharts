@@ -137,6 +137,25 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                 });
             });
 
+            describe('when margins are set partially', function () {
+
+                it('should override the default values', () => {
+                    let previous = legendChart.margin(),
+                        expected = {
+                            ...previous,
+                            top: 10,
+                            right: 20
+                        },
+                        actual;
+
+                    legendChart.width(expected);
+                    actual = legendChart.width();
+
+                    expect(previous).not.toBe(actual);
+                    expect(actual).toEqual(expected);
+                })
+            });
+
             describe('API', function() {
 
                 it('should provide margin getter and setter', () =>{
@@ -290,25 +309,6 @@ define(['d3', 'legend', 'donutChartDataBuilder'], function(d3, legend, dataBuild
                     expect(actual).toBe(expected);
                 });
             });
-        });
-
-        describe('when margins are set partially', function() {
-
-            it('should override the default values', () => {
-                let previous = legendChart.margin(),
-                expected = {
-                    ...previous,
-                    top: 10,
-                    right: 20
-                },
-                actual;
-
-                legendChart.width(expected);
-                actual = legendChart.width();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toEqual(expected);
-            })
         });
 
         describe('when legend is horizontal', () => {
