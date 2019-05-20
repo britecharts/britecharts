@@ -171,13 +171,11 @@ define(function(require){
         }
 
         /**
-         * Builds color scale for chart, if any colorSchema was defined
+         * Builds color scale for chart
          * @private
          */
         function buildColorScale() {
-            if (colorSchema) {
-                colorScale = d3Scale.scaleOrdinal().range(colorSchema);
-            }
+            colorScale = d3Scale.scaleOrdinal().range(colorSchema);
         }
 
         /**
