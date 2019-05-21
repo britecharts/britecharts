@@ -19,6 +19,14 @@ module.exports = (function() {
                 },
                 initialDataType: 'basicBar',
             },
+            brush: {
+                ...baseConfig,
+                chartConfig: {
+                    width: 300,
+                    height: 150
+                },
+                initialDataType: 'basicBrush'
+            },
             donut: {
                 ...baseConfig,
                 chartConfig: {
@@ -26,6 +34,21 @@ module.exports = (function() {
                     height: 300,
                 },
                 initialDataType: 'basicDonut',
+            },
+            legend: {
+                ...baseConfig,
+                chartConfig: {
+                    isHorizontal: true,
+                    margin: {
+                        top: 20,
+                        bottom: 20,
+                        left: 20,
+                        right: 20
+                    },
+                    width: 300,
+                    height: 300
+                },
+                initialDataType: 'basicLegend'
             },
             line: {
                 ...baseConfig,
@@ -49,14 +72,6 @@ module.exports = (function() {
                     height: 150
                 },
                 initialDataType: 'basicSparkLine'
-            },
-            brush: {
-                ...baseConfig,
-                chartConfig: {
-                    width: 300,
-                    height: 150
-                },
-                initialDataType: 'basicBrush'
             },
             step: {
                 ...baseConfig,
