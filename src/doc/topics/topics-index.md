@@ -1,37 +1,8 @@
 # Topics
 In this section we discuss important concepts for Britecharts, giving context to some of our code decisions and helping understand why we have created the library this way.
 
-<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
-
-<!-- code_chunk_output -->
-
-* [Topics](#topics)
-	* [Code Standards](#code-standards)
-		* [Test Driven Development](#test-driven-development)
-		* [JSDoc Generated Documentation](#jsdoc-generated-documentation)
-	* [The Reusable Chart API](#the-reusable-chart-api)
-	* [API Guidelines](#api-guidelines)
-		* [General Considerations](#general-considerations)
-		* [Variable and function names length](#variable-and-function-names-length)
-		* [Event dispatchers](#event-dispatchers)
-		* [Booleans](#booleans)
-		* [Commands](#commands)
-		* [Data labels](#data-labels)
-		* [Formats](#formats)
-		* [Ticks and Axis](#ticks-and-axis)
-	* [Code Structure](#code-structure)
-	* [Project Structure](#project-structure)
-	* [Helpers](#helpers)
-	* [Append Indentation](#append-indentation)
-	* [The Build System](#the-build-system)
-		* [ES2015 transpiling](#es2015-transpiling)
-		* [The Tasks](#the-tasks)
-
-<!-- /code_chunk_output -->
-
-
 ## Code Standards
-We have followed a couple of standards in this project: [JSDoc](http://usejsdoc.org) comments and Test Driven Development. You can also check other info in our code [style guide][styleguide].
+We have followed a couple of standards in this project: [JSDoc](http://usejsdoc.org) comments and Test Driven Development. You can also check other info in our [API guidelines][styleguide].
 
 ### Test Driven Development
 D3.js charts are complex systems. As other Software Development projects, they start simple and become bloated at the end of the process. To overcome this, we have followed a component approach that allows us to create easily testable units.
@@ -338,7 +309,7 @@ The build sequence consists of a small set of [Node][node] tasks. While you'll p
 
 
 [node]: http://nodejs.org
-[styleguide]: https://github.com/eventbrite/britecharts/blob/master/CODESTYLEGUIDE.md
+[styleguide]: http://eventbrite.github.io/britecharts/topics-index.html#toc5__anchor
 [yarn]: https://yarnpkg.com/lang/en/docs/install/
 [reusableAPI]: https://www.eventbrite.com/engineering/leveling-up-d3-the-reusable-chart-api/
 [towardsReusableCharts]: http://bost.ocks.org/mike/chart/
