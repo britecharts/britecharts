@@ -28,7 +28,7 @@
 - [ ] No commented out code (if required, place // TODO above with explanation)
 - [ ] No linting issues
 - [ ] Build is successful
-- [ ] Code follows the [code style guide](https://github.com/eventbrite/britecharts/blob/master/CODESTYLEGUIDE.md)
+- [ ] Code follows the [API Guidelines](http://eventbrite.github.io/britecharts/topics-index.html#toc5__anchor)
 - [ ] Updated the documentation
 - [ ] Added tests to cover changes
 - [ ] All new and existing tests passed

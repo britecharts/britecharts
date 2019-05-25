@@ -1,17 +1,6 @@
 # Contributor How To Guides
 Our contributor how to guides are recipes to address specific use cases when working with Britecharts. They assume contributor knowledge about Britecharts and the library structure. If this is the first time you contribute to Britecharts, we recommend you to read the [Contributing Guide][contributing] first.
 
-<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
-
-<!-- code_chunk_output -->
-
-* [Contributor How To Guides](#contributor-how-to-guides)
-	* [How to Create a Pull Request](#how-to-create-a-pull-request)
-	* [How to Modify a Chart](#how-to-modify-a-chart)
-	* [How to Create a New Chart](#how-to-create-a-new-chart)
-
-<!-- /code_chunk_output -->
-
 ## How to Create a Pull Request
 When you have a branch that you want to contribute back to Britecharts, you need to create a Pull Request(PR) to propose the addition of the code. Follow these steps:
 
@@ -37,7 +26,7 @@ We have created our charts with a Tests First approach, and we encourage you to 
 1. Write a failing test for the API accessor or the feature you want to add
 1. On a new terminal, run ``yarn run test``
 1. Check that the test fails
-1. Write the code that would make that test pass on the chart located in ``/src/charts/``. Please follow our code [style guide][styleguide].
+1. Write the code that would make that test pass on the chart located in ``/src/charts/``. Please follow our [API Guidelines][styleguide].
 1. Make the test pass by writing the less amount of code
 1. Refactor until you get a nice and clean code
 1. Add/update the JSDoc comments so that the proper documentation gets generated when you run ``yarn run docs``
@@ -62,7 +51,7 @@ Adding a new chart is a bunch of work, but we hope that using the current code a
     2. Include the new demo page to the ``currentDemos`` object, keeping the same format
 8. Go to your test file ``ChartName.spec.js`` and, taking another test as an example, copy over pieces until you have the first test case
 1. Add one test and make it fail by calling ``yarn run test``
-1. Keep on coding according to our code [style guide][styleguide]
+1. Keep on coding according to our [API Guidelines][styleguide]
 1. Once you think you are close to having something working, start adding JSDoc comments to your code
 1. Generate your docs with ``yarn run docs`` and manually test the demos
 1. Create a pull request with your branch and ping one of the core authors to get it reviewed
@@ -79,7 +68,7 @@ Docker makes it easier to get started contributing to Britecharts. In this how t
 You can check the rest of make commands on the `Makefile` in the root of the repository.
 
 
-[styleguide]: https://github.com/eventbrite/britecharts/blob/master/CODESTYLEGUIDE.md
+[styleguide]: http://eventbrite.github.io/britecharts/topics-index.html#toc5__anchor
 [contributing]: https://github.com/eventbrite/britecharts/blob/master/.github/CONTRIBUTING.md
 [issues]: https://github.com/eventbrite/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc
 [PRTemplate]: https://github.com/eventbrite/britecharts/blob/master/.github/PULL_REQUEST_TEMPLATE.md
