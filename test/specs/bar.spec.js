@@ -8,7 +8,6 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             .build();
     };
 
-
     describe('Bar Chart', () => {
         let barChart, dataset, containerFixture, f;
 
@@ -32,170 +31,358 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             f.clearCache();
         });
 
-        it('should render a chart with minimal requirements', () => {
-            expect(containerFixture.select('.bar-chart').empty()).toBeFalsy();
-        });
+        describe('Render', () => {
 
-        it('should render container, axis and chart groups', () => {
-            expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.x-axis-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.y-axis-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.grid-lines-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
-        });
-
-        it('should render grid lines', () => {
-            expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
-        });
-
-        it('should render an X and Y axis', () => {
-            expect(containerFixture.select('.x-axis-group.axis').empty()).toBeFalsy();
-            expect(containerFixture.select('.y-axis-group.axis').empty()).toBeFalsy();
-        });
-
-        it('should render a bar for each data entry', () => {
-            let numBars = dataset.length;
-
-            expect(containerFixture.selectAll('.bar').size()).toEqual(numBars);
-        });
-
-        describe('when reloading with a different dataset', () => {
-
-            it('should render in the same svg', function() {
-                let actual;
-                let expected = 1;
-                let newDataset = buildDataSet('withColors');
-
-                containerFixture.datum(newDataset).call(barChart);
-
-                actual = containerFixture.selectAll('.bar-chart').nodes().length;
+            it('should show a chart with minimal requirements', () => {
+                const expected = 1;
+                const actual = containerFixture.select('.bar-chart').size();
 
                 expect(actual).toEqual(expected);
             });
 
-            // This test fails because of the transition on the exit
-            xit('should render six bars', function() {
-                let actual;
-                let expected = 6;
-                let newDataset = buildDataSet('withColors');
+            describe('groups', () => {
+                it('should create a container-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.container-group').size();
 
-                containerFixture.datum(newDataset).call(barChart);
+                    expect(actual).toEqual(expected);
+                });
 
-                actual = containerFixture.selectAll('.bar-chart .bar').nodes().length;
+                it('should create a chart-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.chart-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a x-axis-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.x-axis-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a y-axis-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.y-axis-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a grid-lines-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.grid-lines-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a metadata-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.metadata-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            it('should draw grid lines', () => {
+                const expected = 1;
+                const actual = containerFixture.select('.horizontal-grid-line').size();
 
                 expect(actual).toEqual(expected);
             });
+
+            describe('axis', () => {
+                it('should draw an X axis', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('.x-axis-group.axis').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should draw an Y axis', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('.y-axis-group.axis').size();
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            it('should draw a bar for each data entry', () => {
+                const expected = dataset.length;
+                const actual = containerFixture.selectAll('.bar').size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            describe('when reloading with a different dataset', () => {
+
+                it('should render in the same svg', function() {
+                    const expected = 1;
+                    const newDataset = buildDataSet('withColors');
+                    let actual;
+
+                    containerFixture.datum(newDataset).call(barChart);
+                    actual = containerFixture.selectAll('.bar-chart').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                // This test fails because of the transition on the exit
+                it('should render six bars', function() {
+                    const expected = 6;
+                    const newDataset = buildDataSet('withColors');
+                    let actual;
+
+                    containerFixture.datum(newDataset).call(barChart);
+                    actual = containerFixture.selectAll('.bar-chart .bar').size();
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('Axis labels', () => {
+
+                it('should show custom x axis label and offset', () => {
+                    const expectedValue = 'labelValue';
+                    const expectedOffset = 20;
+
+                    barChart
+                        .xAxisLabel(expectedValue)
+                        .xAxisLabelOffset(expectedOffset);
+                    containerFixture.datum(dataset).call(barChart);
+
+                    const selection = containerFixture.select('.x-axis-label-text');
+                    const actualValue = selection.text();
+                    const actualOffset = Number(selection.attr('y'));
+
+                    expect(actualValue).toBe(expectedValue);
+                    expect(actualOffset).toBe(expectedOffset);
+                });
+
+                it('should show custom y axis label and offset', () => {
+                    const expectedValue = 'labelValue';
+                    const expectedOffset = 20;
+
+                    barChart
+                        .yAxisLabel(expectedValue)
+                        .yAxisLabelOffset(expectedOffset);
+                    containerFixture.datum(dataset).call(barChart);
+
+                    const selection = containerFixture.select('.y-axis-label-text');
+                    const actualValue = selection.text();
+                    const actualOffset = Number(selection.attr('y'));
+
+                    expect(actualValue).toBe(expectedValue);
+                    expect(actualOffset).toBe(expectedOffset);
+                });
+            });
         });
 
-        describe('when orderingFunction is called', () => {
+        describe('Lifecycle', () => {
+            describe('when orderingFunction is called', () => {
 
-            it('accepts custom descending order function', () => {
-                let fn = (a, b) => b.value - a.value;
-                let actual,
-                    expected = {
+                it('accepts custom descending order function', () => {
+                    const orderFunction = (a, b) => b.value - a.value;
+                    const expected = {
                         name: 'E',
                         value: 0.12702
                     };
+                    let actual;
 
-                barChart.orderingFunction(fn);
-                containerFixture.call(barChart)
-                actual = containerFixture.selectAll('.bar-chart .bar').nodes()[0].__data__;
+                    barChart.orderingFunction(orderFunction);
+                    containerFixture.call(barChart)
+                    actual = containerFixture.selectAll('.bar-chart .bar').nodes()[0].__data__;
 
-                expect(actual.name).toBe(expected.name);
-                expect(actual.value).toBe(expected.value);
-            });
+                    expect(actual.name).toBe(expected.name);
+                    expect(actual.value).toBe(expected.value);
+                });
 
-            it('accepts a custom ascending sorting function', () => {
-                let fn = (a, b) => a.value - b.value;
-                let actual,
-                    expected = {
+                it('accepts a custom ascending sorting function', () => {
+                    const orderFunction = (a, b) => a.value - b.value;
+                    const expected = {
                         name: 'Z',
                         value: 0.00074
                     };
+                    let actual;
 
-                barChart.orderingFunction(fn);
-                containerFixture.call(barChart)
-                actual = containerFixture.selectAll('.bar-chart .bar').nodes()[0].__data__;
+                    barChart.orderingFunction(orderFunction);
+                    containerFixture.call(barChart)
+                    actual = containerFixture.selectAll('.bar-chart .bar').nodes()[0].__data__;
 
-                expect(actual.name).toBe(expected.name);
-                expect(actual.value).toBe(expected.value);
-            });
-        });
-
-        describe('when hasSingleBarHighlight is called', () => {
-
-            it('should darken the original color of the hovered bar', () => {
-                let expectedHasBarHighlight = true;
-                let expectedColor = '#7bdcc0';
-                let expectedHoverColor = 'rgb(86, 154, 134)';
-
-                let actualHasHover = barChart.hasSingleBarHighlight();
-                let bar = containerFixture.selectAll('.bar:nth-child(1)');
-
-                let actualColor = bar.attr('fill');
-
-                bar.dispatch('mouseover');
-                let actualHoverColor = bar.attr('fill');
-
-                expect(actualHasHover).toBe(expectedHasBarHighlight);
-                expect(actualColor).toBe(expectedColor);
-                expect(actualHoverColor).toBe(expectedHoverColor);
+                    expect(actual.name).toBe(expected.name);
+                    expect(actual.value).toBe(expected.value);
+                });
             });
 
-            it('should keep the same hover color of the hovered bar', () => {
-                let expectedHasBarHighlight = false;
-                let expectedColor = '#7bdcc0';
+            describe('when hasSingleBarHighlight is called', () => {
 
-                barChart.hasSingleBarHighlight(false);
-                let actualHasHover = barChart.hasSingleBarHighlight();
-                let bar = containerFixture.selectAll('.bar:nth-child(1)');
-                let actualColor = bar.attr('fill');
+                it('should darken the original color of the hovered bar', () => {
+                    const expectedHasBarHighlight = true;
+                    const expectedColor = '#7bdcc0';
+                    const expectedHoverColor = 'rgb(86, 154, 134)';
 
-                bar.dispatch('mouseover');
-                let hoverColor = bar.attr('fill');
+                    const actualHasHover = barChart.hasSingleBarHighlight();
+                    const bar = containerFixture.selectAll('.bar:nth-child(1)');
+                    const actualColor = bar.attr('fill');
 
-                expect(actualHasHover).toBe(expectedHasBarHighlight);
-                expect(actualColor).toBe(expectedColor);
-                expect(actualColor).toBe(hoverColor);
+                    bar.dispatch('mouseover');
+                    const actualHoverColor = bar.attr('fill');
+
+                    expect(actualHasHover).toBe(expectedHasBarHighlight);
+                    expect(actualColor).toBe(expectedColor);
+                    expect(actualHoverColor).toBe(expectedHoverColor);
+                });
+
+                it('should keep the same hover color of the hovered bar', () => {
+                    const expectedHasBarHighlight = false;
+                    const expectedColor = '#7bdcc0';
+
+                    barChart.hasSingleBarHighlight(false);
+                    const actualHasHover = barChart.hasSingleBarHighlight();
+                    const bar = containerFixture.selectAll('.bar:nth-child(1)');
+                    const actualColor = bar.attr('fill');
+
+                    bar.dispatch('mouseover');
+                    const hoverColor = bar.attr('fill');
+
+                    expect(actualHasHover).toBe(expectedHasBarHighlight);
+                    expect(actualColor).toBe(expectedColor);
+                    expect(actualColor).toBe(hoverColor);
+                });
             });
-        });
 
-        describe('when highlightBarFunction is called', () => {
+            describe('when highlightBarFunction is called', () => {
 
-            it('should change behavior of the hovered bar', () => {
-                let expectedHighlightColor = '#ffffff';
-                let customHighlightFunction = barSelection => barSelection.attr('fill', expectedHighlightColor);
+                it('should change behavior of the hovered bar', () => {
+                    const expectedHighlightColor = '#ffffff';
+                    const customHighlightFunction = barSelection => barSelection.attr('fill', expectedHighlightColor);
 
-                barChart.highlightBarFunction(customHighlightFunction);
-                let bar = containerFixture.selectAll('.bar:nth-child(1)');
+                    barChart.highlightBarFunction(customHighlightFunction);
+                    const bar = containerFixture.selectAll('.bar:nth-child(1)');
 
-                let beforeHighlightColor = bar.attr('fill');
+                    const beforeHighlightColor = bar.attr('fill');
 
-                bar.dispatch('mouseover');
-                let actualHighlightColor = bar.attr('fill');
+                    bar.dispatch('mouseover');
+                    const actualHighlightColor = bar.attr('fill');
 
-                expect(actualHighlightColor).toBe(expectedHighlightColor);
-                expect(beforeHighlightColor).not.toBe(expectedHighlightColor);
+                    expect(actualHighlightColor).toBe(expectedHighlightColor);
+                    expect(beforeHighlightColor).not.toBe(expectedHighlightColor);
+                });
+
+                it('should change the behavior of non-hovered bars when hasSingleBarHighlight is False', () => {
+                    const expectedHighlightColor = '#ffffff';
+                    const customHighlightFunction = barSelection => barSelection.attr('fill', expectedHighlightColor);
+
+                    barChart.hasSingleBarHighlight(false);
+                    barChart.highlightBarFunction(customHighlightFunction);
+                    const barNotHighlighted = containerFixture.selectAll('.bar:nth-child(1)');
+                    const barHighlighted = containerFixture.selectAll('.bar:nth-child(2)');
+
+                    const beforeHighlightColor = barNotHighlighted.attr('fill');
+
+                    barNotHighlighted.dispatch('mouseover');
+                    const actualNotHighlightColor = barNotHighlighted.attr('fill');
+                    const actualHighlightColor = barHighlighted.attr('fill');
+
+                    expect(actualHighlightColor).toBe(expectedHighlightColor);
+                    expect(actualNotHighlightColor).toBe(beforeHighlightColor);
+                });
             });
 
-            it('should change the behavior of non-hovered bars when hasSingleBarHighlight is False', () => {
-                let expectedHighlightColor = '#ffffff';
-                let customHighlightFunction = barSelection => barSelection.attr('fill', expectedHighlightColor);
+            describe('when custom gradient color schem is applied', () => {
 
-                barChart.hasSingleBarHighlight(false);
-                barChart.highlightBarFunction(customHighlightFunction);
-                let barNotHighlighted = containerFixture.selectAll('.bar:nth-child(1)');
-                let barHighlighted = containerFixture.selectAll('.bar:nth-child(2)');
+                it('should build the gradient with given colors', () => {
+                    const expectedGradientColors = ['#ddd', 'ccc'];
+                    const expectedGradientRefStr = 'url(#bar-gradient';
 
-                let beforeHighlightColor = barNotHighlighted.attr('fill');
+                    barChart.chartGradient(expectedGradientColors);
+                    containerFixture.datum(dataset).call(barChart);
+                    const bar = containerFixture.selectAll('.bar:nth-child(1)');
+                    const gradientStopEl = containerFixture.selectAll('stop').nodes();
 
-                barNotHighlighted.dispatch('mouseover');
-                let actualNotHighlightColor = barNotHighlighted.attr('fill');
-                let actualHighlightColor = barHighlighted.attr('fill');
+                    expect(bar.attr('fill')).toContain(expectedGradientRefStr);
+                    expect(gradientStopEl[0]).toHaveAttr('stop-color', expectedGradientColors[0]);
+                    expect(gradientStopEl[1]).toHaveAttr('stop-color', expectedGradientColors[1]);
+                });
+            });
 
-                expect(actualHighlightColor).toBe(expectedHighlightColor);
-                expect(actualNotHighlightColor).toBe(beforeHighlightColor);
+            describe('when clicking on a bar', function () {
+
+                it('should trigger a callback on mouse click', () => {
+                    const callbackSpy = jasmine.createSpy('callback');
+                    const bar = containerFixture.selectAll('.bar:nth-child(1)');
+                    const expectedCalls = 1;
+                    const expectedArgumentsNumber = 3;
+                    let actualCalls;
+                    let actualArgumentsNumber;
+
+
+                    barChart.on('customClick', callbackSpy);
+                    bar.dispatch('click');
+                    actualCalls = callbackSpy.calls.count();
+                    actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length
+
+                    expect(actualCalls).toEqual(expectedCalls);
+                    expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
+                });
+            });
+
+            describe('when hovering a bar', function () {
+
+                it('should trigger a callback on mouse over', () => {
+                    const bar = containerFixture.selectAll('.bar:nth-child(1)');
+                    const callbackSpy = jasmine.createSpy('callback');
+                    const expectedCallCount = 1;
+                    const expectedArgumentsNumber = 3;
+                    let actualCallCount;
+                    let actualArgumentsNumber;
+
+                    barChart.on('customMouseOver', callbackSpy);
+                    bar.dispatch('mouseover');
+                    actualCallCount = callbackSpy.calls.count();
+                    actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length
+
+                    expect(actualCallCount).toEqual(expectedCallCount);
+                    expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
+                });
+
+                it('should trigger a callback on mouse move', () => {
+                    const expectedCallCount = 1;
+                    const expectedArgumentsNumber = 3;
+
+                    let actualCallCount;
+                    let actualArgumentsNumber;
+
+                    const bar = containerFixture.selectAll('.bar:nth-child(1)');
+                    const callbackSpy = jasmine.createSpy('callback');
+
+                    barChart.on('customMouseMove', callbackSpy);
+                    bar.dispatch('mousemove');
+                    actualCallCount = callbackSpy.calls.count();
+                    actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length
+
+                    expect(actualCallCount).toEqual(expectedCallCount);
+                    expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
+                });
+
+                it('should trigger a callback on mouse out', () => {
+                    const expectedCallCount = 1;
+                    const expectedArgumentsNumber = 3;
+
+                    let actualCallCount;
+                    let actualArgumentsNumber;
+
+                    const bar = containerFixture.selectAll('.bar:nth-child(1)');
+                    const callbackSpy = jasmine.createSpy('callback');
+
+                    barChart.on('customMouseOut', callbackSpy);
+                    bar.dispatch('mouseout');
+                    actualCallCount = callbackSpy.calls.count();
+                    actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length
+
+                    expect(actualCallCount).toEqual(expectedCallCount);
+                    expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
+                });
             });
         });
 
@@ -579,110 +766,6 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
                 expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
                 expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
-            });
-        });
-
-        describe('when custom gradient color schem is applied', () => {
-
-            it('should build the gradient with given colors', () => {
-                let expectedGradientColors = ['#ddd', 'ccc'];
-                let expectedGradientRefStr = 'url(#bar-gradient';
-
-                barChart.chartGradient(expectedGradientColors);
-                containerFixture.datum(dataset).call(barChart);
-                let bar = containerFixture.selectAll('.bar:nth-child(1)');
-                let gradientStopEl = containerFixture.selectAll('stop').nodes();
-
-                expect(bar.attr('fill')).toContain(expectedGradientRefStr);
-                expect(gradientStopEl[0]).toHaveAttr('stop-color', expectedGradientColors[0]);
-                expect(gradientStopEl[1]).toHaveAttr('stop-color', expectedGradientColors[1]);
-            });
-        });
-
-        describe('when clicking on a bar', function() {
-
-            it('should trigger a callback on mouse click', () => {
-                let bar = containerFixture.selectAll('.bar:nth-child(1)');
-                let callbackSpy = jasmine.createSpy('callback');
-
-                barChart.on('customClick', callbackSpy);
-                bar.dispatch('click');
-
-                expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
-            });
-        });
-
-        describe('Bar axis labels', () => {
-
-            it('should show custom x axis label and offset', () => {
-                let expectedValue = 'labelValue';
-                let expectedOffset = 20;
-
-                barChart
-                    .xAxisLabel(expectedValue)
-                    .xAxisLabelOffset(expectedOffset);
-                containerFixture.datum(dataset).call(barChart);
-
-                let selection = containerFixture.select('.x-axis-label-text');
-                let actualValue = selection.text();
-                let actualOffset = Number(selection.attr('y'));
-
-                expect(actualValue).toBe(expectedValue);
-                expect(actualOffset).toBe(expectedOffset);
-            });
-
-            it('should show custom y axis label and offset', () => {
-                let expectedValue = 'labelValue';
-                let expectedOffset = 20;
-
-                barChart
-                    .yAxisLabel(expectedValue)
-                    .yAxisLabelOffset(expectedOffset);
-                containerFixture.datum(dataset).call(barChart);
-
-                let selection = containerFixture.select('.y-axis-label-text');
-                let actualValue = selection.text();
-                let actualOffset = Number(selection.attr('y'));
-
-                expect(actualValue).toBe(expectedValue);
-                expect(actualOffset).toBe(expectedOffset);
-            });
-        });
-
-        describe('when hovering a bar', function() {
-
-            it('should trigger a callback on mouse over', () => {
-                let bar = containerFixture.selectAll('.bar:nth-child(1)');
-                let callbackSpy = jasmine.createSpy('callback');
-
-                barChart.on('customMouseOver', callbackSpy);
-                bar.dispatch('mouseover');
-
-                expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
-            });
-
-            it('should trigger a callback on mouse move', () => {
-                let bar = containerFixture.selectAll('.bar:nth-child(1)');
-                let callbackSpy = jasmine.createSpy('callback');
-
-                barChart.on('customMouseMove', callbackSpy);
-                bar.dispatch('mousemove');
-
-                expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
-            });
-
-            it('should trigger a callback on mouse out', () => {
-                let bar = containerFixture.selectAll('.bar:nth-child(1)');
-                let callbackSpy = jasmine.createSpy('callback');
-
-                barChart.on('customMouseOut', callbackSpy);
-                bar.dispatch('mouseout');
-
-                expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
             });
         });
     });
