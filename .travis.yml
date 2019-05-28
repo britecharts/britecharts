@@ -22,7 +22,7 @@ deploy:
       repo: eventbrite/britecharts
   - provider: pages
     skip_cleanup: true
-    github_token: $GITHUB_TOKEN_JAYLUM_CHEN
+    github_token: $GITHUB_TOKEN
     local_dir: docs
     on:
       branch: master
