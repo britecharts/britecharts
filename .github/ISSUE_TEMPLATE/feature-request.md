@@ -1,9 +1,9 @@
 ---
-name: 
-about: 
+name: Feature Request
+about: Create a feature request
 title: Feature Proposal
 labels: proposal
-assignees: 
+assignees: ''
 
 ---
 
