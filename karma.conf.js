@@ -1,4 +1,4 @@
-var webpackConfig = require('./webpack.config');
+let webpackConfig = require('./webpack.config');
 
 webpackConfig.devtool = 'inline-source-map';
 
@@ -18,7 +18,12 @@ module.exports = function(config) {
         // list of files / patterns to load in the browser
         files: [
             'tests_index.js',
-            {pattern: 'test/fixtures/*.html', watched: true, served: true, included: false},
+            {
+                pattern: 'test/fixtures/*.html',
+                watched: true,
+                served: true,
+                included: false
+            },
             './node_modules/phantomjs-polyfill-find/find-polyfill.js'
         ],
 
@@ -38,7 +43,26 @@ module.exports = function(config) {
         // Coverage reporter options, check more in:
         // https://github.com/karma-runner/karma-coverage
         coverageReporter: {
-            type: 'text'
+            type: 'text',
+            dir: 'test/coverage/',
+            reporters: [
+                {type: 'text'},
+                {type: 'text-summary', subdir: '.', file: 'text-summary.txt'}
+            ],
+            check: {
+                global: {
+                    statements: 50,
+                    branches: 50,
+                    functions: 50,
+                    lines: 50,
+                    excludes: [
+                        'tests_index.js',
+                        'src/charts/helpers/export.js',
+                        'src/charts/helpers/date.js',
+                        'src/charts/helpers/filter.js'
+                    ]
+                }
+            }
         },
 
         webpack: webpackConfig('test'),
