@@ -1,0 +1,28 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "DalerAsrorov",
+      "name": "Daler Asrorov",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/9118852?v=4",
+      "profile": "http://dalerasrorov.github.io/",
+      "contributions": [
+        "code",
+        "doc",
+        "ideas",
+        "maintenance",
+        "review",
+        "test"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "britecharts",
+  "projectOwner": "eventbrite",
+  "repoType": "github",
+  "repoHost": "https://github.com"
+}
