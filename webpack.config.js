@@ -63,6 +63,21 @@ const testConfig = merge([
     parts.babelIstambulLoader(),
 ]);
 
+const testES6Config = merge([
+    {
+        resolve: {
+            modules: [
+                path.resolve(__dirname, './src/es6charts'),
+                path.resolve(__dirname, './test/fixturesES6'),
+                'node_modules',
+            ],
+        }
+    },
+    parts.babelLoader(),
+    parts.aliasD3ToVendorPath(),
+    parts.babelIstambulLoader(),
+]);
+
 const sandboxConfig = merge([
     {
         mode: 'development',
@@ -131,6 +146,10 @@ module.exports = (env) => {
 
     if (env === 'test') {
         return testConfig;
+    }
+
+    if (env === 'testES6') {
+        return testES6Config;
     }
 
     if (env === 'sandbox') {

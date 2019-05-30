@@ -41,6 +41,7 @@
     "lint": "eslint src/charts/ webpack.*.js --cache",
     "lint:fix": "eslint src/charts/ webpack.*.js --cache --fix",
     "test": "karma start --env=test",
+    "testES6": "karma start --env=testES6",
     "test:travis": "karma start --single-run --browsers PhantomJS --env=test",
     "sandbox:compile": "webpack --env=sandbox",
     "sandbox": "webpack-dev-server --env=sandbox --hot --content-base sandbox/ --inline",

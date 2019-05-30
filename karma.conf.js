@@ -17,13 +17,8 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'tests_index.js',
-            {
-                pattern: 'test/fixtures/*.html',
-                watched: true,
-                served: true,
-                included: false
-            },
+            'tests_index_es6.js',
+            {pattern: 'test/fixtures/*.html', watched: true, served: true, included: false},
             './node_modules/phantomjs-polyfill-find/find-polyfill.js'
         ],
 
