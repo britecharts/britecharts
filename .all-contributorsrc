@@ -18,6 +18,20 @@
         "review",
         "test"
       ]
+    },
+    {
+      "login": "ryanwholey",
+      "name": "Ryan Wholey",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/8100360?v=4",
+      "profile": "https://github.com/ryanwholey",
+      "contributions": [
+        "code",
+        "doc",
+        "ideas",
+        "maintenance",
+        "review",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
