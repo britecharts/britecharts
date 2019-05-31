@@ -39,6 +39,19 @@ module.exports = (function() {
                 { name: 'Other', id: 0, quantity: 814, percentage: 48 }
             ]
         },
+        'grouped-bar': {
+            basicGroupedBar: [
+                { group: 'Shiny', name: 'Q1', value: 26 },
+                { group: 'Blazing', name: 'Q1', value: 30 },
+                { group: 'Dazzling', name: 'Q1', value: 27 },
+                { group: 'Shiny', name: 'Q2', value: 36 },
+                { group: 'Blazing', name: 'Q2', value: 40 },
+                { group: 'Dazzling', name: 'Q2', value: 76 },
+                { group: 'Shiny', name: 'Q3', value: 13 },
+                { group: 'Blazing', name: 'Q3', value: 16 },
+                { group: 'Dazzling', name: 'Q3', value: 26 },
+            ]
+        },
         legend: {
             basicLegend: [
                 { name: 'Shiny', id: 1, quantity: 86},
