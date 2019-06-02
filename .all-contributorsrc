@@ -32,6 +32,19 @@
         "review",
         "test"
       ]
+    },
+    {
+      "login": "jchen85",
+      "name": "jchen85",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/14088460?v=4",
+      "profile": "https://github.com/jchen85",
+      "contributions": [
+        "code",
+        "ideas",
+        "maintenance",
+        "review",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
