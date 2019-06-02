@@ -191,7 +191,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
                     barChart.orderingFunction(orderFunction);
                     containerFixture.call(barChart)
-                    actual = containerFixture.selectAll('.bar-chart .bar').nodes()[0].__data__;
+                    actual = containerFixture.selectAll('.bar-chart .bar').node().__data__;
 
                     expect(actual.name).toBe(expected.name);
                     expect(actual.value).toBe(expected.value);
@@ -207,7 +207,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
                     barChart.orderingFunction(orderFunction);
                     containerFixture.call(barChart)
-                    actual = containerFixture.selectAll('.bar-chart .bar').nodes()[0].__data__;
+                    actual = containerFixture.selectAll('.bar-chart .bar').node().__data__;
 
                     expect(actual.name).toBe(expected.name);
                     expect(actual.value).toBe(expected.value);
