@@ -230,7 +230,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
                 describe('when reloading with a one item dataset', () => {
 
-                    it('should render in the same svg', function() {
+                    it('should render in the same svg', () => {
                         const expected = 1;
                         const newDataset = buildDataSet('withThreeCategories');
                         let actual;
@@ -241,7 +241,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                         expect(actual).toEqual(expected);
                     });
 
-                    it('should render only three slices', function() {
+                    it('should render only three slices', () => {
                         const expected = 3;
                         const newDataset = buildDataSet('withThreeCategories');
                         let actual;
@@ -337,7 +337,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 });
             });
 
-            describe('API', function() {
+            describe('API', () => {
 
                 it('should provide margin getter and setter', () => {
                     let previous = donutChart.margin(),
@@ -351,7 +351,7 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                     expect(actual).toEqual(expected);
                 });
 
-                describe('when margins are set partially', function () {
+                describe('when margins are set partially', () => {
 
                     it('should override the default values', () => {
                         const previous = donutChart.margin();

@@ -116,7 +116,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
             describe('when reloading with a different dataset', () => {
 
-                it('should render in the same svg', function() {
+                it('should render in the same svg', () => {
                     const expected = 1;
                     const newDataset = buildDataSet('withColors');
                     let actual;
@@ -128,7 +128,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 });
 
                 // This test fails because of the transition on the exit
-                it('should render six bars', function() {
+                it('should render six bars', () => {
                     const expected = 6;
                     const newDataset = buildDataSet('withColors');
                     let actual;
@@ -306,7 +306,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 });
             });
 
-            describe('when clicking on a bar', function () {
+            describe('when clicking on a bar', () => {
 
                 it('should trigger a callback on mouse click', () => {
                     const callbackSpy = jasmine.createSpy('callback');
@@ -327,7 +327,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 });
             });
 
-            describe('when hovering a bar', function () {
+            describe('when hovering a bar', () => {
 
                 it('should trigger a callback on mouse over', () => {
                     const bar = containerFixture.selectAll('.bar:nth-child(1)');
@@ -386,7 +386,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             });
         });
 
-        describe('API', function() {
+        describe('API', () => {
 
             it('should provide colorSchema getter and setter', () => {
                 let previous = barChart.colorSchema(),
@@ -556,7 +556,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                     expect(actual).toEqual(expected);
                 });
 
-                describe('when margins are set partially', function () {
+                describe('when margins are set partially', () => {
 
                     it('should override the default values', () => {
                         let previous = barChart.margin(),
