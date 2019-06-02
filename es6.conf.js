@@ -1,5 +1,6 @@
-var webpackConfig = require('./webpack.config');
+let webpackConfig = require('./webpack.config')('testES6');
 
+// webpackConfig.entry = {};
 webpackConfig.devtool = 'inline-source-map';
 
 // Karma configuration
@@ -12,32 +13,41 @@ module.exports = function(config) {
     frameworks: ['jasmine-jquery', 'jasmine'],
     // list of files / patterns to load in the browser
     files: [
+        // 'tests_index_es6.js'
     //   'src/es6charts/donut.js',
     //   'test/fixturesES6/*.js',
-      'test/specsES6/*.spec.js',
+    //   'test/specsES6/*.spec.js',
+        // { pattern: 'test/specsES6/*.spec.js', watched: false }
+        'node_modules/karma-babel-preprocessor/node_modules/babel-core/browser-polyfill.js',
+        { pattern: 'src/es6charts/donut.js', watched: false },
+        { pattern: 'test/specsES6/donut.spec.js', watched: false }
     ],
     // list of files / patterns to exclude
     exclude: [
         'node_modules/**/*spec*',
         'node_modules/**/*Spec*'
     ],
-    webpack: webpackConfig('testES6'),
+    webpack: webpackConfig,
     webpackMiddleware: {
         noInfo: true
     },
     plugins: [
-        'karma-webpack',
-        'karma-jasmine',
-        'karma-jasmine-jquery',
-        'karma-coverage',
-        'karma-chrome-launcher',
-        'karma-phantomjs-launcher',
-        'karma-sourcemap-loader'
+        require('karma-webpack'),
+        ('karma-jasmine'),
+        ('karma-jasmine-jquery'),
+        ('karma-coverage'),
+        ('karma-chrome-launcher'),
+        ('karma-babel-preprocessor'),
+        ('karma-phantomjs-launcher'),
+        ('karma-sourcemap-loader')
     ],
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-        'tests_index_es6.js': ['webpack', 'sourcemap', 'coverage'],
+        'src/es6charts/donut.js': ['webpack'],
+        'test/specsES6/*.spec.js': ['babel'],
+        // 'tests_index_es6.js': ['webpack'],
+        // 'tests_index_es6.js': ['webpack', 'sourcemap', 'coverage'],
     },
     // test results reporter to use
     // possible values: 'dots', 'progress'

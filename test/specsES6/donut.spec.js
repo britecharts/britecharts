@@ -1,7 +1,8 @@
 import d3 from 'd3';
 import chart from 'donut';
+import donut from '../../src/es6charts/donut';
 
-import dataBuilder from 'donutChartDataBuilder';
+import dataBuilder from '../fixturesES6/donutChartDataBuilder';
 
 const donutDataSets = ['withFivePlusOther', 'withFivePlusOtherNoPercent'];
 
