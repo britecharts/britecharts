@@ -4,10 +4,9 @@ define(['d3', 'heatmap', 'heatmapChartDataBuilder'], function (d3, chart, dataBu
     const aTestDataSet = () => new dataBuilder.HeatmapDataBuilder();
     const buildDataSet = (dataSetName) => {
         return aTestDataSet()
-        [dataSetName]()
+            [dataSetName]()
             .build();
     };
-
 
     describe('Heatmap Chart', () => {
         let heatmapChart, dataset, container, f;
@@ -32,91 +31,93 @@ define(['d3', 'heatmap', 'heatmapChartDataBuilder'], function (d3, chart, dataBu
             f.clearCache();
         });
 
-        describe('when render', () => {
+        describe('Render', () => {
 
             it('should render a heatmap', () => {
-                let expected = 1;
-                let actual = container.select('.heatmap').nodes().length;
+                const expected = 1;
+                const actual = container.select('.heatmap').size();
 
                 expect(actual).toEqual(expected);
             });
 
-            describe('group elements', () => {
+            describe('groups', () => {
 
                 it('should render a container-group', () => {
-                    let expected = 1;
-                    let actual = container.select('g.container-group').nodes().length;
+                    const expected = 1;
+                    const actual = container.select('g.container-group').size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should render a chart-group', () => {
-                    let expected = 1;
-                    let actual = container.select('g.chart-group').nodes().length;
+                    const expected = 1;
+                    const actual = container.select('g.chart-group').size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should render a metadata-group', () => {
-                    let expected = 1;
-                    let actual = container.select('g.metadata-group').nodes().length;
+                    const expected = 1;
+                    const actual = container.select('g.metadata-group').size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should render a day-labels-group', () => {
-                    let expected = 1;
-                    let actual = container.select('g.day-labels-group').nodes().length;
+                    const expected = 1;
+                    const actual = container.select('g.day-labels-group').size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should render a hour-labels-group', () => {
-                    let expected = 1;
-                    let actual = container.select('g.hour-labels-group').nodes().length;
+                    const expected = 1;
+                    const actual = container.select('g.hour-labels-group').size();
 
                     expect(actual).toEqual(expected);
                 });
             });
 
             it('should render a box for each hour in the week', () => {
-                let expected = 24 * 7;
-                let actual = container.selectAll('.box').nodes().length;
+                const expected = 24 * 7;
+                const actual = container.selectAll('.box').size();
 
                 expect(actual).toEqual(expected);
             });
 
-            it('should render the day labels', () => {
-                let expected = 7;
-                let actual = container.selectAll('.day-label').nodes().length;
+            describe('axis', () => {
 
-                expect(actual).toEqual(expected);
-            });
+                it('should render the day labels', () => {
+                    const expected = 7;
+                    const actual = container.selectAll('.day-label').size();
 
-            it('should render the hour labels', () => {
-                let expected = 24;
-                let actual = container.selectAll('.hour-label').nodes().length;
+                    expect(actual).toEqual(expected);
+                });
 
-                expect(actual).toEqual(expected);
+                it('should render the hour labels', () => {
+                    const expected = 24;
+                    const actual = container.selectAll('.hour-label').size();
+
+                    expect(actual).toEqual(expected);
+                });
             });
 
             describe('when reloading with a different dataset', () => {
 
-                it('should render in the same svg', function () {
+                it('should render in the same svg', () => {
+                    const expected = 1;
+                    const newDataset = buildDataSet('withAlternativeWeeklyData');
                     let actual;
-                    let expected = 1;
-                    let newDataset = buildDataSet('withAlternativeWeeklyData');
 
                     container.datum(newDataset).call(heatmapChart);
-
-                    actual = container.selectAll('.heatmap').nodes().length;
+                    actual = container.selectAll('.heatmap').size();
 
                     expect(actual).toEqual(expected);
                 });
             });
         });
 
-        describe('API', function () {
+        describe('API', () => {
 
             it('should provide boxSize getter and setter', () => {
                 let previous = heatmapChart.boxSize(),
