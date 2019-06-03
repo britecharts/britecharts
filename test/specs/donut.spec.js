@@ -4,7 +4,6 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
     let donutDataSets = ['withFivePlusOther', 'withFivePlusOtherNoPercent'];
 
     const aTestDataSet = () => new dataBuilder.DonutDataBuilder();
-
     const buildDataSet = (dataSetName) => {
         return aTestDataSet()
             [dataSetName]()
@@ -26,14 +25,13 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 f.fixturesPath = 'base/test/fixtures/';
                 f.load('testContainer.html');
 
-                containerFixture = d3.select('.test-container');
-
                 donutChart
                     .width(600)
                     .height(600)
                     .externalRadius(250)
                     .internalRadius(50);
 
+                containerFixture = d3.select('.test-container');
                 containerFixture.datum(dataset).call(donutChart);
             });
 
@@ -44,299 +42,302 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 f.clearCache();
             });
 
-            it('should render a chart with minimal requirements', () => {
-                expect(containerFixture.select('.donut-chart').empty()).toBeFalsy();
-            });
+            describe('Render', () => {
 
-            it('should render container, chart and legend groups', () => {
-                expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
-                expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
-                expect(containerFixture.select('g.legend-group').empty()).toBeFalsy();
-            });
-
-            it('should render a slice for each data entry', () => {
-                let actual;
-                let expected = dataset.length;
-
-                actual = containerFixture.selectAll('.donut-chart .arc').nodes().length;
-
-                expect(actual).toEqual(expected);
-            });
-
-            it('should render one path in each slice', () => {
-                let actual;
-                let expected = dataset.length;
-
-                actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
-
-                expect(actual).toEqual(expected);
-            });
-
-            it('should use percentage if declared in data, otherwise calculates value', () => {
-                let percentStub = {
-                        withFivePlusOther: ['5', '18', '16', '11', '2', '48'],
-                        withFivePlusOtherNoPercent: ['5.0', '17.6', '16.2', '11.4', '2.1', '47.7'],
-                    },
-                    slices = containerFixture.selectAll('.chart-group .arc');
-
-                slices.each((item, index) => {
-                    expect(item.data.percentage).toEqual(percentStub[datasetName][index]);
-                });
-            });
-
-            it('should append text to the legend container', () => {
-                expect(containerFixture.select('text.donut-text').empty()).toBeFalsy();
-            });
-
-            describe('when one section is zero', () => {
-
-                it('should keep the order of colors', () => {
-                    let dataset = aTestDataSet()
-                        .withOneTopicAtZero()
-                        .build();
-                    let expectedFills = ['#111111', '#222222', '#333333'];
-
-                    donutChart.colorSchema(expectedFills);
-
-                    containerFixture.datum(dataset).call(donutChart);
-
-                    let paths = containerFixture.selectAll('path').nodes();
-                    let actualFirstPathFill = paths[0].getAttribute('fill');
-                    let actualSecondPathFill = paths[1].getAttribute('fill');
-                    let actualThirdPathFill = paths[2].getAttribute('fill');
-
-                    expect(actualFirstPathFill).toEqual(expectedFills[0]);
-                    expect(actualSecondPathFill).toEqual(expectedFills[1]);
-                    expect(actualThirdPathFill).toEqual(expectedFills[2]);
-                });
-            });
-
-
-            describe('when all sections are zero and emptyDataConfig.showEmptySlice', () => {
-
-                it('percentage label should be 0%', () => {
-                    let actual;
-                    let expected = '0.0%';
-
-                    let emptyDataConfig = {
-                        emptySliceColor: '#EFF2F5',
-                        showEmptySlice: true,
-                    }
-
-                    let dataset = aTestDataSet()
-                        .withAllTopicsAtZero()
-                        .build();
-
-                    donutChart.highlightSliceById(11)
-                    donutChart.emptyDataConfig(emptyDataConfig);
-                    containerFixture.datum(dataset).call(donutChart);
-
-                    let textNodes = containerFixture.select('text.donut-text .value').nodes();
-
-                    actual = d3.select(textNodes[0]).text();
-
-                    expect(expected).toEqual(actual);
-
-                });
-
-                it('should render a single filler slice', () => {
-                    let actual;
-                    let expected = 1;
-
-                    let emptyDataConfig = {
-                        emptySliceColor: '#EFF2F5',
-                        showEmptySlice: true,
-                    }
-
-                    let dataset = aTestDataSet()
-                        .withAllTopicsAtZero()
-                        .build();
-
-                    donutChart.emptyDataConfig(emptyDataConfig);
-                    containerFixture.datum(dataset).call(donutChart);
-                    actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
-
-                    expect(actual).toEqual(expected);
-
-                });
-
-                it('should fill the empty slice with emptyDataConfig.emptySliceColor', () => {
-                    let actual;
-                    let expected = '#000000';
-                    let emptyDataConfig = {
-                        emptySliceColor: expected,
-                        showEmptySlice: true,
-                    }
-                    let dataset = aTestDataSet()
-                        .withAllTopicsAtZero()
-                        .build();
-
-                    donutChart.emptyDataConfig(emptyDataConfig);
-                    containerFixture.datum(dataset).call(donutChart);
-
-                    let paths = containerFixture.selectAll('.donut-chart .arc path').nodes();
-
-                    actual = paths[0].getAttribute('fill');
-
-                    expect(actual).toEqual(expected);
-
-                });
-
-            });
-
-            describe('when data is empty and emptyDataConfig.showEmptySlice', () => {
-
-                it('should render a single filler slice', () => {
-                    let actual;
-                    let expected = 1;
-
-                    let emptyDataConfig = {
-                        emptySliceColor: '#000000',
-                        showEmptySlice: true,
-                    }
-
-                    donutChart.emptyDataConfig(emptyDataConfig);
-                    containerFixture.datum([]).call(donutChart);
-
-                    actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
-
-                    expect(actual).toEqual(expected);
-
-                });
-
-                it('should fill the empty slice with emptyDataConfig.emptySliceColor', () => {
-                    let actual;
-                    let expected = '#000000';
-
-                    let emptyDataConfig = {
-                        emptySliceColor: expected,
-                        showEmptySlice: true,
-                    }
-
-                    donutChart.emptyDataConfig(emptyDataConfig);
-                    containerFixture.datum([]).call(donutChart);
-
-                    let paths = containerFixture.selectAll('.donut-chart .arc path').nodes();
-
-                    actual = paths[0].getAttribute('fill');
-
-                    expect(actual).toEqual(expected);
-
-                });
-
-
-            });
-
-            describe('when reloading with a one item dataset', () => {
-
-                it('should render in the same svg', function() {
-                    let actual;
-                    let expected = 1;
-                    let newDataset = buildDataSet('withThreeCategories');
-
-                    containerFixture.datum(newDataset).call(donutChart);
-
-                    actual = containerFixture.selectAll('.donut-chart').nodes().length;
+                it('should render a chart with minimal requirements', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('.donut-chart').size();
 
                     expect(actual).toEqual(expected);
                 });
 
-                it('should render only three slices', function() {
-                    let actual;
-                    let expected = 3;
-                    let newDataset = buildDataSet('withThreeCategories');
+                describe('groups', () => {
+                    it('should create a container-group', () => {
+                        const expected = 1;
+                        const actual = containerFixture.select('g.container-group').size();
 
-                    containerFixture.datum(newDataset).call(donutChart);
-                    actual = containerFixture.selectAll('.donut-chart .arc').nodes().length;
+                        expect(actual).toEqual(expected);
+                    });
+
+                    it('should create a chart-group', () => {
+                        const expected = 1;
+                        const actual = containerFixture.select('g.chart-group').size();
+
+                        expect(actual).toEqual(expected);
+                    });
+
+                    it('should create a legend-group', () => {
+                        const expected = 1;
+                        const actual = containerFixture.select('g.legend-group').size();
+
+                        expect(actual).toEqual(expected);
+                    });
+                });
+
+                it('should draw a slice for each data entry', () => {
+                    const expected = dataset.length;
+                    const actual = containerFixture.selectAll('.donut-chart .arc').size();
 
                     expect(actual).toEqual(expected);
                 });
 
-                it('should render one paths in each slice', () => {
-                    let actual;
-                    let expected = 3;
-                    let newDataset = buildDataSet('withThreeCategories');
-
-                    containerFixture.datum(newDataset).call(donutChart);
-                    actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
+                it('should draw one path in each slice', () => {
+                    let expected = dataset.length;
+                    let actual = containerFixture.selectAll('.donut-chart .arc path').size();
 
                     expect(actual).toEqual(expected);
                 });
+
+                it('should use percentage if declared in data, otherwise calculates value', () => {
+                    let percentStub = {
+                            withFivePlusOther: ['5', '18', '16', '11', '2', '48'],
+                            withFivePlusOtherNoPercent: ['5.0', '17.6', '16.2', '11.4', '2.1', '47.7'],
+                        },
+                        slices = containerFixture.selectAll('.chart-group .arc');
+
+                    slices.each((item, index) => {
+                        expect(item.data.percentage).toEqual(percentStub[datasetName][index]);
+                    });
+                });
+
+                it('should append text to the legend container', () => {
+                    const expected = false;
+                    const actual = containerFixture.select('text.donut-text').empty();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                describe('when one section is zero', () => {
+
+                    it('should keep the order of colors', () => {
+                        const dataset = aTestDataSet()
+                            .withOneTopicAtZero()
+                            .build();
+                        const expectedFills = ['#111111', '#222222', '#333333'];
+
+                        donutChart.colorSchema(expectedFills);
+                        containerFixture.datum(dataset).call(donutChart);
+
+                        const paths = containerFixture.selectAll('path').nodes();
+                        const actualFirstPathFill = paths[0].getAttribute('fill');
+                        const actualSecondPathFill = paths[1].getAttribute('fill');
+                        const actualThirdPathFill = paths[2].getAttribute('fill');
+
+                        expect(actualFirstPathFill).toEqual(expectedFills[0]);
+                        expect(actualSecondPathFill).toEqual(expectedFills[1]);
+                        expect(actualThirdPathFill).toEqual(expectedFills[2]);
+                    });
+                });
+
+                describe('when all sections are zero and emptyDataConfig.showEmptySlice', () => {
+
+                    it('percentage label should be 0%', () => {
+                        const expected = '0.0%';
+                        const emptyDataConfig = {
+                            emptySliceColor: '#EFF2F5',
+                            showEmptySlice: true,
+                        };
+                        const dataset = aTestDataSet()
+                            .withAllTopicsAtZero()
+                            .build();
+                        let actual;
+
+                        donutChart.highlightSliceById(11)
+                        donutChart.emptyDataConfig(emptyDataConfig);
+                        containerFixture.datum(dataset).call(donutChart);
+
+                        const textNodes = containerFixture.select('text.donut-text .value').nodes();
+
+                        actual = d3.select(textNodes[0]).text();
+
+                        expect(expected).toEqual(actual);
+                    });
+
+                    it('should render a single filler slice', () => {
+                        const expected = 1;
+                        const emptyDataConfig = {
+                            emptySliceColor: '#EFF2F5',
+                            showEmptySlice: true,
+                        };
+                        const dataset = aTestDataSet()
+                            .withAllTopicsAtZero()
+                            .build();
+                        let actual;
+
+                        donutChart.emptyDataConfig(emptyDataConfig);
+                        containerFixture.datum(dataset).call(donutChart);
+                        actual = containerFixture.selectAll('.donut-chart .arc path').size();
+
+                        expect(actual).toEqual(expected);
+                    });
+
+                    it('should fill the empty slice with emptyDataConfig.emptySliceColor', () => {
+                        const expected = '#000000';
+                        const emptyDataConfig = {
+                            emptySliceColor: expected,
+                            showEmptySlice: true,
+                        };
+                        const dataset = aTestDataSet()
+                            .withAllTopicsAtZero()
+                            .build();
+                        let actual;
+
+                        donutChart.emptyDataConfig(emptyDataConfig);
+                        containerFixture.datum(dataset).call(donutChart);
+
+                        const paths = containerFixture.selectAll('.donut-chart .arc path').nodes();
+
+                        actual = paths[0].getAttribute('fill');
+
+                        expect(actual).toEqual(expected);
+
+                    });
+                });
+
+                describe('when data is empty and emptyDataConfig.showEmptySlice', () => {
+
+                    it('should render a single filler slice', () => {
+                        const expected = 1;
+                        const emptyDataConfig = {
+                            emptySliceColor: '#000000',
+                            showEmptySlice: true,
+                        };
+                        let actual;
+
+                        donutChart.emptyDataConfig(emptyDataConfig);
+                        containerFixture.datum([]).call(donutChart);
+                        actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
+
+                        expect(actual).toEqual(expected);
+                    });
+
+                    it('should fill the empty slice with emptyDataConfig.emptySliceColor', () => {
+                        const expected = '#000000';
+                        const emptyDataConfig = {
+                            emptySliceColor: expected,
+                            showEmptySlice: true,
+                        };
+                        let actual;
+
+                        donutChart.emptyDataConfig(emptyDataConfig);
+                        containerFixture.datum([]).call(donutChart);
+                        const paths = containerFixture.selectAll('.donut-chart .arc path').nodes();
+                        actual = paths[0].getAttribute('fill');
+
+                        expect(actual).toEqual(expected);
+                    });
+                });
+
+                describe('when reloading with a one item dataset', () => {
+
+                    it('should render in the same svg', () => {
+                        const expected = 1;
+                        const newDataset = buildDataSet('withThreeCategories');
+                        let actual;
+
+                        containerFixture.datum(newDataset).call(donutChart);
+                        actual = containerFixture.selectAll('.donut-chart').nodes().length;
+
+                        expect(actual).toEqual(expected);
+                    });
+
+                    it('should render only three slices', () => {
+                        const expected = 3;
+                        const newDataset = buildDataSet('withThreeCategories');
+                        let actual;
+
+                        containerFixture.datum(newDataset).call(donutChart);
+                        actual = containerFixture.selectAll('.donut-chart .arc').nodes().length;
+
+                        expect(actual).toEqual(expected);
+                    });
+
+                    it('should render one paths in each slice', () => {
+                        const expected = 3;
+                        const newDataset = buildDataSet('withThreeCategories');
+                        let actual;
+
+                        containerFixture.datum(newDataset).call(donutChart);
+                        actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
+
+                        expect(actual).toEqual(expected);
+                    });
+                });
+
+                describe('when orderingFunction is called', () => {
+
+                    it('the default order function sorts properly', () => {
+                        // default: b.quantity - a.quantity (descending order)
+                        const expected = 4;
+                        let actual;
+
+                        donutChart.orderingFunction();
+                        containerFixture.call(donutChart)
+                        actual = containerFixture.selectAll('.chart-group .arc').node().__data__.index;
+
+                        expect(actual).toBe(expected);
+                    });
+
+                    it('it accepts a custom sorting function', () => {
+                        // a.quantity - b.quantity (ascending order)
+                        const expected = 1;
+                        const fn = (a, b) => a.quantity - b.quantity;
+                        let actual;
+
+                        donutChart.orderingFunction(fn);
+                        containerFixture.call(donutChart)
+                        actual = containerFixture.selectAll('.chart-group .arc').node().__data__.index;
+
+                        expect(actual).toBe(expected);
+                    });
+                });
+
+                describe('when centeredTextFunction', () => {
+
+                    it('is not called, the default function formats text properly', () => {
+                        const expectedLabel = 'Shiny';
+                        const expectedValue = '20%';
+                        const dataset = buildDataSet('withThreeCategories');
+                        let actualLabel;
+                        let actualValue;
+
+                        donutChart.highlightSliceById(11);
+                        containerFixture.datum(dataset).call(donutChart);
+
+                        const valueNode = containerFixture.select('text.donut-text .value').node();
+                        const labelNode = containerFixture.select('text.donut-text .label').node();
+
+                        actualValue = d3.select(valueNode).text();
+                        actualLabel = d3.select(labelNode).text();
+
+                        expect(actualValue).toBe(expectedValue);
+                        expect(actualLabel).toBe(expectedLabel);
+                    });
+
+                    it('is called, the custom function changes text format properly', () => {
+                        const expectedLabel = '200';
+                        const expectedValue = '11';
+                        const dataset = buildDataSet('withThreeCategories');
+                        let actualLabel;
+                        let actualValue;
+
+                        donutChart.centeredTextFunction((d) => `${d.id} ${d.quantity}`);
+                        donutChart.highlightSliceById(11);
+                        containerFixture.datum(dataset).call(donutChart);
+
+                        const valueNode = containerFixture.select('text.donut-text .value').node();
+                        const labelNode = containerFixture.select('text.donut-text .label').node();
+
+                        actualValue = d3.select(valueNode).text();
+                        actualLabel = d3.select(labelNode).text();
+
+                        expect(actualValue).toBe(expectedValue);
+                        expect(actualLabel).toBe(expectedLabel);
+                    });
+                });
             });
 
-            describe('when orderingFunction is called', () => {
-
-                it('the default order function sorts properly', () => {
-                    // default: b.quantity - a.quantity (descending order)
-                    let actual,
-                        expected = 4;
-
-                    donutChart.orderingFunction();
-                    containerFixture.call(donutChart)
-                    actual = containerFixture.selectAll('.chart-group .arc').nodes()[0].__data__.index;
-
-                    expect(actual).toBe(expected);
-                });
-
-                it('it accepts a custom sorting function', () => {
-                    // a.quantity - b.quantity (ascending order)
-                    let fn = (a, b) => a.quantity - b.quantity;
-                    let actual,
-                        expected = 1;
-
-                    donutChart.orderingFunction(fn);
-                    containerFixture.call(donutChart)
-                    actual = containerFixture.selectAll('.chart-group .arc').nodes()[0].__data__.index;
-
-                    expect(actual).toBe(expected);
-                });
-            });
-
-            describe('when centeredTextFunction', () => {
-
-                it('is not called, the default function formats text properly', () => {
-                    let actualLabel,
-                        actualValue,
-                        expectedLabel = 'Shiny',
-                        expectedValue = '20%',
-                        dataset = buildDataSet('withThreeCategories');
-
-                    donutChart.highlightSliceById(11);
-                    containerFixture.datum(dataset).call(donutChart);
-
-                    let valueNode = containerFixture.select('text.donut-text .value').nodes()[0];
-                    let labelNode = containerFixture.select('text.donut-text .label').nodes()[0];
-
-                    actualValue = d3.select(valueNode).text();
-                    actualLabel = d3.select(labelNode).text();
-
-                    expect(actualValue).toBe(expectedValue);
-                    expect(actualLabel).toBe(expectedLabel);
-                });
-
-                it('is called, the custom function changes text format properly', () => {
-                    let actualLabel,
-                        actualValue,
-                        expectedLabel = '200',
-                        expectedValue = '11',
-                        dataset = buildDataSet('withThreeCategories');
-
-                    donutChart.centeredTextFunction((d) => `${d.id} ${d.quantity}`);
-                    donutChart.highlightSliceById(11);
-                    containerFixture.datum(dataset).call(donutChart);
-
-                    let valueNode = containerFixture.select('text.donut-text .value').nodes()[0];
-                    let labelNode = containerFixture.select('text.donut-text .label').nodes()[0];
-
-                    actualValue = d3.select(valueNode).text();
-                    actualLabel = d3.select(labelNode).text();
-
-                    expect(actualValue).toBe(expectedValue);
-                    expect(actualLabel).toBe(expectedLabel);
-                });
-            });
-
-            describe('API', function() {
+            describe('API', () => {
 
                 it('should provide margin getter and setter', () => {
                     let previous = donutChart.margin(),
@@ -348,6 +349,25 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
 
                     expect(previous).not.toBe(expected);
                     expect(actual).toEqual(expected);
+                });
+
+                describe('when margins are set partially', () => {
+
+                    it('should override the default values', () => {
+                        const previous = donutChart.margin();
+                        const expected = {
+                            ...previous,
+                            top: 10,
+                            right: 20
+                        };
+                        let actual;
+
+                        donutChart.width(expected);
+                        actual = donutChart.width();
+
+                        expect(previous).not.toBe(actual);
+                        expect(actual).toEqual(expected);
+                    })
                 });
 
                 it('should provide externalRadius getter and setter', () => {
@@ -530,73 +550,50 @@ define(['d3', 'donut', 'donutChartDataBuilder'], function(d3, chart, dataBuilder
                 });
             });
 
-            describe('when margins are set partially', function() {
+            describe('Lifecycle', () => {
 
-                it('should override the default values', () => {
-                    let previous = donutChart.margin(),
-                    expected = {
-                        ...previous,
-                        top: 10,
-                        right: 20
-                    },
-                    actual;
+                describe('when mouse events are triggered', () => {
 
-                    donutChart.width(expected);
-                    actual = donutChart.width();
+                    it('should trigger an event on click', () => {
+                        let callback = jasmine.createSpy('clickCallback'),
+                            firstSlice = containerFixture.select('.chart-group .arc path');
 
-                    expect(previous).not.toBe(actual);
-                    expect(actual).toEqual(expected);
-                })
-            });
+                        donutChart.on('customClick', callback);
+                        firstSlice.dispatch('click');
+                        expect(callback.calls.count()).toBe(1);
+                        expect(callback.calls.allArgs()[0].length).toBe(3);
+                    });
 
-            describe('when mouse events are triggered', () => {
+                    it('should trigger an event on hover', () => {
+                        let callback = jasmine.createSpy('hoverCallback'),
+                            firstSlice = containerFixture.select('.chart-group .arc path');
 
-                it('should trigger an event on click', () => {
-                    let callback = jasmine.createSpy('clickCallback'),
-                        firstSlice = containerFixture.select('.chart-group .arc path');
+                        donutChart.on('customMouseOver', callback);
+                        firstSlice.dispatch('mouseover');
+                        expect(callback.calls.count()).toBe(1);
+                        expect(callback.calls.allArgs()[0].length).toBe(3);
+                    });
 
-                    donutChart.on('customClick', callback);
-                    firstSlice.dispatch('click');
-                    expect(callback.calls.count()).toBe(1);
-                    expect(callback.calls.allArgs()[0].length).toBe(3);
-                });
+                    it('should trigger an event on mouse out', () => {
+                        let callback = jasmine.createSpy('mouseOutCallback'),
+                            firstSlice = containerFixture.select('.chart-group .arc path');
 
-                it('should trigger an event on hover', () => {
-                    let callback = jasmine.createSpy('hoverCallback'),
-                        firstSlice = containerFixture.select('.chart-group .arc path');
+                        donutChart.on('customMouseOut', callback);
+                        firstSlice.dispatch('mouseout');
+                        expect(callback.calls.count()).toBe(1);
+                        expect(callback.calls.allArgs()[0].length).toBe(3);
+                    });
 
-                    donutChart.on('customMouseOver', callback);
-                    firstSlice.dispatch('mouseover');
-                    expect(callback.calls.count()).toBe(1);
-                    expect(callback.calls.allArgs()[0].length).toBe(3);
-                });
+                    it('should trigger a callback on mouse move', () => {
+                        let callback = jasmine.createSpy('mouseMoveCallback'),
+                            firstSlice = containerFixture.select('.chart-group .arc path');
 
-                it('should trigger an event on mouse out', () => {
-                    let callback = jasmine.createSpy('mouseOutCallback'),
-                        firstSlice = containerFixture.select('.chart-group .arc path');
+                        donutChart.on('customMouseMove', callback);
+                        firstSlice.dispatch('mousemove');
 
-                    donutChart.on('customMouseOut', callback);
-                    firstSlice.dispatch('mouseout');
-                    expect(callback.calls.count()).toBe(1);
-                    expect(callback.calls.allArgs()[0].length).toBe(3);
-                });
-
-                it('should trigger a callback on mouse move', () => {
-                    let callback = jasmine.createSpy('mouseMoveCallback'),
-                        firstSlice = containerFixture.select('.chart-group .arc path');
-
-                    donutChart.on('customMouseMove', callback);
-                    firstSlice.dispatch('mousemove');
-
-                    expect(callback.calls.count()).toBe(1);
-                    expect(callback.calls.allArgs()[0].length).toBe(3);
-                });
-            });
-
-            describe('Export chart functionality', () => {
-
-                it('should have exportChart defined', () => {
-                    expect(donutChart.exportChart).toBeDefined();
+                        expect(callback.calls.count()).toBe(1);
+                        expect(callback.calls.allArgs()[0].length).toBe(3);
+                    });
                 });
             });
         });
