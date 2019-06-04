@@ -9,12 +9,12 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
     };
 
     const differentDatesReducer = (acc, d) => {
-                if (acc.indexOf(d.date) === -1) {
-                    acc.push(d.date);
-                }
+        if (acc.indexOf(d.date) === -1) {
+            acc.push(d.date);
+        }
 
-                return acc;
-            };
+        return acc;
+    };
 
     describe('Grouped Bar Chart', () => {
         let groupedBarChart, dataset, containerFixture, f;
@@ -22,10 +22,10 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
         beforeEach(() => {
             dataset = buildDataSet('with3Sources');
             groupedBarChart = chart()
-                        .groupLabel('stack')
-                        .nameLabel('date')
-                        .valueLabel('views')
-                        .grid('full');
+                .groupLabel('stack')
+                .nameLabel('date')
+                .valueLabel('views')
+                .grid('full');
 
             // DOM Fixture Setup
             f = jasmine.getFixtures();
@@ -43,83 +43,161 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
             f.clearCache();
         });
 
-        it('should render a chart with minimal requirements', () => {
-            expect(containerFixture.select('.grouped-bar').empty()).toBeFalsy();
-        });
+        describe('Render', () => {
 
-        it('should render container, axis and chart groups', () => {
-            expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.x-axis-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.y-axis-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.grid-lines-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
-        });
-
-        it('should render grid lines', () => {
-            expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
-            expect(containerFixture.select('.vertical-grid-line').empty()).toBeFalsy();
-        });
-
-        it('should render an X and Y axis', () => {
-            expect(containerFixture.select('.x-axis-group .axis.x').empty()).toBeFalsy();
-            expect(containerFixture.select('.y-axis-group.axis').empty()).toBeFalsy();
-        });
-
-        it('should render a layer for each data entry group', () => {
-            let actual = containerFixture.selectAll('.layer').size();
-            let expected = dataset.data.reduce(differentDatesReducer, []).length;
-
-            expect(actual).toEqual(expected);
-        });
-
-        it('should render a bar for each data entry', () => {
-            let actual = containerFixture.selectAll('.bar').size();
-            let expected = dataset.data.length;
-
-            expect(actual).toEqual(expected);
-        });
-
-        describe('when reloading with a two sources dataset', () => {
-
-            it('should render in the same svg', function() {
-                let actual;
-                let expected = 1;
-                let newDataset = buildDataSet('with2Sources');
-
-                containerFixture.datum(newDataset.data).call(groupedBarChart);
-
-                actual = containerFixture.selectAll('.grouped-bar').nodes().length;
+            it('should render a chart with minimal requirements', () => {
+                const expected = 1;
+                const actual = containerFixture.select('.grouped-bar').size();
 
                 expect(actual).toEqual(expected);
             });
 
-            it('should render four layers', function() {
-                let actual;
-                let expected = 4;
-                let newDataset = buildDataSet('with2Sources');
+            describe('groups', () => {
+                it('should create a container-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.container-group').size();
 
-                containerFixture.datum(newDataset.data).call(groupedBarChart);
+                    expect(actual).toEqual(expected);
+                });
 
-                actual = containerFixture.selectAll('.grouped-bar .layer').nodes().length;
+                it('should create a chart-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.chart-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a x-axis-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.x-axis-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a y-axis-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.y-axis-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a grid-lines-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.grid-lines-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a metadata-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.metadata-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('grid lines', () => {
+
+                it('should draw horizontal grid line', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('.horizontal-grid-line').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should draw vertical grid line', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('.vertical-grid-line').size();
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('axis', () => {
+                it('should draw an X axis', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('.x-axis-group .axis.x').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should draw an Y axis', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('.y-axis-group.axis').size();
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            it('should render a layer for each data entry group', () => {
+                const actual = containerFixture.selectAll('.layer').size();
+                const expected = dataset.data.reduce(differentDatesReducer, []).length;
 
                 expect(actual).toEqual(expected);
             });
 
-            it('should render eight bars total', () => {
-                let actual;
-                let expected = 8;
-                let newDataset = buildDataSet('with2Sources');
-
-                containerFixture.datum(newDataset.data).call(groupedBarChart);
-
-                actual = containerFixture.selectAll('.grouped-bar .bar').nodes().length;
+            it('should render a bar for each data entry', () => {
+                const actual = containerFixture.selectAll('.bar').size();
+                const expected = dataset.data.length;
 
                 expect(actual).toEqual(expected);
+            });
+
+            describe('when reloading with a two sources dataset', () => {
+
+                it('should render in the same svg', () => {
+                    const expected = 1;
+                    const newDataset = buildDataSet('with2Sources');
+                    let actual;
+
+                    containerFixture.datum(newDataset.data).call(groupedBarChart);
+                    actual = containerFixture.selectAll('.grouped-bar').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should render four layers', () => {
+                    const expected = 4;
+                    const newDataset = buildDataSet('with2Sources');
+                    let actual;
+
+                    containerFixture.datum(newDataset.data).call(groupedBarChart);
+                    actual = containerFixture.selectAll('.grouped-bar .layer').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should render eight bars total', () => {
+                    const expected = 8;
+                    const newDataset = buildDataSet('with2Sources');
+                    let actual;
+
+                    containerFixture.datum(newDataset.data).call(groupedBarChart);
+                    actual = containerFixture.selectAll('.grouped-bar .bar').size();
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('when grouped bar is animated', () => {
+
+                it('it renders correct number of layers and bars', () => {
+                    const expectedNLayers = 4;
+                    const nBarsPerLayer = 3;
+
+                    groupedBarChart.isAnimated(true);
+                    containerFixture.datum(dataset.data).call(groupedBarChart);
+
+                    const actualNLayers = containerFixture.selectAll('.chart-group .layer').size();
+                    const actualNBars = containerFixture.selectAll('.chart-group .bar').size();
+
+                    expect(actualNLayers).toEqual(expectedNLayers);
+                    expect(actualNBars).toEqual(expectedNLayers * nBarsPerLayer);
+                });
             });
         });
 
-        describe('API', function() {
+        describe('API', () => {
 
             it('should provide an aspect ratio getter and setter', () => {
                 let previous = groupedBarChart.aspectRatio(),
@@ -231,6 +309,25 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toEqual(expected);
+            });
+
+            describe('when margins are set partially', function () {
+
+                it('should override the default values', () => {
+                    let previous = groupedBarChart.margin(),
+                        expected = {
+                            ...previous,
+                            top: 10,
+                            right: 20
+                        },
+                        actual;
+
+                    groupedBarChart.width(expected);
+                    actual = groupedBarChart.width();
+
+                    expect(previous).not.toBe(actual);
+                    expect(actual).toEqual(expected);
+                })
             });
 
             it('should provide nameLabel getter and setter', () => {
@@ -358,79 +455,51 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
             });
         });
 
-        describe('when margins are set partially', function() {
+        describe('Lifecycle', () => {
 
-            it('should override the default values', () => {
-                let previous = groupedBarChart.margin(),
-                expected = {
-                    ...previous,
-                    top: 10,
-                    right: 20
-                },
-                actual;
+            describe('when clicking on a bar', () => {
 
-                groupedBarChart.width(expected);
-                actual = groupedBarChart.width();
+                it('should trigger a callback', () => {
+                    const chart = containerFixture.select('.grouped-bar');
+                    const callbackSpy = jasmine.createSpy('callback');
+                    const expectedCalls = 1;
+                    const expectedArguments = 2;
 
-                expect(previous).not.toBe(actual);
-                expect(actual).toEqual(expected);
-            })
-        });
+                    groupedBarChart.on('customClick', callbackSpy);
+                    chart.dispatch('click');
 
-        describe('when clicking on a bar', () => {
-
-            it('should trigger a callback', function() {
-                let chart = containerFixture.select('.grouped-bar');
-                let callbackSpy = jasmine.createSpy('callback');
-
-                groupedBarChart.on('customClick', callbackSpy);
-                chart.dispatch('click');
-
-                expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
-            })
-        });
-
-        describe('when hovering', function() {
-
-            it('mouseover should trigger a callback', () => {
-                let chart = containerFixture.selectAll('.grouped-bar');
-                let callbackSpy = jasmine.createSpy('callback');
-
-                groupedBarChart.on('customMouseOver', callbackSpy);
-                chart.dispatch('mouseover');
-
-                expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
+                    expect(callbackSpy.calls.count()).toEqual(expectedCalls);
+                    expect(callbackSpy.calls.allArgs()[0].length).toEqual(expectedArguments);
+                })
             });
 
-            it('mouseout should trigger a callback', () => {
-                let chart = containerFixture.selectAll('.grouped-bar');
-                let callbackSpy = jasmine.createSpy('callback');
+            describe('when hovering', () => {
 
-                groupedBarChart.on('customMouseOut', callbackSpy);
-                chart.dispatch('mouseout');
+                it('mouseover should trigger a callback', () => {
+                    const chart = containerFixture.selectAll('.grouped-bar');
+                    const callbackSpy = jasmine.createSpy('callback');
+                    const expectedCalls = 1;
+                    const expectedArguments = 2;
 
-                expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
-            });
-        });
+                    groupedBarChart.on('customMouseOver', callbackSpy);
+                    chart.dispatch('mouseover');
 
+                    expect(callbackSpy.calls.count()).toEqual(expectedCalls);
+                    expect(callbackSpy.calls.allArgs()[0].length).toEqual(expectedArguments);
+                });
 
-        describe('when grouped bar is animated', () => {
+                it('mouseout should trigger a callback', () => {
+                    const chart = containerFixture.selectAll('.grouped-bar');
+                    const callbackSpy = jasmine.createSpy('callback');
+                    const expectedCalls = 1;
+                    const expectedArguments = 2;
 
-            it('it renders correct number of layers and bars', () => {
-                const expectedNLayers = 4;
-                const nBarsPerLayer = 3;
+                    groupedBarChart.on('customMouseOut', callbackSpy);
+                    chart.dispatch('mouseout');
 
-                groupedBarChart.isAnimated(true);
-                containerFixture.datum(dataset.data).call(groupedBarChart);
-
-                const actualNLayers = containerFixture.selectAll('.chart-group .layer').nodes().length;
-                const actualNBars = containerFixture.selectAll('.chart-group .bar').nodes().length;
-
-                expect(actualNLayers).toEqual(expectedNLayers);
-                expect(actualNBars).toEqual(expectedNLayers * nBarsPerLayer);
+                    expect(callbackSpy.calls.count()).toEqual(expectedCalls);
+                    expect(callbackSpy.calls.allArgs()[0].length).toEqual(expectedArguments);
+                });
             });
         });
     });

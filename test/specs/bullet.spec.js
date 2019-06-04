@@ -1,17 +1,18 @@
 define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuilder) {
     'use strict';
 
+    const aTestDataSet = () => new dataBuilder.BulletChartDataBuilder();
+    const buildDataSet = (dataSetName) => {
+        return aTestDataSet()
+            [dataSetName]()
+            .build();
+    };
+
     describe('Bullet Chart', () => {
         let bulletChart, dataset, containerFixture, f, dataPoint;
 
-        function aTestDataSet() {
-            return new dataBuilder.BulletChartDataBuilder();
-        }
-
         beforeEach(() => {
-            dataset = aTestDataSet()
-                .withCpuData()
-                .build();
+            dataset = buildDataSet('withCpuData');
             bulletChart = chart();
             dataPoint = dataset[0];
 
@@ -31,40 +32,40 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
             f.clearCache();
         });
 
-        describe('when render', () => {
+        describe('Render', () => {
 
-            describe('container groups', () => {
-                it('should render a chart with minimal requirements', () => {
-                    let expected = 1;
-                    let actual = containerFixture.select('.bullet-chart').nodes().length;
+            it('should render a chart with minimal requirements', () => {
+                const expected = 1;
+                const actual = containerFixture.select('.bullet-chart').size();
 
-                    expect(actual).toEqual(expected);
-                });
+                expect(actual).toEqual(expected);
+            });
 
+            describe('groups', () => {
                 it('should render chart group', () => {
-                    let expected = 1;
-                    let actual = containerFixture.select('.chart-group').nodes().length;
+                    const expected = 1;
+                    const actual = containerFixture.select('.chart-group').size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should render axis group', () => {
-                    let expected = 1;
-                    let actual = containerFixture.select('.axis-group').nodes().length;
+                    const expected = 1;
+                    const actual = containerFixture.select('.axis-group').size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should render metadata group', () => {
-                    let expected = 1;
-                    let actual = containerFixture.select('.metadata-group').nodes().length;
+                    const expected = 1;
+                    const actual = containerFixture.select('.metadata-group').size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should render grid lines group', () => {
-                    let expected = 1;
-                    let actual = containerFixture.select('.grid-lines-group').nodes().length;
+                    const expected = 1;
+                    const actual = containerFixture.select('.grid-lines-group').size();
 
                     expect(actual).toEqual(expected);
                 });
@@ -73,24 +74,131 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
             describe('chart components', () => {
 
                 it('should render ranges', () => {
-                    let expected = 3;
-                    let actual = containerFixture.selectAll('rect.range').nodes().length;
+                    const expected = 3;
+                    const actual = containerFixture.selectAll('rect.range').size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should render measures', () => {
-                    let expected = 2;
-                    let actual = containerFixture.selectAll('rect.measure').nodes().length;
+                    const expected = 2;
+                    const actual = containerFixture.selectAll('rect.measure').size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should render grid lines group', () => {
-                    let expected = 1;
-                    let actual = containerFixture.selectAll('.marker-line').nodes().length;
+                    const expected = 1;
+                    const actual = containerFixture.selectAll('.marker-line').size();
 
                     expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('measures', () => {
+
+                it('should have proper attributes', () => {
+                    const expectedClass = 'measure m';
+                    const measureBars = containerFixture.selectAll('rect.measure').nodes();
+
+                    measureBars.forEach((measureBar, i) => {
+                        expect(measureBar).toHaveAttr('class', `${expectedClass}${i}`);
+                        expect(measureBar).toHaveAttr('fill');
+                        expect(measureBar).toHaveAttr('x');
+                        expect(measureBar).toHaveAttr('y');
+                        expect(measureBar).toHaveAttr('width');
+                        expect(measureBar).toHaveAttr('height');
+                    });
+                });
+            });
+
+            describe('ranges', () => {
+
+                it('should have proper attributes', () => {
+                    const expectedClass = 'range r';
+                    const rangeBars = containerFixture.selectAll('rect.range').nodes();
+
+                    rangeBars.forEach((rangeBar, i) => {
+                        expect(rangeBar).toHaveAttr('class', `${expectedClass}${i}`);
+                        expect(rangeBar).toHaveAttr('opacity');
+                        expect(rangeBar).toHaveAttr('x');
+                        expect(rangeBar).toHaveAttr('width');
+                        expect(rangeBar).toHaveAttr('height');
+                        expect(rangeBar).not.toHaveAttr('y');
+                    });
+                });
+            });
+
+            describe('markers', () => {
+
+                it('should have proper attributes', () => {
+                    const expectedClass = 'marker m';
+                    const markerLines = containerFixture.selectAll('line.marker').nodes();
+
+                    markerLines.forEach((markerLine, i) => {
+                        expect(markerLine).toHaveAttr('class', `${expectedClass}${i}`);
+                        expect(markerLine).toHaveAttr('opacity');
+                        expect(markerLine).toHaveAttr('x');
+                        expect(markerLine).toHaveAttr('width');
+                        expect(markerLine).toHaveAttr('height');
+                    });
+                });
+            });
+
+            describe('startMaxRangeOpacity', () => {
+                let diff = 0.2;
+
+                it('sets correct default range for range bars', () => {
+                    const expectedStartOpacity = bulletChart.startMaxRangeOpacity();
+                    const rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
+
+                    rangeBars.forEach((rangeBar, i) => {
+                        expect(rangeBar).toHaveAttr('opacity', `${expectedStartOpacity - (i * diff)}`);
+                    });
+                });
+
+                it('can change the range for opacity', () => {
+                    const expectedStartMaxOpacity = 1;
+
+                    bulletChart.startMaxRangeOpacity(expectedStartMaxOpacity);
+                    containerFixture.datum(dataset[1]).call(bulletChart);
+                    const rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
+
+                    rangeBars.forEach((rangeBar, i) => {
+                        expect(rangeBar).toHaveAttr('opacity', `${expectedStartMaxOpacity - (i * diff)}`);
+                    });
+                });
+
+                it('can change the range for opacity', () => {
+                    const expectedStartMaxOpacity = 1;
+
+                    bulletChart.startMaxRangeOpacity(expectedStartMaxOpacity);
+                    containerFixture.datum(dataset[1]).call(bulletChart);
+                    const rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
+
+                    rangeBars.forEach((rangeBar, i) => {
+                        expect(rangeBar).toHaveAttr('opacity', `${expectedStartMaxOpacity - (i * diff)}`);
+                    });
+                });
+            });
+
+            describe('when custom colorSchema is passed', () => {
+
+                it('should assign first two indexed colors for range and measure/markers in order', () => {
+                    const expectedRangeColor = '#bbb';
+                    const expectedMeasureColor = '#ccc';
+                    const expectedMarkerColor = expectedMeasureColor;
+
+                    bulletChart.colorSchema([expectedRangeColor, expectedMeasureColor]);
+                    containerFixture.datum(dataset[1]).call(bulletChart);
+
+                    const rangeBar = containerFixture.selectAll('rect.range').node();
+                    const measureBar = containerFixture.selectAll('rect.measure').node();
+                    const markerLine = containerFixture.selectAll('line.marker-line').node();
+
+                    expect(rangeBar).toHaveAttr('fill', expectedRangeColor);
+                    expect(measureBar).toHaveAttr('fill', expectedMeasureColor);
+                    expect(markerLine).toHaveAttr('stroke', expectedMarkerColor);
                 });
             });
         });
@@ -243,114 +351,6 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
-            });
-        });
-
-        describe('measures', () => {
-
-            it('when render, should have proper attributes', () => {
-                let expectedClass = 'measure m';
-                let measureBars = containerFixture.selectAll('rect.measure').nodes();
-
-                measureBars.forEach((measureBar, i) => {
-                    expect(measureBar).toHaveAttr('class', `${expectedClass}${i}`);
-                    expect(measureBar).toHaveAttr('fill');
-                    expect(measureBar).toHaveAttr('x');
-                    expect(measureBar).toHaveAttr('y');
-                    expect(measureBar).toHaveAttr('width');
-                    expect(measureBar).toHaveAttr('height');
-                });
-            });
-        });
-
-        describe('ranges', () => {
-
-            it('when render, should have proper attributes', () => {
-                let expectedClass = 'range r';
-                let rangeBars = containerFixture.selectAll('rect.range').nodes();
-
-                rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar).toHaveAttr('class', `${expectedClass}${i}`);
-                    expect(rangeBar).toHaveAttr('opacity');
-                    expect(rangeBar).toHaveAttr('x');
-                    expect(rangeBar).toHaveAttr('width');
-                    expect(rangeBar).toHaveAttr('height');
-                    expect(rangeBar).not.toHaveAttr('y');
-                });
-            });
-        });
-
-        describe('markers', () => {
-
-            it('when render, should have proper attributes', () => {
-                let expectedClass = 'marker m';
-                let markerLines = containerFixture.selectAll('line.marker').nodes();
-
-                markerLines.forEach((markerLine, i) => {
-                    expect(markerLine).toHaveAttr('class', `${expectedClass}${i}`);
-                    expect(markerLine).toHaveAttr('opacity');
-                    expect(markerLine).toHaveAttr('x');
-                    expect(markerLine).toHaveAttr('width');
-                    expect(markerLine).toHaveAttr('height');
-                });
-            });
-        });
-
-        describe('startMaxRangeOpacity', () => {
-            let diff = 0.2;
-
-            it('sets correct default range for range bars', () => {
-                let expectedStartOpacity =  bulletChart.startMaxRangeOpacity();
-
-                let rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
-
-                rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartOpacity - (i * diff)}`);
-                });
-            });
-
-            it('can change the range for opacity', () => {
-                let expectedStartMaxOpacity = 1;
-
-                bulletChart.startMaxRangeOpacity(expectedStartMaxOpacity);
-                containerFixture.datum(dataset[1]).call(bulletChart);
-                let rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
-
-                rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartMaxOpacity - (i * diff)}`);
-                });
-            });
-
-            it('can change the range for opacity', () => {
-                let expectedStartMaxOpacity = 1;
-
-                bulletChart.startMaxRangeOpacity(expectedStartMaxOpacity);
-                containerFixture.datum(dataset[1]).call(bulletChart);
-                let rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
-
-                rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartMaxOpacity - (i * diff)}`);
-                });
-            });
-        });
-
-        describe('when custom colorSchema is passed', () => {
-
-            it('should assign first two indexed colors for range and measure/markers in order', () => {
-                const expectedRangeColor = '#bbb';
-                const expectedMeasureColor = '#ccc';
-                const expectedMarkerColor = expectedMeasureColor;
-
-                bulletChart.colorSchema([expectedRangeColor, expectedMeasureColor]);
-                containerFixture.datum(dataset[1]).call(bulletChart);
-
-                const rangeBar = containerFixture.selectAll('rect.range').node();
-                const measureBar = containerFixture.selectAll('rect.measure').node();
-                const markerLine = containerFixture.selectAll('line.marker-line').node();
-
-                expect(rangeBar).toHaveAttr('fill', expectedRangeColor);
-                expect(measureBar).toHaveAttr('fill', expectedMeasureColor);
-                expect(markerLine).toHaveAttr('stroke', expectedMarkerColor);
             });
         });
     });
