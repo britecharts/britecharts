@@ -19,7 +19,6 @@ define([
                 [dataSetName]()
                 .build();
         };
-
         const hasClass = (element, className) => {
             return _.contains(element.node().classList, className);
         };
@@ -27,47 +26,500 @@ define([
         describe('Line Chart', () => {
             let dataset, containerFixture, f, lineChart;
 
-            describe('when a single line of zeroes', () => {
+            describe('Render', () => {
 
-                beforeEach(() => {
-                    dataset = aTestDataSet().withAllZeroes().build();
-                    lineChart = chart();
+                describe('when a single line of zeroes', () => {
 
-                    // DOM Fixture Setup
-                    f = jasmine.getFixtures();
-                    f.fixturesPath = 'base/test/fixtures/';
-                    f.load('testContainer.html');
+                    beforeEach(() => {
+                        dataset = buildDataSet('withAllZeroes');
+                        lineChart = chart();
 
-                    containerFixture = d3.select('.test-container');
-                    containerFixture.datum(dataset).call(lineChart);
-                });
+                        // DOM Fixture Setup
+                        f = jasmine.getFixtures();
+                        f.fixturesPath = 'base/test/fixtures/';
+                        f.load('testContainer.html');
 
-                afterEach(() => {
-                    containerFixture.remove();
-                    f = jasmine.getFixtures();
-                    f.cleanUp();
-                    f.clearCache();
-                });
+                        containerFixture = d3.select('.test-container');
+                        containerFixture.datum(dataset).call(lineChart);
+                    });
 
-                describe('on render', () => {
+                    afterEach(() => {
+                        containerFixture.remove();
+                        f = jasmine.getFixtures();
+                        f.cleanUp();
+                        f.clearCache();
+                    });
 
                     it('should have one line on the chart line', () => {
-                        let expected = 1,
-                            actual = containerFixture.select('.chart-group').selectAll('path').nodes().length;
+                        const expected = 1;
+                        const actual = containerFixture
+                            .select('.chart-group')
+                            .selectAll('path')
+                            .size();
 
                         expect(actual).toEqual(expected);
                     });
 
                     it('should have a gradient stroke on the chart line', () => {
-                        let actual = containerFixture.select('.chart-group').selectAll('path').node().style.stroke.match('one-line-gradient').length,
-                            expected = 1;
+                        const expected = 1;
+                        const actual = containerFixture
+                            .select('.chart-group')
+                            .selectAll('path')
+                            .node().style.stroke.match('one-line-gradient').length;
 
                         expect(actual).toEqual(expected);
                     });
                 });
+
+                describe('when multiple lines', () => {
+
+                    beforeEach(() => {
+                        dataset = buildDataSet('with5Topics');
+                        lineChart = chart();
+
+                        // DOM Fixture Setup
+                        f = jasmine.getFixtures();
+                        f.fixturesPath = 'base/test/fixtures/';
+                        f.load('testContainer.html');
+
+                        containerFixture = d3.select('.test-container');
+                        containerFixture.datum(dataset).call(lineChart);
+                    });
+
+                    afterEach(() => {
+                        containerFixture.remove();
+                        f = jasmine.getFixtures();
+                        f.cleanUp();
+                        f.clearCache();
+                    });
+
+                    it('should show a chart with minimal requirements', () => {
+                        const expected = 1;
+                        const actual = containerFixture.select('.line-chart').size();
+
+                        expect(actual).toEqual(expected);
+                    });
+
+                    describe('groups', () => {
+                        it('should create a container-group', () => {
+                            const expected = 1;
+                            const actual = containerFixture.select('g.container-group').size();
+
+                            expect(actual).toEqual(expected);
+                        });
+
+                        it('should create a chart-group', () => {
+                            const expected = 1;
+                            const actual = containerFixture.select('g.chart-group').size();
+
+                            expect(actual).toEqual(expected);
+                        });
+
+                        it('should create a x-axis-group', () => {
+                            const expected = 1;
+                            const actual = containerFixture.select('g.x-axis-group').size();
+
+                            expect(actual).toEqual(expected);
+                        });
+
+                        it('should create a y-axis-group', () => {
+                            const expected = 1;
+                            const actual = containerFixture.select('g.y-axis-group').size();
+
+                            expect(actual).toEqual(expected);
+                        });
+
+                        it('should create a grid-lines-group', () => {
+                            const expected = 1;
+                            const actual = containerFixture.select('g.grid-lines-group').size();
+
+                            expect(actual).toEqual(expected);
+                        });
+
+                        it('should create a metadata-group', () => {
+                            const expected = 1;
+                            const actual = containerFixture.select('g.metadata-group').size();
+
+                            expect(actual).toEqual(expected);
+                        });
+                    });
+
+                    describe('grids', () => {
+
+                        describe('when grid is horizontal', () => {
+
+                            beforeEach(() => {
+                                lineChart = chart().grid('horizontal');
+
+                                containerFixture = d3.select('.test-container').append('svg');
+                                containerFixture.datum(dataset).call(lineChart);
+                            });
+
+                            it('should draw horizontal grid lines', () => {
+                                const expected = 1;
+                                const actual = containerFixture.select('.horizontal-grid-line').size();
+
+                                expect(actual).toEqual(expected);
+                            });
+
+                            it('should not draw vertical grid lines', () => {
+                                const expected = 0;
+                                const actual = containerFixture.select('.vertical-grid-line').size();
+
+                                expect(actual).toEqual(expected);
+                            });
+                        });
+
+                        describe('when grid is vertical', function () {
+
+                            beforeEach(function () {
+                                lineChart = chart().grid('vertical');
+
+                                containerFixture = d3.select('.test-container').append('svg');
+                                containerFixture.datum(dataset).call(lineChart);
+                            });
+
+                            it('should not draw horizontal grid lines', () => {
+                                const expected = 0;
+                                const actual = containerFixture.select('.horizontal-grid-line').size();
+
+                                expect(actual).toEqual(expected);
+                            });
+
+                            it('should draw vertical grid lines', () => {
+                                const expected = 1;
+                                const actual = containerFixture.select('.vertical-grid-line').size();
+
+                                expect(actual).toEqual(expected);
+                            });
+                        });
+
+                        describe('when grid is full', function () {
+
+                            beforeEach(function () {
+                                lineChart = chart().grid('full');
+
+                                containerFixture = d3.select('.test-container').append('svg');
+                                containerFixture.datum(dataset).call(lineChart);
+                            });
+
+                            it('should draw horizontal grid lines', () => {
+                                const expected = 1;
+                                const actual = containerFixture.select('.horizontal-grid-line').size();
+
+                                expect(actual).toEqual(expected);
+                            });
+
+                            it('should draw vertical grid lines', () => {
+                                const expected = 1;
+                                const actual = containerFixture.select('.vertical-grid-line').size();
+
+                                expect(actual).toEqual(expected);
+                            });
+                        });
+                    });
+
+                    describe('axis', () => {
+
+                        it('should draw an X axis', () => {
+                            const expected = 1;
+                            const actual = containerFixture.select('.x-axis-group .x.axis').size();
+
+                            expect(actual).toEqual(expected);
+                        });
+
+                        it('should draw a month X axis', () => {
+                            const expected = 1;
+                            const actual = containerFixture.select('.x-axis-group .month-axis').size();
+
+                            expect(actual).toEqual(expected);
+                        });
+
+                        it('should draw an Y axis', () => {
+                            const expected = 1;
+                            const actual = containerFixture.select('.y.axis').size();
+
+                            expect(actual).toEqual(expected);
+                        });
+                    });
+
+                    it('should render a line for each data topic', () => {
+                        const expected = dataset.dataByTopic.length;
+                        const actual = containerFixture.selectAll('.line').size();
+
+                        expect(actual).toEqual(expected);
+                    });
+
+                    it('should not have a gradient line with a data set for more than one line', () => {
+                        const expected = 'url("#line-area-gradient")';
+                        const actual = containerFixture
+                            .select('.chart-group')
+                            .selectAll('path')
+                            .node()
+                            .style.stroke;
+
+                        expect(actual).not.toEqual(expected);
+                    });
+
+                    it('should render an overlay to trigger the hover effect', () => {
+                        const expected = 1;
+                        const actual = containerFixture.select('.overlay').size();
+
+                        expect(actual).toEqual(expected);
+                    });
+
+                    it('should render a vertical marker', () => {
+                        const expected = 1;
+                        const actual = containerFixture.select('.hover-marker').size();
+
+                        expect(actual).toEqual(expected);
+                    });
+
+                    it('should render a vertical marker container', () => {
+                        const expected = 1;
+                        const actual = containerFixture.select('.vertical-marker').size();
+
+                        expect(actual).toEqual(expected);
+                    });
+
+                    describe('when reloading with a different dataset', () => {
+
+                        it('should render in the same svg', function () {
+                            const expected = 1;
+                            const newDataset = buildDataSet('withOneSource');
+                            let actual;
+
+                            containerFixture.datum(newDataset).call(lineChart);
+                            actual = containerFixture.selectAll('.line-chart').size();
+
+                            expect(actual).toEqual(expected);
+                        });
+
+                        it('should render one line', function () {
+                            const expected = 1;
+                            const newDataset = buildDataSet('withOneSource');
+                            let actual;
+
+                            containerFixture.datum(newDataset).call(lineChart);
+                            actual = containerFixture.selectAll('.line-chart .line').size();
+
+                            expect(actual).toEqual(expected);
+                        });
+
+                        it('should not throw error on mousemove', function () {
+                            const container = containerFixture.selectAll('svg');
+                            const newDataset = buildDataSet('withOneSource');
+
+                            // Need to refresh the data twice to get failure before fix
+                            containerFixture.datum(newDataset).call(lineChart);
+                            containerFixture.datum(newDataset).call(lineChart);
+                            container.dispatch('mousemove');
+                        })
+                    });
+
+                    describe('axis Labels', () => {
+                        describe('when axis labels aren\'t set', () => {
+                            beforeEach(() => {
+                                dataset = buildDataSet('withOneSource');
+                                lineChart = chart();
+
+                                // DOM Fixture Setup
+                                f = jasmine.getFixtures();
+                                f.fixturesPath = 'base/test/fixtures/';
+                                f.load('testContainer.html');
+
+                                containerFixture = d3.select('.test-container');
+                                containerFixture.datum(dataset).call(lineChart);
+                            });
+
+                            afterEach(() => {
+                                containerFixture.remove();
+                                f = jasmine.getFixtures();
+                                f.cleanUp();
+                                f.clearCache();
+                            });
+
+                            it('should not render the x-axis label', () => {
+                                const expected = 0;
+                                const actual = containerFixture.selectAll('.x-axis-label')['_groups'][0].length;
+
+                                expect(actual).toEqual(expected);
+                            });
+
+                            it('should not render any axisLabel', () => {
+                                const expected = 0;
+                                const actual = containerFixture.selectAll('.y-axis-label')['_groups'][0].length;
+
+                                expect(actual).toEqual(expected);
+                            });
+                        });
+
+                        describe('when axis labels are set', () => {
+
+                            beforeEach(() => {
+                                dataset = buildDataSet('withOneSource');
+                                lineChart = chart()
+                                    .xAxisLabel('valueSetX')
+                                    .yAxisLabel('valueSetY');
+
+                                // DOM Fixture Setup
+                                f = jasmine.getFixtures();
+                                f.fixturesPath = 'base/test/fixtures/';
+                                f.load('testContainer.html');
+
+                                containerFixture = d3.select('.test-container');
+                                containerFixture.datum(dataset).call(lineChart);
+                            });
+
+                            afterEach(() => {
+                                containerFixture.remove();
+                                f = jasmine.getFixtures();
+                                f.cleanUp();
+                                f.clearCache();
+                            });
+
+                            it('should render the x-axis label', () => {
+                                const expected = 1;
+                                const actual = containerFixture.selectAll('.x-axis-label')['_groups'][0].length;
+
+                                expect(actual).toEqual(expected);
+                            });
+
+                            it('should render any axisLabel', () => {
+                                const expected = 1;
+                                const actual = containerFixture.selectAll('.y-axis-label')['_groups'][0].length;
+
+                                expect(actual).toEqual(expected);
+                            });
+                        });
+                    });
+
+                    describe('when different date ranges', () => {
+
+                        beforeEach(() => {
+                            dataset = buildDataSet('withHourDateRange');
+                            lineChart = chart();
+
+                            // DOM Fixture Setup
+                            f = jasmine.getFixtures();
+                            f.fixturesPath = 'base/test/fixtures/';
+                            f.load('testContainer.html');
+
+                            containerFixture = d3.select('.test-container');
+                            containerFixture.datum(dataset).call(lineChart);
+                        });
+
+                        afterEach(() => {
+                            containerFixture.remove();
+                            f = jasmine.getFixtures();
+                            f.cleanUp();
+                            f.clearCache();
+                        });
+
+                        it('should have an x axis with hour format', () => {
+                            const expected = '00 AM';
+                            const container = containerFixture.selectAll('svg');
+                            const xAxis = d3.select('.x-axis-group');
+                            const xAxisLabels = xAxis.selectAll('.tick text');
+                            const actual = xAxisLabels.text();
+
+                            expect(actual).toEqual(expected)
+                        });
+                    });
+
+                    describe('when using flat data', () => {
+                        beforeEach(() => {
+                            dataset = buildDataSet('withTwoFlatTopics');
+                            lineChart = chart();
+
+                            // DOM Fixture Setup
+                            f = jasmine.getFixtures();
+                            f.fixturesPath = 'base/test/fixtures/';
+                            f.load('testContainer.html');
+
+                            containerFixture = d3.select('.test-container');
+                            containerFixture.datum(dataset).call(lineChart);
+                        });
+
+                        afterEach(() => {
+                            containerFixture.remove();
+                            f = jasmine.getFixtures();
+                            f.cleanUp();
+                            f.clearCache();
+                        });
+
+                        it('should render a chart with two lines', () => {
+                            const expected = 2;
+                            const actual = containerFixture.select('.chart-group').selectAll('path').size();
+
+                            expect(actual).toEqual(expected);
+                        });
+                    });
+                });
+
+                describe('data points', () => {
+
+                    beforeEach(() => {
+                        dataset = buildDataSet('with5Topics');
+
+                        // DOM Fixture Setup
+                        f = jasmine.getFixtures();
+                        f.fixturesPath = 'base/test/fixtures/';
+                        f.load('testContainer.html');
+                    });
+
+                    afterEach(() => {
+                        containerFixture.remove();
+                        f = jasmine.getFixtures();
+                        f.cleanUp();
+                        f.clearCache();
+                    });
+
+                    describe('when shouldShowAllDataPoints is true', () => {
+
+                        beforeEach(() => {
+                            lineChart = chart().shouldShowAllDataPoints(true);
+
+                            containerFixture = d3.select('.test-container').append('svg');
+                            containerFixture.datum(dataset).call(lineChart);
+                        });
+
+                        it('chart should render data points container', () => {
+                            const expected = 1;
+                            const actual = containerFixture.select('.data-points-container').size();
+
+                            expect(actual).toEqual(expected);
+                        });
+
+                        it('data points container renders a circle for each data point', () => {
+                            const expected = dataset.dataByDate.reduce((accum, dataPoint) => (
+                                accum + dataPoint.topics.length
+                            ), 0);
+                            const actual = containerFixture.select('.data-points-container')
+                                .selectAll('circle')
+                                .size();
+
+                            expect(actual).toEqual(expected);
+                        });
+
+                        it('each data circle has proper attributes', () => {
+                            const circles = containerFixture.select('.data-points-container')
+                                .selectAll('circle')
+                                .nodes();
+
+                            circles.forEach((circle) => {
+                                expect(circle).toHaveAttr('class', 'data-point-mark');
+                                expect(circle).toHaveAttr('r', '5');
+                                expect(circle).toHaveAttr('cx');
+                                expect(circle).toHaveAttr('cy');
+                                expect(circle).toHaveAttr('style');
+                            });
+                        });
+                    });
+                });
             });
 
-            describe('when multiple lines', () => {
+            describe('Lifecycle', () => {
 
                 beforeEach(() => {
                     dataset = buildDataSet('with5Topics');
@@ -89,433 +541,86 @@ define([
                     f.clearCache();
                 });
 
-                it('should render a chart with minimal requirements', () => {
-                    expect(containerFixture.select('.line-chart').empty()).toBeFalsy();
-                });
-
-                it('should render container, axis and chart groups', () => {
-                    expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
-                    expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
-                    expect(containerFixture.select('g.x-axis-group').empty()).toBeFalsy();
-                    expect(containerFixture.select('g.y-axis-group').empty()).toBeFalsy();
-                    expect(containerFixture.select('g.grid-lines-group').empty()).toBeFalsy();
-                    expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
-                });
-
-                it('should render grid lines', () => {
-                    expect(containerFixture.select('.horizontal-grid-line').empty()).toBeTruthy();
-                    expect(containerFixture.select('.vertical-grid-line').empty()).toBeTruthy();
-                });
-
-                it('should render an X and Y axis', () => {
-                    expect(containerFixture.select('.x-axis-group .x.axis').empty()).toBeFalsy();
-                    expect(containerFixture.select('.x-axis-group .month-axis').empty()).toBeFalsy();
-                    expect(containerFixture.select('.y.axis').empty()).toBeFalsy();
-                });
-
-                it('should render a line for each data topic', () => {
-                    let numLines = dataset.dataByTopic.length;
-
-                    expect(containerFixture.selectAll('.line').nodes().length).toEqual(numLines);
-                });
-
-                it('should not have a gradient line with a data set for more than one line', function() {
-                    let stroke = containerFixture.select('.chart-group').selectAll('path').nodes()[0].style.stroke;
-
-                    expect(stroke).not.toEqual('url("#line-area-gradient")');
-                });
-
-                // Event Setting
                 it('should trigger an event on hover', () => {
-                    let callback = jasmine.createSpy('hoverCallback'),
-                        container = containerFixture.selectAll('svg');
+                    const callback = jasmine.createSpy('hoverCallback');
+                    const container = containerFixture.selectAll('svg');
+                    const expectedCalls = 1;
+                    const expectedArguments = 2;
 
                     lineChart.on('customMouseOver', callback);
                     container.dispatch('mouseover');
 
-                    expect(callback.calls.count()).toBe(1);
-                    expect(callback.calls.allArgs()[0].length).toBe(2);
+                    expect(callback.calls.count()).toBe(expectedCalls);
+                    expect(callback.calls.allArgs()[0].length).toBe(expectedArguments);
                 });
 
                 it('should trigger an event on mouse out', () => {
-                    let callback = jasmine.createSpy('mouseOutCallback'),
-                        container = containerFixture.selectAll('svg');
+                    const callback = jasmine.createSpy('mouseOutCallback');
+                    const container = containerFixture.selectAll('svg');
+                    const expectedCalls = 1;
+                    const expectedArguments = 2;
 
                     lineChart.on('customMouseOut', callback);
                     container.dispatch('mouseout');
-                    expect(callback.calls.count()).toBe(1);
-                    expect(callback.calls.allArgs()[0].length).toBe(2);
+
+                    expect(callback.calls.count()).toBe(expectedCalls);
+                    expect(callback.calls.allArgs()[0].length).toBe(expectedArguments);
                 });
 
                 it('should trigger an event on touchmove', () => {
-                    let callback = jasmine.createSpy('touchMoveCallback'),
-                        container = containerFixture.selectAll('svg');
+                    const callback = jasmine.createSpy('touchMoveCallback');
+                    const container = containerFixture.selectAll('svg');
+                    const expectedCalls = 1;
+                    const expectedArguments = 2;
 
                     lineChart.on('customTouchMove', callback);
                     container.dispatch('touchmove');
 
-                    expect(callback.calls.count()).toBe(1);
-                    expect(callback.calls.allArgs()[0].length).toBe(2);
+                    expect(callback.calls.count()).toEqual(expectedCalls);
+                    expect(callback.calls.allArgs()[0].length).toEqual(expectedArguments);
                 });
 
-                // We need to stub some code in order to be able to run this test
-                // it('should trigger an event on mouse move', () => {
-                //     let callback = jasmine.createSpy('mouseMoveCallback'),
-                //         container = containerFixture.selectAll('svg');
-                //
-                //     lineChart.on('customMouseMove', callback);
-                //     container.dispatch('mousemove');
+                it('should show the overlay when the mouse is hovering', () => {
+                    const container = containerFixture.selectAll('svg');
+                    const expectedInitial = 'none';
+                    const expected = 'block';
+                    let actual = containerFixture.select('.overlay').style('display');
 
-                //     expect(callback.calls.count()).toBe(1);
-                // });
-
-                it('should render an overlay to trigger the hover effect', () => {
-                    expect(containerFixture.select('.overlay').empty()).toBeFalsy();
-                });
-
-                it('should show the overlay when the mouse is hovering', () =>  {
-                    let container = containerFixture.selectAll('svg');
-
-                    expect(containerFixture.select('.overlay').style('display')).toBe('none');
+                    expect(actual).toEqual(expectedInitial);
                     container.dispatch('mouseover');
-                    expect(containerFixture.select('.overlay').style('display')).toBe('block');
+                    actual = containerFixture.select('.overlay').style('display');
+
+                    expect(actual).toEqual(expected);
                 });
 
-                it('should render a vertical marker and its container', () => {
-                    expect(containerFixture.select('.hover-marker').empty()).toBeFalsy();
-                    expect(containerFixture.select('.vertical-marker').empty()).toBeFalsy();
-                });
-
-                it('should show a vertical line where the mouse is hovering', () =>  {
-                    let container = containerFixture.selectAll('svg'),
-                        verticalLine = d3.select('.hover-marker line');
+                it('should show a vertical line where the mouse is hovering', () => {
+                    const expected = true;
+                    const container = containerFixture.selectAll('svg');
+                    const verticalLine = d3.select('.hover-marker line');
+                    let actual;
 
                     container.dispatch('mouseover');
+                    actual = hasClass(verticalLine, 'bc-is-active');
 
-                    expect(hasClass(verticalLine, 'bc-is-active')).toBe(true);
+                    expect(actual).toEqual(expected);
                 });
 
-                it('should hide the vertical marker when the mouse is out', () =>  {
-                    let container = containerFixture.selectAll('svg'),
-                        verticalLine = d3.select('.hover-marker line');
+                it('should hide the vertical marker when the mouse is out', () => {
+                    const container = containerFixture.selectAll('svg');
+                    const verticalLine = d3.select('.hover-marker line');
 
                     expect(hasClass(verticalLine, 'bc-is-active')).toBe(false);
                     container.dispatch('mouseover');
                     expect(hasClass(verticalLine, 'bc-is-active')).toBe(true);
                     container.dispatch('mouseout');
                     expect(hasClass(verticalLine, 'bc-is-active')).toBe(false);
-                });
-
-                describe('when reloading with a different dataset', () => {
-
-                    it('should render in the same svg', function() {
-                        let actual;
-                        let expected = 1;
-                        let newDataset = buildDataSet('withOneSource');
-
-                        containerFixture.datum(newDataset).call(lineChart);
-
-                        actual = containerFixture.selectAll('.line-chart').nodes().length;
-
-                        expect(actual).toEqual(expected);
-                    });
-
-                    it('should render one line', function() {
-                        let actual;
-                        let expected = 1;
-                        let newDataset = buildDataSet('withOneSource');
-
-                        containerFixture.datum(newDataset).call(lineChart);
-
-                        actual = containerFixture.selectAll('.line-chart .line').nodes().length;
-
-                        expect(actual).toEqual(expected);
-                    });
-
-                    it('should not throw error on mousemove', function() {
-                        let container = containerFixture.selectAll('svg'),
-                            newDataset = buildDataSet('withOneSource');
-
-                        // Need to refresh the data twice to get failure before fix
-                        containerFixture.datum(newDataset).call(lineChart);
-                        containerFixture.datum(newDataset).call(lineChart);
-                        container.dispatch('mousemove');
-                    })
-                });
-            });
-
-            describe('when different date ranges', () => {
-
-                beforeEach(() => {
-                    dataset = aTestDataSet().withHourDateRange().build();
-                    lineChart = chart();
-
-                    // DOM Fixture Setup
-                    f = jasmine.getFixtures();
-                    f.fixturesPath = 'base/test/fixtures/';
-                    f.load('testContainer.html');
-
-                    containerFixture = d3.select('.test-container');
-                    containerFixture.datum(dataset).call(lineChart);
-                });
-
-                afterEach(() => {
-                    containerFixture.remove();
-                    f = jasmine.getFixtures();
-                    f.cleanUp();
-                    f.clearCache();
-                });
-
-                describe('on render', () => {
-
-                    it('should have an x axis with hour format', () => {
-                        let container = containerFixture.selectAll('svg'),
-                            xAxis = d3.select('.x-axis-group'),
-                            xAxisLabels = xAxis.selectAll('.tick text'),
-                            actual = xAxisLabels.text(),
-                            expected = '00 AM';
-
-                        expect(actual).toEqual(expected)
-                    });
-                });
-            });
-
-            describe('when using flat data', () => {
-                beforeEach(() => {
-                    dataset = aTestDataSet().withTwoFlatTopics().build();
-                    lineChart = chart();
-
-                    // DOM Fixture Setup
-                    f = jasmine.getFixtures();
-                    f.fixturesPath = 'base/test/fixtures/';
-                    f.load('testContainer.html');
-
-                    containerFixture = d3.select('.test-container');
-                    containerFixture.datum(dataset).call(lineChart);
-                });
-
-                afterEach(() => {
-                    containerFixture.remove();
-                    f = jasmine.getFixtures();
-                    f.cleanUp();
-                    f.clearCache();
-                });
-
-                it('should render a chart with two lines', () => {
-                    const expected = 2;
-                    const actual = containerFixture.select('.chart-group').selectAll('path').nodes().length;
-
-                    expect(actual).toEqual(expected);
-                });
-            });
-
-            describe('Chart data points', () => {
-
-                beforeEach(() => {
-                    dataset = aTestDataSet().with5Topics().build();
-
-                    // DOM Fixture Setup
-                    f = jasmine.getFixtures();
-                    f.fixturesPath = 'base/test/fixtures/';
-                    f.load('testContainer.html');
-                });
-
-                afterEach(() => {
-                    containerFixture.remove();
-                    f = jasmine.getFixtures();
-                    f.cleanUp();
-                    f.clearCache();
-                });
-
-                describe('when shouldShowAllDataPoints is true', function () {
-
-                    beforeEach(function () {
-                        lineChart = chart().shouldShowAllDataPoints(true);
-
-                        containerFixture = d3.select('.test-container').append('svg');
-                        containerFixture.datum(dataset).call(lineChart);
-                    });
-
-                    it('chart should render data points container', () => {
-                        let expected = 1;
-                        let actual = containerFixture.select('.data-points-container').nodes().length;
-
-                        expect(actual).toEqual(expected);
-                    });
-
-                    it('data points container renders a circle for each data point', () => {
-                        let expected = dataset.dataByDate.reduce((accum, dataPoint) => (
-                            accum + dataPoint.topics.length
-                        ), 0);
-                        let actual = containerFixture.select('.data-points-container')
-                            .selectAll('circle')
-                            .nodes().length;
-
-                        expect(actual).toEqual(expected);
-                    });
-
-                    it('each data circle has proper attributes', () => {
-                        let circles = containerFixture.select('.data-points-container')
-                            .selectAll('circle')
-                            .nodes();
-
-                        circles.forEach((circle) => {
-                            expect(circle).toHaveAttr('class', 'data-point-mark');
-                            expect(circle).toHaveAttr('r', '5');
-                            expect(circle).toHaveAttr('cx');
-                            expect(circle).toHaveAttr('cy');
-                            expect(circle).toHaveAttr('style');
-                        });
-
-                    });
-                });
-            });
-
-            describe('Grid', () => {
-
-                beforeEach(() => {
-                    dataset = aTestDataSet().with5Topics().build();
-
-                    // DOM Fixture Setup
-                    f = jasmine.getFixtures();
-                    f.fixturesPath = 'base/test/fixtures/';
-                    f.load('testContainer.html');
-                });
-
-                afterEach(() => {
-                    containerFixture.remove();
-                    f = jasmine.getFixtures();
-                    f.cleanUp();
-                    f.clearCache();
-                });
-
-                describe('when grid is horizontal', function () {
-
-                    beforeEach(function () {
-                        lineChart = chart().grid('horizontal');
-
-                        containerFixture = d3.select('.test-container').append('svg');
-                        containerFixture.datum(dataset).call(lineChart);
-                    });
-
-                    it('should render the horizontal grid lines', () => {
-                        expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
-                        expect(containerFixture.select('.vertical-grid-line').empty()).toBeTruthy();
-                    });
-                });
-
-                describe('when grid is vertical', function () {
-
-                    beforeEach(function () {
-                        lineChart = chart().grid('vertical');
-
-                        containerFixture = d3.select('.test-container').append('svg');
-                        containerFixture.datum(dataset).call(lineChart);
-                    });
-
-                    it('should render the vertical grid lines', () => {
-                        expect(containerFixture.select('.horizontal-grid-line').empty()).toBeTruthy();
-                        expect(containerFixture.select('.vertical-grid-line').empty()).toBeFalsy();
-                    });
-                });
-
-                describe('when grid is full', function () {
-
-                    beforeEach(function () {
-                        lineChart = chart().grid('full');
-
-                        containerFixture = d3.select('.test-container').append('svg');
-                        containerFixture.datum(dataset).call(lineChart);
-                    });
-
-                    it('should render the vertical grid lines', () => {
-                        expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
-                        expect(containerFixture.select('.vertical-grid-line').empty()).toBeFalsy();
-                    });
-                });
-            });
-
-            describe('Axis Labels', () => {
-                describe('when axis labels aren\'t set', () => {
-
-                    beforeEach(() => {
-                        dataset = aTestDataSet().withOneSource().build();
-                        lineChart = chart();
-                        // DOM Fixture Setup
-                        f = jasmine.getFixtures();
-                        f.fixturesPath = 'base/test/fixtures/';
-                        f.load('testContainer.html');
-
-                        containerFixture = d3.select('.test-container');
-                        containerFixture.datum(dataset).call(lineChart);
-                    });
-
-                    afterEach(() => {
-                        containerFixture.remove();
-                        f = jasmine.getFixtures();
-                        f.cleanUp();
-                        f.clearCache();
-                    });
-
-                    it('should not render the x-axis label', () => {
-                        let expected = 0,
-                            actual = containerFixture.selectAll('.x-axis-label')['_groups'][0].length;
-
-                        expect(actual).toEqual(expected);
-                    });
-
-                    it('should not render any axisLabel', () => {
-                        let expected = 0,
-                            actual = containerFixture.selectAll('.y-axis-label')['_groups'][0].length;
-
-                        expect(actual).toEqual(expected);
-                    });
-                });
-
-                describe('when axis labels are set', () => {
-
-                    beforeEach(() => {
-                        dataset = aTestDataSet().withOneSource().build();
-                        lineChart = chart()
-                            .xAxisLabel('valueSetX')
-                            .yAxisLabel('valueSetY');
-
-                        // DOM Fixture Setup
-                        f = jasmine.getFixtures();
-                        f.fixturesPath = 'base/test/fixtures/';
-                        f.load('testContainer.html');
-
-                        containerFixture = d3.select('.test-container');
-                        containerFixture.datum(dataset).call(lineChart);
-                    });
-
-                    afterEach(() => {
-                        containerFixture.remove();
-                        f = jasmine.getFixtures();
-                        f.cleanUp();
-                        f.clearCache();
-                    });
-
-                    it('should render the x-axis label', () => {
-                        let expected = 1,
-                            actual = containerFixture.selectAll('.x-axis-label')['_groups'][0].length;
-
-                        expect(actual).toEqual(expected);
-                    });
-
-                    it('should render any axisLabel', () => {
-                        let expected = 1,
-                            actual = containerFixture.selectAll('.y-axis-label')['_groups'][0].length;
-
-                        expect(actual).toEqual(expected);
-                    });
                 });
             });
 
             describe('API', () => {
 
                 beforeEach(() => {
-                    dataset = aTestDataSet().withOneSource().build();
+                    dataset = buildDataSet('withOneSource');
                     lineChart = chart();
                     // DOM Fixture Setup
                     f = jasmine.getFixtures();

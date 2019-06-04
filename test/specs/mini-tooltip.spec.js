@@ -29,87 +29,96 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
             f.clearCache();
         });
 
-        it('should render a tooltip with minimal requirements', () =>  {
-            expect(containerFixture.select('.britechart-mini-tooltip').empty()).toBeFalsy();
-        });
+        describe('Render', () => {
 
-        it('should not be visible by default', () =>  {
-            expect(containerFixture.select('.britechart-mini-tooltip').style('visibility')).toBe('hidden');
-        });
+            it('should show a tooltip with minimal requirements', () => {
+                const expected = 1;
+                const actual = containerFixture.select('.britechart-mini-tooltip').size();
 
-        it('should be visible when required', () =>  {
-            expect(containerFixture.select('.britechart-mini-tooltip').style('visibility')).toBe('hidden');
-            tooltipChart.show();
-            expect(containerFixture.select('.britechart-mini-tooltip').style('visibility')).not.toBe('hidden');
-            expect(containerFixture.select('.britechart-mini-tooltip').style('visibility')).toBe('visible');
-        });
+                expect(actual).toEqual(expected);
+            });
 
-        xit('should resize the tooltip depending of number of topics', () =>  {
-            tooltipChart.update({
-                name: 103,
-                value: 0
-            }, [0, 0], [20, 20]);
+            it('should not be visible by default', () => {
+                const expected = 'hidden';
+                const actual = containerFixture.select('.britechart-mini-tooltip').style('visibility');
 
-            expect(
-                containerFixture.select('.tooltip-text-container')
-                    .attr('height')
-            ).toEqual('81.5');
+                expect(actual).toEqual(expected);
+            });
 
-            tooltipChart.update({
-                name: 103,
-                value: 0
-            }, [0, 0], [10, 10]);
-
-            expect(
-                containerFixture.select('.tooltip-text-container')
-                    .attr('height')
-            ).toEqual('105');
-        });
-
-        describe('Render', function() {
-
-            it('should render the title of the tooltip', () =>  {
-                let expected = 'Tooltip title',
-                    actual;
+            it('should render the title of the tooltip', () => {
+                const expected = 'Tooltip title';
+                let actual;
 
                 tooltipChart.title(expected);
                 tooltipChart.show();
 
                 actual = containerFixture.select('.britechart-mini-tooltip')
-                        .selectAll('.mini-tooltip-title')
-                        .text();
-
-                expect(actual).toBe(expected);
-            });
-
-            it('should render a line of text for the name', () =>  {
-                let expected = 'radiating',
-                    actual;
-
-                tooltipChart.update({
-                    name: expected,
-                    value: 10
-                }, [0, 0],[20, 20]);
-
-                actual = containerFixture.select('.britechart-mini-tooltip')
-                        .selectAll('.mini-tooltip-name')
-                        .text();
+                    .selectAll('.mini-tooltip-title')
+                    .text();
 
                 expect(actual).toEqual(expected);
             });
 
-            it('should render a line of text for the value', () =>  {
-                let expected = 10,
-                    actual;
+            it('should render a line of text for the name', () => {
+                const expected = 'radiating';
+                let actual;
+
+                tooltipChart.update({
+                    name: expected,
+                    value: 10
+                }, [0, 0], [20, 20]);
+
+                actual = containerFixture.select('.britechart-mini-tooltip')
+                    .selectAll('.mini-tooltip-name')
+                    .text();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render a line of text for the value', () => {
+                const expected = 10;
+                let actual;
 
                 tooltipChart.update({
                     name: 'radiating',
                     value: expected
-                }, [0, 0],[20, 20]);
+                }, [0, 0], [20, 20]);
 
                 actual = parseInt(containerFixture.select('.britechart-mini-tooltip')
-                        .selectAll('.mini-tooltip-value')
-                        .text(), 10);
+                    .selectAll('.mini-tooltip-value')
+                    .text(), 10);
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
+        describe('Lifecycle', () => {
+
+            it('should be visible when required', () =>  {
+                const initialExpected = 'hidden';
+                const expected = 'visible';
+                let actual = containerFixture.select('.britechart-mini-tooltip').style('visibility');
+
+                expect(actual).toEqual(initialExpected);
+                tooltipChart.show();
+                actual = containerFixture.select('.britechart-mini-tooltip').style('visibility');
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should allow overriding the value formatting function', () => {
+                const expected = '8';
+                const valueFormatFn = value => value.toString().length.toString()
+                let actual;
+
+                tooltipChart.valueFormatter(valueFormatFn);
+                tooltipChart.update({
+                    name: 'radiating',
+                    value: 10000000
+                }, [0, 0], [20, 20]);
+                actual = containerFixture.select('.britechart-mini-tooltip')
+                    .selectAll('.mini-tooltip-value')
+                    .text();
 
                 expect(actual).toEqual(expected);
             });
@@ -125,8 +134,8 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
                 tooltipChart.title(expected);
                 actual = tooltipChart.title();
 
-                expect(current).not.toBe(expected);
-                expect(actual).toBe(expected);
+                expect(current).not.toEqual(expected);
+                expect(actual).toEqual(expected);
             });
 
             it('should provide numberFormat getter and setter', () => {
@@ -137,8 +146,8 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
                 tooltipChart.numberFormat(expected);
                 actual = tooltipChart.numberFormat();
 
-                expect(current).not.toBe(expected);
-                expect(actual).toBe(expected);
+                expect(current).not.toEqual(expected);
+                expect(actual).toEqual(expected);
             });
 
             it('should provide nameLabel getter and setter', () => {
@@ -149,8 +158,8 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
                 tooltipChart.nameLabel(testNameLabel);
                 newNameLabel = tooltipChart.nameLabel();
 
-                expect(defaultNameLabel).not.toBe(newNameLabel);
-                expect(newNameLabel).toBe(testNameLabel);
+                expect(defaultNameLabel).not.toEqual(newNameLabel);
+                expect(newNameLabel).toEqual(testNameLabel);
             });
 
 
@@ -162,27 +171,9 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
                 tooltipChart.valueLabel(testNameLabel);
                 newNameLabel = tooltipChart.valueLabel();
 
-                expect(defaultNameLabel).not.toBe(newNameLabel);
-                expect(newNameLabel).toBe(testNameLabel);
+                expect(defaultNameLabel).not.toEqual(newNameLabel);
+                expect(newNameLabel).toEqual(testNameLabel);
             });
         });
-
-        it('should allow overriding the value formatting function', () => {
-            let expected = '8',
-                actual;
-
-            tooltipChart.valueFormatter(value => value.toString().length.toString());
-
-            tooltipChart.update({
-                name: 'radiating',
-                value: 10000000
-            }, [0, 0],[20, 20]);
-
-            actual = containerFixture.select('.britechart-mini-tooltip')
-                    .selectAll('.mini-tooltip-value')
-                    .text();
-
-            expect(actual).toEqual(expected);
-        })
     });
 });
