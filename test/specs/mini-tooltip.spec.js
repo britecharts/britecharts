@@ -45,28 +45,6 @@ define(['jquery', 'd3', 'mini-tooltip'], function($, d3, tooltip) {
                 expect(actual).toEqual(expected);
             });
 
-            xit('should resize the tooltip depending of number of topics', () => {
-                tooltipChart.update({
-                    name: 103,
-                    value: 0
-                }, [0, 0], [20, 20]);
-
-                expect(
-                    containerFixture.select('.tooltip-text-container')
-                        .attr('height')
-                ).toEqual('81.5');
-
-                tooltipChart.update({
-                    name: 103,
-                    value: 0
-                }, [0, 0], [10, 10]);
-
-                expect(
-                    containerFixture.select('.tooltip-text-container')
-                        .attr('height')
-                ).toEqual('105');
-            });
-
             it('should render the title of the tooltip', () => {
                 const expected = 'Tooltip title';
                 let actual;
