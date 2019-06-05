@@ -41,64 +41,184 @@ define([
             f.clearCache();
         });
 
-        it('should render a chart with minimal requirements', () => {
-            expect(containerFixture.select('.step-chart').empty()).toBeFalsy();
-        });
+        describe('Render', () => {
 
-        it('should render container, axis and chart groups', () => {
-            expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.x-axis-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.x-axis-label').empty()).toBeFalsy();
-            expect(containerFixture.select('g.y-axis-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.y-axis-label').empty()).toBeFalsy();
-            expect(containerFixture.select('g.grid-lines-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
-        });
-
-        it('should render grid lines', () => {
-            expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
-        });
-
-        it('should render an X and Y axis', () => {
-            expect(containerFixture.select('.x-axis-group.axis').empty()).toBeFalsy();
-            expect(containerFixture.select('.y-axis-group.axis').empty()).toBeFalsy();
-        });
-
-        it('should render a step for each data entry', () => {
-            let numSteps = dataset.data.length;
-
-            expect(containerFixture.selectAll('.step').size()).toEqual(numSteps);
-        });
-
-        describe('when reloading with a different dataset', () => {
-
-            it('should render in the same svg', function() {
-                let actual;
-                let expected = 1;
-                let newDataset = buildDataSet('withMediumData');
-
-                containerFixture.datum(newDataset.data).call(stepChart);
-
-                actual = containerFixture.selectAll('.step-chart').nodes().length;
+            it('should render a chart with minimal requirements', () => {
+                const expected = 1;
+                const actual = containerFixture.select('.step-chart').size();
 
                 expect(actual).toEqual(expected);
             });
 
-            it('should render nine steps', function() {
-                let actual;
-                let expected = 9;
-                let newDataset = buildDataSet('withMediumData');
+            describe('groups', () => {
+                it('should create a container-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.container-group').size();
 
-                containerFixture.datum(newDataset.data).call(stepChart);
+                    expect(actual).toEqual(expected);
+                });
 
-                actual = containerFixture.selectAll('.step-chart .step').nodes().length;
+                it('should create a chart-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.chart-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a x-axis-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.x-axis-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a x-axis-label', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.x-axis-label').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a y-axis-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.y-axis-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a y-axis-label', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.y-axis-label').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a grid-lines-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.grid-lines-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a metadata-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.metadata-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('grid lines', () => {
+
+                it('should draw horizontal grid line', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('.horizontal-grid-line').size();
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('axis', () => {
+                it('should draw an X axis', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('.x-axis-group.axis').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should draw an Y axis', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('.y-axis-group.axis').size();
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            it('should render a step for each data entry', () => {
+                const expected = dataset.data.length;
+                const actual = containerFixture.selectAll('.step').size();
 
                 expect(actual).toEqual(expected);
             });
+
+            describe('when reloading with a different dataset', () => {
+
+                it('should render in the same svg', () => {
+                    const expected = 1;
+                    const newDataset = buildDataSet('withMediumData');
+                    let actual;
+
+                    containerFixture.datum(newDataset.data).call(stepChart);
+                    actual = containerFixture.selectAll('.step-chart').nodes().length;
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should render nine steps', () => {
+                    const expected = 9;
+                    const newDataset = buildDataSet('withMediumData');
+                    let actual;
+
+                    containerFixture.datum(newDataset.data).call(stepChart);
+                    actual = containerFixture.selectAll('.step-chart .step').nodes().length;
+
+                    expect(actual).toEqual(expected);
+                });
+            });
         });
 
-        describe('API', function() {
+        describe('Lifecycle', () => {
+
+            describe('when hovering a step', () => {
+
+                it('should trigger a callback', () => {
+                    const step = containerFixture.select('.step:nth-child(1)');
+                    const callbackSpy = jasmine.createSpy('callback');
+                    const expectedCallCount = 1;
+                    const expectedArgumentsCount = 3;
+
+                    stepChart.on('customMouseOver', callbackSpy);
+                    step.dispatch('mouseover');
+
+                    expect(callbackSpy.calls.count()).toBe(expectedCallCount);
+                    expect(callbackSpy.calls.allArgs()[0].length).toBe(expectedArgumentsCount);
+                });
+            });
+
+            describe('when moving on a step', () => {
+
+                it('should trigger a callback', () => {
+                    const step = containerFixture.select('.step:nth-child(1)');
+                    const callbackSpy = jasmine.createSpy('callback');
+                    const expectedCallCount = 1;
+                    const expectedArgumentsCount = 3;
+
+                    stepChart.on('customMouseMove', callbackSpy);
+                    step.dispatch('mousemove');
+
+                    expect(callbackSpy.calls.count()).toBe(expectedCallCount);
+                    expect(callbackSpy.calls.allArgs()[0].length).toBe(expectedArgumentsCount);
+                });
+            });
+
+            describe('when moving out of a step', () => {
+
+                it('should trigger a callback', () => {
+                    const step = containerFixture.select('.step:nth-child(1)');
+                    const callbackSpy = jasmine.createSpy('callback');
+                    const expectedCallCount = 1;
+                    const expectedArgumentsCount = 3;
+
+                    stepChart.on('customMouseOut', callbackSpy);
+                    step.dispatch('mouseout');
+
+                    expect(callbackSpy.calls.count()).toBe(expectedCallCount);
+                    expect(callbackSpy.calls.allArgs()[0].length).toBe(expectedArgumentsCount);
+                });
+            });
+        });
+
+        describe('API', () => {
 
             it('should provide margin getter and setter', () => {
                 let defaultMargin = stepChart.margin(),
@@ -110,6 +230,32 @@ define([
 
                 expect(defaultMargin).not.toBe(newMargin);
                 expect(newMargin).toEqual(testMargin);
+            });
+
+            describe('when margins are set partially', function () {
+
+                it('should override the default values', () => {
+                    let previous = stepChart.margin(),
+                        expected = {
+                            ...previous,
+                            top: 10,
+                            right: 20
+                        },
+                        actual;
+
+                    stepChart.width(expected);
+                    actual = stepChart.width();
+
+                    expect(previous).not.toBe(actual);
+                    expect(actual).toEqual(expected);
+                })
+            });
+
+            describe('export chart functionality', () => {
+
+                it('should have exportChart defined', () => {
+                    expect(stepChart.exportChart).toBeDefined();
+                });
             });
 
             it('should provide height getter and setter', () => {
@@ -206,68 +352,6 @@ define([
 
                 expect(defaultXAxisLabelOffset).not.toBe(newXAxisLabelOffset);
                 expect(newXAxisLabelOffset).toBe(testXAxisLabelOffset);
-            });
-        });
-
-        describe('when margins are set partially', function() {
-
-            it('should override the default values', () => {
-                let previous = stepChart.margin(),
-                expected = {
-                    ...previous,
-                    top: 10,
-                    right: 20
-                },
-                actual;
-
-                stepChart.width(expected);
-                actual = stepChart.width();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toEqual(expected);
-            })
-        });
-
-        describe('when hovering a step', function() {
-
-            it('should trigger a callback', () => {
-                let step = containerFixture.select('.step:nth-child(1)');
-                let callbackSpy = jasmine.createSpy('callback');
-
-                stepChart.on('customMouseOver', callbackSpy);
-                step.dispatch('mouseover');
-
-                expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
-            });
-
-            it('should trigger a callback', () => {
-                let step = containerFixture.select('.step:nth-child(1)');
-                let callbackSpy = jasmine.createSpy('callback');
-
-                stepChart.on('customMouseMove', callbackSpy);
-                step.dispatch('mousemove');
-
-                expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
-            });
-
-            it('should trigger a callback', () => {
-                let step = containerFixture.select('.step:nth-child(1)');
-                let callbackSpy = jasmine.createSpy('callback');
-
-                stepChart.on('customMouseOut', callbackSpy);
-                step.dispatch('mouseout');
-
-                expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(3);
-            });
-        });
-
-        describe('Export chart functionality', () => {
-
-            it('should have exportChart defined', () => {
-                expect(stepChart.exportChart).toBeDefined();
             });
         });
     });
