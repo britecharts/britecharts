@@ -19,14 +19,12 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
         let stackedBarChart, dataset, containerFixture, f;
 
         beforeEach(() => {
-            dataset = aTestDataSet()
-                .with3Sources()
-                .build();
+            dataset = buildDataSet('with3Sources');
             stackedBarChart = chart()
-                        .stackLabel('stack')
-                        .nameLabel('date')
-                        .valueLabel('views')
-                        .grid('full');
+                .stackLabel('stack')
+                .nameLabel('date')
+                .valueLabel('views')
+                .grid('full');
 
             // DOM Fixture Setup
             f = jasmine.getFixtures();
@@ -44,83 +42,209 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
             f.clearCache();
         });
 
-        it('should render a chart with minimal requirements', () => {
-            expect(containerFixture.select('.stacked-bar').empty()).toBeFalsy();
-        });
+        describe('Render', () => {
 
-        it('should render container, axis and chart groups', () => {
-            expect(containerFixture.select('g.container-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.chart-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.x-axis-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.y-axis-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.grid-lines-group').empty()).toBeFalsy();
-            expect(containerFixture.select('g.metadata-group').empty()).toBeFalsy();
-        });
-
-        it('should render grid lines', () => {
-            expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
-            expect(containerFixture.select('.vertical-grid-line').empty()).toBeFalsy();
-        });
-
-        it('should render an X and Y axis', () => {
-            expect(containerFixture.select('.x-axis-group .axis.x').empty()).toBeFalsy();
-            expect(containerFixture.select('.y-axis-group.axis').empty()).toBeFalsy();
-        });
-
-        it('should render a layer for each data entry group', () => {
-            let actual = containerFixture.selectAll('.layer').size();
-            let expected = dataset.data.reduce(differentStacksReducer, []).length;
-
-            expect(actual).toEqual(expected);
-        });
-
-        it('should render a bar for each data entry', () => {
-            let actual = containerFixture.selectAll('.bar').size();
-            let expected = dataset.data.length;
-
-            expect(actual).toEqual(expected);
-        });
-
-        describe('when reloading with a two sources dataset', () => {
-
-            it('should render in the same svg', function() {
-                let actual;
-                let expected = 1;
-                let newDataset = buildDataSet('with2Sources');
-
-                containerFixture.datum(newDataset.data).call(stackedBarChart);
-
-                actual = containerFixture.selectAll('.stacked-bar').nodes().length;
+            it('should render a chart with minimal requirements', () => {
+                const expected = 1;
+                const actual = containerFixture.select('.stacked-bar').size();
 
                 expect(actual).toEqual(expected);
             });
 
-            it('should render two layers', function() {
-                let actual;
-                let expected = 2;
-                let newDataset = buildDataSet('with2Sources');
+            describe('groups', () => {
+                it('should create a container-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.container-group').size();
 
-                containerFixture.datum(newDataset.data).call(stackedBarChart);
+                    expect(actual).toEqual(expected);
+                });
 
-                actual = containerFixture.selectAll('.stacked-bar .layer').nodes().length;
+                it('should create a chart-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.chart-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a x-axis-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.x-axis-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a y-axis-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.y-axis-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a grid-lines-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.grid-lines-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should create a metadata-group', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('g.metadata-group').size();
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('grid lines', () => {
+
+                it('should draw horizontal grid line', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('.horizontal-grid-line').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should draw vertical grid line', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('.vertical-grid-line').size();
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('axis', () => {
+                it('should draw an X axis', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('.x-axis-group .axis.x').size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should draw an Y axis', () => {
+                    const expected = 1;
+                    const actual = containerFixture.select('.y-axis-group.axis').size();
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            it('should render a layer for each data entry group', () => {
+                const expected = dataset.data.reduce(differentStacksReducer, []).length;
+                const actual = containerFixture.selectAll('.layer').size();
 
                 expect(actual).toEqual(expected);
             });
 
-            it('should render eight bars total', () => {
-                let actual;
-                let expected = 8;
-                let newDataset = buildDataSet('with2Sources');
-
-                containerFixture.datum(newDataset.data).call(stackedBarChart);
-
-                actual = containerFixture.selectAll('.stacked-bar .bar').nodes().length;
+            it('should render a bar for each data entry', () => {
+                const expected = dataset.data.length;
+                const actual = containerFixture.selectAll('.bar').size();
 
                 expect(actual).toEqual(expected);
+            });
+
+            describe('when reloading with a two sources dataset', () => {
+
+                it('should render in the same svg', () => {
+                    const expected = 1;
+                    const newDataset = buildDataSet('with2Sources');
+                    let actual;
+
+                    containerFixture.datum(newDataset.data).call(stackedBarChart);
+                    actual = containerFixture.selectAll('.stacked-bar').nodes().length;
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should render two layers', () => {
+                    const expected = 2;
+                    const newDataset = buildDataSet('with2Sources');
+                    let actual;
+
+                    containerFixture.datum(newDataset.data).call(stackedBarChart);
+                    actual = containerFixture.selectAll('.stacked-bar .layer').nodes().length;
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should render eight bars total', () => {
+                    const expected = 8;
+                    const newDataset = buildDataSet('with2Sources');
+                    let actual;
+
+                    containerFixture.datum(newDataset.data).call(stackedBarChart);
+                    actual = containerFixture.selectAll('.stacked-bar .bar').nodes().length;
+
+                    expect(actual).toEqual(expected);
+                });
+            });
+
+            describe('when stacked bar is animated', () => {
+
+                it('it renders correct number of layers and bars', () => {
+                    const expectedNLayers = 3;
+                    const nBarsPerLayer = 4;
+
+                    stackedBarChart.isAnimated(true);
+                    containerFixture.datum(dataset.data).call(stackedBarChart);
+
+                    const actualNLayers = containerFixture.selectAll('.chart-group .layer').nodes().length;
+                    const actualNBars = containerFixture.selectAll('.chart-group .bar').nodes().length;
+
+                    expect(actualNLayers).toEqual(expectedNLayers);
+                    expect(actualNBars).toEqual(expectedNLayers * nBarsPerLayer);
+                });
             });
         });
 
-        describe('API', function() {
+        describe('Lifecycle', () => {
+
+            describe('when clicking on a bar', () => {
+
+                it('should trigger a callback', function () {
+                    const chart = containerFixture.select('.stacked-bar');
+                    const callbackSpy = jasmine.createSpy('callback');
+                    const expectedCallCount = 1;
+                    const expectedArgumentsCount = 2;
+
+                    stackedBarChart.on('customClick', callbackSpy);
+                    chart.dispatch('click');
+
+                    expect(callbackSpy.calls.count()).toEqual(expectedCallCount);
+                    expect(callbackSpy.calls.allArgs()[0].length).toEqual(expectedArgumentsCount);
+                })
+            });
+
+            describe('when hovering', function () {
+
+                it('mouseover should trigger a callback', () => {
+                    const chart = containerFixture.selectAll('.stacked-bar');
+                    const callbackSpy = jasmine.createSpy('callback');
+                    const expectedCallCount = 1;
+                    const expectedArgumentsCount = 2;
+
+                    stackedBarChart.on('customMouseOver', callbackSpy);
+                    chart.dispatch('mouseover');
+
+                    expect(callbackSpy.calls.count()).toBe(expectedCallCount);
+                    expect(callbackSpy.calls.allArgs()[0].length).toBe(expectedArgumentsCount);
+                });
+
+                it('mouseout should trigger a callback', () => {
+                    const chart = containerFixture.selectAll('.stacked-bar');
+                    const callbackSpy = jasmine.createSpy('callback');
+                    const expectedCallCount = 1;
+                    const expectedArgumentsCount = 2;
+
+                    stackedBarChart.on('customMouseOut', callbackSpy);
+                    chart.dispatch('mouseout');
+
+                    expect(callbackSpy.calls.count()).toBe(expectedCallCount);
+                    expect(callbackSpy.calls.allArgs()[0].length).toBe(expectedArgumentsCount);
+                });
+            });
+        });
+
+        describe('API', () => {
 
             it('should provide an aspect ratio getter and setter', () => {
                 let previous = stackedBarChart.aspectRatio(),
@@ -273,6 +397,25 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 expect(actual).toEqual(expected);
             });
 
+            describe('when margins are set partially', function () {
+
+                it('should override the default values', () => {
+                    let previous = stackedBarChart.margin(),
+                        expected = {
+                            ...previous,
+                            top: 10,
+                            right: 20
+                        },
+                        actual;
+
+                    stackedBarChart.width(expected);
+                    actual = stackedBarChart.width();
+
+                    expect(previous).not.toBe(actual);
+                    expect(actual).toEqual(expected);
+                })
+            });
+
             it('should provide nameLabel getter and setter', () => {
                 let previous = stackedBarChart.nameLabel(),
                     expected = 'key',
@@ -403,81 +546,6 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
 
                 expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
                 expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
-            });
-        });
-
-        describe('when clicking on a bar', () => {
-
-            it('should trigger a callback', function() {
-                let chart = containerFixture.select('.stacked-bar');
-                let callbackSpy = jasmine.createSpy('callback');
-
-                stackedBarChart.on('customClick', callbackSpy);
-                chart.dispatch('click');
-
-                expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
-            })
-        });
-
-        describe('when margins are set partially', function() {
-
-            it('should override the default values', () => {
-                let previous = stackedBarChart.margin(),
-                expected = {
-                    ...previous,
-                    top: 10,
-                    right: 20
-                },
-                actual;
-
-                stackedBarChart.width(expected);
-                actual = stackedBarChart.width();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toEqual(expected);
-            })
-        });
-
-        describe('when hovering', function() {
-
-            it('mouseover should trigger a callback', () => {
-                let chart = containerFixture.selectAll('.stacked-bar');
-                let callbackSpy = jasmine.createSpy('callback');
-
-                stackedBarChart.on('customMouseOver', callbackSpy);
-                chart.dispatch('mouseover');
-
-                expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
-            });
-
-            it('mouseout should trigger a callback', () => {
-                let chart = containerFixture.selectAll('.stacked-bar');
-                let callbackSpy = jasmine.createSpy('callback');
-
-                stackedBarChart.on('customMouseOut', callbackSpy);
-                chart.dispatch('mouseout');
-
-                expect(callbackSpy.calls.count()).toBe(1);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(2);
-            });
-        });
-
-        describe('when stacked bar is animated', () => {
-
-            it('it renders correct number of layers and bars', () => {
-                const expectedNLayers = 3;
-                const nBarsPerLayer = 4;
-
-                stackedBarChart.isAnimated(true);
-                containerFixture.datum(dataset.data).call(stackedBarChart);
-
-                const actualNLayers = containerFixture.selectAll('.chart-group .layer').nodes().length;
-                const actualNBars = containerFixture.selectAll('.chart-group .bar').nodes().length;
-
-                expect(actualNLayers).toEqual(expectedNLayers);
-                expect(actualNBars).toEqual(expectedNLayers * nBarsPerLayer);
             });
         });
     });
