@@ -1,3 +1,13 @@
+
+2.12.0
+------
+* Feature - Updated Sandbox with more charts (Legend, Stacked Bar Chart) and better styling
+* Feature - Doc updates (contributing guide, issue and PR templates, API guidelines)
+* Refactor - Updated all tests to be consistent and follow Test Anywhere Protocol (TAP)
+* Refactor - Data example for line chart, cleaning old scripts
+* Refactor - Updated Karma and code coverage reports
+* Refactor - Updated to node 12
+
 2.11.0
 ------
 * Feature - Disable donut hover effect with hasHoverAnimation. Thanks @DalerAsrorov!
