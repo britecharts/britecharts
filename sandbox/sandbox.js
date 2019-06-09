@@ -340,7 +340,8 @@ function _handleChartSelectorChange() {
  */
 function _safeLoadDependency(name) {
     try {
-        window[name.split('/').pop()] = require(`../src/charts/${name}`);
+        debugger
+        window[name.split('/').pop()] = require(`../../src/charts/${name}`);
     } catch(e) {
         errors.push({
             error: e,

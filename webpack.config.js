@@ -70,10 +70,12 @@ const sandboxConfig = merge([
         entry: {
             sandbox: path.resolve(__dirname, './sandbox/sandbox.js'),
         },
+        target: 'web',
         output: {
             path: path.resolve(__dirname, './sandbox/build'),
             publicPath: '/assets/',
             filename: '[name].js',
+
         },
     },
     parts.babelLoader(),
