@@ -1,10 +1,17 @@
-const d3 = require('d3');
-const path = require('path');
+import * as d3 from 'd3';
 
-const constants = require('./constants/constants');
-const defaultData = require('./constants/data');
-const storage = require('./helpers/localStorageHelpers');
-const domHelpers = require('./helpers/domHelpers');
+import constants from './constants/constants';
+import defaultData from './constants/data';
+import storage from './helpers/localStorageHelpers';
+import domHelpers from './helpers/domHelpers';
+import editorHelpers from './helpers/editorHelpers';
+import getCharts from './helpers/dynamic-import';
+import {
+    evalDataString,
+    prettifyInitString,
+    prettifyJson
+} from './helpers/utils';
+
 
 const {
     dataSelectorClass,
@@ -41,16 +48,9 @@ const {
 } = constants.domIdNames;
 
 const {
-    evalDataString,
-    prettifyInitString,
-    prettifyJson
-} = require('./helpers/utils');
-
-const {createEditors} = require('./helpers/editorHelpers');
-const {
     dataEditor,
     configEditor
-} = createEditors({dataInputId, chartInputId});
+} = editorHelpers({dataInputId, chartInputId});
 
 const charts = Object.keys(defaultConfig);
 const tooltipTypes = Object.keys(tooltipConfigs).reduce((m,i) => ({...m, [i]:i}),{});
@@ -62,18 +62,28 @@ const errors = [];
 // move to constants
 const dataEditorWidth = '400px';
 
-require('./styles/styles.scss');
+import './styles/styles.scss';
 
 window.d3 = d3;
 
-// start the sandbox
-main();
+const getDependencies = () => {
+    const modules = getCharts();
+
+    // debugger;
+
+    modules.forEach(({ chartName, fn }) => window[chartName] = fn);
+};
+
+(async () => {
+    // start the sandbox
+    const gago = await main();
+})();
 
 /**
  * Main function to run the sandbox
  */
-function main() {
-    loadDependencies();
+async function main() {
+    getDependencies();
     setInitialData();
     domHelpers.initDomElements();
 
@@ -338,32 +348,37 @@ function _handleChartSelectorChange() {
  * Safe load dependency. If there is an error, it loads the error to be displayed in the notification bar
  * @param  {file name} name     name of fiel at src/charts. probably could refactor to take full path
  */
-function _safeLoadDependency(name) {
-    try {
-        debugger
-        window[name.split('/').pop()] = require(`../../src/charts/${name}`);
-    } catch(e) {
-        errors.push({
-            error: e,
-            filePath: name
-        });
-    }
-}
+// async function _safeLoadDependency(name) {
+//     try {
+//         // const bar = await import('../src/charts/bar');
+//         const module = await import(path.join('../../src/charts', name));
+
+//         window[name.split('/').pop()] = module;
+//         // window[name.split('/').pop()] = require(path.basename('../../src/charts', name));
+//     } catch(e) {
+//         errors.push({
+//             error: e,
+//             filePath: name
+//         });
+//     }
+// }
 
 /**
  * Reads all of the dependencies [charts etc] from the constants file and safe loads them
  * onto the window object.
  */
-function loadDependencies() {
-    [
-        ...charts,
-        ...chartDependencies,
-    ].forEach(_safeLoadDependency);
+// async function loadDependencies() {
+//     const modules = Promise.all(
+//         [
+//             ...charts,
+//             ...chartDependencies,
+//         ].map(await _safeLoadDependency)
+//     );
 
-    if (errors.length) {
-        domHelpers.showErrors(errors);
-    }
-}
+//     if (errors.length) {
+//         domHelpers.showErrors(errors);
+//     }
+// }
 
 /**
  * Updates the chart and all of the input fields and selectors to show the correct info

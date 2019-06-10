@@ -70,6 +70,9 @@ const sandboxConfig = merge([
         entry: {
             sandbox: path.resolve(__dirname, './sandbox/sandbox.js'),
         },
+        resolve: {
+            alias: {charts: path.resolve(__dirname, './src/charts')}
+        },
         target: 'web',
         output: {
             path: path.resolve(__dirname, './sandbox/build'),
