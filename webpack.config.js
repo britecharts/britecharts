@@ -5,6 +5,7 @@ const constants = require('./webpack.constants');
 
 const demosConfig = merge([
     {
+        mode: 'development',
         devtool: 'cheap-eval-source-map',
         entry: constants.DEMOS,
         output: {
@@ -36,14 +37,18 @@ const demosConfig = merge([
                 }
             },
         },
+        optimization: {
+            minimize: false,
+            namedModules: true,
+        },
     },
     parts.babelLoader(),
-    parts.commonsChunkPlugin(),
     parts.devServer(8001),
 ]);
 
 const testConfig = merge([
     {
+        mode: 'development',
         resolve: {
             modules: [
                 path.resolve(__dirname, './src/charts'),
@@ -59,6 +64,7 @@ const testConfig = merge([
 
 const sandboxConfig = merge([
     {
+        mode: 'development',
         devtool: 'cheap-eval-source-map',
         entry: {
             sandbox: path.resolve(__dirname, './sandbox/sandbox.js'),
@@ -76,6 +82,7 @@ const sandboxConfig = merge([
 
 const prodBundleConfig = merge([
     {
+        mode: 'production',
         devtool: 'source-map',
         entry: {
             britecharts: constants.PATHS.bundleIndex
@@ -95,6 +102,7 @@ const prodBundleConfig = merge([
 
 const prodChartsConfig = merge([
     {
+        mode: 'production',
         devtool: 'source-map',
         entry: constants.CHARTS,
         output: {

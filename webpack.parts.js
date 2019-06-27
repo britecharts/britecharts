@@ -78,16 +78,6 @@ exports.aliasD3ToVendorPath = () => ({
     }
 });
 
-exports.commonsChunkPlugin = () => ({
-    plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'common',
-            filename: 'common.js',
-            minChunks: Infinity,
-        })
-    ]
-});
-
 exports.devServer = (port) => ({
     devServer: {
         host: '0.0.0.0',
