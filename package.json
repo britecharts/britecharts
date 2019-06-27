@@ -45,9 +45,9 @@
     "sandbox:compile": "webpack --env=sandbox",
     "sandbox": "webpack-dev-server --env=sandbox --hot --content-base sandbox/ --inline",
     "clean": "yarn cache clean && rimraf node_modules",
-    "release": "yarn build && grunt release:patch",
-    "release:minor": "yarn build && grunt release:minor",
-    "release:major": "yarn build && grunt release:major"
+    "release": "grunt release:patch",
+    "release:minor": "grunt release:minor",
+    "release:major": "grunt release:major"
   },
   "repository": {
     "type": "git",
