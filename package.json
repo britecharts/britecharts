@@ -45,9 +45,9 @@
     "sandbox:compile": "webpack --env=sandbox",
     "sandbox": "webpack-dev-server --env=sandbox --hot --content-base sandbox/ --inline",
     "clean": "yarn cache clean && rimraf node_modules",
-    "release": "grunt release:patch",
-    "release:minor": "grunt release:minor",
-    "release:major": "grunt release:major"
+    "release": "yarn build && grunt release:patch",
+    "release:minor": "yarn build && grunt release:minor",
+    "release:major": "yarn build && grunt release:major"
   },
   "repository": {
     "type": "git",
@@ -132,8 +132,9 @@
     "text": "requirejs/text",
     "underscore": "1.9.1",
     "webpack": "4.35.0",
-    "webpack-bundle-analyzer": "2.9.0",
-    "webpack-dev-server": "2.9.1",
+    "webpack-bundle-analyzer": "3.3.2",
+    "webpack-cli": "^3.3.5",
+    "webpack-dev-server": "3.7.2",
     "webpack-livereload-plugin": "0.9.0",
     "webpack-merge": "4.2.1",
     "yargs": "8.0.2"

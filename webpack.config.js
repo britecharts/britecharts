@@ -96,6 +96,7 @@ const prodBundleConfig = merge([
     },
     parts.babelLoader(),
     parts.aliasD3ToVendorPath(),
+    parts.bundleTreeChart(9999),
     parts.noParseD3Vendor(),
     parts.externals(),
 ]);
@@ -114,7 +115,7 @@ const prodChartsConfig = merge([
     },
     parts.babelLoader(),
     parts.aliasD3ToVendorPath(),
-    // parts.bundleTreeChart(),
+    parts.bundleTreeChart(),
     parts.noParseD3Vendor(),
     parts.externals(),
 ]);

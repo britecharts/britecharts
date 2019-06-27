@@ -34,9 +34,32 @@ exports.babelIstambulLoader = () => ({
     }
 });
 
-exports.bundleTreeChart = () => ({
+// Stats options in https://webpack.js.org/configuration/stats
+exports.bundleTreeChart = (analyzerPort = 8888) => ({
     plugins: [
-        new BundleAnalyzerPlugin(),
+        new BundleAnalyzerPlugin({
+            analyzerPort,
+            generateStatsFile: true,
+            statsFilename: '../../stats/bundle/bundleStats.json',
+            statsOptions: {
+                assets: true,
+                assetsSort: 'size',
+                cached: false,
+                cachedAssets: false,
+                children: false,
+                chunks: false,
+                chunkGroups: false,
+                chunkModules: false,
+                modules: true,
+                modulesSort: 'size',
+                moduleTrace: false,
+                outputPath: false,
+                providedExports: false,
+                reasons: false,
+                source: false,
+                usedExports: false,
+            }
+        }),
     ],
 });
 
