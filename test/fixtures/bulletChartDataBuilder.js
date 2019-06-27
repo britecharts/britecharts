@@ -3,7 +3,7 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonBulletData = require('json-loader!../json/bulletDataCpuUsage.json');
+        jsonBulletData = require('../json/bulletDataCpuUsage.json');
 
 
     function BulletChartDataBuilder(config){

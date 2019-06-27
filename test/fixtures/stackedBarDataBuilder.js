@@ -3,8 +3,8 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonTwoSources = require('json-loader!../json/stackbarDataTwoSources.json'),
-        jsonThreeSources = require('json-loader!../json/stackbarDataThreeSources.json');
+        jsonTwoSources = require('../json/stackbarDataTwoSources.json'),
+        jsonThreeSources = require('../json/stackbarDataThreeSources.json');
 
 
     function StackedBarDataBuilder(config){

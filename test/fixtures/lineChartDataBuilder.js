@@ -3,15 +3,15 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonAllDatas = require('json-loader!../json/lineDataAllDatas.json'),
-        jsonFiveTopics = require('json-loader!../json/lineDataFiveTopics.json'),
-        jsonFourTopics = require('json-loader!../json/lineDataFourTopics.json'),
-        jsonOneSource = require('json-loader!../json/lineDataOneSet.json'),
-        jsonAllZeroes = require('json-loader!../json/lineDataAllZeroes.json'),
-        jsonTwoTopicsFlat = require('json-loader!../json/lineDataTwoTopicsFlat.json'),
-        jsonMultiMonthValueRange = require('json-loader!../json/multiMonthLineData'),
-        jsonHourDateRange = require('json-loader!../json/lineDataOneSetHourly.json'),
-        jsonSmallValueRange = require('json-loader!../json/lineDataSmallValueRange');
+        jsonAllDatas = require('../json/lineDataAllDatas.json'),
+        jsonFiveTopics = require('../json/lineDataFiveTopics.json'),
+        jsonFourTopics = require('../json/lineDataFourTopics.json'),
+        jsonOneSource = require('../json/lineDataOneSet.json'),
+        jsonAllZeroes = require('../json/lineDataAllZeroes.json'),
+        jsonTwoTopicsFlat = require('../json/lineDataTwoTopicsFlat.json'),
+        jsonMultiMonthValueRange = require('../json/multiMonthLineData'),
+        jsonHourDateRange = require('../json/lineDataOneSetHourly.json'),
+        jsonSmallValueRange = require('../json/lineDataSmallValueRange');
 
 
     function LineDataBuilder(config) {

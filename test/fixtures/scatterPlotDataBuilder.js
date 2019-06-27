@@ -2,8 +2,8 @@ define(function(require) {
     'use strict';
 
     var _ = require('underscore');
-    var jsonWithFourNames = require('json-loader!../json/scatterDataWithFourNames.json');
-    var jsonWithOneSource = require('json-loader!../json/scatterDataWithSingleSource.json');
+    var jsonWithFourNames = require('../json/scatterDataWithFourNames.json');
+    var jsonWithOneSource = require('../json/scatterDataWithSingleSource.json');
 
 
     function ScatterPlotDataBuilder(config) {
@@ -16,10 +16,10 @@ define(function(require) {
 
             return new this.Klass(attributes);
         };
-        
+
     this.withOneSource = function() {
             var attributes = _.extend({}, this.config, jsonWithOneSource);
-    
+
             return new this.Klass(attributes);
         }
 

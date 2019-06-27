@@ -3,8 +3,8 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonStepDataSmall = require('json-loader!../json/stepDataSmall.json'),
-        jsonStepDataMedium = require('json-loader!../json/stepDataMedium.json');
+        jsonStepDataSmall = require('../json/stepDataSmall.json'),
+        jsonStepDataMedium = require('../json/stepDataMedium.json');
 
     function StepDataBuilder(config){
         this.Klass = StepDataBuilder;
