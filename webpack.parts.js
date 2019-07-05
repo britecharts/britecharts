@@ -8,9 +8,7 @@ exports.babelLoader = () => ({
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                },
+                use: ['babel-loader'],
             },
         ],
     },
@@ -48,9 +46,9 @@ exports.sassLoader = () => ({
             {
                 test:/\.scss$/,
                 use: [
-                    {loader: 'style-loader'},
-                    {loader: 'css-loader'},
-                    {loader: 'sass-loader'},
+                    'style-loader',
+                    'css-loader',
+                    'sass-loader',
                 ],
                 exclude: /node_modules/,
             }
