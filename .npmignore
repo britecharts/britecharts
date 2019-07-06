@@ -20,9 +20,25 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 
-# Builds
+# Builds and tooling
 .grunt
+Gruntfile.js
 .sass-cache
+.sass-lint.yml
+.travis.yml
+.babelrc
+.codeclimate.yml
+.dockerignore
+Dockerfile
+.all-contributorsrc
+.all-contributrsrc.json
+.eslintcache
+.eslint-babel.json
+.eslintrc.js
+.nojekyll
+Makefile
+webpack.*.js
+
 
 # node-waf configuration
 .lock-wscript

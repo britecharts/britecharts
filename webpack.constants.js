@@ -41,6 +41,6 @@ exports.DEMOS = {
 
 exports.PATHS = {
     vendor: path.resolve('./node_modules'),
-    bundleIndex: path.resolve('./src/bundle.js'),
+    bundleIndex: path.resolve('./src/index.js'),
     charts: path.resolve('./src/charts'),
 };

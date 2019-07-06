@@ -15,19 +15,19 @@ import brush from './charts/brush.js';
 import colors from './charts/helpers/color.js';
 
 export {
-        bar,
-        donut,
-        legend,
-        line,
-        loadingStates,
-        tooltip,
-        miniTooltip,
-        sparkline,
-        stackedArea,
-        groupedBar,
-        stackedBar,
-        heatmap,
-        step,
-        brush,
-        colors
-    };
+    bar,
+    donut,
+    legend,
+    line,
+    loadingStates,
+    tooltip,
+    miniTooltip,
+    sparkline,
+    stackedArea,
+    groupedBar,
+    stackedBar,
+    heatmap,
+    step,
+    brush,
+    colors
+};

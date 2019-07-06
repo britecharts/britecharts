@@ -32,7 +32,7 @@
   "scripts": {
     "demos:compile": "webpack --progress --colors --env=demos",
     "demos:watch": "webpack --watch --progress --colors --env=demos",
-    "demos:serve": "webpack-dev-server --content-base docs/ --inline --hot --port 8001 --env=demos",
+    "demos:serve": "webpack-dev-server --content-base docs/ --inline --hot --env=demos",
     "start": "concurrently \"yarn run docs\" \"yarn run demos:serve\" \"yarn run sandbox\"",
     "styles": "grunt lint && grunt sass && grunt cssmin",
     "docs": "webpack --env=demos && yarn run styles && grunt docs",

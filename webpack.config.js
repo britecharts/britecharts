@@ -1,6 +1,7 @@
-const merge = require('webpack-merge');
-const parts = require('./webpack.parts');
 const path = require('path');
+const merge = require('webpack-merge');
+
+const parts = require('./webpack.parts');
 const constants = require('./webpack.constants');
 
 const demosConfig = merge([
