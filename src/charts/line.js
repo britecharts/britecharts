@@ -34,6 +34,7 @@ define(function(require){
         uniqueId
     } = require('./helpers/number');
 
+    const acceptNullValue = (value) => value === null ? null : +value;
     /**
      * @typedef D3Selection
      * @type {Array[]}
@@ -596,10 +597,12 @@ define(function(require){
             const normalizedDataByTopic = dataByTopic.reduce((accum, topic) => {
                 let {dates, ...restProps} = topic;
 
-                let newDates = dates.map(d => ({
-                       date: new Date(d[dateLabel]),
-                       value: +d[valueLabel]
-                }));
+                let newDates = dates.map(d => {
+                    return {
+                        date: new Date(d[dateLabel]),
+                        value: acceptNullValue(d[valueLabel])
+                    };
+                });
 
                 accum.push({ dates: newDates, ...restProps });
 
@@ -711,6 +714,7 @@ define(function(require){
             topicLine = d3Shape.line()
                 .curve(curveMap[lineCurve])
                 .x(({date}) => xScale(date))
+                .defined(({value}) => value !== null)
                 .y(({value}) => yScale(value));
 
             lines = svg.select('.chart-group').selectAll('.line')
