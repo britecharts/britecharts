@@ -8,9 +8,7 @@ exports.babelLoader = () => ({
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                },
+                use: ['babel-loader'],
             },
         ],
     },
@@ -34,9 +32,11 @@ exports.babelIstambulLoader = () => ({
     }
 });
 
-exports.bundleTreeChart = () => ({
+exports.bundleTreeChart = (analyzerPort = 8888) => ({
     plugins: [
-        new BundleAnalyzerPlugin(),
+        new BundleAnalyzerPlugin({
+            analyzerPort,
+        }),
     ],
 });
 
@@ -46,9 +46,9 @@ exports.sassLoader = () => ({
             {
                 test:/\.scss$/,
                 use: [
-                    {loader: 'style-loader'},
-                    {loader: 'css-loader'},
-                    {loader: 'sass-loader'},
+                    'style-loader',
+                    'css-loader',
+                    'sass-loader',
                 ],
                 exclude: /node_modules/,
             }
@@ -76,16 +76,6 @@ exports.aliasD3ToVendorPath = () => ({
             d3: constants.PATHS.vendor + '/d3',
         }
     }
-});
-
-exports.commonsChunkPlugin = () => ({
-    plugins: [
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'common',
-            filename: 'common.js',
-            minChunks: Infinity,
-        })
-    ]
 });
 
 exports.devServer = (port) => ({

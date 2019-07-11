@@ -3,8 +3,8 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonColors = require('json-loader!../json/barColors.json'),
-        jsonLetters = require('json-loader!../json/barDataLetters.json');
+        jsonColors = require('../json/barColors.json'),
+        jsonLetters = require('../json/barDataLetters.json');
 
 
     function BarDataBuilder(config){

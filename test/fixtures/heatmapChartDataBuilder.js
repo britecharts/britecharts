@@ -3,8 +3,8 @@ define(function (require) {
 
     var _ = require('underscore'),
 
-        jsonWeeklyBis = require('json-loader!../json/heatmapWeeklyBis.json'),
-        jsonWeekly = require('json-loader!../json/heatmapWeekly.json');
+        jsonWeeklyBis = require('../json/heatmapWeeklyBis.json'),
+        jsonWeekly = require('../json/heatmapWeekly.json');
 
 
     function HeatmapDataBuilder(config) {

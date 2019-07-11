@@ -3,8 +3,8 @@ define(function(require) {
 
     var _ = require('underscore'),
 
-        jsonShortData = require('json-loader!../json/brushDataBis.json'),
-        jsonSimpleData = require('json-loader!../json/brushData.json');
+        jsonShortData = require('../json/brushDataBis.json'),
+        jsonSimpleData = require('../json/brushData.json');
 
 
     function BrushDataBuilder(config){

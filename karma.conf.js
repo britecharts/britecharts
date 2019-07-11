@@ -44,7 +44,7 @@ module.exports = function(config) {
         // https://github.com/karma-runner/karma-coverage
         coverageReporter: {
             type: 'text',
-            dir: 'test/coverage/',
+            dir: 'stats/testCoverage/',
             reporters: [
                 {type: 'text'},
                 {type: 'text-summary', subdir: '.', file: 'text-summary.txt'}

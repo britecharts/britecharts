@@ -1,10 +1,12 @@
-const merge = require('webpack-merge');
-const parts = require('./webpack.parts');
 const path = require('path');
+const merge = require('webpack-merge');
+
+const parts = require('./webpack.parts');
 const constants = require('./webpack.constants');
 
 const demosConfig = merge([
     {
+        mode: 'development',
         devtool: 'cheap-eval-source-map',
         entry: constants.DEMOS,
         output: {
@@ -36,14 +38,18 @@ const demosConfig = merge([
                 }
             },
         },
+        optimization: {
+            minimize: false,
+            namedModules: true,
+        },
     },
     parts.babelLoader(),
-    parts.commonsChunkPlugin(),
     parts.devServer(8001),
 ]);
 
 const testConfig = merge([
     {
+        mode: 'development',
         resolve: {
             modules: [
                 path.resolve(__dirname, './src/charts'),
@@ -59,6 +65,7 @@ const testConfig = merge([
 
 const sandboxConfig = merge([
     {
+        mode: 'development',
         devtool: 'cheap-eval-source-map',
         entry: {
             sandbox: path.resolve(__dirname, './sandbox/sandbox.js'),
@@ -76,6 +83,7 @@ const sandboxConfig = merge([
 
 const prodBundleConfig = merge([
     {
+        mode: 'production',
         devtool: 'source-map',
         entry: {
             britecharts: constants.PATHS.bundleIndex
@@ -89,12 +97,14 @@ const prodBundleConfig = merge([
     },
     parts.babelLoader(),
     parts.aliasD3ToVendorPath(),
+    parts.bundleTreeChart(9999),
     parts.noParseD3Vendor(),
     parts.externals(),
 ]);
 
 const prodChartsConfig = merge([
     {
+        mode: 'production',
         devtool: 'source-map',
         entry: constants.CHARTS,
         output: {
@@ -106,7 +116,7 @@ const prodChartsConfig = merge([
     },
     parts.babelLoader(),
     parts.aliasD3ToVendorPath(),
-    // parts.bundleTreeChart(),
+    parts.bundleTreeChart(),
     parts.noParseD3Vendor(),
     parts.externals(),
 ]);
