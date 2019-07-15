@@ -917,8 +917,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the height of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return {height | module} Current height or Chart module to chain calls
+         * @param  {number} [_x=500]    Desired height for the graph
+         * @return {height | module}    Current height or Chart module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -1171,8 +1171,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the width of the chart
-         * @param  {number} _x Desired width for the graph
-         * @return {width | module} Current width or Chart module to chain calls
+         * @param  {number} [_x=960]    Desired width for the graph
+         * @return {width | module}     Current width or Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
