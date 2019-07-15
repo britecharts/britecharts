@@ -4,7 +4,7 @@ const d3Selection = require('d3-selection');
 const d3TimeFormat = require('d3-time-format');
 const PubSub = require('pubsub-js');
 
-const brush = require('./../../src/charts/brush');
+const brush = require('./../../src/es6charts/brush').default;
 const dataBuilder = require('./../../test/fixtures/brushChartDataBuilder');
 
 require('./helpers/resizeHelper');

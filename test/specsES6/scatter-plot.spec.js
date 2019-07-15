@@ -1,4 +1,4 @@
-import d3 from 'd3';
+import * as d3 from 'd3';
 import chart from 'scatter-plot';
 
 import dataBuilder from 'scatterPlotDataBuilder';
@@ -12,28 +12,26 @@ const buildDataSet = (dataSetName) => {
 };
 
 describe('Scatter Plot', () => {
-
     let scatterPlot, dataset, containerFixture, f;
 
     beforeEach(() => {
+        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+        // adds an html fixture to the DOM
+        document.body.insertAdjacentHTML('afterbegin', fixture);
+
         dataset = buildDataSet('withFourNames');
         scatterPlot = chart()
-                .grid('full');
+            .grid('full');
 
-        // DOM Fixture Setup
-        f = jasmine.getFixtures();
-        f.fixturesPath = 'base/test/fixtures/';
-        f.load('testContainer.html');
-
-        containerFixture = d3.select('.test-container');
+        containerFixture = d3.select('.test-container')
+            .append('svg');
         containerFixture.datum(dataset).call(scatterPlot);
     });
 
+    // remove the html fixture from the DOM
     afterEach(() => {
-        containerFixture.remove();
-        f = jasmine.getFixtures();
-        f.cleanUp();
-        f.clearCache();
+        document.body.removeChild(document.getElementById('fixture'));
     });
 
     it('should render a chart with minimal requirements', () => {
@@ -360,24 +358,23 @@ describe('Scatter Plot', () => {
          * animations should be turned off.
          */
         beforeEach(() => {
+            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+            // adds an html fixture to the DOM
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+
             dataset = buildDataSet('withOneSource');
             scatterPlot = chart()
                 .isAnimated(false);
 
-            // DOM Fixture Setup
-            f = jasmine.getFixtures();
-            f.fixturesPath = 'base/test/fixtures/';
-            f.load('testContainer.html');
-
-            containerFixture = d3.select('.test-container');
+            containerFixture = d3.select('.test-container')
+                .append('svg');
             containerFixture.datum(dataset).call(scatterPlot);
         });
 
+        // remove the html fixture from the DOM
         afterEach(() => {
-            containerFixture.remove();
-            f = jasmine.getFixtures();
-            f.cleanUp();
-            f.clearCache();
+            document.body.removeChild(document.getElementById('fixture'));
         });
 
         it('container renders a circle for each data point', () => {
@@ -406,24 +403,21 @@ describe('Scatter Plot', () => {
     describe('when hasHollowCircles is set to true', () => {
 
         beforeEach(() => {
+            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+            // adds an html fixture to the DOM
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+
             dataset = buildDataSet('withOneSource');
-
-            // DOM Fixture Setup
-            f = jasmine.getFixtures();
-            f.fixturesPath = 'base/test/fixtures/';
-            f.load('testContainer.html');
-
             scatterPlot = chart()
                 .isAnimated(false)
                 .hasHollowCircles(true);
             containerFixture = d3.select('.test-container');
         });
 
+        // remove the html fixture from the DOM
         afterEach(() => {
-            containerFixture.remove();
-            f = jasmine.getFixtures();
-            f.cleanUp();
-            f.clearCache();
+            document.body.removeChild(document.getElementById('fixture'));
         });
 
         it('data points should have a fixed fill', () => {
@@ -738,25 +732,23 @@ describe('Scatter Plot', () => {
         let scatterPlot, dataset, containerFixture, f;
 
         beforeEach(() => {
+            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+            // adds an html fixture to the DOM
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+
             dataset = buildDataSet('withOneSource');
             scatterPlot = chart()
                 .xAxisLabel('Hello World')
                 .yAxisLabel('Goodbye World');
 
-            // DOM Fixture Setup
-            f = jasmine.getFixtures();
-            f.fixturesPath = 'base/test/fixtures/';
-            f.load('testContainer.html');
-
             containerFixture = d3.select('.test-container');
             containerFixture.datum(dataset).call(scatterPlot);
         });
 
+        // remove the html fixture from the DOM
         afterEach(() => {
-            containerFixture.remove();
-            f = jasmine.getFixtures();
-            f.cleanUp();
-            f.clearCache();
+            document.body.removeChild(document.getElementById('fixture'));
         });
 
         describe('when x-axis label and offset are set', () => {

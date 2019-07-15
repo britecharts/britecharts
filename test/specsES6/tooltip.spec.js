@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import d3 from 'd3';
+import * as d3 from 'd3';
 
 import tooltip from 'tooltip';
 
@@ -15,23 +15,21 @@ describe('Tooltip Component', () => {
         tooltipChart, dataset, containerFixture, f;
 
     beforeEach(() => {
+        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+        // adds an html fixture to the DOM
+        document.body.insertAdjacentHTML('afterbegin', fixture);
+
         dataset = [];
         tooltipChart = tooltip();
-
-        // DOM Fixture Setup
-        f = jasmine.getFixtures();
-        f.fixturesPath = 'base/test/fixtures/';
-        f.load('testContainer.html');
 
         containerFixture = d3.select('.test-container').append('svg');
         containerFixture.datum(dataset).call(tooltipChart);
     });
 
+    // remove the html fixture from the DOM
     afterEach(() => {
-        containerFixture.remove();
-        f = jasmine.getFixtures();
-        f.cleanUp();
-        f.clearCache();
+        document.body.removeChild(document.getElementById('fixture'));
     });
 
     it('should render a tooltip with minimal requirements', () =>  {

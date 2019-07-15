@@ -1,6 +1,6 @@
-import d3 from 'd3';
-import chart from 'bar';
+import * as d3 from 'd3';
 
+import chart from './../../src/es6charts/bar';
 import dataBuilder from 'barChartDataBuilder';
 
 
@@ -15,23 +15,21 @@ describe('Bar Chart', () => {
     let barChart, dataset, containerFixture, f;
 
     beforeEach(() => {
+        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+        // adds an html fixture to the DOM
+        document.body.insertAdjacentHTML('afterbegin', fixture);
+
         dataset = buildDataSet('withLettersFrequency');
         barChart = chart();
-
-        // DOM Fixture Setup
-        f = jasmine.getFixtures();
-        f.fixturesPath = 'base/test/fixtures/';
-        f.load('testContainer.html');
 
         containerFixture = d3.select('.test-container');
         containerFixture.datum(dataset).call(barChart);
     });
 
+    // remove the html fixture from the DOM
     afterEach(() => {
-        containerFixture.remove();
-        f = jasmine.getFixtures();
-        f.cleanUp();
-        f.clearCache();
+        document.body.removeChild(document.getElementById('fixture'));
     });
 
     it('should render a chart with minimal requirements', () => {

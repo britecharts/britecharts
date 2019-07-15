@@ -8,9 +8,9 @@ import {scaleLinear, scaleBand} from 'd3-scale';
 import {mouse, select} from 'd3-selection';
 import 'd3-transition';
 
-import {wrapTextWithEllipses} from './helpers/text';
-import {exportChart} from './helpers/export';
-import {singleColors} from './helpers/color';
+import { wrapTextWithEllipses } from './helpers/text';
+import { exportChart } from './helpers/export';
+import colorHelper from './helpers/color';
 import { bar as barChartLoadingMarkup } from './helpers/load';
 import { uniqueId } from './helpers/number';
 
@@ -71,7 +71,7 @@ export default function module() {
         dataZeroed,
         chartWidth, chartHeight,
         xScale, yScale,
-        colorSchema = singleColors.aloeGreen,
+        colorSchema = colorHelper.singleColors.aloeGreen,
         colorList,
         colorMap,
         chartGradientColors = null,

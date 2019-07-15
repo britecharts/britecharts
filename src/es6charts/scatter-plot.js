@@ -12,7 +12,7 @@ import * as d3Voronoi from 'd3-voronoi';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
-import * as colorHelper from './helpers/color';
+import colorHelper from './helpers/color';
 import {
     createFilterContainer,
     createGlowWithMatrix,

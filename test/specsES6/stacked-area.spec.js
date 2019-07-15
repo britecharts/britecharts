@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import $ from 'jquery';
-import d3 from 'd3';
+import * as d3 from 'd3';
 
 import stackedArea from 'stacked-area';
 import dataBuilder from 'stackedAreaDataBuilder';
@@ -21,25 +21,23 @@ describe('Stacked Area Chart', () => {
     let dataset, containerFixture, f, stackedAreaChart;
 
     beforeEach(() => {
+        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+        // adds an html fixture to the DOM
+        document.body.insertAdjacentHTML('afterbegin', fixture);
+
         dataset = aTestDataSet().withReportData().build();
         stackedAreaChart = stackedArea()
-                            .valueLabel('views')
-                            .dateLabel('dateUTC');
-
-        // DOM Fixture Setup
-        f = jasmine.getFixtures();
-        f.fixturesPath = 'base/test/fixtures/';
-        f.load('testContainer.html');
+            .valueLabel('views')
+            .dateLabel('dateUTC');
 
         containerFixture = d3.select('.test-container').append('svg');
         containerFixture.datum(dataset.data).call(stackedAreaChart);
     });
 
+    // remove the html fixture from the DOM
     afterEach(() => {
-        containerFixture.remove();
-        f = jasmine.getFixtures();
-        f.cleanUp();
-        f.clearCache();
+        document.body.removeChild(document.getElementById('fixture'));
     });
 
     it('should render a stacked area chart with minimal requirements', () =>  {

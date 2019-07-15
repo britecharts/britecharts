@@ -4,7 +4,7 @@ import * as d3Selection from 'd3-selection';
 import 'd3-transition';
 
 import * as textHelper from './helpers/text';
-import * as colorHelper from './helpers/color';
+import colorHelper from './helpers/color';
 
 
 /**

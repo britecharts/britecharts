@@ -7,11 +7,11 @@ import * as d3Ease from 'd3-ease';
 import * as d3Interpolate from 'd3-interpolate';
 import * as d3Scale from 'd3-scale';
 import * as d3Selection from 'd3-selection';
-import * as assign from 'lodash.assign';
+import assign from 'lodash/assign';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
-import * as colorHelper from './helpers/color';
+import colorHelper from './helpers/color';
 import { bar } from './helpers/load';
 
 const NUMBER_FORMAT = ',f';

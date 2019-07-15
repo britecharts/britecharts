@@ -5,7 +5,7 @@ import * as d3Interpolate from 'd3-interpolate';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
-import * as colorHelper from './helpers/color';
+import colorHelper from './helpers/color';
 
 
 /**

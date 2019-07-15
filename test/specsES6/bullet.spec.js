@@ -1,6 +1,6 @@
-import d3 from 'd3';
-import chart from 'bullet';
+import * as d3 from 'd3';
 
+import chart from './../../src/es6charts/bullet';
 import dataBuilder from 'bulletChartDataBuilder';
 
 
@@ -12,26 +12,24 @@ describe('Bullet Chart', () => {
     }
 
     beforeEach(() => {
+        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+        // adds an html fixture to the DOM
+        document.body.insertAdjacentHTML('afterbegin', fixture);
+
         dataset = aTestDataSet()
             .withCpuData()
             .build();
         bulletChart = chart();
         dataPoint = dataset[0];
 
-        // DOM Fixture Setup
-        f = jasmine.getFixtures();
-        f.fixturesPath = 'base/test/fixtures/';
-        f.load('testContainer.html');
-
         containerFixture = d3.select('.test-container');
         containerFixture.datum(dataPoint).call(bulletChart);
     });
 
+    // remove the html fixture from the DOM
     afterEach(() => {
-        containerFixture.remove();
-        f = jasmine.getFixtures();
-        f.cleanUp();
-        f.clearCache();
+        document.body.removeChild(document.getElementById('fixture'));
     });
 
     describe('when render', () => {

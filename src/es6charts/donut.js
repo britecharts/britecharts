@@ -9,7 +9,7 @@ import 'd3-transition';
 
 import { exportChart } from './helpers/export';
 import * as textHelper from './helpers/text';
-import * as colorHelper from './helpers/color';
+import colorHelper from './helpers/color';
 import { calculatePercent } from './helpers/number';
 import { emptyDonutData } from './helpers/constants';
 import { donut } from './helpers/load';

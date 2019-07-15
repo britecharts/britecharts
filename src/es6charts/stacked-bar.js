@@ -12,7 +12,7 @@ import * as assign from 'lodash.assign';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
-import * as colorHelper from './helpers/color';
+import colorHelper from './helpers/color';
 import { bar as barChartLoadingMarkup } from './helpers/load';
 
 const PERCENTAGE_FORMAT = '%';

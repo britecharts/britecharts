@@ -1,4 +1,4 @@
-import d3 from 'd3';
+import * as d3 from 'd3';
 import legend from 'legend';
 import dataBuilder from 'donutChartDataBuilder';
 
@@ -12,26 +12,24 @@ describe('Legend Component', () =>{
 
     describe('when legend is vertical', () => {
 
-        beforeEach(() =>{
-            dataset = aTestDataSet()
-                        .withFivePlusOther()
-                        .build();
-            legendChart = legend();
+        beforeEach(() => {
+            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
 
-            // DOM Fixture Setup
-            f = jasmine.getFixtures();
-            f.fixturesPath = 'base/test/fixtures/';
-            f.load('testContainer.html');
+            // adds an html fixture to the DOM
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+
+            dataset = aTestDataSet()
+                .withFivePlusOther()
+                .build();
+            legendChart = legend();
 
             containerFixture = d3.select('.test-container');
             containerFixture.datum(dataset).call(legendChart);
         });
 
-        afterEach(() =>{
-            containerFixture.remove();
-            f = jasmine.getFixtures();
-            f.cleanUp();
-            f.clearCache();
+        // remove the html fixture from the DOM
+        afterEach(() => {
+            document.body.removeChild(document.getElementById('fixture'));
         });
 
         it('should render a legend with minimal requirements', () => {
@@ -315,30 +313,28 @@ describe('Legend Component', () =>{
 
     describe('when legend is horizontal', () => {
 
-        beforeEach(() =>{
+        beforeEach(() => {
+            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+            // adds an html fixture to the DOM
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+
             dataset = aTestDataSet()
-                        .withThreeCategories()
-                        .build();
+                .withThreeCategories()
+                .build();
             legendChart = legend();
 
             legendChart
                 .width(500)
                 .isHorizontal(true);
 
-            // DOM Fixture Setup
-            f = jasmine.getFixtures();
-            f.fixturesPath = 'base/test/fixtures/';
-            f.load('testContainer.html');
-
             containerFixture = d3.select('.test-container');
             containerFixture.datum(dataset).call(legendChart);
         });
 
-        afterEach(() =>{
-            containerFixture.remove();
-            f = jasmine.getFixtures();
-            f.cleanUp();
-            f.clearCache();
+        // remove the html fixture from the DOM
+        afterEach(() => {
+            document.body.removeChild(document.getElementById('fixture'));
         });
 
         it('should render a legend with minimal requirements', () => {
@@ -403,27 +399,25 @@ describe('Legend Component', () =>{
 
         describe('when chart width is not enough for one line', () => {
 
-            beforeEach(() =>{
+            beforeEach(() => {
+                const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+                // adds an html fixture to the DOM
+                document.body.insertAdjacentHTML('afterbegin', fixture);
+
                 legendChart = legend();
 
                 legendChart.isHorizontal(true)
                     .height(50)
                     .width(200);
 
-                // DOM Fixture Setup
-                f = jasmine.getFixtures();
-                f.fixturesPath = 'base/test/fixtures/';
-                f.load('testContainer.html');
-
                 containerFixture = d3.select('.test-container');
                 containerFixture.datum(dataset).call(legendChart);
             });
 
-            afterEach(() =>{
-                containerFixture.remove();
-                f = jasmine.getFixtures();
-                f.cleanUp();
-                f.clearCache();
+            // remove the html fixture from the DOM
+            afterEach(() => {
+                document.body.removeChild(document.getElementById('fixture'));
             });
 
             it('should create another line below', function() {
@@ -440,29 +434,27 @@ describe('Legend Component', () =>{
     describe('when legend has unit', () => {
         let unit;
 
-        beforeEach(() =>{
+        beforeEach(() => {
+            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+            // adds an html fixture to the DOM
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+
             unit = 'some unit';
             dataset = aTestDataSet()
-                        .withFivePlusOther()
-                        .build();
+                .withFivePlusOther()
+                .build();
             legendChart = legend();
 
             legendChart.unit(unit);
-
-            // DOM Fixture Setup
-            f = jasmine.getFixtures();
-            f.fixturesPath = 'base/test/fixtures/';
-            f.load('testContainer.html');
 
             containerFixture = d3.select('.test-container');
             containerFixture.datum(dataset).call(legendChart);
         });
 
-        afterEach(() =>{
-            containerFixture.remove();
-            f = jasmine.getFixtures();
-            f.cleanUp();
-            f.clearCache();
+        // remove the html fixture from the DOM
+        afterEach(() => {
+            document.body.removeChild(document.getElementById('fixture'));
         });
 
         it('should add the proper value with unit to each value element', () => {

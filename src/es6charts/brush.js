@@ -10,8 +10,8 @@ import * as d3Time from 'd3-time';
 import * as d3TimeFormat from 'd3-time-format';
 import 'd3-transition';
 
-import * as colorHelper from './helpers/color';
-import * as timeAxisHelper from './helpers/axis';
+import colorHelper from './helpers/color';
+import timeAxisHelper from './helpers/axis';
 import { axisTimeCombinations, timeIntervals } from './helpers/constants';
 import { uniqueId } from './helpers/number';
 import { line } from './helpers/load';

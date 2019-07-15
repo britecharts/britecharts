@@ -6,7 +6,7 @@ import * as d3Selection from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
-import * as colorHelper from './helpers/color';
+import colorHelper from './helpers/color';
 import { stackedArea as stackedAreaLoadingMarkup } from './helpers/load';
 import { uniqueId } from './helpers/number';
 

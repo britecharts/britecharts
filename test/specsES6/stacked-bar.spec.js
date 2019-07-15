@@ -1,4 +1,4 @@
-import d3 from 'd3';
+import * as d3 from 'd3';
 import chart from 'stacked-bar';
 
 import dataBuilder from 'stackedBarDataBuilder';
@@ -22,29 +22,27 @@ describe('Stacked Bar Chart', () => {
     let stackedBarChart, dataset, containerFixture, f;
 
     beforeEach(() => {
+        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+        // adds an html fixture to the DOM
+        document.body.insertAdjacentHTML('afterbegin', fixture);
+
         dataset = aTestDataSet()
             .with3Sources()
             .build();
         stackedBarChart = chart()
-                    .stackLabel('stack')
-                    .nameLabel('date')
-                    .valueLabel('views')
-                    .grid('full');
-
-        // DOM Fixture Setup
-        f = jasmine.getFixtures();
-        f.fixturesPath = 'base/test/fixtures/';
-        f.load('testContainer.html');
+            .stackLabel('stack')
+            .nameLabel('date')
+            .valueLabel('views')
+            .grid('full');
 
         containerFixture = d3.select('.test-container');
         containerFixture.datum(dataset.data).call(stackedBarChart);
     });
 
+    // remove the html fixture from the DOM
     afterEach(() => {
-        containerFixture.remove();
-        f = jasmine.getFixtures();
-        f.cleanUp();
-        f.clearCache();
+        document.body.removeChild(document.getElementById('fixture'));
     });
 
     it('should render a chart with minimal requirements', () => {

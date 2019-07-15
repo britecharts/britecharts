@@ -1,8 +1,7 @@
-import d3 from 'd3';
-import chart from 'grouped-bar';
+import * as d3 from 'd3';
 
+import chart from './../../src/es6charts/grouped-bar';
 import dataBuilder from 'groupedBarChartDataBuilder';
-
 
 const aTestDataSet = () => new dataBuilder.GroupedBarChartDataBuilder();
 const buildDataSet = (dataSetName) => {
@@ -23,27 +22,25 @@ describe('Grouped Bar Chart', () => {
     let groupedBarChart, dataset, containerFixture, f;
 
     beforeEach(() => {
+        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+        // adds an html fixture to the DOM
+        document.body.insertAdjacentHTML('afterbegin', fixture);
+
         dataset = buildDataSet('with3Sources');
         groupedBarChart = chart()
-                    .groupLabel('stack')
-                    .nameLabel('date')
-                    .valueLabel('views')
-                    .grid('full');
-
-        // DOM Fixture Setup
-        f = jasmine.getFixtures();
-        f.fixturesPath = 'base/test/fixtures/';
-        f.load('testContainer.html');
+            .groupLabel('stack')
+            .nameLabel('date')
+            .valueLabel('views')
+            .grid('full');
 
         containerFixture = d3.select('.test-container');
         containerFixture.datum(dataset.data).call(groupedBarChart);
     });
 
+    // remove the html fixture from the DOM
     afterEach(() => {
-        containerFixture.remove();
-        f = jasmine.getFixtures();
-        f.cleanUp();
-        f.clearCache();
+        document.body.removeChild(document.getElementById('fixture'));
     });
 
     it('should render a chart with minimal requirements', () => {

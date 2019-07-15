@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import $ from 'jquery';
-import d3 from 'd3';
+import * as d3 from 'd3';
 
 import chart from 'line';
 import dataBuilder from 'lineChartDataBuilder';
@@ -23,23 +23,21 @@ describe('Line Chart', () => {
     describe('when a single line of zeroes', () => {
 
         beforeEach(() => {
-            dataset = aTestDataSet().withAllZeroes().build();
-            lineChart = chart();
+            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
 
-            // DOM Fixture Setup
-            f = jasmine.getFixtures();
-            f.fixturesPath = 'base/test/fixtures/';
-            f.load('testContainer.html');
+            // adds an html fixture to the DOM
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+
+            dataset = buildDataSet('withAllZeroes');
+            lineChart = chart();
 
             containerFixture = d3.select('.test-container');
             containerFixture.datum(dataset).call(lineChart);
         });
 
+        // remove the html fixture from the DOM
         afterEach(() => {
-            containerFixture.remove();
-            f = jasmine.getFixtures();
-            f.cleanUp();
-            f.clearCache();
+            document.body.removeChild(document.getElementById('fixture'));
         });
 
         describe('on render', () => {
@@ -63,23 +61,21 @@ describe('Line Chart', () => {
     describe('when multiple lines', () => {
 
         beforeEach(() => {
+            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+            // adds an html fixture to the DOM
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+
             dataset = buildDataSet('with5Topics');
             lineChart = chart();
-
-            // DOM Fixture Setup
-            f = jasmine.getFixtures();
-            f.fixturesPath = 'base/test/fixtures/';
-            f.load('testContainer.html');
 
             containerFixture = d3.select('.test-container');
             containerFixture.datum(dataset).call(lineChart);
         });
 
+        // remove the html fixture from the DOM
         afterEach(() => {
-            containerFixture.remove();
-            f = jasmine.getFixtures();
-            f.cleanUp();
-            f.clearCache();
+            document.body.removeChild(document.getElementById('fixture'));
         });
 
         it('should render a chart with minimal requirements', () => {
@@ -240,23 +236,21 @@ describe('Line Chart', () => {
     describe('when different date ranges', () => {
 
         beforeEach(() => {
+            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+            // adds an html fixture to the DOM
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+
             dataset = aTestDataSet().withHourDateRange().build();
             lineChart = chart();
-
-            // DOM Fixture Setup
-            f = jasmine.getFixtures();
-            f.fixturesPath = 'base/test/fixtures/';
-            f.load('testContainer.html');
 
             containerFixture = d3.select('.test-container');
             containerFixture.datum(dataset).call(lineChart);
         });
 
+        // remove the html fixture from the DOM
         afterEach(() => {
-            containerFixture.remove();
-            f = jasmine.getFixtures();
-            f.cleanUp();
-            f.clearCache();
+            document.body.removeChild(document.getElementById('fixture'));
         });
 
         describe('on render', () => {
@@ -274,24 +268,23 @@ describe('Line Chart', () => {
     });
 
     describe('when using flat data', () => {
+
         beforeEach(() => {
+            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+            // adds an html fixture to the DOM
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+
             dataset = aTestDataSet().withTwoFlatTopics().build();
             lineChart = chart();
-
-            // DOM Fixture Setup
-            f = jasmine.getFixtures();
-            f.fixturesPath = 'base/test/fixtures/';
-            f.load('testContainer.html');
 
             containerFixture = d3.select('.test-container');
             containerFixture.datum(dataset).call(lineChart);
         });
 
+        // remove the html fixture from the DOM
         afterEach(() => {
-            containerFixture.remove();
-            f = jasmine.getFixtures();
-            f.cleanUp();
-            f.clearCache();
+            document.body.removeChild(document.getElementById('fixture'));
         });
 
         it('should render a chart with two lines', () => {
@@ -305,19 +298,21 @@ describe('Line Chart', () => {
     describe('Chart data points', () => {
 
         beforeEach(() => {
-            dataset = aTestDataSet().with5Topics().build();
+            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
 
-            // DOM Fixture Setup
-            f = jasmine.getFixtures();
-            f.fixturesPath = 'base/test/fixtures/';
-            f.load('testContainer.html');
+            // adds an html fixture to the DOM
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+
+            dataset = aTestDataSet().with5Topics().build();
+            lineChart = chart();
+
+            containerFixture = d3.select('.test-container');
+            containerFixture.datum(dataset).call(lineChart);
         });
 
+        // remove the html fixture from the DOM
         afterEach(() => {
-            containerFixture.remove();
-            f = jasmine.getFixtures();
-            f.cleanUp();
-            f.clearCache();
+            document.body.removeChild(document.getElementById('fixture'));
         });
 
         describe('when shouldShowAllDataPoints is true', function () {
@@ -367,19 +362,21 @@ describe('Line Chart', () => {
     describe('Grid', () => {
 
         beforeEach(() => {
-            dataset = aTestDataSet().with5Topics().build();
+            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
 
-            // DOM Fixture Setup
-            f = jasmine.getFixtures();
-            f.fixturesPath = 'base/test/fixtures/';
-            f.load('testContainer.html');
+            // adds an html fixture to the DOM
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+
+            dataset = aTestDataSet().with5Topics().build();
+            lineChart = chart();
+
+            containerFixture = d3.select('.test-container');
+            containerFixture.datum(dataset).call(lineChart);
         });
 
+        // remove the html fixture from the DOM
         afterEach(() => {
-            containerFixture.remove();
-            f = jasmine.getFixtures();
-            f.cleanUp();
-            f.clearCache();
+            document.body.removeChild(document.getElementById('fixture'));
         });
 
         describe('when grid is horizontal', function () {
@@ -432,22 +429,21 @@ describe('Line Chart', () => {
         describe('when axis labels aren\'t set', () => {
 
             beforeEach(() => {
+                const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+                // adds an html fixture to the DOM
+                document.body.insertAdjacentHTML('afterbegin', fixture);
+
                 dataset = aTestDataSet().withOneSource().build();
                 lineChart = chart();
-                // DOM Fixture Setup
-                f = jasmine.getFixtures();
-                f.fixturesPath = 'base/test/fixtures/';
-                f.load('testContainer.html');
 
                 containerFixture = d3.select('.test-container');
                 containerFixture.datum(dataset).call(lineChart);
             });
 
+            // remove the html fixture from the DOM
             afterEach(() => {
-                containerFixture.remove();
-                f = jasmine.getFixtures();
-                f.cleanUp();
-                f.clearCache();
+                document.body.removeChild(document.getElementById('fixture'));
             });
 
             it('should not render the x-axis label', () => {
@@ -468,25 +464,22 @@ describe('Line Chart', () => {
         describe('when axis labels are set', () => {
 
             beforeEach(() => {
+                const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+                // adds an html fixture to the DOM
+                document.body.insertAdjacentHTML('afterbegin', fixture);
+
                 dataset = aTestDataSet().withOneSource().build();
                 lineChart = chart()
                     .xAxisLabel('valueSetX')
                     .yAxisLabel('valueSetY');
-
-                // DOM Fixture Setup
-                f = jasmine.getFixtures();
-                f.fixturesPath = 'base/test/fixtures/';
-                f.load('testContainer.html');
-
                 containerFixture = d3.select('.test-container');
                 containerFixture.datum(dataset).call(lineChart);
             });
 
+            // remove the html fixture from the DOM
             afterEach(() => {
-                containerFixture.remove();
-                f = jasmine.getFixtures();
-                f.cleanUp();
-                f.clearCache();
+                document.body.removeChild(document.getElementById('fixture'));
             });
 
             it('should render the x-axis label', () => {
@@ -508,22 +501,21 @@ describe('Line Chart', () => {
     describe('API', () => {
 
         beforeEach(() => {
+            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+            // adds an html fixture to the DOM
+            document.body.insertAdjacentHTML('afterbegin', fixture);
+
             dataset = aTestDataSet().withOneSource().build();
             lineChart = chart();
-            // DOM Fixture Setup
-            f = jasmine.getFixtures();
-            f.fixturesPath = 'base/test/fixtures/';
-            f.load('testContainer.html');
 
             containerFixture = d3.select('.test-container');
             containerFixture.datum(dataset).call(lineChart);
         });
 
+        // remove the html fixture from the DOM
         afterEach(() => {
-            containerFixture.remove();
-            f = jasmine.getFixtures();
-            f.cleanUp();
-            f.clearCache();
+            document.body.removeChild(document.getElementById('fixture'));
         });
 
         describe('Aspect Ratio', () => {

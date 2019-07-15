@@ -11,7 +11,7 @@ import * as d3TimeFormat from 'd3-time-format';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
-import * as colorHelper from './helpers/color';
+import colorHelper from './helpers/color';
 import { line as lineChartLoadingMarkup } from './helpers/load';
 import { getTimeSeriesAxis } from './helpers/axis';
 import {

@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import $ from 'jquery';
-import d3 from 'd3';
+import * as d3 from 'd3';
 
 import sparkline from 'sparkline';
 import dataBuilder from 'sparklineDataBuilder';
@@ -25,23 +25,21 @@ describe('Sparkline Chart', () => {
     let dataset, containerFixture, f, sparklineChart;
 
     beforeEach(() => {
+        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+        // adds an html fixture to the DOM
+        document.body.insertAdjacentHTML('afterbegin', fixture);
+
         dataset = aTestDataSet().with1Source().build();
         sparklineChart = sparkline().dateLabel('dateUTC');
-
-        // DOM Fixture Setup
-        f = jasmine.getFixtures();
-        f.fixturesPath = 'base/test/fixtures/';
-        f.load('testContainer.html');
 
         containerFixture = d3.select('.test-container').append('svg');
         containerFixture.datum(dataset.data).call(sparklineChart);
     });
 
+    // remove the html fixture from the DOM
     afterEach(() => {
-        containerFixture.remove();
-        f = jasmine.getFixtures();
-        f.cleanUp();
-        f.clearCache();
+        document.body.removeChild(document.getElementById('fixture'));
     });
 
     it('should render a sparkline chart with minimal requirements', () =>  {

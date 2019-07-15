@@ -60,7 +60,7 @@ const testConfig = merge([
     },
     parts.babelLoader(),
     parts.aliasD3ToVendorPath(),
-    parts.babelIstambulLoader(),
+    parts.istanbulLoader(),
 ]);
 
 const testES6Config = merge([
@@ -75,7 +75,7 @@ const testES6Config = merge([
     },
     parts.babelLoader(),
     parts.aliasD3ToVendorPath(),
-    parts.babelIstambulLoader(),
+    parts.istanbulLoader(),
 ]);
 
 const sandboxConfig = merge([

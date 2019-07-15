@@ -24,7 +24,7 @@ const defaultFontFace = 'Arial';
  * More discussions on https://github.com/mbostock/d3/issues/1642
  * @return {void}
  */
-const wrapText = function(xOffset, fontSize, availableWidth, node) {
+export const wrapText = function(xOffset, fontSize, availableWidth, node) {
     let text = d3Selection.select(node),
         words = text.text().split(/\s+/).reverse(),
         word,
@@ -79,7 +79,7 @@ const wrapText = function(xOffset, fontSize, availableWidth, node) {
  * More discussions on https://github.com/mbostock/d3/issues/1642
  * @return {void}
  */
-const wrapTextWithEllipses = function(text, width, xpos=0, limit=2) {
+export const wrapTextWithEllipses = function(text, width, xpos=0, limit=2) {
     text.each(function() {
         var words,
             word,
@@ -140,17 +140,11 @@ const wrapTextWithEllipses = function(text, width, xpos=0, limit=2) {
  * @param  {String} [fontFace='Arial']  Font family to use in the calculation (or default)
  * @return {String}                     Approximated width of the text
  */
-const getTextWidth = function(text, fontSize = defaultTextSize, fontFace = defaultFontFace) {
+export const getTextWidth = function(text, fontSize = defaultTextSize, fontFace = defaultFontFace) {
     let a = document.createElement('canvas'),
         b = a.getContext('2d');
 
     b.font = fontSize + 'px ' + fontFace;
 
     return b.measureText(text).width;
-}
-
-export default {
-    getTextWidth,
-    wrapText,
-    wrapTextWithEllipses
 };

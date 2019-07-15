@@ -2,7 +2,7 @@ import * as d3Shape from 'd3-shape';
 import * as d3Time from 'd3-time';
 
 
-const axisTimeCombinations = {
+export const axisTimeCombinations = {
     MINUTE_HOUR: 'minute-hour',
     HOUR_DAY: 'hour-daymonth',
     DAY_MONTH: 'day-month',
@@ -10,13 +10,13 @@ const axisTimeCombinations = {
     CUSTOM: 'custom'
 };
 
-const timeBenchmarks= {
+export const timeBenchmarks = {
     ONE_AND_A_HALF_YEARS: 47304000000,
     ONE_YEAR: 31536000365,
     ONE_DAY: 86400001
 };
 
-const curveMap = {
+export const curveMap = {
     linear: d3Shape.curveLinear,
     basis: d3Shape.curveBasis,
     cardinal: d3Shape.curveCardinal,
@@ -29,12 +29,12 @@ const curveMap = {
     stepBefore: d3Shape.curveStepBefore
 };
 
-const emptyDonutData = [{
+export const emptyDonutData = [{
     'quantity': 1,
     'percentage': 100
 }];
 
-const timeIntervals = {
+export const timeIntervals = {
     timeMillisecond: d3Time.timeMillisecond,
     utcMillisecond: d3Time.utcMillisecond,
     timeSecond: d3Time.timeSecond ,

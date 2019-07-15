@@ -57,7 +57,7 @@ const getValueSize = (value, limits) => {
  * @param  {String}  decimals Specifies number of decimals https://github.com/d3/d3-format
  * @return {String}           Percentage
  */
-const calculatePercent = (value, total, decimals) => {
+export const calculatePercent = (value, total, decimals) => {
     const percent = total ? (value / total * 100) : 0;
 
     return d3Format.format(decimals)(percent);
@@ -68,7 +68,7 @@ const calculatePercent = (value, total, decimals) => {
  * @param  {Number}  value Value to check
  * @return {Boolean}       If it is an iteger
  */
-const isInteger = (value) => {
+export const isInteger = (value) => {
     return value % 1 === 0;
 };
 
@@ -77,7 +77,7 @@ const isInteger = (value) => {
  * @param  {Number} value Decimal point value to format
  * @return {Number}       Formatted value to show
  */
-const formatDecimalValue = (value) => {
+export const formatDecimalValue = (value) => {
     let size = getValueSize(value, decimalValueFormats);
     let format = decimalValueFormats[size].format;
 
@@ -89,7 +89,7 @@ const formatDecimalValue = (value) => {
  * @param  {Number} value Decimal point value to format
  * @return {Number}       Formatted value to show
  */
-const formatIntegerValue = (value) => {
+export const formatIntegerValue = (value) => {
     let size = getValueSize(value, integerValueFormats);
     let format = integerValueFormats[size].format;
 
@@ -101,17 +101,8 @@ const formatIntegerValue = (value) => {
  * @param  {String} prefix   Prefix to add before the id
  * @return {String}          Unique id
  */
-const uniqueId = (prefix) => {
+export const uniqueId = (prefix) => {
     const id = ++idCounter;
 
     return `${prefix.toString()}-${id}`;
 };
-
-export default {
-    calculatePercent,
-    isInteger,
-    formatDecimalValue,
-    formatIntegerValue,
-    uniqueId
-};
-

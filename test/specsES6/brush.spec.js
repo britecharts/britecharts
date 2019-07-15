@@ -1,7 +1,6 @@
-import $ from 'jquery';
-import d3 from 'd3';
+import * as d3 from 'd3';
 
-import chart from 'brush';
+import chart from './../../src/es6charts/brush';
 import dataBuilder from 'brushChartDataBuilder';
 
 
@@ -13,25 +12,23 @@ describe('Brush Chart', () => {
     }
 
     beforeEach(() => {
+        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+
+        // adds an html fixture to the DOM
+        document.body.insertAdjacentHTML('afterbegin', fixture);
+
         dataset = aTestDataSet()
             .withSimpleData()
             .build();
         brushChart = chart();
 
-        // DOM Fixture Setup
-        f = jasmine.getFixtures();
-        f.fixturesPath = 'base/test/fixtures/';
-        f.load('testContainer.html');
-
         containerFixture = d3.select('.test-container');
         containerFixture.datum(dataset).call(brushChart);
     });
 
+    // remove the html fixture from the DOM
     afterEach(() => {
-        containerFixture.remove();
-        f = jasmine.getFixtures();
-        f.cleanUp();
-        f.clearCache();
+        document.body.removeChild(document.getElementById('fixture'));
     });
 
     it('should render a chart with minimal requirements', function() {
