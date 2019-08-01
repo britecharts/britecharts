@@ -7,7 +7,7 @@ import dataBuilder from 'heatmapChartDataBuilder';
 const aTestDataSet = () => new dataBuilder.HeatmapDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()
-    [dataSetName]()
+        [dataSetName]()
         .build();
 };
 
@@ -103,7 +103,7 @@ describe('Heatmap Chart', () => {
 
         describe('when reloading with a different dataset', () => {
 
-            it('should render in the same svg', function () {
+            it('should render in the same svg', () => {
                 let actual;
                 let expected = 1;
                 let newDataset = buildDataSet('withAlternativeWeeklyData');
@@ -117,7 +117,7 @@ describe('Heatmap Chart', () => {
         });
     });
 
-    describe('API', function () {
+    describe('API', () => {
 
         it('should provide boxSize getter and setter', () => {
             let previous = heatmapChart.boxSize(),

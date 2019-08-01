@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import chart from './../../src/es6charts/grouped-bar';
 import dataBuilder from 'groupedBarChartDataBuilder';
 
+
 const aTestDataSet = () => new dataBuilder.GroupedBarChartDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()

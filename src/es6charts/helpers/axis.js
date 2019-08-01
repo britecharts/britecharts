@@ -81,7 +81,7 @@ const getMaxNumOfHorizontalTicks = (width, dataPointNumber) => {
  * @param {String} [locale=null]        Optional forced locale
  * @return {object} tick settings for major and minr axis
  */
-const getTimeSeriesAxis = (dataByDate, width, settings = null, locale = null) => {
+export const getTimeSeriesAxis = (dataByDate, width, settings = null, locale = null) => {
     const firstDate = new Date(dataByDate[0].date);
     const lastDate = new Date(dataByDate[dataByDate.length - 1].date);
     const dateTimeSpan = lastDate - firstDate;

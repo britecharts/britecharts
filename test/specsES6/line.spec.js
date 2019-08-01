@@ -1,5 +1,4 @@
 import _ from 'underscore';
-import $ from 'jquery';
 import * as d3 from 'd3';
 
 import chart from 'line';
@@ -241,7 +240,7 @@ describe('Line Chart', () => {
             // adds an html fixture to the DOM
             document.body.insertAdjacentHTML('afterbegin', fixture);
 
-            dataset = aTestDataSet().withHourDateRange().build();
+            dataset = buildDataSet('withHourDateRange');
             lineChart = chart();
 
             containerFixture = d3.select('.test-container');
@@ -275,7 +274,7 @@ describe('Line Chart', () => {
             // adds an html fixture to the DOM
             document.body.insertAdjacentHTML('afterbegin', fixture);
 
-            dataset = aTestDataSet().withTwoFlatTopics().build();
+            dataset = buildDataSet('withTwoFlatTopics');
             lineChart = chart();
 
             containerFixture = d3.select('.test-container');
@@ -303,7 +302,7 @@ describe('Line Chart', () => {
             // adds an html fixture to the DOM
             document.body.insertAdjacentHTML('afterbegin', fixture);
 
-            dataset = aTestDataSet().with5Topics().build();
+            dataset = buildDataSet('with5Topics');
             lineChart = chart();
 
             containerFixture = d3.select('.test-container');
@@ -367,7 +366,7 @@ describe('Line Chart', () => {
             // adds an html fixture to the DOM
             document.body.insertAdjacentHTML('afterbegin', fixture);
 
-            dataset = aTestDataSet().with5Topics().build();
+            dataset = buildDataSet('with5Topics');
             lineChart = chart();
 
             containerFixture = d3.select('.test-container');
@@ -434,7 +433,7 @@ describe('Line Chart', () => {
                 // adds an html fixture to the DOM
                 document.body.insertAdjacentHTML('afterbegin', fixture);
 
-                dataset = aTestDataSet().withOneSource().build();
+                dataset = buildDataSet('withOneSource');
                 lineChart = chart();
 
                 containerFixture = d3.select('.test-container');
@@ -469,7 +468,7 @@ describe('Line Chart', () => {
                 // adds an html fixture to the DOM
                 document.body.insertAdjacentHTML('afterbegin', fixture);
 
-                dataset = aTestDataSet().withOneSource().build();
+                dataset = buildDataSet('withOneSource');
                 lineChart = chart()
                     .xAxisLabel('valueSetX')
                     .yAxisLabel('valueSetY');
@@ -506,7 +505,7 @@ describe('Line Chart', () => {
             // adds an html fixture to the DOM
             document.body.insertAdjacentHTML('afterbegin', fixture);
 
-            dataset = aTestDataSet().withOneSource().build();
+            dataset = buildDataSet('withOneSource');
             lineChart = chart();
 
             containerFixture = d3.select('.test-container');

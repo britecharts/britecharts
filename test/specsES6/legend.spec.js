@@ -1,13 +1,18 @@
 import * as d3 from 'd3';
+
 import legend from 'legend';
 import dataBuilder from 'donutChartDataBuilder';
 
 
-function aTestDataSet() {
-    return new dataBuilder.DonutDataBuilder();
-}
+const aTestDataSet = () => new dataBuilder.DonutDataBuilder();
+const buildDataSet = (dataSetName) => {
+    return aTestDataSet()
+        [dataSetName]()
+        .build();
+};
 
-describe('Legend Component', () =>{
+
+describe('Legend Component', () => {
     let legendChart, dataset, containerFixture, f;
 
     describe('when legend is vertical', () => {
@@ -18,9 +23,7 @@ describe('Legend Component', () =>{
             // adds an html fixture to the DOM
             document.body.insertAdjacentHTML('afterbegin', fixture);
 
-            dataset = aTestDataSet()
-                .withFivePlusOther()
-                .build();
+            dataset = buildDataSet('withFivePlusOther');
             legendChart = legend();
 
             containerFixture = d3.select('.test-container');
@@ -114,9 +117,7 @@ describe('Legend Component', () =>{
 
         describe('when no quantities in our data', () => {
             beforeEach(() => {
-                dataset = aTestDataSet()
-                    .withNoQuantity()
-                    .build();
+                dataset = buildDataSet('withNoQuantity');
 
                 containerFixture = d3.select('.test-container');
                 containerFixture.datum(dataset).call(legendChart);
@@ -137,7 +138,7 @@ describe('Legend Component', () =>{
             });
         });
 
-        describe('when margins are set partially', function () {
+        describe('when margins are set partially', () => {
 
             it('should override the default values', () => {
                 let previous = legendChart.margin(),
@@ -156,9 +157,9 @@ describe('Legend Component', () =>{
             })
         });
 
-        describe('API', function() {
+        describe('API', () => {
 
-            it('should provide margin getter and setter', () =>{
+            it('should provide margin getter and setter', () => {
                 let previous = legendChart.margin(),
                     expected = {top: 4, right: 4, bottom: 4, left: 4},
                     actual;
@@ -170,7 +171,7 @@ describe('Legend Component', () =>{
                 expect(actual).toEqual(expected);
             });
 
-            it('should provide margin ratio getter and setter', () =>{
+            it('should provide margin ratio getter and setter', () => {
                 let previous = legendChart.marginRatio(),
                     expected = 5,
                     actual;
@@ -182,7 +183,7 @@ describe('Legend Component', () =>{
                 expect(actual).toBe(expected);
             });
 
-            it('should provide width getter and setter', () =>{
+            it('should provide width getter and setter', () => {
                 let previous = legendChart.width(),
                     expected = 200,
                     actual;
@@ -194,7 +195,7 @@ describe('Legend Component', () =>{
                 expect(actual).toBe(expected);
             });
 
-            it('should provide height getter and setter', () =>{
+            it('should provide height getter and setter', () => {
                 let previous = legendChart.height(),
                     expected = 200,
                     actual;
@@ -206,7 +207,7 @@ describe('Legend Component', () =>{
                 expect(actual).toBe(expected);
             });
 
-            it('should provide an horizontal mode getter and setter', () =>{
+            it('should provide an horizontal mode getter and setter', () => {
                 let previous = legendChart.isHorizontal(),
                     expected = true,
                     actual;
@@ -218,7 +219,7 @@ describe('Legend Component', () =>{
                 expect(actual).toBe(expected);
             });
 
-            it('should provide colorSchema getter and setter', () =>{
+            it('should provide colorSchema getter and setter', () => {
                 let previous = legendChart.colorSchema(),
                     expected = ['pink', 'red', 'magenta'],
                     actual;
@@ -230,7 +231,7 @@ describe('Legend Component', () =>{
                 expect(actual).toBe(expected);
             });
 
-            it('should provide markerSize getter and setter', () =>{
+            it('should provide markerSize getter and setter', () => {
                 let previous = legendChart.markerSize(),
                     expected = 10,
                     actual;
@@ -257,7 +258,7 @@ describe('Legend Component', () =>{
                 expect(d3.select(elements[4]).attr('class')).toEqual('legend-entry is-faded');
             });
 
-            it('should provide highlightEntryById getter and setter', () =>{
+            it('should provide highlightEntryById getter and setter', () => {
                 let previous = legendChart.highlightEntryById(),
                     expected = 1,
                     actual;
@@ -285,7 +286,7 @@ describe('Legend Component', () =>{
                 expect(d3.select(elements[4]).attr('class')).toEqual('legend-entry');
             });
 
-            it('should provide numberFormat getter and setter', () =>{
+            it('should provide numberFormat getter and setter', () => {
                 let previous = legendChart.numberFormat(),
                     expected = 'd',
                     actual;
@@ -297,7 +298,7 @@ describe('Legend Component', () =>{
                 expect(actual).toBe(expected);
             });
 
-            it('should provide unit getter and setter', () =>{
+            it('should provide unit getter and setter', () => {
                 let previous = legendChart.unit(),
                     expected = 'unit',
                     actual;
@@ -319,9 +320,7 @@ describe('Legend Component', () =>{
             // adds an html fixture to the DOM
             document.body.insertAdjacentHTML('afterbegin', fixture);
 
-            dataset = aTestDataSet()
-                .withThreeCategories()
-                .build();
+            dataset = buildDataSet('withThreeCategories');
             legendChart = legend();
 
             legendChart
@@ -441,9 +440,7 @@ describe('Legend Component', () =>{
             document.body.insertAdjacentHTML('afterbegin', fixture);
 
             unit = 'some unit';
-            dataset = aTestDataSet()
-                .withFivePlusOther()
-                .build();
+            dataset = buildDataSet('withFivePlusOther');
             legendChart = legend();
 
             legendChart.unit(unit);

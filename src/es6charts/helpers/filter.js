@@ -2,7 +2,7 @@ import * as d3Selection from 'd3-selection';
 
 const filterId = 'highlight-filter';
 
-const createFilterContainer = (metadataSelection) => {
+export const createFilterContainer = (metadataSelection) => {
     let highlightFilter = metadataSelection
         .append('defs')
         .append('filter')
@@ -11,7 +11,7 @@ const createFilterContainer = (metadataSelection) => {
     return highlightFilter;
 };
 
-const createGausianBlur = (filterSelector) => {
+export const createGausianBlur = (filterSelector) => {
     filterSelector
         .append('feGaussianBlur')
         .attr('stdDeviation', 1)
@@ -20,7 +20,7 @@ const createGausianBlur = (filterSelector) => {
     return filterId;
 };
 
-const createGlow = (filterSelector) => {
+export const createGlow = (filterSelector) => {
     filterSelector
         .attr('x', '-30%')
         .attr('y', '-30%')
@@ -50,7 +50,7 @@ const createGlow = (filterSelector) => {
     return filterId;
 };
 
-const createGlowWithMatrix = (filterSelector) => {
+export const createGlowWithMatrix = (filterSelector) => {
     let colorMatrix = '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0';
 
     filterSelector
@@ -84,7 +84,7 @@ const createGlowWithMatrix = (filterSelector) => {
     return filterId;
 }
 
-const createWhiteGlow = (filterSelector) => {
+export const createWhiteGlow = (filterSelector) => {
     filterSelector
         .attr('x', '-5000%')
         .attr('y', '-5000%')
@@ -131,7 +131,7 @@ const createWhiteGlow = (filterSelector) => {
     return filterId;
 };
 
-const bounceCircleHighlight = (el, ease, radius, bounceRadius = radius * 2) => {
+export const bounceCircleHighlight = (el, ease, radius, bounceRadius = radius * 2) => {
     const duration = 100;
     const delay = 50;
 

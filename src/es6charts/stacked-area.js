@@ -7,8 +7,8 @@ import * as d3Scale from 'd3-scale';
 import * as d3Shape from 'd3-shape';
 import * as d3Selection from 'd3-selection';
 import * as d3TimeFormat from 'd3-time-format';
-import * as assign from 'lodash.assign';
 import 'd3-transition';
+import assign from 'lodash/assign';
 
 import { exportChart } from './helpers/export';
 import colorHelper from './helpers/color';

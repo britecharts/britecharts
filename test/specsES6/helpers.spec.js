@@ -24,7 +24,7 @@ function aLineTestDataSet() {
     return new lineDataBuilder.LineDataBuilder();
 }
 
-fdescribe('Helpers', () => {
+describe('Helpers', () => {
 
     beforeEach(() => {
         const fixture = '<div id="fixture"><div class="test-container"></div></div>';

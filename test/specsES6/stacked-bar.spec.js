@@ -27,9 +27,7 @@ describe('Stacked Bar Chart', () => {
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
 
-        dataset = aTestDataSet()
-            .with3Sources()
-            .build();
+        dataset = buildDataSet('with3Sources');
         stackedBarChart = chart()
             .stackLabel('stack')
             .nameLabel('date')

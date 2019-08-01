@@ -30,7 +30,7 @@ describe('Sparkline Chart', () => {
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
 
-        dataset = aTestDataSet().with1Source().build();
+        dataset = buildDataSet('with1Source');
         sparklineChart = sparkline().dateLabel('dateUTC');
 
         containerFixture = d3.select('.test-container').append('svg');
