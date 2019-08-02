@@ -1,10 +1,9 @@
-import * as d3Dispatch from 'd3-dispatch';
-import * as d3Ease from 'd3-ease';
-import * as d3Format from 'd3-format';
-import * as d3Interpolate from 'd3-interpolate';
-import * as d3Scale from 'd3-scale';
-import * as d3Shape from 'd3-shape';
-import * as d3Selection from 'd3-selection';
+import { dispatch } from 'd3-dispatch';
+import { easeCubicInOut } from 'd3-ease';
+import { interpolate } from 'd3-interpolate';
+import { scaleOrdinal } from 'd3-scale';
+import { pie, arc } from 'd3-shape';
+import { select, mouse } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
@@ -46,7 +45,7 @@ import { donut } from './helpers/load';
  *
  * @module Donut
  * @tutorial donut
- * @requires d3-dispatch, d3-ease, d3-interpolate, d3-scale, d3-shape, d3-selection
+ * @requires d3-dispatch, d3-ease, d3-interpolate, d3-scale, d3-shape, d3-selection, d3-transition
  *
  * @example
  * var donutChart = donut();
@@ -70,7 +69,7 @@ export default function module() {
         width = 300,
         height = 300,
         loadingState = donut,
-        ease = d3Ease.easeCubicInOut,
+        ease = easeCubicInOut,
         arcTransitionDuration = 750,
         pieDrawingTransitionDuration = 1200,
         pieHoverTransitionDuration = 150,
@@ -132,7 +131,7 @@ export default function module() {
         getSliceFill = ({data}) => colorScale(data.name),
 
         // events
-        dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove', 'customClick');
+        dispatcher = dispatch('customMouseOver', 'customMouseOut', 'customMouseMove', 'customClick');
 
     /**
      * This function creates the graph using the selection as container
@@ -169,7 +168,7 @@ export default function module() {
      */
     function buildColorScale() {
         if (colorSchema) {
-            colorScale = d3Scale.scaleOrdinal().range(colorSchema);
+            colorScale = scaleOrdinal().range(colorSchema);
         }
     }
 
@@ -195,7 +194,7 @@ export default function module() {
      * @private
      */
     function buildLayout() {
-        layout = d3Shape.pie()
+        layout = pie()
             .padAngle(paddingAngle)
             .value(getQuantity)
             .sort(orderingFunction);
@@ -206,7 +205,7 @@ export default function module() {
      * @private
      */
     function buildShape() {
-        shape = d3Shape.arc()
+        shape = arc()
             .innerRadius(internalRadius)
             .padRadius(externalRadius);
     }
@@ -219,7 +218,7 @@ export default function module() {
      */
     function buildSVG(container) {
         if (!svg) {
-            svg = d3Selection.select(container)
+            svg = select(container)
                 .append('svg')
                 .classed('britechart donut-chart', true);
 
@@ -412,7 +411,7 @@ export default function module() {
      */
     function handleMouseOver(el, d, chartWidth, chartHeight) {
         drawLegend(d);
-        dispatcher.call('customMouseOver', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
+        dispatcher.call('customMouseOver', el, d, mouse(el), [chartWidth, chartHeight]);
 
         if (hasHoverAnimation) {
             // if the hovered slice is not the same as the last slice hovered
@@ -434,7 +433,7 @@ export default function module() {
      * @private
      */
     function handleMouseMove(el, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseMove', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
+        dispatcher.call('customMouseMove', el, d, mouse(el), [chartWidth, chartHeight]);
     }
 
     /**
@@ -464,7 +463,7 @@ export default function module() {
             lastHighlightedSlice = el;
         }
 
-        dispatcher.call('customMouseOut', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
+        dispatcher.call('customMouseOut', el, d, mouse(el), [chartWidth, chartHeight]);
     }
 
     /**
@@ -473,7 +472,7 @@ export default function module() {
      * @private
      */
     function handleClick(el, d, chartWidth, chartHeight) {
-        dispatcher.call('customClick', el, d, d3Selection.mouse(el), [chartWidth, chartHeight]);
+        dispatcher.call('customClick', el, d, mouse(el), [chartWidth, chartHeight]);
     }
 
     /**
@@ -508,7 +507,7 @@ export default function module() {
      * @private
      */
     function tweenArc(a) {
-        let i = d3Interpolate.interpolate(this._current, a);
+        let i = interpolate(this._current, a);
 
         this._current = i(0);
 
@@ -526,11 +525,11 @@ export default function module() {
      * @private
      */
     function tweenGrowth(slice, outerRadius, delay = 0) {
-        d3Selection.select(slice)
+        select(slice)
             .transition()
             .delay(delay)
             .attrTween('d', function(d) {
-                let i = d3Interpolate.interpolate(d.outerRadius, outerRadius);
+                let i = interpolate(d.outerRadius, outerRadius);
 
                 return (t) => {
                     d.outerRadius = i(t);
@@ -552,7 +551,7 @@ export default function module() {
         let i;
 
         b.innerRadius = 0;
-        i = d3Interpolate.interpolate({ startAngle: 0, endAngle: 0}, b);
+        i = interpolate({ startAngle: 0, endAngle: 0}, b);
 
         return function(t) { return shape(i(t)); };
     }

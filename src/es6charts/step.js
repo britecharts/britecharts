@@ -1,10 +1,10 @@
-import * as d3Array from 'd3-array';
-import * as d3Axis from 'd3-axis';
-import * as d3Dispatch from 'd3-dispatch';
-import * as d3Ease from 'd3-ease';
-import * as d3Format from 'd3-format';
-import * as d3Scale from 'd3-scale';
-import * as d3Selection from 'd3-selection';
+import { max } from 'd3-array';
+import { axisLeft, axisBottom } from 'd3-axis';
+import { dispatch } from 'd3-dispatch';
+import { easeQuadInOut } from 'd3-ease';
+import { format } from 'd3-format';
+import { scaleLinear, scaleBand } from 'd3-scale';
+import { select, mouse } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
@@ -36,7 +36,7 @@ import { line } from './helpers/load';
  *
  * @module Step
  * @tutorial step
- * @requires d3-array, d3-axis, d3-dispatch, d3-format, d3-scale, d3-selection, d3-transition
+ * @requires d3-array, d3-axis, d3-dispatch, d3-ease, d3-format, d3-scale, d3-selection, d3-transition
  *
  * @example
  * var stepChart= step();
@@ -62,7 +62,7 @@ export default function module() {
         width = 960,
         height = 500,
         loadingState = line,
-        ease = d3Ease.easeQuadInOut,
+        ease = easeQuadInOut,
         data,
         chartWidth, chartHeight,
         xScale, yScale,
@@ -92,10 +92,10 @@ export default function module() {
 
         // Dispatcher object to broadcast the mouse events
         // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
-        dispatcher = d3Dispatch.dispatch('customMouseOver', 'customMouseOut', 'customMouseMove'),
+        dispatcher = dispatch('customMouseOver', 'customMouseOut', 'customMouseMove'),
 
         // Formats
-        yAxisTickFormat = d3Format.format('.3'),
+        yAxisTickFormat = format('.3'),
 
         // extractors
         getKey = ({key}) => key,
@@ -129,9 +129,9 @@ export default function module() {
      * @private
      */
     function buildAxis(){
-        xAxis = d3Axis.axisBottom(xScale);
+        xAxis = axisBottom(xScale);
 
-        yAxis = d3Axis.axisLeft(yScale)
+        yAxis = axisLeft(yScale)
             .ticks(yTicks)
             .tickPadding(yTickPadding)
             .tickFormat(yAxisTickFormat);
@@ -173,13 +173,13 @@ export default function module() {
      * @private
      */
     function buildScales(){
-        xScale = d3Scale.scaleBand()
+        xScale = scaleBand()
             .domain(data.map(getKey))
             .rangeRound([0, chartWidth])
             .paddingInner(0);
 
-        yScale = d3Scale.scaleLinear()
-            .domain([0, d3Array.max(data, getValue)])
+        yScale = scaleLinear()
+            .domain([0, max(data, getValue)])
             .rangeRound([chartHeight, 0]);
     }
 
@@ -190,7 +190,7 @@ export default function module() {
      */
     function buildSVG(container){
         if (!svg) {
-            svg = d3Selection.select(container)
+            svg = select(container)
                 .append('svg')
                 .classed('britechart step-chart', true);
 
@@ -353,7 +353,7 @@ export default function module() {
      * @private
      */
     function handleMouseOver(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        dispatcher.call('customMouseOver', e, d, mouse(e), [chartWidth, chartHeight]);
     }
 
     /**
@@ -362,7 +362,7 @@ export default function module() {
      * @private
      */
     function handleMouseMove(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        dispatcher.call('customMouseMove', e, d, mouse(e), [chartWidth, chartHeight]);
     }
 
     /**
@@ -371,7 +371,7 @@ export default function module() {
      * @private
      */
     function handleMouseOut(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        dispatcher.call('customMouseOut', e, d, mouse(e), [chartWidth, chartHeight]);
     }
 
     /**

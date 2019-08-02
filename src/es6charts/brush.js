@@ -1,13 +1,11 @@
-import * as d3Array from 'd3-array';
-import * as d3Axis from 'd3-axis';
-import * as d3Brush from 'd3-brush';
-import * as d3Ease from 'd3-ease';
-import * as d3Scale from 'd3-scale';
-import * as d3Shape from 'd3-shape';
-import * as d3Dispatch from 'd3-dispatch';
-import * as d3Selection from 'd3-selection';
-import * as d3Time from 'd3-time';
-import * as d3TimeFormat from 'd3-time-format';
+import { extent, max } from 'd3-array';
+import { axisBottom } from 'd3-axis';
+import { brushX } from 'd3-brush';
+import { scaleLinear, scaleTime } from 'd3-scale';
+import { curveBasis, area } from 'd3-shape';
+import { dispatch } from 'd3-dispatch';
+import { select, event } from 'd3-selection';
+import { timeFormat } from 'd3-time-format';
 import 'd3-transition';
 
 import colorHelper from './helpers/color';
@@ -79,8 +77,6 @@ export default function module() {
         data,
         svg,
 
-        ease = d3Ease.easeQuadOut,
-
         dateLabel = 'date',
         valueLabel = 'value',
 
@@ -110,7 +106,7 @@ export default function module() {
 
         // Dispatcher object to broadcast the mouse events
         // @see {@link https://github.com/d3/d3/blob/master/API.md#dispatches-d3-dispatch}
-        dispatcher = d3Dispatch.dispatch('customBrushStart', 'customBrushEnd'),
+        dispatcher = dispatch('customBrushStart', 'customBrushEnd'),
 
         // extractors
         getValue = ({value}) => value,
@@ -151,13 +147,13 @@ export default function module() {
         if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
             minor = {
                 tick: xTicks,
-                format: d3TimeFormat.timeFormat(xAxisCustomFormat)
+                format: timeFormat(xAxisCustomFormat)
             };
         } else {
             ({minor, major} = timeAxisHelper.getTimeSeriesAxis(data, width, xAxisFormat));
         }
 
-        xAxis = d3Axis.axisBottom(xScale)
+        xAxis = axisBottom(xScale)
             .ticks(minor.tick)
             .tickSize(10, 0)
             .tickPadding([tickPadding])
@@ -169,7 +165,7 @@ export default function module() {
      * @return {void}
      */
     function buildBrush() {
-        brush = d3Brush.brushX()
+        brush = brushX()
             .extent([[0, 0], [chartWidth, chartHeight]])
             .on('brush', handleBrushStart)
             .on('end', handleBrushEnd);
@@ -232,12 +228,12 @@ export default function module() {
      * @private
      */
     function buildScales(){
-        xScale = d3Scale.scaleTime()
-            .domain(d3Array.extent(data, getDate ))
+        xScale = scaleTime()
+            .domain(extent(data, getDate ))
             .range([0, chartWidth]);
 
-        yScale = d3Scale.scaleLinear()
-            .domain([0, d3Array.max(data, getValue)])
+        yScale = scaleLinear()
+            .domain([0, max(data, getValue)])
             .range([chartHeight, 0]);
     }
 
@@ -248,7 +244,7 @@ export default function module() {
      */
     function buildSVG(container){
         if (!svg) {
-            svg = d3Selection.select(container)
+            svg = select(container)
                 .append('svg')
                 .classed('britechart brush-chart', true);
 
@@ -307,11 +303,11 @@ export default function module() {
         }
 
         // Create and configure the area generator
-        brushArea = d3Shape.area()
+        brushArea = area()
             .x(({date}) => xScale(date))
             .y0(chartHeight)
             .y1(({value}) => yScale(value))
-            .curve(d3Shape.curveBasis);
+            .curve(curveBasis);
 
         // Create the area path
         svg.select('.chart-group')
@@ -357,7 +353,7 @@ export default function module() {
      * @return {void}
      */
     function handleBrushStart() {
-        const selection = d3Selection.event.selection;
+        const selection = event.selection;
 
         if (!selection) {
             return;
@@ -373,12 +369,12 @@ export default function module() {
      * @private
      */
     function handleBrushEnd() {
-        if (!d3Selection.event.sourceEvent) {
+        if (!event.sourceEvent) {
             return; // Only transition after input.
         }
 
         let dateExtentRounded = [null, null];
-        const selection = d3Selection.event.selection;
+        const selection = event.selection;
 
         if (selection) {
             let dateExtent = selection.map(xScale.invert);
@@ -391,9 +387,9 @@ export default function module() {
                 dateExtentRounded[1] = timeIntervals[roundingTimeInterval].offset(dateExtentRounded[0]);
             }
 
-            d3Selection.select(this)
+            select(this)
                 .transition()
-                .call(d3Selection.event.target.move, dateExtentRounded.map(xScale));
+                .call(event.target.move, dateExtentRounded.map(xScale));
         }
 
         dispatcher.call('customBrushEnd', this, dateExtentRounded);

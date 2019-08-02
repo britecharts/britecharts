@@ -1,14 +1,12 @@
-import * as d3Array from 'd3-array';
-import * as d3Axis from 'd3-axis';
-import * as d3Collection from 'd3-collection';
-import * as d3Dispatch from 'd3-dispatch';
-import * as d3Ease from 'd3-ease';
-import * as d3Format from 'd3-format';
-import * as d3Scale from 'd3-scale';
-import * as d3Shape from 'd3-shape';
-import * as d3Selection from 'd3-selection';
-import * as d3TimeFormat from 'd3-time-format';
-import * as d3Voronoi from 'd3-voronoi';
+import { min, max } from 'd3-array';
+import { axisLeft, axisBottom } from 'd3-axis';
+import { dispatch } from 'd3-dispatch';
+import { easeCircleIn } from 'd3-ease';
+import { format } from 'd3-format';
+import { scaleSqrt, scaleOrdinal, scaleLinear } from 'd3-scale';
+import { curveBasis, line } from 'd3-shape';
+import { select, mouse } from 'd3-selection';
+import { voronoi } from 'd3-voronoi';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
@@ -18,12 +16,7 @@ import {
     createGlowWithMatrix,
     bounceCircleHighlight,
 } from './helpers/filter';
-import {
-    formatIntegerValue,
-    formatDecimalValue,
-    isInteger,
-    uniqueId
-} from './helpers/number';
+
 
 /**
  * @typedef ScatterPlotData
@@ -63,7 +56,7 @@ import {
  *
  * @module Scatter-plot
  * @tutorial scatter-plot
- * @requires d3-array, d3-dispatch, d3-ease, d3-scale, d3-selection
+ * @requires d3-array, d3-axis, d3-dispatch, d3-format, d3-ease, d3-scale, d3-selection, d3-shape, d3-voronoi
  *
  * @example
  * let scatterPlot = scatterPlot();
@@ -105,7 +98,7 @@ export default function module() {
     grid = null,
     baseLine,
     maskGridLines,
-    voronoi,
+    voronoiMesh,
 
     xAxis,
     xAxisFormat = '',
@@ -124,7 +117,7 @@ export default function module() {
     xAxisLabelOffset = -40,
 
     trendLinePath,
-    trendLineCurve = d3Shape.curveBasis,
+    trendLineCurve = curveBasis,
     trendLineStrokWidth = '2',
     trendLineDelay = 1500,
     trendLineDuration = 2000,
@@ -156,7 +149,7 @@ export default function module() {
     isAnimated = true,
     hasCrossHairs = false,
     hasTrendline = false,
-    ease = d3Ease.easeCircleIn,
+    ease = easeCircleIn,
     delay = 500,
     duration = 500,
 
@@ -166,7 +159,7 @@ export default function module() {
     chartWidth,
     chartHeight,
 
-    dispatcher = d3Dispatch.dispatch(
+    dispatcher = dispatch(
         'customClick',
         'customMouseMove',
         'customMouseOver',
@@ -234,15 +227,15 @@ export default function module() {
      * @private
     */
     function buildAxis() {
-        xAxis = d3Axis.axisBottom(xScale)
+        xAxis = axisBottom(xScale)
             .ticks(xTicks)
             .tickPadding(tickPadding)
-            .tickFormat(d3Format.format(xAxisFormat));
+            .tickFormat(format(xAxisFormat));
 
-        yAxis = d3Axis.axisLeft(yScale)
+        yAxis = axisLeft(yScale)
             .ticks(yTicks)
             .tickPadding(tickPadding)
-            .tickFormat(d3Format.format(yAxisFormat));
+            .tickFormat(format(yAxisFormat));
     }
 
     /**
@@ -279,7 +272,7 @@ export default function module() {
      * @private
      */
     function buildVoronoi() {
-        voronoi = d3Voronoi.voronoi()
+        voronoiMesh = voronoi()
             .x((d) => xScale(d.x))
             .y((d) => yScale(d.y))
             .extent([
@@ -294,25 +287,25 @@ export default function module() {
      * @private
      */
     function buildScales() {
-        const [minX, minY] = [d3Array.min(dataPoints, ({ x }) => x), d3Array.min(dataPoints, ({ y }) => y)];
-        const [maxX, maxY] = [d3Array.max(dataPoints, ({ x }) => x), d3Array.max(dataPoints, ({ y }) => y)];
+        const [minX, minY] = [min(dataPoints, ({ x }) => x), min(dataPoints, ({ y }) => y)];
+        const [maxX, maxY] = [max(dataPoints, ({ x }) => x), max(dataPoints, ({ y }) => y)];
         const yScaleBottomValue = Math.abs(minY) < 0 ? Math.abs(minY) : 0;
 
-        xScale = d3Scale.scaleLinear()
+        xScale = scaleLinear()
             .domain([minX, maxX])
             .rangeRound([0, chartWidth])
             .nice();
 
-        yScale = d3Scale.scaleLinear()
+        yScale = scaleLinear()
             .domain([yScaleBottomValue, maxY])
             .rangeRound([chartHeight, 0])
             .nice();
 
-        colorScale = d3Scale.scaleOrdinal()
+        colorScale = scaleOrdinal()
             .domain(dataPoints.map(getName))
             .range(colorSchema);
 
-        areaScale = d3Scale.scaleSqrt()
+        areaScale = scaleSqrt()
             .domain([yScaleBottomValue, maxY])
             .range([0, maxCircleArea]);
 
@@ -345,7 +338,7 @@ export default function module() {
      */
     function buildSVG(container) {
         if (!svg) {
-            svg = d3Selection.select(container)
+            svg = select(container)
                 .append('svg')
                 .classed('britechart scatter-plot', true);
 
@@ -470,7 +463,7 @@ export default function module() {
             {x: linearData.x2, y: linearData.y2}
         ];
 
-        let line = d3Shape.line()
+        let trendLine = line()
             .curve(trendLineCurve)
             .x(({x}) => xScale(x))
             .y(({y}) => yScale(y));
@@ -478,7 +471,7 @@ export default function module() {
         trendLinePath = svg.selectAll('.chart-group')
             .append('path')
             .attr('class', 'scatter-trendline')
-            .attr('d', line(params))
+            .attr('d', trendLine(params))
             .attr('stroke', colorSchema[0])
             .attr('stroke-width', trendLineStrokWidth)
             .attr('fill', 'none');
@@ -596,7 +589,7 @@ export default function module() {
             .attr('class', 'highlight-y-legend')
             .attr('y', (yScale(data.y) + (areaScale(data.y) / 2)))
             .attr('x', highlightTextLegendOffset)
-            .text(`${d3Format.format(yAxisFormat)(data.y)}`);
+            .text(`${format(yAxisFormat)(data.y)}`);
 
         // Draw data label for x value
         highlightCrossHairLabelsContainer.selectAll('text.highlight-x-legend')
@@ -605,7 +598,7 @@ export default function module() {
             .attr('class', 'highlight-x-legend')
             .attr('transform', `translate(0, ${chartHeight - highlightTextLegendOffset})`)
             .attr('x', (xScale(data.x) - (areaScale(data.y) / 2)))
-            .text(`${d3Format.format(xAxisFormat)(data.x)}`);
+            .text(`${format(xAxisFormat)(data.x)}`);
     }
 
     /**
@@ -691,8 +684,8 @@ export default function module() {
         const denominator = (n * x2) - (x * x);
         const intercept = ((y * x2) - (x * xy)) / denominator;
         const slope = ((n * xy) - (x * y)) / denominator;
-        const minX = d3Array.min(dataPoints, ({ x }) => x);
-        const maxX = d3Array.max(dataPoints, ({ x }) => x);
+        const minX = min(dataPoints, ({ x }) => x);
+        const maxX = max(dataPoints, ({ x }) => x);
 
         return {
             x1: minX,
@@ -709,13 +702,13 @@ export default function module() {
      * @private
      */
     function getPointProps(svg) {
-        let mousePos = d3Selection.mouse(svg);
+        let mousePos = mouse(svg);
 
         mousePos[0] -= margin.left;
         mousePos[1] -= margin.top;
 
         return {
-            closestPoint: voronoi.find(mousePos[0], mousePos[1]),
+            closestPoint: voronoiMesh.find(mousePos[0], mousePos[1]),
             mousePos
         };
     }
@@ -735,7 +728,7 @@ export default function module() {
 
         highlightDataPoint(pointData);
 
-        dispatcher.call('customMouseMove', e, pointData, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        dispatcher.call('customMouseMove', e, pointData, mouse(e), [chartWidth, chartHeight]);
     }
 
     /**
@@ -744,7 +737,7 @@ export default function module() {
      * @private
      */
     function handleMouseOver (e, d) {
-        dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
+        dispatcher.call('customMouseOver', e, d, mouse(e));
     }
 
     /**
@@ -758,7 +751,7 @@ export default function module() {
         if (hasCrossHairs) {
             showCrossHairComponentsWithLabels(false);
         }
-        dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
+        dispatcher.call('customMouseOut', e, d, mouse(e));
     }
 
     /**
@@ -772,7 +765,7 @@ export default function module() {
 
         handleClickAnimation(d);
 
-        dispatcher.call('customClick', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        dispatcher.call('customClick', e, d, mouse(e), [chartWidth, chartHeight]);
     }
 
     /**

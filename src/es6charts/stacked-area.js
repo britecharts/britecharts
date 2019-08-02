@@ -1,12 +1,12 @@
-import * as d3Array from 'd3-array';
-import * as d3Axis from 'd3-axis';
-import * as d3Collection from 'd3-collection';
-import * as d3Dispatch from 'd3-dispatch';
-import * as d3Ease from 'd3-ease';
-import * as d3Scale from 'd3-scale';
-import * as d3Shape from 'd3-shape';
-import * as d3Selection from 'd3-selection';
-import * as d3TimeFormat from 'd3-time-format';
+import { max, sum, range, extent } from 'd3-array';
+import { axisRight, axisBottom } from 'd3-axis';
+import { nest } from 'd3-collection';
+import { dispatch } from 'd3-dispatch';
+import { easeQuadInOut } from 'd3-ease';
+import { scaleLinear, scaleTime } from 'd3-scale';
+import { line, area, stackOffsetNone, stackOrderNone, stack } from 'd3-shape';
+import { select, mouse, touch } from 'd3-selection';
+import { timeFormat } from 'd3-time-format';
 import 'd3-transition';
 import assign from 'lodash/assign';
 
@@ -60,7 +60,7 @@ const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) ===
  *
  * @module Stacked-area
  * @tutorial stacked-area
- * @requires d3-array, d3-axis, d3-collection, d3-ease, d3-scale, d3-shape, d3-selection, d3-time, d3-time-format
+ * @requires d3-array, d3-axis, d3-collection, d3-dispatch, d3-ease, d3-scale, d3-shape, d3-selection, d3-transition, d3-time-format
  *
  * @example
  * let stackedArea = stackedArea();
@@ -127,13 +127,13 @@ export default function module() {
         layers,
         series,
         layersInitial,
-        area,
+        areaShape,
         areaOutline,
 
         // Area Animation
         maxAreaNumber = 10,
         areaAnimationDelayStep = 20,
-        areaAnimationDelays = d3Array.range(areaAnimationDelayStep, maxAreaNumber * areaAnimationDelayStep, areaAnimationDelayStep),
+        areaAnimationDelays = range(areaAnimationDelayStep, maxAreaNumber * areaAnimationDelayStep, areaAnimationDelayStep),
 
         overlay,
         overlayColor = 'rgba(0, 0, 0, 0)',
@@ -147,7 +147,7 @@ export default function module() {
         pointsBorderColor     = '#ffffff',
 
         isAnimated = false,
-        ease = d3Ease.easeQuadInOut,
+        ease = easeQuadInOut,
         areaAnimationDuration = 1000,
 
         hasOutline = true,
@@ -189,7 +189,7 @@ export default function module() {
         getDate = ({date}) => date,
 
         // events
-        dispatcher = d3Dispatch.dispatch(
+        dispatcher = dispatch(
             'customMouseOver',
             'customMouseOut',
             'customMouseMove',
@@ -238,7 +238,7 @@ export default function module() {
             highlightFilterId = createGlowWithMatrix(highlightFilter);
         }
 
-        let glowEl = d3Selection.select(el);
+        let glowEl = select(el);
 
         glowEl
             .style('stroke-width', highlightCircleActiveStrokeWidth)
@@ -309,26 +309,26 @@ export default function module() {
         if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
             minor = {
                 tick: xTicks,
-                format:  d3TimeFormat.timeFormat(xAxisCustomFormat)
+                format: timeFormat(xAxisCustomFormat)
             };
             major = null;
         } else {
             ({minor, major} = getTimeSeriesAxis(dataByDate, width, xAxisFormat, locale));
 
-            xMonthAxis = d3Axis.axisBottom(xScale)
+            xMonthAxis = axisBottom(xScale)
                 .ticks(major.tick)
                 .tickSize(0, 0)
                 .tickFormat(major.format);
         }
 
-        xAxis = d3Axis.axisBottom(xScale)
+        xAxis = axisBottom(xScale)
             .ticks(minor.tick)
             .tickSize(10, 0)
             .tickPadding(tickPadding)
             .tickFormat(minor.format);
 
 
-        yAxis = d3Axis.axisRight(yScale)
+        yAxis = axisRight(yScale)
             .ticks(yTicks)
             .tickSize([0])
             .tickPadding(tickPadding)
@@ -416,10 +416,10 @@ export default function module() {
 
         order = topicsOrder || formatOrder(totals);
 
-        let stack3 = d3Shape.stack()
+        let stack3 = stack()
             .keys(order)
-            .order(d3Shape.stackOrderNone)
-            .offset(d3Shape.stackOffsetNone);
+            .order(stackOrderNone)
+            .offset(stackOffsetNone);
 
         layersInitial = stack3(dataByDateZeroed);
         layers = stack3(dataByDateFormatted);
@@ -459,11 +459,11 @@ export default function module() {
     function buildScales() {
         const maxValueByDate = isUsingFakeData ? emptyDataConfig.maxY : getMaxValueByDate();
 
-        xScale = d3Scale.scaleTime()
-            .domain(d3Array.extent(dataByDate, ({date}) => date))
+        xScale = scaleTime()
+            .domain(extent(dataByDate, ({date}) => date))
             .rangeRound([0, chartWidth]);
 
-        yScale = d3Scale.scaleLinear()
+        yScale = scaleLinear()
             .domain([0, maxValueByDate])
             .rangeRound([chartHeight, 0])
             .nice();
@@ -479,7 +479,7 @@ export default function module() {
      */
     function buildSVG(container) {
         if (!svg) {
-            svg = d3Selection.select(container)
+            svg = select(container)
                 .append('svg')
                 .classed('britechart stacked-area', true);
 
@@ -571,7 +571,7 @@ export default function module() {
             }
 
         // Moving the YAxis tick labels to the right side
-        // d3Selection.selectAll('.y-axis-group .tick text')
+        // selectAll('.y-axis-group .tick text')
         //     .attr('transform', `translate( ${-chartWidth - yTickTextXOffset}, ${yTickTextYOffset})` );
     }
 
@@ -596,7 +596,7 @@ export default function module() {
             .enter()
                 .append('g')
                 .attr('class', 'dots')
-                .attr('d', ({values}) => area(values))
+                .attr('d', ({ values }) => areaShape(values))
                 .attr('clip-path', 'url(#clip)');
 
         // Processes the points
@@ -697,7 +697,7 @@ export default function module() {
      * @private
      */
     function drawEmptyDataLine() {
-        let emptyDataLine = d3Shape.line()
+        let emptyDataLine = line()
             .x( (d) => xScale(d.date) )
             .y( () => yScale(0) - 1 );
 
@@ -746,14 +746,14 @@ export default function module() {
             return;
         }
 
-        area = d3Shape.area()
+        areaShape = area()
             .curve(curveMap[areaCurve])
             .x(({data})=> xScale(data.date))
             .y0((d) => yScale(d[0]))
             .y1((d) => yScale(d[1]));
 
-        areaOutline = d3Shape.line()
-            .curve(area.curve())
+        areaOutline = line()
+            .curve(areaShape.curve())
             .x(({data}) => xScale(data.date))
             .y((d) => yScale(d[1]));
 
@@ -767,7 +767,7 @@ export default function module() {
             series
                 .append('path')
                 .attr('class', 'layer')
-                .attr('d', area)
+                .attr('d', areaShape)
                 .style('opacity', areaOpacity)
                 .style('fill', ({key}) => categoryColorMap[key]);
 
@@ -784,7 +784,7 @@ export default function module() {
                 .delay((_, i) => areaAnimationDelays[i])
                 .duration(areaAnimationDuration)
                 .ease(ease)
-                .attr('d', area)
+                .attr('d', areaShape)
                 .style('opacity', areaOpacity)
                 .style('fill', ({key}) => categoryColorMap[key]);
 
@@ -806,7 +806,7 @@ export default function module() {
             series
                 .append('path')
                 .attr('class', 'layer')
-                .attr('d', area)
+                .attr('d', areaShape)
                 .style('opacity', areaOpacity)
                 .style('fill', ({key}) => categoryColorMap[key]);
 
@@ -819,7 +819,7 @@ export default function module() {
 
             // Update
             svg.select('.chart-group').selectAll('.layer')
-                .attr('d', area)
+                .attr('d', areaShape)
                 .style('opacity', areaOpacity)
                 .style('fill', ({key}) => categoryColorMap[key]);
 
@@ -889,7 +889,7 @@ export default function module() {
      * @private
      */
     function getDataByDate(data) {
-        return d3Collection.nest()
+        return nest()
             .key(getDate)
             .entries(
                 data.sort((a, b) => a.date - b.date)
@@ -900,8 +900,8 @@ export default function module() {
                 });
             });
 
-        // let b =  d3Collection.nest()
-        //                     .key(getDate).sortKeys(d3Array.ascending)
+        // let b =  nest()
+        //                     .key(getDate).sortKeys(ascending)
         //                     .entries(data);
     }
 
@@ -912,10 +912,10 @@ export default function module() {
      */
     function getMaxValueByDate() {
         let keys = uniq(data.map(o => o.name));
-        let maxValueByDate = d3Array.max(dataByDateFormatted, function(d){
+        let maxValueByDate = max(dataByDateFormatted, function(d){
             let vals = keys.map((key) => d[key]);
 
-            return d3Array.sum(vals);
+            return sum(vals);
         });
 
         return maxValueByDate;
@@ -953,7 +953,7 @@ export default function module() {
     function handleMouseMove(e) {
         epsilon || setEpsilon();
 
-        let [xPosition, yPosition] = d3Selection.mouse(e),
+        let [xPosition, yPosition] = mouse(e),
             dataPoint = getNearestDataPoint(xPosition - margin.left),
             dataPointXPosition;
 
@@ -978,7 +978,7 @@ export default function module() {
         verticalMarkerLine.classed('bc-is-active', false);
         verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
 
-        dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
+        dispatcher.call('customMouseOut', e, d, mouse(e));
     }
 
     /**
@@ -989,7 +989,7 @@ export default function module() {
         overlay.style('display', 'block');
         verticalMarkerLine.classed('bc-is-active', true);
 
-        dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
+        dispatcher.call('customMouseOver', e, d, mouse(e));
     }
 
     /**
@@ -998,7 +998,7 @@ export default function module() {
      * @private
      */
     function handleTouchMove(e, d) {
-        dispatcher.call('customTouchMove', e, d, d3Selection.touch(e));
+        dispatcher.call('customTouchMove', e, d, touch(e));
     }
 
     /**
@@ -1007,7 +1007,7 @@ export default function module() {
      * @private
      */
     function handleHighlightClick(e, d) {
-        dispatcher.call('customDataEntryClick', e, d, d3Selection.mouse(e));
+        dispatcher.call('customDataEntryClick', e, d, mouse(e));
     }
 
     /**
@@ -1065,7 +1065,7 @@ export default function module() {
      * @param {DOMElement} point  Point to reset
      */
     function removeFilter(point) {
-        d3Selection.select(point)
+        select(point)
             .attr('filter', 'none');
     }
 

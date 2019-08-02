@@ -1,7 +1,7 @@
-import * as d3Ease from 'd3-ease';
-import * as d3Format from 'd3-format';
-import * as d3Selection from 'd3-selection';
-import * as d3TimeFormat from 'd3-time-format';
+import { easeQuadInOut } from 'd3-ease';
+import { format } from 'd3-format';
+import { select } from 'd3-selection';
+import { timeFormat } from 'd3-time-format';
 import 'd3-transition';
 
 import { axisTimeCombinations } from './helpers/constants';
@@ -11,6 +11,7 @@ import {
     isInteger
 } from './helpers/number';
 import { getTextWidth } from './helpers/text';
+
 
 /**
  * Tooltip Component reusable API class that renders a
@@ -62,7 +63,6 @@ export default function module() {
 
         title = 'Tooltip title',
         shouldShowDateInTitle = true,
-        valueFormat = null,
 
         // tooltip
         tooltip,
@@ -87,7 +87,7 @@ export default function module() {
         tooltipRightWidth,
         // Animations
         mouseChaseDuration = 100,
-        ease = d3Ease.easeQuadInOut,
+        ease = easeQuadInOut,
 
         circleYOffset = 8,
 
@@ -111,8 +111,8 @@ export default function module() {
         // formats
         numberFormat = null,
         valueFormatter = null,
-        monthDayYearFormat = d3TimeFormat.timeFormat('%b %d, %Y'),
-        monthDayHourFormat = d3TimeFormat.timeFormat('%b %d, %I %p'),
+        monthDayYearFormat = timeFormat('%b %d, %Y'),
+        monthDayHourFormat = timeFormat('%b %d, %I %p'),
         locale,
 
         chartWidth, chartHeight,
@@ -156,7 +156,7 @@ export default function module() {
      */
     function buildSVG(container) {
         if (!svg) {
-            svg = d3Selection.select(container)
+            svg = select(container)
                 .append('g')
                 .classed('britechart britechart-tooltip', true)
                 .style('visibility', 'hidden');
@@ -247,7 +247,7 @@ export default function module() {
             return 0;
         }
         if (numberFormat !== null) {
-            chosenValueFormatter = d3Format.format(numberFormat);
+            chosenValueFormatter = format(numberFormat);
         } else if (isInteger(value)) {
             chosenValueFormatter = formatIntegerValue;
         }
@@ -435,7 +435,7 @@ export default function module() {
             format = monthDayHourFormat;
             localeOptions.hour = 'numeric';
         } else if (settings === axisTimeCombinations.CUSTOM && typeof dateCustomFormat === 'string') {
-            format = d3TimeFormat.timeFormat(dateCustomFormat);
+            format = timeFormat(dateCustomFormat);
         }
 
         if (locale && ((typeof Intl !== 'undefined') && (typeof Intl === 'object' && Intl.DateTimeFormat))) {
@@ -504,7 +504,7 @@ export default function module() {
                 dy,
                 tspan;
 
-            text = d3Selection.select(this);
+            text = select(this);
 
             words = text.text().split(/\s+/).reverse();
             line = [];

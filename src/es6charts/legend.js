@@ -1,6 +1,6 @@
-import * as d3Format from 'd3-format';
-import * as d3Scale from 'd3-scale';
-import * as d3Selection from 'd3-selection';
+import { format } from 'd3-format';
+import { scaleOrdinal } from 'd3-scale';
+import { select } from 'd3-selection';
 import 'd3-transition';
 
 import * as textHelper from './helpers/text';
@@ -97,7 +97,7 @@ export default function module() {
         getId = ({id}) => id,
         getName = ({name}) => name,
 
-        getFormattedQuantity = ({quantity}) => d3Format.format(numberFormat)(quantity) + unit,
+        getFormattedQuantity = ({quantity}) => format(numberFormat)(quantity) + unit,
         getCircleFill = ({name}) => colorScale(name),
         hasQuantity = ({quantity}) => typeof quantity === 'number' || typeof quantity === 'string',
 
@@ -173,7 +173,7 @@ export default function module() {
      * @private
      */
     function buildColorScale() {
-        colorScale = d3Scale.scaleOrdinal().range(colorSchema);
+        colorScale = scaleOrdinal().range(colorSchema);
     }
 
     /**
@@ -183,7 +183,7 @@ export default function module() {
      */
     function buildSVG(container) {
         if (!svg) {
-            svg = d3Selection.select(container)
+            svg = select(container)
                 .append('svg')
                 .classed('britechart britechart-legend', true);
 

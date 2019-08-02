@@ -1,7 +1,7 @@
-import * as d3Array from 'd3-array';
-import * as d3Ease from 'd3-ease';
-import * as d3Format from 'd3-format';
-import * as d3Selection from 'd3-selection';
+import { max } from 'd3-array';
+import { easeQuadInOut } from 'd3-ease';
+import { format } from 'd3-format';
+import { select } from 'd3-selection';
 import 'd3-transition';
 
 const NUMBER_FORMAT = '.2f';
@@ -13,7 +13,7 @@ const NUMBER_FORMAT = '.2f';
  *
  * @module Mini-tooltip
  * @tutorial bar
- * @requires d3
+ * @requires d3-array, d3-ease, d3-format, d3-selection, d3-transition
  *
  * @example
  * var barChart = line(),
@@ -55,7 +55,7 @@ export default function module() {
 
         // Animations
         mouseChaseDuration = 100,
-        ease = d3Ease.easeQuadInOut,
+        ease = easeQuadInOut,
 
         // tooltip
         tooltipBackground,
@@ -82,7 +82,7 @@ export default function module() {
 
         // formats
         numberFormat = NUMBER_FORMAT,
-        valueFormatter = (value) => d3Format.format(numberFormat)(value),
+        valueFormatter = (value) => format(numberFormat)(value),
 
         chartWidth,
         chartHeight,
@@ -125,7 +125,7 @@ export default function module() {
      */
     function buildSVG(container) {
         if (!svg) {
-            svg = d3Selection.select(container)
+            svg = select(container)
                 .append('g')
                 .classed('britechart britechart-mini-tooltip', true);
 
@@ -174,7 +174,7 @@ export default function module() {
         let textSizes = texts.filter(x => !!x)
             .map(x => x.node().getBBox().width);
 
-        return d3Array.max(textSizes);
+        return max(textSizes);
     }
 
     /**

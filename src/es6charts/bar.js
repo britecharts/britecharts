@@ -42,7 +42,7 @@ const NUMBER_FORMAT = ',f';
  *
  * @module Bar
  * @tutorial bar
- * @requires d3-array, d3-axis, d3-dispatch, d3-scale, d3-selection
+ * @requires d3-array, d3-ease, d3-axis, d3-color, d3-dispatch, d3-format, d3-scale, d3-selection, d3-transition
  *
  * @example
  * var barChart = bar();

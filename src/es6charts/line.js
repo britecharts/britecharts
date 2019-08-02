@@ -1,13 +1,13 @@
-import * as d3Array from 'd3-array';
-import * as d3Axis from 'd3-axis';
-import * as d3Collection from 'd3-collection';
-import * as d3Dispatch from 'd3-dispatch';
-import * as d3Ease from 'd3-ease';
-import * as d3Format from 'd3-format';
-import * as d3Scale from 'd3-scale';
-import * as d3Shape from 'd3-shape';
-import * as d3Selection from 'd3-selection';
-import * as d3TimeFormat from 'd3-time-format';
+import { min, max, bisector } from 'd3-array';
+import { axisLeft, axisBottom } from 'd3-axis';
+import { nest } from 'd3-collection';
+import { dispatch } from 'd3-dispatch';
+import { easeQuadInOut } from 'd3-ease';
+import { format } from 'd3-format';
+import { timeFormat } from 'd3-time-format';
+import { scaleOrdinal, scaleTime, scaleLinear } from 'd3-scale';
+import { line } from 'd3-shape';
+import { select, mouse, touch } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
@@ -39,119 +39,119 @@ import {
  */
 
 /**
-     * @typedef lineChartFlatData
-     * @type {Object}
-     * @property {String} topicName    Topic name (required)
-     * @property {Number} topic        Topic identifier (required)
-     * @property {Object[]} dates      All date entries with values for that topic in ISO8601 format (required)
-     *
-     * @example
-     * [
-     *     {
-     *         topicName: 'San Francisco',
-     *         name: 123,
-     *         date: '2017-01-16T16:00:00-08:00',
-     *         value: 1
-     *     }
-     * ]
-     */
-
-    /**
-     * Former data standard, it is currently calculated internally if not passed
-     * @typedef lineChartDataByTopic
-     * @type {Object}
-     * @property {String} topicName    Topic name (required)
-     * @property {Number} topic        Topic identifier (required)
-     * @property {Object[]} dates      All date entries with values for that topic in ISO8601 format (required)
-     *
-     * @example
-     * {
-     *     topicName: 'San Francisco',
-     *     topic: 123,
-     *     dates: [
-     *         {
-     *             date: '2017-01-16T16:00:00-08:00',
-     *             value: 1
-     *         },
-     *         {
-     *             date: '2017-01-16T17:00:00-08:00',
-     *             value: 2
-     *         }
-     *     ]
-     * }
-     */
+ * @typedef lineChartFlatData
+ * @type {Object}
+ * @property {String} topicName    Topic name (required)
+ * @property {Number} topic        Topic identifier (required)
+ * @property {Object[]} dates      All date entries with values for that topic in ISO8601 format (required)
+ *
+ * @example
+ * [
+ *     {
+ *         topicName: 'San Francisco',
+ *         name: 123,
+ *         date: '2017-01-16T16:00:00-08:00',
+ *         value: 1
+ *     }
+ * ]
+ */
 
 /**
-     * The Data by Date is calculated internally in the chart in order to pass it to our tooltips
-     * @typedef lineChartDataByDate
-     * @type {Object[]}
-     * @property {String} date         Date in ISO8601 format (required)
-     * @property {Object[]} topics     List of topics with values that date (required)
-     *
-     * @example
-     * [
-     *     {
-     *         date: "2015-06-27T07:00:00.000Z",
-     *         topics: [
-     *             {
-     *                 "name": 1,
-     *                 "value": 1,
-     *                 "topicName": "San Francisco"
-     *             },
-     *             {
-     *                 "name": 2,
-     *                 "value": 20,
-     *                 "topicName": "Los Angeles"
-     *             },
-     *             {
-     *                 "name": 3,
-     *                 "value": 10,
-     *                 "topicName": "Oakland"
-     *             }
-     *         ]
-     *     },
-     *     {...}
-     * ]
-     */
+ * Former data standard, it is currently calculated internally if not passed
+ * @typedef lineChartDataByTopic
+ * @type {Object}
+ * @property {String} topicName    Topic name (required)
+ * @property {Number} topic        Topic identifier (required)
+ * @property {Object[]} dates      All date entries with values for that topic in ISO8601 format (required)
+ *
+ * @example
+ * {
+ *     topicName: 'San Francisco',
+ *     topic: 123,
+ *     dates: [
+ *         {
+ *             date: '2017-01-16T16:00:00-08:00',
+ *             value: 1
+ *         },
+ *         {
+ *             date: '2017-01-16T17:00:00-08:00',
+ *             value: 2
+ *         }
+ *     ]
+ * }
+ */
 
-    /**
-     * The data shape for the line chart.
-     * Note that up to version 2.10.1, this required a "dataByTopic" array described on lineChartDataByTopic.
-     * The "dataByTopic" schema still works, but we prefer a flat dataset as described here.
-     * @typedef LineChartData
-     * @type {Object}
-     * @property {lineChartFlatData[]} data  Data values to chart (required)
-     *
-     * @example
-     * {
-     *     data: [
-     *         {
-     *             topicName: 'San Francisco',
-     *             name: 1,
-     *             date: '2017-01-16T16:00:00-08:00',
-     *             value: 1
-     *         },
-     *         {
-     *             topicName: 'San Francisco',
-     *             name: 1,
-     *             date: '2017-01-17T16:00:00-08:00',
-     *             value: 2
-     *         },
-     *         {
-     *             topicName: 'Oakland',
-     *             name: 2,
-     *             date: '2017-01-16T16:00:00-08:00',
-     *             value: 3
-     *         },
-     *         {
-     *             topicName: 'Oakland',
-     *             name: 2,
-     *             date: '2017-01-17T16:00:00-08:00',
-     *             value: 7
-     *         }
-     *     ]
-     * }
-     */
+/**
+ * The Data by Date is calculated internally in the chart in order to pass it to our tooltips
+ * @typedef lineChartDataByDate
+ * @type {Object[]}
+ * @property {String} date         Date in ISO8601 format (required)
+ * @property {Object[]} topics     List of topics with values that date (required)
+ *
+ * @example
+ * [
+ *     {
+ *         date: "2015-06-27T07:00:00.000Z",
+ *         topics: [
+ *             {
+ *                 "name": 1,
+ *                 "value": 1,
+ *                 "topicName": "San Francisco"
+ *             },
+ *             {
+ *                 "name": 2,
+ *                 "value": 20,
+ *                 "topicName": "Los Angeles"
+ *             },
+ *             {
+ *                 "name": 3,
+ *                 "value": 10,
+ *                 "topicName": "Oakland"
+ *             }
+ *         ]
+ *     },
+ *     {...}
+ * ]
+ */
+
+/**
+ * The data shape for the line chart.
+ * Note that up to version 2.10.1, this required a "dataByTopic" array described on lineChartDataByTopic.
+ * The "dataByTopic" schema still works, but we prefer a flat dataset as described here.
+ * @typedef LineChartData
+ * @type {Object}
+ * @property {lineChartFlatData[]} data  Data values to chart (required)
+ *
+ * @example
+ * {
+ *     data: [
+ *         {
+ *             topicName: 'San Francisco',
+ *             name: 1,
+ *             date: '2017-01-16T16:00:00-08:00',
+ *             value: 1
+ *         },
+ *         {
+ *             topicName: 'San Francisco',
+ *             name: 1,
+ *             date: '2017-01-17T16:00:00-08:00',
+ *             value: 2
+ *         },
+ *         {
+ *             topicName: 'Oakland',
+ *             name: 2,
+ *             date: '2017-01-16T16:00:00-08:00',
+ *             value: 3
+ *         },
+ *         {
+ *             topicName: 'Oakland',
+ *             name: 2,
+ *             date: '2017-01-17T16:00:00-08:00',
+ *             value: 7
+ *         }
+ *     ]
+ * }
+ */
 
 /**
  * Line Chart reusable API module that allows us
@@ -159,7 +159,7 @@ import {
  *
  * @module Line
  * @tutorial line
- * @requires d3-array, d3-axis, d3-brush, d3-ease, d3-format, d3-scale, d3-shape, d3-selection, d3-time, d3-time-format
+ * @requires d3-array, d3-axis, d3-collection, d3-dispatch, d3-ease, d3-format, d3-time-format, d3-scale, d3-shape, d3-selection, d3-transition
  *
  * @example
  * let lineChart = line();
@@ -222,7 +222,7 @@ export default function module() {
 
         shouldShowAllDataPoints = false,
         isAnimated = false,
-        ease = d3Ease.easeQuadInOut,
+        ease = easeQuadInOut,
         animationDuration = 1500,
         maskingRectangle,
 
@@ -267,7 +267,7 @@ export default function module() {
         getLineColor = ({topic}) => colorScale(topic),
 
         // events
-        dispatcher = d3Dispatch.dispatch(
+        dispatcher = dispatch(
             'customMouseOver',
             'customMouseOut',
             'customMouseMove',
@@ -325,7 +325,7 @@ export default function module() {
             highlightFilterId = createGlowWithMatrix(highlightFilter);
         }
 
-        let glowEl = d3Selection.select(el);
+        let glowEl = select(el);
 
         glowEl
             .style('stroke-width', highlightCircleActiveStrokeWidth)
@@ -384,19 +384,19 @@ export default function module() {
      * @return {Number}       Formatted value
      */
     function getFormattedValue(value) {
-        let format;
+        let formatFn;
 
         if (isInteger(value)) {
-            format = formatIntegerValue;
+            formatFn = formatIntegerValue;
         } else {
-            format = formatDecimalValue;
+            formatFn = formatDecimalValue;
         }
 
         if (numberFormat) {
-            format = d3Format.format(numberFormat)
+            formatFn = format(numberFormat)
         }
 
-        return format(value);
+        return formatFn(value);
     }
 
     /**
@@ -409,25 +409,25 @@ export default function module() {
         if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
             minor = {
                 tick: xTicks,
-                format: d3TimeFormat.timeFormat(xAxisCustomFormat)
+                format: timeFormat(xAxisCustomFormat)
             };
             major = null;
         } else {
             ({minor, major} = getTimeSeriesAxis(dataByDate, width, xAxisFormat, locale));
 
-            xMonthAxis = d3Axis.axisBottom(xScale)
+            xMonthAxis = axisBottom(xScale)
                 .ticks(major.tick)
                 .tickSize(0, 0)
                 .tickFormat(major.format);
         }
 
-        xAxis = d3Axis.axisBottom(xScale)
+        xAxis = axisBottom(xScale)
             .ticks(minor.tick)
             .tickSize(10, 0)
             .tickPadding(tickPadding)
             .tickFormat(minor.format);
 
-        yAxis = d3Axis.axisLeft(yScale)
+        yAxis = axisLeft(yScale)
             .ticks(yTicks)
             .tickSize([0])
             .tickPadding(tickPadding)
@@ -495,22 +495,22 @@ export default function module() {
      * @private
      */
     function buildScales(){
-        let minX = d3Array.min(dataByTopic, ({dates}) => d3Array.min(dates, getDate)),
-            maxX = d3Array.max(dataByTopic, ({dates}) => d3Array.max(dates, getDate)),
-            maxY = d3Array.max(dataByTopic, ({dates}) => d3Array.max(dates, getValue)),
-            minY = d3Array.min(dataByTopic, ({dates}) => d3Array.min(dates, getValue));
+        let minX = min(dataByTopic, ({dates}) => min(dates, getDate)),
+            maxX = max(dataByTopic, ({dates}) => max(dates, getDate)),
+            maxY = max(dataByTopic, ({dates}) => max(dates, getValue)),
+            minY = min(dataByTopic, ({dates}) => min(dates, getValue));
         let yScaleBottomValue = Math.abs(minY) < 0 ? Math.abs(minY) : 0;
 
-        xScale = d3Scale.scaleTime()
+        xScale = scaleTime()
             .domain([minX, maxX])
             .rangeRound([0, chartWidth]);
 
-        yScale = d3Scale.scaleLinear()
+        yScale = scaleLinear()
             .domain([yScaleBottomValue, Math.abs(maxY)])
             .rangeRound([chartHeight, 0])
             .nice();
 
-        colorScale = d3Scale.scaleOrdinal()
+        colorScale = scaleOrdinal()
             .range(colorSchema)
             .domain(dataByTopic.map(getTopic));
 
@@ -531,7 +531,7 @@ export default function module() {
      */
     function buildSVG(container){
         if (!svg) {
-            svg = d3Selection.select(container)
+            svg = select(container)
                 .append('svg')
                 .classed('britechart line-chart', true);
 
@@ -555,7 +555,7 @@ export default function module() {
 
         // If dataByTopic or data are not present, we generate them
         if (!dataByTopic) {
-            dataByTopic = d3Collection.nest()
+            dataByTopic = nest()
                 .key(getVariableTopicName)
                 .entries(data)
                 .map(d => ({
@@ -580,7 +580,7 @@ export default function module() {
         }
 
         // Nest data by date and format
-        dataByDate = d3Collection.nest()
+        dataByDate = nest()
             .key(getDate)
             .entries(data)
             .map((d) => {
@@ -705,7 +705,7 @@ export default function module() {
         let lines,
             topicLine;
 
-        topicLine = d3Shape.line()
+        topicLine = line()
             .curve(curveMap[lineCurve])
             .x(({date}) => xScale(date))
             .y(({value}) => yScale(value));
@@ -888,7 +888,7 @@ export default function module() {
      */
     function getNearestDataPoint(mouseX) {
         let dateFromInvertedX = xScale.invert(mouseX);
-        let bisectDate = d3Array.bisector(getDate).left;
+        let bisectDate = bisector(getDate).left;
         let dataEntryIndex = bisectDate(dataByDate, dateFromInvertedX, 1);
         let dataEntryForXPosition = dataByDate[dataEntryIndex];
         let previousDataEntryForXPosition = dataByDate[dataEntryIndex - 1];
@@ -909,7 +909,7 @@ export default function module() {
      * @private
      */
     function handleMouseMove(e){
-        let [xPosition, yPosition] = d3Selection.mouse(e),
+        let [xPosition, yPosition] = mouse(e),
             xPositionOffset = -margin.left, //Arbitrary number, will love to know how to assess it
             dataPoint = getNearestDataPoint(xPosition + xPositionOffset),
             dataPointXPosition;
@@ -935,7 +935,7 @@ export default function module() {
         verticalMarkerLine.classed('bc-is-active', false);
         verticalMarkerContainer.attr('transform', 'translate(9999, 0)');
 
-        dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
+        dispatcher.call('customMouseOut', e, d, mouse(e));
     }
 
     /**
@@ -946,7 +946,7 @@ export default function module() {
         overlay.style('display', 'block');
         verticalMarkerLine.classed('bc-is-active', true);
 
-        dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
+        dispatcher.call('customMouseOver', e, d, mouse(e));
     }
 
     /**
@@ -955,7 +955,7 @@ export default function module() {
      * @private
      */
     function handleHighlightClick(e, d) {
-        dispatcher.call('customDataEntryClick', e, d, d3Selection.mouse(e));
+        dispatcher.call('customDataEntryClick', e, d, mouse(e));
     }
 
     /**
@@ -964,7 +964,7 @@ export default function module() {
      * @private
      */
     function handleTouchMove(e, d) {
-        dispatcher.call('customTouchMove', e, d, d3Selection.touch(e));
+        dispatcher.call('customTouchMove', e, d, touch(e));
     }
 
     /**
@@ -1085,7 +1085,7 @@ export default function module() {
      * @param {DOMElement} point  Point to reset
      */
     function removeFilter(point) {
-        d3Selection.select(point)
+        select(point)
             .attr('filter', 'none');
     }
 

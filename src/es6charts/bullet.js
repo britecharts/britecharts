@@ -1,11 +1,7 @@
-import * as d3Array from 'd3-array';
-import * as d3Ease from 'd3-ease';
-import * as d3Axis from 'd3-axis';
-import * as d3Color from 'd3-color';
-import * as d3Dispatch from 'd3-dispatch';
-import * as d3Format from 'd3-format';
-import * as d3Scale from 'd3-scale';
-import * as d3Selection from 'd3-selection';
+import { axisBottom } from 'd3-axis';
+import { format } from 'd3-format';
+import { scaleLinear } from 'd3-scale';
+import { select } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
@@ -36,7 +32,7 @@ import colorHelper from './helpers/color';
  *
  * @module Bullet
  * @tutorial bullet-chart
- * @requires d3-array, d3-dispatch, d3-ease, d3-scale, d3-selection
+ * @requires d3-axis, d3-format, d3-scale, d3-selection, d3-transition
  *
  * @example
  * let bulletChart = bullet();
@@ -105,7 +101,6 @@ export default function module() {
         measures = [],
 
         svg,
-        ease = d3Ease.easeQuadInOut,
 
         hasTitle = () => title || customTitle,
         getMeasureBarHeight = () => chartHeight / 3;
@@ -142,10 +137,10 @@ export default function module() {
      * @private
      */
     function buildAxis() {
-        axis = d3Axis.axisBottom(xScale)
+        axis = axisBottom(xScale)
             .ticks(ticks)
             .tickPadding(tickPadding)
-            .tickFormat(d3Format.format(numberFormat));
+            .tickFormat(format(numberFormat));
     }
 
     /**
@@ -183,7 +178,7 @@ export default function module() {
     function buildScales() {
         const decidedRange = isReverse ? [chartWidth, 0] : [0, chartWidth];
 
-        xScale = d3Scale.scaleLinear()
+        xScale = scaleLinear()
             .domain([0, Math.max(ranges[0], markers[0], measures[0])])
             .rangeRound(decidedRange)
             .nice();
@@ -208,7 +203,7 @@ export default function module() {
      */
     function buildSVG(container) {
         if (!svg) {
-            svg = d3Selection.select(container)
+            svg = select(container)
                 .append('svg')
                     .classed('britechart bullet-chart', true);
 

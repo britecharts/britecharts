@@ -1,8 +1,8 @@
-import * as d3Array from 'd3-array';
-import * as d3Ease from 'd3-ease';
-import * as d3Scale from 'd3-scale';
-import * as d3Shape from 'd3-shape';
-import * as d3Selection from 'd3-selection';
+import { extent } from 'd3-array';
+import { easeQuadInOut } from 'd3-ease';
+import { scaleLinear } from 'd3-scale';
+import { area, line, curveBasis } from 'd3-shape';
+import { select } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
@@ -42,7 +42,7 @@ const DEFAULT_TITLE_TEXT_STYLE = {
  *
  * @module Sparkline
  * @tutorial sparkline
- * @requires d3
+ * @requires d3-array, d3-ease, d3-scale, d3-shape, d3-selection, d3-transition
  *
  * @example
  * var sparkLineChart = sparkline();
@@ -90,10 +90,10 @@ export default function module(){
         hasArea = true,
         isAnimated = false,
         clipDuration = 3000,
-        ease = d3Ease.easeQuadInOut,
+        ease = easeQuadInOut,
 
         topLine,
-        area,
+        areaBelow,
         circle,
 
         titleEl,
@@ -161,12 +161,12 @@ export default function module(){
      * @private
      */
     function buildScales(){
-        xScale = d3Scale.scaleLinear()
-            .domain(d3Array.extent(data, getDate))
+        xScale = scaleLinear()
+            .domain(extent(data, getDate))
             .range([0, chartWidth]);
 
-        yScale = d3Scale.scaleLinear()
-            .domain(d3Array.extent(data, getValue))
+        yScale = scaleLinear()
+            .domain(extent(data, getValue))
             .range([chartHeight, 0]);
     }
 
@@ -177,7 +177,7 @@ export default function module(){
      */
     function buildSVG(container){
         if (!svg) {
-            svg = d3Selection.select(container)
+            svg = select(container)
                 .append('svg')
                 .classed('britechart sparkline', true);
 
@@ -272,7 +272,7 @@ export default function module(){
                     .attr('width', 0)
                     .attr('height', height);
 
-            d3Selection.select(`#${maskingClipId} rect`)
+            select(`#${maskingClipId} rect`)
                 .transition()
                 .ease(ease)
                 .duration(clipDuration)
@@ -285,22 +285,22 @@ export default function module(){
      * @private
      */
     function drawArea(){
-        if (area) {
+        if (areaBelow) {
             svg.selectAll('.sparkline-area').remove();
         }
 
-        area = d3Shape.area()
+        areaBelow = area()
             .x(({date}) => xScale(date))
             .y0(() => yScale(0) + lineStrokeWidth / 2)
             .y1(({value}) => yScale(value))
-            .curve(d3Shape.curveBasis);
+            .curve(curveBasis);
 
         svg.select('.chart-group')
             .append('path')
             .datum(data)
             .attr('class', 'sparkline-area')
             .attr('fill', `url(#${areaGradientId})`)
-            .attr('d', area)
+            .attr('d', areaBelow)
             .attr('clip-path', `url(#${maskingClipId})`);
     }
 
@@ -313,8 +313,8 @@ export default function module(){
             svg.selectAll('.line').remove();
         }
 
-        topLine = d3Shape.line()
-            .curve(d3Shape.curveBasis)
+        topLine = line()
+            .curve(curveBasis)
             .x(({date}) => xScale(date))
             .y(({value}) => yScale(value));
 

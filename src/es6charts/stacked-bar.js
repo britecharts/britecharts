@@ -1,13 +1,13 @@
-import * as d3Array from 'd3-array';
-import * as d3Axis from 'd3-axis';
-import * as d3Color from 'd3-color';
-import * as d3Collection from 'd3-collection';
-import * as d3Dispatch from 'd3-dispatch';
-import * as d3Ease from 'd3-ease';
-import * as d3Interpolate from 'd3-interpolate';
-import * as d3Scale from 'd3-scale';
-import * as d3Shape from 'd3-shape';
-import * as d3Selection from 'd3-selection';
+import { max, sum, range, permute } from 'd3-array';
+import { axisLeft, axisBottom } from 'd3-axis';
+import { color } from 'd3-color';
+import { nest } from 'd3-collection';
+import { dispatch } from 'd3-dispatch';
+import { easeQuadInOut } from 'd3-ease';
+import { interpolateNumber, interpolateRound } from 'd3-interpolate';
+import { scaleOrdinal, scaleBand, scaleLinear } from 'd3-scale';
+import { stack } from 'd3-shape';
+import { select, mouse } from 'd3-selection';
 import 'd3-transition';
 import assign from 'lodash/assign';
 
@@ -48,7 +48,7 @@ const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == 
  * @module Stacked-bar
  * @tutorial stacked-bar
  * @requires d3-array, d3-axis, d3-color, d3-collection, d3-dispatch, d3-ease,
- *  d3-interpolate, d3-scale, d3-shape, d3-selection, lodash assign
+ *  d3-interpolate, d3-scale, d3-shape, d3-selection, d3-transition, lodash assign
  *
  * @example
  * let stackedBar = stackedBar();
@@ -97,7 +97,7 @@ export default function module() {
 
         layers,
 
-        ease = d3Ease.easeQuadInOut,
+        ease = easeQuadInOut,
         isHorizontal = false,
 
         svg,
@@ -142,7 +142,7 @@ export default function module() {
         isAnimated = false,
 
         // events
-        dispatcher = d3Dispatch.dispatch(
+        dispatcher = dispatch(
             'customMouseOver',
             'customMouseOut',
             'customMouseMove',
@@ -215,12 +215,12 @@ export default function module() {
      */
     function buildAxis() {
         if (isHorizontal) {
-            xAxis = d3Axis.axisBottom(xScale)
+            xAxis = axisBottom(xScale)
                 .ticks(xTicks, valueLabelFormat);
-            yAxis = d3Axis.axisLeft(yScale)
+            yAxis = axisLeft(yScale)
         } else {
-            xAxis = d3Axis.axisBottom(xScale)
-            yAxis = d3Axis.axisLeft(yScale)
+            xAxis = axisBottom(xScale)
+            yAxis = axisLeft(yScale)
                 .ticks(yTicks, valueLabelFormat)
         }
     }
@@ -260,7 +260,7 @@ export default function module() {
      * @private
      */
     function buildLayers(){
-        let stack3 = d3Shape.stack().keys(stacks),
+        let stack3 = stack().keys(stacks),
             dataInitial = transformedData.map((item) => {
                     let ret = {};
 
@@ -279,33 +279,33 @@ export default function module() {
      * @private
      */
     function buildScales() {
-        let yMax = d3Array.max(transformedData.map(function(d){
+        let yMax = max(transformedData.map(function(d){
             return d.total;
         }));
 
         if (isHorizontal) {
-            xScale = d3Scale.scaleLinear()
+            xScale = scaleLinear()
                 .domain([0, yMax])
                 .rangeRound([0, chartWidth - 1]);
             // 1 pix for edge tick
 
-            yScale = d3Scale.scaleBand()
+            yScale = scaleBand()
                 .domain(data.map(getName))
                 .rangeRound([chartHeight, 0])
                 .padding(betweenBarsPadding);
         } else {
-            xScale = d3Scale.scaleBand()
+            xScale = scaleBand()
                 .domain(data.map(getName))
                 .rangeRound([0, chartWidth ])
                 .padding(betweenBarsPadding);
 
-            yScale = d3Scale.scaleLinear()
+            yScale = scaleLinear()
                 .domain([0,yMax])
                 .rangeRound([chartHeight, 0])
                 .nice();
         }
 
-        colorScale = d3Scale.scaleOrdinal()
+        colorScale = scaleOrdinal()
             .range(colorSchema)
             .domain(data.map(getStack));
 
@@ -324,7 +324,7 @@ export default function module() {
      */
     function buildSVG(container) {
         if (!svg) {
-            svg = d3Selection.select(container)
+            svg = select(container)
                 .append('svg')
                 .classed('britechart stacked-bar', true);
 
@@ -565,7 +565,7 @@ export default function module() {
 
         let series = svg.select('.chart-group').selectAll('.layer')
 
-        animationDelays = d3Array.range(animationDelayStep, (layers[0].length + 1) * animationDelayStep, animationDelayStep)
+        animationDelays = range(animationDelayStep, (layers[0].length + 1) * animationDelayStep, animationDelayStep)
 
         if (isHorizontal) {
             drawHorizontalBars(series)
@@ -601,7 +601,7 @@ export default function module() {
      * @private
      */
     function getMousePosition(event) {
-        return d3Selection.mouse(event);
+        return mouse(event);
     }
 
     /**
@@ -647,8 +647,8 @@ export default function module() {
      * @return {void}
      */
     function handleBarsMouseOver() {
-        d3Selection.select(this)
-            .attr('fill', () => d3Color.color(d3Selection.select(this.parentNode).attr('fill')).darker())
+        select(this)
+            .attr('fill', () => color(select(this.parentNode).attr('fill')).darker())
     }
 
     /**
@@ -657,7 +657,7 @@ export default function module() {
      */
     function handleBarsMouseOut() {
         d3Selection
-            .select(this).attr('fill', () => d3Selection.select(this.parentNode).attr('fill'))
+            .select(this).attr('fill', () => select(this.parentNode).attr('fill'))
     }
 
     /**
@@ -692,13 +692,12 @@ export default function module() {
      * (or it's nearest point)
      * @private
      */
-
-        function handleClick(e) {
+    function handleClick(e) {
         let [mouseX, mouseY] = getMousePosition(e);
         let dataPoint = isHorizontal ? getNearestDataPoint2(mouseY) : getNearestDataPoint(mouseX);
 
-        dispatcher.call('customClick', e, dataPoint, d3Selection.mouse(e));
-        }
+        dispatcher.call('customClick', e, dataPoint, mouse(e));
+    }
 
     /**
      * MouseOut handler, hides overlay and removes active class on verticalMarkerLine
@@ -707,7 +706,7 @@ export default function module() {
      */
     function handleMouseOut(e, d) {
         svg.select('.metadata-group').attr('transform', 'translate(9999, 0)');
-        dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e));
+        dispatcher.call('customMouseOut', e, d, mouse(e));
     }
 
     /**
@@ -715,7 +714,7 @@ export default function module() {
      * @private
      */
     function handleMouseOver(e, d) {
-        dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e));
+        dispatcher.call('customMouseOver', e, d, mouse(e));
     }
 
     /**
@@ -724,9 +723,9 @@ export default function module() {
      * @return {void}
      */
     function horizontalBarsTween(d) {
-        let node = d3Selection.select(this),
-            i = d3Interpolate.interpolateRound(0, xScale(d[1] - d[0])),
-            j = d3Interpolate.interpolateNumber(0, 1);
+        let node = select(this),
+            i = interpolateRound(0, xScale(d[1] - d[0])),
+            j = interpolateNumber(0, 1);
 
         return function (t) {
             node.attr('width', i(t))
@@ -755,7 +754,7 @@ export default function module() {
             stacks = stacks.reverse();
         }
 
-        transformedData = d3Collection.nest()
+        transformedData = nest()
             .key(getName)
             .rollup(function(values) {
                 let ret = {};
@@ -772,7 +771,7 @@ export default function module() {
             .entries(data)
             .map(function(data){
                 return assign({}, {
-                    total:d3Array.sum( d3Array.permute(data.value, stacks) ),
+                    total:sum( permute(data.value, stacks) ),
                     key:data.key
                 }, data.value);
             });
@@ -796,9 +795,9 @@ export default function module() {
     function verticalBarsTween(d) {
         const vertDiff = yScale(d[0]) - yScale(d[1]);
 
-        let node = d3Selection.select(this),
-            i = d3Interpolate.interpolateRound(0, getValOrDefaultToZero(vertDiff)),
-            j = d3Interpolate.interpolateNumber(0,1);
+        let node = select(this),
+            i = interpolateRound(0, getValOrDefaultToZero(vertDiff)),
+            j = interpolateNumber(0,1);
 
         return function (t) {
             node

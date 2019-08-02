@@ -1,7 +1,7 @@
-import * as d3Array from 'd3-array';
-import * as d3Selection from 'd3-selection';
-import * as d3Scale from 'd3-scale';
-import * as d3Interpolate from 'd3-interpolate';
+import { extent } from 'd3-array';
+import { select } from 'd3-selection';
+import { scaleLinear } from 'd3-scale';
+import { interpolateHcl } from 'd3-interpolate';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
@@ -119,7 +119,7 @@ export default function module() {
      */
     function buildSVG(container) {
         if (!svg) {
-            svg = d3Selection.select(container)
+            svg = select(container)
                 .append('svg')
                 .classed('britechart heatmap', true);
 
@@ -179,10 +179,10 @@ export default function module() {
      * @return void
      */
     function buildScales() {
-        colorScale = d3Scale.scaleLinear()
+        colorScale = scaleLinear()
             .range([colorSchema[0], colorSchema[colorSchema.length - 1]])
-            .domain(d3Array.extent(data, getValue))
-            .interpolate(d3Interpolate.interpolateHcl);
+            .domain(extent(data, getValue))
+            .interpolate(interpolateHcl);
     }
 
     /**
