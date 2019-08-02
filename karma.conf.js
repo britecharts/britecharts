@@ -1,32 +1,47 @@
 let webpackConfig = require('./webpack.config');
 
+// webpackConfig.entry = {};
 webpackConfig.devtool = 'inline-source-map';
 
 // Karma configuration
 module.exports = function(config) {
-    'use strict';
+  config.set({
+    // base path that will be used to resolve all patterns (eg. files, exclude)
+    basePath: '',
+    // frameworks to use
+    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+    frameworks: ['jasmine-jquery', 'jasmine'],
+    // list of files / patterns to load in the browser
+    files: [
+        'tests_index.js'
+    ],
 
-    config.set({
+    // preprocess matching files before serving them to the browser
+    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+    preprocessors: {
+        'src/charts/*.js': ['coverage'],
+        'tests_index.js': ['webpack', 'sourcemap']
+    },
 
-        // base path that will be used to resolve all patterns (eg. files, exclude)
-        basePath: '',
+    webpack: webpackConfig('test'),
 
-        // frameworks to use
-        // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['jasmine-jquery', 'jasmine'],
+    webpackServer: {
+        noInfo: true
+    },
 
-        // list of files / patterns to load in the browser
-        files: [
-            'tests_index_es6.js',
-            {pattern: 'test/fixtures/*.html', watched: true, served: true, included: false},
-            './node_modules/phantomjs-polyfill-find/find-polyfill.js'
-        ],
+    // test results reporter to use
+    // possible values: 'dots', 'progress'
+    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+    reporters: ['dots', 'coverage'],
 
-
-        // list of files to exclude
-        exclude: [
-            'node_modules/**/*spec*',
-            'node_modules/**/*Spec*'
+    // Coverage reporter options, check more in:
+    // https://github.com/karma-runner/karma-coverage
+    coverageReporter: {
+        type: 'text',
+        dir: 'coverage/',
+        reporters: [
+            { type: 'text' },
+            { type: 'text-summary', subdir: '.', file: 'coverage-summary.txt' }
         ],
 
         // preprocess matching files before serving them to the browser
@@ -84,37 +99,33 @@ module.exports = function(config) {
             }
         },
 
-        // test results reporter to use
-        // possible values: 'dots', 'progress'
-        // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['dots', 'coverage'],
+        check: {
+            global: {
+                excludes: [
+                    'src/tests.webpack.js',
+                ]
+            }
+        }
+    },
 
+    // web server port
+    port: 9876,
+    // enable / disable colors in the output (reporters and logs)
+    colors: true,
+    // level of logging
+    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
+    logLevel: config.LOG_INFO,
+    // enable / disable watching file and executing tests whenever any file changes
+    autoWatch: true,
+    // start these browsers
+    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+    browsers: ['Chrome'],
 
-        // web server port
-        port: 9876,
-
-
-        // enable / disable colors in the output (reporters and logs)
-        colors: true,
-
-
-        // level of logging
-        // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: config.LOG_INFO,
-
-
-        // enable / disable watching file and executing tests whenever any file changes
-        autoWatch: true,
-
-
-        // start these browsers
-        // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        // possible values: 'PhantomJS', 'Chrome'
-        browsers: ['Chrome'],
-
-
-        // Continuous Integration mode
-        // if true, Karma captures browsers, runs the tests and exits
-        singleRun: false
-    });
-};
+    // Continuous Integration mode
+    // if true, Karma captures browsers, runs the tests and exits
+    singleRun: false,
+    // Concurrency level
+    // how many browser should be started simultaneous
+    concurrency: Infinity
+  })
+}

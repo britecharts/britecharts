@@ -1,160 +1,156 @@
-define(function (require) {
+const filterId = 'highlight-filter';
 
-    const d3Selection = require('d3-selection');
-    const filterId = 'highlight-filter';
+export const createFilterContainer = (metadataSelection) => {
+    let highlightFilter = metadataSelection
+        .append('defs')
+        .append('filter')
+        .attr('id', filterId);
 
+    return highlightFilter;
+};
 
-    const createFilterContainer = (metadataSelection) => {
-        let highlightFilter = metadataSelection
-          .append('defs')
-            .append('filter')
-            .attr('id', filterId);
+export const createGausianBlur = (filterSelector) => {
+    filterSelector
+        .append('feGaussianBlur')
+        .attr('stdDeviation', 1)
+        .attr('result', 'coloredBlur');
 
-        return highlightFilter;
-    };
+    return filterId;
+};
 
-    const createGausianBlur = (filterSelector) => {
-        filterSelector
-          .append('feGaussianBlur')
-            .attr('stdDeviation', 1)
-            .attr('result', 'coloredBlur');
+export const createGlow = (filterSelector) => {
+    filterSelector
+        .attr('x', '-30%')
+        .attr('y', '-30%')
+        .attr('width', '160%')
+        .attr('height', '160%');
 
-        return filterId;
-    };
+    filterSelector
+        .append('feGaussianBlur')
+        .attr('stdDeviation', '0.9 0.9')
+        .attr('result', 'glow');
 
-    const createGlow = (filterSelector) => {
-        filterSelector
-            .attr('x', '-30%')
-            .attr('y', '-30%')
-            .attr('width', '160%')
-            .attr('height', '160%');
+    let merge = filterSelector
+        .append('feMerge');
 
-        filterSelector
-          .append('feGaussianBlur')
-            .attr('stdDeviation', '0.9 0.9')
-            .attr('result', 'glow');
+    merge
+        .append('feMergeNode')
+        .attr('in', 'glow');
 
-        let merge = filterSelector
-          .append('feMerge');
+    merge
+        .append('feMergeNode')
+        .attr('in', 'glow');
 
-        merge
-          .append('feMergeNode')
-            .attr('in', 'glow');
+    merge
+        .append('feMergeNode')
+        .attr('in', 'glow');
 
-        merge
-          .append('feMergeNode')
-            .attr('in', 'glow');
+    return filterId;
+};
 
-        merge
-          .append('feMergeNode')
-            .attr('in', 'glow');
+export const createGlowWithMatrix = (filterSelector) => {
+    let colorMatrix = '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0';
 
-        return filterId;
-    };
+    filterSelector
+        .attr('x', '-500%')
+        .attr('y', '-500%')
+        .attr('width', '1800%')
+        .attr('height', '1800%');
 
-    const createGlowWithMatrix = (filterSelector) => {
-        let colorMatrix = '0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0';
+    filterSelector
+        .append('feColorMatrix')
+        .attr('type', 'matrix')
+        .attr('values', colorMatrix);
 
-        filterSelector
-            .attr('x', '-500%')
-            .attr('y', '-500%')
-            .attr('width', '1800%')
-            .attr('height', '1800%');
+    filterSelector
+        .append('feGaussianBlur')
+        .attr('stdDeviation', '1')
+        .attr('result', 'coloredBlur')
+        .attr('in', 'SourceGraphic');
 
-        filterSelector
-          .append('feColorMatrix')
-            .attr('type', 'matrix')
-            .attr('values', colorMatrix);
+    let merge = filterSelector
+        .append('feMerge');
 
-        filterSelector
-          .append('feGaussianBlur')
-            .attr('stdDeviation', '1')
-            .attr('result', 'coloredBlur')
-            .attr('in', 'SourceGraphic');
+    merge
+        .append('feMergeNode')
+        .attr('in', 'coloredBlur');
 
-        let merge = filterSelector
-          .append('feMerge');
+    merge
+        .append('feMergeNode')
+        .attr('in', 'SourceGraphic');
 
-        merge
-          .append('feMergeNode')
-            .attr('in', 'coloredBlur');
+    return filterId;
+}
 
-        merge
-          .append('feMergeNode')
-            .attr('in', 'SourceGraphic');
+export const createWhiteGlow = (filterSelector) => {
+    filterSelector
+        .attr('x', '-5000%')
+        .attr('y', '-5000%')
+        .attr('width', '10000%')
+        .attr('height', '10000%');
 
-        return filterId;
-    }
+    filterSelector
+        .append('feFlood')
+        .attr('result', 'flood')
+        .attr('flood-color', '#ffffff')
+        .attr('flood-opacity', '1');
 
-    const createWhiteGlow = (filterSelector) => {
-        filterSelector
-            .attr('x', '-5000%')
-            .attr('y', '-5000%')
-            .attr('width', '10000%')
-            .attr('height', '10000%');
+    filterSelector
+        .append('feComposite')
+        .attr('result', 'mask')
+        .attr('in2', 'SourceGraphic')
+        .attr('operator', 'in')
+        .attr('in', 'flood');
 
-        filterSelector
-          .append('feFlood')
-            .attr('result', 'flood')
-            .attr('flood-color', '#ffffff')
-            .attr('flood-opacity', '1');
+    filterSelector
+        .append('feMorphology')
+        .attr('result', 'dilated')
+        .attr('operator', 'dilate')
+        .attr('radius', '2')
+        .attr('in', 'mask');
 
-        filterSelector
-          .append('feComposite')
-            .attr('result', 'mask')
-            .attr('in2', 'SourceGraphic')
-            .attr('operator', 'in')
-            .attr('in', 'flood');
+    filterSelector
+        .append('feGaussianBlur')
+        .attr('result', 'blurred')
+        .attr('stdDeviation', '5')
+        .attr('in', 'dilated');
 
-        filterSelector
-          .append('feMorphology')
-            .attr('result', 'dilated')
-            .attr('operator', 'dilate')
-            .attr('radius', '2')
-            .attr('in', 'mask');
+    let merge = filterSelector
+        .append('feMerge');
 
-        filterSelector
-          .append('feGaussianBlur')
-            .attr('result', 'blurred')
-            .attr('stdDeviation', '5')
-            .attr('in', 'dilated');
+    merge
+        .append('feMergeNode')
+        .attr('in', 'blurred');
 
-        let merge = filterSelector
-          .append('feMerge');
+    merge
+        .append('feMergeNode')
+        .attr('in', 'SourceGraphic');
 
-        merge
-          .append('feMergeNode')
-            .attr('in', 'blurred');
+    return filterId;
+};
 
-        merge
-          .append('feMergeNode')
-            .attr('in', 'SourceGraphic');
+export const bounceCircleHighlight = (el, ease, radius, bounceRadius = radius * 2) => {
+    const duration = 100;
+    const delay = 50;
 
-        return filterId;
-    };
-
-    const bounceCircleHighlight = (el, ease, radius, bounceRadius = radius * 2) => {
-        const duration = 100;
-        const delay = 50;
-
-        el
-          .transition()
+    el
+        .transition()
+        .ease(ease)
+        .duration(duration)
+        .attr('r', bounceRadius)
+        .transition()
             .ease(ease)
+            .delay(delay)
             .duration(duration)
-            .attr('r', bounceRadius)
-            .transition()
-              .ease(ease)
-              .delay(delay)
-              .duration(duration)
-              .attr('r', radius);
-    }
+            .attr('r', radius);
+}
 
-    return {
-        bounceCircleHighlight,
-        createFilterContainer,
-        createGausianBlur,
-        createWhiteGlow,
-        createGlow,
-        createGlowWithMatrix,
-    };
-});
+export default {
+    bounceCircleHighlight,
+    createFilterContainer,
+    createGausianBlur,
+    createWhiteGlow,
+    createGlow,
+    createGlowWithMatrix,
+};
+

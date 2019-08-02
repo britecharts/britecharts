@@ -1,36 +1,31 @@
-define(function(require) {
-    'use strict';
+import _ from 'underscore';
+import jsonOneSource from 'json-loader!../json/sparklineOneSource.json';
+import jsonLowValues from 'json-loader!../json/sparklineLowValues.json';
 
-    var _ = require('underscore'),
+function SparklineDataBuilder(config){
+    this.Klass = SparklineDataBuilder;
 
-        jsonOneSource = require('../json/sparklineOneSource.json'),
-        jsonLowValues = require('../json/sparklineLowValues.json');
+    this.config = _.defaults({}, config);
 
+    this.with1Source = function(){
+        var attributes = _.extend({}, this.config, jsonOneSource);
 
-    function SparklineDataBuilder(config){
-        this.Klass = SparklineDataBuilder;
-
-        this.config = _.defaults({}, config);
-
-        this.with1Source = function(){
-            var attributes = _.extend({}, this.config, jsonOneSource);
-
-            return new this.Klass(attributes);
-        };
-
-        this.withLowValues = function(){
-            var attributes = _.extend({}, this.config, jsonLowValues);
-
-            return new this.Klass(attributes);
-        };
-
-        this.build = function() {
-            return this.config;
-        };
-    }
-
-    return {
-        SparklineDataBuilder: SparklineDataBuilder
+        return new this.Klass(attributes);
     };
 
-});
+    this.withLowValues = function(){
+        var attributes = _.extend({}, this.config, jsonLowValues);
+
+        return new this.Klass(attributes);
+    };
+
+    this.build = function() {
+        return this.config;
+    };
+}
+
+export default {
+    SparklineDataBuilder,
+};
+
+

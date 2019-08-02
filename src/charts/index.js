@@ -2,7 +2,7 @@ export { default as bar } from './bar';
 export { default as brush } from './brush';
 export { default as bullet } from './bullet';
 export { default as donut } from './donut';
-export { default as groupedBar } from './groupedBar';
+export { default as groupedBar } from './grouped-bar';
 export { default as heatmap } from './heatmap';
 export { default as legend } from './legend';
 export { default as line } from './line';
