@@ -1,5 +1,3 @@
-import * as d3Selection from 'd3-selection';
-
 const filterId = 'highlight-filter';
 
 export const createFilterContainer = (metadataSelection) => {

@@ -1,5 +1,5 @@
-import * as d3Time from 'd3-time';
-import * as d3TimeFormat from 'd3-time-format';
+import { timeHour, timeDay, timeMonth, timeYear } from 'd3-time';
+import { timeFormat } from 'd3-time-format';
 
 import {
     axisTimeCombinations,
@@ -16,12 +16,12 @@ const horizontalTickSpacing = 50;
 const minEntryNumForDayFormat = 5;
 
 const formatMap = {
-    minute: d3TimeFormat.timeFormat('%M m'),
-    hour: d3TimeFormat.timeFormat('%H %p'),
-    day: d3TimeFormat.timeFormat('%e'),
-    daymonth: d3TimeFormat.timeFormat('%d %b'),
-    month: d3TimeFormat.timeFormat('%b'),
-    year: d3TimeFormat.timeFormat('%Y')
+    minute: timeFormat('%M m'),
+    hour: timeFormat('%H %p'),
+    day: timeFormat('%e'),
+    daymonth: timeFormat('%d %b'),
+    month: timeFormat('%b'),
+    year: timeFormat('%Y')
 };
 const localeTimeMap = {
     minute: {minute:'numeric'},
@@ -32,10 +32,10 @@ const localeTimeMap = {
     year: {year: 'numeric'}
 };
 const settingsToMajorTickMap = {
-    [axisTimeCombinations.MINUTE_HOUR]: d3Time.timeHour.every(1),
-    [axisTimeCombinations.HOUR_DAY]: d3Time.timeDay.every(1),
-    [axisTimeCombinations.DAY_MONTH]: d3Time.timeMonth.every(1),
-    [axisTimeCombinations.MONTH_YEAR]: d3Time.timeYear.every(1)
+    [axisTimeCombinations.MINUTE_HOUR]: timeHour.every(1),
+    [axisTimeCombinations.HOUR_DAY]: timeDay.every(1),
+    [axisTimeCombinations.DAY_MONTH]: timeMonth.every(1),
+    [axisTimeCombinations.MONTH_YEAR]: timeYear.every(1)
 };
 
 /**
@@ -70,7 +70,7 @@ const getAxisSettingsFromTimeSpan = (timeSpan) => {
 const getMaxNumOfHorizontalTicks = (width, dataPointNumber) => {
     let ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
 
-    return dataPointNumber < minEntryNumForDayFormat ? d3Time.timeDay : Math.min(dataPointNumber, ticksForWidth);
+    return dataPointNumber < minEntryNumForDayFormat ? timeDay : Math.min(dataPointNumber, ticksForWidth);
 }
 
 /**

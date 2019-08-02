@@ -1,5 +1,3 @@
-import * as d3Format from 'd3-format';
-
 /**
  * Calculates a new date by summing a given amount of days to a given date
  * @param  {String}  startDate      Date

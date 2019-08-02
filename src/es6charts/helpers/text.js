@@ -1,4 +1,4 @@
-import * as d3Selection from 'd3-selection';
+import { select } from 'd3-selection';
 
 
 const wrapConfig = {
@@ -25,7 +25,7 @@ const defaultFontFace = 'Arial';
  * @return {void}
  */
 export const wrapText = function(xOffset, fontSize, availableWidth, node) {
-    let text = d3Selection.select(node),
+    let text = select(node),
         words = text.text().split(/\s+/).reverse(),
         word,
         line = [],
@@ -90,7 +90,7 @@ export const wrapTextWithEllipses = function(text, width, xpos=0, limit=2) {
             dy,
             tspan;
 
-        text = d3Selection.select(this);
+        text = select(this);
 
         words = text.text().split(/\s+/).reverse();
         line = [];

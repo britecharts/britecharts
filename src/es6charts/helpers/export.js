@@ -2,7 +2,6 @@ import base64 from 'base-64';
 
 import { colorSchemas } from './color';
 import serializeWithStyles from './style';
-import * as constants from './constants';
 
 
 const isBrowser = (typeof window !== 'undefined');

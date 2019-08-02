@@ -1,5 +1,47 @@
-import * as d3Shape from 'd3-shape';
-import * as d3Time from 'd3-time';
+import {
+    curveLinear,
+    curveBasis,
+    curveCardinal,
+    curveCatmullRom,
+    curveMonotoneX,
+    curveMonotoneY,
+    curveNatural,
+    curveStep,
+    curveStepAfter,
+    curveStepBefore
+} from 'd3-shape';
+import {
+    timeMillisecond,
+    utcMillisecond,
+    timeSecond,
+    utcSecond,
+    timeMinute,
+    utcMinute,
+    timeHour,
+    utcHour,
+    timeDay,
+    utcDay,
+    timeWeek,
+    utcWeek,
+    timeSunday,
+    utcSunday,
+    timeMonday,
+    utcMonday,
+    timeTuesday,
+    utcTuesday,
+    timeWednesday,
+    utcWednesday,
+    timeThursday,
+    utcThursday,
+    timeFriday,
+    utcFriday,
+    timeSaturday,
+    utcSaturday,
+    timeMonth,
+    utcMonth,
+    timeYear,
+    utcYear
+} from 'd3-time';
 
 
 export const axisTimeCombinations = {
@@ -17,16 +59,16 @@ export const timeBenchmarks = {
 };
 
 export const curveMap = {
-    linear: d3Shape.curveLinear,
-    basis: d3Shape.curveBasis,
-    cardinal: d3Shape.curveCardinal,
-    catmullRom: d3Shape.curveCatmullRom,
-    monotoneX: d3Shape.curveMonotoneX,
-    monotoneY: d3Shape.curveMonotoneY,
-    natural: d3Shape.curveNatural,
-    step: d3Shape.curveStep,
-    stepAfter: d3Shape.curveStepAfter,
-    stepBefore: d3Shape.curveStepBefore
+    linear: curveLinear,
+    basis: curveBasis,
+    cardinal: curveCardinal,
+    catmullRom: curveCatmullRom,
+    monotoneX: curveMonotoneX,
+    monotoneY: curveMonotoneY,
+    natural: curveNatural,
+    step: curveStep,
+    stepAfter: curveStepAfter,
+    stepBefore: curveStepBefore
 };
 
 export const emptyDonutData = [{
@@ -35,36 +77,36 @@ export const emptyDonutData = [{
 }];
 
 export const timeIntervals = {
-    timeMillisecond: d3Time.timeMillisecond,
-    utcMillisecond: d3Time.utcMillisecond,
-    timeSecond: d3Time.timeSecond ,
-    utcSecond: d3Time.utcSecond,
-    timeMinute: d3Time.timeMinute,
-    utcMinute: d3Time.utcMinute,
-    timeHour: d3Time.timeHour,
-    utcHour: d3Time.utcHour,
-    timeDay: d3Time.timeDay,
-    utcDay: d3Time.utcDay,
-    timeWeek: d3Time.timeWeek,
-    utcWeek: d3Time.utcWeek,
-    timeSunday: d3Time.timeSunday,
-    utcSunday: d3Time.utcSunday,
-    timeMonday: d3Time.timeMonday,
-    utcMonday: d3Time.utcMonday,
-    timeTuesday: d3Time.timeTuesday,
-    utcTuesday: d3Time.utcTuesday,
-    timeWednesday: d3Time.timeWednesday,
-    utcWednesday: d3Time.utcWednesday,
-    timeThursday: d3Time.timeThursday,
-    utcThursday: d3Time.utcThursday,
-    timeFriday: d3Time.timeFriday,
-    utcFriday: d3Time.utcFriday,
-    timeSaturday: d3Time.timeSaturday,
-    utcSaturday: d3Time.utcSaturday,
-    timeMonth: d3Time.timeMonth,
-    utcMonth: d3Time.utcMonth,
-    timeYear: d3Time.timeYear,
-    utcYear: d3Time.utcYear
+    timeMillisecond: timeMillisecond,
+    utcMillisecond: utcMillisecond,
+    timeSecond: timeSecond ,
+    utcSecond: utcSecond,
+    timeMinute: timeMinute,
+    utcMinute: utcMinute,
+    timeHour: timeHour,
+    utcHour: utcHour,
+    timeDay: timeDay,
+    utcDay: utcDay,
+    timeWeek: timeWeek,
+    utcWeek: utcWeek,
+    timeSunday: timeSunday,
+    utcSunday: utcSunday,
+    timeMonday: timeMonday,
+    utcMonday: utcMonday,
+    timeTuesday: timeTuesday,
+    utcTuesday: utcTuesday,
+    timeWednesday: timeWednesday,
+    utcWednesday: utcWednesday,
+    timeThursday: timeThursday,
+    utcThursday: utcThursday,
+    timeFriday: timeFriday,
+    utcFriday: utcFriday,
+    timeSaturday: timeSaturday,
+    utcSaturday: utcSaturday,
+    timeMonth: timeMonth,
+    utcMonth: utcMonth,
+    timeYear: timeYear,
+    utcYear: utcYear
 };
 
 export default {

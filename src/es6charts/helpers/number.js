@@ -1,34 +1,34 @@
-import * as d3Format from 'd3-format';
+import { format } from 'd3-format';
 
 let idCounter = 0;
 
 const integerValueFormats = {
     small: {
         limit: 10,
-        format: d3Format.format('')
+        format: format('')
     },
     medium: {
         limit: 1000,
-        format: d3Format.format('')
+        format: format('')
     },
     large: {
         limit: null,
-        format: d3Format.format('.2s')
+        format: format('.2s')
     }
 };
 
 const decimalValueFormats = {
     small: {
         limit: 10,
-        format: d3Format.format('.3f')
+        format: format('.3f')
     },
     medium: {
         limit: 100,
-        format: d3Format.format('.1f')
+        format: format('.1f')
     },
     large: {
         limit: null,
-        format: d3Format.format('.2s')
+        format: format('.2s')
     }
 };
 
@@ -60,7 +60,7 @@ const getValueSize = (value, limits) => {
 export const calculatePercent = (value, total, decimals) => {
     const percent = total ? (value / total * 100) : 0;
 
-    return d3Format.format(decimals)(percent);
+    return format(decimals)(percent);
 };
 
 /**
