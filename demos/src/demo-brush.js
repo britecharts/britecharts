@@ -4,15 +4,16 @@ const d3Selection = require('d3-selection');
 const d3TimeFormat = require('d3-time-format');
 const PubSub = require('pubsub-js');
 
-const brush = require('./../../src/es6charts/brush').default;
-const dataBuilder = require('./../../test/fixtures/brushChartDataBuilder');
+const brush = require('./../../src/charts/brush').default;
+
+import { BrushDataBuilder } from './../../test/fixtures/brushChartDataBuilder';
 
 require('./helpers/resizeHelper');
 
 
 function createBrushChart() {
     const brushChart = brush();
-    const testDataSet = new dataBuilder.BrushDataBuilder();
+    const testDataSet = new BrushDataBuilder();
     const brushContainer = d3Selection.select('.js-brush-chart-container');
     const containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false;
     let dataset;

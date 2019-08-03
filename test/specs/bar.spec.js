@@ -1,10 +1,10 @@
 import * as d3 from 'd3';
 
 import chart from './../../src/charts/bar';
-import dataBuilder from 'barChartDataBuilder';
+import { BarDataBuilder } from 'barChartDataBuilder';
 
 
-const aTestDataSet = () => new dataBuilder.BarDataBuilder();
+const aTestDataSet = () => new BarDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()
         [dataSetName]()

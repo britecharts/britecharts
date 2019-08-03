@@ -1,13 +1,14 @@
 'use strict';
 
 const d3Selection = require('d3-selection');
-
 const PubSub = require('pubsub-js');
 
-const sparklineChart = require('./../../src/charts/sparkline');
-const dataBuilder = require('./../../test/fixtures/sparklineDataBuilder');
+import sparklineChart from './../../src/charts/sparkline';
 
-const aTestDataSet = () => new dataBuilder.SparklineDataBuilder();
+import { SparklineDataBuilder } from './../../test/fixtures/sparklineDataBuilder';
+
+
+const aTestDataSet = () => new SparklineDataBuilder();
 let redrawCharts;
 
 require('./helpers/resizeHelper');

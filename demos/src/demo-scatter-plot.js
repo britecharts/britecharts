@@ -3,16 +3,17 @@
 const d3Selection = require('d3-selection');
 const PubSub = require('pubsub-js');
 
-const scatterPlot = require('./../../src/charts/scatter-plot');
+import scatterPlot from './../../src/charts/scatter-plot';
+import miniTooltip from './../../src/charts/mini-tooltip';
 const colors = require('./../../src/charts/helpers/color');
-const dataBuilder = require('./../../test/fixtures/scatterPlotDataBuilder');
-const colorSelectorHelper = require('./helpers/colorSelector');
+import colorSelectorHelper from './helpers/colorSelector';
 
-const miniTooltip = require('./../../src/charts/mini-tooltip');
-
-const aTestDataSet = () => new dataBuilder.ScatterPlotDataBuilder();
+import { ScatterPlotDataBuilder } from './../../test/fixtures/scatterPlotDataBuilder';
 
 require('./helpers/resizeHelper');
+
+
+const aTestDataSet = () => new ScatterPlotDataBuilder();
 
 let redrawCharts;
 

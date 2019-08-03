@@ -2,10 +2,10 @@ import $ from 'jquery';
 import * as d3 from 'd3';
 
 import chart from 'step';
-import dataBuilder from 'stepChartDataBuilder';
+import { StepDataBuilder } from 'stepChartDataBuilder';
 
 
-const aTestDataSet = () => new dataBuilder.StepDataBuilder();
+const aTestDataSet = () => new StepDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()
     [dataSetName]()

@@ -1,14 +1,14 @@
-'use strict';
-
 const d3Selection = require('d3-selection');
 const PubSub = require('pubsub-js');
 
-const heatmap = require('./../../src/charts/heatmap');
+import heatmap from './../../src/charts/heatmap';
 const colors = require('./../../src/charts/helpers/color');
-const dataBuilder = require('./../../test/fixtures/heatmapChartDataBuilder');
-const colorSelectorHelper = require('./helpers/colorSelector');
 
-const aTestDataSet = () => new dataBuilder.HeatmapDataBuilder();
+import { HeatmapDataBuilder } from './../../test/fixtures/heatmapChartDataBuilder';
+
+import colorSelectorHelper from './helpers/colorSelector';
+
+const aTestDataSet = () => new HeatmapDataBuilder();
 
 require('./helpers/resizeHelper');
 

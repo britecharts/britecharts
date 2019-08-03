@@ -1,9 +1,10 @@
 import * as d3 from 'd3';
+
 import chart from 'stacked-bar';
-import dataBuilder from 'stackedBarDataBuilder';
+import { StackedBarDataBuilder } from 'stackedBarDataBuilder';
 
 
-const aTestDataSet = () => new dataBuilder.StackedBarDataBuilder();
+const aTestDataSet = () => new StackedBarDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()
         [dataSetName]()

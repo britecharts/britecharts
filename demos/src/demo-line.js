@@ -5,18 +5,20 @@ const d3TimeFormat = require('d3-time-format');
 
 const PubSub = require('pubsub-js');
 
-const brush = require('./../../src/charts/brush');
-const line = require('./../../src/charts/line');
-const tooltip = require('./../../src/charts/tooltip');
-const dataBuilder = require('./../../test/fixtures/lineChartDataBuilder');
-const colorSelectorHelper = require('./helpers/colorSelector');
+import brush from './../../src/charts/brush';
+import line from './../../src/charts/line';
+import tooltip from './../../src/charts/tooltip';
+
+import { LineDataBuilder } from './../../test/fixtures/lineChartDataBuilder';
+
+import colorSelectorHelper from './helpers/colorSelector';
 
 const lineMargin = {top:60, bottom: 50, left: 50, right: 30};
 let redrawCharts;
 
 require('./helpers/resizeHelper');
 
-const aTestDataSet = () => new dataBuilder.LineDataBuilder();
+const aTestDataSet = () => new LineDataBuilder();
 
 function createBrushChart(optionalColorSchema) {
     let brushChart = brush(),

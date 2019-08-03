@@ -3,7 +3,7 @@ import jsonTwoSources from 'json-loader!../json/stackbarDataTwoSources.json';
 import jsonThreeSources from 'json-loader!../json/stackbarDataThreeSources.json';
 
 
-function StackedBarDataBuilder(config){
+export function StackedBarDataBuilder(config){
     this.Klass = StackedBarDataBuilder;
 
     this.config = _.defaults({}, config);
@@ -24,9 +24,3 @@ function StackedBarDataBuilder(config){
         return this.config;
     };
 }
-
-export default {
-    StackedBarDataBuilder,
-};
-
-

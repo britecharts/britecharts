@@ -10,7 +10,7 @@ import jsonHourDateRange from 'json-loader!../json/lineDataOneSetHourly.json';
 import jsonSmallValueRange from 'json-loader!../json/lineDataSmallValueRange';
 
 
-function LineDataBuilder(config) {
+export function LineDataBuilder(config) {
     this.Klass = LineDataBuilder;
 
     this.config = _.defaults({}, config);
@@ -73,9 +73,5 @@ function LineDataBuilder(config) {
         return this.config;
     };
 }
-
-export default {
-    LineDataBuilder,
-};
 
 

@@ -3,7 +3,7 @@ import jsonTwoSources from 'json-loader!../json/groupedbarDataTwoSources.json';
 import jsonThreeSources from 'json-loader!../json/groupedbarDataThreeSources.json';
 
 
-function GroupedBarChartDataBuilder(config){
+export function GroupedBarChartDataBuilder(config){
     this.Klass = GroupedBarChartDataBuilder;
 
     this.config = _.defaults({}, config);
@@ -24,9 +24,5 @@ function GroupedBarChartDataBuilder(config){
         return this.config;
     };
 }
-
-export default {
-    GroupedBarChartDataBuilder,
-};
 
 

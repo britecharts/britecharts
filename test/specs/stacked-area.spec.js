@@ -3,10 +3,10 @@ import $ from 'jquery';
 import * as d3 from 'd3';
 
 import stackedArea from 'stacked-area';
-import dataBuilder from 'stackedAreaDataBuilder';
+import { StackedAreaDataBuilder } from 'stackedAreaDataBuilder';
 
 
-const aTestDataSet = () => new dataBuilder.StackedAreaDataBuilder();
+const aTestDataSet = () => new StackedAreaDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()
         [dataSetName]()

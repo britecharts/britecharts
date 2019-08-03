@@ -1,10 +1,10 @@
 import * as d3 from 'd3';
 
 import chart from './../../src/charts/bullet';
-import dataBuilder from 'bulletChartDataBuilder';
+import { BulletChartDataBuilder } from 'bulletChartDataBuilder';
 
 
-const aTestDataSet = () => new dataBuilder.BulletChartDataBuilder();
+const aTestDataSet = () => new BulletChartDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()
         [dataSetName]()

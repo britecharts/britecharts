@@ -2,7 +2,8 @@ import _ from 'underscore';
 import jsonOneSource from 'json-loader!../json/sparklineOneSource.json';
 import jsonLowValues from 'json-loader!../json/sparklineLowValues.json';
 
-function SparklineDataBuilder(config){
+
+export function SparklineDataBuilder(config){
     this.Klass = SparklineDataBuilder;
 
     this.config = _.defaults({}, config);
@@ -23,9 +24,3 @@ function SparklineDataBuilder(config){
         return this.config;
     };
 }
-
-export default {
-    SparklineDataBuilder,
-};
-
-

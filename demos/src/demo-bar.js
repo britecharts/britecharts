@@ -3,13 +3,13 @@
 const d3Selection = require('d3-selection');
 const PubSub = require('pubsub-js');
 
-import bar from './../../src/es6charts/bar';
-import miniTooltip from './../../src/es6charts/mini-tooltip';
-import colors from './../../src/es6charts/helpers/color';
+import bar from './../../src/charts/bar';
+import miniTooltip from './../../src/charts/mini-tooltip';
+import colors from './../../src/charts/helpers/color';
 
-const dataBuilder = require('./../../test/fixtures/barChartDataBuilder');
+import { BarDataBuilder } from './../../test/fixtures/barChartDataBuilder';
 
-const aTestDataSet = () => new dataBuilder.BarDataBuilder();
+const aTestDataSet = () => new BarDataBuilder();
 
 require('./helpers/resizeHelper');
 

@@ -4,10 +4,12 @@ const d3Selection = require('d3-selection');
 const PubSub = require('pubsub-js');
 
 const colors = require('./../../src/charts/helpers/color');
-const groupedBarChart = require('./../../src/charts/grouped-bar');
-const tooltip = require('./../../src/charts/tooltip');
-const groupedDataBuilder = require('./../../test/fixtures/groupedBarChartDataBuilder');
-const colorSelectorHelper = require('./helpers/colorSelector');
+import groupedBarChart from './../../src/charts/grouped-bar';
+import tooltip from './../../src/charts/tooltip';
+
+import { GroupedBarChartDataBuilder } from './../../test/fixtures/GroupedBarChartDataBuilder';
+import colorSelectorHelper from './helpers/colorSelector';
+
 let redrawCharts;
 
 require('./helpers/resizeHelper');
@@ -15,7 +17,7 @@ require('./helpers/resizeHelper');
 function creategroupedBarChartWithTooltip(optionalColorSchema) {
     let groupedBar = groupedBarChart(),
         chartTooltip = tooltip(),
-        testDataSet = new groupedDataBuilder.GroupedBarChartDataBuilder(),
+        testDataSet = new GroupedBarChartDataBuilder(),
         container = d3Selection.select('.js-grouped-bar-chart-tooltip-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
@@ -70,7 +72,7 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
 function createHorizontalgroupedBarChart(optionalColorSchema) {
     let groupedBar = groupedBarChart(),
         chartTooltip = tooltip(),
-        testDataSet = new groupedDataBuilder.GroupedBarChartDataBuilder(),
+        testDataSet = new GroupedBarChartDataBuilder(),
         container = d3Selection.select('.js-grouped-bar-chart-fixed-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,

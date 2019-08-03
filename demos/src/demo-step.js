@@ -3,13 +3,14 @@
 const d3Selection = require('d3-selection');
 const PubSub = require('pubsub-js');
 
-const step = require('./../../src/charts/step');
-const miniTooltip = require('./../../src/charts/mini-tooltip');
+import step from './../../src/charts/step';
+import miniTooltip from './../../src/charts/mini-tooltip';
 
-const dataBuilder = require('./../../test/fixtures/stepChartDataBuilder');
+import { StepDataBuilder } from './../../test/fixtures/stepChartDataBuilder';
+
 let redrawCharts;
 
-const aTestDataSet = () => new dataBuilder.StepDataBuilder();
+const aTestDataSet = () => new StepDataBuilder();
 
 require('./helpers/resizeHelper');
 

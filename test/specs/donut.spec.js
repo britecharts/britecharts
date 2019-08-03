@@ -1,11 +1,11 @@
 import * as d3 from 'd3';
 
 import chart from './../../src/charts/donut';
-import dataBuilder from 'donutChartDataBuilder';
+import { DonutDataBuilder } from 'donutChartDataBuilder';
 
 const donutDataSets = ['withFivePlusOther', 'withFivePlusOtherNoPercent'];
 
-const aTestDataSet = () => new dataBuilder.DonutDataBuilder();
+const aTestDataSet = () => new DonutDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()
         [dataSetName]()

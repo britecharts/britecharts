@@ -3,7 +3,7 @@ import jsonStepDataSmall from 'json-loader!../json/stepDataSmall.json';
 import jsonStepDataMedium from 'json-loader!../json/stepDataMedium.json';
 
 
-function StepDataBuilder(config){
+export function StepDataBuilder(config){
     this.Klass = StepDataBuilder;
 
     this.config = _.defaults({}, config);
@@ -24,9 +24,3 @@ function StepDataBuilder(config){
         return this.config;
     };
 }
-
-export default {
-    StepDataBuilder,
-};
-
-

@@ -3,19 +3,20 @@
 const d3Selection = require('d3-selection');
 const PubSub = require('pubsub-js');
 
-const donut = require('./../../src/charts/donut');
-const legend = require('./../../src/charts/legend');
+import colorSelectorHelper from './helpers/colorSelector';
 
-const dataBuilder = require('./../../test/fixtures/donutChartDataBuilder');
-const colorSelectorHelper = require('./helpers/colorSelector');
+import donut from './../../src/charts/donut';
+import legend from './../../src/charts/legend';
+import { DonutDataBuilder } from './../../test/fixtures/donutChartDataBuilder';
 
-const dataset = new dataBuilder.DonutDataBuilder()
+
+const dataset = new DonutDataBuilder()
         .withFivePlusOther()
         .build();
-const datasetNoPercentages = new dataBuilder.DonutDataBuilder()
+const datasetNoPercentages = new DonutDataBuilder()
         .withFivePlusOtherNoPercent()
         .build();
-const datasetWithThreeItems = new dataBuilder.DonutDataBuilder()
+const datasetWithThreeItems = new DonutDataBuilder()
         .withThreeCategories()
         .build();
 let legendChart;

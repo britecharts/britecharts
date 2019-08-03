@@ -1,17 +1,15 @@
-'use strict';
-
 const d3Selection = require('d3-selection');
 const PubSub = require('pubsub-js');
 
-const donut = require('./../../src/charts/donut');
-const legend = require('./../../src/charts/legend');
+import donut from './../../src/charts/donut';
+import legend from './../../src/charts/legend';
+import { DonutDataBuilder } from './../../test/fixtures/donutChartDataBuilder';
 
-const dataBuilder = require('./../../test/fixtures/donutChartDataBuilder');
-const colorSelectorHelper = require('./helpers/colorSelector');
+import colorSelectorHelper from './helpers/colorSelector';
 
-const dataset = new dataBuilder.DonutDataBuilder()
+const dataset = new DonutDataBuilder()
         .withFivePlusOther().build();
-const datasetWithThreeItems = new dataBuilder.DonutDataBuilder()
+const datasetWithThreeItems = new DonutDataBuilder()
         .withThreeCategories()
         .build();
 let redrawCharts;

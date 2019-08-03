@@ -2,7 +2,7 @@ import _ from 'underscore';
 import jsonBulletData from 'json-loader!../json/bulletDataCpuUsage.json';
 
 
-function BulletChartDataBuilder(config){
+export function BulletChartDataBuilder(config) {
     this.Klass = BulletChartDataBuilder;
 
     this.config = _.defaults({}, config);
@@ -17,8 +17,4 @@ function BulletChartDataBuilder(config){
         return this.config.data;
     };
 }
-
-export default {
-    BulletChartDataBuilder,
-};
 

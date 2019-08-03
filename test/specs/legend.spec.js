@@ -1,9 +1,9 @@
 import * as d3 from 'd3';
 
 import legend from 'legend';
-import dataBuilder from 'donutChartDataBuilder';
+import { DonutDataBuilder } from 'donutChartDataBuilder';
 
-const aTestDataSet = () => new dataBuilder.DonutDataBuilder();
+const aTestDataSet = () => new DonutDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()
     [dataSetName]()

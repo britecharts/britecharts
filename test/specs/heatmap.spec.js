@@ -1,9 +1,10 @@
 import * as d3 from 'd3';
 
 import chart from './../../src/charts/heatmap';
-import dataBuilder from 'heatmapChartDataBuilder';
+import { HeatmapDataBuilder } from 'heatmapChartDataBuilder';
 
-const aTestDataSet = () => new dataBuilder.HeatmapDataBuilder();
+
+const aTestDataSet = () => new HeatmapDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()
         [dataSetName]()

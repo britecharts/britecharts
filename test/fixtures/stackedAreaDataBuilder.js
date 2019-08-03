@@ -6,7 +6,7 @@ import jsonReportService from 'json-loader!../json/areaDataReportService.json';
 import jsonLargeService from 'json-loader!../json/areaDataLarge.json';
 
 
-function StackedAreaDataBuilder(config){
+export function StackedAreaDataBuilder(config){
     this.Klass = StackedAreaDataBuilder;
 
     this.config = _.defaults({}, config);
@@ -45,9 +45,3 @@ function StackedAreaDataBuilder(config){
         return this.config;
     };
 }
-
-export default {
-    StackedAreaDataBuilder,
-};
-
-

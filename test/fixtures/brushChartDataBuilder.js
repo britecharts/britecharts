@@ -2,7 +2,8 @@ import _ from 'underscore';
 import jsonShortData from 'json-loader!../json/brushDataBis.json';
 import jsonSimpleData from 'json-loader!../json/brushData.json';
 
-function BrushDataBuilder(config){
+
+export function BrushDataBuilder(config) {
     this.Klass = BrushDataBuilder;
 
     this.config = _.defaults({}, config);
@@ -23,8 +24,4 @@ function BrushDataBuilder(config){
         return this.config.data;
     };
 }
-
-export default {
-    BrushDataBuilder,
-};
 

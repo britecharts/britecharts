@@ -6,7 +6,8 @@ import jsonOneZeroed from 'json-loader!../json/donutDataOneZeroed.json';
 import jsonAllZeroed from 'json-loader!../json/donutDataAllZeroed.json';
 import jsonThreeCategories from 'json-loader!../json/donutDataThreeCategories.json';
 
-function DonutDataBuilder(config) {
+
+export function DonutDataBuilder(config) {
     this.Klass = DonutDataBuilder;
 
     this.config = _.defaults({}, config);
@@ -51,8 +52,4 @@ function DonutDataBuilder(config) {
         return this.config.data;
     };
 }
-
-export default {
-    DonutDataBuilder,
-};
 

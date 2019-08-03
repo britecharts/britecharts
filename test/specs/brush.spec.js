@@ -1,10 +1,10 @@
 import * as d3 from 'd3';
 
 import chart from './../../src/charts/brush';
-import dataBuilder from 'brushChartDataBuilder';
+import { BrushDataBuilder } from 'brushChartDataBuilder';
 
 
-const aTestDataSet = () => new dataBuilder.BrushDataBuilder();
+const aTestDataSet = () => new BrushDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()
         [dataSetName]()

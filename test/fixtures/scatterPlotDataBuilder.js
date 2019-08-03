@@ -3,7 +3,7 @@ import jsonWithFourNames from 'json-loader!../json/scatterDataWithFourNames.json
 import jsonWithOneSource from 'json-loader!../json/scatterDataWithSingleSource.json';
 
 
-function ScatterPlotDataBuilder(config) {
+export function ScatterPlotDataBuilder(config) {
     this.Klass = ScatterPlotDataBuilder;
 
     this.config = _.defaults({}, config);
@@ -24,9 +24,5 @@ function ScatterPlotDataBuilder(config) {
         return this.config.data;
     };
 }
-
-export default {
-    ScatterPlotDataBuilder,
-};
 
 

@@ -2,9 +2,10 @@ import _ from 'underscore';
 import * as d3 from 'd3';
 
 import sparkline from 'sparkline';
-import dataBuilder from 'sparklineDataBuilder';
+import { SparklineDataBuilder } from 'sparklineDataBuilder';
 
-const aTestDataSet = () => new dataBuilder.SparklineDataBuilder();
+
+const aTestDataSet = () => new SparklineDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()
         [dataSetName]()

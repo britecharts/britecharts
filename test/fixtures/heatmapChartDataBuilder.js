@@ -3,7 +3,7 @@ import jsonWeeklyBis from 'json-loader!../json/heatmapWeeklyBis.json';
 import jsonWeekly from 'json-loader!../json/heatmapWeekly.json';
 
 
-function HeatmapDataBuilder(config) {
+export function HeatmapDataBuilder(config) {
     this.Klass = HeatmapDataBuilder;
 
     this.config = _.defaults({}, config);
@@ -24,8 +24,4 @@ function HeatmapDataBuilder(config) {
         return this.config.data;
     };
 }
-
-export default {
-    HeatmapDataBuilder,
-};
 

@@ -1,9 +1,10 @@
 import * as d3 from 'd3';
+
 import chart from 'scatter-plot';
+import { ScatterPlotDataBuilder } from 'scatterPlotDataBuilder';
 
-import dataBuilder from 'scatterPlotDataBuilder';
 
-const aTestDataSet = () => new dataBuilder.ScatterPlotDataBuilder();
+const aTestDataSet = () => new ScatterPlotDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()
     [dataSetName]()

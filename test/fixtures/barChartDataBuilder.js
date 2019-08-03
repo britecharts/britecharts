@@ -2,7 +2,8 @@ import _ from 'underscore';
 import jsonColors from 'json-loader!../json/barColors.json';
 import jsonLetters from 'json-loader!../json/barDataLetters.json';
 
-function BarDataBuilder(config){
+
+export function BarDataBuilder (config) {
     this.Klass = BarDataBuilder;
 
     this.config = _.defaults({}, config);
@@ -23,8 +24,4 @@ function BarDataBuilder(config){
         return this.config.data;
     };
 }
-
-export default {
-    BarDataBuilder,
-};
 

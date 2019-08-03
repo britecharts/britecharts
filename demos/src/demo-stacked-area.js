@@ -3,17 +3,17 @@
 const d3Selection = require('d3-selection');
 const PubSub = require('pubsub-js');
 
-const stackedAreaChart = require('./../../src/charts/stacked-area');
-const colors = require('./../../src/charts/helpers/color');
-const tooltip = require('./../../src/charts/tooltip');
+import stackedAreaChart from './../../src/charts/stacked-area';
+import tooltip from './../../src/charts/tooltip';
+import colorSelectorHelper from './helpers/colorSelector';
 
-const stackedDataBuilder = require('./../../test/fixtures/stackedAreaDataBuilder');
-const colorSelectorHelper = require('./helpers/colorSelector');
+import { StackedAreaDataBuilder } from './../../test/fixtures/stackedAreaDataBuilder';
+
 let redrawCharts;
 
 require('./helpers/resizeHelper');
 
-const aTestDataSet = () => new stackedDataBuilder.StackedAreaDataBuilder();
+const aTestDataSet = () => new StackedAreaDataBuilder();
 
 const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 

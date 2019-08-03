@@ -3,8 +3,8 @@ import $ from 'jquery';
 import * as d3 from 'd3';
 
 import legend from 'legend';
-import donutDataBuilder from 'donutChartDataBuilder';
-import lineDataBuilder from 'lineChartDataBuilder';
+import { DonutDataBuilder } from 'donutChartDataBuilder';
+import { LineDataBuilder } from 'lineChartDataBuilder';
 import serializeWithStyles from './../../src/charts/helpers/style';
 import { wrapText } from './../../src/charts/helpers/text';
 import { calculatePercent, isInteger } from './../../src/charts/helpers/number';
@@ -16,9 +16,8 @@ import timeAxis from './../../src/charts/helpers/axis';
 const randomColor = 'rgb(222,163,12)';
 let f, containerFixture, styles, node;
 
-const aDonutTestDataSet = () => new donutDataBuilder.DonutDataBuilder();
-const aLineTestDataSet = () => new lineDataBuilder.LineDataBuilder();
-
+const aDonutTestDataSet = () => new DonutDataBuilder();
+const aLineTestDataSet = () => new LineDataBuilder();
 
 describe('Helpers', () => {
 

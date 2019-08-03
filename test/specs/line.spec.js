@@ -2,10 +2,10 @@ import _ from 'underscore';
 import * as d3 from 'd3';
 
 import chart from 'line';
-import dataBuilder from 'lineChartDataBuilder';
+import { LineDataBuilder } from 'lineChartDataBuilder';
 
 
-const aTestDataSet = () => new dataBuilder.LineDataBuilder();
+const aTestDataSet = () => new LineDataBuilder();
 const buildDataSet = (dataSetName) => {
     return aTestDataSet()
         [dataSetName]()
