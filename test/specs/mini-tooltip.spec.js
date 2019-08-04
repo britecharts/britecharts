@@ -45,7 +45,12 @@ describe('Mini Tooltip Component', () => {
 
         it('should render the title of the tooltip', () => {
             const expected = 'Tooltip title';
-            const actual = containerFixture.select('.britechart-mini-tooltip')
+            let actual;
+
+            tooltipChart.title(expected);
+            tooltipChart.show();
+
+            actual = containerFixture.select('.britechart-mini-tooltip')
                 .selectAll('.mini-tooltip-title')
                 .text();
 
