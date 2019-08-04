@@ -1,13 +1,9 @@
-'use strict';
-
-const d3Selection = require('d3-selection');
-const PubSub = require('pubsub-js');
+import { select, selectAll } from 'd3-selection';
+import { default as PubSub } from 'pubsub-js';
 
 import scatterPlot from './../../src/charts/scatter-plot';
 import miniTooltip from './../../src/charts/mini-tooltip';
-const colors = require('./../../src/charts/helpers/color');
 import colorSelectorHelper from './helpers/colorSelector';
-
 import { ScatterPlotDataBuilder } from './../../test/fixtures/scatterPlotDataBuilder';
 
 require('./helpers/resizeHelper');
@@ -20,7 +16,7 @@ let redrawCharts;
 function createScatterPlotWithSingleSource(optionalColorSchema) {
     let scatterChart = scatterPlot();
     let tooltip = miniTooltip().title('Temperature (C)');
-    let scatterPlotContainer = d3Selection.select('.js-scatter-plot-chart-tooltip-container');
+    let scatterPlotContainer = select('.js-scatter-plot-chart-tooltip-container');
     let containerWidth = scatterPlotContainer.node() ? scatterPlotContainer.node().getBoundingClientRect().width : false;
     let dataset, tooltipContainer;
 
@@ -57,7 +53,7 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
             .nameLabel('x')
             .numberFormat('$');
 
-        tooltipContainer = d3Selection.select('.js-scatter-plot-chart-tooltip-container .scatter-plot .metadata-group');
+        tooltipContainer = select('.js-scatter-plot-chart-tooltip-container .scatter-plot .metadata-group');
         tooltipContainer.datum([]).call(tooltip);
     }
 }
@@ -65,7 +61,7 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
 function createScatterPlotWithIncreasedAreaAndHollowCircles() {
     let scatterChart = scatterPlot();
     let tooltip = miniTooltip();
-    let scatterPlotContainer = d3Selection.select('.js-scatter-plot-container-with-hollow-circles');
+    let scatterPlotContainer = select('.js-scatter-plot-container-with-hollow-circles');
     let containerWidth = scatterPlotContainer.node() ? scatterPlotContainer.node().getBoundingClientRect().width : false;
     let dataset, tooltipContainer;
 
@@ -92,18 +88,18 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
 
         scatterPlotContainer.datum(dataset).call(scatterChart);
 
-        tooltipContainer = d3Selection.select('.js-scatter-plot-container-with-hollow-circles .scatter-plot .metadata-group');
+        tooltipContainer = select('.js-scatter-plot-container-with-hollow-circles .scatter-plot .metadata-group');
         tooltipContainer.datum([]).call(tooltip);
     }
 }
 
 // Show charts if container available
-if (d3Selection.select('.js-scatter-plot-chart-tooltip-container').node()) {
+if (select('.js-scatter-plot-chart-tooltip-container').node()) {
     createScatterPlotWithSingleSource()
     createScatterPlotWithIncreasedAreaAndHollowCircles();
 
     redrawCharts = function() {
-        d3Selection.selectAll('.scatter-plot').remove();
+        selectAll('.scatter-plot').remove();
         createScatterPlotWithSingleSource();
         createScatterPlotWithIncreasedAreaAndHollowCircles();
     };

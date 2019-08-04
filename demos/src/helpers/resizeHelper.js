@@ -1,12 +1,12 @@
-'use strict';
-
 const _ = require('underscore');
-const d3Selection = require('d3-selection');
-const PubSub = require('pubsub-js');
+import { default as PubSub } from 'pubsub-js';
+
+import { select } from 'd3-selection';
+
 const debounceDelay = 200;
 let cachedWidth = window.innerWidth;
 
-d3Selection.select(window)
+select(window)
     .on('resize', _.debounce(function(){
             var newWidth = window.innerWidth;
 

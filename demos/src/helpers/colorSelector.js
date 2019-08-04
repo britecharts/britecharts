@@ -1,4 +1,4 @@
-const d3Selection = require('d3-selection');
+import { select } from 'd3-selection';
 import colors from './../../../src/charts/helpers/color';
 
 const selectClass = 'form-control';
@@ -34,12 +34,12 @@ function createColorSelector(selectContainerSelector, chartSelector, callback) {
     containerSelector.appendChild(sel);
 
     // Listen for changes
-    d3Selection.select(sel)
+    select(sel)
         .on('change', function() {
             // Get new color schema
             let newSchema = colors.colorSchemas[this.value];
 
-            d3Selection.select(chartSelector).remove();
+            select(chartSelector).remove();
 
             // Draw
             if (callback) {

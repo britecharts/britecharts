@@ -1,13 +1,10 @@
-'use strict';
-
-const d3Selection = require('d3-selection');
-const PubSub = require('pubsub-js');
-
-import colorSelectorHelper from './helpers/colorSelector';
+import { select, selectAll } from 'd3-selection';
+import { default as PubSub } from 'pubsub-js';
 
 import donut from './../../src/charts/donut';
 import legend from './../../src/charts/legend';
 import { DonutDataBuilder } from './../../test/fixtures/donutChartDataBuilder';
+import colorSelectorHelper from './helpers/colorSelector';
 
 
 const dataset = new DonutDataBuilder()
@@ -27,11 +24,11 @@ require('./helpers/resizeHelper');
 function createDonutChart(optionalColorSchema) {
     let legendChart = getLegendChart(dataset, optionalColorSchema),
         donutChart = donut(),
-        donutContainer = d3Selection.select('.js-donut-chart-container'),
+        donutContainer = select('.js-donut-chart-container'),
         containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false;
 
     if (containerWidth) {
-        d3Selection.select('#button').on('click', function() {
+        select('#button').on('click', function() {
             donutChart.exportChart();
         });
 
@@ -55,7 +52,7 @@ function createDonutChart(optionalColorSchema) {
 
         donutContainer.datum(dataset).call(donutChart);
 
-        d3Selection.select('#button').on('click', function() {
+        select('#button').on('click', function() {
             donutChart.exportChart('donut.png', 'Britecharts Donut Chart');
         });
     }
@@ -63,11 +60,11 @@ function createDonutChart(optionalColorSchema) {
 
 function getLegendChart(dataset, optionalColorSchema) {
     let legendChart = legend(),
-        legendContainer = d3Selection.select('.js-legend-chart-container'),
+        legendContainer = select('.js-legend-chart-container'),
         containerWidth = legendContainer.node() ? legendContainer.node().getBoundingClientRect().width : false;
 
     if (containerWidth) {
-        d3Selection.select('.js-legend-chart-container .britechart-legend').remove();
+        select('.js-legend-chart-container .britechart-legend').remove();
 
         legendChart
             .width(containerWidth*0.8)
@@ -86,11 +83,11 @@ function getLegendChart(dataset, optionalColorSchema) {
 
 function getInlineLegendChart(dataset, optionalColorSchema) {
     let legendChart = legend(),
-        legendContainer = d3Selection.select('.js-inline-legend-chart-container'),
+        legendContainer = select('.js-inline-legend-chart-container'),
         containerWidth = legendContainer.node() ? legendContainer.node().getBoundingClientRect().width : false;
 
     if (containerWidth) {
-        d3Selection.select('.js-inline-legend-chart-container .britechart-legend').remove();
+        select('.js-inline-legend-chart-container .britechart-legend').remove();
 
         legendChart
             .isHorizontal(true)
@@ -110,11 +107,11 @@ function getInlineLegendChart(dataset, optionalColorSchema) {
 
 function getVerticalLegendChart(dataset, optionalColorSchema) {
     let legendChart = legend(),
-        legendContainer = d3Selection.select('.js-vertical-legend-no-quantity-container'),
+        legendContainer = select('.js-vertical-legend-no-quantity-container'),
         containerWidth = legendContainer.node() ? legendContainer.node().getBoundingClientRect().width : false;
 
     if (containerWidth) {
-        d3Selection.select('.js-vertical-legend-no-quantity-container .britechart-legend').remove();
+        select('.js-vertical-legend-no-quantity-container .britechart-legend').remove();
 
         legendChart
             .width(containerWidth)
@@ -132,7 +129,7 @@ function getVerticalLegendChart(dataset, optionalColorSchema) {
 
 function createSmallDonutChart() {
     let donutChart = donut(),
-        donutContainer = d3Selection.select('.js-small-donut-chart-container'),
+        donutContainer = select('.js-small-donut-chart-container'),
         containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false,
         legendChart = getInlineLegendChart(datasetWithThreeItems);
 
@@ -162,7 +159,7 @@ function createDonutWithHighlightSliceChart() {
         }),
         legendChart = getVerticalLegendChart(dataNoQuantity),
         donutChart = donut(),
-        donutContainer = d3Selection.select('.js-donut-highlight-slice-chart-container'),
+        donutContainer = select('.js-donut-highlight-slice-chart-container'),
         containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false;
 
     if (containerWidth) {
@@ -187,7 +184,7 @@ function createDonutWithHighlightSliceChart() {
 
 function createLoadingState() {
     let donutChart = donut(),
-        donutContainer = d3Selection.select('.js-loading-container'),
+        donutContainer = select('.js-loading-container'),
         containerWidth = donutContainer.node() ? donutContainer.node().getBoundingClientRect().width : false,
         dataset = null;
 
@@ -197,14 +194,14 @@ function createLoadingState() {
 }
 
 // Show charts if container available
-if (d3Selection.select('.js-donut-chart-container').node()) {
+if (select('.js-donut-chart-container').node()) {
     createDonutChart();
     createSmallDonutChart();
     createDonutWithHighlightSliceChart();
     createLoadingState();
 
     redrawCharts = function(){
-        d3Selection.selectAll('.donut-chart').remove();
+        selectAll('.donut-chart').remove();
 
         createDonutChart();
         createSmallDonutChart();

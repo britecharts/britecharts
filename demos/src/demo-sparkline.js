@@ -1,26 +1,22 @@
-'use strict';
-
-const d3Selection = require('d3-selection');
-const PubSub = require('pubsub-js');
+import { select, selectAll } from 'd3-selection';
+import { default as PubSub } from 'pubsub-js';
 
 import sparklineChart from './../../src/charts/sparkline';
-
 import { SparklineDataBuilder } from './../../test/fixtures/sparklineDataBuilder';
+
+require('./helpers/resizeHelper');
 
 
 const aTestDataSet = () => new SparklineDataBuilder();
 let redrawCharts;
 
-require('./helpers/resizeHelper');
-
-
 function createSparklineChart() {
     let sparkline = sparklineChart(),
-        containerWidth = d3Selection.select('.js-sparkline-chart-container').node().getBoundingClientRect().width,
-        container = d3Selection.select('.js-sparkline-chart-container'),
+        containerWidth = select('.js-sparkline-chart-container').node().getBoundingClientRect().width,
+        container = select('.js-sparkline-chart-container'),
         dataset;
 
-    d3Selection.select('#button').on('click', function() {
+    select('#button').on('click', function() {
         sparkline.exportChart('sparkline.png', 'Britechart Sparkline Chart');
     });
 
@@ -39,8 +35,8 @@ function createSparklineChart() {
 
 function createLoadingState() {
     let sparkline = sparklineChart(),
-        containerWidth = d3Selection.select('.js-loading-container').node().getBoundingClientRect().width,
-        container = d3Selection.select('.js-loading-container'),
+        containerWidth = select('.js-loading-container').node().getBoundingClientRect().width,
+        container = select('.js-loading-container'),
         dataset = null;
 
     if (containerWidth) {
@@ -49,12 +45,12 @@ function createLoadingState() {
 }
 
 // Show charts if container available
-if (d3Selection.select('.js-sparkline-chart-container').node()){
+if (select('.js-sparkline-chart-container').node()){
     createSparklineChart();
     createLoadingState();
 
     redrawCharts = function(){
-        d3Selection.selectAll('.sparkline').remove();
+        selectAll('.sparkline').remove();
         createSparklineChart();
         createLoadingState();
     };

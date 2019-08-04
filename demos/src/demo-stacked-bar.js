@@ -1,24 +1,22 @@
-'use strict';
-
-const d3Selection = require('d3-selection');
-const PubSub = require('pubsub-js');
+import { select, selectAll } from 'd3-selection';
+import { default as PubSub } from 'pubsub-js';
 
 import stackedBarChart from './../../src/charts/stacked-bar';
 import tooltip from './../../src/charts/tooltip';
-
 import colors from './../../src/charts/helpers/color';
 import { StackedBarDataBuilder } from './../../test/fixtures/stackedBarDataBuilder';
-
 import colorSelectorHelper from './helpers/colorSelector';
-let redrawCharts;
 
 require('./helpers/resizeHelper');
+
+
+let redrawCharts;
 
 function createStackedBarChartWithTooltip(optionalColorSchema) {
     let stackedBar = stackedBarChart(),
         chartTooltip = tooltip(),
         testDataSet = new StackedBarDataBuilder(),
-        container = d3Selection.select('.js-stacked-bar-chart-tooltip-container'),
+        container = select('.js-stacked-bar-chart-tooltip-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
@@ -61,10 +59,10 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = d3Selection.select('.js-stacked-bar-chart-tooltip-container .metadata-group');
+        tooltipContainer = select('.js-stacked-bar-chart-tooltip-container .metadata-group');
         tooltipContainer.datum([]).call(chartTooltip);
 
-        d3Selection.select('#button').on('click', function() {
+        select('#button').on('click', function() {
                 stackedBar.exportChart('stacked-bar.png', 'Britecharts Stacked Bar');
         });
     }
@@ -74,7 +72,7 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
     let stackedBar = stackedBarChart(),
         chartTooltip = tooltip(),
         testDataSet = new StackedBarDataBuilder(),
-        container = d3Selection.select('.js-stacked-bar-chart-fixed-container'),
+        container = select('.js-stacked-bar-chart-fixed-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
@@ -124,12 +122,12 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = d3Selection.select('.js-stacked-bar-chart-fixed-container .metadata-group');
+        tooltipContainer = select('.js-stacked-bar-chart-fixed-container .metadata-group');
         tooltipContainer.datum([]).call(chartTooltip);
     }
 }
 
-if (d3Selection.select('.js-stacked-bar-chart-tooltip-container').node()){
+if (select('.js-stacked-bar-chart-tooltip-container').node()){
     // Chart creation
     createStackedBarChartWithTooltip();
     createHorizontalStackedBarChart();
@@ -137,7 +135,7 @@ if (d3Selection.select('.js-stacked-bar-chart-tooltip-container').node()){
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
     redrawCharts = function(){
-        d3Selection.selectAll('.stacked-bar').remove();
+        selectAll('.stacked-bar').remove();
 
         createStackedBarChartWithTooltip();
         createHorizontalStackedBarChart();

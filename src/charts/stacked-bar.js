@@ -656,8 +656,7 @@ export default function module() {
      * @return {void}
      */
     function handleBarsMouseOut() {
-        d3Selection
-            .select(this).attr('fill', () => select(this.parentNode).attr('fill'))
+        select(this).attr('fill', () => select(this.parentNode).attr('fill'))
     }
 
     /**

@@ -1,29 +1,24 @@
-'use strict';
-
-const d3Selection = require('d3-selection');
-const d3TimeFormat = require('d3-time-format');
-
-const PubSub = require('pubsub-js');
+import { select, selectAll } from 'd3-selection';
+import { timeFormat } from 'd3-time-format';
+import { default as PubSub } from 'pubsub-js';
 
 import brush from './../../src/charts/brush';
 import line from './../../src/charts/line';
 import tooltip from './../../src/charts/tooltip';
-
 import { LineDataBuilder } from './../../test/fixtures/lineChartDataBuilder';
-
 import colorSelectorHelper from './helpers/colorSelector';
-
-const lineMargin = {top:60, bottom: 50, left: 50, right: 30};
-let redrawCharts;
 
 require('./helpers/resizeHelper');
 
+
 const aTestDataSet = () => new LineDataBuilder();
+const lineMargin = {top:60, bottom: 50, left: 50, right: 30};
+let redrawCharts;
 
 function createBrushChart(optionalColorSchema) {
     let brushChart = brush(),
         brushMargin = {top:0, bottom: 40, left: 50, right: 30},
-        brushContainer = d3Selection.select('.js-line-brush-chart-container'),
+        brushContainer = select('.js-line-brush-chart-container'),
         containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
         colorSchema = optionalColorSchema ? optionalColorSchema : null,
         dataset;
@@ -36,14 +31,14 @@ function createBrushChart(optionalColorSchema) {
             .height(100)
             .margin(brushMargin)
             .on('customBrushEnd', function(brushExtent) {
-                let format = d3TimeFormat.timeFormat('%m/%d/%Y');
+                let format = timeFormat('%m/%d/%Y');
 
-                d3Selection.select('.js-start-date').text(format(brushExtent[0]));
-                d3Selection.select('.js-end-date').text(format(brushExtent[1]));
-                d3Selection.select('.js-date-range').classed('is-hidden', false);
+                select('.js-start-date').text(format(brushExtent[0]));
+                select('.js-end-date').text(format(brushExtent[1]));
+                select('.js-date-range').classed('is-hidden', false);
 
                 // Filter
-                d3Selection.selectAll('.js-line-chart-container .line-chart').remove();
+                selectAll('.js-line-chart-container .line-chart').remove();
 
                 if (brushExtent[0] && brushExtent[1]) {
                     createLineChart(colorSchema, filterData(brushExtent[0], brushExtent[1]));
@@ -59,13 +54,13 @@ function createBrushChart(optionalColorSchema) {
 function createLineChart(optionalColorSchema, optionalData) {
     let lineChart1 = line(),
         chartTooltip = tooltip(),
-        container = d3Selection.select('.js-line-chart-container'),
+        container = select('.js-line-chart-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
 
     if (containerWidth) {
-        d3Selection.select('#button').on('click', function() {
+        select('#button').on('click', function() {
             lineChart1.exportChart('linechart.png', 'Britecharts Line Chart');
         });
 
@@ -109,7 +104,7 @@ function createLineChart(optionalColorSchema, optionalData) {
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = d3Selection.select('.js-line-chart-container .metadata-group .hover-marker');
+        tooltipContainer = select('.js-line-chart-container .metadata-group .hover-marker');
         tooltipContainer.datum([]).call(chartTooltip);
     }
 }
@@ -117,7 +112,7 @@ function createLineChart(optionalColorSchema, optionalData) {
 function createLineChartWithSingleLine() {
     let lineChart2 = line(),
         chartTooltip = tooltip(),
-        container = d3Selection.select('.js-single-line-chart-container'),
+        container = select('.js-single-line-chart-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
@@ -146,10 +141,10 @@ function createLineChartWithSingleLine() {
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = d3Selection.select('.js-single-line-chart-container .metadata-group .vertical-marker-container');
+        tooltipContainer = select('.js-single-line-chart-container .metadata-group .vertical-marker-container');
         tooltipContainer.datum([]).call(chartTooltip);
 
-        d3Selection.select('#button2').on('click', function() {
+        select('#button2').on('click', function() {
             lineChart2.exportChart('linechart.png', 'Britecharts LÍne Chart');
         });
     }
@@ -158,7 +153,7 @@ function createLineChartWithSingleLine() {
 function createLineChartWithFixedHeight() {
     let lineChart3 = line(),
         chartTooltip = tooltip(),
-        container = d3Selection.select('.js-fixed-line-chart-container'),
+        container = select('.js-fixed-line-chart-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
@@ -190,14 +185,14 @@ function createLineChartWithFixedHeight() {
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = d3Selection.select('.js-fixed-line-chart-container .metadata-group .hover-marker');
+        tooltipContainer = select('.js-fixed-line-chart-container .metadata-group .hover-marker');
         tooltipContainer.datum([]).call(chartTooltip);
     }
 }
 
 function createLoadingState() {
     let lineChart = line(),
-        lineContainer = d3Selection.select('.js-loading-container'),
+        lineContainer = select('.js-loading-container'),
         containerWidth = lineContainer.node() ? lineContainer.node().getBoundingClientRect().width : false,
         dataset = null;
 
@@ -249,7 +244,7 @@ function isInRange(d0, d1, d) {
 }
 
 // Show charts if container available
-if (d3Selection.select('.js-line-chart-container').node()) {
+if (select('.js-line-chart-container').node()) {
     createLineChart();
     createBrushChart();
     createLineChartWithSingleLine();
@@ -257,8 +252,8 @@ if (d3Selection.select('.js-line-chart-container').node()) {
     createLoadingState();
 
     redrawCharts = function(){
-        d3Selection.selectAll('.line-chart').remove();
-        d3Selection.selectAll('.brush-chart').remove();
+        selectAll('.line-chart').remove();
+        selectAll('.brush-chart').remove();
         createLineChart();
         createBrushChart();
         createLineChartWithSingleLine();
@@ -272,7 +267,7 @@ if (d3Selection.select('.js-line-chart-container').node()) {
     // Color schema selector
     colorSelectorHelper.createColorSelector('.js-color-selector-container', '.line-chart', function(newSchema) {
         createLineChart(newSchema);
-        d3Selection.selectAll('.brush-chart').remove();
+        selectAll('.brush-chart').remove();
         createBrushChart(newSchema);
     });
 }

@@ -1,19 +1,16 @@
-'use strict';
-
-const d3Selection = require('d3-selection');
-const PubSub = require('pubsub-js');
-
-import colorSelectorHelper from './helpers/colorSelector';
+import { select } from 'd3-selection';
+import { default as PubSub } from 'pubsub-js';
 
 import bullet from './../../src/charts/bullet';
 import { BulletChartDataBuilder } from './../../test/fixtures/bulletChartDataBuilder';
+import colorSelectorHelper from './helpers/colorSelector';
 
 require('./helpers/resizeHelper');
 
 
 function createBulletChart(optionalColorSchema) {
     const testDataSet = new BulletChartDataBuilder();
-    const bulletContainer = d3Selection.select('.js-bullet-chart-container');
+    const bulletContainer = select('.js-bullet-chart-container');
     const containerWidth = bulletContainer.node()
         ? bulletContainer.node().getBoundingClientRect().width
         : false;
@@ -40,11 +37,11 @@ function createBulletChart(optionalColorSchema) {
 }
 
 // Show charts if container available
-if (d3Selection.select('.js-bullet-chart-container').node()) {
+if (select('.js-bullet-chart-container').node()) {
     createBulletChart();
 
     let redrawCharts = function() {
-        d3Selection.select('.bullet-chart').remove();
+        select('.bullet-chart').remove();
 
         createBulletChart();
     };
