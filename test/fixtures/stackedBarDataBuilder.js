@@ -1,6 +1,6 @@
 import _ from 'underscore';
-import jsonTwoSources from 'json-loader!../json/stackbarDataTwoSources.json';
-import jsonThreeSources from 'json-loader!../json/stackbarDataThreeSources.json';
+import jsonTwoSources from '../json/stackbarDataTwoSources.json';
+import jsonThreeSources from '../json/stackbarDataThreeSources.json';
 
 
 export function StackedBarDataBuilder(config){

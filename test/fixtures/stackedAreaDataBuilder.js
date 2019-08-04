@@ -1,9 +1,9 @@
 import _ from 'underscore';
-import jsonThreeSources from 'json-loader!../json/areaDataThreeSources.json';
-import jsonSixSources from 'json-loader!../json/areaDataSixSources.json';
-import jsonSalesChannel from 'json-loader!../json/areaDataSalesChannel.json';
-import jsonReportService from 'json-loader!../json/areaDataReportService.json';
-import jsonLargeService from 'json-loader!../json/areaDataLarge.json';
+import jsonThreeSources from '../json/areaDataThreeSources.json';
+import jsonSixSources from '../json/areaDataSixSources.json';
+import jsonSalesChannel from '../json/areaDataSalesChannel.json';
+import jsonReportService from '../json/areaDataReportService.json';
+import jsonLargeService from '../json/areaDataLarge.json';
 
 
 export function StackedAreaDataBuilder(config){

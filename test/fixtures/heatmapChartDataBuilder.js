@@ -1,6 +1,6 @@
 import _ from 'underscore';
-import jsonWeeklyBis from 'json-loader!../json/heatmapWeeklyBis.json';
-import jsonWeekly from 'json-loader!../json/heatmapWeekly.json';
+import jsonWeeklyBis from '../json/heatmapWeeklyBis.json';
+import jsonWeekly from '../json/heatmapWeekly.json';
 
 
 export function HeatmapDataBuilder(config) {

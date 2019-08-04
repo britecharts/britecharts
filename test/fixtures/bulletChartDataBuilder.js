@@ -1,5 +1,5 @@
 import _ from 'underscore';
-import jsonBulletData from 'json-loader!../json/bulletDataCpuUsage.json';
+import jsonBulletData from '../json/bulletDataCpuUsage.json';
 
 
 export function BulletChartDataBuilder(config) {

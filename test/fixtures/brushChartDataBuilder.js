@@ -1,6 +1,6 @@
 import _ from 'underscore';
-import jsonShortData from 'json-loader!../json/brushDataBis.json';
-import jsonSimpleData from 'json-loader!../json/brushData.json';
+import jsonShortData from '../json/brushDataBis.json';
+import jsonSimpleData from '../json/brushData.json';
 
 
 export function BrushDataBuilder(config) {

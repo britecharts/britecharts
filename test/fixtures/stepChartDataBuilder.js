@@ -1,6 +1,6 @@
 import _ from 'underscore';
-import jsonStepDataSmall from 'json-loader!../json/stepDataSmall.json';
-import jsonStepDataMedium from 'json-loader!../json/stepDataMedium.json';
+import jsonStepDataSmall from '../json/stepDataSmall.json';
+import jsonStepDataMedium from '../json/stepDataMedium.json';
 
 
 export function StepDataBuilder(config){

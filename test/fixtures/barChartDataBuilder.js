@@ -1,6 +1,6 @@
 import _ from 'underscore';
-import jsonColors from 'json-loader!../json/barColors.json';
-import jsonLetters from 'json-loader!../json/barDataLetters.json';
+import jsonColors from '../json/barColors.json';
+import jsonLetters from '../json/barDataLetters.json';
 
 
 export function BarDataBuilder (config) {

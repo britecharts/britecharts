@@ -1,6 +1,6 @@
 import _ from 'underscore';
-import jsonWithFourNames from 'json-loader!../json/scatterDataWithFourNames.json';
-import jsonWithOneSource from 'json-loader!../json/scatterDataWithSingleSource.json';
+import jsonWithFourNames from '../json/scatterDataWithFourNames.json';
+import jsonWithOneSource from '../json/scatterDataWithSingleSource.json';
 
 
 export function ScatterPlotDataBuilder(config) {

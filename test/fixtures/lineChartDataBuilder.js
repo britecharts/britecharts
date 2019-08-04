@@ -1,13 +1,13 @@
 import _ from 'underscore';
-import jsonAllDatas from 'json-loader!../json/lineDataAllDatas.json';
-import jsonFiveTopics from 'json-loader!../json/lineDataFiveTopics.json';
-import jsonFourTopics from 'json-loader!../json/lineDataFourTopics.json';
-import jsonOneSource from 'json-loader!../json/lineDataOneSet.json';
-import jsonAllZeroes from 'json-loader!../json/lineDataAllZeroes.json';
-import jsonTwoTopicsFlat from 'json-loader!../json/lineDataTwoTopicsFlat.json';
-import jsonMultiMonthValueRange from 'json-loader!../json/multiMonthLineData';
-import jsonHourDateRange from 'json-loader!../json/lineDataOneSetHourly.json';
-import jsonSmallValueRange from 'json-loader!../json/lineDataSmallValueRange';
+import jsonAllDatas from '../json/lineDataAllDatas.json';
+import jsonFiveTopics from '../json/lineDataFiveTopics.json';
+import jsonFourTopics from '../json/lineDataFourTopics.json';
+import jsonOneSource from '../json/lineDataOneSet.json';
+import jsonAllZeroes from '../json/lineDataAllZeroes.json';
+import jsonTwoTopicsFlat from '../json/lineDataTwoTopicsFlat.json';
+import jsonMultiMonthValueRange from '../json/multiMonthLineData';
+import jsonHourDateRange from '../json/lineDataOneSetHourly.json';
+import jsonSmallValueRange from '../json/lineDataSmallValueRange';
 
 
 export function LineDataBuilder(config) {

@@ -1,6 +1,6 @@
 import _ from 'underscore';
-import jsonOneSource from 'json-loader!../json/sparklineOneSource.json';
-import jsonLowValues from 'json-loader!../json/sparklineLowValues.json';
+import jsonOneSource from '../json/sparklineOneSource.json';
+import jsonLowValues from '../json/sparklineLowValues.json';
 
 
 export function SparklineDataBuilder(config){
