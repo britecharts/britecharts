@@ -314,7 +314,7 @@ describe('Bar Chart', () => {
                 barChart.on('customClick', callbackSpy);
                 bar.dispatch('click');
                 actualCalls = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length
+                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
 
                 expect(actualCalls).toEqual(expectedCalls);
                 expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
@@ -334,7 +334,7 @@ describe('Bar Chart', () => {
                 barChart.on('customMouseOver', callbackSpy);
                 bar.dispatch('mouseover');
                 actualCallCount = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length
+                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
 
                 expect(actualCallCount).toEqual(expectedCallCount);
                 expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
@@ -353,7 +353,7 @@ describe('Bar Chart', () => {
                 barChart.on('customMouseMove', callbackSpy);
                 bar.dispatch('mousemove');
                 actualCallCount = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length
+                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
 
                 expect(actualCallCount).toEqual(expectedCallCount);
                 expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
