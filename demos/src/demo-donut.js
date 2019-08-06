@@ -1,5 +1,5 @@
 import { select, selectAll } from 'd3-selection';
-import { default as PubSub } from 'pubsub-js';
+import PubSub from 'pubsub-js';
 
 import donut from './../../src/charts/donut';
 import legend from './../../src/charts/legend';

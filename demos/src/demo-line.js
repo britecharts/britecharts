@@ -1,6 +1,6 @@
 import { select, selectAll } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
-import { default as PubSub } from 'pubsub-js';
+import PubSub from 'pubsub-js';
 
 import brush from './../../src/charts/brush';
 import line from './../../src/charts/line';
@@ -252,8 +252,7 @@ if (select('.js-line-chart-container').node()) {
     createLoadingState();
 
     redrawCharts = function(){
-        selectAll('.line-chart').remove();
-        selectAll('.brush-chart').remove();
+        selectAll('.line-chart, .brush-chart').remove();
         createLineChart();
         createBrushChart();
         createLineChartWithSingleLine();

@@ -1,7 +1,5 @@
-'use strict';
-
-import { default as PubSub } from 'pubsub-js';
 import { select, selectAll } from 'd3-selection';
+import PubSub from 'pubsub-js';
 
 import bar from './../../src/charts/bar';
 import miniTooltip from './../../src/charts/mini-tooltip';

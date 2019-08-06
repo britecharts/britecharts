@@ -1,6 +1,6 @@
 import { select, event } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
-import { default as PubSub } from 'pubsub-js';
+import PubSub from 'pubsub-js';
 
 import brush from './../../src/charts/brush';
 import { BrushDataBuilder } from './../../test/fixtures/brushChartDataBuilder';

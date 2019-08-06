@@ -1,3 +1,5 @@
+import demoPaths from './demo-charts-in-sink.json';
+
 const loadScript = (name, cb) => {
     let head = document.getElementsByTagName('head')[0],
         script = document.createElement('script');
@@ -10,20 +12,8 @@ const loadScript = (name, cb) => {
     cb && cb();
 };
 
-const demoPaths = [
-    '/britecharts/scripts/demo-stacked-area',
-    '/britecharts/scripts/demo-bar',
-    '/britecharts/scripts/demo-stacked-bar',
-    '/britecharts/scripts/demo-grouped-bar',
-    '/britecharts/scripts/demo-donut',
-    '/britecharts/scripts/demo-line',
-    '/britecharts/scripts/demo-sparkline',
-    '/britecharts/scripts/demo-step',
-    '/britecharts/scripts/demo-brush',
-    '/britecharts/scripts/demo-scatter-plot',
-    '/britecharts/scripts/demo-bullet'
-];
+
 
 window.onload = function(){
-    demoPaths.forEach((path) => loadScript(path));
+    demoPaths.demos.forEach((path) => loadScript(path));
 }
