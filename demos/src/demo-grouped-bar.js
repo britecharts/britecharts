@@ -3,7 +3,7 @@ import PubSub from 'pubsub-js';
 
 import groupedBarChart from './../../src/charts/grouped-bar';
 import tooltip from './../../src/charts/tooltip';
-import { GroupedBarChartDataBuilder } from './../../test/fixtures/GroupedBarChartDataBuilder';
+import { GroupedBarChartDataBuilder } from './../../test/fixtures/groupedBarChartDataBuilder';
 import colorSelectorHelper from './helpers/colorSelector';
 
 require('./helpers/resizeHelper');
