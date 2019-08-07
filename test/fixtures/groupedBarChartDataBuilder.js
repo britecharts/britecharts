@@ -24,5 +24,3 @@ export function GroupedBarChartDataBuilder(config){
         return this.config;
     };
 }
-
-
