@@ -65,7 +65,7 @@ const testConfig = merge([
 
 const sandboxConfig = merge([
     {
-        // mode: 'development',
+        mode: 'development',
         devtool: 'cheap-eval-source-map',
         entry: {
             sandbox: path.resolve(__dirname, './sandbox/sandbox.js'),
