@@ -163,7 +163,6 @@ function setNewChart(
     domHelpers.removeBriteChartContainer();
     domHelpers.addBritechartContainer();
 
-    console.log(storage.getData());
     let chart = window[chartType]();
     let tip = window['tooltip']();
     let miniTip = window['mini-tooltip']();
@@ -238,7 +237,7 @@ function getCurrentData() {
 
 /**
  * Gets teh current chart configuration either from the store or from the constants file.
- * If no configuraiton is found on the store, one is set from the constants.
+ * If no configuration is found on the store, one is set from the constants.
  * @return {String}     config string
  */
 function getCurrentConfig() {
@@ -278,6 +277,7 @@ function getCurrentType() {
 function _handleAddTooltip(tooltipType) {
     let initString = getCurrentConfig();
     let tooltipInitString = tooltipConfigs[tooltipType].initString;
+
     initString = initString.concat(tooltipInitString);
     configEditor.setValue(prettifyInitString(initString));
     setNewChart();
@@ -361,42 +361,6 @@ function _handleChartSelectorChange() {
     storage.setDataByKey(savedChartTypeKey, chartType);
     updateAllComponents();
 }
-
-/**
- * Safe load dependency. If there is an error, it loads the error to be displayed in the notification bar
- * @param  {file name} name     name of fiel at src/charts. probably could refactor to take full path
- */
-// async function _safeLoadDependency(name) {
-//     try {
-//         // const bar = await import('../src/charts/bar');
-//         const module = await import(path.join('../../src/charts', name));
-
-//         window[name.split('/').pop()] = module;
-//         // window[name.split('/').pop()] = require(path.basename('../../src/charts', name));
-//     } catch(e) {
-//         errors.push({
-//             error: e,
-//             filePath: name
-//         });
-//     }
-// }
-
-/**
- * Reads all of the dependencies [charts etc] from the constants file and safe loads them
- * onto the window object.
- */
-// async function loadDependencies() {
-//     const modules = Promise.all(
-//         [
-//             ...charts,
-//             ...chartDependencies,
-//         ].map(await _safeLoadDependency)
-//     );
-
-//     if (errors.length) {
-//         domHelpers.showErrors(errors);
-//     }
-// }
 
 /**
  * Updates the chart and all of the input fields and selectors to show the correct info
