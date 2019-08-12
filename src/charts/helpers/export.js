@@ -3,10 +3,10 @@ import base64 from 'base-64';
 import { colorSchemas } from './color';
 import serializeWithStyles from './style';
 
-
-const isBrowser = (typeof window !== 'undefined');
+const isBrowser = typeof window !== 'undefined';
 const isIE = navigator.msSaveOrOpenBlob;
-const IE_ERROR_MSG = 'Sorry, this feature is not available for IE. If you require this to work, check this issue https://github.com/eventbrite/britecharts/pull/652';
+const IE_ERROR_MSG =
+    'Sorry, this feature is not available for IE. If you require this to work, check this issue https://github.com/eventbrite/britecharts/pull/652';
 
 let encoder = isBrowser && window.btoa;
 
@@ -16,23 +16,25 @@ if (!encoder) {
 
 // Base64 doesn't work really well with Unicode strings, so we need to use this function
 // Ref: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
-const b64EncodeUnicode = (str) => {
-    return encoder(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-        return String.fromCharCode('0x' + p1);
-    }));
+const b64EncodeUnicode = str => {
+    return encoder(
+        encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+            return String.fromCharCode('0x' + p1);
+        }),
+    );
 };
 
 const config = {
-    styleClass : 'britechartStyle',
+    styleClass: 'britechartStyle',
     defaultFilename: 'britechart.png',
     chartBackground: 'white',
     imageSourceBase: 'data:image/svg+xml;base64,',
     titleFontSize: '15px',
-    titleFontFamily: '\'Benton Sans\', sans-serif',
+    titleFontFamily: "'Benton Sans', sans-serif",
     titleTopOffset: 15,
-    get styleBackgroundString () {
+    get styleBackgroundString() {
         return `<style>svg{background:${this.chartBackground};}</style>`;
-    }
+    },
 };
 
 /**
@@ -41,7 +43,7 @@ const config = {
  * @param  {string} filename    [download to be called <filename>.png]
  * @param  {string} title       Title for the image
  */
-function exportChart(d3svg, filename, title) {
+export function exportChart(d3svg, filename, title) {
     if (isIE) {
         // eslint-disable-next-line no-console
         console.error(IE_ERROR_MSG);
@@ -52,10 +54,10 @@ function exportChart(d3svg, filename, title) {
     let img = createImage(convertSvgToHtml.call(this, d3svg, title));
 
     img.onload = handleImageLoad.bind(
-            img,
-            createCanvas(this.width(), this.height()),
-            filename
-        );
+        img,
+        createCanvas(this.width(), this.height()),
+        filename,
+    );
 }
 
 /**
@@ -63,7 +65,7 @@ function exportChart(d3svg, filename, title) {
  * @param {string} html raw html
  */
 function addBackground(html) {
-    return html.replace('>',`>${config.styleBackgroundString}`);
+    return html.replace('>', `>${config.styleBackgroundString}`);
 }
 
 /**
@@ -72,18 +74,22 @@ function addBackground(html) {
  * @param  {SVGElement} d3svg   TYPE d3 svg element
  * @return {String}             String of passed d3
  */
-function convertSvgToHtml (d3svg, title) {
+export function convertSvgToHtml(d3svg, title) {
     if (!d3svg) {
         return;
     }
 
-    d3svg.attr('version', 1.1)
-        .attr('xmlns', 'http://www.w3.org/2000/svg');
+    d3svg.attr('version', 1.1).attr('xmlns', 'http://www.w3.org/2000/svg');
     let serializer = serializeWithStyles.initializeSerializer();
     let html = serializer(d3svg.node());
 
     html = formatHtmlByBrowser(html);
-    html = prependTitle.call(this, html, title, parseInt(d3svg.attr('width'), 10));
+    html = prependTitle.call(
+        this,
+        html,
+        title,
+        parseInt(d3svg.attr('width'), 10),
+    );
     html = addBackground(html);
 
     return html;
@@ -109,20 +115,20 @@ function createCanvas(width, height) {
  * @param  {string} svgHtml string representation of svg el
  * @return {object}  TYPE element <img>, src points at svg
  */
-function createImage(svgHtml) {
+export function createImage(svgHtml) {
     let img = new Image();
 
-    img.src = `${config.imageSourceBase}${ b64EncodeUnicode(svgHtml) }`;
+    img.src = `${config.imageSourceBase}${b64EncodeUnicode(svgHtml)}`;
 
     return img;
-};
+}
 
 /**
  * Draws image on canvas
  * @param  {object} image TYPE:el <img>, to be drawn
  * @param  {object} canvas TYPE: el <canvas>, to draw on
  */
-function drawImageOnCanvas(image, canvas) {
+export function drawImageOnCanvas(image, canvas) {
     canvas.getContext('2d').drawImage(image, 0, 0);
 
     return canvas;
@@ -136,7 +142,11 @@ function drawImageOnCanvas(image, canvas) {
  * @param  {string} filename
  * @param  {string} extensionType
  */
-function downloadCanvas(canvas, filename=config.defaultFilename, extensionType='image/png') {
+function downloadCanvas(
+    canvas,
+    filename = config.defaultFilename,
+    extensionType = 'image/png',
+) {
     let url = canvas.toDataURL(extensionType);
     let link = document.createElement('a');
 
@@ -154,7 +164,10 @@ function downloadCanvas(canvas, filename=config.defaultFilename, extensionType='
  */
 function formatHtmlByBrowser(html) {
     if (navigator.userAgent.search('FireFox') > -1) {
-        return html.replace(/url.*&quot;\)/, 'url(&quot;linearGradient[id*="-gradient-"]&quot;);');
+        return html.replace(
+            /url.*&quot;\)/,
+            'url(&quot;linearGradient[id*="-gradient-"]&quot;);',
+        );
     }
 
     return html;
@@ -183,9 +196,16 @@ function prependTitle(html, title, svgWidth) {
     if (!title || !svgWidth) {
         return html;
     }
-    let {grey} = colorSchemas;
+    let { grey } = colorSchemas;
 
-    html =  html.replace(/<g/,`<text x="${this.margin().left}" y="${config.titleTopOffset}" font-family="${config.titleFontFamily}" font-size="${config.titleFontSize}" fill="${grey[6]}"> ${title} </text><g `);
+    html = html.replace(
+        /<g/,
+        `<text x="${this.margin().left}" y="${
+            config.titleTopOffset
+        }" font-family="${config.titleFontFamily}" font-size="${
+            config.titleFontSize
+        }" fill="${grey[6]}"> ${title} </text><g `,
+    );
 
     return html;
 }
@@ -194,6 +214,5 @@ export default {
     exportChart,
     convertSvgToHtml,
     createImage,
-    drawImageOnCanvas
+    drawImageOnCanvas,
 };
-
