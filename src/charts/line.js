@@ -706,6 +706,9 @@ export default function module() {
         let lines,
             topicLine;
 
+        // clear tooltip chache on path redraw
+        pathYCache = {};
+
         topicLine = line()
             .curve(curveMap[lineCurve])
             .x(({date}) => xScale(date))
