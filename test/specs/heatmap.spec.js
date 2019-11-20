@@ -117,6 +117,26 @@ describe('Heatmap Chart', () => {
         });
     });
 
+    describe('custom axis labels', () => {
+
+        it('should render custom y axis labels correctly', () => {
+            const customYAxisLabels = ['Test1', 'Test2'];
+
+            // clear container to avoid having multiple
+            //  charts within one container
+            containerFixture.html('');
+            containerFixture.datum(dataset).call(heatmapChart);
+            heatmapChart.yAxisLabels(customYAxisLabels);
+
+            const yAxisLabels = containerFixture.select('svg')
+                .selectAll('.heatmap .y-axis-label');
+
+            yAxisLabels.each((yAxisLabel, i) => {
+                expect(yAxisLabel).toBe(customYAxisLabels[i]);
+            });
+        });
+    });
+
     describe('API', () => {
 
         it('should provide boxSize getter and setter', () => {
@@ -190,6 +210,18 @@ describe('Heatmap Chart', () => {
 
             heatmapChart.width(expected);
             actual = heatmapChart.width();
+
+            expect(previous).not.toBe(actual);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide yAxisLabels getter and setter', () => {
+            let previous = heatmapChart.yAxisLabels(),
+                expected = ['One', 'Two', 'Three'],
+                actual;
+
+            heatmapChart.yAxisLabels(expected);
+            actual = heatmapChart.yAxisLabels();
 
             expect(previous).not.toBe(actual);
             expect(actual).toBe(expected);
