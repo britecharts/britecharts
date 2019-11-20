@@ -76,6 +76,8 @@ export default function module() {
 
         animationDuration = 2000,
 
+        yAxisLabels,
+
         dayLabels,
         daysHuman = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
         dayLabelWidth = 30,
@@ -214,10 +216,11 @@ export default function module() {
      * Draws the day labels
      */
     function drawDayLabels() {
-        let dayLabelsGroup = svg.select('.day-labels-group');
+        const dayLabelsGroup = svg.select('.day-labels-group');
+        const arrayForYAxisLabels = yAxisLabels || daysHuman;
 
         dayLabels = svg.select('.day-labels-group').selectAll('.day-label')
-            .data(daysHuman);
+            .data(arrayForYAxisLabels);
 
         dayLabels.enter()
             .append('text')
@@ -226,7 +229,7 @@ export default function module() {
             .attr('y', (d, i) => i * boxSize)
             .style('text-anchor', 'start')
             .style('dominant-baseline', 'central')
-            .attr('class', 'day-label');
+            .attr('class', 'day-label y-axis-label');
 
         dayLabelsGroup.attr('transform', `translate(-${dayLabelWidth}, ${boxSize / 2})`);
     }
@@ -322,6 +325,21 @@ export default function module() {
             ...margin,
             ..._x
         };
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the y-axis labels of the chart
+     * @param  {String[]} _x            An array of string labels across the y-axis
+     * @return {yAxisLabels | module}   Current yAxisLabels array or Chart module to chain calls
+     * @public
+     */
+    exports.yAxisLabels = function (_x) {
+        if (!arguments.length) {
+            return yAxisLabels;
+        }
+        yAxisLabels = _x;
 
         return this;
     };
