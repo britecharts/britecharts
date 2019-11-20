@@ -1,4 +1,5 @@
 2.13.0
+2.13.0
 ------
 * Feature - Customizable y labels for Heatmap (@DalerAsrorov)
 * Refactor - Updates Babel to 7.5 (@gagoar)
