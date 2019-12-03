@@ -1,3 +1,4 @@
+2.12.1
 2.13.0
 ------
 * Feature - Customizable y labels for Heatmap (@DalerAsrorov)
