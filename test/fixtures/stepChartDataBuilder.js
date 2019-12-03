@@ -1,26 +1,35 @@
-import _ from 'underscore';
-import jsonStepDataSmall from '../json/stepDataSmall.json';
-import jsonStepDataMedium from '../json/stepDataMedium.json';
+define(function(require) {
+    'use strict';
 
+    var _ = require('underscore'),
 
-export function StepDataBuilder(config){
-    this.Klass = StepDataBuilder;
+        jsonStepDataSmall = require('../json/stepDataSmall.json'),
+        jsonStepDataMedium = require('../json/stepDataMedium.json');
 
-    this.config = _.defaults({}, config);
+    function StepDataBuilder(config){
+        this.Klass = StepDataBuilder;
 
-    this.withSmallData = function() {
-        var attributes = _.extend({}, this.config, jsonStepDataSmall);
+        this.config = _.defaults({}, config);
 
-        return new this.Klass(attributes);
+        this.withSmallData = function() {
+            var attributes = _.extend({}, this.config, jsonStepDataSmall);
+
+            return new this.Klass(attributes);
+        }
+
+        this.withMediumData = function() {
+            var attributes = _.extend({}, this.config, jsonStepDataMedium);
+
+            return new this.Klass(attributes);
+        }
+
+        this.build = function() {
+            return this.config;
+        };
     }
 
-    this.withMediumData = function() {
-        var attributes = _.extend({}, this.config, jsonStepDataMedium);
-
-        return new this.Klass(attributes);
-    }
-
-    this.build = function() {
-        return this.config;
+    return {
+        StepDataBuilder: StepDataBuilder
     };
-}
+
+});

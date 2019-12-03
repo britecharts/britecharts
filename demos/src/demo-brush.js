@@ -1,20 +1,23 @@
-import { select, event } from 'd3-selection';
-import { timeFormat } from 'd3-time-format';
-import PubSub from 'pubsub-js';
+'use strict';
 
-import brush from './../../src/charts/brush';
-import { BrushDataBuilder } from './../../test/fixtures/brushChartDataBuilder';
+const d3Selection = require('d3-selection');
+const d3TimeFormat = require('d3-time-format');
+const PubSub = require('pubsub-js');
+
+const brush = require('./../../src/charts/brush');
+const dataBuilder = require('./../../test/fixtures/brushChartDataBuilder');
 
 require('./helpers/resizeHelper');
 
+
 function createBrushChart() {
     const brushChart = brush();
-    const testDataSet = new BrushDataBuilder();
-    const brushContainer = select('.js-brush-chart-container');
+    const testDataSet = new dataBuilder.BrushDataBuilder();
+    const brushContainer = d3Selection.select('.js-brush-chart-container');
     const containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false;
     let dataset;
 
-    let elementDateRange = select('.js-date-range');
+    let elementDateRange = d3Selection.select('.js-date-range');
 
     if (containerWidth) {
         dataset = testDataSet.withSimpleData().build();
@@ -23,10 +26,10 @@ function createBrushChart() {
             .width(containerWidth)
             .height(125)
             .on('customBrushStart', function(brushExtent) {
-                let format = timeFormat('%m/%d/%Y');
+                let format = d3TimeFormat.timeFormat('%m/%d/%Y');
 
-                select('.js-start-date').text(format(brushExtent[0]));
-                select('.js-end-date').text(format(brushExtent[1]));
+                d3Selection.select('.js-start-date').text(format(brushExtent[0]));
+                d3Selection.select('.js-end-date').text(format(brushExtent[1]));
 
                 elementDateRange.classed('is-hidden', false);
             })
@@ -48,11 +51,11 @@ function createBrushChart() {
 }
 
 // Show charts if container available
-if (select('.js-brush-chart-container').node()){
+if (d3Selection.select('.js-brush-chart-container').node()){
     let brushChart = createBrushChart();
 
     const redrawCharts = function () {
-        const brushContainer = select('.js-brush-chart-container');
+        const brushContainer = d3Selection.select('.js-brush-chart-container');
         const containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false;
 
         brushChart
@@ -65,8 +68,8 @@ if (select('.js-brush-chart-container').node()){
     // Redraw charts on window resize
     PubSub.subscribe('resize', redrawCharts);
 
-    select('#clear-selection').on('click', function (e) {
+    d3Selection.select('#clear-selection').on('click', function (event) {
         brushChart.dateRange([null, null]);
-        event.preventDefault();
+        d3Selection.event.preventDefault();
     });
 }

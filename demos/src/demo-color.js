@@ -1,5 +1,7 @@
-import { select } from 'd3-selection';
-import colors from './../../src/charts/helpers/color';
+'use strict';
+
+const d3Selection = require('d3-selection');
+const colors = require('./../../src/charts/helpers/color');
 
 function createColors() {
     const { colorSchemas } = colors;
@@ -56,7 +58,7 @@ function createSingleColors() {
     });
 }
 
-if (select('.js-color-container').node()) {
+if (d3Selection.select('.js-color-container').node()) {
     createColors();
     createGradients();
     createSingleColors();

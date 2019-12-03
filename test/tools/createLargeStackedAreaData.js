@@ -1,11 +1,23 @@
 // to run `node <path to>createLargeStackedAreaData.js`
-const fs = require('fs');
-const config = {
+var fs = require('fs'),
+    writable,
+    config,
+    monthHash,
+    currentDate,
+    toAdd,
+    i = 0;
+
+writable = {
+    data : []
+};
+
+config = {
     path: './../json/areaDataLarge.json',
-    sources: ['google', 'facebook', 'twitter', 'user_newsvarter', 'user_email', 'unknown'],
+    sources: ['google', 'facebook','twitter', 'user_newsvarter', 'user_email', 'unknown'],
     startDate: new Date()
 };
-const monthHash = {
+
+monthHash = {
     Jan: '01',
     Feb: '02',
     Mar: '03',
@@ -19,12 +31,6 @@ const monthHash = {
     Nov: '11',
     Dev: '12'
 };
-let writable = {
-        data: []
-    };
-let currentDate;
-let toAdd;
-let i = 0;
 
 for (; i < 100; i++) {
     currentDate = new Date(new Date().setDate(config.startDate.getDate() + i));
