@@ -1,108 +1,120 @@
-import { format } from 'd3-format';
+define(function(require) {
+    'use strict';
 
-let idCounter = 0;
+    const d3Format = require('d3-format');
 
-const integerValueFormats = {
-    small: {
-        limit: 10,
-        format: format('')
-    },
-    medium: {
-        limit: 1000,
-        format: format('')
-    },
-    large: {
-        limit: null,
-        format: format('.2s')
-    }
-};
+    let idCounter = 0;
 
-const decimalValueFormats = {
-    small: {
-        limit: 10,
-        format: format('.3f')
-    },
-    medium: {
-        limit: 100,
-        format: format('.1f')
-    },
-    large: {
-        limit: null,
-        format: format('.2s')
-    }
-};
+    const integerValueFormats = {
+        small: {
+            limit: 10,
+            format: d3Format.format('')
+        },
+        medium: {
+            limit: 1000,
+            format: d3Format.format('')
+        },
+        large: {
+            limit: null,
+            format: d3Format.format('.2s')
+        }
+    };
 
-/**
- * Return a relative size for the value given, based in our decimal or integer tables
- * @param {Number} value    Value to assess its relative size
- * @param {Object} limits   Object stablishing the limits and formats
- * to consider the value of a given size
- */
-const getValueSize = (value, limits) => {
-    let size = 'large';
+    const decimalValueFormats = {
+        small: {
+            limit: 10,
+            format: d3Format.format('.3f')
+        },
+        medium: {
+            limit: 100,
+            format: d3Format.format('.1f')
+        },
+        large: {
+            limit: null,
+            format: d3Format.format('.2s')
+        }
+    };
 
-    if (value < limits.small.limit) {
-        size = 'small';
-    } else if (value < limits.medium.limit) {
-        size = 'medium';
-    }
+    /**
+     * Return a relative size for the value given, based in our decimal or integer tables
+     * @param {Number} value    Value to assess its relative size
+     * @param {Object} limits   Object stablishing the limits and formats
+     * to consider the value of a given size
+     */
+    const getValueSize = (value, limits) => {
+        let size = 'large';
 
-    return size;
-};
+        if (value < limits.small.limit) {
+            size = 'small';
+        } else if (value < limits.medium.limit) {
+            size = 'medium';
+        }
 
-/**
- * Calculates percentage of value from total
- * @param  {Number}  value    Value to check
- * @param  {Number}  total    Sum of values
- * @param  {String}  decimals Specifies number of decimals https://github.com/d3/d3-format
- * @return {String}           Percentage
- */
-export const calculatePercent = (value, total, decimals) => {
-    const percent = total ? (value / total * 100) : 0;
+        return size;
+    };
 
-    return format(decimals)(percent);
-};
+    /**
+     * Calculates percentage of value from total
+     * @param  {Number}  value    Value to check
+     * @param  {Number}  total    Sum of values
+     * @param  {String}  decimals Specifies number of decimals https://github.com/d3/d3-format
+     * @return {String}           Percentage
+     */
+    const calculatePercent = (value, total, decimals) => {
+        const percent = total ? (value / total * 100) : 0;
 
-/**
- * Checks if a number is an integer or a decimal value
- * @param  {Number}  value Value to check
- * @return {Boolean}       If it is an iteger
- */
-export const isInteger = (value) => {
-    return value % 1 === 0;
-};
+        return d3Format.format(decimals)(percent);
+    };
 
-/**
- * Formats a floating point value depending on its value range
- * @param  {Number} value Decimal point value to format
- * @return {Number}       Formatted value to show
- */
-export const formatDecimalValue = (value) => {
-    let size = getValueSize(value, decimalValueFormats);
-    let format = decimalValueFormats[size].format;
+    /**
+     * Checks if a number is an integer or a decimal value
+     * @param  {Number}  value Value to check
+     * @return {Boolean}       If it is an iteger
+     */
+    const isInteger = (value) => {
+        return value % 1 === 0;
+    };
 
-    return format(value);
-};
+    /**
+     * Formats a floating point value depending on its value range
+     * @param  {Number} value Decimal point value to format
+     * @return {Number}       Formatted value to show
+     */
+    const formatDecimalValue = (value) => {
+        let size = getValueSize(value, decimalValueFormats);
+        let format = decimalValueFormats[size].format;
 
-/**
- * Formats an integer value depending on its value range
- * @param  {Number} value Decimal point value to format
- * @return {Number}       Formatted value to show
- */
-export const formatIntegerValue = (value) => {
-    let size = getValueSize(value, integerValueFormats);
-    let format = integerValueFormats[size].format;
+        return format(value);
+    };
 
-    return format(value);
-};
+    /**
+     * Formats an integer value depending on its value range
+     * @param  {Number} value Decimal point value to format
+     * @return {Number}       Formatted value to show
+     */
+    const formatIntegerValue = (value) => {
+        let size = getValueSize(value, integerValueFormats);
+        let format = integerValueFormats[size].format;
 
-/**
- * Generates a unique id with a prefix
- * @param  {String} prefix   Prefix to add before the id
- * @return {String}          Unique id
- */
-export const uniqueId = (prefix) => {
-    const id = ++idCounter;
+        return format(value);
+    };
 
-    return `${prefix.toString()}-${id}`;
-};
+    /**
+     * Generates a unique id with a prefix
+     * @param  {String} prefix   Prefix to add before the id
+     * @return {String}          Unique id
+     */
+    const uniqueId = (prefix) => {
+        const id = ++idCounter;
+
+        return `${prefix.toString()}-${id}`;
+    };
+
+    return {
+        calculatePercent,
+        isInteger,
+        formatDecimalValue,
+        formatIntegerValue,
+        uniqueId
+    };
+});

@@ -1,53 +1,56 @@
-import { select } from 'd3-selection';
-import colors from './../../../src/charts/helpers/color';
+define(function(require) {
 
-const selectClass = 'form-control';
+    const d3Selection = require('d3-selection');
+    const colors = require('./../../../src/charts/helpers/color');
 
-/**
- * Creates a color schema selector
- * @param  {String}   selectContainerSelector   CSS DOM selector for the select box root
- * @param  {String}   chartSelector             CSS DOM selector of the chart to render
- * @param  {Function} callback                  Optional callback to execute after color change
- * @return {void}
- */
-function createColorSelector(selectContainerSelector, chartSelector, callback) {
-    const colorKeys = Object.keys(colors.colorSchemas);
-    const containerSelector = document.querySelector(selectContainerSelector);
+    const selectClass = 'form-control';
 
-    if (!containerSelector) { return; }
+    /**
+     * Creates a color schema selector
+     * @param  {String}   selectContainerSelector   CSS DOM selector for the select box root
+     * @param  {String}   chartSelector             CSS DOM selector of the chart to render
+     * @param  {Function} callback                  Optional callback to execute after color change
+     * @return {void}
+     */
+    function createColorSelector(selectContainerSelector, chartSelector, callback) {
+        const colorKeys = Object.keys(colors.colorSchemas);
+        const containerSelector = document.querySelector(selectContainerSelector);
 
-    // Create Select
-    let sel = document.createElement('select');
+        if (!containerSelector) { return; }
 
-    sel.className += ' ' + selectClass;
+        // Create Select
+        let sel = document.createElement('select');
 
-    // And fill with options
-    colorKeys.forEach(function(key) {
-            let opt = document.createElement('option');
+        sel.className += ' ' + selectClass;
 
-            opt.value = key;
-            opt.text = colors.colorSchemasHuman[key];
-            sel.add(opt);
-        });
+        // And fill with options
+        colorKeys.forEach(function(key) {
+                let opt = document.createElement('option');
 
-    // Add it to the DOM
-    containerSelector.appendChild(sel);
+                opt.value = key;
+                opt.text = colors.colorSchemasHuman[key];
+                sel.add(opt);
+            });
 
-    // Listen for changes
-    select(sel)
-        .on('change', function() {
-            // Get new color schema
-            let newSchema = colors.colorSchemas[this.value];
+        // Add it to the DOM
+        containerSelector.appendChild(sel);
 
-            select(chartSelector).remove();
+        // Listen for changes
+        d3Selection.select(sel)
+            .on('change', function() {
+                // Get new color schema
+                let newSchema = colors.colorSchemas[this.value];
 
-            // Draw
-            if (callback) {
-                callback(newSchema);
-            }
-        });
-}
+                d3Selection.select(chartSelector).remove();
 
-export default {
-    createColorSelector
-};
+                // Draw
+                if (callback) {
+                    callback(newSchema);
+                }
+            });
+    }
+
+    return {
+        createColorSelector: createColorSelector
+    };
+});

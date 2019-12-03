@@ -1,22 +1,25 @@
-import { select, selectAll } from 'd3-selection';
-import PubSub from 'pubsub-js';
+'use strict';
 
-import sparklineChart from './../../src/charts/sparkline';
-import { SparklineDataBuilder } from './../../test/fixtures/sparklineDataBuilder';
+const d3Selection = require('d3-selection');
+
+const PubSub = require('pubsub-js');
+
+const sparklineChart = require('./../../src/charts/sparkline');
+const dataBuilder = require('./../../test/fixtures/sparklineDataBuilder');
+
+const aTestDataSet = () => new dataBuilder.SparklineDataBuilder();
+let redrawCharts;
 
 require('./helpers/resizeHelper');
 
 
-const aTestDataSet = () => new SparklineDataBuilder();
-let redrawCharts;
-
 function createSparklineChart() {
     let sparkline = sparklineChart(),
-        containerWidth = select('.js-sparkline-chart-container').node().getBoundingClientRect().width,
-        container = select('.js-sparkline-chart-container'),
+        containerWidth = d3Selection.select('.js-sparkline-chart-container').node().getBoundingClientRect().width,
+        container = d3Selection.select('.js-sparkline-chart-container'),
         dataset;
 
-    select('#button').on('click', function() {
+    d3Selection.select('#button').on('click', function() {
         sparkline.exportChart('sparkline.png', 'Britechart Sparkline Chart');
     });
 
@@ -35,8 +38,8 @@ function createSparklineChart() {
 
 function createLoadingState() {
     let sparkline = sparklineChart(),
-        containerWidth = select('.js-loading-container').node().getBoundingClientRect().width,
-        container = select('.js-loading-container'),
+        containerWidth = d3Selection.select('.js-loading-container').node().getBoundingClientRect().width,
+        container = d3Selection.select('.js-loading-container'),
         dataset = null;
 
     if (containerWidth) {
@@ -45,12 +48,12 @@ function createLoadingState() {
 }
 
 // Show charts if container available
-if (select('.js-sparkline-chart-container').node()){
+if (d3Selection.select('.js-sparkline-chart-container').node()){
     createSparklineChart();
     createLoadingState();
 
     redrawCharts = function(){
-        selectAll('.sparkline').remove();
+        d3Selection.selectAll('.sparkline').remove();
         createSparklineChart();
         createLoadingState();
     };

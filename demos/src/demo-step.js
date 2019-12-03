@@ -1,26 +1,28 @@
-import { select, selectAll } from 'd3-selection';
-import PubSub from 'pubsub-js';
+'use strict';
 
-import step from './../../src/charts/step';
-import miniTooltip from './../../src/charts/mini-tooltip';
-import { StepDataBuilder } from './../../test/fixtures/stepChartDataBuilder';
+const d3Selection = require('d3-selection');
+const PubSub = require('pubsub-js');
+
+const step = require('./../../src/charts/step');
+const miniTooltip = require('./../../src/charts/mini-tooltip');
+
+const dataBuilder = require('./../../test/fixtures/stepChartDataBuilder');
+let redrawCharts;
+
+const aTestDataSet = () => new dataBuilder.StepDataBuilder();
 
 require('./helpers/resizeHelper');
-
-
-const aTestDataSet = () => new StepDataBuilder();
-let redrawCharts;
 
 function createStepChart() {
     let stepChart = step(),
         tooltip = miniTooltip(),
-        stepContainer = select('.js-step-chart-container'),
+        stepContainer = d3Selection.select('.js-step-chart-container'),
         containerWidth = stepContainer.node() ? stepContainer.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
 
     if (containerWidth) {
-        select('#button').on('click', function() {
+        d3Selection.select('#button').on('click', function() {
             stepChart.exportChart('stepchart.png', 'Britecharts Step Chart');
         });
 
@@ -48,19 +50,19 @@ function createStepChart() {
 
         tooltip.nameLabel('key');
 
-        tooltipContainer = select('.js-step-chart-container .step-chart .metadata-group');
+        tooltipContainer = d3Selection.select('.js-step-chart-container .step-chart .metadata-group');
         tooltipContainer.datum([]).call(tooltip);
     }
 }
 
 // Show charts if container available
-if (select('.js-step-chart-container').node()){
+if (d3Selection.select('.js-step-chart-container').node()){
     createStepChart();
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
     redrawCharts = function(){
-        select('.step-chart').remove();
+        d3Selection.select('.step-chart').remove();
 
         createStepChart();
     };
