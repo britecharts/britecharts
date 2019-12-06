@@ -12,6 +12,7 @@ import stackedBar from './charts/stacked-bar.js';
 import heatmap from './charts/heatmap.js';
 import step from './charts/step.js';
 import brush from './charts/brush.js';
+import bullet from './charts/bullet.js';
 import colors from './charts/helpers/color.js';
 
 export {
@@ -29,5 +30,6 @@ export {
     heatmap,
     step,
     brush,
+    bullet,
     colors
 };
