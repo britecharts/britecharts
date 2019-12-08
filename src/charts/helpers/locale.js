@@ -9,6 +9,7 @@ define(function (require) {
      * @param  {string | Object} locale The locale in string or object format.
      * @return {Promise}       Result of formatDefaultLocale call.
      */
+
     function setDefaultLocale(locale) {
         if (typeof locale === 'string' && isValidLocale(locale)) {
             return json(`${FORMAT_LOCALE_URL}/${locale}.json`)
@@ -32,7 +33,8 @@ define(function (require) {
     }
 
     function isValidLocaleDefinition(locale) {
-        const requiredKeys = ["decimal", "thousands", "grouping", "currency"]
+        const requiredKeys = ['decimal', 'thousands', 'grouping', 'currency']
+
         return requiredKeys.every(localeKey => locale.hasOwnProperty(localeKey));
     }
 
