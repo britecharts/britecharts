@@ -767,6 +767,18 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
                 expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
             });
+
+            it('should provide locale getter and setter', () => {
+                let defaultLocale = false,
+                    testLocale = 'en-GB',
+                    newLocale;
+
+                barChart.locale(testLocale);
+                newLocale = barChart.locale();
+
+                expect(defaultLocale).not.toBe(newLocale);
+                expect(newLocale).toBe(testLocale);
+            })
         });
     });
 });

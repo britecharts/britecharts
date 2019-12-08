@@ -9,7 +9,6 @@ define(function(require) {
     const d3Format = require('d3-format');
     const d3Scale = require('d3-scale');
     const d3Selection = require('d3-selection');
-    const d3Transition = require('d3-transition');
 
     const textHelper = require('./helpers/text');
     const {exportChart} = require('./helpers/export');
@@ -137,6 +136,7 @@ define(function(require) {
             maskGridLines,
             shouldReverseColorList = true,
             locale = false,
+            localeRequest,
 
             // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
@@ -167,15 +167,10 @@ define(function(require) {
          */
         function exports(_selection) {
             if (locale && enableLabels) {
-                setDefaultLocale(locale)
-                    .then(() => initChart(_selection))
-            } else {
-                initChart(_selection);
+                localeRequest = setDefaultLocale(locale);
             }
-        }
 
-        function initChart(selection) {
-            selection.each(function(_data) {
+            _selection.each(function(_data) {
                 chartWidth = width - margin.left - margin.right - (yAxisPaddingBetweenChart * 1.2);
                 chartHeight = height - margin.top - margin.bottom;
                 ({data, dataZeroed} = sortData(cleanData(_data)));
@@ -188,11 +183,14 @@ define(function(require) {
                 drawBars();
                 drawAxis();
 
-                if (enableLabels) {
+                if (enableLabels && locale) {
+                    localeRequest
+                        .then(() => drawLabels())
+                        .catch(() => undefined);
+                } else {
                     drawLabels();
                 }
             });
-
         }
 
         /**

@@ -10,7 +10,8 @@ define([
     'helpers/number',
     'helpers/date',
     'helpers/export',
-    'helpers/axis'
+    'helpers/axis',
+    'helpers/locale'
     ], function (
         _,
         $,
@@ -23,7 +24,8 @@ define([
         number,
         date,
         exportChart,
-        axis
+        axis,
+        locale
     ) {
     'use strict';
 
@@ -439,6 +441,35 @@ define([
                         expect(actual).toEqual(yearFormat);
                     });
                 });
+            });
+        });
+
+        describe('locale', () => {
+            it('should return a rejected promise upon an invalid locale', (done) => {
+                expectAsync(locale.setDefaultLocale('foo-bar')).toBeRejectedWith('Please pass in a valid locale string (az-AZ) or locale object definition');
+                done();
+            });
+
+            it('should return a resolved promise when a valid locale definition is given', (done) => {
+                const validLocaleDefinition = {
+                    'decimal': '.',
+                    'thousands': ',',
+                    'grouping': [
+                      3
+                    ],
+                    'currency': [
+                      '$',
+                      ''
+                    ]
+                  };
+                expectAsync(locale.setDefaultLocale(validLocaleDefinition)).toBeResolved();
+                done();
+            });
+
+            it('should return a rejected promise when a invalid locale definition is given', (done) => {
+                const invalidLocaleDefinition = {};
+                expectAsync(locale.setDefaultLocale(invalidLocaleDefinition)).toBeRejected();
+                done();
             });
         });
     });
