@@ -16,6 +16,7 @@ define(function(require) {
     const colorHelper = require('./helpers/color');
     const { bar: barChartLoadingMarkup } = require('./helpers/load');
     const {uniqueId} = require('./helpers/number');
+    const {setDefaultLocale} = require('./helpers/locale');
 
     const PERCENTAGE_FORMAT = '%';
     const NUMBER_FORMAT = ',f';
@@ -135,6 +136,7 @@ define(function(require) {
             baseLine,
             maskGridLines,
             shouldReverseColorList = true,
+            locale = false,
 
             // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
@@ -164,7 +166,16 @@ define(function(require) {
          * @param {BarChartData} _data The data to attach and generate the chart
          */
         function exports(_selection) {
-            _selection.each(function(_data) {
+            if (locale && enableLabels) {
+                setDefaultLocale(locale)
+                    .then(() => initChart(_selection))
+            } else {
+                initChart(_selection);
+            }
+        }
+
+        function initChart(selection) {
+            selection.each(function(_data) {
                 chartWidth = width - margin.left - margin.right - (yAxisPaddingBetweenChart * 1.2);
                 chartHeight = height - margin.top - margin.bottom;
                 ({data, dataZeroed} = sortData(cleanData(_data)));
@@ -181,6 +192,7 @@ define(function(require) {
                     drawLabels();
                 }
             });
+
         }
 
         /**
@@ -1288,6 +1300,15 @@ define(function(require) {
                 return yTicks;
             }
             yTicks = _x;
+
+            return this;
+        };
+
+        exports.locale = function (_x) {
+            if (!arguments.length) {
+                return locale;
+            }
+            locale = _x;
 
             return this;
         };
