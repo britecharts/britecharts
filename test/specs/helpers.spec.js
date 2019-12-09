@@ -462,15 +462,35 @@ define([
                       ''
                     ]
                   };
+
                 expectAsync(locale.setDefaultLocale(validLocaleDefinition)).toBeResolved();
                 done();
             });
 
             it('should return a rejected promise when a invalid locale definition is given', (done) => {
                 const invalidLocaleDefinition = {};
+
                 expectAsync(locale.setDefaultLocale(invalidLocaleDefinition)).toBeRejected();
                 done();
             });
+
+            // it('should return a resolved promise when a valid locale string is given', (done) => {
+            //     const validLocaleDefinition = {
+            //         'decimal': '.',
+            //         'thousands': ',',
+            //         'grouping': [
+            //           3
+            //         ],
+            //         'currency': [
+            //           '$',
+            //           ''
+            //         ]
+            //       };
+
+            //     spyOn(d3, 'json').and.returnValue(Promise.resolve(validLocaleDefinition));
+            //     expectAsync(locale.setDefaultLocale('en-US')).toBeResolved();
+            //     done();
+            // });
         });
     });
 });

@@ -9,6 +9,7 @@ define(function(require) {
     const d3Format = require('d3-format');
     const d3Scale = require('d3-scale');
     const d3Selection = require('d3-selection');
+    const d3Transition = require('d3-transition');
 
     const textHelper = require('./helpers/text');
     const {exportChart} = require('./helpers/export');
@@ -19,7 +20,6 @@ define(function(require) {
 
     const PERCENTAGE_FORMAT = '%';
     const NUMBER_FORMAT = ',f';
-
 
     /**
      * @typedef BarChartData
@@ -136,7 +136,7 @@ define(function(require) {
             maskGridLines,
             shouldReverseColorList = true,
             locale = false,
-            localeRequest,
+            localeRequest = Promise.resolve(),
 
             // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
@@ -183,12 +183,10 @@ define(function(require) {
                 drawBars();
                 drawAxis();
 
-                if (enableLabels && locale) {
+                if (enableLabels) {
                     localeRequest
                         .then(() => drawLabels())
-                        .catch(() => undefined);
-                } else {
-                    drawLabels();
+                        .catch((error) => new Error(error));
                 }
             });
         }
@@ -1302,6 +1300,13 @@ define(function(require) {
             return this;
         };
 
+        /**
+         * Gets or Sets the locale which d3-format uses.
+         * (Default is en-US)
+         * @param  {string} _x                   Desired locale
+         * @return {string | Object | module}    Current locale or Chart module to chain calls
+         * @public
+         */
         exports.locale = function (_x) {
             if (!arguments.length) {
                 return locale;
