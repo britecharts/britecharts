@@ -24,7 +24,8 @@ module.exports = function(config) {
                 served: true,
                 included: false
             },
-            './node_modules/phantomjs-polyfill-find/find-polyfill.js'
+            './node_modules/phantomjs-polyfill-find/find-polyfill.js',
+            './node_modules/babel-polyfill/dist/polyfill.js',
         ],
 
 

@@ -1,7 +1,8 @@
-define(function() {
+define(function () {
 
     const d3Shape = require('d3-shape');
     const d3Time = require('d3-time');
+    const FORMAT_LOCALE_URL = 'https://cdn.jsdelivr.net/npm/d3-format/locale';
 
     const axisTimeCombinations = {
         MINUTE_HOUR: 'minute-hour',
@@ -11,7 +12,7 @@ define(function() {
         CUSTOM: 'custom'
     };
 
-    const timeBenchmarks= {
+    const timeBenchmarks = {
         ONE_AND_A_HALF_YEARS: 47304000000,
         ONE_YEAR: 31536000365,
         ONE_DAY: 86400001
@@ -38,7 +39,7 @@ define(function() {
     const timeIntervals = {
         timeMillisecond: d3Time.timeMillisecond,
         utcMillisecond: d3Time.utcMillisecond,
-        timeSecond: d3Time.timeSecond ,
+        timeSecond: d3Time.timeSecond,
         utcSecond: d3Time.utcSecond,
         timeMinute: d3Time.timeMinute,
         utcMinute: d3Time.utcMinute,
@@ -74,7 +75,8 @@ define(function() {
         emptyDonutData,
         timeBenchmarks,
         lineGradientId: 'lineGradientId',
-        timeIntervals
+        timeIntervals,
+        FORMAT_LOCALE_URL
     };
 });
 

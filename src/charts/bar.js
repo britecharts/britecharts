@@ -16,10 +16,10 @@ define(function(require) {
     const colorHelper = require('./helpers/color');
     const { bar: barChartLoadingMarkup } = require('./helpers/load');
     const {uniqueId} = require('./helpers/number');
+    const {setDefaultLocale} = require('./helpers/locale');
 
     const PERCENTAGE_FORMAT = '%';
     const NUMBER_FORMAT = ',f';
-
 
     /**
      * @typedef BarChartData
@@ -135,6 +135,8 @@ define(function(require) {
             baseLine,
             maskGridLines,
             shouldReverseColorList = true,
+            locale = false,
+            localeRequest = Promise.resolve(),
 
             // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
@@ -164,6 +166,10 @@ define(function(require) {
          * @param {BarChartData} _data The data to attach and generate the chart
          */
         function exports(_selection) {
+            if (locale && enableLabels) {
+                localeRequest = setDefaultLocale(locale);
+            }
+
             _selection.each(function(_data) {
                 chartWidth = width - margin.left - margin.right - (yAxisPaddingBetweenChart * 1.2);
                 chartHeight = height - margin.top - margin.bottom;
@@ -178,7 +184,9 @@ define(function(require) {
                 drawAxis();
 
                 if (enableLabels) {
-                    drawLabels();
+                    localeRequest
+                        .then(() => drawLabels())
+                        .catch((error) => new Error(error));
                 }
             });
         }
@@ -1288,6 +1296,24 @@ define(function(require) {
                 return yTicks;
             }
             yTicks = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the locale which d3-format uses.
+         * (Default is en-US)
+         * @param  {string} _x                   Desired locale
+         * @param  {string | Object}  [_x = 'en-US']  _x  Desired locale in string or object format.
+         *                                                Possible string and object values can be found here: https://cdn.jsdelivr.net/npm/d3-format/locale/.
+         * @return {string | Object | module}    Current locale or Chart module to chain calls
+         * @public
+         */
+        exports.locale = function (_x) {
+            if (!arguments.length) {
+                return locale;
+            }
+            locale = _x;
 
             return this;
         };
