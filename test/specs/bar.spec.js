@@ -178,7 +178,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function (d3, chart, dataBuilder) {
             });
 
             xdescribe('Locale', () => {
-                fit('should show the $ sign as a default currency symbol', () => {
+                it('should show the $ sign as a default currency symbol', () => {
                     const newDataset = buildDataSet('withColors');
 
                     barChart.enableLabels(true).labelsNumberFormat('$,.2f');
