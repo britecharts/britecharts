@@ -1,4 +1,4 @@
-define(function(require) {
+define(function (require) {
     'use strict';
 
     const d3Array = require('d3-array');
@@ -12,11 +12,11 @@ define(function(require) {
     const d3Transition = require('d3-transition');
 
     const textHelper = require('./helpers/text');
-    const {exportChart} = require('./helpers/export');
+    const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
     const { bar: barChartLoadingMarkup } = require('./helpers/load');
-    const {uniqueId} = require('./helpers/number');
-    const {setDefaultLocale} = require('./helpers/locale');
+    const { uniqueId } = require('./helpers/number');
+    const { setDefaultLocale } = require('./helpers/locale');
 
     const PERCENTAGE_FORMAT = '%';
     const NUMBER_FORMAT = ',f';
@@ -63,11 +63,11 @@ define(function(require) {
     return function module() {
 
         let margin = {
-                top: 20,
-                right: 20,
-                bottom: 30,
-                left: 40
-            },
+            top: 20,
+            right: 20,
+            bottom: 30,
+            left: 40
+        },
             width = 960,
             height = 500,
             loadingState = barChartLoadingMarkup,
@@ -111,11 +111,11 @@ define(function(require) {
             interBarDelay = (d, i) => animationStepRatio * i,
 
             highlightBarFunction = (barSelection) =>
-                barSelection.attr('fill', ({name}) =>
+                barSelection.attr('fill', ({ name }) =>
                     d3Color.color(
                         chartGradientColors
-                        ? chartGradientColors[1]
-                        : colorMap(name)
+                            ? chartGradientColors[1]
+                            : colorMap(name)
                     ).darker()
                 ),
             orderingFunction,
@@ -148,16 +148,16 @@ define(function(require) {
             ),
 
             // extractors
-            getName = ({name}) => name,
-            getValue = ({value}) => value,
+            getName = ({ name }) => name,
+            getValue = ({ value }) => value,
 
-            _labelsFormatValue = ({value}) => d3Format.format(labelsNumberFormat)(value),
+            _labelsFormatValue = ({ value }) => d3Format.format(labelsNumberFormat)(value),
 
-            _labelsHorizontalX = ({value}) => xScale(value) + labelsMargin,
-            _labelsHorizontalY= ({name}) => yScale(name) + (yScale.bandwidth() / 2) + (labelsSize * (3/8)),
+            _labelsHorizontalX = ({ value }) => xScale(value) + labelsMargin,
+            _labelsHorizontalY = ({ name }) => yScale(name) + (yScale.bandwidth() / 2) + (labelsSize * (3 / 8)),
 
-            _labelsVerticalX = ({name}) => xScale(name),
-            _labelsVerticalY = ({value}) => yScale(value) - labelsMargin;
+            _labelsVerticalX = ({ name }) => xScale(name),
+            _labelsVerticalY = ({ value }) => yScale(value) - labelsMargin;
 
         /**
          * This function creates the graph using the selection as container
@@ -170,10 +170,10 @@ define(function(require) {
                 localeRequest = setDefaultLocale(locale);
             }
 
-            _selection.each(function(_data) {
+            _selection.each(function (_data) {
                 chartWidth = width - margin.left - margin.right - (yAxisPaddingBetweenChart * 1.2);
                 chartHeight = height - margin.top - margin.bottom;
-                ({data, dataZeroed} = sortData(cleanData(_data)));
+                ({ data, dataZeroed } = sortData(cleanData(_data)));
 
                 buildScales();
                 buildAxis();
@@ -218,28 +218,28 @@ define(function(require) {
         function buildContainerGroups() {
             let container = svg
                 .append('g')
-                  .classed('container-group', true)
-                  .attr('transform', `translate(${margin.left + yAxisPaddingBetweenChart}, ${margin.top})`);
+                .classed('container-group', true)
+                .attr('transform', `translate(${margin.left + yAxisPaddingBetweenChart}, ${margin.top})`);
 
             container
-              .append('g')
+                .append('g')
                 .classed('grid-lines-group', true);
             container
-              .append('g')
+                .append('g')
                 .classed('chart-group', true);
             container
-              .append('g')
+                .append('g')
                 .classed('x-axis-group axis', true)
-              .append('g')
+                .append('g')
                 .classed('x-axis-label', true);
             container
-              .append('g')
+                .append('g')
                 .attr('transform', `translate(${-1 * (yAxisPaddingBetweenChart)}, 0)`)
                 .classed('y-axis-group axis', true)
-                  .append('g')
-                    .classed('y-axis-label', true);
+                .append('g')
+                .classed('y-axis-label', true);
             container
-              .append('g')
+                .append('g')
                 .classed('metadata-group', true);
         }
 
@@ -251,7 +251,7 @@ define(function(require) {
         function buildGradient() {
             if (!chartGradientEl && chartGradientColors) {
                 chartGradientEl = svg.select('.metadata-group')
-                  .append('linearGradient')
+                    .append('linearGradient')
                     .attr('id', chartGradientId)
                     .attr('x1', '0%')
                     .attr('y1', '0%')
@@ -259,14 +259,14 @@ define(function(require) {
                     .attr('y2', '100%')
                     .attr('gradientUnits', 'userSpaceOnUse')
                     .selectAll('stop')
-                     .data([
-                        {offset:'0%', color: chartGradientColors[0]},
-                        {offset:'50%', color: chartGradientColors[1]}
+                    .data([
+                        { offset: '0%', color: chartGradientColors[0] },
+                        { offset: '50%', color: chartGradientColors[1] }
                     ])
                     .enter()
-                      .append('stop')
-                        .attr('offset', ({offset}) => offset)
-                        .attr('stop-color', ({color}) => color)
+                    .append('stop')
+                    .attr('offset', ({ offset }) => offset)
+                    .attr('stop-color', ({ color }) => color)
             }
         }
 
@@ -299,20 +299,22 @@ define(function(require) {
 
             if (shouldReverseColorList) {
                 colorList = data.map(d => d)
-                                .reverse()
-                                .map(({name}, i) => ({
-                                        name,
-                                        color: colorSchema[i % colorSchema.length]}
-                                    ));
+                    .reverse()
+                    .map(({ name }, i) => ({
+                        name,
+                        color: colorSchema[i % colorSchema.length]
+                    }
+                    ));
             } else {
                 colorList = data.map(d => d)
-                                .map(({name}, i) => ({
-                                        name,
-                                        color: colorSchema[i % colorSchema.length]}
-                                    ));
+                    .map(({ name }, i) => ({
+                        name,
+                        color: colorSchema[i % colorSchema.length]
+                    }
+                    ));
             }
 
-            colorMap = (item) => colorList.filter(({name}) => name === item)[0].color;
+            colorMap = (item) => colorList.filter(({ name }) => name === item)[0].color;
         }
 
         /**
@@ -324,7 +326,7 @@ define(function(require) {
             if (!svg) {
                 svg = d3Selection.select(container)
                     .append('svg')
-                      .classed('britechart bar-chart', true);
+                    .classed('britechart bar-chart', true);
 
                 buildContainerGroups();
             }
@@ -376,7 +378,7 @@ define(function(require) {
          * @private
          */
         function sortData(unorderedData) {
-            let {data, dataZeroed} = unorderedData;
+            let { data, dataZeroed } = unorderedData;
 
             if (orderingFunction) {
                 data.sort(orderingFunction);
@@ -425,7 +427,7 @@ define(function(require) {
                     yAxisLabelEl.remove();
                 }
                 yAxisLabelEl = svg.select('.y-axis-label')
-                  .append('text')
+                    .append('text')
                     .classed('y-axis-label-text', true)
                     .attr('x', -chartHeight / 2)
                     .attr('y', yAxisLabelOffset)
@@ -439,7 +441,7 @@ define(function(require) {
                     xAxisLabelEl.remove();
                 }
                 xAxisLabelEl = svg.select('.x-axis-label')
-                  .append('text')
+                    .append('text')
                     .attr('y', xAxisLabelOffset)
                     .attr('text-anchor', 'middle')
                     .classed('x-axis-label-text', true)
@@ -456,30 +458,30 @@ define(function(require) {
         function drawHorizontalBars(bars) {
             // Enter + Update
             bars.enter()
-              .append('rect')
+                .append('rect')
                 .classed('bar', true)
                 .attr('y', chartHeight)
                 .attr('x', 0)
                 .attr('height', yScale.bandwidth())
-                .attr('width', ({value}) => xScale(value))
-                .on('mouseover', function(d, index, barList) {
+                .attr('width', ({ value }) => xScale(value))
+                .on('mouseover', function (d, index, barList) {
                     handleMouseOver(this, d, barList, chartWidth, chartHeight);
                 })
-                .on('mousemove', function(d) {
+                .on('mousemove', function (d) {
                     handleMouseMove(this, d, chartWidth, chartHeight);
                 })
-                .on('mouseout', function(d, index, barList) {
+                .on('mouseout', function (d, index, barList) {
                     handleMouseOut(this, d, barList, chartWidth, chartHeight);
                 })
-                .on('click', function(d) {
+                .on('click', function (d) {
                     handleClick(this, d, chartWidth, chartHeight);
                 })
-              .merge(bars)
+                .merge(bars)
                 .attr('x', 0)
-                .attr('y', ({name}) => yScale(name))
+                .attr('y', ({ name }) => yScale(name))
                 .attr('height', yScale.bandwidth())
-                .attr('width', ({value}) => xScale(value))
-                .attr('fill', ({name}) => computeColor(name));
+                .attr('width', ({ value }) => xScale(value))
+                .attr('fill', ({ name }) => computeColor(name));
         }
 
         /**
@@ -490,35 +492,35 @@ define(function(require) {
         function drawAnimatedHorizontalBars(bars) {
             // Enter + Update
             bars.enter()
-              .append('rect')
+                .append('rect')
                 .classed('bar', true)
                 .attr('x', 0)
                 .attr('y', chartHeight)
                 .attr('height', yScale.bandwidth())
-                .attr('width', ({value}) => xScale(value))
-                .on('mouseover', function(d, index, barList) {
+                .attr('width', ({ value }) => xScale(value))
+                .on('mouseover', function (d, index, barList) {
                     handleMouseOver(this, d, barList, chartWidth, chartHeight);
                 })
-                .on('mousemove', function(d) {
+                .on('mousemove', function (d) {
                     handleMouseMove(this, d, chartWidth, chartHeight);
                 })
-                .on('mouseout', function(d, index, barList) {
+                .on('mouseout', function (d, index, barList) {
                     handleMouseOut(this, d, barList, chartWidth, chartHeight);
                 })
-                .on('click', function(d) {
+                .on('click', function (d) {
                     handleClick(this, d, chartWidth, chartHeight);
                 });
 
             bars
                 .attr('x', 0)
-                .attr('y', ({name}) => yScale(name))
+                .attr('y', ({ name }) => yScale(name))
                 .attr('height', yScale.bandwidth())
-                .attr('fill', ({name}) => computeColor(name))
+                .attr('fill', ({ name }) => computeColor(name))
                 .transition()
                 .duration(animationDuration)
                 .delay(interBarDelay)
                 .ease(ease)
-                .attr('width', ({value}) => xScale(value));
+                .attr('width', ({ value }) => xScale(value));
         }
 
         /**
@@ -529,34 +531,34 @@ define(function(require) {
         function drawAnimatedVerticalBars(bars) {
             // Enter + Update
             bars.enter()
-              .append('rect')
+                .append('rect')
                 .classed('bar', true)
                 .attr('x', chartWidth)
-                .attr('y', ({value}) => yScale(value))
+                .attr('y', ({ value }) => yScale(value))
                 .attr('width', xScale.bandwidth())
-                .attr('height', ({value}) => chartHeight - yScale(value))
-                .on('mouseover', function(d, index, barList) {
+                .attr('height', ({ value }) => chartHeight - yScale(value))
+                .on('mouseover', function (d, index, barList) {
                     handleMouseOver(this, d, barList, chartWidth, chartHeight);
                 })
-                .on('mousemove', function(d) {
+                .on('mousemove', function (d) {
                     handleMouseMove(this, d, chartWidth, chartHeight);
                 })
-                .on('mouseout', function(d, index, barList) {
+                .on('mouseout', function (d, index, barList) {
                     handleMouseOut(this, d, barList, chartWidth, chartHeight);
                 })
-                .on('click', function(d) {
+                .on('click', function (d) {
                     handleClick(this, d, chartWidth, chartHeight);
                 })
-              .merge(bars)
-                .attr('x', ({name}) => xScale(name))
+                .merge(bars)
+                .attr('x', ({ name }) => xScale(name))
                 .attr('width', xScale.bandwidth())
-                .attr('fill', ({name}) => computeColor(name))
+                .attr('fill', ({ name }) => computeColor(name))
                 .transition()
                 .duration(animationDuration)
                 .delay(interBarDelay)
                 .ease(ease)
-                .attr('y', ({value}) => yScale(value))
-                .attr('height', ({value}) => chartHeight - yScale(value));
+                .attr('y', ({ value }) => yScale(value))
+                .attr('height', ({ value }) => chartHeight - yScale(value));
         }
 
         /**
@@ -567,30 +569,30 @@ define(function(require) {
         function drawVerticalBars(bars) {
             // Enter + Update
             bars.enter()
-              .append('rect')
+                .append('rect')
                 .classed('bar', true)
                 .attr('x', chartWidth)
-                .attr('y', ({value}) => yScale(value))
+                .attr('y', ({ value }) => yScale(value))
                 .attr('width', xScale.bandwidth())
-                .attr('height', ({value}) => chartHeight - yScale(value))
-                .on('mouseover', function(d, index, barList) {
+                .attr('height', ({ value }) => chartHeight - yScale(value))
+                .on('mouseover', function (d, index, barList) {
                     handleMouseOver(this, d, barList, chartWidth, chartHeight);
                 })
-                .on('mousemove', function(d) {
+                .on('mousemove', function (d) {
                     handleMouseMove(this, d, chartWidth, chartHeight);
                 })
-                .on('mouseout', function(d, index, barList) {
+                .on('mouseout', function (d, index, barList) {
                     handleMouseOut(this, d, barList, chartWidth, chartHeight);
                 })
-                .on('click', function(d) {
+                .on('click', function (d) {
                     handleClick(this, d, chartWidth, chartHeight);
                 })
-              .merge(bars)
-                .attr('x', ({name}) => xScale(name))
-                .attr('y', ({value}) => yScale(value))
+                .merge(bars)
+                .attr('x', ({ name }) => xScale(name))
+                .attr('y', ({ value }) => yScale(value))
                 .attr('width', xScale.bandwidth())
-                .attr('height', ({value}) => chartHeight - yScale(value))
-                .attr('fill', ({name}) => computeColor(name));
+                .attr('height', ({ value }) => chartHeight - yScale(value))
+                .attr('fill', ({ name }) => computeColor(name));
         }
 
         /**
@@ -608,12 +610,12 @@ define(function(require) {
             }
 
             labelEl = svg.select('.metadata-group')
-              .append('g')
+                .append('g')
                 .classed('percentage-label-group', true)
                 .selectAll('text')
                 .data(data.reverse())
                 .enter()
-              .append('text');
+                .append('text');
 
             labelEl
                 .classed('percentage-label', true)
@@ -696,12 +698,12 @@ define(function(require) {
                 .selectAll('line.vertical-grid-line')
                 .data(xScale.ticks(xTicks).slice(1))
                 .enter()
-                  .append('line')
-                    .attr('class', 'vertical-grid-line')
-                    .attr('y1', (xAxisPadding.left))
-                    .attr('y2', chartHeight)
-                    .attr('x1', (d) => xScale(d))
-                    .attr('x2', (d) => xScale(d))
+                .append('line')
+                .attr('class', 'vertical-grid-line')
+                .attr('y1', (xAxisPadding.left))
+                .attr('y2', chartHeight)
+                .attr('x1', (d) => xScale(d))
+                .attr('x2', (d) => xScale(d))
 
             drawVerticalExtendedLine();
         }
@@ -715,12 +717,12 @@ define(function(require) {
                 .selectAll('line.extended-y-line')
                 .data([0])
                 .enter()
-                  .append('line')
-                    .attr('class', 'extended-y-line')
-                    .attr('y1', (xAxisPadding.bottom))
-                    .attr('y2', chartHeight)
-                    .attr('x1', 0)
-                    .attr('x2', 0);
+                .append('line')
+                .attr('class', 'extended-y-line')
+                .attr('y1', (xAxisPadding.bottom))
+                .attr('y2', chartHeight)
+                .attr('x1', 0)
+                .attr('x2', 0);
         }
 
         /**
@@ -732,12 +734,12 @@ define(function(require) {
                 .selectAll('line.horizontal-grid-line')
                 .data(yScale.ticks(yTicks).slice(1))
                 .enter()
-                  .append('line')
-                    .attr('class', 'horizontal-grid-line')
-                    .attr('x1', (xAxisPadding.left))
-                    .attr('x2', chartWidth)
-                    .attr('y1', (d) => yScale(d))
-                    .attr('y2', (d) => yScale(d))
+                .append('line')
+                .attr('class', 'horizontal-grid-line')
+                .attr('x1', (xAxisPadding.left))
+                .attr('x2', chartWidth)
+                .attr('y1', (d) => yScale(d))
+                .attr('y2', (d) => yScale(d))
 
             drawHorizontalExtendedLine();
         }
@@ -751,12 +753,12 @@ define(function(require) {
                 .selectAll('line.extended-x-line')
                 .data([0])
                 .enter()
-                  .append('line')
-                    .attr('class', 'extended-x-line')
-                    .attr('x1', (xAxisPadding.left))
-                    .attr('x2', chartWidth)
-                    .attr('y1', chartHeight)
-                    .attr('y2', chartHeight);
+                .append('line')
+                .attr('class', 'extended-x-line')
+                .attr('x1', (xAxisPadding.left))
+                .attr('x2', chartWidth)
+                .attr('y1', chartHeight)
+                .attr('y2', chartHeight);
         }
 
         /**
@@ -766,7 +768,7 @@ define(function(require) {
          */
         function handleMouseOver(e, d, barList, chartWidth, chartHeight) {
             dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
-            highlightBarFunction = highlightBarFunction || function() {};
+            highlightBarFunction = highlightBarFunction || function () { };
 
             if (hasSingleBarHighlight) {
                 highlightBarFunction(d3Selection.select(e));
@@ -799,7 +801,7 @@ define(function(require) {
             dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
 
             barList.forEach((barRect) => {
-                d3Selection.select(barRect).attr('fill', ({name}) => computeColor(name));
+                d3Selection.select(barRect).attr('fill', ({ name }) => computeColor(name));
             });
         }
 
@@ -820,7 +822,7 @@ define(function(require) {
          * @return {String[] | module} Current color gradient or Line Chart module to chain calls
          * @public
          */
-        exports.chartGradient = function(_x) {
+        exports.chartGradient = function (_x) {
             if (!arguments.length) {
                 return chartGradientColors;
             }
@@ -835,7 +837,7 @@ define(function(require) {
          * @return {padding | module} Current padding or Chart module to chain calls
          * @public
          */
-        exports.betweenBarsPadding = function(_x) {
+        exports.betweenBarsPadding = function (_x) {
             if (!arguments.length) {
                 return betweenBarsPadding;
             }
@@ -850,7 +852,7 @@ define(function(require) {
          * @return { colorSchema | module} Current colorSchema or Chart module to chain calls
          * @public
          */
-        exports.colorSchema = function(_x) {
+        exports.colorSchema = function (_x) {
             if (!arguments.length) {
                 return colorSchema;
             }
@@ -865,7 +867,7 @@ define(function(require) {
          * @return {Boolean | module}    Current value of enableLabels or Chart module to chain calls
          * @public
          */
-        exports.enableLabels = function(_x) {
+        exports.enableLabels = function (_x) {
             if (!arguments.length) {
                 return enableLabels;
             }
@@ -880,7 +882,7 @@ define(function(require) {
          * @param {String} title        Title to add at the top of the exported picture
          * @public
          */
-        exports.exportChart = function(filename, title) {
+        exports.exportChart = function (filename, title) {
             exportChart.call(exports, svg, filename, title);
         };
 
@@ -890,7 +892,7 @@ define(function(require) {
          * @return {boolean | module} Is percentage used or Chart module to chain calls
          * @public
          */
-        exports.hasPercentage = function(_x) {
+        exports.hasPercentage = function (_x) {
             if (!arguments.length) {
                 return numberFormat === PERCENTAGE_FORMAT;
             }
@@ -914,7 +916,7 @@ define(function(require) {
          * @return {boolean | module} Is hasSingleBarHighlight used or Chart module to chain calls
          * @public
          */
-        exports.hasSingleBarHighlight = function(_x) {
+        exports.hasSingleBarHighlight = function (_x) {
             if (!arguments.length) {
                 return hasSingleBarHighlight;
             }
@@ -929,7 +931,7 @@ define(function(require) {
          * @return {height | module} Current height or Chart module to chain calls
          * @public
          */
-        exports.height = function(_x) {
+        exports.height = function (_x) {
             if (!arguments.length) {
                 return height;
             }
@@ -952,7 +954,7 @@ define(function(require) {
          * @example barChart.highlightBarFunction(bar => bar.attr('fill', 'blue'))
          * barChart.highlightBarFunction(null) // will disable the default highlight effect
          */
-        exports.highlightBarFunction = function(_x) {
+        exports.highlightBarFunction = function (_x) {
             if (!arguments.length) {
                 return highlightBarFunction;
             }
@@ -969,7 +971,7 @@ define(function(require) {
          * @return {isAnimated | module}    Current isAnimated flag or Chart module
          * @public
          */
-        exports.isAnimated = function(_x) {
+        exports.isAnimated = function (_x) {
             if (!arguments.length) {
                 return isAnimated;
             }
@@ -984,7 +986,7 @@ define(function(require) {
          * @return { isHorizontal | module} If it is horizontal or Chart module to chain calls
          * @public
          */
-        exports.isHorizontal = function(_x) {
+        exports.isHorizontal = function (_x) {
             if (!arguments.length) {
                 return isHorizontal;
             }
@@ -999,7 +1001,7 @@ define(function(require) {
          * @return {number | module}    Current offset or Chart module to chain calls
          * @public
          */
-        exports.labelsMargin = function(_x) {
+        exports.labelsMargin = function (_x) {
             if (!arguments.length) {
                 return labelsMargin;
             }
@@ -1014,7 +1016,7 @@ define(function(require) {
          * @return {string | module} Current labelsNumberFormat or Chart module to chain calls
          * @public
          */
-        exports.labelsNumberFormat = function(_x) {
+        exports.labelsNumberFormat = function (_x) {
             if (!arguments.length) {
                 return labelsNumberFormat;
             }
@@ -1029,7 +1031,7 @@ define(function(require) {
          * @return {number | module}    Current text size or Chart module to chain calls
          * @public
          */
-        exports.labelsSize = function(_x) {
+        exports.labelsSize = function (_x) {
             if (!arguments.length) {
                 return labelsSize;
             }
@@ -1044,7 +1046,7 @@ define(function(require) {
          * @return {loadingState | module} Current loading state markup or Chart module to chain calls
          * @public
          */
-        exports.loadingState = function(_markup) {
+        exports.loadingState = function (_markup) {
             if (!arguments.length) {
                 return loadingState;
             }
@@ -1059,7 +1061,7 @@ define(function(require) {
          * @return {margin | module} Current margin or Chart module to chain calls
          * @public
          */
-        exports.margin = function(_x) {
+        exports.margin = function (_x) {
             if (!arguments.length) {
                 return margin;
             }
@@ -1077,7 +1079,7 @@ define(function(require) {
          * @return {nameLabel | module} Current nameLabel or Chart module to chain calls
          * @public
          */
-        exports.nameLabel = function(_x) {
+        exports.nameLabel = function (_x) {
             if (!arguments.length) {
                 return nameLabel;
             }
@@ -1092,7 +1094,7 @@ define(function(require) {
          * @return {numberFormat | module} Current numberFormat or Chart module to chain calls
          * @public
          */
-        exports.numberFormat = function(_x) {
+        exports.numberFormat = function (_x) {
             if (!arguments.length) {
                 return numberFormat;
             }
@@ -1109,7 +1111,7 @@ define(function(require) {
          * @return {module} Bar Chart
          * @public
          */
-        exports.on = function() {
+        exports.on = function () {
             let value = dispatcher.on.apply(dispatcher, arguments);
 
             return value === dispatcher ? exports : value;
@@ -1122,7 +1124,7 @@ define(function(require) {
          * @return {ratio | module} Current ratio or Chart module to chain calls
          * @public
          */
-        exports.percentageAxisToMaxRatio = function(_x) {
+        exports.percentageAxisToMaxRatio = function (_x) {
             if (!arguments.length) {
                 return percentageAxisToMaxRatio;
             }
@@ -1137,7 +1139,7 @@ define(function(require) {
          * @return {boolean | module} Is color list being reversed or Chart module to chain calls
          * @public
          */
-        exports.shouldReverseColorList = function(_x) {
+        exports.shouldReverseColorList = function (_x) {
             if (!arguments.length) {
                 return shouldReverseColorList;
             }
@@ -1153,7 +1155,7 @@ define(function(require) {
          * @return {(Function | Module)}   A custom ordering function or Chart module to chain calls
          * @public
          */
-        exports.orderingFunction = function(_x) {
+        exports.orderingFunction = function (_x) {
             if (!arguments.length) {
                 return orderingFunction;
             }
@@ -1168,7 +1170,7 @@ define(function(require) {
          * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
          * @public
          */
-        exports.valueLabel = function(_x) {
+        exports.valueLabel = function (_x) {
             if (!arguments.length) {
                 return valueLabel;
             }
@@ -1183,7 +1185,7 @@ define(function(require) {
          * @return {width | module} Current width or Chart module to chain calls
          * @public
          */
-        exports.width = function(_x) {
+        exports.width = function (_x) {
             if (!arguments.length) {
                 return width;
             }
@@ -1198,7 +1200,7 @@ define(function(require) {
          * @return {String | module} label or Chart module to chain calls
          * @public
          */
-        exports.xAxisLabel = function(_x) {
+        exports.xAxisLabel = function (_x) {
             if (!arguments.length) {
                 return xAxisLabel;
             }
@@ -1213,7 +1215,7 @@ define(function(require) {
          * @return {Number | module} label or Chart module to chain calls
          * @public
          */
-        exports.xAxisLabelOffset = function(_x) {
+        exports.xAxisLabelOffset = function (_x) {
             if (!arguments.length) {
                 return xAxisLabelOffset;
             }
@@ -1244,7 +1246,7 @@ define(function(require) {
          * @return {String | module} label or Chart module to chain calls
          * @public
          */
-        exports.yAxisLabel = function(_x) {
+        exports.yAxisLabel = function (_x) {
             if (!arguments.length) {
                 return yAxisLabel;
             }
@@ -1259,7 +1261,7 @@ define(function(require) {
          * @return {Number | module} label or Chart module to chain calls
          * @public
          */
-        exports.yAxisLabelOffset = function(_x) {
+        exports.yAxisLabelOffset = function (_x) {
             if (!arguments.length) {
                 return yAxisLabelOffset;
             }
@@ -1275,7 +1277,7 @@ define(function(require) {
          * @return {Number| module}     Current value of yAxisPaddingBetweenChart or Chart module to chain calls
          * @public
          */
-        exports.yAxisPaddingBetweenChart = function(_x) {
+        exports.yAxisPaddingBetweenChart = function (_x) {
             if (!arguments.length) {
                 return yAxisPaddingBetweenChart;
             }
@@ -1291,7 +1293,7 @@ define(function(require) {
          * @return {Number | module}    Current yTicks or Chart module to chain calls
          * @public
          */
-        exports.yTicks = function(_x) {
+        exports.yTicks = function (_x) {
             if (!arguments.length) {
                 return yTicks;
             }
@@ -1303,7 +1305,8 @@ define(function(require) {
         /**
          * Gets or Sets the locale which d3-format uses.
          * (Default is en-US)
-         * @param  {string} _x                   Desired locale
+         * @param  {string | Object}  [_x = 'en-US']  _x  Desired locale in string or object format.
+         *                                                Possible string and object values can be found here: https://cdn.jsdelivr.net/npm/d3-format/locale/.
          * @return {string | Object | module}    Current locale or Chart module to chain calls
          * @public
          */
