@@ -1,10 +1,10 @@
-define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
+define(['d3', 'bar', 'barChartDataBuilder'], function (d3, chart, dataBuilder) {
     'use strict';
 
     const aTestDataSet = () => new dataBuilder.BarDataBuilder();
     const buildDataSet = (dataSetName) => {
         return aTestDataSet()
-            [dataSetName]()
+        [dataSetName]()
             .build();
     };
 
@@ -177,43 +177,43 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 });
             });
 
-            // describe('Locale', () => {
-            //     fit('should show the $ sign as a default currency symbol', () => {
-            //         const newDataset = buildDataSet('withColors');
+            xdescribe('Locale', () => {
+                fit('should show the $ sign as a default currency symbol', () => {
+                    const newDataset = buildDataSet('withColors');
 
-            //         barChart.enableLabels(true).labelsNumberFormat('$,.2f');
-            //         containerFixture.datum(newDataset).call(barChart);
+                    barChart.enableLabels(true).labelsNumberFormat('$,.2f');
+                    containerFixture.datum(newDataset).call(barChart);
 
-            //         const selection = containerFixture.select('.percentage-label-group text')
+                    const selection = containerFixture.select('.percentage-label-group text')
 
-            //         const actualValue = selection.text();
+                    const actualValue = selection.text();
 
-            //         expect(actualValue).toEqual('$1.00');
-            //     });
+                    expect(actualValue).toEqual('$1.00');
+                });
 
-            //     it('should show the € sign when the locale is changed to nl-NL', () => {
-            //         const newDataset = buildDataSet('withColors');
-            //         const customLocale = {
-            //             'decimal': ',',
-            //             'thousands': '.',
-            //             'grouping': [
-            //               3
-            //             ],
-            //             'currency': [
-            //               '€ ',
-            //               ''
-            //             ]
-            //           };
+                it('should show the € sign when the locale is changed to nl-NL', () => {
+                    const newDataset = buildDataSet('withColors');
+                    const customLocale = {
+                        'decimal': ',',
+                        'thousands': '.',
+                        'grouping': [
+                            3
+                        ],
+                        'currency': [
+                            '€ ',
+                            ''
+                        ]
+                    };
 
-            //           barChart.labelsNumberFormat('$,.2f').enableLabels(true).locale(customLocale);
-            //           containerFixture.datum(newDataset).call(barChart);
+                    barChart.labelsNumberFormat('$,.2f').enableLabels(true).locale(customLocale);
+                    containerFixture.datum(newDataset).call(barChart);
 
-            //         const selection = containerFixture.select('.percentage-label-group text')
-            //         const actualValue = selection.text();
+                    const selection = containerFixture.select('.percentage-label-group text')
+                    const actualValue = selection.text();
 
-            //         expect(actualValue).toBe('€ 1.00');
-            //     });
-            // });
+                    expect(actualValue).toBe('€ 1.00');
+                });
+            });
         });
 
         describe('Lifecycle', () => {
@@ -484,7 +484,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
             it('should provide height getter and setter', () => {
                 let previous = barChart.height(),
-                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    expected = { top: 4, right: 4, bottom: 4, left: 4 },
                     actual;
 
                 barChart.height(expected);
@@ -530,7 +530,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
-            it('should provide labelsNumberFormat getter and setter', () =>{
+            it('should provide labelsNumberFormat getter and setter', () => {
                 let previous = barChart.labelsNumberFormat(),
                     expected = 'd',
                     actual;
@@ -584,7 +584,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
             describe('margin', () => {
                 it('should provide margin getter and setter', () => {
                     let previous = barChart.margin(),
-                        expected = {top: 4, right: 4, bottom: 4, left: 4},
+                        expected = { top: 4, right: 4, bottom: 4, left: 4 },
                         actual;
 
                     barChart.margin(expected);
@@ -688,7 +688,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
 
             it('should provide width getter and setter', () => {
                 let previous = barChart.width(),
-                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    expected = { top: 4, right: 4, bottom: 4, left: 4 },
                     actual;
 
                 barChart.width(expected);
@@ -734,7 +734,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
-            it('should provide numberFormat getter and setter', () =>{
+            it('should provide numberFormat getter and setter', () => {
                 let previous = barChart.numberFormat(),
                     expected = 'd',
                     actual;
@@ -746,7 +746,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function(d3, chart, dataBuilder) {
                 expect(actual).toBe(expected);
             });
 
-            it('should provide hasSingleBarHighlight getter and setter', () =>{
+            it('should provide hasSingleBarHighlight getter and setter', () => {
                 let previous = barChart.hasSingleBarHighlight(),
                     expected = false,
                     actual;
