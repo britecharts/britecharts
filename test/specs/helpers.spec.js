@@ -12,28 +12,28 @@ define([
     'helpers/export',
     'helpers/axis',
     'helpers/locale'
-    ], function (
-        _,
-        $,
-        d3,
-        legend,
-        donutDataBuilder,
-        lineDataBuilder,
-        style,
-        textHelper,
-        number,
-        date,
-        exportChart,
-        axis,
-        locale
-    ) {
+], function (
+    _,
+    $,
+    d3,
+    legend,
+    donutDataBuilder,
+    lineDataBuilder,
+    style,
+    textHelper,
+    number,
+    date,
+    exportChart,
+    axis,
+    locale
+) {
     'use strict';
 
     const randomColor = 'rgb(222,163,12)';
     let f, containerFixture, styles, node;
 
     const aDonutTestDataSet = () => new donutDataBuilder.DonutDataBuilder();
-    const aLineTestDataSet = () =>  new lineDataBuilder.LineDataBuilder();
+    const aLineTestDataSet = () => new lineDataBuilder.LineDataBuilder();
 
     describe('Helpers', () => {
 
@@ -55,7 +55,7 @@ define([
             let styledHTML;
 
             beforeEach(() => {
-                containerFixture.append($('<span></span>',{class:'child'}));
+                containerFixture.append($('<span></span>', { class: 'child' }));
 
                 this.serializer = style.initializeSerializer();
                 styles = document.createElement('style');
@@ -79,10 +79,10 @@ define([
                 let actual;
                 node = containerFixture[0];
 
-                styledHTML = this.serializer(node).replace(' ','');
+                styledHTML = this.serializer(node).replace(' ', '');
                 actual = styledHTML.indexOf(randomColor).length;
 
-                expect(styledHTML).not.toBe(node.outerHTML.replace(' ',''));
+                expect(styledHTML).not.toBe(node.outerHTML.replace(' ', ''));
                 expect(actual).not.toEqual(0);
             });
         });
@@ -97,11 +97,11 @@ define([
                 const expectedLabelCount = 3;
                 const expectedValueCount = 1;
                 const textNode = d3.select('.test-container')
-                  .append('svg')
+                    .append('svg')
                     .append('text')
-                      .attr('dy', '.2em')
-                      .text(expectedText)
-                      .node();
+                    .attr('dy', '.2em')
+                    .text(expectedText)
+                    .node();
 
                 textHelper.wrapText.call(null, xOffset, fontSize, availableWidth, textNode);
 
@@ -275,7 +275,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = axis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300));
+                        ({ minor, major } = axis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300));
                     });
 
                     it('should give back a minor tick function', () => {
@@ -302,7 +302,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = axis.getTimeSeriesAxis(lessThanOneMonthDataSet.dataByDate, 300));
+                        ({ minor, major } = axis.getTimeSeriesAxis(lessThanOneMonthDataSet.dataByDate, 300));
                     });
 
                     it('should give back a minor tick function', () => {
@@ -329,7 +329,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = axis.getTimeSeriesAxis(twoYearsDataSet.dataByDate, 300));
+                        ({ minor, major } = axis.getTimeSeriesAxis(twoYearsDataSet.dataByDate, 300));
                     });
 
                     it('should give back a minor month format', () => {
@@ -359,7 +359,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = axis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'minute-hour'));
+                        ({ minor, major } = axis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'minute-hour'));
                     });
 
                     it('should give back a minor minute format and 5 ticks', () => {
@@ -379,7 +379,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = axis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'hour-daymonth'));
+                        ({ minor, major } = axis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'hour-daymonth'));
                     });
 
                     it('should give back a minor hour format and 5 ticks', () => {
@@ -399,7 +399,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = axis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'day-month'));
+                        ({ minor, major } = axis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'day-month'));
                     });
 
                     it('should give back a minor day format and 5 ticks', () => {
@@ -419,7 +419,7 @@ define([
                     let minor, major;
 
                     beforeEach(() => {
-                        ({minor, major} = axis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'month-year'));
+                        ({ minor, major } = axis.getTimeSeriesAxis(oneDayDataSet.dataByDate, 300, 'month-year'));
                     });
 
                     it('should give back a minor tick function', () => {
@@ -455,13 +455,13 @@ define([
                     'decimal': '.',
                     'thousands': ',',
                     'grouping': [
-                      3
+                        3
                     ],
                     'currency': [
-                      '$',
-                      ''
+                        '$',
+                        ''
                     ]
-                  };
+                };
 
                 expectAsync(locale.setDefaultLocale(validLocaleDefinition)).toBeResolved();
                 done();
@@ -474,23 +474,23 @@ define([
                 done();
             });
 
-            // it('should return a resolved promise when a valid locale string is given', (done) => {
-            //     const validLocaleDefinition = {
-            //         'decimal': '.',
-            //         'thousands': ',',
-            //         'grouping': [
-            //           3
-            //         ],
-            //         'currency': [
-            //           '$',
-            //           ''
-            //         ]
-            //       };
+            xit('should return a resolved promise when a valid locale string is given', (done) => {
+                const validLocaleDefinition = {
+                    'decimal': '.',
+                    'thousands': ',',
+                    'grouping': [
+                        3
+                    ],
+                    'currency': [
+                        '$',
+                        ''
+                    ]
+                };
 
-            //     spyOn(d3, 'json').and.returnValue(Promise.resolve(validLocaleDefinition));
-            //     expectAsync(locale.setDefaultLocale('en-US')).toBeResolved();
-            //     done();
-            // });
+                spyOn(d3, 'json').and.returnValue(Promise.resolve(validLocaleDefinition));
+                expectAsync(locale.setDefaultLocale('en-US')).toBeResolved();
+                done();
+            });
         });
     });
 });
