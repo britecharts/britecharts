@@ -1304,6 +1304,8 @@ define(function(require) {
          * Gets or Sets the locale which d3-format uses.
          * (Default is en-US)
          * @param  {string} _x                   Desired locale
+         * @param  {string | Object}  [_x = 'en-US']  _x  Desired locale in string or object format.
+         *                                                Possible string and object values can be found here: https://cdn.jsdelivr.net/npm/d3-format/locale/.
          * @return {string | Object | module}    Current locale or Chart module to chain calls
          * @public
          */
