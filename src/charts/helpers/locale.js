@@ -1,9 +1,13 @@
 define(function (require) {
     const { FORMAT_LOCALE_URL } = require('./constants');
     const { formatDefaultLocale } = require('d3-format');
-    const { json } = require('d3');
+    const { json } = require('d3-fetch');
+
     const VALID_LOCALE_REGEX = /[a-z]{2}-[A-Z]{2}/;
     const REQUIRED_LOCALE_DEFINITION_KEYS = ['decimal', 'thousands', 'grouping', 'currency'];
+
+    const getLocaleURL = (locale) => `${FORMAT_LOCALE_URL}/${locale}.json`;
+    const setLocale = (localeDefinition) => Promise.resolve(formatDefaultLocale(localeDefinition));
 
     /**
      * Sets the given locale as the new default locale through d3-format's formatDefaultLocale
@@ -13,16 +17,12 @@ define(function (require) {
      * @return {Promise}       Result of formatDefaultLocale call.
      */
     function setDefaultLocale(locale) {
-        if (typeof locale === 'string' && isValidLocale(locale)) {
-            return json(`${FORMAT_LOCALE_URL}/${locale}.json`)
-                .then(localeDefinition => {
-
-                    formatDefaultLocale(localeDefinition);
-                    return Promise.resolve()
-                })
+        if (isValidLocale(locale)) {
+            return json(getLocaleURL(locale))
+                .then(setLocale)
                 .catch(() => Promise.reject(`Error retrieving locale, ${locale} from ${FORMAT_LOCALE_URL}`));
-        } else if (typeof locale == 'object' && isValidLocaleDefinition(locale)) {
-            return Promise.resolve(formatDefaultLocale(locale));
+        } else if (isValidLocaleDefinition(locale)) {
+            return setLocale(locale);
         } else {
             return Promise.reject('Please pass in a valid locale string (az-AZ) or locale object definition');
         }
@@ -34,7 +34,7 @@ define(function (require) {
      * @return {Boolean}       Is the locale has a correct format (https://cdn.jsdelivr.net/npm/d3-format/locale/)
      */
     function isValidLocale(locale) {
-        return VALID_LOCALE_REGEX.test(locale);
+        return typeof locale === 'string' && VALID_LOCALE_REGEX.test(locale);
     }
 
     /**
@@ -43,7 +43,7 @@ define(function (require) {
      * @return {Boolean}       Is the locale definition has a correct format (https://cdn.jsdelivr.net/npm/d3-format/locale/en-US.json)
      */
     function isValidLocaleDefinition(locale) {
-        return REQUIRED_LOCALE_DEFINITION_KEYS.every(localeKey => locale.hasOwnProperty(localeKey));
+        return typeof locale == 'object' && REQUIRED_LOCALE_DEFINITION_KEYS.every(localeKey => locale.hasOwnProperty(localeKey));
     }
 
     return {
