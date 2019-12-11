@@ -41,6 +41,28 @@ define(function(require) {
      */
 
     /**
+     * @typedef LocaleObject
+     * @type {Object}
+     * @property {String} decimal       the decimal point(e.g., ".")
+     * @property {String} thousands     the group separator(e.g., ",")
+     * @property {Number[]} grouping    the array of group sizes(e.g., [3]), cycled as needed
+     * @property {String[]} currency    the currency prefix and suffix(e.g., ["$", ""])
+     * @property {String[]} numerals    optional; an array of ten strings to replace the numerals 0 - 9.
+     * @property {String} percent       optional; the percent sign(defaults to "%")
+     * @property {String} minus         optional; the minus sign(defaults to hyphen - minus, "-")
+     * @property {String} nan           optional; the not - a - number value(defaults "NaN")
+     *
+     * See some standard locale object values [here]{@link https://cdn.jsdelivr.net/npm/d3-format/locale/}.
+     * @example
+     * {
+     *     "decimal": ",",
+     *     "thousands": ".",
+     *     "grouping": [3],
+     *     "currency": ["", "\u00a0€"]
+     * }
+     */
+
+    /**
      * Bar Chart reusable API class that renders a
      * simple and configurable bar chart.
      *
@@ -135,8 +157,8 @@ define(function(require) {
             baseLine,
             maskGridLines,
             shouldReverseColorList = true,
-            locale = false,
-            localeRequest = Promise.resolve(d3Format),
+            locale = null,
+            localeFormatter = d3Format,
 
             // Dispatcher object to broadcast the mouse events
             // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
@@ -165,7 +187,7 @@ define(function(require) {
          */
         function exports(_selection) {
             if (locale) {
-                localeRequest = setDefaultLocale(locale);
+                localeFormatter = setDefaultLocale(locale);
             }
 
             _selection.each(function(_data) {
@@ -174,23 +196,16 @@ define(function(require) {
                 ({data, dataZeroed} = sortData(cleanData(_data)));
 
                 buildScales();
+                buildAxis(localeFormatter);
                 buildSVG(this);
                 buildGradient();
                 drawGridLines();
+                drawAxis();
                 drawBars();
 
-                localeRequest
-                    .then((locale) => {
-                        buildAxis(locale);
-                        drawAxis();
-
-                        if (enableLabels) {
-                            drawLabels(locale);
-                        }
-                    })
-                    .catch((errorMessage) => {
-                        throw new Error(errorMessage)
-                    });
+                if (enableLabels) {
+                    drawLabels(localeFormatter);
+                }
             });
         }
 
@@ -1304,11 +1319,11 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the locale which d3-format uses.
-         * Possible locale string values can be found [here]{@link https://cdn.jsdelivr.net/npm/d3-format/locale/}.
-         * For objects, check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
-         * @param  {string | Object}  [_x='en-US']  _x  Desired locale in string or object format.
-         * @return {string | Object | module}    Current locale or Chart module to chain calls
+         * Gets or Sets the locale which our formatting functions use.
+         * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
+         *
+         * @param  {LocaleObject}  [_x=false]  _x    Desired locale object format.
+         * @return {LocaleObject | module}           Current locale object or Chart module to chain calls
          * @public
          */
         exports.locale = function (_x) {

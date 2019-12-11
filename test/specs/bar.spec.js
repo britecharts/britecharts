@@ -140,8 +140,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function (d3, chart, dataBuilder) {
                 });
             });
 
-            // The extra call stack called by using a promise to draw labels make this test to fail
-            xdescribe('Axis labels', () => {
+            describe('Axis labels', () => {
 
                 it('should show custom x axis label and offset', () => {
                     const expectedValue = 'labelValue';
@@ -178,41 +177,62 @@ define(['d3', 'bar', 'barChartDataBuilder'], function (d3, chart, dataBuilder) {
                 });
             });
 
-            xdescribe('Locale', () => {
+            describe('Locale', () => {
+
                 it('should show the $ sign as a default currency symbol', () => {
                     const newDataset = buildDataSet('withColors');
 
                     barChart.enableLabels(true).labelsNumberFormat('$,.2f');
                     containerFixture.datum(newDataset).call(barChart);
 
-                    const selection = containerFixture.select('.percentage-label-group text')
+                    const actual = containerFixture.select('.percentage-label-group text').text();
+                    const expected = '$1.00';
 
-                    const actualValue = selection.text();
-
-                    expect(actualValue).toEqual('$1.00');
+                    expect(actual).toEqual(expected);
                 });
 
-                xit('should show the € sign when the locale is changed to nl-NL', () => {
-                    const newDataset = buildDataSet('withColors');
-                    const customLocale = {
-                        'decimal': ',',
-                        'thousands': '.',
-                        'grouping': [
-                            3
-                        ],
-                        'currency': [
-                            '€ ',
-                            ''
-                        ]
-                    };
+                // We need to figure out how to clear the default formatting, as this
+                // test is messing up with the rest of tests
+                xdescribe('when the locale is set to nl-NL', () => {
 
-                    barChart.labelsNumberFormat('$,.2f').enableLabels(true).locale(customLocale);
-                    containerFixture.datum(newDataset).call(barChart);
+                    afterEach(() => {
+                        const USLocale = {
+                            "decimal": ".",
+                            "thousands": ",",
+                            "grouping": [3],
+                            "currency": ["$", ""]
+                        };
 
-                    const selection = containerFixture.select('.percentage-label-group text')
-                    const actualValue = selection.text();
+                        barChart
+                            .locale(USLocale)
+                            .labelsNumberFormat(',f');
+                    });
 
-                    expect(actualValue).toBe('€ 1.00');
+                    it('should show the € sign', () => {
+                        const newDataset = buildDataSet('withColors');
+                        const customLocale = {
+                            'decimal': ',',
+                            'thousands': '.',
+                            'grouping': [
+                                3
+                            ],
+                            'currency': [
+                                '€ ',
+                                ''
+                            ]
+                        };
+
+                        barChart
+                            .labelsNumberFormat('$,.2f')
+                            .enableLabels(true)
+                            .locale(customLocale);
+                        containerFixture.datum(newDataset).call(barChart);
+
+                        const actual = containerFixture.select('.percentage-label-group text').text();
+                        const expected = '€ 1,00';
+
+                        expect(actual).toEqual(expected);
+                    });
                 });
             });
         });
