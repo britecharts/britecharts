@@ -1,17 +1,17 @@
-'use strict';
-
-const d3Selection = require('d3-selection');
-const colors = require('./../../src/charts/helpers/color');
+import { select } from 'd3-selection';
+import colors from './../../src/charts/helpers/color';
 
 function createColors() {
     const { colorSchemas } = colors;
 
-    Object.keys(colorSchemas).forEach(colorPalette => {
-        const paletteDiv = document.getElementById(`js-palette-${colorPalette}`);
+    Object.keys(colorSchemas).forEach((colorPalette) => {
+        const paletteDiv = document.getElementById(
+            `js-palette-${colorPalette}`
+        );
 
         paletteDiv.style.display = 'flex';
 
-        colorSchemas[colorPalette].forEach(color => {
+        colorSchemas[colorPalette].forEach((color) => {
             const div = document.createElement('div');
 
             div.style.width = '100px';
@@ -25,12 +25,16 @@ function createColors() {
 function createGradients() {
     const { colorGradients } = colors;
 
-    Object.keys(colorGradients).forEach(colorGradient => {
-        const gradientDiv = document.getElementById(`js-gradient-${colorGradient}`);
+    Object.keys(colorGradients).forEach((colorGradient) => {
+        const gradientDiv = document.getElementById(
+            `js-gradient-${colorGradient}`
+        );
 
         gradientDiv.style.display = 'flex';
 
-        let [gradientStartColor, gradientEndColor] = colorGradients[colorGradient];
+        let [gradientStartColor, gradientEndColor] = colorGradients[
+            colorGradient
+        ];
         const div = document.createElement('div');
 
         div.style.width = '900px';
@@ -43,11 +47,13 @@ function createGradients() {
 
 function createSingleColors() {
     const { singleColors } = colors;
-    const colorsDiv = document.getElementsByClassName('js-single-color-container')[0];
+    const colorsDiv = document.getElementsByClassName(
+        'js-single-color-container'
+    )[0];
 
     colorsDiv.style.display = 'flex';
 
-    Object.keys(singleColors).forEach(singleColor => {
+    Object.keys(singleColors).forEach((singleColor) => {
         const div = document.createElement('div');
 
         div.style.width = '100px';
@@ -58,7 +64,7 @@ function createSingleColors() {
     });
 }
 
-if (d3Selection.select('.js-color-container').node()) {
+if (select('.js-color-container').node()) {
     createColors();
     createGradients();
     createSingleColors();

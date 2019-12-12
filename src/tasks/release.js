@@ -1,4 +1,4 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     'use strict';
 
     var shell = require('shelljs');
@@ -7,7 +7,7 @@ module.exports = function(grunt) {
     grunt.renameTask('release', 'bump-version');
 
     grunt.config.set('bump-version', {
-        'options': {
+        options: {
             commitMessage: 'Bumped Project to <%= version %>',
             changelog: true, //default: false
             changelogText: '<%= version %>\n',
@@ -19,14 +19,16 @@ module.exports = function(grunt) {
             push: true,
             pushTags: true,
             npm: false,
-            npmtag: false
-        }
+            npmtag: false,
+        },
     });
 
-    grunt.registerTask('release', function() {
-        var bumpTask = 'bump-version' + Array.prototype.slice.call(arguments).map(function(val) {
-            return ':' + val;
-        });
+    grunt.registerTask('release', function () {
+        var bumpTask =
+            'bump-version' +
+            Array.prototype.slice.call(arguments).map(function (val) {
+                return ':' + val;
+            });
 
         grunt.task.run(bumpTask);
     });

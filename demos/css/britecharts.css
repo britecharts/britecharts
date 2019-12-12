@@ -1,33 +1,22 @@
 @font-face {
   font-family: 'Karla', sans-serif;
-  src: url("https://fonts.googleapis.com/css?family=Karla") format("opentype");
-  font-weight: 300; }
+  font-weight: 300;
+  src: url("https://fonts.googleapis.com/css?family=Karla") format("opentype"); }
 
 .britechart {
   font-family: 'Karla', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  font-size: 10px; }
+  font-size: 10px;
+  -webkit-font-smoothing: antialiased; }
 
 .select-disable {
-  -webkit-touch-callout: none;
-  /* iOS Safari */
-  -webkit-user-select: none;
-  /* Safari */
-  -khtml-user-select: none;
-  /* Konqueror HTML */
-  -moz-user-select: none;
-  /* Firefox */
-  -ms-user-select: none;
-  /* Internet Explorer/Edge */
-  user-select: none;
-  /* Non-prefixed version, currently supported by Chrome and Opera */ }
+  user-select: none; }
 
 .line-load-state .chart-filter,
 .stacked-area-load-state .chart-filter,
 .donut-load-state .chart-filter,
 .bar-load-state .chart-filter {
-  will-change: transform;
-  animation: swipe 1.5s linear infinite forwards; }
+  animation: swipe 1.5s linear infinite forwards;
+  will-change: transform; }
 
 @keyframes swipe {
   from {
@@ -39,88 +28,78 @@
 .horizontal-grid-line {
   fill: none;
   shape-rendering: crispEdges;
-  stroke: #EFF2F5;
-  stroke-width: 1;
-  stroke-dasharray: 4, 4; }
+  stroke: #eff2f5;
+  stroke-dasharray: 4, 4;
+  stroke-width: 1; }
 
 .horizontal-grid-line--highlighted {
-  stroke: #45494E;
+  stroke: #45494e;
   stroke-dasharray: 2, 2; }
 
 .extended-y-line,
 .extended-x-line {
   fill: none;
   shape-rendering: crispEdges;
-  stroke: #D2D6DF;
+  stroke: #d2d6df;
   stroke-width: 1; }
 
 .tick line {
   fill: none;
-  stroke: #ADB0B6;
-  stroke-width: 1;
-  shape-rendering: crispEdges; }
+  shape-rendering: crispEdges;
+  stroke: #adb0b6;
+  stroke-width: 1; }
 
 .tick text {
+  fill: #666a73;
   font-size: 10px;
-  fill: #666A73;
   padding: 12px; }
 
 .y-axis-label,
 .x-axis-label {
-  font-size: 12px;
-  fill: #ADB0B6; }
+  fill: #adb0b6;
+  font-size: 12px; }
 
 .britechart-tooltip {
   font-size: 12px; }
 
 .vertical-marker-container .vertical-marker {
-  stroke: #D2D6DF;
-  stroke-width: 1;
-  fill: none; }
+  fill: none;
+  stroke: #d2d6df;
+  stroke-width: 1; }
 
 .vertical-marker-container .data-point-highlighter {
-  fill: #ffffff;
+  fill: #fff;
   stroke-width: 2; }
 
 .tooltip-background {
+  border-radius: 2px;
   fill: rgba(255, 255, 255, 0.97);
-  stroke: #D2D6DF;
-  stroke-width: 1;
-  border-radius: 2px; }
-
-.britechart-mini-tooltip .mini-tooltip-title,
-.britechart-mini-tooltip .mini-tooltip-name {
-  font-size: 14px; }
-
-.britechart-mini-tooltip .mini-tooltip-value {
-  font-size: 27px; }
+  stroke: #d2d6df;
+  stroke-width: 1; }
 
 .britechart-legend .legend-entry {
   font-size: 12px; }
-  .britechart-legend .legend-entry .legend-entry-name,
-  .britechart-legend .legend-entry .legend-entry-value,
-  .britechart-legend .legend-entry .legend-circle {
-    font-size: 1em !important;
-    letter-spacing: 0.5px; }
-  .britechart-legend .legend-entry .legend-entry-value {
-    text-anchor: end;
-    letter-spacing: 0.8px; }
-  .britechart-legend .legend-entry.is-faded .legend-entry-name,
-  .britechart-legend .legend-entry.is-faded .legend-entry-value,
-  .britechart-legend .legend-entry.is-faded .legend-circle {
-    opacity: 0.97;
-    transition: opacity .2s ease-out;
-    -moz-transition: opacity .2s ease-out;
-    -webkit-transition: opacity .2s ease-out; }
-  .britechart-legend .legend-entry.is-faded .legend-entry-name,
-  .britechart-legend .legend-entry.is-faded .legend-entry-value,
-  .britechart-legend .legend-entry.is-faded .legend-circle {
-    opacity: 0.2; }
+
+.britechart-legend .legend-entry-name,
+.britechart-legend .legend-entry-value,
+.britechart-legend .legend-circle {
+  font-size: 1em !important;
+  letter-spacing: 0.5px; }
+
+.britechart-legend .legend-entry-value {
+  letter-spacing: 0.8px;
+  text-anchor: end; }
+
+.britechart-legend.is-faded .legend-entry-name,
+.britechart-legend.is-faded .legend-entry-value,
+.britechart-legend.is-faded .legend-circle {
+  opacity: 0.97;
+  transition: opacity 0.2s ease-out; }
 
 .bar-chart .bar {
   shape-rendering: crispEdges; }
 
-.bar-chart .y-axis-group .tick text {
+.bar-chart .y-axis-group text {
   font-size: 14px; }
 
 .bar-chart .axis path {
@@ -133,15 +112,16 @@
   transform: translate(0, -10px); }
 
 .bar-chart .percentage-label {
-  fill: #666A73; }
+  fill: #666a73; }
 
 .line-chart .data-point-mark {
-  fill: #ffffff; }
+  fill: #fff; }
 
 .line-chart .topic .line {
   stroke-width: 2;
   stroke-linecap: round;
-  stroke-linejoin: round; }
+  stroke-linejoin: round;
+  fill: none; }
 
 .line-chart .x.axis path,
 .line-chart .y.axis path {
@@ -155,17 +135,17 @@
   stroke-width: 1; }
 
 .line-chart .custom-line-annotation {
+  fill: #666a73;
   font-size: 0.75rem;
-  line-height: 0.75rem;
-  fill: #666A73; }
+  line-height: 0.75rem; }
 
 .line-chart .masking-rectangle {
-  fill: #ffffff; }
+  fill: #fff; }
 
-.scatter-plot .y-axis-group .tick line {
+.scatter-plot .y-axis-group line {
   display: none; }
 
-.scatter-plot .y-axis-group .axis path {
+.scatter-plot .y-axis-group path {
   display: none; }
 
 .scatter-plot .x.axis path {
@@ -175,16 +155,17 @@
   stroke-width: 1.2; }
 
 .sparkline {
-  stroke: #ADB0B6;
-  stroke-width: 1;
+  stroke: #adb0b6;
+  fill: none;
   stroke-linecap: round;
-  stroke-linejoin: round; }
+  stroke-linejoin: round;
+  stroke-width: 1; }
   .sparkline .line {
     stroke-width: 2; }
   .sparkline .sparkline-circle {
+    display: none;
     fill: #ff584c;
-    stroke-width: 0;
-    display: none; }
+    stroke-width: 0; }
   .sparkline .sparkline-area {
     stroke: none; }
 
@@ -198,6 +179,7 @@
   display: none; }
 
 .stacked-area .area-outline {
+  fill: none;
   shape-rendering: geometricPrecision;
   stroke-width: 1.2; }
 
@@ -205,17 +187,16 @@
   stroke-width: 1.2; }
 
 .stacked-area .empty-data-line {
-  stroke-width: 2px;
-  stroke-linecap: round; }
+  stroke-linecap: round;
+  stroke-width: 2px; }
 
 .stacked-bar .x-axis-group path,
 .stacked-bar .y-axis-group path {
   display: none; }
 
-.stacked-bar .y-axis-group .tick text {
+.stacked-bar .y-axis-group text {
   font-size: 14px; }
 
-.stacked-bar .tick line,
 .stacked-bar .tick line {
   display: none; }
 
@@ -223,19 +204,18 @@
 .grouped-bar .y-axis-group path {
   display: none; }
 
-.grouped-bar .y-axis-group .tick text {
+.grouped-bar .y-axis-group text {
   font-size: 14px; }
 
-.grouped-bar .tick line,
 .grouped-bar .tick line {
   display: none; }
 
 .step-chart .step {
-  fill: #8FDAD8;
-  stroke-width: 0;
-  shape-rendering: crispEdges; }
+  fill: #8fdad8;
+  shape-rendering: crispEdges;
+  stroke-width: 0; }
   .step-chart .step:hover {
-    fill: #39C2C9; }
+    fill: #39c2c9; }
 
 .step-chart .axis path {
   display: none; }
@@ -244,13 +224,13 @@
   display: none; }
 
 .brush-chart .brush-area {
-  fill: #EFF2F5; }
+  fill: #eff2f5; }
 
-.brush-chart rect.brush-rect.selection {
+.brush-chart .brush-rect.selection {
   fill-opacity: 0.08;
   stroke-linejoin: round; }
 
-.brush-chart rect.brush-rect.handle {
+.brush-chart .brush-rect.handle {
   fill: #00d8d2;
   width: 0.2rem; }
 

@@ -8,18 +8,18 @@ $text-size-large: $text-size-base * 1.4;
 
 // Basic Colors
 //
-$white: #ffffff;
+$white: #fff;
 
 // Grey
-$grey-100: #F8F8FA;
-$grey-200: #EFF2F5;
-$grey-300: #D2D6DF;
-$grey-400: #C3C6CF;
-$grey-500: #ADB0B6;
-$grey-600: #666A73;
-$grey-700: #45494E;
-$grey-800: #363A43;
-$grey-900: #282C35;
+$grey-100: #f8f8fa;
+$grey-200: #eff2f5;
+$grey-300: #d2d6df;
+$grey-400: #c3c6cf;
+$grey-500: #adb0b6;
+$grey-600: #666a73;
+$grey-700: #45494e;
+$grey-800: #363a43;
+$grey-900: #282c35;
 
 // Colors
 // Eventbrite Brand Colors
@@ -34,7 +34,6 @@ $grey-900: #282C35;
 // $brand-color-green: #00cc52;
 // // Blueberry
 // $brand-color-light-blue: #00a8f2;
-
 
 // Extended Palette (britecharts-extended-)
 // Orange
@@ -121,10 +120,9 @@ $bc-e-red-300: #ff938c;
 $bc-e-red-400: #ff766c;
 $bc-e-red-500: #ff584c;
 $bc-e-red-600: #f04b42;
-$bc-e-red-700: #D33732;
+$bc-e-red-700: #d33732;
 $bc-e-red-800: #be2e29;
 $bc-e-red-900: #9c1e19;
-
 
 // Main chart color palette
 $bc-green: $bc-e-green-500;
