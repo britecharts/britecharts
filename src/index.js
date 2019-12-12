@@ -33,5 +33,5 @@ export {
     step,
     brush,
     bullet,
-    colors
+    colors,
 };

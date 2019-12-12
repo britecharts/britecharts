@@ -1,28 +1,27 @@
-'use strict';
+import { select, selectAll } from 'd3-selection';
+import PubSub from 'pubsub-js';
 
-const d3Selection = require('d3-selection');
-const PubSub = require('pubsub-js');
-
-const step = require('./../../src/charts/step');
-const miniTooltip = require('./../../src/charts/mini-tooltip');
-
-const dataBuilder = require('./../../test/fixtures/stepChartDataBuilder');
-let redrawCharts;
-
-const aTestDataSet = () => new dataBuilder.StepDataBuilder();
+import step from './../../src/charts/step';
+import miniTooltip from './../../src/charts/mini-tooltip';
+import { StepDataBuilder } from './../../test/fixtures/stepChartDataBuilder';
 
 require('./helpers/resizeHelper');
+
+const aTestDataSet = () => new StepDataBuilder();
+let redrawCharts;
 
 function createStepChart() {
     let stepChart = step(),
         tooltip = miniTooltip(),
-        stepContainer = d3Selection.select('.js-step-chart-container'),
-        containerWidth = stepContainer.node() ? stepContainer.node().getBoundingClientRect().width : false,
+        stepContainer = select('.js-step-chart-container'),
+        containerWidth = stepContainer.node()
+            ? stepContainer.node().getBoundingClientRect().width
+            : false,
         tooltipContainer,
         dataset;
 
     if (containerWidth) {
-        d3Selection.select('#button').on('click', function() {
+        select('#button').on('click', function () {
             stepChart.exportChart('stepchart.png', 'Britecharts Step Chart');
         });
 
@@ -39,30 +38,31 @@ function createStepChart() {
                 top: 40,
                 right: 40,
                 bottom: 50,
-                left: 80
+                left: 80,
             })
             .on('customMouseOver', tooltip.show)
             .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);
 
-
         stepContainer.datum(dataset.data).call(stepChart);
 
         tooltip.nameLabel('key');
 
-        tooltipContainer = d3Selection.select('.js-step-chart-container .step-chart .metadata-group');
+        tooltipContainer = select(
+            '.js-step-chart-container .step-chart .metadata-group'
+        );
         tooltipContainer.datum([]).call(tooltip);
     }
 }
 
 // Show charts if container available
-if (d3Selection.select('.js-step-chart-container').node()){
+if (select('.js-step-chart-container').node()) {
     createStepChart();
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
-    redrawCharts = function(){
-        d3Selection.select('.step-chart').remove();
+    redrawCharts = function () {
+        select('.step-chart').remove();
 
         createStepChart();
     };

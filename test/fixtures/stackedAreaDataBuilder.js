@@ -1,71 +1,60 @@
-define(function(require) {
-    'use strict';
+import _ from 'underscore';
+import jsonThreeSources from '../json/areaDataThreeSources.json';
+import jsonSixSources from '../json/areaDataSixSources.json';
+import jsonSalesChannel from '../json/areaDataSalesChannel.json';
+import jsonReportService from '../json/areaDataReportService.json';
+import jsonLargeService from '../json/areaDataLarge.json';
+import jsonNegativeValues from '../json/areaDataNegativeValues.json';
+import jsonNumericKeys from '../json/areaDataNumericKeys.json';
 
-    var _ = require('underscore'),
+export function StackedAreaDataBuilder(config) {
+    this.Klass = StackedAreaDataBuilder;
 
-        jsonThreeSources = require('../json/areaDataThreeSources.json'),
-        jsonSixSources = require('../json/areaDataSixSources.json'),
-        jsonSalesChannel = require('../json/areaDataSalesChannel.json'),
-        jsonReportService = require('../json/areaDataReportService.json'),
-        jsonLargeService = require('../json/areaDataLarge.json'),
-        jsonNegativeValues = require('../json/areaDataNegativeValues.json'),
-        jsonNumericKeys = require('../json/areaDataNumericKeys.json');
+    this.config = _.defaults({}, config);
 
+    this.with3Sources = function () {
+        var attributes = _.extend({}, this.config, jsonThreeSources);
 
-    function StackedAreaDataBuilder(config){
-        this.Klass = StackedAreaDataBuilder;
-
-        this.config = _.defaults({}, config);
-
-        this.with3Sources = function(){
-            var attributes = _.extend({}, this.config, jsonThreeSources);
-
-            return new this.Klass(attributes);
-        };
-
-        this.with6Sources = function(){
-            var attributes = _.extend({}, this.config, jsonSixSources);
-
-            return new this.Klass(attributes);
-        };
-
-        this.withReportData = function(){
-            var attributes = _.extend({}, this.config, jsonReportService);
-
-            return new this.Klass(attributes);
-        };
-
-        this.withSalesChannelData = function(){
-            var attributes = _.extend({}, this.config, jsonSalesChannel);
-
-            return new this.Klass(attributes);
-        };
-
-        this.withLargeData = function() {
-            var attributes = _.extend({}, this.config, jsonLargeService);
-
-            return new this.Klass(attributes);
-        };
-
-        this.withNegativeValues = function() {
-            var attributes = _.extend({}, this.config, jsonNegativeValues);
-
-            return new this.Klass(attributes);
-        };
-
-        this.withNumericKeys = function() {
-            var attributes = _.extend({}, this.config, jsonNumericKeys);
-
-            return new this.Klass(attributes);
-        }
-
-        this.build = function() {
-            return this.config;
-        };
-    }
-
-    return {
-        StackedAreaDataBuilder: StackedAreaDataBuilder
+        return new this.Klass(attributes);
     };
 
-});
+    this.with6Sources = function () {
+        var attributes = _.extend({}, this.config, jsonSixSources);
+
+        return new this.Klass(attributes);
+    };
+
+    this.withReportData = function () {
+        var attributes = _.extend({}, this.config, jsonReportService);
+
+        return new this.Klass(attributes);
+    };
+
+    this.withSalesChannelData = function () {
+        var attributes = _.extend({}, this.config, jsonSalesChannel);
+
+        return new this.Klass(attributes);
+    };
+
+    this.withLargeData = function () {
+        var attributes = _.extend({}, this.config, jsonLargeService);
+
+        return new this.Klass(attributes);
+    };
+
+    this.withNegativeValues = function () {
+        var attributes = _.extend({}, this.config, jsonNegativeValues);
+
+        return new this.Klass(attributes);
+    };
+
+    this.withNumericKeys = function () {
+        var attributes = _.extend({}, this.config, jsonNumericKeys);
+
+        return new this.Klass(attributes);
+    };
+
+    this.build = function () {
+        return this.config;
+    };
+}
