@@ -445,51 +445,67 @@ define([
         });
 
         describe('locale', () => {
-            it('should return a rejected promise upon an invalid locale', (done) => {
-                expectAsync(locale.setDefaultLocale('foo-bar')).toBeRejectedWith('Please pass in a valid locale string (az-AZ) or locale object definition');
-                done();
-            });
 
-            it('should return a resolved promise when a valid locale definition is given', (done) => {
-                const validLocaleDefinition = {
+            afterEach(() => {
+                const USLocale = {
                     'decimal': '.',
                     'thousands': ',',
-                    'grouping': [
-                        3
-                    ],
-                    'currency': [
-                        '$',
-                        ''
-                    ]
+                    'grouping': [3],
+                    'currency': ['$', '']
                 };
 
-                expectAsync(locale.setDefaultLocale(validLocaleDefinition)).toBeResolved();
-                done();
+                locale.setDefaultLocale(USLocale);
             });
 
-            it('should return a rejected promise when a invalid locale definition is given', (done) => {
-                const invalidLocaleDefinition = {};
+            describe('when a valid locale definition is given', () => {
 
-                expectAsync(locale.setDefaultLocale(invalidLocaleDefinition)).toBeRejected();
-                done();
+                it('should return an object', () => {
+                    const validLocaleDefinition = {
+                        'decimal': '.',
+                        'thousands': ',',
+                        'grouping': [
+                            3
+                        ],
+                        'currency': [
+                            '$',
+                            ''
+                        ]
+                    };
+                    const expected = 'object';
+                    const actual = typeof locale.setDefaultLocale(validLocaleDefinition);
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should return an object with a format function', () => {
+                    const validLocaleDefinition = {
+                        'decimal': '.',
+                        'thousands': ',',
+                        'grouping': [
+                            3
+                        ],
+                        'currency': [
+                            '$',
+                            ''
+                        ]
+                    };
+                    const expected = 'function';
+                    const actual = typeof locale.setDefaultLocale(validLocaleDefinition).format;
+
+                    expect(actual).toEqual(expected);
+                });
             });
 
-            xit('should return a resolved promise when a valid locale string is given', (done) => {
-                const validLocaleDefinition = {
-                    'decimal': '.',
-                    'thousands': ',',
-                    'grouping': [
-                        3
-                    ],
-                    'currency': [
-                        '$',
-                        ''
-                    ]
-                };
+            describe('when an invalid locale definition is given', () => {
 
-                spyOn(d3, 'json').and.returnValue(Promise.resolve(validLocaleDefinition));
-                expectAsync(locale.setDefaultLocale('en-US')).toBeResolved();
-                done();
+                it('should throw an error', () => {
+                    const invalidLocaleDefinition = {};
+                    const expected = new Error('Please pass in a valid locale object definition');
+
+                    expect(
+                        () => locale.setDefaultLocale(invalidLocaleDefinition)
+                    ).toThrow(expected);
+                });
             });
         });
     });
