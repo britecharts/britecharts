@@ -39,57 +39,54 @@
 .horizontal-grid-line {
   fill: none;
   shape-rendering: crispEdges;
-  stroke: #EFF2F5;
+  stroke: #eff2f5;
   stroke-width: 1;
   stroke-dasharray: 4, 4; }
+
+.horizontal-grid-line--highlighted {
+  stroke: #45494e;
+  stroke-dasharray: 2, 2; }
 
 .extended-y-line,
 .extended-x-line {
   fill: none;
   shape-rendering: crispEdges;
-  stroke: #D2D6DF;
+  stroke: #d2d6df;
   stroke-width: 1; }
 
 .tick line {
   fill: none;
-  stroke: #ADB0B6;
+  stroke: #adb0b6;
   stroke-width: 1;
   shape-rendering: crispEdges; }
 
 .tick text {
   font-size: 10px;
-  fill: #666A73;
+  fill: #666a73;
   padding: 12px; }
 
 .y-axis-label,
 .x-axis-label {
   font-size: 12px;
-  fill: #ADB0B6; }
+  fill: #adb0b6; }
 
 .britechart-tooltip {
   font-size: 12px; }
 
 .vertical-marker-container .vertical-marker {
-  stroke: #D2D6DF;
+  stroke: #d2d6df;
   stroke-width: 1;
   fill: none; }
 
 .vertical-marker-container .data-point-highlighter {
-  fill: #ffffff;
+  fill: #fff;
   stroke-width: 2; }
 
 .tooltip-background {
   fill: rgba(255, 255, 255, 0.97);
-  stroke: #D2D6DF;
+  stroke: #d2d6df;
   stroke-width: 1;
   border-radius: 2px; }
-
-.britechart-mini-tooltip .mini-tooltip-title,
-.britechart-mini-tooltip .mini-tooltip-name {
-  font-size: 14px; }
-
-.britechart-mini-tooltip .mini-tooltip-value {
-  font-size: 27px; }
 
 .britechart-legend .legend-entry {
   font-size: 12px; }
@@ -105,13 +102,9 @@
   .britechart-legend .legend-entry.is-faded .legend-entry-value,
   .britechart-legend .legend-entry.is-faded .legend-circle {
     opacity: 0.97;
-    transition: opacity .2s ease-out;
-    -moz-transition: opacity .2s ease-out;
-    -webkit-transition: opacity .2s ease-out; }
-  .britechart-legend .legend-entry.is-faded .legend-entry-name,
-  .britechart-legend .legend-entry.is-faded .legend-entry-value,
-  .britechart-legend .legend-entry.is-faded .legend-circle {
-    opacity: 0.2; }
+    transition: opacity 0.2s ease-out;
+    -moz-transition: opacity 0.2s ease-out;
+    -webkit-transition: opacity 0.2s ease-out; }
 
 .bar-chart .bar {
   shape-rendering: crispEdges; }
@@ -129,10 +122,10 @@
   transform: translate(0, -10px); }
 
 .bar-chart .percentage-label {
-  fill: #666A73; }
+  fill: #666a73; }
 
 .line-chart .data-point-mark {
-  fill: #ffffff; }
+  fill: #fff; }
 
 .line-chart .topic .line {
   fill: none;
@@ -147,8 +140,18 @@
 .line-chart .month-axis path {
   display: none; }
 
+.line-chart .custom-line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke-width: 1; }
+
+.line-chart .custom-line-annotation {
+  font-size: 0.75rem;
+  line-height: 0.75rem;
+  fill: #666a73; }
+
 .line-chart .masking-rectangle {
-  fill: #ffffff; }
+  fill: #fff; }
 
 .scatter-plot .y-axis-group .tick line {
   display: none; }
@@ -163,7 +166,7 @@
   stroke-width: 1.2; }
 
 .sparkline {
-  stroke: #ADB0B6;
+  stroke: #adb0b6;
   stroke-width: 1;
   fill: none;
   stroke-linecap: round;
@@ -205,7 +208,6 @@
 .stacked-bar .y-axis-group .tick text {
   font-size: 14px; }
 
-.stacked-bar .tick line,
 .stacked-bar .tick line {
   display: none; }
 
@@ -216,16 +218,15 @@
 .grouped-bar .y-axis-group .tick text {
   font-size: 14px; }
 
-.grouped-bar .tick line,
 .grouped-bar .tick line {
   display: none; }
 
 .step-chart .step {
-  fill: #8FDAD8;
+  fill: #8fdad8;
   stroke-width: 0;
   shape-rendering: crispEdges; }
   .step-chart .step:hover {
-    fill: #39C2C9; }
+    fill: #39c2c9; }
 
 .step-chart .axis path {
   display: none; }
@@ -234,7 +235,7 @@
   display: none; }
 
 .brush-chart .brush-area {
-  fill: #EFF2F5; }
+  fill: #eff2f5; }
 
 .brush-chart rect.brush-rect.selection {
   fill-opacity: 0.08;

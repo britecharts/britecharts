@@ -1,4 +1,4 @@
-@import "../helpers/_variables.scss";
+@import '../helpers/_variables';
 
 $line-width: 2;
 $text-size: 0.75rem;
@@ -13,9 +13,9 @@ $text-size: 0.75rem;
     // Lines
     .topic .line {
         fill: none;
-        stroke-width: $line-width;
         stroke-linecap: round;
         stroke-linejoin: round;
+        stroke-width: $line-width;
     }
 
     // Axes
@@ -23,6 +23,7 @@ $text-size: 0.75rem;
     .y.axis path {
         display: none;
     }
+
     .month-axis path {
         display: none;
     }
@@ -34,9 +35,9 @@ $text-size: 0.75rem;
     }
 
     .custom-line-annotation {
+        fill: $grey-600;
         font-size: $text-size;
         line-height: $text-size;
-        fill: $grey-600;
     }
 
     // This is the div that we use to simulate a line drawing animation

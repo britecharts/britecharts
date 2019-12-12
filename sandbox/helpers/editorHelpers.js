@@ -1,33 +1,28 @@
-const ace = require('brace');
-require('brace/mode/javascript');
-require('brace/theme/monokai');
+import ace from 'brace';
 
-const {
-    theme,
-    mode
-} = require('../constants/constants').editorConfig;
+import 'brace/mode/javascript';
+import 'brace/theme/monokai';
+import constants from '../constants/constants';
 
-module.exports = (function() {
+const { editorConfig } = constants;
+const { theme, mode } = editorConfig;
+
+export default ({ dataInputId, chartInputId }) => {
+    const dataEditor = ace.edit(dataInputId);
+    const configEditor = ace.edit(chartInputId);
+
+    [dataEditor, configEditor].forEach((editor) => {
+        editor.setTheme(theme);
+        editor.getSession().setMode(mode);
+        // remove unwanted warning
+        editor.$blockScrolling = Infinity;
+    });
+
+    // Config Editor
+    configEditor.renderer.setShowGutter(false);
 
     return {
-        createEditors({dataInputId, chartInputId}) {
-            const dataEditor = ace.edit(dataInputId);
-            const configEditor = ace.edit(chartInputId);
-
-            [dataEditor, configEditor].forEach((editor) => {
-                editor.setTheme(theme);
-                editor.getSession().setMode(mode);
-                // remove unwanted warning
-                editor.$blockScrolling = Infinity;
-            });
-
-            // Config Editor
-            configEditor.renderer.setShowGutter(false);
-
-            return {
-                dataEditor,
-                configEditor
-            };
-        }
-    }
-}());
+        dataEditor,
+        configEditor,
+    };
+};

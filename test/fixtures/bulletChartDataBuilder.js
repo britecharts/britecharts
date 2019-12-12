@@ -1,28 +1,18 @@
-define(function(require) {
-    'use strict';
+import _ from 'underscore';
+import jsonBulletData from '../json/bulletDataCpuUsage.json';
 
-    var _ = require('underscore'),
+export function BulletChartDataBuilder(config) {
+    this.Klass = BulletChartDataBuilder;
 
-        jsonBulletData = require('../json/bulletDataCpuUsage.json');
+    this.config = _.defaults({}, config);
 
+    this.withCpuData = function () {
+        var attributes = _.extend({}, this.config, jsonBulletData);
 
-    function BulletChartDataBuilder(config){
-        this.Klass = BulletChartDataBuilder;
-
-        this.config = _.defaults({}, config);
-
-        this.withCpuData = function() {
-            var attributes = _.extend({}, this.config, jsonBulletData);
-
-            return new this.Klass(attributes);
-        };
-
-        this.build = function() {
-            return this.config.data;
-        };
-    }
-
-    return {
-        BulletChartDataBuilder: BulletChartDataBuilder
+        return new this.Klass(attributes);
     };
-});
+
+    this.build = function () {
+        return this.config.data;
+    };
+}
