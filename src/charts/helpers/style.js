@@ -1,24 +1,136 @@
-module.exports = (function() {
-
+module.exports = (function () {
     'use strict';
 
     // Styles inherited from style sheets will not be rendered for elements with these tag names
     const noStyleTags = {
-        'BASE': true,
-        'HEAD': true,
-        'HTML': true,
-        'META': true,
-        'NOFRAME': true,
-        'NOSCRIPT': true,
-        'PARAM': true,
-        'SCRIPT': true,
-        'STYLE': true,
-        'TITLE': true
+        BASE: true,
+        HEAD: true,
+        HTML: true,
+        META: true,
+        NOFRAME: true,
+        NOSCRIPT: true,
+        PARAM: true,
+        SCRIPT: true,
+        STYLE: true,
+        TITLE: true,
     };
 
     // This list determines which css default values lookup tables are precomputed at load time
     // Lookup tables for other tag names will be automatically built at runtime if needed
-    const tagNames = ['A', 'ABBR', 'ADDRESS', 'AREA', 'ARTICLE', 'ASIDE', 'AUDIO', 'B', 'BASE', 'BDI', 'BDO', 'BLOCKQUOTE', 'BODY', 'BR', 'BUTTON', 'CANVAS', 'CAPTION', 'CENTER', 'CITE', 'CODE', 'COL', 'COLGROUP', 'COMMAND', 'DATALIST', 'DD', 'DEL', 'DETAILS', 'DFN', 'DIV', 'DL', 'DT', 'EM', 'EMBED', 'FIELDSET', 'FIGCAPTION', 'FIGURE', 'FONT', 'FOOTER', 'FORM', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'HEAD', 'HEADER', 'HGROUP', 'HR', 'HTML', 'I', 'IFRAME', 'IMG', 'INPUT', 'INS', 'KBD', 'LABEL', 'LEGEND', 'LI', 'LINK', 'MAP', 'MARK', 'MATH', 'MENU', 'META', 'METER', 'NAV', 'NOBR', 'NOSCRIPT', 'OBJECT', 'OL', 'OPTION', 'OPTGROUP', 'OUTPUT', 'P', 'PARAM', 'PRE', 'PROGRESS', 'Q', 'RP', 'RT', 'RUBY', 'S', 'SAMP', 'SCRIPT', 'SECTION', 'SELECT', 'SMALL', 'SOURCE', 'SPAN', 'STRONG', 'STYLE', 'SUB', 'SUMMARY', 'SUP', 'SVG', 'TABLE', 'TBODY', 'TD', 'TEXTAREA', 'TFOOT', 'TH', 'THEAD', 'TIME', 'TITLE', 'TR', 'TRACK', 'U', 'UL', 'VAR', 'VIDEO', 'WBR'];
+    const tagNames = [
+        'A',
+        'ABBR',
+        'ADDRESS',
+        'AREA',
+        'ARTICLE',
+        'ASIDE',
+        'AUDIO',
+        'B',
+        'BASE',
+        'BDI',
+        'BDO',
+        'BLOCKQUOTE',
+        'BODY',
+        'BR',
+        'BUTTON',
+        'CANVAS',
+        'CAPTION',
+        'CENTER',
+        'CITE',
+        'CODE',
+        'COL',
+        'COLGROUP',
+        'COMMAND',
+        'DATALIST',
+        'DD',
+        'DEL',
+        'DETAILS',
+        'DFN',
+        'DIV',
+        'DL',
+        'DT',
+        'EM',
+        'EMBED',
+        'FIELDSET',
+        'FIGCAPTION',
+        'FIGURE',
+        'FONT',
+        'FOOTER',
+        'FORM',
+        'H1',
+        'H2',
+        'H3',
+        'H4',
+        'H5',
+        'H6',
+        'HEAD',
+        'HEADER',
+        'HGROUP',
+        'HR',
+        'HTML',
+        'I',
+        'IFRAME',
+        'IMG',
+        'INPUT',
+        'INS',
+        'KBD',
+        'LABEL',
+        'LEGEND',
+        'LI',
+        'LINK',
+        'MAP',
+        'MARK',
+        'MATH',
+        'MENU',
+        'META',
+        'METER',
+        'NAV',
+        'NOBR',
+        'NOSCRIPT',
+        'OBJECT',
+        'OL',
+        'OPTION',
+        'OPTGROUP',
+        'OUTPUT',
+        'P',
+        'PARAM',
+        'PRE',
+        'PROGRESS',
+        'Q',
+        'RP',
+        'RT',
+        'RUBY',
+        'S',
+        'SAMP',
+        'SCRIPT',
+        'SECTION',
+        'SELECT',
+        'SMALL',
+        'SOURCE',
+        'SPAN',
+        'STRONG',
+        'STYLE',
+        'SUB',
+        'SUMMARY',
+        'SUP',
+        'SVG',
+        'TABLE',
+        'TBODY',
+        'TD',
+        'TEXTAREA',
+        'TFOOT',
+        'TH',
+        'THEAD',
+        'TIME',
+        'TITLE',
+        'TR',
+        'TRACK',
+        'U',
+        'UL',
+        'VAR',
+        'VIDEO',
+        'WBR',
+    ];
 
     /**
      * Extracts the styles of elements of the given tag name
@@ -27,7 +139,9 @@ module.exports = (function() {
      */
     const computeDefaultStyleByTagName = (tagName) => {
         let defaultStyle = {},
-            element = document.body.appendChild(document.createElement(tagName)),
+            element = document.body.appendChild(
+                document.createElement(tagName)
+            ),
             computedStyle = window.getComputedStyle(element);
 
         [].forEach.call(computedStyle, (style) => {
@@ -49,7 +163,9 @@ module.exports = (function() {
         // Precompute the lookup tables.
         [].forEach.call(tagNames, (name) => {
             if (!noStyleTags[name]) {
-                defaultStylesByTagName[name] = computeDefaultStyleByTagName(name);
+                defaultStylesByTagName[name] = computeDefaultStyleByTagName(
+                    name
+                );
             }
         });
 
@@ -57,7 +173,9 @@ module.exports = (function() {
             tagName = tagName.toUpperCase();
 
             if (!defaultStylesByTagName[tagName]) {
-                defaultStylesByTagName[tagName] = computeDefaultStyleByTagName(tagName);
+                defaultStylesByTagName[tagName] = computeDefaultStyleByTagName(
+                    tagName
+                );
             }
 
             return defaultStylesByTagName[tagName];
@@ -85,7 +203,10 @@ module.exports = (function() {
                     defaultStyle = getDefaultStyleByTagName(el.tagName);
                     cssTexts[i] = el.style.cssText;
                     [].forEach.call(computedStyle, (cssPropName) => {
-                        if (computedStyle[cssPropName] !== defaultStyle[cssPropName]) {
+                        if (
+                            computedStyle[cssPropName] !==
+                            defaultStyle[cssPropName]
+                        ) {
                             el.style[cssPropName] = computedStyle[cssPropName];
                         }
                     });
@@ -100,12 +221,12 @@ module.exports = (function() {
             });
 
             return result;
-        };
+        }
 
         return serializeWithStyles;
     };
 
     return {
-        initializeSerializer
-    }
+        initializeSerializer,
+    };
 })();

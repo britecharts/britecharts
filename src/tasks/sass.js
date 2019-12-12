@@ -10,7 +10,7 @@ module.exports = function (grunt) {
             cwd: 'src/styles/',
             src: ['britecharts.scss'],
             dest: './dist/css',
-            ext: '.css'
+            ext: '.css',
         },
         // Common bundle including axes and gridlines
         // specified on common.scss
@@ -19,7 +19,7 @@ module.exports = function (grunt) {
             cwd: 'src/styles/',
             src: ['common.scss'],
             dest: './dist/css/common/',
-            ext: '.css'
+            ext: '.css',
         },
         // Individual styles for each chart
         {
@@ -27,8 +27,8 @@ module.exports = function (grunt) {
             cwd: 'src/styles/charts',
             src: ['*.scss'],
             dest: './dist/css/charts',
-            ext: '.css'
-        }
+            ext: '.css',
+        },
     ];
     const devFiles = [
         {
@@ -36,24 +36,24 @@ module.exports = function (grunt) {
             cwd: 'src/styles/',
             src: ['britecharts.scss'],
             dest: './demos/css',
-            ext: '.css'
-        }
+            ext: '.css',
+        },
     ];
 
     grunt.config.set('sass', {
         dev: {
             options: {
                 implementation: sass,
-                style: 'expanded'
+                style: 'expanded',
             },
-            files: devFiles
+            files: devFiles,
         },
         dist: {
             options: {
                 implementation: sass,
-                style: 'expanded'
+                style: 'expanded',
             },
-            files: distFiles
-        }
+            files: distFiles,
+        },
     });
 };
