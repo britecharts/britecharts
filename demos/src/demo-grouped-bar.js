@@ -1,22 +1,20 @@
-'use strict';
+import { select, selectAll } from 'd3-selection';
+import PubSub from 'pubsub-js';
 
-const d3Selection = require('d3-selection');
-const PubSub = require('pubsub-js');
-
-const colors = require('./../../src/charts/helpers/color');
-const groupedBarChart = require('./../../src/charts/grouped-bar');
-const tooltip = require('./../../src/charts/tooltip');
-const groupedDataBuilder = require('./../../test/fixtures/groupedBarChartDataBuilder');
-const colorSelectorHelper = require('./helpers/colorSelector');
-let redrawCharts;
+import groupedBarChart from './../../src/charts/grouped-bar';
+import tooltip from './../../src/charts/tooltip';
+import { GroupedBarChartDataBuilder } from './../../test/fixtures/groupedBarChartDataBuilder';
+import colorSelectorHelper from './helpers/colorSelector';
 
 require('./helpers/resizeHelper');
+
+let redrawCharts;
 
 function creategroupedBarChartWithTooltip(optionalColorSchema) {
     let groupedBar = groupedBarChart(),
         chartTooltip = tooltip(),
-        testDataSet = new groupedDataBuilder.GroupedBarChartDataBuilder(),
-        container = d3Selection.select('.js-grouped-bar-chart-tooltip-container'),
+        testDataSet = new GroupedBarChartDataBuilder(),
+        container = select('.js-grouped-bar-chart-tooltip-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
@@ -58,10 +56,10 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = d3Selection.select('.js-grouped-bar-chart-tooltip-container .metadata-group');
+        tooltipContainer = select('.js-grouped-bar-chart-tooltip-container .metadata-group');
         tooltipContainer.datum([]).call(chartTooltip);
 
-        d3Selection.select('#button').on('click', function() {
+        select('#button').on('click', function() {
             groupedBar.exportChart('grouped-bar.png', 'Britecharts Grouped Bar');
         });
     }
@@ -70,8 +68,8 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
 function createHorizontalgroupedBarChart(optionalColorSchema) {
     let groupedBar = groupedBarChart(),
         chartTooltip = tooltip(),
-        testDataSet = new groupedDataBuilder.GroupedBarChartDataBuilder(),
-        container = d3Selection.select('.js-grouped-bar-chart-fixed-container'),
+        testDataSet = new GroupedBarChartDataBuilder(),
+        container = select('.js-grouped-bar-chart-fixed-container'),
         containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
         tooltipContainer,
         dataset;
@@ -120,12 +118,12 @@ function createHorizontalgroupedBarChart(optionalColorSchema) {
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = d3Selection.select('.js-grouped-bar-chart-fixed-container .metadata-group');
+        tooltipContainer = select('.js-grouped-bar-chart-fixed-container .metadata-group');
         tooltipContainer.datum([]).call(chartTooltip);
     }
 }
 
-if (d3Selection.select('.js-grouped-bar-chart-tooltip-container').node()){
+if (select('.js-grouped-bar-chart-tooltip-container').node()){
     // Chart creation
     creategroupedBarChartWithTooltip();
     createHorizontalgroupedBarChart();
@@ -133,7 +131,7 @@ if (d3Selection.select('.js-grouped-bar-chart-tooltip-container').node()){
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
     redrawCharts = () => {
-        d3Selection.selectAll('.grouped-bar').remove();
+        selectAll('.grouped-bar').remove();
 
         creategroupedBarChartWithTooltip();
         createHorizontalgroupedBarChart();

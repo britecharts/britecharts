@@ -38,5 +38,7 @@ node_modules
 # Demos
 demos/build
 
+sandbox/build
+
 dist
 docs

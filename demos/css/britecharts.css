@@ -43,6 +43,10 @@
   stroke-width: 1;
   stroke-dasharray: 4, 4; }
 
+.horizontal-grid-line--highlighted {
+  stroke: #45494E;
+  stroke-dasharray: 2, 2; }
+
 .extended-y-line,
 .extended-x-line {
   fill: none;
@@ -83,13 +87,6 @@
   stroke: #D2D6DF;
   stroke-width: 1;
   border-radius: 2px; }
-
-.britechart-mini-tooltip .mini-tooltip-title,
-.britechart-mini-tooltip .mini-tooltip-name {
-  font-size: 14px; }
-
-.britechart-mini-tooltip .mini-tooltip-value {
-  font-size: 27px; }
 
 .britechart-legend .legend-entry {
   font-size: 12px; }
@@ -146,6 +143,16 @@
 
 .line-chart .month-axis path {
   display: none; }
+
+.line-chart .custom-line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke-width: 1; }
+
+.line-chart .custom-line-annotation {
+  font-size: 0.75rem;
+  line-height: 0.75rem;
+  fill: #666A73; }
 
 .line-chart .masking-rectangle {
   fill: #ffffff; }
