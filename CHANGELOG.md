@@ -26,9 +26,12 @@ Features
 * Failed bumps, removes ES modules from regular version
 
 2.13.0
+2.13.0
 ------
 * Feature - Customizable y labels for Heatmap (@DalerAsrorov)
+* Refactor - Updates Babel to 7.5 (@gagoar)
 * Refactor - Updates Webpack to version 4
+* Refactor - Use ES2015 modules all over the library
 * Feature - Supports null data points in line charts (@shayh)
 * Fix - Clear tooltip cache before path is redrawn (@shayh)
 

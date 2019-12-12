@@ -7,8 +7,8 @@ $animation-to: 100%;
 .stacked-area-load-state .chart-filter,
 .donut-load-state .chart-filter,
 .bar-load-state .chart-filter {
-    will-change: transform;
     animation: swipe $animation-duration linear infinite forwards;
+    will-change: transform;
 }
 
 @keyframes swipe {

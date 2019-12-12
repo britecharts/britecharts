@@ -1,35 +1,25 @@
-define(function(require) {
-    'use strict';
+import _ from 'underscore';
+import jsonColors from '../json/barColors.json';
+import jsonLetters from '../json/barDataLetters.json';
 
-    var _ = require('underscore'),
+export function BarDataBuilder(config) {
+    this.Klass = BarDataBuilder;
 
-        jsonColors = require('../json/barColors.json'),
-        jsonLetters = require('../json/barDataLetters.json');
+    this.config = _.defaults({}, config);
 
+    this.withLettersFrequency = function () {
+        var attributes = _.extend({}, this.config, jsonLetters);
 
-    function BarDataBuilder(config){
-        this.Klass = BarDataBuilder;
-
-        this.config = _.defaults({}, config);
-
-        this.withLettersFrequency = function(){
-            var attributes = _.extend({}, this.config, jsonLetters);
-
-            return new this.Klass(attributes);
-        };
-
-        this.withColors = function(){
-            var attributes = _.extend({}, this.config, jsonColors);
-
-            return new this.Klass(attributes);
-        };
-
-        this.build = function() {
-            return this.config.data;
-        };
-    }
-
-    return {
-        BarDataBuilder: BarDataBuilder
+        return new this.Klass(attributes);
     };
-});
+
+    this.withColors = function () {
+        var attributes = _.extend({}, this.config, jsonColors);
+
+        return new this.Klass(attributes);
+    };
+
+    this.build = function () {
+        return this.config.data;
+    };
+}
