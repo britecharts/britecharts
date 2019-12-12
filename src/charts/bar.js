@@ -211,11 +211,11 @@ export default function module() {
      */
     function buildAxis(locale) {
         if (isHorizontal) {
-            xAxis = d3Axis.axisBottom(xScale)
+            xAxis = axisBottom(xScale)
                 .ticks(xTicks, locale.format(numberFormat))
                 .tickSizeInner([-chartHeight]);
 
-            yAxis = d3Axis.axisLeft(yScale)
+            yAxis = axisLeft(yScale)
                 .ticks(yTicks, locale.format(numberFormat))
         } else {
             xAxis = axisBottom(xScale);

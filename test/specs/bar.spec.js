@@ -229,6 +229,20 @@ describe('Bar Chart', () => {
                 });
             });
         });
+
+        describe('when horizontal', () => {
+            it('should show a chart with minimal requirements', () => {
+                const expected = 1;
+                let actual;
+
+                barChart.isHorizontal(true);
+                containerFixture.datum(dataset).call(barChart);
+
+                actual = containerFixture.select('.bar-chart').size();
+
+                expect(actual).toEqual(expected);
+            });
+        });
     });
 
     describe('Lifecycle', () => {
