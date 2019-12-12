@@ -8,7 +8,7 @@ module.exports = function (grunt, configOptions) {
             cwd: './dist/css',
             src: ['britecharts.css', '!britecharts.min.css'],
             dest: './dist/css',
-            ext: '.min.css'
+            ext: '.min.css',
         },
         // Common bundle including axes and gridlines
         // specified on common.scss
@@ -17,7 +17,7 @@ module.exports = function (grunt, configOptions) {
             cwd: './dist/css/common',
             src: ['common.css', '!common.min.css'],
             dest: './dist/css/common/',
-            ext: '.min.css'
+            ext: '.min.css',
         },
         // Individual styles for each chart
         {
@@ -25,13 +25,13 @@ module.exports = function (grunt, configOptions) {
             cwd: './dist/css/charts',
             src: ['*.css', '!*.min.css'],
             dest: './dist/css/charts',
-            ext: '.min.css'
-        }
+            ext: '.min.css',
+        },
     ];
 
     grunt.config.set('cssmin', {
         dist: {
-            files: distFiles
-        }
+            files: distFiles,
+        },
     });
 };
