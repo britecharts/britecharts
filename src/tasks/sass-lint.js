@@ -3,12 +3,10 @@ module.exports = function (grunt) {
 
     grunt.config.set('sasslint', {
         options: {
-            configFile: '.sass-lint.yml'
+            configFile: '.sass-lint.yml',
         },
-        target: ['./src/styles/**/*.scss']
+        target: ['./src/styles/**/*.scss'],
     });
 
-    grunt.registerTask('lint', [
-        'sasslint'
-    ]);
-}
+    grunt.registerTask('lint', ['sasslint']);
+};

@@ -1,17 +1,16 @@
-@import "../helpers/_variables.scss";
+@import '../helpers/_variables';
 
 .brush-chart {
-
     .brush-area {
         fill: $grey-200;
     }
 
-    rect.brush-rect.selection {
+    .brush-rect.selection {
         fill-opacity: 0.08;
         stroke-linejoin: round;
     }
 
-    rect.brush-rect.handle {
+    .brush-rect.handle {
         fill: $bc-e-blue-300;
         width: 0.2rem;
     }
