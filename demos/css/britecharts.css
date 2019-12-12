@@ -84,13 +84,6 @@
   stroke-width: 1;
   border-radius: 2px; }
 
-.britechart-mini-tooltip .mini-tooltip-title,
-.britechart-mini-tooltip .mini-tooltip-name {
-  font-size: 14px; }
-
-.britechart-mini-tooltip .mini-tooltip-value {
-  font-size: 27px; }
-
 .britechart-legend .legend-entry {
   font-size: 12px; }
   .britechart-legend .legend-entry .legend-entry-name,

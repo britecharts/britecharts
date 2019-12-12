@@ -14,7 +14,7 @@ exports.babelLoader = () => ({
     },
 });
 
-exports.babelIstambulLoader = () => ({
+exports.istanbulLoader = () => ({
     module: {
         rules: [
             {
