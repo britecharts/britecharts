@@ -405,6 +405,14 @@ define(function(require) {
             return this;
         };
 
+        exports.yAxisTickFormat = function(_x) {
+          if (!arguments.length) {
+              return yAxisTickFormat;
+          }
+          yAxisTickFormat = _x;
+          return this;
+        };
+        
         /**
          * Gets or Sets the number of vertical ticks on the chart
          * (Default is 6)
