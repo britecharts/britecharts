@@ -8,7 +8,8 @@
 }
 
 .horizontal-grid-line--bold {
-    stroke: #000;
+    stroke: #ccc;
+    stroke-dasharray: 2, 2;
 }
 
 .extended-y-line,
