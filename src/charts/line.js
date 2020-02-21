@@ -504,7 +504,7 @@ define(function(require){
                 maxX = d3Array.max(dataByTopic, ({dates}) => d3Array.max(dates, getDate)),
                 maxY = d3Array.max(dataByTopic, ({dates}) => d3Array.max(dates, getValue)),
                 minY = d3Array.min(dataByTopic, ({dates}) => d3Array.min(dates, getValue));
-            let yScaleBottomValue = Math.abs(minY) < 0 ? Math.abs(minY) : 0;
+            let yScaleBottomValue = minY < 0 ? minY : 0;
 
             xScale = d3Scale.scaleTime()
                 .domain([minX, maxX])
