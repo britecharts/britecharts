@@ -521,7 +521,7 @@ define([
                 describe('when has negative values', () => {
                     beforeEach(() => {
                         dataset = buildDataSet('withNegativeValues');
-                        lineChart = chart();
+                        lineChart = chart().grid('full');
 
                         // DOM Fixture Setup
                         f = jasmine.getFixtures();
@@ -548,6 +548,16 @@ define([
                         let text = yAxis.select('g.tick');
                         expect(text.text()).toEqual(minValueText);
                     })
+
+                    it('0-axis is highlited with an additional class', () => {
+                        let values = dataset.dataByTopic[0].dates.map(it => it.value);
+                        let minValue = Math.min(...values);
+                        let indexOf0 = -minValue;
+                        
+                        let horizontalGridLines = d3.selectAll('.horizontal-grid-line').filter((_, i) => i === indexOf0)
+                        let classes = horizontalGridLines.attr('class').split(' ')
+                        expect(classes.includes('horizontal-grid-line--highlighted')).toEqual(true)
+                    });
                 });
             });
 
