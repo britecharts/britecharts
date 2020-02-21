@@ -760,7 +760,7 @@ define(function(require){
                     .enter()
                       .append('line')
                         .classed('horizontal-grid-line', true)
-                        .classed('horizontal-grid-line--bold', (value) => highlight0Axis && value === 0)
+                        .classed('horizontal-grid-line--highlighted', (value) => highlight0Axis && value === 0)
                         .attr('x1', (-xAxisPadding.left - 30))
                         .attr('x2', chartWidth)
                         .attr('y1', (d) => yScale(d))
