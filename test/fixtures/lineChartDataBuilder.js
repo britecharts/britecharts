@@ -11,7 +11,8 @@ define(function(require) {
         jsonTwoTopicsFlat = require('../json/lineDataTwoTopicsFlat.json'),
         jsonMultiMonthValueRange = require('../json/multiMonthLineData'),
         jsonHourDateRange = require('../json/lineDataOneSetHourly.json'),
-        jsonSmallValueRange = require('../json/lineDataSmallValueRange');
+        jsonSmallValueRange = require('../json/lineDataSmallValueRange'),
+        jsonNegativeValues = require('../json/lineDataNegativeValues.json');
 
 
     function LineDataBuilder(config) {
@@ -69,6 +70,12 @@ define(function(require) {
 
         this.withAllZeroes = function() {
             var attributes = _.extend({}, this.config, jsonAllZeroes);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withNegativeValues = function() {
+            var attributes = _.extend({}, this.config, jsonNegativeValues);
 
             return new this.Klass(attributes);
         };
