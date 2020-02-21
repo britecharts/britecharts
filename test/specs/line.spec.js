@@ -168,6 +168,17 @@ define([
 
                                 expect(actual).toEqual(expected);
                             });
+
+                            it('0-axis is NOT highlited with an additional class', () => {
+                                let values = dataset.dataByTopic[0].dates.map(it => it.value);
+                                let minValue = Math.min(...values);
+                                expect(minValue).toEqual(0);
+                                let indexOf0 = -minValue;
+                                
+                                let horizontalGridLines = d3.selectAll('.horizontal-grid-line').filter((_, i) => i === indexOf0);
+                                let classes = horizontalGridLines.attr('class').split(' ');
+                                expect(classes.includes('horizontal-grid-line--highlighted')).toEqual(false);
+                            });
                         });
 
                         describe('when grid is vertical', function () {
@@ -554,9 +565,9 @@ define([
                         let minValue = Math.min(...values);
                         let indexOf0 = -minValue;
                         
-                        let horizontalGridLines = d3.selectAll('.horizontal-grid-line').filter((_, i) => i === indexOf0)
-                        let classes = horizontalGridLines.attr('class').split(' ')
-                        expect(classes.includes('horizontal-grid-line--highlighted')).toEqual(true)
+                        let horizontalGridLines = d3.selectAll('.horizontal-grid-line').filter((_, i) => i === indexOf0);
+                        let classes = horizontalGridLines.attr('class').split(' ');
+                        expect(classes.includes('horizontal-grid-line--highlighted')).toEqual(true);
                     });
                 });
             });
