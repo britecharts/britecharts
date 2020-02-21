@@ -750,13 +750,17 @@ define(function(require){
                 .selectAll('line')
                 .remove();
 
+            let minY = d3Array.min(dataByTopic, ({dates}) => d3Array.min(dates, getValue));
+            let highlight0Axis = minY < 0;
+            
             if (grid === 'horizontal' || grid === 'full') {
                 horizontalGridLines = svg.select('.grid-lines-group')
                     .selectAll('line.horizontal-grid-line')
                     .data(yScale.ticks(yTicks))
                     .enter()
                       .append('line')
-                        .attr('class', 'horizontal-grid-line')
+                        .classed('horizontal-grid-line', true)
+                        .classed('horizontal-grid-line--bold', (value) => highlight0Axis && value === 0)
                         .attr('x1', (-xAxisPadding.left - 30))
                         .attr('x2', chartWidth)
                         .attr('y1', (d) => yScale(d))
