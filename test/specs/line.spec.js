@@ -517,6 +517,38 @@ define([
                         });
                     });
                 });
+
+                describe('when has negative values', () => {
+                    beforeEach(() => {
+                        dataset = buildDataSet('withNegativeValues');
+                        lineChart = chart();
+
+                        // DOM Fixture Setup
+                        f = jasmine.getFixtures();
+                        f.fixturesPath = 'base/test/fixtures/';
+                        f.load('testContainer.html');
+
+                        containerFixture = d3.select('.test-container');
+                        containerFixture.datum(dataset).call(lineChart);
+                    });
+
+                    afterEach(() => {
+                        containerFixture.remove();
+                        f = jasmine.getFixtures();
+                        f.cleanUp();
+                        f.clearCache();
+                    });
+
+                    it('The lowest Y-axis value is negative', () => {
+                        let values = dataset.dataByTopic[0].dates.map(it => it.value);
+                        let minValue = Math.min(...values);
+                        let minValueText = '' + minValue;
+
+                        let yAxis = d3.select('.y-axis-group');
+                        let text = yAxis.select('g.tick');
+                        expect(text.text()).toEqual(minValueText);
+                    })
+                });
             });
 
             describe('Lifecycle', () => {
