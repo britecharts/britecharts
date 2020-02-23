@@ -751,7 +751,7 @@ define(function(require){
                 .remove();
 
             let minY = d3Array.min(dataByTopic, ({dates}) => d3Array.min(dates, getValue));
-            let shouldHighlight0Axis = minY < 0;
+            let shouldHighlightXAxis = minY < 0;
             
             if (grid === 'horizontal' || grid === 'full') {
                 horizontalGridLines = svg.select('.grid-lines-group')
@@ -764,7 +764,7 @@ define(function(require){
                         .attr('x2', chartWidth)
                         .attr('y1', (d) => yScale(d))
                         .attr('y2', (d) => yScale(d))
-                        .classed('horizontal-grid-line--highlighted', (value) => shouldHighlight0Axis && value === 0);
+                        .classed('horizontal-grid-line--highlighted', (value) => shouldHighlightXAxis && value === 0);
             }
 
             if (grid === 'vertical' || grid === 'full') {
