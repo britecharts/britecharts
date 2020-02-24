@@ -1,7 +1,16 @@
+2.14.0
+------
+* Feature - Added negative values support for line chart (Thanks to Alexey Karpov)
+* Feature - Added 'locale' logic to bar chart (@maikdiepenbroek)
+
 2.13.2
-2.13.1
-2.13.0
-2.12.1
+------
+* Fix - Adds Bullet chart to global bundle
+
+2.13.1 - 2.13.0 - 2.12.1
+------
+* Failed bumps, removes ES modules from regular version
+
 2.13.0
 ------
 * Feature - Customizable y labels for Heatmap (@DalerAsrorov)
