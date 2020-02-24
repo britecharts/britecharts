@@ -1,4 +1,5 @@
 2.14.0
+2.14.0
 ------
 * Feature - Added negative values support for line chart (Thanks to Alexey Karpov)
 * Feature - Added 'locale' logic to bar chart (@maikdiepenbroek)
