@@ -7,6 +7,11 @@
     stroke-dasharray: 4, 4;
 }
 
+.horizontal-grid-line--highlighted {
+    stroke: $grey-700;
+    stroke-dasharray: 2, 2;
+}
+
 .extended-y-line,
 .extended-x-line {
     fill: none;

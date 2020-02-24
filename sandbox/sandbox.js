@@ -6,6 +6,8 @@ const defaultData = require('./constants/data');
 const storage = require('./helpers/localStorageHelpers');
 const domHelpers = require('./helpers/domHelpers');
 
+require('../src/styles/britecharts.scss');
+
 const {
     dataSelectorClass,
     chartSelectorClass,
