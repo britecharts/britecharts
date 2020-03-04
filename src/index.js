@@ -7,6 +7,7 @@ import tooltip from './charts/tooltip.js';
 import miniTooltip from './charts/mini-tooltip.js';
 import sparkline from './charts/sparkline.js';
 import stackedArea from './charts/stacked-area.js';
+import scatterPlot from './charts/scatter-plot.js';
 import groupedBar from './charts/grouped-bar.js';
 import stackedBar from './charts/stacked-bar.js';
 import heatmap from './charts/heatmap.js';
@@ -25,6 +26,7 @@ export {
     miniTooltip,
     sparkline,
     stackedArea,
+    scatterPlot,
     groupedBar,
     stackedBar,
     heatmap,
