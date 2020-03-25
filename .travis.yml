@@ -19,7 +19,7 @@ deploy:
     skip_cleanup: true
     email: npmjs+eng@eventbrite.com
     api_key:
-      secure: $NPM_TOKEN
+      secure: 'testThingToSeeIfItBreaks'
     on:
       tags: true
       repo: eventbrite/britecharts
