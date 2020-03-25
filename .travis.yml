@@ -1,6 +1,9 @@
-language: node_js
+language: "node_js"
+os: "linux"
+dist: "xenial"
+
 node_js:
-- 12.2.0
+  - 12.2.0
 env:
   - CXX=g++-4.8
 addons:
@@ -16,18 +19,17 @@ before_install:
 before_deploy: yarn run build && yarn run docs
 deploy:
   - provider: npm
-    skip_cleanup: true
+    cleanup: true
     email: npmjs+eng@eventbrite.com
-    api_key:
-      secure: 'testThingToSeeIfItBreaks'
+    api_token: $NPM_TOKEN
     on:
       tags: true
       repo: eventbrite/britecharts
   - provider: pages
-    skip_cleanup: true
-    github_token: $GITHUB_TOKEN
+    cleanup: true
+    strategy: git
+    token: $GITHUB_TOKEN
     local_dir: docs
     on:
       branch: master
 
-# after_deploy: git remote add origin-pages https://${GITHUB_TOKEN_JAYLUM_CHEN}@github.com/eventbrite/britecharts.git > /dev/null 2>&1 && git rm .gitignore && git add docs && git commit -m 'Updating docs' && git push -fu origin-pages HEAD:gh-pages
