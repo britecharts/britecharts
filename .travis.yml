@@ -19,14 +19,12 @@ before_install:
 before_deploy: yarn run build && yarn run docs
 deploy:
   - provider: npm
-    cleanup: true
     email: npmjs+eng@eventbrite.com
     api_token: $NPM_TOKEN
     on:
       tags: true
       repo: eventbrite/britecharts
   - provider: pages
-    cleanup: true
     strategy: git
     token: $GITHUB_TOKEN
     local_dir: docs
