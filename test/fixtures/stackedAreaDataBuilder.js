@@ -7,7 +7,8 @@ define(function(require) {
         jsonSixSources = require('../json/areaDataSixSources.json'),
         jsonSalesChannel = require('../json/areaDataSalesChannel.json'),
         jsonReportService = require('../json/areaDataReportService.json'),
-        jsonLargeService = require('../json/areaDataLarge.json');
+        jsonLargeService = require('../json/areaDataLarge.json'),
+        jsonNegativeValues = require('../json/areaDataNegativeValues.json');
 
 
     function StackedAreaDataBuilder(config){
@@ -43,7 +44,13 @@ define(function(require) {
             var attributes = _.extend({}, this.config, jsonLargeService);
 
             return new this.Klass(attributes);
-        }
+        };
+
+        this.withNegativeValues = function() {
+            var attributes = _.extend({}, this.config, jsonNegativeValues);
+
+            return new this.Klass(attributes);
+        };
 
         this.build = function() {
             return this.config;
