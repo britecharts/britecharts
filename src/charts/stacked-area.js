@@ -99,6 +99,7 @@ define(function(require){
             monthAxisPadding = 30,
             yTicks = 5,
             yTickTextYOffset = -8,
+            yAxisBaseline = 0,
             yAxisLabel,
             yAxisLabelEl,
             yAxisLabelOffset = -60,
@@ -429,7 +430,29 @@ define(function(require){
                 .offset(d3Shape.stackOffsetNone);
 
             layersInitial = stack3(dataByDateZeroed);
-            layers = stack3(dataByDateFormatted);
+            layers = moveLayersByBaseline(stack3(dataByDateFormatted));
+        }
+
+        /**
+         * Takes the layers and moves them by the yAxisBaseline
+         * Returns the original layers if yAxisBaseline equals zero, because nothing to do then
+         * @param layers
+         * @return Manipulated Layers
+         */
+        function moveLayersByBaseline(layers) {
+            if(yAxisBaseline === 0) {
+                return layers;
+            }
+
+            layers = layers.map(section => {
+                section.map(entry => {
+                    entry[0] = yAxisBaseline;
+                    return entry;
+                });
+                return section;
+            });
+
+            return layers;
         }
 
         /**
@@ -967,7 +990,7 @@ define(function(require){
                 return emptyDataConfig.minY;
             }
 
-            return d3Array.min([getMinValue(), getMinValueByDate(), 0]);
+            return d3Array.min([getMinValue(), getMinValueByDate(), yAxisBaseline, 0]);
         }
 
         /**
@@ -980,7 +1003,7 @@ define(function(require){
                 return emptyDataConfig.maxY;
             }
 
-            return getMaxValueByDate();
+            return d3Array.max([getMaxValueByDate(), yAxisBaseline]);
         }
 
         /**
@@ -1557,6 +1580,22 @@ define(function(require){
                 return yTicks;
             }
             yTicks = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the yAxisBaseline
+         * (Default is 0)
+         * @param  {Number} [_x=0]      Desired baseline of the y axis
+         * @return {Number | module}    Current baseline or Chart module to chain calls
+         * @public
+         */
+        exports.yAxisBaseline = function (_x) {
+            if (!arguments.length) {
+                return yAxisBaseline;
+            }
+            yAxisBaseline = _x;
 
             return this;
         };
