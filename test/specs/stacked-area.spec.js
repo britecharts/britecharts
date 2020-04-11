@@ -343,6 +343,49 @@ define([
                 });
 
             });
+
+            describe('when has a modified y-axis baseline', () => {
+
+                describe('and baseline is smaller', () => {
+                    beforeEach(function () {
+                        dataset = aTestDataSet().withNegativeValues().build();
+                        stackedAreaChart = stackedArea()
+                            .grid('full')
+                            .valueLabel('views')
+                            .dateLabel('date')
+                            .yAxisBaseline(-30);
+
+                        containerFixture = d3.select('.test-container').append('svg');
+                        containerFixture.datum(dataset.data).call(stackedAreaChart);
+                    });
+
+                    it('the lowest Y-axis value is changing in respect to the y-axis baseline', () => {
+                        let firstText = containerFixture.selectAll('.y-axis-group').select('g.tick');
+                        expect(firstText.text()).toEqual('-30');
+                    });
+                });
+
+                describe('and baseline is bigger', () => {
+                    beforeEach(function () {
+                        dataset = aTestDataSet().withNegativeValues().build();
+                        stackedAreaChart = stackedArea()
+                            .grid('full')
+                            .valueLabel('views')
+                            .dateLabel('date')
+                            .yAxisBaseline(100);
+
+                        containerFixture = d3.select('.test-container').append('svg');
+                        containerFixture.datum(dataset.data).call(stackedAreaChart);
+                    });
+
+                    it('the lowest Y-axis value is changing in respect to the y-axis baseline', () => {
+                        let firstText = containerFixture.selectAll('.y-axis-group').select('g.tick:last-child');
+                        expect(firstText.text()).toEqual('100');
+                    });
+                });
+
+            });
+
         });
 
         describe('Lifecycle', () => {
