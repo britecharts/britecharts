@@ -185,6 +185,7 @@ define(function(require){
             emptyDataConfig = {
                 minDate: new Date(new Date().setDate(new Date().getDate()-30)),
                 maxDate: new Date(),
+                minY: 0,
                 maxY: 500
             },
 
@@ -463,14 +464,15 @@ define(function(require){
          * @private
          */
         function buildScales() {
-            const maxValueByDate = isUsingFakeData ? emptyDataConfig.maxY : getMaxValueByDate();
+            const minY = getMinYAxisScale();
+            const maxY = getMaxYAxisScale();
 
             xScale = d3Scale.scaleTime()
                 .domain(d3Array.extent(dataByDate, ({date}) => date))
                 .rangeRound([0, chartWidth]);
 
             yScale = d3Scale.scaleLinear()
-                .domain([0, maxValueByDate])
+                .domain([minY, maxY])
                 .rangeRound([chartHeight, 0])
                 .nice();
 
@@ -638,6 +640,8 @@ define(function(require){
                 .selectAll('line')
                 .remove();
 
+            let shouldHighlightXAxis = getMinYAxisScale() < 0;
+
             if (grid === 'horizontal' || grid === 'full') {
                 horizontalGridLines = svg.select('.grid-lines-group')
                     .selectAll('line.horizontal-grid-line')
@@ -648,7 +652,8 @@ define(function(require){
                         .attr('x1', (-xAxisPadding.left - 30))
                         .attr('x2', chartWidth)
                         .attr('y1', (d) => yScale(d))
-                        .attr('y2', (d) => yScale(d));
+                        .attr('y2', (d) => yScale(d))
+                        .classed('horizontal-grid-line--highlighted', (value) => shouldHighlightXAxis && value === 0);
             }
 
             if (grid === 'vertical' || grid === 'full') {
@@ -912,6 +917,31 @@ define(function(require){
         }
 
         /**
+         * Computes the minimum value
+         *
+         * @return {Number} Min value
+         */
+        function getMinValue() {
+            return d3Array.min(data.map(d => d.value));
+        }
+
+        /**
+         * Computes the minimal sum of values for any date
+         *
+         * @return {Number} Min value
+         */
+        function getMinValueByDate() {
+            let keys = uniq(data.map(o => o.name));
+            let minValueByDate = d3Array.min(dataByDateFormatted, function(d){
+                let vals = keys.map((key) => d[key]);
+
+                return d3Array.sum(vals);
+            });
+
+            return minValueByDate;
+        }
+
+        /**
          * Computes the maximum sum of values for any date
          *
          * @return {Number} Max value
@@ -925,6 +955,32 @@ define(function(require){
             });
 
             return maxValueByDate;
+        }
+
+        /**
+         * Computes the mininmal value for the Y-axis scale
+         *
+         * @return {Number} minY value
+         */
+        function getMinYAxisScale() {
+            if(isUsingFakeData) {
+                return emptyDataConfig.minY;
+            }
+
+            return d3Array.min([getMinValue(), getMinValueByDate(), 0]);
+        }
+
+        /**
+         * Computes the maximal value for the Y-axis scale
+         *
+         * @return {Number} maxY value
+         */
+        function getMaxYAxisScale() {
+            if(isUsingFakeData) {
+                return emptyDataConfig.maxY;
+            }
+
+            return getMaxValueByDate();
         }
 
         /**
