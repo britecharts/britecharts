@@ -134,6 +134,10 @@ define([
                         expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
                         expect(containerFixture.select('.vertical-grid-line').empty()).toBeTruthy();
                     });
+
+                    it('0-axis is NOT highlighted with an additional class', () => {
+                        expect(containerFixture.select('.horizontal-grid-line--highlighted').empty()).toBeTruthy();
+                    });
                 });
 
                 describe('when grid is vertical', function () {
@@ -171,6 +175,10 @@ define([
                     it('should render the vertical grid lines', () => {
                         expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
                         expect(containerFixture.select('.vertical-grid-line').empty()).toBeFalsy();
+                    });
+
+                    it('0-axis is NOT highlighted with an additional class', () => {
+                        expect(containerFixture.select('.horizontal-grid-line--highlighted').empty()).toBeTruthy();
                     });
                 });
             });
@@ -309,6 +317,31 @@ define([
 
                     expect(actual).toEqual(expected);
                 });
+            });
+
+            describe('when has negative values', () => {
+
+                beforeEach(function () {
+                    dataset = aTestDataSet().withNegativeValues().build();
+                    stackedAreaChart = stackedArea()
+                        .grid('full')
+                        .valueLabel('views')
+                        .dateLabel('date');
+
+                    containerFixture = d3.select('.test-container').append('svg');
+                    containerFixture.datum(dataset.data).call(stackedAreaChart);
+                });
+
+                it('The lowest Y-axis value is negative', () => {
+                    let yAxis = containerFixture.selectAll('.y-axis-group');
+                    let text = yAxis.select('g.tick');
+                    expect(text.text()).toEqual('-15');
+                });
+
+                it('0-axis is highlighted with an additional class', () => {
+                    expect(containerFixture.select('.horizontal-grid-line--highlighted').empty()).toBeFalsy();
+                });
+
             });
         });
 
