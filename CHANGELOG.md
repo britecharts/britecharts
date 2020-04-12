@@ -1,11 +1,9 @@
+2.15.0
+------
+* Feature - Support for negative values on stacked area chart (Thanks @ajdani)
+* Fix - Error handling on weird line paths on Firefox (Thanks @shayh)
+
 2.14.6
-2.14.5
-2.14.4
-2.14.3
-2.14.2
-2.14.1
-2.14.0
-2.14.0
 ------
 * Feature - Added negative values support for line chart (Thanks to Alexey Karpov)
 * Feature - Added 'locale' logic to bar chart (@maikdiepenbroek)
