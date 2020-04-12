@@ -76,6 +76,18 @@ define(function(require) {
     }
 
     /**
+     * Calculates the maximum number of ticks for the x axis
+     * with respect to number ranges
+     * @param  {Number} width               Chart width
+     * @param  {Number} dataPointNumber     Number of entries on the data
+     * @return {Number}                     Number of ticks to render
+     */
+    const getMaxNumOfHorizontalTicksForNumberRanges = (width, dataPointNumber) => {
+        let ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
+        return Math.min(dataPointNumber, ticksForWidth);
+    }
+
+    /**
      * Returns tick object to be used when building the x axis
      * @param {dataByDate} dataByDate       Chart data ordered by Date
      * @param {Number} width                Chart width
@@ -112,8 +124,32 @@ define(function(require) {
         };
     };
 
+    /**
+     * Returns tick object to be used when building the x axis
+     * @param {dataSorted} dataSorted       Chart data ordered by Date
+     * @param {Number} width                Chart width
+     * @param {String} [settings=null]      Optional forced settings for axis
+     * @return {object} tick settings for minor axis
+     */
+    const getSortedNumberAxis = (dataSorted, width) => {
+        const firstEntry = dataSorted[0].date;
+        const lastEntry = dataSorted[dataSorted.length - 1].date;
+        const timeSpan = lastEntry - firstEntry;
+
+        const minorTickValue = getMaxNumOfHorizontalTicksForNumberRanges(
+            width,
+            timeSpan
+        );
+
+        return {
+            tick: minorTickValue,
+            format: null
+        };
+    };
+
     return {
-        getTimeSeriesAxis
+        getTimeSeriesAxis,
+        getSortedNumberAxis
     };
 
 });
