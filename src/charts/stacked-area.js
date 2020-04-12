@@ -15,7 +15,7 @@ define(function(require){
 
     const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
-    const { getTimeSeriesAxis } = require('./helpers/axis');
+    const { getTimeSeriesAxis, getSortedNumberAxis } = require('./helpers/axis');
     const { axisTimeCombinations, curveMap } = require('./helpers/constants');
     const {
         formatIntegerValue,
@@ -91,12 +91,13 @@ define(function(require){
             height = 500,
             loadingState = stackedAreaLoadingMarkup,
 
-            xScale, xAxis, xMonthAxis,
+            xScale, xAxis, xSubAxis,
             yScale, yAxis,
 
             aspectRatio = null,
 
             monthAxisPadding = 30,
+            xAxisValueType = 'date',
             yTicks = 5,
             yTickTextYOffset = -8,
             yAxisLabel,
@@ -161,9 +162,9 @@ define(function(require){
             svg,
             chartWidth, chartHeight,
             data,
-            dataByDate,
-            dataByDateFormatted,
-            dataByDateZeroed,
+            dataSorted,
+            dataSortedFormatted,
+            dataSortedZeroed,
 
             verticalGridLines,
             horizontalGridLines,
@@ -215,7 +216,7 @@ define(function(require){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
-                dataByDate = getDataByDate(data);
+                dataSorted = getSortedData(data);
 
                 buildLayers();
                 buildScales();
@@ -313,27 +314,34 @@ define(function(require){
         function buildAxis() {
             let minor, major;
 
-            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
-                minor = {
-                    tick: xTicks,
-                    format:  d3TimeFormat.timeFormat(xAxisCustomFormat)
-                };
+            if(xAxisValueType === 'number') {
+                xAxis = d3Axis.axisBottom(xScale)
+                    .tickFormat(getFormattedValue);
+
+                minor = getSortedNumberAxis(dataSorted, width);
                 major = null;
             } else {
-                ({minor, major} = getTimeSeriesAxis(dataByDate, width, xAxisFormat, locale));
+                if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
+                    minor = {
+                        tick: xTicks,
+                        format: d3TimeFormat.timeFormat(xAxisCustomFormat)
+                    };
+                    major = null;
+                } else {
+                    ({minor, major} = getTimeSeriesAxis(dataSorted, width, xAxisFormat, locale));
 
-                xMonthAxis = d3Axis.axisBottom(xScale)
-                    .ticks(major.tick)
-                    .tickSize(0, 0)
-                    .tickFormat(major.format);
+                    xSubAxis = d3Axis.axisBottom(xScale)
+                        .ticks(major.tick)
+                        .tickSize(0, 0)
+                        .tickFormat(major.format);
+                }
+
+                xAxis = d3Axis.axisBottom(xScale)
+                    .ticks(minor.tick)
+                    .tickSize(10, 0)
+                    .tickPadding(tickPadding)
+                    .tickFormat(minor.format);
             }
-
-            xAxis = d3Axis.axisBottom(xScale)
-                .ticks(minor.tick)
-                .tickSize(10, 0)
-                .tickPadding(tickPadding)
-                .tickFormat(minor.format);
-
 
             yAxis = d3Axis.axisRight(yScale)
                 .ticks(yTicks)
@@ -379,7 +387,7 @@ define(function(require){
          * @private
          */
         function buildLayers() {
-            dataByDateFormatted = dataByDate
+            dataSortedFormatted = dataSorted
                 .map(d => assign({}, d, d.values))
                 .map(d => {
                     Object.keys(d).forEach(k => {
@@ -391,11 +399,11 @@ define(function(require){
                     });
 
                     return assign({}, d, {
-                        date: new Date(d['key'])
+                        date: castValuesToType(d['key'])
                     });
                 });
 
-            dataByDateZeroed = dataByDate
+            dataSortedZeroed = dataSorted
                 .map(d => assign({}, d, d.values))
                 .map(d => {
                     Object.keys(d).forEach(k => {
@@ -407,7 +415,7 @@ define(function(require){
                     });
 
                     return assign({}, d, {
-                        date: new Date(d['key'])
+                        date: castValuesToType(d['key'])
                     });
                 });
 
@@ -428,8 +436,8 @@ define(function(require){
                 .order(d3Shape.stackOrderNone)
                 .offset(d3Shape.stackOffsetNone);
 
-            layersInitial = stack3(dataByDateZeroed);
-            layers = stack3(dataByDateFormatted);
+            layersInitial = stack3(dataSortedZeroed);
+            layers = stack3(dataSortedFormatted);
         }
 
         /**
@@ -468,7 +476,7 @@ define(function(require){
             const maxY = getMaxYAxisScale();
 
             xScale = d3Scale.scaleTime()
-                .domain(d3Array.extent(dataByDate, ({date}) => date))
+                .domain(d3Array.extent(dataSorted, ({date}) => date))
                 .rangeRound([0, chartWidth]);
 
             yScale = d3Scale.scaleLinear()
@@ -535,7 +543,7 @@ define(function(require){
             originalData = originalData.length === 0 ? createFakeData() : originalData;
 
             return originalData.reduce((acc, d) => {
-                d.date = new Date(d[dateLabel]),
+                d.date = castValuesToType(d[dateLabel]),
                 d.value = +d[valueLabel]
 
                 return [...acc, d];
@@ -552,10 +560,10 @@ define(function(require){
                 .attr('transform', `translate( 0, ${chartHeight} )`)
                 .call(xAxis);
 
-            if (xAxisFormat !== 'custom') {
+            if (xAxisFormat !== 'custom' && xAxisValueType !== 'number') {
                 svg.select('.x-axis-group .month-axis')
                     .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
-                    .call(xMonthAxis);
+                    .call(xSubAxis);
             }
 
             svg.select('.y-axis-group.axis')
@@ -717,7 +725,7 @@ define(function(require){
             chartGroup
               .append('path')
                 .attr('class', 'empty-data-line')
-                .attr('d', emptyDataLine(dataByDateFormatted))
+                .attr('d', emptyDataLine(dataSortedFormatted))
                 .style('stroke', 'url(#empty-data-line-gradient)');
 
             chartGroup
@@ -899,7 +907,7 @@ define(function(require){
          * @return {Object[]}               Chart data ordered by date
          * @private
          */
-        function getDataByDate(data) {
+        function getSortedData(data) {
             return d3Collection.nest()
                 .key(getDate)
                 .entries(
@@ -907,13 +915,23 @@ define(function(require){
                 )
                 .map(d => {
                     return assign({}, d, {
-                        date: new Date(d.key)
+                        date: castValuesToType(d.key)
                     });
                 });
+        }
 
-            // let b =  d3Collection.nest()
-            //                     .key(getDate).sortKeys(d3Array.ascending)
-            //                     .entries(data);
+        /**
+         * Casts the data given to a date or number
+         * respecting the value of xAxisValueType
+         * @param {string | number} value   Value data
+         * @return {Date | number} value    Casted value
+         */
+        function castValuesToType(value) {
+            if(xAxisValueType === 'number') {
+                return Number(value);
+            }
+
+            return new Date(value);
         }
 
         /**
@@ -932,7 +950,7 @@ define(function(require){
          */
         function getMinValueByDate() {
             let keys = uniq(data.map(o => o.name));
-            let minValueByDate = d3Array.min(dataByDateFormatted, function(d){
+            let minValueByDate = d3Array.min(dataSortedFormatted, function(d){
                 let vals = keys.map((key) => d[key]);
 
                 return d3Array.sum(vals);
@@ -948,7 +966,7 @@ define(function(require){
          */
         function getMaxValueByDate() {
             let keys = uniq(data.map(o => o.name));
-            let maxValueByDate = d3Array.max(dataByDateFormatted, function(d){
+            let maxValueByDate = d3Array.max(dataSortedFormatted, function(d){
                 let vals = keys.map((key) => d[key]);
 
                 return d3Array.sum(vals);
@@ -989,7 +1007,7 @@ define(function(require){
          * @return {obj}        Data entry that is closer to that x axis position
          */
         function getNearestDataPoint(mouseX) {
-            let points = dataByDate.filter(({date}) => Math.abs(xScale(date) - mouseX) <= epsilon);
+            let points = dataSorted.filter(({date}) => Math.abs(xScale(date) - mouseX) <= epsilon);
 
             if (points.length) {
                 return points[0];
@@ -1002,7 +1020,7 @@ define(function(require){
          * @return {Number} half distance between any two points
          */
         function setEpsilon() {
-            let dates = dataByDate.map(({date}) => date);
+            let dates = dataSorted.map(({date}) => date);
 
             epsilon = (xScale(dates[1]) - xScale(dates[0])) / 2;
         }
@@ -1020,7 +1038,7 @@ define(function(require){
                 dataPointXPosition;
 
             if (dataPoint) {
-                dataPointXPosition = xScale(new Date( dataPoint.key ));
+                dataPointXPosition = xScale( dataPoint.key );
                 // Move verticalMarker to that datapoint
                 moveVerticalMarker(dataPointXPosition);
                 // Add data points highlighting
@@ -1557,6 +1575,22 @@ define(function(require){
                 return yTicks;
             }
             yTicks = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the xAxisValueType
+         * (Default is date)
+         * @param  {string} [_x=5]      Desired value type of the x-axis
+         * @return {string | module}    Current value type of the x-axis or Chart module to chain calls
+         * @public
+         */
+        exports.xAxisValueType = function (_x) {
+            if (!arguments.length) {
+                return xAxisValueType;
+            }
+            xAxisValueType = _x;
 
             return this;
         };
