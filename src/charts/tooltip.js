@@ -108,6 +108,7 @@ define(function(require){
             topicLabel = 'topics',
 
             defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
+            xAxisValueType = 'date',
             dateFormat = null,
             dateCustomFormat = null,
             topicsOrder = [],
@@ -408,7 +409,7 @@ define(function(require){
          */
         function updateTitle(dataPoint) {
             let tTitle = title;
-            let formattedDate = formatDate(new Date(dataPoint[dateLabel]));
+            let formattedDate = formatKey(dataPoint[dateLabel]);
 
             if (tTitle.length) {
                 if (shouldShowDateInTitle) {
@@ -419,6 +420,20 @@ define(function(require){
             }
 
             tooltipTitle.text(tTitle);
+        }
+
+        /**
+         * Get formatted key to show in the tooltip title
+         * @param {Date | String} key   Key to format
+         * @return {String}     Formatted Key
+         * @private
+         */
+        function formatKey(key) {
+            if(xAxisValueType === 'number') {
+                return Number(key);
+            }
+
+            return formatDate(new Date(key));
         }
 
         /**
@@ -826,6 +841,22 @@ define(function(require){
                 return valueLabel;
             }
             valueLabel = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the keyType of the data
+         * The default value is 'date'
+         * @param  {String} [_x='date']     Desired keyType
+         * @return {String | module}        Current keyType or Chart module to chain calls
+         * @public
+         */
+        exports.xAxisValueType = function(_x) {
+            if (!arguments.length) {
+                return xAxisValueType;
+            }
+            xAxisValueType = _x;
 
             return this;
         };
