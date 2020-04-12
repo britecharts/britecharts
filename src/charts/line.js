@@ -752,7 +752,7 @@ define(function(require){
 
             let minY = d3Array.min(dataByTopic, ({dates}) => d3Array.min(dates, getValue));
             let shouldHighlightXAxis = minY < 0;
-            
+
             if (grid === 'horizontal' || grid === 'full') {
                 horizontalGridLines = svg.select('.grid-lines-group')
                     .selectAll('line.horizontal-grid-line')
@@ -1061,13 +1061,22 @@ define(function(require){
 
             let lengthStart = 0;
             let lengthEnd = path.getTotalLength();
-            let point = path.getPointAtLength((lengthEnd + lengthStart) / 2);
+            let point;
+            try {
+                point = path.getPointAtLength((lengthEnd + lengthStart) / 2);
+            } catch (e) {
+                point = {x: 0, y: 0}
+            }
             let iterations = 0;
 
             while (x < point.x - error || x > point.x + error) {
                 const midpoint = (lengthStart + lengthEnd) / 2;
 
-                point = path.getPointAtLength(midpoint);
+                try {
+                    point = path.getPointAtLength(midpoint);
+                } catch (e) {
+                    point = {x: 0, y: 0}
+                }
 
                 if (x < point.x) {
                     lengthEnd = midpoint;
