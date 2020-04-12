@@ -843,6 +843,18 @@ define([
                 expect(defaultYAxisBaseline).not.toEqual(newYAxisBaseline);
                 expect(newYAxisBaseline).toEqual(testYAxisBaseline);
             });
+
+            it('should provide xAxisValueType getter and setter', () => {
+                let defaultXAxisValueType =  stackedAreaChart.yAxisLabelOffset(),
+                    testXAxisValueType = 'number',
+                    newXAxisValueType;
+
+                stackedAreaChart.yAxisLabelOffset(testXAxisValueType);
+                newXAxisValueType = stackedAreaChart.yAxisLabelOffset();
+
+                expect(defaultXAxisValueType).not.toEqual(newXAxisValueType);
+                expect(newXAxisValueType).toEqual(testXAxisValueType);
+            });
         });
     });
 });

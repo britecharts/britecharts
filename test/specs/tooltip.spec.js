@@ -468,6 +468,23 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                 expect(current).not.toBe(expected);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide xAxisValueType getter and setter', () => {
+                let current = tooltipChart.xAxisValueType(),
+                    expected = 'number',
+                    actual;
+
+                tooltipChart.xAxisValueType(expected);
+                actual = tooltipChart.xAxisValueType();
+
+                expect(current).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('default of xAxisValueType should be "date"', () => {
+                let current = tooltipChart.xAxisValueType();
+                expect(current).toBe('date');
+            });
         });
     });
 });
