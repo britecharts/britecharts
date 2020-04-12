@@ -846,8 +846,8 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the keyType of the data
-         * The default value is 'date'
+         * Gets or Sets the `xAxisValueType` of the data. Choose between 'date' and 'number'. When set to
+         * number, the x-Axis values won't be parsed as dates anymore, but as numbers.
          * @param  {String} [_x='date']     Desired keyType
          * @return {String | module}        Current keyType or Chart module to chain calls
          * @public

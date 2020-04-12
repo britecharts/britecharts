@@ -1581,9 +1581,10 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the xAxisValueType
-         * (Default is date)
-         * @param  {string} [_x=5]      Desired value type of the x-axis
+         * Gets or Sets the `xAxisValueType`.
+         * Choose between 'date' and 'number'. When set to `number` the values of the x-axis must not
+         * be dates anymore, but can be arbitrary numbers.
+         * @param  {string} [_x='date']      Desired value type of the x-axis
          * @return {string | module}    Current value type of the x-axis or Chart module to chain calls
          * @public
          */
