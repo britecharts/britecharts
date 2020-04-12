@@ -315,11 +315,12 @@ define(function(require){
             let minor, major;
 
             if(xAxisValueType === 'number') {
-                xAxis = d3Axis.axisBottom(xScale)
-                    .tickFormat(getFormattedValue);
-
                 minor = getSortedNumberAxis(dataSorted, width);
                 major = null;
+
+                xAxis = d3Axis.axisBottom(xScale)
+                    .ticks(minor.tick)
+                    .tickFormat(getFormattedValue);
             } else {
                 if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
                     minor = {
