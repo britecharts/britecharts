@@ -254,6 +254,13 @@ define([
 
                                 expect(actual).toEqual(expected);
                             });
+
+                            it('should not render an annotation text', () => {
+                                const expected = 0;
+                                const actual = containerFixture.select('.custom-line-annotation').size();
+
+                                expect(actual).toEqual(expected);
+                            });
                         })
 
                         describe('when one line is set', () => {
@@ -261,7 +268,8 @@ define([
                             beforeEach(() => {
                                 lineChart = chart().lines([{
                                     y: 2,
-                                    color: '#ff0000'
+                                    color: '#ff0000',
+                                    name: 'Testname'
                                 }]);
 
                                 containerFixture = d3.select('.test-container').append('svg');
@@ -273,6 +281,16 @@ define([
                                 const actual = containerFixture.select('.custom-line').size();
 
                                 expect(actual).toEqual(expected);
+                            });
+
+                            it('should render an annotation text', () => {
+                                const expected = 1;
+                                const actual = containerFixture.select('.custom-line-annotation').size();
+
+                                expect(actual).toEqual(expected);
+
+                                const actualText = containerFixture.select('.custom-lines-group text').text();
+                                expect(actualText).toEqual('Testname');
                             });
                         })
                     });
