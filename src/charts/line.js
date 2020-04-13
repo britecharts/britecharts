@@ -256,6 +256,8 @@ define(function(require){
             verticalMarkerLine,
             numberFormat,
 
+            customLines = [],
+            verticalLines,
             verticalGridLines,
             horizontalGridLines,
             grid = null,
@@ -439,6 +441,7 @@ define(function(require){
                 .tickFormat(getFormattedValue);
 
             drawGridLines(minor.tick, yTicks);
+            drawCustomLines(minor.tick, yTicks);
         }
 
         /**
@@ -463,6 +466,8 @@ define(function(require){
               .append('g').classed('axis y', true);
             container
               .append('g').classed('grid-lines-group', true);
+            container
+                .append('g').classed('custom-lines-group', true);
             container
               .append('g').classed('chart-group', true);
             container
@@ -791,6 +796,40 @@ define(function(require){
                     .attr('x2', chartWidth)
                     .attr('y1', height - margin.bottom - margin.top)
                     .attr('y2', height - margin.bottom - margin.top);
+        }
+
+        /**
+         * Draws custom user-defined lines onto the chart
+         * @return void
+         */
+        function drawCustomLines(xTicks, yTicks){
+            svg.select('.custom-lines-group')
+                .selectAll('line')
+                .remove();
+
+            let yValues = customLines.map(it => it.y);
+
+            let getColor = yValue => {
+                const definedColor = customLines.find(it => it.y === yValue).color;
+                if(definedColor) {
+                    return definedColor;
+                }
+
+                return 'grey';
+            }
+
+            //draw a horizontal line to extend x-axis till the edges
+            verticalLines = svg.select('.custom-lines-group')
+                .selectAll('line.custom-line')
+                .data(yValues)
+                .enter()
+                .append('line')
+                .attr('class', 'custom-line')
+                .attr('x1', (-xAxisPadding.left - 30))
+                .attr('x2', chartWidth)
+                .attr('y1', (d) => yScale(d))
+                .attr('y2', (d) => yScale(d))
+                .attr('stroke', (d) => getColor(d));
         }
 
         /**
@@ -1506,6 +1545,21 @@ define(function(require){
                 return locale;
             }
             locale = _x;
+
+            return this;
+        };
+
+        /**
+         * Add custom horizontal lines to the Chart
+         * @param  {Object[]} _x  Array of Objects describing the lines
+         * @return { (Object[] | Module) }    Current lines or module to chain calls
+         * @public
+         */
+        exports.lines = function(_x) {
+            if (!arguments.length) {
+                return customLines;
+            }
+            customLines = _x;
 
             return this;
         };
