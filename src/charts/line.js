@@ -830,6 +830,22 @@ define(function(require){
                 .attr('y1', (d) => yScale(d))
                 .attr('y2', (d) => yScale(d))
                 .attr('stroke', (d) => getColor(d));
+
+            // draw the annotations right above the line at the right end of the chart
+            for(let line of customLines) {
+                if(!line.name) {
+                    continue;
+                }
+
+                svg.select('.custom-lines-group')
+                    .append('text')
+                    .attr('x', chartWidth)
+                    .attr('y', yScale(line.y) - 6)
+                    .attr('class', 'custom-line-annotation')
+                    .attr('text-anchor', 'end')
+                    .attr('dominant-baseline', 'baseline')
+                    .text(line.name);
+            }
         }
 
         /**

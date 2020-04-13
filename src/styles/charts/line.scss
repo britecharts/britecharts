@@ -32,6 +32,12 @@ $line-width: 2;
         stroke-width: 1;
     }
 
+    .custom-line-annotation {
+        font-size: 12px;
+        line-height: 12px;
+        fill: $grey-600;
+    }
+
     // This is the div that we use to simulate a line drawing animation
     // NOTE: it should be of the same color of the background of the chart
     .masking-rectangle {
