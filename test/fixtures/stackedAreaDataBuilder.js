@@ -8,7 +8,8 @@ define(function(require) {
         jsonSalesChannel = require('../json/areaDataSalesChannel.json'),
         jsonReportService = require('../json/areaDataReportService.json'),
         jsonLargeService = require('../json/areaDataLarge.json'),
-        jsonNegativeValues = require('../json/areaDataNegativeValues.json');
+        jsonNegativeValues = require('../json/areaDataNegativeValues.json'),
+        jsonNumericKeys = require('../json/areaDataNumericKeys.json');
 
 
     function StackedAreaDataBuilder(config){
@@ -51,6 +52,12 @@ define(function(require) {
 
             return new this.Klass(attributes);
         };
+
+        this.withNumericKeys = function() {
+            var attributes = _.extend({}, this.config, jsonNumericKeys);
+
+            return new this.Klass(attributes);
+        }
 
         this.build = function() {
             return this.config;
