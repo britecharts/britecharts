@@ -320,9 +320,18 @@ define(function(require){
                 minor = getSortedNumberAxis(dataSorted, width);
                 major = null;
 
-                xAxis = d3Axis.axisBottom(xScale)
-                    .ticks(minor.tick)
-                    .tickFormat(getFormattedValue);
+                if(xAxisScale === 'logarithmic') {
+                    xAxis = d3Axis.axisBottom(xScale)
+                        .ticks(minor.tick, "e")
+                        .tickFormat(function (d) {
+                            var log = Math.log(d) / Math.LN10;
+                            return Math.abs(Math.round(log) - log) < 1e-6 ? '10^' + Math.round(log) : '';
+                        });
+                } else {
+                    xAxis = d3Axis.axisBottom(xScale)
+                        .ticks(minor.tick)
+                        .tickFormat(getFormattedValue);
+                }
             } else {
                 if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
                     minor = {
