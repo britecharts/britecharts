@@ -378,7 +378,7 @@ define([
                         containerFixture.datum(dataset.data).call(stackedAreaChart);
                     });
 
-                    it('the lowest Y-axis value is changing in respect to the y-axis baseline', () => {
+                    it('the highest Y-axis value is changing in respect to the y-axis baseline', () => {
                         let firstText = containerFixture.selectAll('.y-axis-group').select('g.tick:last-child');
                         expect(firstText.text()).toEqual('100');
                     });
