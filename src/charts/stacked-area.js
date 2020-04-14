@@ -98,6 +98,7 @@ define(function(require){
 
             monthAxisPadding = 30,
             xAxisValueType = 'date',
+            xAxisScale = 'linear',
             yTicks = 5,
             yTickTextYOffset = -8,
             yAxisBaseline = 0,
@@ -496,21 +497,49 @@ define(function(require){
          * @private
          */
         function buildScales() {
-            const minY = getMinYAxisScale();
-            const maxY = getMaxYAxisScale();
-
-            xScale = d3Scale.scaleTime()
-                .domain(d3Array.extent(dataSorted, ({date}) => date))
-                .rangeRound([0, chartWidth]);
-
-            yScale = d3Scale.scaleLinear()
-                .domain([minY, maxY])
-                .rangeRound([chartHeight, 0])
-                .nice();
+            xScale = buildXAxisScale();
+            yScale = buildYAxisScale();
 
             categoryColorMap =  order.reduce((memo, topic, index) => (
                 assign({}, memo, {[topic]: colorSchema[index]})
             ), {});
+        }
+
+        /**
+         * Creates the xScale depending on the settings of
+         * xAxisValueType and xAxisScale
+         * @private
+         */
+        function buildXAxisScale() {
+            if(xAxisValueType === 'number') {
+                if(xAxisScale === 'logarithmic') {
+                    return d3Scale.scaleLog()
+                        .domain(d3Array.extent(dataSorted, ({ date }) => date))
+                        .rangeRound([0, chartWidth]);
+                } else {
+                    return d3Scale.scaleLinear()
+                        .domain(d3Array.extent(dataSorted, ({ date }) => date))
+                        .rangeRound([0, chartWidth]);
+                }
+            } else {
+                return d3Scale.scaleTime()
+                    .domain(d3Array.extent(dataSorted, ({ date }) => date))
+                    .rangeRound([0, chartWidth]);
+            }
+        }
+
+        /**
+         * Creates the yScale
+         * @private
+         */
+        function buildYAxisScale() {
+            const minY = getMinYAxisScale();
+            const maxY = getMaxYAxisScale();
+
+            return d3Scale.scaleLinear()
+                .domain([minY, maxY])
+                .rangeRound([chartHeight, 0])
+                .nice();
         }
 
         /**
@@ -1633,6 +1662,23 @@ define(function(require){
                 return xAxisValueType;
             }
             xAxisValueType = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the `xAxisScale`.
+         * Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to
+         * 'number' as well, otherwise it won't influence the visualization.
+         * @param  {string} [_x='linear']      Desired value type of the x-axis
+         * @return {string | module}    Current value type of the x-axis or Chart module to chain calls
+         * @public
+         */
+        exports.xAxisScale = function (_x) {
+            if (!arguments.length) {
+                return xAxisScale;
+            }
+            xAxisScale = _x;
 
             return this;
         };
