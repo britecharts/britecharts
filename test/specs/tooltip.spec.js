@@ -142,6 +142,24 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                         expect(actual).toBe(expected);
                     });
                 });
+
+                describe('when xAxisValueType is set to number', () => {
+                    it('should show the number in the title of the tooltip', () => {
+                        const expected = 'Tooltip title - 20000';
+                        let actual;
+
+                        tooltipChart.xAxisValueType('number');
+                        tooltipChart.update({
+                            date: 20000,
+                            topics: []
+                        }, topicColorMap, 0);
+                        actual = containerFixture.select('.britechart-tooltip')
+                            .selectAll('.tooltip-title')
+                            .text();
+
+                        expect(actual).toEqual(expected);
+                    });
+                })
             });
         });
 
