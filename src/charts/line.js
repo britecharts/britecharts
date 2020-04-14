@@ -441,7 +441,7 @@ define(function(require){
                 .tickFormat(getFormattedValue);
 
             drawGridLines(minor.tick, yTicks);
-            drawCustomLines(minor.tick, yTicks);
+            drawCustomLines();
         }
 
         /**
@@ -802,7 +802,7 @@ define(function(require){
          * Draws custom user-defined lines onto the chart
          * @return void
          */
-        function drawCustomLines(xTicks, yTicks){
+        function drawCustomLines(){
             svg.select('.custom-lines-group')
                 .selectAll('line')
                 .remove();
