@@ -831,6 +831,18 @@ define([
                 expect(defaultYAxisLabelOffset).not.toEqual(newYAxisLabelOffset);
                 expect(newYAxisLabelOffset).toEqual(testYAxisLabelOffset);
             });
+
+            it('should provide yAxisBaseline getter and setter', () => {
+                let defaultYAxisBaseline =  stackedAreaChart.yAxisBaseline(),
+                    testYAxisBaseline = -30,
+                    newYAxisBaseline;
+
+                stackedAreaChart.yAxisBaseline(testYAxisBaseline);
+                newYAxisBaseline = stackedAreaChart.yAxisBaseline();
+
+                expect(defaultYAxisBaseline).not.toEqual(newYAxisBaseline);
+                expect(newYAxisBaseline).toEqual(testYAxisBaseline);
+            });
         });
     });
 });
