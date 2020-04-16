@@ -1565,10 +1565,16 @@ define(function(require){
         };
 
         /**
-         * Add custom horizontal lines to the Chart
+         * Add custom horizontal lines to the Chart - this way you are able to plot arbitrary horizontal lines
+         * onto the chart with a specific color and a text annotation over the line.
          * @param  {Object[]} _x  Array of Objects describing the lines
          * @return { (Object[] | Module) }    Current lines or module to chain calls
          * @public
+         * @example line.lines([{
+         *   y: 2,
+         *   name: 'Maximum threshold',
+         *   color: '#ff0000'
+         * }])
          */
         exports.lines = function(_x) {
             if (!arguments.length) {
