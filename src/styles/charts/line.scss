@@ -1,6 +1,7 @@
 @import "../helpers/_variables.scss";
 
 $line-width: 2;
+$text-size: 0.75rem;
 
 .line-chart {
 
@@ -33,8 +34,8 @@ $line-width: 2;
     }
 
     .custom-line-annotation {
-        font-size: 12px;
-        line-height: 12px;
+        font-size: $text-size;
+        line-height: $text-size;
         fill: $grey-600;
     }
 
