@@ -142,8 +142,7 @@ define(function(require) {
         );
 
         return {
-            tick: minorTickValue,
-            format: null
+            tick: minorTickValue
         };
     };
 
