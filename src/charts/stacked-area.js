@@ -324,7 +324,7 @@ define(function(require){
                     xAxis = d3Axis.axisBottom(xScale)
                         .ticks(minor.tick, "e")
                         .tickFormat(function (d) {
-                            var log = Math.log(d) / Math.LN10;
+                            const log = Math.log(d) / Math.LN10;
                             return Math.abs(Math.round(log) - log) < 1e-6 ? '10^' + Math.round(log) : '';
                         });
                 } else {
@@ -1665,6 +1665,7 @@ define(function(require){
          * @param  {string} [_x='date']      Desired value type of the x-axis
          * @return {string | module}    Current value type of the x-axis or Chart module to chain calls
          * @public
+         * @example stackedArea.xAxisValueType('numeric')
          */
         exports.xAxisValueType = function (_x) {
             if (!arguments.length) {
@@ -1682,6 +1683,7 @@ define(function(require){
          * @param  {string} [_x='linear']      Desired value type of the x-axis
          * @return {string | module}    Current value type of the x-axis or Chart module to chain calls
          * @public
+         * @example stackedArea.xAxisValueType('numeric').xAxisScale('logarithmic')
          */
         exports.xAxisScale = function (_x) {
             if (!arguments.length) {
