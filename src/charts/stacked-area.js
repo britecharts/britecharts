@@ -1585,11 +1585,12 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the yAxisBaseline
-         * (Default is 0)
+         * Gets or Sets the yAxisBaseline - this is the y-value where the area starts from in y-direction
+         * (default is 0). Change this value if you don't want to start your area from y=0.
          * @param  {Number} [_x=0]      Desired baseline of the y axis
          * @return {Number | module}    Current baseline or Chart module to chain calls
          * @public
+         * @example stackedArea.yAxisBaseline(20)
          */
         exports.yAxisBaseline = function (_x) {
             if (!arguments.length) {
