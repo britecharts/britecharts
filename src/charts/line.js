@@ -202,6 +202,7 @@ define(function(require){
                 bottom: 0,
                 right: 0
             },
+            verticalShift = 30,
             monthAxisPadding = 28,
             tickPadding = 5,
             colorSchema = colorHelper.colorSchemas.britecharts,
@@ -765,7 +766,7 @@ define(function(require){
                     .enter()
                       .append('line')
                         .attr('class', 'horizontal-grid-line')
-                        .attr('x1', (-xAxisPadding.left - 30))
+                        .attr('x1', (-xAxisPadding.left - verticalShift))
                         .attr('x2', chartWidth)
                         .attr('y1', (d) => yScale(d))
                         .attr('y2', (d) => yScale(d))
@@ -792,7 +793,7 @@ define(function(require){
                 .enter()
                   .append('line')
                     .attr('class', 'extended-x-line')
-                    .attr('x1', (-xAxisPadding.left - 30))
+                    .attr('x1', (-xAxisPadding.left - verticalShift))
                     .attr('x2', chartWidth)
                     .attr('y1', height - margin.bottom - margin.top)
                     .attr('y2', height - margin.bottom - margin.top);
@@ -825,7 +826,7 @@ define(function(require){
                 .enter()
                 .append('line')
                 .attr('class', 'custom-line')
-                .attr('x1', (-xAxisPadding.left - 30))
+                .attr('x1', (-xAxisPadding.left - verticalShift))
                 .attr('x2', chartWidth)
                 .attr('y1', (d) => yScale(d))
                 .attr('y2', (d) => yScale(d))
