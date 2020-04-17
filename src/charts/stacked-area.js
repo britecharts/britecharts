@@ -16,7 +16,7 @@ define(function(require){
     const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
     const { getTimeSeriesAxis, getSortedNumberAxis } = require('./helpers/axis');
-    const { castValuesToType } = require('./helpers/type');
+    const { castValueToType } = require('./helpers/type');
     const { axisTimeCombinations, curveMap } = require('./helpers/constants');
     const {
         formatIntegerValue,
@@ -412,7 +412,7 @@ define(function(require){
                     });
 
                     return assign({}, d, {
-                        date: castValuesToType(d['key'], xAxisValueType)
+                        date: castValueToType(d['key'], xAxisValueType)
                     });
                 });
 
@@ -428,7 +428,7 @@ define(function(require){
                     });
 
                     return assign({}, d, {
-                        date: castValuesToType(d['key'], xAxisValueType)
+                        date: castValueToType(d['key'], xAxisValueType)
                     });
                 });
 
@@ -606,7 +606,7 @@ define(function(require){
             originalData = originalData.length === 0 ? createFakeData() : originalData;
 
             return originalData.reduce((acc, d) => {
-                d.date = castValuesToType(d[dateLabel], xAxisValueType),
+                d.date = castValueToType(d[dateLabel], xAxisValueType),
                 d.value = +d[valueLabel]
 
                 return [...acc, d];
@@ -978,7 +978,7 @@ define(function(require){
                 )
                 .map(d => {
                     return assign({}, d, {
-                        date: castValuesToType(d.key, xAxisValueType)
+                        date: castValueToType(d.key, xAxisValueType)
                     });
                 });
         }

@@ -8,7 +8,7 @@ define(function(require) {
      * @param {string} type             Type to cast to
      * @return {Date | number} value    Casted value
      */
-    const castValuesToType = (value, type) => {
+    const castValueToType = (value, type) => {
         if(type === 'number') {
             return Number(value);
         }
@@ -17,6 +17,6 @@ define(function(require) {
     }
 
     return {
-        castValuesToType
+        castValueToType: castValueToType
     };
 });

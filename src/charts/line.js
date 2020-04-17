@@ -17,7 +17,8 @@ define(function(require){
     const colorHelper = require('./helpers/color');
     const { line: lineChartLoadingMarkup } = require('./helpers/load');
 
-    const { getTimeSeriesAxis } = require('./helpers/axis');
+    const { getTimeSeriesAxis, getSortedNumberAxis } = require('./helpers/axis');
+    const { castValueToType } = require('./helpers/type');
     const {
         axisTimeCombinations,
         curveMap
@@ -87,11 +88,11 @@ define(function(require){
       */
 
     /**
-      * The Data by Date is calculated internally in the chart in order to pass it to our tooltips
-      * @typedef lineChartDataByDate
+      * The Data Sorted is calculated internally in the chart in order to pass it to our tooltips
+      * @typedef lineChartDataSorted
       * @type {Object[]}
-      * @property {String} date         Date in ISO8601 format (required)
-      * @property {Object[]} topics     List of topics with values that date (required)
+      * @property {String} date | number        Date in ISO8601 format or number (required)
+      * @property {Object[]} topics     List of topics with values that date or number (required)
       *
       * @example
       * [
@@ -195,7 +196,7 @@ define(function(require){
             paths,
             chartWidth, chartHeight,
             xScale, yScale, colorScale,
-            xAxis, xMonthAxis, yAxis,
+            xAxis, xSubAxis, yAxis,
             xAxisPadding = {
                 top: 0,
                 left: 15,
@@ -221,6 +222,8 @@ define(function(require){
             highlightCircleActiveStrokeWidth = 5,
             highlightCircleActiveStrokeOpacity = 0.6,
 
+            xAxisValueType = 'date',
+            xAxisScale = 'linear',
             xAxisFormat = null,
             xTicks = null,
             xAxisCustomFormat = null,
@@ -235,7 +238,7 @@ define(function(require){
             lineCurve = 'linear',
 
             dataByTopic,
-            dataByDate,
+            dataSorted,
 
             dateLabel = 'date',
             valueLabel = 'value',
@@ -295,7 +298,7 @@ define(function(require){
             _selection.each(function(_data) {
                 ({
                     dataByTopic,
-                    dataByDate
+                    dataSorted: dataSorted
                 } = cleanData(_data));
 
                 chartWidth = width - margin.left - margin.right;
@@ -415,26 +418,44 @@ define(function(require){
         function buildAxis() {
             let minor, major;
 
-            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
-                minor = {
-                    tick: xTicks,
-                    format: d3TimeFormat.timeFormat(xAxisCustomFormat)
-                };
+            if (xAxisValueType === 'number') {
+                minor = getSortedNumberAxis(dataSorted, width);
                 major = null;
+
+                if(xAxisScale === 'logarithmic') {
+                    xAxis = d3Axis.axisBottom(xScale)
+                        .ticks(minor.tick, "e")
+                        .tickFormat(function (d) {
+                            const log = Math.log(d) / Math.LN10;
+                            return Math.abs(Math.round(log) - log) < 1e-6 ? '10^' + Math.round(log) : '';
+                        });
+                } else {
+                    xAxis = d3Axis.axisBottom(xScale)
+                        .ticks(minor.tick)
+                        .tickFormat(getFormattedValue);
+                }
             } else {
-                ({minor, major} = getTimeSeriesAxis(dataByDate, width, xAxisFormat, locale));
+                if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
+                    minor = {
+                        tick: xTicks,
+                        format: d3TimeFormat.timeFormat(xAxisCustomFormat)
+                    };
+                    major = null;
+                } else {
+                    ({ minor, major } = getTimeSeriesAxis(dataSorted, width, xAxisFormat, locale));
 
-                xMonthAxis = d3Axis.axisBottom(xScale)
-                    .ticks(major.tick)
-                    .tickSize(0, 0)
-                    .tickFormat(major.format);
+                    xSubAxis = d3Axis.axisBottom(xScale)
+                        .ticks(major.tick)
+                        .tickSize(0, 0)
+                        .tickFormat(major.format);
+                }
+
+                xAxis = d3Axis.axisBottom(xScale)
+                    .ticks(minor.tick)
+                    .tickSize(10, 0)
+                    .tickPadding(tickPadding)
+                    .tickFormat(minor.format);
             }
-
-            xAxis = d3Axis.axisBottom(xScale)
-                .ticks(minor.tick)
-                .tickSize(10, 0)
-                .tickPadding(tickPadding)
-                .tickFormat(minor.format);
 
             yAxis = d3Axis.axisLeft(yScale)
                 .ticks(yTicks)
@@ -507,20 +528,8 @@ define(function(require){
          * @private
          */
         function buildScales(){
-            let minX = d3Array.min(dataByTopic, ({dates}) => d3Array.min(dates, getDate)),
-                maxX = d3Array.max(dataByTopic, ({dates}) => d3Array.max(dates, getDate)),
-                maxY = d3Array.max(dataByTopic, ({dates}) => d3Array.max(dates, getValue)),
-                minY = d3Array.min(dataByTopic, ({dates}) => d3Array.min(dates, getValue));
-            let yScaleBottomValue = minY < 0 ? minY : 0;
-
-            xScale = d3Scale.scaleTime()
-                .domain([minX, maxX])
-                .rangeRound([0, chartWidth]);
-
-            yScale = d3Scale.scaleLinear()
-                .domain([yScaleBottomValue, Math.abs(maxY)])
-                .rangeRound([chartHeight, 0])
-                .nice();
+            xScale = buildXAxisScale();
+            yScale = buildYAxisScale();
 
             colorScale = d3Scale.scaleOrdinal()
                 .range(colorSchema)
@@ -533,6 +542,47 @@ define(function(require){
 
                 return memo;
             }, {});
+        }
+
+        /**
+         * Creates the xScale depending on the settings of
+         * xAxisValueType and xAxisScale
+         * @private
+         */
+        function buildXAxisScale() {
+            let minX = d3Array.min(dataByTopic, ({dates}) => d3Array.min(dates, getDate)),
+                maxX = d3Array.max(dataByTopic, ({dates}) => d3Array.max(dates, getDate));
+
+            if(xAxisValueType === 'number') {
+                if(xAxisScale === 'logarithmic') {
+                    return d3Scale.scaleLog()
+                        .domain([minX, maxX])
+                        .rangeRound([0, chartWidth]);
+                } else {
+                    return d3Scale.scaleLinear()
+                        .domain([minX, maxX])
+                        .rangeRound([0, chartWidth]);
+                }
+            } else {
+                return d3Scale.scaleTime()
+                    .domain([minX, maxX])
+                    .rangeRound([0, chartWidth]);
+            }
+        }
+
+        /**
+         * Creates the yScale
+         * @private
+         */
+        function buildYAxisScale() {
+            let maxY = d3Array.max(dataByTopic, ({dates}) => d3Array.max(dates, getValue)),
+                minY = d3Array.min(dataByTopic, ({dates}) => d3Array.min(dates, getValue));
+            let yScaleBottomValue = minY < 0 ? minY : 0;
+
+            return d3Scale.scaleLinear()
+                .domain([yScaleBottomValue, maxY])
+                .rangeRound([chartHeight, 0])
+                .nice();
         }
 
         /**
@@ -558,9 +608,9 @@ define(function(require){
         /**
          * Parses dates and values into JS Date objects and numbers
          * @param  {obj} dataByTopic    Raw data grouped by topic
-         * @return {obj}                Parsed data with dataByTopic and dataByDate
+         * @return {obj}                Parsed data with dataByTopic and dataSorted
          */
-        function cleanData({dataByTopic, dataByDate, data}) {
+        function cleanData({dataByTopic, dataSorted, data}) {
             if (!dataByTopic && !data) {
                 throw new Error('Data needs to have a dataByTopic or data property. See more in http://eventbrite.github.io/britecharts/global.html#LineChartData__anchor');
             }
@@ -591,13 +641,13 @@ define(function(require){
                 }, []);
             }
 
-            // Nest data by date and format
-            dataByDate = d3Collection.nest()
+            // Nest data by date or number and format
+            dataSorted = d3Collection.nest()
                 .key(getDate)
                 .entries(data)
                 .map((d) => {
                     return {
-                        date: new Date(d.key),
+                        date: castValueToType(d.key, xAxisValueType),
                         topics: d.values
                     }
                 });
@@ -607,7 +657,7 @@ define(function(require){
 
                 let newDates = dates.map(d => {
                     return {
-                        date: new Date(d[dateLabel]),
+                        date: castValueToType(d[dateLabel], xAxisValueType),
                         value: acceptNullValue(d[valueLabel])
                     };
                 });
@@ -619,7 +669,7 @@ define(function(require){
 
             return {
                 dataByTopic: normalizedDataByTopic,
-                dataByDate
+                dataSorted
             };
         }
 
@@ -665,10 +715,10 @@ define(function(require){
                 .attr('transform', `translate(0, ${chartHeight})`)
                 .call(xAxis);
 
-            if (xAxisFormat !== 'custom') {
+            if (xAxisFormat !== 'custom' && xAxisValueType !== 'number') {
                 svg.select('.x-axis-group .month-axis')
                     .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
-                    .call(xMonthAxis);
+                    .call(xSubAxis);
             }
 
             if (xAxisLabel) {
@@ -885,7 +935,7 @@ define(function(require){
             }, {});
 
 
-            const allTopics = dataByDate.reduce((accum, dataPoint) => {
+            const allTopics = dataSorted.reduce((accum, dataPoint) => {
                 const dataPointTopics = dataPoint.topics.map(topic => ({
                     topic,
                     node: nodesById[topic.name]
@@ -908,8 +958,8 @@ define(function(require){
                 .style('stroke-width', highlightCircleStroke)
                 .style('stroke', (d) => topicColorMap[d.topic.name])
                 .style('cursor', 'pointer')
-                .attr('cx', d => xScale(new Date(d.topic.date)))
-                .attr('cy', d => getPathYFromX(xScale(new Date(d.topic.date)), d.node, d.topic.name));
+                .attr('cx', d => xScale(castValueToType(d.topic.date, xAxisValueType)))
+                .attr('cy', d => getPathYFromX(xScale(castValueToType(d.topic.date, xAxisValueType)), d.node, d.topic.name));
         }
 
         /**
@@ -942,12 +992,16 @@ define(function(require){
 
         /**
          * Finds out which datapoint is closer to the given x position
-         * @param  {Number} x0 Date value for data point
+         * @param  {Number} x0 Date or number value for data point
          * @param  {Object} d0 Previous datapoint
          * @param  {Object} d1 Next datapoint
          * @return {Object}    d0 or d1, the datapoint with closest date to x0
          */
         function findOutNearestDate(x0, d0, d1){
+            if(xAxisValueType === 'number') {
+                return (x0 - d0.date) > (d1.date - x0) ? d0 : d1;
+            }
+
             return (new Date(x0).getTime() - new Date(d0.date).getTime()) > (new Date(d1.date).getTime() - new Date(x0).getTime()) ? d0 : d1;
         }
 
@@ -959,9 +1013,9 @@ define(function(require){
         function getNearestDataPoint(mouseX) {
             let dateFromInvertedX = xScale.invert(mouseX);
             let bisectDate = d3Array.bisector(getDate).left;
-            let dataEntryIndex = bisectDate(dataByDate, dateFromInvertedX, 1);
-            let dataEntryForXPosition = dataByDate[dataEntryIndex];
-            let previousDataEntryForXPosition = dataByDate[dataEntryIndex - 1];
+            let dataEntryIndex = bisectDate(dataSorted, dateFromInvertedX, 1);
+            let dataEntryForXPosition = dataSorted[dataEntryIndex];
+            let previousDataEntryForXPosition = dataSorted[dataEntryIndex - 1];
             let nearestDataPoint;
 
             if (previousDataEntryForXPosition && dataEntryForXPosition) {
@@ -985,7 +1039,7 @@ define(function(require){
                 dataPointXPosition;
 
             if (dataPoint) {
-                dataPointXPosition = xScale(new Date(dataPoint.date));
+                dataPointXPosition = xScale(castValueToType(dataPoint.date, xAxisValueType));
                 // More verticalMarker to that datapoint
                 moveVerticalMarker(dataPointXPosition);
                 // Add data points highlighting
@@ -1088,7 +1142,7 @@ define(function(require){
                         });
 
                 const path = topicsWithNode[index].node;
-                const x = xScale(new Date(dataPoint.topics[index].date));
+                const x = xScale(castValueToType(dataPoint.topics[index].date, xAxisValueType));
                 const y = getPathYFromX(x, path, d.name);
 
                 marker.attr('transform', `translate( ${(-highlightCircleSize)}, ${y} )` );
@@ -1618,6 +1672,42 @@ define(function(require){
          *     line.xAxisCustomFormat(line.axisTimeCombinations.HOUR_DAY)
          */
         exports.axisTimeCombinations = axisTimeCombinations;
+
+        /**
+         * Gets or Sets the `xAxisValueType`.
+         * Choose between 'date' and 'number'. When set to `number` the values of the x-axis must not
+         * be dates anymore, but can be arbitrary numbers.
+         * @param  {string} [_x='date']      Desired value type of the x-axis
+         * @return {string | module}    Current value type of the x-axis or Chart module to chain calls
+         * @public
+         * @example line.xAxisValueType('numeric')
+         */
+        exports.xAxisValueType = function (_x) {
+            if (!arguments.length) {
+                return xAxisValueType;
+            }
+            xAxisValueType = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the `xAxisScale`.
+         * Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to
+         * 'number' as well, otherwise it won't influence the visualization.
+         * @param  {string} [_x='linear']      Desired value type of the x-axis
+         * @return {string | module}    Current value type of the x-axis or Chart module to chain calls
+         * @public
+         * @example line.xAxisValueType('numeric').xAxisScale('logarithmic')
+         */
+        exports.xAxisScale = function (_x) {
+            if (!arguments.length) {
+                return xAxisScale;
+            }
+            xAxisScale = _x;
+
+            return this;
+        };
 
         return exports;
     };
