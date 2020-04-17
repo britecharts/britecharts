@@ -12,8 +12,9 @@ define(function(require) {
         jsonMultiMonthValueRange = require('../json/multiMonthLineData'),
         jsonHourDateRange = require('../json/lineDataOneSetHourly.json'),
         jsonSmallValueRange = require('../json/lineDataSmallValueRange'),
-        jsonNegativeValues = require('../json/lineDataNegativeValues.json');
-
+        jsonNegativeValues = require('../json/lineDataNegativeValues.json'),
+        jsonOnlyNegativeValues = require('../json/lineDataOnlyNegativeValues.json'),
+        jsonNumericKeys = require('../json/lineDataNumericKeys');
 
     function LineDataBuilder(config) {
         this.Klass = LineDataBuilder;
@@ -76,6 +77,18 @@ define(function(require) {
 
         this.withNegativeValues = function() {
             var attributes = _.extend({}, this.config, jsonNegativeValues);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withOnlyNegativeValues = function() {
+            var attributes = _.extend({}, this.config, jsonOnlyNegativeValues);
+
+            return new this.Klass(attributes);
+        };
+
+        this.withNumericKeys = function() {
+            var attributes = _.extend({}, this.config, jsonNumericKeys);
 
             return new this.Klass(attributes);
         };

@@ -181,7 +181,7 @@ define([
                                 let minValue = Math.min(...values);
                                 expect(minValue).toEqual(0);
                                 let indexOf0 = -minValue;
-                                
+
                                 let horizontalGridLines = d3.selectAll('.horizontal-grid-line').filter((_, i) => i === indexOf0);
                                 let classes = horizontalGridLines.attr('class').split(' ');
                                 expect(classes.includes('horizontal-grid-line--highlighted')).toEqual(false);
@@ -533,6 +533,54 @@ define([
                     });
                 });
 
+                describe('when single line', () => {
+
+                    describe('when x-axis value type is number', () => {
+
+                        beforeEach(() => {
+                            dataset = buildDataSet('withNumericKeys');
+                            lineChart = chart().xAxisValueType('number');
+
+                            // DOM Fixture Setup
+                            f = jasmine.getFixtures();
+                            f.fixturesPath = 'base/test/fixtures/';
+                            f.load('testContainer.html');
+
+                            containerFixture = d3.select('.test-container');
+                            containerFixture.datum(dataset).call(lineChart);
+                        });
+
+                        it('the highest X-axis value is a number', () => {
+                            let xAxis = containerFixture.selectAll('.x-axis-group');
+                            let text = xAxis.select('g.tick:last-child');
+                            expect(text.text()).toEqual('8.0k');
+                        });
+                    });
+
+                    describe('when x-axis value type is number and x-axis scale is logarithmic', () => {
+
+                        beforeEach(() => {
+                            dataset = buildDataSet('withNumericKeys');
+                            lineChart = chart().xAxisValueType('number').xAxisScale('logarithmic');
+
+                            // DOM Fixture Setup
+                            f = jasmine.getFixtures();
+                            f.fixturesPath = 'base/test/fixtures/';
+                            f.load('testContainer.html');
+
+                            containerFixture = d3.select('.test-container');
+                            containerFixture.datum(dataset).call(lineChart);
+                        });
+
+                        it('one X-axis value is a logarithmic number', () => {
+                            let xAxis = containerFixture.selectAll('.x-axis-group');
+                            let text = xAxis.select('g.tick:nth-child(2)');
+                            expect(text.text()).toEqual('10^1');
+                        });
+                    });
+
+                });
+
                 describe('data points', () => {
 
                     beforeEach(() => {
@@ -629,10 +677,44 @@ define([
                         let values = dataset.dataByTopic[0].dates.map(it => it.value);
                         let minValue = Math.min(...values);
                         let indexOf0 = -minValue;
-                        
+
                         let horizontalGridLines = d3.selectAll('.horizontal-grid-line').filter((_, i) => i === indexOf0);
                         let classes = horizontalGridLines.attr('class').split(' ');
                         expect(classes.includes('horizontal-grid-line--highlighted')).toEqual(true);
+                    });
+                });
+
+                describe('when has only negative values', () => {
+                    beforeEach(() => {
+                        dataset = buildDataSet('withOnlyNegativeValues');
+                        lineChart = chart().grid('full');
+
+                        // DOM Fixture Setup
+                        f = jasmine.getFixtures();
+                        f.fixturesPath = 'base/test/fixtures/';
+                        f.load('testContainer.html');
+
+                        containerFixture = d3.select('.test-container');
+                        containerFixture.datum(dataset).call(lineChart);
+                    });
+
+                    afterEach(() => {
+                        containerFixture.remove();
+                        f = jasmine.getFixtures();
+                        f.cleanUp();
+                        f.clearCache();
+                    });
+
+                    it('The highest Y-axis value is negative', () => {
+                        let yAxis = d3.selectAll('.y-axis-group');
+                        let text = yAxis.selectAll('g.tick:nth-child(8)');
+                        expect(text.text()).toEqual('-1');
+                    });
+
+                    it('The lowest Y-axis value is negative', () => {
+                        let yAxis = d3.selectAll('.y-axis-group');
+                        let text = yAxis.selectAll('g.tick');
+                        expect(text.text()).toEqual('-4');
                     });
                 });
             });
@@ -1163,6 +1245,40 @@ define([
 
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);
+                });
+
+                it('should provide xAxisValueType getter and setter', () => {
+                    let previous = lineChart.xAxisValueType(),
+                        expected = 'number',
+                        actual;
+
+                    lineChart.xAxisValueType(expected);
+                    actual = lineChart.xAxisValueType();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('default xAxisValueType is date', () => {
+                    let defaultXAxisValueType = lineChart.xAxisValueType();
+                    expect(defaultXAxisValueType).toBe('date');
+                });
+
+                it('should provide xAxisScale getter and setter', () => {
+                    let previous = lineChart.xAxisScale(),
+                        expected = 'logarithmic',
+                        actual;
+
+                    lineChart.xAxisScale(expected);
+                    actual = lineChart.xAxisScale();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('default xAxisScale is linear', () => {
+                    let defaultXAxisScale = lineChart.xAxisScale();
+                    expect(defaultXAxisScale).toBe('linear');
                 });
             });
         });
