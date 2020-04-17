@@ -1,3 +1,4 @@
+2.15.1
 2.15.0
 ------
 * Feature - Support for negative values on stacked area chart (Thanks @ajdani)
