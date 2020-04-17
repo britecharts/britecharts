@@ -1,5 +1,4 @@
 2.15.0
-2.15.0
 ------
 * Feature - Support for negative values on stacked area chart (Thanks @ajdani)
 * Fix - Error handling on weird line paths on Firefox (Thanks @shayh)
