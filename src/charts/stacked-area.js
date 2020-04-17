@@ -16,6 +16,7 @@ define(function(require){
     const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
     const { getTimeSeriesAxis, getSortedNumberAxis } = require('./helpers/axis');
+    const { castValuesToType } = require('./helpers/type');
     const { axisTimeCombinations, curveMap } = require('./helpers/constants');
     const {
         formatIntegerValue,
@@ -411,7 +412,7 @@ define(function(require){
                     });
 
                     return assign({}, d, {
-                        date: castValuesToType(d['key'])
+                        date: castValuesToType(d['key'], xAxisValueType)
                     });
                 });
 
@@ -427,7 +428,7 @@ define(function(require){
                     });
 
                     return assign({}, d, {
-                        date: castValuesToType(d['key'])
+                        date: castValuesToType(d['key'], xAxisValueType)
                     });
                 });
 
@@ -605,7 +606,7 @@ define(function(require){
             originalData = originalData.length === 0 ? createFakeData() : originalData;
 
             return originalData.reduce((acc, d) => {
-                d.date = castValuesToType(d[dateLabel]),
+                d.date = castValuesToType(d[dateLabel], xAxisValueType),
                 d.value = +d[valueLabel]
 
                 return [...acc, d];
@@ -977,23 +978,9 @@ define(function(require){
                 )
                 .map(d => {
                     return assign({}, d, {
-                        date: castValuesToType(d.key)
+                        date: castValuesToType(d.key, xAxisValueType)
                     });
                 });
-        }
-
-        /**
-         * Casts the data given to a date or number
-         * respecting the value of xAxisValueType
-         * @param {string | number} value   Value data
-         * @return {Date | number} value    Casted value
-         */
-        function castValuesToType(value) {
-            if(xAxisValueType === 'number') {
-                return Number(value);
-            }
-
-            return new Date(value);
         }
 
         /**
