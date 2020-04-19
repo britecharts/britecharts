@@ -258,6 +258,7 @@ define(function(require){
             numberFormat,
 
             customLines = [],
+            defaultCustomLineColor = '#C3C6CF',
             verticalLines,
             verticalGridLines,
             horizontalGridLines,
@@ -816,7 +817,7 @@ define(function(require){
                     return definedColor;
                 }
 
-                return 'grey';
+                return defaultCustomLineColor;
             }
 
             //draw a horizontal line to extend x-axis till the edges
@@ -824,13 +825,13 @@ define(function(require){
                 .selectAll('line.custom-line')
                 .data(yValues)
                 .enter()
-                .append('line')
-                .attr('class', 'custom-line')
-                .attr('x1', (-xAxisPadding.left - verticalShift))
-                .attr('x2', chartWidth)
-                .attr('y1', (d) => yScale(d))
-                .attr('y2', (d) => yScale(d))
-                .attr('stroke', (d) => getColor(d));
+                  .append('line')
+                  .attr('class', 'custom-line')
+                  .attr('x1', 0)
+                  .attr('x2', chartWidth)
+                  .attr('y1', (d) => yScale(d))
+                  .attr('y2', (d) => yScale(d))
+                  .attr('stroke', (d) => getColor(d));
 
             // draw the annotations right above the line at the right end of the chart
             for(let line of customLines) {
