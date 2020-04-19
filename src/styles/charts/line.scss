@@ -1,6 +1,7 @@
 @import "../helpers/_variables.scss";
 
 $line-width: 2;
+$text-size: 0.75rem;
 
 .line-chart {
 
@@ -24,6 +25,18 @@ $line-width: 2;
     }
     .month-axis path {
         display: none;
+    }
+
+    .custom-line {
+        fill: none;
+        shape-rendering: crispEdges;
+        stroke-width: 1;
+    }
+
+    .custom-line-annotation {
+        font-size: $text-size;
+        line-height: $text-size;
+        fill: $grey-600;
     }
 
     // This is the div that we use to simulate a line drawing animation

@@ -136,6 +136,13 @@ define([
                             expect(actual).toEqual(expected);
                         });
 
+                        it('should create a custom-lines-group', () => {
+                            const expected = 1;
+                            const actual = containerFixture.select('g.custom-lines-group').size();
+
+                            expect(actual).toEqual(expected);
+                        });
+
                         it('should create a metadata-group', () => {
                             const expected = 1;
                             const actual = containerFixture.select('g.metadata-group').size();
@@ -228,6 +235,64 @@ define([
                                 expect(actual).toEqual(expected);
                             });
                         });
+                    });
+
+                    describe('custom lines', () => {
+
+                        describe('when no lines are set', () => {
+
+                            beforeEach(() => {
+                                lineChart = chart();
+
+                                containerFixture = d3.select('.test-container').append('svg');
+                                containerFixture.datum(dataset).call(lineChart);
+                            });
+
+                            it('should not draw a horizontal line', () => {
+                                const expected = 0;
+                                const actual = containerFixture.select('.custom-line').size();
+
+                                expect(actual).toEqual(expected);
+                            });
+
+                            it('should not render an annotation text', () => {
+                                const expected = 0;
+                                const actual = containerFixture.select('.custom-line-annotation').size();
+
+                                expect(actual).toEqual(expected);
+                            });
+                        })
+
+                        describe('when one line is set', () => {
+
+                            beforeEach(() => {
+                                lineChart = chart().lines([{
+                                    y: 2,
+                                    color: '#ff0000',
+                                    name: 'Testname'
+                                }]);
+
+                                containerFixture = d3.select('.test-container').append('svg');
+                                containerFixture.datum(dataset).call(lineChart);
+                            });
+
+                            it('should draw a horizontal line', () => {
+                                const expected = 1;
+                                const actual = containerFixture.select('.custom-line').size();
+
+                                expect(actual).toEqual(expected);
+                            });
+
+                            it('should render an annotation text', () => {
+                                const expected = 1;
+                                const actual = containerFixture.select('.custom-line-annotation').size();
+
+                                expect(actual).toEqual(expected);
+
+                                const actualText = containerFixture.select('.custom-lines-group text').text();
+                                expect(actualText).toEqual('Testname');
+                            });
+                        })
                     });
 
                     describe('axis', () => {
@@ -1080,6 +1145,21 @@ define([
 
                     lineChart.yAxisLabelPadding(expected);
                     actual = lineChart.yAxisLabelPadding();
+
+                    expect(previous).not.toBe(expected);
+                    expect(actual).toBe(expected);
+                });
+
+                it('should provide a lines getter and setter', () => {
+                    let previous = lineChart.lines(),
+                        expected = [{
+                            y: 2,
+                            color: 'grey'
+                        }],
+                        actual;
+
+                    lineChart.lines(expected);
+                    actual = lineChart.lines();
 
                     expect(previous).not.toBe(expected);
                     expect(actual).toBe(expected);

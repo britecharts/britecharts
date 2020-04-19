@@ -202,6 +202,7 @@ define(function(require){
                 bottom: 0,
                 right: 0
             },
+            verticalShift = 30,
             monthAxisPadding = 28,
             tickPadding = 5,
             colorSchema = colorHelper.colorSchemas.britecharts,
@@ -256,6 +257,9 @@ define(function(require){
             verticalMarkerLine,
             numberFormat,
 
+            customLines = [],
+            defaultCustomLineColor = '#C3C6CF',
+            verticalLines,
             verticalGridLines,
             horizontalGridLines,
             grid = null,
@@ -439,6 +443,7 @@ define(function(require){
                 .tickFormat(getFormattedValue);
 
             drawGridLines(minor.tick, yTicks);
+            drawCustomLines();
         }
 
         /**
@@ -463,6 +468,8 @@ define(function(require){
               .append('g').classed('axis y', true);
             container
               .append('g').classed('grid-lines-group', true);
+            container
+                .append('g').classed('custom-lines-group', true);
             container
               .append('g').classed('chart-group', true);
             container
@@ -760,7 +767,7 @@ define(function(require){
                     .enter()
                       .append('line')
                         .attr('class', 'horizontal-grid-line')
-                        .attr('x1', (-xAxisPadding.left - 30))
+                        .attr('x1', (-xAxisPadding.left - verticalShift))
                         .attr('x2', chartWidth)
                         .attr('y1', (d) => yScale(d))
                         .attr('y2', (d) => yScale(d))
@@ -787,10 +794,58 @@ define(function(require){
                 .enter()
                   .append('line')
                     .attr('class', 'extended-x-line')
-                    .attr('x1', (-xAxisPadding.left - 30))
+                    .attr('x1', (-xAxisPadding.left - verticalShift))
                     .attr('x2', chartWidth)
                     .attr('y1', height - margin.bottom - margin.top)
                     .attr('y2', height - margin.bottom - margin.top);
+        }
+
+        /**
+         * Draws custom user-defined lines onto the chart
+         * @return void
+         */
+        function drawCustomLines(){
+            svg.select('.custom-lines-group')
+                .selectAll('line')
+                .remove();
+
+            let yValues = customLines.map(line => line.y);
+
+            let getColor = yValue => {
+                const definedColor = customLines.find(line => line.y === yValue).color;
+                if(definedColor) {
+                    return definedColor;
+                }
+
+                return defaultCustomLineColor;
+            }
+
+            //draw a horizontal line to extend x-axis till the edges
+            verticalLines = svg.select('.custom-lines-group')
+                .selectAll('line.custom-line')
+                .data(yValues)
+                .enter()
+                  .append('line')
+                  .attr('class', 'custom-line')
+                  .attr('x1', 0)
+                  .attr('x2', chartWidth)
+                  .attr('y1', (d) => yScale(d))
+                  .attr('y2', (d) => yScale(d))
+                  .attr('stroke', (d) => getColor(d));
+
+            // draw the annotations right above the line at the right end of the chart
+            for(let line of customLines) {
+                if (line.name) {
+                    svg.select('.custom-lines-group')
+                        .append('text')
+                        .attr('x', chartWidth)
+                        .attr('y', yScale(line.y) - 6)
+                        .attr('class', 'custom-line-annotation')
+                        .attr('text-anchor', 'end')
+                        .attr('dominant-baseline', 'baseline')
+                        .text(line.name);
+                }
+            }
         }
 
         /**
@@ -1506,6 +1561,27 @@ define(function(require){
                 return locale;
             }
             locale = _x;
+
+            return this;
+        };
+
+        /**
+         * Add custom horizontal lines to the Chart - this way you are able to plot arbitrary horizontal lines
+         * onto the chart with a specific color and a text annotation over the line.
+         * @param  {Object[]} _x  Array of Objects describing the lines
+         * @return { (Object[] | Module) }    Current lines or module to chain calls
+         * @public
+         * @example line.lines([{
+         *   y: 2,
+         *   name: 'Maximum threshold',
+         *   color: '#ff0000'
+         * }])
+         */
+        exports.lines = function(_x) {
+            if (!arguments.length) {
+                return customLines;
+            }
+            customLines = _x;
 
             return this;
         };
