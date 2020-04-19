@@ -75,6 +75,7 @@ define(function(require){
                 x: 0
             },
             tooltipMaxTopicLength = 170,
+            tooltipMaxTitleLength = 230,
             tooltipTextContainer,
             tooltipDivider,
             tooltipBody,
@@ -86,6 +87,8 @@ define(function(require){
             ttTextY = 37,
             textHeight,
             entryLineLimit = 3,
+            initialTooltipBodyYPosition = 37,
+            additionalTooltipTitleHeight = 0,
             initialTooltipTextXPosition = -25,
             tooltipTextLinePadding = 5,
             tooltipRightWidth,
@@ -214,18 +217,20 @@ define(function(require){
             tooltipTitle = tooltipTextContainer
               .append('text')
                 .classed('tooltip-title', true)
-                .attr('x', -tooltipWidth / 4 + 16)
+                .attr('x', getTooltipTitleXPosition())
                 .attr('dy', '.35em')
                 .attr('y', 16)
                 .style('fill', titleFillColor);
+
+            updateTooltipTitleYPosition();
 
             tooltipDivider = tooltipTextContainer
               .append('line')
                 .classed('tooltip-divider', true)
                 .attr('x1', -tooltipWidth / 4 + 16)
                 .attr('x2', 265)
-                .attr('y1', 31)
-                .attr('y2', 31)
+                .attr('y1', initialTooltipBodyYPosition - 6 + additionalTooltipTitleHeight)
+                .attr('y2', initialTooltipBodyYPosition - 6 + additionalTooltipTitleHeight)
                 .style('stroke', borderStrokeColor);
 
             tooltipBody = tooltipTextContainer
@@ -312,8 +317,8 @@ define(function(require){
          * position
          */
         function resetSizeAndPositionPointers() {
-            tooltipHeight = 48;
-            ttTextY = 37;
+            tooltipHeight = 48 + additionalTooltipTitleHeight;
+            ttTextY = initialTooltipBodyYPosition + additionalTooltipTitleHeight;
             ttTextX = 0;
         }
 
@@ -402,12 +407,65 @@ define(function(require){
         }
 
         /**
+         * Calculates the number of lines the tooltip title will need and updates the
+         * initialTooltipBodyYPosition accordingly
+         */
+        function updateTooltipTitleYPosition() {
+            const approximateNumberOfTitleLines = getApproximateNumberOfLines();
+            if(approximateNumberOfTitleLines > 1) {
+                additionalTooltipTitleHeight = 17 * (approximateNumberOfTitleLines -1)
+            }
+        }
+
+        /**
+         * Heuristic which gets the number of lines needed to display the title of the tooltip
+         * If shouldShowDateInTitle is set to true, it takes the formatted Date.now() as additional influencer
+         * for the approximation of the needed number of lines.
+         * @return  {Number}  approximateLineNumber  Approximative number of lines needed to display the title
+         * @private
+         */
+        function getApproximateNumberOfLines() {
+            const approximativeTitle = getTooltipTitle(Date.now());
+            const words = approximativeTitle.split(/\s+/).reverse();
+
+            var word,
+                line = [],
+                approximateLineNumber = 1;
+
+            while (word = words.pop()) {
+                line.push(word);
+
+                const textWidth = getTextWidth(line.join(' '), 16, 'Karla, sans-serif');
+                if (textWidth > tooltipMaxTitleLength) {
+                    line.pop();
+                    line = [word];
+                    ++approximateLineNumber;
+                }
+            }
+
+            return approximateLineNumber;
+        }
+
+        /**
          * Updates value of tooltipTitle with the data meaning and the date
          * @param  {Object} dataPoint Point of data to use as source
          * @return void
          * @private
          */
         function updateTitle(dataPoint) {
+            const tTitle = getTooltipTitle(dataPoint[dateLabel]);
+
+            tooltipTitle
+                .text(tTitle)
+                .call(textWrap, tooltipMaxTitleLength, getTooltipTitleXPosition());
+        }
+
+        /**
+         * Gets the tooltipTitle respecting the different settings
+         * @param  {Date | String}  date  Date to use
+         * @private
+         */
+        function getTooltipTitle(date) {
             let tTitle = title;
             let formattedDate = formatKey(dataPoint[dateLabel]);
 
@@ -419,7 +477,7 @@ define(function(require){
                 tTitle = formattedDate;
             }
 
-            tooltipTitle.text(tTitle);
+            return tTitle;
         }
 
         /**
@@ -464,6 +522,14 @@ define(function(require){
             }
 
             return format(date);
+        }
+
+        /**
+         * Returns the x-Position of the Tooltip Title
+         * @private
+         */
+        function getTooltipTitleXPosition() {
+            return -tooltipWidth / 4 + 16;
         }
 
         /**
