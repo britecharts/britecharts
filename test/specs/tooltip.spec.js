@@ -122,6 +122,57 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
 
                         expect(actual).toEqual(expected);
                     });
+
+                });
+
+                describe('when title is long', () => {
+
+                    beforeEach(() => {
+                        dataset = [];
+                        tooltipChart = tooltip().title('Super long and exciting Tooltip title');
+
+                        // DOM Fixture Setup
+                        f = jasmine.getFixtures();
+                        f.fixturesPath = 'base/test/fixtures/';
+                        f.load('testContainer.html');
+
+                        containerFixture = d3.select('.test-container').append('svg');
+                        containerFixture.datum(dataset).call(tooltipChart);
+                    });
+
+                    afterEach(() => {
+                        containerFixture.remove();
+                        f = jasmine.getFixtures();
+                        f.cleanUp();
+                        f.clearCache();
+                    });
+
+                    it('should be displayed in two rows', () => {
+                        // the space between 'Tooltip' and 'title' dissappears because of the text wrap
+                        const expectedTitle = 'Super long and exciting Tooltiptitle - Aug 05, 2015';
+                        const expectedDividerYPosition = 48;
+                        let actualTitle, actualDividerY1Position, actualDividerY2Position;
+
+                        tooltipChart.dateFormat(tooltipChart.axisTimeCombinations.DAY_MONTH);
+                        tooltipChart.update({
+                            date: '2015-08-05T07:00:00.000Z',
+                            topics: []
+                        }, topicColorMap, 0);
+
+                        actualTitle = containerFixture.select('.britechart-tooltip')
+                            .selectAll('.tooltip-title')
+                            .text();
+
+                        actualDividerY1Position = containerFixture.select('.britechart-tooltip')
+                            .select('.tooltip-divider').attr('y1');
+
+                        actualDividerY2Position = containerFixture.select('.britechart-tooltip')
+                            .select('.tooltip-divider').attr('y2');
+
+                        expect(actualTitle).toEqual(expectedTitle);
+                        expect(parseInt(actualDividerY1Position)).toEqual(expectedDividerYPosition);
+                        expect(parseInt(actualDividerY2Position)).toEqual(expectedDividerYPosition);
+                    });
                 });
 
                 describe('when date must not be shown', () => {
