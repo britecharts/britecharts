@@ -808,10 +808,10 @@ define(function(require){
                 .selectAll('line')
                 .remove();
 
-            let yValues = customLines.map(it => it.y);
+            let yValues = customLines.map(line => line.y);
 
             let getColor = yValue => {
-                const definedColor = customLines.find(it => it.y === yValue).color;
+                const definedColor = customLines.find(line => line.y === yValue).color;
                 if(definedColor) {
                     return definedColor;
                 }
