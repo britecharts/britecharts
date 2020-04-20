@@ -11,7 +11,8 @@ define([
     'helpers/date',
     'helpers/export',
     'helpers/axis',
-    'helpers/locale'
+    'helpers/locale',
+    'helpers/type'
 ], function (
     _,
     $,
@@ -25,7 +26,8 @@ define([
     date,
     exportChart,
     axis,
-    locale
+    locale,
+    typeHelper
 ) {
     'use strict';
 
@@ -256,6 +258,7 @@ define([
             let twoYearsDataSet;
             let oneDayDataSet;
             let lessThanOneMonthDataSet;
+            let numericalAxisDataSet;
 
             beforeEach(() => {
                 lessThanOneMonthDataSet = aLineTestDataSet()
@@ -266,6 +269,9 @@ define([
                     .build();
                 twoYearsDataSet = aLineTestDataSet()
                     .withMultiMonthValueRange()
+                    .build();
+                numericalAxisDataSet = aLineTestDataSet()
+                    .withNumericKeys()
                     .build();
             });
 
@@ -442,6 +448,25 @@ define([
                     });
                 });
             });
+
+            describe('when using a numerical axis', () => {
+                let minor;
+
+                beforeEach(() => {
+                    minor = axis.getSortedNumberAxis(numericalAxisDataSet.dataSorted, 300);
+                });
+
+                it('should give back a minor tick value', () => {
+                    const expectedFormat = 'number';
+                    const actualFormat = typeof minor.tick;
+                    expect(actualFormat).toEqual(expectedFormat);
+
+                    const expectedValue = 5;
+                    const actualValue = minor.tick;
+                    expect(actualValue).toEqual(expectedValue);
+                });
+
+            });
         });
 
         describe('locale', () => {
@@ -507,6 +532,26 @@ define([
                     ).toThrow(expected);
                 });
             });
+        });
+
+        describe('type', () => {
+
+            it('should cast the type correct to a number', () => {
+                const actualCaseOne = typeHelper.castValueToType('127', 'number');
+                const expectedCaseOne = 127;
+                expect(typeof actualCaseOne).toEqual(typeof expectedCaseOne);
+
+                const expectedCaseTwo = new Date('December 17, 2020 01:02:03');
+                const dateString = 'December 17, 2020 01:02:03';
+                const actualCaseTwo = typeHelper.castValueToType(dateString, 'date');
+                expect(typeof actualCaseTwo).toEqual(typeof expectedCaseTwo);
+
+                const expectedCaseThree = new Date('December 17, 2020 01:02:03');
+                const anotherDateString = 'December 17, 2020 01:02:03';
+                const actualCaseThree = typeHelper.castValueToType(anotherDateString, 'invalidInput');
+                expect(typeof actualCaseThree).toEqual(typeof expectedCaseThree);
+            });
+
         });
     });
 });

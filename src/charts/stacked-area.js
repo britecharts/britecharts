@@ -15,7 +15,8 @@ define(function(require){
 
     const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
-    const { getTimeSeriesAxis } = require('./helpers/axis');
+    const { getTimeSeriesAxis, getSortedNumberAxis } = require('./helpers/axis');
+    const { castValueToType } = require('./helpers/type');
     const { axisTimeCombinations, curveMap } = require('./helpers/constants');
     const {
         formatIntegerValue,
@@ -91,12 +92,14 @@ define(function(require){
             height = 500,
             loadingState = stackedAreaLoadingMarkup,
 
-            xScale, xAxis, xMonthAxis,
+            xScale, xAxis, xSubAxis,
             yScale, yAxis,
 
             aspectRatio = null,
 
             monthAxisPadding = 30,
+            xAxisValueType = 'date',
+            xAxisScale = 'linear',
             yTicks = 5,
             yTickTextYOffset = -8,
             yAxisBaseline = 0,
@@ -162,9 +165,9 @@ define(function(require){
             svg,
             chartWidth, chartHeight,
             data,
-            dataByDate,
-            dataByDateFormatted,
-            dataByDateZeroed,
+            dataSorted,
+            dataSortedFormatted,
+            dataSortedZeroed,
 
             verticalGridLines,
             horizontalGridLines,
@@ -216,7 +219,7 @@ define(function(require){
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
-                dataByDate = getDataByDate(data);
+                dataSorted = getSortedData(data);
 
                 buildLayers();
                 buildScales();
@@ -314,27 +317,44 @@ define(function(require){
         function buildAxis() {
             let minor, major;
 
-            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
-                minor = {
-                    tick: xTicks,
-                    format:  d3TimeFormat.timeFormat(xAxisCustomFormat)
-                };
+            if(xAxisValueType === 'number') {
+                minor = getSortedNumberAxis(dataSorted, width);
                 major = null;
+
+                if(xAxisScale === 'logarithmic') {
+                    xAxis = d3Axis.axisBottom(xScale)
+                        .ticks(minor.tick, "e")
+                        .tickFormat(function (d) {
+                            const log = Math.log(d) / Math.LN10;
+                            return Math.abs(Math.round(log) - log) < 1e-6 ? '10^' + Math.round(log) : '';
+                        });
+                } else {
+                    xAxis = d3Axis.axisBottom(xScale)
+                        .ticks(minor.tick)
+                        .tickFormat(getFormattedValue);
+                }
             } else {
-                ({minor, major} = getTimeSeriesAxis(dataByDate, width, xAxisFormat, locale));
+                if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
+                    minor = {
+                        tick: xTicks,
+                        format: d3TimeFormat.timeFormat(xAxisCustomFormat)
+                    };
+                    major = null;
+                } else {
+                    ({minor, major} = getTimeSeriesAxis(dataSorted, width, xAxisFormat, locale));
 
-                xMonthAxis = d3Axis.axisBottom(xScale)
-                    .ticks(major.tick)
-                    .tickSize(0, 0)
-                    .tickFormat(major.format);
+                    xSubAxis = d3Axis.axisBottom(xScale)
+                        .ticks(major.tick)
+                        .tickSize(0, 0)
+                        .tickFormat(major.format);
+                }
+
+                xAxis = d3Axis.axisBottom(xScale)
+                    .ticks(minor.tick)
+                    .tickSize(10, 0)
+                    .tickPadding(tickPadding)
+                    .tickFormat(minor.format);
             }
-
-            xAxis = d3Axis.axisBottom(xScale)
-                .ticks(minor.tick)
-                .tickSize(10, 0)
-                .tickPadding(tickPadding)
-                .tickFormat(minor.format);
-
 
             yAxis = d3Axis.axisRight(yScale)
                 .ticks(yTicks)
@@ -380,7 +400,7 @@ define(function(require){
          * @private
          */
         function buildLayers() {
-            dataByDateFormatted = dataByDate
+            dataSortedFormatted = dataSorted
                 .map(d => assign({}, d, d.values))
                 .map(d => {
                     Object.keys(d).forEach(k => {
@@ -392,11 +412,11 @@ define(function(require){
                     });
 
                     return assign({}, d, {
-                        date: new Date(d['key'])
+                        date: castValueToType(d['key'], xAxisValueType)
                     });
                 });
 
-            dataByDateZeroed = dataByDate
+            dataSortedZeroed = dataSorted
                 .map(d => assign({}, d, d.values))
                 .map(d => {
                     Object.keys(d).forEach(k => {
@@ -408,7 +428,7 @@ define(function(require){
                     });
 
                     return assign({}, d, {
-                        date: new Date(d['key'])
+                        date: castValueToType(d['key'], xAxisValueType)
                     });
                 });
 
@@ -429,8 +449,8 @@ define(function(require){
                 .order(d3Shape.stackOrderNone)
                 .offset(d3Shape.stackOffsetNone);
 
-            layersInitial = stack3(dataByDateZeroed);
-            layers = moveLayersByBaseline(stack3(dataByDateFormatted));
+            layersInitial = stack3(dataSortedZeroed);
+            layers = moveLayersByBaseline(stack3(dataSortedFormatted));
         }
 
         /**
@@ -487,21 +507,49 @@ define(function(require){
          * @private
          */
         function buildScales() {
-            const minY = getMinYAxisScale();
-            const maxY = getMaxYAxisScale();
-
-            xScale = d3Scale.scaleTime()
-                .domain(d3Array.extent(dataByDate, ({date}) => date))
-                .rangeRound([0, chartWidth]);
-
-            yScale = d3Scale.scaleLinear()
-                .domain([minY, maxY])
-                .rangeRound([chartHeight, 0])
-                .nice();
+            xScale = buildXAxisScale();
+            yScale = buildYAxisScale();
 
             categoryColorMap =  order.reduce((memo, topic, index) => (
                 assign({}, memo, {[topic]: colorSchema[index]})
             ), {});
+        }
+
+        /**
+         * Creates the xScale depending on the settings of
+         * xAxisValueType and xAxisScale
+         * @private
+         */
+        function buildXAxisScale() {
+            if(xAxisValueType === 'number') {
+                if(xAxisScale === 'logarithmic') {
+                    return d3Scale.scaleLog()
+                        .domain(d3Array.extent(dataSorted, ({ date }) => date))
+                        .rangeRound([0, chartWidth]);
+                } else {
+                    return d3Scale.scaleLinear()
+                        .domain(d3Array.extent(dataSorted, ({ date }) => date))
+                        .rangeRound([0, chartWidth]);
+                }
+            } else {
+                return d3Scale.scaleTime()
+                    .domain(d3Array.extent(dataSorted, ({ date }) => date))
+                    .rangeRound([0, chartWidth]);
+            }
+        }
+
+        /**
+         * Creates the yScale
+         * @private
+         */
+        function buildYAxisScale() {
+            const minY = getMinYAxisScale();
+            const maxY = getMaxYAxisScale();
+
+            return d3Scale.scaleLinear()
+                .domain([minY, maxY])
+                .rangeRound([chartHeight, 0])
+                .nice();
         }
 
         /**
@@ -558,7 +606,7 @@ define(function(require){
             originalData = originalData.length === 0 ? createFakeData() : originalData;
 
             return originalData.reduce((acc, d) => {
-                d.date = new Date(d[dateLabel]),
+                d.date = castValueToType(d[dateLabel], xAxisValueType),
                 d.value = +d[valueLabel]
 
                 return [...acc, d];
@@ -575,10 +623,10 @@ define(function(require){
                 .attr('transform', `translate( 0, ${chartHeight} )`)
                 .call(xAxis);
 
-            if (xAxisFormat !== 'custom') {
+            if (xAxisFormat !== 'custom' && xAxisValueType !== 'number') {
                 svg.select('.x-axis-group .month-axis')
                     .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
-                    .call(xMonthAxis);
+                    .call(xSubAxis);
             }
 
             svg.select('.y-axis-group.axis')
@@ -740,7 +788,7 @@ define(function(require){
             chartGroup
               .append('path')
                 .attr('class', 'empty-data-line')
-                .attr('d', emptyDataLine(dataByDateFormatted))
+                .attr('d', emptyDataLine(dataSortedFormatted))
                 .style('stroke', 'url(#empty-data-line-gradient)');
 
             chartGroup
@@ -922,7 +970,7 @@ define(function(require){
          * @return {Object[]}               Chart data ordered by date
          * @private
          */
-        function getDataByDate(data) {
+        function getSortedData(data) {
             return d3Collection.nest()
                 .key(getDate)
                 .entries(
@@ -930,13 +978,9 @@ define(function(require){
                 )
                 .map(d => {
                     return assign({}, d, {
-                        date: new Date(d.key)
+                        date: castValueToType(d.key, xAxisValueType)
                     });
                 });
-
-            // let b =  d3Collection.nest()
-            //                     .key(getDate).sortKeys(d3Array.ascending)
-            //                     .entries(data);
         }
 
         /**
@@ -955,7 +999,7 @@ define(function(require){
          */
         function getMinValueByDate() {
             let keys = uniq(data.map(o => o.name));
-            let minValueByDate = d3Array.min(dataByDateFormatted, function(d){
+            let minValueByDate = d3Array.min(dataSortedFormatted, function(d){
                 let vals = keys.map((key) => d[key]);
 
                 return d3Array.sum(vals);
@@ -971,7 +1015,7 @@ define(function(require){
          */
         function getMaxValueByDate() {
             let keys = uniq(data.map(o => o.name));
-            let maxValueByDate = d3Array.max(dataByDateFormatted, function(d){
+            let maxValueByDate = d3Array.max(dataSortedFormatted, function(d){
                 let vals = keys.map((key) => d[key]);
 
                 return d3Array.sum(vals);
@@ -1012,7 +1056,7 @@ define(function(require){
          * @return {obj}        Data entry that is closer to that x axis position
          */
         function getNearestDataPoint(mouseX) {
-            let points = dataByDate.filter(({date}) => Math.abs(xScale(date) - mouseX) <= epsilon);
+            let points = dataSorted.filter(({date}) => Math.abs(xScale(date) - mouseX) <= epsilon);
 
             if (points.length) {
                 return points[0];
@@ -1025,7 +1069,7 @@ define(function(require){
          * @return {Number} half distance between any two points
          */
         function setEpsilon() {
-            let dates = dataByDate.map(({date}) => date);
+            let dates = dataSorted.map(({date}) => date);
 
             epsilon = (xScale(dates[1]) - xScale(dates[0])) / 2;
         }
@@ -1043,7 +1087,7 @@ define(function(require){
                 dataPointXPosition;
 
             if (dataPoint) {
-                dataPointXPosition = xScale(new Date( dataPoint.key ));
+                dataPointXPosition = xScale( dataPoint.key );
                 // Move verticalMarker to that datapoint
                 moveVerticalMarker(dataPointXPosition);
                 // Add data points highlighting
@@ -1597,6 +1641,42 @@ define(function(require){
                 return yAxisBaseline;
             }
             yAxisBaseline = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the `xAxisValueType`.
+         * Choose between 'date' and 'number'. When set to `number` the values of the x-axis must not
+         * be dates anymore, but can be arbitrary numbers.
+         * @param  {string} [_x='date']      Desired value type of the x-axis
+         * @return {string | module}    Current value type of the x-axis or Chart module to chain calls
+         * @public
+         * @example stackedArea.xAxisValueType('numeric')
+         */
+        exports.xAxisValueType = function (_x) {
+            if (!arguments.length) {
+                return xAxisValueType;
+            }
+            xAxisValueType = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the `xAxisScale`.
+         * Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to
+         * 'number' as well, otherwise it won't influence the visualization.
+         * @param  {string} [_x='linear']      Desired value type of the x-axis
+         * @return {string | module}    Current value type of the x-axis or Chart module to chain calls
+         * @public
+         * @example stackedArea.xAxisValueType('numeric').xAxisScale('logarithmic')
+         */
+        exports.xAxisScale = function (_x) {
+            if (!arguments.length) {
+                return xAxisScale;
+            }
+            xAxisScale = _x;
 
             return this;
         };

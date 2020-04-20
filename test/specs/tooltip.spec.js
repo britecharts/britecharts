@@ -142,6 +142,24 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                         expect(actual).toBe(expected);
                     });
                 });
+
+                describe('when xAxisValueType is set to number', () => {
+                    it('should show the number in the title of the tooltip', () => {
+                        const expected = 'Tooltip title - 20000';
+                        let actual;
+
+                        tooltipChart.xAxisValueType('number');
+                        tooltipChart.update({
+                            date: 20000,
+                            topics: []
+                        }, topicColorMap, 0);
+                        actual = containerFixture.select('.britechart-tooltip')
+                            .selectAll('.tooltip-title')
+                            .text();
+
+                        expect(actual).toEqual(expected);
+                    });
+                })
             });
         });
 
@@ -467,6 +485,23 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
 
                 expect(current).not.toBe(expected);
                 expect(actual).toBe(expected);
+            });
+
+            it('should provide xAxisValueType getter and setter', () => {
+                let current = tooltipChart.xAxisValueType(),
+                    expected = 'number',
+                    actual;
+
+                tooltipChart.xAxisValueType(expected);
+                actual = tooltipChart.xAxisValueType();
+
+                expect(current).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('default of xAxisValueType should be "date"', () => {
+                let current = tooltipChart.xAxisValueType();
+                expect(current).toBe('date');
             });
         });
     });

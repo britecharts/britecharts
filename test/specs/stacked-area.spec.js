@@ -204,6 +204,45 @@ define([
 
                     expect(actual).toEqual(expected);
                 });
+
+                describe('when x-axis value type is number', () => {
+
+                    beforeEach(function () {
+                        dataset = aTestDataSet().withNumericKeys().build();
+                        stackedAreaChart = stackedArea()
+                            .xAxisValueType('number')
+                            .dateLabel('date');
+
+                        containerFixture = d3.select('.test-container').append('svg');
+                        containerFixture.datum(dataset.data).call(stackedAreaChart);
+                    });
+
+                    it('the highest X-axis value is a number', () => {
+                        let yAxis = containerFixture.selectAll('.x-axis-group');
+                        let text = yAxis.select('g.tick:last-child');
+                        expect(text.text()).toEqual('12M');
+                    });
+                });
+
+                describe('when x-axis value type is number and scale is logarithmic', () => {
+
+                    beforeEach(function () {
+                        dataset = aTestDataSet().withNumericKeys().build();
+                        stackedAreaChart = stackedArea()
+                            .xAxisValueType('number')
+                            .xAxisScale('logarithmic')
+                            .dateLabel('date');
+
+                        containerFixture = d3.select('.test-container').append('svg');
+                        containerFixture.datum(dataset.data).call(stackedAreaChart);
+                    });
+
+                    it('the highest X-axis value is a logarithmic number', () => {
+                        let yAxis = containerFixture.selectAll('.x-axis-group');
+                        let text = yAxis.select('g.tick:last-child');
+                        expect(text.text()).toEqual('10^7');
+                    });
+                });
             });
 
             it('should render an area for each category', () => {
@@ -842,6 +881,35 @@ define([
 
                 expect(defaultYAxisBaseline).not.toEqual(newYAxisBaseline);
                 expect(newYAxisBaseline).toEqual(testYAxisBaseline);
+            });
+
+            it('should provide xAxisValueType getter and setter', () => {
+                let defaultXAxisValueType =  stackedAreaChart.yAxisLabelOffset(),
+                    testXAxisValueType = 'number',
+                    newXAxisValueType;
+
+                stackedAreaChart.yAxisLabelOffset(testXAxisValueType);
+                newXAxisValueType = stackedAreaChart.yAxisLabelOffset();
+
+                expect(defaultXAxisValueType).not.toEqual(newXAxisValueType);
+                expect(newXAxisValueType).toEqual(testXAxisValueType);
+            });
+
+            it('should provide xAxisScale getter and setter', () => {
+                let defaultXAxisScale =  stackedAreaChart.xAxisScale(),
+                    testXAxisScale = 'logarithmic',
+                    newXAxisScale;
+
+                stackedAreaChart.xAxisScale(testXAxisScale);
+                newXAxisScale = stackedAreaChart.xAxisScale();
+
+                expect(defaultXAxisScale).not.toEqual(newXAxisScale);
+                expect(newXAxisScale).toEqual(testXAxisScale);
+            });
+
+            it('default of xAxisValueType should be "date"', () => {
+                let current = stackedAreaChart.xAxisValueType();
+                expect(current).toBe('date');
             });
         });
     });
