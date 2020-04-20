@@ -14,7 +14,7 @@ define(function(require){
         isInteger
     } = require('./helpers/number');
 
-    const {getTextWidth} = require('./helpers/text');
+    const {getTextWidth, getApproximateNumberOfLines} = require('./helpers/text');
 
     /**
      * Tooltip Component reusable API class that renders a
@@ -411,39 +411,16 @@ define(function(require){
          * initialTooltipBodyYPosition accordingly
          */
         function updateTooltipTitleYPosition() {
-            const approximateNumberOfTitleLines = getApproximateNumberOfLines();
+            const approximateTitle = getTooltipTitle(Date.now());
+            const approximateNumberOfTitleLines = getApproximateNumberOfLines(
+                approximateTitle,
+                16,
+                tooltipMaxTitleLength
+            );
+
             if(approximateNumberOfTitleLines > 1) {
                 additionalTooltipTitleHeight = 17 * (approximateNumberOfTitleLines -1)
             }
-        }
-
-        /**
-         * Heuristic which gets the number of lines needed to display the title of the tooltip
-         * If shouldShowDateInTitle is set to true, it takes the formatted Date.now() as additional influencer
-         * for the approximation of the needed number of lines.
-         * @return  {Number}  approximateLineNumber  Approximative number of lines needed to display the title
-         * @private
-         */
-        function getApproximateNumberOfLines() {
-            const approximativeTitle = getTooltipTitle(Date.now());
-            const words = approximativeTitle.split(/\s+/).reverse();
-
-            var word,
-                line = [],
-                approximateLineNumber = 1;
-
-            while (word = words.pop()) {
-                line.push(word);
-
-                const textWidth = getTextWidth(line.join(' '), 16, 'Karla, sans-serif');
-                if (textWidth > tooltipMaxTitleLength) {
-                    line.pop();
-                    line = [word];
-                    ++approximateLineNumber;
-                }
-            }
-
-            return approximateLineNumber;
         }
 
         /**

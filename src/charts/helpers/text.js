@@ -150,9 +150,41 @@ define(function(require) {
         return b.measureText(text).width;
     }
 
+    /**
+     * Heuristic which gets the number of lines needed to display the title of the tooltip
+     * If shouldShowDateInTitle is set to true, it takes the formatted Date.now() as additional influencer
+     * for the approximation of the needed number of lines.
+     * @param  {String}  text  Text which shall be tested for the necessary number of lines
+     * @param  {Number}  fontSize  Fontsize to use for the heuristic
+     * @param  {Number}  maxLength  Maximal length per line
+     * @return  {Number}  approximateLineNumber  Approximative number of lines needed to display the title
+     * @private
+     */
+    const getApproximateNumberOfLines = function(title, fontSize, maxLength) {
+        const words = title.split(/\s+/).reverse();
+
+        var word,
+            line = [],
+            approximateLineNumber = 1;
+
+        while (word = words.pop()) {
+            line.push(word);
+
+            const textWidth = getTextWidth(line.join(' '), fontSize, 'Karla, sans-serif');
+            if (textWidth > maxLength) {
+                line.pop();
+                line = [word];
+                ++approximateLineNumber;
+            }
+        }
+
+        return approximateLineNumber;
+    }
+
     return {
         getTextWidth,
         wrapText,
-        wrapTextWithEllipses
+        wrapTextWithEllipses,
+        getApproximateNumberOfLines
     };
 });
