@@ -444,7 +444,7 @@ define(function(require){
          */
         function getTooltipTitle(date) {
             let tTitle = title;
-            let formattedDate = formatKey(dataPoint[dateLabel]);
+            let formattedDate = formatKey(date);
 
             if (tTitle.length) {
                 if (shouldShowDateInTitle) {
