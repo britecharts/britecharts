@@ -418,7 +418,7 @@ define(function(require){
                 tooltipMaxTitleLength
             );
 
-            if(approximateNumberOfTitleLines > 1) {
+            if (approximateNumberOfTitleLines > 1) {
                 additionalTooltipTitleHeight = 17 * (approximateNumberOfTitleLines -1)
             }
         }
@@ -430,10 +430,10 @@ define(function(require){
          * @private
          */
         function updateTitle(dataPoint) {
-            const tTitle = getTooltipTitle(dataPoint[dateLabel]);
+            const textTitle = getTooltipTitle(dataPoint[dateLabel]);
 
             tooltipTitle
-                .text(tTitle)
+                .text(textTitle)
                 .call(textWrap, tooltipMaxTitleLength, getTooltipTitleXPosition());
         }
 
@@ -443,18 +443,18 @@ define(function(require){
          * @private
          */
         function getTooltipTitle(date) {
-            let tTitle = title;
+            let textTitle = title;
             let formattedDate = formatKey(date);
 
-            if (tTitle.length) {
+            if (textTitle.length) {
                 if (shouldShowDateInTitle) {
-                    tTitle = `${tTitle} - ${formattedDate}`;
+                    textTitle = `${textTitle} - ${formattedDate}`;
                 }
             } else {
-                tTitle = formattedDate;
+                textTitle = formattedDate;
             }
 
-            return tTitle;
+            return textTitle;
         }
 
         /**
