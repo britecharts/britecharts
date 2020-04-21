@@ -163,11 +163,10 @@ define(function(require) {
     const getApproximateNumberOfLines = function(title, fontSize, maxLength) {
         const words = title.split(/\s+/).reverse();
 
-        var word,
-            line = [],
+        let line = [],
             approximateLineNumber = 1;
 
-        while (word = words.pop()) {
+        for(let word of words) {
             line.push(word);
 
             const textWidth = getTextWidth(line.join(' '), fontSize, 'Karla, sans-serif');
