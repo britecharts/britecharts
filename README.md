@@ -132,29 +132,29 @@ Read more in the [license document][15]
 [17]: https://github.com/babel/babel
 [19]: https://bleedingedgepress.com/our-books/developing-a-d3-js-edge/
 [20]: https://www.packtpub.com/web-development/mastering-d3js
-[21]: https://eventbrite.github.io/britecharts/module-Donut.html
-[22]: https://eventbrite.github.io/britecharts/module-Bar.html
-[23]: https://eventbrite.github.io/britecharts/module-Brush.html
-[24]: https://eventbrite.github.io/britecharts/module-Legend.html
-[25]: https://eventbrite.github.io/britecharts/module-Line.html
-[26]: https://eventbrite.github.io/britecharts/module-Mini-tooltip.html
-[27]: https://eventbrite.github.io/britecharts/module-Tooltip.html
-[28]: https://eventbrite.github.io/britecharts/module-Step.html
-[29]: https://eventbrite.github.io/britecharts/module-Sparkline.html
-[30]: https://eventbrite.github.io/britecharts/module-Stacked-area.html
-[31]: https://eventbrite.github.io/britecharts/
-[32]: https://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
+[21]: https://britecharts.github.io/britecharts/module-Donut.html
+[22]: https://britecharts.github.io/britecharts/module-Bar.html
+[23]: https://britecharts.github.io/britecharts/module-Brush.html
+[24]: https://britecharts.github.io/britecharts/module-Legend.html
+[25]: https://britecharts.github.io/britecharts/module-Line.html
+[26]: https://britecharts.github.io/britecharts/module-Mini-tooltip.html
+[27]: https://britecharts.github.io/britecharts/module-Tooltip.html
+[28]: https://britecharts.github.io/britecharts/module-Step.html
+[29]: https://britecharts.github.io/britecharts/module-Sparkline.html
+[30]: https://britecharts.github.io/britecharts/module-Stacked-area.html
+[31]: https://britecharts.github.io/britecharts/
+[32]: https://britecharts.github.io/britecharts/tutorial-kitchen-sink.html
 [33]: https://github.com/britecharts/britecharts
-[gettingstarted]: https://eventbrite.github.io/britecharts/getting-started.html
+[gettingstarted]: https://britecharts.github.io/britecharts/getting-started.html
 [35]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
-[36]: https://eventbrite.github.io/britecharts/img/logo-stripes-small.png
+[36]: https://britecharts.github.io/britecharts/img/logo-stripes-small.png
 [37]: https://github.com/d3/d3-selection
-[38]: https://eventbrite.github.io/britecharts/module-Stacked-bar.html
-[40]: https://eventbrite.github.io/britecharts/module-Grouped-bar.html
-[41]: https://eventbrite.github.io/britecharts/module-Scatter-plot.html
+[38]: https://britecharts.github.io/britecharts/module-Stacked-bar.html
+[40]: https://britecharts.github.io/britecharts/module-Grouped-bar.html
+[41]: https://britecharts.github.io/britecharts/module-Scatter-plot.html
 [42]: https://scrimba.com/casts/cZWm2tb
-[43]: https://eventbrite.github.io/britecharts/module-Bullet.html
-[cdndemo]: https://eventbrite.github.io/britecharts/cdn.html
+[43]: https://britecharts.github.io/britecharts/module-Bullet.html
+[cdndemo]: https://britecharts.github.io/britecharts/cdn.html
 [cdnhome]: https://cdn.jsdelivr.net/npm/britecharts/dist/
 [jsbinsandbox]: https://jsbin.com/wativun/3/edit?html,js,output
 [codepensandbox]: https://codepen.io/Golodhros/pen/PprGeP?editors=1010
@@ -167,18 +167,18 @@ Read more in the [license document][15]
 [d3slack]: https://d3js.slack.com/
 [proposals]: https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+label%3Aproposal
 [release3project]: https://github.com/britecharts/britecharts/projects/2
-[barchartdemo]: https://eventbrite.github.io/britecharts/tutorial-bar.html "Check the Demo"
-[linechartdemo]: https://eventbrite.github.io/britecharts/tutorial-line.html "Check the Demo"
-[donutchartdemo]: https://eventbrite.github.io/britecharts/tutorial-donut.html "Check the Demo"
-[scatterplotdemo]: https://eventbrite.github.io/britecharts/tutorial-scatter-plot.html "Check the Demo"
-[sparklinechartdemo]: https://eventbrite.github.io/britecharts/tutorial-sparkline.html "Check the Demo"
-[stackedareachartdemo]: https://eventbrite.github.io/britecharts/tutorial-stacked-area.html "Check the Demo"
-[stepchartdemo]: https://eventbrite.github.io/britecharts/tutorial-step.html "Check the Demo"
-[brushchartdemo]: https://eventbrite.github.io/britecharts/tutorial-brush.html "Check the Demo"
-[bulletchartdemo]: https://eventbrite.github.io/britecharts/tutorial-bullet.html "Check the Demo"
-[stackedbarchartdemo]: https://eventbrite.github.io/britecharts/tutorial-stacked-bar.html "Check the Demo"
-[groupedbarchartdemo]: https://eventbrite.github.io/britecharts/tutorial-grouped-bar.html "Check the Demo"
-[stackedareademo]: https://eventbrite.github.io/britecharts-react/#stacked-area-chart "Check the Demo"
+[barchartdemo]: https://britecharts.github.io/britecharts/tutorial-bar.html "Check the Demo"
+[linechartdemo]: https://britecharts.github.io/britecharts/tutorial-line.html "Check the Demo"
+[donutchartdemo]: https://britecharts.github.io/britecharts/tutorial-donut.html "Check the Demo"
+[scatterplotdemo]: https://britecharts.github.io/britecharts/tutorial-scatter-plot.html "Check the Demo"
+[sparklinechartdemo]: https://britecharts.github.io/britecharts/tutorial-sparkline.html "Check the Demo"
+[stackedareachartdemo]: https://britecharts.github.io/britecharts/tutorial-stacked-area.html "Check the Demo"
+[stepchartdemo]: https://britecharts.github.io/britecharts/tutorial-step.html "Check the Demo"
+[brushchartdemo]: https://britecharts.github.io/britecharts/tutorial-brush.html "Check the Demo"
+[bulletchartdemo]: https://britecharts.github.io/britecharts/tutorial-bullet.html "Check the Demo"
+[stackedbarchartdemo]: https://britecharts.github.io/britecharts/tutorial-stacked-bar.html "Check the Demo"
+[groupedbarchartdemo]: https://britecharts.github.io/britecharts/tutorial-grouped-bar.html "Check the Demo"
+[stackedareademo]: https://britecharts.github.io/britecharts-react/#stacked-area-chart "Check the Demo"
 [stackedareaimg]: https://raw.githubusercontent.com/britecharts/britecharts-react/master/src/docs/images/thumbnails/stacked-area.png
 [barchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/bar-chart.png
 [linechartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/line-chart.png
@@ -191,7 +191,7 @@ Read more in the [license document][15]
 [stackedbarchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/stacked-bar-chart.png
 [groupedbarchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/grouped-bar-chart.png
 [legendchartimg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/thumbnails/legend-chart.png
-[tutorialsindex]: http://eventbrite.github.io/britecharts/tutorials-index.html
-[howtoindex]: http://eventbrite.github.io/britecharts/how-to-index.html
-[topicsindex]: http://eventbrite.github.io/britecharts/topics-index.html
-[stylingbritecharts]: http://eventbrite.github.io/britecharts/styling-charts.html
+[tutorialsindex]: http://britecharts.github.io/britecharts/tutorials-index.html
+[howtoindex]: http://britecharts.github.io/britecharts/how-to-index.html
+[topicsindex]: http://britecharts.github.io/britecharts/topics-index.html
+[stylingbritecharts]: http://britecharts.github.io/britecharts/styling-charts.html

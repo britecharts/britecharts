@@ -54,7 +54,7 @@
             "type": "image/png"
         }
     ],
-    "start_url": "http://eventbrite.github.io/britecharts/index.html?homescreen=1",
+    "start_url": "http://britecharts.github.io/britecharts/index.html?homescreen=1",
     "display": "standalone",
     "background_color": "#FFFFFF",
     "theme_color": "#FFFFFF"

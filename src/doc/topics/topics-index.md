@@ -309,7 +309,7 @@ The build sequence consists of a small set of [Node][node] tasks. While you'll p
 
 
 [node]: http://nodejs.org
-[styleguide]: http://eventbrite.github.io/britecharts/topics-index.html#toc5__anchor
+[styleguide]: http://britecharts.github.io/britecharts/topics-index.html#toc5__anchor
 [yarn]: https://yarnpkg.com/lang/en/docs/install/
 [reusableAPI]: https://www.eventbrite.com/engineering/leveling-up-d3-the-reusable-chart-api/
 [towardsReusableCharts]: http://bost.ocks.org/mike/chart/

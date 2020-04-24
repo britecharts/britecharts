@@ -69,13 +69,13 @@ To keep on learning more about Britecharts, you can follow our [Composing Your F
 If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contributingGuide]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
 
 [jsDelivrDist]: https://cdn.jsdelivr.net/npm/britecharts/dist/
-[cdnDemo]: https://eventbrite.github.io/britecharts/cdn.html
+[cdnDemo]: https://britecharts.github.io/britecharts/cdn.html
 [jsbinSandbox]: https://jsbin.com/wativun/1/edit?html,js,output
 [codepenSandbox]: https://codepen.io/Golodhros/pen/PprGeP?editors=1010
 [contributingGuide]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
 [githubReleases]: https://github.com/britecharts/britecharts/releases
-[home]: http://eventbrite.github.io/britecharts/
-[demos]: http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
-[gettingStarted]: http://eventbrite.github.io/britecharts/getting-started.html
-[composingDataviz]: http://eventbrite.github.io/britecharts/composing-dataviz.html
-[stylingBritecharts]: http://eventbrite.github.io/britecharts/styling-dataviz.html
+[home]: http://britecharts.github.io/britecharts/
+[demos]: http://britecharts.github.io/britecharts/tutorial-kitchen-sink.html
+[gettingStarted]: http://britecharts.github.io/britecharts/getting-started.html
+[composingDataviz]: http://britecharts.github.io/britecharts/composing-dataviz.html
+[stylingBritecharts]: http://britecharts.github.io/britecharts/styling-dataviz.html

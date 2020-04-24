@@ -67,6 +67,6 @@ You can add yourself or somebody else to the contributors list by using the [All
 
 [yarn]: https://yarnpkg.com/lang/en/docs/install/
 [issues]: https://github.com/britecharts/britecharts/issues
-[contributorHowTo]: http://eventbrite.github.io/britecharts/contributor-how-to-guides.html
-[topicsPage]: http://eventbrite.github.io/britecharts/topics-index.html
+[contributorHowTo]: http://britecharts.github.io/britecharts/contributor-how-to-guides.html
+[topicsPage]: http://britecharts.github.io/britecharts/topics-index.html
 [allContributorsBot]: https://allcontributors.org/docs/en/bot/usage

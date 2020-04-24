@@ -69,7 +69,7 @@
   "bugs": {
     "url": "https://github.com/britecharts/britecharts/issues"
   },
-  "homepage": "http://eventbrite.github.io/britecharts/",
+  "homepage": "http://britecharts.github.io/britecharts/",
   "dependencies": {
     "base-64": "^0.1.0",
     "d3": "^5.9.2",
