@@ -1087,7 +1087,7 @@ define(function(require){
                 dataPointXPosition;
 
             if (dataPoint) {
-                dataPointXPosition = xScale( dataPoint.key );
+                dataPointXPosition = xScale(castValueToType(dataPoint.key));
                 // Move verticalMarker to that datapoint
                 moveVerticalMarker(dataPointXPosition);
                 // Add data points highlighting
