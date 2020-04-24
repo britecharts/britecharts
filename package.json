@@ -51,7 +51,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/eventbrite/britecharts.git"
+    "url": "https://github.com/britecharts/britecharts.git"
   },
   "keywords": [
     "d3",
@@ -67,7 +67,7 @@
   "author": "Eventbrite",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/eventbrite/britecharts/issues"
+    "url": "https://github.com/britecharts/britecharts/issues"
   },
   "homepage": "http://eventbrite.github.io/britecharts/",
   "dependencies": {

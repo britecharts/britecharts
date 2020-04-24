@@ -24,7 +24,7 @@ deploy:
     api_token: $NPM_TOKEN
     on:
       tags: true
-      repo: eventbrite/britecharts
+      repo: britecharts/britecharts
   - provider: pages
     skip_cleanup: true
     strategy: git

@@ -55,7 +55,7 @@ You can see the CDN links in action in:
 ## Building the source code
 To build the soure code, you need first to get the code. You can do it by cloning or downloading it from Github.com. You can clone the git repository by running:
 ```
-   git clone https://github.com/eventbrite/britecharts.git
+   git clone https://github.com/britecharts/britecharts.git
 ```
 Or download the source code by navigating to the [Release Page][githubReleases] and click in the latest's release `zip` or `tar.gz` links.
 
@@ -72,8 +72,8 @@ If you are excited about Britecharts, want to add more configurable properties o
 [cdnDemo]: https://eventbrite.github.io/britecharts/cdn.html
 [jsbinSandbox]: https://jsbin.com/wativun/1/edit?html,js,output
 [codepenSandbox]: https://codepen.io/Golodhros/pen/PprGeP?editors=1010
-[contributingGuide]: https://github.com/eventbrite/britecharts/blob/master/.github/CONTRIBUTING.md
-[githubReleases]: https://github.com/eventbrite/britecharts/releases
+[contributingGuide]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[githubReleases]: https://github.com/britecharts/britecharts/releases
 [home]: http://eventbrite.github.io/britecharts/
 [demos]: http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
 [gettingStarted]: http://eventbrite.github.io/britecharts/getting-started.html

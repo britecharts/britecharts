@@ -278,7 +278,7 @@ This special indentation of the `append` call is highlighting a modification on 
 
 
 
-NOTE: This is still work in progress, don't hesitate to ask for more by opening a new [github issue](https://github.com/eventbrite/britecharts/issues).
+NOTE: This is still work in progress, don't hesitate to ask for more by opening a new [github issue](https://github.com/britecharts/britecharts/issues).
 
 
 ## The Build System

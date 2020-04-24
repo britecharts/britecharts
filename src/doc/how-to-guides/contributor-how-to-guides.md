@@ -69,8 +69,8 @@ You can check the rest of make commands on the `Makefile` in the root of the rep
 
 
 [styleguide]: http://eventbrite.github.io/britecharts/topics-index.html#toc5__anchor
-[contributing]: https://github.com/eventbrite/britecharts/blob/master/.github/CONTRIBUTING.md
-[issues]: https://github.com/eventbrite/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc
-[PRTemplate]: https://github.com/eventbrite/britecharts/blob/master/.github/PULL_REQUEST_TEMPLATE.md
+[contributing]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[issues]: https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc
+[PRTemplate]: https://github.com/britecharts/britecharts/blob/master/.github/PULL_REQUEST_TEMPLATE.md
 [makeAPR]: http://makeapullrequest.com/
 [docker]: https://docs.docker.com/

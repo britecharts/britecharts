@@ -95,9 +95,9 @@ To learn more, you can follow our [Composing Your First Data Visualization tutor
 [gettingStarted]: http://eventbrite.github.io/britecharts/getting-started.html
 [composingDataviz]: http://eventbrite.github.io/britecharts/composing-dataviz.html
 [colorPalettesDemo]: http://eventbrite.github.io/britecharts/tutorial-color.html
-[stylingBritechartsHTML]: https://github.com/eventbrite/britecharts/blob/master/src/doc/html/tutorial-styling-britecharts.html
+[stylingBritechartsHTML]: https://github.com/britecharts/britecharts/blob/master/src/doc/html/tutorial-styling-britecharts.html
 [stylingBritechartsTutorial]: http://eventbrite.github.io/britecharts/tutorial-styling-britecharts.html
-[orangeBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/orange-bar-chart.png
-[redBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/red-bar-chart.png
+[orangeBarChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/orange-bar-chart.png
+[redBarChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/red-bar-chart.png
 [gFonts]: https://fonts.google.com/
 [svgReference]: https://www.smashingmagazine.com/2014/11/styling-and-animating-svgs-with-css/
