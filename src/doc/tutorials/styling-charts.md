@@ -90,14 +90,14 @@ In this tutorial, you saw how you can use Britecharts' color helper to apply col
 
 To learn more, you can follow our [Composing Your First Data Visualization tutorial][composingDataviz]. You can also check out our [Documentation Homepage][home] and our [kitchen sink][demos] to see all the available charts.
 
-[home]: http://eventbrite.github.io/britecharts/
-[demos]: http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
-[gettingStarted]: http://eventbrite.github.io/britecharts/getting-started.html
-[composingDataviz]: http://eventbrite.github.io/britecharts/composing-dataviz.html
-[colorPalettesDemo]: http://eventbrite.github.io/britecharts/tutorial-color.html
-[stylingBritechartsHTML]: https://github.com/eventbrite/britecharts/blob/master/src/doc/html/tutorial-styling-britecharts.html
-[stylingBritechartsTutorial]: http://eventbrite.github.io/britecharts/tutorial-styling-britecharts.html
-[orangeBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/orange-bar-chart.png
-[redBarChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/red-bar-chart.png
+[home]: http://britecharts.github.io/britecharts/
+[demos]: http://britecharts.github.io/britecharts/tutorial-kitchen-sink.html
+[gettingStarted]: http://britecharts.github.io/britecharts/getting-started.html
+[composingDataviz]: http://britecharts.github.io/britecharts/composing-dataviz.html
+[colorPalettesDemo]: http://britecharts.github.io/britecharts/tutorial-color.html
+[stylingBritechartsHTML]: https://github.com/britecharts/britecharts/blob/master/src/doc/html/tutorial-styling-britecharts.html
+[stylingBritechartsTutorial]: http://britecharts.github.io/britecharts/tutorial-styling-britecharts.html
+[orangeBarChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/orange-bar-chart.png
+[redBarChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/red-bar-chart.png
 [gFonts]: https://fonts.google.com/
 [svgReference]: https://www.smashingmagazine.com/2014/11/styling-and-animating-svgs-with-css/

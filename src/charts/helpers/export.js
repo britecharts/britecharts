@@ -7,7 +7,7 @@ define(function(require) {
 
     const isBrowser = (typeof window !== 'undefined');
     const isIE = navigator.msSaveOrOpenBlob;
-    const IE_ERROR_MSG = 'Sorry, this feature is not available for IE. If you require this to work, check this issue https://github.com/eventbrite/britecharts/pull/652';
+    const IE_ERROR_MSG = 'Sorry, this feature is not available for IE. If you require this to work, check this issue https://github.com/britecharts/britecharts/pull/652';
 
     let encoder = isBrowser && window.btoa;
 

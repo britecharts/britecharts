@@ -138,13 +138,13 @@ To keep on learning more about Britecharts, you can follow our [Composing Your F
 
 If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.
 
-[home]: http://eventbrite.github.io/britecharts/
-[demos]: http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
-[contribute]: https://github.com/eventbrite/britecharts/blob/master/.github/CONTRIBUTING.md
-[barChartAPI]: http://eventbrite.github.io/britecharts/module-Bar.html
-[barChartDataSchema]: http://eventbrite.github.io/britecharts/global.html#BarChartData
-[barChartImg]: https://raw.githubusercontent.com/eventbrite/britecharts/master/src/doc/images/tutorials/simple-bar-chart.png
-[simpleBarChartTutorialHTML]: https://github.com/eventbrite/britecharts/blob/master/src/doc/html/tutorial-simple-bar-chart.html
-[simpleBarChartTutorial]: http://eventbrite.github.io/britecharts/tutorial-simple-bar-chart.html
-[composingDataviz]: http://eventbrite.github.io/britecharts/composing-dataviz.html
-[installingBritecharts]: http://eventbrite.github.io/britecharts/installing-britecharts.html
+[home]: http://britecharts.github.io/britecharts/
+[demos]: http://britecharts.github.io/britecharts/tutorial-kitchen-sink.html
+[contribute]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[barChartAPI]: http://britecharts.github.io/britecharts/module-Bar.html
+[barChartDataSchema]: http://britecharts.github.io/britecharts/global.html#BarChartData
+[barChartImg]: https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/simple-bar-chart.png
+[simpleBarChartTutorialHTML]: https://github.com/britecharts/britecharts/blob/master/src/doc/html/tutorial-simple-bar-chart.html
+[simpleBarChartTutorial]: http://britecharts.github.io/britecharts/tutorial-simple-bar-chart.html
+[composingDataviz]: http://britecharts.github.io/britecharts/composing-dataviz.html
+[installingBritecharts]: http://britecharts.github.io/britecharts/installing-britecharts.html

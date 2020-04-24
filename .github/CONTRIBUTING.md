@@ -37,8 +37,8 @@ To start contributing to Britecharts, you need to set up your machine to develop
 4. If you don't have yarn installed, you can install it following the instructions in the [yarn docs][yarn]
 
 ### Creating Feature and Fix Branches
-1. In local master, set the upstream to https://github.com/eventbrite/britecharts.git
-`git remote add upstream https://github.com/eventbrite/britecharts.git`
+1. In local master, set the upstream to https://github.com/britecharts/britecharts.git
+`git remote add upstream https://github.com/britecharts/britecharts.git`
 2. Pull the most recent changes with `git pull --rebase upstream master`
 3. Create a new branch. Branch names should be prefixed with either `fix-`, `feat-` or `ref-` depending on your PR content. Run `git checkout -b [fix|feat|ref]-<your branch name>`
 
@@ -48,7 +48,7 @@ To generate the demos and see the library' documentation you would need to:
 1. Download and install node
 1. Ensure you have [yarn][yarn] installed as well
 1. Clone the repository with:
-    `git clone git@github.com:eventbrite/britecharts.git`
+    `git clone git@github.com:britecharts/britecharts.git`
 1. Change directory into the repository root and install its dependencies:
     `yarn install`
 1. In the root or the repository folder, run:
@@ -66,7 +66,7 @@ Check also our [Topics Page][topicsPage] to learn about our Code Standards, API 
 You can add yourself or somebody else to the contributors list by using the [All Contributors bot][allContributorsBot].
 
 [yarn]: https://yarnpkg.com/lang/en/docs/install/
-[issues]: https://github.com/eventbrite/britecharts/issues
-[contributorHowTo]: http://eventbrite.github.io/britecharts/contributor-how-to-guides.html
-[topicsPage]: http://eventbrite.github.io/britecharts/topics-index.html
+[issues]: https://github.com/britecharts/britecharts/issues
+[contributorHowTo]: http://britecharts.github.io/britecharts/contributor-how-to-guides.html
+[topicsPage]: http://britecharts.github.io/britecharts/topics-index.html
 [allContributorsBot]: https://allcontributors.org/docs/en/bot/usage

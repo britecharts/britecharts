@@ -363,7 +363,7 @@ Features:
 * Added curve interpolation attribute to line chart (thanks @dylanmoz)
 
 
-[2.0.0][https://github.com/eventbrite/britecharts/compare/1.7.2...2.0.0] - Major Release
+[2.0.0][https://github.com/britecharts/britecharts/compare/1.7.2...2.0.0] - Major Release
 -----------------
 
 Features:
@@ -415,7 +415,7 @@ Docs
 * Updated Readme (thanks @perborgen)
 * Update docs (thanks @nikkistonge)
 * Added license badge to readme
-* Created Code Styleguide document with API Guidelines: https://github.com/eventbrite/britecharts/blob/master/CODESTYLEGUIDE.md
+* Created Code Styleguide document with API Guidelines: https://github.com/britecharts/britecharts/blob/master/CODESTYLEGUIDE.md
 * Updated the Contributing guide
 
 
@@ -427,7 +427,7 @@ Docs
 ---------------------
 * Remove find from stacked area, fixing IE11 bug
 
-[1.7.0][https://github.com/eventbrite/britecharts/compare/1.7.0...1.6.0] - Minor Release]
+[1.7.0][https://github.com/britecharts/britecharts/compare/1.7.0...1.6.0] - Minor Release]
 ---------------------
 * Put safety check for Intl on uncompatible browsers
 * Finalize addition of new feature date localization
@@ -437,7 +437,7 @@ Docs
 * Locale added to stacked area and line
 * Stacked bar made it in to the dist bundle
 
-[1.6.0][https://github.com/eventbrite/britecharts/compare/1.6.0...1.5.0] - Minor Release
+[1.6.0][https://github.com/britecharts/britecharts/compare/1.6.0...1.5.0] - Minor Release
 ---------------------
 Features:
 * New Stacked bar chart (thanks @bung87)
@@ -478,7 +478,7 @@ Bug Fixes:
 Changes:
 * Several docs improvements
 
-[1.5.0][https://github.com/eventbrite/britecharts/compare/1.5.0...1.4.0] - Minor Release
+[1.5.0][https://github.com/britecharts/britecharts/compare/1.5.0...1.4.0] - Minor Release
 ---------------------
 Changes:
 * Adding Grid options to area and line charts
@@ -550,7 +550,7 @@ Bug Fixes:
 --------------
 Failed bump
 
-[1.4.0][https://github.com/eventbrite/britecharts/compare/1.4.0...1.3.0] - Minor Release
+[1.4.0][https://github.com/britecharts/britecharts/compare/1.4.0...1.3.0] - Minor Release
 ---------------------
 Changes:
 * Brush on Line Chart Demo
@@ -571,7 +571,7 @@ Bug Fixes:
 --------------
 Failed bumps
 
-[1.3.0][https://github.com/eventbrite/britecharts/compare/1.3.0...1.2.0] - Minor Release
+[1.3.0][https://github.com/britecharts/britecharts/compare/1.3.0...1.2.0] - Minor Release
 ---------------------
 Changes:
 * Logo Update
@@ -582,7 +582,7 @@ Changes:
 Bug Fixes:
 * Docs hamburger menu styling
 
-[1.2.0][https://github.com/eventbrite/britecharts/compare/1.2.0...1.1.16] - Minor Release
+[1.2.0][https://github.com/britecharts/britecharts/compare/1.2.0...1.1.16] - Minor Release
 ---------------------
 Changes:
 * Changed data input of Line Chart
@@ -594,7 +594,7 @@ Changes:
 --------------
 Failed bumps
 
-[1.1.16][https://github.com/eventbrite/britecharts/compare/1.1.16...1.1.15] - Patch
+[1.1.16][https://github.com/britecharts/britecharts/compare/1.1.16...1.1.15] - Patch
 ----------
 Bug Fixes:
 

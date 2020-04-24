@@ -17,7 +17,7 @@ In order to use a Britecharts chart in your project you would need to install it
 
 ##### Clone the git repository
 ```
-   git clone https://github.com/eventbrite/britecharts.git
+   git clone https://github.com/britecharts/britecharts.git
 ```
 
 ##### Directly from CDN
@@ -119,9 +119,9 @@ Check out our [Documentation Homepage][home] and our [kitchen sink][demos] to se
 If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, run our docs and demos and create new Pull Requests.
 
 
-[demos]: http://eventbrite.github.io/britecharts/tutorial-kitchen-sink.html
-[contribute]: https://github.com/eventbrite/britecharts/blob/master/.github/CONTRIBUTING.md
-[home]: http://eventbrite.github.io/britecharts/
-[cdnDemo]: https://eventbrite.github.io/britecharts/cdn.html
+[demos]: http://britecharts.github.io/britecharts/tutorial-kitchen-sink.html
+[contribute]: https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md
+[home]: http://britecharts.github.io/britecharts/
+[cdnDemo]: https://britecharts.github.io/britecharts/cdn.html
 [jsbinSandbox]: https://jsbin.com/wativun/1/edit?html,js,output
 [codepenSandbox]: https://codepen.io/Golodhros/pen/PprGeP?editors=1010

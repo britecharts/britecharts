@@ -278,7 +278,7 @@ This special indentation of the `append` call is highlighting a modification on 
 
 
 
-NOTE: This is still work in progress, don't hesitate to ask for more by opening a new [github issue](https://github.com/eventbrite/britecharts/issues).
+NOTE: This is still work in progress, don't hesitate to ask for more by opening a new [github issue](https://github.com/britecharts/britecharts/issues).
 
 
 ## The Build System
@@ -309,7 +309,7 @@ The build sequence consists of a small set of [Node][node] tasks. While you'll p
 
 
 [node]: http://nodejs.org
-[styleguide]: http://eventbrite.github.io/britecharts/topics-index.html#toc5__anchor
+[styleguide]: http://britecharts.github.io/britecharts/topics-index.html#toc5__anchor
 [yarn]: https://yarnpkg.com/lang/en/docs/install/
 [reusableAPI]: https://www.eventbrite.com/engineering/leveling-up-d3-the-reusable-chart-api/
 [towardsReusableCharts]: http://bost.ocks.org/mike/chart/

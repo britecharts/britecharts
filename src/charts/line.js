@@ -612,7 +612,7 @@ define(function(require){
          */
         function cleanData({dataByTopic, dataSorted, data}) {
             if (!dataByTopic && !data) {
-                throw new Error('Data needs to have a dataByTopic or data property. See more in http://eventbrite.github.io/britecharts/global.html#LineChartData__anchor');
+                throw new Error('Data needs to have a dataByTopic or data property. See more in http://britecharts.github.io/britecharts/global.html#LineChartData__anchor');
             }
 
             // If dataByTopic or data are not present, we generate them

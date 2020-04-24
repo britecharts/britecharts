@@ -8,8 +8,8 @@ Britechart tutorials allow new users to get started and learn the basic procedur
 
 After following these tutorials, you can also check the [Topics page][topicsIndex] to learn more about Britecharts' approach and code philosophy.
 
-[gettingStarted]: http://eventbrite.github.io/britecharts/getting-started.html
-[installingBritecharts]: http://eventbrite.github.io/britecharts/installing-britecharts.html
-[composingDataviz]: http://eventbrite.github.io/britecharts/composing-dataviz.html
-[stylingBritecharts]: http://eventbrite.github.io/britecharts/styling-charts.html
-[topicsIndex]: http://eventbrite.github.io/britecharts/topics-index.html
+[gettingStarted]: http://britecharts.github.io/britecharts/getting-started.html
+[installingBritecharts]: http://britecharts.github.io/britecharts/installing-britecharts.html
+[composingDataviz]: http://britecharts.github.io/britecharts/composing-dataviz.html
+[stylingBritecharts]: http://britecharts.github.io/britecharts/styling-charts.html
+[topicsIndex]: http://britecharts.github.io/britecharts/topics-index.html

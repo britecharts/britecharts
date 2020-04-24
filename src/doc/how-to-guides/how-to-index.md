@@ -7,6 +7,6 @@ We have how to guides for different kinds of users:
 
 You can also check the [Topics page][topicsIndex] to learn more about Britecharts' approach and code philosophy.
 
-[userHowTo]: http://eventbrite.github.io/britecharts/user-how-to-guides.html
-[contributorHowTo]: http://eventbrite.github.io/britecharts/contributor-how-to-guides.html
-[topicsIndex]: http://eventbrite.github.io/britecharts/topics-index.html
+[userHowTo]: http://britecharts.github.io/britecharts/user-how-to-guides.html
+[contributorHowTo]: http://britecharts.github.io/britecharts/contributor-how-to-guides.html
+[topicsIndex]: http://britecharts.github.io/britecharts/topics-index.html
