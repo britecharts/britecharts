@@ -72,7 +72,7 @@
   "homepage": "http://britecharts.github.io/britecharts/",
   "dependencies": {
     "base-64": "^0.1.0",
-    "d3": "^5.9.2",
+    "d3": "^5.16.0",
     "lodash.assign": "^4.2.0"
   },
   "devDependencies": {
