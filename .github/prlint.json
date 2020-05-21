@@ -1,0 +1,32 @@
+{
+    "title": [
+        {
+            "pattern": "^(build|ci|docs|feat|fix|perf|refactor|style|test):\\s",
+            "message": "Your title needs to be prefixed with a topic"
+        }
+    ],
+    "body": [
+        {
+            "pattern": ".{1,}",
+            "message": "You need to have some content in the description."
+        }
+    ],
+    "head.ref": [
+        {
+            "pattern": "^(docs|feat|fix|dev|test)/",
+            "message": "Your branch name is invalid. Please prefix it with docs|feat|fix|dev|test."
+        }
+    ],
+    "assignee.login": [
+        {
+            "pattern": ".+",
+            "message": "You need to assign someone"
+        }
+    ],
+    "labels.0.name": [
+        {
+            "pattern": "bug|enhancement|question|feature",
+            "message": "Please add a label"
+        }
+    ]
+}
