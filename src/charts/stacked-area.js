@@ -1251,8 +1251,8 @@ define(function(require){
 
         /**
          * Gets or Sets the keyLabel of the chart
-         * @param  {Number} _x Desired keyLabel for the graph
-         * @return {Number | module} Current keyLabel or Chart module to chain calls
+         * @param  {String} _x Desired keyLabel for the graph
+         * @return {String | module} Current keyLabel or Chart module to chain calls
          * @public
          */
         exports.keyLabel = function(_x) {
