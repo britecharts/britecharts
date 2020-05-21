@@ -1372,8 +1372,8 @@ define(function(require){
 
         /**
          * Gets or Sets the valueLabel of the chart
-         * @param  {Number} _x Desired valueLabel for the graph
-         * @return {Number | module} Current valueLabel or Chart module to chain calls
+         * @param  {String} _x Desired valueLabel for the graph
+         * @return {String | module} Current valueLabel or Chart module to chain calls
          * @public
          */
         exports.valueLabel = function(_x) {
