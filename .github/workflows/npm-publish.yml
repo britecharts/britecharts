@@ -20,18 +20,18 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.2.0
-      - uses: borales/actions-yarn@v2.0.0
+      - uses: borales/actions-yarn@v2.0.2
         with:
           cmd: install
-      - uses: borales/actions-yarn@v2.0.0
+      - uses: borales/actions-yarn@v2.0.2
         with:
           cmd: run test:travis
     
       - name: Build 🔧
-        uses: borales/actions-yarn@v2.0.0
+        uses: borales/actions-yarn@v2.0.2
         with:
           cmd: run build
-      - uses: borales/actions-yarn@v2.0.0
+      - uses: borales/actions-yarn@v2.0.2
         with:
           cmd: run docs
 
@@ -44,7 +44,7 @@ jobs:
         with:
           node-version: 12.2.0
           registry-url: https://registry.npmjs.org/
-      - uses: borales/actions-yarn@v2.0.0
+      - uses: borales/actions-yarn@v2.0.2
         with:
           cmd: install
       - run: npm publish
