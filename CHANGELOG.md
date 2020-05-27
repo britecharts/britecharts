@@ -1,5 +1,10 @@
-2.15.2
-2.15.1
+2.16.0
+------
+Features
+* Adds numerical and logarithmic axis for Line Charts
+* Adds the ability to plot horizontal lines on the Line Chart
+* Adds a baseline to the stacked area chart
+
 2.15.0
 ------
 * Feature - Support for negative values on stacked area chart (Thanks @ajdani)
