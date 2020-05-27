@@ -1,4 +1,5 @@
 2.16.0
+2.16.0
 ------
 Features
 * Adds numerical and logarithmic axis for Line Charts
