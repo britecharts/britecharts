@@ -42,6 +42,10 @@
   stroke-width: 1;
   stroke-dasharray: 4, 4; }
 
+.horizontal-grid-line--highlighted {
+  stroke: #45494E;
+  stroke-dasharray: 2, 2; }
+
 .extended-y-line,
 .extended-x-line {
   fill: none;
@@ -126,6 +130,16 @@
 
 .line-chart .month-axis path {
   display: none; }
+
+.line-chart .custom-line {
+  fill: none;
+  shape-rendering: crispEdges;
+  stroke-width: 1; }
+
+.line-chart .custom-line-annotation {
+  font-size: 0.75rem;
+  line-height: 0.75rem;
+  fill: #666A73; }
 
 .line-chart .masking-rectangle {
   fill: #ffffff; }
