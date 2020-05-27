@@ -12,12 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
         with:
           persist-credentials: false
 
       - name: Install and Test 
-      - uses: actions/setup-node@v1
+        uses: actions/setup-node@v1
         with:
           node-version: 12.2.0
       - uses: borales/actions-yarn@v2.0.0
@@ -28,7 +28,7 @@ jobs:
           cmd: run test:travis
     
       - name: Build 🔧
-      - uses: borales/actions-yarn@v2.0.0
+        uses: borales/actions-yarn@v2.0.0
         with:
           cmd: run build
       - uses: borales/actions-yarn@v2.0.0
