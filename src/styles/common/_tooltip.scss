@@ -1,4 +1,4 @@
-@import "../helpers/variables";
+@import '../helpers/variables';
 
 $marker-stroke-width: 1;
 $marker-stroke-width-highlight: 2;
@@ -15,9 +15,9 @@ $tooltip-value-text-size: 27px;
 // Vertical Marker Container
 .vertical-marker-container {
     .vertical-marker {
+        fill: none;
         stroke: $grey-300;
         stroke-width: $marker-stroke-width;
-        fill: none;
     }
 
     .data-point-highlighter {
@@ -29,8 +29,8 @@ $tooltip-value-text-size: 27px;
 // Tooltip
 // TODO: Currently unused. Consider removing in refactoring for #113.
 .tooltip-background {
+    border-radius: $tooltip-border-radius;
     fill: rgba($white, 0.97);
     stroke: $grey-300;
     stroke-width: $tooltip-stroke-width;
-    border-radius: $tooltip-border-radius;
 }

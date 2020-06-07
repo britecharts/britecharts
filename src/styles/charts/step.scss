@@ -1,4 +1,4 @@
-@import "../helpers/_variables.scss";
+@import '../helpers/_variables';
 
 $step-color: #8fdad8;
 $step-color-hover: #39c2c9;
@@ -8,8 +8,8 @@ $step-color-hover: #39c2c9;
     // Steps
     .step {
         fill: $step-color;
-        stroke-width: 0;
         shape-rendering: crispEdges;
+        stroke-width: 0;
 
         &:hover {
             fill: $step-color-hover;

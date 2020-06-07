@@ -145,11 +145,14 @@
     "plugins": [
       "stylelint-scss"
     ],
-    "extends": "stylelint-config-standard",
+    "extends": ["stylelint-config-standard", "stylelint-config-sass-guidelines"],
     "rules": {
       "indentation": 4,
       "scss/dollar-variable-colon-space-after": "always",
       "no-descending-specificity": null,
+      "selector-class-pattern": null,
+      "scss/at-import-no-partial-leading-underscore": null,
+      "max-nesting-depth": 2,
       "at-rule-no-unknown": [
         true,
         {
@@ -248,6 +251,7 @@
     "sinon": "7.5.0",
     "style-loader": "0.23.1",
     "stylelint": "^13.6.0",
+    "stylelint-config-sass-guidelines": "^7.0.0",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-scss": "^3.17.2",
     "text": "requirejs/text",

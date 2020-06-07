@@ -1,4 +1,4 @@
-@import "../helpers/_variables.scss";
+@import '../helpers/_variables';
 
 .stacked-bar {
 
@@ -9,10 +9,8 @@
     }
 
     .y-axis-group {
-        .tick {
-            text {
-                font-size: 14px;
-            }
+        text {
+            font-size: 14px;
         }
     }
 
