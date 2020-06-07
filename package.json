@@ -122,21 +122,21 @@
   "prettier": {
     "endOfLine": "lf",
     "tabWidth": 4,
-    "semi": true, 
-    "bracketSpacing": true, 
-    "singleQuote": true, 
-    "arrowParens": "always", 
+    "semi": true,
+    "bracketSpacing": true,
+    "singleQuote": true,
+    "arrowParens": "always",
     "overrides": [
-        {
-            "files": "*.md",
-            "options": {
-                "printWidth": 70,
-                "useTabs": false,
-                "trailingComma": "none",
-                "arrowParens": "avoid",
-                "proseWrap": "never"
-            }
+      {
+        "files": "*.md",
+        "options": {
+          "printWidth": 70,
+          "useTabs": false,
+          "trailingComma": "none",
+          "arrowParens": "avoid",
+          "proseWrap": "never"
         }
+      }
     ]
   },
   "dependencies": {
@@ -189,6 +189,7 @@
     "grunt-sass-lint": "0.2.4",
     "grunt-shell": "2.1.0",
     "grunt-sync": "0.8.0",
+    "husky": ">=4",
     "ink-docstrap": "1.3.2",
     "istanbul-instrumenter-loader": "3.0.1",
     "jasmine-core": "3.4.0",
@@ -205,11 +206,13 @@
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "2.0.5",
+    "lint-staged": ">=10",
     "load-grunt-tasks": "5.0.0",
     "moment": "2.24.0",
     "node-gyp": "4.0.0",
     "node-sass": "4.12.0",
     "phantomjs-polyfill-find": "ptim/phantomjs-polyfill-find",
+    "prettier": "^2.0.5",
     "prismjs": "1.16.0",
     "pubsub-js": "1.7.0",
     "requirejs-plugins": "^1.0.2",
@@ -227,5 +230,16 @@
     "webpack-dev-server": "3.7.2",
     "webpack-merge": "4.2.1",
     "yargs": "8.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --cache --fix",
+      "prettier --write"
+    ]
   }
 }
