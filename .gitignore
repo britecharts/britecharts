@@ -42,3 +42,5 @@ sandbox/build
 
 dist
 docs
+
+.eslintcache
