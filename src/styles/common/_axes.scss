@@ -10,12 +10,14 @@ $tick-size: 1;
         stroke-width: $tick-size;
         shape-rendering: crispEdges;
     }
+
     text {
         font-size: $text-size-small;
         fill: $grey-600;
         padding: $text-padding;
     }
 }
+
 .y-axis-label,
 .x-axis-label {
     font-size: $text-size-medium;

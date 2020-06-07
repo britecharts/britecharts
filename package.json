@@ -40,6 +40,8 @@
     "build": "webpack --env=production",
     "lint": "eslint src/charts/ webpack.*.js --cache",
     "lint:fix": "eslint src/charts/ webpack.*.js --cache --fix",
+    "stylelint": "stylelint '**/*.scss'",
+    "stylelint:fix": "stylelint '**/*.scss' --fix",
     "test": "karma start --env=test",
     "posttest": "npm run format",
     "test:travis": "karma start --single-run --browsers PhantomJS --env=test",
@@ -139,6 +141,29 @@
       }
     ]
   },
+  "stylelint": {
+    "plugins": [
+      "stylelint-scss"
+    ],
+    "extends": "stylelint-config-standard",
+    "rules": {
+      "indentation": 4,
+      "scss/dollar-variable-colon-space-after": "always",
+      "no-descending-specificity": null,
+      "at-rule-no-unknown": [
+        true,
+        {
+          "ignoreAtRules": [
+            "function",
+            "if",
+            "each",
+            "include",
+            "mixin"
+          ]
+        }
+      ]
+    }
+  },
   "dependencies": {
     "@babel/runtime": "^7.4.5",
     "base-64": "^0.1.0",
@@ -222,6 +247,9 @@
     "shelljs": "0.7.8",
     "sinon": "7.5.0",
     "style-loader": "0.23.1",
+    "stylelint": "^13.6.0",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-scss": "^3.17.2",
     "text": "requirejs/text",
     "underscore": "1.9.1",
     "webpack": "4.35.0",
@@ -240,6 +268,7 @@
     "*.js": [
       "eslint --cache --fix",
       "prettier --write"
-    ]
+    ],
+    "*.scss": "stylelint --fix"
   }
 }

@@ -1,7 +1,7 @@
 @import "../helpers/_variables.scss";
 
-$step-color: #8FDAD8;
-$step-color-hover: #39C2C9;
+$step-color: #8fdad8;
+$step-color-hover: #39c2c9;
 
 .step-chart {
 
@@ -20,6 +20,7 @@ $step-color-hover: #39C2C9;
     .axis path {
         display: none;
     }
+
     .tick {
         line {
             display: none;
