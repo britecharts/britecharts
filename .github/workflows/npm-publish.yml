@@ -1,0 +1,71 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
+
+name: NPM Publish
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Install and Test 
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.2.0
+      - uses: borales/actions-yarn@v2.0.2
+        with:
+          cmd: install
+      - uses: borales/actions-yarn@v2.0.2
+        with:
+          cmd: run test:travis
+    
+      - name: Build 🔧
+        uses: borales/actions-yarn@v2.0.2
+        with:
+          cmd: run build
+      - uses: borales/actions-yarn@v2.0.2
+        with:
+          cmd: run docs
+
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.2.0
+          registry-url: https://registry.npmjs.org/
+      - uses: borales/actions-yarn@v2.0.2
+        with:
+          cmd: install
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+  deploy-docs:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: docs 
+    
+    
+      
+      
+      
+      
+      
+      
