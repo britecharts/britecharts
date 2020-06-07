@@ -6,9 +6,9 @@
  * @return {Date | number} value    Casted value
  */
 export const castValueToType = (value, type) => {
-    if(type === 'number') {
+    if (type === 'number') {
         return Number(value);
     }
 
     return new Date(value);
-}
+};

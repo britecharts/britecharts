@@ -10,16 +10,17 @@ import colorSelectorHelper from './helpers/colorSelector';
 
 require('./helpers/resizeHelper');
 
-
 const aTestDataSet = () => new LineDataBuilder();
-const lineMargin = {top:60, bottom: 50, left: 50, right: 30};
+const lineMargin = { top: 60, bottom: 50, left: 50, right: 30 };
 let redrawCharts;
 
 function createBrushChart(optionalColorSchema) {
     let brushChart = brush(),
-        brushMargin = {top:0, bottom: 40, left: 50, right: 30},
+        brushMargin = { top: 0, bottom: 40, left: 50, right: 30 },
         brushContainer = select('.js-line-brush-chart-container'),
-        containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false,
+        containerWidth = brushContainer.node()
+            ? brushContainer.node().getBoundingClientRect().width
+            : false,
         colorSchema = optionalColorSchema ? optionalColorSchema : null,
         dataset;
 
@@ -30,7 +31,7 @@ function createBrushChart(optionalColorSchema) {
             .width(containerWidth)
             .height(100)
             .margin(brushMargin)
-            .on('customBrushEnd', function(brushExtent) {
+            .on('customBrushEnd', function (brushExtent) {
                 let format = timeFormat('%m/%d/%Y');
 
                 select('.js-start-date').text(format(brushExtent[0]));
@@ -41,7 +42,10 @@ function createBrushChart(optionalColorSchema) {
                 selectAll('.js-line-chart-container .line-chart').remove();
 
                 if (brushExtent[0] && brushExtent[1]) {
-                    createLineChart(colorSchema, filterData(brushExtent[0], brushExtent[1]));
+                    createLineChart(
+                        colorSchema,
+                        filterData(brushExtent[0], brushExtent[1])
+                    );
                 } else {
                     createLineChart(colorSchema, dataset);
                 }
@@ -55,12 +59,14 @@ function createLineChart(optionalColorSchema, optionalData) {
     let lineChart1 = line(),
         chartTooltip = tooltip(),
         container = select('.js-line-chart-container'),
-        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
+        containerWidth = container.node()
+            ? container.node().getBoundingClientRect().width
+            : false,
         tooltipContainer,
         dataset;
 
     if (containerWidth) {
-        select('#button').on('click', function() {
+        select('#button').on('click', function () {
             lineChart1.exportChart('linechart.png', 'Britecharts Line Chart');
         });
 
@@ -79,7 +85,7 @@ function createLineChart(optionalColorSchema, optionalData) {
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', chartTooltip.hide)
-            .on('customDataEntryClick', function(d, mousePosition) {
+            .on('customDataEntryClick', function (d, mousePosition) {
                 // eslint-disable-next-line no-console
                 console.log('Data entry marker clicked', d, mousePosition);
             });
@@ -98,13 +104,17 @@ function createLineChart(optionalColorSchema, optionalData) {
         chartTooltip
             // In order to change the date range on the tooltip title, uncomment this line
             // .dateFormat(chartTooltip.axisTimeCombinations.HOUR .title('Quantity Sold')
-            .topicsOrder(dataset.dataByTopic.map(function(topic) {
-                return topic.topic;
-            }));
+            .topicsOrder(
+                dataset.dataByTopic.map(function (topic) {
+                    return topic.topic;
+                })
+            );
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = select('.js-line-chart-container .metadata-group .hover-marker');
+        tooltipContainer = select(
+            '.js-line-chart-container .metadata-group .hover-marker'
+        );
         tooltipContainer.datum([]).call(chartTooltip);
     }
 }
@@ -113,7 +123,9 @@ function createLineChartWithSingleLine() {
     let lineChart2 = line(),
         chartTooltip = tooltip(),
         container = select('.js-single-line-chart-container'),
-        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
+        containerWidth = container.node()
+            ? container.node().getBoundingClientRect().width
+            : false,
         tooltipContainer,
         dataset;
 
@@ -128,23 +140,32 @@ function createLineChartWithSingleLine() {
             .grid('vertical')
             .width(containerWidth)
             .on('customMouseOver', chartTooltip.show)
-            .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-                chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+            .on('customMouseMove', function (
+                dataPoint,
+                topicColorMap,
+                dataPointXPosition
+            ) {
+                chartTooltip.update(
+                    dataPoint,
+                    topicColorMap,
+                    dataPointXPosition
+                );
             })
             .on('customMouseOut', chartTooltip.hide);
 
         container.datum(dataset).call(lineChart2);
 
         // Tooltip Setup and start
-        chartTooltip
-            .title('Quantity Sold');
+        chartTooltip.title('Quantity Sold');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = select('.js-single-line-chart-container .metadata-group .vertical-marker-container');
+        tooltipContainer = select(
+            '.js-single-line-chart-container .metadata-group .vertical-marker-container'
+        );
         tooltipContainer.datum([]).call(chartTooltip);
 
-        select('#button2').on('click', function() {
+        select('#button2').on('click', function () {
             lineChart2.exportChart('linechart.png', 'Britecharts LÍne Chart');
         });
     }
@@ -154,7 +175,9 @@ function createLineChartWithFixedHeight() {
     let lineChart3 = line(),
         chartTooltip = tooltip(),
         container = select('.js-fixed-line-chart-container'),
-        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
+        containerWidth = container.node()
+            ? container.node().getBoundingClientRect().width
+            : false,
         tooltipContainer,
         dataset;
 
@@ -167,25 +190,34 @@ function createLineChartWithFixedHeight() {
             .margin(lineMargin)
             .grid('full')
             .dateLabel('fullDate')
-            .on('customMouseOver', function() {
+            .on('customMouseOver', function () {
                 chartTooltip.show();
             })
-            .on('customMouseMove', function(dataPoint, topicColorMap, dataPointXPosition) {
-                chartTooltip.update(dataPoint, topicColorMap, dataPointXPosition);
+            .on('customMouseMove', function (
+                dataPoint,
+                topicColorMap,
+                dataPointXPosition
+            ) {
+                chartTooltip.update(
+                    dataPoint,
+                    topicColorMap,
+                    dataPointXPosition
+                );
             })
-            .on('customMouseOut', function() {
+            .on('customMouseOut', function () {
                 chartTooltip.hide();
             });
 
         container.datum(dataset).call(lineChart3);
 
         // Tooltip Setup and start
-        chartTooltip
-            .title('Quantity Sold');
+        chartTooltip.title('Quantity Sold');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = select('.js-fixed-line-chart-container .metadata-group .hover-marker');
+        tooltipContainer = select(
+            '.js-fixed-line-chart-container .metadata-group .hover-marker'
+        );
         tooltipContainer.datum([]).call(chartTooltip);
     }
 }
@@ -193,7 +225,9 @@ function createLineChartWithFixedHeight() {
 function createLoadingState() {
     let lineChart = line(),
         lineContainer = select('.js-loading-container'),
-        containerWidth = lineContainer.node() ? lineContainer.node().getBoundingClientRect().width : false,
+        containerWidth = lineContainer.node()
+            ? lineContainer.node().getBoundingClientRect().width
+            : false,
         dataset = null;
 
     if (containerWidth) {
@@ -216,13 +250,13 @@ function createLoadingState() {
  * ]
  */
 function brushDataAdapter(dataLine) {
-    return dataLine.dataByDate.map(function(d){
-        d.value = d.topics.reduce(function(acc, topic) {
+    return dataLine.dataByDate.map(function (d) {
+        d.value = d.topics.reduce(function (acc, topic) {
             return acc + topic.value;
-        },0);
+        }, 0);
 
         return d;
-    })
+    });
 }
 
 function filterData(d0, d1) {
@@ -251,7 +285,7 @@ if (select('.js-line-chart-container').node()) {
     createLineChartWithFixedHeight();
     createLoadingState();
 
-    redrawCharts = function(){
+    redrawCharts = function () {
         selectAll('.line-chart, .brush-chart').remove();
         createLineChart();
         createBrushChart();
@@ -264,9 +298,13 @@ if (select('.js-line-chart-container').node()) {
     PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
-    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.line-chart', function(newSchema) {
-        createLineChart(newSchema);
-        selectAll('.brush-chart').remove();
-        createBrushChart(newSchema);
-    });
+    colorSelectorHelper.createColorSelector(
+        '.js-color-selector-container',
+        '.line-chart',
+        function (newSchema) {
+            createLineChart(newSchema);
+            selectAll('.brush-chart').remove();
+            createBrushChart(newSchema);
+        }
+    );
 }

@@ -49,7 +49,7 @@ const { dataEditor, configEditor } = editorHelpers({
 const charts = Object.keys(defaultConfig);
 const tooltipTypes = Object.keys(tooltipConfigs).reduce(
     (m, i) => ({ ...m, [i]: i }),
-    {},
+    {}
 );
 
 const state = {
@@ -102,7 +102,7 @@ function setInitialData() {
 function setHandlers() {
     d3.select(`.${chartSelectorClass}`).on(
         'change',
-        _handleChartSelectorChange,
+        _handleChartSelectorChange
     );
     d3.select(`.${dataSelectorClass}`).on('change', _handleDataSelectorChange);
 
@@ -114,11 +114,11 @@ function setHandlers() {
 
     d3.select(`.${configAddTooltipClass}`).on(
         'click',
-        _handleAddTooltip.bind(null, tooltipTypes.basic),
+        _handleAddTooltip.bind(null, tooltipTypes.basic)
     );
     d3.select(`.${configAddMiniTooltipClass}`).on(
         'click',
-        _handleAddTooltip.bind(null, tooltipTypes.mini),
+        _handleAddTooltip.bind(null, tooltipTypes.mini)
     );
 }
 
@@ -160,7 +160,7 @@ function setChartSelectorType() {
 function setNewChart(
     chartData = getCurrentData(),
     chartInitString = getCurrentConfig(),
-    chartType = getCurrentType(),
+    chartType = getCurrentType()
 ) {
     domHelpers.removeBriteChartContainer();
     domHelpers.addBritechartContainer();
@@ -180,19 +180,13 @@ function setNewChart(
         console.error(e);
     }
 
-    d3.select(`.${britechartContainerClass}`)
-        .datum(chartData)
-        .call(chart);
+    d3.select(`.${britechartContainerClass}`).datum(chartData).call(chart);
     d3.select(
-        `.${britechartContainerClass} ${
-            constants.chartConfigs[chartType].tooltipSelector
-        }`,
+        `.${britechartContainerClass} ${constants.chartConfigs[chartType].tooltipSelector}`
     )
         .datum([])
         .call(tip);
-    d3.select(`.${tooltipMetaGroup}`)
-        .datum([])
-        .call(miniTip);
+    d3.select(`.${tooltipMetaGroup}`).datum([]).call(miniTip);
 }
 
 /**
@@ -211,8 +205,8 @@ function setNewDataTypes() {
         .enter()
         .append('option')
         .merge(dataSelector)
-        .attr('value', d => d)
-        .text(d => d);
+        .attr('value', (d) => d)
+        .text((d) => d);
 
     dataSelector.exit().remove();
 }
@@ -309,7 +303,7 @@ function _handleDataUpdate() {
         freshData = evalDataString(rawData);
     } catch (e) {
         errors.push(
-            new Error('Could not parse the data from the input field', rawData),
+            new Error('Could not parse the data from the input field', rawData)
         );
     }
 

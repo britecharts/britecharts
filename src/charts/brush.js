@@ -64,54 +64,44 @@ import { line } from './helpers/load';
  */
 
 export default function module() {
-
     let margin = {
             top: 20,
             right: 20,
             bottom: 30,
-            left: 20
+            left: 20,
         },
         width = 960,
         height = 500,
         loadingState = line,
         data,
         svg,
-
         dateLabel = 'date',
         valueLabel = 'value',
-
         dateRange = [null, null],
-
-        chartWidth, chartHeight,
-        xScale, yScale,
+        chartWidth,
+        chartHeight,
+        xScale,
+        yScale,
         xAxis,
-
         xAxisFormat = null,
         xTicks = null,
         xAxisCustomFormat = null,
         locale,
-
         brush,
         chartBrush,
         brushArea,
         handle,
-
         tickPadding = 5,
-
         chartGradientEl,
         gradient = colorHelper.colorGradients.greenBlue,
         gradientId = uniqueId('brush-area-gradient'),
-
         roundingTimeInterval = 'timeDay',
-
         // Dispatcher object to broadcast the mouse events
         // @see {@link https://github.com/d3/d3/blob/master/API.md#dispatches-d3-dispatch}
         dispatcher = dispatch('customBrushStart', 'customBrushEnd'),
-
         // extractors
-        getValue = ({value}) => value,
-        getDate = ({date}) => date;
-
+        getValue = ({ value }) => value,
+        getDate = ({ date }) => date;
 
     /**
      * This function creates the graph using the selection as container
@@ -119,8 +109,8 @@ export default function module() {
      *                                  the container(s) where the chart(s) will be rendered
      * @param {BrushChartData} _data The data to attach and generate the chart
      */
-    function exports(_selection){
-        _selection.each(function(_data){
+    function exports(_selection) {
+        _selection.each(function (_data) {
             chartWidth = width - margin.left - margin.right;
             chartHeight = height - margin.top - margin.bottom;
             data = cleanData(cloneData(_data));
@@ -141,16 +131,20 @@ export default function module() {
      * Creates the d3 x axis, setting orientation
      * @private
      */
-    function buildAxis(){
+    function buildAxis() {
         let minor, major;
 
         if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
             minor = {
                 tick: xTicks,
-                format: timeFormat(xAxisCustomFormat)
+                format: timeFormat(xAxisCustomFormat),
             };
         } else {
-            ({minor, major} = timeAxisHelper.getTimeSeriesAxis(data, width, xAxisFormat));
+            ({ minor, major } = timeAxisHelper.getTimeSeriesAxis(
+                data,
+                width,
+                xAxisFormat
+            ));
         }
 
         xAxis = axisBottom(xScale)
@@ -166,7 +160,10 @@ export default function module() {
      */
     function buildBrush() {
         brush = brushX()
-            .extent([[0, 0], [chartWidth, chartHeight]])
+            .extent([
+                [0, 0],
+                [chartWidth, chartHeight],
+            ])
             .on('brush', handleBrushStart)
             .on('end', handleBrushEnd);
     }
@@ -176,26 +173,20 @@ export default function module() {
      * Also applies the Margin convention
      * @private
      */
-    function buildContainerGroups(){
+    function buildContainerGroups() {
         let container = svg
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-        container
-            .append('g')
-            .classed('chart-group', true);
+        container.append('g').classed('chart-group', true);
         container
             .append('g')
             .classed('x-axis-group', true)
-                .append('g')
-                .classed('x axis', true);
-        container
             .append('g')
-            .classed('brush-group', true);
-        container
-            .append('g')
-            .classed('metadata-group', true);
+            .classed('x axis', true);
+        container.append('g').classed('brush-group', true);
+        container.append('g').classed('metadata-group', true);
     }
 
     /**
@@ -204,7 +195,8 @@ export default function module() {
      */
     function buildGradient() {
         if (!chartGradientEl) {
-            chartGradientEl = svg.select('.metadata-group')
+            chartGradientEl = svg
+                .select('.metadata-group')
                 .append('linearGradient')
                 .attr('id', gradientId)
                 .attr('gradientUnits', 'userSpaceOnUse')
@@ -214,12 +206,13 @@ export default function module() {
                 .attr('y2', 0)
                 .selectAll('stop')
                 .data([
-                    {offset: '0%', color: gradient[0]},
-                    {offset: '100%', color: gradient[1]}
+                    { offset: '0%', color: gradient[0] },
+                    { offset: '100%', color: gradient[1] },
                 ])
-                .enter().append('stop')
-                .attr('offset', ({offset}) => offset)
-                .attr('stop-color', ({color}) => color);
+                .enter()
+                .append('stop')
+                .attr('offset', ({ offset }) => offset)
+                .attr('stop-color', ({ color }) => color);
         }
     }
 
@@ -227,9 +220,9 @@ export default function module() {
      * Creates the x and y scales of the graph
      * @private
      */
-    function buildScales(){
+    function buildScales() {
         xScale = scaleTime()
-            .domain(extent(data, getDate ))
+            .domain(extent(data, getDate))
             .range([0, chartWidth]);
 
         yScale = scaleLinear()
@@ -242,7 +235,7 @@ export default function module() {
      * @param  {HTMLElement} container DOM element that will work as the container of the graph
      * @private
      */
-    function buildSVG(container){
+    function buildSVG(container) {
         if (!svg) {
             svg = select(container)
                 .append('svg')
@@ -251,9 +244,7 @@ export default function module() {
             buildContainerGroups();
         }
 
-        svg
-            .attr('width', width)
-            .attr('height', height);
+        svg.attr('width', width).attr('height', height);
     }
 
     /**
@@ -304,9 +295,9 @@ export default function module() {
 
         // Create and configure the area generator
         brushArea = area()
-            .x(({date}) => xScale(date))
+            .x(({ date }) => xScale(date))
             .y0(chartHeight)
-            .y1(({value}) => yScale(value))
+            .y1(({ value }) => yScale(value))
             .curve(curveBasis);
 
         // Create the area path
@@ -325,12 +316,12 @@ export default function module() {
         chartBrush = svg.select('.brush-group').call(brush);
 
         // Update the height of the brushing rectangle
-        chartBrush.selectAll('rect')
+        chartBrush
+            .selectAll('rect')
             .classed('brush-rect', true)
             .attr('height', chartHeight);
 
-        chartBrush.selectAll('.selection')
-            .attr('fill', `url(#${gradientId})`);
+        chartBrush.selectAll('.selection').attr('fill', `url(#${gradientId})`);
     }
 
     /**
@@ -342,8 +333,8 @@ export default function module() {
 
         // Styling
         handle = chartBrush
-                    .selectAll('.handle.brush-rect')
-                    .style('fill', handleFillColor);
+            .selectAll('.handle.brush-rect')
+            .style('fill', handleFillColor);
     }
 
     /**
@@ -379,12 +370,18 @@ export default function module() {
         if (selection) {
             let dateExtent = selection.map(xScale.invert);
 
-            dateExtentRounded = dateExtent.map(timeIntervals[roundingTimeInterval].round);
+            dateExtentRounded = dateExtent.map(
+                timeIntervals[roundingTimeInterval].round
+            );
 
             // If empty when rounded, use floor & ceil instead.
             if (dateExtentRounded[0] >= dateExtentRounded[1]) {
-                dateExtentRounded[0] = timeIntervals[roundingTimeInterval].floor(dateExtent[0]);
-                dateExtentRounded[1] = timeIntervals[roundingTimeInterval].offset(dateExtentRounded[0]);
+                dateExtentRounded[0] = timeIntervals[
+                    roundingTimeInterval
+                ].floor(dateExtent[0]);
+                dateExtentRounded[1] = timeIntervals[
+                    roundingTimeInterval
+                ].offset(dateExtentRounded[0]);
             }
 
             select(this)
@@ -404,10 +401,7 @@ export default function module() {
         let selection = null;
 
         if (dateA !== null) {
-            selection = [
-                xScale(new Date(dateA)),
-                xScale(new Date(dateB))
-            ];
+            selection = [xScale(new Date(dateA)), xScale(new Date(dateB))];
         }
 
         brush.move(chartBrush, selection);
@@ -429,7 +423,7 @@ export default function module() {
      * @return { dateRange | module}    Current dateRange or Chart module to chain calls
      * @public
      */
-    exports.dateRange = function(_x) {
+    exports.dateRange = function (_x) {
         if (!arguments.length) {
             return dateRange;
         }
@@ -448,7 +442,7 @@ export default function module() {
      * @return {String | Module}    Current gradient or Chart module to chain calls
      * @public
      */
-    exports.gradient = function(_x) {
+    exports.gradient = function (_x) {
         if (!arguments.length) {
             return gradient;
         }
@@ -463,7 +457,7 @@ export default function module() {
      * @return {Number | Module}    Current height or Chart module to chain calls
      * @public
      */
-    exports.height = function(_x) {
+    exports.height = function (_x) {
         if (!arguments.length) {
             return height;
         }
@@ -478,7 +472,7 @@ export default function module() {
      * @return { loadingState | module}     Current loading state markup or Chart module to chain calls
      * @public
      */
-    exports.loadingState = function(_markup) {
+    exports.loadingState = function (_markup) {
         if (!arguments.length) {
             return loadingState;
         }
@@ -494,7 +488,7 @@ export default function module() {
      * @param  {String} _x              Must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
      * @return { (String|Module) }      Current locale or module to chain calls
      */
-    exports.locale = function(_x) {
+    exports.locale = function (_x) {
         if (!arguments.length) {
             return locale;
         }
@@ -509,13 +503,13 @@ export default function module() {
      * @return {Object | Module}    Current margin or Chart module to chain calls
      * @public
      */
-    exports.margin = function(_x) {
+    exports.margin = function (_x) {
         if (!arguments.length) {
             return margin;
         }
         margin = {
             ...margin,
-            ..._x
+            ..._x,
         };
 
         return this;
@@ -559,7 +553,7 @@ export default function module() {
      * @see {@link https://github.com/d3/d3-dispatch/blob/master/README.md#dispatch_on|d3-dispatch:on}
      * @public
      */
-    exports.on = function() {
+    exports.on = function () {
         let value = dispatcher.on.apply(dispatcher, arguments);
 
         return value === dispatcher ? exports : value;
@@ -571,7 +565,7 @@ export default function module() {
      * @return {Number | Module}    Current width or Chart module to chain calls
      * @public
      */
-    exports.width = function(_x) {
+    exports.width = function (_x) {
         if (!arguments.length) {
             return width;
         }
@@ -586,7 +580,7 @@ export default function module() {
      * @param  {String} _x              Desired format for x axis
      * @return {String | Module}        Current format or module to chain calls
      */
-    exports.xAxisCustomFormat = function(_x) {
+    exports.xAxisCustomFormat = function (_x) {
         if (!arguments.length) {
             return xAxisCustomFormat;
         }
@@ -602,7 +596,7 @@ export default function module() {
      * @example
      *     brush.xAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
      */
-    exports.xAxisFormat = function(_x) {
+    exports.xAxisFormat = function (_x) {
         if (!arguments.length) {
             return xAxisFormat;
         }
@@ -619,7 +613,7 @@ export default function module() {
      * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
      * @return {Number | Module}        Current number or ticks or module to chain calls
      */
-    exports.xTicks = function(_x) {
+    exports.xTicks = function (_x) {
         if (!arguments.length) {
             return xTicks;
         }
@@ -638,7 +632,7 @@ export default function module() {
      * @return { (roundingTimeInterval | Module) } Current time interval or module to chain calls
      * @public
      */
-    exports.roundingTimeInterval = function(_x) {
+    exports.roundingTimeInterval = function (_x) {
         if (!arguments.length) {
             return roundingTimeInterval;
         }
@@ -648,6 +642,4 @@ export default function module() {
     };
 
     return exports;
-};
-
-
+}

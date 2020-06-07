@@ -1,10 +1,10 @@
 import saveKeys from '../constants/constants';
-import {throwUndefinedError} from './utils';
+import { throwUndefinedError } from './utils';
 
 const { rootSaveKey } = saveKeys;
 
 export default {
-    getDataByKey(key=throwUndefinedError('getDataByKey', 'key')) {
+    getDataByKey(key = throwUndefinedError('getDataByKey', 'key')) {
         let currentData = this.getData();
 
         if (currentData) {
@@ -12,13 +12,13 @@ export default {
         }
     },
     setDataByKey(
-        key=throwUndefinedError('setDataByKey', 'key'),
-        data=throwUndefinedError('setDataByKey', 'data')
+        key = throwUndefinedError('setDataByKey', 'key'),
+        data = throwUndefinedError('setDataByKey', 'data')
     ) {
         let currentData = this.getData();
 
         if (currentData) {
-            let nextData = {...currentData, [key]: data};
+            let nextData = { ...currentData, [key]: data };
 
             this._setData(nextData);
         }
@@ -34,18 +34,18 @@ export default {
 
         try {
             parsedData = JSON.parse(currentData);
-        } catch(e) {
+        } catch (e) {
             // errorList.push(new Error('Cannot load root data'));
         }
 
         return parsedData;
     },
-    _setData(data=throwUndefinedError('_setData', 'data')) {
+    _setData(data = throwUndefinedError('_setData', 'data')) {
         let jsonData = JSON.stringify(data);
 
         localStorage.setItem(rootSaveKey, jsonData);
     },
-    removeDataByKey(key=throwUndefinedError('removeDataByKey', 'key')) {
+    removeDataByKey(key = throwUndefinedError('removeDataByKey', 'key')) {
         let currentData = this.getData();
 
         if (currentData && currentData[key]) {
@@ -55,5 +55,5 @@ export default {
     },
     clear() {
         localStorage.removeItem(rootSaveKey);
-    }
+    },
 };

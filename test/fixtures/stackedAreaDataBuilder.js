@@ -7,54 +7,54 @@ import jsonLargeService from '../json/areaDataLarge.json';
 import jsonNegativeValues from '../json/areaDataNegativeValues.json';
 import jsonNumericKeys from '../json/areaDataNumericKeys.json';
 
-export function StackedAreaDataBuilder(config){
+export function StackedAreaDataBuilder(config) {
     this.Klass = StackedAreaDataBuilder;
 
     this.config = _.defaults({}, config);
 
-    this.with3Sources = function(){
+    this.with3Sources = function () {
         var attributes = _.extend({}, this.config, jsonThreeSources);
 
         return new this.Klass(attributes);
     };
 
-    this.with6Sources = function(){
+    this.with6Sources = function () {
         var attributes = _.extend({}, this.config, jsonSixSources);
 
         return new this.Klass(attributes);
     };
 
-    this.withReportData = function(){
+    this.withReportData = function () {
         var attributes = _.extend({}, this.config, jsonReportService);
 
         return new this.Klass(attributes);
     };
 
-    this.withSalesChannelData = function(){
+    this.withSalesChannelData = function () {
         var attributes = _.extend({}, this.config, jsonSalesChannel);
 
         return new this.Klass(attributes);
     };
 
-    this.withLargeData = function() {
+    this.withLargeData = function () {
         var attributes = _.extend({}, this.config, jsonLargeService);
 
         return new this.Klass(attributes);
-    }
+    };
 
-    this.withNegativeValues = function() {
+    this.withNegativeValues = function () {
         var attributes = _.extend({}, this.config, jsonNegativeValues);
 
         return new this.Klass(attributes);
     };
 
-    this.withNumericKeys = function() {
+    this.withNumericKeys = function () {
         var attributes = _.extend({}, this.config, jsonNumericKeys);
 
         return new this.Klass(attributes);
-    }
+    };
 
-    this.build = function() {
+    this.build = function () {
         return this.config;
     };
 }

@@ -3,7 +3,7 @@ import data from '../constants/data';
 import constants from '../constants/constants';
 import storage from './localStorageHelpers';
 
-const {savedChartTypeKey} = constants.saveKeys;
+const { savedChartTypeKey } = constants.saveKeys;
 const {
     britechartContainerClass,
     britechartPlaceHolderClass,
@@ -14,7 +14,7 @@ const {
     genericSelectBoxClass,
     notificationBarClass,
     notificationErrorClass,
-    notificationStackTraceClass
+    notificationStackTraceClass,
 } = constants.domClassNames;
 const charts = Object.keys(constants.chartConfigs);
 
@@ -24,39 +24,54 @@ export default {
         this.createDataSelector();
     },
     createChartSelector() {
-        this.createSelectElement(`.${chartSelectorContainerClass}`, chartSelectorClass, charts);
+        this.createSelectElement(
+            `.${chartSelectorContainerClass}`,
+            chartSelectorClass,
+            charts
+        );
     },
     createDataSelector() {
         let chartType = storage.getDataByKey(savedChartTypeKey);
         let dataTypes = Object.keys(data[chartType]);
 
-        this.createSelectElement(`.${dataSelectorContainerClass}`, dataSelectorClass, dataTypes);
-
+        this.createSelectElement(
+            `.${dataSelectorContainerClass}`,
+            dataSelectorClass,
+            dataTypes
+        );
     },
     createSelectElement(selector, selectClass, optionList) {
-        let select = d3.select(selector)
+        let select = d3
+            .select(selector)
             .append('select')
             .classed(selectClass, true)
             .classed(genericSelectBoxClass, true);
 
         let options = select.selectAll('option').data(optionList);
 
-        options.enter().append('option')
+        options
+            .enter()
+            .append('option')
             .attr('value', (d) => d)
             .text((d) => d);
     },
     showErrors(errorList) {
-        let notifications = d3.select(`.${notificationBarClass}`).selectAll('div').data(errorList);
+        let notifications = d3
+            .select(`.${notificationBarClass}`)
+            .selectAll('div')
+            .data(errorList);
 
-        notifications.enter().append('div')
-            .text(d => `Could not load ${d.filePath}: ${d.error.message}`)
+        notifications
+            .enter()
+            .append('div')
+            .text((d) => `Could not load ${d.filePath}: ${d.error.message}`)
             .classed(notificationErrorClass, true)
             // cannot be bound to calling scope, weird d3 stuff
-            .each(function() {
+            .each(function () {
                 d3.select(this)
                     .append('pre')
-                    .text(({error}) => error.stack)
-                    .classed(notificationStackTraceClass, true)
+                    .text(({ error }) => error.stack)
+                    .classed(notificationStackTraceClass, true);
             });
     },
     removeBriteChartContainer() {
@@ -67,5 +82,5 @@ export default {
         d3.select(`.${britechartPlaceHolderClass}`)
             .append('div')
             .classed(britechartContainerClass, true);
-    }
+    },
 };

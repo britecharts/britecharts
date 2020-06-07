@@ -3,29 +3,25 @@ import * as d3 from 'd3';
 import chart from 'scatter-plot';
 import { ScatterPlotDataBuilder } from 'scatterPlotDataBuilder';
 
-
 const aTestDataSet = () => new ScatterPlotDataBuilder();
 const buildDataSet = (dataSetName) => {
-    return aTestDataSet()
-    [dataSetName]()
-        .build();
+    return aTestDataSet()[dataSetName]().build();
 };
 
-describe('Scatter Plot', ()  => {
+describe('Scatter Plot', () => {
     let scatterPlot, dataset, containerFixture, f;
 
     beforeEach(() => {
-        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+        const fixture =
+            '<div id="fixture"><div class="test-container"></div></div>';
 
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
 
         dataset = buildDataSet('withFourNames');
-        scatterPlot = chart()
-            .grid('full');
+        scatterPlot = chart().grid('full');
 
-        containerFixture = d3.select('.test-container')
-            .append('svg');
+        containerFixture = d3.select('.test-container').append('svg');
         containerFixture.datum(dataset).call(scatterPlot);
     });
 
@@ -35,7 +31,6 @@ describe('Scatter Plot', ()  => {
     });
 
     describe('Render', () => {
-
         it('should render a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.scatter-plot').size();
@@ -46,7 +41,9 @@ describe('Scatter Plot', ()  => {
         describe('groups', () => {
             it('should create a container-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.container-group').size();
+                const actual = containerFixture
+                    .select('g.container-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -74,28 +71,36 @@ describe('Scatter Plot', ()  => {
 
             it('should render axis labels group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.axis-labels-group').size();
+                const actual = containerFixture
+                    .select('.axis-labels-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should render clip-path container', () => {
                 const expected = 1;
-                const actual = containerFixture.select('#scatter-clip-path').size();
+                const actual = containerFixture
+                    .select('#scatter-clip-path')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should create a grid-lines-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.grid-lines-group').size();
+                const actual = containerFixture
+                    .select('g.grid-lines-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should create a metadata-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.metadata-group').size();
+                const actual = containerFixture
+                    .select('g.metadata-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -104,40 +109,55 @@ describe('Scatter Plot', ()  => {
         describe('axis', () => {
             it('should draw an X axis', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.x-axis-group .axis.x').size();
+                const actual = containerFixture
+                    .select('.x-axis-group .axis.x')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should draw an Y axis', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.y-axis-group .axis.y').size();
+                const actual = containerFixture
+                    .select('.y-axis-group .axis.y')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
         });
 
         describe('grid', () => {
-
             it('should render horizontal grid lines', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.horizontal-grid-line').size();
+                const actual = containerFixture
+                    .select('.horizontal-grid-line')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should render vertical grid lines', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.vertical-grid-line').size();
+                const actual = containerFixture
+                    .select('.vertical-grid-line')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should render as many gridlines as number of ticks', () => {
-                const actualVerticalN = containerFixture.selectAll('.grid-lines-group .vertical-grid-line').size();
-                const actualHorizontalN = containerFixture.selectAll('.grid-lines-group .horizontal-grid-line').size();
-                const expectedXticks = containerFixture.selectAll('.x-axis-group .tick').size();
-                const expectedYticks = containerFixture.selectAll('.y-axis-group .tick').size();
+                const actualVerticalN = containerFixture
+                    .selectAll('.grid-lines-group .vertical-grid-line')
+                    .size();
+                const actualHorizontalN = containerFixture
+                    .selectAll('.grid-lines-group .horizontal-grid-line')
+                    .size();
+                const expectedXticks = containerFixture
+                    .selectAll('.x-axis-group .tick')
+                    .size();
+                const expectedYticks = containerFixture
+                    .selectAll('.y-axis-group .tick')
+                    .size();
 
                 expect(actualVerticalN).toBe(expectedXticks);
                 expect(actualHorizontalN).toBe(expectedYticks);
@@ -145,21 +165,20 @@ describe('Scatter Plot', ()  => {
         });
 
         describe('data points(circles)', () => {
-
             /**
              * With animation, the chart is initialized without
              * points. In order to render data points in tests,
              * animations should be turned off.
              */
             beforeEach(() => {
-                const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
 
                 // adds an html fixture to the DOM
                 document.body.insertAdjacentHTML('afterbegin', fixture);
 
                 dataset = buildDataSet('withOneSource');
-                scatterPlot = chart()
-                    .isAnimated(false);
+                scatterPlot = chart().isAnimated(false);
 
                 containerFixture = d3.select('.test-container');
                 containerFixture.datum(dataset).call(scatterPlot);
@@ -172,7 +191,8 @@ describe('Scatter Plot', ()  => {
 
             it('container renders a circle for each data point', () => {
                 const expected = dataset.length;
-                const actual = containerFixture.select('.chart-group')
+                const actual = containerFixture
+                    .select('.chart-group')
                     .selectAll('circle')
                     .size();
 
@@ -180,10 +200,15 @@ describe('Scatter Plot', ()  => {
             });
 
             it('should have proper default parameteres', () => {
-                const circles = containerFixture.selectAll('.chart-group circle.data-point').nodes();
+                const circles = containerFixture
+                    .selectAll('.chart-group circle.data-point')
+                    .nodes();
 
                 circles.forEach((circle) => {
-                    expect(circle).toHaveAttr('class', 'data-point data-point-highlighter');
+                    expect(circle).toHaveAttr(
+                        'class',
+                        'data-point data-point-highlighter'
+                    );
                     expect(circle).toHaveAttr('fill-opacity', '0.24');
                     expect(circle).toHaveAttr('fill');
                     expect(circle).toHaveAttr('cx');
@@ -194,17 +219,15 @@ describe('Scatter Plot', ()  => {
         });
 
         describe('when hasHollowCircles is set to true', () => {
-
             beforeEach(() => {
-                const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
 
                 // adds an html fixture to the DOM
                 document.body.insertAdjacentHTML('afterbegin', fixture);
 
                 dataset = buildDataSet('withOneSource');
-                scatterPlot = chart()
-                    .isAnimated(false)
-                    .hasHollowCircles(true);
+                scatterPlot = chart().isAnimated(false).hasHollowCircles(true);
                 containerFixture = d3.select('.test-container');
                 containerFixture.datum(dataset).call(scatterPlot);
             });
@@ -218,7 +241,9 @@ describe('Scatter Plot', ()  => {
                 const expected = '#fff';
 
                 containerFixture.datum(dataset).call(scatterPlot);
-                const circles = containerFixture.selectAll('.chart-group circle').nodes();
+                const circles = containerFixture
+                    .selectAll('.chart-group circle')
+                    .nodes();
 
                 circles.forEach((circle) => {
                     expect(circle.getAttribute('fill')).toBe(expected);
@@ -227,13 +252,14 @@ describe('Scatter Plot', ()  => {
         });
 
         describe('when it has a trend line', () => {
-
             it('should render a path node', () => {
                 const expected = 1;
 
                 scatterPlot.hasTrendline(true);
                 containerFixture.datum(dataset).call(scatterPlot);
-                const actual = containerFixture.selectAll('.scatter-trendline').size();
+                const actual = containerFixture
+                    .selectAll('.scatter-trendline')
+                    .size();
 
                 expect(actual).toBe(expected);
             });
@@ -242,7 +268,9 @@ describe('Scatter Plot', ()  => {
                 scatterPlot.hasTrendline(true);
                 containerFixture.datum(dataset).call(scatterPlot);
 
-                const trendline = containerFixture.selectAll('.scatter-trendline').node();
+                const trendline = containerFixture
+                    .selectAll('.scatter-trendline')
+                    .node();
 
                 expect(trendline).toHaveAttr('class');
                 expect(trendline).toHaveAttr('d');
@@ -255,10 +283,11 @@ describe('Scatter Plot', ()  => {
         });
 
         describe('point highlighter', () => {
-
             it('is successfully initialized on render', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.highlight-circle').size();
+                const actual = containerFixture
+                    .select('.highlight-circle')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -266,7 +295,9 @@ describe('Scatter Plot', ()  => {
             it('initially has only class and cursor attributes', () => {
                 const expectedCursor = 'pointer';
                 const expectedClass = 'highlight-circle';
-                const scatterPoint = containerFixture.selectAll('.highlight-circle').node();
+                const scatterPoint = containerFixture
+                    .selectAll('.highlight-circle')
+                    .node();
 
                 expect(scatterPoint).toHaveAttr('cursor', expectedCursor);
                 expect(scatterPoint).toHaveAttr('class', expectedClass);
@@ -283,13 +314,18 @@ describe('Scatter Plot', ()  => {
                 const container = containerFixture.select('svg');
 
                 container.dispatch('mousemove');
-                const scatterPoint = containerFixture.selectAll('.highlight-circle').node();
+                const scatterPoint = containerFixture
+                    .selectAll('.highlight-circle')
+                    .node();
 
                 expect(scatterPoint).toHaveAttr('cursor', expectedCursor);
                 expect(scatterPoint).toHaveAttr('opacity', expectedOpacity);
                 expect(scatterPoint).toHaveAttr('stroke', expectedStroke);
                 expect(scatterPoint).toHaveAttr('fill', expectedStroke);
-                expect(scatterPoint).toHaveAttr('fill-opacity', expectedFillOpacity);
+                expect(scatterPoint).toHaveAttr(
+                    'fill-opacity',
+                    expectedFillOpacity
+                );
                 expect(scatterPoint).toHaveAttr('cx', expectedCx);
                 expect(scatterPoint).toHaveAttr('cy', expectedCy);
                 expect(scatterPoint).toHaveAttr('filter', expectedFilter);
@@ -297,19 +333,23 @@ describe('Scatter Plot', ()  => {
         });
 
         describe('when it has CrossHairs', () => {
-
             beforeEach(() => {
                 scatterPlot.hasCrossHairs(true);
                 containerFixture.datum(dataset).call(scatterPlot);
             });
 
             describe('cross hair lines', () => {
-
                 it('successfully initialize with container on render', () => {
                     const expected = 1;
-                    const testContainer = containerFixture.select('.crosshair-lines-container').size();
-                    const testXLine = containerFixture.select('line.highlight-x-line').size();
-                    const testYLine = containerFixture.select('line.highlight-y-line').size();
+                    const testContainer = containerFixture
+                        .select('.crosshair-lines-container')
+                        .size();
+                    const testXLine = containerFixture
+                        .select('line.highlight-x-line')
+                        .size();
+                    const testYLine = containerFixture
+                        .select('line.highlight-y-line')
+                        .size();
 
                     expect(testContainer).toEqual(expected);
                     expect(testXLine).toEqual(expected);
@@ -321,7 +361,9 @@ describe('Scatter Plot', ()  => {
                     const expectedStroke = '#6aedc7';
 
                     container.dispatch('mousemove');
-                    const scatterPoint = containerFixture.select('line.highlight-x-line').node();
+                    const scatterPoint = containerFixture
+                        .select('line.highlight-x-line')
+                        .node();
 
                     expect(scatterPoint).toHaveAttr('stroke', expectedStroke);
                     expect(scatterPoint).toHaveAttr('x1');
@@ -335,7 +377,9 @@ describe('Scatter Plot', ()  => {
                     const expectedStroke = '#6aedc7';
 
                     container.dispatch('mousemove');
-                    const scatterPoint = containerFixture.select('line.highlight-y-line').node();
+                    const scatterPoint = containerFixture
+                        .select('line.highlight-y-line')
+                        .node();
 
                     expect(scatterPoint).toHaveAttr('stroke', expectedStroke);
                     expect(scatterPoint).toHaveAttr('x1');
@@ -346,12 +390,17 @@ describe('Scatter Plot', ()  => {
             });
 
             describe('crosshair labels', () => {
-
                 it('successfully initialize with container on render', () => {
                     const expected = 1;
-                    const testContainer = containerFixture.select('.crosshair-labels-container').size();
-                    const testXText = containerFixture.select('text.highlight-x-legend').size();
-                    const testYText = containerFixture.select('text.highlight-y-legend').size();
+                    const testContainer = containerFixture
+                        .select('.crosshair-labels-container')
+                        .size();
+                    const testXText = containerFixture
+                        .select('text.highlight-x-legend')
+                        .size();
+                    const testYText = containerFixture
+                        .select('text.highlight-y-legend')
+                        .size();
 
                     expect(testContainer).toEqual(expected);
                     expect(testXText).toEqual(expected);
@@ -363,7 +412,9 @@ describe('Scatter Plot', ()  => {
                     const expectedFill = '#6aedc7';
 
                     container.dispatch('mousemove');
-                    const scatterText = containerFixture.select('text.highlight-x-legend').node();
+                    const scatterText = containerFixture
+                        .select('text.highlight-x-legend')
+                        .node();
 
                     expect(scatterText).toHaveAttr('fill', expectedFill);
                     expect(scatterText).toHaveAttr('text-anchor');
@@ -376,7 +427,9 @@ describe('Scatter Plot', ()  => {
                     const expectedFill = '#6aedc7';
 
                     container.dispatch('mousemove');
-                    const scatterText = containerFixture.select('text.highlight-y-legend').node();
+                    const scatterText = containerFixture
+                        .select('text.highlight-y-legend')
+                        .node();
 
                     expect(scatterText).toHaveAttr('fill', expectedFill);
                     expect(scatterText).toHaveAttr('text-anchor');
@@ -387,7 +440,6 @@ describe('Scatter Plot', ()  => {
         });
 
         describe('when formats of the axis values are set', () => {
-
             it('should have correct x-axis values format', () => {
                 const format = '$';
                 const previous = scatterPlot.xAxisFormat();
@@ -396,7 +448,8 @@ describe('Scatter Plot', ()  => {
                 scatterPlot.xAxisFormat(format);
                 containerFixture.datum(dataset).call(scatterPlot);
 
-                const actual = containerFixture.select('svg')
+                const actual = containerFixture
+                    .select('svg')
                     .selectAll('.x-axis-group .tick text')
                     .text();
 
@@ -412,7 +465,8 @@ describe('Scatter Plot', ()  => {
                 scatterPlot.yAxisFormat(format);
                 containerFixture.datum(dataset).call(scatterPlot);
 
-                const actual = containerFixture.select('svg')
+                const actual = containerFixture
+                    .select('svg')
                     .selectAll('.y-axis-group .tick:nth-child(3) text')
                     .text();
 
@@ -425,7 +479,8 @@ describe('Scatter Plot', ()  => {
             let scatterPlot, dataset, containerFixture, f;
 
             beforeEach(() => {
-                const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
 
                 // adds an html fixture to the DOM
                 document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -445,55 +500,64 @@ describe('Scatter Plot', ()  => {
             });
 
             describe('when x-axis label and offset are set', () => {
-
                 it('should render the x axis label', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('svg')
-                        .selectAll('.axis-labels-group .x-axis-label-text').size();
+                    const actual = containerFixture
+                        .select('svg')
+                        .selectAll('.axis-labels-group .x-axis-label-text')
+                        .size();
 
                     expect(actual).toBe(expected);
-                })
+                });
 
                 it('label should have correct string', () => {
                     const expected = 'Hello World';
-                    const actual = containerFixture.select('svg')
-                        .selectAll('.axis-labels-group .x-axis-label-text').text();
+                    const actual = containerFixture
+                        .select('svg')
+                        .selectAll('.axis-labels-group .x-axis-label-text')
+                        .text();
 
                     expect(actual).toBe(expected);
-                })
+                });
             });
 
             describe('when y-axis label and offset are set', () => {
-
                 it('should render the x axis label', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('svg')
-                        .selectAll('.axis-labels-group .y-axis-label-text').size();
+                    const actual = containerFixture
+                        .select('svg')
+                        .selectAll('.axis-labels-group .y-axis-label-text')
+                        .size();
 
                     expect(actual).toBe(expected);
-                })
+                });
 
                 it('label should have correct string', () => {
                     const expected = 'Goodbye World';
-                    const actual = containerFixture.select('svg')
-                        .selectAll('.axis-labels-group .y-axis-label-text').text();
+                    const actual = containerFixture
+                        .select('svg')
+                        .selectAll('.axis-labels-group .y-axis-label-text')
+                        .text();
 
                     expect(actual).toBe(expected);
-                })
+                });
             });
 
             describe('xTicks and yTicks', () => {
-
                 it('should change xTicks value if given', () => {
                     const xTicks = 5;
                     const expected = 4;
 
-                    const previous = containerFixture.selectAll('.x-axis-group .tick').size();
+                    const previous = containerFixture
+                        .selectAll('.x-axis-group .tick')
+                        .size();
 
                     scatterPlot.xTicks(xTicks);
                     containerFixture.datum(dataset).call(scatterPlot);
 
-                    const next = containerFixture.selectAll('.x-axis-group .tick').size();
+                    const next = containerFixture
+                        .selectAll('.x-axis-group .tick')
+                        .size();
 
                     expect(previous).not.toBe(next);
                     expect(next).toBe(expected);
@@ -503,12 +567,16 @@ describe('Scatter Plot', ()  => {
                     const yTicks = 25;
                     const expected = 33;
 
-                    const previous = containerFixture.selectAll('.y-axis-group .tick').size();
+                    const previous = containerFixture
+                        .selectAll('.y-axis-group .tick')
+                        .size();
 
                     scatterPlot.yTicks(yTicks);
                     containerFixture.datum(dataset).call(scatterPlot);
 
-                    const next = containerFixture.selectAll('.y-axis-group .tick').size();
+                    const next = containerFixture
+                        .selectAll('.y-axis-group .tick')
+                        .size();
 
                     expect(previous).not.toBe(next);
                     expect(next).toBe(expected);
@@ -518,9 +586,7 @@ describe('Scatter Plot', ()  => {
     });
 
     describe('API', () => {
-
         describe('aspect ratio', () => {
-
             it('should provide an aspect ratio getter and setter', () => {
                 let previous = scatterPlot.aspectRatio(),
                     expected = 600,
@@ -534,7 +600,6 @@ describe('Scatter Plot', ()  => {
             });
 
             describe('when an aspect ratio is set', function () {
-
                 it('should modify the height depending on the width', () => {
                     let testAspectRatio = 0.5,
                         testWidth = 400,
@@ -544,7 +609,9 @@ describe('Scatter Plot', ()  => {
                     scatterPlot.width(testWidth);
                     newHeight = scatterPlot.height();
 
-                    expect(newHeight).toBe(Math.ceil(testWidth * testAspectRatio));
+                    expect(newHeight).toBe(
+                        Math.ceil(testWidth * testAspectRatio)
+                    );
                 });
 
                 it('should modify the width depending on the height', () => {
@@ -556,7 +623,9 @@ describe('Scatter Plot', ()  => {
                     scatterPlot.height(testHeight);
                     newWidth = scatterPlot.width();
 
-                    expect(newWidth).toBe(Math.ceil(testHeight / testAspectRatio));
+                    expect(newWidth).toBe(
+                        Math.ceil(testHeight / testAspectRatio)
+                    );
                 });
             });
         });
@@ -611,7 +680,7 @@ describe('Scatter Plot', ()  => {
 
         it('should provide margin getter and setter', () => {
             let previous = scatterPlot.margin(),
-                expected = {top: 4, right: 4, bottom: 4, left: 4},
+                expected = { top: 4, right: 4, bottom: 4, left: 4 },
                 actual;
 
             scatterPlot.margin(expected);
@@ -622,13 +691,12 @@ describe('Scatter Plot', ()  => {
         });
 
         describe('when margins are set partially', function () {
-
             it('should override the default values', () => {
                 let previous = scatterPlot.margin(),
                     expected = {
                         ...previous,
                         top: 10,
-                        right: 20
+                        right: 20,
                     },
                     actual;
 
@@ -637,7 +705,7 @@ describe('Scatter Plot', ()  => {
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toEqual(expected);
-            })
+            });
         });
 
         it('should provide maxCircleArea getter and setter', () => {
@@ -780,9 +848,7 @@ describe('Scatter Plot', ()  => {
     });
 
     describe('Lifecycle', () => {
-
         describe('when clicking on a point', function () {
-
             it('should trigger a callback on mouse click', () => {
                 const callbackSpy = jasmine.createSpy('callback');
                 const scatterDataPoint = containerFixture.select('svg');
@@ -793,12 +859,13 @@ describe('Scatter Plot', ()  => {
                 scatterDataPoint.dispatch('click');
 
                 expect(callbackSpy.calls.count()).toEqual(expectedCallCount);
-                expect(callbackSpy.calls.allArgs()[0].length).toEqual(expectedArguments);
+                expect(callbackSpy.calls.allArgs()[0].length).toEqual(
+                    expectedArguments
+                );
             });
         });
 
         describe('mouse events', () => {
-
             it('should dispatch customMouseOver event', () => {
                 const callback = jasmine.createSpy('hoverCallback');
                 const container = containerFixture.selectAll('svg');
@@ -809,7 +876,9 @@ describe('Scatter Plot', ()  => {
                 container.dispatch('mouseover');
 
                 expect(callback.calls.count()).toEqual(expectedCallCount);
-                expect(callback.calls.allArgs()[0].length).toEqual(expectedArguments);
+                expect(callback.calls.allArgs()[0].length).toEqual(
+                    expectedArguments
+                );
             });
 
             it('should dispatch customMouseOut event', () => {
@@ -822,7 +891,9 @@ describe('Scatter Plot', ()  => {
                 container.dispatch('mouseout');
 
                 expect(callback.calls.count()).toEqual(expectedCallCount);
-                expect(callback.calls.allArgs()[0].length).toEqual(expectedArguments);
+                expect(callback.calls.allArgs()[0].length).toEqual(
+                    expectedArguments
+                );
             });
 
             it('should dispatch customMouseMove event', () => {
@@ -835,9 +906,10 @@ describe('Scatter Plot', ()  => {
                 container.dispatch('mousemove');
 
                 expect(callback.calls.count()).toEqual(expectedCallCount);
-                expect(callback.calls.allArgs()[0].length).toEqual(expectedArguments);
+                expect(callback.calls.allArgs()[0].length).toEqual(
+                    expectedArguments
+                );
             });
         });
     });
 });
-

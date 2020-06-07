@@ -2,25 +2,24 @@ import _ from 'underscore';
 import jsonStepDataSmall from '../json/stepDataSmall.json';
 import jsonStepDataMedium from '../json/stepDataMedium.json';
 
-
-export function StepDataBuilder(config){
+export function StepDataBuilder(config) {
     this.Klass = StepDataBuilder;
 
     this.config = _.defaults({}, config);
 
-    this.withSmallData = function() {
+    this.withSmallData = function () {
         var attributes = _.extend({}, this.config, jsonStepDataSmall);
 
         return new this.Klass(attributes);
-    }
+    };
 
-    this.withMediumData = function() {
+    this.withMediumData = function () {
         var attributes = _.extend({}, this.config, jsonStepDataMedium);
 
         return new this.Klass(attributes);
-    }
+    };
 
-    this.build = function() {
+    this.build = function () {
         return this.config;
     };
 }

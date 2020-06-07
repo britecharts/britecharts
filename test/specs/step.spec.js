@@ -4,19 +4,17 @@ import * as d3 from 'd3';
 import chart from 'step';
 import { StepDataBuilder } from 'stepChartDataBuilder';
 
-
 const aTestDataSet = () => new StepDataBuilder();
 const buildDataSet = (dataSetName) => {
-    return aTestDataSet()
-    [dataSetName]()
-        .build();
+    return aTestDataSet()[dataSetName]().build();
 };
 
 describe('Step Chart', () => {
     let stepChart, dataset, containerFixture, f;
 
     beforeEach(() => {
-        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+        const fixture =
+            '<div id="fixture"><div class="test-container"></div></div>';
 
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -34,7 +32,6 @@ describe('Step Chart', () => {
     });
 
     describe('Render', () => {
-
         it('should render a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.step-chart').size();
@@ -45,7 +42,9 @@ describe('Step Chart', () => {
         describe('groups', () => {
             it('should create a container-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.container-group').size();
+                const actual = containerFixture
+                    .select('g.container-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -87,24 +86,29 @@ describe('Step Chart', () => {
 
             it('should create a grid-lines-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.grid-lines-group').size();
+                const actual = containerFixture
+                    .select('g.grid-lines-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should create a metadata-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.metadata-group').size();
+                const actual = containerFixture
+                    .select('g.metadata-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
         });
 
         describe('grid lines', () => {
-
             it('should draw horizontal grid line', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.horizontal-grid-line').size();
+                const actual = containerFixture
+                    .select('.horizontal-grid-line')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -113,14 +117,18 @@ describe('Step Chart', () => {
         describe('axis', () => {
             it('should draw an X axis', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.x-axis-group.axis').size();
+                const actual = containerFixture
+                    .select('.x-axis-group.axis')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should draw an Y axis', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.y-axis-group.axis').size();
+                const actual = containerFixture
+                    .select('.y-axis-group.axis')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -134,14 +142,14 @@ describe('Step Chart', () => {
         });
 
         describe('when reloading with a different dataset', () => {
-
             it('should render in the same svg', () => {
                 const expected = 1;
                 const newDataset = buildDataSet('withMediumData');
                 let actual;
 
                 containerFixture.datum(newDataset.data).call(stepChart);
-                actual = containerFixture.selectAll('.step-chart').nodes().length;
+                actual = containerFixture.selectAll('.step-chart').nodes()
+                    .length;
 
                 expect(actual).toEqual(expected);
             });
@@ -152,7 +160,8 @@ describe('Step Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset.data).call(stepChart);
-                actual = containerFixture.selectAll('.step-chart .step').nodes().length;
+                actual = containerFixture.selectAll('.step-chart .step').nodes()
+                    .length;
 
                 expect(actual).toEqual(expected);
             });
@@ -160,9 +169,7 @@ describe('Step Chart', () => {
     });
 
     describe('Lifecycle', () => {
-
         describe('when hovering a step', () => {
-
             it('should trigger a callback', () => {
                 const step = containerFixture.select('.step:nth-child(1)');
                 const callbackSpy = jasmine.createSpy('callback');
@@ -173,12 +180,13 @@ describe('Step Chart', () => {
                 step.dispatch('mouseover');
 
                 expect(callbackSpy.calls.count()).toBe(expectedCallCount);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(expectedArgumentsCount);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(
+                    expectedArgumentsCount
+                );
             });
         });
 
         describe('when moving on a step', () => {
-
             it('should trigger a callback', () => {
                 const step = containerFixture.select('.step:nth-child(1)');
                 const callbackSpy = jasmine.createSpy('callback');
@@ -189,12 +197,13 @@ describe('Step Chart', () => {
                 step.dispatch('mousemove');
 
                 expect(callbackSpy.calls.count()).toBe(expectedCallCount);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(expectedArgumentsCount);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(
+                    expectedArgumentsCount
+                );
             });
         });
 
         describe('when moving out of a step', () => {
-
             it('should trigger a callback', () => {
                 const step = containerFixture.select('.step:nth-child(1)');
                 const callbackSpy = jasmine.createSpy('callback');
@@ -205,16 +214,17 @@ describe('Step Chart', () => {
                 step.dispatch('mouseout');
 
                 expect(callbackSpy.calls.count()).toBe(expectedCallCount);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(expectedArgumentsCount);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(
+                    expectedArgumentsCount
+                );
             });
         });
     });
 
     describe('API', () => {
-
         it('should provide margin getter and setter', () => {
             let defaultMargin = stepChart.margin(),
-                testMargin = {top: 4, right: 4, bottom: 4, left: 4},
+                testMargin = { top: 4, right: 4, bottom: 4, left: 4 },
                 newMargin;
 
             stepChart.margin(testMargin);
@@ -225,13 +235,12 @@ describe('Step Chart', () => {
         });
 
         describe('when margins are set partially', function () {
-
             it('should override the default values', () => {
                 let previous = stepChart.margin(),
                     expected = {
                         ...previous,
                         top: 10,
-                        right: 20
+                        right: 20,
                     },
                     actual;
 
@@ -240,11 +249,10 @@ describe('Step Chart', () => {
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toEqual(expected);
-            })
+            });
         });
 
         describe('export chart functionality', () => {
-
             it('should have exportChart defined', () => {
                 expect(stepChart.exportChart).toBeDefined();
             });
@@ -347,4 +355,3 @@ describe('Step Chart', () => {
         });
     });
 });
-

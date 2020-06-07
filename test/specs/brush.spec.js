@@ -3,19 +3,17 @@ import * as d3 from 'd3';
 import chart from './../../src/charts/brush';
 import { BrushDataBuilder } from 'brushChartDataBuilder';
 
-
 const aTestDataSet = () => new BrushDataBuilder();
 const buildDataSet = (dataSetName) => {
-    return aTestDataSet()
-        [dataSetName]()
-        .build();
+    return aTestDataSet()[dataSetName]().build();
 };
 
 describe('Brush Chart', () => {
     let brushChart, dataset, containerFixture, f;
 
     beforeEach(() => {
-        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+        const fixture =
+            '<div id="fixture"><div class="test-container"></div></div>';
 
         dataset = buildDataSet('withSimpleData');
         brushChart = chart();
@@ -32,7 +30,6 @@ describe('Brush Chart', () => {
     });
 
     describe('Render', () => {
-
         it('should show a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.brush-chart').size();
@@ -43,7 +40,9 @@ describe('Brush Chart', () => {
         describe('groups', () => {
             it('should create a container-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.container-group').size();
+                const actual = containerFixture
+                    .select('g.container-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -64,7 +63,9 @@ describe('Brush Chart', () => {
 
             it('should create a metadata-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.metadata-group').size();
+                const actual = containerFixture
+                    .select('g.metadata-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -93,34 +94,41 @@ describe('Brush Chart', () => {
 
         it('should render a brush rect overlay', () => {
             const expected = 1;
-            const actual = containerFixture.selectAll('.overlay.brush-rect').size();
+            const actual = containerFixture
+                .selectAll('.overlay.brush-rect')
+                .size();
 
             expect(actual).toEqual(expected);
         });
 
         it('should render a brush rect selection', () => {
             const expected = 1;
-            const actual = containerFixture.selectAll('.selection.brush-rect').size();
+            const actual = containerFixture
+                .selectAll('.selection.brush-rect')
+                .size();
 
             expect(actual).toEqual(expected);
         });
 
         it('should render an e handle', () => {
             const expected = 1;
-            const actual = containerFixture.selectAll('.handle.handle--e.brush-rect').size();
+            const actual = containerFixture
+                .selectAll('.handle.handle--e.brush-rect')
+                .size();
 
             expect(actual).toEqual(expected);
         });
 
         it('should render an w handle', () => {
             const expected = 1;
-            const actual = containerFixture.selectAll('.handle.handle--w.brush-rect').size();
+            const actual = containerFixture
+                .selectAll('.handle.handle--w.brush-rect')
+                .size();
 
             expect(actual).toEqual(expected);
         });
 
         describe('when reloading with a different dataset', () => {
-
             it('should render in the same svg', () => {
                 const expected = 1;
                 const newDataset = buildDataSet('withShortData');
@@ -138,7 +146,9 @@ describe('Brush Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset).call(brushChart);
-                actual = containerFixture.selectAll('.brush-chart .brush-area').size();
+                actual = containerFixture
+                    .selectAll('.brush-chart .brush-area')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -149,7 +159,9 @@ describe('Brush Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset).call(brushChart);
-                actual = containerFixture.selectAll('.brush-chart .x.axis').size();
+                actual = containerFixture
+                    .selectAll('.brush-chart .x.axis')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -157,7 +169,6 @@ describe('Brush Chart', () => {
     });
 
     describe('API', () => {
-
         it('should provide a bush date range getter and setter', () => {
             let previous = brushChart.dateRange(),
                 expected = ['9/15/2015', '1/25/2016'],
@@ -207,7 +218,6 @@ describe('Brush Chart', () => {
         });
 
         describe('margin', () => {
-
             it('should provide margin getter and setter', () => {
                 let previous = brushChart.margin(),
                     expected = { top: 4, right: 4, bottom: 4, left: 4 },
@@ -221,13 +231,12 @@ describe('Brush Chart', () => {
             });
 
             describe('when margins are set partially', () => {
-
                 it('should override the default values', () => {
                     let previous = brushChart.margin(),
                         expected = {
                             ...previous,
                             top: 10,
-                            right: 20
+                            right: 20,
                         },
                         actual;
 
@@ -313,4 +322,3 @@ describe('Brush Chart', () => {
         });
     });
 });
-

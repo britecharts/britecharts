@@ -8,10 +8,9 @@ import { axisTimeCombinations } from './helpers/constants';
 import {
     formatIntegerValue,
     formatDecimalValue,
-    isInteger
+    isInteger,
 } from './helpers/number';
 import { getTextWidth } from './helpers/text';
-
 
 /**
  * Tooltip Component reusable API class that renders a
@@ -51,25 +50,22 @@ import { getTextWidth } from './helpers/text';
  *
  */
 export default function module() {
-
     let margin = {
             top: 2,
             right: 2,
             bottom: 2,
-            left: 2
+            left: 2,
         },
         width = 250,
         height = 45,
-
         title = 'Tooltip title',
         shouldShowDateInTitle = true,
         valueFormat = null,
-
         // tooltip
         tooltip,
         tooltipOffset = {
             y: -55,
-            x: 0
+            x: 0,
         },
         tooltipMaxTopicLength = 170,
         tooltipTextContainer,
@@ -89,38 +85,32 @@ export default function module() {
         // Animations
         mouseChaseDuration = 100,
         ease = easeQuadInOut,
-
         circleYOffset = 8,
-
         colorMap,
         bodyFillColor = '#FFFFFF',
         borderStrokeColor = '#D2D6DF',
         titleFillColor = '#6D717A',
         textFillColor = '#282C35',
         tooltipTextColor = '#000000',
-
         dateLabel = 'date',
         valueLabel = 'value',
         nameLabel = 'name',
         topicLabel = 'topics',
-
         defaultAxisSettings = axisTimeCombinations.DAY_MONTH,
         xAxisValueType = 'date',
         dateFormat = null,
         dateCustomFormat = null,
         topicsOrder = [],
-
         // formats
         numberFormat = null,
         valueFormatter = null,
         monthDayYearFormat = timeFormat('%b %d, %Y'),
         monthDayHourFormat = timeFormat('%b %d, %I %p'),
         locale,
-
-        chartWidth, chartHeight,
+        chartWidth,
+        chartHeight,
         data,
         svg;
-
 
     /**
      * This function creates the graph using the selection as container
@@ -129,7 +119,7 @@ export default function module() {
      * @param {Object} _data The data to attach and generate the chart
      */
     function exports(_selection) {
-        _selection.each(function(_data){
+        _selection.each(function (_data) {
             chartWidth = width - margin.left - margin.right;
             chartHeight = height - margin.top - margin.bottom;
             data = _data;
@@ -144,7 +134,8 @@ export default function module() {
      * @private
      */
     function buildContainerGroups() {
-        var container = svg.append('g')
+        var container = svg
+            .append('g')
             .classed('tooltip-container-group select-disable', true)
             .attr('transform', `translate( ${margin.left}, ${margin.top})`);
 
@@ -166,10 +157,7 @@ export default function module() {
             buildContainerGroups();
             drawTooltip();
         }
-        svg
-            .transition()
-            .attr('width', width)
-            .attr('height', height);
+        svg.transition().attr('width', width).attr('height', height);
 
         // Hidden by default
         exports.hide();
@@ -180,7 +168,7 @@ export default function module() {
      * @return void
      * @private
      */
-    function cleanContent(){
+    function cleanContent() {
         tooltipBody.selectAll('text').remove();
         tooltipBody.selectAll('circle').remove();
     }
@@ -190,8 +178,9 @@ export default function module() {
      * @return void
      * @private
      */
-    function drawTooltip(){
-        tooltipTextContainer = svg.selectAll('.tooltip-group')
+    function drawTooltip() {
+        tooltipTextContainer = svg
+            .selectAll('.tooltip-group')
             .append('g')
             .classed('tooltip-text', true);
 
@@ -268,12 +257,12 @@ export default function module() {
         let tooltipX, tooltipY;
 
         // show tooltip to the right
-        if ((mouseX - tooltipWidth) < 0) {
+        if (mouseX - tooltipWidth < 0) {
             // Tooltip on the right
             tooltipX = tooltipWidth - 185;
         } else {
             // Tooltip on the left
-            tooltipX = -205
+            tooltipX = -205;
         }
 
         if (mouseY) {
@@ -320,7 +309,7 @@ export default function module() {
      * @return void
      * @private
      */
-    function updateTopicContent(topic){
+    function updateTopicContent(topic) {
         let name = topic[nameLabel],
             tooltipRight,
             tooltipLeftText,
@@ -331,7 +320,7 @@ export default function module() {
         tooltipRightText = getValueText(topic);
 
         elementText = tooltipBody
-          .append('text')
+            .append('text')
             .classed('tooltip-left-text', true)
             .attr('dy', '1em')
             .attr('x', ttTextX)
@@ -341,7 +330,7 @@ export default function module() {
             .call(textWrap, tooltipMaxTopicLength, initialTooltipTextXPosition);
 
         tooltipRight = tooltipBody
-          .append('text')
+            .append('text')
             .classed('tooltip-right-text', true)
             .attr('dy', '1em')
             .attr('x', ttTextX)
@@ -352,19 +341,26 @@ export default function module() {
         // IE11 give us sometimes a height of 0 when hovering on top of the vertical marker
         // This hack fixes it for some cases, but it doesn't work in multiline (they won't wrap)
         // Let's remove this once we stop supporting IE11
-        textHeight = elementText.node().getBBox().height ? elementText.node().getBBox().height : textHeight;
+        textHeight = elementText.node().getBBox().height
+            ? elementText.node().getBBox().height
+            : textHeight;
 
         tooltipHeight += textHeight + tooltipTextLinePadding;
         // update the width if it exists because IE renders the elements
         // too slow and cant figure out the width?
-        tooltipRightWidth = tooltipRight.node().getBBox().width ? tooltipRight.node().getBBox().width : tooltipRightWidth;
-        tooltipRight.attr( 'x', tooltipWidth - tooltipRightWidth - 10 - tooltipWidth / 4 );
+        tooltipRightWidth = tooltipRight.node().getBBox().width
+            ? tooltipRight.node().getBBox().width
+            : tooltipRightWidth;
+        tooltipRight.attr(
+            'x',
+            tooltipWidth - tooltipRightWidth - 10 - tooltipWidth / 4
+        );
 
         tooltipBody
             .append('circle')
             .classed('tooltip-circle', true)
             .attr('cx', 23 - tooltipWidth / 4)
-            .attr('cy', (ttTextY + circleYOffset))
+            .attr('cy', ttTextY + circleYOffset)
             .attr('r', 5)
             .style('fill', colorMap[name])
             .style('stroke-width', 1);
@@ -382,20 +378,18 @@ export default function module() {
      * @return void
      * @private
      */
-    function updatePositionAndSize(dataPoint, xPosition, yPosition){
-        let [tooltipX, tooltipY] = getTooltipPosition([xPosition, yPosition])
+    function updatePositionAndSize(dataPoint, xPosition, yPosition) {
+        let [tooltipX, tooltipY] = getTooltipPosition([xPosition, yPosition]);
 
-        tooltip
-            .attr('width', tooltipWidth)
-            .attr('height', tooltipHeight + 10);
+        tooltip.attr('width', tooltipWidth).attr('height', tooltipHeight + 10);
 
-        tooltipTextContainer.transition()
+        tooltipTextContainer
+            .transition()
             .duration(mouseChaseDuration)
             .ease(ease)
             .attr('transform', `translate(${tooltipX}, ${tooltipY})`);
 
-        tooltipDivider
-            .attr('x2', tooltipWidth - 60);
+        tooltipDivider.attr('x2', tooltipWidth - 60);
     }
 
     /**
@@ -426,7 +420,7 @@ export default function module() {
      * @private
      */
     function formatKey(key) {
-        if(xAxisValueType === 'number') {
+        if (xAxisValueType === 'number') {
             return Number(key);
         }
 
@@ -442,19 +436,33 @@ export default function module() {
     function formatDate(date) {
         let settings = dateFormat || defaultAxisSettings;
         let format = null;
-        let localeOptions = {month:'short', day:'numeric'};
+        let localeOptions = { month: 'short', day: 'numeric' };
 
-        if (settings === axisTimeCombinations.DAY_MONTH || settings === axisTimeCombinations.MONTH_YEAR) {
+        if (
+            settings === axisTimeCombinations.DAY_MONTH ||
+            settings === axisTimeCombinations.MONTH_YEAR
+        ) {
             format = monthDayYearFormat;
             localeOptions.year = 'numeric';
-        } else if (settings === axisTimeCombinations.HOUR_DAY || settings === axisTimeCombinations.MINUTE_HOUR) {
+        } else if (
+            settings === axisTimeCombinations.HOUR_DAY ||
+            settings === axisTimeCombinations.MINUTE_HOUR
+        ) {
             format = monthDayHourFormat;
             localeOptions.hour = 'numeric';
-        } else if (settings === axisTimeCombinations.CUSTOM && typeof dateCustomFormat === 'string') {
+        } else if (
+            settings === axisTimeCombinations.CUSTOM &&
+            typeof dateCustomFormat === 'string'
+        ) {
             format = timeFormat(dateCustomFormat);
         }
 
-        if (locale && ((typeof Intl !== 'undefined') && (typeof Intl === 'object' && Intl.DateTimeFormat))) {
+        if (
+            locale &&
+            typeof Intl !== 'undefined' &&
+            typeof Intl === 'object' &&
+            Intl.DateTimeFormat
+        ) {
             let f = Intl.DateTimeFormat(locale, localeOptions);
 
             return f.format(date);
@@ -470,8 +478,10 @@ export default function module() {
      * @return {Object[]}           sorted topics object
      * @private
      */
-    function _sortByTopicsOrder(topics, order=topicsOrder) {
-        return order.map((orderName) => topics.filter(({name}) => name === orderName)[0]);
+    function _sortByTopicsOrder(topics, order = topicsOrder) {
+        return order.map(
+            (orderName) => topics.filter(({ name }) => name === orderName)[0]
+        );
     }
 
     /**
@@ -482,7 +492,7 @@ export default function module() {
      */
     function _sortByAlpha(topics) {
         return topics
-            .map(d => d)
+            .map((d) => d)
             .sort((a, b) => {
                 if (a.name > b.name) return 1;
                 if (a.name === b.name) return 0;
@@ -510,15 +520,8 @@ export default function module() {
      *
      */
     function textWrap(text, width, xpos = 0) {
-        text.each(function() {
-            var words,
-                word,
-                line,
-                lineNumber,
-                lineHeight,
-                y,
-                dy,
-                tspan;
+        text.each(function () {
+            var words, word, line, lineNumber, lineHeight, y, dy, tspan;
 
             text = select(this);
 
@@ -540,7 +543,11 @@ export default function module() {
                 tspan.text(line.join(' '));
 
                 // fixes for IE wrap text issue
-                const textWidth = getTextWidth(line.join(' '), 16, 'Karla, sans-serif');
+                const textWidth = getTextWidth(
+                    line.join(' '),
+                    16,
+                    'Karla, sans-serif'
+                );
 
                 if (textWidth > width) {
                     line.pop();
@@ -548,7 +555,8 @@ export default function module() {
 
                     if (lineNumber < entryLineLimit - 1) {
                         line = [word];
-                        tspan = text.append('tspan')
+                        tspan = text
+                            .append('tspan')
                             .attr('x', xpos)
                             .attr('y', y)
                             .attr('dy', ++lineNumber * lineHeight + dy + 'em')
@@ -565,7 +573,7 @@ export default function module() {
      * @return void
      * @private
      */
-    function updateContent(dataPoint){
+    function updateContent(dataPoint) {
         var topics = dataPoint[topicLabel];
 
         // sort order by topicsOrder array if passed
@@ -610,7 +618,7 @@ export default function module() {
      * @return {String | module}  Current format or module to chain calls
      * @public
      */
-    exports.dateFormat = function(_x) {
+    exports.dateFormat = function (_x) {
         if (!arguments.length) {
             return dateFormat || defaultAxisSettings;
         }
@@ -627,7 +635,7 @@ export default function module() {
      * @example tooltip.dateFormat(tooltip.axisTimeCombinations.CUSTOM);
      * tooltip.dateCustomFormat('%H:%M %p')
      */
-    exports.dateCustomFormat = function(_x) {
+    exports.dateCustomFormat = function (_x) {
         if (!arguments.length) {
             return dateCustomFormat;
         }
@@ -642,7 +650,7 @@ export default function module() {
      * @return {String | module}   Current dateLabel or Chart module to chain calls
      * @public
      */
-    exports.dateLabel = function(_x) {
+    exports.dateLabel = function (_x) {
         if (!arguments.length) {
             return dateLabel;
         }
@@ -656,7 +664,7 @@ export default function module() {
      * @return {module} Tooltip module to chain calls
      * @public
      */
-    exports.hide = function() {
+    exports.hide = function () {
         svg.style('visibility', 'hidden');
 
         return this;
@@ -668,7 +676,7 @@ export default function module() {
      * @return {String | module}    Current locale or module to chain calls
      * @public
      */
-    exports.locale = function(_x) {
+    exports.locale = function (_x) {
         if (!arguments.length) {
             return locale;
         }
@@ -683,7 +691,7 @@ export default function module() {
      * @return {String | module}    Current nameLabel or Chart module to chain calls
      * @public
      */
-    exports.nameLabel = function(_x) {
+    exports.nameLabel = function (_x) {
         if (!arguments.length) {
             return nameLabel;
         }
@@ -698,14 +706,14 @@ export default function module() {
      * @return {string | module} Current numberFormat or Chart module to chain calls
      * @public
      */
-    exports.numberFormat = function(_x) {
+    exports.numberFormat = function (_x) {
         if (!arguments.length) {
             return numberFormat;
         }
         numberFormat = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets the formatter function for the value displayed on the tooltip.
@@ -715,14 +723,14 @@ export default function module() {
      * @public
      * @example tooltipChart.valueFormatter(value => value.toString().length.toString())
      */
-    exports.valueFormatter = function(_x) {
+    exports.valueFormatter = function (_x) {
         if (!arguments.length) {
             return valueFormatter;
         }
         valueFormatter = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets shouldShowDateInTitle
@@ -730,7 +738,7 @@ export default function module() {
      * @return {Boolean | module}    Current shouldShowDateInTitle or Chart module to chain calls
      * @public
      */
-    exports.shouldShowDateInTitle = function(_x) {
+    exports.shouldShowDateInTitle = function (_x) {
         if (!arguments.length) {
             return shouldShowDateInTitle;
         }
@@ -744,7 +752,7 @@ export default function module() {
      * @return {module} Tooltip module to chain calls
      * @public
      */
-    exports.show = function() {
+    exports.show = function () {
         svg.style('visibility', 'visible');
 
         return this;
@@ -756,7 +764,7 @@ export default function module() {
      * @return {String | module}   Current title or module to chain calls
      * @public
      */
-    exports.title = function(_x) {
+    exports.title = function (_x) {
         if (!arguments.length) {
             return title;
         }
@@ -771,7 +779,7 @@ export default function module() {
      * @return {Object | module}       Current tooltipOffset
      * @public
      */
-    exports.tooltipOffset = function(_x) {
+    exports.tooltipOffset = function (_x) {
         if (!arguments.length) {
             return tooltipOffset;
         }
@@ -786,7 +794,7 @@ export default function module() {
      * @return {String[] | module}    Current overrideOrder or Chart module to chain calls
      * @public
      */
-    exports.topicsOrder = function(_x) {
+    exports.topicsOrder = function (_x) {
         if (!arguments.length) {
             return topicsOrder;
         }
@@ -801,7 +809,7 @@ export default function module() {
      * @return {String | module}   Current topicLabel or Chart module to chain calls
      * @public
      */
-    exports.topicLabel = function(_x) {
+    exports.topicLabel = function (_x) {
         if (!arguments.length) {
             return topicLabel;
         }
@@ -818,7 +826,12 @@ export default function module() {
      * @return {Module}                 Tooltip module to chain calls
      * @public
      */
-    exports.update = function(dataPoint, colorMapping, xPosition, yPosition = null) {
+    exports.update = function (
+        dataPoint,
+        colorMapping,
+        xPosition,
+        yPosition = null
+    ) {
         colorMap = colorMapping;
         updateTooltip(dataPoint, xPosition, yPosition);
 
@@ -831,7 +844,7 @@ export default function module() {
      * @return {String | module}   Current valueLabel or Chart module to chain calls
      * @public
      */
-    exports.valueLabel = function(_x) {
+    exports.valueLabel = function (_x) {
         if (!arguments.length) {
             return valueLabel;
         }
@@ -847,7 +860,7 @@ export default function module() {
      * @return {String | module}        Current keyType or Chart module to chain calls
      * @public
      */
-    exports.xAxisValueType = function(_x) {
+    exports.xAxisValueType = function (_x) {
         if (!arguments.length) {
             return xAxisValueType;
         }
@@ -857,5 +870,4 @@ export default function module() {
     };
 
     return exports;
-};
-
+}

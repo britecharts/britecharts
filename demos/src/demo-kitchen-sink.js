@@ -12,8 +12,6 @@ const loadScript = (name, cb) => {
     cb && cb();
 };
 
-
-
-window.onload = function(){
+window.onload = function () {
     demoPaths.demos.forEach((path) => loadScript(path));
-}
+};

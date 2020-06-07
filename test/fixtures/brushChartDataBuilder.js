@@ -2,26 +2,24 @@ import _ from 'underscore';
 import jsonShortData from '../json/brushDataBis.json';
 import jsonSimpleData from '../json/brushData.json';
 
-
 export function BrushDataBuilder(config) {
     this.Klass = BrushDataBuilder;
 
     this.config = _.defaults({}, config);
 
-    this.withSimpleData = function(){
+    this.withSimpleData = function () {
         var attributes = _.extend({}, this.config, jsonSimpleData);
 
         return new this.Klass(attributes);
     };
 
-    this.withShortData = function(){
+    this.withShortData = function () {
         var attributes = _.extend({}, this.config, jsonShortData);
 
         return new this.Klass(attributes);
     };
 
-    this.build = function() {
+    this.build = function () {
         return this.config.data;
     };
 }
-

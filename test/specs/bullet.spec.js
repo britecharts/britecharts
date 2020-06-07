@@ -3,19 +3,17 @@ import * as d3 from 'd3';
 import chart from './../../src/charts/bullet';
 import { BulletChartDataBuilder } from 'bulletChartDataBuilder';
 
-
 const aTestDataSet = () => new BulletChartDataBuilder();
 const buildDataSet = (dataSetName) => {
-    return aTestDataSet()
-        [dataSetName]()
-        .build();
+    return aTestDataSet()[dataSetName]().build();
 };
 
 describe('Bullet Chart', () => {
     let bulletChart, dataset, containerFixture, f, dataPoint;
 
     beforeEach(() => {
-        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+        const fixture =
+            '<div id="fixture"><div class="test-container"></div></div>';
         dataset = buildDataSet('withCpuData');
         bulletChart = chart();
         dataPoint = dataset[0];
@@ -32,7 +30,6 @@ describe('Bullet Chart', () => {
     });
 
     describe('Render', () => {
-
         it('should render a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.bullet-chart').size();
@@ -57,14 +54,18 @@ describe('Bullet Chart', () => {
 
             it('should render metadata group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.metadata-group').size();
+                const actual = containerFixture
+                    .select('.metadata-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should render grid lines group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.grid-lines-group').size();
+                const actual = containerFixture
+                    .select('.grid-lines-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -85,13 +86,17 @@ describe('Bullet Chart', () => {
         });
 
         describe('measures', () => {
-
             it('should have proper attributes', () => {
                 const expectedClass = 'measure m';
-                const measureBars = containerFixture.selectAll('rect.measure').nodes();
+                const measureBars = containerFixture
+                    .selectAll('rect.measure')
+                    .nodes();
 
                 measureBars.forEach((measureBar, i) => {
-                    expect(measureBar).toHaveAttr('class', `${expectedClass}${i}`);
+                    expect(measureBar).toHaveAttr(
+                        'class',
+                        `${expectedClass}${i}`
+                    );
                     expect(measureBar).toHaveAttr('fill');
                     expect(measureBar).toHaveAttr('x');
                     expect(measureBar).toHaveAttr('y');
@@ -102,13 +107,17 @@ describe('Bullet Chart', () => {
         });
 
         describe('ranges', () => {
-
             it('should have proper attributes', () => {
                 const expectedClass = 'range r';
-                const rangeBars = containerFixture.selectAll('rect.range').nodes();
+                const rangeBars = containerFixture
+                    .selectAll('rect.range')
+                    .nodes();
 
                 rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar).toHaveAttr('class', `${expectedClass}${i}`);
+                    expect(rangeBar).toHaveAttr(
+                        'class',
+                        `${expectedClass}${i}`
+                    );
                     expect(rangeBar).toHaveAttr('opacity');
                     expect(rangeBar).toHaveAttr('x');
                     expect(rangeBar).toHaveAttr('width');
@@ -119,13 +128,17 @@ describe('Bullet Chart', () => {
         });
 
         describe('markers', () => {
-
             it('should have proper attributes', () => {
                 const expectedClass = 'marker m';
-                const markerLines = containerFixture.selectAll('line.marker').nodes();
+                const markerLines = containerFixture
+                    .selectAll('line.marker')
+                    .nodes();
 
                 markerLines.forEach((markerLine, i) => {
-                    expect(markerLine).toHaveAttr('class', `${expectedClass}${i}`);
+                    expect(markerLine).toHaveAttr(
+                        'class',
+                        `${expectedClass}${i}`
+                    );
                     expect(markerLine).toHaveAttr('opacity');
                     expect(markerLine).toHaveAttr('x');
                     expect(markerLine).toHaveAttr('width');
@@ -139,10 +152,16 @@ describe('Bullet Chart', () => {
 
             it('sets correct default range for range bars', () => {
                 const expectedStartOpacity = bulletChart.startMaxRangeOpacity();
-                const rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
+                const rangeBars = containerFixture
+                    .selectAll('rect.range')
+                    .nodes()
+                    .reverse();
 
                 rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartOpacity - (i * diff)}`);
+                    expect(rangeBar).toHaveAttr(
+                        'opacity',
+                        `${expectedStartOpacity - i * diff}`
+                    );
                 });
             });
 
@@ -151,10 +170,16 @@ describe('Bullet Chart', () => {
 
                 bulletChart.startMaxRangeOpacity(expectedStartMaxOpacity);
                 containerFixture.datum(dataset[1]).call(bulletChart);
-                const rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
+                const rangeBars = containerFixture
+                    .selectAll('rect.range')
+                    .nodes()
+                    .reverse();
 
                 rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartMaxOpacity - (i * diff)}`);
+                    expect(rangeBar).toHaveAttr(
+                        'opacity',
+                        `${expectedStartMaxOpacity - i * diff}`
+                    );
                 });
             });
 
@@ -163,27 +188,41 @@ describe('Bullet Chart', () => {
 
                 bulletChart.startMaxRangeOpacity(expectedStartMaxOpacity);
                 containerFixture.datum(dataset[1]).call(bulletChart);
-                const rangeBars = containerFixture.selectAll('rect.range').nodes().reverse();
+                const rangeBars = containerFixture
+                    .selectAll('rect.range')
+                    .nodes()
+                    .reverse();
 
                 rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar).toHaveAttr('opacity', `${expectedStartMaxOpacity - (i * diff)}`);
+                    expect(rangeBar).toHaveAttr(
+                        'opacity',
+                        `${expectedStartMaxOpacity - i * diff}`
+                    );
                 });
             });
         });
 
         describe('when custom colorSchema is passed', () => {
-
             it('should assign first two indexed colors for range and measure/markers in order', () => {
                 const expectedRangeColor = '#bbb';
                 const expectedMeasureColor = '#ccc';
                 const expectedMarkerColor = expectedMeasureColor;
 
-                bulletChart.colorSchema([expectedRangeColor, expectedMeasureColor]);
+                bulletChart.colorSchema([
+                    expectedRangeColor,
+                    expectedMeasureColor,
+                ]);
                 containerFixture.datum(dataset[1]).call(bulletChart);
 
-                const rangeBar = containerFixture.selectAll('rect.range').node();
-                const measureBar = containerFixture.selectAll('rect.measure').node();
-                const markerLine = containerFixture.selectAll('line.marker-line').node();
+                const rangeBar = containerFixture
+                    .selectAll('rect.range')
+                    .node();
+                const measureBar = containerFixture
+                    .selectAll('rect.measure')
+                    .node();
+                const markerLine = containerFixture
+                    .selectAll('line.marker-line')
+                    .node();
 
                 expect(rangeBar).toHaveAttr('fill', expectedRangeColor);
                 expect(measureBar).toHaveAttr('fill', expectedMeasureColor);
@@ -192,24 +231,26 @@ describe('Bullet Chart', () => {
         });
 
         describe('chart components', () => {
-
             it('should render ranges', () => {
                 let expected = 3;
-                let actual = containerFixture.selectAll('rect.range').nodes().length;
+                let actual = containerFixture.selectAll('rect.range').nodes()
+                    .length;
 
                 expect(actual).toEqual(expected);
             });
 
             it('should render measures', () => {
                 let expected = 2;
-                let actual = containerFixture.selectAll('rect.measure').nodes().length;
+                let actual = containerFixture.selectAll('rect.measure').nodes()
+                    .length;
 
                 expect(actual).toEqual(expected);
             });
 
             it('should render grid lines group', () => {
                 let expected = 1;
-                let actual = containerFixture.selectAll('.marker-line').nodes().length;
+                let actual = containerFixture.selectAll('.marker-line').nodes()
+                    .length;
 
                 expect(actual).toEqual(expected);
             });
@@ -217,7 +258,6 @@ describe('Bullet Chart', () => {
     });
 
     describe('API', () => {
-
         it('should provide an aspect ratio getter and setter', () => {
             let previous = bulletChart.aspectRatio(),
                 expected = 600,
@@ -308,7 +348,7 @@ describe('Bullet Chart', () => {
 
         it('should provide margin getter and setter', () => {
             let previous = bulletChart.margin(),
-                expected = {top: 4, right: 4, bottom: 4, left: 4},
+                expected = { top: 4, right: 4, bottom: 4, left: 4 },
                 actual;
 
             bulletChart.margin(expected);

@@ -4,12 +4,9 @@ import * as d3 from 'd3';
 import sparkline from 'sparkline';
 import { SparklineDataBuilder } from 'sparklineDataBuilder';
 
-
 const aTestDataSet = () => new SparklineDataBuilder();
 const buildDataSet = (dataSetName) => {
-    return aTestDataSet()
-        [dataSetName]()
-        .build();
+    return aTestDataSet()[dataSetName]().build();
 };
 const hasIdWithPrefix = (element, prefix) => element.id.match(prefix) !== null;
 const hasClass = (element, className) => {
@@ -20,7 +17,8 @@ describe('Sparkline Chart', () => {
     let dataset, containerFixture, f, sparklineChart;
 
     beforeEach(() => {
-        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+        const fixture =
+            '<div id="fixture"><div class="test-container"></div></div>';
 
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -38,7 +36,6 @@ describe('Sparkline Chart', () => {
     });
 
     describe('Render', () => {
-
         it('should show a sparkline chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.line').size();
@@ -49,7 +46,9 @@ describe('Sparkline Chart', () => {
         describe('groups', () => {
             it('should create a container-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.container-group').size();
+                const actual = containerFixture
+                    .select('g.container-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -70,7 +69,9 @@ describe('Sparkline Chart', () => {
 
             it('should create a metadata-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.metadata-group').size();
+                const actual = containerFixture
+                    .select('g.metadata-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -111,11 +112,12 @@ describe('Sparkline Chart', () => {
         });
 
         describe('when the title text is set', () => {
-
             it('should create a text node with proper attributes', () => {
                 sparklineChart.titleText('text');
                 containerFixture.datum(dataset.data).call(sparklineChart);
-                const titleTextNode = containerFixture.selectAll('.sparkline-text').node();
+                const titleTextNode = containerFixture
+                    .selectAll('.sparkline-text')
+                    .node();
 
                 expect(titleTextNode).toBeInDOM();
                 expect(titleTextNode).toHaveAttr('x');
@@ -131,14 +133,14 @@ describe('Sparkline Chart', () => {
 
                 sparklineChart.titleText(expected);
                 containerFixture.datum(dataset.data).call(sparklineChart);
-                actual = containerFixture.selectAll('.sparkline-text').node().textContent;
+                actual = containerFixture.selectAll('.sparkline-text').node()
+                    .textContent;
 
                 expect(actual).toEqual(expected);
             });
         });
 
         describe('when reloading with a different dataset', () => {
-
             it('should render in the same svg', () => {
                 const expected = 1;
                 const newDataset = buildDataSet('withLowValues');
@@ -167,7 +169,9 @@ describe('Sparkline Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset.data).call(sparklineChart);
-                actual = containerFixture.selectAll('.sparkline .sparkline-area').size();
+                actual = containerFixture
+                    .selectAll('.sparkline .sparkline-area')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -179,14 +183,15 @@ describe('Sparkline Chart', () => {
 
                 containerFixture.datum(newDataset.data).call(sparklineChart);
 
-                actual = containerFixture.selectAll('.sparkline .sparkline-circle').size();
+                actual = containerFixture
+                    .selectAll('.sparkline .sparkline-circle')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
         });
 
         describe('when is animated', () => {
-
             it('should create a masking clip', () => {
                 const expected = 1;
 
@@ -203,7 +208,6 @@ describe('Sparkline Chart', () => {
     });
 
     describe('API', () => {
-
         it('should provide an areaGradient getter and setter', () => {
             let defaultGradient = sparklineChart.areaGradient(),
                 testGradient = ['#ffffff', '#fafefc'],
@@ -217,7 +221,6 @@ describe('Sparkline Chart', () => {
         });
 
         describe('export chart', () => {
-
             it('should have exportChart defined', () => {
                 expect(sparklineChart.exportChart).toBeDefined();
             });
@@ -284,7 +287,6 @@ describe('Sparkline Chart', () => {
         });
 
         describe('loadingState', () => {
-
             it('should provide a loading state getter and setter', () => {
                 let previous = sparklineChart.loadingState(),
                     expected = '<svg></svg>',
@@ -303,7 +305,9 @@ describe('Sparkline Chart', () => {
                         actual;
 
                     sparklineChart = sparkline();
-                    actual = sparklineChart.loadingState().match('stacked-area-load-state').length;
+                    actual = sparklineChart
+                        .loadingState()
+                        .match('stacked-area-load-state').length;
 
                     expect(actual).toEqual(expected);
                 });
@@ -336,13 +340,12 @@ describe('Sparkline Chart', () => {
             });
 
             describe('when margins are set partially', function () {
-
                 it('should override the default values', () => {
                     let previous = sparklineChart.margin(),
                         expected = {
                             ...previous,
                             top: 10,
-                            right: 20
+                            right: 20,
                         },
                         actual;
 
@@ -357,8 +360,8 @@ describe('Sparkline Chart', () => {
 
         it('should provide a titleText getter and setter', () => {
             let defaultTitleText = sparklineChart.titleText(),
-            testTitleText = 'Budget Growth',
-            newTitleText;
+                testTitleText = 'Budget Growth',
+                newTitleText;
 
             sparklineChart.titleText(testTitleText);
             newTitleText = sparklineChart.titleText();
@@ -369,14 +372,14 @@ describe('Sparkline Chart', () => {
 
         it('should provide a titleTextStyle getter and setter', () => {
             let defaultTitleTextStyle = sparklineChart.titleTextStyle(),
-            testTitleTextStyle = {
-                'font-family': 'Verdana',
-                'font-size': '32px',
-                'font-weight': 200,
-                'font-style': 'italic',
-                'fill': 'green',
-            },
-            newTitleTextStyle;
+                testTitleTextStyle = {
+                    'font-family': 'Verdana',
+                    'font-size': '32px',
+                    'font-weight': 200,
+                    'font-style': 'italic',
+                    fill: 'green',
+                },
+                newTitleTextStyle;
 
             sparklineChart.titleTextStyle(testTitleTextStyle);
             newTitleTextStyle = sparklineChart.titleTextStyle();
@@ -398,4 +401,3 @@ describe('Sparkline Chart', () => {
         });
     });
 });
-

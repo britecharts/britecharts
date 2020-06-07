@@ -1,7 +1,13 @@
 import * as d3Format from 'd3-format';
 
-const REQUIRED_LOCALE_DEFINITION_KEYS = ['decimal', 'thousands', 'grouping', 'currency'];
-const WRONG_LOCALE_OBJECT_MESSAGE = 'Please pass in a valid locale object definition';
+const REQUIRED_LOCALE_DEFINITION_KEYS = [
+    'decimal',
+    'thousands',
+    'grouping',
+    'currency',
+];
+const WRONG_LOCALE_OBJECT_MESSAGE =
+    'Please pass in a valid locale object definition';
 
 /**
  * Sets the given locale as the new default locale through d3-format's formatDefaultLocale
@@ -15,7 +21,7 @@ export const setDefaultLocale = (locale) => {
     } else {
         throw new Error(WRONG_LOCALE_OBJECT_MESSAGE);
     }
-}
+};
 
 /**
  * Checks if a locale definition object contains the required keys
@@ -25,6 +31,8 @@ export const setDefaultLocale = (locale) => {
 const isValidLocaleDefinition = (locale) => {
     return (
         typeof locale == 'object' &&
-        REQUIRED_LOCALE_DEFINITION_KEYS.every(localeKey => locale.hasOwnProperty(localeKey))
+        REQUIRED_LOCALE_DEFINITION_KEYS.every((localeKey) =>
+            locale.hasOwnProperty(localeKey)
+        )
     );
-}
+};

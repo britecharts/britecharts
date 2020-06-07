@@ -5,12 +5,9 @@ import * as d3 from 'd3';
 import stackedArea from 'stacked-area';
 import { StackedAreaDataBuilder } from 'stackedAreaDataBuilder';
 
-
 const aTestDataSet = () => new StackedAreaDataBuilder();
 const buildDataSet = (dataSetName) => {
-    return aTestDataSet()
-        [dataSetName]()
-        .build();
+    return aTestDataSet()[dataSetName]().build();
 };
 const hasClass = (element, className) => {
     return _.contains(element.node().classList, className);
@@ -20,7 +17,8 @@ describe('Stacked Area Chart', () => {
     let dataset, containerFixture, f, stackedAreaChart;
 
     beforeEach(() => {
-        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+        const fixture =
+            '<div id="fixture"><div class="test-container"></div></div>';
 
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -40,7 +38,6 @@ describe('Stacked Area Chart', () => {
     });
 
     describe('Render', () => {
-
         it('should show a stacked area chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.stacked-area').size();
@@ -51,7 +48,9 @@ describe('Stacked Area Chart', () => {
         describe('groups', () => {
             it('should create a container-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.container-group').size();
+                const actual = containerFixture
+                    .select('g.container-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -79,37 +78,43 @@ describe('Stacked Area Chart', () => {
 
             it('should create a grid-lines-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.grid-lines-group').size();
+                const actual = containerFixture
+                    .select('g.grid-lines-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should create a metadata-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.metadata-group').size();
+                const actual = containerFixture
+                    .select('g.metadata-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
         });
 
         describe('grid', function () {
-
             it('should not draw horizontal grid line', () => {
                 const expected = 0;
-                const actual = containerFixture.select('.horizontal-grid-line').size();
+                const actual = containerFixture
+                    .select('.horizontal-grid-line')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should not draw vertical grid line', () => {
                 const expected = 0;
-                const actual = containerFixture.select('.vertical-grid-line').size();
+                const actual = containerFixture
+                    .select('.vertical-grid-line')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             describe('when grid is horizontal', function () {
-
                 beforeEach(function () {
                     dataset = aTestDataSet().withReportData().build();
                     stackedAreaChart = stackedArea()
@@ -117,29 +122,42 @@ describe('Stacked Area Chart', () => {
                         .valueLabel('views')
                         .dateLabel('dateUTC');
 
-                    containerFixture = d3.select('.test-container').append('svg');
+                    containerFixture = d3
+                        .select('.test-container')
+                        .append('svg');
                     containerFixture.datum(dataset.data).call(stackedAreaChart);
                 });
 
                 it('should render the horizontal grid lines', () => {
-                    expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
-                    expect(containerFixture.select('.vertical-grid-line').empty()).toBeTruthy();
+                    expect(
+                        containerFixture.select('.horizontal-grid-line').empty()
+                    ).toBeFalsy();
+                    expect(
+                        containerFixture.select('.vertical-grid-line').empty()
+                    ).toBeTruthy();
                 });
 
                 it('0-axis is NOT highlighted with an additional class', () => {
-                    expect(containerFixture.select('.horizontal-grid-line--highlighted').empty()).toBeTruthy();
+                    expect(
+                        containerFixture
+                            .select('.horizontal-grid-line--highlighted')
+                            .empty()
+                    ).toBeTruthy();
                 });
 
                 describe('when x-axis value type is number', () => {
-
                     beforeEach(function () {
                         dataset = aTestDataSet().withNumericKeys().build();
                         stackedAreaChart = stackedArea()
                             .xAxisValueType('number')
                             .dateLabel('date');
 
-                        containerFixture = d3.select('.test-container').append('svg');
-                        containerFixture.datum(dataset.data).call(stackedAreaChart);
+                        containerFixture = d3
+                            .select('.test-container')
+                            .append('svg');
+                        containerFixture
+                            .datum(dataset.data)
+                            .call(stackedAreaChart);
                     });
 
                     it('the highest X-axis value is a number', () => {
@@ -150,7 +168,6 @@ describe('Stacked Area Chart', () => {
                 });
 
                 describe('when x-axis value type is number and scale is logarithmic', () => {
-
                     beforeEach(function () {
                         dataset = aTestDataSet().withNumericKeys().build();
                         stackedAreaChart = stackedArea()
@@ -158,8 +175,12 @@ describe('Stacked Area Chart', () => {
                             .xAxisScale('logarithmic')
                             .dateLabel('date');
 
-                        containerFixture = d3.select('.test-container').append('svg');
-                        containerFixture.datum(dataset.data).call(stackedAreaChart);
+                        containerFixture = d3
+                            .select('.test-container')
+                            .append('svg');
+                        containerFixture
+                            .datum(dataset.data)
+                            .call(stackedAreaChart);
                     });
 
                     it('the highest X-axis value is a logarithmic number', () => {
@@ -171,7 +192,6 @@ describe('Stacked Area Chart', () => {
             });
 
             describe('when grid is vertical', function () {
-
                 beforeEach(function () {
                     dataset = aTestDataSet().withReportData().build();
                     stackedAreaChart = stackedArea()
@@ -179,18 +199,23 @@ describe('Stacked Area Chart', () => {
                         .valueLabel('views')
                         .dateLabel('dateUTC');
 
-                    containerFixture = d3.select('.test-container').append('svg');
+                    containerFixture = d3
+                        .select('.test-container')
+                        .append('svg');
                     containerFixture.datum(dataset.data).call(stackedAreaChart);
                 });
 
                 it('should render the vertical grid lines', () => {
-                    expect(containerFixture.select('.horizontal-grid-line').empty()).toBeTruthy();
-                    expect(containerFixture.select('.vertical-grid-line').empty()).toBeFalsy();
+                    expect(
+                        containerFixture.select('.horizontal-grid-line').empty()
+                    ).toBeTruthy();
+                    expect(
+                        containerFixture.select('.vertical-grid-line').empty()
+                    ).toBeFalsy();
                 });
             });
 
             describe('when grid is full', function () {
-
                 beforeEach(function () {
                     dataset = aTestDataSet().withReportData().build();
                     stackedAreaChart = stackedArea()
@@ -198,13 +223,19 @@ describe('Stacked Area Chart', () => {
                         .valueLabel('views')
                         .dateLabel('dateUTC');
 
-                    containerFixture = d3.select('.test-container').append('svg');
+                    containerFixture = d3
+                        .select('.test-container')
+                        .append('svg');
                     containerFixture.datum(dataset.data).call(stackedAreaChart);
                 });
 
                 it('should render the vertical grid lines', () => {
-                    expect(containerFixture.select('.horizontal-grid-line').empty()).toBeFalsy();
-                    expect(containerFixture.select('.vertical-grid-line').empty()).toBeFalsy();
+                    expect(
+                        containerFixture.select('.horizontal-grid-line').empty()
+                    ).toBeFalsy();
+                    expect(
+                        containerFixture.select('.vertical-grid-line').empty()
+                    ).toBeFalsy();
                 });
             });
         });
@@ -212,21 +243,27 @@ describe('Stacked Area Chart', () => {
         describe('axis', () => {
             it('should draw an X axis', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.x-axis-group .axis.x').size();
+                const actual = containerFixture
+                    .select('.x-axis-group .axis.x')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should draw a month X axis', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.x-axis-group .month-axis').size();
+                const actual = containerFixture
+                    .select('.x-axis-group .month-axis')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should draw an Y axis', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.y-axis-group.axis').size();
+                const actual = containerFixture
+                    .select('.y-axis-group.axis')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -236,8 +273,7 @@ describe('Stacked Area Chart', () => {
             const expected = _.chain(dataset.data)
                 .pluck('name')
                 .unique()
-                .value()
-                .length;
+                .value().length;
             const actual = containerFixture.selectAll('.layer').size();
 
             expect(actual).toEqual(expected);
@@ -247,26 +283,28 @@ describe('Stacked Area Chart', () => {
             const expected = _.chain(dataset.data)
                 .pluck('name')
                 .unique()
-                .value()
-                .length;
+                .value().length;
             const actual = containerFixture.selectAll('.area-outline').size();
 
             expect(actual).toEqual(expected);
         });
 
         it('should render areas and areas outlines that follow the same path', () => {
-            const layerContainerNodes = containerFixture.selectAll('.layer-container').nodes();
+            const layerContainerNodes = containerFixture
+                .selectAll('.layer-container')
+                .nodes();
 
-            layerContainerNodes.forEach(layerContainerNode => {
-                const areaPath = layerContainerNode.childNodes[0].attributes.d.value;
-                const areaOutlinePath = layerContainerNode.childNodes[1].attributes.d.value;
+            layerContainerNodes.forEach((layerContainerNode) => {
+                const areaPath =
+                    layerContainerNode.childNodes[0].attributes.d.value;
+                const areaOutlinePath =
+                    layerContainerNode.childNodes[1].attributes.d.value;
 
                 expect(areaPath).toContain(areaOutlinePath);
             });
         });
 
         describe('overlay', () => {
-
             it('should render an overlay to trigger the hover effect', () => {
                 const expected = 1;
                 const actual = containerFixture.select('.overlay').size();
@@ -277,7 +315,9 @@ describe('Stacked Area Chart', () => {
 
         it('should render a vertical marker container', () => {
             const expected = 1;
-            const actual = containerFixture.select('.vertical-marker-container').size();
+            const actual = containerFixture
+                .select('.vertical-marker-container')
+                .size();
 
             expect(actual).toEqual(expected);
         });
@@ -290,11 +330,12 @@ describe('Stacked Area Chart', () => {
         });
 
         it('should be able to render even when data is length 0', () => {
-            expect(() => containerFixture.datum([]).call(stackedAreaChart)).not.toThrow();
+            expect(() =>
+                containerFixture.datum([]).call(stackedAreaChart)
+            ).not.toThrow();
         });
 
         describe('stacked area outline', () => {
-
             it('should not render outline if hasOutline is false', () => {
                 const expected = 1;
                 const newDataset = buildDataSet('with3Sources');
@@ -308,7 +349,6 @@ describe('Stacked Area Chart', () => {
         });
 
         describe('when reloading with a three sources dataset', () => {
-
             it('should render in the same svg', function () {
                 const expected = 'none';
                 let actual;
@@ -328,7 +368,9 @@ describe('Stacked Area Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset.data).call(stackedAreaChart);
-                actual = containerFixture.selectAll('.stacked-area .layer').size();
+                actual = containerFixture
+                    .selectAll('.stacked-area .layer')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -339,14 +381,15 @@ describe('Stacked Area Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset.data).call(stackedAreaChart);
-                actual = containerFixture.selectAll('.stacked-area .area-outline').size();
+                actual = containerFixture
+                    .selectAll('.stacked-area .area-outline')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
         });
 
         describe('when has negative values', () => {
-
             beforeEach(function () {
                 dataset = aTestDataSet().withNegativeValues().build();
                 stackedAreaChart = stackedArea()
@@ -365,12 +408,15 @@ describe('Stacked Area Chart', () => {
             });
 
             it('0-axis is highlighted with an additional class', () => {
-                expect(containerFixture.select('.horizontal-grid-line--highlighted').empty()).toBeFalsy();
+                expect(
+                    containerFixture
+                        .select('.horizontal-grid-line--highlighted')
+                        .empty()
+                ).toBeFalsy();
             });
         });
 
         describe('when has a modified y-axis baseline', () => {
-
             describe('and baseline is smaller', () => {
                 beforeEach(function () {
                     dataset = aTestDataSet().withNegativeValues().build();
@@ -380,12 +426,16 @@ describe('Stacked Area Chart', () => {
                         .dateLabel('date')
                         .yAxisBaseline(-30);
 
-                    containerFixture = d3.select('.test-container').append('svg');
+                    containerFixture = d3
+                        .select('.test-container')
+                        .append('svg');
                     containerFixture.datum(dataset.data).call(stackedAreaChart);
                 });
 
                 it('the lowest Y-axis value is changing in respect to the y-axis baseline', () => {
-                    let firstText = containerFixture.selectAll('.y-axis-group').select('g.tick');
+                    let firstText = containerFixture
+                        .selectAll('.y-axis-group')
+                        .select('g.tick');
                     expect(firstText.text()).toEqual('-30');
                 });
             });
@@ -399,35 +449,43 @@ describe('Stacked Area Chart', () => {
                         .dateLabel('date')
                         .yAxisBaseline(100);
 
-                    containerFixture = d3.select('.test-container').append('svg');
+                    containerFixture = d3
+                        .select('.test-container')
+                        .append('svg');
                     containerFixture.datum(dataset.data).call(stackedAreaChart);
                 });
 
                 it('the highest Y-axis value is changing in respect to the y-axis baseline', () => {
-                    let firstText = containerFixture.selectAll('.y-axis-group').select('g.tick:last-child');
+                    let firstText = containerFixture
+                        .selectAll('.y-axis-group')
+                        .select('g.tick:last-child');
                     expect(firstText.text()).toEqual('100');
                 });
             });
-
         });
     });
 
     describe('Lifecycle', () => {
-
-        it('should show the overlay when the mouse is hovering', () =>  {
+        it('should show the overlay when the mouse is hovering', () => {
             const container = containerFixture.selectAll('svg');
             const expectedDefaultStyle = 'none';
             const expectedStyle = 'block';
 
-            expect(containerFixture.select('.overlay').style('display')).toEqual(expectedDefaultStyle);
+            expect(
+                containerFixture.select('.overlay').style('display')
+            ).toEqual(expectedDefaultStyle);
             container.dispatch('mouseover');
-            expect(containerFixture.select('.overlay').style('display')).toEqual(expectedStyle);
+            expect(
+                containerFixture.select('.overlay').style('display')
+            ).toEqual(expectedStyle);
         });
 
-        it('should show a vertical line where the mouse is hovering', () =>  {
+        it('should show a vertical line where the mouse is hovering', () => {
             const expected = true;
             const container = containerFixture.selectAll('svg');
-            const verticalLine = d3.select('.vertical-marker-container .vertical-marker');
+            const verticalLine = d3.select(
+                '.vertical-marker-container .vertical-marker'
+            );
             let actual;
 
             container.dispatch('mouseover');
@@ -436,9 +494,11 @@ describe('Stacked Area Chart', () => {
             expect(actual).toEqual(expected);
         });
 
-        it('should hide the vertical marker when the mouse is out', () =>  {
+        it('should hide the vertical marker when the mouse is out', () => {
             const container = containerFixture.selectAll('svg');
-            const verticalLine = d3.select('.vertical-marker-container .vertical-marker');
+            const verticalLine = d3.select(
+                '.vertical-marker-container .vertical-marker'
+            );
             const expected = false;
             let actual = hasClass(verticalLine, 'bc-is-active');
 
@@ -461,7 +521,9 @@ describe('Stacked Area Chart', () => {
             container.dispatch('mouseover');
 
             expect(callback.calls.count()).toEqual(expectedCallCount);
-            expect(callback.calls.allArgs()[0].length).toEqual(expectedArgumentCount);
+            expect(callback.calls.allArgs()[0].length).toEqual(
+                expectedArgumentCount
+            );
         });
 
         it('should trigger an event on mouse out', () => {
@@ -474,7 +536,9 @@ describe('Stacked Area Chart', () => {
             container.dispatch('mouseout');
 
             expect(callback.calls.count()).toEqual(expectedCallCount);
-            expect(callback.calls.allArgs()[0].length).toEqual(expectedArgumentCount);
+            expect(callback.calls.allArgs()[0].length).toEqual(
+                expectedArgumentCount
+            );
         });
 
         it('should trigger an event on touchmove', () => {
@@ -487,16 +551,15 @@ describe('Stacked Area Chart', () => {
             container.dispatch('touchmove');
 
             expect(callback.calls.count()).toEqual(expectedCallCount);
-            expect(callback.calls.allArgs()[0].length).toEqual(expectedArgumentCount);
+            expect(callback.calls.allArgs()[0].length).toEqual(
+                expectedArgumentCount
+            );
         });
     });
 
-    describe('API', function() {
-
+    describe('API', function () {
         describe('aspect ratio', function () {
-
             describe('when an aspect ratio is set', function () {
-
                 it('should modify the height depending on the width', () => {
                     let testAspectRatio = 0.5,
                         testWidth = 400,
@@ -506,7 +569,9 @@ describe('Stacked Area Chart', () => {
                     stackedAreaChart.width(testWidth);
                     newHeight = stackedAreaChart.height();
 
-                    expect(newHeight).toEqual(Math.ceil(testWidth * testAspectRatio));
+                    expect(newHeight).toEqual(
+                        Math.ceil(testWidth * testAspectRatio)
+                    );
                 });
 
                 it('should modify the width depending on the height', () => {
@@ -518,7 +583,9 @@ describe('Stacked Area Chart', () => {
                     stackedAreaChart.height(testHeight);
                     newWidth = stackedAreaChart.width();
 
-                    expect(newWidth).toEqual(Math.ceil(testHeight / testAspectRatio));
+                    expect(newWidth).toEqual(
+                        Math.ceil(testHeight / testAspectRatio)
+                    );
                 });
             });
         });
@@ -536,7 +603,6 @@ describe('Stacked Area Chart', () => {
         });
 
         describe('export chart functionality', () => {
-
             it('should have exportChart defined', () => {
                 expect(stackedAreaChart.exportChart).toBeDefined();
             });
@@ -571,7 +637,7 @@ describe('Stacked Area Chart', () => {
                 expected = {
                     minDate: Date.now(),
                     maxDate: Date.now(),
-                    maxY: 100
+                    maxY: 100,
                 },
                 actual;
 
@@ -607,7 +673,6 @@ describe('Stacked Area Chart', () => {
         });
 
         describe('loadingState', () => {
-
             it('should provide loadingState getter and setter', () => {
                 let previous = stackedAreaChart.loadingState(),
                     expected = 'test',
@@ -626,7 +691,9 @@ describe('Stacked Area Chart', () => {
                         actual;
 
                     stackedAreaChart = stackedArea();
-                    actual = stackedAreaChart.loadingState().match('stacked-area-load-state').length;
+                    actual = stackedAreaChart
+                        .loadingState()
+                        .match('stacked-area-load-state').length;
 
                     expect(actual).toEqual(expected);
                 });
@@ -658,13 +725,12 @@ describe('Stacked Area Chart', () => {
         });
 
         describe('when margins are set partially', function () {
-
             it('should override the default values', () => {
                 let previous = stackedAreaChart.margin(),
                     expected = {
                         ...previous,
                         top: 10,
-                        right: 20
+                        right: 20,
                     },
                     actual;
 
@@ -673,7 +739,7 @@ describe('Stacked Area Chart', () => {
 
                 expect(previous).not.toEqual(actual);
                 expect(actual).toEqual(expected);
-            })
+            });
         });
 
         it('should provide a locale getter and setter', () => {
@@ -690,7 +756,7 @@ describe('Stacked Area Chart', () => {
 
         it('should provide margin getter and setter', () => {
             let previous = stackedAreaChart.margin(),
-                expected = {top: 4, right: 4, bottom: 4, left: 4},
+                expected = { top: 4, right: 4, bottom: 4, left: 4 },
                 actual;
 
             stackedAreaChart.margin(expected);
@@ -714,7 +780,14 @@ describe('Stacked Area Chart', () => {
 
         it('should provide a topicsOrder getter and setter', () => {
             let previous = stackedAreaChart.topicsOrder(),
-                expected = [ 'twitter', 'user_email', 'user_newsletter', 'unknown', 'google', 'facebook'],
+                expected = [
+                    'twitter',
+                    'user_email',
+                    'user_newsletter',
+                    'unknown',
+                    'google',
+                    'facebook',
+                ],
                 actual;
 
             stackedAreaChart.topicsOrder(expected);
@@ -833,7 +906,7 @@ describe('Stacked Area Chart', () => {
         });
 
         it('should provide yAxisLabelOffset getter and setter', () => {
-            let defaultYAxisLabelOffset =  stackedAreaChart.yAxisLabelOffset(),
+            let defaultYAxisLabelOffset = stackedAreaChart.yAxisLabelOffset(),
                 testYAxisLabelOffset = -30,
                 newYAxisLabelOffset;
 
@@ -843,9 +916,9 @@ describe('Stacked Area Chart', () => {
             expect(defaultYAxisLabelOffset).not.toEqual(newYAxisLabelOffset);
             expect(newYAxisLabelOffset).toEqual(testYAxisLabelOffset);
         });
-        
+
         it('should provide yAxisBaseline getter and setter', () => {
-            let defaultYAxisBaseline =  stackedAreaChart.yAxisBaseline(),
+            let defaultYAxisBaseline = stackedAreaChart.yAxisBaseline(),
                 testYAxisBaseline = -30,
                 newYAxisBaseline;
 
@@ -857,7 +930,7 @@ describe('Stacked Area Chart', () => {
         });
 
         it('should provide xAxisValueType getter and setter', () => {
-            let defaultXAxisValueType =  stackedAreaChart.yAxisLabelOffset(),
+            let defaultXAxisValueType = stackedAreaChart.yAxisLabelOffset(),
                 testXAxisValueType = 'number',
                 newXAxisValueType;
 
@@ -869,7 +942,7 @@ describe('Stacked Area Chart', () => {
         });
 
         it('should provide xAxisScale getter and setter', () => {
-            let defaultXAxisScale =  stackedAreaChart.xAxisScale(),
+            let defaultXAxisScale = stackedAreaChart.xAxisScale(),
                 testXAxisScale = 'logarithmic',
                 newXAxisScale;
 
@@ -886,4 +959,3 @@ describe('Stacked Area Chart', () => {
         });
     });
 });
-

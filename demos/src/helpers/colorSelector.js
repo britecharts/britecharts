@@ -14,7 +14,9 @@ function createColorSelector(selectContainerSelector, chartSelector, callback) {
     const colorKeys = Object.keys(colors.colorSchemas);
     const containerSelector = document.querySelector(selectContainerSelector);
 
-    if (!containerSelector) { return; }
+    if (!containerSelector) {
+        return;
+    }
 
     // Create Select
     let sel = document.createElement('select');
@@ -22,32 +24,31 @@ function createColorSelector(selectContainerSelector, chartSelector, callback) {
     sel.className += ' ' + selectClass;
 
     // And fill with options
-    colorKeys.forEach(function(key) {
-            let opt = document.createElement('option');
+    colorKeys.forEach(function (key) {
+        let opt = document.createElement('option');
 
-            opt.value = key;
-            opt.text = colors.colorSchemasHuman[key];
-            sel.add(opt);
-        });
+        opt.value = key;
+        opt.text = colors.colorSchemasHuman[key];
+        sel.add(opt);
+    });
 
     // Add it to the DOM
     containerSelector.appendChild(sel);
 
     // Listen for changes
-    select(sel)
-        .on('change', function() {
-            // Get new color schema
-            let newSchema = colors.colorSchemas[this.value];
+    select(sel).on('change', function () {
+        // Get new color schema
+        let newSchema = colors.colorSchemas[this.value];
 
-            select(chartSelector).remove();
+        select(chartSelector).remove();
 
-            // Draw
-            if (callback) {
-                callback(newSchema);
-            }
-        });
+        // Draw
+        if (callback) {
+            callback(newSchema);
+        }
+    });
 }
 
 export default {
-    createColorSelector
+    createColorSelector,
 };

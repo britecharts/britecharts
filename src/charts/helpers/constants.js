@@ -8,7 +8,7 @@ import {
     curveNatural,
     curveStep,
     curveStepAfter,
-    curveStepBefore
+    curveStepBefore,
 } from 'd3-shape';
 import {
     timeMillisecond,
@@ -40,22 +40,21 @@ import {
     timeMonth,
     utcMonth,
     timeYear,
-    utcYear
+    utcYear,
 } from 'd3-time';
-
 
 export const axisTimeCombinations = {
     MINUTE_HOUR: 'minute-hour',
     HOUR_DAY: 'hour-daymonth',
     DAY_MONTH: 'day-month',
     MONTH_YEAR: 'month-year',
-    CUSTOM: 'custom'
+    CUSTOM: 'custom',
 };
 
 export const timeBenchmarks = {
     ONE_AND_A_HALF_YEARS: 47304000000,
     ONE_YEAR: 31536000365,
-    ONE_DAY: 86400001
+    ONE_DAY: 86400001,
 };
 
 export const curveMap = {
@@ -68,18 +67,20 @@ export const curveMap = {
     natural: curveNatural,
     step: curveStep,
     stepAfter: curveStepAfter,
-    stepBefore: curveStepBefore
+    stepBefore: curveStepBefore,
 };
 
-export const emptyDonutData = [{
-    'quantity': 1,
-    'percentage': 100
-}];
+export const emptyDonutData = [
+    {
+        quantity: 1,
+        percentage: 100,
+    },
+];
 
 export const timeIntervals = {
     timeMillisecond: timeMillisecond,
     utcMillisecond: utcMillisecond,
-    timeSecond: timeSecond ,
+    timeSecond: timeSecond,
     utcSecond: utcSecond,
     timeMinute: timeMinute,
     utcMinute: utcMinute,
@@ -106,7 +107,7 @@ export const timeIntervals = {
     timeMonth: timeMonth,
     utcMonth: utcMonth,
     timeYear: timeYear,
-    utcYear: utcYear
+    utcYear: utcYear,
 };
 
 export default {
@@ -115,5 +116,5 @@ export default {
     emptyDonutData,
     timeBenchmarks,
     lineGradientId: 'lineGradientId',
-    timeIntervals
+    timeIntervals,
 };

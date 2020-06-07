@@ -7,7 +7,6 @@ import 'd3-transition';
 import { exportChart } from './helpers/export';
 import colorHelper from './helpers/color';
 
-
 /**
  * @typedef BulletChartData
  * @type {Object}
@@ -46,30 +45,27 @@ import colorHelper from './helpers/color';
  *     .call(bulletChart);
  */
 export default function module() {
-
     let margin = {
             top: 20,
             right: 20,
             bottom: 30,
-            left: 20
+            left: 20,
         },
         data,
-        width = 960, height = 150,
-        chartWidth, chartHeight,
+        width = 960,
+        height = 150,
+        chartWidth,
+        chartHeight,
         xScale,
-
         rangeOpacityScale,
         rangeOpacifyDiff = 0.2,
         measureOpacityScale,
         measureOpacifyDiff = 0.3,
-
         colorSchema = colorHelper.colorSchemas.britecharts,
         rangeColor,
         measureColor,
         numberFormat = '',
-
         baseLine,
-
         aspectRatio = null,
         ticks = 6,
         tickPadding = 5,
@@ -78,33 +74,25 @@ export default function module() {
         startMaxRangeOpacity = 0.5,
         markerStrokeWidth = 5,
         barWidth,
-
         isReverse = false,
-
         legendGroup,
         titleEl,
         subtitleEl,
         rangesEl,
         measuresEl,
         markersEl,
-
         legendSpacing = 100,
         title,
         customTitle,
-
         subtitle,
         customSubtitle,
         subtitleSpacing = 15,
-
         ranges = [],
         markers = [],
         measures = [],
-
         svg,
-
         hasTitle = () => title || customTitle,
         getMeasureBarHeight = () => chartHeight / 3;
-
 
     /**
      * This function creates the graph using the selection as container
@@ -113,7 +101,7 @@ export default function module() {
      * @param {BulletChartData} _data   The data to attach and generate the chart
      */
     function exports(_selection) {
-        _selection.each(function(_data) {
+        _selection.each(function (_data) {
             chartWidth = width - margin.left - margin.right;
             chartHeight = height - margin.top - margin.bottom;
             data = cleanData(_data);
@@ -128,7 +116,6 @@ export default function module() {
             drawBullet();
             drawTitles();
             drawAxis();
-
         });
     }
 
@@ -152,20 +139,17 @@ export default function module() {
     function buildContainerGroups() {
         let container = svg
             .append('g')
-                .classed('container-group', true)
-                .attr('transform', `translate(${margin.left}, ${margin.top})`);
+            .classed('container-group', true)
+            .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-        container
-            .append('g').classed('grid-lines-group', true);
-        container
-            .append('g').classed('chart-group', true);
-        container
-            .append('g').classed('axis-group', true);
-        container
-            .append('g').classed('metadata-group', true);
+        container.append('g').classed('grid-lines-group', true);
+        container.append('g').classed('chart-group', true);
+        container.append('g').classed('axis-group', true);
+        container.append('g').classed('metadata-group', true);
 
         if (hasTitle()) {
-            container.selectAll('.chart-group')
+            container
+                .selectAll('.chart-group')
                 .attr('transform', `translate(${legendSpacing}, 0)`);
         }
     }
@@ -187,8 +171,12 @@ export default function module() {
         barWidth = bulletWidth(xScale);
 
         // set up opacity scale based on ranges and measures
-        rangeOpacityScale = ranges.map((d, i) => startMaxRangeOpacity - (i * rangeOpacifyDiff)).reverse();
-        measureOpacityScale = ranges.map((d, i) => 0.9 - (i * measureOpacifyDiff)).reverse();
+        rangeOpacityScale = ranges
+            .map((d, i) => startMaxRangeOpacity - i * rangeOpacifyDiff)
+            .reverse();
+        measureOpacityScale = ranges
+            .map((d, i) => 0.9 - i * measureOpacifyDiff)
+            .reverse();
 
         // initialize range and measure bars and marker line colors
         rangeColor = colorSchema[0];
@@ -205,14 +193,12 @@ export default function module() {
         if (!svg) {
             svg = select(container)
                 .append('svg')
-                    .classed('britechart bullet-chart', true);
+                .classed('britechart bullet-chart', true);
 
             buildContainerGroups();
         }
 
-        svg
-            .attr('width', width)
-            .attr('height', height);
+        svg.attr('width', width).attr('height', height);
     }
 
     /**
@@ -225,7 +211,7 @@ export default function module() {
 
         return function (d) {
             return Math.abs(x(d) - x0);
-        }
+        };
     }
 
     /**
@@ -242,10 +228,10 @@ export default function module() {
             measures: originalData.measures.slice().sort().reverse(),
             markers: originalData.markers.slice().sort().reverse(),
             subtitle: originalData.subtitle,
-            title: originalData.title
+            title: originalData.title,
         };
 
-        ({title, subtitle, ranges, measures, markers} = newData);
+        ({ title, subtitle, ranges, measures, markers } = newData);
 
         return newData;
     }
@@ -260,7 +246,12 @@ export default function module() {
         let translateX = hasTitle() ? legendSpacing : 0;
 
         svg.select('.axis-group')
-            .attr('transform', `translate(${translateX}, ${chartHeight + paddingBetweenAxisAndChart})`)
+            .attr(
+                'transform',
+                `translate(${translateX}, ${
+                    chartHeight + paddingBetweenAxisAndChart
+                })`
+            )
             .call(axis);
 
         drawHorizontalExtendedLine();
@@ -278,44 +269,47 @@ export default function module() {
             markersEl.remove();
         }
 
-        rangesEl = svg.select('.chart-group')
+        rangesEl = svg
+            .select('.chart-group')
             .selectAll('rect.range')
             .data(ranges)
             .enter()
             .append('rect')
-                .attr('fill', rangeColor)
-                .attr('opacity', (d, i) => rangeOpacityScale[i])
-                .attr('class', (d, i) => `range r${i}`)
-                .attr('width', barWidth)
-                .attr('height', chartHeight)
-                .attr('x', isReverse ? xScale : 0);
+            .attr('fill', rangeColor)
+            .attr('opacity', (d, i) => rangeOpacityScale[i])
+            .attr('class', (d, i) => `range r${i}`)
+            .attr('width', barWidth)
+            .attr('height', chartHeight)
+            .attr('x', isReverse ? xScale : 0);
 
-        measuresEl = svg.select('.chart-group')
+        measuresEl = svg
+            .select('.chart-group')
             .selectAll('rect.measure')
             .data(measures)
             .enter()
             .append('rect')
-                .attr('fill', measureColor)
-                .attr('fill-opacity', (d, i) => measureOpacityScale[i])
-                .attr('class', (d, i) => `measure m${i}`)
-                .attr('width', barWidth)
-                .attr('height', getMeasureBarHeight)
-                .attr('x', isReverse ? xScale : 0)
-                .attr('y', getMeasureBarHeight);
+            .attr('fill', measureColor)
+            .attr('fill-opacity', (d, i) => measureOpacityScale[i])
+            .attr('class', (d, i) => `measure m${i}`)
+            .attr('width', barWidth)
+            .attr('height', getMeasureBarHeight)
+            .attr('x', isReverse ? xScale : 0)
+            .attr('y', getMeasureBarHeight);
 
-        markersEl = svg.select('.chart-group')
+        markersEl = svg
+            .select('.chart-group')
             .selectAll('line.marker-line')
             .data(markers)
             .enter()
             .append('line')
-                .attr('class', 'marker-line')
-                .attr('stroke', measureColor)
-                .attr('stroke-width', markerStrokeWidth)
-                .attr('opacity', measureOpacityScale[0])
-                .attr('x1', xScale)
-                .attr('x2', xScale)
-                .attr('y1', 0)
-                .attr('y2', chartHeight);
+            .attr('class', 'marker-line')
+            .attr('stroke', measureColor)
+            .attr('stroke-width', markerStrokeWidth)
+            .attr('opacity', measureOpacityScale[0])
+            .attr('x1', xScale)
+            .attr('x2', xScale)
+            .attr('y1', 0)
+            .attr('y2', chartHeight);
     }
 
     /**
@@ -324,14 +318,15 @@ export default function module() {
      * @private
      */
     function drawHorizontalExtendedLine() {
-        baseLine = svg.select('.axis-group')
+        baseLine = svg
+            .select('.axis-group')
             .selectAll('line.extended-x-line')
             .data([0])
             .enter()
             .append('line')
-                .attr('class', 'extended-x-line')
-                .attr('x1', 0)
-                .attr('x2', chartWidth);
+            .attr('class', 'extended-x-line')
+            .attr('x1', 0)
+            .attr('x2', chartWidth);
     }
 
     /**
@@ -347,40 +342,41 @@ export default function module() {
                 legendGroup.remove();
             }
 
-            legendGroup = svg.select('.metadata-group')
+            legendGroup = svg
+                .select('.metadata-group')
                 .append('g')
                 .classed('legend-group', true)
                 .attr('transform', `translate(0, ${chartHeight / 2})`);
-
 
             // override title with customTitle if given
             if (customTitle) {
                 title = customTitle;
             }
 
-            titleEl = legendGroup.selectAll('text.bullet-title')
+            titleEl = legendGroup
+                .selectAll('text.bullet-title')
                 .data([1])
                 .enter()
                 .append('text')
-                    .attr('class', 'bullet-title x-axis-label')
-                    .text(title);
+                .attr('class', 'bullet-title x-axis-label')
+                .text(title);
 
             // either use subtitle provided from the data
             // or customSubtitle provided via API method call
             if (subtitle || customSubtitle) {
-
                 // override subtitle with customSubtitle if given
                 if (customSubtitle) {
                     subtitle = customSubtitle;
                 }
 
-                titleEl = legendGroup.selectAll('text.bullet-subtitle')
+                titleEl = legendGroup
+                    .selectAll('text.bullet-subtitle')
                     .data([1])
                     .enter()
                     .append('text')
-                        .attr('class', 'bullet-subtitle x-axis-label')
-                        .attr('y', subtitleSpacing)
-                        .text(subtitle);
+                    .attr('class', 'bullet-subtitle x-axis-label')
+                    .attr('y', subtitleSpacing)
+                    .text(subtitle);
             }
         }
     }
@@ -410,7 +406,7 @@ export default function module() {
      * @return {String[] | module}  Current colorSchema or Chart module to chain calls
      * @public
      */
-    exports.colorSchema = function(_x) {
+    exports.colorSchema = function (_x) {
         if (!arguments.length) {
             return colorSchema;
         }
@@ -427,14 +423,14 @@ export default function module() {
      * @public
      * @example bulletChart.customTitle('CPU Usage')
      */
-    exports.customTitle = function(_x) {
+    exports.customTitle = function (_x) {
         if (!arguments.length) {
             return customTitle;
         }
         customTitle = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets the subtitle for measure identifier
@@ -444,14 +440,14 @@ export default function module() {
      * @public
      * @example bulletChart.customSubtitle('GHz')
      */
-    exports.customSubtitle = function(_x) {
+    exports.customSubtitle = function (_x) {
         if (!arguments.length) {
             return customSubtitle;
         }
         customSubtitle = _x;
 
         return this;
-    }
+    };
 
     /**
      * Chart exported to png and a download action is fired
@@ -459,7 +455,7 @@ export default function module() {
      * @param {String} title        Title to add at the top of the exported picture
      * @public
      */
-    exports.exportChart = function(filename, title) {
+    exports.exportChart = function (filename, title) {
         exportChart.call(exports, svg, filename, title);
     };
 
@@ -495,7 +491,7 @@ export default function module() {
         isReverse = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets the margin of the chart
@@ -503,13 +499,13 @@ export default function module() {
      * @return {margin | module}    Current margin or Chart module to chain calls
      * @public
      */
-    exports.margin = function(_x) {
+    exports.margin = function (_x) {
         if (!arguments.length) {
             return margin;
         }
         margin = {
             ...margin,
-            ..._x
+            ..._x,
         };
 
         return this;
@@ -521,14 +517,14 @@ export default function module() {
      * @return {numberFormat | module}      Current numberFormat or Chart module to chain calls
      * @public
      */
-    exports.numberFormat = function(_x) {
+    exports.numberFormat = function (_x) {
         if (!arguments.length) {
             return numberFormat;
         }
         numberFormat = _x;
 
         return this;
-    }
+    };
 
     /**
      * Space between axis and chart
@@ -536,7 +532,7 @@ export default function module() {
      * @return {Number| module}         Current value of paddingBetweenAxisAndChart or Chart module to chain calls
      * @public
      */
-    exports.paddingBetweenAxisAndChart = function(_x) {
+    exports.paddingBetweenAxisAndChart = function (_x) {
         if (!arguments.length) {
             return paddingBetweenAxisAndChart;
         }
@@ -553,14 +549,14 @@ export default function module() {
      * @public
      * @example bulletChart.startMaxRangeOpacity(0.8)
      */
-    exports.startMaxRangeOpacity = function(_x) {
+    exports.startMaxRangeOpacity = function (_x) {
         if (!arguments.length) {
             return startMaxRangeOpacity;
         }
         startMaxRangeOpacity = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets the number of ticks of the x axis on the chart
@@ -584,7 +580,7 @@ export default function module() {
      * @return {Number | module}     Current width or Chart module to chain calls
      * @public
      */
-    exports.width = function(_x) {
+    exports.width = function (_x) {
         if (!arguments.length) {
             return width;
         }
@@ -597,6 +593,4 @@ export default function module() {
     };
 
     return exports;
-};
-
-
+}

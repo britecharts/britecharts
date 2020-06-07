@@ -7,7 +7,6 @@ import 'd3-transition';
 import { exportChart } from './helpers/export';
 import colorHelper from './helpers/color';
 
-
 /**
  * @typedef HeatmapData
  * @type {Array[]}
@@ -49,12 +48,11 @@ import colorHelper from './helpers/color';
  *     .call(heatmap);
  */
 export default function module() {
-
     let margin = {
             top: 40,
             right: 20,
             bottom: 20,
-            left: 40
+            left: 40,
         },
         width = 780,
         height = 270,
@@ -62,7 +60,6 @@ export default function module() {
         data,
         chartWidth,
         chartHeight,
-
         boxes,
         boxSize = 30,
         boxBorderSize = 2,
@@ -70,27 +67,42 @@ export default function module() {
         boxFinalOpacity = 1,
         boxInitialColor = '#BBBBBB',
         boxBorderColor = '#FFFFFF',
-
         colorScale,
         colorSchema = colorHelper.colorSchemas.red,
-
         animationDuration = 2000,
-
         yAxisLabels,
-
         dayLabels,
         daysHuman = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
         dayLabelWidth = 30,
-
         hourLabels,
         hoursHuman = [
-            '00h', '01h', '02h', '03h', '04h', '05h', '06h', '07h', '08h',
-            '09h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h',
-            '18h', '19h', '20h', '21h', '22h', '23h'
+            '00h',
+            '01h',
+            '02h',
+            '03h',
+            '04h',
+            '05h',
+            '06h',
+            '07h',
+            '08h',
+            '09h',
+            '10h',
+            '11h',
+            '12h',
+            '13h',
+            '14h',
+            '15h',
+            '16h',
+            '17h',
+            '18h',
+            '19h',
+            '20h',
+            '21h',
+            '22h',
+            '23h',
         ],
         hourLabelHeight = 20,
-
-        getValue = ({value}) => value;
+        getValue = ({ value }) => value;
 
     /**
      * This function creates the graph using the selection as container
@@ -128,9 +140,7 @@ export default function module() {
             buildContainerGroups();
         }
 
-        svg
-            .attr('width', width)
-            .attr('height', height);
+        svg.attr('width', width).attr('height', height);
     }
 
     /**
@@ -145,14 +155,10 @@ export default function module() {
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-        container
-            .append('g').classed('chart-group', true);
-        container
-            .append('g').classed('day-labels-group', true);
-        container
-            .append('g').classed('hour-labels-group', true);
-        container
-            .append('g').classed('metadata-group', true);
+        container.append('g').classed('chart-group', true);
+        container.append('g').classed('day-labels-group', true);
+        container.append('g').classed('hour-labels-group', true);
+        container.append('g').classed('metadata-group', true);
     }
 
     /**
@@ -164,14 +170,14 @@ export default function module() {
      * @private
      */
     function cleanData(originalData) {
-        return originalData.reduce((acc, {day, hour, value}) => {
+        return originalData.reduce((acc, { day, hour, value }) => {
             return [
                 ...acc,
                 {
                     day: +day,
                     hour: +hour,
-                    value: +value
-                }
+                    value: +value,
+                },
             ];
         }, []);
     }
@@ -193,21 +199,22 @@ export default function module() {
     function drawBoxes() {
         boxes = svg.select('.chart-group').selectAll('.box').data(data);
 
-        boxes.enter()
+        boxes
+            .enter()
             .append('rect')
             .classed('box', true)
             .attr('width', boxSize)
             .attr('height', boxSize)
-            .attr('x', ({hour}) => hour * boxSize)
-            .attr('y', ({day}) => day * boxSize)
+            .attr('x', ({ hour }) => hour * boxSize)
+            .attr('y', ({ day }) => day * boxSize)
             .style('opacity', boxInitialOpacity)
             .style('fill', boxInitialColor)
             .style('stroke', boxBorderColor)
             .style('stroke-width', boxBorderSize)
             .transition()
-                .duration(animationDuration)
-                .style('fill', ({value}) => colorScale(value))
-                .style('opacity', boxFinalOpacity);
+            .duration(animationDuration)
+            .style('fill', ({ value }) => colorScale(value))
+            .style('opacity', boxFinalOpacity);
 
         boxes.exit().remove();
     }
@@ -219,10 +226,13 @@ export default function module() {
         const dayLabelsGroup = svg.select('.day-labels-group');
         const arrayForYAxisLabels = yAxisLabels || daysHuman;
 
-        dayLabels = svg.select('.day-labels-group').selectAll('.day-label')
+        dayLabels = svg
+            .select('.day-labels-group')
+            .selectAll('.day-label')
             .data(arrayForYAxisLabels);
 
-        dayLabels.enter()
+        dayLabels
+            .enter()
             .append('text')
             .text((label) => label)
             .attr('x', 0)
@@ -231,7 +241,10 @@ export default function module() {
             .style('dominant-baseline', 'central')
             .attr('class', 'day-label y-axis-label');
 
-        dayLabelsGroup.attr('transform', `translate(-${dayLabelWidth}, ${boxSize / 2})`);
+        dayLabelsGroup.attr(
+            'transform',
+            `translate(-${dayLabelWidth}, ${boxSize / 2})`
+        );
     }
 
     /**
@@ -240,10 +253,13 @@ export default function module() {
     function drawHourLabels() {
         let hourLabelsGroup = svg.select('.hour-labels-group');
 
-        hourLabels = svg.select('.hour-labels-group').selectAll('.hour-label')
+        hourLabels = svg
+            .select('.hour-labels-group')
+            .selectAll('.hour-label')
             .data(hoursHuman);
 
-        hourLabels.enter()
+        hourLabels
+            .enter()
             .append('text')
             .text((label) => label)
             .attr('y', 0)
@@ -252,7 +268,10 @@ export default function module() {
             .style('dominant-baseline', 'central')
             .attr('class', 'hour-label');
 
-        hourLabelsGroup.attr('transform', `translate(${boxSize / 2}, -${hourLabelHeight})`);
+        hourLabelsGroup.attr(
+            'transform',
+            `translate(${boxSize / 2}, -${hourLabelHeight})`
+        );
     }
 
     // API
@@ -323,7 +342,7 @@ export default function module() {
         }
         margin = {
             ...margin,
-            ..._x
+            ..._x,
         };
 
         return this;
@@ -360,5 +379,4 @@ export default function module() {
     };
 
     return exports;
-};
-
+}

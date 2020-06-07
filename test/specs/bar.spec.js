@@ -3,19 +3,17 @@ import * as d3 from 'd3';
 import chart from './../../src/charts/bar';
 import { BarDataBuilder } from 'barChartDataBuilder';
 
-
 const aTestDataSet = () => new BarDataBuilder();
 const buildDataSet = (dataSetName) => {
-    return aTestDataSet()
-        [dataSetName]()
-        .build();
+    return aTestDataSet()[dataSetName]().build();
 };
 
 describe('Bar Chart', () => {
     let barChart, dataset, containerFixture, f;
 
     beforeEach(() => {
-        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+        const fixture =
+            '<div id="fixture"><div class="test-container"></div></div>';
 
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -33,7 +31,6 @@ describe('Bar Chart', () => {
     });
 
     describe('Render', () => {
-
         it('should show a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.bar-chart').size();
@@ -44,7 +41,9 @@ describe('Bar Chart', () => {
         describe('groups', () => {
             it('should create a container-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.container-group').size();
+                const actual = containerFixture
+                    .select('g.container-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -72,14 +71,18 @@ describe('Bar Chart', () => {
 
             it('should create a grid-lines-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.grid-lines-group').size();
+                const actual = containerFixture
+                    .select('g.grid-lines-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should create a metadata-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.metadata-group').size();
+                const actual = containerFixture
+                    .select('g.metadata-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -88,14 +91,18 @@ describe('Bar Chart', () => {
         describe('axis', () => {
             it('should draw an X axis', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.x-axis-group.axis').size();
+                const actual = containerFixture
+                    .select('.x-axis-group.axis')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should draw an Y axis', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.y-axis-group.axis').size();
+                const actual = containerFixture
+                    .select('.y-axis-group.axis')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -109,7 +116,6 @@ describe('Bar Chart', () => {
         });
 
         describe('when reloading with a different dataset', () => {
-
             it('should render in the same svg', () => {
                 const expected = 1;
                 const newDataset = buildDataSet('withColors');
@@ -135,7 +141,6 @@ describe('Bar Chart', () => {
         });
 
         describe('Axis labels', () => {
-
             it('should show custom x axis label and offset', () => {
                 const expectedValue = 'labelValue';
                 const expectedOffset = 20;
@@ -171,14 +176,15 @@ describe('Bar Chart', () => {
             });
 
             describe('Locale', () => {
-
                 it('should show the $ sign as a default currency symbol', () => {
                     const newDataset = buildDataSet('withColors');
 
                     barChart.enableLabels(true).labelsNumberFormat('$,.2f');
                     containerFixture.datum(newDataset).call(barChart);
 
-                    const actual = containerFixture.select('.percentage-label-group text').text();
+                    const actual = containerFixture
+                        .select('.percentage-label-group text')
+                        .text();
                     const expected = '$1.00';
 
                     expect(actual).toEqual(expected);
@@ -187,32 +193,24 @@ describe('Bar Chart', () => {
                 // We need to figure out how to clear the default formatting, as this
                 // test is messing up with the rest of tests
                 xdescribe('when the locale is set to nl-NL', () => {
-
                     afterEach(() => {
                         const USLocale = {
-                            "decimal": ".",
-                            "thousands": ",",
-                            "grouping": [3],
-                            "currency": ["$", ""]
+                            decimal: '.',
+                            thousands: ',',
+                            grouping: [3],
+                            currency: ['$', ''],
                         };
 
-                        barChart
-                            .locale(USLocale)
-                            .labelsNumberFormat(',f');
+                        barChart.locale(USLocale).labelsNumberFormat(',f');
                     });
 
                     it('should show the € sign', () => {
                         const newDataset = buildDataSet('withColors');
                         const customLocale = {
-                            'decimal': ',',
-                            'thousands': '.',
-                            'grouping': [
-                                3
-                            ],
-                            'currency': [
-                                '€ ',
-                                ''
-                            ]
+                            decimal: ',',
+                            thousands: '.',
+                            grouping: [3],
+                            currency: ['€ ', ''],
                         };
 
                         barChart
@@ -221,7 +219,9 @@ describe('Bar Chart', () => {
                             .locale(customLocale);
                         containerFixture.datum(newDataset).call(barChart);
 
-                        const actual = containerFixture.select('.percentage-label-group text').text();
+                        const actual = containerFixture
+                            .select('.percentage-label-group text')
+                            .text();
                         const expected = '€ 1,00';
 
                         expect(actual).toEqual(expected);
@@ -247,18 +247,18 @@ describe('Bar Chart', () => {
 
     describe('Lifecycle', () => {
         describe('when orderingFunction is called', () => {
-
             it('accepts custom descending order function', () => {
                 const orderFunction = (a, b) => b.value - a.value;
                 const expected = {
                     name: 'E',
-                    value: 0.12702
+                    value: 0.12702,
                 };
                 let actual;
 
                 barChart.orderingFunction(orderFunction);
-                containerFixture.call(barChart)
-                actual = containerFixture.selectAll('.bar-chart .bar').node().__data__;
+                containerFixture.call(barChart);
+                actual = containerFixture.selectAll('.bar-chart .bar').node()
+                    .__data__;
 
                 expect(actual.name).toBe(expected.name);
                 expect(actual.value).toBe(expected.value);
@@ -268,13 +268,14 @@ describe('Bar Chart', () => {
                 const orderFunction = (a, b) => a.value - b.value;
                 const expected = {
                     name: 'Z',
-                    value: 0.00074
+                    value: 0.00074,
                 };
                 let actual;
 
                 barChart.orderingFunction(orderFunction);
-                containerFixture.call(barChart)
-                actual = containerFixture.selectAll('.bar-chart .bar').node().__data__;
+                containerFixture.call(barChart);
+                actual = containerFixture.selectAll('.bar-chart .bar').node()
+                    .__data__;
 
                 expect(actual.name).toBe(expected.name);
                 expect(actual.value).toBe(expected.value);
@@ -282,7 +283,6 @@ describe('Bar Chart', () => {
         });
 
         describe('when hasSingleBarHighlight is called', () => {
-
             it('should darken the original color of the hovered bar', () => {
                 const expectedHasBarHighlight = true;
                 const expectedColor = '#7bdcc0';
@@ -319,10 +319,10 @@ describe('Bar Chart', () => {
         });
 
         describe('when highlightBarFunction is called', () => {
-
             it('should change behavior of the hovered bar', () => {
                 const expectedHighlightColor = '#ffffff';
-                const customHighlightFunction = barSelection => barSelection.attr('fill', expectedHighlightColor);
+                const customHighlightFunction = (barSelection) =>
+                    barSelection.attr('fill', expectedHighlightColor);
 
                 barChart.highlightBarFunction(customHighlightFunction);
                 const bar = containerFixture.selectAll('.bar:nth-child(1)');
@@ -338,12 +338,17 @@ describe('Bar Chart', () => {
 
             it('should change the behavior of non-hovered bars when hasSingleBarHighlight is False', () => {
                 const expectedHighlightColor = '#ffffff';
-                const customHighlightFunction = barSelection => barSelection.attr('fill', expectedHighlightColor);
+                const customHighlightFunction = (barSelection) =>
+                    barSelection.attr('fill', expectedHighlightColor);
 
                 barChart.hasSingleBarHighlight(false);
                 barChart.highlightBarFunction(customHighlightFunction);
-                const barNotHighlighted = containerFixture.selectAll('.bar:nth-child(1)');
-                const barHighlighted = containerFixture.selectAll('.bar:nth-child(2)');
+                const barNotHighlighted = containerFixture.selectAll(
+                    '.bar:nth-child(1)'
+                );
+                const barHighlighted = containerFixture.selectAll(
+                    '.bar:nth-child(2)'
+                );
 
                 const beforeHighlightColor = barNotHighlighted.attr('fill');
 
@@ -357,7 +362,6 @@ describe('Bar Chart', () => {
         });
 
         describe('when custom gradient color schem is applied', () => {
-
             it('should build the gradient with given colors', () => {
                 const expectedGradientColors = ['#ddd', 'ccc'];
                 const expectedGradientRefStr = 'url(#bar-gradient';
@@ -365,16 +369,23 @@ describe('Bar Chart', () => {
                 barChart.chartGradient(expectedGradientColors);
                 containerFixture.datum(dataset).call(barChart);
                 const bar = containerFixture.selectAll('.bar:nth-child(1)');
-                const gradientStopEl = containerFixture.selectAll('stop').nodes();
+                const gradientStopEl = containerFixture
+                    .selectAll('stop')
+                    .nodes();
 
                 expect(bar.attr('fill')).toContain(expectedGradientRefStr);
-                expect(gradientStopEl[0]).toHaveAttr('stop-color', expectedGradientColors[0]);
-                expect(gradientStopEl[1]).toHaveAttr('stop-color', expectedGradientColors[1]);
+                expect(gradientStopEl[0]).toHaveAttr(
+                    'stop-color',
+                    expectedGradientColors[0]
+                );
+                expect(gradientStopEl[1]).toHaveAttr(
+                    'stop-color',
+                    expectedGradientColors[1]
+                );
             });
         });
 
         describe('when clicking on a bar', () => {
-
             it('should trigger a callback on mouse click', () => {
                 const callbackSpy = jasmine.createSpy('callback');
                 const bar = containerFixture.selectAll('.bar:nth-child(1)');
@@ -382,7 +393,6 @@ describe('Bar Chart', () => {
                 const expectedArgumentsNumber = 3;
                 let actualCalls;
                 let actualArgumentsNumber;
-
 
                 barChart.on('customClick', callbackSpy);
                 bar.dispatch('click');
@@ -395,7 +405,6 @@ describe('Bar Chart', () => {
         });
 
         describe('when hovering a bar', () => {
-
             it('should trigger a callback on mouse over', () => {
                 const bar = containerFixture.selectAll('.bar:nth-child(1)');
                 const callbackSpy = jasmine.createSpy('callback');
@@ -445,7 +454,7 @@ describe('Bar Chart', () => {
                 barChart.on('customMouseOut', callbackSpy);
                 bar.dispatch('mouseout');
                 actualCallCount = callbackSpy.calls.count();
-                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length
+                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
 
                 expect(actualCallCount).toEqual(expectedCallCount);
                 expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
@@ -454,7 +463,6 @@ describe('Bar Chart', () => {
     });
 
     describe('API', () => {
-
         it('should provide colorSchema getter and setter', () => {
             let previous = barChart.colorSchema(),
                 expected = ['#FFFFFF'],
@@ -513,7 +521,7 @@ describe('Bar Chart', () => {
 
         it('should provide height getter and setter', () => {
             let previous = barChart.height(),
-                expected = {top: 4, right: 4, bottom: 4, left: 4},
+                expected = { top: 4, right: 4, bottom: 4, left: 4 },
                 actual;
 
             barChart.height(expected);
@@ -559,7 +567,7 @@ describe('Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it('should provide labelsNumberFormat getter and setter', () =>{
+        it('should provide labelsNumberFormat getter and setter', () => {
             let previous = barChart.labelsNumberFormat(),
                 expected = 'd',
                 actual;
@@ -584,7 +592,6 @@ describe('Bar Chart', () => {
         });
 
         describe('loadingState', () => {
-
             it('should provide loadingState getter and setter', () => {
                 let previous = barChart.loadingState(),
                     expected = 'test',
@@ -603,7 +610,8 @@ describe('Bar Chart', () => {
                         actual;
 
                     barChart = chart();
-                    actual = barChart.loadingState().match('bar-load-state').length;
+                    actual = barChart.loadingState().match('bar-load-state')
+                        .length;
 
                     expect(actual).toEqual(expected);
                 });
@@ -613,7 +621,7 @@ describe('Bar Chart', () => {
         describe('margin', () => {
             it('should provide margin getter and setter', () => {
                 let previous = barChart.margin(),
-                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    expected = { top: 4, right: 4, bottom: 4, left: 4 },
                     actual;
 
                 barChart.margin(expected);
@@ -624,13 +632,12 @@ describe('Bar Chart', () => {
             });
 
             describe('when margins are set partially', function () {
-
                 it('should override the default values', () => {
                     let previous = barChart.margin(),
                         expected = {
                             ...previous,
                             top: 10,
-                            right: 20
+                            right: 20,
                         },
                         actual;
 
@@ -717,7 +724,7 @@ describe('Bar Chart', () => {
 
         it('should provide width getter and setter', () => {
             let previous = barChart.width(),
-                expected = {top: 4, right: 4, bottom: 4, left: 4},
+                expected = { top: 4, right: 4, bottom: 4, left: 4 },
                 actual;
 
             barChart.width(expected);
@@ -763,7 +770,7 @@ describe('Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it('should provide numberFormat getter and setter', () =>{
+        it('should provide numberFormat getter and setter', () => {
             let previous = barChart.numberFormat(),
                 expected = 'd',
                 actual;
@@ -775,7 +782,7 @@ describe('Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it('should provide hasSingleBarHighlight getter and setter', () =>{
+        it('should provide hasSingleBarHighlight getter and setter', () => {
             let previous = barChart.hasSingleBarHighlight(),
                 expected = false,
                 actual;
@@ -848,4 +855,3 @@ describe('Bar Chart', () => {
         });
     });
 });
-

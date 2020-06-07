@@ -3,12 +3,9 @@ import * as d3 from 'd3';
 import chart from './../../src/charts/grouped-bar';
 import { GroupedBarChartDataBuilder } from 'groupedBarChartDataBuilder';
 
-
 const aTestDataSet = () => new GroupedBarChartDataBuilder();
 const buildDataSet = (dataSetName) => {
-    return aTestDataSet()
-        [dataSetName]()
-        .build();
+    return aTestDataSet()[dataSetName]().build();
 };
 
 const differentDatesReducer = (acc, d) => {
@@ -23,7 +20,8 @@ describe('Grouped Bar Chart', () => {
     let groupedBarChart, dataset, containerFixture, f;
 
     beforeEach(() => {
-        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+        const fixture =
+            '<div id="fixture"><div class="test-container"></div></div>';
 
         dataset = buildDataSet('with3Sources');
         groupedBarChart = chart()
@@ -45,7 +43,6 @@ describe('Grouped Bar Chart', () => {
     });
 
     describe('Render', () => {
-
         it('should render a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.grouped-bar').size();
@@ -56,7 +53,9 @@ describe('Grouped Bar Chart', () => {
         describe('groups', () => {
             it('should create a container-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.container-group').size();
+                const actual = containerFixture
+                    .select('g.container-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -84,31 +83,38 @@ describe('Grouped Bar Chart', () => {
 
             it('should create a grid-lines-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.grid-lines-group').size();
+                const actual = containerFixture
+                    .select('g.grid-lines-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should create a metadata-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.metadata-group').size();
+                const actual = containerFixture
+                    .select('g.metadata-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
         });
 
         describe('grid lines', () => {
-
             it('should draw horizontal grid line', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.horizontal-grid-line').size();
+                const actual = containerFixture
+                    .select('.horizontal-grid-line')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should draw vertical grid line', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.vertical-grid-line').size();
+                const actual = containerFixture
+                    .select('.vertical-grid-line')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -117,14 +123,18 @@ describe('Grouped Bar Chart', () => {
         describe('axis', () => {
             it('should draw an X axis', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.x-axis-group .axis.x').size();
+                const actual = containerFixture
+                    .select('.x-axis-group .axis.x')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should draw an Y axis', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.y-axis-group.axis').size();
+                const actual = containerFixture
+                    .select('.y-axis-group.axis')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -132,7 +142,8 @@ describe('Grouped Bar Chart', () => {
 
         it('should render a layer for each data entry group', () => {
             const actual = containerFixture.selectAll('.layer').size();
-            const expected = dataset.data.reduce(differentDatesReducer, []).length;
+            const expected = dataset.data.reduce(differentDatesReducer, [])
+                .length;
 
             expect(actual).toEqual(expected);
         });
@@ -145,7 +156,6 @@ describe('Grouped Bar Chart', () => {
         });
 
         describe('when reloading with a two sources dataset', () => {
-
             it('should render in the same svg', () => {
                 const expected = 1;
                 const newDataset = buildDataSet('with2Sources');
@@ -163,7 +173,9 @@ describe('Grouped Bar Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset.data).call(groupedBarChart);
-                actual = containerFixture.selectAll('.grouped-bar .layer').size();
+                actual = containerFixture
+                    .selectAll('.grouped-bar .layer')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -181,7 +193,6 @@ describe('Grouped Bar Chart', () => {
         });
 
         describe('when grouped bar is animated', () => {
-
             it('it renders correct number of layers and bars', () => {
                 const expectedNLayers = 4;
                 const nBarsPerLayer = 3;
@@ -189,8 +200,12 @@ describe('Grouped Bar Chart', () => {
                 groupedBarChart.isAnimated(true);
                 containerFixture.datum(dataset.data).call(groupedBarChart);
 
-                const actualNLayers = containerFixture.selectAll('.chart-group .layer').size();
-                const actualNBars = containerFixture.selectAll('.chart-group .bar').size();
+                const actualNLayers = containerFixture
+                    .selectAll('.chart-group .layer')
+                    .size();
+                const actualNBars = containerFixture
+                    .selectAll('.chart-group .bar')
+                    .size();
 
                 expect(actualNLayers).toEqual(expectedNLayers);
                 expect(actualNBars).toEqual(expectedNLayers * nBarsPerLayer);
@@ -199,10 +214,8 @@ describe('Grouped Bar Chart', () => {
     });
 
     describe('Lifecycle', () => {
-
         // TODO: Review this test with more time, as it fails in Travis only
         xdescribe('when clicking on the chart', () => {
-
             it('should trigger a callback', () => {
                 const bar = containerFixture.select('.grouped-bar');
                 const callbackSpy = jasmine.createSpy('callback');
@@ -219,11 +232,10 @@ describe('Grouped Bar Chart', () => {
 
                 expect(actualCalls).toEqual(expectedCalls);
                 expect(actualArgumentsNumber).toEqual(expectedArguments);
-            })
+            });
         });
 
         describe('when hovering', () => {
-
             it('mouseover should trigger a callback', () => {
                 const chart = containerFixture.selectAll('.grouped-bar');
                 const callbackSpy = jasmine.createSpy('callback');
@@ -261,7 +273,6 @@ describe('Grouped Bar Chart', () => {
     });
 
     describe('API', () => {
-
         it('should provide group label getter and setter', () => {
             let previous = groupedBarChart.groupLabel(),
                 expected = 'label',
@@ -334,7 +345,6 @@ describe('Grouped Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
-
         it('should provide margin getter and setter', () => {
             let previous = groupedBarChart.margin(),
                 expected = { top: 4, right: 4, bottom: 4, left: 4 },
@@ -348,13 +358,12 @@ describe('Grouped Bar Chart', () => {
         });
 
         describe('when margins are set partially', function () {
-
             it('should override the default values', () => {
                 let previous = groupedBarChart.margin(),
                     expected = {
                         ...previous,
                         top: 10,
-                        right: 20
+                        right: 20,
                     },
                     actual;
 
@@ -439,4 +448,3 @@ describe('Grouped Bar Chart', () => {
         });
     });
 });
-

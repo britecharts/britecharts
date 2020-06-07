@@ -8,7 +8,6 @@ import { ScatterPlotDataBuilder } from './../../test/fixtures/scatterPlotDataBui
 
 require('./helpers/resizeHelper');
 
-
 const aTestDataSet = () => new ScatterPlotDataBuilder();
 
 let redrawCharts;
@@ -16,8 +15,12 @@ let redrawCharts;
 function createScatterPlotWithSingleSource(optionalColorSchema) {
     let scatterChart = scatterPlot();
     let tooltip = miniTooltip().title('Temperature (C)');
-    let scatterPlotContainer = select('.js-scatter-plot-chart-tooltip-container');
-    let containerWidth = scatterPlotContainer.node() ? scatterPlotContainer.node().getBoundingClientRect().width : false;
+    let scatterPlotContainer = select(
+        '.js-scatter-plot-chart-tooltip-container'
+    );
+    let containerWidth = scatterPlotContainer.node()
+        ? scatterPlotContainer.node().getBoundingClientRect().width
+        : false;
     let dataset, tooltipContainer;
 
     if (containerWidth) {
@@ -33,7 +36,7 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
             .xAxisLabel('Temperature (C)')
             .margin({
                 left: 60,
-                bottom: 50
+                bottom: 50,
             })
             .yAxisLabel('Ice Cream Sales')
             .yAxisFormat('$')
@@ -49,11 +52,11 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
         scatterPlotContainer.datum(dataset).call(scatterChart);
 
         // tooltip set up
-        tooltip.valueLabel('y')
-            .nameLabel('x')
-            .numberFormat('$');
+        tooltip.valueLabel('y').nameLabel('x').numberFormat('$');
 
-        tooltipContainer = select('.js-scatter-plot-chart-tooltip-container .scatter-plot .metadata-group');
+        tooltipContainer = select(
+            '.js-scatter-plot-chart-tooltip-container .scatter-plot .metadata-group'
+        );
         tooltipContainer.datum([]).call(tooltip);
     }
 }
@@ -61,8 +64,12 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
 function createScatterPlotWithIncreasedAreaAndHollowCircles() {
     let scatterChart = scatterPlot();
     let tooltip = miniTooltip();
-    let scatterPlotContainer = select('.js-scatter-plot-container-with-hollow-circles');
-    let containerWidth = scatterPlotContainer.node() ? scatterPlotContainer.node().getBoundingClientRect().width : false;
+    let scatterPlotContainer = select(
+        '.js-scatter-plot-container-with-hollow-circles'
+    );
+    let containerWidth = scatterPlotContainer.node()
+        ? scatterPlotContainer.node().getBoundingClientRect().width
+        : false;
     let dataset, tooltipContainer;
 
     if (containerWidth) {
@@ -74,7 +81,7 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
             .hasHollowCircles(true)
             .margin({
                 left: 60,
-                bottom: 45
+                bottom: 45,
             })
             .maxCircleArea(15)
             .on('customMouseOver', tooltip.show)
@@ -88,17 +95,19 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
 
         scatterPlotContainer.datum(dataset).call(scatterChart);
 
-        tooltipContainer = select('.js-scatter-plot-container-with-hollow-circles .scatter-plot .metadata-group');
+        tooltipContainer = select(
+            '.js-scatter-plot-container-with-hollow-circles .scatter-plot .metadata-group'
+        );
         tooltipContainer.datum([]).call(tooltip);
     }
 }
 
 // Show charts if container available
 if (select('.js-scatter-plot-chart-tooltip-container').node()) {
-    createScatterPlotWithSingleSource()
+    createScatterPlotWithSingleSource();
     createScatterPlotWithIncreasedAreaAndHollowCircles();
 
-    redrawCharts = function() {
+    redrawCharts = function () {
         selectAll('.scatter-plot').remove();
         createScatterPlotWithSingleSource();
         createScatterPlotWithIncreasedAreaAndHollowCircles();
@@ -108,7 +117,11 @@ if (select('.js-scatter-plot-chart-tooltip-container').node()) {
     PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
-    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.scatter-plot', function (newSchema) {
-        createScatterPlotWithSingleSource(newSchema);
-    });
+    colorSelectorHelper.createColorSelector(
+        '.js-color-selector-container',
+        '.scatter-plot',
+        function (newSchema) {
+            createScatterPlotWithSingleSource(newSchema);
+        }
+    );
 }

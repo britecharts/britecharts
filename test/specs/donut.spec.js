@@ -7,19 +7,17 @@ const donutDataSets = ['withFivePlusOther', 'withFivePlusOtherNoPercent'];
 
 const aTestDataSet = () => new DonutDataBuilder();
 const buildDataSet = (dataSetName) => {
-    return aTestDataSet()
-        [dataSetName]()
-        .build();
+    return aTestDataSet()[dataSetName]().build();
 };
 
 // loops over donutDataSets array and runs tests for each data-set
 donutDataSets.forEach((datasetName) => {
-
     describe('Donut Chart', () => {
         let donutChart, dataset, containerFixture, f;
 
         beforeEach(() => {
-            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+            const fixture =
+                '<div id="fixture"><div class="test-container"></div></div>';
 
             // adds an html fixture to the DOM
             document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -42,7 +40,6 @@ donutDataSets.forEach((datasetName) => {
         });
 
         describe('Render', () => {
-
             it('should render a chart with minimal requirements', () => {
                 const expected = 1;
                 const actual = containerFixture.select('.donut-chart').size();
@@ -53,21 +50,27 @@ donutDataSets.forEach((datasetName) => {
             describe('groups', () => {
                 it('should create a container-group', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('g.container-group').size();
+                    const actual = containerFixture
+                        .select('g.container-group')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should create a chart-group', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('g.chart-group').size();
+                    const actual = containerFixture
+                        .select('g.chart-group')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should create a legend-group', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('g.legend-group').size();
+                    const actual = containerFixture
+                        .select('g.legend-group')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
@@ -75,14 +78,18 @@ donutDataSets.forEach((datasetName) => {
 
             it('should draw a slice for each data entry', () => {
                 const expected = dataset.length;
-                const actual = containerFixture.selectAll('.donut-chart .arc').size();
+                const actual = containerFixture
+                    .selectAll('.donut-chart .arc')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should draw one path in each slice', () => {
                 let expected = dataset.length;
-                let actual = containerFixture.selectAll('.donut-chart .arc path').size();
+                let actual = containerFixture
+                    .selectAll('.donut-chart .arc path')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -90,28 +97,36 @@ donutDataSets.forEach((datasetName) => {
             it('should use percentage if declared in data, otherwise calculates value', () => {
                 let percentStub = {
                         withFivePlusOther: ['5', '18', '16', '11', '2', '48'],
-                        withFivePlusOtherNoPercent: ['5.0', '17.6', '16.2', '11.4', '2.1', '47.7'],
+                        withFivePlusOtherNoPercent: [
+                            '5.0',
+                            '17.6',
+                            '16.2',
+                            '11.4',
+                            '2.1',
+                            '47.7',
+                        ],
                     },
                     slices = containerFixture.selectAll('.chart-group .arc');
 
                 slices.each((item, index) => {
-                    expect(item.data.percentage).toEqual(percentStub[datasetName][index]);
+                    expect(item.data.percentage).toEqual(
+                        percentStub[datasetName][index]
+                    );
                 });
             });
 
             it('should append text to the legend container', () => {
                 const expected = false;
-                const actual = containerFixture.select('text.donut-text').empty();
+                const actual = containerFixture
+                    .select('text.donut-text')
+                    .empty();
 
                 expect(actual).toEqual(expected);
             });
 
             describe('when one section is zero', () => {
-
                 it('should keep the order of colors', () => {
-                    const dataset = aTestDataSet()
-                        .withOneTopicAtZero()
-                        .build();
+                    const dataset = aTestDataSet().withOneTopicAtZero().build();
                     const expectedFills = ['#111111', '#222222', '#333333'];
 
                     donutChart.colorSchema(expectedFills);
@@ -129,7 +144,6 @@ donutDataSets.forEach((datasetName) => {
             });
 
             describe('when all sections are zero and emptyDataConfig.showEmptySlice', () => {
-
                 it('percentage label should be 0%', () => {
                     const expected = '0.0%';
                     const emptyDataConfig = {
@@ -141,11 +155,13 @@ donutDataSets.forEach((datasetName) => {
                         .build();
                     let actual;
 
-                    donutChart.highlightSliceById(11)
+                    donutChart.highlightSliceById(11);
                     donutChart.emptyDataConfig(emptyDataConfig);
                     containerFixture.datum(dataset).call(donutChart);
 
-                    const textNodes = containerFixture.select('text.donut-text .value').nodes();
+                    const textNodes = containerFixture
+                        .select('text.donut-text .value')
+                        .nodes();
 
                     actual = d3.select(textNodes[0]).text();
 
@@ -165,7 +181,9 @@ donutDataSets.forEach((datasetName) => {
 
                     donutChart.emptyDataConfig(emptyDataConfig);
                     containerFixture.datum(dataset).call(donutChart);
-                    actual = containerFixture.selectAll('.donut-chart .arc path').size();
+                    actual = containerFixture
+                        .selectAll('.donut-chart .arc path')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
@@ -184,17 +202,17 @@ donutDataSets.forEach((datasetName) => {
                     donutChart.emptyDataConfig(emptyDataConfig);
                     containerFixture.datum(dataset).call(donutChart);
 
-                    const paths = containerFixture.selectAll('.donut-chart .arc path').nodes();
+                    const paths = containerFixture
+                        .selectAll('.donut-chart .arc path')
+                        .nodes();
 
                     actual = paths[0].getAttribute('fill');
 
                     expect(actual).toEqual(expected);
-
                 });
             });
 
             describe('when data is empty and emptyDataConfig.showEmptySlice', () => {
-
                 it('should render a single filler slice', () => {
                     const expected = 1;
                     const emptyDataConfig = {
@@ -205,7 +223,9 @@ donutDataSets.forEach((datasetName) => {
 
                     donutChart.emptyDataConfig(emptyDataConfig);
                     containerFixture.datum([]).call(donutChart);
-                    actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
+                    actual = containerFixture
+                        .selectAll('.donut-chart .arc path')
+                        .nodes().length;
 
                     expect(actual).toEqual(expected);
                 });
@@ -220,7 +240,9 @@ donutDataSets.forEach((datasetName) => {
 
                     donutChart.emptyDataConfig(emptyDataConfig);
                     containerFixture.datum([]).call(donutChart);
-                    const paths = containerFixture.selectAll('.donut-chart .arc path').nodes();
+                    const paths = containerFixture
+                        .selectAll('.donut-chart .arc path')
+                        .nodes();
                     actual = paths[0].getAttribute('fill');
 
                     expect(actual).toEqual(expected);
@@ -228,14 +250,14 @@ donutDataSets.forEach((datasetName) => {
             });
 
             describe('when reloading with a one item dataset', () => {
-
                 it('should render in the same svg', () => {
                     const expected = 1;
                     const newDataset = buildDataSet('withThreeCategories');
                     let actual;
 
                     containerFixture.datum(newDataset).call(donutChart);
-                    actual = containerFixture.selectAll('.donut-chart').nodes().length;
+                    actual = containerFixture.selectAll('.donut-chart').nodes()
+                        .length;
 
                     expect(actual).toEqual(expected);
                 });
@@ -246,7 +268,9 @@ donutDataSets.forEach((datasetName) => {
                     let actual;
 
                     containerFixture.datum(newDataset).call(donutChart);
-                    actual = containerFixture.selectAll('.donut-chart .arc').nodes().length;
+                    actual = containerFixture
+                        .selectAll('.donut-chart .arc')
+                        .nodes().length;
 
                     expect(actual).toEqual(expected);
                 });
@@ -257,22 +281,25 @@ donutDataSets.forEach((datasetName) => {
                     let actual;
 
                     containerFixture.datum(newDataset).call(donutChart);
-                    actual = containerFixture.selectAll('.donut-chart .arc path').nodes().length;
+                    actual = containerFixture
+                        .selectAll('.donut-chart .arc path')
+                        .nodes().length;
 
                     expect(actual).toEqual(expected);
                 });
             });
 
             describe('when orderingFunction is called', () => {
-
                 it('the default order function sorts properly', () => {
                     // default: b.quantity - a.quantity (descending order)
                     const expected = 4;
                     let actual;
 
                     donutChart.orderingFunction();
-                    containerFixture.call(donutChart)
-                    actual = containerFixture.selectAll('.chart-group .arc').node().__data__.index;
+                    containerFixture.call(donutChart);
+                    actual = containerFixture
+                        .selectAll('.chart-group .arc')
+                        .node().__data__.index;
 
                     expect(actual).toBe(expected);
                 });
@@ -284,15 +311,16 @@ donutDataSets.forEach((datasetName) => {
                     let actual;
 
                     donutChart.orderingFunction(fn);
-                    containerFixture.call(donutChart)
-                    actual = containerFixture.selectAll('.chart-group .arc').node().__data__.index;
+                    containerFixture.call(donutChart);
+                    actual = containerFixture
+                        .selectAll('.chart-group .arc')
+                        .node().__data__.index;
 
                     expect(actual).toBe(expected);
                 });
             });
 
             describe('when centeredTextFunction', () => {
-
                 it('is not called, the default function formats text properly', () => {
                     const expectedLabel = 'Shiny';
                     const expectedValue = '20%';
@@ -303,8 +331,12 @@ donutDataSets.forEach((datasetName) => {
                     donutChart.highlightSliceById(11);
                     containerFixture.datum(dataset).call(donutChart);
 
-                    const valueNode = containerFixture.select('text.donut-text .value').node();
-                    const labelNode = containerFixture.select('text.donut-text .label').node();
+                    const valueNode = containerFixture
+                        .select('text.donut-text .value')
+                        .node();
+                    const labelNode = containerFixture
+                        .select('text.donut-text .label')
+                        .node();
 
                     actualValue = d3.select(valueNode).text();
                     actualLabel = d3.select(labelNode).text();
@@ -320,12 +352,18 @@ donutDataSets.forEach((datasetName) => {
                     let actualLabel;
                     let actualValue;
 
-                    donutChart.centeredTextFunction((d) => `${d.id} ${d.quantity}`);
+                    donutChart.centeredTextFunction(
+                        (d) => `${d.id} ${d.quantity}`
+                    );
                     donutChart.highlightSliceById(11);
                     containerFixture.datum(dataset).call(donutChart);
 
-                    const valueNode = containerFixture.select('text.donut-text .value').node();
-                    const labelNode = containerFixture.select('text.donut-text .label').node();
+                    const valueNode = containerFixture
+                        .select('text.donut-text .value')
+                        .node();
+                    const labelNode = containerFixture
+                        .select('text.donut-text .label')
+                        .node();
 
                     actualValue = d3.select(valueNode).text();
                     actualLabel = d3.select(labelNode).text();
@@ -337,10 +375,9 @@ donutDataSets.forEach((datasetName) => {
         });
 
         describe('API', () => {
-
             it('should provide margin getter and setter', () => {
                 let previous = donutChart.margin(),
-                    expected = {top: 4, right: 4, bottom: 4, left: 4},
+                    expected = { top: 4, right: 4, bottom: 4, left: 4 },
                     actual;
 
                 donutChart.margin(expected);
@@ -351,13 +388,12 @@ donutDataSets.forEach((datasetName) => {
             });
 
             describe('when margins are set partially', () => {
-
                 it('should override the default values', () => {
                     const previous = donutChart.margin();
                     const expected = {
                         ...previous,
                         top: 10,
-                        right: 20
+                        right: 20,
                     };
                     let actual;
 
@@ -548,12 +584,12 @@ donutDataSets.forEach((datasetName) => {
         });
 
         describe('Lifecycle', () => {
-
             describe('when mouse events are triggered', () => {
-
                 it('should trigger an event on click', () => {
                     let callback = jasmine.createSpy('clickCallback'),
-                        firstSlice = containerFixture.select('.chart-group .arc path');
+                        firstSlice = containerFixture.select(
+                            '.chart-group .arc path'
+                        );
 
                     donutChart.on('customClick', callback);
                     firstSlice.dispatch('click');
@@ -563,7 +599,9 @@ donutDataSets.forEach((datasetName) => {
 
                 it('should trigger an event on hover', () => {
                     let callback = jasmine.createSpy('hoverCallback'),
-                        firstSlice = containerFixture.select('.chart-group .arc path');
+                        firstSlice = containerFixture.select(
+                            '.chart-group .arc path'
+                        );
 
                     donutChart.on('customMouseOver', callback);
                     firstSlice.dispatch('mouseover');
@@ -573,7 +611,9 @@ donutDataSets.forEach((datasetName) => {
 
                 it('should trigger an event on mouse out', () => {
                     let callback = jasmine.createSpy('mouseOutCallback'),
-                        firstSlice = containerFixture.select('.chart-group .arc path');
+                        firstSlice = containerFixture.select(
+                            '.chart-group .arc path'
+                        );
 
                     donutChart.on('customMouseOut', callback);
                     firstSlice.dispatch('mouseout');
@@ -583,7 +623,9 @@ donutDataSets.forEach((datasetName) => {
 
                 it('should trigger a callback on mouse move', () => {
                     let callback = jasmine.createSpy('mouseMoveCallback'),
-                        firstSlice = containerFixture.select('.chart-group .arc path');
+                        firstSlice = containerFixture.select(
+                            '.chart-group .arc path'
+                        );
 
                     donutChart.on('customMouseMove', callback);
                     firstSlice.dispatch('mousemove');
@@ -594,7 +636,6 @@ donutDataSets.forEach((datasetName) => {
             });
 
             describe('Export chart functionality', () => {
-
                 it('should have exportChart defined', () => {
                     expect(donutChart.exportChart).toBeDefined();
                 });
@@ -602,4 +643,3 @@ donutDataSets.forEach((datasetName) => {
         });
     });
 });
-

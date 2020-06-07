@@ -1,13 +1,12 @@
 import { select } from 'd3-selection';
 
-
 const wrapConfig = {
     lineHeight: 1.2,
     smallTextOffset: 10,
     smallTextLineHeightRatio: 0.9,
     smallTextRatio: 0.6,
     valueClassName: 'value',
-    labelClassName: 'label'
+    labelClassName: 'label',
 };
 
 const defaultTextSize = 12;
@@ -24,17 +23,20 @@ const defaultFontFace = 'Arial';
  * More discussions on https://github.com/mbostock/d3/issues/1642
  * @return {void}
  */
-export const wrapText = function(xOffset, fontSize, availableWidth, node) {
+export const wrapText = function (xOffset, fontSize, availableWidth, node) {
     let text = select(node),
         words = text.text().split(/\s+/).reverse(),
         word,
         line = [],
         lineNumber = 0,
-        smallLineHeight = wrapConfig.lineHeight * wrapConfig.smallTextLineHeightRatio,
+        smallLineHeight =
+            wrapConfig.lineHeight * wrapConfig.smallTextLineHeightRatio,
         y = text.attr('y'),
         dy = parseFloat(text.attr('dy')),
         smallFontSize = fontSize * wrapConfig.smallTextRatio,
-        tspan = text.text(null).append('tspan')
+        tspan = text
+            .text(null)
+            .append('tspan')
             .attr('x', xOffset)
             .attr('y', y - 5)
             .attr('dy', dy + 'em')
@@ -42,24 +44,29 @@ export const wrapText = function(xOffset, fontSize, availableWidth, node) {
             .style('font-size', fontSize + 'px');
 
     tspan.text(words.pop());
-    tspan = text.append('tspan')
+    tspan = text
+        .append('tspan')
         .classed(wrapConfig.labelClassName, true)
         .attr('x', xOffset)
         .attr('y', y + wrapConfig.smallTextOffset)
         .attr('dy', ++lineNumber * smallLineHeight + dy + 'em')
         .style('font-size', smallFontSize + 'px');
 
-    while (word = words.pop()) {
+    while ((word = words.pop())) {
         line.push(word);
         tspan.text(line.join(' '));
-        if (tspan.node() && tspan.node().getComputedTextLength() > availableWidth - 50) {
+        if (
+            tspan.node() &&
+            tspan.node().getComputedTextLength() > availableWidth - 50
+        ) {
             line.pop();
             tspan.text(line.join(' '));
             line = [word];
-            tspan = text.append('tspan')
+            tspan = text
+                .append('tspan')
                 .classed(wrapConfig.labelClassName, true)
                 .attr('x', xOffset)
-                .attr('y', y+ wrapConfig.smallTextOffset)
+                .attr('y', y + wrapConfig.smallTextOffset)
                 .attr('dy', ++lineNumber * smallLineHeight + dy + 'em')
                 .text(word)
                 .style('font-size', smallFontSize + 'px');
@@ -79,16 +86,14 @@ export const wrapText = function(xOffset, fontSize, availableWidth, node) {
  * More discussions on https://github.com/mbostock/d3/issues/1642
  * @return {void}
  */
-export const wrapTextWithEllipses = function(text, width, xpos=0, limit=2) {
-    text.each(function() {
-        var words,
-            word,
-            line,
-            lineNumber,
-            lineHeight,
-            y,
-            dy,
-            tspan;
+export const wrapTextWithEllipses = function (
+    text,
+    width,
+    xpos = 0,
+    limit = 2
+) {
+    text.each(function () {
+        var words, word, line, lineNumber, lineHeight, y, dy, tspan;
 
         text = select(this);
 
@@ -115,7 +120,8 @@ export const wrapTextWithEllipses = function(text, width, xpos=0, limit=2) {
 
                 if (lineNumber < limit - 1) {
                     line = [word];
-                    tspan = text.append('tspan')
+                    tspan = text
+                        .append('tspan')
                         .attr('x', xpos)
                         .attr('y', y)
                         .attr('dy', ++lineNumber * lineHeight + dy + 'em')
@@ -140,7 +146,11 @@ export const wrapTextWithEllipses = function(text, width, xpos=0, limit=2) {
  * @param  {String} [fontFace='Arial']  Font family to use in the calculation (or default)
  * @return {String}                     Approximated width of the text
  */
-export const getTextWidth = function(text, fontSize = defaultTextSize, fontFace = defaultFontFace) {
+export const getTextWidth = function (
+    text,
+    fontSize = defaultTextSize,
+    fontFace = defaultFontFace
+) {
     let a = document.createElement('canvas'),
         b = a.getContext('2d');
 
@@ -149,24 +159,23 @@ export const getTextWidth = function(text, fontSize = defaultTextSize, fontFace 
     return b.measureText(text).width;
 };
 
-
 /**
  * Gets the font size of the passed node using getComputedStyle
  * or falls back to the default font size
  * @param {HTMLElement} node The node to get the computed font size for
  * @return {number}
  */
-export const getFontSize = function(node) {
+export const getFontSize = function (node) {
     if (typeof window.getComputedStyle === 'function') {
         return parseFloat(window.getComputedStyle(node).fontSize);
     }
 
     return defaultTextSize;
-}
+};
 
 export default {
     wrapText,
     wrapTextWithEllipses,
     getTextWidth,
     getFontSize,
-}
+};

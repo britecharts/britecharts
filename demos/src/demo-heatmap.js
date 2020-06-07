@@ -12,7 +12,9 @@ const aTestDataSet = () => new HeatmapDataBuilder();
 function createWeeklyHeatmapChart(optionalColorSchema) {
     let heatmapChart = heatmap(),
         heatmapContainer = select('.js-heatmap-chart-container'),
-        containerWidth = heatmapContainer.node() ? heatmapContainer.node().getBoundingClientRect().width : false,
+        containerWidth = heatmapContainer.node()
+            ? heatmapContainer.node().getBoundingClientRect().width
+            : false,
         dataset;
 
     if (containerWidth) {
@@ -22,8 +24,7 @@ function createWeeklyHeatmapChart(optionalColorSchema) {
 
         dataset = aTestDataSet().withWeeklyData().build();
 
-        heatmapChart
-            .boxSize(30);
+        heatmapChart.boxSize(30);
 
         if (optionalColorSchema) {
             heatmapChart.colorSchema(optionalColorSchema);
@@ -46,7 +47,11 @@ if (select('.js-heatmap-chart-container').node()) {
     PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
-    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.heatmap', function (newSchema) {
-        createWeeklyHeatmapChart(newSchema);
-    });
+    colorSelectorHelper.createColorSelector(
+        '.js-color-selector-container',
+        '.heatmap',
+        function (newSchema) {
+            createWeeklyHeatmapChart(newSchema);
+        }
+    );
 }

@@ -4,12 +4,9 @@ import * as d3 from 'd3';
 import chart from 'line';
 import { LineDataBuilder } from 'lineChartDataBuilder';
 
-
 const aTestDataSet = () => new LineDataBuilder();
 const buildDataSet = (dataSetName) => {
-    return aTestDataSet()
-        [dataSetName]()
-        .build();
+    return aTestDataSet()[dataSetName]().build();
 };
 
 const hasClass = (element, className) => {
@@ -20,11 +17,10 @@ describe('Line Chart', () => {
     let dataset, containerFixture, f, lineChart;
 
     describe('Render', () => {
-
         describe('when a single line of zeroes', () => {
-
             beforeEach(() => {
-                const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
 
                 // adds an html fixture to the DOM
                 document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -48,7 +44,7 @@ describe('Line Chart', () => {
                     .selectAll('path')
                     .size();
 
-                    expect(actual).toEqual(expected);
+                expect(actual).toEqual(expected);
             });
 
             it('should have a gradient stroke on the chart line', () => {
@@ -56,16 +52,17 @@ describe('Line Chart', () => {
                 const actual = containerFixture
                     .select('.chart-group')
                     .selectAll('path')
-                    .node().style.stroke.match('one-line-gradient').length;
+                    .node()
+                    .style.stroke.match('one-line-gradient').length;
 
                 expect(actual).toEqual(expected);
             });
         });
 
         describe('when multiple lines', () => {
-
             beforeEach(() => {
-                const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
 
                 // adds an html fixture to the DOM
                 document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -92,134 +89,172 @@ describe('Line Chart', () => {
             describe('groups', () => {
                 it('should create a container-group', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('g.container-group').size();
+                    const actual = containerFixture
+                        .select('g.container-group')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should create a chart-group', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('g.chart-group').size();
+                    const actual = containerFixture
+                        .select('g.chart-group')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should create a x-axis-group', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('g.x-axis-group').size();
+                    const actual = containerFixture
+                        .select('g.x-axis-group')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should create a y-axis-group', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('g.y-axis-group').size();
+                    const actual = containerFixture
+                        .select('g.y-axis-group')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should create a grid-lines-group', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('g.grid-lines-group').size();
+                    const actual = containerFixture
+                        .select('g.grid-lines-group')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should create a custom-lines-group', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('g.custom-lines-group').size();
+                    const actual = containerFixture
+                        .select('g.custom-lines-group')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should create a metadata-group', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('g.metadata-group').size();
+                    const actual = containerFixture
+                        .select('g.metadata-group')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
             });
 
             describe('grids', () => {
-
                 describe('when grid is horizontal', () => {
-
                     beforeEach(() => {
                         lineChart = chart().grid('horizontal');
 
-                        containerFixture = d3.select('.test-container').append('svg');
+                        containerFixture = d3
+                            .select('.test-container')
+                            .append('svg');
                         containerFixture.datum(dataset).call(lineChart);
                     });
 
                     it('should draw horizontal grid lines', () => {
                         const expected = 1;
-                        const actual = containerFixture.select('.horizontal-grid-line').size();
+                        const actual = containerFixture
+                            .select('.horizontal-grid-line')
+                            .size();
 
                         expect(actual).toEqual(expected);
                     });
 
                     it('should not draw vertical grid lines', () => {
                         const expected = 0;
-                        const actual = containerFixture.select('.vertical-grid-line').size();
+                        const actual = containerFixture
+                            .select('.vertical-grid-line')
+                            .size();
 
                         expect(actual).toEqual(expected);
                     });
 
                     it('0-axis is NOT highlited with an additional class', () => {
-                        let values = dataset.dataByTopic[0].dates.map(it => it.value);
+                        let values = dataset.dataByTopic[0].dates.map(
+                            (it) => it.value
+                        );
                         let minValue = Math.min(...values);
                         expect(minValue).toEqual(0);
                         let indexOf0 = -minValue;
-    
-                        let horizontalGridLines = d3.selectAll('.horizontal-grid-line').filter((_, i) => i === indexOf0);
-                        let classes = horizontalGridLines.attr('class').split(' ');
-                        expect(classes.includes('horizontal-grid-line--highlighted')).toEqual(false);
+
+                        let horizontalGridLines = d3
+                            .selectAll('.horizontal-grid-line')
+                            .filter((_, i) => i === indexOf0);
+                        let classes = horizontalGridLines
+                            .attr('class')
+                            .split(' ');
+                        expect(
+                            classes.includes(
+                                'horizontal-grid-line--highlighted'
+                            )
+                        ).toEqual(false);
                     });
                 });
 
                 describe('when grid is vertical', function () {
-
                     beforeEach(function () {
                         lineChart = chart().grid('vertical');
 
-                        containerFixture = d3.select('.test-container').append('svg');
+                        containerFixture = d3
+                            .select('.test-container')
+                            .append('svg');
                         containerFixture.datum(dataset).call(lineChart);
                     });
 
                     it('should not draw horizontal grid lines', () => {
                         const expected = 0;
-                        const actual = containerFixture.select('.horizontal-grid-line').size();
+                        const actual = containerFixture
+                            .select('.horizontal-grid-line')
+                            .size();
 
                         expect(actual).toEqual(expected);
                     });
 
                     it('should draw vertical grid lines', () => {
                         const expected = 1;
-                        const actual = containerFixture.select('.vertical-grid-line').size();
+                        const actual = containerFixture
+                            .select('.vertical-grid-line')
+                            .size();
 
                         expect(actual).toEqual(expected);
                     });
                 });
 
                 describe('when grid is full', function () {
-
                     beforeEach(function () {
                         lineChart = chart().grid('full');
 
-                        containerFixture = d3.select('.test-container').append('svg');
+                        containerFixture = d3
+                            .select('.test-container')
+                            .append('svg');
                         containerFixture.datum(dataset).call(lineChart);
                     });
 
                     it('should draw horizontal grid lines', () => {
                         const expected = 1;
-                        const actual = containerFixture.select('.horizontal-grid-line').size();
+                        const actual = containerFixture
+                            .select('.horizontal-grid-line')
+                            .size();
 
                         expect(actual).toEqual(expected);
                     });
 
                     it('should draw vertical grid lines', () => {
                         const expected = 1;
-                        const actual = containerFixture.select('.vertical-grid-line').size();
+                        const actual = containerFixture
+                            .select('.vertical-grid-line')
+                            .size();
 
                         expect(actual).toEqual(expected);
                     });
@@ -227,75 +262,91 @@ describe('Line Chart', () => {
             });
 
             describe('custom lines', () => {
-
                 describe('when no lines are set', () => {
-
                     beforeEach(() => {
                         lineChart = chart();
 
-                        containerFixture = d3.select('.test-container').append('svg');
+                        containerFixture = d3
+                            .select('.test-container')
+                            .append('svg');
                         containerFixture.datum(dataset).call(lineChart);
                     });
 
                     it('should not draw a horizontal line', () => {
                         const expected = 0;
-                        const actual = containerFixture.select('.custom-line').size();
+                        const actual = containerFixture
+                            .select('.custom-line')
+                            .size();
 
                         expect(actual).toEqual(expected);
                     });
 
                     it('should not render an annotation text', () => {
                         const expected = 0;
-                        const actual = containerFixture.select('.custom-line-annotation').size();
+                        const actual = containerFixture
+                            .select('.custom-line-annotation')
+                            .size();
 
                         expect(actual).toEqual(expected);
                     });
-                })
+                });
 
                 describe('when one line is set', () => {
-
                     beforeEach(() => {
-                        lineChart = chart().lines([{
-                            y: 2,
-                            color: '#ff0000',
-                            name: 'Testname'
-                        }]);
+                        lineChart = chart().lines([
+                            {
+                                y: 2,
+                                color: '#ff0000',
+                                name: 'Testname',
+                            },
+                        ]);
 
-                        containerFixture = d3.select('.test-container').append('svg');
+                        containerFixture = d3
+                            .select('.test-container')
+                            .append('svg');
                         containerFixture.datum(dataset).call(lineChart);
                     });
 
                     it('should draw a horizontal line', () => {
                         const expected = 1;
-                        const actual = containerFixture.select('.custom-line').size();
+                        const actual = containerFixture
+                            .select('.custom-line')
+                            .size();
 
                         expect(actual).toEqual(expected);
                     });
 
                     it('should render an annotation text', () => {
                         const expected = 1;
-                        const actual = containerFixture.select('.custom-line-annotation').size();
+                        const actual = containerFixture
+                            .select('.custom-line-annotation')
+                            .size();
 
                         expect(actual).toEqual(expected);
 
-                        const actualText = containerFixture.select('.custom-lines-group text').text();
+                        const actualText = containerFixture
+                            .select('.custom-lines-group text')
+                            .text();
                         expect(actualText).toEqual('Testname');
                     });
-                })
+                });
             });
 
             describe('axis', () => {
-
                 it('should draw an X axis', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('.x-axis-group .x.axis').size();
+                    const actual = containerFixture
+                        .select('.x-axis-group .x.axis')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should draw a month X axis', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('.x-axis-group .month-axis').size();
+                    const actual = containerFixture
+                        .select('.x-axis-group .month-axis')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
@@ -320,8 +371,7 @@ describe('Line Chart', () => {
                 const actual = containerFixture
                     .select('.chart-group')
                     .selectAll('path')
-                    .node()
-                    .style.stroke;
+                    .node().style.stroke;
 
                 expect(actual).not.toEqual(expected);
             });
@@ -342,13 +392,14 @@ describe('Line Chart', () => {
 
             it('should render a vertical marker container', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.vertical-marker').size();
+                const actual = containerFixture
+                    .select('.vertical-marker')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             describe('when reloading with a different dataset', () => {
-
                 it('should render in the same svg', function () {
                     const expected = 1;
                     const newDataset = buildDataSet('withOneSource');
@@ -366,7 +417,9 @@ describe('Line Chart', () => {
                     let actual;
 
                     containerFixture.datum(newDataset).call(lineChart);
-                    actual = containerFixture.selectAll('.line-chart .line').size();
+                    actual = containerFixture
+                        .selectAll('.line-chart .line')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
@@ -379,14 +432,14 @@ describe('Line Chart', () => {
                     containerFixture.datum(newDataset).call(lineChart);
                     containerFixture.datum(newDataset).call(lineChart);
                     container.dispatch('mousemove');
-                })
+                });
             });
 
             describe('axis Labels', () => {
-                describe('when axis labels aren\'t set', () => {
-
+                describe("when axis labels aren't set", () => {
                     beforeEach(() => {
-                        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                        const fixture =
+                            '<div id="fixture"><div class="test-container"></div></div>';
 
                         // adds an html fixture to the DOM
                         document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -399,28 +452,34 @@ describe('Line Chart', () => {
 
                     // remove the html fixture from the DOM
                     afterEach(() => {
-                        document.body.removeChild(document.getElementById('fixture'));
+                        document.body.removeChild(
+                            document.getElementById('fixture')
+                        );
                     });
 
                     it('should not render the x-axis label', () => {
                         const expected = 0;
-                        const actual = containerFixture.selectAll('.x-axis-label')['_groups'][0].length;
+                        const actual = containerFixture.selectAll(
+                            '.x-axis-label'
+                        )['_groups'][0].length;
 
                         expect(actual).toEqual(expected);
                     });
 
                     it('should not render any axisLabel', () => {
                         const expected = 0;
-                        const actual = containerFixture.selectAll('.y-axis-label')['_groups'][0].length;
+                        const actual = containerFixture.selectAll(
+                            '.y-axis-label'
+                        )['_groups'][0].length;
 
                         expect(actual).toEqual(expected);
                     });
                 });
 
                 describe('when axis labels are set', () => {
-
                     beforeEach(() => {
-                        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                        const fixture =
+                            '<div id="fixture"><div class="test-container"></div></div>';
 
                         // adds an html fixture to the DOM
                         document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -435,19 +494,25 @@ describe('Line Chart', () => {
 
                     // remove the html fixture from the DOM
                     afterEach(() => {
-                        document.body.removeChild(document.getElementById('fixture'));
+                        document.body.removeChild(
+                            document.getElementById('fixture')
+                        );
                     });
 
                     it('should render the x-axis label', () => {
                         let expected = 1,
-                            actual = containerFixture.selectAll('.x-axis-label')['_groups'][0].length;
+                            actual = containerFixture.selectAll(
+                                '.x-axis-label'
+                            )['_groups'][0].length;
 
                         expect(actual).toEqual(expected);
                     });
 
                     it('should render any axisLabel', () => {
                         let expected = 1,
-                            actual = containerFixture.selectAll('.y-axis-label')['_groups'][0].length;
+                            actual = containerFixture.selectAll(
+                                '.y-axis-label'
+                            )['_groups'][0].length;
 
                         expect(actual).toEqual(expected);
                     });
@@ -455,7 +520,8 @@ describe('Line Chart', () => {
 
                 describe('when has negative values', () => {
                     beforeEach(() => {
-                        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                        const fixture =
+                            '<div id="fixture"><div class="test-container"></div></div>';
 
                         // adds an html fixture to the DOM
                         document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -475,29 +541,42 @@ describe('Line Chart', () => {
                     });
 
                     it('The lowest Y-axis value is negative', () => {
-                        let values = dataset.dataByTopic[0].dates.map(it => it.value);
+                        let values = dataset.dataByTopic[0].dates.map(
+                            (it) => it.value
+                        );
                         let minValue = Math.min(...values);
                         let minValueText = '' + minValue;
 
                         let yAxis = d3.select('.y-axis-group');
                         let text = yAxis.select('g.tick');
                         expect(text.text()).toEqual(minValueText);
-                    })
+                    });
 
                     it('0-axis is highlited with an additional class', () => {
-                        let values = dataset.dataByTopic[0].dates.map(it => it.value);
+                        let values = dataset.dataByTopic[0].dates.map(
+                            (it) => it.value
+                        );
                         let minValue = Math.min(...values);
                         let indexOf0 = -minValue;
 
-                        let horizontalGridLines = d3.selectAll('.horizontal-grid-line').filter((_, i) => i === indexOf0);
-                        let classes = horizontalGridLines.attr('class').split(' ');
-                        expect(classes.includes('horizontal-grid-line--highlighted')).toEqual(true);
+                        let horizontalGridLines = d3
+                            .selectAll('.horizontal-grid-line')
+                            .filter((_, i) => i === indexOf0);
+                        let classes = horizontalGridLines
+                            .attr('class')
+                            .split(' ');
+                        expect(
+                            classes.includes(
+                                'horizontal-grid-line--highlighted'
+                            )
+                        ).toEqual(true);
                     });
                 });
 
                 describe('when has only negative values', () => {
                     beforeEach(() => {
-                        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                        const fixture =
+                            '<div id="fixture"><div class="test-container"></div></div>';
 
                         // adds an html fixture to the DOM
                         document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -531,9 +610,9 @@ describe('Line Chart', () => {
             });
 
             describe('when different date ranges', () => {
-
                 beforeEach(() => {
-                    const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                    const fixture =
+                        '<div id="fixture"><div class="test-container"></div></div>';
 
                     // adds an html fixture to the DOM
                     document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -547,7 +626,9 @@ describe('Line Chart', () => {
 
                 // remove the html fixture from the DOM
                 afterEach(() => {
-                    document.body.removeChild(document.getElementById('fixture'));
+                    document.body.removeChild(
+                        document.getElementById('fixture')
+                    );
                 });
 
                 it('should have an x axis with hour format', () => {
@@ -557,13 +638,14 @@ describe('Line Chart', () => {
                     const xAxisLabels = xAxis.selectAll('.tick text');
                     const actual = xAxisLabels.text();
 
-                    expect(actual).toEqual(expected)
+                    expect(actual).toEqual(expected);
                 });
             });
 
             describe('when using flat data', () => {
                 beforeEach(() => {
-                    const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                    const fixture =
+                        '<div id="fixture"><div class="test-container"></div></div>';
 
                     // adds an html fixture to the DOM
                     document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -577,12 +659,17 @@ describe('Line Chart', () => {
 
                 // remove the html fixture from the DOM
                 afterEach(() => {
-                    document.body.removeChild(document.getElementById('fixture'));
+                    document.body.removeChild(
+                        document.getElementById('fixture')
+                    );
                 });
 
                 it('should render a chart with two lines', () => {
                     const expected = 2;
-                    const actual = containerFixture.select('.chart-group').selectAll('path').size();
+                    const actual = containerFixture
+                        .select('.chart-group')
+                        .selectAll('path')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
@@ -590,11 +677,10 @@ describe('Line Chart', () => {
         });
 
         describe('when single line', () => {
-
             describe('when x-axis value type is number', () => {
-
                 beforeEach(() => {
-                    const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                    const fixture =
+                        '<div id="fixture"><div class="test-container"></div></div>';
 
                     // adds an html fixture to the DOM
                     document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -614,15 +700,17 @@ describe('Line Chart', () => {
             });
 
             describe('when x-axis value type is number and x-axis scale is logarithmic', () => {
-
                 beforeEach(() => {
-                    const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                    const fixture =
+                        '<div id="fixture"><div class="test-container"></div></div>';
 
                     // adds an html fixture to the DOM
                     document.body.insertAdjacentHTML('afterbegin', fixture);
 
                     dataset = buildDataSet('withNumericKeys');
-                    lineChart = chart().xAxisValueType('number').xAxisScale('logarithmic');
+                    lineChart = chart()
+                        .xAxisValueType('number')
+                        .xAxisScale('logarithmic');
 
                     containerFixture = d3.select('.test-container');
                     containerFixture.datum(dataset).call(lineChart);
@@ -634,13 +722,12 @@ describe('Line Chart', () => {
                     expect(text.text()).toEqual('10^1');
                 });
             });
-
         });
 
         describe('data points', () => {
-
             beforeEach(() => {
-                const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
 
                 // adds an html fixture to the DOM
                 document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -658,26 +745,31 @@ describe('Line Chart', () => {
             });
 
             describe('when shouldShowAllDataPoints is true', () => {
-
                 beforeEach(() => {
                     lineChart = chart().shouldShowAllDataPoints(true);
 
-                    containerFixture = d3.select('.test-container').append('svg');
+                    containerFixture = d3
+                        .select('.test-container')
+                        .append('svg');
                     containerFixture.datum(dataset).call(lineChart);
                 });
 
                 it('chart should render data points container', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('.data-points-container').size();
+                    const actual = containerFixture
+                        .select('.data-points-container')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('data points container renders a circle for each data point', () => {
-                    const expected = dataset.dataByDate.reduce((accum, dataPoint) => (
-                        accum + dataPoint.topics.length
-                    ), 0);
-                    const actual = containerFixture.select('.data-points-container')
+                    const expected = dataset.dataByDate.reduce(
+                        (accum, dataPoint) => accum + dataPoint.topics.length,
+                        0
+                    );
+                    const actual = containerFixture
+                        .select('.data-points-container')
                         .selectAll('circle')
                         .size();
 
@@ -685,7 +777,8 @@ describe('Line Chart', () => {
                 });
 
                 it('each data circle has proper attributes', () => {
-                    const circles = containerFixture.select('.data-points-container')
+                    const circles = containerFixture
+                        .select('.data-points-container')
                         .selectAll('circle')
                         .nodes();
 
@@ -702,9 +795,9 @@ describe('Line Chart', () => {
     });
 
     describe('Lifecycle', () => {
-
         beforeEach(() => {
-            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+            const fixture =
+                '<div id="fixture"><div class="test-container"></div></div>';
 
             // adds an html fixture to the DOM
             document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -757,7 +850,9 @@ describe('Line Chart', () => {
             container.dispatch('touchmove');
 
             expect(callback.calls.count()).toEqual(expectedCalls);
-            expect(callback.calls.allArgs()[0].length).toEqual(expectedArguments);
+            expect(callback.calls.allArgs()[0].length).toEqual(
+                expectedArguments
+            );
         });
 
         it('should show the overlay when the mouse is hovering', () => {
@@ -798,9 +893,9 @@ describe('Line Chart', () => {
     });
 
     describe('API', () => {
-
         beforeEach(() => {
-            const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+            const fixture =
+                '<div id="fixture"><div class="test-container"></div></div>';
 
             // adds an html fixture to the DOM
             document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -818,7 +913,6 @@ describe('Line Chart', () => {
         });
 
         describe('Aspect Ratio', () => {
-
             it('should provide an aspect ratio getter and setter', () => {
                 let previous = lineChart.aspectRatio(),
                     expected = 600,
@@ -832,7 +926,6 @@ describe('Line Chart', () => {
             });
 
             describe('when an aspect ratio is set', () => {
-
                 it('should modify the height depending on the width', () => {
                     let testAspectRatio = 0.5,
                         testWidth = 400,
@@ -842,7 +935,9 @@ describe('Line Chart', () => {
                     lineChart.width(testWidth);
                     newHeight = lineChart.height();
 
-                    expect(newHeight).toBe(Math.ceil(testWidth * testAspectRatio));
+                    expect(newHeight).toBe(
+                        Math.ceil(testWidth * testAspectRatio)
+                    );
                 });
 
                 it('should modify the width depending on the height', () => {
@@ -854,7 +949,9 @@ describe('Line Chart', () => {
                     lineChart.height(testHeight);
                     newWidth = lineChart.width();
 
-                    expect(newWidth).toBe(Math.ceil(testHeight / testAspectRatio));
+                    expect(newWidth).toBe(
+                        Math.ceil(testHeight / testAspectRatio)
+                    );
                 });
             });
         });
@@ -867,12 +964,11 @@ describe('Line Chart', () => {
                 HOUR_DAY: 'hour-daymonth',
                 DAY_MONTH: 'day-month',
                 MONTH_YEAR: 'month-year',
-                CUSTOM: 'custom'
+                CUSTOM: 'custom',
             });
         });
 
         describe('Export', () => {
-
             it('should have exportChart defined', () => {
                 expect(lineChart.exportChart).toBeDefined();
             });
@@ -952,13 +1048,12 @@ describe('Line Chart', () => {
             });
 
             describe('when margins are set partially', () => {
-
                 it('should override the default values', () => {
                     let previous = lineChart.margin(),
                         expected = {
                             ...previous,
                             top: 10,
-                            right: 20
+                            right: 20,
                         },
                         actual;
 
@@ -967,7 +1062,7 @@ describe('Line Chart', () => {
 
                     expect(previous).not.toBe(actual);
                     expect(actual).toEqual(expected);
-                })
+                });
             });
         });
 
@@ -1041,7 +1136,6 @@ describe('Line Chart', () => {
         });
 
         describe('loadingState', () => {
-
             it('should provide a loading state getter and setter', () => {
                 let previous = lineChart.loadingState(),
                     expected = '<svg></svg>',
@@ -1057,10 +1151,11 @@ describe('Line Chart', () => {
             describe('when getting a loadingState', () => {
                 it('should return an SVG element', () => {
                     let expected = 1,
-                    actual;
+                        actual;
 
                     lineChart = chart();
-                    actual = lineChart.loadingState().match('line-load-state').length;
+                    actual = lineChart.loadingState().match('line-load-state')
+                        .length;
 
                     expect(actual).toEqual(expected);
                 });
@@ -1213,10 +1308,12 @@ describe('Line Chart', () => {
 
         it('should provide a lines getter and setter', () => {
             let previous = lineChart.lines(),
-                expected = [{
-                    y: 2,
-                    color: 'grey'
-                }],
+                expected = [
+                    {
+                        y: 2,
+                        color: 'grey',
+                    },
+                ],
                 actual;
 
             lineChart.lines(expected);

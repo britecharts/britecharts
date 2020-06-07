@@ -36,42 +36,35 @@ const NUMBER_FORMAT = '.2f';
  *
  */
 export default function module() {
-
     let margin = {
             top: 12,
             right: 12,
             bottom: 12,
-            left: 12
+            left: 12,
         },
         width = 100,
         height = 100,
-
         // Optional Title
         title = '',
-
         // Data Format
         valueLabel = 'value',
         nameLabel = 'name',
-
         // Animations
         mouseChaseDuration = 100,
         ease = easeQuadInOut,
-
         // tooltip
         tooltipBackground,
         backgroundBorderRadius = 1,
         tooltipTextContainer,
         tooltipOffset = {
             y: 0,
-            x: 20
+            x: 20,
         },
-
         // Fonts
         textSize = 14,
         textLineHeight = 1.5,
         valueTextSize = 27,
         valueTextLineHeight = 1.18,
-
         // Colors
         bodyFillColor = '#FFFFFF',
         borderStrokeColor = '#D2D6DF',
@@ -79,15 +72,12 @@ export default function module() {
         nameTextFillColor = '#666a73',
         valueTextFillColor = '#45494E',
         valueTextWeight = 200,
-
         // formats
         numberFormat = NUMBER_FORMAT,
         valueFormatter = (value) => format(numberFormat)(value),
-
         chartWidth,
         chartHeight,
         svg;
-
 
     /**
      * This function creates the graph using the selection as container
@@ -95,7 +85,7 @@ export default function module() {
      *                                  the container(s) where the chart(s) will be rendered
      */
     function exports(_selection) {
-        _selection.each(function(){
+        _selection.each(function () {
             chartWidth = width - margin.left - margin.right;
             chartHeight = height - margin.top - margin.bottom;
 
@@ -131,10 +121,7 @@ export default function module() {
 
             buildContainerGroups();
         }
-        svg
-            .transition()
-            .attr('width', width)
-            .attr('height', height);
+        svg.transition().attr('width', width).attr('height', height);
 
         // Hidden by default
         exports.hide();
@@ -144,8 +131,9 @@ export default function module() {
      * Draws the different elements of the Tooltip box
      * @return void
      */
-    function drawTooltip(){
-        tooltipTextContainer = svg.selectAll('.tooltip-group')
+    function drawTooltip() {
+        tooltipTextContainer = svg
+            .selectAll('.tooltip-group')
             .append('g')
             .classed('tooltip-text select-disable', true);
 
@@ -156,8 +144,8 @@ export default function module() {
             .attr('height', height)
             .attr('rx', backgroundBorderRadius)
             .attr('ry', backgroundBorderRadius)
-            .attr('y', - margin.top)
-            .attr('x', - margin.left)
+            .attr('y', -margin.top)
+            .attr('x', -margin.left)
             .style('fill', bodyFillColor)
             .style('stroke', borderStrokeColor)
             .style('stroke-width', 1)
@@ -171,8 +159,9 @@ export default function module() {
      * @return {Number}                 Max size of the lines
      */
     function getMaxLengthLine(...texts) {
-        let textSizes = texts.filter(x => !!x)
-            .map(x => x.node().getBBox().width);
+        let textSizes = texts
+            .filter((x) => !!x)
+            .map((x) => x.node().getBBox().width);
 
         return max(textSizes);
     }
@@ -186,7 +175,10 @@ export default function module() {
      * @return {Number[]}                  X and Y position
      * @private
      */
-    function getTooltipPosition([mouseX, mouseY], [parentChartWidth, parentChartHeight]) {
+    function getTooltipPosition(
+        [mouseX, mouseY],
+        [parentChartWidth, parentChartHeight]
+    ) {
         let tooltipX, tooltipY;
 
         if (hasEnoughHorizontalRoom(parentChartWidth, mouseX)) {
@@ -211,7 +203,14 @@ export default function module() {
      * @return {Boolean}            If the mouse position allows space for the tooltip
      */
     function hasEnoughHorizontalRoom(parentChartWidth, positionX) {
-        return (parentChartWidth - margin.left - margin.right - chartWidth) - positionX > 0;
+        return (
+            parentChartWidth -
+                margin.left -
+                margin.right -
+                chartWidth -
+                positionX >
+            0
+        );
     }
 
     /**
@@ -221,7 +220,14 @@ export default function module() {
      * @return {Boolean}            If the mouse position allows space for the tooltip
      */
     function hasEnoughVerticalRoom(parentChartHeight, positionY) {
-        return (parentChartHeight - margin.top - margin.bottom - chartHeight) - positionY > 0;
+        return (
+            parentChartHeight -
+                margin.top -
+                margin.bottom -
+                chartHeight -
+                positionY >
+            0
+        );
     }
 
     /**
@@ -247,7 +253,7 @@ export default function module() {
      * @param  {Object} topic Topic to extract data from
      * @return void
      */
-    function updateContent(dataPoint = {}){
+    function updateContent(dataPoint = {}) {
         let value = dataPoint[valueLabel] || '',
             name = dataPoint[nameLabel] || '',
             lineHeight = textSize * textLineHeight,
@@ -258,8 +264,7 @@ export default function module() {
             tooltipName,
             tooltipTitle;
 
-        tooltipTextContainer.selectAll('text')
-            .remove();
+        tooltipTextContainer.selectAll('text').remove();
 
         if (title) {
             tooltipTitle = tooltipTextContainer
@@ -311,7 +316,10 @@ export default function module() {
      * @return void
      */
     function updatePositionAndSize(mousePosition, parentChartSize) {
-        let [tooltipX, tooltipY] = getTooltipPosition(mousePosition, parentChartSize);
+        let [tooltipX, tooltipY] = getTooltipPosition(
+            mousePosition,
+            parentChartSize
+        );
 
         svg.transition()
             .duration(mouseChaseDuration)
@@ -341,7 +349,7 @@ export default function module() {
      * @return {Module} Tooltip module to chain calls
      * @public
      */
-    exports.hide = function() {
+    exports.hide = function () {
         hideTooltip();
 
         return this;
@@ -353,7 +361,7 @@ export default function module() {
      * @return { text | module} nameLabel or Step Chart module to chain calls
      * @public
      */
-    exports.nameLabel = function(_x) {
+    exports.nameLabel = function (_x) {
         if (!arguments.length) {
             return nameLabel;
         }
@@ -368,14 +376,14 @@ export default function module() {
      * @return {string | module} Current numberFormat or Chart module to chain calls
      * @public
      */
-    exports.numberFormat = function(_x) {
+    exports.numberFormat = function (_x) {
         if (!arguments.length) {
             return numberFormat;
         }
         numberFormat = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets the formatter function for the value displayed on the tooltip.
@@ -386,21 +394,21 @@ export default function module() {
      * @public
      * @example tooltipChart.valueFormatter(value => value.toString().length.toString())
      */
-    exports.valueFormatter = function(_x) {
+    exports.valueFormatter = function (_x) {
         if (!arguments.length) {
             return valueFormatter;
         }
         valueFormatter = _x;
 
         return this;
-    }
+    };
 
     /**
      * Shows the tooltip
      * @return {Module} Tooltip module to chain calls
      * @public
      */
-    exports.show = function() {
+    exports.show = function () {
         showTooltip();
 
         return this;
@@ -412,7 +420,7 @@ export default function module() {
      * @return { string | module} Current title or module to chain calls
      * @public
      */
-    exports.title = function(_x) {
+    exports.title = function (_x) {
         if (!arguments.length) {
             return title;
         }
@@ -428,7 +436,7 @@ export default function module() {
      * @param  {Array} chartSize        Parent chart size [x, y]
      * @return {module}                 Current component
      */
-    exports.update = function(dataPoint, mousePosition, chartSize) {
+    exports.update = function (dataPoint, mousePosition, chartSize) {
         updateTooltip(dataPoint, mousePosition, chartSize);
 
         return this;
@@ -440,15 +448,14 @@ export default function module() {
      * @return {text | module}  valueLabel or Step Chart module to chain calls
      * @public
      */
-    exports.valueLabel = function(_x) {
+    exports.valueLabel = function (_x) {
         if (!arguments.length) {
             return valueLabel;
         }
         valueLabel = _x;
 
         return this;
-    }
+    };
 
     return exports;
-};
-
+}

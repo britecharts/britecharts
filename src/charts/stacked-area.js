@@ -18,20 +18,18 @@ import { axisTimeCombinations, curveMap } from './helpers/constants';
 import {
     formatIntegerValue,
     formatDecimalValue,
-    isInteger
+    isInteger,
 } from './helpers/number';
 import {
     createFilterContainer,
     createGlowWithMatrix,
-    bounceCircleHighlight
+    bounceCircleHighlight,
 } from './helpers/filter';
-import {
-    addDays,
-    diffDays
-} from './helpers/date';
+import { addDays, diffDays } from './helpers/date';
 import { stackedArea as stackedAreaLoadingMarkup } from './helpers/load';
 
-const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
+const uniq = (arrArg) =>
+    arrArg.filter((elem, pos, arr) => arr.indexOf(elem) === pos);
 
 /**
  * @typdef D3Layout
@@ -75,22 +73,21 @@ const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) ===
  *
  */
 export default function module() {
-
     let margin = {
             top: 70,
             right: 30,
             bottom: 60,
-            left: 70
+            left: 70,
         },
         width = 960,
         height = 500,
         loadingState = stackedAreaLoadingMarkup,
-
-        xScale, xAxis, xSubAxis,
-        yScale, yAxis,
-
+        xScale,
+        xAxis,
+        xSubAxis,
+        yScale,
+        yAxis,
         aspectRatio = null,
-
         monthAxisPadding = 30,
         xAxisValueType = 'date',
         xAxisScale = 'linear',
@@ -102,10 +99,8 @@ export default function module() {
         yAxisLabelOffset = -60,
         yTickTextXOffset = -20,
         tickPadding = 5,
-
         colorSchema = colorHelper.colorSchemas.britecharts,
         lineGradient = colorHelper.colorGradients.greenBlue,
-
         highlightFilter = null,
         highlightFilterId = null,
         highlightCircleSize = 12,
@@ -114,85 +109,72 @@ export default function module() {
         highlightCircleActiveRadius = highlightCircleRadius + 2,
         highlightCircleActiveStrokeWidth = 5,
         highlightCircleActiveStrokeOpacity = 0.6,
-
         areaOpacity = 0.24,
         categoryColorMap,
         order,
         topicsOrder,
-
         xAxisFormat = null,
         xTicks = null,
         xAxisCustomFormat = null,
         locale,
-
         baseLine,
         areaCurve = 'monotoneX',
-
         layers,
         series,
         layersInitial,
         areaShape,
         areaOutline,
-
         // Area Animation
         maxAreaNumber = 10,
         areaAnimationDelayStep = 20,
-        areaAnimationDelays = range(areaAnimationDelayStep, maxAreaNumber * areaAnimationDelayStep, areaAnimationDelayStep),
-
+        areaAnimationDelays = range(
+            areaAnimationDelayStep,
+            maxAreaNumber * areaAnimationDelayStep,
+            areaAnimationDelayStep
+        ),
         overlay,
         overlayColor = 'rgba(0, 0, 0, 0)',
         verticalMarkerContainer,
         verticalMarkerLine,
         epsilon,
-
-        dataPoints            = {},
-        pointsSize            = 1.5,
-        pointsColor           = '#c0c6cc',
-        pointsBorderColor     = '#ffffff',
-
+        dataPoints = {},
+        pointsSize = 1.5,
+        pointsColor = '#c0c6cc',
+        pointsBorderColor = '#ffffff',
         isAnimated = false,
         ease = easeQuadInOut,
         areaAnimationDuration = 1000,
-
         hasOutline = true,
-
         svg,
-        chartWidth, chartHeight,
+        chartWidth,
+        chartHeight,
         data,
         dataSorted,
         dataSortedFormatted,
         dataSortedZeroed,
-
         verticalGridLines,
         horizontalGridLines,
         grid = null,
-
         tooltipThreshold = 480,
-
         xAxisPadding = {
             top: 0,
             left: 15,
             bottom: 0,
-            right: 0
+            right: 0,
         },
-
         dateLabel = 'date',
         valueLabel = 'value',
         keyLabel = 'name',
-
         emptyDataConfig = {
-            minDate: new Date(new Date().setDate(new Date().getDate()-30)),
+            minDate: new Date(new Date().setDate(new Date().getDate() - 30)),
             maxDate: new Date(),
             minY: 0,
-            maxY: 500
+            maxY: 500,
         },
-
         isUsingFakeData = false,
-
         // getters
-        getName = ({name}) => name,
-        getDate = ({date}) => date,
-
+        getName = ({ name }) => name,
+        getDate = ({ date }) => date,
         // events
         dispatcher = dispatch(
             'customMouseOver',
@@ -209,7 +191,7 @@ export default function module() {
      * @param {areaChartData} _data The data to attach and generate the chart
      */
     function exports(_selection) {
-        _selection.each(function(_data) {
+        _selection.each(function (_data) {
             chartWidth = width - margin.left - margin.right;
             chartHeight = height - margin.top - margin.bottom;
             data = cleanData(_data);
@@ -239,7 +221,9 @@ export default function module() {
      */
     function addGlowFilter(el) {
         if (!highlightFilter) {
-            highlightFilter = createFilterContainer(svg.select('.metadata-group'));
+            highlightFilter = createFilterContainer(
+                svg.select('.metadata-group')
+            );
             highlightFilterId = createGlowWithMatrix(highlightFilter);
         }
 
@@ -250,11 +234,7 @@ export default function module() {
             .style('stroke-opacity', highlightCircleActiveStrokeOpacity)
             .attr('filter', `url(#${highlightFilterId})`);
 
-        bounceCircleHighlight(
-            glowEl,
-            ease,
-            highlightCircleActiveRadius
-        );
+        bounceCircleHighlight(glowEl, ease, highlightCircleActiveRadius);
     }
 
     /**
@@ -263,14 +243,13 @@ export default function module() {
      * @private
      */
     function addMouseEvents() {
-        svg
-            .on('mouseover', function(d) {
-                handleMouseOver(this, d);
-            })
-            .on('mouseout', function(d) {
+        svg.on('mouseover', function (d) {
+            handleMouseOver(this, d);
+        })
+            .on('mouseout', function (d) {
                 handleMouseOut(this, d);
             })
-            .on('mousemove',  function(d) {
+            .on('mousemove', function (d) {
                 handleMouseMove(this, d);
             });
     }
@@ -281,10 +260,9 @@ export default function module() {
      * @private
      */
     function addTouchEvents() {
-        svg
-            .on('touchmove', function(d) {
-                handleTouchMove(this, d);
-            });
+        svg.on('touchmove', function (d) {
+            handleTouchMove(this, d);
+        });
     }
 
     /**
@@ -311,16 +289,18 @@ export default function module() {
     function buildAxis() {
         let minor, major;
 
-        if(xAxisValueType === 'number') {
+        if (xAxisValueType === 'number') {
             minor = getSortedNumberAxis(dataSorted, width);
             major = null;
 
-            if(xAxisScale === 'logarithmic') {
+            if (xAxisScale === 'logarithmic') {
                 xAxis = axisBottom(xScale)
-                    .ticks(minor.tick, "e")
+                    .ticks(minor.tick, 'e')
                     .tickFormat(function (d) {
                         const log = Math.log(d) / Math.LN10;
-                        return Math.abs(Math.round(log) - log) < 1e-6 ? '10^' + Math.round(log) : '';
+                        return Math.abs(Math.round(log) - log) < 1e-6
+                            ? '10^' + Math.round(log)
+                            : '';
                     });
             } else {
                 xAxis = axisBottom(xScale)
@@ -328,34 +308,42 @@ export default function module() {
                     .tickFormat(getFormattedValue);
             }
         } else {
-            if (xAxisFormat === 'custom' && typeof xAxisCustomFormat === 'string') {
+            if (
+                xAxisFormat === 'custom' &&
+                typeof xAxisCustomFormat === 'string'
+            ) {
                 minor = {
                     tick: xTicks,
-                    format: timeFormat(xAxisCustomFormat)
+                    format: timeFormat(xAxisCustomFormat),
                 };
                 major = null;
             } else {
-                ({minor, major} = getTimeSeriesAxis(dataSorted, width, xAxisFormat, locale));
-    
+                ({ minor, major } = getTimeSeriesAxis(
+                    dataSorted,
+                    width,
+                    xAxisFormat,
+                    locale
+                ));
+
                 xSubAxis = axisBottom(xScale)
                     .ticks(major.tick)
                     .tickSize(0, 0)
                     .tickFormat(major.format);
             }
-    
+
             xAxis = axisBottom(xScale)
                 .ticks(minor.tick)
                 .tickSize(10, 0)
                 .tickPadding(tickPadding)
-                .tickFormat(minor.format);    
+                .tickFormat(minor.format);
         }
-        
+
         yAxis = axisRight(yScale)
             .ticks(yTicks)
             .tickSize([0])
             .tickPadding(tickPadding)
             .tickFormat(getFormattedValue);
-            
+
         drawGridLines(minor.tick, yTicks);
     }
 
@@ -372,20 +360,19 @@ export default function module() {
             .attr('transform', `translate(${margin.left},${margin.top})`);
 
         container
-            .append('g').classed('x-axis-group', true)
-            .append('g').classed('x axis', true);
-        container.selectAll('.x-axis-group')
-            .append('g').classed('month-axis', true);
+            .append('g')
+            .classed('x-axis-group', true)
+            .append('g')
+            .classed('x axis', true);
         container
-            .append('g').classed('y-axis-group axis', true);
-        container
-            .append('g').classed('grid-lines-group', true);
-        container
-            .append('g').classed('y-axis-label', true);
-        container
-            .append('g').classed('chart-group', true);
-        container
-            .append('g').classed('metadata-group', true);
+            .selectAll('.x-axis-group')
+            .append('g')
+            .classed('month-axis', true);
+        container.append('g').classed('y-axis-group axis', true);
+        container.append('g').classed('grid-lines-group', true);
+        container.append('g').classed('y-axis-label', true);
+        container.append('g').classed('chart-group', true);
+        container.append('g').classed('metadata-group', true);
     }
 
     /**
@@ -395,9 +382,9 @@ export default function module() {
      */
     function buildLayers() {
         dataSortedFormatted = dataSorted
-            .map(d => assign({}, d, d.values))
-            .map(d => {
-                Object.keys(d).forEach(k => {
+            .map((d) => assign({}, d, d.values))
+            .map((d) => {
+                Object.keys(d).forEach((k) => {
                     const entry = d[k];
 
                     if (entry && entry.name) {
@@ -406,14 +393,14 @@ export default function module() {
                 });
 
                 return assign({}, d, {
-                    date: castValueToType(d['key'], xAxisValueType)
+                    date: castValueToType(d['key'], xAxisValueType),
                 });
             });
 
         dataSortedZeroed = dataSorted
-            .map(d => assign({}, d, d.values))
-            .map(d => {
-                Object.keys(d).forEach(k => {
+            .map((d) => assign({}, d, d.values))
+            .map((d) => {
+                Object.keys(d).forEach((k) => {
                     const entry = d[k];
 
                     if (entry && entry.name) {
@@ -422,19 +409,22 @@ export default function module() {
                 });
 
                 return assign({}, d, {
-                    date: castValueToType(d['key'], xAxisValueType)
+                    date: castValueToType(d['key'], xAxisValueType),
                 });
             });
 
-        let initialTotalsObject = uniq(data.map(getName))
-            .reduce((memo, key) => (
-                assign({}, memo, {[key]: 0})
-            ), {});
+        let initialTotalsObject = uniq(data.map(getName)).reduce(
+            (memo, key) => assign({}, memo, { [key]: 0 }),
+            {}
+        );
 
-        let totals = data
-            .reduce((memo, item) => (
-                assign({}, memo, {[item.name]: memo[item.name] += item.value})
-            ), initialTotalsObject);
+        let totals = data.reduce(
+            (memo, item) =>
+                assign({}, memo, {
+                    [item.name]: (memo[item.name] += item.value),
+                }),
+            initialTotalsObject
+        );
 
         order = topicsOrder || formatOrder(totals);
 
@@ -454,12 +444,12 @@ export default function module() {
      * @return Manipulated Layers
      */
     function moveLayersByBaseline(layers) {
-        if(yAxisBaseline === 0) {
+        if (yAxisBaseline === 0) {
             return layers;
         }
 
-        layers = layers.map(section => {
-            section.map(entry => {
+        layers = layers.map((section) => {
+            section.map((entry) => {
                 entry[0] = yAxisBaseline;
                 return entry;
             });
@@ -477,13 +467,12 @@ export default function module() {
      * @return {Array}          List of topic names in aggregate order
      */
     function formatOrder(totals) {
-        let order = Object.keys(totals)
-            .sort((a, b) => {
-                if (totals[a] > totals[b]) return -1;
-                if (totals[a] === totals[b]) return 0;
+        let order = Object.keys(totals).sort((a, b) => {
+            if (totals[a] > totals[b]) return -1;
+            if (totals[a] === totals[b]) return 0;
 
-                return 1;
-            });
+            return 1;
+        });
 
         let otherIndex = order.indexOf('Other');
 
@@ -494,7 +483,7 @@ export default function module() {
         }
 
         return order;
-    }       
+    }
 
     /**
      * Creates the x, y and color scales of the chart
@@ -504,9 +493,11 @@ export default function module() {
         xScale = buildXAxisScale();
         yScale = buildYAxisScale();
 
-        categoryColorMap =  order.reduce((memo, topic, index) => (
-            assign({}, memo, {[topic]: colorSchema[index]})
-        ), {});
+        categoryColorMap = order.reduce(
+            (memo, topic, index) =>
+                assign({}, memo, { [topic]: colorSchema[index] }),
+            {}
+        );
     }
 
     /**
@@ -515,8 +506,8 @@ export default function module() {
      * @private
      */
     function buildXAxisScale() {
-        if(xAxisValueType === 'number') {
-            if(xAxisScale === 'logarithmic') {
+        if (xAxisValueType === 'number') {
+            if (xAxisScale === 'logarithmic') {
                 return scaleLog()
                     .domain(extent(dataSorted, ({ date }) => date))
                     .rangeRound([0, chartWidth]);
@@ -559,9 +550,7 @@ export default function module() {
             buildContainerGroups();
         }
 
-        svg
-            .attr('width', width)
-            .attr('height', height);
+        svg.attr('width', width).attr('height', height);
     }
 
     /**
@@ -569,7 +558,10 @@ export default function module() {
      * @return {array}      Fake data built from emptyDataConfig settings
      */
     function createFakeData() {
-        const numDays = diffDays(emptyDataConfig.minDate, emptyDataConfig.maxDate)
+        const numDays = diffDays(
+            emptyDataConfig.minDate,
+            emptyDataConfig.maxDate
+        );
         const emptyArray = Array.apply(null, Array(numDays));
 
         isUsingFakeData = true;
@@ -584,9 +576,8 @@ export default function module() {
                 [dateLabel]: addDays(emptyDataConfig.minDate, i),
                 [valueLabel]: 0,
                 [keyLabel]: '2',
-            }))
+            })),
         ];
-
     }
 
     /**
@@ -597,11 +588,12 @@ export default function module() {
      * @private
      */
     function cleanData(originalData) {
-        originalData = originalData.length === 0 ? createFakeData() : originalData;
+        originalData =
+            originalData.length === 0 ? createFakeData() : originalData;
 
         return originalData.reduce((acc, d) => {
-            d.date = castValueToType(d[dateLabel], xAxisValueType),
-            d.value = +d[valueLabel]
+            (d.date = castValueToType(d[dateLabel], xAxisValueType)),
+                (d.value = +d[valueLabel]);
 
             return [...acc, d];
         }, []);
@@ -619,7 +611,10 @@ export default function module() {
 
         if (xAxisFormat !== 'custom' && xAxisValueType !== 'number') {
             svg.select('.x-axis-group .month-axis')
-                .attr('transform', `translate(0, ${(chartHeight + monthAxisPadding)})`)
+                .attr(
+                    'transform',
+                    `translate(0, ${chartHeight + monthAxisPadding})`
+                )
                 .call(xSubAxis);
         }
 
@@ -628,20 +623,21 @@ export default function module() {
             .call(yAxis)
             .call(adjustYTickLabels);
 
-            if (yAxisLabel) {
-                if (yAxisLabelEl) {
-                    svg.selectAll('.y-axis-label-text').remove();
-                }
-
-                yAxisLabelEl = svg.select('.y-axis-label')
-                    .append('text')
-                        .classed('y-axis-label-text', true)
-                            .attr('x', -chartHeight / 2)
-                            .attr('y', yAxisLabelOffset)
-                            .attr('text-anchor', 'middle')
-                            .attr('transform', 'rotate(270 0 0)')
-                            .text(yAxisLabel)
+        if (yAxisLabel) {
+            if (yAxisLabelEl) {
+                svg.selectAll('.y-axis-label-text').remove();
             }
+
+            yAxisLabelEl = svg
+                .select('.y-axis-label')
+                .append('text')
+                .classed('y-axis-label-text', true)
+                .attr('x', -chartHeight / 2)
+                .attr('y', yAxisLabelOffset)
+                .attr('text-anchor', 'middle')
+                .attr('transform', 'rotate(270 0 0)')
+                .text(yAxisLabel);
+        }
 
         // Moving the YAxis tick labels to the right side
         // selectAll('.y-axis-group .tick text')
@@ -654,8 +650,12 @@ export default function module() {
      * @return void
      */
     function adjustYTickLabels(selection) {
-        selection.selectAll('.tick text')
-            .attr('transform', `translate(${yTickTextXOffset}, ${yTickTextYOffset})`);
+        selection
+            .selectAll('.tick text')
+            .attr(
+                'transform',
+                `translate(${yTickTextXOffset}, ${yTickTextYOffset})`
+            );
     }
 
     /**
@@ -664,36 +664,41 @@ export default function module() {
      */
     function drawDataReferencePoints() {
         // Creates Dots on Data points
-        var points = svg.select('.chart-group').selectAll('.dots')
+        var points = svg
+            .select('.chart-group')
+            .selectAll('.dots')
             .data(layers)
             .enter()
-              .append('g')
-                .attr('class', 'dots')
-                .attr('d', ({ values }) => areaShape(values))
-                .attr('clip-path', 'url(#clip)');
+            .append('g')
+            .attr('class', 'dots')
+            .attr('d', ({ values }) => areaShape(values))
+            .attr('clip-path', 'url(#clip)');
 
         // Processes the points
         // TODO: Optimize this code
-        points.selectAll('.dot')
-            .data(({values}, index) => values.map((point) => ({index, point})))
+        points
+            .selectAll('.dot')
+            .data(({ values }, index) =>
+                values.map((point) => ({ index, point }))
+            )
             .enter()
-              .append('circle')
-                .attr('class','dot')
-                .attr('r', () => pointsSize)
-                .attr('fill', () => pointsColor)
-                .attr('stroke-width', '0')
-                .attr('stroke', pointsBorderColor)
-                .attr('transform', function(d) {
-                    let {point} = d;
-                    let key = xScale(point.date);
+            .append('circle')
+            .attr('class', 'dot')
+            .attr('r', () => pointsSize)
+            .attr('fill', () => pointsColor)
+            .attr('stroke-width', '0')
+            .attr('stroke', pointsBorderColor)
+            .attr('transform', function (d) {
+                let { point } = d;
+                let key = xScale(point.date);
 
-                    dataPoints[key] = dataPoints[key] || [];
-                    dataPoints[key].push(d);
+                dataPoints[key] = dataPoints[key] || [];
+                dataPoints[key].push(d);
 
-                    let {date, y, y0} = point;
+                let { date, y, y0 } = point;
 
-                    return `translate( ${xScale(date)}, ${yScale(y + y0)} )`;
-                });
+                return `translate( ${xScale(date)}, ${yScale(y + y0)} )`;
+            });
     }
 
     /**
@@ -701,50 +706,54 @@ export default function module() {
      * @return void
      */
     function drawGridLines(xTicks, yTicks) {
-        svg.select('.grid-lines-group')
-            .selectAll('line')
-            .remove();
+        svg.select('.grid-lines-group').selectAll('line').remove();
 
         let shouldHighlightXAxis = getMinYAxisScale() < 0;
 
         if (grid === 'horizontal' || grid === 'full') {
-            horizontalGridLines = svg.select('.grid-lines-group')
+            horizontalGridLines = svg
+                .select('.grid-lines-group')
                 .selectAll('line.horizontal-grid-line')
                 .data(yScale.ticks(yTicks))
                 .enter()
-                    .append('line')
-                    .attr('class', 'horizontal-grid-line')
-                    .attr('x1', (-xAxisPadding.left - 30))
-                    .attr('x2', chartWidth)
-                    .attr('y1', (d) => yScale(d))
-                    .attr('y2', (d) => yScale(d))
-                    .classed('horizontal-grid-line--highlighted', (value) => shouldHighlightXAxis && value === 0);
+                .append('line')
+                .attr('class', 'horizontal-grid-line')
+                .attr('x1', -xAxisPadding.left - 30)
+                .attr('x2', chartWidth)
+                .attr('y1', (d) => yScale(d))
+                .attr('y2', (d) => yScale(d))
+                .classed(
+                    'horizontal-grid-line--highlighted',
+                    (value) => shouldHighlightXAxis && value === 0
+                );
         }
 
         if (grid === 'vertical' || grid === 'full') {
-            verticalGridLines = svg.select('.grid-lines-group')
+            verticalGridLines = svg
+                .select('.grid-lines-group')
                 .selectAll('line.vertical-grid-line')
                 .data(xScale.ticks(xTicks))
                 .enter()
-                    .append('line')
-                    .attr('class', 'vertical-grid-line')
-                    .attr('y1', 0)
-                    .attr('y2', chartHeight)
-                    .attr('x1', (d) => xScale(d))
-                    .attr('x2', (d) => xScale(d));
+                .append('line')
+                .attr('class', 'vertical-grid-line')
+                .attr('y1', 0)
+                .attr('y2', chartHeight)
+                .attr('x1', (d) => xScale(d))
+                .attr('x2', (d) => xScale(d));
         }
 
         //draw a horizontal line to extend x-axis till the edges
-        baseLine = svg.select('.grid-lines-group')
+        baseLine = svg
+            .select('.grid-lines-group')
             .selectAll('line.extended-x-line')
             .data([0])
             .enter()
-                .append('line')
-                .attr('class', 'extended-x-line')
-                .attr('x1', (-xAxisPadding.left - 30))
-                .attr('x2', chartWidth)
-                .attr('y1', height - margin.bottom - margin.top)
-                .attr('y2', height - margin.bottom - margin.top);
+            .append('line')
+            .attr('class', 'extended-x-line')
+            .attr('x1', -xAxisPadding.left - 30)
+            .attr('x2', chartWidth)
+            .attr('y1', height - margin.bottom - margin.top)
+            .attr('y2', height - margin.bottom - margin.top);
     }
 
     /**
@@ -757,7 +766,8 @@ export default function module() {
             svg.selectAll('.overlay').remove();
         }
 
-        overlay = svg.select('.metadata-group')
+        overlay = svg
+            .select('.metadata-group')
             .append('rect')
             .attr('class', 'overlay')
             .attr('y1', 0)
@@ -767,26 +777,26 @@ export default function module() {
             .attr('fill', overlayColor)
             .style('display', 'none');
     }
-    
+
     /**
      * Draws an empty line when the data is all zero
      * @private
      */
     function drawEmptyDataLine() {
         let emptyDataLine = line()
-            .x( (d) => xScale(d.date) )
-            .y( () => yScale(0) - 1 );
+            .x((d) => xScale(d.date))
+            .y(() => yScale(0) - 1);
 
         let chartGroup = svg.select('.chart-group');
 
         chartGroup
-          .append('path')
+            .append('path')
             .attr('class', 'empty-data-line')
             .attr('d', emptyDataLine(dataSortedFormatted))
             .style('stroke', 'url(#empty-data-line-gradient)');
 
         chartGroup
-          .append('linearGradient')
+            .append('linearGradient')
             .attr('id', 'empty-data-line-gradient')
             .attr('gradientUnits', 'userSpaceOnUse')
             .attr('x1', 0)
@@ -795,13 +805,13 @@ export default function module() {
             .attr('y2', 0)
             .selectAll('stop')
             .data([
-                {offset: '0%', color: lineGradient[0]},
-                {offset: '100%', color: lineGradient[1]}
+                { offset: '0%', color: lineGradient[0] },
+                { offset: '100%', color: lineGradient[1] },
             ])
             .enter()
-              .append('stop')
-                .attr('offset', ({offset}) => offset)
-                .attr('stop-color', ({color}) => color);
+            .append('stop')
+            .attr('offset', ({ offset }) => offset)
+            .attr('stop-color', ({ color }) => color);
     }
 
     /**
@@ -824,37 +834,40 @@ export default function module() {
 
         areaShape = area()
             .curve(curveMap[areaCurve])
-            .x(({data})=> xScale(data.date))
+            .x(({ data }) => xScale(data.date))
             .y0((d) => yScale(d[0]))
             .y1((d) => yScale(d[1]));
 
         areaOutline = line()
             .curve(areaShape.curve())
-            .x(({data}) => xScale(data.date))
+            .x(({ data }) => xScale(data.date))
             .y((d) => yScale(d[1]));
 
         if (isAnimated) {
-            series = svg.select('.chart-group').selectAll('.layer')
+            series = svg
+                .select('.chart-group')
+                .selectAll('.layer')
                 .data(layersInitial, getName)
                 .enter()
-                  .append('g')
-                    .classed('layer-container', true);
+                .append('g')
+                .classed('layer-container', true);
 
             series
-              .append('path')
+                .append('path')
                 .attr('class', 'layer')
                 .attr('d', areaShape)
                 .style('opacity', areaOpacity)
-                .style('fill', ({key}) => categoryColorMap[key]);
+                .style('fill', ({ key }) => categoryColorMap[key]);
 
             series
-              .append('path')
+                .append('path')
                 .attr('class', 'area-outline')
                 .attr('d', areaOutline)
-                .style('stroke', ({key}) => categoryColorMap[key]);
+                .style('stroke', ({ key }) => categoryColorMap[key]);
 
             // Update
-            svg.select('.chart-group').selectAll('.layer')
+            svg.select('.chart-group')
+                .selectAll('.layer')
                 .data(layers)
                 .transition()
                 .delay((_, i) => areaAnimationDelays[i])
@@ -862,47 +875,50 @@ export default function module() {
                 .ease(ease)
                 .attr('d', areaShape)
                 .style('opacity', areaOpacity)
-                .style('fill', ({key}) => categoryColorMap[key]);
+                .style('fill', ({ key }) => categoryColorMap[key]);
 
-            svg.select('.chart-group').selectAll('.area-outline')
+            svg.select('.chart-group')
+                .selectAll('.area-outline')
                 .data(layers)
                 .transition()
-                .delay( (_, i) => areaAnimationDelays[i])
+                .delay((_, i) => areaAnimationDelays[i])
                 .duration(areaAnimationDuration)
                 .ease(ease)
                 .attr('d', areaOutline);
-
         } else {
-            series = svg.select('.chart-group').selectAll('.layer')
+            series = svg
+                .select('.chart-group')
+                .selectAll('.layer')
                 .data(layers)
                 .enter()
-                    .append('g')
-                    .classed('layer-container', true);
+                .append('g')
+                .classed('layer-container', true);
 
             series
                 .append('path')
                 .attr('class', 'layer')
                 .attr('d', areaShape)
                 .style('opacity', areaOpacity)
-                .style('fill', ({key}) => categoryColorMap[key]);
+                .style('fill', ({ key }) => categoryColorMap[key]);
 
             series
                 .append('path')
                 .attr('class', 'area-outline')
                 .attr('d', areaOutline)
-                .style('stroke', ({key}) => categoryColorMap[key]);
-
+                .style('stroke', ({ key }) => categoryColorMap[key]);
 
             // Update
-            svg.select('.chart-group').selectAll('.layer')
+            svg.select('.chart-group')
+                .selectAll('.layer')
                 .attr('d', areaShape)
                 .style('opacity', areaOpacity)
-                .style('fill', ({key}) => categoryColorMap[key]);
+                .style('fill', ({ key }) => categoryColorMap[key]);
 
-            svg.select('.chart-group').selectAll('.area-outline')
+            svg.select('.chart-group')
+                .selectAll('.area-outline')
                 .attr('class', 'area-outline')
                 .attr('d', areaOutline)
-                .style('stroke', ({key}) => categoryColorMap[key]);
+                .style('stroke', ({ key }) => categoryColorMap[key]);
         }
 
         if (!hasOutline) {
@@ -910,12 +926,9 @@ export default function module() {
                 .selectAll('.area-outline')
                 .style('display', 'none');
         }
-    
+
         // Exit
-        series.exit()
-            .transition()
-            .style('opacity', 0)
-            .remove();
+        series.exit().transition().style('opacity', 0).remove();
     }
 
     /**
@@ -928,25 +941,29 @@ export default function module() {
             svg.selectAll('.vertical-marker-container').remove();
         }
 
-        verticalMarkerContainer = svg.select('.metadata-group')
+        verticalMarkerContainer = svg
+            .select('.metadata-group')
             .append('g')
             .attr('class', 'vertical-marker-container')
             .attr('transform', 'translate(9999, 0)');
 
-        verticalMarkerLine = verticalMarkerContainer.selectAll('path')
-            .data([{
-                x1: 0,
-                y1: 0,
-                x2: 0,
-                y2: 0
-            }])
+        verticalMarkerLine = verticalMarkerContainer
+            .selectAll('path')
+            .data([
+                {
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 0,
+                },
+            ])
             .enter()
-                .append('line')
-                .classed('vertical-marker', true)
-                .attr('x1', 0)
-                .attr('y1', chartHeight)
-                .attr('x2', 0)
-                .attr('y2', 0);
+            .append('line')
+            .classed('vertical-marker', true)
+            .attr('x1', 0)
+            .attr('y1', chartHeight)
+            .attr('x2', 0)
+            .attr('y2', 0);
     }
 
     /**
@@ -967,12 +984,10 @@ export default function module() {
     function getSortedData(data) {
         return nest()
             .key(getDate)
-            .entries(
-                data.sort((a, b) => a.date - b.date)
-            )
-            .map(d => {
+            .entries(data.sort((a, b) => a.date - b.date))
+            .map((d) => {
                 return assign({}, d, {
-                    date: castValueToType(d.key, xAxisValueType)
+                    date: castValueToType(d.key, xAxisValueType),
                 });
             });
     }
@@ -983,7 +998,7 @@ export default function module() {
      * @return {Number} Min value
      */
     function getMinValue() {
-        return min(data.map(d => d.value));
+        return min(data.map((d) => d.value));
     }
 
     /**
@@ -992,8 +1007,8 @@ export default function module() {
      * @return {Number} Min value
      */
     function getMinValueByDate() {
-        let keys = uniq(data.map(o => o.name));
-        let minValueByDate = min(dataSortedFormatted, function(d){
+        let keys = uniq(data.map((o) => o.name));
+        let minValueByDate = min(dataSortedFormatted, function (d) {
             let vals = keys.map((key) => d[key]);
 
             return sum(vals);
@@ -1008,8 +1023,8 @@ export default function module() {
      * @return {Number} Max value
      */
     function getMaxValueByDate() {
-        let keys = uniq(data.map(o => o.name));
-        let maxValueByDate = max(dataSortedFormatted, function(d){
+        let keys = uniq(data.map((o) => o.name));
+        let maxValueByDate = max(dataSortedFormatted, function (d) {
             let vals = keys.map((key) => d[key]);
 
             return sum(vals);
@@ -1024,7 +1039,7 @@ export default function module() {
      * @return {Number} minY value
      */
     function getMinYAxisScale() {
-        if(isUsingFakeData) {
+        if (isUsingFakeData) {
             return emptyDataConfig.minY;
         }
 
@@ -1037,7 +1052,7 @@ export default function module() {
      * @return {Number} maxY value
      */
     function getMaxYAxisScale() {
-        if(isUsingFakeData) {
+        if (isUsingFakeData) {
             return emptyDataConfig.maxY;
         }
 
@@ -1050,7 +1065,9 @@ export default function module() {
      * @return {obj}        Data entry that is closer to that x axis position
      */
     function getNearestDataPoint(mouseX) {
-        let points = dataSorted.filter(({date}) => Math.abs(xScale(date) - mouseX) <= epsilon);
+        let points = dataSorted.filter(
+            ({ date }) => Math.abs(xScale(date) - mouseX) <= epsilon
+        );
 
         if (points.length) {
             return points[0];
@@ -1063,7 +1080,7 @@ export default function module() {
      * @return {Number} half distance between any two points
      */
     function setEpsilon() {
-        let dates = dataSorted.map(({date}) => date);
+        let dates = dataSorted.map(({ date }) => date);
 
         epsilon = (xScale(dates[1]) - xScale(dates[0])) / 2;
     }
@@ -1087,7 +1104,14 @@ export default function module() {
             // Add data points highlighting
             highlightDataPoints(dataPoint);
             // Emit event with xPosition for tooltip or similar feature
-            dispatcher.call('customMouseMove', e, dataPoint, categoryColorMap, dataPointXPosition, yPosition);
+            dispatcher.call(
+                'customMouseMove',
+                e,
+                dataPoint,
+                categoryColorMap,
+                dataPointXPosition,
+                yPosition
+            );
         }
     }
 
@@ -1104,13 +1128,20 @@ export default function module() {
             dataPointXPosition;
 
         if (dataPoint) {
-            dataPointXPosition = xScale(new Date( dataPoint.key ));
+            dataPointXPosition = xScale(new Date(dataPoint.key));
             // Move verticalMarker to that datapoint
             moveVerticalMarker(dataPointXPosition);
             // Add data points highlighting
             highlightDataPoints(dataPoint);
             // Emit event with xPosition for tooltip or similar feature
-            dispatcher.call('customMouseMove', e, dataPoint, categoryColorMap, dataPointXPosition, yPosition);
+            dispatcher.call(
+                'customMouseMove',
+                e,
+                dataPoint,
+                categoryColorMap,
+                dataPointXPosition,
+                yPosition
+            );
         }
     }
 
@@ -1161,39 +1192,42 @@ export default function module() {
      * @param  {obj} dataPoint Data point to extract info from
      * @private
      */
-    function highlightDataPoints({values}) {
+    function highlightDataPoints({ values }) {
         let accumulator = 0;
 
         cleanDataPointHighlights();
 
         // ensure order stays constant
         let sortedValues = order.reduce((acc, current) => {
-            return [...acc, values.find(({name}) => name === current)];
-        },[]);
+            return [...acc, values.find(({ name }) => name === current)];
+        }, []);
 
         sortedValues.forEach((d, index) => {
             let marker = verticalMarkerContainer
                 .append('g')
                 .classed('circle-container', true)
-                    .append('circle')
-                    .classed('data-point-highlighter', true)
-                    .attr('cx', highlightCircleSize)
-                    .attr('cy', 0)
-                    .attr('r', highlightCircleRadius)
-                    .style('stroke-width', highlightCircleStroke)
-                    .style('stroke', categoryColorMap[d.name])
-                    .style('cursor', 'pointer')
-                    .on('click', function() {
-                        addGlowFilter(this);
-                        handleHighlightClick(this, d);
-                    })
-                    .on('mouseout', function() {
-                        removeFilter(this);
-                    });
+                .append('circle')
+                .classed('data-point-highlighter', true)
+                .attr('cx', highlightCircleSize)
+                .attr('cy', 0)
+                .attr('r', highlightCircleRadius)
+                .style('stroke-width', highlightCircleStroke)
+                .style('stroke', categoryColorMap[d.name])
+                .style('cursor', 'pointer')
+                .on('click', function () {
+                    addGlowFilter(this);
+                    handleHighlightClick(this, d);
+                })
+                .on('mouseout', function () {
+                    removeFilter(this);
+                });
 
             accumulator = accumulator + sortedValues[index][valueLabel];
 
-            marker.attr('transform', `translate( ${(- highlightCircleSize)}, ${(yScale(accumulator))} )` );
+            marker.attr(
+                'transform',
+                `translate( ${-highlightCircleSize}, ${yScale(accumulator)} )`
+            );
         });
     }
 
@@ -1203,7 +1237,10 @@ export default function module() {
      * @return void
      */
     function moveVerticalMarker(verticalMarkerXPosition) {
-        verticalMarkerContainer.attr('transform', `translate(${verticalMarkerXPosition},0)`);
+        verticalMarkerContainer.attr(
+            'transform',
+            `translate(${verticalMarkerXPosition},0)`
+        );
     }
 
     /**
@@ -1211,8 +1248,7 @@ export default function module() {
      * @param {DOMElement} point  Point to reset
      */
     function removeFilter(point) {
-        select(point)
-            .attr('filter', 'none');
+        select(point).attr('filter', 'none');
     }
 
     /**
@@ -1225,7 +1261,6 @@ export default function module() {
         return width > tooltipThreshold && !isUsingFakeData;
     }
 
-
     // API
 
     /**
@@ -1237,14 +1272,14 @@ export default function module() {
      * @public
      * @example stackedArea.areaCurve('step')
      */
-    exports.areaCurve = function(_x) {
+    exports.areaCurve = function (_x) {
         if (!arguments.length) {
             return areaCurve;
         }
         areaCurve = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
@@ -1252,7 +1287,7 @@ export default function module() {
      * @return {Number | module}          Current opacity or Area Chart module to chain calls
      * @public
      */
-    exports.areaOpacity = function(_x) {
+    exports.areaOpacity = function (_x) {
         if (!arguments.length) {
             return areaOpacity;
         }
@@ -1267,7 +1302,7 @@ export default function module() {
      * @return {Number | Module} Current aspect ratio or Area Chart module to chain calls
      * @public
      */
-    exports.aspectRatio = function(_x) {
+    exports.aspectRatio = function (_x) {
         if (!arguments.length) {
             return aspectRatio;
         }
@@ -1290,7 +1325,7 @@ export default function module() {
      * @return {String[] | module} Current colorSchema or Chart module to chain calls
      * @public
      */
-    exports.colorSchema = function(_x) {
+    exports.colorSchema = function (_x) {
         if (!arguments.length) {
             return colorSchema;
         }
@@ -1305,7 +1340,7 @@ export default function module() {
      * @return {String | module} Current dateLabel or Chart module to chain calls
      * @public
      */
-    exports.dateLabel = function(_x) {
+    exports.dateLabel = function (_x) {
         if (!arguments.length) {
             return dateLabel;
         }
@@ -1320,7 +1355,7 @@ export default function module() {
      * @return {Object | module} Current config for when chart data is an empty array
      * @public
      */
-    exports.emptyDataConfig = function(_x) {
+    exports.emptyDataConfig = function (_x) {
         if (!arguments.length) {
             return emptyDataConfig;
         }
@@ -1336,7 +1371,7 @@ export default function module() {
      * @return {String | module} Current mode of the grid or Area Chart module to chain calls
      * @public
      */
-    exports.grid = function(_x) {
+    exports.grid = function (_x) {
         if (!arguments.length) {
             return grid;
         }
@@ -1345,14 +1380,14 @@ export default function module() {
         return this;
     };
 
-    exports.hasOutline = function(_x) {
+    exports.hasOutline = function (_x) {
         if (!arguments.length) {
             return hasOutline;
         }
         hasOutline = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets the height of the chart
@@ -1360,7 +1395,7 @@ export default function module() {
      * @return {Number | module} Current height or Area Chart module to chain calls
      * @public
      */
-    exports.height = function(_x) {
+    exports.height = function (_x) {
         if (!arguments.length) {
             return height;
         }
@@ -1380,7 +1415,7 @@ export default function module() {
      * @return {Boolean | module} Current isAnimated flag or Chart module
      * @public
      */
-    exports.isAnimated = function(_x) {
+    exports.isAnimated = function (_x) {
         if (!arguments.length) {
             return isAnimated;
         }
@@ -1395,7 +1430,7 @@ export default function module() {
      * @return {Number | module} Current keyLabel or Chart module to chain calls
      * @public
      */
-    exports.keyLabel = function(_x) {
+    exports.keyLabel = function (_x) {
         if (!arguments.length) {
             return keyLabel;
         }
@@ -1410,13 +1445,13 @@ export default function module() {
      * @return {Object | module} Current margin or Area Chart module to chain calls
      * @public
      */
-    exports.margin = function(_x) {
+    exports.margin = function (_x) {
         if (!arguments.length) {
             return margin;
         }
         margin = {
             ...margin,
-            ..._x
+            ..._x,
         };
 
         return this;
@@ -1430,7 +1465,7 @@ export default function module() {
      * @return {Number | module}    Current tooltipThreshold or Area Chart module to chain calls
      * @public
      */
-    exports.tooltipThreshold = function(_x) {
+    exports.tooltipThreshold = function (_x) {
         if (!arguments.length) {
             return tooltipThreshold;
         }
@@ -1445,7 +1480,7 @@ export default function module() {
      * @return {String[] | module}    Current override order or Chart module to chain calls
      * @public
      */
-    exports.topicsOrder = function(_x) {
+    exports.topicsOrder = function (_x) {
         if (!arguments.length) {
             return topicsOrder;
         }
@@ -1460,7 +1495,7 @@ export default function module() {
      * @return {String | module} Current loading state markup or Chart module to chain calls
      * @public
      */
-    exports.loadingState = function(_markup) {
+    exports.loadingState = function (_markup) {
         if (!arguments.length) {
             return loadingState;
         }
@@ -1477,7 +1512,7 @@ export default function module() {
      * @return {String | Module}    Current locale or module to chain calls
      * @public
      */
-    exports.locale = function(_x) {
+    exports.locale = function (_x) {
         if (!arguments.length) {
             return locale;
         }
@@ -1492,7 +1527,7 @@ export default function module() {
      * @param {String} title        Title to add at the top of the exported picture
      * @public
      */
-    exports.exportChart = function(filename, title) {
+    exports.exportChart = function (filename, title) {
         exportChart.call(exports, svg, filename, title);
     };
 
@@ -1504,7 +1539,7 @@ export default function module() {
      * @return {module} Stacked Area
      * @public
      */
-    exports.on = function() {
+    exports.on = function () {
         let value = dispatcher.on.apply(dispatcher, arguments);
 
         return value === dispatcher ? exports : value;
@@ -1516,7 +1551,7 @@ export default function module() {
      * @return {Number | module} Current valueLabel or Chart module to chain calls
      * @public
      */
-    exports.valueLabel = function(_x) {
+    exports.valueLabel = function (_x) {
         if (!arguments.length) {
             return valueLabel;
         }
@@ -1531,7 +1566,7 @@ export default function module() {
      * @return {Number | module} Current width or Area Chart module to chain calls
      * @public
      */
-    exports.width = function(_x) {
+    exports.width = function (_x) {
         if (!arguments.length) {
             return width;
         }
@@ -1551,7 +1586,7 @@ export default function module() {
      * @return {String | Module}      Current format or module to chain calls
      * @public
      */
-    exports.xAxisCustomFormat = function(_x) {
+    exports.xAxisCustomFormat = function (_x) {
         if (!arguments.length) {
             return xAxisCustomFormat;
         }
@@ -1568,7 +1603,7 @@ export default function module() {
      * @example
      *     area.xAxisFormat(area.axisTimeCombinations.HOUR_DAY)
      */
-    exports.xAxisFormat = function(_x) {
+    exports.xAxisFormat = function (_x) {
         if (!arguments.length) {
             return xAxisFormat;
         }
@@ -1586,7 +1621,7 @@ export default function module() {
      * @return {Number | Module}      Current number or ticks or module to chain calls
      * @public
      */
-    exports.xTicks = function(_x) {
+    exports.xTicks = function (_x) {
         if (!arguments.length) {
             return xTicks;
         }
@@ -1609,7 +1644,7 @@ export default function module() {
         yAxisLabel = _x;
 
         return this;
-    };      
+    };
 
     /**
      * Gets or Sets the offset of the yAxisLabel of the chart.
@@ -1645,7 +1680,7 @@ export default function module() {
         return this;
     };
 
-     /**
+    /**
      * Gets or Sets the yAxisBaseline - this is the y-value where the area starts from in y-direction
      * (default is 0). Change this value if you don't want to start your area from y=0.
      * @param  {Number} [_x=0]      Desired baseline of the y axis
@@ -1699,6 +1734,4 @@ export default function module() {
     };
 
     return exports;
-};
-
-
+}

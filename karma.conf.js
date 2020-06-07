@@ -3,7 +3,7 @@ let webpackConfig = require('./webpack.config');
 webpackConfig.devtool = 'inline-source-map';
 
 // Karma configuration
-module.exports = function(config) {
+module.exports = function (config) {
     config.set({
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
@@ -11,9 +11,7 @@ module.exports = function(config) {
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
         frameworks: ['jasmine-jquery', 'jasmine'],
         // list of files / patterns to load in the browser
-        files: [
-            'tests_index.js'
-        ],
+        files: ['tests_index.js'],
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
@@ -24,7 +22,7 @@ module.exports = function(config) {
         webpack: webpackConfig('test'),
 
         webpackServer: {
-            noInfo: true
+            noInfo: true,
         },
 
         // test results reporter to use
@@ -36,10 +34,8 @@ module.exports = function(config) {
         // https://github.com/karma-runner/karma-coverage
         coverageReporter: {
             type: 'text',
-            dir: 'stats/testCoverage/',
             reporters: [
-                {type: 'text'},
-                {type: 'text-summary', subdir: '.', file: 'text-summary.txt'}
+                { type: 'text' },
             ],
             check: {
                 global: {
@@ -51,10 +47,10 @@ module.exports = function(config) {
                         'tests_index.js',
                         'src/charts/helpers/export.js',
                         'src/charts/helpers/date.js',
-                        'src/charts/helpers/filter.js'
-                    ]
-                }
-            }
+                        'src/charts/helpers/filter.js',
+                    ],
+                },
+            },
         },
 
         plugins: [
@@ -64,23 +60,21 @@ module.exports = function(config) {
             require('karma-coverage'),
             require('karma-chrome-launcher'),
             require('karma-phantomjs-launcher'),
-            require('karma-sourcemap-loader')
+            require('karma-sourcemap-loader'),
         ],
 
         // Setup of babel settings
         // Check more in: https://github.com/babel/karma-babel-preprocessor
         babelPreprocessor: {
             options: {
-                presets: ['es2015']
-            }
+                presets: ['es2015'],
+            },
         },
 
         check: {
             global: {
-                excludes: [
-                    'src/tests.webpack.js',
-                ]
-            }
+                excludes: ['src/tests.webpack.js'],
+            },
         },
 
         // web server port
@@ -101,6 +95,6 @@ module.exports = function(config) {
         singleRun: false,
         // Concurrency level
         // how many browser should be started simultaneous
-        concurrency: Infinity
+        concurrency: Infinity,
     });
 };

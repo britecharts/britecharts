@@ -1,20 +1,15 @@
 const baseConfig = {
-    tooltipSelector: '.metadata-group'
+    tooltipSelector: '.metadata-group',
 };
 
 export default {
-    chartDependencies: [
-        'helpers/color',
-        'legend',
-        'tooltip',
-        'mini-tooltip'
-    ],
+    chartDependencies: ['helpers/color', 'legend', 'tooltip', 'mini-tooltip'],
     chartConfigs: {
         bar: {
             ...baseConfig,
             chartConfig: {
                 width: 400,
-                height: 300
+                height: 300,
             },
             initialDataType: 'basicBar',
         },
@@ -22,9 +17,9 @@ export default {
             ...baseConfig,
             chartConfig: {
                 width: 300,
-                height: 150
+                height: 150,
             },
-            initialDataType: 'basicBrush'
+            initialDataType: 'basicBrush',
         },
         donut: {
             ...baseConfig,
@@ -41,12 +36,12 @@ export default {
                     top: 20,
                     bottom: 20,
                     left: 20,
-                    right: 20
+                    right: 20,
                 },
                 width: 300,
-                height: 300
+                height: 300,
             },
-            initialDataType: 'basicGroupedBar'
+            initialDataType: 'basicGroupedBar',
         },
         legend: {
             ...baseConfig,
@@ -56,12 +51,12 @@ export default {
                     top: 20,
                     bottom: 20,
                     left: 20,
-                    right: 20
+                    right: 20,
                 },
                 width: 300,
-                height: 300
+                height: 300,
             },
-            initialDataType: 'basicLegend'
+            initialDataType: 'basicLegend',
         },
         line: {
             ...baseConfig,
@@ -70,49 +65,48 @@ export default {
                     top: 60,
                     bottom: 50,
                     left: 50,
-                    right: 20
+                    right: 20,
                 },
                 width: 500,
-                height: 300
+                height: 300,
             },
             initialDataType: 'basicLine',
-            tooltipSelector: '.metadata-group .hover-marker'
+            tooltipSelector: '.metadata-group .hover-marker',
         },
         sparkline: {
             ...baseConfig,
             chartConfig: {
                 width: 300,
-                height: 150
+                height: 150,
             },
-            initialDataType: 'basicSparkLine'
+            initialDataType: 'basicSparkLine',
         },
         step: {
             ...baseConfig,
             chartConfig: {
                 width: 400,
-                height: 275
+                height: 275,
             },
             initialDataType: 'basicStep',
-
         },
         'stacked-area': {
             ...baseConfig,
             chartConfig: {
                 width: 500,
-                height:300
+                height: 300,
             },
             initialDataType: 'basicStackedArea',
-            tooltipSelector: '.metadata-group .vertical-marker-container'
+            tooltipSelector: '.metadata-group .vertical-marker-container',
         },
         'scatter-plot': {
             ...baseConfig,
             chartConfig: {
                 width: 500,
-                height:300
+                height: 300,
             },
             initialDataType: 'basicScatterPlot',
-            tooltipSelector: '.metadata-group .vertical-marker-container'
-        }
+            tooltipSelector: '.metadata-group .vertical-marker-container',
+        },
     },
     domClassNames: {
         // chart selector
@@ -141,22 +135,21 @@ export default {
         notificationErrorClass: 'notification__error',
         tooltipMetaGroup: 'metadata-group',
         tooltipHoverGroup: 'hover-marker',
-
     },
     domIdNames: {
         dataInputId: 'dataInput',
-        chartInputId: 'chartConfigInput'
+        chartInputId: 'chartConfigInput',
     },
     editorConfig: {
         theme: 'ace/theme/monokai',
-        mode: 'ace/mode/javascript'
+        mode: 'ace/mode/javascript',
     },
     saveKeys: {
         rootSaveKey: '__BRITECHARTS_SANDBOX_ROOT',
         savedDataKey: '__SAVED_CHART_DATA',
         // savedDataTypeKey: '__SAVED_DATA_TYPE',
         savedChartTypeKey: '__SAVED_CHART_TYPE',
-        savedConfigKey: '__SAVED_CHART_CONFIG'
+        savedConfigKey: '__SAVED_CHART_CONFIG',
     },
     tooltipConfigs: {
         basic: {
@@ -167,8 +160,7 @@ export default {
         mini: {
             initString: `.on('customMouseOver', miniTip.show)
                         .on('customMouseMove', miniTip.update)
-                        .on('customMouseOut', miniTip.hide)`
-        }
-    }
-}
-
+                        .on('customMouseOut', miniTip.hide)`,
+        },
+    },
+};

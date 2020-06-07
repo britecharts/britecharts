@@ -17,7 +17,6 @@ import {
     bounceCircleHighlight,
 } from './helpers/filter';
 
-
 /**
  * @typedef ScatterPlotData
  * @type {Object[]}
@@ -71,103 +70,85 @@ import {
  *     .call(scatterPlot);
  */
 export default function module() {
-
     let margin = {
-        top: 20,
-        right: 10,
-        bottom: 20,
-        left: 40
-    },
-    width = 960,
-    height = 500,
-    aspectRatio = null,
-
-    nameColorMap,
-
-    dataPoints,
-
-    xKey = 'x',
-    yKey = 'y',
-    nameKey = 'name',
-
-    xTicks = 6,
-    yTicks = null,
-    tickPadding = 5,
-    hollowColor = '#fff',
-
-    grid = null,
-    baseLine,
-    maskGridLines,
-    voronoiMesh,
-
-    xAxis,
-    xAxisFormat = '',
-    xScale,
-    yAxis,
-    yAxisFormat = '',
-    yScale,
-    areaScale,
-    colorScale,
-
-    yAxisLabel,
-    yAxisLabelEl,
-    yAxisLabelOffset = -40,
-    xAxisLabel,
-    xAxisLabelEl,
-    xAxisLabelOffset = -40,
-
-    trendLinePath,
-    trendLineCurve = curveBasis,
-    trendLineStrokWidth = '2',
-    trendLineDelay = 1500,
-    trendLineDuration = 2000,
-
-    highlightFilter,
-    highlightFilterId,
-    highlightStrokeWidth = 10,
-    highlightCrossHairContainer,
-    highlightCrossHairLabelsContainer,
-    highlightTextLegendOffset = -45,
-
-    xAxisPadding = {
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0
-    },
-
-    circleOpacity = 0.24,
-    highlightCircle = null,
-    highlightCircleOpacity = circleOpacity,
-    maxCircleArea = 10,
-    maskingRectangle,
-    maskingRectangleId = 'scatter-clip-path',
-    maxDistanceFromPoint = 50,
-
-    colorSchema = colorHelper.colorSchemas.britecharts,
-
-    isAnimated = true,
-    hasCrossHairs = false,
-    hasTrendline = false,
-    ease = easeCircleIn,
-    delay = 500,
-    duration = 500,
-
-    hasHollowCircles = false,
-
-    svg,
-    chartWidth,
-    chartHeight,
-
-    dispatcher = dispatch(
-        'customClick',
-        'customMouseMove',
-        'customMouseOver',
-        'customMouseOut'
-    ),
-
-    getName = ({name}) => name,
-    getPointData = ({data}) => data;
+            top: 20,
+            right: 10,
+            bottom: 20,
+            left: 40,
+        },
+        width = 960,
+        height = 500,
+        aspectRatio = null,
+        nameColorMap,
+        dataPoints,
+        xKey = 'x',
+        yKey = 'y',
+        nameKey = 'name',
+        xTicks = 6,
+        yTicks = null,
+        tickPadding = 5,
+        hollowColor = '#fff',
+        grid = null,
+        baseLine,
+        maskGridLines,
+        voronoiMesh,
+        xAxis,
+        xAxisFormat = '',
+        xScale,
+        yAxis,
+        yAxisFormat = '',
+        yScale,
+        areaScale,
+        colorScale,
+        yAxisLabel,
+        yAxisLabelEl,
+        yAxisLabelOffset = -40,
+        xAxisLabel,
+        xAxisLabelEl,
+        xAxisLabelOffset = -40,
+        trendLinePath,
+        trendLineCurve = curveBasis,
+        trendLineStrokWidth = '2',
+        trendLineDelay = 1500,
+        trendLineDuration = 2000,
+        highlightFilter,
+        highlightFilterId,
+        highlightStrokeWidth = 10,
+        highlightCrossHairContainer,
+        highlightCrossHairLabelsContainer,
+        highlightTextLegendOffset = -45,
+        xAxisPadding = {
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+        },
+        circleOpacity = 0.24,
+        highlightCircle = null,
+        highlightCircleOpacity = circleOpacity,
+        maxCircleArea = 10,
+        maskingRectangle,
+        maskingRectangleId = 'scatter-clip-path',
+        maxDistanceFromPoint = 50,
+        colorSchema = colorHelper.colorSchemas.britecharts,
+        isAnimated = true,
+        hasCrossHairs = false,
+        hasTrendline = false,
+        ease = easeCircleIn,
+        delay = 500,
+        duration = 500,
+        hasHollowCircles = false,
+        svg,
+        chartWidth,
+        chartHeight,
+        dispatcher = dispatch(
+            'customClick',
+            'customMouseMove',
+            'customMouseOver',
+            'customMouseOut'
+        ),
+        getName = ({ name }) => name,
+        getPointData = ({ data }) => data;
 
     /**
      * This function creates the graph using the selection as container
@@ -176,7 +157,7 @@ export default function module() {
      * @param {ScatterPlotData} _data The data to attach and generate the chart
      */
     function exports(_selection) {
-        _selection.each(function(_data) {
+        _selection.each(function (_data) {
             dataPoints = cleanData(_data);
 
             chartWidth = width - margin.left - margin.right;
@@ -206,14 +187,13 @@ export default function module() {
      * @private
      */
     function addMouseEvents() {
-        svg
-            .on('mousemove', function (d) {
-                handleMouseMove(this, d);
-            })
+        svg.on('mousemove', function (d) {
+            handleMouseMove(this, d);
+        })
             .on('mouseover', function (d) {
                 handleMouseOver(this, d);
             })
-            .on('mouseout', function(d) {
+            .on('mouseout', function (d) {
                 handleMouseOut(this, d);
             })
             .on('click', function () {
@@ -225,7 +205,7 @@ export default function module() {
      * Creates the x-axis and y-axis with proper orientations
      * @return {void}
      * @private
-    */
+     */
     function buildAxis() {
         xAxis = axisBottom(xScale)
             .ticks(xTicks)
@@ -243,27 +223,27 @@ export default function module() {
      * chart, and metadata groups.
      * @return {void}
      * @private
-    */
+     */
     function buildContainerGroups() {
         let container = svg
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+        container.append('g').classed('grid-lines-group', true);
+        container.append('g').classed('chart-group', true);
         container
-            .append('g').classed('grid-lines-group', true);
+            .append('g')
+            .classed('x-axis-group', true)
+            .append('g')
+            .classed('axis x', true);
         container
-            .append('g').classed('chart-group', true);
-        container
-            .append('g').classed('x-axis-group', true)
-            .append('g').classed('axis x', true);
-        container
-            .append('g').classed('y-axis-group', true)
-            .append('g').classed('axis y', true);
-        container
-            .append('g').classed('axis-labels-group', true);
-        container
-            .append('g').classed('metadata-group', true);
+            .append('g')
+            .classed('y-axis-group', true)
+            .append('g')
+            .classed('axis y', true);
+        container.append('g').classed('axis-labels-group', true);
+        container.append('g').classed('metadata-group', true);
     }
 
     /**
@@ -277,7 +257,7 @@ export default function module() {
             .y((d) => yScale(d.y))
             .extent([
                 [0, 0],
-                [chartWidth, chartHeight]
+                [chartWidth, chartHeight],
             ])(dataPoints);
     }
 
@@ -287,8 +267,14 @@ export default function module() {
      * @private
      */
     function buildScales() {
-        const [minX, minY] = [min(dataPoints, ({ x }) => x), min(dataPoints, ({ y }) => y)];
-        const [maxX, maxY] = [max(dataPoints, ({ x }) => x), max(dataPoints, ({ y }) => y)];
+        const [minX, minY] = [
+            min(dataPoints, ({ x }) => x),
+            min(dataPoints, ({ y }) => y),
+        ];
+        const [maxX, maxY] = [
+            max(dataPoints, ({ x }) => x),
+            max(dataPoints, ({ y }) => y),
+        ];
         const yScaleBottomValue = Math.abs(minY) < 0 ? Math.abs(minY) : 0;
 
         xScale = scaleLinear()
@@ -345,9 +331,7 @@ export default function module() {
             buildContainerGroups();
         }
 
-        svg
-            .attr('width', width)
-            .attr('height', height);
+        svg.attr('width', width).attr('height', height);
     }
 
     /**
@@ -378,8 +362,7 @@ export default function module() {
             .attr('transform', `translate(0, ${chartHeight})`)
             .call(xAxis);
 
-        svg.select('.y-axis-group .axis.y')
-            .call(yAxis);
+        svg.select('.y-axis-group .axis.y').call(yAxis);
 
         drawAxisLabels();
     }
@@ -397,16 +380,17 @@ export default function module() {
                 svg.selectAll('.y-axis-label-text').remove();
             }
 
-            yAxisLabelEl = svg.select('.axis-labels-group')
+            yAxisLabelEl = svg
+                .select('.axis-labels-group')
                 .append('g')
                 .attr('class', 'y-axis-label')
-                    .append('text')
-                    .classed('y-axis-label-text', true)
-                    .attr('x', -chartHeight / 2)
-                    .attr('y', yAxisLabelOffset - xAxisPadding.left)
-                    .attr('text-anchor', 'middle')
-                    .attr('transform', 'rotate(270 0 0)')
-                    .text(yAxisLabel)
+                .append('text')
+                .classed('y-axis-label-text', true)
+                .attr('x', -chartHeight / 2)
+                .attr('y', yAxisLabelOffset - xAxisPadding.left)
+                .attr('text-anchor', 'middle')
+                .attr('transform', 'rotate(270 0 0)')
+                .text(yAxisLabel);
         }
 
         // If x-axis label is given, draw it
@@ -415,15 +399,16 @@ export default function module() {
                 svg.selectAll('.x-axis-label-text').remove();
             }
 
-            xAxisLabelEl = svg.selectAll('.axis-labels-group')
+            xAxisLabelEl = svg
+                .selectAll('.axis-labels-group')
                 .append('g')
                 .attr('class', 'x-axis-label')
-                    .append('text')
-                    .classed('x-axis-label-text', true)
-                    .attr('x', chartWidth / 2)
-                    .attr('y', chartHeight - xAxisLabelOffset)
-                    .attr('text-anchor', 'middle')
-                    .text(xAxisLabel);
+                .append('text')
+                .classed('x-axis-label-text', true)
+                .attr('x', chartWidth / 2)
+                .attr('y', chartHeight - xAxisLabelOffset)
+                .attr('text-anchor', 'middle')
+                .text(xAxisLabel);
         }
     }
 
@@ -435,7 +420,8 @@ export default function module() {
      * @private
      */
     function drawMaskingClip() {
-        maskingRectangle = svg.selectAll('.chart-group')
+        maskingRectangle = svg
+            .selectAll('.chart-group')
             .append('clipPath')
             .attr('id', maskingRectangleId)
             .append('rect')
@@ -459,16 +445,17 @@ export default function module() {
         }
 
         const params = [
-            {x: linearData.x1, y: linearData.y1},
-            {x: linearData.x2, y: linearData.y2}
+            { x: linearData.x1, y: linearData.y1 },
+            { x: linearData.x2, y: linearData.y2 },
         ];
 
         let trendLine = line()
             .curve(trendLineCurve)
-            .x(({x}) => xScale(x))
-            .y(({y}) => yScale(y));
+            .x(({ x }) => xScale(x))
+            .y(({ y }) => yScale(y));
 
-        trendLinePath = svg.selectAll('.chart-group')
+        trendLinePath = svg
+            .selectAll('.chart-group')
             .append('path')
             .attr('class', 'scatter-trendline')
             .attr('d', trendLine(params))
@@ -495,25 +482,27 @@ export default function module() {
      * @private
      */
     function drawVerticalGridLines() {
-        maskGridLines = svg.select('.grid-lines-group')
+        maskGridLines = svg
+            .select('.grid-lines-group')
             .selectAll('line.vertical-grid-line')
             .data(xScale.ticks(xTicks))
             .enter()
-                .append('line')
-                .attr('class', 'vertical-grid-line')
-                .attr('y1', (xAxisPadding.left))
-                .attr('y2', chartHeight)
-                .attr('x1', (d) => xScale(d))
-                .attr('x2', (d) => xScale(d));
+            .append('line')
+            .attr('class', 'vertical-grid-line')
+            .attr('y1', xAxisPadding.left)
+            .attr('y2', chartHeight)
+            .attr('x1', (d) => xScale(d))
+            .attr('x2', (d) => xScale(d));
     }
 
     /**
      * Draws the points for each data element on the chart group
      * @return {void}
      * @private
-    */
+     */
     function drawDataPoints() {
-        let circles = svg.select('.chart-group')
+        let circles = svg
+            .select('.chart-group')
             .attr('clip-path', `url(#${maskingRectangleId})`)
             .selectAll('circle')
             .data(dataPoints)
@@ -528,9 +517,9 @@ export default function module() {
                 .duration(duration)
                 .ease(ease)
                 .style('stroke', (d) => nameColorMap[d.name])
-                .attr('fill', (d) => (
+                .attr('fill', (d) =>
                     hasHollowCircles ? hollowColor : nameColorMap[d.name]
-                ))
+                )
                 .attr('fill-opacity', circleOpacity)
                 .attr('r', (d) => areaScale(d.y))
                 .attr('cx', (d) => xScale(d.x))
@@ -542,9 +531,9 @@ export default function module() {
                 .attr('class', 'point')
                 .attr('class', 'data-point-highlighter')
                 .style('stroke', (d) => nameColorMap[d.name])
-                .attr('fill', (d) => (
+                .attr('fill', (d) =>
                     hasHollowCircles ? hollowColor : nameColorMap[d.name]
-                ))
+                )
                 .attr('fill-opacity', circleOpacity)
                 .attr('r', (d) => areaScale(d.y))
                 .attr('cx', (d) => xScale(d.x))
@@ -559,45 +548,51 @@ export default function module() {
      * @param {Object} dataPoint
      * @return {void}
      * @private
-    */
+     */
     function drawDataPointsValueHighlights(data) {
         showCrossHairComponentsWithLabels(true);
 
         // Draw line perpendicular to y-axis
-        highlightCrossHairContainer.selectAll('line.highlight-y-line')
+        highlightCrossHairContainer
+            .selectAll('line.highlight-y-line')
             .attr('stroke', nameColorMap[data.name])
             .attr('class', 'highlight-y-line')
-            .attr('x1', (xScale(data.x) - areaScale(data.y)))
+            .attr('x1', xScale(data.x) - areaScale(data.y))
             .attr('x2', 0)
             .attr('y1', yScale(data.y))
             .attr('y2', yScale(data.y));
 
-
         // Draw line perpendicular to x-axis
-        highlightCrossHairContainer.selectAll('line.highlight-x-line')
+        highlightCrossHairContainer
+            .selectAll('line.highlight-x-line')
             .attr('stroke', nameColorMap[data.name])
             .attr('class', 'highlight-x-line')
             .attr('x1', xScale(data.x))
             .attr('x2', xScale(data.x))
-            .attr('y1', (yScale(data.y) + areaScale(data.y)))
+            .attr('y1', yScale(data.y) + areaScale(data.y))
             .attr('y2', chartHeight);
 
         // Draw data label for y value
-        highlightCrossHairLabelsContainer.selectAll('text.highlight-y-legend')
+        highlightCrossHairLabelsContainer
+            .selectAll('text.highlight-y-legend')
             .attr('text-anchor', 'middle')
             .attr('fill', nameColorMap[data.name])
             .attr('class', 'highlight-y-legend')
-            .attr('y', (yScale(data.y) + (areaScale(data.y) / 2)))
+            .attr('y', yScale(data.y) + areaScale(data.y) / 2)
             .attr('x', highlightTextLegendOffset)
             .text(`${format(yAxisFormat)(data.y)}`);
 
         // Draw data label for x value
-        highlightCrossHairLabelsContainer.selectAll('text.highlight-x-legend')
+        highlightCrossHairLabelsContainer
+            .selectAll('text.highlight-x-legend')
             .attr('text-anchor', 'middle')
             .attr('fill', nameColorMap[data.name])
             .attr('class', 'highlight-x-legend')
-            .attr('transform', `translate(0, ${chartHeight - highlightTextLegendOffset})`)
-            .attr('x', (xScale(data.x) - (areaScale(data.y) / 2)))
+            .attr(
+                'transform',
+                `translate(0, ${chartHeight - highlightTextLegendOffset})`
+            )
+            .attr('x', xScale(data.x) - areaScale(data.y) / 2)
             .text(`${format(xAxisFormat)(data.x)}`);
     }
 
@@ -607,9 +602,7 @@ export default function module() {
      * @private
      */
     function drawGridLines() {
-        svg.select('.grid-lines-group')
-            .selectAll('line')
-            .remove();
+        svg.select('.grid-lines-group').selectAll('line').remove();
 
         if (grid === 'horizontal' || grid === 'full') {
             drawHorizontalGridLines();
@@ -628,16 +621,17 @@ export default function module() {
      * @private
      */
     function drawHorizontalExtendedLine() {
-        baseLine = svg.select('.grid-lines-group')
+        baseLine = svg
+            .select('.grid-lines-group')
             .selectAll('line.extended-x-line')
             .data([0])
             .enter()
-                .append('line')
-                .attr('class', 'extended-x-line')
-                .attr('x1', xAxisPadding.left)
-                .attr('x2', chartWidth)
-                .attr('y1', chartHeight)
-                .attr('y2', chartHeight);
+            .append('line')
+            .attr('class', 'extended-x-line')
+            .attr('x1', xAxisPadding.left)
+            .attr('x2', chartWidth)
+            .attr('y1', chartHeight)
+            .attr('y2', chartHeight);
     }
 
     /**
@@ -647,16 +641,17 @@ export default function module() {
      * @private
      */
     function drawHorizontalGridLines() {
-        maskGridLines = svg.select('.grid-lines-group')
+        maskGridLines = svg
+            .select('.grid-lines-group')
             .selectAll('line.horizontal-grid-line')
             .data(yScale.ticks(yTicks))
             .enter()
-                .append('line')
-                .attr('class', 'horizontal-grid-line')
-                .attr('x1', xAxisPadding.left)
-                .attr('x2', chartWidth)
-                .attr('y1', (d) => yScale(d))
-                .attr('y2', (d) => yScale(d));
+            .append('line')
+            .attr('class', 'horizontal-grid-line')
+            .attr('x1', xAxisPadding.left)
+            .attr('x2', chartWidth)
+            .attr('y1', (d) => yScale(d))
+            .attr('y2', (d) => yScale(d));
     }
 
     /**
@@ -674,16 +669,16 @@ export default function module() {
             xy = 0,
             x2 = 0;
 
-        dataPoints.forEach(d => {
+        dataPoints.forEach((d) => {
             x += d.x;
             y += d.y;
             xy += d.x * d.y;
             x2 += d.x * d.x;
         });
 
-        const denominator = (n * x2) - (x * x);
-        const intercept = ((y * x2) - (x * xy)) / denominator;
-        const slope = ((n * xy) - (x * y)) / denominator;
+        const denominator = n * x2 - x * x;
+        const intercept = (y * x2 - x * xy) / denominator;
+        const slope = (n * xy - x * y) / denominator;
         const minX = min(dataPoints, ({ x }) => x);
         const maxX = max(dataPoints, ({ x }) => x);
 
@@ -691,8 +686,8 @@ export default function module() {
             x1: minX,
             y1: slope * n + intercept,
             x2: maxX,
-            y2: slope * maxX + intercept
-        }
+            y2: slope * maxX + intercept,
+        };
     }
 
     /**
@@ -709,7 +704,7 @@ export default function module() {
 
         return {
             closestPoint: voronoiMesh.find(mousePos[0], mousePos[1]),
-            mousePos
+            mousePos,
         };
     }
 
@@ -728,7 +723,10 @@ export default function module() {
 
         highlightDataPoint(pointData);
 
-        dispatcher.call('customMouseMove', e, pointData, mouse(e), [chartWidth, chartHeight]);
+        dispatcher.call('customMouseMove', e, pointData, mouse(e), [
+            chartWidth,
+            chartHeight,
+        ]);
     }
 
     /**
@@ -736,7 +734,7 @@ export default function module() {
      * @return {void}
      * @private
      */
-    function handleMouseOver (e, d) {
+    function handleMouseOver(e, d) {
         dispatcher.call('customMouseOver', e, d, mouse(e));
     }
 
@@ -765,7 +763,10 @@ export default function module() {
 
         handleClickAnimation(d);
 
-        dispatcher.call('customClick', e, d, mouse(e), [chartWidth, chartHeight]);
+        dispatcher.call('customClick', e, d, mouse(e), [
+            chartWidth,
+            chartHeight,
+        ]);
     }
 
     /**
@@ -792,7 +793,9 @@ export default function module() {
         removePointHighlight();
 
         if (!highlightFilter) {
-            highlightFilter = createFilterContainer(svg.select('.metadata-group'));
+            highlightFilter = createFilterContainer(
+                svg.select('.metadata-group')
+            );
             highlightFilterId = createGlowWithMatrix(highlightFilter);
         }
 
@@ -808,8 +811,7 @@ export default function module() {
             .style('stroke-opacity', highlightCircleOpacity);
 
         // apply glow container overlay
-        highlightCircle
-            .attr('filter', `url(#${highlightFilterId})`);
+        highlightCircle.attr('filter', `url(#${highlightFilterId})`);
     }
 
     /**
@@ -818,46 +820,53 @@ export default function module() {
      * highlighted
      * @return {void}
      * @private
-    */
+     */
     function initHighlightComponents() {
-        highlightCircle = svg.select('.metadata-group')
+        highlightCircle = svg
+            .select('.metadata-group')
             .selectAll('circle.highlight-circle')
             .data([1])
             .enter()
-                .append('circle')
-                .attr('class', 'highlight-circle')
-                .attr('cursor', 'pointer');
+            .append('circle')
+            .attr('class', 'highlight-circle')
+            .attr('cursor', 'pointer');
 
         if (hasCrossHairs) {
             // initialize cross hair lines container
-            highlightCrossHairContainer = svg.select('.chart-group')
+            highlightCrossHairContainer = svg
+                .select('.chart-group')
                 .append('g')
                 .attr('class', 'crosshair-lines-container');
 
             // initialize corss hair labels container
-            highlightCrossHairLabelsContainer = svg.select('.metadata-group')
+            highlightCrossHairLabelsContainer = svg
+                .select('.metadata-group')
                 .append('g')
                 .attr('class', 'crosshair-labels-container');
 
-            highlightCrossHairContainer.selectAll('line.highlight-y-line')
+            highlightCrossHairContainer
+                .selectAll('line.highlight-y-line')
                 .data([1])
                 .enter()
                 .append('line')
                 .attr('class', 'highlight-y-line');
 
-            highlightCrossHairContainer.selectAll('line.highlight-x-line')
+            highlightCrossHairContainer
+                .selectAll('line.highlight-x-line')
                 .data([1])
                 .enter()
                 .append('line')
                 .attr('class', 'highlight-x-line');
 
-            highlightCrossHairLabelsContainer.selectAll('text.highlight-y-legend')
+            highlightCrossHairLabelsContainer
+                .selectAll('text.highlight-y-legend')
                 .data([1])
                 .enter()
                 .append('text')
-                    .attr('class', 'highlight-y-legend');
+                .attr('class', 'highlight-y-legend');
 
-            highlightCrossHairLabelsContainer.selectAll('text.highlight-x-legend')
+            highlightCrossHairLabelsContainer
+                .selectAll('text.highlight-x-legend')
                 .data([1])
                 .enter()
                 .append('text')
@@ -923,8 +932,7 @@ export default function module() {
         circleOpacity = _x;
 
         return this;
-    }
-
+    };
 
     /**
      * Gets or Sets the colorSchema of the chart
@@ -934,7 +942,7 @@ export default function module() {
      * @example
      * scatterPlot.colorSchema(['#fff', '#bbb', '#ccc'])
      */
-    exports.colorSchema = function(_x) {
+    exports.colorSchema = function (_x) {
         if (!arguments.length) {
             return colorSchema;
         }
@@ -979,14 +987,14 @@ export default function module() {
      * @return {boolean | module}  Current hasCrossHairs or Chart module to chain calls
      * @public
      */
-    exports.hasCrossHairs = function(_x) {
+    exports.hasCrossHairs = function (_x) {
         if (!arguments.length) {
             return hasCrossHairs;
         }
         hasCrossHairs = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets the hasHollowCircles value of the chart area
@@ -1001,7 +1009,7 @@ export default function module() {
         hasHollowCircles = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets the hasTrendline value of the chart area
@@ -1018,7 +1026,7 @@ export default function module() {
         hasTrendline = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets the height of the chart
@@ -1048,14 +1056,14 @@ export default function module() {
      * @example
      * scatterPlot.highlightTextLegendOffset(-55)
      */
-    exports.highlightTextLegendOffset = function(_x) {
+    exports.highlightTextLegendOffset = function (_x) {
         if (!arguments.length) {
             return highlightTextLegendOffset;
         }
         highlightTextLegendOffset = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets isAnimated value. If set to true,
@@ -1064,14 +1072,14 @@ export default function module() {
      * @return {boolean | module}    Current isAnimated or Chart module to chain calls
      * @public
      */
-    exports.isAnimated = function(_x) {
+    exports.isAnimated = function (_x) {
         if (!arguments.length) {
             return isAnimated;
         }
         isAnimated = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets the margin object of the chart
@@ -1079,7 +1087,7 @@ export default function module() {
      * @return {Object | module}    Current margin or Chart module to chain calls
      * @public
      */
-    exports.margin = function(_x) {
+    exports.margin = function (_x) {
         if (!arguments.length) {
             return margin;
         }
@@ -1097,14 +1105,14 @@ export default function module() {
      * @return {Number | module}    Current maxCircleArea or Chart module to chain calls
      * @public
      */
-    exports.maxCircleArea = function(_x) {
+    exports.maxCircleArea = function (_x) {
         if (!arguments.length) {
             return maxCircleArea;
         }
         maxCircleArea = _x;
 
         return this;
-    }
+    };
 
     /**
      * Exposes an 'on' method that acts as a bridge with the event dispatcher
@@ -1125,7 +1133,7 @@ export default function module() {
      * @return {Number | module}     Current width or Chart module to chain calls
      * @public
      */
-    exports.width = function(_x) {
+    exports.width = function (_x) {
         if (!arguments.length) {
             return width;
         }
@@ -1144,7 +1152,7 @@ export default function module() {
      * @return {String | module}        Current xAxisLabel or Chart module to chain calls
      * @public
      */
-    exports.xAxisLabel = function(_x) {
+    exports.xAxisLabel = function (_x) {
         if (!arguments.length) {
             return xAxisLabel;
         }
@@ -1191,7 +1199,7 @@ export default function module() {
      * @return {Number | module}   Current xTicks or Chart module to chain calls
      * @public
      */
-    exports.xTicks = function(_x) {
+    exports.xTicks = function (_x) {
         if (!arguments.length) {
             return xTicks;
         }
@@ -1206,14 +1214,14 @@ export default function module() {
      * @return {String | module}    Current yAxisFormat or Chart module to chain calls
      * @public
      */
-    exports.yAxisFormat = function(_x) {
+    exports.yAxisFormat = function (_x) {
         if (!arguments.length) {
             return yAxisFormat;
         }
         yAxisFormat = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets the y-axis label of the chart
@@ -1246,7 +1254,7 @@ export default function module() {
         yAxisLabelOffset = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets the xTicks of the chart
@@ -1254,7 +1262,7 @@ export default function module() {
      * @return {Number | module}    Current yTicks or Chart module to chain calls
      * @public
      */
-    exports.yTicks = function(_x) {
+    exports.yTicks = function (_x) {
         if (!arguments.length) {
             return yTicks;
         }
@@ -1264,5 +1272,4 @@ export default function module() {
     };
 
     return exports;
-};
-
+}

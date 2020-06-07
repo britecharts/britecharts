@@ -14,7 +14,7 @@ const DEFAULT_TITLE_TEXT_STYLE = {
     'font-size': '22px',
     'font-family': 'sans-serif',
     'font-style': 'normal',
-    'font-weight': 0
+    'font-weight': 0,
 };
 
 /**
@@ -56,58 +56,47 @@ const DEFAULT_TITLE_TEXT_STYLE = {
  *     .call(sparkLineChart);
  *
  */
-export default function module(){
-
+export default function module() {
     let margin = {
             left: 5,
             right: 5,
             top: 5,
-            bottom: 5
+            bottom: 5,
         },
         width = 100,
         height = 30,
         loadingState = stackedAreaLoadingMarkup,
-
         xScale,
         yScale,
-
         areaGradient = ['#F5FDFF', '#F6FEFC'],
         areaGradientEl,
         areaGradientId = uniqueId('sparkline-area-gradient'),
-
         lineStrokeWidth = 2,
         lineGradient = colorHelper.colorGradients.greenBlue,
         lineGradientEl,
         lineGradientId = uniqueId('sparkline-line-gradient'),
-
         maskingClip,
         maskingClipId = uniqueId('maskingClip'),
-
         svg,
-        chartWidth, chartHeight,
+        chartWidth,
+        chartHeight,
         data,
-
         hasArea = true,
         isAnimated = false,
         clipDuration = 3000,
         ease = easeQuadInOut,
-
         topLine,
         areaBelow,
         circle,
-
         titleEl,
         titleText,
         titleTextStyle = DEFAULT_TITLE_TEXT_STYLE,
-
         markerSize = 1.5,
-
         valueLabel = 'value',
         dateLabel = 'date',
-
         // getters
-        getDate = ({date}) => date,
-        getValue = ({value}) => value;
+        getDate = ({ date }) => date,
+        getValue = ({ value }) => value;
 
     /**
      * This function creates the graph using the selection and data provided
@@ -117,7 +106,7 @@ export default function module(){
      * @param {SparklineChartData} _data The data to attach and generate the chart
      */
     function exports(_selection) {
-        _selection.each(function(_data){
+        _selection.each(function (_data) {
             chartWidth = width - margin.left - margin.right;
             chartHeight = height - margin.top - margin.bottom;
             data = cleanData(_data);
@@ -142,25 +131,22 @@ export default function module(){
      * as everything else will be drawn on top of them
      * @private
      */
-    function buildContainerGroups(){
+    function buildContainerGroups() {
         let container = svg
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left},${margin.top})`);
 
-        container
-            .append('g').classed('text-group', true);
-        container
-            .append('g').classed('chart-group', true);
-        container
-            .append('g').classed('metadata-group', true);
+        container.append('g').classed('text-group', true);
+        container.append('g').classed('chart-group', true);
+        container.append('g').classed('metadata-group', true);
     }
 
     /**
      * Creates the x, y and color scales of the chart
      * @private
      */
-    function buildScales(){
+    function buildScales() {
         xScale = scaleLinear()
             .domain(extent(data, getDate))
             .range([0, chartWidth]);
@@ -175,7 +161,7 @@ export default function module(){
      * @param  {HTMLElement} container DOM element that will work as the container of the graph
      * @private
      */
-    function buildSVG(container){
+    function buildSVG(container) {
         if (!svg) {
             svg = select(container)
                 .append('svg')
@@ -184,9 +170,7 @@ export default function module(){
             buildContainerGroups();
         }
 
-        svg
-            .attr('width', width)
-            .attr('height', height);
+        svg.attr('width', width).attr('height', height);
     }
 
     /**
@@ -217,7 +201,8 @@ export default function module(){
             svg.selectAll(`#${lineGradientId}`).remove();
         }
 
-        areaGradientEl = metadataGroup.append('linearGradient')
+        areaGradientEl = metadataGroup
+            .append('linearGradient')
             .attr('id', areaGradientId)
             .attr('class', 'area-gradient')
             .attr('gradientUnits', 'userSpaceOnUse')
@@ -227,14 +212,16 @@ export default function module(){
             .attr('y2', 0)
             .selectAll('stop')
             .data([
-                {offset: '0%', color: areaGradient[0]},
-                {offset: '100%', color: areaGradient[1]}
+                { offset: '0%', color: areaGradient[0] },
+                { offset: '100%', color: areaGradient[1] },
             ])
-            .enter().append('stop')
-            .attr('offset', ({offset}) => offset)
-            .attr('stop-color', ({color}) => color);
+            .enter()
+            .append('stop')
+            .attr('offset', ({ offset }) => offset)
+            .attr('stop-color', ({ color }) => color);
 
-        lineGradientEl = metadataGroup.append('linearGradient')
+        lineGradientEl = metadataGroup
+            .append('linearGradient')
             .attr('id', lineGradientId)
             .attr('class', 'line-gradient')
             .attr('gradientUnits', 'userSpaceOnUse')
@@ -244,12 +231,13 @@ export default function module(){
             .attr('y2', 0)
             .selectAll('stop')
             .data([
-                {offset: '0%', color: lineGradient[0]},
-                {offset: '100%', color: lineGradient[1]}
+                { offset: '0%', color: lineGradient[0] },
+                { offset: '100%', color: lineGradient[1] },
             ])
-            .enter().append('stop')
-            .attr('offset', ({offset}) => offset)
-            .attr('stop-color', ({color}) => color);
+            .enter()
+            .append('stop')
+            .attr('offset', ({ offset }) => offset)
+            .attr('stop-color', ({ color }) => color);
     }
 
     /**
@@ -264,13 +252,14 @@ export default function module(){
         }
 
         if (isAnimated) {
-            maskingClip = svg.select('.metadata-group')
+            maskingClip = svg
+                .select('.metadata-group')
                 .append('clipPath')
                 .attr('id', maskingClipId)
                 .attr('class', 'clip-path')
-                    .append('rect')
-                    .attr('width', 0)
-                    .attr('height', height);
+                .append('rect')
+                .attr('width', 0)
+                .attr('height', height);
 
             select(`#${maskingClipId} rect`)
                 .transition()
@@ -284,15 +273,15 @@ export default function module(){
      * Draws the area that will be placed below the line
      * @private
      */
-    function drawArea(){
+    function drawArea() {
         if (areaBelow) {
             svg.selectAll('.sparkline-area').remove();
         }
 
         areaBelow = area()
-            .x(({date}) => xScale(date))
+            .x(({ date }) => xScale(date))
             .y0(() => yScale(0) + lineStrokeWidth / 2)
-            .y1(({value}) => yScale(value))
+            .y1(({ value }) => yScale(value))
             .curve(curveBasis);
 
         svg.select('.chart-group')
@@ -308,15 +297,15 @@ export default function module(){
      * Draws the line element within the chart group
      * @private
      */
-    function drawLine(){
+    function drawLine() {
         if (topLine) {
             svg.selectAll('.line').remove();
         }
 
         topLine = line()
             .curve(curveBasis)
-            .x(({date}) => xScale(date))
-            .y(({value}) => yScale(value));
+            .x(({ date }) => xScale(date))
+            .y(({ value }) => yScale(value));
 
         svg.select('.chart-group')
             .append('path')
@@ -337,29 +326,47 @@ export default function module(){
             svg.selectAll('.sparkline-text').remove();
         }
 
-        titleEl = svg.selectAll('.text-group')
+        titleEl = svg
+            .selectAll('.text-group')
             .append('text')
             .attr('x', chartWidth / 2)
             .attr('y', chartHeight / 6)
             .attr('text-anchor', 'middle')
             .attr('class', 'sparkline-text')
-            .style('font-size', titleTextStyle['font-size'] || DEFAULT_TITLE_TEXT_STYLE['font-size'])
+            .style(
+                'font-size',
+                titleTextStyle['font-size'] ||
+                    DEFAULT_TITLE_TEXT_STYLE['font-size']
+            )
             .style('fill', titleTextStyle['fill'] || lineGradient[0])
-            .style('font-family', titleTextStyle['font-family'] || DEFAULT_TITLE_TEXT_STYLE['font-family'])
-            .style('font-weight', titleTextStyle['font-weight'] || DEFAULT_TITLE_TEXT_STYLE['font-weight'])
-            .style('font-style', titleTextStyle['font-style'] || DEFAULT_TITLE_TEXT_STYLE['font-style'])
-            .text(titleText)
+            .style(
+                'font-family',
+                titleTextStyle['font-family'] ||
+                    DEFAULT_TITLE_TEXT_STYLE['font-family']
+            )
+            .style(
+                'font-weight',
+                titleTextStyle['font-weight'] ||
+                    DEFAULT_TITLE_TEXT_STYLE['font-weight']
+            )
+            .style(
+                'font-style',
+                titleTextStyle['font-style'] ||
+                    DEFAULT_TITLE_TEXT_STYLE['font-style']
+            )
+            .text(titleText);
     }
 
     /**
      * Draws a marker at the end of the sparkline
      */
-    function drawEndMarker(){
+    function drawEndMarker() {
         if (circle) {
             svg.selectAll('.sparkline-circle').remove();
         }
 
-        circle = svg.selectAll('.chart-group')
+        circle = svg
+            .selectAll('.chart-group')
             .append('circle')
             .attr('class', 'sparkline-circle')
             .attr('cx', xScale(data[data.length - 1].date))
@@ -375,7 +382,7 @@ export default function module(){
      * @return {areaGradient | module} Current areaGradient or Chart module to chain calls
      * @public
      */
-    exports.areaGradient = function(_x) {
+    exports.areaGradient = function (_x) {
         if (!arguments.length) {
             return areaGradient;
         }
@@ -389,7 +396,7 @@ export default function module(){
      * @return {dateLabel | module} Current dateLabel or Chart module to chain calls
      * @public
      */
-    exports.dateLabel = function(_x) {
+    exports.dateLabel = function (_x) {
         if (!arguments.length) {
             return dateLabel;
         }
@@ -404,7 +411,7 @@ export default function module(){
      * @return {dateLabel | module} Current animation duration or Chart module to chain calls
      * @public
      */
-    exports.duration = function(_x) {
+    exports.duration = function (_x) {
         if (!arguments.length) {
             return clipDuration;
         }
@@ -419,7 +426,7 @@ export default function module(){
      * @param {String} title        Title to add at the top of the exported picture
      * @public
      */
-    exports.exportChart = function(filename, title) {
+    exports.exportChart = function (filename, title) {
         exportChart.call(exports, svg, filename, title);
     };
 
@@ -429,7 +436,7 @@ export default function module(){
      * @return { height | module} Current height or Chart module to chain calls
      * @public
      */
-    exports.height = function(_x) {
+    exports.height = function (_x) {
         if (!arguments.length) {
             return height;
         }
@@ -446,7 +453,7 @@ export default function module(){
      * @return {isAnimated | module} Current isAnimated flag or Chart module
      * @public
      */
-    exports.isAnimated = function(_x) {
+    exports.isAnimated = function (_x) {
         if (!arguments.length) {
             return isAnimated;
         }
@@ -461,7 +468,7 @@ export default function module(){
      * @return {lineGradient | module} Current lineGradient or Chart module to chain calls
      * @public
      */
-    exports.lineGradient = function(_x) {
+    exports.lineGradient = function (_x) {
         if (!arguments.length) {
             return lineGradient;
         }
@@ -475,7 +482,7 @@ export default function module(){
      * @return {loadingState | module} Current loading state markup or Chart module to chain calls
      * @public
      */
-    exports.loadingState = function(_markup) {
+    exports.loadingState = function (_markup) {
         if (!arguments.length) {
             return loadingState;
         }
@@ -490,13 +497,13 @@ export default function module(){
      * @return {margin | module} Current margin or Chart module to chain calls
      * @public
      */
-    exports.margin = function(_x) {
+    exports.margin = function (_x) {
         if (!arguments.length) {
             return margin;
         }
         margin = {
             ...margin,
-            ..._x
+            ..._x,
         };
 
         return this;
@@ -509,7 +516,7 @@ export default function module(){
      * @return {String | module} Current titleText or Chart module to chain calls
      * @public
      */
-    exports.titleText = function(_x) {
+    exports.titleText = function (_x) {
         if (!arguments.length) {
             return titleText;
         }
@@ -550,14 +557,14 @@ export default function module(){
      *    'fill': 'lightblue'
      * })
      */
-    exports.titleTextStyle = function(_x) {
+    exports.titleTextStyle = function (_x) {
         if (!arguments.length) {
             return titleTextStyle;
         }
         titleTextStyle = _x;
 
         return this;
-    }
+    };
 
     /**
      * Gets or Sets the valueLabel of the chart
@@ -565,7 +572,7 @@ export default function module(){
      * @return {valueLabel | module} Current valueLabel or Chart module to chain calls
      * @public
      */
-    exports.valueLabel = function(_x) {
+    exports.valueLabel = function (_x) {
         if (!arguments.length) {
             return valueLabel;
         }
@@ -580,7 +587,7 @@ export default function module(){
      * @return {width | module} Current width or Chart module to chain calls
      * @public
      */
-    exports.width = function(_x) {
+    exports.width = function (_x) {
         if (!arguments.length) {
             return width;
         }
@@ -590,6 +597,4 @@ export default function module(){
     };
 
     return exports;
-};
-
-
+}

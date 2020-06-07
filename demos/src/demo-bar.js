@@ -14,7 +14,9 @@ require('./helpers/resizeHelper');
 function createSimpleBarChart() {
     let barChart = bar(),
         barContainer = select('.js-bar-chart-container'),
-        containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
+        containerWidth = barContainer.node()
+            ? barContainer.node().getBoundingClientRect().width
+            : false,
         dataset;
 
     if (containerWidth) {
@@ -35,7 +37,9 @@ function createHorizontalBarChart() {
     let barChart = bar(),
         tooltip = miniTooltip(),
         barContainer = select('.js-horizontal-bar-chart-container'),
-        containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
+        containerWidth = barContainer.node()
+            ? barContainer.node().getBoundingClientRect().width
+            : false,
         tooltipContainer,
         dataset;
 
@@ -49,7 +53,7 @@ function createHorizontalBarChart() {
                 left: 120,
                 right: 20,
                 top: 20,
-                bottom: 30
+                bottom: 30,
             })
             .colorSchema(colors.colorSchemas.britecharts)
             .width(containerWidth)
@@ -62,7 +66,9 @@ function createHorizontalBarChart() {
 
         barContainer.datum(dataset).call(barChart);
 
-        tooltipContainer = select('.js-horizontal-bar-chart-container .bar-chart .metadata-group');
+        tooltipContainer = select(
+            '.js-horizontal-bar-chart-container .bar-chart .metadata-group'
+        );
         tooltipContainer.datum([]).call(tooltip);
     }
 }
@@ -71,12 +77,14 @@ function createBarChartWithTooltip() {
     let barChart = bar(),
         tooltip = miniTooltip(),
         barContainer = select('.js-bar-chart-tooltip-container'),
-        containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
+        containerWidth = barContainer.node()
+            ? barContainer.node().getBoundingClientRect().width
+            : false,
         tooltipContainer,
         dataset;
 
     if (containerWidth) {
-        select('.js-download-button').on('click', function() {
+        select('.js-download-button').on('click', function () {
             barChart.exportChart('barchart.png', 'Britecharts Bar Chart');
         });
 
@@ -92,8 +100,7 @@ function createBarChartWithTooltip() {
 
         barContainer.datum(dataset).call(barChart);
 
-        tooltip
-            .numberFormat('.2%')
+        tooltip.numberFormat('.2%');
 
         tooltipContainer = select('.bar-chart .metadata-group');
         tooltipContainer.datum([]).call(tooltip);
@@ -103,7 +110,9 @@ function createBarChartWithTooltip() {
 function createLoadingState() {
     let barChart = bar(),
         barContainer = select('.js-loading-container'),
-        containerWidth = barContainer.node() ? barContainer.node().getBoundingClientRect().width : false,
+        containerWidth = barContainer.node()
+            ? barContainer.node().getBoundingClientRect().width
+            : false,
         dataset = null;
 
     if (containerWidth) {
@@ -112,13 +121,13 @@ function createLoadingState() {
 }
 
 // Show charts if container available
-if (select('.js-bar-chart-tooltip-container').node()){
+if (select('.js-bar-chart-tooltip-container').node()) {
     createBarChartWithTooltip();
     createHorizontalBarChart();
     createSimpleBarChart();
     createLoadingState();
 
-    let redrawCharts = function(){
+    let redrawCharts = function () {
         selectAll('.bar-chart').remove();
         createBarChartWithTooltip();
         createHorizontalBarChart();

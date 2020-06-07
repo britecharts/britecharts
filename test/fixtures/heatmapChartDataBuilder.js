@@ -2,7 +2,6 @@ import _ from 'underscore';
 import jsonWeeklyBis from '../json/heatmapWeeklyBis.json';
 import jsonWeekly from '../json/heatmapWeekly.json';
 
-
 export function HeatmapDataBuilder(config) {
     this.Klass = HeatmapDataBuilder;
 
@@ -24,4 +23,3 @@ export function HeatmapDataBuilder(config) {
         return this.config.data;
     };
 }
-

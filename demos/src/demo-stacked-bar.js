@@ -9,7 +9,6 @@ import colorSelectorHelper from './helpers/colorSelector';
 
 require('./helpers/resizeHelper');
 
-
 let redrawCharts;
 
 function createStackedBarChartWithTooltip(optionalColorSchema) {
@@ -17,7 +16,9 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
         chartTooltip = tooltip(),
         testDataSet = new StackedBarDataBuilder(),
         container = select('.js-stacked-bar-chart-tooltip-container'),
-        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
+        containerWidth = container.node()
+            ? container.node().getBoundingClientRect().width
+            : false,
         tooltipContainer,
         dataset;
 
@@ -34,13 +35,13 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
             .nameLabel('date')
             .valueLabel('views')
             .betweenBarsPadding(0.3)
-            .on('customMouseOver', function() {
+            .on('customMouseOver', function () {
                 chartTooltip.show();
             })
-            .on('customMouseMove', function(dataPoint, topicColorMap, x,y) {
+            .on('customMouseMove', function (dataPoint, topicColorMap, x, y) {
                 chartTooltip.update(dataPoint, topicColorMap, x, y);
             })
-            .on('customMouseOut', function() {
+            .on('customMouseOut', function () {
                 chartTooltip.hide();
             });
 
@@ -59,11 +60,16 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = select('.js-stacked-bar-chart-tooltip-container .metadata-group');
+        tooltipContainer = select(
+            '.js-stacked-bar-chart-tooltip-container .metadata-group'
+        );
         tooltipContainer.datum([]).call(chartTooltip);
 
-        select('#button').on('click', function() {
-                stackedBar.exportChart('stacked-bar.png', 'Britecharts Stacked Bar');
+        select('#button').on('click', function () {
+            stackedBar.exportChart(
+                'stacked-bar.png',
+                'Britecharts Stacked Bar'
+            );
         });
     }
 }
@@ -73,7 +79,9 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
         chartTooltip = tooltip(),
         testDataSet = new StackedBarDataBuilder(),
         container = select('.js-stacked-bar-chart-fixed-container'),
-        containerWidth = container.node() ? container.node().getBoundingClientRect().width : false,
+        containerWidth = container.node()
+            ? container.node().getBoundingClientRect().width
+            : false,
         tooltipContainer,
         dataset;
 
@@ -91,19 +99,19 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
                 left: 100,
                 top: 40,
                 right: 30,
-                bottom: 20
+                bottom: 20,
             })
             .nameLabel('date')
             .valueLabel('views')
             .stackLabel('stack')
             .colorSchema(colors.colorSchemas.teal.reverse())
-            .on('customMouseOver', function() {
+            .on('customMouseOver', function () {
                 chartTooltip.show();
             })
-            .on('customMouseMove', function(dataPoint, topicColorMap, x, y) {
+            .on('customMouseMove', function (dataPoint, topicColorMap, x, y) {
                 chartTooltip.update(dataPoint, topicColorMap, x, y);
             })
-            .on('customMouseOut', function() {
+            .on('customMouseOut', function () {
                 chartTooltip.hide();
             });
 
@@ -122,19 +130,21 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
-        tooltipContainer = select('.js-stacked-bar-chart-fixed-container .metadata-group');
+        tooltipContainer = select(
+            '.js-stacked-bar-chart-fixed-container .metadata-group'
+        );
         tooltipContainer.datum([]).call(chartTooltip);
     }
 }
 
-if (select('.js-stacked-bar-chart-tooltip-container').node()){
+if (select('.js-stacked-bar-chart-tooltip-container').node()) {
     // Chart creation
     createStackedBarChartWithTooltip();
     createHorizontalStackedBarChart();
 
     // For getting a responsive behavior on our chart,
     // we'll need to listen to the window resize event
-    redrawCharts = function(){
+    redrawCharts = function () {
         selectAll('.stacked-bar').remove();
 
         createStackedBarChartWithTooltip();
@@ -145,5 +155,9 @@ if (select('.js-stacked-bar-chart-tooltip-container').node()){
     PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
-    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.stacked-bar', createStackedBarChartWithTooltip);
+    colorSelectorHelper.createColorSelector(
+        '.js-color-selector-container',
+        '.stacked-bar',
+        createStackedBarChartWithTooltip
+    );
 }

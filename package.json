@@ -41,13 +41,15 @@
     "lint": "eslint src/charts/ webpack.*.js --cache",
     "lint:fix": "eslint src/charts/ webpack.*.js --cache --fix",
     "test": "karma start --env=test",
+    "posttest": "npm run format",
     "test:travis": "karma start --single-run --browsers PhantomJS --env=test",
     "sandbox:compile": "webpack --env=sandbox",
     "sandbox": "webpack-dev-server --env=sandbox --hot --content-base sandbox/ --inline",
     "clean": "yarn cache clean && rimraf node_modules",
     "release": "grunt release:patch",
     "release:minor": "grunt release:minor",
-    "release:major": "grunt release:major"
+    "release:major": "grunt release:major",
+    "format": "prettier --loglevel warn --write \"**/*.{js,css}\""
   },
   "repository": {
     "type": "git",
@@ -115,6 +117,26 @@
           "regenerator": true
         }
       ]
+    ]
+  },
+  "prettier": {
+    "endOfLine": "lf",
+    "tabWidth": 4,
+    "semi": true, 
+    "bracketSpacing": true, 
+    "singleQuote": true, 
+    "arrowParens": "always", 
+    "overrides": [
+        {
+            "files": "*.md",
+            "options": {
+                "printWidth": 70,
+                "useTabs": false,
+                "trailingComma": "none",
+                "arrowParens": "avoid",
+                "proseWrap": "never"
+            }
+        }
     ]
   },
   "dependencies": {

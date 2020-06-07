@@ -3,19 +3,17 @@ import * as d3 from 'd3';
 import chart from './../../src/charts/heatmap';
 import { HeatmapDataBuilder } from 'heatmapChartDataBuilder';
 
-
 const aTestDataSet = () => new HeatmapDataBuilder();
 const buildDataSet = (dataSetName) => {
-    return aTestDataSet()
-        [dataSetName]()
-        .build();
+    return aTestDataSet()[dataSetName]().build();
 };
 
 describe('Heatmap Chart', () => {
     let heatmapChart, dataset, containerFixture, f;
 
     beforeEach(() => {
-        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+        const fixture =
+            '<div id="fixture"><div class="test-container"></div></div>';
 
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -32,7 +30,6 @@ describe('Heatmap Chart', () => {
     });
 
     describe('Render', () => {
-
         it('should render a heatmap', () => {
             const expected = 1;
             const actual = containerFixture.select('.heatmap').size();
@@ -41,10 +38,11 @@ describe('Heatmap Chart', () => {
         });
 
         describe('groups', () => {
-
             it('should render a container-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.container-group').size();
+                const actual = containerFixture
+                    .select('g.container-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -58,21 +56,27 @@ describe('Heatmap Chart', () => {
 
             it('should render a metadata-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.metadata-group').size();
+                const actual = containerFixture
+                    .select('g.metadata-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should render a day-labels-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.day-labels-group').size();
+                const actual = containerFixture
+                    .select('g.day-labels-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should render a hour-labels-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.hour-labels-group').size();
+                const actual = containerFixture
+                    .select('g.hour-labels-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -86,7 +90,6 @@ describe('Heatmap Chart', () => {
         });
 
         describe('axis', () => {
-
             it('should render the day labels', () => {
                 const expected = 7;
                 const actual = containerFixture.selectAll('.day-label').size();
@@ -103,7 +106,6 @@ describe('Heatmap Chart', () => {
         });
 
         describe('when reloading with a different dataset', () => {
-
             it('should render in the same svg', () => {
                 const expected = 1;
                 const newDataset = buildDataSet('withAlternativeWeeklyData');
@@ -118,7 +120,6 @@ describe('Heatmap Chart', () => {
     });
 
     describe('custom axis labels', () => {
-
         it('should render custom y axis labels correctly', () => {
             const customYAxisLabels = ['Test1', 'Test2'];
 
@@ -128,7 +129,8 @@ describe('Heatmap Chart', () => {
             containerFixture.datum(dataset).call(heatmapChart);
             heatmapChart.yAxisLabels(customYAxisLabels);
 
-            const yAxisLabels = containerFixture.select('svg')
+            const yAxisLabels = containerFixture
+                .select('svg')
                 .selectAll('.heatmap .y-axis-label');
 
             yAxisLabels.each((yAxisLabel, i) => {
@@ -138,7 +140,6 @@ describe('Heatmap Chart', () => {
     });
 
     describe('API', () => {
-
         it('should provide boxSize getter and setter', () => {
             let previous = heatmapChart.boxSize(),
                 expected = 10,
@@ -228,4 +229,3 @@ describe('Heatmap Chart', () => {
         });
     });
 });
-

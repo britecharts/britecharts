@@ -16,11 +16,14 @@ if (!encoder) {
 
 // Base64 doesn't work really well with Unicode strings, so we need to use this function
 // Ref: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding
-const b64EncodeUnicode = str => {
+const b64EncodeUnicode = (str) => {
     return encoder(
-        encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+        encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (
+            match,
+            p1
+        ) {
             return String.fromCharCode('0x' + p1);
-        }),
+        })
     );
 };
 
@@ -56,7 +59,7 @@ export function exportChart(d3svg, filename, title) {
     img.onload = handleImageLoad.bind(
         img,
         createCanvas(this.width(), this.height()),
-        filename,
+        filename
     );
 }
 
@@ -88,7 +91,7 @@ export function convertSvgToHtml(d3svg, title) {
         this,
         html,
         title,
-        parseInt(d3svg.attr('width'), 10),
+        parseInt(d3svg.attr('width'), 10)
     );
     html = addBackground(html);
 
@@ -145,7 +148,7 @@ export function drawImageOnCanvas(image, canvas) {
 function downloadCanvas(
     canvas,
     filename = config.defaultFilename,
-    extensionType = 'image/png',
+    extensionType = 'image/png'
 ) {
     let url = canvas.toDataURL(extensionType);
     let link = document.createElement('a');
@@ -166,7 +169,7 @@ function formatHtmlByBrowser(html) {
     if (navigator.userAgent.search('FireFox') > -1) {
         return html.replace(
             /url.*&quot;\)/,
-            'url(&quot;linearGradient[id*="-gradient-"]&quot;);',
+            'url(&quot;linearGradient[id*="-gradient-"]&quot;);'
         );
     }
 
@@ -204,7 +207,7 @@ function prependTitle(html, title, svgWidth) {
             config.titleTopOffset
         }" font-family="${config.titleFontFamily}" font-size="${
             config.titleFontSize
-        }" fill="${grey[6]}"> ${title} </text><g `,
+        }" fill="${grey[6]}"> ${title} </text><g `
     );
 
     return html;

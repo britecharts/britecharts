@@ -5,16 +5,15 @@ import { DonutDataBuilder } from 'donutChartDataBuilder';
 
 const aTestDataSet = () => new DonutDataBuilder();
 const buildDataSet = (dataSetName) => {
-    return aTestDataSet()
-    [dataSetName]()
-        .build();
+    return aTestDataSet()[dataSetName]().build();
 };
 
-describe('Legend', () =>{
+describe('Legend', () => {
     let legendChart, dataset, containerFixture, f;
 
     beforeEach(() => {
-        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+        const fixture =
+            '<div id="fixture"><div class="test-container"></div></div>';
 
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -32,7 +31,6 @@ describe('Legend', () =>{
     });
 
     describe('Render', () => {
-
         it('should show a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.britechart-legend').size();
@@ -43,7 +41,9 @@ describe('Legend', () =>{
         describe('groups', () => {
             it('should create a legend-container-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.legend-container-group').size();
+                const actual = containerFixture
+                    .select('g.legend-container-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -58,7 +58,8 @@ describe('Legend', () =>{
 
         it('should add a line group for each entry', () => {
             const expected = dataset.length;
-            const actual = containerFixture.select('.britechart-legend')
+            const actual = containerFixture
+                .select('.britechart-legend')
                 .selectAll('.legend-line')
                 .size();
 
@@ -66,7 +67,9 @@ describe('Legend', () =>{
         });
 
         it('should add the proper data identifier to each entry', () => {
-            const lines = containerFixture.select('.britechart-legend').selectAll('.legend-entry');
+            const lines = containerFixture
+                .select('.britechart-legend')
+                .selectAll('.legend-entry');
             const elements = lines.nodes();
 
             lines.each(function (d, index) {
@@ -78,16 +81,18 @@ describe('Legend', () =>{
 
         it('should add a circle for each entry', () => {
             const expected = dataset.length;
-            const actual = containerFixture.select('.britechart-legend')
-                    .selectAll('.legend-circle')
-                    .size();
+            const actual = containerFixture
+                .select('.britechart-legend')
+                .selectAll('.legend-circle')
+                .size();
 
             expect(actual).toEqual(expected);
         });
 
         it('should add a text element for each entry', () => {
             const expected = dataset.length;
-            const actual = containerFixture.select('.britechart-legend')
+            const actual = containerFixture
+                .select('.britechart-legend')
                 .selectAll('.legend-entry-name')
                 .size();
 
@@ -96,8 +101,8 @@ describe('Legend', () =>{
 
         it('should add the proper text to each text element', () => {
             const texts = containerFixture
-                    .select('.britechart-legend')
-                    .selectAll('.legend-entry-name text');
+                .select('.britechart-legend')
+                .selectAll('.legend-entry-name text');
             const elements = texts[0];
 
             texts.each(function (d, index) {
@@ -107,17 +112,18 @@ describe('Legend', () =>{
 
         it('should add a value element for each entry', () => {
             const expected = dataset.length;
-            const actual = containerFixture.select('.britechart-legend')
-                    .selectAll('.legend-entry-value')
-                    .size();
+            const actual = containerFixture
+                .select('.britechart-legend')
+                .selectAll('.legend-entry-value')
+                .size();
 
             expect(actual).toEqual(expected);
         });
 
         it('should add the proper value to each value element', () => {
             const texts = containerFixture
-                    .select('.britechart-legend')
-                    .selectAll('.legend-entry-value text');
+                .select('.britechart-legend')
+                .selectAll('.legend-entry-value text');
             const elements = texts[0];
 
             texts.each(function (d, index) {
@@ -135,14 +141,18 @@ describe('Legend', () =>{
 
             it('should render the legend', () => {
                 const expected = 1;
-                const actual = containerFixture.select('svg.britechart-legend').size();
+                const actual = containerFixture
+                    .select('svg.britechart-legend')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should not draw any value', () => {
                 const expected = 0;
-                const actual = containerFixture.selectAll('.legend-entry-value').size();
+                const actual = containerFixture
+                    .selectAll('.legend-entry-value')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -152,7 +162,8 @@ describe('Legend', () =>{
             let unit;
 
             beforeEach(() => {
-                const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
 
                 // adds an html fixture to the DOM
                 document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -179,15 +190,17 @@ describe('Legend', () =>{
                 const elements = texts[0];
 
                 texts.each(function (d, index) {
-                    expect(elements[index]).toEqual(dataset[index]['quantity'] + unit);
+                    expect(elements[index]).toEqual(
+                        dataset[index]['quantity'] + unit
+                    );
                 });
             });
         });
 
         describe('when legend is horizontal', () => {
-
             beforeEach(() => {
-                const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
 
                 // adds an html fixture to the DOM
                 document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -195,9 +208,7 @@ describe('Legend', () =>{
                 dataset = buildDataSet('withThreeCategories');
                 legendChart = legend();
 
-                legendChart
-                    .width(500)
-                    .isHorizontal(true);
+                legendChart.width(500).isHorizontal(true);
 
                 containerFixture = d3.select('.test-container');
                 containerFixture.datum(dataset).call(legendChart);
@@ -210,7 +221,9 @@ describe('Legend', () =>{
 
             it('should show a chart with minimal requirements', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.britechart-legend').size();
+                const actual = containerFixture
+                    .select('.britechart-legend')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -218,14 +231,18 @@ describe('Legend', () =>{
             describe('groups', () => {
                 it('should create a legend-container-group', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('g.legend-container-group').size();
+                    const actual = containerFixture
+                        .select('g.legend-container-group')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
 
                 it('should create a legend-group', () => {
                     const expected = 1;
-                    const actual = containerFixture.select('g.legend-group').size();
+                    const actual = containerFixture
+                        .select('g.legend-group')
+                        .size();
 
                     expect(actual).toEqual(expected);
                 });
@@ -259,14 +276,18 @@ describe('Legend', () =>{
 
                 lines.each(function (d, index) {
                     expect(
-                        parseInt(d3.select(elements[index]).attr('data-item'), 10)
+                        parseInt(
+                            d3.select(elements[index]).attr('data-item'),
+                            10
+                        )
                     ).toEqual(dataset[index].id);
                 });
             });
 
             it('should add a circle for each entry', () => {
                 const expected = dataset.length;
-                const actual = containerFixture.select('.britechart-legend')
+                const actual = containerFixture
+                    .select('.britechart-legend')
                     .selectAll('.legend-circle')
                     .size();
 
@@ -275,7 +296,8 @@ describe('Legend', () =>{
 
             it('should add a text element for each entry', () => {
                 const expected = dataset.length;
-                const actual = containerFixture.select('.britechart-legend')
+                const actual = containerFixture
+                    .select('.britechart-legend')
                     .selectAll('.legend-entry-name')
                     .size();
 
@@ -283,9 +305,9 @@ describe('Legend', () =>{
             });
 
             describe('when chart width is not enough for one line', () => {
-
                 beforeEach(() => {
-                    const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                    const fixture =
+                        '<div id="fixture"><div class="test-container"></div></div>';
 
                     // adds an html fixture to the DOM
                     document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -293,10 +315,7 @@ describe('Legend', () =>{
                     dataset = buildDataSet('withThreeCategories');
                     legendChart = legend();
 
-                    legendChart
-                        .isHorizontal(true)
-                        .height(50)
-                        .width(200);
+                    legendChart.isHorizontal(true).height(50).width(200);
 
                     containerFixture = d3.select('.test-container');
                     containerFixture.datum(dataset).call(legendChart);
@@ -304,12 +323,15 @@ describe('Legend', () =>{
 
                 // remove the html fixture from the DOM
                 afterEach(() => {
-                    document.body.removeChild(document.getElementById('fixture'));
+                    document.body.removeChild(
+                        document.getElementById('fixture')
+                    );
                 });
 
                 it('should create another line below', function () {
                     const expected = 2;
-                    const actual = containerFixture.select('.britechart-legend')
+                    const actual = containerFixture
+                        .select('.britechart-legend')
                         .selectAll('.legend-line')
                         .size();
 
@@ -320,7 +342,6 @@ describe('Legend', () =>{
     });
 
     describe('API', () => {
-
         it('should provide margin getter and setter', () => {
             let previous = legendChart.margin(),
                 expected = { top: 4, right: 4, bottom: 4, left: 4 },
@@ -334,13 +355,12 @@ describe('Legend', () =>{
         });
 
         describe('when margins are set partially', function () {
-
             it('should override the default values', () => {
                 let previous = legendChart.margin(),
                     expected = {
                         ...previous,
                         top: 10,
-                        right: 20
+                        right: 20,
                     },
                     actual;
 
@@ -349,7 +369,7 @@ describe('Legend', () =>{
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toEqual(expected);
-            })
+            });
         });
 
         it('should provide margin ratio getter and setter', () => {
@@ -413,4 +433,3 @@ describe('Legend', () =>{
         });
     });
 });
-

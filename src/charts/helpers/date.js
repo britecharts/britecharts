@@ -10,7 +10,7 @@ export const addDays = (startDate, days) => {
     result.setDate(result.getDate() + days);
 
     return String(result);
-}
+};
 
 /**
  * Calculates difference between dates in days
@@ -21,15 +21,21 @@ export const addDays = (startDate, days) => {
 export const diffDays = (startDate, endDate) => {
     const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
 
-    return Math.ceil(Math.abs((new Date(startDate).getTime() - new Date(endDate).getTime()) / (oneDayInMilliseconds)));
-}
+    return Math.ceil(
+        Math.abs(
+            (new Date(startDate).getTime() - new Date(endDate).getTime()) /
+                oneDayInMilliseconds
+        )
+    );
+};
 
 /**
  * Takes a number representing milliseconds and convert to days
  * @param  {Number} milliseconds    Any number of days in milliseconds
  * @return {Number}                 Number of days that the input represents
  */
-export const convertMillisecondsToDays = (milliseconds) => Math.ceil(milliseconds/(24*60*60*1000));
+export const convertMillisecondsToDays = (milliseconds) =>
+    Math.ceil(milliseconds / (24 * 60 * 60 * 1000));
 
 /**
  * Takes a locale (string) and the format to return and returns a function to format dates
@@ -37,18 +43,16 @@ export const convertMillisecondsToDays = (milliseconds) => Math.ceil(millisecond
  * @param  {String} [timeUnit='day']    Minute, hour, day, dayMonth, month, year
  * @return {Function}                   Function that formats dates in the proper locale
  */
-export const getLocaleDateFormatter = (locale, timeUnit='day') => {
+export const getLocaleDateFormatter = (locale, timeUnit = 'day') => {
     let options = localeTimeMap[timeUnit];
     let formatter = new Intl.DateTimeFormat(locale, options);
 
     return (date) => formatter.format(date);
-}
+};
 
 export default {
     addDays,
     convertMillisecondsToDays,
     diffDays,
-    getLocaleDateFormatter
+    getLocaleDateFormatter,
 };
-
-

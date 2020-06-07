@@ -6,17 +6,18 @@ import { SparklineDataBuilder } from './../../test/fixtures/sparklineDataBuilder
 
 require('./helpers/resizeHelper');
 
-
 const aTestDataSet = () => new SparklineDataBuilder();
 let redrawCharts;
 
 function createSparklineChart() {
     let sparkline = sparklineChart(),
-        containerWidth = select('.js-sparkline-chart-container').node().getBoundingClientRect().width,
+        containerWidth = select('.js-sparkline-chart-container')
+            .node()
+            .getBoundingClientRect().width,
         container = select('.js-sparkline-chart-container'),
         dataset;
 
-    select('#button').on('click', function() {
+    select('#button').on('click', function () {
         sparkline.exportChart('sparkline.png', 'Britechart Sparkline Chart');
     });
 
@@ -35,7 +36,9 @@ function createSparklineChart() {
 
 function createLoadingState() {
     let sparkline = sparklineChart(),
-        containerWidth = select('.js-loading-container').node().getBoundingClientRect().width,
+        containerWidth = select('.js-loading-container')
+            .node()
+            .getBoundingClientRect().width,
         container = select('.js-loading-container'),
         dataset = null;
 
@@ -45,11 +48,11 @@ function createLoadingState() {
 }
 
 // Show charts if container available
-if (select('.js-sparkline-chart-container').node()){
+if (select('.js-sparkline-chart-container').node()) {
     createSparklineChart();
     createLoadingState();
 
-    redrawCharts = function(){
+    redrawCharts = function () {
         selectAll('.sparkline').remove();
         createSparklineChart();
         createLoadingState();

@@ -5,31 +5,31 @@ let idCounter = 0;
 const integerValueFormats = {
     small: {
         limit: 10,
-        format: format('')
+        format: format(''),
     },
     medium: {
         limit: 1000,
-        format: format('')
+        format: format(''),
     },
     large: {
         limit: null,
-        format: format('.2s')
-    }
+        format: format('.2s'),
+    },
 };
 
 const decimalValueFormats = {
     small: {
         limit: 10,
-        format: format('.3f')
+        format: format('.3f'),
     },
     medium: {
         limit: 100,
-        format: format('.1f')
+        format: format('.1f'),
     },
     large: {
         limit: null,
-        format: format('.2s')
-    }
+        format: format('.2s'),
+    },
 };
 
 /**
@@ -58,7 +58,7 @@ const getValueSize = (value, limits) => {
  * @return {String}           Percentage
  */
 export const calculatePercent = (value, total, decimals) => {
-    const percent = total ? (value / total * 100) : 0;
+    const percent = total ? (value / total) * 100 : 0;
 
     return format(decimals)(percent);
 };

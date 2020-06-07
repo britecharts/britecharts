@@ -11,7 +11,9 @@ function createBrushChart() {
     const brushChart = brush();
     const testDataSet = new BrushDataBuilder();
     const brushContainer = select('.js-brush-chart-container');
-    const containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false;
+    const containerWidth = brushContainer.node()
+        ? brushContainer.node().getBoundingClientRect().width
+        : false;
     let dataset;
 
     let elementDateRange = select('.js-date-range');
@@ -22,7 +24,7 @@ function createBrushChart() {
         brushChart
             .width(containerWidth)
             .height(125)
-            .on('customBrushStart', function(brushExtent) {
+            .on('customBrushStart', function (brushExtent) {
                 let format = timeFormat('%m/%d/%Y');
 
                 select('.js-start-date').text(format(brushExtent[0]));
@@ -30,7 +32,7 @@ function createBrushChart() {
 
                 elementDateRange.classed('is-hidden', false);
             })
-            .on('customBrushEnd', function(brushExtent) {
+            .on('customBrushEnd', function (brushExtent) {
                 // eslint-disable-next-line no-console
                 console.log('rounded extent', brushExtent);
 
@@ -41,23 +43,23 @@ function createBrushChart() {
 
         brushContainer.datum(dataset).call(brushChart);
 
-        brushChart.dateRange(['7/15/2015', '7/25/2015'])
+        brushChart.dateRange(['7/15/2015', '7/25/2015']);
     }
 
     return brushChart;
 }
 
 // Show charts if container available
-if (select('.js-brush-chart-container').node()){
+if (select('.js-brush-chart-container').node()) {
     let brushChart = createBrushChart();
 
     const redrawCharts = function () {
         const brushContainer = select('.js-brush-chart-container');
-        const containerWidth = brushContainer.node() ? brushContainer.node().getBoundingClientRect().width : false;
+        const containerWidth = brushContainer.node()
+            ? brushContainer.node().getBoundingClientRect().width
+            : false;
 
-        brushChart
-            .width(containerWidth)
-            .dateRange([null, null]);
+        brushChart.width(containerWidth).dateRange([null, null]);
 
         brushContainer.call(brushChart);
     };

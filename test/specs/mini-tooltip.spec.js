@@ -3,13 +3,11 @@ import * as d3 from 'd3';
 import tooltip from 'mini-tooltip';
 
 describe('Mini Tooltip Component', () => {
-    let tooltipChart,
-        containerFixture,
-        dataset,
-        f;
+    let tooltipChart, containerFixture, dataset, f;
 
     beforeEach(() => {
-        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+        const fixture =
+            '<div id="fixture"><div class="test-container"></div></div>';
 
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -17,8 +15,7 @@ describe('Mini Tooltip Component', () => {
         dataset = [];
         tooltipChart = tooltip();
 
-        containerFixture = d3.select('.test-container')
-            .append('svg');
+        containerFixture = d3.select('.test-container').append('svg');
         containerFixture.datum(dataset).call(tooltipChart);
     });
 
@@ -28,17 +25,20 @@ describe('Mini Tooltip Component', () => {
     });
 
     describe('Render', () => {
-
         it('should show a tooltip with minimal requirements', () => {
             const expected = 1;
-            const actual = containerFixture.select('.britechart-mini-tooltip').size();
+            const actual = containerFixture
+                .select('.britechart-mini-tooltip')
+                .size();
 
             expect(actual).toEqual(expected);
         });
 
         it('should not be visible by default', () => {
             const expected = 'hidden';
-            const actual = containerFixture.select('.britechart-mini-tooltip').style('visibility');
+            const actual = containerFixture
+                .select('.britechart-mini-tooltip')
+                .style('visibility');
 
             expect(actual).toEqual(expected);
         });
@@ -50,7 +50,8 @@ describe('Mini Tooltip Component', () => {
             tooltipChart.title(expected);
             tooltipChart.show();
 
-            actual = containerFixture.select('.britechart-mini-tooltip')
+            actual = containerFixture
+                .select('.britechart-mini-tooltip')
                 .selectAll('.mini-tooltip-title')
                 .text();
 
@@ -61,12 +62,17 @@ describe('Mini Tooltip Component', () => {
             const expected = 'radiating';
             let actual;
 
-            tooltipChart.update({
-                name: expected,
-                value: 10
-            }, [0, 0], [20, 20]);
+            tooltipChart.update(
+                {
+                    name: expected,
+                    value: 10,
+                },
+                [0, 0],
+                [20, 20]
+            );
 
-            actual = containerFixture.select('.britechart-mini-tooltip')
+            actual = containerFixture
+                .select('.britechart-mini-tooltip')
                 .selectAll('.mini-tooltip-name')
                 .text();
 
@@ -77,44 +83,60 @@ describe('Mini Tooltip Component', () => {
             const expected = 10;
             let actual;
 
-            tooltipChart.update({
-                name: 'radiating',
-                value: expected
-            }, [0, 0], [20, 20]);
+            tooltipChart.update(
+                {
+                    name: 'radiating',
+                    value: expected,
+                },
+                [0, 0],
+                [20, 20]
+            );
 
-            actual = parseInt(containerFixture.select('.britechart-mini-tooltip')
-                .selectAll('.mini-tooltip-value')
-                .text(), 10);
+            actual = parseInt(
+                containerFixture
+                    .select('.britechart-mini-tooltip')
+                    .selectAll('.mini-tooltip-value')
+                    .text(),
+                10
+            );
 
             expect(actual).toEqual(expected);
         });
     });
 
     describe('Lifecycle', () => {
-
-        it('should be visible when required', () =>  {
+        it('should be visible when required', () => {
             const initialExpected = 'hidden';
             const expected = 'visible';
-            let actual = containerFixture.select('.britechart-mini-tooltip').style('visibility');
+            let actual = containerFixture
+                .select('.britechart-mini-tooltip')
+                .style('visibility');
 
             expect(actual).toEqual(initialExpected);
             tooltipChart.show();
-            actual = containerFixture.select('.britechart-mini-tooltip').style('visibility');
+            actual = containerFixture
+                .select('.britechart-mini-tooltip')
+                .style('visibility');
 
             expect(actual).toEqual(expected);
         });
 
         it('should allow overriding the value formatting function', () => {
             const expected = '8';
-            const valueFormatFn = value => value.toString().length.toString()
+            const valueFormatFn = (value) => value.toString().length.toString();
             let actual;
 
             tooltipChart.valueFormatter(valueFormatFn);
-            tooltipChart.update({
-                name: 'radiating',
-                value: 10000000
-            }, [0, 0], [20, 20]);
-            actual = containerFixture.select('.britechart-mini-tooltip')
+            tooltipChart.update(
+                {
+                    name: 'radiating',
+                    value: 10000000,
+                },
+                [0, 0],
+                [20, 20]
+            );
+            actual = containerFixture
+                .select('.britechart-mini-tooltip')
                 .selectAll('.mini-tooltip-value')
                 .text();
 
@@ -122,8 +144,7 @@ describe('Mini Tooltip Component', () => {
         });
     });
 
-    describe('API', function() {
-
+    describe('API', function () {
         it('should provide title getter and setter', () => {
             let current = tooltipChart.title(),
                 expected = 'test',
@@ -173,4 +194,3 @@ describe('Mini Tooltip Component', () => {
         });
     });
 });
-

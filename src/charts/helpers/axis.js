@@ -1,15 +1,8 @@
 import { timeHour, timeDay, timeMonth, timeYear } from 'd3-time';
 import { timeFormat } from 'd3-time-format';
 
-import {
-    axisTimeCombinations,
-    timeBenchmarks
-} from './constants';
-import {
-    convertMillisecondsToDays,
-    getLocaleDateFormatter
-} from './date';
-
+import { axisTimeCombinations, timeBenchmarks } from './constants';
+import { convertMillisecondsToDays, getLocaleDateFormatter } from './date';
 
 const singleTickWidth = 20;
 const horizontalTickSpacing = 50;
@@ -21,21 +14,21 @@ const formatMap = {
     day: timeFormat('%e'),
     daymonth: timeFormat('%d %b'),
     month: timeFormat('%b'),
-    year: timeFormat('%Y')
+    year: timeFormat('%Y'),
 };
 const localeTimeMap = {
-    minute: {minute:'numeric'},
-    hour: {hour:'numeric'},
-    day: {day: 'numeric'},
-    daymonth: {day: 'numeric', month:'short'},
-    month: {month: 'short'},
-    year: {year: 'numeric'}
+    minute: { minute: 'numeric' },
+    hour: { hour: 'numeric' },
+    day: { day: 'numeric' },
+    daymonth: { day: 'numeric', month: 'short' },
+    month: { month: 'short' },
+    year: { year: 'numeric' },
 };
 const settingsToMajorTickMap = {
     [axisTimeCombinations.MINUTE_HOUR]: timeHour.every(1),
     [axisTimeCombinations.HOUR_DAY]: timeDay.every(1),
     [axisTimeCombinations.DAY_MONTH]: timeMonth.every(1),
-    [axisTimeCombinations.MONTH_YEAR]: timeYear.every(1)
+    [axisTimeCombinations.MONTH_YEAR]: timeYear.every(1),
 };
 
 /**
@@ -44,10 +37,7 @@ const settingsToMajorTickMap = {
  * @return {String}             Type of settings for the given timeSpan
  */
 const getAxisSettingsFromTimeSpan = (timeSpan) => {
-    let {
-        ONE_YEAR,
-        ONE_DAY
-    } = timeBenchmarks;
+    let { ONE_YEAR, ONE_DAY } = timeBenchmarks;
     let settings;
 
     if (timeSpan < ONE_DAY) {
@@ -59,7 +49,7 @@ const getAxisSettingsFromTimeSpan = (timeSpan) => {
     }
 
     return settings;
-}
+};
 
 /**
  * Calculates the maximum number of ticks for the x axis
@@ -68,10 +58,14 @@ const getAxisSettingsFromTimeSpan = (timeSpan) => {
  * @return {Number}                     Number of ticks to render
  */
 const getMaxNumOfHorizontalTicks = (width, dataPointNumber) => {
-    let ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
+    let ticksForWidth = Math.ceil(
+        width / (singleTickWidth + horizontalTickSpacing)
+    );
 
-    return dataPointNumber < minEntryNumForDayFormat ? timeDay : Math.min(dataPointNumber, ticksForWidth);
-}
+    return dataPointNumber < minEntryNumForDayFormat
+        ? timeDay
+        : Math.min(dataPointNumber, ticksForWidth);
+};
 
 /**
  * Calculates the maximum number of ticks for the x axis
@@ -81,9 +75,11 @@ const getMaxNumOfHorizontalTicks = (width, dataPointNumber) => {
  * @return {Number}                     Number of ticks to render
  */
 const getMaxNumOfHorizontalTicksForNumberRanges = (width, dataPointNumber) => {
-    let ticksForWidth = Math.ceil(width / (singleTickWidth + horizontalTickSpacing));
+    let ticksForWidth = Math.ceil(
+        width / (singleTickWidth + horizontalTickSpacing)
+    );
     return Math.min(dataPointNumber, ticksForWidth);
-}
+};
 
 /**
  * Returns tick object to be used when building the x axis
@@ -93,12 +89,21 @@ const getMaxNumOfHorizontalTicksForNumberRanges = (width, dataPointNumber) => {
  * @param {String} [locale=null]        Optional forced locale
  * @return {object} tick settings for major and minr axis
  */
-export const getTimeSeriesAxis = (dataByDate, width, settings = null, locale = null) => {
+export const getTimeSeriesAxis = (
+    dataByDate,
+    width,
+    settings = null,
+    locale = null
+) => {
     const firstDate = new Date(dataByDate[0].date);
     const lastDate = new Date(dataByDate[dataByDate.length - 1].date);
     const dateTimeSpan = lastDate - firstDate;
 
-    if (locale && ((typeof Intl === 'undefined') || (typeof Intl === 'object' && !Intl.DateTimeFormat))) {
+    if (
+        locale &&
+        (typeof Intl === 'undefined' ||
+            (typeof Intl === 'object' && !Intl.DateTimeFormat))
+    ) {
         locale = null;
     }
 
@@ -108,17 +113,24 @@ export const getTimeSeriesAxis = (dataByDate, width, settings = null, locale = n
 
     const [minor, major] = settings.split('-');
     const majorTickValue = settingsToMajorTickMap[settings];
-    const minorTickValue = getMaxNumOfHorizontalTicks(width, convertMillisecondsToDays(dateTimeSpan));
+    const minorTickValue = getMaxNumOfHorizontalTicks(
+        width,
+        convertMillisecondsToDays(dateTimeSpan)
+    );
 
     return {
         minor: {
-            format: locale ? getLocaleDateFormatter(locale, minor) : formatMap[minor],
-            tick: minorTickValue
+            format: locale
+                ? getLocaleDateFormatter(locale, minor)
+                : formatMap[minor],
+            tick: minorTickValue,
         },
         major: {
-            format: locale ? getLocaleDateFormatter(locale, major) : formatMap[major],
-            tick: majorTickValue
-        }
+            format: locale
+                ? getLocaleDateFormatter(locale, major)
+                : formatMap[major],
+            tick: majorTickValue,
+        },
     };
 };
 
@@ -140,10 +152,9 @@ export const getSortedNumberAxis = (dataSorted, width) => {
     );
 
     return {
-        tick: minorTickValue
+        tick: minorTickValue,
     };
 };
-
 
 export default {
     getTimeSeriesAxis,

@@ -52,20 +52,21 @@ import { line } from './helpers/load';
  */
 
 export default function module() {
-
     let margin = {
             top: 20,
             right: 20,
             bottom: 30,
-            left: 40
+            left: 40,
         },
         width = 960,
         height = 500,
         loadingState = line,
         ease = easeQuadInOut,
         data,
-        chartWidth, chartHeight,
-        xScale, yScale,
+        chartWidth,
+        chartHeight,
+        xScale,
+        yScale,
         yTicks = 6,
         xAxis,
         xAxisLabel,
@@ -79,28 +80,26 @@ export default function module() {
             top: 0,
             left: 0,
             bottom: 0,
-            right: 0
+            right: 0,
         },
         yTickPadding = 8,
         svg,
-
         valueLabel = 'value',
         nameLabel = 'key',
-
         maskGridLines,
         baseLine,
-
         // Dispatcher object to broadcast the mouse events
         // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
-        dispatcher = dispatch('customMouseOver', 'customMouseOut', 'customMouseMove'),
-
+        dispatcher = dispatch(
+            'customMouseOver',
+            'customMouseOut',
+            'customMouseMove'
+        ),
         // Formats
         yAxisTickFormat = format('.3'),
-
         // extractors
-        getKey = ({key}) => key,
-        getValue = ({value}) => value;
-
+        getKey = ({ key }) => key,
+        getValue = ({ value }) => value;
 
     /**
      * This function creates the graph using the selection as container
@@ -108,8 +107,8 @@ export default function module() {
      *                                  the container(s) where the chart(s) will be rendered
      * @param {StepChartData} _data The data to attach and generate the chart
      */
-    function exports(_selection){
-        _selection.each(function(_data){
+    function exports(_selection) {
+        _selection.each(function (_data) {
             // Make space on the left of the graph for the y axis label
             chartWidth = width - margin.left - margin.right;
             chartHeight = height - margin.top - margin.bottom;
@@ -128,7 +127,7 @@ export default function module() {
      * Creates the d3 x and y axis, setting orientations
      * @private
      */
-    function buildAxis(){
+    function buildAxis() {
         xAxis = axisBottom(xScale);
 
         yAxis = axisLeft(yScale)
@@ -142,18 +141,14 @@ export default function module() {
      * Also applies the Margin convention
      * @private
      */
-    function buildContainerGroups(){
+    function buildContainerGroups() {
         let container = svg
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-        container
-            .append('g')
-            .classed('grid-lines-group', true);
-        container
-            .append('g')
-            .classed('chart-group', true);
+        container.append('g').classed('grid-lines-group', true);
+        container.append('g').classed('chart-group', true);
         container
             .append('g')
             .classed('x-axis-group axis', true)
@@ -164,15 +159,14 @@ export default function module() {
             .classed('y-axis-group axis', true)
             .append('g')
             .classed('y-axis-label', true);
-        container
-            .append('g').classed('metadata-group', true);
+        container.append('g').classed('metadata-group', true);
     }
 
     /**
      * Creates the x and y scales of the graph
      * @private
      */
-    function buildScales(){
+    function buildScales() {
         xScale = scaleBand()
             .domain(data.map(getKey))
             .rangeRound([0, chartWidth])
@@ -188,7 +182,7 @@ export default function module() {
      * @param  {HTMLElement} container DOM element that will work as the container of the graph
      * @private
      */
-    function buildSVG(container){
+    function buildSVG(container) {
         if (!svg) {
             svg = select(container)
                 .append('svg')
@@ -197,9 +191,7 @@ export default function module() {
             buildContainerGroups();
         }
 
-        svg
-            .attr('width', width)
-            .attr('height', height);
+        svg.attr('width', width).attr('height', height);
     }
 
     /**
@@ -222,7 +214,7 @@ export default function module() {
      * respective groups
      * @private
      */
-    function drawAxis(){
+    function drawAxis() {
         svg.select('.x-axis-group.axis')
             .attr('transform', `translate(0, ${chartHeight})`)
             .call(xAxis);
@@ -235,7 +227,8 @@ export default function module() {
             if (xAxisLabelEl) {
                 svg.selectAll('.x-axis-label-text').remove();
             }
-            xAxisLabelEl = svg.select('.x-axis-label')
+            xAxisLabelEl = svg
+                .select('.x-axis-label')
                 .append('text')
                 .attr('y', xAxisLabelOffset)
                 .attr('text-anchor', 'middle')
@@ -244,14 +237,14 @@ export default function module() {
                 .text(xAxisLabel);
         }
 
-        svg.select('.y-axis-group.axis')
-            .call(yAxis);
+        svg.select('.y-axis-group.axis').call(yAxis);
 
         if (yAxisLabel) {
             if (yAxisLabelEl) {
                 svg.selectAll('.y-axis-label-text').remove();
             }
-            yAxisLabelEl = svg.select('.y-axis-label')
+            yAxisLabelEl = svg
+                .select('.y-axis-label')
                 .append('text')
                 .classed('y-axis-label-text', true)
                 .attr('x', -chartHeight / 2)
@@ -266,50 +259,48 @@ export default function module() {
      * Draws the step elements within the chart group
      * @private
      */
-    function drawSteps(){
+    function drawSteps() {
         let steps = svg.select('.chart-group').selectAll('.step').data(data);
 
         // Enter
-        steps.enter()
+        steps
+            .enter()
             .append('rect')
             .classed('step', true)
             .attr('x', chartWidth) // Initially drawing the steps at the end of Y axis
-            .attr('y', ({value}) => yScale(value))
+            .attr('y', ({ value }) => yScale(value))
             .attr('width', xScale.bandwidth())
-            .attr('height', (d) => (chartHeight - yScale(d.value)))
-            .on('mouseover', function(d) {
+            .attr('height', (d) => chartHeight - yScale(d.value))
+            .on('mouseover', function (d) {
                 handleMouseOver(this, d, chartWidth, chartHeight);
             })
-            .on('mousemove', function(d) {
+            .on('mousemove', function (d) {
                 handleMouseMove(this, d, chartWidth, chartHeight);
             })
-            .on('mouseout', function(d) {
+            .on('mouseout', function (d) {
                 handleMouseOut(this, d, chartWidth, chartHeight);
             })
             .merge(steps)
             .transition()
             .ease(ease)
-            .attr('x', ({key}) => xScale(key))
-            .attr('y', function(d) {
+            .attr('x', ({ key }) => xScale(key))
+            .attr('y', function (d) {
                 return yScale(d.value);
             })
             .attr('width', xScale.bandwidth())
-            .attr('height', function(d) {
+            .attr('height', function (d) {
                 return chartHeight - yScale(d.value);
             });
 
         // Exit
-        steps.exit()
-            .transition()
-            .style('opacity', 0)
-            .remove();
+        steps.exit().transition().style('opacity', 0).remove();
     }
 
     /**
      * Draws grid lines on the background of the chart
      * @return void
      */
-    function drawGridLines(){
+    function drawGridLines() {
         if (maskGridLines) {
             svg.selectAll('.horizontal-grid-line').remove();
         }
@@ -317,32 +308,34 @@ export default function module() {
             svg.selectAll('.extended-x-line').remove();
         }
 
-        maskGridLines = svg.select('.grid-lines-group')
+        maskGridLines = svg
+            .select('.grid-lines-group')
             .selectAll('line.horizontal-grid-line')
             .data(yScale.ticks(yTicks))
             .enter()
-                .append('line')
-                .attr('class', 'horizontal-grid-line')
-                .attr('x1', (xAxisPadding.left))
-                .attr('x2', chartWidth)
-                .attr('y1', (d) => yScale(d))
-                .attr('y2', (d) => yScale(d));
+            .append('line')
+            .attr('class', 'horizontal-grid-line')
+            .attr('x1', xAxisPadding.left)
+            .attr('x2', chartWidth)
+            .attr('y1', (d) => yScale(d))
+            .attr('y2', (d) => yScale(d));
 
         if (baseLine) {
             svg.selectAll('.extended-x-line').remove();
         }
 
         //draw a horizontal line to extend x-axis till the edges
-        baseLine = svg.select('.grid-lines-group')
+        baseLine = svg
+            .select('.grid-lines-group')
             .selectAll('line.extended-x-line')
             .data([0])
             .enter()
-                .append('line')
-                .attr('class', 'extended-x-line')
-                .attr('x1', (xAxisPadding.left))
-                .attr('x2', chartWidth)
-                .attr('y1', chartHeight)
-                .attr('y2', chartHeight);
+            .append('line')
+            .attr('class', 'extended-x-line')
+            .attr('x1', xAxisPadding.left)
+            .attr('x2', chartWidth)
+            .attr('y1', chartHeight)
+            .attr('y2', chartHeight);
     }
 
     // API
@@ -353,7 +346,10 @@ export default function module() {
      * @private
      */
     function handleMouseOver(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseOver', e, d, mouse(e), [chartWidth, chartHeight]);
+        dispatcher.call('customMouseOver', e, d, mouse(e), [
+            chartWidth,
+            chartHeight,
+        ]);
     }
 
     /**
@@ -362,7 +358,10 @@ export default function module() {
      * @private
      */
     function handleMouseMove(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseMove', e, d, mouse(e), [chartWidth, chartHeight]);
+        dispatcher.call('customMouseMove', e, d, mouse(e), [
+            chartWidth,
+            chartHeight,
+        ]);
     }
 
     /**
@@ -371,7 +370,10 @@ export default function module() {
      * @private
      */
     function handleMouseOut(e, d, chartWidth, chartHeight) {
-        dispatcher.call('customMouseOut', e, d, mouse(e), [chartWidth, chartHeight]);
+        dispatcher.call('customMouseOut', e, d, mouse(e), [
+            chartWidth,
+            chartHeight,
+        ]);
     }
 
     /**
@@ -380,7 +382,7 @@ export default function module() {
      * @param {String} title        Title to add at the top of the exported picture
      * @public
      */
-    exports.exportChart = function(filename) {
+    exports.exportChart = function (filename) {
         exportChart.call(exports, svg, filename);
     };
 
@@ -390,13 +392,13 @@ export default function module() {
      * @return { margin | module} Current margin or Chart module to chain calls
      * @public
      */
-    exports.margin = function(_x) {
+    exports.margin = function (_x) {
         if (!arguments.length) {
             return margin;
         }
         margin = {
             ...margin,
-            ..._x
+            ..._x,
         };
         return this;
     };
@@ -408,7 +410,7 @@ export default function module() {
      * @return {Number | module}    Current yTicks or Chart module to chain calls
      * @public
      */
-    exports.yTicks = function(_x) {
+    exports.yTicks = function (_x) {
         if (!arguments.length) {
             return yTicks;
         }
@@ -422,7 +424,7 @@ export default function module() {
      * @return { height | module} Current height or Chart module to chain calls
      * @public
      */
-    exports.height = function(_x) {
+    exports.height = function (_x) {
         if (!arguments.length) {
             return height;
         }
@@ -436,7 +438,7 @@ export default function module() {
      * @return { loadingState | module} Current loading state markup or Chart module to chain calls
      * @public
      */
-    exports.loadingState = function(_markup) {
+    exports.loadingState = function (_markup) {
         if (!arguments.length) {
             return loadingState;
         }
@@ -453,7 +455,7 @@ export default function module() {
      * @return {module} Bar Chart
      * @public
      */
-    exports.on = function(...args) {
+    exports.on = function (...args) {
         let value = dispatcher.on(...args);
 
         return value === dispatcher ? exports : value;
@@ -465,7 +467,7 @@ export default function module() {
      * @return { width | module} Current width or Chart module to chain calls
      * @public
      */
-    exports.width = function(_x) {
+    exports.width = function (_x) {
         if (!arguments.length) {
             return width;
         }
@@ -479,7 +481,7 @@ export default function module() {
      * @return {String | module} label or Chart module to chain calls
      * @public
      */
-    exports.xAxisLabel = function(_x) {
+    exports.xAxisLabel = function (_x) {
         if (!arguments.length) {
             return xAxisLabel;
         }
@@ -493,7 +495,7 @@ export default function module() {
      * @return {Number | module} label or Chart module to chain calls
      * @public
      */
-    exports.xAxisLabelOffset = function(_x) {
+    exports.xAxisLabelOffset = function (_x) {
         if (!arguments.length) {
             return xAxisLabelOffset;
         }
@@ -507,7 +509,7 @@ export default function module() {
      * @return {String | module} label or Chart module to chain calls
      * @public
      */
-    exports.yAxisLabel = function(_x) {
+    exports.yAxisLabel = function (_x) {
         if (!arguments.length) {
             return yAxisLabel;
         }
@@ -521,7 +523,7 @@ export default function module() {
      * @return {Number | module} label or Chart module to chain calls
      * @public
      */
-    exports.yAxisLabelOffset = function(_x) {
+    exports.yAxisLabelOffset = function (_x) {
         if (!arguments.length) {
             return yAxisLabelOffset;
         }
@@ -530,6 +532,4 @@ export default function module() {
     };
 
     return exports;
-};
-
-
+}

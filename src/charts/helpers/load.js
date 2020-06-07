@@ -107,5 +107,5 @@ export default {
     bar,
     donut,
     line,
-    stackedArea
+    stackedArea,
 };

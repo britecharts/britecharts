@@ -125,7 +125,7 @@ const prodChartsConfig = merge([
     parts.externals(),
 ]);
 
-module.exports = env => {
+module.exports = (env) => {
     // eslint-disable-next-line no-console
     console.log('%%%%%%%% env', env);
 

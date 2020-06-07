@@ -3,26 +3,24 @@ import * as d3 from 'd3';
 import chart from 'stacked-bar';
 import { StackedBarDataBuilder } from 'stackedBarDataBuilder';
 
-
 const aTestDataSet = () => new StackedBarDataBuilder();
 const buildDataSet = (dataSetName) => {
-    return aTestDataSet()
-        [dataSetName]()
-        .build();
+    return aTestDataSet()[dataSetName]().build();
 };
 const differentStacksReducer = (acc, d) => {
-            if (acc.indexOf(d.stack) === -1) {
-                acc.push(d.stack);
-            }
+    if (acc.indexOf(d.stack) === -1) {
+        acc.push(d.stack);
+    }
 
-            return acc;
-        };
+    return acc;
+};
 
 describe('Stacked Bar Chart', () => {
     let stackedBarChart, dataset, containerFixture, f;
 
     beforeEach(() => {
-        const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+        const fixture =
+            '<div id="fixture"><div class="test-container"></div></div>';
 
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -44,7 +42,6 @@ describe('Stacked Bar Chart', () => {
     });
 
     describe('Render', () => {
-
         it('should render a chart with minimal requirements', () => {
             const expected = 1;
             const actual = containerFixture.select('.stacked-bar').size();
@@ -55,7 +52,9 @@ describe('Stacked Bar Chart', () => {
         describe('groups', () => {
             it('should create a container-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.container-group').size();
+                const actual = containerFixture
+                    .select('g.container-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -83,31 +82,38 @@ describe('Stacked Bar Chart', () => {
 
             it('should create a grid-lines-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.grid-lines-group').size();
+                const actual = containerFixture
+                    .select('g.grid-lines-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should create a metadata-group', () => {
                 const expected = 1;
-                const actual = containerFixture.select('g.metadata-group').size();
+                const actual = containerFixture
+                    .select('g.metadata-group')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
         });
 
         describe('grid lines', () => {
-
             it('should draw horizontal grid line', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.horizontal-grid-line').size();
+                const actual = containerFixture
+                    .select('.horizontal-grid-line')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should draw vertical grid line', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.vertical-grid-line').size();
+                const actual = containerFixture
+                    .select('.vertical-grid-line')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
@@ -116,21 +122,26 @@ describe('Stacked Bar Chart', () => {
         describe('axis', () => {
             it('should draw an X axis', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.x-axis-group .axis.x').size();
+                const actual = containerFixture
+                    .select('.x-axis-group .axis.x')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
 
             it('should draw an Y axis', () => {
                 const expected = 1;
-                const actual = containerFixture.select('.y-axis-group.axis').size();
+                const actual = containerFixture
+                    .select('.y-axis-group.axis')
+                    .size();
 
                 expect(actual).toEqual(expected);
             });
         });
 
         it('should render a layer for each data entry group', () => {
-            const expected = dataset.data.reduce(differentStacksReducer, []).length;
+            const expected = dataset.data.reduce(differentStacksReducer, [])
+                .length;
             const actual = containerFixture.selectAll('.layer').size();
 
             expect(actual).toEqual(expected);
@@ -144,14 +155,14 @@ describe('Stacked Bar Chart', () => {
         });
 
         describe('when reloading with a two sources dataset', () => {
-
             it('should render in the same svg', () => {
                 const expected = 1;
                 const newDataset = buildDataSet('with2Sources');
                 let actual;
 
                 containerFixture.datum(newDataset.data).call(stackedBarChart);
-                actual = containerFixture.selectAll('.stacked-bar').nodes().length;
+                actual = containerFixture.selectAll('.stacked-bar').nodes()
+                    .length;
 
                 expect(actual).toEqual(expected);
             });
@@ -162,7 +173,9 @@ describe('Stacked Bar Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset.data).call(stackedBarChart);
-                actual = containerFixture.selectAll('.stacked-bar .layer').nodes().length;
+                actual = containerFixture
+                    .selectAll('.stacked-bar .layer')
+                    .nodes().length;
 
                 expect(actual).toEqual(expected);
             });
@@ -173,14 +186,14 @@ describe('Stacked Bar Chart', () => {
                 let actual;
 
                 containerFixture.datum(newDataset.data).call(stackedBarChart);
-                actual = containerFixture.selectAll('.stacked-bar .bar').nodes().length;
+                actual = containerFixture.selectAll('.stacked-bar .bar').nodes()
+                    .length;
 
                 expect(actual).toEqual(expected);
             });
         });
 
         describe('when stacked bar is animated', () => {
-
             it('it renders correct number of layers and bars', () => {
                 const expectedNLayers = 3;
                 const nBarsPerLayer = 4;
@@ -188,8 +201,12 @@ describe('Stacked Bar Chart', () => {
                 stackedBarChart.isAnimated(true);
                 containerFixture.datum(dataset.data).call(stackedBarChart);
 
-                const actualNLayers = containerFixture.selectAll('.chart-group .layer').nodes().length;
-                const actualNBars = containerFixture.selectAll('.chart-group .bar').nodes().length;
+                const actualNLayers = containerFixture
+                    .selectAll('.chart-group .layer')
+                    .nodes().length;
+                const actualNBars = containerFixture
+                    .selectAll('.chart-group .bar')
+                    .nodes().length;
 
                 expect(actualNLayers).toEqual(expectedNLayers);
                 expect(actualNBars).toEqual(expectedNLayers * nBarsPerLayer);
@@ -198,10 +215,8 @@ describe('Stacked Bar Chart', () => {
     });
 
     describe('Lifecycle', () => {
-
         // TODO: Review this test with more time, as it fails in Travis only
         xdescribe('when clicking on the chart', () => {
-
             it('should trigger a callback', () => {
                 const chart = containerFixture.select('.stacked-bar');
                 const callbackSpy = jasmine.createSpy('callback');
@@ -221,7 +236,6 @@ describe('Stacked Bar Chart', () => {
         });
 
         describe('when hovering', () => {
-
             it('mouseover should trigger a callback', () => {
                 const chart = containerFixture.selectAll('.stacked-bar');
                 const callbackSpy = jasmine.createSpy('callback');
@@ -232,7 +246,9 @@ describe('Stacked Bar Chart', () => {
                 chart.dispatch('mouseover');
 
                 expect(callbackSpy.calls.count()).toBe(expectedCallCount);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(expectedArgumentsCount);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(
+                    expectedArgumentsCount
+                );
             });
 
             it('mouseout should trigger a callback', () => {
@@ -245,13 +261,14 @@ describe('Stacked Bar Chart', () => {
                 chart.dispatch('mouseout');
 
                 expect(callbackSpy.calls.count()).toBe(expectedCallCount);
-                expect(callbackSpy.calls.allArgs()[0].length).toBe(expectedArgumentsCount);
+                expect(callbackSpy.calls.allArgs()[0].length).toBe(
+                    expectedArgumentsCount
+                );
             });
         });
     });
 
     describe('API', () => {
-
         it('should provide an aspect ratio getter and setter', () => {
             let previous = stackedBarChart.aspectRatio(),
                 expected = 600,
@@ -318,7 +335,7 @@ describe('Stacked Bar Chart', () => {
 
         it('should provide height getter and setter', () => {
             let previous = stackedBarChart.height(),
-                expected = {top: 4, right: 4, bottom: 4, left: 4},
+                expected = { top: 4, right: 4, bottom: 4, left: 4 },
                 actual;
 
             stackedBarChart.height(expected);
@@ -365,7 +382,6 @@ describe('Stacked Bar Chart', () => {
         });
 
         describe('loadingState', () => {
-
             it('should provide loadingState getter and setter', () => {
                 let previous = stackedBarChart.loadingState(),
                     expected = 'test',
@@ -384,7 +400,9 @@ describe('Stacked Bar Chart', () => {
                         actual;
 
                     stackedBarChart = chart();
-                    actual = stackedBarChart.loadingState().match('bar-load-state').length;
+                    actual = stackedBarChart
+                        .loadingState()
+                        .match('bar-load-state').length;
 
                     expect(actual).toEqual(expected);
                 });
@@ -393,7 +411,7 @@ describe('Stacked Bar Chart', () => {
 
         it('should provide margin getter and setter', () => {
             let previous = stackedBarChart.margin(),
-                expected = {top: 4, right: 4, bottom: 4, left: 4},
+                expected = { top: 4, right: 4, bottom: 4, left: 4 },
                 actual;
 
             stackedBarChart.margin(expected);
@@ -404,13 +422,12 @@ describe('Stacked Bar Chart', () => {
         });
 
         describe('when margins are set partially', function () {
-
             it('should override the default values', () => {
                 let previous = stackedBarChart.margin(),
                     expected = {
                         ...previous,
                         top: 10,
-                        right: 20
+                        right: 20,
                     },
                     actual;
 
@@ -419,7 +436,7 @@ describe('Stacked Bar Chart', () => {
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toEqual(expected);
-            })
+            });
         });
 
         it('should provide nameLabel getter and setter', () => {
@@ -543,7 +560,7 @@ describe('Stacked Bar Chart', () => {
         });
 
         it('should provide yAxisLabelOffset getter and setter', () => {
-            let defaultYAxisLabelOffset =  stackedBarChart.yAxisLabelOffset(),
+            let defaultYAxisLabelOffset = stackedBarChart.yAxisLabelOffset(),
                 testYAxisLabelOffset = -30,
                 newYAxisLabelOffset;
 
@@ -555,4 +572,3 @@ describe('Stacked Bar Chart', () => {
         });
     });
 });
-

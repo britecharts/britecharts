@@ -5,10 +5,7 @@ import 'brace/theme/monokai';
 import constants from '../constants/constants';
 
 const { editorConfig } = constants;
-const {
-    theme,
-    mode
-} = editorConfig;
+const { theme, mode } = editorConfig;
 
 export default ({ dataInputId, chartInputId }) => {
     const dataEditor = ace.edit(dataInputId);
@@ -26,6 +23,6 @@ export default ({ dataInputId, chartInputId }) => {
 
     return {
         dataEditor,
-        configEditor
+        configEditor,
     };
 };

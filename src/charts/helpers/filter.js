@@ -30,20 +30,13 @@ export const createGlow = (filterSelector) => {
         .attr('stdDeviation', '0.9 0.9')
         .attr('result', 'glow');
 
-    let merge = filterSelector
-        .append('feMerge');
+    let merge = filterSelector.append('feMerge');
 
-    merge
-        .append('feMergeNode')
-        .attr('in', 'glow');
+    merge.append('feMergeNode').attr('in', 'glow');
 
-    merge
-        .append('feMergeNode')
-        .attr('in', 'glow');
+    merge.append('feMergeNode').attr('in', 'glow');
 
-    merge
-        .append('feMergeNode')
-        .attr('in', 'glow');
+    merge.append('feMergeNode').attr('in', 'glow');
 
     return filterId;
 };
@@ -68,19 +61,14 @@ export const createGlowWithMatrix = (filterSelector) => {
         .attr('result', 'coloredBlur')
         .attr('in', 'SourceGraphic');
 
-    let merge = filterSelector
-        .append('feMerge');
+    let merge = filterSelector.append('feMerge');
 
-    merge
-        .append('feMergeNode')
-        .attr('in', 'coloredBlur');
+    merge.append('feMergeNode').attr('in', 'coloredBlur');
 
-    merge
-        .append('feMergeNode')
-        .attr('in', 'SourceGraphic');
+    merge.append('feMergeNode').attr('in', 'SourceGraphic');
 
     return filterId;
-}
+};
 
 export const createWhiteGlow = (filterSelector) => {
     filterSelector
@@ -115,35 +103,34 @@ export const createWhiteGlow = (filterSelector) => {
         .attr('stdDeviation', '5')
         .attr('in', 'dilated');
 
-    let merge = filterSelector
-        .append('feMerge');
+    let merge = filterSelector.append('feMerge');
 
-    merge
-        .append('feMergeNode')
-        .attr('in', 'blurred');
+    merge.append('feMergeNode').attr('in', 'blurred');
 
-    merge
-        .append('feMergeNode')
-        .attr('in', 'SourceGraphic');
+    merge.append('feMergeNode').attr('in', 'SourceGraphic');
 
     return filterId;
 };
 
-export const bounceCircleHighlight = (el, ease, radius, bounceRadius = radius * 2) => {
+export const bounceCircleHighlight = (
+    el,
+    ease,
+    radius,
+    bounceRadius = radius * 2
+) => {
     const duration = 100;
     const delay = 50;
 
-    el
-        .transition()
+    el.transition()
         .ease(ease)
         .duration(duration)
         .attr('r', bounceRadius)
         .transition()
-            .ease(ease)
-            .delay(delay)
-            .duration(duration)
-            .attr('r', radius);
-}
+        .ease(ease)
+        .delay(delay)
+        .duration(duration)
+        .attr('r', radius);
+};
 
 export default {
     bounceCircleHighlight,
@@ -153,4 +140,3 @@ export default {
     createGlow,
     createGlowWithMatrix,
 };
-

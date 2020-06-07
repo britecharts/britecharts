@@ -7,7 +7,6 @@ import colorSelectorHelper from './helpers/colorSelector';
 
 require('./helpers/resizeHelper');
 
-
 function createBulletChart(optionalColorSchema) {
     const testDataSet = new BulletChartDataBuilder();
     const bulletContainer = select('.js-bullet-chart-container');
@@ -23,7 +22,7 @@ function createBulletChart(optionalColorSchema) {
         // appending the next one
         bulletContainer.selectAll('*').remove();
 
-        dataset.forEach(data => {
+        dataset.forEach((data) => {
             bulletChart = new bullet();
             bulletChart.width(containerWidth);
 
@@ -40,7 +39,7 @@ function createBulletChart(optionalColorSchema) {
 if (select('.js-bullet-chart-container').node()) {
     createBulletChart();
 
-    let redrawCharts = function() {
+    let redrawCharts = function () {
         select('.bullet-chart').remove();
 
         createBulletChart();
@@ -50,7 +49,11 @@ if (select('.js-bullet-chart-container').node()) {
     PubSub.subscribe('resize', redrawCharts);
 
     // Color schema selector
-    colorSelectorHelper.createColorSelector('.js-color-selector-container', '.bullet-chart', function (newSchema) {
-        createBulletChart(newSchema);
-    });
+    colorSelectorHelper.createColorSelector(
+        '.js-color-selector-container',
+        '.bullet-chart',
+        function (newSchema) {
+            createBulletChart(newSchema);
+        }
+    );
 }
