@@ -882,7 +882,8 @@ define(function(require){
                   .attr('x2', chartWidth)
                   .attr('y1', (d) => yScale(d))
                   .attr('y2', (d) => yScale(d))
-                  .attr('stroke', (d) => getColor(d));
+                  .attr('stroke', (d) => getColor(d))
+                  .attr('fill', 'none');
 
             // draw the annotations right above the line at the right end of the chart
             for(let line of customLines) {
