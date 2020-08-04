@@ -791,7 +791,8 @@ define(function(require){
                 .attr('d', ({dates}) => topicLine(dates))
                 .style('stroke', (d) => (
                     dataByTopic.length === 1 ? `url(#${lineGradientId})` : getLineColor(d)
-                ));
+                ))
+                .style('fill', 'none');
 
             lines
                 .exit()
