@@ -293,7 +293,7 @@ define(function(require) {
          * @private
          */
         function buildScales() {
-            let percentageAxis = getPercentageAxis()
+            let percentageAxis = getPercentageAxis();
 
             if (isHorizontal) {
                 xScale = d3Scale.scaleLinear()
@@ -836,13 +836,13 @@ define(function(require) {
          * @private
          */
         function getPercentageAxis() {
-            const uniqueDataPoints = new Set(data.map(x => x.value))
-            const allZeroes = uniqueDataPoints.size === 1 && uniqueDataPoints.has(0)
-            if(allZeroes) {
-                return percentageAxisToMaxRatio
+            const uniqueDataPoints = new Set(data.map(x => x.value));
+            const allZeroes = uniqueDataPoints.size === 1 && uniqueDataPoints.has(0);
+            if (allZeroes) {
+                return percentageAxisToMaxRatio;
             }
 
-            return Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue))
+            return Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue));
         }
 
         // API
