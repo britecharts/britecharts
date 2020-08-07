@@ -831,7 +831,7 @@ define(function(require) {
         }
 
         /**
-         * Gets the percentageAxis, sets it to 1 if all data points are 0
+         * Gets the percentageAxis, sets it to `percentageAxisToMaxRatio` if all data points are 0
          * @return {number} Calculated percentageAxis
          * @private
          */
