@@ -836,7 +836,7 @@ define(function(require) {
          * @private
          */
         function getPercentageAxis() {
-            const uniqueDataPoints = new Set(data.map(x => x.value));
+            const uniqueDataPoints = new Set(data.map(getValue));
             const allZeroes = uniqueDataPoints.size === 1 && uniqueDataPoints.has(0);
             if (allZeroes) {
                 return percentageAxisToMaxRatio;
