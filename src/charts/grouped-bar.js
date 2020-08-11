@@ -137,6 +137,7 @@ define(function (require) {
             valueLabelFormat = NUMBER_FORMAT,
 
             betweenBarsPadding = 0.1,
+            betweenGroupsPadding = 0.1,
 
             // getters
             getName = ({name}) => name,
@@ -294,7 +295,7 @@ define(function (require) {
                 yScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([chartHeight, 0])
-                    .padding(0.1);
+                    .padding(betweenGroupsPadding);
 
                 yScale2 = d3Scale.scaleBand()
                     .domain(data.map(getGroup))
@@ -304,7 +305,7 @@ define(function (require) {
                 xScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([0, chartWidth])
-                    .padding(0.1);
+                    .padding(betweenGroupsPadding);
                 xScale2 = d3Scale.scaleBand()
                     .domain(data.map(getGroup))
                     .rangeRound([0, xScale.bandwidth()])
@@ -844,6 +845,22 @@ define(function (require) {
                 return betweenBarsPadding;
             }
             betweenBarsPadding = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the padding between groups of bars.
+         * The default value is 0.1
+         * @param  {Number} [_x = 0.1] Padding value to get/set
+         * @return {Number | module} Current group padding or Chart module to chain calls
+         * @public
+         */
+        exports.betweenGroupsPadding = function (_x) {
+            if (!arguments.length) {
+                return betweenGroupsPadding;
+            }
+            betweenGroupsPadding = _x;
 
             return this;
         };

@@ -465,6 +465,18 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);
             });
+
+            it('should provide bar group padding getter and setter', () => {
+                let previous = groupedBarChart.betweenGroupsPadding(),
+                    expected = 0.5,
+                    actual;
+
+                groupedBarChart.betweenGroupsPadding(expected);
+                actual = groupedBarChart.betweenGroupsPadding();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
         });
 
         describe('Lifecycle', () => {
