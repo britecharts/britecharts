@@ -453,6 +453,18 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
                 expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
             });
+
+            it('should provide bar padding getter and setter', () => {
+                let previous = groupedBarChart.betweenBarsPadding(),
+                    expected = 0.5,
+                    actual;
+
+                groupedBarChart.betweenBarsPadding(expected);
+                actual = groupedBarChart.betweenBarsPadding();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
         });
 
         describe('Lifecycle', () => {
