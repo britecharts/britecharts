@@ -136,6 +136,9 @@ define(function (require) {
             groupLabel = 'group',
             valueLabelFormat = NUMBER_FORMAT,
 
+            betweenBarsPadding = 0.1,
+            betweenGroupsPadding = 0.1,
+
             // getters
             getName = ({name}) => name,
             getValue = ({value}) => value,
@@ -292,21 +295,21 @@ define(function (require) {
                 yScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([chartHeight, 0])
-                    .padding(0.1);
+                    .padding(betweenGroupsPadding);
 
                 yScale2 = d3Scale.scaleBand()
                     .domain(data.map(getGroup))
                     .rangeRound([yScale.bandwidth(), 0])
-                    .padding(0.1);
+                    .padding(betweenBarsPadding);
             } else {
                 xScale = d3Scale.scaleBand()
                     .domain(data.map(getName))
                     .rangeRound([0, chartWidth])
-                    .padding(0.1);
+                    .padding(betweenGroupsPadding);
                 xScale2 = d3Scale.scaleBand()
                     .domain(data.map(getGroup))
                     .rangeRound([0, xScale.bandwidth()])
-                    .padding(0.1);
+                    .padding(betweenBarsPadding);
 
                 yScale = d3Scale.scaleLinear()
                     .domain([0, yMax])
@@ -826,6 +829,38 @@ define(function (require) {
                 return aspectRatio;
             }
             aspectRatio = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the padding between bars.
+         * The default value is 0.1
+         * @param  {Number} [_x = 0.1] Padding value to get/set
+         * @return {Number | module} Current padding or Chart module to chain calls
+         * @public
+         */
+        exports.betweenBarsPadding = function (_x) {
+            if (!arguments.length) {
+                return betweenBarsPadding;
+            }
+            betweenBarsPadding = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the padding between groups of bars.
+         * The default value is 0.1
+         * @param  {Number} [_x = 0.1] Padding value to get/set
+         * @return {Number | module} Current group padding or Chart module to chain calls
+         * @public
+         */
+        exports.betweenGroupsPadding = function (_x) {
+            if (!arguments.length) {
+                return betweenGroupsPadding;
+            }
+            betweenGroupsPadding = _x;
 
             return this;
         };
