@@ -45,11 +45,21 @@
         "review",
         "test"
       ]
+    },
+    {
+      "login": "ImADrafter",
+      "name": "Marcos Gómez",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/44379989?v=4",
+      "profile": "https://github.com/ImADrafter",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
   "projectName": "britecharts",
-  "projectOwner": "eventbrite",
+  "projectOwner": "britecharts",
   "repoType": "github",
-  "repoHost": "https://github.com"
+  "repoHost": "https://github.com",
+  "skipCi": true
 }
