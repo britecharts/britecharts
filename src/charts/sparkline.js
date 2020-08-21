@@ -327,7 +327,8 @@ define(function(require){
                 .attr('class', 'line')
                 .attr('stroke', `url(#${lineGradientId})`)
                 .attr('d', topLine)
-                .attr('clip-path', `url(#${maskingClipId})`);
+                .attr('clip-path', `url(#${maskingClipId})`)
+                .attr('fill', 'none');
         }
 
         /**

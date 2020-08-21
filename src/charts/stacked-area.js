@@ -857,7 +857,8 @@ define(function(require){
                   .append('path')
                     .attr('class', 'area-outline')
                     .attr('d', areaOutline)
-                    .style('stroke', ({key}) => categoryColorMap[key]);
+                    .style('stroke', ({key}) => categoryColorMap[key])
+                    .style('fill', 'none');
 
                 // Update
                 svg.select('.chart-group').selectAll('.layer')
@@ -896,7 +897,8 @@ define(function(require){
                   .append('path')
                     .attr('class', 'area-outline')
                     .attr('d', areaOutline)
-                    .style('stroke', ({key}) => categoryColorMap[key]);
+                    .style('stroke', ({key}) => categoryColorMap[key])
+                    .style('fill', 'none');
 
 
                 // Update
@@ -908,7 +910,8 @@ define(function(require){
                 svg.select('.chart-group').selectAll('.area-outline')
                     .attr('class', 'area-outline')
                     .attr('d', areaOutline)
-                    .style('stroke', ({key}) => categoryColorMap[key]);
+                    .style('stroke', ({key}) => categoryColorMap[key])
+                    .style('fill', 'none');
             }
 
             if (!hasOutline) {

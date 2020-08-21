@@ -12,7 +12,6 @@ $text-size: 0.75rem;
 
     // Lines
     .topic .line {
-        fill: none;
         stroke-width: $line-width;
         stroke-linecap: round;
         stroke-linejoin: round;
@@ -28,7 +27,6 @@ $text-size: 0.75rem;
     }
 
     .custom-line {
-        fill: none;
         shape-rendering: crispEdges;
         stroke-width: 1;
     }
