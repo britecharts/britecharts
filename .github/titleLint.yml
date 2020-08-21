@@ -1,0 +1,1 @@
+regex: (feat|fix|docs|chore|style|refactor|perf|test): .*
