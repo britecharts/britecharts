@@ -435,8 +435,8 @@ define(function(require) {
 
         /**
          * Gets or Sets the dateRange for the selected part of the brush
-         * @param  {String[]} _x            Desired dateRange for the graph
-         * @return { dateRange | module}    Current dateRange or Chart module to chain calls
+         * @param  {String[]} [_x=[null, null]]     Desired dateRange for the graph
+         * @return { dateRange | module}            Current dateRange or Chart module to chain calls
          * @public
          */
         exports.dateRange = function(_x) {
@@ -607,7 +607,7 @@ define(function(require) {
 
         /**
          * Exposes the ability to force the chart to show a certain x axis grouping
-         * @param  {String} _x          Desired format
+         * @param  {String} [_x=null]   Desired format
          * @return {String | Module}    Current format or module to chain calls
          * @example
          *     brush.xAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
@@ -626,7 +626,7 @@ define(function(require) {
          * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
          * how many and where the ticks will appear.
          *
-         * @param  {Number} _x              Desired number of x axis ticks (multiple of 2, 5 or 10)
+         * @param  {Number} [_x=null]       Desired number of x axis ticks (multiple of 2, 5 or 10)
          * @return {Number | Module}        Current number or ticks or module to chain calls
          */
         exports.xTicks = function(_x) {
@@ -640,13 +640,15 @@ define(function(require) {
 
         /**
          * Gets or Sets the rounding time interval of the selection boundary
-         * @param  {roundingTimeInterval} _x Desired time interval for the selection, default 'timeDay'. All options are:
+         * @param  {roundingTimeInterval} [_x='timeDay'] Desired time interval for the selection, default 'timeDay'.
+         * @return { (roundingTimeInterval | Module) } Current time interval or module to chain calls
+         * @see {@link https://github.com/d3/d3-time#intervals}
+         * @public
+         * All options are:
          * timeMillisecond, utcMillisecond, timeSecond, utcSecond, timeMinute, utcMinute, timeHour, utcHour, timeDay, utcDay
          * timeWeek, utcWeek, timeSunday, utcSunday, timeMonday, utcMonday, timeTuesday, utcTuesday, timeWednesday,
          * utcWednesday, timeThursday, utcThursday, timeFriday, utcFriday, timeSaturday, utcSaturday, timeMonth, utcMonth,
-         * timeYear and utcYear. Visit https://github.com/d3/d3-time#intervals for more information.
-         * @return { (roundingTimeInterval | Module) } Current time interval or module to chain calls
-         * @public
+         * timeYear and utcYear.
          */
         exports.roundingTimeInterval = function(_x) {
             if (!arguments.length) {

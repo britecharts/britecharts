@@ -119,7 +119,6 @@
   fill: #ffffff; }
 
 .line-chart .topic .line {
-  fill: none;
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round; }
@@ -132,7 +131,6 @@
   display: none; }
 
 .line-chart .custom-line {
-  fill: none;
   shape-rendering: crispEdges;
   stroke-width: 1; }
 
@@ -159,7 +157,6 @@
 .sparkline {
   stroke: #ADB0B6;
   stroke-width: 1;
-  fill: none;
   stroke-linecap: round;
   stroke-linejoin: round; }
   .sparkline .line {
@@ -182,7 +179,6 @@
 
 .stacked-area .area-outline {
   shape-rendering: geometricPrecision;
-  fill: none;
   stroke-width: 1.2; }
 
 .stacked-area .data-point-highlighter {
