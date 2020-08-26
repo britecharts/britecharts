@@ -54,6 +54,17 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "ajdani",
+      "name": "ajdani",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/16606530?v=4",
+      "profile": "https://github.com/ajdani",
+      "contributions": [
+        "bug",
+        "code",
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
