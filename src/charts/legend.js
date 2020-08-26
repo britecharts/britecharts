@@ -462,8 +462,8 @@ define(function(require){
 
         /**
          * Gets or Sets the colorSchema of the chart
-         * @param  {array} _x           Color scheme array to get/set
-         * @return {number | module}    Current colorSchema or Donut Chart module to chain calls
+         * @param  {array} [_x=colorHelper.colorSchemas.britecharts]    Color scheme array to get/set
+         * @return {number | module}                                    Current colorSchema or Donut Chart module to chain calls
          * @public
          */
         exports.colorSchema = function(_x) {
@@ -477,8 +477,8 @@ define(function(require){
 
         /**
          * Gets or Sets the height of the legend chart
-         * @param  {number} _x          Desired width for the chart
-         * @return {height | module}    Current height or Legend module to chain calls
+         * @param  {number} [_x=180]        Desired width for the chart in pixels
+         * @return {height | module}        Current height or Legend module to chain calls
          * @public
          */
         exports.height = function(_x) {
@@ -502,8 +502,8 @@ define(function(require){
 
         /**
          * Gets or Sets the id of the entry to highlight
-         * @param  {Number} _x              Entry id
-         * @return { (Number | Module) }    Current highlighted slice id or Donut Chart module to chain calls
+         * @param  {Number} [_x=null]           Entry id
+         * @return { (Number | Module) }        Current highlighted slice id or Donut Chart module to chain calls
          * @public
          */
         exports.highlightEntryById = function (_x) {
@@ -517,8 +517,8 @@ define(function(require){
 
         /**
          * Gets or Sets the horizontal mode on the legend
-         * @param  {Boolean} _x         Desired horizontal mode for the graph
-         * @return {Boolean | module}   If it is horizontal or Legend module to chain calls
+         * @param  {Boolean} [_x=false]     Desired horizontal mode for the graph
+         * @return {Boolean | module}       If it is horizontal or Legend module to chain calls
          * @public
          */
         exports.isHorizontal = function(_x) {
@@ -551,7 +551,7 @@ define(function(require){
         /**
          * Gets or Sets the margin ratio of the legend chart.
          * Used to determine spacing between legend elements.
-         * @param  {number} _x          Margin Ratio to get/set
+         * @param  {number} [_x=1.5]    Margin Ratio to get/set
          * @return {number | module}    Current marginRatio or Legend module to chain calls
          * @public
          */
@@ -569,8 +569,8 @@ define(function(require){
          * This markerSize will determine the horizontal and vertical size of the colored marks
          * added as color identifiers for the chart's categories.
          *
-         * @param  {object} _x          Margin object to get/set
-         * @return {object | module}    Current markerSize or Legend module to chain calls
+         * @param  {object} [_x=16]         Margin object to get/set
+         * @return {object | module}        Current markerSize or Legend module to chain calls
          * @public
          */
         exports.markerSize = function(_x) {
@@ -584,7 +584,7 @@ define(function(require){
 
         /**
          * Gets or Sets the number format of the legend chart
-         * @param  {string} _x          Desired number format for the legend chart
+         * @param  {string} [_x='s']    Desired number format for the legend chart
          * @return {string | module}    Current number format or Legend module to chain calls
          * @public
          */
@@ -599,7 +599,7 @@ define(function(require){
 
         /**
          * Gets or Sets the unit of the value
-         * @param  {String} _x          Desired unit
+         * @param  {String} [_x='']     Desired unit
          * @return {String | module}    Current unit or Legend module to chain calls
          * @public
          */
@@ -614,7 +614,7 @@ define(function(require){
 
         /**
          * Gets or Sets the width of the legend chart
-         * @param  {number} _x          Desired width for the graph
+         * @param  {number} [_x=320]    Desired width for the graph in pixels
          * @return {number | module}    Current width or Legend module to chain calls
          * @public
          */
