@@ -453,7 +453,7 @@ define(function(require){
         // API
 
         /**
-         * Clears all highlighted entries
+         * Command that clears all highlighted entries on a legend instance
          * @public
          */
         exports.clearHighlight = function() {
@@ -491,7 +491,7 @@ define(function(require){
         };
 
         /**
-         * Highlights a line entry by fading the rest of lines
+         * Command that highlights a line entry by fading the rest of lines on a legend instance
          * @param  {number} entryId     ID of the entry line
          * @public
          */
