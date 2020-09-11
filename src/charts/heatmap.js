@@ -343,8 +343,8 @@ define(function (require) {
 
         /**
          * Gets or Sets the y-axis labels of the chart
-         * @param  {String[]} _x            An array of string labels across the y-axis
-         * @return {yAxisLabels | module}   Current yAxisLabels array or Chart module to chain calls
+         * @param  {String[]} _x=['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']     An array of string labels across the y-axis
+         * @return {yAxisLabels | module}                                       Current yAxisLabels array or Chart module to chain calls
          * @public
          */
         exports.yAxisLabels = function (_x) {
@@ -358,8 +358,8 @@ define(function (require) {
 
         /**
          * Gets or Sets the height of the chart
-         * @param  {Number} _x          Desired height for the chart
-         * @return {Number | module}    Current height or Chart module to chain calls
+         * @param  {Number} _x=270          Desired height for the chart
+         * @return {Number | module}        Current height or Chart module to chain calls
          * @public
          */
         exports.height = function (_x) {
@@ -391,8 +391,8 @@ define(function (require) {
 
         /**
          * Gets or Sets the width of the chart
-         * @param  {Number} _x           Desired width for the chart
-         * @return {Number | module}     Current width or Chart module to chain calls
+         * @param  {Number} _x=780           Desired width for the chart
+         * @return {Number | module}         Current width or Chart module to chain calls
          * @public
          */
         exports.width = function (_x) {
