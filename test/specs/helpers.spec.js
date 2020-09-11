@@ -113,6 +113,16 @@ define([
                 expect(actualValueCount).toEqual(expectedValueCount);
                 expect(actualLabelCount).toEqual(expectedLabelCount);
             });
+
+            it('should calculate the number of necessary lines to render the text', () => {
+                const text = 'This is a super long text';
+                const fontSize = 16;
+                const availableWidth = 150;
+                const expectedNumberOfLines = 2;
+
+                const actualNumberOfLines = textHelper.getApproximateNumberOfLines(text, fontSize, availableWidth);
+                expect(actualNumberOfLines).toEqual(expectedNumberOfLines);
+            });
         });
 
         describe('number', () => {
