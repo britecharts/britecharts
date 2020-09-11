@@ -70,4 +70,4 @@ module.exports = (function() {
                 .classed(britechartContainerClass, true);
         }
     }
-}());
+})();

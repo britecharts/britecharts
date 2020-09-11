@@ -275,7 +275,7 @@ define(function(require){
                         return assign({}, item, ret);
                 });
 
-            layers  = stack3(dataInitial);
+            layers = stack3(dataInitial);
         }
 
         /**
@@ -283,9 +283,7 @@ define(function(require){
          * @private
          */
         function buildScales() {
-            let yMax = d3Array.max(transformedData.map(function(d){
-                return d.total;
-            }));
+            let yMax = getYMax();
 
             if (isHorizontal) {
                 xScale = d3Scale.scaleLinear()
@@ -596,6 +594,22 @@ define(function(require){
                 }
                 return layerEls;
             });
+        }
+
+        /**
+         * Gets the yMax, sets it to 1 if all data points are 0
+         * @return {number} Calculated yMax
+         * @private
+         */
+        function getYMax() {
+            const uniqueDataPoints = new Set(transformedData.map(({total}) => total));
+            const isAllZero = uniqueDataPoints.size === 1 && uniqueDataPoints.has(0);
+
+            if (isAllZero) {
+                return 1;
+            } else {
+                return d3Array.max(transformedData.map(({total}) => total));
+            }
         }
 
         /**

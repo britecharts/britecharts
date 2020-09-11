@@ -49,6 +49,20 @@ module.exports = (function() {
                 },
                 initialDataType: 'basicGroupedBar'
             },
+            'stacked-bar': {
+                ...baseConfig,
+                chartConfig: {
+                    margin: {
+                        top: 20,
+                        bottom: 20,
+                        left: 20,
+                        right: 20
+                    },
+                    width: 300,
+                    height: 300
+                },
+                initialDataType: 'basicStackedBar'
+            },
             legend: {
                 ...baseConfig,
                 chartConfig: {
@@ -172,4 +186,4 @@ module.exports = (function() {
             }
         }
     }
-}());
+})();

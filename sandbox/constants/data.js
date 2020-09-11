@@ -52,6 +52,19 @@ module.exports = (function() {
                 { group: 'Dazzling', name: 'Q3', value: 26 },
             ]
         },
+        'stacked-bar': {
+            basicStackedBar: [
+                { stack: 'Shiny', name: 'Q1', value: 26 },
+                { stack: 'Blazing', name: 'Q1', value: 30 },
+                { stack: 'Dazzling', name: 'Q1', value: 27 },
+                { stack: 'Shiny', name: 'Q2', value: 36 },
+                { stack: 'Blazing', name: 'Q2', value: 40 },
+                { stack: 'Dazzling', name: 'Q2', value: 76 },
+                { stack: 'Shiny', name: 'Q3', value: 13 },
+                { stack: 'Blazing', name: 'Q3', value: 16 },
+                { stack: 'Dazzling', name: 'Q3', value: 26 },
+            ]
+        },
         legend: {
             basicLegend: [
                 { name: 'Shiny', id: 1, quantity: 86},
@@ -201,4 +214,4 @@ module.exports = (function() {
             ]
         }
     };
-}());
+})();
