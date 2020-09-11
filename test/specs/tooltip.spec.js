@@ -173,6 +173,33 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
                         expect(parseInt(actualDividerY1Position)).toEqual(expectedDividerYPosition);
                         expect(parseInt(actualDividerY2Position)).toEqual(expectedDividerYPosition);
                     });
+
+                    it('should be displayed in two rows bis', () => {
+                        // the space between 'Tooltip' and 'title' dissappears because of the text wrap
+                        const expectedTitle = 'SuperlongandexcitingTooltiptitle-Aug05,2015';
+                        const expectedDividerYPosition = 48;
+                        let actualTitle, actualDividerY1Position, actualDividerY2Position;
+
+                        tooltipChart.dateFormat(tooltipChart.axisTimeCombinations.DAY_MONTH);
+                        tooltipChart.update({
+                            date: '2015-08-05T07:00:00.000Z',
+                            topics: []
+                        }, topicColorMap, 0);
+
+                        actualTitle = containerFixture.select('.britechart-tooltip')
+                            .selectAll('.tooltip-title')
+                            .text();
+
+                        actualDividerY1Position = containerFixture.select('.britechart-tooltip')
+                            .select('.tooltip-divider').attr('y1');
+
+                        actualDividerY2Position = containerFixture.select('.britechart-tooltip')
+                            .select('.tooltip-divider').attr('y2');
+
+                        expect(actualTitle.split(' ').join('')).toEqual(expectedTitle);
+                        expect(parseInt(actualDividerY1Position)).toEqual(expectedDividerYPosition);
+                        expect(parseInt(actualDividerY2Position)).toEqual(expectedDividerYPosition);
+                    });
                 });
 
                 describe('when date must not be shown', () => {
@@ -552,6 +579,7 @@ define(['jquery', 'd3', 'tooltip'], function($, d3, tooltip) {
 
             it('default of xAxisValueType should be "date"', () => {
                 let current = tooltipChart.xAxisValueType();
+
                 expect(current).toBe('date');
             });
         });
