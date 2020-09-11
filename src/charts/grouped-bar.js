@@ -284,7 +284,7 @@ define(function (require) {
          * @private
          */
         function buildScales() {
-            let yMax = d3Array.max(data.map(getValue));
+            let yMax = getYMax();
 
             if (isHorizontal) {
                 xScale = d3Scale.scaleLinear()
@@ -653,6 +653,22 @@ define(function (require) {
             });
 
             return nearest.length ? nearest[0] : undefined;
+        }
+
+        /**
+         * Gets the yMax, sets it to 1 if all data points are 0
+         * @return {number} Calculated yMax
+         * @private
+         */
+        function getYMax() {
+            const uniqueDataPoints = new Set(data.map(getValue));
+            const isAllZero = uniqueDataPoints.size === 1 && uniqueDataPoints.has(0);
+
+            if (isAllZero) {
+                return 1;
+            } else {
+                return d3Array.max(data.map(getValue));
+            }
         }
 
         /**

@@ -55,6 +55,7 @@ const {
 } = createEditors({dataInputId, chartInputId});
 
 const charts = Object.keys(defaultConfig);
+
 const tooltipTypes = Object.keys(tooltipConfigs).reduce((m,i) => ({...m, [i]:i}),{});
 
 const state = {
@@ -253,6 +254,7 @@ function getCurrentType() {
 function _handleAddTooltip(tooltipType) {
     let initString = getCurrentConfig();
     let tooltipInitString = tooltipConfigs[tooltipType].initString;
+
     initString = initString.concat(tooltipInitString);
     configEditor.setValue(prettifyInitString(initString));
     setNewChart();
@@ -280,7 +282,7 @@ function _handleDataUpdate() {
 
     try {
         freshData = evalDataString(rawData);
-    } catch(e) {
+    } catch (e) {
         errors.push(new Error('Could not parse the data from the input field', rawData));
     }
 
@@ -343,7 +345,7 @@ function _handleChartSelectorChange() {
 function _safeLoadDependency(name) {
     try {
         window[name.split('/').pop()] = require(`../src/charts/${name}`);
-    } catch(e) {
+    } catch (e) {
         errors.push({
             error: e,
             filePath: name

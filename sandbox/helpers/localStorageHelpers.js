@@ -34,7 +34,7 @@ module.exports = (function() {
 
             try {
                 parsedData = JSON.parse(currentData);
-            } catch(e) {
+            } catch (e) {
                 // errorList.push(new Error('Cannot load root data'));
             }
 
@@ -57,4 +57,4 @@ module.exports = (function() {
             localStorage.removeItem(rootSaveKey);
         }
     };
-}());
+})();
