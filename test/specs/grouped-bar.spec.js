@@ -538,5 +538,34 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 });
             });
         });
+
+        // TODO-locale: We need to figure out how to clear the default formatting, as this
+        // test is messing up with the rest of tests
+        xdescribe('locale', () => {
+            it('should show the € sign', () => {
+                const customSign = '€';
+                const customLocale = {
+                    'decimal': ',',
+                    'thousands': '.',
+                    'grouping': [
+                        3
+                    ],
+                    'currency': [
+                        `${customSign} `,
+                        ''
+                    ]
+                };
+
+                groupedBarChart
+                    .valueLabelFormat('$,.2f')
+                    .locale(customLocale);
+                containerFixture.datum(dataset.data).call(groupedBarChart);
+
+                const firstTickSelection = containerFixture.select('.y-axis-group.axis')
+                    .select('.tick');
+
+                expect(firstTickSelection.text()).toMatch(new RegExp(`${customSign} \\d+\\.?\\d*`));
+            });
+        });
     });
 });
