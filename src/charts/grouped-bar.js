@@ -7,6 +7,7 @@ define(function (require) {
     const d3Collection = require('d3-collection');
     const d3Dispatch = require('d3-dispatch');
     const d3Ease = require('d3-ease');
+    const d3Format = require('d3-format');
     const d3Interpolate = require('d3-interpolate');
     const d3Scale = require('d3-scale');
     const d3Selection = require('d3-selection');
@@ -16,6 +17,7 @@ define(function (require) {
     const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
     const {bar} = require('./helpers/load');
+    const {setDefaultLocale} = require('./helpers/locale');
 
     const NUMBER_FORMAT = ',f';
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
@@ -139,6 +141,9 @@ define(function (require) {
             betweenBarsPadding = 0.1,
             betweenGroupsPadding = 0.1,
 
+            locale = null,
+            localeFormatter = d3Format,
+
             // getters
             getName = ({name}) => name,
             getValue = ({value}) => value,
@@ -160,19 +165,25 @@ define(function (require) {
          * @param {GroupedBarChartData} _data The data to attach and generate the chart
          */
         function exports(_selection) {
+            if (locale) {
+                localeFormatter = setDefaultLocale(locale);
+            }
+
             _selection.each(function (_data) {
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
 
                 prepareData(data);
+
                 buildScales();
                 buildLayers();
                 buildSVG(this);
                 drawGridLines();
-                buildAxis();
+                buildAxis(localeFormatter);
                 drawAxis();
                 drawGroupedBar();
+
                 addMouseEvents();
             });
         }
@@ -221,15 +232,15 @@ define(function (require) {
          * Creates the d3 x and y axis, setting orientations
          * @private
          */
-        function buildAxis() {
+        function buildAxis(locale) {
             if (isHorizontal) {
                 xAxis = d3Axis.axisBottom(xScale)
-                    .ticks(xTicks, valueLabelFormat);
+                    .ticks(xTicks, locale.format(valueLabelFormat));
                 yAxis = d3Axis.axisLeft(yScale)
             } else {
                 xAxis = d3Axis.axisBottom(xScale)
                 yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(yTicks, valueLabelFormat)
+                    .ticks(yTicks, locale.format(valueLabelFormat))
             }
         }
 
@@ -998,6 +1009,23 @@ define(function (require) {
                 return loadingState;
             }
             loadingState = _markup;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the locale which our formatting functions use.
+         * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
+         *
+         * @param  {LocaleObject}  [_x=null]  _x     Desired locale object format.
+         * @return {LocaleObject | module}           Current locale object or Chart module to chain calls
+         * @public
+         */
+        exports.locale = function (_x) {
+            if (!arguments.length) {
+                return locale;
+            }
+            locale = _x;
 
             return this;
         };

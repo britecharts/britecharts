@@ -191,7 +191,7 @@ define(['d3', 'bar', 'barChartDataBuilder'], function (d3, chart, dataBuilder) {
                     expect(actual).toEqual(expected);
                 });
 
-                // We need to figure out how to clear the default formatting, as this
+                // TODO-locale: We need to figure out how to clear the default formatting, as this
                 // test is messing up with the rest of tests
                 xdescribe('when the locale is set to nl-NL', () => {
 
