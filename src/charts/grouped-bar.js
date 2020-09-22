@@ -1,3 +1,5 @@
+const { locale } = require('yargs');
+
 define(function (require) {
     'use strict';
 
@@ -16,6 +18,7 @@ define(function (require) {
     const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
     const {bar} = require('./helpers/load');
+    const {setDefaultLocale} = require('./helpers/locale');
 
     const NUMBER_FORMAT = ',f';
     const uniq = (arrArg) => arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
@@ -139,6 +142,9 @@ define(function (require) {
             betweenBarsPadding = 0.1,
             betweenGroupsPadding = 0.1,
 
+            locale = null,
+            localeFormatter = d3Format,
+
             // getters
             getName = ({name}) => name,
             getValue = ({value}) => value,
@@ -160,19 +166,25 @@ define(function (require) {
          * @param {GroupedBarChartData} _data The data to attach and generate the chart
          */
         function exports(_selection) {
+            if (locale) {
+                localeFormatter = setDefaultLocale(locale);
+            }
+
             _selection.each(function (_data) {
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
                 data = cleanData(_data);
 
                 prepareData(data);
+
                 buildScales();
                 buildLayers();
                 buildSVG(this);
                 drawGridLines();
-                buildAxis();
+                buildAxis(localeFormatter);
                 drawAxis();
                 drawGroupedBar();
+
                 addMouseEvents();
             });
         }
@@ -221,15 +233,15 @@ define(function (require) {
          * Creates the d3 x and y axis, setting orientations
          * @private
          */
-        function buildAxis() {
+        function buildAxis(locale) {
             if (isHorizontal) {
                 xAxis = d3Axis.axisBottom(xScale)
-                    .ticks(xTicks, valueLabelFormat);
+                    .ticks(xTicks, locale.format(valueLabelFormat));
                 yAxis = d3Axis.axisLeft(yScale)
             } else {
                 xAxis = d3Axis.axisBottom(xScale)
                 yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(yTicks, valueLabelFormat)
+                    .ticks(yTicks, locale.format(valueLabelFormat))
             }
         }
 
