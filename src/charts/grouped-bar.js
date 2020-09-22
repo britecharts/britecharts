@@ -7,6 +7,7 @@ define(function (require) {
     const d3Collection = require('d3-collection');
     const d3Dispatch = require('d3-dispatch');
     const d3Ease = require('d3-ease');
+    const d3Format = require('d3-format');
     const d3Interpolate = require('d3-interpolate');
     const d3Scale = require('d3-scale');
     const d3Selection = require('d3-selection');
@@ -1008,6 +1009,23 @@ define(function (require) {
                 return loadingState;
             }
             loadingState = _markup;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the locale which our formatting functions use.
+         * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
+         *
+         * @param  {LocaleObject}  [_x=null]  _x     Desired locale object format.
+         * @return {LocaleObject | module}           Current locale object or Chart module to chain calls
+         * @public
+         */
+        exports.locale = function (_x) {
+            if (!arguments.length) {
+                return locale;
+            }
+            locale = _x;
 
             return this;
         };

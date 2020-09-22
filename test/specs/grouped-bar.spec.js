@@ -287,6 +287,18 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 expect(actual).toBe(expected);
             });
 
+            it('should provide locale getter and setter', () => {
+                let defaultLocale = false,
+                    testLocale = 'en-GB',
+                    newLocale;
+
+                groupedBarChart.locale(testLocale);
+                newLocale = groupedBarChart.locale();
+
+                expect(defaultLocale).not.toBe(newLocale);
+                expect(newLocale).toBe(testLocale);
+            })
+
             it('should provide loadingState getter and setter', () => {
                 let previous = groupedBarChart.loadingState(),
                     expected = 'test',
