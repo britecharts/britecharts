@@ -1,5 +1,3 @@
-const { locale } = require('yargs');
-
 define(function (require) {
     'use strict';
 
