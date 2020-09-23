@@ -136,7 +136,7 @@ define(function (require) {
             nameLabel = 'name',
             valueLabel = 'value',
             groupLabel = 'group',
-            valueLabelFormat = NUMBER_FORMAT,
+            numberFormat = NUMBER_FORMAT,
 
             betweenBarsPadding = 0.1,
             betweenGroupsPadding = 0.1,
@@ -235,12 +235,12 @@ define(function (require) {
         function buildAxis(locale) {
             if (isHorizontal) {
                 xAxis = d3Axis.axisBottom(xScale)
-                    .ticks(xTicks, locale.format(valueLabelFormat));
+                    .ticks(xTicks, locale.format(numberFormat));
                 yAxis = d3Axis.axisLeft(yScale)
             } else {
                 xAxis = d3Axis.axisBottom(xScale)
                 yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(yTicks, locale.format(valueLabelFormat))
+                    .ticks(yTicks, locale.format(numberFormat))
             }
         }
 
@@ -1125,16 +1125,16 @@ define(function (require) {
         };
 
         /**
-         * Gets or Sets the valueLabelFormat of the chart
-         * @param  {String[]} [_x=',f']     Desired valueLabelFormat for the graph
-         * @return {String[] | module}      Current valueLabelFormat or Chart module to chain calls
+         * Gets or Sets the numberFormat of the chart
+         * @param  {String[]} [_x=',f']     Desired numberFormat for the graph
+         * @return {String[] | module}      Current numberFormat or Chart module to chain calls
          * @public
          */
-        exports.valueLabelFormat = function (_x) {
+        exports.numberFormat = function (_x) {
             if (!arguments.length) {
-                return valueLabelFormat;
+                return numberFormat;
             }
-            valueLabelFormat = _x;
+            numberFormat = _x;
 
             return this;
         };

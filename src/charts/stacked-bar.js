@@ -136,7 +136,7 @@ define(function(require){
             nameLabel = 'name',
             valueLabel = 'value',
             stackLabel = 'stack',
-            valueLabelFormat = NUMBER_FORMAT,
+            numberFormat = NUMBER_FORMAT,
 
             // getters
             getName = (data) =>  data[nameLabel],
@@ -220,12 +220,12 @@ define(function(require){
         function buildAxis() {
             if (isHorizontal) {
                 xAxis = d3Axis.axisBottom(xScale)
-                    .ticks(xTicks, valueLabelFormat);
+                    .ticks(xTicks, numberFormat);
                 yAxis = d3Axis.axisLeft(yScale)
             } else {
                 xAxis = d3Axis.axisBottom(xScale)
                 yAxis = d3Axis.axisLeft(yScale)
-                    .ticks(yTicks, valueLabelFormat)
+                    .ticks(yTicks, numberFormat)
             }
         }
 
@@ -906,12 +906,12 @@ define(function(require){
          */
         exports.hasPercentage = function(_x) {
             if (!arguments.length) {
-                return valueLabelFormat === PERCENTAGE_FORMAT;
+                return numberFormat === PERCENTAGE_FORMAT;
             }
             if (_x) {
-                valueLabelFormat = PERCENTAGE_FORMAT;
+                numberFormat = PERCENTAGE_FORMAT;
             } else {
-                valueLabelFormat = NUMBER_FORMAT;
+                numberFormat = NUMBER_FORMAT;
             }
 
             return this;
@@ -1155,16 +1155,16 @@ define(function(require){
         };
 
         /**
-         * Gets or Sets the valueLabelFormat of the chart
-         * @param  {String[]} _x Desired valueLabelFormat for the graph
-         * @return {String[] | module} Current valueLabelFormat or Chart module to chain calls
+         * Gets or Sets the numberFormat of the chart
+         * @param  {String[]} _x Desired numberFormat for the graph
+         * @return {String[] | module} Current numberFormat or Chart module to chain calls
          * @public
          */
-        exports.valueLabelFormat = function(_x) {
+        exports.numberFormat = function(_x) {
             if (!arguments.length) {
-                return valueLabelFormat;
+                return numberFormat;
             }
-            valueLabelFormat = _x;
+            numberFormat = _x;
 
             return this;
         };

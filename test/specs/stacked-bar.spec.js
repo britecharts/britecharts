@@ -464,13 +464,13 @@ define(['d3', 'stacked-bar', 'stackedBarDataBuilder'], function(d3, chart, dataB
                 expect(actual).toBe(expected);
             });
 
-            it('should provide valueLabelFormat getter and setter', () => {
-                let previous = stackedBarChart.valueLabelFormat(),
+            it('should provide numberFormat getter and setter', () => {
+                let previous = stackedBarChart.numberFormat(),
                     expected = 's',
                     actual;
 
-                stackedBarChart.valueLabelFormat(expected);
-                actual = stackedBarChart.valueLabelFormat();
+                stackedBarChart.numberFormat(expected);
+                actual = stackedBarChart.numberFormat();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);

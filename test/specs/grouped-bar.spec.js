@@ -402,13 +402,13 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 expect(actual).toBe(expected);
             });
 
-            it('should provide valueLabelFormat getter and setter', () => {
-                let previous = groupedBarChart.valueLabelFormat(),
+            it('should provide numberFormat getter and setter', () => {
+                let previous = groupedBarChart.numberFormat(),
                     expected = 's',
                     actual;
 
-                groupedBarChart.valueLabelFormat(expected);
-                actual = groupedBarChart.valueLabelFormat();
+                groupedBarChart.numberFormat(expected);
+                actual = groupedBarChart.numberFormat();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
@@ -557,7 +557,7 @@ define(['d3', 'grouped-bar', 'groupedBarChartDataBuilder'], function(d3, chart, 
                 };
 
                 groupedBarChart
-                    .valueLabelFormat('$,.2f')
+                    .numberFormat('$,.2f')
                     .locale(customLocale);
                 containerFixture.datum(dataset.data).call(groupedBarChart);
 
