@@ -7,8 +7,9 @@ define(function (require) {
     const d3Transition = require('d3-transition');
     const d3Interpolate = require('d3-interpolate');
 
-    const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
+    const { exportChart } = require('./helpers/export');
+    const { hoursHuman } = require('./helpers/constants'); 
 
     /**
      * @typedef HeatmapData
@@ -87,11 +88,6 @@ define(function (require) {
             dayLabelWidth = 30,
 
             hourLabels,
-            hoursHuman = [
-                '00h', '01h', '02h', '03h', '04h', '05h', '06h', '07h', '08h',
-                '09h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h',
-                '18h', '19h', '20h', '21h', '22h', '23h'
-            ],
             hourLabelHeight = 20,
 
             getValue = ({value}) => value;
@@ -190,16 +186,14 @@ define(function (require) {
          * @private
          */
         function cleanData(originalData) {
-            return originalData.reduce((acc, {day, hour, value}) => {
-                return [
-                    ...acc,
-                    {
-                        day: +day,
-                        hour: +hour,
-                        value: +value
-                    }
-                ];
-            }, []);
+            return originalData.reduce((acc, {day, hour, value}) => [
+                ...acc,
+                {
+                    day: +day,
+                    hour: +hour,
+                    value: +value
+                }
+            ], []);
         }
 
         /**
@@ -229,7 +223,7 @@ define(function (require) {
                 .style('opacity', boxInitialOpacity)
                 .style('fill', boxInitialColor)
                 .style('stroke', boxBorderColor)
-                .style('stroke-width', boxBorderSize)
+                .style('stroke-width', boxBorderSize);
 
             if (isAnimated) {
                 boxElements.transition()

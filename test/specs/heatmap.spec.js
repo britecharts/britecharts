@@ -191,6 +191,18 @@ define(['d3', 'heatmap', 'heatmapChartDataBuilder'], function (d3, chart, dataBu
                 expect(actual).toBe(expected);
             });
 
+            it('should provide isAnimated getter and setter', () => {
+                let previous = heatmapChart.isAnimated(),
+                    expected = false,
+                    actual;
+
+                heatmapChart.isAnimated(expected);
+                actual = heatmapChart.isAnimated();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
             xit('should provide loadingState getter and setter', () => {
                 let previous = heatmapChart.loadingState(),
                     expected = 'test',
