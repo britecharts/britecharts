@@ -4,7 +4,6 @@ const d3Selection = require('d3-selection');
 const PubSub = require('pubsub-js');
 
 const scatterPlot = require('./../../src/charts/scatter-plot');
-const colors = require('./../../src/charts/helpers/color');
 const dataBuilder = require('./../../test/fixtures/scatterPlotDataBuilder');
 const colorSelectorHelper = require('./helpers/colorSelector');
 
@@ -33,14 +32,14 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
             .circleOpacity(0.6)
             .hasTrendline(true)
             .grid('horizontal')
-            .xAxisLabel('Temperature (C)')
             .margin({
                 left: 60,
                 bottom: 50
             })
-            .yAxisLabel('Ice Cream Sales')
-            .yAxisFormat('$')
             .xAxisFormat('.1f')
+            .xAxisLabel('Temperature (C)')
+            .yAxisFormat('$')
+            .yAxisLabel('Ice Cream Sales')
             .on('customMouseOver', tooltip.show)
             .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);

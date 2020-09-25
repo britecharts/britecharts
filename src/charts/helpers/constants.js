@@ -2,6 +2,7 @@ define(function () {
 
     const d3Shape = require('d3-shape');
     const d3Time = require('d3-time');
+
     const FORMAT_LOCALE_URL = 'https://cdn.jsdelivr.net/npm/d3-format/locale';
 
     const axisTimeCombinations = {
@@ -10,12 +11,6 @@ define(function () {
         DAY_MONTH: 'day-month',
         MONTH_YEAR: 'month-year',
         CUSTOM: 'custom'
-    };
-
-    const timeBenchmarks = {
-        ONE_AND_A_HALF_YEARS: 47304000000,
-        ONE_YEAR: 31536000365,
-        ONE_DAY: 86400001
     };
 
     const curveMap = {
@@ -35,6 +30,39 @@ define(function () {
         'quantity': 1,
         'percentage': 100
     }];
+
+    const hoursHuman = [
+        "00h",
+        "01h",
+        "02h",
+        "03h",
+        "04h",
+        "05h",
+        "06h",
+        "07h",
+        "08h",
+        "09h",
+        "10h",
+        "11h",
+        "12h",
+        "13h",
+        "14h",
+        "15h",
+        "16h",
+        "17h",
+        "18h",
+        "19h",
+        "20h",
+        "21h",
+        "22h",
+        "23h",
+    ];
+
+    const timeBenchmarks = {
+        ONE_AND_A_HALF_YEARS: 47304000000,
+        ONE_YEAR: 31536000365,
+        ONE_DAY: 86400001
+    };
 
     const timeIntervals = {
         timeMillisecond: d3Time.timeMillisecond,
@@ -73,6 +101,7 @@ define(function () {
         axisTimeCombinations,
         curveMap,
         emptyDonutData,
+        hoursHuman,
         timeBenchmarks,
         lineGradientId: 'lineGradientId',
         timeIntervals,

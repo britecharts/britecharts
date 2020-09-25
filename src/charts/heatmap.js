@@ -7,8 +7,9 @@ define(function (require) {
     const d3Transition = require('d3-transition');
     const d3Interpolate = require('d3-interpolate');
 
-    const { exportChart } = require('./helpers/export');
     const colorHelper = require('./helpers/color');
+    const { exportChart } = require('./helpers/export');
+    const { hoursHuman } = require('./helpers/constants'); 
 
     /**
      * @typedef HeatmapData
@@ -78,6 +79,8 @@ define(function (require) {
 
             animationDuration = 2000,
 
+            isAnimated = true,
+
             yAxisLabels,
 
             dayLabels,
@@ -85,11 +88,6 @@ define(function (require) {
             dayLabelWidth = 30,
 
             hourLabels,
-            hoursHuman = [
-                '00h', '01h', '02h', '03h', '04h', '05h', '06h', '07h', '08h',
-                '09h', '10h', '11h', '12h', '13h', '14h', '15h', '16h', '17h',
-                '18h', '19h', '20h', '21h', '22h', '23h'
-            ],
             hourLabelHeight = 20,
 
             getValue = ({value}) => value;
@@ -113,28 +111,6 @@ define(function (require) {
                 drawHourLabels();
                 drawBoxes();
             });
-        }
-
-        function drawBoxes() {
-            boxes = svg.select('.chart-group').selectAll('.box').data(data);
-
-            boxes.enter()
-                .append('rect')
-                .classed('box', true)
-                .attr('width', boxSize)
-                .attr('height', boxSize)
-                .attr('x', ({hour}) => hour * boxSize)
-                .attr('y', ({day}) => day * boxSize)
-                .style('opacity', boxInitialOpacity)
-                .style('fill', boxInitialColor)
-                .style('stroke', boxBorderColor)
-                .style('stroke-width', boxBorderSize)
-                .transition()
-                    .duration(animationDuration)
-                    .style('fill', ({value}) => colorScale(value))
-                    .style('opacity', boxFinalOpacity);
-
-            boxes.exit().remove();
         }
 
         /**
@@ -210,16 +186,14 @@ define(function (require) {
          * @private
          */
         function cleanData(originalData) {
-            return originalData.reduce((acc, {day, hour, value}) => {
-                return [
-                    ...acc,
-                    {
-                        day: +day,
-                        hour: +hour,
-                        value: +value
-                    }
-                ];
-            }, []);
+            return originalData.reduce((acc, {day, hour, value}) => [
+                ...acc,
+                {
+                    day: +day,
+                    hour: +hour,
+                    value: +value
+                }
+            ], []);
         }
 
         /**
@@ -239,7 +213,7 @@ define(function (require) {
         function drawBoxes() {
             boxes = svg.select('.chart-group').selectAll('.box').data(data);
 
-            boxes.enter()
+            const boxElements = boxes.enter()
               .append('rect')
                 .classed('box', true)
                 .attr('width', boxSize)
@@ -249,13 +223,20 @@ define(function (require) {
                 .style('opacity', boxInitialOpacity)
                 .style('fill', boxInitialColor)
                 .style('stroke', boxBorderColor)
-                .style('stroke-width', boxBorderSize)
-                .transition()
-                    .duration(animationDuration)
-                    .style('fill', ({value}) => colorScale(value))
-                    .style('opacity', boxFinalOpacity);
+                .style('stroke-width', boxBorderSize);
 
-            boxes.exit().remove();
+            if (isAnimated) {
+                boxElements.transition()
+                  .duration(animationDuration)
+                  .style('fill', ({value}) => colorScale(value))
+                  .style('opacity', boxFinalOpacity);
+            } else {
+                boxElements
+                  .style('fill', ({value}) => colorScale(value))
+                  .style('opacity', boxFinalOpacity);
+            }
+
+            boxElements.exit().remove();
         }
 
         /**
@@ -367,6 +348,21 @@ define(function (require) {
                 return height;
             }
             height = _x;
+
+            return this;
+        };
+
+        /**
+         * Gets or Sets the isAnimated value of the chart
+         * @param  {Boolean} _x=true          Decide whether to show chart animation
+         * @return {Boolean | module}         Current isAnimated value or Chart module to chain calls
+         * @public
+         */
+        exports.isAnimated = function (_x) {
+            if (!arguments.length) {
+                return isAnimated;
+            }
+            isAnimated = _x;
 
             return this;
         };
