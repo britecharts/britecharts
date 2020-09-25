@@ -890,7 +890,7 @@ define(function(require) {
         /**
          * Gets or Sets each circle's border opacity value of the chart.
          * It makes each circle border transparent if it's less than 1.
-         * @param  {Number} _x=0.24            Desired border opacity of circles of the chart
+         * @param  {Number} _x=1            Desired border opacity of circles of the chart
          * @return {Number | module}           Current circleStrokeOpacity or Chart module to chain calls
          * @public
          * @example
