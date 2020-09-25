@@ -2,6 +2,7 @@ define(function(require) {
     'use strict';
 
     const d3Format = require('d3-format');
+    const d3Array = require('d3-array');
 
     let idCounter = 0;
 
@@ -52,6 +53,40 @@ define(function(require) {
 
         return size;
     };
+
+    /**
+     * Returns an object that contains necessary coordinates for drawing the trendline. The
+     * calculation of slope and y-intercept uses basic accumulative linear regression formula.
+     * @param  {Object[]} dataPoints    Array of circle data points
+     * @return {Object}
+     */
+    function calcLinearRegression(dataPoints) {
+        let n = dataPoints.length,
+            x = 0,
+            y = 0,
+            xy = 0,
+            x2 = 0;
+
+        dataPoints.forEach(d => {
+            x += d.x;
+            y += d.y;
+            xy += d.x * d.y;
+            x2 += d.x * d.x;
+        });
+
+        const denominator = (n * x2) - (x * x);
+        const intercept = ((y * x2) - (x * xy)) / denominator;
+        const slope = ((n * xy) - (x * y)) / denominator;
+        const minX = d3Array.min(dataPoints, ({ x }) => x);
+        const maxX = d3Array.max(dataPoints, ({ x }) => x);
+
+        return {
+            x1: minX,
+            y1: slope * n + intercept,
+            x2: maxX,
+            y2: slope * maxX + intercept
+        }
+    }
 
     /**
      * Calculates percentage of value from total
@@ -112,6 +147,7 @@ define(function(require) {
 
     return {
         calculatePercent,
+        calcLinearRegression,
         isInteger,
         formatDecimalValue,
         formatIntegerValue,
