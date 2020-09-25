@@ -828,8 +828,8 @@ define(function(require){
         // API
         /**
          * Gets or Sets the aspect ratio of the chart
-         * @param  {Number} _x Desired aspect ratio for the graph
-         * @return {Number | module} Current aspect ratio or Area Chart module to chain calls
+         * @param  {Number} _x = null       Desired aspect ratio for the graph
+         * @return {Number | module}        Current aspect ratio or Area Chart module to chain calls
          * @public
          */
         exports.aspectRatio = function(_x) {
@@ -843,9 +843,9 @@ define(function(require){
 
         /**
          * Gets or Sets the padding of the stacked bar chart
-         * The default value is
-         * @param  {Number} _x Padding value to get/set
-         * @return {Number | module} Current padding or Chart module to chain calls
+         * The default value is 0.1
+         * @param  {Number} _x = 0.1    Padding value to get/set
+         * @return {Number | module}    Current padding or Chart module to chain calls
          * @public
          */
         exports.betweenBarsPadding = function (_x) {
@@ -859,8 +859,8 @@ define(function(require){
 
         /**
          * Gets or Sets the colorSchema of the chart
-         * @param  {String[]} _x Desired colorSchema for the graph
-         * @return {String[] | module} Current colorSchema or Chart module to chain calls
+         * @param  {String[]} _x = colorSchemas.britecharts     Desired colorSchema for the graph
+         * @return {String[] | module}                          Current colorSchema or Chart module to chain calls
          * @public
          */
         exports.colorSchema = function(_x) {
@@ -937,8 +937,8 @@ define(function(require){
 
         /**
          * Gets or Sets the horizontal direction of the chart
-         * @param  {Boolean} _x Desired horizontal direction for the graph
-         * @return {Boolean | module} If it is horizontal or Bar Chart module to chain calls
+         * @param  {Boolean} _x = false     Desired horizontal direction for the graph
+         * @return {Boolean | module}       If it is horizontal or Bar Chart module to chain calls
          * @public
          */
         exports.isHorizontal = function(_x) {
@@ -952,8 +952,8 @@ define(function(require){
 
         /**
          * Gets or Sets the hasReversedStacks property of the chart, reversing the order of stacks.
-         * @param  {Boolean} _x Desired hasReversedStacks flag
-         * @return {Boolean | module} Current hasReversedStacks or Chart module to chain calls
+         * @param  {Boolean} _x = false     Desired hasReversedStacks flag
+         * @return {Boolean | module}       Current hasReversedStacks or Chart module to chain calls
          * @public
          */
         exports.hasReversedStacks = function(_x) {
@@ -969,8 +969,8 @@ define(function(require){
          * Gets or Sets the isAnimated property of the chart, making it to animate when render.
          * By default this is 'false'
          *
-         * @param  {Boolean} _x Desired animation flag
-         * @return {Boolean | module} Current isAnimated flag or Chart module
+         * @param  {Boolean} _x = false     Desired animation flag
+         * @return {Boolean | module}       Current isAnimated flag or Chart module
          * @public
          */
         exports.isAnimated = function(_x) {
@@ -986,7 +986,7 @@ define(function(require){
          * Pass language tag for the tooltip to localize the date.
          * Feature uses Intl.DateTimeFormat, for compatability and support, refer to
          * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-         * @param  {String} _x  must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
+         * @param  {String} _x          Must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
          * @return {String | module}    Current locale or module to chain calls
          */
         exports.locale = function(_x) {
@@ -1000,8 +1000,8 @@ define(function(require){
 
         /**
          * Gets or Sets the margin of the chart
-         * @param  {Object} _x Margin object to get/set
-         * @return {Object | module} Current margin or Area Chart module to chain calls
+         * @param  {Object} _x          Margin object to get/set
+         * @return {Object | module}    Current margin or Area Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -1018,8 +1018,8 @@ define(function(require){
 
         /**
          * Gets or Sets the nameLabel of the chart
-         * @param  {Number} _x Desired dateLabel for the graph
-         * @return {Number | module} Current nameLabel or Chart module to chain calls
+         * @param  {Number} _x          Desired dateLabel for the graph
+         * @return {Number | module}    Current nameLabel or Chart module to chain calls
          * @public
          */
         exports.nameLabel = function(_x) {
@@ -1034,8 +1034,8 @@ define(function(require){
         /**
          * Gets or Sets the number of ticks of the x axis on the chart
          * (Default is 5)
-         * @param  {Number} _x Desired horizontal ticks
-         * @return {Number | module} Current xTicks or Chart module to chain calls
+         * @param  {Number} _x = 5      Desired horizontal ticks
+         * @return {Number | module}    Current xTicks or Chart module to chain calls
          * @public
          */
         exports.xTicks = function (_x) {
@@ -1049,7 +1049,7 @@ define(function(require){
 
         /**
          * Gets or Sets the number of vertical ticks of the axis on the chart
-         * @param  {Number} _x          Desired vertical ticks
+         * @param  {Number} _x = 5      Desired vertical ticks
          * @return {Number | module}    Current yTicks or Chart module to chain calls
          * @public
          */
@@ -1064,8 +1064,8 @@ define(function(require){
 
         /**
          * Gets or Sets the loading state of the chart
-         * @param  {String} markup Desired markup to show when null data
-         * @return {String | module} Current loading state markup or Chart module to chain calls
+         * @param  {String} markup      Desired markup to show when null data
+         * @return {String | module}    Current loading state markup or Chart module to chain calls
          * @public
          */
         exports.loadingState = function(_markup) {
@@ -1094,8 +1094,8 @@ define(function(require){
         /**
          * Configurable extension of the x axis
          * if your max point was 50% you might want to show x axis to 60%, pass 1.2
-         * @param  {Number} _x ratio to max data point to add to the x axis
-         * @return {Number | module} Current ratio or Bar Chart module to chain calls
+         * @param  {Number} _x = 1      Ratio to max data point to add to the x axis
+         * @return {Number | module}    Current ratio or Bar Chart module to chain calls
          * @public
          */
         exports.percentageAxisToMaxRatio = function(_x) {
@@ -1109,8 +1109,8 @@ define(function(require){
 
         /**
          * Gets or Sets the stackLabel of the chart
-         * @param  {String} _x Desired stackLabel for the graph
-         * @return {String | module} Current stackLabel or Chart module to chain calls
+         * @param  {String} _x          Desired stackLabel for the graph
+         * @return {String | module}    Current stackLabel or Chart module to chain calls
          * @public
          */
         exports.stackLabel = function(_x) {
@@ -1126,8 +1126,8 @@ define(function(require){
          * Gets or Sets the minimum width of the graph in order to show the tooltip
          * NOTE: This could also depend on the aspect ratio
          *
-         * @param  {Number} [_x=480] Minimum width of the graph
-         * @return {Number | module} Current tooltipThreshold or Area Chart module to chain calls
+         * @param  {Number} [_x=480]    Minimum width of the graph
+         * @return {Number | module}    Current tooltipThreshold or Area Chart module to chain calls
          * @public
          */
         exports.tooltipThreshold = function(_x) {
@@ -1141,8 +1141,8 @@ define(function(require){
 
         /**
          * Gets or Sets the valueLabel of the chart
-         * @param  {Number} _x Desired valueLabel for the graph
-         * @return {Number | module} Current valueLabel or Chart module to chain calls
+         * @param  {Number} _x          Desired valueLabel for the graph
+         * @return {Number | module}    Current valueLabel or Chart module to chain calls
          * @public
          */
         exports.valueLabel = function(_x) {
@@ -1156,8 +1156,8 @@ define(function(require){
 
         /**
          * Gets or Sets the valueLabelFormat of the chart
-         * @param  {String[]} _x Desired valueLabelFormat for the graph
-         * @return {String[] | module} Current valueLabelFormat or Chart module to chain calls
+         * @param  {String[]} _x = ',f'     Desired valueLabelFormat for the graph
+         * @return {String[] | module}      Current valueLabelFormat or Chart module to chain calls
          * @public
          */
         exports.valueLabelFormat = function(_x) {
@@ -1171,8 +1171,8 @@ define(function(require){
 
         /**
          * Gets or Sets the width of the chart
-         * @param  {Number} _x Desired width for the graph
-         * @return {Number | module} Current width or Area Chart module to chain calls
+         * @param  {Number} _x = 960    Desired width for the graph
+         * @return {Number | module}    Current width or Area Chart module to chain calls
          * @public
          */
         exports.width = function(_x) {
@@ -1189,8 +1189,8 @@ define(function(require){
 
         /**
          * Gets or Sets the y-axis label of the chart
-         * @param  {String} _x Desired label string
-         * @return {String | module} Current yAxisLabel or Chart module to chain calls
+         * @param  {String} _x          Desired label string
+         * @return {String | module}    Current yAxisLabel or Chart module to chain calls
          * @public
          * @example stackedBar.yAxisLabel('Ticket Sales')
          */
@@ -1207,8 +1207,8 @@ define(function(require){
          * Gets or Sets the offset of the yAxisLabel of the chart.
          * The method accepts both positive and negative values.
          * The default value is -60
-         * @param  {Number} _x Desired offset for the label
-         * @return {Number | module} Current yAxisLabelOffset or Chart module to chain calls
+         * @param  {Number} _x = -60        Desired offset for the label
+         * @return {Number | module}        Current yAxisLabelOffset or Chart module to chain calls
          * @public
          * @example stackedBar.yAxisLabelOffset(-55)
          */
