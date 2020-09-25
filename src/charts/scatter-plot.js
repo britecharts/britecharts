@@ -1,34 +1,29 @@
 define(function(require) {
     'use strict';
 
+    require('d3-transition');
+
     const d3Array = require('d3-array');
     const d3Axis = require('d3-axis');
-    const d3Collection = require('d3-collection');
     const d3Dispatch = require('d3-dispatch');
     const d3Ease = require('d3-ease');
     const d3Format = require('d3-format');
     const d3Scale = require('d3-scale');
     const d3Shape = require('d3-shape');
     const d3Selection = require('d3-selection');
-    const d3Transition = require('d3-transition');
-    const d3TimeFormat = require('d3-time-format');
     const d3Voronoi = require('d3-voronoi');
 
-    const {exportChart} = require('./helpers/export');
     const colorHelper = require('./helpers/color');
+    const {calcLinearRegression} = require('./helpers/number');
+    const {exportChart} = require('./helpers/export');
+    const {setDefaultLocale} = require('./helpers/locale');
+
 
     const {
         createFilterContainer,
         createGlowWithMatrix,
         bounceCircleHighlight,
     } = require('./helpers/filter');
-
-    const {
-        formatIntegerValue,
-        formatDecimalValue,
-        isInteger,
-        uniqueId
-    } = require('./helpers/number');
 
     /**
      * @typedef ScatterPlotData
@@ -123,10 +118,10 @@ define(function(require) {
 
         yAxisLabel,
         yAxisLabelEl,
-        yAxisLabelOffset = -40,
+        yAxisLabelOffset = -50,
         xAxisLabel,
         xAxisLabelEl,
-        xAxisLabelOffset = -40,
+        xAxisLabelOffset = -50,
 
         trendLinePath,
         trendLineCurve = d3Shape.curveBasis,
@@ -149,6 +144,8 @@ define(function(require) {
         },
 
         circleOpacity = 0.24,
+        circleStrokeOpacity = 1,
+        circleStrokeWidth = 1,
         highlightCircle = null,
         highlightCircleOpacity = circleOpacity,
         maxCircleArea = 10,
@@ -166,6 +163,8 @@ define(function(require) {
         duration = 500,
 
         hasHollowCircles = false,
+        locale = null,
+        localeFormatter = d3Format,
 
         svg,
         chartWidth,
@@ -194,6 +193,10 @@ define(function(require) {
                 chartWidth = width - margin.left - margin.right;
                 chartHeight = height - margin.top - margin.bottom;
 
+                if (locale) {
+                    localeFormatter = setDefaultLocale(locale);
+                }
+
                 buildScales();
                 buildSVG(this);
                 buildAxis();
@@ -205,7 +208,7 @@ define(function(require) {
                 drawMaskingClip();
 
                 if (hasTrendline) {
-                    drawTrendline(calcLinearRegression());
+                    drawTrendline(calcLinearRegression(dataPoints));
                 }
 
                 addMouseEvents();
@@ -247,7 +250,7 @@ define(function(require) {
             yAxis = d3Axis.axisLeft(yScale)
                 .ticks(yTicks)
                 .tickPadding(tickPadding)
-                .tickFormat(d3Format.format(yAxisFormat));
+                .tickFormat(localeFormatter.format(yAxisFormat));
         }
 
         /**
@@ -534,26 +537,29 @@ define(function(require) {
             if (isAnimated) {
                 circles
                     .append('circle')
-                    .attr('class', 'data-point data-point-highlighter')
+                    .attr('class', 'data-point')
                     .transition()
-                    .delay(delay)
-                    .duration(duration)
-                    .ease(ease)
-                    .style('stroke', (d) => nameColorMap[d.name])
-                    .attr('fill', (d) => (
+                      .delay(delay)
+                      .duration(duration)
+                      .ease(ease)
+                      .attr('stroke-opacity', circleStrokeOpacity)
+                      .attr('stroke-width', circleStrokeWidth)
+                      .attr('stroke', (d) => nameColorMap[d.name])
+                      .attr('fill', (d) => (
                         hasHollowCircles ? hollowColor : nameColorMap[d.name]
-                    ))
-                    .attr('fill-opacity', circleOpacity)
-                    .attr('r', (d) => areaScale(d.y))
-                    .attr('cx', (d) => xScale(d.x))
-                    .attr('cy', (d) => yScale(d.y))
-                    .style('cursor', 'pointer');
+                      ))
+                      .attr('fill-opacity', circleOpacity)
+                      .attr('r', (d) => areaScale(d.y))
+                      .attr('cx', (d) => xScale(d.x))
+                      .attr('cy', (d) => yScale(d.y))
+                      .style('cursor', 'pointer');
             } else {
                 circles
                     .append('circle')
-                    .attr('class', 'point')
-                    .attr('class', 'data-point-highlighter')
-                    .style('stroke', (d) => nameColorMap[d.name])
+                    .attr('class', 'data-point')
+                    .attr('stroke-opacity', circleStrokeOpacity)
+                    .attr('stroke-width', circleStrokeWidth)
+                    .attr('stroke', (d) => nameColorMap[d.name])
                     .attr('fill', (d) => (
                         hasHollowCircles ? hollowColor : nameColorMap[d.name]
                     ))
@@ -563,6 +569,10 @@ define(function(require) {
                     .attr('cy', (d) => yScale(d.y))
                     .style('cursor', 'pointer');
             }
+
+            // Exit
+            circles.exit()
+                .remove();
         }
 
         /**
@@ -601,7 +611,7 @@ define(function(require) {
               .attr('class', 'highlight-y-legend')
               .attr('y', (yScale(data.y) + (areaScale(data.y) / 2)))
               .attr('x', highlightTextLegendOffset)
-              .text(`${d3Format.format(yAxisFormat)(data.y)}`);
+              .text(`${localeFormatter.format(yAxisFormat)(data.y)}`);
 
             // Draw data label for x value
             highlightCrossHairLabelsContainer.selectAll('text.highlight-x-legend')
@@ -671,58 +681,14 @@ define(function(require) {
                     .attr('y2', (d) => yScale(d));
         }
 
-        /**
-         * Returns an object that contains necessary
-         * coordinates for drawing the trendline. The
-         * calculation of slope and y-intercept uses
-         * basic accumulative linear regression formula.
-         * @return {Object}
-         * @private
-         */
-        function calcLinearRegression() {
-            let n = dataPoints.length,
-                x = 0,
-                y = 0,
-                xy = 0,
-                x2 = 0;
 
-            dataPoints.forEach(d => {
-                x += d.x;
-                y += d.y;
-                xy += d.x * d.y;
-                x2 += d.x * d.x;
-            });
-
-            const denominator = (n * x2) - (x * x);
-            const intercept = ((y * x2) - (x * xy)) / denominator;
-            const slope = ((n * xy) - (x * y)) / denominator;
-            const minX = d3Array.min(dataPoints, ({ x }) => x);
-            const maxX = d3Array.max(dataPoints, ({ x }) => x);
-
-            return {
-                x1: minX,
-                y1: slope * n + intercept,
-                x2: maxX,
-                y2: slope * maxX + intercept
-            }
-        }
-
-        /**
-         * Calculates and returns
-         * @param {*} svg
-         * @return {Object}
-         * @private
-         */
-        function getPointProps(svg) {
+        function getClosestPoint(svg) {
             let mousePos = d3Selection.mouse(svg);
 
             mousePos[0] -= margin.left;
             mousePos[1] -= margin.top;
 
-            return {
-                closestPoint: voronoi.find(mousePos[0], mousePos[1]),
-                mousePos
-            };
+            return voronoi.find(mousePos[0], mousePos[1]);
         }
 
         /**
@@ -731,8 +697,8 @@ define(function(require) {
          * @private
          */
         function handleMouseMove(e) {
-            let { mousePos, closestPoint } = getPointProps(e);
-            let pointData = getPointData(closestPoint);
+            const closestPoint = getClosestPoint(e);
+            const pointData = getPointData(closestPoint);
 
             if (hasCrossHairs) {
                 drawDataPointsValueHighlights(pointData);
@@ -772,8 +738,8 @@ define(function(require) {
          * @private
          */
         function handleClick(e) {
-            let { closestPoint } = getPointProps(e);
-            let d = getPointData(closestPoint);
+            const closestPoint = getClosestPoint(e);
+            const d = getPointData(closestPoint);
 
             handleClickAnimation(d);
 
@@ -816,8 +782,8 @@ define(function(require) {
                 .attr('cx', () => xScale(data.x))
                 .attr('cy', () => yScale(data.y))
                 .attr('r', () => areaScale(data.y))
-                .style('stroke-width', highlightStrokeWidth)
-                .style('stroke-opacity', highlightCircleOpacity);
+                .attr('stroke-width', highlightStrokeWidth)
+                .attr('stroke-opacity', highlightCircleOpacity);
 
             // apply glow container overlay
             highlightCircle
@@ -875,6 +841,9 @@ define(function(require) {
                   .append('text')
                     .attr('class', 'highlight-x-legend');
             }
+
+            highlightCircle.exit()
+                .remove();
         }
 
         /**
@@ -906,7 +875,7 @@ define(function(require) {
         /**
          * Gets or Sets the aspect ratio of the chart
          * @param  {Number} _x            Desired aspect ratio for the graph
-         * @return {Number | module} Current aspect ratio or Chart module to chain calls
+         * @return {Number | module}      Current aspect ratio or Chart module to chain calls
          * @public
          */
         exports.aspectRatio = function (_x) {
@@ -919,11 +888,47 @@ define(function(require) {
         };
 
         /**
-         * Gets or Sets the circles opacity value of the chart.
+         * Gets or Sets each circle's border opacity value of the chart.
+         * It makes each circle border transparent if it's less than 1.
+         * @param  {Number} _x=0.24            Desired border opacity of circles of the chart
+         * @return {Number | module}           Current circleStrokeOpacity or Chart module to chain calls
+         * @public
+         * @example
+         * scatterPlot.circleStrokeOpacity(0.6)
+         */
+        exports.circleStrokeOpacity = function (_x) {
+            if (!arguments.length) {
+                return circleStrokeOpacity;
+            }
+            circleStrokeOpacity = _x;
+
+            return this;
+        }
+
+        /**
+         * Gets or Sets each circle's border width value of the chart.
+         * It makes each circle border transparent if it's less than 1.
+         * @param  {Number} _x=1            Desired border width of circles of the chart
+         * @return {Number | module}           Current circleStrokeWidth or Chart module to chain calls
+         * @public
+         * @example
+         * scatterPlot.circleStrokeWidth(10)
+         */
+        exports.circleStrokeWidth = function (_x) {
+            if (!arguments.length) {
+                return circleStrokeWidth;
+            }
+            circleStrokeWidth = _x;
+
+            return this;
+        }
+
+        /**
+         * Gets or Sets each circle's opacity value of the chart.
          * Use this to set opacity of a circle for each data point of the chart.
          * It makes the area of each data point more transparent if it's less than 1.
          * @param  {Number} _x=0.24            Desired opacity of circles of the chart
-         * @return {Number | module}    Current circleOpacity or Chart module to chain calls
+         * @return {Number | module}           Current circleOpacity or Chart module to chain calls
          * @public
          * @example
          * scatterPlot.circleOpacity(0.6)
@@ -1073,7 +1078,7 @@ define(function(require) {
          * Gets or Sets isAnimated value. If set to true,
          * the chart will be initialized or updated with animation.
          * @param  {boolean} _x=false       Desired isAnimated properties for each side
-         * @return {boolean | module}    Current isAnimated or Chart module to chain calls
+         * @return {boolean | module}       Current isAnimated or Chart module to chain calls
          * @public
          */
         exports.isAnimated = function(_x) {
@@ -1085,6 +1090,22 @@ define(function(require) {
             return this;
         }
 
+        /**
+         * Gets or Sets the locale which our formatting functions use.
+         * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
+         *
+         * @param  {LocaleObject}  [_x=null]  _x        Desired locale object format.
+         * @return {LocaleObject | module}              Current locale object or Chart module to chain calls
+         * @public
+         */
+        exports.locale = function (_x) {
+            if (!arguments.length) {
+                return locale;
+            }
+            locale = _x;
+
+            return this;
+        };
         /**
          * Gets or Sets the margin object of the chart
          * @param  {Object} _x          Desired margin object properties for each side

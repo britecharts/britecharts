@@ -142,7 +142,7 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 });
             });
 
-            describe('data points(circles)', () => {
+            describe('data points(circles) default state', () => {
 
                 /**
                  * With animation, the chart is initialized without
@@ -151,8 +151,7 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                  */
                 beforeEach(() => {
                     dataset = buildDataSet('withOneSource');
-                    scatterPlot = chart()
-                        .isAnimated(false);
+                    scatterPlot = chart().isAnimated(false);
 
                     // DOM Fixture Setup
                     f = jasmine.getFixtures();
@@ -180,11 +179,13 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 });
 
                 it('should have proper default parameteres', () => {
-                    const circles = containerFixture.selectAll('.chart-group circle.data-point').nodes();
+                    const circles = containerFixture.selectAll('.chart-group circle').nodes();
 
                     circles.forEach((circle) => {
-                        expect(circle).toHaveAttr('class', 'data-point data-point-highlighter');
+                        expect(circle).toHaveAttr('class', 'data-point');
                         expect(circle).toHaveAttr('fill-opacity', '0.24');
+                        expect(circle).toHaveAttr('stroke-opacity', '1');
+                        expect(circle).toHaveAttr('stroke');
                         expect(circle).toHaveAttr('fill');
                         expect(circle).toHaveAttr('cx');
                         expect(circle).toHaveAttr('cy');
@@ -298,7 +299,7 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 });
             });
 
-            describe('when it has CrossHairs', () => {
+            describe('when it has cross-hairs', () => {
 
                 beforeEach(() => {
                     scatterPlot.hasCrossHairs(true);
@@ -577,6 +578,30 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(actual).toEqual(expected);
             });
 
+            it('should provide circleStrokeOpacity getter and setter', () => {
+                let previous = scatterPlot.circleStrokeOpacity(),
+                    expected = 0.6,
+                    actual;
+
+                scatterPlot.circleStrokeOpacity(expected);
+                actual = scatterPlot.circleStrokeOpacity();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toEqual(expected);
+            });
+
+            it('should provide circleStrokeWidth getter and setter', () => {
+                let previous = scatterPlot.circleStrokeWidth(),
+                    expected = 10,
+                    actual;
+
+                scatterPlot.circleStrokeWidth(expected);
+                actual = scatterPlot.circleStrokeWidth();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toEqual(expected);
+            });
+
             it('should provide colorSchema getter and setter', () => {
                 let previous = scatterPlot.colorSchema(),
                     expected = ['#aaa', '#bbb', '#ccc', '#fff'],
@@ -663,6 +688,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toEqual(expected);
+            });
+
+            it('should provide locale getter and setter', () => {
+                let previous = scatterPlot.locale(),
+                    expected = 'en-US',
+                    actual;
+
+                scatterPlot.locale(expected);
+                actual = scatterPlot.locale();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
             });
 
             it('should provide margin getter and setter', () => {
