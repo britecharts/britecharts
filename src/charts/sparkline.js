@@ -375,8 +375,8 @@ define(function(require){
 
         /**
          * Gets or Sets the areaGradient of the chart
-         * @param  {String[]} _x Desired areaGradient for the graph
-         * @return {areaGradient | module} Current areaGradient or Chart module to chain calls
+         * @param  {String[]} _x = ['#F5FDFF', '#F6FEFC']   Desired areaGradient for the graph
+         * @return {areaGradient | module}                  Current areaGradient or Chart module to chain calls
          * @public
          */
         exports.areaGradient = function(_x) {
@@ -389,7 +389,7 @@ define(function(require){
 
         /**
          * Gets or Sets the dateLabel of the chart
-         * @param  {Number} _x Desired dateLabel for the graph
+         * @param  {Number} _x          Desired dateLabel for the graph
          * @return {dateLabel | module} Current dateLabel or Chart module to chain calls
          * @public
          */
@@ -404,8 +404,8 @@ define(function(require){
 
         /**
          * Gets or Sets the duration of the animation
-         * @param  {Number} _x Desired animation duration for the graph
-         * @return {dateLabel | module} Current animation duration or Chart module to chain calls
+         * @param  {Number} _x=3000         Desired animation duration for the graph
+         * @return {dateLabel | module}     Current animation duration or Chart module to chain calls
          * @public
          */
         exports.duration = function(_x) {
@@ -461,8 +461,8 @@ define(function(require){
 
         /**
          * Gets or Sets the lineGradient of the chart
-         * @param  {String[]} _x Desired lineGradient for the graph
-         * @return {lineGradient | module} Current lineGradient or Chart module to chain calls
+         * @param  {String[]} _x = colorHelper.colorGradients.greenBlue     Desired lineGradient for the graph
+         * @return {lineGradient | module}                                  Current lineGradient or Chart module to chain calls
          * @public
          */
         exports.lineGradient = function(_x) {
@@ -475,8 +475,8 @@ define(function(require){
 
         /**
          * Gets or Sets the loading state of the chart
-         * @param  {string} markup Desired markup to show when null data
-         * @return {loadingState | module} Current loading state markup or Chart module to chain calls
+         * @param  {string} markup          Desired markup to show when null data
+         * @return {loadingState | module}  Current loading state markup or Chart module to chain calls
          * @public
          */
         exports.loadingState = function(_markup) {
@@ -490,8 +490,8 @@ define(function(require){
 
         /**
          * Gets or Sets the margin of the chart
-         * @param  {Object} _x Margin object to get/set
-         * @return {margin | module} Current margin or Chart module to chain calls
+         * @param  {Object} _x          Margin object to get/set
+         * @return {margin | module}    Current margin or Chart module to chain calls
          * @public
          */
         exports.margin = function(_x) {
@@ -509,8 +509,8 @@ define(function(require){
         /**
          * Gets or Sets the text of the title at the top of sparkline.
          * To style the title, use the titleTextStyle method below.
-         * @param  {String} _x  String to set
-         * @return {String | module} Current titleText or Chart module to chain calls
+         * @param  {String} _x = null   String to set
+         * @return {String | module}    Current titleText or Chart module to chain calls
          * @public
          */
         exports.titleText = function(_x) {
@@ -542,8 +542,8 @@ define(function(require){
          * You can set attributes individually. Setting just 'font-family'
          * within the object will set custom 'font-family` while the rest
          * of the attributes will have the default values provided above.
-         * @param  {Object} _x  Object with text font configurations
-         * @return {Object | module} Current titleTextStyle or Chart module to chain calls
+         * @param  {Object} _x              Object with text font configurations
+         * @return {Object | module}        Current titleTextStyle or Chart module to chain calls
          * @public
          * @example
          * sparkline.titleTextStyle({
@@ -565,8 +565,8 @@ define(function(require){
 
         /**
          * Gets or Sets the valueLabel of the chart
-         * @param  {Number} _x Desired valueLabel for the graph
-         * @return {valueLabel | module} Current valueLabel or Chart module to chain calls
+         * @param  {Number} _x              Desired valueLabel for the graph
+         * @return {valueLabel | module}    Current valueLabel or Chart module to chain calls
          * @public
          */
         exports.valueLabel = function(_x) {
