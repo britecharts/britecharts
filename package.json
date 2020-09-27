@@ -45,9 +45,10 @@
     "sandbox:compile": "webpack --env=sandbox",
     "sandbox": "webpack-dev-server --env=sandbox --hot --content-base sandbox/ --inline",
     "clean": "yarn cache clean && rimraf node_modules",
-    "release": "grunt release:patch && auto-changelog -p --template changelog-template.hbs",
+    "release": "grunt release:patch && yarn changelog-upgrade",
     "release:minor": "grunt release:minor",
-    "release:major": "grunt release:major"
+    "release:major": "grunt release:major",
+    "changelog-upgrade": "auto-changelog -p --template changelog-template.hbs"
   },
   "repository": {
     "type": "git",
