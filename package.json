@@ -9,6 +9,10 @@
       "email": "golodhros@gmail.com"
     },
     {
+      "name": "Daler Asrorov",
+      "email": "daler.asrorov@eventbrite.com"
+    },
+    {
       "name": "Ryan Wholey",
       "email": "rjwholey@gmail.com"
     },
@@ -23,10 +27,6 @@
     {
       "name": "Amber Rockwood",
       "email": "arockwood@eventbrite.com"
-    },
-    {
-      "name": "Daler Asrorov",
-      "email": "daler.asrorov@eventbrite.com"
     }
   ],
   "scripts": {
