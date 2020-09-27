@@ -1,0 +1,17 @@
+### Changelog
+
+All notable changes to this project will be documented in this file. Dates are displayed in UTC.
+
+{{#each releases}}
+  ### [{{title}}]({{href}})
+
+  {{#each merges}}
+    - {{message}} {{#if href}}[`#{{id}}`]({{href}}){{/if}} by {{author}}
+  {{/each}}
+  {{#each fixes}}
+    - {{commit.subject}} {{#each fixes}}{{#if href}} [`#{{id}}`]({{href}}){{/if}}{{/each}}
+  {{/each}}
+  {{#each commits}}
+    - {{subject}} {{#if href}} [`{{shorthash}}`]({{href}}){{/if}} by {{author}}
+  {{/each}}
+{{/each}}
