@@ -1,9 +1,11 @@
-### 2.17.1 - 2020-09-26
+### 2.17.2 - 2020-09-26
 ### Changelog
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-### [2.17.0](https://github.com/DalerAsrorov/britecharts/compare/2.16.1...2.17.0)
+### [2.17.1](https://github.com/DalerAsrorov/britecharts/compare/2.17.1...2.17.1)
+
+### [2.17.1](https://github.com/DalerAsrorov/britecharts/compare/2.16.1...2.17.1)
 
 - feat: heatmap isAnimated & scatter plot enrichment/optimizations [`#855`](https://github.com/DalerAsrorov/britecharts/pull/855) by Daler Asrorov
 - chore: Updates docs on Sparkline and Stacked bar charts [`#856`](https://github.com/DalerAsrorov/britecharts/pull/856) by Marcos Iglesias
@@ -24,7 +26,9 @@ All notable changes to this project will be documented in this file. Dates are d
 - Bump prismjs from 1.16.0 to 1.21.0 [`#830`](https://github.com/DalerAsrorov/britecharts/pull/830) by dependabot[bot]
 - Add padding between bars and groups for grouped bar chart. [`#832`](https://github.com/DalerAsrorov/britecharts/pull/832) by Marcos Gómez
 - Fixes wacky JSON file, removes test coverage sumary file [`#831`](https://github.com/DalerAsrorov/britecharts/pull/831) by Marcos Iglesias
-- Bumped Project to 2.17.0  [`98ed338`](https://github.com/DalerAsrorov/britecharts/commit/98ed338fc1a715e21f93a1f2290009b33be3823b) by Marcos Iglesias
+- Update changlog automatically using the auto-configg package  [`6a8b13b`](https://github.com/DalerAsrorov/britecharts/commit/6a8b13b521f12cc37c867aea0be689da843aa97f) by DalerAsrorov
+- Contributors order change based on number of contributions :)  [`388d4ff`](https://github.com/DalerAsrorov/britecharts/commit/388d4ff2d2376117c423da3735f9dedc1d3ab48b) by DalerAsrorov
+- Update command  [`bef6b0f`](https://github.com/DalerAsrorov/britecharts/commit/bef6b0fe667150be2ed988fb75fd721be96a7541) by DalerAsrorov
 ### [2.16.1](https://github.com/DalerAsrorov/britecharts/compare/2.16.0...2.16.1)
 
 - fix bug that bars are shown if all values are 0 [`#829`](https://github.com/DalerAsrorov/britecharts/pull/829) by ajdani

@@ -1,6 +1,6 @@
 {
   "name": "britecharts",
-  "version": "2.17.1",
+  "version": "2.17.2",
   "description": "D3.js based Modular Charting Library by Eventbrite",
   "main": "dist/bundled/britecharts.min.js",
   "contributors": [
@@ -45,7 +45,7 @@
     "sandbox:compile": "webpack --env=sandbox",
     "sandbox": "webpack-dev-server --env=sandbox --hot --content-base sandbox/ --inline",
     "clean": "yarn cache clean && rimraf node_modules",
-    "release": "grunt release:patch && yarn changelog-upgrade",
+    "release": "grunt release:patch",
     "release:minor": "grunt release:minor && yarn changelog-upgrade",
     "release:major": "grunt release:major && yarn changelog-upgrade",
     "changelog-upgrade": "auto-changelog -p --template changelog-template.hbs"
