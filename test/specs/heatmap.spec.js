@@ -173,6 +173,25 @@ define(['d3', 'heatmap', 'heatmapChartDataBuilder'], function (d3, chart, dataBu
                 expect(actualCallCount).toEqual(expectedCallCount);
                 expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
             });
+
+            it('should trigger a callback on mouse click', () => {
+                const expectedCallCount = 1;
+                const expectedArgumentsNumber = 3;
+
+                let actualCallCount;
+                let actualArgumentsNumber;
+
+                const box = container.selectAll('.box:nth-child(1)');
+                const callbackSpy = jasmine.createSpy('callback');
+
+                heatmapChart.on('customClick', callbackSpy);
+                box.dispatch('click');
+                actualCallCount = callbackSpy.calls.count();
+                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length
+
+                expect(actualCallCount).toEqual(expectedCallCount);
+                expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
+            });
         });
 
         describe('API', () => {
