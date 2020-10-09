@@ -1,6 +1,6 @@
 # Britecharts
 
-> Britecharts is a client-side **reusable Charting Library** based on [D3.js v5][1] that offers easy and intuitive use of charts and components that can be composed together to create amazing visualizations.
+> Britecharts is a client-side **reusable Charting Library** based on [D3.js v5][1] that provides easy composition of charts and components to create amazing visualizations.
 
 [![Build Status](https://travis-ci.org/britecharts/britecharts.svg?branch=master)](https://travis-ci.org/britecharts/britecharts)
 [![npm version](https://badge.fury.io/js/britecharts.svg)](https://badge.fury.io/js/britecharts)
@@ -18,19 +18,28 @@ Britecharts [components][32] have been written in ES2016 with a Test Driven meth
 
 ## Key Features
 
--   Reusability
--   Composability
--   Great design
+-   🛠 Reusability
+-   🏗 Composability
+-   🌈 Great design
 
 ## Usage
 
 The typical use of Britecharts involves creating a chart using its simple API, then rendering it on a container which has previously had data applied to it. The code will look like this:
+
+```js
+    import { select } from 'd3-selection';
+    import { bar } from 'britecharts';
+
+    const barChart = bar();
+    const barContainer = select('.bar-chart-container');
+    const dataset = [...];
 
     barChart
         .width(500)
         .height(300);
 
     barContainer.datum(dataset).call(barChart);
+```
 
 ## API
 
@@ -55,8 +64,9 @@ All the components expose some **common API methods** like width, height, and ma
 
 Britecharts components are distributed in **UMD modules**, each one exposing a D3.js component written with the [Reusable API pattern][3]. To use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules or adding a script tag with the `src` pointing to the file. You would also need to load the [d3-selection][37] submodule to select the chart container.
 
-```
-   npm install britecharts d3-selection
+```js
+   npm install --save britecharts d3-selection
+   yarn add britecharts d3-selection
 ```
 
 You can also load Britecharts from our [CDN][cdnhome] as we do in this [demo][cdndemo] page or play around in our [JSBin][jsbinsandbox] and [CodePen][codependemos] demo projects.
