@@ -14,6 +14,9 @@ heatmapChart
     .boxSize(30);
 
 barContainer.datum(dataset).call(heatmapChart);
+
+tooltipContainer = d3Selection.select('.js-heatmap-chart-container .heatmap .metadata-group');
+tooltipContainer.datum([]).call(tooltip);
             </code></pre>
 
             <h4>Colors</h4>
