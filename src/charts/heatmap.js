@@ -1,11 +1,13 @@
 define(function (require) {
     'use strict';
 
+    require('d3-transition');
+
     const d3Array = require('d3-array');
     const d3Selection = require('d3-selection');
     const d3Scale = require('d3-scale');
-    const d3Transition = require('d3-transition');
     const d3Interpolate = require('d3-interpolate');
+    const d3Dispatch = require('d3-dispatch');
 
     const colorHelper = require('./helpers/color');
     const { exportChart } = require('./helpers/export');
@@ -89,6 +91,15 @@ define(function (require) {
 
             hourLabels,
             hourLabelHeight = 20,
+
+            // Dispatcher object to broadcast the mouse events
+            // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
+            dispatcher = d3Dispatch.dispatch(
+                'customMouseOver',
+                'customMouseOut',
+                'customMouseMove',
+                'customClick'
+            ),
 
             getValue = ({value}) => value;
 
@@ -223,7 +234,20 @@ define(function (require) {
                 .style('opacity', boxInitialOpacity)
                 .style('fill', boxInitialColor)
                 .style('stroke', boxBorderColor)
-                .style('stroke-width', boxBorderSize);
+                .style('stroke-width', boxBorderSize)
+                .on('mouseover', function(d, index, boxList) {
+                    handleMouseOver(this, d, boxList, chartWidth, chartHeight);
+                })
+                .on('mousemove', function(d) {
+                    handleMouseMove(this, d, chartWidth, chartHeight);
+                })
+                .on('mouseout', function(d, index, boxList) {
+                    handleMouseOut(this, d, boxList, chartWidth, chartHeight);
+                })
+                .on('click', function(d) {
+                    console.log({d}, 'click');
+                    handleClick(this, d, chartWidth, chartHeight);
+                });
 
             if (isAnimated) {
                 boxElements.transition()
@@ -280,6 +304,23 @@ define(function (require) {
 
             hourLabelsGroup.attr('transform', `translate(${boxSize / 2}, -${hourLabelHeight})`);
         }
+
+        function handleMouseOver(e, d, boxList, chartWidth, chartHeight) {
+            dispatcher.call('customMouseOver', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        }
+
+        function handleMouseMove(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customMouseMove', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        }
+
+        function handleMouseOut(e, d, boxList, chartWidth, chartHeight) {
+            dispatcher.call('customMouseOut', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        }
+
+        function handleClick(e, d, chartWidth, chartHeight) {
+            dispatcher.call('customClick', e, d, d3Selection.mouse(e), [chartWidth, chartHeight]);
+        }
+
 
         // API
         /**
@@ -383,6 +424,20 @@ define(function (require) {
             };
 
             return this;
+        };
+
+        /**
+         * Exposes an 'on' method that acts as a bridge with the event dispatcher
+         * We are going to expose this events:
+         * customMouseOver, customMouseMove, customMouseOut, and customClick
+         *
+         * @return {module} Bar Chart
+         * @public
+         */
+        exports.on = function() {
+            let value = dispatcher.on.apply(dispatcher, arguments);
+
+            return value === dispatcher ? exports : value;
         };
 
         /**

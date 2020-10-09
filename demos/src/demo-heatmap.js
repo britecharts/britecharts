@@ -6,6 +6,7 @@ const PubSub = require('pubsub-js');
 const heatmap = require('./../../src/charts/heatmap');
 const colors = require('./../../src/charts/helpers/color');
 const dataBuilder = require('./../../test/fixtures/heatmapChartDataBuilder');
+const miniTooltip = require('./../../src/charts/mini-tooltip');
 const colorSelectorHelper = require('./helpers/colorSelector');
 
 const aTestDataSet = () => new dataBuilder.HeatmapDataBuilder();
@@ -14,8 +15,10 @@ require('./helpers/resizeHelper');
 
 function createWeeklyHeatmapChart(optionalColorSchema) {
     let heatmapChart = heatmap(),
+        tooltip = miniTooltip(),
         heatmapContainer = d3Selection.select('.js-heatmap-chart-container'),
         containerWidth = heatmapContainer.node() ? heatmapContainer.node().getBoundingClientRect().width : false,
+        tooltipContainer,
         dataset;
 
     if (containerWidth) {
@@ -26,13 +29,19 @@ function createWeeklyHeatmapChart(optionalColorSchema) {
         dataset = aTestDataSet().withWeeklyData().build();
 
         heatmapChart
-            .boxSize(30);
+            .boxSize(30)
+            .on('customMouseOver', tooltip.show)
+            .on('customMouseMove', tooltip.update)
+            .on('customMouseOut', tooltip.hide);
 
         if (optionalColorSchema) {
             heatmapChart.colorSchema(optionalColorSchema);
         }
 
         heatmapContainer.datum(dataset).call(heatmapChart);
+
+        tooltipContainer = d3Selection.select('.js-heatmap-chart-container .heatmap .metadata-group');
+        tooltipContainer.datum([]).call(tooltip);
     }
 }
 

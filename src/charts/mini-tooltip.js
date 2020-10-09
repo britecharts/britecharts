@@ -1,11 +1,14 @@
 define(function(require){
     'use strict';
 
+    require('d3-transition');
+
     const d3Array = require('d3-array');
     const d3Ease = require('d3-ease');
     const d3Format = require('d3-format');
     const d3Selection = require('d3-selection');
-    const d3Transition = require('d3-transition');
+
+    const {isDefined} = require('./helpers/type');
 
     const NUMBER_FORMAT = '.2f';
 
@@ -250,7 +253,7 @@ define(function(require){
          * @param  {Object} topic Topic to extract data from
          * @return void
          */
-        function updateContent(dataPoint = {}){
+        function updateContent(dataPoint = {}) {
             let value = dataPoint[valueLabel] || '',
                 name = dataPoint[nameLabel] || '',
                 lineHeight = textSize * textLineHeight,
@@ -290,7 +293,7 @@ define(function(require){
                 temporalHeight = lineHeight + temporalHeight;
             }
 
-            if (value) {
+            if (isDefined(value)) {
                 tooltipValue = tooltipTextContainer
                   .append('text')
                     .classed('mini-tooltip-value', true)
