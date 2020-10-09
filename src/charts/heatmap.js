@@ -245,7 +245,6 @@ define(function (require) {
                     handleMouseOut(this, d, boxList, chartWidth, chartHeight);
                 })
                 .on('click', function(d) {
-                    console.log({d}, 'click');
                     handleClick(this, d, chartWidth, chartHeight);
                 });
 
