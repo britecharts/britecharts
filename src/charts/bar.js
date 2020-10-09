@@ -845,8 +845,8 @@ define(function(require) {
             return Math.min(percentageAxisToMaxRatio * d3Array.max(data, getValue));
         }
 
+        
         // API
-
         /**
          * Gets or Sets the gradient colors of a bar in the chart
          * @param  {String[]} _x Desired color gradient for the line (array of two hexadecimal numbers)
