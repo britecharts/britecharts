@@ -23,9 +23,9 @@ jobs:
       - uses: borales/actions-yarn@v2.0.2
         with:
           cmd: install
-      - uses: borales/actions-yarn@v2.0.2
-        with:
-          cmd: run test:travis
+#       - uses: borales/actions-yarn@v2.0.2
+#         with:
+#           cmd: run test:travis
     
       - name: Build 🔧
         uses: borales/actions-yarn@v2.0.2
