@@ -1,18 +1,19 @@
 (function($) {
-  var navbarHeight;
-  var initialised = false;
-  var navbarOffset;
+  var navbarHeight,
+   initialised = false,
+   navbarOffset;
 
   function elOffset($el) {
     return $el.offset().top - (navbarHeight + navbarOffset);
   }
 
   function scrollToHash(duringPageLoad) {
-    var elScrollToId = location.hash.replace(/^#/, '');
-    var $el;
+    var elScrollToId = location.hash.replace(/^#/, ''),
+     $el;
 
     function doScroll() {
       var offsetTop = elOffset($el);
+
       window.scrollTo(window.pageXOffset || window.scrollX, offsetTop);
     }
 
@@ -45,40 +46,43 @@
 
     // some browsers move the offset after changing location.
     // also catch external links coming in
-    $(window).on("hashchange", scrollToHash.bind(null, false));
+    $(window).on('hashchange', scrollToHash.bind(null, false));
     $(scrollToHash.bind(null, true));
   }
 
   $.catchAnchorLinks = function(options) {
     var opts = $.extend({}, jQuery.fn.toc.defaults, options);
+
     init(opts);
   };
 
   $.fn.toc = function(options) {
-    var self = this;
-    var opts = $.extend({}, jQuery.fn.toc.defaults, options);
+    var self = this,
+     opts = $.extend({}, jQuery.fn.toc.defaults, options),
 
-    var container = $(opts.container);
-    var tocs = [];
-    var headings = $(opts.selectors, container);
-    var headingOffsets = [];
-    var activeClassName = 'active';
-    var ANCHOR_PREFIX = "__anchor";
-    var maxScrollTo;
-    var visibleHeight;
-    var headerHeight = 10; // so if the header is readable, its counted as shown
+     container = $(opts.container),
+     tocs = [],
+     headings = $(opts.selectors, container),
+     headingOffsets = [],
+     activeClassName = 'active',
+     ANCHOR_PREFIX = '__anchor',
+     maxScrollTo,
+     visibleHeight,
+     headerHeight = 10; // so if the header is readable, its counted as shown
+
     init();
 
     var scrollTo = function(e) {
       e.preventDefault();
       var target = $(e.target);
-      if (target.prop('tagName').toLowerCase() !== "a") {
+
+      if (target.prop('tagName').toLowerCase() !== 'a') {
         target = target.parent();
       }
-      var elScrollToId = target.attr('href').replace(/^#/, '') + ANCHOR_PREFIX;
-      var $el = $(document.getElementById(elScrollToId));
+      var elScrollToId = target.attr('href').replace(/^#/, '') + ANCHOR_PREFIX,
+       $el = $(document.getElementById(elScrollToId)),
 
-      var offsetTop = Math.min(maxScrollTo, elOffset($el));
+       offsetTop = Math.min(maxScrollTo, elOffset($el));
 
       $('body,html').animate({ scrollTop: offsetTop }, 400, 'swing', function() {
         location.hash = '#' + elScrollToId;
@@ -86,25 +90,26 @@
 
       $('a', self).removeClass(activeClassName);
       target.addClass(activeClassName);
-    };
+    },
 
-    var calcHadingOffsets = function() {
-      maxScrollTo = $("body").height() - $(window).height();
+     calcHadingOffsets = function() {
+      maxScrollTo = $('body').height() - $(window).height();
       visibleHeight = $(window).height() - navbarHeight;
       headingOffsets = [];
       headings.each(function(i, heading) {
-        var anchorSpan = $(heading).prev("span");
-        var top = 0;
+        var anchorSpan = $(heading).prev('span'),
+         top = 0;
+
         if (anchorSpan.length) {
           top = elOffset(anchorSpan);
         }
         headingOffsets.push(top > 0 ? top : 0);
       });
-    }
+    },
 
     //highlight on scroll
-    var timeout;
-    var highlightOnScroll = function(e) {
+     timeout,
+     highlightOnScroll = function(e) {
       if (!tocs.length) {
         return;
       }
@@ -114,9 +119,11 @@
       timeout = setTimeout(function() {
         var top = $(window).scrollTop(),
           highlighted;
+
         for (var i = headingOffsets.length - 1; i >= 0; i--) {
           var isActive = tocs[i].hasClass(activeClassName);
           // at the end of the page, allow any shown header
+
           if (isActive && headingOffsets[i] >= maxScrollTo && top >= maxScrollTo) {
             return;
           }
@@ -137,6 +144,7 @@
         }
       }, 50);
     };
+
     if (opts.highlightOnScroll) {
       $(window).bind('scroll', highlightOnScroll);
       $(window).bind('load resize', function() {
@@ -147,19 +155,19 @@
 
     return this.each(function() {
       //build TOC
-      var el = $(this);
-      var ul = $('<div class="list-group">');
+      var el = $(this),
+       ul = $('<div class="list-group">');
 
       headings.each(function(i, heading) {
-        var $h = $(heading);
+        var $h = $(heading),
 
-        var anchor = $('<span/>').attr('id', opts.anchorName(i, heading, opts.prefix) + ANCHOR_PREFIX).insertBefore($h);
+         anchor = $('<span/>').attr('id', opts.anchorName(i, heading, opts.prefix) + ANCHOR_PREFIX).insertBefore($h),
 
-        var span = $('<span/>')
-          .text(opts.headerText(i, heading, $h));
+         span = $('<span/>')
+          .text(opts.headerText(i, heading, $h)),
 
         //build TOC item
-        var a = $('<a class="list-group-item"/>')
+         a = $('<a class="list-group-item"/>')
           .append(span)
           .attr('href', '#' + opts.anchorName(i, heading, opts.prefix))
           .bind('click', function(e) {
@@ -173,7 +181,9 @@
 
         ul.append(a);
       });
-      el.html(ul);
+      el.prepend(ul);
+    //   Modified to add Sponsor's link
+    //   el.html(ul);
 
       calcHadingOffsets();
     });
