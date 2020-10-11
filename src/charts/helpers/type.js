@@ -12,3 +12,13 @@ export const castValueToType = (value, type) => {
 
     return new Date(value);
 };
+
+/**
+ * Given any type of value, checks
+ * if it's strictly defined in JS terms.
+ * @param {any} value           Any kind of value
+ * @param {Boolean} isDefined   Whether the value is defined
+ */
+export const isDefined = (value) => {
+    return value !== null && value !== undefined;
+};
