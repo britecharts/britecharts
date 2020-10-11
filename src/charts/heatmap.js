@@ -1,7 +1,8 @@
 import { extent } from 'd3-array';
-import { select } from 'd3-selection';
+import { select, mouse } from 'd3-selection';
 import { scaleLinear } from 'd3-scale';
 import { interpolateHcl } from 'd3-interpolate';
+import { dispatch } from 'd3-dispatch';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
@@ -78,6 +79,14 @@ export default function module() {
         dayLabelWidth = 30,
         hourLabels,
         hourLabelHeight = 20,
+        // Dispatcher object to broadcast the mouse events
+        // Ref: https://github.com/mbostock/d3/wiki/Internals#d3_dispatch
+        dispatcher = dispatch(
+            'customMouseOver',
+            'customMouseOut',
+            'customMouseMove',
+            'customClick'
+        ),
         getValue = ({ value }) => value;
 
     /**
@@ -187,7 +196,19 @@ export default function module() {
             .style('opacity', boxInitialOpacity)
             .style('fill', boxInitialColor)
             .style('stroke', boxBorderColor)
-            .style('stroke-width', boxBorderSize);
+            .style('stroke-width', boxBorderSize)
+            .on('mouseover', function (d, index, boxList) {
+                handleMouseOver(this, d, boxList, chartWidth, chartHeight);
+            })
+            .on('mousemove', function (d) {
+                handleMouseMove(this, d, chartWidth, chartHeight);
+            })
+            .on('mouseout', function (d, index, boxList) {
+                handleMouseOut(this, d, boxList, chartWidth, chartHeight);
+            })
+            .on('click', function (d) {
+                handleClick(this, d, chartWidth, chartHeight);
+            });
 
         if (isAnimated) {
             boxElements
@@ -257,6 +278,34 @@ export default function module() {
             'transform',
             `translate(${boxSize / 2}, -${hourLabelHeight})`
         );
+    }
+
+    function handleMouseOver(e, d, boxList, chartWidth, chartHeight) {
+        dispatcher.call('customMouseOver', e, d, mouse(e), [
+            chartWidth,
+            chartHeight,
+        ]);
+    }
+
+    function handleMouseMove(e, d, chartWidth, chartHeight) {
+        dispatcher.call('customMouseMove', e, d, mouse(e), [
+            chartWidth,
+            chartHeight,
+        ]);
+    }
+
+    function handleMouseOut(e, d, boxList, chartWidth, chartHeight) {
+        dispatcher.call('customMouseOut', e, d, mouse(e), [
+            chartWidth,
+            chartHeight,
+        ]);
+    }
+
+    function handleClick(e, d, chartWidth, chartHeight) {
+        dispatcher.call('customClick', e, d, mouse(e), [
+            chartWidth,
+            chartHeight,
+        ]);
     }
 
     // API
@@ -346,6 +395,20 @@ export default function module() {
         };
 
         return this;
+    };
+
+    /**
+     * Exposes an 'on' method that acts as a bridge with the event dispatcher
+     * We are going to expose this events:
+     * customMouseOver, customMouseMove, customMouseOut, and customClick
+     *
+     * @return {module} Bar Chart
+     * @public
+     */
+    exports.on = function () {
+        let value = dispatcher.on.apply(dispatcher, arguments);
+
+        return value === dispatcher ? exports : value;
     };
 
     /**

@@ -4,6 +4,8 @@ import { format } from 'd3-format';
 import { select } from 'd3-selection';
 import 'd3-transition';
 
+import { isDefined } from './helpers/type';
+
 const NUMBER_FORMAT = '.2f';
 
 /**
@@ -294,7 +296,7 @@ export default function module() {
             temporalHeight = lineHeight + temporalHeight;
         }
 
-        if (value) {
+        if (isDefined(value)) {
             tooltipValue = tooltipTextContainer
                 .append('text')
                 .classed('mini-tooltip-value', true)
