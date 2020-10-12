@@ -65,6 +65,15 @@
         "code",
         "maintenance"
       ]
+    },
+    {
+      "login": "shayh",
+      "name": "shayh",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/366321?v=4",
+      "profile": "https://github.com/shayh",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
