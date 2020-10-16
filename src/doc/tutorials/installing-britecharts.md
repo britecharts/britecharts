@@ -21,7 +21,7 @@ To use the modules within your JavaScript code, you will follow a different appr
 ```js
 // For AMD and CommonJS modules
 const selection = require('d3-selection');
-const LineChart = require('britecharts/umd/line.min');
+const BarChart = require('britecharts/dist/umd/bar.min');
 
 // For ES modules
 import bar from 'britecharts/dist/umd/bar.min';
