@@ -420,7 +420,7 @@ export default function module() {
     /**
      * Gets or Sets the dateRange for the selected part of the brush
      * @param  {String[]} [_x=[null, null]]     Desired dateRange for the graph
-     * @return { dateRange | module}    Current dateRange or Chart module to chain calls
+     * @return { dateRange | module}            Current dateRange or Chart module to chain calls
      * @public
      */
     exports.dateRange = function (_x) {

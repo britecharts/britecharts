@@ -16,7 +16,6 @@ import colorHelper from './helpers/color';
 import { bar } from './helpers/load';
 import { setDefaultLocale } from './helpers/locale';
 
-
 const NUMBER_FORMAT = ',f';
 const uniq = (arrArg) =>
     arrArg.filter((elem, pos, arr) => arr.indexOf(elem) == pos);
@@ -121,10 +120,8 @@ export default function module() {
         valueLabel = 'value',
         groupLabel = 'group',
         numberFormat = NUMBER_FORMAT,
-
         betweenBarsPadding = 0.1,
         betweenGroupsPadding = 0.1,
-
         // getters
         getName = ({ name }) => name,
         getValue = ({ value }) => value,
@@ -153,7 +150,6 @@ export default function module() {
             chartWidth = width - margin.left - margin.right;
             chartHeight = height - margin.top - margin.bottom;
             data = cleanData(_data);
-
 
             prepareData(data);
             buildScales();
@@ -216,13 +212,14 @@ export default function module() {
      */
     function buildAxis(locale) {
         if (isHorizontal) {
-            xAxis = axisBottom(xScale)
-                .ticks(xTicks, locale.format(numberFormat));
-            yAxis = axisLeft(yScale)
+            xAxis = axisBottom(xScale).ticks(
+                xTicks,
+                locale.format(numberFormat)
+            );
+            yAxis = axisLeft(yScale);
         } else {
-            xAxis = axisBottom(xScale)
-            yAxis = axisLeft(yScale)
-                .ticks(yTicks, locale.format(numberFormat))
+            xAxis = axisBottom(xScale);
+            yAxis = axisLeft(yScale).ticks(yTicks, locale.format(numberFormat));
         }
     }
 
@@ -773,7 +770,8 @@ export default function module() {
      */
     function getYMax() {
         const uniqueDataPoints = new Set(data.map(getValue));
-        const isAllZero = uniqueDataPoints.size === 1 && uniqueDataPoints.has(0);
+        const isAllZero =
+            uniqueDataPoints.size === 1 && uniqueDataPoints.has(0);
 
         if (isAllZero) {
             return 1;
@@ -872,7 +870,6 @@ export default function module() {
 
     /**
      * Gets or Sets the padding between bars.
-     * The default value is 0.1
      * @param  {Number} [_x = 0.1] Padding value to get/set
      * @return {Number | module} Current padding or Chart module to chain calls
      * @public
@@ -888,7 +885,6 @@ export default function module() {
 
     /**
      * Gets or Sets the padding between groups of bars.
-     * The default value is 0.1
      * @param  {Number} [_x = 0.1] Padding value to get/set
      * @return {Number | module} Current group padding or Chart module to chain calls
      * @public
@@ -944,7 +940,6 @@ export default function module() {
 
     /**
      * Gets or Sets the grid mode.
-     *
      * @param  {String} [_x=null]   Desired mode for the grid ('vertical'|'horizontal'|'full')
      * @return { String | module}   Current mode of the grid or Area Chart module to chain calls
      * @public
@@ -1201,7 +1196,6 @@ export default function module() {
     /**
      * Gets or Sets the offset of the yAxisLabel of the chart.
      * The method accepts both positive and negative values.
-     * The default value is -60
      * @param  {Number} [_x=-60]    Desired offset for the label
      * @return {Number | module}    Current yAxisLabelOffset or Chart module to chain calls
      * @public

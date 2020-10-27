@@ -443,8 +443,7 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the subtitle for measure identifier
-     * range.
+     * Gets or Sets the subtitle for measure identifier range.
      * @param  {String} _x              Desired customSubtitle for chart
      * @return {String | module}        current customSubtitle or Chart module to chain calls
      * @public
@@ -552,8 +551,7 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the starting point of the capacity
-     * range.
+     * Gets or Sets the starting point of the capacity range.
      * @param  {Number} _x=0.5          Desired startMaxRangeOpacity for chart
      * @return {Number | module}        current startMaxRangeOpacity or Chart module to chain calls
      * @public
@@ -570,8 +568,7 @@ export default function module() {
 
     /**
      * Gets or Sets the number of ticks of the x axis on the chart
-     * (Default is 5)
-     * @param  {Number} _x          Desired horizontal ticks
+     * @param  {Number} _x = 5      Desired horizontal ticks
      * @return {Number | module}    Current ticks or Chart module to chain calls
      * @public
      */
