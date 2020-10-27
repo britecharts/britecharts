@@ -570,7 +570,7 @@ export default function module() {
      * Animation for chart loading
      * Check out {@link http://bl.ocks.org/mbostock/4341574| this example}
      *
-     * @param  {Object} b Data point
+     * @param  {Object} b   Data point
      * @return {Function}   Tween function
      * @private
      */
@@ -588,8 +588,8 @@ export default function module() {
     /**
      * Utility function that wraps a text into the given width
      *
-     * @param  {D3Selection} text         Text to write
-     * @param  {Number} legendWidth Width of the container
+     * @param  {D3Selection} text       Text to write
+     * @param  {Number} legendWidth     Width of the container
      * @private
      */
     function wrapText(text, legendWidth) {
@@ -639,8 +639,8 @@ export default function module() {
      * Gets or Sets the emptyDataConfig of the chart. If set and data is empty (quantity
      * adds up to zero or there are no entries), the chart will render an empty slice
      * with a given color (light gray by default)
-     * @param  {Object} _x emptyDataConfig object to get/set
-     * @return { Object | module} Current config for when chart data is an empty array
+     * @param  {Object} _x          EmptyDataConfig object to get/set
+     * @return { Object | module}   Current config for when chart data is an empty array
      * @public
      * @example donutChart.emptyDataConfig({showEmptySlice: true, emptySliceColor: '#000000'})
      */
@@ -796,8 +796,8 @@ export default function module() {
 
     /**
      * Gets or Sets the loading state of the chart
-     * @param  {string} markup Desired markup to show when null data
-     * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+     * @param  {string} markup              Desired markup to show when null data
+     * @return { loadingState | module}     Current loading state markup or Chart module to chain calls
      * @public
      */
     exports.loadingState = function (_markup) {
@@ -829,8 +829,8 @@ export default function module() {
 
     /**
      * Gets or Sets the number format of the donut chart
-     * @param  {string} _x Desired number format for the donut chart
-     * @return {numberFormat | module} Current numberFormat or Chart module to chain calls
+     * @param  {string} _x              Desired number format for the donut chart
+     * @return {numberFormat | module}  Current numberFormat or Chart module to chain calls
      * @public
      */
     exports.numberFormat = function (_x) {

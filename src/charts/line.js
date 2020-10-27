@@ -1271,11 +1271,10 @@ export default function module() {
     }
 
     // API
-
     /**
      * Gets or Sets the aspect ratio of the chart
-     * @param  {Number} _x Desired aspect ratio for the graph
-     * @return { (Number | Module) } Current aspect ratio or Line Chart module to chain calls
+     * @param  {Number} _x              Desired aspect ratio for the graph
+     * @return { (Number | Module) }    Current aspect ratio or Line Chart module to chain calls
      * @public
      */
     exports.aspectRatio = function (_x) {
@@ -1289,8 +1288,8 @@ export default function module() {
 
     /**
      * Gets or Sets the label of the X axis of the chart
-     * @param  {String} _x Desired label for the X axis
-     * @return { (String | Module) } Current label of the X axis or Line Chart module to chain calls
+     * @param  {String} _x              Desired label for the X axis
+     * @return { (String | Module) }    Current label of the X axis or Line Chart module to chain calls
      * @public
      */
     exports.xAxisLabel = function (_x) {
@@ -1304,8 +1303,8 @@ export default function module() {
 
     /**
      * Gets or Sets the label of the Y axis of the chart
-     * @param  {String} _x Desired label for the Y axis
-     * @return { (String | Module) } Current label of the Y axis or Line Chart module to chain calls
+     * @param  {String} _x              Desired label for the Y axis
+     * @return { (String | Module) }    Current label of the Y axis or Line Chart module to chain calls
      * @public
      */
     exports.yAxisLabel = function (_x) {
@@ -1349,8 +1348,8 @@ export default function module() {
 
     /**
      * Exposes the ability to force the chart to show a certain x axis grouping
-     * @param  {String} _x Desired format
-     * @return { (String|Module) }    Current format or module to chain calls
+     * @param  {String} _x              Desired format
+     * @return { (String|Module) }      Current format or module to chain calls
      * @public
      * @example
      *     line.xAxisFormat(line.axisTimeCombinations.HOUR_DAY)
@@ -1402,8 +1401,8 @@ export default function module() {
     /**
      * Gets or Sets the grid mode.
      *
-     * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
-     * @return { String | module} Current mode of the grid or Line Chart module to chain calls
+     * @param  {String} _x          Desired mode for the grid ('vertical'|'horizontal'|'full')
+     * @return { String | module}   Current mode of the grid or Line Chart module to chain calls
      * @public
      */
     exports.grid = function (_x) {
@@ -1517,8 +1516,8 @@ export default function module() {
 
     /**
      * Gets or Sets the gradient colors of the line chart when there is only one line
-     * @param  {String[]} _x Desired color gradient for the line (array of two hexadecimal numbers)
-     * @return { (Number | Module) } Current color gradient or Line Chart module to chain calls
+     * @param  {String[]} _x            Desired color gradient for the line (array of two hexadecimal numbers)
+     * @return { (Number | Module) }    Current color gradient or Line Chart module to chain calls
      * @public
      */
     exports.lineGradient = function (_x) {
@@ -1532,7 +1531,7 @@ export default function module() {
 
     /**
      * Gets or Sets the topicLabel of the chart
-     * @param  {Boolean} _x=false       Whether all data points should be drawn
+     * @param  {Boolean} _x=false                   Whether all data points should be drawn
      * @return {shouldShowAllDataPoints | module}   Current shouldShowAllDataPoints or Chart module to chain calls
      * @public
      */
@@ -1548,8 +1547,8 @@ export default function module() {
     /**
      * Gets or Sets the minimum width of the graph in order to show the tooltip
      * NOTE: This could also depend on the aspect ratio
-     * @param  {Number} _x Desired tooltip threshold for the graph
-     * @return { (Number | Module) } Current tooltip threshold or Line Chart module to chain calls
+     * @param  {Number} _x              Desired tooltip threshold for the graph
+     * @return { (Number | Module) }    Current tooltip threshold or Line Chart module to chain calls
      * @public
      */
     exports.tooltipThreshold = function (_x) {
@@ -1563,8 +1562,8 @@ export default function module() {
 
     /**
      * Gets or Sets the topicLabel of the chart
-     * @param  {Number} _x Desired topicLabel for the graph
-     * @return {topicLabel | module} Current topicLabel or Chart module to chain calls
+     * @param  {Number} _x              Desired topicLabel for the graph
+     * @return {topicLabel | module}    Current topicLabel or Chart module to chain calls
      * @public
      */
     exports.topicLabel = function (_x) {
@@ -1578,8 +1577,8 @@ export default function module() {
 
     /**
      * Gets or Sets the valueLabel of the chart
-     * @param  {Number} _x Desired valueLabel for the graph
-     * @return {valueLabel | module} Current valueLabel or Chart module to chain calls
+     * @param  {Number} _x              Desired valueLabel for the graph
+     * @return {valueLabel | module}    Current valueLabel or Chart module to chain calls
      * @public
      */
     exports.valueLabel = function (_x) {
@@ -1593,9 +1592,8 @@ export default function module() {
 
     /**
      * Gets or Sets the yAxisLabelPadding of the chart.
-     * The default value is -36
-     * @param  {Number} _x Desired yAxisLabelPadding for the graph
-     * @return {yAxisLabelPadding | module} Current yAxisLabelPadding or Chart module to chain calls
+     * @param  {Number} _x= -36                 Desired yAxisLabelPadding for the graph
+     * @return {yAxisLabelPadding | module}     Current yAxisLabelPadding or Chart module to chain calls
      * @public
      */
     exports.yAxisLabelPadding = function (_x) {
@@ -1609,8 +1607,7 @@ export default function module() {
 
     /**
      * Gets or Sets the number of ticks of the y axis on the chart
-     * (Default is 5)
-     * @param  {Number} _x          Desired yTicks
+     * @param  {Number} _x = 5     Desired yTicks
      * @return {Number | module}   Current yTicks or Chart module to chain calls
      * @public
      */
@@ -1625,8 +1622,8 @@ export default function module() {
 
     /**
      * Gets or Sets the width of the chart
-     * @param  {Number} _x Desired width for the graph
-     * @return {Number | Module} Current width or Line Chart module to chain calls
+     * @param  {Number} _x          Desired width for the graph
+     * @return {Number | Module}    Current width or Line Chart module to chain calls
      * @public
      */
     exports.width = function (_x) {
@@ -1645,7 +1642,7 @@ export default function module() {
      * Pass language tag for the tooltip to localize the date.
      * Feature uses Intl.DateTimeFormat, for compatability and support, refer to
      * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-     * @param  {String} _x  must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
+     * @param  {String} _x            A language tag (BCP 47) like 'en-US' or 'fr-FR'
      * @return { (String|Module) }    Current locale or module to chain calls
      * @public
      */
@@ -1661,8 +1658,8 @@ export default function module() {
     /**
      * Add custom horizontal lines to the Chart - this way you are able to plot arbitrary horizontal lines
      * onto the chart with a specific color and a text annotation over the line.
-     * @param  {Object[]} _x  Array of Objects describing the lines
-     * @return { (Object[] | Module) }    Current lines or module to chain calls
+     * @param  {Object[]} _x            Array of Objects describing the lines
+     * @return { (Object[] | Module) }  Current lines or module to chain calls
      * @public
      * @example line.lines([{
      *   y: 2,
@@ -1716,8 +1713,8 @@ export default function module() {
      * Gets or Sets the `xAxisValueType`.
      * Choose between 'date' and 'number'. When set to `number` the values of the x-axis must not
      * be dates anymore, but can be arbitrary numbers.
-     * @param  {string} [_x='date']      Desired value type of the x-axis
-     * @return {string | module}    Current value type of the x-axis or Chart module to chain calls
+     * @param  {string} [_x='date']     Desired value type of the x-axis
+     * @return {string | module}        Current value type of the x-axis or Chart module to chain calls
      * @public
      * @example line.xAxisValueType('numeric')
      */
@@ -1735,7 +1732,7 @@ export default function module() {
      * Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to
      * 'number' as well, otherwise it won't influence the visualization.
      * @param  {string} [_x='linear']      Desired value type of the x-axis
-     * @return {string | module}    Current value type of the x-axis or Chart module to chain calls
+     * @return {string | module}           Current value type of the x-axis or Chart module to chain calls
      * @public
      * @example line.xAxisValueType('numeric').xAxisScale('logarithmic')
      */
