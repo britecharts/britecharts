@@ -849,7 +849,8 @@ export default function module() {
      */
     function getPercentageAxis() {
         const uniqueDataPoints = new Set(data.map(getValue));
-        const allZeroes = uniqueDataPoints.size === 1 && uniqueDataPoints.has(0);
+        const allZeroes =
+            uniqueDataPoints.size === 1 && uniqueDataPoints.has(0);
 
         if (allZeroes) {
             return percentageAxisToMaxRatio;
@@ -860,24 +861,9 @@ export default function module() {
 
     // API
     /**
-     * Gets or Sets the gradient colors of a bar in the chart
-     * @param  {String[]} _x Desired color gradient for the line (array of two hexadecimal numbers)
-     * @return {String[] | module} Current color gradient or Line Chart module to chain calls
-     * @public
-     */
-    exports.chartGradient = function (_x) {
-        if (!arguments.length) {
-            return chartGradientColors;
-        }
-        chartGradientColors = _x;
-
-        return this;
-    };
-
-    /**
      * Gets or Sets the padding of the chart (Default is 0.1)
-     * @param  { Number | module } _x Padding value to get/set
-     * @return {padding | module} Current padding or Chart module to chain calls
+     * @param  { Number | module } _x   Padding value to get/set
+     * @return {padding | module}       Current padding or Chart module to chain calls
      * @public
      */
     exports.betweenBarsPadding = function (_x) {
@@ -885,6 +871,21 @@ export default function module() {
             return betweenBarsPadding;
         }
         betweenBarsPadding = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the gradient colors of a bar in the chart
+     * @param  {String[]} _x            Desired color gradient for the line (array of two hexadecimal numbers)
+     * @return {String[] | module}      Current color gradient or Line Chart module to chain calls
+     * @public
+     */
+    exports.chartGradient = function (_x) {
+        if (!arguments.length) {
+            return chartGradientColors;
+        }
+        chartGradientColors = _x;
 
         return this;
     };
@@ -931,8 +932,8 @@ export default function module() {
 
     /**
      * Gets or Sets the hasPercentage status
-     * @param  {boolean} _x     Should use percentage as value format
-     * @return {boolean | module} Is percentage used or Chart module to chain calls
+     * @param  {boolean} _x         Should use percentage as value format
+     * @return {boolean | module}   Is percentage used or Chart module to chain calls
      * @public
      */
     exports.hasPercentage = function (_x) {
@@ -1161,8 +1162,7 @@ export default function module() {
     };
 
     /**
-     * Configurable extension of the x axis
-     * if your max point was 50% you might want to show x axis to 60%, pass 1.2
+     * Configurable extension of the x axis. If your max point was 50% you might want to show x axis to 60%, pass 1.2
      * @param  {number} _x ratio to max data point to add to the x axis
      * @return {ratio | module} Current ratio or Chart module to chain calls
      * @public
@@ -1238,8 +1238,8 @@ export default function module() {
 
     /**
      * Gets or Sets the text of the xAxisLabel on the chart
-     * @param  {String} _x Desired text for the label
-     * @return {String | module} label or Chart module to chain calls
+     * @param  {String} _x          Desired text for the label
+     * @return {String | module}    Label or Chart module to chain calls
      * @public
      */
     exports.xAxisLabel = function (_x) {
@@ -1268,9 +1268,8 @@ export default function module() {
 
     /**
      * Gets or Sets the number of ticks of the x axis on the chart
-     * (Default is 5)
-     * @param  {Number} _x          Desired horizontal ticks
-     * @return {Number | module}    Current xTicks or Chart module to chain calls
+     * @param  {Number} _x = 5          Desired horizontal ticks
+     * @return {Number | module}        Current xTicks or Chart module to chain calls
      * @public
      */
     exports.xTicks = function (_x) {
@@ -1284,8 +1283,8 @@ export default function module() {
 
     /**
      * Gets or Sets the text of the yAxisLabel on the chart
-     * @param  {String} _x Desired text for the label
-     * @return {String | module} label or Chart module to chain calls
+     * @param  {String} _x          Desired text for the label
+     * @return {String | module}    Label or Chart module to chain calls
      * @public
      */
     exports.yAxisLabel = function (_x) {
@@ -1299,8 +1298,8 @@ export default function module() {
 
     /**
      * Gets or Sets the offset of the yAxisLabel on the chart
-     * @param  {Number} _x Desired offset for the label
-     * @return {Number | module} label or Chart module to chain calls
+     * @param  {Number} _x          Desired offset for the label
+     * @return {Number | module}    Label or Chart module to chain calls
      * @public
      */
     exports.yAxisLabelOffset = function (_x) {
@@ -1314,8 +1313,7 @@ export default function module() {
 
     /**
      * Space between y axis and chart
-     * (Default 10)
-     * @param  {Number} _x          Space between y axis and chart
+     * @param  {Number} _x = 10     Space between y axis and chart
      * @return {Number| module}     Current value of yAxisPaddingBetweenChart or Chart module to chain calls
      * @public
      */
@@ -1330,9 +1328,8 @@ export default function module() {
 
     /**
      * Gets or Sets the number of vertical ticks on the chart
-     * (Default is 6)
-     * @param  {Number} _x          Desired number of vertical ticks for the graph
-     * @return {Number | module}    Current yTicks or Chart module to chain calls
+     * @param  {Number} _x = 6         Desired number of vertical ticks for the graph
+     * @return {Number | module}       Current yTicks or Chart module to chain calls
      * @public
      */
     exports.yTicks = function (_x) {
