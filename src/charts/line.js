@@ -1416,8 +1416,8 @@ export default function module() {
 
     /**
      * Gets or Sets the height of the chart
-     * @param  {Number} _x Desired width for the graph
-     * @return { (Number | Module) } Current height or Line Chart module to chain calls
+     * @param  {Number} _x              Desired width for the graph
+     * @return { (Number | Module) }    Current height or Line Chart module to chain calls
      * @public
      */
     exports.height = function (_x) {
@@ -1434,10 +1434,8 @@ export default function module() {
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
-     * By default this is 'false'
-     *
-     * @param  {Boolean} _x Desired animation flag
-     * @return { isAnimated | module} Current isAnimated flag or Chart module
+     * @param  {Boolean} _x = false     Desired animation flag
+     * @return { isAnimated | module}   Current isAnimated flag or Chart module
      * @public
      */
     exports.isAnimated = function (_x) {
@@ -1450,49 +1448,22 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the loading state of the chart
-     * @param  {string} markup Desired markup to show when null data
-     * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+     * Add custom horizontal lines to the Chart - this way you are able to plot arbitrary horizontal lines
+     * onto the chart with a specific color and a text annotation over the line.
+     * @param  {Object[]} _x            Array of Objects describing the lines
+     * @return { (Object[] | Module) }  Current lines or module to chain calls
      * @public
+     * @example line.lines([{
+     *   y: 2,
+     *   name: 'Maximum threshold',
+     *   color: '#ff0000'
+     * }])
      */
-    exports.loadingState = function (_markup) {
+    exports.lines = function (_x) {
         if (!arguments.length) {
-            return loadingState;
+            return customLines;
         }
-        loadingState = _markup;
-
-        return this;
-    };
-
-    /**
-     * Gets or Sets the margin of the chart
-     * @param  {Object} _x Margin object to get/set
-     * @return { (Object | Module) } Current margin or Line Chart module to chain calls
-     * @public
-     */
-    exports.margin = function (_x) {
-        if (!arguments.length) {
-            return margin;
-        }
-        margin = {
-            ...margin,
-            ..._x,
-        };
-
-        return this;
-    };
-
-    /**
-     * Gets or Sets the number format of the line chart
-     * @param  {string} _x Desired number format for the line chart
-     * @return {numberFormat | module} Current numberFormat or Chart module to chain calls
-     * @public
-     */
-    exports.numberFormat = function (_x) {
-        if (!arguments.length) {
-            return numberFormat;
-        }
-        numberFormat = _x;
+        customLines = _x;
 
         return this;
     };
@@ -1525,6 +1496,71 @@ export default function module() {
             return singleLineGradientColors;
         }
         singleLineGradientColors = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the loading state of the chart
+     * @param  {string} markup Desired markup to show when null data
+     * @return { loadingState | module} Current loading state markup or Chart module to chain calls
+     * @public
+     */
+    exports.loadingState = function (_markup) {
+        if (!arguments.length) {
+            return loadingState;
+        }
+        loadingState = _markup;
+
+        return this;
+    };
+
+    /**
+     * Pass language tag for the tooltip to localize the date.
+     * Uses Intl.DateTimeFormat, for compatability and support, refer to
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+     * @param  {String} _x            A language tag (BCP 47) like 'en-US' or 'fr-FR'
+     * @return { (String|Module) }    Current locale or module to chain calls
+     * @public
+     */
+    exports.locale = function (_x) {
+        if (!arguments.length) {
+            return locale;
+        }
+        locale = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the margin object of the chart (top, bottom, left and right)
+     * @param  {Object} _x              Margin object to get/set
+     * @return { (Object | Module) }    Current margin or Line Chart module to chain calls
+     * @public
+     */
+    exports.margin = function (_x) {
+        if (!arguments.length) {
+            return margin;
+        }
+        margin = {
+            ...margin,
+            ..._x,
+        };
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the number format of the line chart
+     * @param  {string} _x              Desired number format for the line chart
+     * @return {numberFormat | module}  Current numberFormat or Chart module to chain calls
+     * @public
+     */
+    exports.numberFormat = function (_x) {
+        if (!arguments.length) {
+            return numberFormat;
+        }
+        numberFormat = _x;
 
         return this;
     };
@@ -1634,44 +1670,6 @@ export default function module() {
             height = Math.ceil(_x * aspectRatio);
         }
         width = _x;
-
-        return this;
-    };
-
-    /**
-     * Pass language tag for the tooltip to localize the date.
-     * Feature uses Intl.DateTimeFormat, for compatability and support, refer to
-     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-     * @param  {String} _x            A language tag (BCP 47) like 'en-US' or 'fr-FR'
-     * @return { (String|Module) }    Current locale or module to chain calls
-     * @public
-     */
-    exports.locale = function (_x) {
-        if (!arguments.length) {
-            return locale;
-        }
-        locale = _x;
-
-        return this;
-    };
-
-    /**
-     * Add custom horizontal lines to the Chart - this way you are able to plot arbitrary horizontal lines
-     * onto the chart with a specific color and a text annotation over the line.
-     * @param  {Object[]} _x            Array of Objects describing the lines
-     * @return { (Object[] | Module) }  Current lines or module to chain calls
-     * @public
-     * @example line.lines([{
-     *   y: 2,
-     *   name: 'Maximum threshold',
-     *   color: '#ff0000'
-     * }])
-     */
-    exports.lines = function (_x) {
-        if (!arguments.length) {
-            return customLines;
-        }
-        customLines = _x;
 
         return this;
     };
