@@ -1268,10 +1268,10 @@ export default function module() {
 
     /**
      * Gets or Sets the area curve of the stacked area.
-     * @param {String} [_x='monotoneX'] Desired curve for the stacked area, default 'monotoneX'. Other options are:
+     * @param {String} [_x='monotoneX']     Desired curve for the stacked area, default 'monotoneX'. Other options are:
      * basis, natural, linear, monotoneY, step, stepAfter, stepBefore, cardinal, and
      * catmullRom. Visit https://github.com/d3/d3-shape#curves for more information.
-     * @return {String | module} Current area curve setting or Chart module to chain calls
+     * @return {String | module}            Current area curve setting or Chart module to chain calls
      * @public
      * @example stackedArea.areaCurve('step')
      */
@@ -1286,8 +1286,8 @@ export default function module() {
 
     /**
      * Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity)
-     * @param  {Number} _x                  Opacity to get/set
-     * @return {Number | module}          Current opacity or Area Chart module to chain calls
+     * @param  {Number} _x          Opacity to get/set
+     * @return {Number | module}    Current opacity or Area Chart module to chain calls
      * @public
      */
     exports.areaOpacity = function (_x) {
@@ -1301,8 +1301,8 @@ export default function module() {
 
     /**
      * Gets or Sets the aspect ratio of the chart
-     * @param  {Number} _x Desired aspect ratio for the graph
-     * @return {Number | Module} Current aspect ratio or Area Chart module to chain calls
+     * @param  {Number} _x          Desired aspect ratio for the graph
+     * @return {Number | Module}    Current aspect ratio or Area Chart module to chain calls
      * @public
      */
     exports.aspectRatio = function (_x) {
@@ -1324,8 +1324,8 @@ export default function module() {
 
     /**
      * Gets or Sets the colorSchema of the chart
-     * @param  {String[]} _x Desired colorSchema for the graph
-     * @return {String[] | module} Current colorSchema or Chart module to chain calls
+     * @param  {String[]} _x        Desired colorSchema for the graph
+     * @return {String[] | module}  Current colorSchema or Chart module to chain calls
      * @public
      */
     exports.colorSchema = function (_x) {
@@ -1339,8 +1339,8 @@ export default function module() {
 
     /**
      * Gets or Sets the dateLabel of the chart
-     * @param  {String} _x Desired dateLabel for the graph
-     * @return {String | module} Current dateLabel or Chart module to chain calls
+     * @param  {String} _x          Desired dateLabel for the graph
+     * @return {String | module}    Current dateLabel or Chart module to chain calls
      * @public
      */
     exports.dateLabel = function (_x) {
@@ -1354,8 +1354,8 @@ export default function module() {
 
     /**
      * Gets or Sets the emptyDataConfig of the chart
-     * @param  {Object} _x emptyDataConfig object to get/set
-     * @return {Object | module} Current config for when chart data is an empty array
+     * @param  {Object} _x          emptyDataConfig object to get/set
+     * @return {Object | module}    Current config for when chart data is an empty array
      * @public
      */
     exports.emptyDataConfig = function (_x) {
@@ -1368,10 +1368,9 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the grid mode.
-     *
-     * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
-     * @return {String | module} Current mode of the grid or Area Chart module to chain calls
+     * Gets or Sets the grid mode
+     * @param  {String} _x          Desired mode for the grid ('vertical'|'horizontal'|'full')
+     * @return {String | module}    Current mode of the grid or Area Chart module to chain calls
      * @public
      */
     exports.grid = function (_x) {
@@ -1383,6 +1382,12 @@ export default function module() {
         return this;
     };
 
+    /**
+     * Enables or disables the outline at the top of the areas
+     * @param {Boolean} _x = true   Whether if the areas in the chart have an outline at the top
+     * @return {Boolean | module}   Current state of the flag
+     * @public
+     */
     exports.hasOutline = function (_x) {
         if (!arguments.length) {
             return hasOutline;
@@ -1394,8 +1399,8 @@ export default function module() {
 
     /**
      * Gets or Sets the height of the chart
-     * @param  {Number} _x Desired width for the graph
-     * @return {Number | module} Current height or Area Chart module to chain calls
+     * @param  {Number} _x          Desired width for the graph
+     * @return {Number | module}    Current height or Area Chart module to chain calls
      * @public
      */
     exports.height = function (_x) {
@@ -1412,10 +1417,8 @@ export default function module() {
 
     /**
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
-     * By default this is 'false'
-     *
-     * @param  {Boolean} _x Desired animation flag
-     * @return {Boolean | module} Current isAnimated flag or Chart module
+     * @param  {Boolean} _x = false     Desired animation flag
+     * @return {Boolean | module}       Current isAnimated flag or Chart module
      * @public
      */
     exports.isAnimated = function (_x) {
@@ -1444,8 +1447,8 @@ export default function module() {
 
     /**
      * Gets or Sets the margin of the chart
-     * @param  {Object} _x Margin object to get/set
-     * @return {Object | module} Current margin or Area Chart module to chain calls
+     * @param  {Object} _x          Margin object to get/set
+     * @return {Object | module}    Current margin or Area Chart module to chain calls
      * @public
      */
     exports.margin = function (_x) {
@@ -1463,7 +1466,6 @@ export default function module() {
     /**
      * Gets or Sets the minimum width of the graph in order to show the tooltip
      * NOTE: This could also depend on the aspect ratio
-     *
      * @param  {Number} _x          Minimum width of the graph
      * @return {Number | module}    Current tooltipThreshold or Area Chart module to chain calls
      * @public
@@ -1479,7 +1481,7 @@ export default function module() {
 
     /**
      * Pass an override for the ordering of the topics
-     * @param  {String[]} _x           Array of the names of your tooltip items
+     * @param  {String[]} _x          Array of the names of your tooltip items
      * @return {String[] | module}    Current override order or Chart module to chain calls
      * @public
      */
@@ -1494,8 +1496,8 @@ export default function module() {
 
     /**
      * Gets or Sets the loading state of the chart
-     * @param  {String} markup Desired markup to show when null data
-     * @return {String | module} Current loading state markup or Chart module to chain calls
+     * @param  {String} markup      Desired markup to show when null data
+     * @return {String | module}    Current loading state markup or Chart module to chain calls
      * @public
      */
     exports.loadingState = function (_markup) {
@@ -1511,7 +1513,7 @@ export default function module() {
      * Pass language tag for the tooltip to localize the date.
      * Feature uses Intl.DateTimeFormat, for compatability and support, refer to
      * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-     * @param  {String} _x  must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
+     * @param  {String} _x          A language tag (BCP 47) like 'en-US' or 'fr-FR'
      * @return {String | Module}    Current locale or module to chain calls
      * @public
      */
@@ -1539,7 +1541,7 @@ export default function module() {
      * We are going to expose this events:
      * customMouseOver, customMouseMove, customMouseOut,
      * customDataEntryClick and customTouchMove
-     * @return {module} Stacked Area
+     * @return {module}     Stacked Area
      * @public
      */
     exports.on = function () {
@@ -1550,8 +1552,8 @@ export default function module() {
 
     /**
      * Gets or Sets the valueLabel of the chart
-     * @param  {Number} _x Desired valueLabel for the graph
-     * @return {Number | module} Current valueLabel or Chart module to chain calls
+     * @param  {Number} _x          Desired valueLabel for the graph
+     * @return {Number | module}    Current valueLabel or Chart module to chain calls
      * @public
      */
     exports.valueLabel = function (_x) {
@@ -1565,8 +1567,8 @@ export default function module() {
 
     /**
      * Gets or Sets the width of the chart
-     * @param  {Number} _x Desired width for the graph
-     * @return {Number | module} Current width or Area Chart module to chain calls
+     * @param  {Number} _x          Desired width for the graph
+     * @return {Number | module}    Current width or Area Chart module to chain calls
      * @public
      */
     exports.width = function (_x) {
@@ -1619,7 +1621,6 @@ export default function module() {
      * Exposes the ability to force the chart to show a certain x ticks. It requires a `xAxisFormat` of 'custom' in order to work.
      * NOTE: This value needs to be a multiple of 2, 5 or 10. They won't always work as expected, as D3 decides at the end
      * how many and where the ticks will appear.
-     *
      * @param  {Number} _x            Desired number of x axis ticks (multiple of 2, 5 or 10)
      * @return {Number | Module}      Current number or ticks or module to chain calls
      * @public
@@ -1652,9 +1653,8 @@ export default function module() {
     /**
      * Gets or Sets the offset of the yAxisLabel of the chart.
      * The method accepts both positive and negative values.
-     * The default value is -60
-     * @param  {Number} [_x=-60] Desired offset for the label
-     * @return {Number | module} Current yAxisLabelOffset or Chart module to chain calls
+     * @param  {Number} [_x=-60]    Desired offset for the label
+     * @return {Number | module}    Current yAxisLabelOffset or Chart module to chain calls
      * @public
      * @example stackedArea.yAxisLabelOffset(-55)
      */
@@ -1669,7 +1669,6 @@ export default function module() {
 
     /**
      * Gets or Sets the number of ticks of the y axis on the chart
-     * (Default is 5)
      * @param  {Number} [_x=5]      Desired vertical ticks
      * @return {Number | module}    Current vertical ticks or Chart module to chain calls
      * @public
@@ -1704,8 +1703,8 @@ export default function module() {
      * Gets or Sets the `xAxisValueType`.
      * Choose between 'date' and 'number'. When set to `number` the values of the x-axis must not
      * be dates anymore, but can be arbitrary numbers.
-     * @param  {string} [_x='date']      Desired value type of the x-axis
-     * @return {string | module}    Current value type of the x-axis or Chart module to chain calls
+     * @param  {string} [_x='date']     Desired value type of the x-axis
+     * @return {string | module}        Current value type of the x-axis or Chart module to chain calls
      * @public
      * @example stackedArea.xAxisValueType('numeric')
      */
@@ -1722,8 +1721,8 @@ export default function module() {
      * Gets or Sets the `xAxisScale`.
      * Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to
      * 'number' as well, otherwise it won't influence the visualization.
-     * @param  {string} [_x='linear']      Desired value type of the x-axis
-     * @return {string | module}    Current value type of the x-axis or Chart module to chain calls
+     * @param  {string} [_x='linear']   Desired value type of the x-axis
+     * @return {string | module}        Current value type of the x-axis or Chart module to chain calls
      * @public
      * @example stackedArea.xAxisValueType('numeric').xAxisScale('logarithmic')
      */
