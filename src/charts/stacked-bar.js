@@ -627,13 +627,16 @@ export default function module() {
      * @private
      */
     function getYMax() {
-        const uniqueDataPoints = new Set(transformedData.map(({total}) => total));
-        const isAllZero = uniqueDataPoints.size === 1 && uniqueDataPoints.has(0);
+        const uniqueDataPoints = new Set(
+            transformedData.map(({ total }) => total)
+        );
+        const isAllZero =
+            uniqueDataPoints.size === 1 && uniqueDataPoints.has(0);
 
         if (isAllZero) {
             return 1;
         } else {
-            return max(transformedData.map(({total}) => total));
+            return max(transformedData.map(({ total }) => total));
         }
     }
 
@@ -833,7 +836,6 @@ export default function module() {
 
     /**
      * Gets or Sets the padding of the stacked bar chart
-     * The default value is
      * @param  {Number} _x = 0.1    Padding value to get/set
      * @return {Number | module}    Current padding or Chart module to chain calls
      * @public
@@ -850,7 +852,7 @@ export default function module() {
     /**
      * Gets or Sets the colorSchema of the chart
      * @param  {String[]} _x = colorSchemas.britecharts     Desired colorSchema for the graph
-     * @return {String[] | module} Current colorSchema or Chart module to chain calls
+     * @return {String[] | module}                          Current colorSchema or Chart module to chain calls
      * @public
      */
     exports.colorSchema = function (_x) {
@@ -873,10 +875,9 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the grid mode.
-     *
-     * @param  {String} _x Desired mode for the grid ('vertical'|'horizontal'|'full')
-     * @return {String | module} Current mode of the grid or Area Chart module to chain calls
+     * Gets or Sets the grid mode
+     * @param  {String} _x          Desired mode for the grid ('vertical'|'horizontal'|'full')
+     * @return {String | module}    Current mode of the grid or Area Chart module to chain calls
      * @public
      */
     exports.grid = function (_x) {
@@ -890,8 +891,8 @@ export default function module() {
 
     /**
      * Gets or Sets the hasPercentage status
-     * @param  {Boolean} _x     Should use percentage as value format
-     * @return {Boolean | module} Is percentage used or Chart module to chain calls
+     * @param  {Boolean} _x         Should use percentage as value format
+     * @return {Boolean | module}   Is percentage used or Chart module to chain calls
      * @public
      */
     exports.hasPercentage = function (_x) {
@@ -909,8 +910,8 @@ export default function module() {
 
     /**
      * Gets or Sets the height of the chart
-     * @param  {Number} _x Desired width for the graph
-     * @return {Number | module} Current height or Area Chart module to chain calls
+     * @param  {Number} _x          Desired width for the graph
+     * @return {Number | module}    Current height or Area Chart module to chain calls
      * @public
      */
     exports.height = function (_x) {
@@ -926,24 +927,9 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the horizontal direction of the chart
-     * @param  {Boolean} _x = false     Desired horizontal direction for the graph
-     * @return {Boolean | module} If it is horizontal or Bar Chart module to chain calls
-     * @public
-     */
-    exports.isHorizontal = function (_x) {
-        if (!arguments.length) {
-            return isHorizontal;
-        }
-        isHorizontal = _x;
-
-        return this;
-    };
-
-    /**
-     * Gets or Sets the hasReversedStacks property of the chart, reversing the order of stacks.
+     * Gets or Sets the hasReversedStacks property of the chart, reversing the order of stacks
      * @param  {Boolean} _x = false     Desired hasReversedStacks flag
-     * @return {Boolean | module} Current hasReversedStacks or Chart module to chain calls
+     * @return {Boolean | module}       Current hasReversedStacks or Chart module to chain calls
      * @public
      */
     exports.hasReversedStacks = function (_x) {
@@ -973,6 +959,36 @@ export default function module() {
     };
 
     /**
+     * Gets or Sets the horizontal direction of the chart
+     * @param  {Boolean} _x = false     Desired horizontal direction for the graph
+     * @return {Boolean | module}       If it is horizontal or Bar Chart module to chain calls
+     * @public
+     */
+    exports.isHorizontal = function (_x) {
+        if (!arguments.length) {
+            return isHorizontal;
+        }
+        isHorizontal = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the loading state of the chart
+     * @param  {String} markup      Desired markup to show when null data
+     * @return {String | module}    Current loading state markup or Chart module to chain calls
+     * @public
+     */
+    exports.loadingState = function (_markup) {
+        if (!arguments.length) {
+            return loadingState;
+        }
+        loadingState = _markup;
+
+        return this;
+    };
+
+    /**
      * Pass language tag for the tooltip to localize the date.
      * Feature uses Intl.DateTimeFormat, for compatability and support, refer to
      * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
@@ -991,7 +1007,7 @@ export default function module() {
     /**
      * Gets or Sets the margin of the chart
      * @param  {Object} _x          Margin object to get/set
-     * @return {Object | module} Current margin or Area Chart module to chain calls
+     * @return {Object | module}    Current margin or Area Chart module to chain calls
      * @public
      */
     exports.margin = function (_x) {
@@ -1022,47 +1038,16 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the number of ticks of the x axis on the chart
-     * (Default is 5)
-     * @param  {Number} _x = 5      Desired horizontal ticks
-     * @return {Number | module} Current xTicks or Chart module to chain calls
+     * Gets or Sets the numberFormat of the chart
+     * @param  {String[]} _x = ',f'     Desired numberFormat for the graph
+     * @return {String[] | module}      Current numberFormat or Chart module to chain calls
      * @public
      */
-    exports.xTicks = function (_x) {
+    exports.numberFormat = function (_x) {
         if (!arguments.length) {
-            return xTicks;
+            return numberFormat;
         }
-        xTicks = _x;
-
-        return this;
-    };
-
-    /**
-     * Gets or Sets the number of vertical ticks of the axis on the chart
-     * @param  {Number} _x = 5      Desired vertical ticks
-     * @return {Number | module}    Current yTicks or Chart module to chain calls
-     * @public
-     */
-    exports.yTicks = function (_x) {
-        if (!arguments.length) {
-            return yTicks;
-        }
-        yTicks = _x;
-
-        return this;
-    };
-
-    /**
-     * Gets or Sets the loading state of the chart
-     * @param  {String} markup      Desired markup to show when null data
-     * @return {String | module}    Current loading state markup or Chart module to chain calls
-     * @public
-     */
-    exports.loadingState = function (_markup) {
-        if (!arguments.length) {
-            return loadingState;
-        }
-        loadingState = _markup;
+        numberFormat = _x;
 
         return this;
     };
@@ -1083,7 +1068,7 @@ export default function module() {
 
     /**
      * Configurable extension of the x axis
-     * if your max point was 50% you might want to show x axis to 60%, pass 1.2
+     * If your max point was 50% you might want to show x axis to 60%, pass 1.2
      * @param  {Number} _x          Ratio to max data point to add to the x axis
      * @return {Number | module}    Current ratio or Bar Chart module to chain calls
      * @public
@@ -1115,7 +1100,6 @@ export default function module() {
     /**
      * Gets or Sets the minimum width of the graph in order to show the tooltip
      * NOTE: This could also depend on the aspect ratio
-     *
      * @param  {Number} [_x=480]    Minimum width of the graph
      * @return {Number | module}    Current tooltipThreshold or Area Chart module to chain calls
      * @public
@@ -1145,21 +1129,6 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the numberFormat of the chart
-     * @param  {String[]} _x = ',f'     Desired numberFormat for the graph
-     * @return {String[] | module}      Current numberFormat or Chart module to chain calls
-     * @public
-     */
-    exports.numberFormat = function (_x) {
-        if (!arguments.length) {
-            return numberFormat;
-        }
-        numberFormat = _x;
-
-        return this;
-    };
-
-    /**
      * Gets or Sets the width of the chart
      * @param  {Number} _x = 960    Desired width for the graph
      * @return {Number | module}    Current width or Area Chart module to chain calls
@@ -1173,6 +1142,21 @@ export default function module() {
             height = Math.ceil(_x * aspectRatio);
         }
         width = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the number of ticks of the x axis on the chart
+     * @param  {Number} _x = 5      Desired horizontal ticks
+     * @return {Number | module}    Current xTicks or Chart module to chain calls
+     * @public
+     */
+    exports.xTicks = function (_x) {
+        if (!arguments.length) {
+            return xTicks;
+        }
+        xTicks = _x;
 
         return this;
     };
@@ -1196,7 +1180,6 @@ export default function module() {
     /**
      * Gets or Sets the offset of the yAxisLabel of the chart.
      * The method accepts both positive and negative values.
-     * The default value is -60
      * @param  {Number} _x = -60        Desired offset for the label
      * @return {Number | module}        Current yAxisLabelOffset or Chart module to chain calls
      * @public
@@ -1207,6 +1190,21 @@ export default function module() {
             return yAxisLabelOffset;
         }
         yAxisLabelOffset = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the number of vertical ticks of the axis on the chart
+     * @param  {Number} _x = 5      Desired vertical ticks
+     * @return {Number | module}    Current yTicks or Chart module to chain calls
+     * @public
+     */
+    exports.yTicks = function (_x) {
+        if (!arguments.length) {
+            return yTicks;
+        }
+        yTicks = _x;
 
         return this;
     };

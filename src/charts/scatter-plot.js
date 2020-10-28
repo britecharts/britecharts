@@ -968,7 +968,7 @@ export default function module() {
 
     /**
      * Gets or Sets the colorSchema of the chart
-     * @param  {String[]} _x            Desired colorSchema for the chart
+     * @param  {String[]} _x         Desired colorSchema for the chart
      * @return {String[] | module}   Current colorSchema or Chart module to chain calls
      * @public
      * @example
@@ -995,7 +995,6 @@ export default function module() {
 
     /**
      * Gets or Sets the grid mode.
-     *
      * @param  {String} _x          Desired mode for the grid ('vertical'|'horizontal'|'full')
      * @return {String | module}    Current mode of the grid or Chart module to chain calls
      * @public
@@ -1015,8 +1014,8 @@ export default function module() {
      * and legend from both x and y axis. The user will see
      * values for x under x axis line and y under y axis. Lines
      * will be drawn with respect to highlighted data point
-     * @param  {boolean} _x=false               Desired hasCrossHairs status for chart
-     * @return {boolean | module}  Current hasCrossHairs or Chart module to chain calls
+     * @param  {boolean} _x=false   Desired hasCrossHairs status for chart
+     * @return {boolean | module}   Current hasCrossHairs or Chart module to chain calls
      * @public
      */
     exports.hasCrossHairs = function (_x) {
@@ -1030,7 +1029,7 @@ export default function module() {
 
     /**
      * Gets or Sets the hasHollowCircles value of the chart area
-     * @param  {boolean} _x=false             Choose whether chart's data points/circles should be hollow
+     * @param  {boolean} _x=false    Choose whether chart's data points/circles should be hollow
      * @return {boolean | module}    Current hasHollowCircles value or Chart module to chain calls
      * @public
      */
@@ -1100,7 +1099,7 @@ export default function module() {
     /**
      * Gets or Sets isAnimated value. If set to true,
      * the chart will be initialized or updated with animation.
-     * @param  {boolean} _x=false       Desired isAnimated properties for each side
+     * @param  {boolean} _x=false    Desired isAnimated properties for each side
      * @return {boolean | module}    Current isAnimated or Chart module to chain calls
      * @public
      */
@@ -1150,7 +1149,7 @@ export default function module() {
 
     /**
      * Gets or Sets the maximum value of the chart area
-     * @param  {Number} _x=10              Desired margin object properties for each side
+     * @param  {Number} _x=10       Desired margin object properties for each side
      * @return {Number | module}    Current maxCircleArea or Chart module to chain calls
      * @public
      */
@@ -1229,8 +1228,8 @@ export default function module() {
 
     /**
      * Exposes ability to set the format of x-axis values
-     * @param  {String} _x               Desired height for the chart
-     * @return {String | module}         Current xAxisFormat or Chart module to chain calls
+     * @param  {String} _x        Desired height for the chart
+     * @return {String | module}  Current xAxisFormat or Chart module to chain calls
      * @public
      */
     exports.xAxisFormat = function (_x) {
@@ -1276,7 +1275,7 @@ export default function module() {
 
     /**
      * Exposes ability to set the format of y-axis values
-     * @param  {String} _x               Desired height for the chart
+     * @param  {String} _x          Desired height for the chart
      * @return {String | module}    Current yAxisFormat or Chart module to chain calls
      * @public
      */
@@ -1291,8 +1290,8 @@ export default function module() {
 
     /**
      * Gets or Sets the y-axis label of the chart
-     * @param  {String} _x Desired label string
-     * @return {String | module} Current yAxisLabel or Chart module to chain calls
+     * @param  {String} _x          Desired label string
+     * @return {String | module}    Current yAxisLabel or Chart module to chain calls
      * @public
      * @example scatterPlot.yAxisLabel('Ice Cream Consmuption Growth')
      */
