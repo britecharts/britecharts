@@ -450,8 +450,8 @@ export default function module() {
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
      * By default this is 'false'
      *
-     * @param  {Boolean} _x Desired animation flag
-     * @return {isAnimated | module} Current isAnimated flag or Chart module
+     * @param  {Boolean} _x             Desired animation flag
+     * @return {isAnimated | module}    Current isAnimated flag or Chart module
      * @public
      */
     exports.isAnimated = function (_x) {
@@ -514,7 +514,7 @@ export default function module() {
      * Gets or Sets the text of the title at the top of sparkline.
      * To style the title, use the titleTextStyle method below.
      * @param  {String} _x = null   String to set
-     * @return {String | module} Current titleText or Chart module to chain calls
+     * @return {String | module}    Current titleText or Chart module to chain calls
      * @public
      */
     exports.titleText = function (_x) {
@@ -584,8 +584,8 @@ export default function module() {
 
     /**
      * Gets or Sets the width of the chart
-     * @param  {Number} _x Desired width for the graph
-     * @return {width | module} Current width or Chart module to chain calls
+     * @param  {Number} _x          Desired width for the graph
+     * @return {width | module}     Current width or Chart module to chain calls
      * @public
      */
     exports.width = function (_x) {
