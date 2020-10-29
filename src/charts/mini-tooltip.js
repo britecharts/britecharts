@@ -58,6 +58,7 @@ define(function(require){
 
             // Animations
             mouseChaseDuration = 100,
+            fadeInDuration = 200,
             ease = d3Ease.easeQuadInOut,
 
             // tooltip
@@ -242,7 +243,9 @@ define(function(require){
          */
         function showTooltip(dataPoint) {
             updateContent(dataPoint);
-            svg.style('visibility', 'visible');
+            svg
+                .style('visibility', 'visible')
+                .style('opacity', 0);
         }
 
         /**
@@ -317,8 +320,9 @@ define(function(require){
             let [tooltipX, tooltipY] = getTooltipPosition(mousePosition, parentChartSize);
 
             svg.transition()
-                .duration(mouseChaseDuration)
+                .duration(fadeInDuration)
                 .ease(ease)
+                .style('opacity', 1)
                 .attr('height', chartHeight + margin.top + margin.bottom)
                 .attr('width', chartWidth + margin.left + margin.right)
                 .attr('transform', `translate(${tooltipX},${tooltipY})`);
