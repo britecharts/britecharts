@@ -1,7 +1,7 @@
-import { ChartBaseAPI, InteractiveChartAPI, ExportableChartAPI } from '@common/base';
-import { GridTypes } from '@common/grid';
-import { ChartModuleSelection } from '@common/selection';
-import { AxisTimeCombination } from '@helpers/constants';
+import { ChartBaseAPI, InteractiveChartAPI, ExportableChartAPI } from '../common/base';
+import { GridTypes } from '../common/grid';
+import { ChartModuleSelection } from '../common/selection';
+import { AxisTimeCombination } from '../helpers/constants';
 import { StackedBarChartModule } from 'britecharts';
 
 

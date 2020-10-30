@@ -1,7 +1,7 @@
-import { LocalObject } from '@common/local';
-import { StackedBarBaseAPI, InteractiveChartAPI, ExportableChartAPI } from '@common/base';
-import { GridTypes } from '@common/grid';
-import { ChartModuleSelection } from '@common/selection';
+import { LocalObject } from '../common/local';
+import { StackedBarBaseAPI, InteractiveChartAPI, ExportableChartAPI } from '../common/base';
+import { GridTypes } from '../common/grid';
+import { ChartModuleSelection } from '../common/selection';
 import { BaseType, Selection } from 'd3-selection';
 import { StackedAreaChartModule } from 'britecharts';
 

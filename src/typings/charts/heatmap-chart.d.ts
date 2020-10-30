@@ -1,5 +1,5 @@
-import { BaseAPI, ExportableChartAPI } from '@common/base';
-import { ChartModuleSelection } from '@common/selection';
+import { BaseAPI, ExportableChartAPI } from '../common/base';
+import { ChartModuleSelection } from '../common/selection';
 
 export enum HeatmapChartKeys {
   Day = 'day',

@@ -1,5 +1,5 @@
-import { ChartDimensionsAPI, ChartAnimationAPI, ExportableChartAPI } from '@common/base';
-import { ChartModuleSelection } from '@common/selection';
+import { ChartDimensionsAPI, ChartAnimationAPI, ExportableChartAPI } from '../common/base';
+import { ChartModuleSelection } from '../common/selection';
 import { BaseType, Selection } from 'd3-selection';
 
 export enum SparklineChartKeys {

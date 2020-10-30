@@ -1,4 +1,4 @@
-import { ChartModuleSelection } from '@common/selection';
+import { ChartModuleSelection } from '../common/selection';
 import { BaseType, Selection } from 'd3-selection';
 
 export enum MiniTooltipKeys {

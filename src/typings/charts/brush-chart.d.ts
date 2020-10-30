@@ -1,8 +1,8 @@
-import { ChartBaseAPIMinimal, InteractiveChartAPI } from '@common/base';
-import { ChartModuleSelection } from '@common/selection';
+import { ChartBaseAPIMinimal, InteractiveChartAPI } from '../common/base';
+import { ChartModuleSelection } from '../common/selection';
 import { BaseType, Selection } from 'd3-selection';
-import { AxisTimeCombination } from '@helpers/constants';
-import { ColorGradientType } from '@helpers/colors';
+import { AxisTimeCombination } from '../helpers/constants';
+import { ColorGradientType } from '../helpers/colors';
 
 
 export enum BrushChartKeys {

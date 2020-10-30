@@ -1,5 +1,5 @@
-import { ChartBaseAPI, InteractiveChartAPI, ExportableChartAPI } from '@common/base';
-import { ChartModuleSelection } from '@common/selection';
+import { ChartBaseAPI, InteractiveChartAPI, ExportableChartAPI } from '../common/base';
+import { ChartModuleSelection } from '../common/selection';
 
 export enum DonutChartKeys {
   ID = 'id',

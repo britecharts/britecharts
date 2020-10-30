@@ -1,6 +1,6 @@
-import { LocalObject } from '@common/local';
-import { ColorsSchemasType } from '@helpers/colors';
-import { ChartMarginParams } from '@common/margin';
+import { LocalObject } from './local';
+import { ColorsSchemasType } from '../helpers/colors';
+import { ChartMarginParams } from './margin';
 
 export interface ChartBaseAPI<T> {
   /** Gets or Sets the colorSchema of the chart */

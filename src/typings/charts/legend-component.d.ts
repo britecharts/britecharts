@@ -1,5 +1,5 @@
-import { ComponentBaseAPI } from '@common/base';
-import { ChartModuleSelection } from '@common/selection';
+import { ComponentBaseAPI } from '../common/base';
+import { ChartModuleSelection } from '../common/selection';
 import { BaseType, Selection } from 'd3-selection';
 
 

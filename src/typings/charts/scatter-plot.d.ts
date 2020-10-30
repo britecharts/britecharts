@@ -1,6 +1,6 @@
-import { ChartBaseAPI, InteractiveChartAPI, ExportableChartAPI } from '@common/base';
-import { GridTypes } from '@common/grid';
-import { ChartModuleSelection } from '@common/selection';
+import { ChartBaseAPI, InteractiveChartAPI, ExportableChartAPI } from '../common/base';
+import { GridTypes } from '../common/grid';
+import { ChartModuleSelection } from '../common/selection';
 
 export enum ScatterPlotKeys {
   Name = 'name',

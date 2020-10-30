@@ -1,5 +1,5 @@
-import { ChartBaseAPI, ExportableChartAPI } from '@common/base';
-import { ChartModuleSelection } from '@common/selection';
+import { ChartBaseAPI, ExportableChartAPI } from '../common/base';
+import { ChartModuleSelection } from '../common/selection';
 
 export enum BulletChartKeys {
   Ranges = 'ranges',

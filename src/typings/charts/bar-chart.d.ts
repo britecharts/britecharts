@@ -1,5 +1,5 @@
-import { ChartBaseAPI, InteractiveChartAPI, ExportableChartAPI } from '@common/base';
-import { ChartModuleSelection } from '@common/selection';
+import { ChartBaseAPI, InteractiveChartAPI, ExportableChartAPI } from '../common/base';
+import { ChartModuleSelection } from '../common/selection';
 import { BaseType, Selection } from 'd3-selection';
 
 export enum BarChartKeys {
@@ -85,8 +85,8 @@ export interface BarChartAPI extends ChartBaseAPI<BarChartModule>, ExportableCha
 export type BarChartModule = ChartModuleSelection<BarChartDataShape[]> &
   BarChartAPI;
 
-/**
- * import {bar} from 'britecharts;
- * bar().width(100).height(100)
- */
-export function bar(): BarChartModule;
+// /**
+//  * import {bar} from 'britecharts;
+//  * bar().width(100).height(100)
+//  */
+// export function bar(): BarChartModule;

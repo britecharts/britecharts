@@ -1,6 +1,6 @@
-import { GroupedBarBaseAPI, InteractiveChartAPI, ExportableChartAPI } from '@common/base';
-import { ChartModuleSelection } from '@common/selection';
-import { GridTypes } from '@common/grid';
+import { GroupedBarBaseAPI, InteractiveChartAPI, ExportableChartAPI } from '../common/base';
+import { ChartModuleSelection } from '../common/selection';
+import { GridTypes } from '../common/grid';
 import { BaseType, Selection } from 'd3-selection';
 
 

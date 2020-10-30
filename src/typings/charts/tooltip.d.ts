@@ -1,7 +1,7 @@
-import { ChartModuleSelection } from '@common/selection';
+import { ChartModuleSelection } from '../common/selection';
 import { BaseType, Selection } from 'd3-selection';
-import { AxisTimeCombination } from '@helpers/constants';
-import { LocalObject } from '@common/local';
+import { AxisTimeCombination } from '../helpers/constants';
+import { LocalObject } from '../common/local';
 
 export enum tooltipKeys {
   Date = 'date',
