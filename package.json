@@ -4,7 +4,7 @@
     "description": "D3.js based Modular Charting Library by Eventbrite",
     "main": "dist/bundled/britecharts.min.js",
     "module": "src/index.js",
-    "types": "./src/typings/index.d.ts",
+    "types": "src/typings/index.d.ts",
     "contributors": [
         {
             "name": "Marcos Iglesias",
