@@ -4,6 +4,7 @@
     "description": "D3.js based Modular Charting Library by Eventbrite",
     "main": "dist/bundled/britecharts.min.js",
     "module": "src/index.js",
+    "types": "src/typings/index.d.js",
     "contributors": [
         {
             "name": "Marcos Iglesias",
@@ -178,6 +179,8 @@
         "lodash.assign": "^4.2.0"
     },
     "devDependencies": {
+        "@types/d3-selection": "^1.4.1",
+        "typescript": "^3.9.2",
         "@babel/core": "^7.0.0",
         "@babel/plugin-proposal-class-properties": "^7.0.0",
         "@babel/plugin-proposal-decorators": "^7.0.0",
