@@ -39,9 +39,10 @@ node_modules
 # Demos
 demos/build
 
+# Builds
 sandbox/build
-
 dist
 docs
+*.tgz
 
 .eslintcache
