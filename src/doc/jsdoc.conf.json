@@ -13,9 +13,9 @@
     },
     "plugins": [],
     "templates": {
-        "default":{
-            "staticFiles":{
-                "paths":["./src/doc/html"]
+        "default": {
+            "staticFiles": {
+                "paths": ["./src/doc/html"]
             }
         },
         "logoFile": "img/britecharts-logo.svg",
@@ -33,9 +33,9 @@
         "syntaxTheme": "default",
         "monospaceLinks": false,
         "search": true,
-        "analytics":{
-            "ua":"UA-141520-30",
-            "domain":"auto"
+        "analytics": {
+            "ua": "G-W3BQXCKSD9",
+            "domain": "auto"
         },
         "openGraph": {
             "title": "Britecharts, a D3.js based charting library of reusable components",
