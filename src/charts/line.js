@@ -578,9 +578,10 @@ define(function(require){
             let maxY = d3Array.max(dataByTopic, ({dates}) => d3Array.max(dates, getValue)),
                 minY = d3Array.min(dataByTopic, ({dates}) => d3Array.min(dates, getValue));
             let yScaleBottomValue = minY < 0 ? minY : 0;
+            let yScaleTopValue = minY === 0 && maxY === 0 ? 1 : maxY;
 
             return d3Scale.scaleLinear()
-                .domain([yScaleBottomValue, maxY])
+                .domain([yScaleBottomValue, yScaleTopValue])
                 .rangeRound([chartHeight, 0])
                 .nice();
         }

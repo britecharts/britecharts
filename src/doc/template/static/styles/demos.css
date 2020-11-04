@@ -83,6 +83,7 @@
     display: none;
 }
 
+/* Readme */
 .readme-section h1 {
     display: none;
 }
@@ -91,6 +92,17 @@
 }
 .readme-section img {
     max-width: 100%;
+}
+/* Contributors Table */
+.readme-section .contributors-table a {
+    text-decoration: none;
+    display: inline-block;
+}
+.readme-section .contributors-table img {
+    max-width: none;
+}
+.readme-section .contributors-table sub {
+    bottom: 0;
 }
 
 /* Charts */
