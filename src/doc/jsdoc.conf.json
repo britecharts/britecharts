@@ -21,7 +21,6 @@
         "logoFile": "img/britecharts-logo.svg",
         "systemName": "Britecharts",
         "footer": "",
-        "copyright": "Eventbrite Copyright",
         "includeDate": false,
         "navType": "inline",
         "theme": "flatly",
