@@ -22,13 +22,13 @@ This process watches the test and chart files, re-running the tests when those c
 
 ### JSDoc Generated Documentation
 
-JSDoc is an API documentation generator. It allows us to follow a methodology when commenting our code so that later we can automatically generate documentation from these comments. Check it's [getting started guide](http://usejsdoc.org/about-getting-started.html) to know more about it.
+JSDoc is an API documentation generator. It allows us to follow a methodology when commenting our code so that later we can automatically generate documentation from these comments. Check its [getting started guide](http://usejsdoc.org/about-getting-started.html) to know more about it.
 
-We enforce jsDoc comments in our review process, so all the functions need a comment. We require also to be mindful and when we change the code of a function. Please check if its comments need an update too. This is essential, as our documentation gets generated from these JSDoc comments.
+We enforce jsDoc comments in our review process, hence each function should be commented. We require also to be mindful and when we change the code of a function. Please check if comments need to be updated too. This is essential, as our documentation gets generated from these JSDoc comments.
 
 We are also using [Grunt](http://gruntjs.com/) and a [grunt task](https://github.com/krampstudio/grunt-jsdoc) to generate the documentation.
 
-Lastly, for the documentation site theme, we are using a custom [Bootswatch theme](https://bootswatch.com/). Its repository is [a fork](https://github.com/Golodhros/bootswatch) of the original, and to update it, we would only run:
+Lastly, for the documentation site theme, we are using a custom [Bootswatch theme](https://bootswatch.com/). Its repository is [a fork](https://github.com/Golodhros/bootswatch) of the original, and to update it, we only run:
 
 ```
 grunt swatch_scss:custom

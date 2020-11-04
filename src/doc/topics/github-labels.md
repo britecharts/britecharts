@@ -16,7 +16,7 @@ Read on to learn more about them.
 
 #### Status Labels
 
--   Shows at a glance the progress of each issue
+-   Show at a glance the progress of each issue
 -   Prefixed with Status: &lt;Name of Label>
 -   Only one status label will be applied to any particular issue
 -   They are:

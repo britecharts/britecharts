@@ -1,18 +1,18 @@
 ## API Guidelines
 
-Creating new features and charts for Britecharts is easy. However, naming the API methods is hard. We have created these API guidelines to help our contributors choosing the right names for their accessors and variables.
+Creating new features and charts for Britecharts is easy. However, naming the API methods is hard. We have created these API guidelines to help our contributors choose proper accessor and variable names.
 
-The guidelines help developers to improve the consistency of the library and lower the entry barrier to start contributing to Britecharts. They also help reviewers at the time of doing code reviews.
+The guidelines help developers improve the consistency of the library and lower the entry barrier to start contributing to Britecharts. They also help reviewers at the time of doing code reviews, and they facilitate an efficient code review process.
 
 ### General Considerations
 
-Variable and accessor names should be on camelCase, and we try to use only one word that coincides with the internal variable we are using. Variables probably are nouns, while commands are verbs.
+Variable and accessor names should be camel cased (eg. "shouldBeCamelCase"), and we try to use only one word that coincide with the internal variable we are using. Variables are nouns, while commands are verbs.
 
 For example: _height, width, margin, title_.
 
 ### Variable and function names length
 
-We will usually follow the 'Scope Rule':
+We will follow the 'Scope Rule':
 
 -   Variable names:
     -   short in small scopes (d)
@@ -23,7 +23,7 @@ We will usually follow the 'Scope Rule':
 
 ### Event dispatchers
 
-The custom events that are attached to the charts always are added using ‘on’.
+The custom events that are attached to the charts always are prefixed with ‘on’.
 
 As in: _.on('customHover')_
 
@@ -39,7 +39,7 @@ As in: _isAnimated, hasFixedHighlightedSlice_.
 
 ### Commands
 
-They must be a verb, and keep them as one word when possible.
+Commands must be verbs and be constructed into a single word if possible
 
 As in: _hide, show, exportChart_
 
@@ -57,6 +57,6 @@ As in: _numberFormat, xLabelFormat_
 
 ### Ticks and Axis
 
-We use the axis name and the 'axis' and ‘ticks’ suffix:
+We use the axis name followed by the 'axis' and ‘ticks’ suffix:
 
 As in: _xTicks, yTicks_

@@ -2,7 +2,7 @@
 
 ### ES2015 transpiling
 
-We wrote Britecharts modules in ES2015, so we would need to create an ES5-compatible version of the charts before releasing a new version.
+We built Britecharts module in es2015 to create an ES5-compatible version of the charts before releasing a new version.
 
 To work with the development version of the charts, we need to run:
 `yarn run demos:serve`
@@ -12,7 +12,7 @@ However, if you want to create the production version of the charts, you should 
 
 ### The Tasks
 
-The build sequence consists of a small set of [Node][node] tasks. While you'll probably only need `yarn run test` and `yarn run build` most of the time, the other tasks can be called independently or combined to see the docs.
+The build sequence consists of a small set of [Node][node] tasks. While you'll probably only need `yarn run test` and `yarn run build` most of the time, the other tasks can be called independently or be combined to see the docs.
 
 | Task                     | Description                                                                              |
 | ------------------------ | ---------------------------------------------------------------------------------------- |

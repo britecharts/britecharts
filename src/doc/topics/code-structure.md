@@ -2,7 +2,7 @@
 
 ## Code Structure
 
-We want to keep a standard code structure that we base on the original Reusable Chart API. The structure of a chart would look more or less like this:
+We require contributors to preserve both the structure and the code standards based on the original Reusable Chart API. The structure of a chart would look more or less like this:
 
 ```
   // D3 module requires
