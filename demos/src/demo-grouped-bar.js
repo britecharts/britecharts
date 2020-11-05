@@ -30,9 +30,6 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
             .width(containerWidth)
             .grid('horizontal')
             .isAnimated(true)
-            .groupLabel('stack')
-            .nameLabel('date')
-            .valueLabel('views')
             .on('customMouseOver', function () {
                 chartTooltip.show();
             })
@@ -53,7 +50,7 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
         chartTooltip
             .topicLabel('values')
             .dateLabel('key')
-            .nameLabel('stack')
+            .nameLabel('group')
             .title('Testing tooltip');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
@@ -99,9 +96,6 @@ function createHorizontalgroupedBarChart(optionalColorSchema) {
                 right: 30,
                 bottom: 20,
             })
-            .nameLabel('date')
-            .valueLabel('views')
-            .groupLabel('stack')
             .on('customMouseOver', function () {
                 chartTooltip.show();
             })
@@ -122,7 +116,7 @@ function createHorizontalgroupedBarChart(optionalColorSchema) {
         chartTooltip
             .topicLabel('values')
             .dateLabel('key')
-            .nameLabel('stack')
+            .nameLabel('group')
             .title('Tooltip Title');
 
         // Note that if the viewport width is less than the tooltipThreshold value,

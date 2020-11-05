@@ -9,8 +9,8 @@ const buildDataSet = (dataSetName) => {
 };
 
 const differentDatesReducer = (acc, d) => {
-    if (acc.indexOf(d.date) === -1) {
-        acc.push(d.date);
+    if (acc.indexOf(d.name) === -1) {
+        acc.push(d.name);
     }
 
     return acc;
@@ -24,11 +24,7 @@ describe('Grouped Bar Chart', () => {
             '<div id="fixture"><div class="test-container"></div></div>';
 
         dataset = buildDataSet('with3Sources');
-        groupedBarChart = chart()
-            .groupLabel('stack')
-            .nameLabel('date')
-            .valueLabel('views')
-            .grid('full');
+        groupedBarChart = chart().grid('full');
 
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -489,26 +485,22 @@ describe('Grouped Bar Chart', () => {
             it('should show the € sign', () => {
                 const customSign = '€';
                 const customLocale = {
-                    'decimal': ',',
-                    'thousands': '.',
-                    'grouping': [
-                        3
-                    ],
-                    'currency': [
-                        `${customSign} `,
-                        ''
-                    ]
+                    decimal: ',',
+                    thousands: '.',
+                    grouping: [3],
+                    currency: [`${customSign} `, ''],
                 };
 
-                groupedBarChart
-                    .numberFormat('$,.2f')
-                    .locale(customLocale);
+                groupedBarChart.numberFormat('$,.2f').locale(customLocale);
                 containerFixture.datum(dataset.data).call(groupedBarChart);
 
-                const firstTickSelection = containerFixture.select('.y-axis-group.axis')
+                const firstTickSelection = containerFixture
+                    .select('.y-axis-group.axis')
                     .select('.tick');
 
-                expect(firstTickSelection.text()).toMatch(new RegExp(`${customSign} \\d+\\.?\\d*`));
+                expect(firstTickSelection.text()).toMatch(
+                    new RegExp(`${customSign} \\d+\\.?\\d*`)
+                );
             });
         });
     });

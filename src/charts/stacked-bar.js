@@ -774,7 +774,8 @@ export default function module() {
                         ret[entry[stackLabel]] = getValue(entry);
                     }
                 });
-                ret.values = values; //for tooltip
+                //for tooltip
+                ret.values = values;
 
                 return ret;
             })

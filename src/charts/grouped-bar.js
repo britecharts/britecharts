@@ -798,6 +798,7 @@ export default function module() {
      */
     function prepareData(data) {
         groups = uniq(data.map((d) => getGroup(d)));
+
         transformedData = nest()
             .key(getName)
             .rollup(function (values) {
@@ -810,6 +811,7 @@ export default function module() {
                 });
                 //for tooltip
                 ret.values = values;
+
                 return ret;
             })
             .entries(data)
@@ -852,7 +854,6 @@ export default function module() {
     }
 
     // API
-
     /**
      * Gets or Sets the aspect ratio of the chart
      * @param  {Number} [_x = null]     Desired aspect ratio for the graph
