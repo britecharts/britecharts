@@ -127,7 +127,7 @@
         <main class="container" id="toc-content">
             <div class="row">
             	<?js if(docs && docs[0].kind !== "source"){ ?>
-            	<div class="col-md-9 col-lg-6 col-lg-offset-2 is-source ">
+            	<div class="col-md-9 col-lg-7 col-lg-offset-1 is-source ">
             	<?js } else { ?>
             	<div class="col-md-12">
             	<?js } ?>
@@ -137,10 +137,24 @@
             	</div>
             	<?js if(docs && docs[0].kind !== "source"){ ?>
             		<div class="col-md-3 col-lg-2">
-            			<div id="toc" class="col-md-3 col-lg-2 affix hidden-xs hidden-sm">
+            			<div id="toc" class="col-md-3 col-lg-3 affix hidden-xs hidden-sm">
                             <div style="padding-left:14px">
-                                <h5>Loving this project?</h5>
-                                <iframe src="https://github.com/sponsors/britecharts/button" title="Sponsor britecharts" height="35" width="130" style="border: 0;"></iframe>
+                                <h4>Loving this project?</h4>
+                                <iframe src="https://github.com/sponsors/britecharts/button" title="Sponsor britecharts" height="35" width="130" style="border: 0; margin-bottom: 20px;"></iframe>
+                                <h4>Learn more about Britecharts</h4>
+                                <a
+                                    class="book-container"
+                                    href="http://bit.ly/pro-d3"
+                                    target="_blank"
+                                    rel="noreferrer noopener"
+                                >
+                                    <div class="book">
+                                        <img
+                                            alt="Marcos Iglesias - Pro D3.js cover"
+                                            src="https://images.springer.com/sgw/books/medium/9781484252024.jpg"
+                                        />
+                                    </div>
+                                </a>
                             </div>
                         </div>
             		</div>
