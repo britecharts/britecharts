@@ -1,7 +1,7 @@
 # How-To Guides
 The Britecharts how-to guides provide step by step instructions on how to accomplish standardized tasks for the library.
 
-We have how multiple guides for different kinds of users:
+We have how multiple guides for specific type of users:
 * [User How-To Guides][userHowTo]
 * [Contributor How-To Guides][contributorHowTo]
 
