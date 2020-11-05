@@ -910,94 +910,6 @@ exports.publish = function (taffyData, opts, tutorials) {
         );
     }
 
-// Topics (main page)
-var topicsIndexContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/topics-index.md')).toString(),
- topicsIndexhtml = parser(topicsIndexContent),
-// topics sub pages
- apiGuidelinesContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/api-guidelines.md')).toString(),
- apiGuidelinesHtml = parser(apiGuidelinesContent),
- codeStandardsContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/code-standards.md')).toString(),
- condeStandardsHtml = parser(codeStandardsContent),
- buildSystemContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/build-system.md')).toString(),
- buildSystemHtml = parser(buildSystemContent),
- codeStructureContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/code-structure.md')).toString(),
- codeStructureContentHtml = parser(codeStructureContent),
- githubLabelsContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/github-labels.md')).toString(),
- githubLabelsHtml = parser(githubLabelsContent),
- reusableApiContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/reusable-api.md')).toString(),
- reusableApiHtml = parser(reusableApiContent);
-
-generate(
-    'topics-index',
-    'Britecharts Topics',
-    [{
-        kind: 'mainpage',
-        class: 'tutorial',
-        readme: topicsIndexhtml
-    }],
-    topicsIndexUrl
-);
-generate(
-    'api-guidelines',
-    'API Guidelines',
-    [{
-        kind: 'mainpage',
-        class: 'topics',
-        readme: apiGuidelinesHtml
-    }],
-    apiGuidelines
-);
-generate(
-    'code-standards',
-    'Code Standards',
-    [{
-        kind: 'mainpage',
-        class: 'topics',
-        readme: condeStandardsHtml
-    }],
-    codeStandards
-);
-generate(
-    'build-system',
-    'Build System',
-    [{
-        kind: 'mainpage',
-        class: 'topics',
-        readme: buildSystemHtml
-    }],
-    buildSystem
-);
-generate(
-    'code-structure',
-    'Code and Project Structure',
-    [{
-        kind: 'mainpage',
-        class: 'topics',
-        readme: codeStructureContentHtml
-    }],
-    codeStructure
-);
-generate(
-    'github-labels',
-    'Github Labels',
-    [{
-        kind: 'mainpage',
-        class: 'topics',
-        readme: githubLabelsHtml
-    }],
-    githubLabels
-);
-generate(
-    'reusable-api',
-    'Reusable API',
-    [{
-        kind: 'mainpage',
-        class: 'topics',
-        readme: reusableApiHtml
-    }],
-    reusableApi
-);
-
 
   // set up the lists that we'll use to generate pages
   var classes = taffy(members.classes),
@@ -1279,23 +1191,93 @@ for (var longname in helper.longnameToUrl) {
         cdnUrl
     );
 
-    // Topics
-    var topicsIndexContent = fs
-        .readFileSync(`${process.cwd()}/` + './src/doc/topics/topics-index.md')
-        .toString(),
-     topicsIndexhtml = parser(topicsIndexContent);
+
+    // Topics (main page)
+    var topicsIndexContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/topics-index.md')).toString(),
+    topicsIndexhtml = parser(topicsIndexContent),
+    // topics sub pages
+    apiGuidelinesContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/api-guidelines.md')).toString(),
+    apiGuidelinesHtml = parser(apiGuidelinesContent),
+    codeStandardsContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/code-standards.md')).toString(),
+    condeStandardsHtml = parser(codeStandardsContent),
+    buildSystemContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/build-system.md')).toString(),
+    buildSystemHtml = parser(buildSystemContent),
+    codeStructureContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/code-structure.md')).toString(),
+    codeStructureContentHtml = parser(codeStructureContent),
+    githubLabelsContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/github-labels.md')).toString(),
+    githubLabelsHtml = parser(githubLabelsContent),
+    reusableApiContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/reusable-api.md')).toString(),
+    reusableApiHtml = parser(reusableApiContent);
 
     generate(
         'topics-index',
         'Britecharts Topics',
-        [
-            {
-                kind: 'mainpage',
-                class: 'tutorial',
-                readme: topicsIndexhtml,
-            },
-        ],
+        [{
+            kind: 'mainpage',
+            class: 'tutorial',
+            readme: topicsIndexhtml
+        }],
         topicsIndexUrl
+    );
+    generate(
+        'api-guidelines',
+        'API Guidelines',
+        [{
+            kind: 'mainpage',
+            class: 'topics',
+            readme: apiGuidelinesHtml
+        }],
+        apiGuidelines
+    );
+    generate(
+        'code-standards',
+        'Code Standards',
+        [{
+            kind: 'mainpage',
+            class: 'topics',
+            readme: condeStandardsHtml
+        }],
+        codeStandards
+    );
+    generate(
+        'build-system',
+        'Build System',
+        [{
+            kind: 'mainpage',
+            class: 'topics',
+            readme: buildSystemHtml
+        }],
+        buildSystem
+    );
+    generate(
+        'code-structure',
+        'Code and Project Structure',
+        [{
+            kind: 'mainpage',
+            class: 'topics',
+            readme: codeStructureContentHtml
+        }],
+        codeStructure
+    );
+    generate(
+        'github-labels',
+        'Github Labels',
+        [{
+            kind: 'mainpage',
+            class: 'topics',
+            readme: githubLabelsHtml
+        }],
+        githubLabels
+    );
+    generate(
+        'reusable-api',
+        'Reusable API',
+        [{
+            kind: 'mainpage',
+            class: 'topics',
+            readme: reusableApiHtml
+        }],
+        reusableApi
     );
 
     // set up the lists that we'll use to generate pages

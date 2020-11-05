@@ -314,13 +314,12 @@ export default function module() {
             .domain(data.map(getName))
             .domain()
             .reduce((memo, item) => {
-                data.forEach(function (v) {
-                    if (getName(v) == item) {
-                        memo[v.name] = colorScale(v.group);
-                        memo[v.group] = colorScale(v.group);
-                        memo[v.group + item] = colorScale(v.group);
+                data.forEach(({ name, group }) => {
+                    if (name == item) {
+                        memo[group] = colorScale(group);
                     }
                 });
+
                 return memo;
             }, {});
     }
@@ -352,8 +351,9 @@ export default function module() {
         return originalData.reduce((acc, d) => {
             d.value = +d[valueLabel];
             d.group = d[groupLabel];
+
             // for tooltip
-            d.topicName = getGroup(d);
+            d.topicName = d[groupLabel];
             d.name = d[nameLabel];
 
             return [...acc, d];
@@ -797,7 +797,7 @@ export default function module() {
      * @private
      */
     function prepareData(data) {
-        groups = uniq(data.map((d) => getGroup(d)));
+        groups = uniq(data.map(getGroup));
 
         transformedData = nest()
             .key(getName)

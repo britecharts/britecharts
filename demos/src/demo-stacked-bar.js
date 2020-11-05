@@ -104,7 +104,7 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
             .nameLabel('date')
             .valueLabel('views')
             .stackLabel('stack')
-            .colorSchema(colors.colorSchemas.teal.reverse())
+            .colorSchema(colors.colorSchemas.red)
             .on('customMouseOver', function () {
                 chartTooltip.show();
             })

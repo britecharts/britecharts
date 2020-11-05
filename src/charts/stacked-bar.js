@@ -295,6 +295,7 @@ export default function module() {
             .domain()
             .reduce((memo, item) => {
                 memo[item] = colorScale(item);
+
                 return memo;
             }, {});
     }
@@ -326,7 +327,9 @@ export default function module() {
         return originalData.reduce((acc, d) => {
             d.value = +d[valueLabel];
             d.stack = d[stackLabel];
-            d.topicName = getStack(d); // for tooltip
+
+            // for tooltip
+            d.topicName = d[stackLabel];
             d.name = d[nameLabel];
 
             return [...acc, d];
