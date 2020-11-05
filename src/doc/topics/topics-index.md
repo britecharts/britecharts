@@ -11,9 +11,9 @@ In this section we discuss important concepts for Britecharts, giving context to
 
 After reading about these topics, you should be up to speed with the Britecharts project. This documentation is still work in progress, don't hesitate to ask for more by opening a new [github issue](https://github.com/britecharts/britecharts/issues)
 
-[codestandards]: http://britecharts.github.io/britecharts/code-standards.html
-[apiguidelines]: http://britecharts.github.io/britecharts/api-guidelines.html
-[codestructure]: http://britecharts.github.io/britecharts/code-structure.html
-[reusableapi]: http://britecharts.github.io/britecharts/reusable-api.html
-[githublabels]: http://britecharts.github.io/britecharts/githug-labels.html
-[buildsystem]: http://britecharts.github.io/britecharts/build-system.html
+[codestandards]: ./code-standards.html
+[apiguidelines]: ./api-guidelines.html
+[codestructure]: ./code-structure.html
+[reusableapi]: ./reusable-api.html
+[githublabels]: ./github-labels.html
+[buildsystem]: ./build-system.html
