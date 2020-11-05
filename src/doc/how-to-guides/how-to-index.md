@@ -1,5 +1,5 @@
 # How-To Guides
-Britecharts' how-to guides provides step by step processes to perform typical tasks with the library.
+The Britecharts how-to guides provide step by step instructions on how to accomplish standardized tasks for the library.
 
 We have how to guides for different kinds of users:
 * [User How-To Guides][userHowTo]
@@ -7,6 +7,6 @@ We have how to guides for different kinds of users:
 
 You can also check the [Topics page][topicsIndex] to learn more about Britecharts' approach and code philosophy.
 
-[userHowTo]: http://britecharts.github.io/britecharts/user-how-to-guides.html
-[contributorHowTo]: http://britecharts.github.io/britecharts/contributor-how-to-guides.html
-[topicsIndex]: http://britecharts.github.io/britecharts/topics-index.html
+[userHowTo]: ./user-how-to-guides.html
+[contributorHowTo]: ./contributor-how-to-guides.html
+[topicsIndex]: ./topics-index.html
