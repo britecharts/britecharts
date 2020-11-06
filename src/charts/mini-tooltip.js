@@ -4,6 +4,7 @@ import { format } from 'd3-format';
 import { select } from 'd3-selection';
 import 'd3-transition';
 
+import { dataKeyDeprecationMessage } from './helpers/project';
 import { isDefined } from './helpers/type';
 
 const NUMBER_FORMAT = '.2f';
@@ -370,10 +371,7 @@ export default function module() {
             return nameLabel;
         }
         nameLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "name" as the key'
-        );
+        dataKeyDeprecationMessage('name');
 
         return this;
     };
@@ -462,10 +460,7 @@ export default function module() {
             return valueLabel;
         }
         valueLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "value" as the key'
-        );
+        dataKeyDeprecationMessage('value');
 
         return this;
     };

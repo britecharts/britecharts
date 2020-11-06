@@ -5,6 +5,7 @@ import { timeFormat } from 'd3-time-format';
 import 'd3-transition';
 
 import { axisTimeCombinations } from './helpers/constants';
+import { dataKeyDeprecationMessage } from './helpers/project';
 import {
     formatIntegerValue,
     formatDecimalValue,
@@ -698,10 +699,7 @@ export default function module() {
             return dateLabel;
         }
         dateLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "date" as the key'
-        );
+        dataKeyDeprecationMessage('date');
 
         return this;
     };
@@ -744,10 +742,7 @@ export default function module() {
             return nameLabel;
         }
         nameLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "name" as the key'
-        );
+        dataKeyDeprecationMessage('name');
 
         return this;
     };
@@ -867,10 +862,7 @@ export default function module() {
             return topicLabel;
         }
         topicLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "topic" as the key'
-        );
+        dataKeyDeprecationMessage('topic');
 
         return this;
     };
@@ -907,10 +899,7 @@ export default function module() {
             return valueLabel;
         }
         valueLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "value" as the key'
-        );
+        dataKeyDeprecationMessage('value');
 
         return this;
     };

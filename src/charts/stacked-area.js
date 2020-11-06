@@ -11,6 +11,7 @@ import 'd3-transition';
 import assign from 'lodash/assign';
 
 import { exportChart } from './helpers/export';
+import { dataKeyDeprecationMessage } from './helpers/project';
 import colorHelper from './helpers/color';
 import { getTimeSeriesAxis, getSortedNumberAxis } from './helpers/axis';
 import { castValueToType } from './helpers/type';
@@ -1349,10 +1350,7 @@ export default function module() {
             return dateLabel;
         }
         dateLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "date" as the key'
-        );
+        dataKeyDeprecationMessage('date');
 
         return this;
     };
@@ -1447,10 +1445,7 @@ export default function module() {
             return keyLabel;
         }
         keyLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "name" as the key'
-        );
+        dataKeyDeprecationMessage('name');
 
         return this;
     };
@@ -1572,10 +1567,7 @@ export default function module() {
             return valueLabel;
         }
         valueLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "value" as the key'
-        );
+        dataKeyDeprecationMessage('value');
 
         return this;
     };

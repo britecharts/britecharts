@@ -12,6 +12,7 @@ import 'd3-transition';
 import assign from 'lodash/assign';
 
 import { exportChart } from './helpers/export';
+import { dataKeyDeprecationMessage } from './helpers/project';
 import colorHelper from './helpers/color';
 import { bar } from './helpers/load';
 import { setDefaultLocale } from './helpers/locale';
@@ -935,10 +936,7 @@ export default function module() {
             return groupLabel;
         }
         groupLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "group" as the key'
-        );
+        dataKeyDeprecationMessage('group');
 
         return this;
     };
@@ -1073,10 +1071,7 @@ export default function module() {
             return nameLabel;
         }
         nameLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "name" as the key'
-        );
+        dataKeyDeprecationMessage('name');
 
         return this;
     };
@@ -1138,10 +1133,8 @@ export default function module() {
         if (!arguments.length) {
             return valueLabel;
         }
-        valueLabel = _x; // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "value" as the key'
-        );
+        valueLabel = _x;
+        dataKeyDeprecationMessage('value');
 
         return this;
     };

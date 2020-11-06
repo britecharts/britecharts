@@ -6,6 +6,7 @@ import { select } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
+import { dataKeyDeprecationMessage } from './helpers/project';
 import colorHelper from './helpers/color';
 import { stackedArea as stackedAreaLoadingMarkup } from './helpers/load';
 import { uniqueId } from './helpers/number';
@@ -403,10 +404,7 @@ export default function module() {
             return dateLabel;
         }
         dateLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "date" as the key'
-        );
+        dataKeyDeprecationMessage('date');
 
         return this;
     };
@@ -584,10 +582,7 @@ export default function module() {
             return valueLabel;
         }
         valueLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "value" as the key'
-        );
+        dataKeyDeprecationMessage('value');
 
         return this;
     };

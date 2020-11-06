@@ -14,6 +14,7 @@ import { exportChart } from './helpers/export';
 import colorHelper from './helpers/color';
 import { line as lineChartLoadingMarkup } from './helpers/load';
 import { getTimeSeriesAxis, getSortedNumberAxis } from './helpers/axis';
+import { dataKeyDeprecationMessage } from './helpers/project';
 import { axisTimeCombinations, curveMap } from './helpers/constants';
 import {
     createFilterContainer,
@@ -1343,10 +1344,7 @@ export default function module() {
             return dateLabel;
         }
         dateLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "date" as the key'
-        );
+        dataKeyDeprecationMessage('date');
 
         return this;
     };
@@ -1613,10 +1611,7 @@ export default function module() {
             return topicLabel;
         }
         topicLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "topic" as the key'
-        );
+        dataKeyDeprecationMessage('topic');
 
         return this;
     };
@@ -1633,10 +1628,7 @@ export default function module() {
             return valueLabel;
         }
         valueLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "value" as the key'
-        );
+        dataKeyDeprecationMessage('value');
 
         return this;
     };

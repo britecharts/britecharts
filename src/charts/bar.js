@@ -14,6 +14,7 @@ import colorHelper from './helpers/color';
 import { bar as barChartLoadingMarkup } from './helpers/load';
 import { uniqueId } from './helpers/number';
 import { setDefaultLocale } from './helpers/locale';
+import { dataKeyDeprecationMessage } from './helpers/project';
 
 const PERCENTAGE_FORMAT = '%';
 const NUMBER_FORMAT = ',f';
@@ -1130,10 +1131,7 @@ export default function module() {
             return nameLabel;
         }
         nameLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "name" as the key'
-        );
+        dataKeyDeprecationMessage('name');
 
         return this;
     };
@@ -1224,10 +1222,7 @@ export default function module() {
             return valueLabel;
         }
         valueLabel = _x;
-        // eslint-disable-next-line no-console
-        console.log(
-            'This method is being deprecated! Please modify your data to use "value" as the key'
-        );
+        dataKeyDeprecationMessage('value');
 
         return this;
     };
