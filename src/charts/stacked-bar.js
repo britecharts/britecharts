@@ -85,8 +85,8 @@ export default function module() {
         xTicks = 5,
         percentageAxisToMaxRatio = 1,
         colorSchema = colorHelper.colorSchemas.britecharts,
+        nameToColorMap = null,
         colorScale,
-        categoryColorMap,
         layers,
         ease = easeQuadInOut,
         isHorizontal = false,
@@ -290,13 +290,16 @@ export default function module() {
             .range(colorSchema)
             .domain(data.map(getStack));
 
-        categoryColorMap = colorScale
-            .domain(data.map(getStack))
-            .domain()
-            .reduce((memo, item) => {
-                memo[item] = colorScale(item);
-                return memo;
-            }, {});
+        nameToColorMap =
+            nameToColorMap ||
+            colorScale
+                .domain(data.map(getStack))
+                .domain()
+                .reduce((memo, item) => {
+                    memo[item] = colorScale(item);
+
+                    return memo;
+                }, {});
     }
 
     /**
@@ -326,7 +329,9 @@ export default function module() {
         return originalData.reduce((acc, d) => {
             d.value = +d[valueLabel];
             d.stack = d[stackLabel];
-            d.topicName = getStack(d); // for tooltip
+
+            // for tooltip
+            d.topicName = d[stackLabel];
             d.name = d[nameLabel];
 
             return [...acc, d];
@@ -428,7 +433,7 @@ export default function module() {
         layerElements = layerJoin
             .enter()
             .append('g')
-            .attr('fill', ({ key }) => categoryColorMap[key])
+            .attr('fill', ({ key }) => nameToColorMap[key])
             .classed('layer', true);
 
         let barJoin = layerElements
@@ -485,7 +490,7 @@ export default function module() {
         layerElements = layerJoin
             .enter()
             .append('g')
-            .attr('fill', ({ key }) => categoryColorMap[key])
+            .attr('fill', ({ key }) => nameToColorMap[key])
             .classed('layer', true);
 
         let barJoin = layerElements
@@ -687,7 +692,7 @@ export default function module() {
                 'customMouseMove',
                 e,
                 dataPoint,
-                categoryColorMap,
+                nameToColorMap,
                 x,
                 y
             );
@@ -774,7 +779,8 @@ export default function module() {
                         ret[entry[stackLabel]] = getValue(entry);
                     }
                 });
-                ret.values = values; //for tooltip
+                //for tooltip
+                ret.values = values;
 
                 return ret;
             })
@@ -845,6 +851,22 @@ export default function module() {
             return betweenBarsPadding;
         }
         betweenBarsPadding = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the colorMap of the chart
+     * @param  {object} [_x=null]    Color map
+     * @return {number | module}     Current colorMap or Chart module to chain calls
+     * @example stackedBar.colorMap({groupName: 'colorHex', groupName2: 'colorString'})
+     * @public
+     */
+    exports.colorMap = function (_x) {
+        if (!arguments.length) {
+            return nameToColorMap;
+        }
+        nameToColorMap = _x;
 
         return this;
     };

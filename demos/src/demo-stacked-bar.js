@@ -3,18 +3,22 @@ import PubSub from 'pubsub-js';
 
 import stackedBarChart from './../../src/charts/stacked-bar';
 import tooltip from './../../src/charts/tooltip';
+import legend from './../../src/charts/legend';
+
 import colors from './../../src/charts/helpers/color';
 import { StackedBarDataBuilder } from './../../test/fixtures/stackedBarDataBuilder';
 import colorSelectorHelper from './helpers/colorSelector';
 
 require('./helpers/resizeHelper');
 
+const testDataSet = new StackedBarDataBuilder();
+const datasetWithThreeSources = testDataSet.with3Sources().build();
+
 let redrawCharts;
 
 function createStackedBarChartWithTooltip(optionalColorSchema) {
     let stackedBar = stackedBarChart(),
         chartTooltip = tooltip(),
-        testDataSet = new StackedBarDataBuilder(),
         container = select('.js-stacked-bar-chart-tooltip-container'),
         containerWidth = container.node()
             ? container.node().getBoundingClientRect().width
@@ -23,7 +27,7 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
         dataset;
 
     if (containerWidth) {
-        dataset = testDataSet.with3Sources().build();
+        dataset = datasetWithThreeSources;
 
         // StackedAreChart Setup and start
         stackedBar
@@ -51,6 +55,8 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
 
         container.datum(dataset.data).call(stackedBar);
 
+        getInlineLegendChart(datasetWithThreeSources, stackedBar.colorMap());
+
         // Tooltip Setup and start
         chartTooltip
             .topicLabel('values')
@@ -74,10 +80,38 @@ function createStackedBarChartWithTooltip(optionalColorSchema) {
     }
 }
 
+function getInlineLegendChart(dataset, optionalColorMap) {
+    let legendChart = legend(),
+        legendContainer = select('.js-inline-legend-chart-container'),
+        containerWidth = legendContainer.node()
+            ? legendContainer.node().getBoundingClientRect().width
+            : false;
+    const legendData = [
+        ...new Set(dataset.data.map((d) => d.stack)),
+    ].map((d) => ({ name: d, id: d }));
+
+    if (containerWidth) {
+        select('.js-inline-legend-chart-container .britechart-legend').remove();
+
+        legendChart
+            .isHorizontal(true)
+            .width(containerWidth * 0.6)
+            .markerSize(8)
+            .height(40);
+
+        if (optionalColorMap) {
+            legendChart.colorMap(optionalColorMap);
+        }
+
+        legendContainer.datum(legendData).call(legendChart);
+
+        return legendChart;
+    }
+}
+
 function createHorizontalStackedBarChart(optionalColorSchema) {
     let stackedBar = stackedBarChart(),
         chartTooltip = tooltip(),
-        testDataSet = new StackedBarDataBuilder(),
         container = select('.js-stacked-bar-chart-fixed-container'),
         containerWidth = container.node()
             ? container.node().getBoundingClientRect().width
@@ -86,7 +120,7 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
         dataset;
 
     if (containerWidth) {
-        dataset = testDataSet.with3Sources().build();
+        dataset = datasetWithThreeSources;
 
         // StackedAreChart Setup and start
         stackedBar
@@ -104,7 +138,7 @@ function createHorizontalStackedBarChart(optionalColorSchema) {
             .nameLabel('date')
             .valueLabel('views')
             .stackLabel('stack')
-            .colorSchema(colors.colorSchemas.teal.reverse())
+            .colorSchema(colors.colorSchemas.red)
             .on('customMouseOver', function () {
                 chartTooltip.show();
             })
