@@ -87,8 +87,8 @@ export default function module() {
         xTicks = 5,
         baseLine,
         colorSchema = colorHelper.colorSchemas.britecharts,
+        nameToColorMap = null,
         colorScale,
-        categoryColorMap,
         layers,
         locale = null,
         localeFormatter = d3Format,
@@ -310,18 +310,20 @@ export default function module() {
             .range(colorSchema)
             .domain(data.map(getGroup));
 
-        categoryColorMap = colorScale
-            .domain(data.map(getName))
-            .domain()
-            .reduce((memo, item) => {
-                data.forEach(({ name, group }) => {
-                    if (name == item) {
-                        memo[group] = colorScale(group);
-                    }
-                });
+        nameToColorMap =
+            nameToColorMap ||
+            colorScale
+                .domain(data.map(getName))
+                .domain()
+                .reduce((memo, item) => {
+                    data.forEach(({ name, group }) => {
+                        if (name == item) {
+                            memo[group] = colorScale(group);
+                        }
+                    });
 
-                return memo;
-            }, {});
+                    return memo;
+                }, {});
     }
 
     /**
@@ -506,7 +508,7 @@ export default function module() {
             .attr('x', 1)
             .attr('y', (d) => yScale2(getGroup(d)))
             .attr('height', yScale2.bandwidth())
-            .attr('fill', ({ group }) => categoryColorMap[group]);
+            .attr('fill', ({ group }) => nameToColorMap[group]);
 
         if (isAnimated) {
             bars.style('opacity', barOpacity)
@@ -545,7 +547,7 @@ export default function module() {
             .attr('x', (d) => xScale2(getGroup(d)))
             .attr('y', ({ value }) => yScale(value))
             .attr('width', xScale2.bandwidth)
-            .attr('fill', ({ group }) => categoryColorMap[group]);
+            .attr('fill', ({ group }) => nameToColorMap[group]);
 
         if (isAnimated) {
             bars.style('opacity', barOpacity)
@@ -667,7 +669,7 @@ export default function module() {
      * @return {void}
      */
     function handleBarsMouseOver(e, d) {
-        select(e).attr('fill', () => color(categoryColorMap[d.group]).darker());
+        select(e).attr('fill', () => color(nameToColorMap[d.group]).darker());
     }
 
     /**
@@ -677,7 +679,7 @@ export default function module() {
      * @return {void}
      */
     function handleBarsMouseOut(e, d) {
-        select(e).attr('fill', () => categoryColorMap[d.group]);
+        select(e).attr('fill', () => nameToColorMap[d.group]);
     }
 
     /**
@@ -710,7 +712,7 @@ export default function module() {
                 'customMouseMove',
                 e,
                 dataPoint,
-                categoryColorMap,
+                nameToColorMap,
                 x,
                 y
             );
@@ -900,6 +902,22 @@ export default function module() {
     };
 
     /**
+     * Gets or Sets the colorMap of the chart
+     * @param  {object} [_x=null]    Color map
+     * @return {number | module}     Current colorMap or Chart module to chain calls
+     * @example groupedBar.colorMap({groupName: 'colorHex', groupName2: 'colorString'})
+     * @public
+     */
+    exports.colorMap = function (_x) {
+        if (!arguments.length) {
+            return nameToColorMap;
+        }
+        nameToColorMap = _x;
+
+        return this;
+    };
+
+    /**
      * Gets or Sets the colorSchema of the chart
      * @param  {String[]} _x            Desired colorSchema for the graph
      * @return { colorSchema | module}  Current colorSchema or Chart module to chain calls
@@ -1020,24 +1038,6 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the margin of the chart
-     * @param  {Object} _x          Margin object to get/set
-     * @return { margin | module}   Current margin or Area Chart module to chain calls
-     * @public
-     */
-    exports.margin = function (_x) {
-        if (!arguments.length) {
-            return margin;
-        }
-        margin = {
-            ...margin,
-            ..._x,
-        };
-
-        return this;
-    };
-
-    /**
      * Gets or Sets the locale which our formatting functions use.
      * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
      * @example
@@ -1058,6 +1058,24 @@ export default function module() {
     };
 
     /**
+     * Gets or Sets the margin of the chart
+     * @param  {Object} _x          Margin object to get/set
+     * @return { margin | module}   Current margin or Area Chart module to chain calls
+     * @public
+     */
+    exports.margin = function (_x) {
+        if (!arguments.length) {
+            return margin;
+        }
+        margin = {
+            ...margin,
+            ..._x,
+        };
+
+        return this;
+    };
+
+    /**
      * Gets or Sets the nameLabel of the chart
      * @param  {Number} _x              Desired dateLabel for the graph
      * @return { nameLabel | module}    Current nameLabel or Chart module to chain calls
@@ -1073,16 +1091,16 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the number of ticks of the y axis on the chart
-     * @param  {Number} [_x=5]      Desired vertical ticks
-     * @return {Number | module}    Current yTicks or Chart module to chain calls
+     * Gets or Sets the numberFormat of the chart
+     * @param  {String[]} [_x=',f']     Desired numberFormat for the graph
+     * @return {String[] | module}      Current numberFormat or Chart module to chain calls
      * @public
      */
-    exports.yTicks = function (_x) {
+    exports.numberFormat = function (_x) {
         if (!arguments.length) {
-            return yTicks;
+            return numberFormat;
         }
-        yTicks = _x;
+        numberFormat = _x;
 
         return this;
     };
@@ -1129,21 +1147,6 @@ export default function module() {
             return valueLabel;
         }
         valueLabel = _x;
-
-        return this;
-    };
-
-    /**
-     * Gets or Sets the numberFormat of the chart
-     * @param  {String[]} [_x=',f']     Desired numberFormat for the graph
-     * @return {String[] | module}      Current numberFormat or Chart module to chain calls
-     * @public
-     */
-    exports.numberFormat = function (_x) {
-        if (!arguments.length) {
-            return numberFormat;
-        }
-        numberFormat = _x;
 
         return this;
     };
@@ -1210,6 +1213,21 @@ export default function module() {
             return yAxisLabelOffset;
         }
         yAxisLabelOffset = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the number of ticks of the y axis on the chart
+     * @param  {Number} [_x=5]      Desired vertical ticks
+     * @return {Number | module}    Current yTicks or Chart module to chain calls
+     * @public
+     */
+    exports.yTicks = function (_x) {
+        if (!arguments.length) {
+            return yTicks;
+        }
+        yTicks = _x;
 
         return this;
     };

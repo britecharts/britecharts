@@ -25,8 +25,6 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
         tooltipContainer,
         dataset;
 
-    getInlineLegendChart(datasetWithThreeSources);
-
     if (containerWidth) {
         dataset = datasetWithThreeSources;
 
@@ -52,6 +50,8 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
 
         container.datum(dataset.data).call(groupedBar);
 
+        getInlineLegendChart(datasetWithThreeSources, groupedBar.colorMap());
+
         // Tooltip Setup and start
         chartTooltip
             .topicLabel('values')
@@ -75,7 +75,7 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
     }
 }
 
-function getInlineLegendChart(dataset, optionalColorSchema) {
+function getInlineLegendChart(dataset, optionalColorMap) {
     let legendChart = legend(),
         legendContainer = select('.js-inline-legend-chart-container'),
         containerWidth = legendContainer.node()
@@ -83,7 +83,7 @@ function getInlineLegendChart(dataset, optionalColorSchema) {
             : false;
     const legendData = [
         ...new Set(dataset.data.map((d) => d.group)),
-    ].map((d, i) => ({ name: d, id: d }));
+    ].map((d) => ({ name: d, id: d }));
 
     if (containerWidth) {
         select('.js-inline-legend-chart-container .britechart-legend').remove();
@@ -94,8 +94,8 @@ function getInlineLegendChart(dataset, optionalColorSchema) {
             .markerSize(8)
             .height(40);
 
-        if (optionalColorSchema) {
-            legendChart.colorSchema(optionalColorSchema);
+        if (optionalColorMap) {
+            legendChart.colorMap(optionalColorMap);
         }
 
         legendContainer.datum(legendData).call(legendChart);
