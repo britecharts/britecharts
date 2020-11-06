@@ -1,3 +1,20 @@
+import './charts/bar-chart'
+import './charts/brush-chart'
+import './charts/bullet-chart'
+import './charts/donut-chart'
+import './charts/grouped-bar-chart'
+import './charts/heatmap-chart'
+import './charts/legend-component'
+import './charts/line-chart'
+import './charts/mini-tooltip'
+import './charts/scatter-plot'
+import './charts/sparkline-chart'
+import './charts/stacked-area'
+import './charts/stacked-bar-chart'
+import './charts/tooltip'
+import './helpers/colors'
+import './helpers/constants'
+
 declare module 'britecharts' {
   export * from './charts/bar-chart';
   export * from './charts/brush-chart';
