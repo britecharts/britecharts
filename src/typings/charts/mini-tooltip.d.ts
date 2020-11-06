@@ -11,7 +11,7 @@ export type MiniTooltipDataShape = {
   [MiniTooltipKeys.Name]: string;
 };
 
-export type TooltipSelection = Selection<
+export type MiniTooltipSelection = Selection<
   BaseType,
   MiniTooltipDataShape,
   HTMLElement,
@@ -22,7 +22,7 @@ export type MousePosition = [ number, number ];
 
 export type ChartSize = [ number, number ];
 
-type FormattingFunction = (value: number) => number;
+type MiniTooltipFormattingFunction = (value: number) => number;
 
 export interface MiniTooltipAPI {
   /** Hides the tooltip */
@@ -38,7 +38,7 @@ export interface MiniTooltipAPI {
    * Setting this property makes the tooltip ignore numberFormat. Set by default to
    * d3-format formatter with numberFormat.
    */
-  valueFormatter(formattingFunction?: FormattingFunction): MiniTooltipModule;
+  valueFormatter(formattingFunction?: MiniTooltipFormattingFunction): MiniTooltipModule;
   /** Gets or Sets the title of the tooltip */
   title(title?: string): MiniTooltipModule;
   /** Gets or Sets data's valueLabel */

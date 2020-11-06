@@ -35,7 +35,7 @@ export type TooltipOffset = {
 
 export type TopicColorMap = Record<string, string>;
 
-type FormattingFunction = (value: number) => number;
+type TooltipFormattingFunction = (value: number) => number;
 
 export interface TooltipAPI {
   /** Hides the tooltip */
@@ -65,7 +65,7 @@ export interface TooltipAPI {
    * Gets or Sets the formatter function for the value displayed on the tooltip.
    * Setting this property makes the tooltip ignore numberFormat.
    * */
-  valueFormatter(formattingFunction?: FormattingFunction): TooltipModule;
+  valueFormatter(formattingFunction?: TooltipFormattingFunction): TooltipModule;
   /** Shows or hides the date on the title */
   shouldShowDateInTitle(shouldShowDateInTitle?: boolean): TooltipModule;
   /** Gets or Sets the title of the tooltip */

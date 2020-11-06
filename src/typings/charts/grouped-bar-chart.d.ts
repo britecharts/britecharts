@@ -1,5 +1,6 @@
 import { GroupedBarBaseAPI, InteractiveChartAPI, ExportableChartAPI } from '../common/base';
 import { ChartModuleSelection } from '../common/selection';
+import { Offset } from '../common/position';
 import { GridTypes } from '../common/grid';
 import { BaseType, Selection } from 'd3-selection';
 
@@ -22,11 +23,6 @@ export type GroupedBarSelection = Selection<
   HTMLElement,
   any
 >;
-
-type Offset = {
-  x: number;
-  y: number;
-}
 
 export interface GroupedBarChartAPI extends GroupedBarBaseAPI<GroupedBarChartModule>, InteractiveChartAPI<GroupedBarChartModule>, ExportableChartAPI<GroupedBarChartModule> {
   /** Gets or Sets the aspect ratio of the chart */

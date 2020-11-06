@@ -25,10 +25,6 @@ export type StackedBarSelection = Selection<
   any
 >;
 
-type Offset = {
-  x: number;
-  y: number;
-}
 
 export interface StackedBarChartAPI extends StackedBarBaseAPI<StackedBarChartModule>, InteractiveChartAPI<StackedBarChartModule>, ExportableChartAPI<StackedAreaChartModule> {
   /** Gets or Sets the aspect ratio of the chart */
