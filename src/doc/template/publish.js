@@ -25,34 +25,34 @@ var template = require('jsdoc/template'),
     data,
     view,
     outdir = env.opts.destination,
-    searchEnabled = conf.search !== false;
+    searchEnabled = conf.search !== false,
 
-var globalUrl = helper.getUniqueFilename('global');
-var indexUrl = helper.getUniqueFilename('index');
-var cdnUrl = helper.getUniqueFilename('cdn');
+ globalUrl = helper.getUniqueFilename('global'),
+ indexUrl = helper.getUniqueFilename('index'),
+ cdnUrl = helper.getUniqueFilename('cdn'),
 
 // Tutorials
-var tutorialIndexUrl = helper.getUniqueFilename('tutorials-index');
-var gettingUrl = helper.getUniqueFilename('getting-started');
-var composingUrl = helper.getUniqueFilename('composing-dataviz');
-var installingUrl = helper.getUniqueFilename('installing-britecharts');
-var stylingUrl = helper.getUniqueFilename('styling-charts');
+ tutorialIndexUrl = helper.getUniqueFilename('tutorials-index'),
+ gettingUrl = helper.getUniqueFilename('getting-started'),
+ composingUrl = helper.getUniqueFilename('composing-dataviz'),
+ installingUrl = helper.getUniqueFilename('installing-britecharts'),
+ stylingUrl = helper.getUniqueFilename('styling-charts'),
 
 // How-Tos
-var howtoIndexUrl = helper.getUniqueFilename('how-to-index');
-var contributorHowToUrl = helper.getUniqueFilename('contributor-how-to-guides');
-var userHowToUrl = helper.getUniqueFilename('user-how-to-guides');
+ howtoIndexUrl = helper.getUniqueFilename('how-to-index'),
+ contributorHowToUrl = helper.getUniqueFilename('contributor-how-to-guides'),
+ userHowToUrl = helper.getUniqueFilename('user-how-to-guides'),
 
 // Topics
-var topicsIndexUrl = helper.getUniqueFilename('topics-index');
-var apiGuidelines = helper.getUniqueFilename('api-guidelines');
-var codeStandards = helper.getUniqueFilename('code-standards');
-var buildSystem = helper.getUniqueFilename('build-system');
-var codeStructure = helper.getUniqueFilename('code-structure');
-var githubLabels = helper.getUniqueFilename('github-labels');
-var reusableApi = helper.getUniqueFilename('reusable-api');
+ topicsIndexUrl = helper.getUniqueFilename('topics-index'),
+ apiGuidelines = helper.getUniqueFilename('api-guidelines'),
+ codeStandards = helper.getUniqueFilename('code-standards'),
+ buildSystem = helper.getUniqueFilename('build-system'),
+ codeStructure = helper.getUniqueFilename('code-structure'),
+ githubLabels = helper.getUniqueFilename('github-labels'),
+ reusableApi = helper.getUniqueFilename('reusable-api'),
 
-var navOptions = {
+ navOptions = {
     includeDate: conf.includeDate !== false,
     logoFile: conf.logoFile,
     systemName: conf.systemName || 'Documentation',
@@ -73,10 +73,10 @@ var navOptions = {
     methodHeadingReturns: conf.methodHeadingReturns === true,
     sort: conf.sort,
     search: searchEnabled,
-};
-var searchableDocuments = {};
+},
+ searchableDocuments = {},
 
-var navigationMaster = {
+ navigationMaster = {
     index: {
         title: conf.meta.title,
         link: indexUrl,
@@ -202,14 +202,14 @@ function needsSignature(doclet) {
 }
 
 function addSignatureParams(f) {
-    var optionalClass = 'optional';
-    var params = helper.getSignatureParams(f, optionalClass);
+    var optionalClass = 'optional',
+     params = helper.getSignatureParams(f, optionalClass);
 
     f.signature = (f.signature || '') + '(';
 
     for (var i = 0, l = params.length; i < l; i++) {
-        var element = params[i];
-        var seperator = i > 0 ? ', ' : '';
+        var element = params[i],
+         seperator = i > 0 ? ', ' : '';
 
         if (
             !new RegExp('class=["|\']' + optionalClass + '["|\']').test(element)
@@ -220,9 +220,10 @@ function addSignatureParams(f) {
                 '<span class=["|\']' + optionalClass + '["|\']>(.*?)<\\/span>',
                 'i'
             );
+
             f.signature += element.replace(
                 regExp,
-                ' $`[' + seperator + "$1$']"
+                ' $`[' + seperator + '$1$\']'
             );
         }
     }
@@ -305,17 +306,20 @@ function getPathFromDoclet(doclet) {
 
 function searchData(html) {
     var startOfContent = html.indexOf('<div class="container">');
+
     if (startOfContent > 0) {
         var startOfSecondContent = html.indexOf(
             '<div class="container">',
             startOfContent + 2
         );
+
         if (startOfSecondContent > 0) {
             startOfContent = startOfSecondContent;
         }
         html = html.slice(startOfContent);
     }
     var endOfContent = html.indexOf('<span class="copyright">');
+
     if (endOfContent > 0) {
         html = html.substring(0, endOfContent);
     }
@@ -323,6 +327,7 @@ function searchData(html) {
         allowedTags: [],
         allowedAttributes: [],
     });
+
     stripped = stripped.replace(/\s+/g, ' ');
     return stripped;
 }
@@ -334,9 +339,9 @@ function generate(docType, title, docs, filename, resolveLinks) {
         title: title,
         docs: docs,
         docType: docType,
-    };
+    },
 
-    var outpath = path.join(outdir, filename),
+     outpath = path.join(outdir, filename),
         html = view.render('container.tmpl', docData);
 
     if (resolveLinks) {
@@ -356,11 +361,12 @@ function generate(docType, title, docs, filename, resolveLinks) {
 
 function generateSourceFiles(sourceFiles) {
     Object.keys(sourceFiles).forEach(function (file) {
-        var source;
+        var source,
         // links are keyed to the shortened path in each doclet's `meta.shortpath` property
-        var sourceOutfile = helper.getUniqueFilename(
+         sourceOutfile = helper.getUniqueFilename(
             sourceFiles[file].shortened
         );
+
         helper.registerLink(sourceFiles[file].shortened, sourceOutfile);
 
         try {
@@ -442,8 +448,9 @@ function attachModuleSymbols(doclets, modules) {
  * @return {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
-    var seen = {};
-    var nav = navigationMaster;
+    var seen = {},
+     nav = navigationMaster;
+
     if (members.modules.length) {
         members.modules.forEach(function (m) {
             if (!hasOwnProp.call(seen, m.longname)) {
@@ -534,6 +541,7 @@ function buildNav(members) {
 
     var topLevelNav = [],
         apis = [];
+
     _.each(nav, function (entry, name) {
         if (
             entry.members.length > 0 &&
@@ -569,6 +577,7 @@ exports.publish = function (taffyData, opts, tutorials) {
     conf['default'] = conf['default'] || {};
 
     var templatePath = opts.template;
+
     view = new template.Template(templatePath + '/tmpl');
 
     // claim some special filenames in advance, so the All-Powerful Overseer of Filename Uniqueness
@@ -595,6 +604,7 @@ exports.publish = function (taffyData, opts, tutorials) {
 
     var sortOption =
         navOptions.sort === undefined ? opts.sort : navOptions.sort;
+
     sortOption = sortOption === undefined ? true : sortOption;
     sortOption = sortOption === true ? 'longname, version, since' : sortOption;
     if (sortOption) {
@@ -602,8 +612,9 @@ exports.publish = function (taffyData, opts, tutorials) {
     }
     helper.addEventListeners(data);
 
-    var sourceFiles = {};
-    var sourceFilePaths = [];
+    var sourceFiles = {},
+     sourceFilePaths = [];
+
     data().each(function (doclet) {
         doclet.attribs = '';
 
@@ -645,6 +656,7 @@ exports.publish = function (taffyData, opts, tutorials) {
 
         // build a list of source files
         var sourcePath;
+
         if (doclet.meta) {
             sourcePath = getPathFromDoclet(doclet);
             sourceFiles[sourcePath] = {
@@ -664,6 +676,7 @@ exports.publish = function (taffyData, opts, tutorials) {
     var packageInfo = (find({
         kind: 'package',
     }) || [])[0];
+
     if (
         navOptions.disablePackagePath !== true &&
         packageInfo &&
@@ -678,19 +691,21 @@ exports.publish = function (taffyData, opts, tutorials) {
     fs.mkPath(outdir);
 
     // copy the template's static files to outdir
-    var fromDir = path.join(templatePath, 'static');
-    var staticFiles = fs.ls(fromDir, 3);
+    var fromDir = path.join(templatePath, 'static'),
+     staticFiles = fs.ls(fromDir, 3);
 
     staticFiles.forEach(function (fileName) {
         var toDir = fs.toDir(fileName.replace(fromDir, outdir));
+
         fs.mkPath(toDir);
         fs.copyFileSync(fileName, toDir);
     });
 
     // copy user-specified static files to outdir
-    var staticFilePaths;
-    var staticFileFilter;
-    var staticFileScanner;
+    var staticFilePaths,
+     staticFileFilter,
+     staticFileScanner;
+
     if (conf.default.staticFiles) {
         // The canonical property name is `include`. We accept `paths` for backwards compatibility
         // with a bug in JSDoc 3.2.x.
@@ -711,8 +726,9 @@ exports.publish = function (taffyData, opts, tutorials) {
             );
 
             extraStaticFiles.forEach(function (fileName) {
-                var sourcePath = fs.toDir(filePath);
-                var toDir = fs.toDir(fileName.replace(sourcePath, outdir));
+                var sourcePath = fs.toDir(filePath),
+                 toDir = fs.toDir(fileName.replace(sourcePath, outdir));
+
                 fs.mkPath(toDir);
                 fs.copyFileSync(fileName, toDir);
             });
@@ -721,6 +737,7 @@ exports.publish = function (taffyData, opts, tutorials) {
 
     if (sourceFilePaths.length) {
         var payload = navOptions.sourceRootPath;
+
         if (!payload) {
             payload = path.commonPrefix(sourceFilePaths);
         }
@@ -728,10 +745,12 @@ exports.publish = function (taffyData, opts, tutorials) {
     }
     data().each(function (doclet) {
         var url = helper.createLink(doclet);
+
         helper.registerLink(doclet.longname, url);
 
         // add a shortened version of the full path
         var docletPath;
+
         if (doclet.meta) {
             docletPath = getPathFromDoclet(doclet);
             if (!_.isEmpty(sourceFiles[docletPath])) {
@@ -776,6 +795,7 @@ exports.publish = function (taffyData, opts, tutorials) {
     });
 
     var members = helper.getMembers(data);
+
     members.tutorials = tutorials.children;
 
     // add template helpers
@@ -890,110 +910,21 @@ exports.publish = function (taffyData, opts, tutorials) {
         );
     }
 
-<<<<<<< HEAD
-// Topics (main page)
-var topicsIndexContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/topics-index.md')).toString();
-var topicsIndexhtml = parser(topicsIndexContent);
-// topics sub pages
-var apiGuidelinesContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/api-guidelines.md')).toString();
-var apiGuidelinesHtml = parser(apiGuidelinesContent);
-var codeStandardsContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/code-standards.md')).toString();
-var condeStandardsHtml = parser(codeStandardsContent);
-var buildSystemContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/build-system.md')).toString();
-var buildSystemHtml = parser(buildSystemContent);
-var codeStructureContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/code-structure.md')).toString();
-var codeStructureContentHtml = parser(codeStructureContent);
-var githubLabelsContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/github-labels.md')).toString();
-var githubLabelsHtml = parser(githubLabelsContent);
-var reusableApiContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/reusable-api.md')).toString();
-var reusableApiHtml = parser(reusableApiContent);
-
-generate(
-    'topics-index',
-    'Britecharts Topics',
-    [{
-        kind: 'mainpage',
-        class: 'tutorial',
-        readme: topicsIndexhtml
-    }],
-    topicsIndexUrl
-);
-generate(
-    'api-guidelines',
-    'API Guidelines',
-    [{
-        kind: 'mainpage',
-        class: 'topics',
-        readme: apiGuidelinesHtml
-    }],
-    apiGuidelines
-);
-generate(
-    'code-standards',
-    'Code Standards',
-    [{
-        kind: 'mainpage',
-        class: 'topics',
-        readme: condeStandardsHtml
-    }],
-    codeStandards
-);
-generate(
-    'build-system',
-    'Build System',
-    [{
-        kind: 'mainpage',
-        class: 'topics',
-        readme: buildSystemHtml
-    }],
-    buildSystem
-);
-generate(
-    'code-structure',
-    'Code and Project Structure',
-    [{
-        kind: 'mainpage',
-        class: 'topics',
-        readme: codeStructureContentHtml
-    }],
-    codeStructure
-);
-generate(
-    'github-labels',
-    'Github Labels',
-    [{
-        kind: 'mainpage',
-        class: 'topics',
-        readme: githubLabelsHtml
-    }],
-    githubLabels
-);
-generate(
-    'reusable-api',
-    'Reusable API',
-    [{
-        kind: 'mainpage',
-        class: 'topics',
-        readme: reusableApiHtml
-    }],
-    reusableApi
-);
-
-
 
   // set up the lists that we'll use to generate pages
-  var classes = taffy(members.classes);
-  var modules = taffy(members.modules);
-  var namespaces = taffy(members.namespaces);
-  var mixins = taffy(members.mixins);
-  var interfaces = taffy(members.interfaces);
-  var externals = taffy(members.externals);
+  var classes = taffy(members.classes),
+   modules = taffy(members.modules),
+   namespaces = taffy(members.namespaces),
+   mixins = taffy(members.mixins),
+   interfaces = taffy(members.interfaces),
+   externals = taffy(members.externals);
 
-  for (var longname in helper.longnameToUrl) {
+for (var longname in helper.longnameToUrl) {
     if (hasOwnProp.call(helper.longnameToUrl, longname)) {
       var myClasses = helper.find(classes, {
         longname: longname
       });
+
       if (myClasses.length) {
         generate('class', 'Class: ' + myClasses[0].name, myClasses, helper.longnameToUrl[longname]);
       }
@@ -1001,6 +932,7 @@ generate(
       var myModules = helper.find(modules, {
         longname: longname
       });
+
       if (myModules.length) {
         generate('module', 'API: ' + myModules[0].name, myModules, helper.longnameToUrl[longname]);
       }
@@ -1008,6 +940,7 @@ generate(
       var myNamespaces = helper.find(namespaces, {
         longname: longname
       });
+
       if (myNamespaces.length) {
         generate('namespace', 'Namespace: ' + myNamespaces[0].name, myNamespaces, helper.longnameToUrl[longname]);
       }
@@ -1015,6 +948,7 @@ generate(
       var myMixins = helper.find(mixins, {
         longname: longname
       });
+
       if (myMixins.length) {
         generate('mixin', 'Mixin: ' + myMixins[0].name, myMixins, helper.longnameToUrl[longname]);
       }
@@ -1022,6 +956,7 @@ generate(
       var myInterfaces = helper.find(interfaces, {
         longname: longname
       });
+
       if (myInterfaces.length) {
         generate('interface', 'Interface: ' + myInterfaces[0].name, myInterfaces, helper.longnameToUrl[longname]);
       }
@@ -1029,10 +964,13 @@ generate(
       var myExternals = helper.find(externals, {
         longname: longname
       });
+
       if (myExternals.length) {
         generate('external', 'External: ' + myExternals[0].name, myExternals, helper.longnameToUrl[longname]);
       }
-=======
+    }
+}
+
     if (view.nav.external && view.nav.external.members.length) {
         generate(
             'external',
@@ -1045,7 +983,6 @@ generate(
             ],
             navigationMaster.external.link
         );
->>>>>>> Adds CSS and JavaScript linting plus code formatting
     }
 
     if (view.nav.tutorial && view.nav.tutorial.members.length) {
@@ -1086,30 +1023,30 @@ generate(
             .concat(files),
         indexUrl
     );
-    var markdown = require('jsdoc/util/markdown');
-    var parser = markdown.getParser();
+    var markdown = require('jsdoc/util/markdown'),
+     parser = markdown.getParser(),
 
     // How To Guides
-    var howToIndexContent = fs
+     howToIndexContent = fs
         .readFileSync(
             `${process.cwd()}/` + './src/doc/how-to-guides/how-to-index.md'
         )
-        .toString();
-    var contributorHowToContent = fs
+        .toString(),
+     contributorHowToContent = fs
         .readFileSync(
             `${process.cwd()}/` +
                 './src/doc/how-to-guides/contributor-how-to-guides.md'
         )
-        .toString();
-    var userHowToContent = fs
+        .toString(),
+     userHowToContent = fs
         .readFileSync(
             `${process.cwd()}/` +
                 './src/doc/how-to-guides/user-how-to-guides.md'
         )
-        .toString();
-    var howToIndexhtml = parser(howToIndexContent);
-    var contributorHowTohtml = parser(contributorHowToContent);
-    var userHowTohtml = parser(userHowToContent);
+        .toString(),
+     howToIndexhtml = parser(howToIndexContent),
+     contributorHowTohtml = parser(contributorHowToContent),
+     userHowTohtml = parser(userHowToContent);
 
     generate(
         'how-to-index',
@@ -1153,33 +1090,33 @@ generate(
         .readFileSync(
             `${process.cwd()}/` + './src/doc/tutorials/tutorials-index.md'
         )
-        .toString();
-    var gettingStartedContent = fs
+        .toString(),
+     gettingStartedContent = fs
         .readFileSync(
             `${process.cwd()}/` + './src/doc/tutorials/getting-started.md'
         )
-        .toString();
-    var composingDatavizContent = fs
+        .toString(),
+     composingDatavizContent = fs
         .readFileSync(
             `${process.cwd()}/` + './src/doc/tutorials/composing-dataviz.md'
         )
-        .toString();
-    var installingContent = fs
+        .toString(),
+     installingContent = fs
         .readFileSync(
             `${process.cwd()}/` +
                 './src/doc/tutorials/installing-britecharts.md'
         )
-        .toString();
-    var stylingContent = fs
+        .toString(),
+     stylingContent = fs
         .readFileSync(
             `${process.cwd()}/` + './src/doc/tutorials/styling-charts.md'
         )
-        .toString();
-    var tutorialIndexhtml = parser(tutorialsIndexContent);
-    var gettingStartedhtml = parser(gettingStartedContent);
-    var composinghtml = parser(composingDatavizContent);
-    var installinghtml = parser(installingContent);
-    var stylinghtml = parser(stylingContent);
+        .toString(),
+     tutorialIndexhtml = parser(tutorialsIndexContent),
+     gettingStartedhtml = parser(gettingStartedContent),
+     composinghtml = parser(composingDatavizContent),
+     installinghtml = parser(installingContent),
+     stylinghtml = parser(stylingContent);
 
     generate(
         'tutorials-index',
@@ -1254,38 +1191,109 @@ generate(
         cdnUrl
     );
 
-    // Topics
-    var topicsIndexContent = fs
-        .readFileSync(`${process.cwd()}/` + './src/doc/topics/topics-index.md')
-        .toString();
-    var topicsIndexhtml = parser(topicsIndexContent);
+
+    // Topics (main page)
+    var topicsIndexContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/topics-index.md')).toString(),
+    topicsIndexhtml = parser(topicsIndexContent),
+    // topics sub pages
+    apiGuidelinesContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/api-guidelines.md')).toString(),
+    apiGuidelinesHtml = parser(apiGuidelinesContent),
+    codeStandardsContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/code-standards.md')).toString(),
+    condeStandardsHtml = parser(codeStandardsContent),
+    buildSystemContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/build-system.md')).toString(),
+    buildSystemHtml = parser(buildSystemContent),
+    codeStructureContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/code-structure.md')).toString(),
+    codeStructureContentHtml = parser(codeStructureContent),
+    githubLabelsContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/github-labels.md')).toString(),
+    githubLabelsHtml = parser(githubLabelsContent),
+    reusableApiContent = fs.readFileSync((`${process.cwd()}/` + './src/doc/topics/reusable-api.md')).toString(),
+    reusableApiHtml = parser(reusableApiContent);
 
     generate(
         'topics-index',
         'Britecharts Topics',
-        [
-            {
-                kind: 'mainpage',
-                class: 'tutorial',
-                readme: topicsIndexhtml,
-            },
-        ],
+        [{
+            kind: 'mainpage',
+            class: 'tutorial',
+            readme: topicsIndexhtml
+        }],
         topicsIndexUrl
+    );
+    generate(
+        'api-guidelines',
+        'API Guidelines',
+        [{
+            kind: 'mainpage',
+            class: 'topics',
+            readme: apiGuidelinesHtml
+        }],
+        apiGuidelines
+    );
+    generate(
+        'code-standards',
+        'Code Standards',
+        [{
+            kind: 'mainpage',
+            class: 'topics',
+            readme: condeStandardsHtml
+        }],
+        codeStandards
+    );
+    generate(
+        'build-system',
+        'Build System',
+        [{
+            kind: 'mainpage',
+            class: 'topics',
+            readme: buildSystemHtml
+        }],
+        buildSystem
+    );
+    generate(
+        'code-structure',
+        'Code and Project Structure',
+        [{
+            kind: 'mainpage',
+            class: 'topics',
+            readme: codeStructureContentHtml
+        }],
+        codeStructure
+    );
+    generate(
+        'github-labels',
+        'Github Labels',
+        [{
+            kind: 'mainpage',
+            class: 'topics',
+            readme: githubLabelsHtml
+        }],
+        githubLabels
+    );
+    generate(
+        'reusable-api',
+        'Reusable API',
+        [{
+            kind: 'mainpage',
+            class: 'topics',
+            readme: reusableApiHtml
+        }],
+        reusableApi
     );
 
     // set up the lists that we'll use to generate pages
-    var classes = taffy(members.classes);
-    var modules = taffy(members.modules);
-    var namespaces = taffy(members.namespaces);
-    var mixins = taffy(members.mixins);
-    var interfaces = taffy(members.interfaces);
-    var externals = taffy(members.externals);
+    var classes = taffy(members.classes),
+     modules = taffy(members.modules),
+     namespaces = taffy(members.namespaces),
+     mixins = taffy(members.mixins),
+     interfaces = taffy(members.interfaces),
+     externals = taffy(members.externals);
 
     for (var longname in helper.longnameToUrl) {
         if (hasOwnProp.call(helper.longnameToUrl, longname)) {
             var myClasses = helper.find(classes, {
                 longname: longname,
             });
+
             if (myClasses.length) {
                 generate(
                     'class',
@@ -1298,6 +1306,7 @@ generate(
             var myModules = helper.find(modules, {
                 longname: longname,
             });
+
             if (myModules.length) {
                 generate(
                     'module',
@@ -1310,6 +1319,7 @@ generate(
             var myNamespaces = helper.find(namespaces, {
                 longname: longname,
             });
+
             if (myNamespaces.length) {
                 generate(
                     'namespace',
@@ -1322,6 +1332,7 @@ generate(
             var myMixins = helper.find(mixins, {
                 longname: longname,
             });
+
             if (myMixins.length) {
                 generate(
                     'mixin',
@@ -1334,6 +1345,7 @@ generate(
             var myInterfaces = helper.find(interfaces, {
                 longname: longname,
             });
+
             if (myInterfaces.length) {
                 generate(
                     'interface',
@@ -1346,6 +1358,7 @@ generate(
             var myExternals = helper.find(externals, {
                 longname: longname,
             });
+
             if (myExternals.length) {
                 generate(
                     'external',
@@ -1367,9 +1380,9 @@ generate(
             content: tutorial.parse(),
             children: tutorial.children,
             docs: null,
-        };
+        },
 
-        var tutorialPath = path.join(outdir, filename),
+         tutorialPath = path.join(outdir, filename),
             html = view.render('tutorial.tmpl', tutorialData);
 
         // yes, you can use {@link} in tutorials too!
@@ -1406,14 +1419,14 @@ generate(
         var data = {
             searchableDocuments: JSON.stringify(searchableDocuments),
             navOptions: navOptions,
-        };
+        },
 
-        var tmplString = fs
+         tmplString = fs
                 .readFileSync(templatePath + '/quicksearch.tmpl')
                 .toString(),
-            tmpl = _.template(tmplString);
+            tmpl = _.template(tmplString),
 
-        var html = tmpl(data),
+         html = tmpl(data),
             outpath = path.join(outdir, 'quicksearch.html');
 
         fs.writeFileSync(outpath, html, 'utf8');
