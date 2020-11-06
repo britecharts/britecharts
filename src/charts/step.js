@@ -33,11 +33,12 @@ import { line } from './helpers/load';
 /**
  * Step Chart reusable API class that renders a
  * simple and configurable step chart.
+ * NOTE: We will be deprecating this chart soon
  *
  * @module Step
  * @tutorial step
  * @requires d3-array, d3-axis, d3-dispatch, d3-ease, d3-format, d3-scale, d3-selection, d3-transition
- *
+ * @deprecated
  * @example
  * var stepChart= step();
  *
@@ -106,6 +107,7 @@ export default function module() {
      * @param  {D3Selection} _selection A d3 selection that represents
      *                                  the container(s) where the chart(s) will be rendered
      * @param {StepChartData} _data The data to attach and generate the chart
+     * @deprecated
      */
     function exports(_selection) {
         _selection.each(function (_data) {
@@ -113,6 +115,11 @@ export default function module() {
             chartWidth = width - margin.left - margin.right;
             chartHeight = height - margin.top - margin.bottom;
             data = cleanData(_data);
+
+            // eslint-disable-next-line no-console
+            console.log(
+                'This chart is being deprecated! Please use other chart for your visualization!'
+            );
 
             buildScales();
             buildAxis();

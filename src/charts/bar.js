@@ -138,6 +138,7 @@ export default function module() {
                 ).darker()
             ),
         orderingFunction,
+        // To Deprecate
         valueLabel = 'value',
         nameLabel = 'name',
         labelEl,
@@ -1122,12 +1123,17 @@ export default function module() {
      * @param  {Number} _x Desired nameLabel for the graph
      * @return {nameLabel | module} Current nameLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.nameLabel = function (_x) {
         if (!arguments.length) {
             return nameLabel;
         }
         nameLabel = _x;
+        // eslint-disable-next-line no-console
+        console.log(
+            'This method is being deprecated! Please modify your data to use "name" as the key'
+        );
 
         return this;
     };
@@ -1211,12 +1217,17 @@ export default function module() {
      * @param  {Number} _x Desired valueLabel for the graph
      * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.valueLabel = function (_x) {
         if (!arguments.length) {
             return valueLabel;
         }
         valueLabel = _x;
+        // eslint-disable-next-line no-console
+        console.log(
+            'This method is being deprecated! Please modify your data to use "value" as the key'
+        );
 
         return this;
     };

@@ -928,12 +928,17 @@ export default function module() {
      * @param  {String} _x              Desired groupLabel for the graph
      * @return { groupLabel | module}   Current groupLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.groupLabel = function (_x) {
         if (!arguments.length) {
             return groupLabel;
         }
         groupLabel = _x;
+        // eslint-disable-next-line no-console
+        console.log(
+            'This method is being deprecated! Please modify your data to use "group" as the key'
+        );
 
         return this;
     };
@@ -1061,12 +1066,17 @@ export default function module() {
      * @param  {Number} _x              Desired dateLabel for the graph
      * @return { nameLabel | module}    Current nameLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.nameLabel = function (_x) {
         if (!arguments.length) {
             return nameLabel;
         }
         nameLabel = _x;
+        // eslint-disable-next-line no-console
+        console.log(
+            'This method is being deprecated! Please modify your data to use "name" as the key'
+        );
 
         return this;
     };
@@ -1122,12 +1132,16 @@ export default function module() {
      * @param  {Number} _x          Desired valueLabel for the graph
      * @return {Number | module}    Current valueLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.valueLabel = function (_x) {
         if (!arguments.length) {
             return valueLabel;
         }
-        valueLabel = _x;
+        valueLabel = _x; // eslint-disable-next-line no-console
+        console.log(
+            'This method is being deprecated! Please modify your data to use "value" as the key'
+        );
 
         return this;
     };

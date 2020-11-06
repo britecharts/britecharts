@@ -213,8 +213,14 @@ export default function module() {
             .classed('tooltip-divider', true)
             .attr('x1', -tooltipWidth / 4 + 16)
             .attr('x2', 265)
-            .attr('y1', initialTooltipBodyYPosition - 6 + additionalTooltipTitleHeight)
-            .attr('y2', initialTooltipBodyYPosition - 6 + additionalTooltipTitleHeight)
+            .attr(
+                'y1',
+                initialTooltipBodyYPosition - 6 + additionalTooltipTitleHeight
+            )
+            .attr(
+                'y2',
+                initialTooltipBodyYPosition - 6 + additionalTooltipTitleHeight
+            )
             .style('stroke', borderStrokeColor);
 
         tooltipBody = tooltipTextContainer
@@ -506,7 +512,8 @@ export default function module() {
         );
 
         if (approximateNumberOfTitleLines > 1) {
-            additionalTooltipTitleHeight = 17 * (approximateNumberOfTitleLines -1)
+            additionalTooltipTitleHeight =
+                17 * (approximateNumberOfTitleLines - 1);
         }
     }
 
@@ -684,12 +691,17 @@ export default function module() {
      * @param  {String} _x          Desired dateLabel
      * @return {String | module}   Current dateLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.dateLabel = function (_x) {
         if (!arguments.length) {
             return dateLabel;
         }
         dateLabel = _x;
+        // eslint-disable-next-line no-console
+        console.log(
+            'This method is being deprecated! Please modify your data to use "date" as the key'
+        );
 
         return this;
     };
@@ -725,12 +737,17 @@ export default function module() {
      * @param  {String} _x           Desired nameLabel
      * @return {String | module}    Current nameLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.nameLabel = function (_x) {
         if (!arguments.length) {
             return nameLabel;
         }
         nameLabel = _x;
+        // eslint-disable-next-line no-console
+        console.log(
+            'This method is being deprecated! Please modify your data to use "name" as the key'
+        );
 
         return this;
     };
@@ -843,12 +860,17 @@ export default function module() {
      * @param  {String} _x          Desired topicLabel
      * @return {String | module}   Current topicLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.topicLabel = function (_x) {
         if (!arguments.length) {
             return topicLabel;
         }
         topicLabel = _x;
+        // eslint-disable-next-line no-console
+        console.log(
+            'This method is being deprecated! Please modify your data to use "topic" as the key'
+        );
 
         return this;
     };
@@ -878,12 +900,17 @@ export default function module() {
      * @param  {String} _x          Desired valueLabel
      * @return {String | module}   Current valueLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.valueLabel = function (_x) {
         if (!arguments.length) {
             return valueLabel;
         }
         valueLabel = _x;
+        // eslint-disable-next-line no-console
+        console.log(
+            'This method is being deprecated! Please modify your data to use "value" as the key'
+        );
 
         return this;
     };

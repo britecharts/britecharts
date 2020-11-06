@@ -1336,12 +1336,17 @@ export default function module() {
      * @param  {Number} _x Desired dateLabel for the graph
      * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.dateLabel = function (_x) {
         if (!arguments.length) {
             return dateLabel;
         }
         dateLabel = _x;
+        // eslint-disable-next-line no-console
+        console.log(
+            'This method is being deprecated! Please modify your data to use "date" as the key'
+        );
 
         return this;
     };
@@ -1601,12 +1606,17 @@ export default function module() {
      * @param  {Number} _x              Desired topicLabel for the graph
      * @return {topicLabel | module}    Current topicLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.topicLabel = function (_x) {
         if (!arguments.length) {
             return topicLabel;
         }
         topicLabel = _x;
+        // eslint-disable-next-line no-console
+        console.log(
+            'This method is being deprecated! Please modify your data to use "topic" as the key'
+        );
 
         return this;
     };
@@ -1616,12 +1626,17 @@ export default function module() {
      * @param  {Number} _x              Desired valueLabel for the graph
      * @return {valueLabel | module}    Current valueLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.valueLabel = function (_x) {
         if (!arguments.length) {
             return valueLabel;
         }
         valueLabel = _x;
+        // eslint-disable-next-line no-console
+        console.log(
+            'This method is being deprecated! Please modify your data to use "value" as the key'
+        );
 
         return this;
     };
