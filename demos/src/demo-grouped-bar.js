@@ -3,17 +3,21 @@ import PubSub from 'pubsub-js';
 
 import groupedBarChart from './../../src/charts/grouped-bar';
 import tooltip from './../../src/charts/tooltip';
+import legend from './../../src/charts/legend';
+
 import { GroupedBarChartDataBuilder } from './../../test/fixtures/groupedBarChartDataBuilder';
 import colorSelectorHelper from './helpers/colorSelector';
 
 require('./helpers/resizeHelper');
+
+const testDataSet = new GroupedBarChartDataBuilder();
+const datasetWithThreeSources = testDataSet.with3Sources().build();
 
 let redrawCharts;
 
 function creategroupedBarChartWithTooltip(optionalColorSchema) {
     let groupedBar = groupedBarChart(),
         chartTooltip = tooltip(),
-        testDataSet = new GroupedBarChartDataBuilder(),
         container = select('.js-grouped-bar-chart-tooltip-container'),
         containerWidth = container.node()
             ? container.node().getBoundingClientRect().width
@@ -22,7 +26,7 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
         dataset;
 
     if (containerWidth) {
-        dataset = testDataSet.with3Sources().build();
+        dataset = datasetWithThreeSources;
 
         // GroupedAreChart Setup and start
         groupedBar
@@ -30,9 +34,6 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
             .width(containerWidth)
             .grid('horizontal')
             .isAnimated(true)
-            .groupLabel('stack')
-            .nameLabel('date')
-            .valueLabel('views')
             .on('customMouseOver', function () {
                 chartTooltip.show();
             })
@@ -49,11 +50,13 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
 
         container.datum(dataset.data).call(groupedBar);
 
+        getInlineLegendChart(datasetWithThreeSources, groupedBar.colorMap());
+
         // Tooltip Setup and start
         chartTooltip
             .topicLabel('values')
             .dateLabel('key')
-            .nameLabel('stack')
+            .nameLabel('group')
             .title('Testing tooltip');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
@@ -72,10 +75,38 @@ function creategroupedBarChartWithTooltip(optionalColorSchema) {
     }
 }
 
+function getInlineLegendChart(dataset, optionalColorMap) {
+    let legendChart = legend(),
+        legendContainer = select('.js-inline-legend-chart-container'),
+        containerWidth = legendContainer.node()
+            ? legendContainer.node().getBoundingClientRect().width
+            : false;
+    const legendData = [
+        ...new Set(dataset.data.map((d) => d.group)),
+    ].map((d) => ({ name: d, id: d }));
+
+    if (containerWidth) {
+        select('.js-inline-legend-chart-container .britechart-legend').remove();
+
+        legendChart
+            .isHorizontal(true)
+            .width(containerWidth * 0.6)
+            .markerSize(8)
+            .height(40);
+
+        if (optionalColorMap) {
+            legendChart.colorMap(optionalColorMap);
+        }
+
+        legendContainer.datum(legendData).call(legendChart);
+
+        return legendChart;
+    }
+}
+
 function createHorizontalgroupedBarChart(optionalColorSchema) {
     let groupedBar = groupedBarChart(),
         chartTooltip = tooltip(),
-        testDataSet = new GroupedBarChartDataBuilder(),
         container = select('.js-grouped-bar-chart-fixed-container'),
         containerWidth = container.node()
             ? container.node().getBoundingClientRect().width
@@ -84,7 +115,7 @@ function createHorizontalgroupedBarChart(optionalColorSchema) {
         dataset;
 
     if (containerWidth) {
-        dataset = testDataSet.with3Sources().build();
+        dataset = datasetWithThreeSources;
 
         // StackedAreChart Setup and start
         groupedBar
@@ -99,9 +130,6 @@ function createHorizontalgroupedBarChart(optionalColorSchema) {
                 right: 30,
                 bottom: 20,
             })
-            .nameLabel('date')
-            .valueLabel('views')
-            .groupLabel('stack')
             .on('customMouseOver', function () {
                 chartTooltip.show();
             })
@@ -122,7 +150,7 @@ function createHorizontalgroupedBarChart(optionalColorSchema) {
         chartTooltip
             .topicLabel('values')
             .dateLabel('key')
-            .nameLabel('stack')
+            .nameLabel('group')
             .title('Tooltip Title');
 
         // Note that if the viewport width is less than the tooltipThreshold value,
