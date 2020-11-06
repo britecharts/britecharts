@@ -9,8 +9,8 @@ const buildDataSet = (dataSetName) => {
 };
 
 const differentDatesReducer = (acc, d) => {
-    if (acc.indexOf(d.date) === -1) {
-        acc.push(d.date);
+    if (acc.indexOf(d.name) === -1) {
+        acc.push(d.name);
     }
 
     return acc;
@@ -24,11 +24,7 @@ describe('Grouped Bar Chart', () => {
             '<div id="fixture"><div class="test-container"></div></div>';
 
         dataset = buildDataSet('with3Sources');
-        groupedBarChart = chart()
-            .groupLabel('stack')
-            .nameLabel('date')
-            .valueLabel('views')
-            .grid('full');
+        groupedBarChart = chart().grid('full');
 
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
@@ -211,6 +207,45 @@ describe('Grouped Bar Chart', () => {
                 expect(actualNBars).toEqual(expectedNLayers * nBarsPerLayer);
             });
         });
+
+        describe('when grouped bar has a colorMap', () => {
+            const colorMap = {
+                Shiny: 'green',
+                Radiant: 'blue',
+                Luminous: 'black',
+            };
+
+            beforeEach(() => {
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
+
+                // adds an html fixture to the DOM
+                document.body.insertAdjacentHTML('afterbegin', fixture);
+
+                dataset = buildDataSet('with3Sources');
+                groupedBarChart = chart().colorMap(colorMap);
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(dataset.data).call(groupedBarChart);
+            });
+
+            // remove the html fixture from the DOM
+            afterEach(() => {
+                document.body.removeChild(document.getElementById('fixture'));
+            });
+
+            it('should add the proper color to each group', () => {
+                const bars = containerFixture
+                    .select('.grouped-bar')
+                    .selectAll('.bar');
+
+                bars.nodes().forEach((d) => {
+                    expect(d.getAttribute('fill')).toEqual(
+                        colorMap[d.__data__.group]
+                    );
+                });
+            });
+        });
     });
 
     describe('Lifecycle', () => {
@@ -273,6 +308,18 @@ describe('Grouped Bar Chart', () => {
     });
 
     describe('API', () => {
+        it('should provide an aspect ratio getter and setter', () => {
+            let previous = groupedBarChart.aspectRatio(),
+                expected = 600,
+                actual;
+
+            groupedBarChart.aspectRatio(expected);
+            actual = groupedBarChart.aspectRatio();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
         it('should provide bar padding getter and setter', () => {
             let previous = groupedBarChart.betweenBarsPadding(),
                 expected = 0.5,
@@ -294,6 +341,33 @@ describe('Grouped Bar Chart', () => {
             actual = groupedBarChart.betweenGroupsPadding();
 
             expect(previous).not.toBe(actual);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide colorMap getter and setter', () => {
+            let previous = groupedBarChart.colorMap(),
+                expected = {
+                    testName: 'red',
+                    testName2: 'black',
+                },
+                actual;
+
+            groupedBarChart.colorMap(expected);
+            actual = groupedBarChart.colorMap();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide colorSchema getter and setter', () => {
+            let previous = groupedBarChart.colorSchema(),
+                expected = ['pink', 'red', 'magenta'],
+                actual;
+
+            groupedBarChart.colorSchema(expected);
+            actual = groupedBarChart.colorSchema();
+
+            expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
         });
 
@@ -423,25 +497,13 @@ describe('Grouped Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it('should provide xTicks getter and setter', () => {
-            let previous = groupedBarChart.xTicks(),
-                expected = 4,
+        it('should provide numberFormat getter and setter', () => {
+            let previous = groupedBarChart.numberFormat(),
+                expected = 's',
                 actual;
 
-            groupedBarChart.xTicks(expected);
-            actual = groupedBarChart.xTicks();
-
-            expect(previous).not.toBe(actual);
-            expect(actual).toBe(expected);
-        });
-
-        it('should provide yTicks getter and setter', () => {
-            let previous = groupedBarChart.yTicks(),
-                expected = 4,
-                actual;
-
-            groupedBarChart.yTicks(expected);
-            actual = groupedBarChart.yTicks();
+            groupedBarChart.numberFormat(expected);
+            actual = groupedBarChart.numberFormat();
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
@@ -471,13 +533,61 @@ describe('Grouped Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it('should provide numberFormat getter and setter', () => {
-            let previous = groupedBarChart.numberFormat(),
-                expected = 's',
+        it('should provide width getter and setter', () => {
+            let previous = groupedBarChart.width(),
+                expected = 200,
                 actual;
 
-            groupedBarChart.numberFormat(expected);
-            actual = groupedBarChart.numberFormat();
+            groupedBarChart.width(expected);
+            actual = groupedBarChart.width();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide xTicks getter and setter', () => {
+            let previous = groupedBarChart.xTicks(),
+                expected = 4,
+                actual;
+
+            groupedBarChart.xTicks(expected);
+            actual = groupedBarChart.xTicks();
+
+            expect(previous).not.toBe(actual);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide yAxisLabel getter and setter', () => {
+            let previous = groupedBarChart.yAxisLabel(),
+                expected = 'valueSet',
+                actual;
+
+            groupedBarChart.yAxisLabel(expected);
+            actual = groupedBarChart.yAxisLabel();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide yAxisLabelOffset getter and setter', () => {
+            let previous = groupedBarChart.yAxisLabelOffset(),
+                expected = [2],
+                actual;
+
+            groupedBarChart.yAxisLabelOffset(expected);
+            actual = groupedBarChart.yAxisLabelOffset();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide yTicks getter and setter', () => {
+            let previous = groupedBarChart.yTicks(),
+                expected = 4,
+                actual;
+
+            groupedBarChart.yTicks(expected);
+            actual = groupedBarChart.yTicks();
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
@@ -489,26 +599,22 @@ describe('Grouped Bar Chart', () => {
             it('should show the € sign', () => {
                 const customSign = '€';
                 const customLocale = {
-                    'decimal': ',',
-                    'thousands': '.',
-                    'grouping': [
-                        3
-                    ],
-                    'currency': [
-                        `${customSign} `,
-                        ''
-                    ]
+                    decimal: ',',
+                    thousands: '.',
+                    grouping: [3],
+                    currency: [`${customSign} `, ''],
                 };
 
-                groupedBarChart
-                    .numberFormat('$,.2f')
-                    .locale(customLocale);
+                groupedBarChart.numberFormat('$,.2f').locale(customLocale);
                 containerFixture.datum(dataset.data).call(groupedBarChart);
 
-                const firstTickSelection = containerFixture.select('.y-axis-group.axis')
+                const firstTickSelection = containerFixture
+                    .select('.y-axis-group.axis')
                     .select('.tick');
 
-                expect(firstTickSelection.text()).toMatch(new RegExp(`${customSign} \\d+\\.?\\d*`));
+                expect(firstTickSelection.text()).toMatch(
+                    new RegExp(`${customSign} \\d+\\.?\\d*`)
+                );
             });
         });
     });

@@ -339,6 +339,45 @@ describe('Legend', () => {
                 });
             });
         });
+
+        describe('when legend has a colorMap', () => {
+            const colorMap = {
+                Shiny: 'green',
+                Radiant: 'blue',
+                Sparkling: 'black',
+            };
+
+            beforeEach(() => {
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
+
+                // adds an html fixture to the DOM
+                document.body.insertAdjacentHTML('afterbegin', fixture);
+
+                dataset = buildDataSet('withThreeCategories');
+                legendChart = legend();
+
+                legendChart.colorMap(colorMap);
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(dataset).call(legendChart);
+            });
+
+            // remove the html fixture from the DOM
+            afterEach(() => {
+                document.body.removeChild(document.getElementById('fixture'));
+            });
+
+            it('should add the proper color to each marker', () => {
+                const markers = containerFixture
+                    .select('.britechart-legend')
+                    .selectAll('.legend-circle');
+
+                markers.nodes().forEach((d) => {
+                    expect(d.style.fill).toEqual(colorMap[d.__data__.name]);
+                });
+            });
+        });
     });
 
     describe('API', () => {
@@ -427,6 +466,21 @@ describe('Legend', () => {
 
             legendChart.colorSchema(expected);
             actual = legendChart.colorSchema();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide colorMap getter and setter', () => {
+            let previous = legendChart.colorMap(),
+                expected = {
+                    testName: 'red',
+                    testName2: 'black',
+                },
+                actual;
+
+            legendChart.colorMap(expected);
+            actual = legendChart.colorMap();
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
