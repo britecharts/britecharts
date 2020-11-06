@@ -212,6 +212,45 @@ describe('Stacked Bar Chart', () => {
                 expect(actualNBars).toEqual(expectedNLayers * nBarsPerLayer);
             });
         });
+
+        describe('when stacked bar has a colorMap', () => {
+            const colorMap = {
+                sparkling: 'green',
+                vivid: 'blue',
+                sunny: 'black',
+            };
+
+            beforeEach(() => {
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
+
+                // adds an html fixture to the DOM
+                document.body.insertAdjacentHTML('afterbegin', fixture);
+
+                dataset = buildDataSet('with3Sources');
+                stackedBarChart = chart().colorMap(colorMap);
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(dataset.data).call(stackedBarChart);
+            });
+
+            // remove the html fixture from the DOM
+            afterEach(() => {
+                document.body.removeChild(document.getElementById('fixture'));
+            });
+
+            it('should add the proper color to each stack', () => {
+                const bars = containerFixture
+                    .select('.grouped-bar')
+                    .selectAll('.bar');
+
+                bars.nodes().forEach((d) => {
+                    expect(d.getAttribute('fill')).toEqual(
+                        colorMap[d.__data__.stack]
+                    );
+                });
+            });
+        });
     });
 
     describe('Lifecycle', () => {
@@ -290,6 +329,21 @@ describe('Stacked Bar Chart', () => {
             actual = stackedBarChart.betweenBarsPadding();
 
             expect(previous).not.toBe(actual);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide colorMap getter and setter', () => {
+            let previous = stackedBarChart.colorMap(),
+                expected = {
+                    testName: 'red',
+                    testName2: 'black',
+                },
+                actual;
+
+            stackedBarChart.colorMap(expected);
+            actual = stackedBarChart.colorMap();
+
+            expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
         });
 

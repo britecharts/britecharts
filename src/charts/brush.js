@@ -579,6 +579,7 @@ export default function module() {
      * It requires a `xAxisFormat` of 'custom' in order to work.
      * @param  {String} _x              Desired format for x axis
      * @return {String | Module}        Current format or module to chain calls
+     * @public
      */
     exports.xAxisCustomFormat = function (_x) {
         if (!arguments.length) {
@@ -595,6 +596,7 @@ export default function module() {
      * @return {String | Module}    Current format or module to chain calls
      * @example
      *     brush.xAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
+     * @public
      */
     exports.xAxisFormat = function (_x) {
         if (!arguments.length) {
@@ -612,6 +614,7 @@ export default function module() {
      *
      * @param  {Number} [_x=null]       Desired number of x axis ticks (multiple of 2, 5 or 10)
      * @return {Number | Module}        Current number or ticks or module to chain calls
+     * @public
      */
     exports.xTicks = function (_x) {
         if (!arguments.length) {
@@ -628,6 +631,7 @@ export default function module() {
      * @return { (roundingTimeInterval | Module) } Current time interval or module to chain calls
      * @see {@link https://github.com/d3/d3-time#intervals}
      * @public
+     * @example
      * All options are:
      * timeMillisecond, utcMillisecond, timeSecond, utcSecond, timeMinute, utcMinute, timeHour, utcHour, timeDay, utcDay
      * timeWeek, utcWeek, timeSunday, utcSunday, timeMonday, utcMonday, timeTuesday, utcTuesday, timeWednesday,

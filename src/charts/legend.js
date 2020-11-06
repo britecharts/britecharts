@@ -84,12 +84,21 @@ export default function module() {
         hasQuantities = true,
         // colors
         colorScale,
+        nameToColorMap = null,
         colorSchema = colorHelper.colorSchemas.britecharts,
         getId = ({ id }) => id,
         getName = ({ name }) => name,
         getFormattedQuantity = ({ quantity }) =>
             format(numberFormat)(quantity) + unit,
-        getCircleFill = ({ name }) => colorScale(name),
+        getMarkerFill = ({ name }) => {
+            if (nameToColorMap !== null) {
+                return nameToColorMap[name]
+                    ? nameToColorMap[name]
+                    : colorScale(name);
+            }
+
+            return colorScale(name);
+        },
         hasQuantity = ({ quantity }) =>
             typeof quantity === 'number' || typeof quantity === 'string',
         entries,
@@ -296,7 +305,7 @@ export default function module() {
             .attr('cx', markerSize / 2)
             .attr('cy', markerYOffset)
             .attr('r', markerSize / 2)
-            .style('fill', getCircleFill)
+            .style('fill', getMarkerFill)
             .style('stroke-width', 1);
 
         svg.select('.legend-group')
@@ -352,7 +361,7 @@ export default function module() {
             .attr('cx', markerSize / 2)
             .attr('cy', markerYOffset)
             .attr('r', markerSize / 2)
-            .style('fill', getCircleFill)
+            .style('fill', getMarkerFill)
             .style('stroke-width', 1);
 
         svg.select('.legend-group')
@@ -457,9 +466,24 @@ export default function module() {
     };
 
     /**
+     * Gets or Sets the colorMap of the chart
+     * @param  {object} [_x=null]    Color map
+     * @return {number | module}     Current colorMap or Legend module to chain calls
+     * @public
+     */
+    exports.colorMap = function (_x) {
+        if (!arguments.length) {
+            return nameToColorMap;
+        }
+        nameToColorMap = _x;
+
+        return this;
+    };
+
+    /**
      * Gets or Sets the colorSchema of the chart
      * @param  {array} [_x=colorHelper.colorSchemas.britecharts]    Color scheme array to get/set
-     * @return {number | module}                                    Current colorSchema or Donut Chart module to chain calls
+     * @return {number | module}                                    Current colorSchema or Legend module to chain calls
      * @public
      */
     exports.colorSchema = function (_x) {
