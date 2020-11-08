@@ -14,6 +14,7 @@ import { exportChart } from './helpers/export';
 import colorHelper from './helpers/color';
 import { line as lineChartLoadingMarkup } from './helpers/load';
 import { getTimeSeriesAxis, getSortedNumberAxis } from './helpers/axis';
+import { dataKeyDeprecationMessage } from './helpers/project';
 import { axisTimeCombinations, curveMap } from './helpers/constants';
 import {
     createFilterContainer,
@@ -1336,12 +1337,14 @@ export default function module() {
      * @param  {Number} _x Desired dateLabel for the graph
      * @return { dateLabel | module} Current dateLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.dateLabel = function (_x) {
         if (!arguments.length) {
             return dateLabel;
         }
         dateLabel = _x;
+        dataKeyDeprecationMessage('date');
 
         return this;
     };
@@ -1601,12 +1604,14 @@ export default function module() {
      * @param  {Number} _x              Desired topicLabel for the graph
      * @return {topicLabel | module}    Current topicLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.topicLabel = function (_x) {
         if (!arguments.length) {
             return topicLabel;
         }
         topicLabel = _x;
+        dataKeyDeprecationMessage('topic');
 
         return this;
     };
@@ -1616,12 +1621,14 @@ export default function module() {
      * @param  {Number} _x              Desired valueLabel for the graph
      * @return {valueLabel | module}    Current valueLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.valueLabel = function (_x) {
         if (!arguments.length) {
             return valueLabel;
         }
         valueLabel = _x;
+        dataKeyDeprecationMessage('value');
 
         return this;
     };
