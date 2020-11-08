@@ -12,6 +12,7 @@ import 'd3-transition';
 import assign from 'lodash/assign';
 
 import { exportChart } from './helpers/export';
+import { dataKeyDeprecationMessage } from './helpers/project';
 import colorHelper from './helpers/color';
 import { bar } from './helpers/load';
 import { setDefaultLocale } from './helpers/locale';
@@ -947,12 +948,14 @@ export default function module() {
      * @param  {String} _x              Desired groupLabel for the graph
      * @return { groupLabel | module}   Current groupLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.groupLabel = function (_x) {
         if (!arguments.length) {
             return groupLabel;
         }
         groupLabel = _x;
+        dataKeyDeprecationMessage('group');
 
         return this;
     };
@@ -1080,12 +1083,14 @@ export default function module() {
      * @param  {Number} _x              Desired dateLabel for the graph
      * @return { nameLabel | module}    Current nameLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.nameLabel = function (_x) {
         if (!arguments.length) {
             return nameLabel;
         }
         nameLabel = _x;
+        dataKeyDeprecationMessage('name');
 
         return this;
     };
@@ -1141,12 +1146,14 @@ export default function module() {
      * @param  {Number} _x          Desired valueLabel for the graph
      * @return {Number | module}    Current valueLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.valueLabel = function (_x) {
         if (!arguments.length) {
             return valueLabel;
         }
         valueLabel = _x;
+        dataKeyDeprecationMessage('value');
 
         return this;
     };

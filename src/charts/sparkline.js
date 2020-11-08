@@ -6,6 +6,7 @@ import { select } from 'd3-selection';
 import 'd3-transition';
 
 import { exportChart } from './helpers/export';
+import { dataKeyDeprecationMessage } from './helpers/project';
 import colorHelper from './helpers/color';
 import { stackedArea as stackedAreaLoadingMarkup } from './helpers/load';
 import { uniqueId } from './helpers/number';
@@ -396,12 +397,14 @@ export default function module() {
      * @param  {Number} _x          Desired dateLabel for the graph
      * @return {dateLabel | module} Current dateLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.dateLabel = function (_x) {
         if (!arguments.length) {
             return dateLabel;
         }
         dateLabel = _x;
+        dataKeyDeprecationMessage('date');
 
         return this;
     };
@@ -572,12 +575,14 @@ export default function module() {
      * @param  {Number} _x              Desired valueLabel for the graph
      * @return {valueLabel | module}    Current valueLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.valueLabel = function (_x) {
         if (!arguments.length) {
             return valueLabel;
         }
         valueLabel = _x;
+        dataKeyDeprecationMessage('value');
 
         return this;
     };
