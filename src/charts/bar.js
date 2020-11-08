@@ -14,6 +14,7 @@ import colorHelper from './helpers/color';
 import { bar as barChartLoadingMarkup } from './helpers/load';
 import { uniqueId } from './helpers/number';
 import { setDefaultLocale } from './helpers/locale';
+import { dataKeyDeprecationMessage } from './helpers/project';
 
 const PERCENTAGE_FORMAT = '%';
 const NUMBER_FORMAT = ',f';
@@ -138,6 +139,7 @@ export default function module() {
                 ).darker()
             ),
         orderingFunction,
+        // To Deprecate
         valueLabel = 'value',
         nameLabel = 'name',
         labelEl,
@@ -1122,12 +1124,14 @@ export default function module() {
      * @param  {Number} _x Desired nameLabel for the graph
      * @return {nameLabel | module} Current nameLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.nameLabel = function (_x) {
         if (!arguments.length) {
             return nameLabel;
         }
         nameLabel = _x;
+        dataKeyDeprecationMessage('name');
 
         return this;
     };
@@ -1211,12 +1215,14 @@ export default function module() {
      * @param  {Number} _x Desired valueLabel for the graph
      * @return { valueLabel | module} Current valueLabel or Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.valueLabel = function (_x) {
         if (!arguments.length) {
             return valueLabel;
         }
         valueLabel = _x;
+        dataKeyDeprecationMessage('value');
 
         return this;
     };

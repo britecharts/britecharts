@@ -4,6 +4,7 @@ import { format } from 'd3-format';
 import { select } from 'd3-selection';
 import 'd3-transition';
 
+import { dataKeyDeprecationMessage } from './helpers/project';
 import { isDefined } from './helpers/type';
 
 const NUMBER_FORMAT = '.2f';
@@ -247,9 +248,7 @@ export default function module() {
      */
     function showTooltip(dataPoint) {
         updateContent(dataPoint);
-        svg
-            .style('visibility', 'visible')
-            .style('opacity', 0);
+        svg.style('visibility', 'visible').style('opacity', 0);
     }
 
     /**
@@ -365,12 +364,14 @@ export default function module() {
      * @param  {text} _x Desired nameLabel
      * @return { text | module} nameLabel or Step Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.nameLabel = function (_x) {
         if (!arguments.length) {
             return nameLabel;
         }
         nameLabel = _x;
+        dataKeyDeprecationMessage('name');
 
         return this;
     };
@@ -452,12 +453,14 @@ export default function module() {
      * @param  {text} _x        Desired valueLabel
      * @return {text | module}  valueLabel or Step Chart module to chain calls
      * @public
+     * @deprecated
      */
     exports.valueLabel = function (_x) {
         if (!arguments.length) {
             return valueLabel;
         }
         valueLabel = _x;
+        dataKeyDeprecationMessage('value');
 
         return this;
     };
