@@ -50,4 +50,10 @@ module.exports = {
         'vars-on-top': 1,
         'wrap-iife': [2, 'inside'],
     },
+    overrides: [
+        {
+            files: ['*.d.ts'],
+            parser: '@typescript-eslint/parser',
+        },
+    ],
 };
