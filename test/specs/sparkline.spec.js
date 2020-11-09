@@ -24,7 +24,7 @@ describe('Sparkline Chart', () => {
         document.body.insertAdjacentHTML('afterbegin', fixture);
 
         dataset = buildDataSet('with1Source');
-        sparklineChart = sparkline().dateLabel('dateUTC');
+        sparklineChart = sparkline();
 
         containerFixture = d3.select('.test-container').append('svg');
         containerFixture.datum(dataset.data).call(sparklineChart);
@@ -220,39 +220,9 @@ describe('Sparkline Chart', () => {
             expect(newGradient).toBe(testGradient);
         });
 
-        describe('export chart', () => {
-            it('should have exportChart defined', () => {
-                expect(sparklineChart.exportChart).toBeDefined();
-            });
-        });
-
-        it('should provide width getter and setter', () => {
-            let defaultWidth = sparklineChart.width(),
-                testWidth = 200,
-                newWidth;
-
-            sparklineChart.width(testWidth);
-            newWidth = sparklineChart.width();
-
-            expect(defaultWidth).not.toBe(testWidth);
-            expect(newWidth).toBe(testWidth);
-        });
-
-        it('should provide height getter and setter', () => {
-            let defaultHeight = sparklineChart.height(),
-                testHeight = 200,
-                newHeight;
-
-            sparklineChart.height(testHeight);
-            newHeight = sparklineChart.height();
-
-            expect(defaultHeight).not.toBe(testHeight);
-            expect(newHeight).toBe(testHeight);
-        });
-
         it('should provide dateLabel getter and setter', () => {
             let defaultDateLabel = sparklineChart.dateLabel(),
-                testDateLabel = 'date',
+                testDateLabel = 'testDateLabel',
                 newDateLabel;
 
             sparklineChart.valueLabel(testDateLabel);
@@ -272,6 +242,24 @@ describe('Sparkline Chart', () => {
 
             expect(defaultAnimationDuration).not.toBe(testAnimationDuration);
             expect(newAnimationDuration).toBe(testAnimationDuration);
+        });
+
+        describe('export chart', () => {
+            it('should have exportChart defined', () => {
+                expect(sparklineChart.exportChart).toBeDefined();
+            });
+        });
+
+        it('should provide height getter and setter', () => {
+            let defaultHeight = sparklineChart.height(),
+                testHeight = 200,
+                newHeight;
+
+            sparklineChart.height(testHeight);
+            newHeight = sparklineChart.height();
+
+            expect(defaultHeight).not.toBe(testHeight);
+            expect(newHeight).toBe(testHeight);
         });
 
         it('should provide isAnimated getter and setter', () => {
@@ -398,6 +386,18 @@ describe('Sparkline Chart', () => {
 
             expect(defaultValueLabel).not.toBe(testValueLabel);
             expect(newValueLabel).toBe(testValueLabel);
+        });
+
+        it('should provide width getter and setter', () => {
+            let defaultWidth = sparklineChart.width(),
+                testWidth = 200,
+                newWidth;
+
+            sparklineChart.width(testWidth);
+            newWidth = sparklineChart.width();
+
+            expect(defaultWidth).not.toBe(testWidth);
+            expect(newWidth).toBe(testWidth);
         });
     });
 });
