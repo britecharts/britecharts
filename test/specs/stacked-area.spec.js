@@ -450,6 +450,46 @@ describe('Stacked Area Chart', () => {
                 });
             });
         });
+
+        describe('when has a colorMap', () => {
+            const colorMap = {
+                Blazing: 'green',
+                Shimmering: 'blue',
+                Brilliant: 'black',
+            };
+
+            beforeEach(() => {
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
+
+                // adds an html fixture to the DOM
+                document.body.insertAdjacentHTML('afterbegin', fixture);
+
+                const newDataset = buildDataSet('with3Sources');
+
+                stackedAreaChart = stackedArea().colorMap(colorMap);
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(newDataset.data).call(stackedAreaChart);
+            });
+
+            // remove the html fixture from the DOM
+            afterEach(() => {
+                document.body.removeChild(document.getElementById('fixture'));
+            });
+
+            it('should add the proper color to each stack', () => {
+                const layers = containerFixture.selectAll(
+                    '.stacked-area .layer'
+                );
+
+                layers.nodes().forEach((d) => {
+                    expect(d.getAttribute('fill')).toEqual(
+                        colorMap[d.__data__.key]
+                    );
+                });
+            });
+        });
     });
 
     describe('Lifecycle', () => {
@@ -593,6 +633,21 @@ describe('Stacked Area Chart', () => {
             it('should have exportChart defined', () => {
                 expect(stackedAreaChart.exportChart).toBeDefined();
             });
+        });
+
+        it('should provide colorMap getter and setter', () => {
+            let previous = stackedAreaChart.colorMap(),
+                expected = {
+                    testName: 'red',
+                    testName2: 'black',
+                },
+                actual;
+
+            stackedAreaChart.colorMap(expected);
+            actual = stackedAreaChart.colorMap();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
         });
 
         it('should provide a colorSchema getter and setter', () => {
