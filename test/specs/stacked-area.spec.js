@@ -24,9 +24,7 @@ describe('Stacked Area Chart', () => {
         document.body.insertAdjacentHTML('afterbegin', fixture);
 
         dataset = aTestDataSet().withReportData().build();
-        stackedAreaChart = stackedArea()
-            .valueLabel('views')
-            .dateLabel('dateUTC');
+        stackedAreaChart = stackedArea();
 
         containerFixture = d3.select('.test-container').append('svg');
         containerFixture.datum(dataset.data).call(stackedAreaChart);
@@ -117,10 +115,7 @@ describe('Stacked Area Chart', () => {
             describe('when grid is horizontal', function () {
                 beforeEach(function () {
                     dataset = aTestDataSet().withReportData().build();
-                    stackedAreaChart = stackedArea()
-                        .grid('horizontal')
-                        .valueLabel('views')
-                        .dateLabel('dateUTC');
+                    stackedAreaChart = stackedArea().grid('horizontal');
 
                     containerFixture = d3
                         .select('.test-container')
@@ -148,9 +143,9 @@ describe('Stacked Area Chart', () => {
                 describe('when x-axis value type is number', () => {
                     beforeEach(function () {
                         dataset = aTestDataSet().withNumericKeys().build();
-                        stackedAreaChart = stackedArea()
-                            .xAxisValueType('number')
-                            .dateLabel('date');
+                        stackedAreaChart = stackedArea().xAxisValueType(
+                            'number'
+                        );
 
                         containerFixture = d3
                             .select('.test-container')
@@ -163,6 +158,7 @@ describe('Stacked Area Chart', () => {
                     it('the highest X-axis value is a number', () => {
                         let yAxis = containerFixture.selectAll('.x-axis-group');
                         let text = yAxis.select('g.tick:last-child');
+
                         expect(text.text()).toEqual('12M');
                     });
                 });
@@ -172,8 +168,7 @@ describe('Stacked Area Chart', () => {
                         dataset = aTestDataSet().withNumericKeys().build();
                         stackedAreaChart = stackedArea()
                             .xAxisValueType('number')
-                            .xAxisScale('logarithmic')
-                            .dateLabel('date');
+                            .xAxisScale('logarithmic');
 
                         containerFixture = d3
                             .select('.test-container')
@@ -186,6 +181,7 @@ describe('Stacked Area Chart', () => {
                     it('the highest X-axis value is a logarithmic number', () => {
                         let yAxis = containerFixture.selectAll('.x-axis-group');
                         let text = yAxis.select('g.tick:last-child');
+
                         expect(text.text()).toEqual('10^7');
                     });
                 });
@@ -194,10 +190,7 @@ describe('Stacked Area Chart', () => {
             describe('when grid is vertical', function () {
                 beforeEach(function () {
                     dataset = aTestDataSet().withReportData().build();
-                    stackedAreaChart = stackedArea()
-                        .grid('vertical')
-                        .valueLabel('views')
-                        .dateLabel('dateUTC');
+                    stackedAreaChart = stackedArea().grid('vertical');
 
                     containerFixture = d3
                         .select('.test-container')
@@ -218,10 +211,7 @@ describe('Stacked Area Chart', () => {
             describe('when grid is full', function () {
                 beforeEach(function () {
                     dataset = aTestDataSet().withReportData().build();
-                    stackedAreaChart = stackedArea()
-                        .grid('full')
-                        .valueLabel('views')
-                        .dateLabel('dateUTC');
+                    stackedAreaChart = stackedArea().grid('full');
 
                     containerFixture = d3
                         .select('.test-container')
@@ -357,6 +347,7 @@ describe('Stacked Area Chart', () => {
                 containerFixture.datum(dataset.data).call(stackedAreaChart);
 
                 const outlines = containerFixture.selectAll('.area-outline');
+
                 actual = outlines.style('display');
 
                 expect(actual).toEqual(expected);
@@ -392,10 +383,7 @@ describe('Stacked Area Chart', () => {
         describe('when has negative values', () => {
             beforeEach(function () {
                 dataset = aTestDataSet().withNegativeValues().build();
-                stackedAreaChart = stackedArea()
-                    .grid('full')
-                    .valueLabel('views')
-                    .dateLabel('date');
+                stackedAreaChart = stackedArea().grid('full');
 
                 containerFixture = d3.select('.test-container').append('svg');
                 containerFixture.datum(dataset.data).call(stackedAreaChart);
@@ -404,6 +392,7 @@ describe('Stacked Area Chart', () => {
             it('The lowest Y-axis value is negative', () => {
                 let yAxis = containerFixture.selectAll('.y-axis-group');
                 let text = yAxis.select('g.tick');
+
                 expect(text.text()).toEqual('-15');
             });
 
@@ -422,8 +411,6 @@ describe('Stacked Area Chart', () => {
                     dataset = aTestDataSet().withNegativeValues().build();
                     stackedAreaChart = stackedArea()
                         .grid('full')
-                        .valueLabel('views')
-                        .dateLabel('date')
                         .yAxisBaseline(-30);
 
                     containerFixture = d3
@@ -436,6 +423,7 @@ describe('Stacked Area Chart', () => {
                     let firstText = containerFixture
                         .selectAll('.y-axis-group')
                         .select('g.tick');
+
                     expect(firstText.text()).toEqual('-30');
                 });
             });
@@ -445,8 +433,6 @@ describe('Stacked Area Chart', () => {
                     dataset = aTestDataSet().withNegativeValues().build();
                     stackedAreaChart = stackedArea()
                         .grid('full')
-                        .valueLabel('views')
-                        .dateLabel('date')
                         .yAxisBaseline(100);
 
                     containerFixture = d3
@@ -459,6 +445,7 @@ describe('Stacked Area Chart', () => {
                     let firstText = containerFixture
                         .selectAll('.y-axis-group')
                         .select('g.tick:last-child');
+
                     expect(firstText.text()).toEqual('100');
                 });
             });
@@ -955,6 +942,7 @@ describe('Stacked Area Chart', () => {
 
         it('default of xAxisValueType should be "date"', () => {
             let current = stackedAreaChart.xAxisValueType();
+
             expect(current).toBe('date');
         });
     });
