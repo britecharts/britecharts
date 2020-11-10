@@ -1,5 +1,6 @@
 import { ChartBaseAPI, ExportableChartAPI } from '../common/base';
 import { ChartModuleSelection } from '../common/selection';
+import { ColorsSchemasType } from '../helpers/colors';
 
 export enum BulletChartKeys {
   Ranges = 'ranges',
@@ -21,6 +22,8 @@ export type BulletChartBaseAPI = Omit<
 export interface BulletChartAPI extends BulletChartBaseAPI, ExportableChartAPI<BulletChartModule> {
   /** Gets or Sets the aspect ratio of the chart */
   aspectRatio(ratio?: number): BulletChartModule;
+  /** Gets or Sets the colorSchema of the chart */
+  colorSchema(schema: ColorsSchemasType): BulletChartModule;
   /** Gets or Sets the subtitle for measure identifier range. */
   customSubtitle(subtitle?: number): BulletChartModule;
   /** Gets or Sets the title for measure identifier */
