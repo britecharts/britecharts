@@ -23,6 +23,8 @@ export type LegendSelection = Selection<
 >;
 
 export interface LegendAPI extends ComponentBaseAPI<LegendModule> {
+  /** Gets or Sets the colorMap of the chart */
+  colorMap(colorMap?: Record<string, string> ): LegendModule;
   /** Command that highlights a line entry by fading the rest of lines on a legend instance */
   highlight(entryId: number): void;
   /** Gets or Sets the id of the entry to highlight */

@@ -24,6 +24,8 @@ export interface BarChartAPI extends ChartBaseAPI<BarChartModule>, ExportableCha
   betweenBarsPadding(padding?: number): BarChartModule;
   /** Gets or Sets the gradient colors of a bar in the chart */
   chartGradient(gradient?: [string, string]): BarChartModule;
+  /** Gets or Sets the colorMap of the chart */
+  colorMap(colorMap?: Record<string, string> ): BarChartModule;
   /** If true, adds labels at the end of the bars */
   enableLabels(shouldEnable?: boolean): BarChartModule;
   /** Gets or Sets the hasPercentage status */

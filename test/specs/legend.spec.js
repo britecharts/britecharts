@@ -381,6 +381,33 @@ describe('Legend', () => {
     });
 
     describe('API', () => {
+        it('should provide colorSchema getter and setter', () => {
+            let previous = legendChart.colorSchema(),
+                expected = ['pink', 'red', 'magenta'],
+                actual;
+
+            legendChart.colorSchema(expected);
+            actual = legendChart.colorSchema();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide colorMap getter and setter', () => {
+            let previous = legendChart.colorMap(),
+                expected = {
+                    testName: 'red',
+                    testName2: 'black',
+                },
+                actual;
+
+            legendChart.colorMap(expected);
+            actual = legendChart.colorMap();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
         it('should provide margin getter and setter', () => {
             let previous = legendChart.margin(),
                 expected = { top: 4, right: 4, bottom: 4, left: 4 },
@@ -454,33 +481,6 @@ describe('Legend', () => {
 
             legendChart.isHorizontal(expected);
             actual = legendChart.isHorizontal();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
-        it('should provide colorSchema getter and setter', () => {
-            let previous = legendChart.colorSchema(),
-                expected = ['pink', 'red', 'magenta'],
-                actual;
-
-            legendChart.colorSchema(expected);
-            actual = legendChart.colorSchema();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
-        it('should provide colorMap getter and setter', () => {
-            let previous = legendChart.colorMap(),
-                expected = {
-                    testName: 'red',
-                    testName2: 'black',
-                },
-                actual;
-
-            legendChart.colorMap(expected);
-            actual = legendChart.colorMap();
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);

@@ -31,6 +31,8 @@ export interface DonutChartAPI extends ChartBaseAPI<DonutChartModule>, Interacti
   centeredTextFunction(
     centeredTextFunc: (a: DonutChartDataShape) => void
   ): DonutChartModule;
+  /** Gets or Sets the colorMap of the chart */
+  colorMap(colorMap?: Record<string, string> ): DonutChartModule;
   /**
    * Gets or Sets the emptyDataConfig of the chart. If set and data is empty (quantity
    * adds up to zero or there are no entries), the chart will render an empty slice

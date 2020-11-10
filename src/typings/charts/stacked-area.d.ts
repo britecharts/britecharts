@@ -38,6 +38,8 @@ export interface StackedAreaChartAPI
   areaOpacity(opacity?: number): StackedAreaChartModule;
   /** Gets or Sets the aspect ratio of the chart */
   aspectRatio(ratio?: number): StackedAreaChartModule;
+  /** Gets or Sets the colorMap of the chart */
+  colorMap(colorMap?: Record<string, string> ): StackedAreaChartModule;
   /** Gets or Sets the emptyDataConfig of the chart */
   emptyDataConfig(config?: StackedAreaEmptyDataConfig): StackedAreaChartModule;
   /** Gets or Sets the grid mode */

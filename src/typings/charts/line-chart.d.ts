@@ -45,6 +45,8 @@ export interface LineChartAPI
   };
   /** Gets or Sets the aspect ratio of the chart */
   aspectRatio(ratio?: number): LineChartModule;
+  /** Gets or Sets the colorMap of the chart */
+  colorMap(colorMap?: Record<string, string> ): LineChartModule;
   /** Gets or Sets the grid mode. */
   grid(gridType?: GridTypes): LineChartModule;
   /** Gets or Sets the curve of the line chart */

@@ -38,6 +38,8 @@ export interface ScatterPlotAPI extends ScatterPlotBaseAPI, InteractiveChartAPI<
    * It makes the area of each data point more transparent if it's less than 1.
    */
   circleOpacity(opacity?: number): ScatterPlotModule;
+  /** Gets or Sets the colorMap of the chart */
+  colorMap(colorMap?: Record<string, string> ): ScatterPlotModule;
   /** Gets or Sets the grid mode. */
   grid(opacity?: GridTypes): ScatterPlotModule;
   /**

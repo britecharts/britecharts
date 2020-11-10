@@ -31,6 +31,8 @@ export interface StackedBarChartAPI extends StackedBarBaseAPI<StackedBarChartMod
   aspectRatio(ratio?: number): StackedBarChartModule;
   /** Gets or Sets the padding of the stacked bar chart */
   betweenBarsPadding(padding?: number): StackedBarChartModule;
+  /** Gets or Sets the colorMap of the chart */
+  colorMap(colorMap?: Record<string, string> ): StackedBarChartModule;
   /** Gets or Sets the grid mode */
   grid(gridMode?: GridTypes): StackedBarChartModule;
   /** Gets or Sets the hasPercentage status */

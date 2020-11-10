@@ -31,6 +31,8 @@ export interface GroupedBarChartAPI extends GroupedBarBaseAPI<GroupedBarChartMod
   betweenBarsPadding(padding?: number): GroupedBarChartModule;
   /** Gets or Sets the padding between groups of bars. */
   betweenGroupsPadding(padding?: number): GroupedBarChartModule;
+  /** Gets or Sets the colorMap of the chart */
+  colorMap(colorMap?: Record<string, string> ): GroupedBarChartModule;
   /** Gets or Sets the grid mode. */
   grid(gridMode?: GridTypes): GroupedBarChartModule;
   /** Gets or Sets the horizontal direction of the chart */

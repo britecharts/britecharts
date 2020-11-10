@@ -1328,7 +1328,7 @@ export default function module() {
     /**
      * Gets or Sets the colorMap of the chart
      * @param  {object} [_x=null]    Color map
-     * @return {number | module}     Current colorMap or Chart module to chain calls
+     * @return {object | module}     Current colorMap or Chart module to chain calls
      * @example stackedArea.colorMap({name: 'colorHex', name2: 'colorString'})
      * @public
      */
