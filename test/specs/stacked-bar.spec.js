@@ -304,6 +304,18 @@ describe('Stacked Bar Chart', () => {
     });
 
     describe('API', () => {
+        it('should provide animationDuration getter and setter', () => {
+            let defaultAnimationDuration = stackedBarChart.animationDuration(),
+                testAnimationDuration = 2000,
+                newAnimationDuration;
+
+            stackedBarChart.animationDuration(testAnimationDuration);
+            newAnimationDuration = stackedBarChart.animationDuration();
+
+            expect(defaultAnimationDuration).not.toBe(testAnimationDuration);
+            expect(newAnimationDuration).toBe(testAnimationDuration);
+        });
+
         it('should provide an aspect ratio getter and setter', () => {
             let previous = stackedBarChart.aspectRatio(),
                 expected = 600,

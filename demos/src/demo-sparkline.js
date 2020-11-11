@@ -25,9 +25,7 @@ function createSparklineChart() {
 
     // Sparkline Chart Setup and start
     sparkline
-        .dateLabel('dateUTC')
         .isAnimated(true)
-        .duration(1000)
         .height(containerWidth / 4)
         .width(containerWidth);
 

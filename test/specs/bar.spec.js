@@ -503,6 +503,18 @@ describe('Bar Chart', () => {
     });
 
     describe('API', () => {
+        it('should provide animationDuration getter and setter', () => {
+            let defaultAnimationDuration = barChart.animationDuration(),
+                testAnimationDuration = 2000,
+                newAnimationDuration;
+
+            barChart.animationDuration(testAnimationDuration);
+            newAnimationDuration = barChart.animationDuration();
+
+            expect(defaultAnimationDuration).not.toBe(testAnimationDuration);
+            expect(newAnimationDuration).toBe(testAnimationDuration);
+        });
+
         it('should provide colorSchema getter and setter', () => {
             let previous = barChart.colorSchema(),
                 expected = ['#FFFFFF'],

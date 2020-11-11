@@ -631,6 +631,18 @@ describe('Scatter Plot', () => {
     });
 
     describe('API', () => {
+        it('should provide animationDuration getter and setter', () => {
+            let defaultAnimationDuration = scatterPlot.animationDuration(),
+                testAnimationDuration = 2000,
+                newAnimationDuration;
+
+            scatterPlot.animationDuration(testAnimationDuration);
+            newAnimationDuration = scatterPlot.animationDuration();
+
+            expect(defaultAnimationDuration).not.toBe(testAnimationDuration);
+            expect(newAnimationDuration).toBe(testAnimationDuration);
+        });
+
         describe('aspect ratio', () => {
             it('should provide an aspect ratio getter and setter', () => {
                 let previous = scatterPlot.aspectRatio(),
