@@ -588,6 +588,46 @@ describe('Scatter Plot', () => {
                 });
             });
         });
+
+        describe('when has a colorMap', () => {
+            const colorMap = {
+                radiating: 'green',
+                reflecting: 'blue',
+                blazing: 'black',
+                vivid: 'yellow',
+            };
+
+            beforeEach(() => {
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
+
+                // adds an html fixture to the DOM
+                document.body.insertAdjacentHTML('afterbegin', fixture);
+
+                dataset = buildDataSet('withFourNames');
+                scatterPlot = chart().colorMap(colorMap);
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(dataset).call(scatterPlot);
+            });
+
+            // remove the html fixture from the DOM
+            afterEach(() => {
+                document.body.removeChild(document.getElementById('fixture'));
+            });
+
+            it('should add the proper color to each stack', () => {
+                const circles = containerFixture
+                    .selectAll('.chart-group circle')
+                    .nodes();
+
+                circles.forEach((d) => {
+                    expect(d.getAttribute('fill')).toEqual(
+                        colorMap[d.__data__.name]
+                    );
+                });
+            });
+        });
     });
 
     describe('API', () => {
@@ -659,6 +699,33 @@ describe('Scatter Plot', () => {
             });
         });
 
+        it('should provide colorMap getter and setter', () => {
+            let previous = scatterPlot.colorMap(),
+                expected = {
+                    testName: 'red',
+                    testName2: 'black',
+                },
+                actual;
+
+            scatterPlot.colorMap(expected);
+            actual = scatterPlot.colorMap();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide a colorSchema getter and setter', () => {
+            let previous = scatterPlot.colorSchema(),
+                expected = ['#ffffff', '#fafefc', '#000000'],
+                actual;
+
+            scatterPlot.colorSchema(expected);
+            actual = scatterPlot.colorSchema();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
         it('should provide hasHollowCircles getter and setter', () => {
             let previous = scatterPlot.hasHollowCircles(),
                 expected = true,
@@ -669,6 +736,18 @@ describe('Scatter Plot', () => {
 
             expect(previous).not.toBe(expected);
             expect(actual).toEqual(expected);
+        });
+
+        it('should provide hasTrendline getter and setter', () => {
+            let previous = scatterPlot.hasTrendline(),
+                expected = true,
+                actual;
+
+            scatterPlot.hasTrendline(expected);
+            actual = scatterPlot.hasTrendline();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
         });
 
         it('should provide height getter and setter', () => {
@@ -697,7 +776,7 @@ describe('Scatter Plot', () => {
 
         it('should provide isAnimated getter and setter', () => {
             let previous = scatterPlot.isAnimated(),
-                expected = false,
+                expected = true,
                 actual;
 
             scatterPlot.isAnimated(expected);
@@ -876,18 +955,6 @@ describe('Scatter Plot', () => {
 
             scatterPlot.width(expected);
             actual = scatterPlot.width();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
-        it('should provide hasTrendline getter and setter', () => {
-            let previous = scatterPlot.width(),
-                expected = true,
-                actual;
-
-            scatterPlot.hasTrendline(expected);
-            actual = scatterPlot.hasTrendline();
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
