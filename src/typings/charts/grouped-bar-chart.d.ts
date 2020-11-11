@@ -2,6 +2,7 @@ import {
     GroupedBarBaseAPI,
     InteractiveChartAPI,
     ExportableChartAPI,
+    AnimatedChartAPI,
     ThemableChartAPI,
 } from '../common/base';
 import { ChartModuleSelection } from '../common/selection';
@@ -32,6 +33,7 @@ export interface GroupedBarChartAPI
     extends GroupedBarBaseAPI<GroupedBarChartModule>,
         InteractiveChartAPI<GroupedBarChartModule>,
         ExportableChartAPI<GroupedBarChartModule>,
+        AnimatedChartAPI<GroupedBarChartModule>,
         ThemableChartAPI<GroupedBarChartModule> {
     /** Gets or Sets the aspect ratio of the chart */
     aspectRatio(ratio?: number): GroupedBarChartModule;

@@ -3,6 +3,7 @@ import {
     InteractiveChartAPI,
     ExportableChartAPI,
     ThemableChartAPI,
+    AnimatedChartAPI,
 } from '../common/base';
 import { GridTypes } from '../common/grid';
 import { ChartModuleSelection } from '../common/selection';
@@ -31,6 +32,7 @@ export interface StackedAreaChartAPI
     extends ChartBaseAPI<StackedAreaChartModule>,
         InteractiveChartAPI<StackedBarChartModule>,
         ExportableChartAPI<StackedAreaChartModule>,
+        AnimatedChartAPI<StackedAreaChartModule>,
         ThemableChartAPI<StackedAreaChartModule> {
     /**
      * Exposes the constants to be used to force the x axis to respect a certain granularity

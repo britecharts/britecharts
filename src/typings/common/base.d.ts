@@ -5,8 +5,6 @@ import { ChartMarginParams } from './margin';
 export interface ChartBaseAPI<T> {
     /** Gets or Sets the number format of the chart */
     numberFormat(format?: string): T & ChartBaseAPI<T>;
-    /** Gets or Sets the isAnimated property of the chart, making it to animate when render */
-    isAnimated(isAnimated?: boolean): T & ChartBaseAPI<T>;
     /** Gets or Sets the height of the chart */
     height(height?: number): T & ChartBaseAPI<T>;
     /** Gets or Sets the loading state of the chart */
@@ -58,10 +56,6 @@ export interface ComponentBaseAPI<T> {
 // https://github.com/britecharts/britecharts/issues/842
 // https://github.com/britecharts/britecharts/issues/841
 export interface GroupedBarBaseAPI<T> {
-    /** Gets or Sets the colorSchema of the chart */
-    colorSchema(schema: ColorsSchemasType): T & GroupedBarBaseAPI<T>;
-    /** Gets or Sets the isAnimated property of the chart, making it to animate when render */
-    isAnimated(isAnimated?: boolean): T & GroupedBarBaseAPI<T>;
     /** Gets or Sets the height of the chart */
     height(height?: number): T & GroupedBarBaseAPI<T>;
     /** Gets or Sets the loading state of the chart */
@@ -73,10 +67,6 @@ export interface GroupedBarBaseAPI<T> {
 }
 
 export interface StackedBarBaseAPI<T> {
-    /** Gets or Sets the colorSchema of the chart */
-    colorSchema(schema: ColorsSchemasType): T & StackedBarBaseAPI<T>;
-    /** Gets or Sets the isAnimated property of the chart, making it to animate when render */
-    isAnimated(isAnimated?: boolean): T & StackedBarBaseAPI<T>;
     /** Gets or Sets the height of the chart */
     height(height?: number): T & StackedBarBaseAPI<T>;
     /** Gets or Sets the loading state of the chart */
@@ -118,11 +108,11 @@ export interface ChartDimensionsAPI<T> {
     width(width?: number): T & ChartDimensionsAPI<T>;
 }
 
-export interface ChartAnimationAPI<T> {
+export interface AnimatedChartAPI<T> {
     /** Gets or Sets the isAnimated property of the chart, making it to animate when render */
-    isAnimated(isAnimated?: boolean): T & ChartAnimationAPI<T>;
+    isAnimated(isAnimated?: boolean): T & AnimatedChartAPI<T>;
     /** Gets or Sets the duration of the animation */
-    duration(duration?: number): T & ChartAnimationAPI<T>;
+    animationDuration(duration?: number): T & AnimatedChartAPI<T>;
 }
 
 export interface ExportableChartAPI {
