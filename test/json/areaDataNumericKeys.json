@@ -3,77 +3,77 @@
         {
             "date": 5,
             "name": "Radiant",
-            "views": 5
+            "value": 5
         },
         {
             "date": 13,
             "name": "Radiant",
-            "views": 13
+            "value": 13
         },
         {
             "date": 31,
             "name": "Radiant",
-            "views": 5
+            "value": 5
         },
         {
             "date": 42,
             "name": "Radiant",
-            "views": 13
+            "value": 13
         },
         {
             "date": 87,
             "name": "Radiant",
-            "views": 15
+            "value": 15
         },
         {
             "date": 271,
             "name": "Radiant",
-            "views": 15
+            "value": 15
         },
         {
             "date": 571,
             "name": "Radiant",
-            "views": 18
+            "value": 18
         },
         {
             "date": 1500,
             "name": "Radiant",
-            "views": 3
+            "value": 3
         },
         {
             "date": 3500,
             "name": "Radiant",
-            "views": 3
+            "value": 3
         },
         {
             "date": 8400,
             "name": "Radiant",
-            "views": 23
+            "value": 23
         },
         {
             "date": 13400,
             "name": "Radiant",
-            "views": 22
+            "value": 22
         },
         {
             "date": 87000,
             "name": "Radiant",
-            "views": 23
+            "value": 23
         },
         {
             "date": 130400,
             "name": "Radiant",
-            "views": 22
+            "value": 22
         },
         {
             "date": 1350000,
             "name": "Radiant",
-            "views": 23
+            "value": 23
         },
         {
             "date": 12000000,
             "name": "Radiant",
-            "views": 22
+            "value": 22
         }
     ]
 }

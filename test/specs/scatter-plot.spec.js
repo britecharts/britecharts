@@ -204,10 +204,7 @@ describe('Scatter Plot', () => {
                     .nodes();
 
                 circles.forEach((circle) => {
-                    expect(circle).toHaveAttr(
-                        'class',
-                        'data-point'
-                    );
+                    expect(circle).toHaveAttr('class', 'data-point');
                     expect(circle).toHaveAttr('fill-opacity', '0.24');
                     expect(circle).toHaveAttr('stroke-opacity', '1');
                     expect(circle).toHaveAttr('fill');
@@ -339,7 +336,6 @@ describe('Scatter Plot', () => {
             });
 
             describe('cross hair lines', () => {
-
                 describe('cross hair lines', () => {
                     it('successfully initialize with container on render', () => {
                         const expected = 1;
@@ -367,7 +363,10 @@ describe('Scatter Plot', () => {
                             .select('line.highlight-x-line')
                             .node();
 
-                        expect(scatterPoint).toHaveAttr('stroke', expectedStroke);
+                        expect(scatterPoint).toHaveAttr(
+                            'stroke',
+                            expectedStroke
+                        );
                         expect(scatterPoint).toHaveAttr('x1');
                         expect(scatterPoint).toHaveAttr('x2');
                         expect(scatterPoint).toHaveAttr('y1');
@@ -383,7 +382,10 @@ describe('Scatter Plot', () => {
                             .select('line.highlight-y-line')
                             .node();
 
-                        expect(scatterPoint).toHaveAttr('stroke', expectedStroke);
+                        expect(scatterPoint).toHaveAttr(
+                            'stroke',
+                            expectedStroke
+                        );
                         expect(scatterPoint).toHaveAttr('x1');
                         expect(scatterPoint).toHaveAttr('x2');
                         expect(scatterPoint).toHaveAttr('y1');
@@ -586,6 +588,46 @@ describe('Scatter Plot', () => {
                 });
             });
         });
+
+        describe('when has a colorMap', () => {
+            const colorMap = {
+                radiating: 'green',
+                reflecting: 'blue',
+                blazing: 'black',
+                vivid: 'yellow',
+            };
+
+            beforeEach(() => {
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
+
+                // adds an html fixture to the DOM
+                document.body.insertAdjacentHTML('afterbegin', fixture);
+
+                dataset = buildDataSet('withFourNames');
+                scatterPlot = chart().colorMap(colorMap);
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(dataset).call(scatterPlot);
+            });
+
+            // remove the html fixture from the DOM
+            afterEach(() => {
+                document.body.removeChild(document.getElementById('fixture'));
+            });
+
+            it('should add the proper color to each stack', () => {
+                const circles = containerFixture
+                    .selectAll('.chart-group circle')
+                    .nodes();
+
+                circles.forEach((d) => {
+                    expect(d.getAttribute('fill')).toEqual(
+                        colorMap[d.__data__.name]
+                    );
+                });
+            });
+        });
     });
 
     describe('API', () => {
@@ -657,6 +699,33 @@ describe('Scatter Plot', () => {
             });
         });
 
+        it('should provide colorMap getter and setter', () => {
+            let previous = scatterPlot.colorMap(),
+                expected = {
+                    testName: 'red',
+                    testName2: 'black',
+                },
+                actual;
+
+            scatterPlot.colorMap(expected);
+            actual = scatterPlot.colorMap();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide a colorSchema getter and setter', () => {
+            let previous = scatterPlot.colorSchema(),
+                expected = ['#ffffff', '#fafefc', '#000000'],
+                actual;
+
+            scatterPlot.colorSchema(expected);
+            actual = scatterPlot.colorSchema();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
         it('should provide hasHollowCircles getter and setter', () => {
             let previous = scatterPlot.hasHollowCircles(),
                 expected = true,
@@ -667,6 +736,18 @@ describe('Scatter Plot', () => {
 
             expect(previous).not.toBe(expected);
             expect(actual).toEqual(expected);
+        });
+
+        it('should provide hasTrendline getter and setter', () => {
+            let previous = scatterPlot.hasTrendline(),
+                expected = true,
+                actual;
+
+            scatterPlot.hasTrendline(expected);
+            actual = scatterPlot.hasTrendline();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
         });
 
         it('should provide height getter and setter', () => {
@@ -695,7 +776,7 @@ describe('Scatter Plot', () => {
 
         it('should provide isAnimated getter and setter', () => {
             let previous = scatterPlot.isAnimated(),
-                expected = false,
+                expected = true,
                 actual;
 
             scatterPlot.isAnimated(expected);
@@ -783,12 +864,6 @@ describe('Scatter Plot', () => {
             expect(actual).toBe(expected);
         });
 
-        // scatterPlot.hasCrossHairs(expected);
-        // actual = scatterPlot.hasCrossHairs();
-
-        // expect(previous).not.toBe(expected);
-        // expect(actual).toEqual(expected);
-
         it('should provide xAxisLabelOffset getter and setter', () => {
             let previous = scatterPlot.xAxisLabelOffset(),
                 expected = 40,
@@ -868,18 +943,6 @@ describe('Scatter Plot', () => {
 
             scatterPlot.width(expected);
             actual = scatterPlot.width();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
-        it('should provide hasTrendline getter and setter', () => {
-            let previous = scatterPlot.width(),
-                expected = true,
-                actual;
-
-            scatterPlot.hasTrendline(expected);
-            actual = scatterPlot.hasTrendline();
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);

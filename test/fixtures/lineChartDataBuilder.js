@@ -5,12 +5,12 @@ import jsonFourTopics from '../json/lineDataFourTopics.json';
 import jsonOneSource from '../json/lineDataOneSet.json';
 import jsonAllZeroes from '../json/lineDataAllZeroes.json';
 import jsonTwoTopicsFlat from '../json/lineDataTwoTopicsFlat.json';
-import jsonMultiMonthValueRange from '../json/multiMonthLineData';
+import jsonMultiMonthValueRange from '../json/multiMonthLineData.json';
 import jsonHourDateRange from '../json/lineDataOneSetHourly.json';
-import jsonSmallValueRange from '../json/lineDataSmallValueRange';
+import jsonSmallValueRange from '../json/lineDataSmallValueRange.json';
 import jsonNegativeValues from '../json/lineDataNegativeValues.json';
 import jsonOnlyNegativeValues from '../json/lineDataOnlyNegativeValues.json';
-import jsonNumericKeys from '../json/lineDataNumericKeys';
+import jsonNumericKeys from '../json/lineDataNumericKeys.json';
 
 export function LineDataBuilder(config) {
     this.Klass = LineDataBuilder;

@@ -98,9 +98,8 @@ export default function module() {
         yScale,
         colorSchema = colorHelper.singleColors.aloeGreen,
         colorList,
-        colorMap,
+        nameToColorMap = null,
         chartGradientColors = null,
-        chartGradient = null,
         chartGradientEl,
         chartGradientId = uniqueId('bar-gradient'),
         yTicks = 5,
@@ -135,7 +134,7 @@ export default function module() {
                 color(
                     chartGradientColors
                         ? chartGradientColors[1]
-                        : colorMap(name)
+                        : nameToColorMap[name]
                 ).darker()
             ),
         orderingFunction,
@@ -326,8 +325,17 @@ export default function module() {
                 }));
         }
 
-        colorMap = (item) =>
-            colorList.filter(({ name }) => name === item)[0].color;
+        nameToColorMap =
+            nameToColorMap ||
+            data
+                .map((d) => d)
+                .reduce(
+                    (acc, { name }, i) => ({
+                        ...acc,
+                        [name]: colorSchema[i % colorSchema.length],
+                    }),
+                    {}
+                );
     }
 
     /**
@@ -381,7 +389,7 @@ export default function module() {
     function computeColor(name) {
         return chartGradientColors
             ? `url(#${chartGradientId})`
-            : colorMap(name);
+            : nameToColorMap[name];
     }
 
     /**
@@ -888,6 +896,22 @@ export default function module() {
             return chartGradientColors;
         }
         chartGradientColors = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the colorMap of the chart
+     * @param  {object} [_x=null]    Color map
+     * @return {object | module}     Current colorMap or Chart module to chain calls
+     * @example barChart.colorMap({name: 'colorHex', name2: 'colorString'})
+     * @public
+     */
+    exports.colorMap = function (_x) {
+        if (!arguments.length) {
+            return nameToColorMap;
+        }
+        nameToColorMap = _x;
 
         return this;
     };

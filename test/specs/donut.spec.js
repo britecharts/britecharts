@@ -13,7 +13,7 @@ const buildDataSet = (dataSetName) => {
 // loops over donutDataSets array and runs tests for each data-set
 donutDataSets.forEach((datasetName) => {
     describe('Donut Chart', () => {
-        let donutChart, dataset, containerFixture, f;
+        let donutChart, dataset, containerFixture;
 
         beforeEach(() => {
             const fixture =
@@ -124,22 +124,28 @@ donutDataSets.forEach((datasetName) => {
                 expect(actual).toEqual(expected);
             });
 
-            describe('when one section is zero', () => {
-                it('should keep the order of colors', () => {
-                    const dataset = aTestDataSet().withOneTopicAtZero().build();
-                    const expectedFills = ['#111111', '#222222', '#333333'];
+            describe('when donut has a colorMap', () => {
+                const colorMap = {
+                    Shiny: 'green',
+                    Radiant: 'blue',
+                    Sparkling: 'black',
+                };
 
-                    donutChart.colorSchema(expectedFills);
+                it('should add the proper color to each group', () => {
+                    const dataset = aTestDataSet()
+                        .withThreeCategories()
+                        .build();
+
+                    donutChart.colorMap(colorMap);
                     containerFixture.datum(dataset).call(donutChart);
 
                     const paths = containerFixture.selectAll('path').nodes();
-                    const actualFirstPathFill = paths[0].getAttribute('fill');
-                    const actualSecondPathFill = paths[1].getAttribute('fill');
-                    const actualThirdPathFill = paths[2].getAttribute('fill');
 
-                    expect(actualFirstPathFill).toEqual(expectedFills[0]);
-                    expect(actualSecondPathFill).toEqual(expectedFills[1]);
-                    expect(actualThirdPathFill).toEqual(expectedFills[2]);
+                    paths.forEach((d) => {
+                        expect(d.getAttribute('fill')).toEqual(
+                            colorMap[d.__data__.data.name]
+                        );
+                    });
                 });
             });
 
@@ -243,6 +249,7 @@ donutDataSets.forEach((datasetName) => {
                     const paths = containerFixture
                         .selectAll('.donut-chart .arc path')
                         .nodes();
+
                     actual = paths[0].getAttribute('fill');
 
                     expect(actual).toEqual(expected);
@@ -375,6 +382,141 @@ donutDataSets.forEach((datasetName) => {
         });
 
         describe('API', () => {
+            it('should provide colorMap getter and setter', () => {
+                let previous = donutChart.colorMap(),
+                    expected = {
+                        testName: 'red',
+                        testName2: 'black',
+                    },
+                    actual;
+
+                donutChart.colorMap(expected);
+                actual = donutChart.colorMap();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a colorSchema getter and setter', () => {
+                let defaultSchema = donutChart.colorSchema(),
+                    testSchema = ['#ffffff', '#fafefc', '#000000'],
+                    newSchema;
+
+                donutChart.colorSchema(testSchema);
+                newSchema = donutChart.colorSchema();
+
+                expect(defaultSchema).not.toBe(testSchema);
+                expect(newSchema).toBe(testSchema);
+            });
+
+            it('should provide externalRadius getter and setter', () => {
+                let previous = donutChart.externalRadius(),
+                    expected = 32,
+                    actual;
+
+                donutChart.externalRadius(expected);
+                actual = donutChart.externalRadius();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a hasFixedHighlightedSlice getter and setter', () => {
+                let defaultId = donutChart.hasFixedHighlightedSlice(),
+                    testValue = true,
+                    newValue;
+
+                donutChart.hasFixedHighlightedSlice(testValue);
+                newValue = donutChart.hasFixedHighlightedSlice();
+
+                expect(defaultId).not.toBe(newValue);
+                expect(newValue).toBe(testValue);
+            });
+
+            it('should provide hasHoverAnimation getter and setter', () => {
+                let previous = donutChart.hasHoverAnimation(),
+                    expected = false,
+                    actual;
+
+                donutChart.hasHoverAnimation(expected);
+                actual = donutChart.hasHoverAnimation();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide hasLastHoverSliceHighlighted getter and setter', () => {
+                let previous = donutChart.hasLastHoverSliceHighlighted(),
+                    expected = true,
+                    actual;
+
+                donutChart.hasLastHoverSliceHighlighted(expected);
+                actual = donutChart.hasLastHoverSliceHighlighted();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide a highlightSliceById getter and setter', () => {
+                let defaultId = donutChart.highlightSliceById(),
+                    testId = 10,
+                    newId;
+
+                donutChart.highlightSliceById(testId);
+                newId = donutChart.highlightSliceById();
+
+                expect(defaultId).not.toBe(newId);
+                expect(newId).toBe(testId);
+            });
+
+            it('should provide height getter and setter', () => {
+                let previous = donutChart.height(),
+                    expected = 20,
+                    actual;
+
+                donutChart.height(expected);
+                actual = donutChart.height();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide internalRadius getter and setter', () => {
+                let previous = donutChart.internalRadius(),
+                    expected = 12,
+                    actual;
+
+                donutChart.internalRadius(expected);
+                actual = donutChart.internalRadius();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
+            it('should provide animation getter and setter', () => {
+                let defaultAnimation = donutChart.isAnimated(),
+                    testAnimation = true,
+                    newAnimation;
+
+                donutChart.isAnimated(testAnimation);
+                newAnimation = donutChart.isAnimated();
+
+                expect(defaultAnimation).not.toBe(testAnimation);
+                expect(newAnimation).toBe(testAnimation);
+            });
+
+            it('should provide loadingState getter and setter', () => {
+                let previous = donutChart.loadingState(),
+                    expected = 'test',
+                    actual;
+
+                donutChart.loadingState(expected);
+                actual = donutChart.loadingState();
+
+                expect(previous).not.toBe(actual);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide margin getter and setter', () => {
                 let previous = donutChart.margin(),
                     expected = { top: 4, right: 4, bottom: 4, left: 4 },
@@ -405,37 +547,22 @@ donutDataSets.forEach((datasetName) => {
                 });
             });
 
-            it('should provide externalRadius getter and setter', () => {
-                let previous = donutChart.externalRadius(),
-                    expected = 32,
+            it('should not have numberFormat by default', () => {
+                let expected = undefined,
                     actual;
 
-                donutChart.externalRadius(expected);
-                actual = donutChart.externalRadius();
+                actual = donutChart.numberFormat();
 
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
+                expect(expected).toBe(actual);
             });
 
-            it('should provide internalRadius getter and setter', () => {
-                let previous = donutChart.internalRadius(),
-                    expected = 12,
+            it('should provide numberFormat getter and setter', () => {
+                let previous = donutChart.numberFormat(),
+                    expected = 'd',
                     actual;
 
-                donutChart.internalRadius(expected);
-                actual = donutChart.internalRadius();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide width getter and setter', () => {
-                let previous = donutChart.width(),
-                    expected = 20,
-                    actual;
-
-                donutChart.width(expected);
-                actual = donutChart.width();
+                donutChart.numberFormat(expected);
+                actual = donutChart.numberFormat();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);
@@ -465,118 +592,13 @@ donutDataSets.forEach((datasetName) => {
                 expect(actual).toBe(expected);
             });
 
-            it('should provide height getter and setter', () => {
-                let previous = donutChart.height(),
+            it('should provide width getter and setter', () => {
+                let previous = donutChart.width(),
                     expected = 20,
                     actual;
 
-                donutChart.height(expected);
-                actual = donutChart.height();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide a colorSchema getter and setter', () => {
-                let defaultSchema = donutChart.colorSchema(),
-                    testSchema = ['#ffffff', '#fafefc', '#000000'],
-                    newSchema;
-
-                donutChart.colorSchema(testSchema);
-                newSchema = donutChart.colorSchema();
-
-                expect(defaultSchema).not.toBe(testSchema);
-                expect(newSchema).toBe(testSchema);
-            });
-
-            it('should provide animation getter and setter', () => {
-                let defaultAnimation = donutChart.isAnimated(),
-                    testAnimation = true,
-                    newAnimation;
-
-                donutChart.isAnimated(testAnimation);
-                newAnimation = donutChart.isAnimated();
-
-                expect(defaultAnimation).not.toBe(testAnimation);
-                expect(newAnimation).toBe(testAnimation);
-            });
-
-            it('should provide a highlightSliceById getter and setter', () => {
-                let defaultId = donutChart.highlightSliceById(),
-                    testId = 10,
-                    newId;
-
-                donutChart.highlightSliceById(testId);
-                newId = donutChart.highlightSliceById();
-
-                expect(defaultId).not.toBe(newId);
-                expect(newId).toBe(testId);
-            });
-
-            it('should provide a hasFixedHighlightedSlice getter and setter', () => {
-                let defaultId = donutChart.hasFixedHighlightedSlice(),
-                    testValue = true,
-                    newValue;
-
-                donutChart.hasFixedHighlightedSlice(testValue);
-                newValue = donutChart.hasFixedHighlightedSlice();
-
-                expect(defaultId).not.toBe(newValue);
-                expect(newValue).toBe(testValue);
-            });
-
-            it('should provide loadingState getter and setter', () => {
-                let previous = donutChart.loadingState(),
-                    expected = 'test',
-                    actual;
-
-                donutChart.loadingState(expected);
-                actual = donutChart.loadingState();
-
-                expect(previous).not.toBe(actual);
-                expect(actual).toBe(expected);
-            });
-
-            it('should not have numberFormat by default', () => {
-                let expected = undefined,
-                    actual;
-
-                actual = donutChart.numberFormat();
-
-                expect(expected).toBe(actual);
-            });
-
-            it('should provide numberFormat getter and setter', () => {
-                let previous = donutChart.numberFormat(),
-                    expected = 'd',
-                    actual;
-
-                donutChart.numberFormat(expected);
-                actual = donutChart.numberFormat();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide hasLastHoverSliceHighlighted getter and setter', () => {
-                let previous = donutChart.hasLastHoverSliceHighlighted(),
-                    expected = true,
-                    actual;
-
-                donutChart.hasLastHoverSliceHighlighted(expected);
-                actual = donutChart.hasLastHoverSliceHighlighted();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            it('should provide hasHoverAnimation getter and setter', () => {
-                let previous = donutChart.hasHoverAnimation(),
-                    expected = false,
-                    actual;
-
-                donutChart.hasHoverAnimation(expected);
-                actual = donutChart.hasHoverAnimation();
+                donutChart.width(expected);
+                actual = donutChart.width();
 
                 expect(previous).not.toBe(expected);
                 expect(actual).toBe(expected);

@@ -436,8 +436,8 @@ export default function module() {
 
     /**
      * Gets or Sets the height of the chart
-     * @param  {Number} _x Desired width for the graph
-     * @return { height | module} Current height or Chart module to chain calls
+     * @param  {Number} _x=30       Desired height for the graph
+     * @return { height | module}   Current height or Chart module to chain calls
      * @public
      */
     exports.height = function (_x) {
@@ -453,7 +453,7 @@ export default function module() {
      * Gets or Sets the isAnimated property of the chart, making it to animate when render.
      * By default this is 'false'
      *
-     * @param  {Boolean} _x             Desired animation flag
+     * @param  {Boolean} _x=false       Desired animation flag
      * @return {isAnimated | module}    Current isAnimated flag or Chart module
      * @public
      */
@@ -589,7 +589,7 @@ export default function module() {
 
     /**
      * Gets or Sets the width of the chart
-     * @param  {Number} _x          Desired width for the graph
+     * @param  {Number} _x=100      Desired width for the graph
      * @return {width | module}     Current width or Chart module to chain calls
      * @public
      */
