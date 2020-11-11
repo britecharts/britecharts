@@ -15,6 +15,7 @@ import { bar as barChartLoadingMarkup } from './helpers/load';
 import { uniqueId } from './helpers/number';
 import { setDefaultLocale } from './helpers/locale';
 import { dataKeyDeprecationMessage } from './helpers/project';
+import { motion } from './helpers/constants';
 
 const PERCENTAGE_FORMAT = '%';
 const NUMBER_FORMAT = ',f';
@@ -126,7 +127,7 @@ export default function module() {
         hasSingleBarHighlight = true,
         isAnimated = false,
         ease = easeQuadInOut,
-        animationDuration = 800,
+        animationDuration = motion.duration,
         animationStepRatio = 70,
         interBarDelay = (d, i) => animationStepRatio * i,
         highlightBarFunction = (barSelection) =>
@@ -870,6 +871,21 @@ export default function module() {
     }
 
     // API
+    /**
+     * Gets or Sets the duration of the animation
+     * @param  {Number} _x=1200         Desired animation duration for the graph
+     * @return {duration | module}      Current animation duration or Chart module to chain calls
+     * @public
+     */
+    exports.animationDuration = function (_x) {
+        if (!arguments.length) {
+            return animationDuration;
+        }
+        animationDuration = _x;
+
+        return this;
+    };
+
     /**
      * Gets or Sets the padding of the chart (Default is 0.1)
      * @param  { Number | module } _x   Padding value to get/set

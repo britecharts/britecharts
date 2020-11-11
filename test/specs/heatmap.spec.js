@@ -218,6 +218,18 @@ describe('Heatmap Chart', () => {
     });
 
     describe('API', () => {
+        it('should provide animationDuration getter and setter', () => {
+            let defaultAnimationDuration = heatmapChart.animationDuration(),
+                testAnimationDuration = 2000,
+                newAnimationDuration;
+
+            heatmapChart.animationDuration(testAnimationDuration);
+            newAnimationDuration = heatmapChart.animationDuration();
+
+            expect(defaultAnimationDuration).not.toBe(testAnimationDuration);
+            expect(newAnimationDuration).toBe(testAnimationDuration);
+        });
+
         it('should provide boxSize getter and setter', () => {
             let previous = heatmapChart.boxSize(),
                 expected = 10,

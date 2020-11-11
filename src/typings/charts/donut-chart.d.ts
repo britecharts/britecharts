@@ -3,6 +3,7 @@ import {
     InteractiveChartAPI,
     ExportableChartAPI,
     ThemableChartAPI,
+    AnimatedChartAPI,
 } from '../common/base';
 import { ChartModuleSelection } from '../common/selection';
 
@@ -29,6 +30,7 @@ export interface DonutChartAPI
     extends ChartBaseAPI<DonutChartModule>,
         InteractiveChartAPI<DonutChartModule>,
         ExportableChartAPI<DonutChartModule>,
+        AnimatedChartAPI<DonutChartModule>,
         ThemableChartAPI<DonutChartModule> {
     /**
      * Gets or Sets the centeredTextFunction of the chart. If function is provided

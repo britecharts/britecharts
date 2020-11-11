@@ -16,6 +16,7 @@ import { dataKeyDeprecationMessage } from './helpers/project';
 import colorHelper from './helpers/color';
 import { bar } from './helpers/load';
 import { setDefaultLocale } from './helpers/locale';
+import { motion } from './helpers/constants';
 
 const NUMBER_FORMAT = ',f';
 const uniq = (arrArg) =>
@@ -115,7 +116,7 @@ export default function module() {
         barOpacity = 0.24,
         animationDelayStep = 20,
         animationDelays,
-        animationDuration = 1000,
+        animationDuration = motion.duration,
         grid = null,
         nameLabel = 'name',
         valueLabel = 'value',
@@ -857,6 +858,21 @@ export default function module() {
     }
 
     // API
+    /**
+     * Gets or Sets the duration of the animation
+     * @param  {Number} _x=1200         Desired animation duration for the graph
+     * @return {duration | module}      Current animation duration or Chart module to chain calls
+     * @public
+     */
+    exports.animationDuration = function (_x) {
+        if (!arguments.length) {
+            return animationDuration;
+        }
+        animationDuration = _x;
+
+        return this;
+    };
+
     /**
      * Gets or Sets the aspect ratio of the chart
      * @param  {Number} [_x = null]     Desired aspect ratio for the graph
