@@ -243,6 +243,46 @@ describe('Bar Chart', () => {
                 expect(actual).toEqual(expected);
             });
         });
+
+        describe('when it has a colorMap', () => {
+            const colorMap = {
+                Radiating: 'green',
+                Opalescent: 'blue',
+                Shining: 'black',
+                Vibrant: 'yellow',
+                Vivid: 'orange',
+                Brilliant: 'red',
+            };
+
+            beforeEach(() => {
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
+
+                // adds an html fixture to the DOM
+                document.body.insertAdjacentHTML('afterbegin', fixture);
+
+                dataset = buildDataSet('withColors');
+                barChart = chart().colorMap(colorMap);
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(dataset).call(barChart);
+            });
+
+            // remove the html fixture from the DOM
+            afterEach(() => {
+                document.body.removeChild(document.getElementById('fixture'));
+            });
+
+            it('should add the proper color to each stack', () => {
+                const bars = containerFixture.selectAll('.bar');
+
+                bars.nodes().forEach((d) => {
+                    expect(d.getAttribute('fill')).toEqual(
+                        colorMap[d.__data__.name]
+                    );
+                });
+            });
+        });
     });
 
     describe('Lifecycle', () => {
@@ -488,18 +528,30 @@ describe('Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it('should update color', () => {
+        it('should provide a colorSchema getter and setter', () => {
             let previous = barChart.colorSchema(),
-                expected = '#FFFFFF',
+                expected = ['#FFFFFF'],
                 actual;
 
-            barChart.colorSchema([expected]);
+            barChart.colorSchema(expected);
+            actual = barChart.colorSchema();
 
-            const barColor = containerFixture.select('rect.bar');
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
 
-            containerFixture.call(barChart);
-            actual = barColor.attr('fill');
+        it('should provide colorMap getter and setter', () => {
+            let previous = barChart.colorMap(),
+                expected = {
+                    testName: 'red',
+                    testName2: 'black',
+                },
+                actual;
 
+            barChart.colorMap(expected);
+            actual = barChart.colorMap();
+
+            expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
         });
 

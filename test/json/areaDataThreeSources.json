@@ -2,62 +2,62 @@
     "data": [
         {
             "name": "Blazing",
-            "views": 0,
+            "value": 0,
             "date": "2011-01-05T00:00:00"
         },
         {
             "name": "Blazing",
-            "views": 10,
+            "value": 10,
             "date": "2011-01-06T00:00:00"
         },
         {
             "name": "Blazing",
-            "views": 7,
+            "value": 7,
             "date": "2011-01-07T00:00:00"
         },
         {
             "name": "Blazing",
-            "views": 6,
+            "value": 6,
             "date": "2011-01-08T00:00:00"
         },
         {
             "name": "Shimmering",
-            "views": 3,
+            "value": 3,
             "date": "2011-01-05T00:00:00"
         },
         {
             "name": "Shimmering",
-            "views": 16,
+            "value": 16,
             "date": "2011-01-06T00:00:00"
         },
         {
             "name": "Shimmering",
-            "views": 10,
+            "value": 10,
             "date": "2011-01-07T00:00:00"
         },
         {
             "name": "Shimmering",
-            "views": 0,
+            "value": 0,
             "date": "2011-01-08T00:00:00"
         },
         {
             "name": "Brilliant",
-            "views": 10,
+            "value": 10,
             "date": "2011-01-05T00:00:00"
         },
         {
             "name": "Brilliant",
-            "views": 15,
+            "value": 15,
             "date": "2011-01-06T00:00:00"
         },
         {
             "name": "Brilliant",
-            "views": 3,
+            "value": 3,
             "date": "2011-01-07T00:00:00"
         },
         {
             "name": "Brilliant",
-            "views": 33,
+            "value": 33,
             "date": "2011-01-08T00:00:00"
         }
     ]

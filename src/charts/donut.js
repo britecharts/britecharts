@@ -103,6 +103,7 @@ export default function module() {
         numberFormat,
         // colors
         colorScale,
+        nameToColorMap = null,
         colorSchema = colorHelper.colorSchemas.britecharts,
         centeredTextFunction = (d) => `${d.percentage}% ${d.name}`,
         // utils
@@ -116,7 +117,8 @@ export default function module() {
         sumValues = (data) => data.reduce((total, d) => d.quantity + total, 0),
         // extractors
         getQuantity = ({ quantity }) => quantity,
-        getSliceFill = ({ data }) => colorScale(data.name),
+        getName = ({ name }) => name,
+        getSliceFill = ({ data }) => nameToColorMap[data.name],
         // events
         dispatcher = dispatch(
             'customMouseOver',
@@ -161,6 +163,17 @@ export default function module() {
     function buildColorScale() {
         if (colorSchema) {
             colorScale = scaleOrdinal().range(colorSchema);
+
+            nameToColorMap =
+                nameToColorMap ||
+                colorScale
+                    .domain(data.map(getName))
+                    .domain()
+                    .reduce((memo, item) => {
+                        memo[item] = colorScale(item);
+
+                        return memo;
+                    }, {});
         }
     }
 
@@ -616,6 +629,22 @@ export default function module() {
             return centeredTextFunction;
         }
         centeredTextFunction = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the colorMap of the chart
+     * @param  {object} [_x=null]    Color map
+     * @return {number | module}     Current colorMap or Chart module to chain calls
+     * @example stackedBar.colorMap({groupName: 'colorHex', groupName2: 'colorString'})
+     * @public
+     */
+    exports.colorMap = function (_x) {
+        if (!arguments.length) {
+            return nameToColorMap;
+        }
+        nameToColorMap = _x;
 
         return this;
     };

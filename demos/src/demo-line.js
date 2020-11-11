@@ -80,7 +80,6 @@ function createLineChart(optionalColorSchema, optionalData) {
             .tooltipThreshold(600)
             .width(containerWidth)
             .margin(lineMargin)
-            .dateLabel('fullDate')
             .yAxisLabel('Value Axis Label')
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)
@@ -189,7 +188,6 @@ function createLineChartWithFixedHeight() {
             .width(containerWidth)
             .margin(lineMargin)
             .grid('full')
-            .dateLabel('fullDate')
             .on('customMouseOver', function () {
                 chartTooltip.show();
             })

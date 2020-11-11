@@ -32,8 +32,6 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
             .isAnimated(true)
             .tooltipThreshold(600)
             .width(containerWidth)
-            .dateLabel('dateUTC')
-            .valueLabel('views')
             .grid('horizontal')
             .on('customDataEntryClick', function (d, mousePosition) {
                 // eslint-disable-next-line no-console
@@ -100,8 +98,6 @@ function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
             .xAxisCustomFormat('%Y/%m/%d')
             .xTicks(2)
             .width(containerWidth)
-            .dateLabel('date')
-            .valueLabel('views')
             .on('customMouseOver', chartTooltip.show)
             .on('customMouseMove', chartTooltip.update)
             .on('customMouseOut', chartTooltip.hide);
