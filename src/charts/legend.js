@@ -468,7 +468,7 @@ export default function module() {
     /**
      * Gets or Sets the colorMap of the chart
      * @param  {object} [_x=null]    Color map
-     * @return {number | module}     Current colorMap or Legend module to chain calls
+     * @return {object | module}     Current colorMap or Legend module to chain calls
      * @public
      */
     exports.colorMap = function (_x) {

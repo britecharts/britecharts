@@ -117,101 +117,103 @@ describe('Heatmap Chart', () => {
                 expect(actual).toEqual(expected);
             });
         });
-    });
 
-    describe('custom axis labels', () => {
-        it('should render custom y axis labels correctly', () => {
-            const customYAxisLabels = ['Test1', 'Test2'];
+        describe('custom axis labels', () => {
+            it('should render custom y axis labels correctly', () => {
+                const customYAxisLabels = ['Test1', 'Test2'];
 
-            // clear container to avoid having multiple
-            //  charts within one container
-            containerFixture.html('');
-            containerFixture.datum(dataset).call(heatmapChart);
-            heatmapChart.yAxisLabels(customYAxisLabels);
+                // clear container to avoid having multiple
+                //  charts within one container
+                containerFixture.html('');
+                containerFixture.datum(dataset).call(heatmapChart);
+                heatmapChart.yAxisLabels(customYAxisLabels);
 
-            const yAxisLabels = containerFixture
-                .select('svg')
-                .selectAll('.heatmap .y-axis-label');
+                const yAxisLabels = containerFixture
+                    .select('svg')
+                    .selectAll('.heatmap .y-axis-label');
 
-            yAxisLabels.each((yAxisLabel, i) => {
-                expect(yAxisLabel).toBe(customYAxisLabels[i]);
+                yAxisLabels.each((yAxisLabel, i) => {
+                    expect(yAxisLabel).toBe(customYAxisLabels[i]);
+                });
             });
         });
     });
 
-    describe('when hovering a box', () => {
-        it('should trigger a callback on mouse over', () => {
-            const box = containerFixture.selectAll('.box:nth-child(1)');
-            const callbackSpy = jasmine.createSpy('callback');
-            const expectedCallCount = 1;
-            const expectedArgumentsNumber = 3;
-            let actualCallCount;
-            let actualArgumentsNumber;
+    describe('Lifecycle', () => {
+        describe('when hovering a box', () => {
+            it('should trigger a callback on mouse over', () => {
+                const box = containerFixture.selectAll('.box:nth-child(1)');
+                const callbackSpy = jasmine.createSpy('callback');
+                const expectedCallCount = 1;
+                const expectedArgumentsNumber = 3;
+                let actualCallCount;
+                let actualArgumentsNumber;
 
-            heatmapChart.on('customMouseOver', callbackSpy);
-            box.dispatch('mouseover');
-            actualCallCount = callbackSpy.calls.count();
-            actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                heatmapChart.on('customMouseOver', callbackSpy);
+                box.dispatch('mouseover');
+                actualCallCount = callbackSpy.calls.count();
+                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
 
-            expect(actualCallCount).toEqual(expectedCallCount);
-            expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
-        });
+                expect(actualCallCount).toEqual(expectedCallCount);
+                expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
+            });
 
-        it('should trigger a callback on mouse move', () => {
-            const expectedCallCount = 1;
-            const expectedArgumentsNumber = 3;
+            it('should trigger a callback on mouse move', () => {
+                const expectedCallCount = 1;
+                const expectedArgumentsNumber = 3;
 
-            let actualCallCount;
-            let actualArgumentsNumber;
+                let actualCallCount;
+                let actualArgumentsNumber;
 
-            const box = containerFixture.selectAll('.box:nth-child(1)');
-            const callbackSpy = jasmine.createSpy('callback');
+                const box = containerFixture.selectAll('.box:nth-child(1)');
+                const callbackSpy = jasmine.createSpy('callback');
 
-            heatmapChart.on('customMouseMove', callbackSpy);
-            box.dispatch('mousemove');
-            actualCallCount = callbackSpy.calls.count();
-            actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                heatmapChart.on('customMouseMove', callbackSpy);
+                box.dispatch('mousemove');
+                actualCallCount = callbackSpy.calls.count();
+                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
 
-            expect(actualCallCount).toEqual(expectedCallCount);
-            expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
-        });
+                expect(actualCallCount).toEqual(expectedCallCount);
+                expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
+            });
 
-        it('should trigger a callback on mouse out', () => {
-            const expectedCallCount = 1;
-            const expectedArgumentsNumber = 3;
+            it('should trigger a callback on mouse out', () => {
+                const expectedCallCount = 1;
+                const expectedArgumentsNumber = 3;
 
-            let actualCallCount;
-            let actualArgumentsNumber;
+                let actualCallCount;
+                let actualArgumentsNumber;
 
-            const box = containerFixture.selectAll('.box:nth-child(1)');
-            const callbackSpy = jasmine.createSpy('callback');
+                const box = containerFixture.selectAll('.box:nth-child(1)');
+                const callbackSpy = jasmine.createSpy('callback');
 
-            heatmapChart.on('customMouseOut', callbackSpy);
-            box.dispatch('mouseout');
-            actualCallCount = callbackSpy.calls.count();
-            actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                heatmapChart.on('customMouseOut', callbackSpy);
+                box.dispatch('mouseout');
+                actualCallCount = callbackSpy.calls.count();
+                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
 
-            expect(actualCallCount).toEqual(expectedCallCount);
-            expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
-        });
+                expect(actualCallCount).toEqual(expectedCallCount);
+                expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
+            });
 
-        it('should trigger a callback on mouse click', () => {
-            const expectedCallCount = 1;
-            const expectedArgumentsNumber = 3;
+            it('should trigger a callback on mouse click', () => {
+                const expectedCallCount = 1;
+                const expectedArgumentsNumber = 3;
 
-            let actualCallCount;
-            let actualArgumentsNumber;
+                let actualCallCount;
+                let actualArgumentsNumber;
 
-            const box = containerFixture.selectAll('.box:nth-child(1)');
-            const callbackSpy = jasmine.createSpy('callback');
+                const box = containerFixture.selectAll('.box:nth-child(1)');
+                const callbackSpy = jasmine.createSpy('callback');
 
-            heatmapChart.on('customClick', callbackSpy);
-            box.dispatch('click');
-            actualCallCount = callbackSpy.calls.count();
-            actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
+                heatmapChart.on('customClick', callbackSpy);
+                box.dispatch('click');
+                actualCallCount = callbackSpy.calls.count();
+                actualArgumentsNumber = callbackSpy.calls.allArgs()[0].length;
 
-            expect(actualCallCount).toEqual(expectedCallCount);
-            expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
+                expect(actualCallCount).toEqual(expectedCallCount);
+                expect(actualArgumentsNumber).toEqual(expectedArgumentsNumber);
+            });
         });
     });
 
@@ -258,7 +260,7 @@ describe('Heatmap Chart', () => {
 
         it('should provide isAnimated getter and setter', () => {
             let previous = heatmapChart.isAnimated(),
-                expected = false,
+                expected = true,
                 actual;
 
             heatmapChart.isAnimated(expected);

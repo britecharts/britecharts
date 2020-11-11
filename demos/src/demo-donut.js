@@ -7,13 +7,9 @@ import { DonutDataBuilder } from './../../test/fixtures/donutChartDataBuilder';
 import colorSelectorHelper from './helpers/colorSelector';
 
 const dataset = new DonutDataBuilder().withFivePlusOther().build();
-const datasetNoPercentages = new DonutDataBuilder()
-    .withFivePlusOtherNoPercent()
-    .build();
 const datasetWithThreeItems = new DonutDataBuilder()
     .withThreeCategories()
     .build();
-let legendChart;
 let redrawCharts;
 
 require('./helpers/resizeHelper');

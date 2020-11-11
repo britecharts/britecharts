@@ -53,7 +53,8 @@ describe('Line Chart', () => {
                     .select('.chart-group')
                     .selectAll('path')
                     .node()
-                    .style.stroke.match('one-line-gradient').length;
+                    .getAttribute('stroke')
+                    .match('one-line-gradient').length;
 
                 expect(actual).toEqual(expected);
             });
@@ -185,6 +186,7 @@ describe('Line Chart', () => {
                             (it) => it.value
                         );
                         let minValue = Math.min(...values);
+
                         expect(minValue).toEqual(0);
                         let indexOf0 = -minValue;
 
@@ -194,6 +196,7 @@ describe('Line Chart', () => {
                         let classes = horizontalGridLines
                             .attr('class')
                             .split(' ');
+
                         expect(
                             classes.includes(
                                 'horizontal-grid-line--highlighted'
@@ -327,6 +330,7 @@ describe('Line Chart', () => {
                         const actualText = containerFixture
                             .select('.custom-lines-group text')
                             .text();
+
                         expect(actualText).toEqual('Testname');
                     });
                 });
@@ -549,6 +553,7 @@ describe('Line Chart', () => {
 
                         let yAxis = d3.select('.y-axis-group');
                         let text = yAxis.select('g.tick');
+
                         expect(text.text()).toEqual(minValueText);
                     });
 
@@ -565,6 +570,7 @@ describe('Line Chart', () => {
                         let classes = horizontalGridLines
                             .attr('class')
                             .split(' ');
+
                         expect(
                             classes.includes(
                                 'horizontal-grid-line--highlighted'
@@ -598,12 +604,14 @@ describe('Line Chart', () => {
                     it('The highest Y-axis value is negative', () => {
                         let yAxis = d3.selectAll('.y-axis-group');
                         let text = yAxis.selectAll('g.tick:nth-child(8)');
+
                         expect(text.text()).toEqual('-1');
                     });
 
                     it('The lowest Y-axis value is negative', () => {
                         let yAxis = d3.selectAll('.y-axis-group');
                         let text = yAxis.selectAll('g.tick');
+
                         expect(text.text()).toEqual('-4');
                     });
                 });
@@ -674,6 +682,44 @@ describe('Line Chart', () => {
                     expect(actual).toEqual(expected);
                 });
             });
+
+            describe('when it has a colorMap', () => {
+                const colorMap = {
+                    123: 'green',
+                    120: 'blue',
+                };
+
+                beforeEach(() => {
+                    const fixture =
+                        '<div id="fixture"><div class="test-container"></div></div>';
+
+                    // adds an html fixture to the DOM
+                    document.body.insertAdjacentHTML('afterbegin', fixture);
+
+                    dataset = buildDataSet('withTwoFlatTopics');
+                    lineChart = chart().colorMap(colorMap);
+
+                    containerFixture = d3.select('.test-container');
+                    containerFixture.datum(dataset).call(lineChart);
+                });
+
+                // remove the html fixture from the DOM
+                afterEach(() => {
+                    document.body.removeChild(
+                        document.getElementById('fixture')
+                    );
+                });
+
+                it('should add the proper color to each stack', () => {
+                    const lines = containerFixture.selectAll('.line');
+
+                    lines.nodes().forEach((d) => {
+                        expect(d.getAttribute('stroke')).toEqual(
+                            colorMap[d.__data__.topic]
+                        );
+                    });
+                });
+            });
         });
 
         describe('when single line', () => {
@@ -695,6 +741,7 @@ describe('Line Chart', () => {
                 it('the highest X-axis value is a number', () => {
                     let xAxis = containerFixture.selectAll('.x-axis-group');
                     let text = xAxis.select('g.tick:last-child');
+
                     expect(text.text()).toEqual('8.0k');
                 });
             });
@@ -719,6 +766,7 @@ describe('Line Chart', () => {
                 it('one X-axis value is a logarithmic number', () => {
                     let xAxis = containerFixture.selectAll('.x-axis-group');
                     let text = xAxis.select('g.tick:nth-child(2)');
+
                     expect(text.text()).toEqual('10^1');
                 });
             });
@@ -981,6 +1029,21 @@ describe('Line Chart', () => {
 
             lineChart.colorSchema(expected);
             actual = lineChart.colorSchema();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide colorMap getter and setter', () => {
+            let previous = lineChart.colorMap(),
+                expected = {
+                    testName: 'red',
+                    testName2: 'black',
+                },
+                actual;
+
+            lineChart.colorMap(expected);
+            actual = lineChart.colorMap();
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
@@ -1337,6 +1400,7 @@ describe('Line Chart', () => {
 
         it('default xAxisValueType is date', () => {
             let defaultXAxisValueType = lineChart.xAxisValueType();
+
             expect(defaultXAxisValueType).toBe('date');
         });
 
@@ -1354,6 +1418,7 @@ describe('Line Chart', () => {
 
         it('default xAxisScale is linear', () => {
             let defaultXAxisScale = lineChart.xAxisScale();
+
             expect(defaultXAxisScale).toBe('linear');
         });
     });

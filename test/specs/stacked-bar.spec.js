@@ -26,11 +26,7 @@ describe('Stacked Bar Chart', () => {
         document.body.insertAdjacentHTML('afterbegin', fixture);
 
         dataset = buildDataSet('with3Sources');
-        stackedBarChart = chart()
-            .stackLabel('stack')
-            .nameLabel('date')
-            .valueLabel('views')
-            .grid('full');
+        stackedBarChart = chart().grid('full');
 
         containerFixture = d3.select('.test-container');
         containerFixture.datum(dataset.data).call(stackedBarChart);
