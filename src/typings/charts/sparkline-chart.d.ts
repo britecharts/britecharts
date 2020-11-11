@@ -1,6 +1,6 @@
 import {
     ChartDimensionsAPI,
-    ChartAnimationAPI,
+    AnimatedChartAPI,
     ExportableChartAPI,
 } from '../common/base';
 import { ChartModuleSelection } from '../common/selection';
@@ -33,7 +33,7 @@ export interface SparkelineTitleTextStyle {
 
 export interface SparklineChartAPI
     extends ChartDimensionsAPI<SparklineChartModule>,
-        ChartAnimationAPI<SparklineChartModule>,
+        AnimatedChartAPI<SparklineChartModule>,
         ExportableChartAPI<SparklineChartModule> {
     /** Gets or Sets the areaGradient of the chart */
     areaGradient(gradient?: [string, string]): SparklineChartModule;

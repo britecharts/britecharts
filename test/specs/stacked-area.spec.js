@@ -584,7 +584,19 @@ describe('Stacked Area Chart', () => {
         });
     });
 
-    describe('API', function () {
+    describe('API', () => {
+        it('should provide animationDuration getter and setter', () => {
+            let defaultAnimationDuration = stackedAreaChart.animationDuration(),
+                testAnimationDuration = 2000,
+                newAnimationDuration;
+
+            stackedAreaChart.animationDuration(testAnimationDuration);
+            newAnimationDuration = stackedAreaChart.animationDuration();
+
+            expect(defaultAnimationDuration).not.toBe(testAnimationDuration);
+            expect(newAnimationDuration).toBe(testAnimationDuration);
+        });
+
         describe('aspect ratio', function () {
             describe('when an aspect ratio is set', function () {
                 it('should modify the height depending on the width', () => {

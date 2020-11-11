@@ -391,7 +391,6 @@ export default function module() {
     }
 
     // API
-
     /**
      * Gets or Sets the aspect ratio of the chart
      * @param  {Number} _x              Desired aspect ratio for the graph
