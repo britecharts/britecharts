@@ -3,6 +3,7 @@ import {
     InteractiveChartAPI,
     ExportableChartAPI,
     ThemableChartAPI,
+    AnimatedChartAPI,
 } from '../common/base';
 import { ChartModuleSelection } from '../common/selection';
 import { BaseType, Selection } from 'd3-selection';
@@ -28,6 +29,7 @@ export interface BarChartAPI
     extends ChartBaseAPI<BarChartModule>,
         ExportableChartAPI<BarChartModule>,
         InteractiveChartAPI<BarChartModule>,
+        AnimatedChartAPI<BarChartModule>,
         ThemableChartAPI<BarChartModule> {
     /** Gets or Sets the padding of the chart (Default is 0.1) */
     betweenBarsPadding(padding?: number): BarChartModule;
