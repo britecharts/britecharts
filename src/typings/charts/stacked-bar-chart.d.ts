@@ -1,6 +1,6 @@
 import { LocalObject } from '../common/local';
 import {
-    StackedBarBaseAPI,
+    ChartBaseAPI,
     InteractiveChartAPI,
     ExportableChartAPI,
     ThemableChartAPI,
@@ -32,7 +32,7 @@ export type StackedBarSelection = Selection<
 >;
 
 export interface StackedBarChartAPI
-    extends StackedBarBaseAPI<StackedBarChartModule>,
+    extends ChartBaseAPI<StackedBarChartModule>,
         InteractiveChartAPI<StackedBarChartModule>,
         ExportableChartAPI<StackedAreaChartModule>,
         AnimatedChartAPI<StackedAreaChartModule>,

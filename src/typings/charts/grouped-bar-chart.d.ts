@@ -1,5 +1,5 @@
 import {
-    GroupedBarBaseAPI,
+    ChartBaseAPI,
     InteractiveChartAPI,
     ExportableChartAPI,
     AnimatedChartAPI,
@@ -30,7 +30,7 @@ export type GroupedBarSelection = Selection<
 >;
 
 export interface GroupedBarChartAPI
-    extends GroupedBarBaseAPI<GroupedBarChartModule>,
+    extends ChartBaseAPI<GroupedBarChartModule>,
         InteractiveChartAPI<GroupedBarChartModule>,
         ExportableChartAPI<GroupedBarChartModule>,
         AnimatedChartAPI<GroupedBarChartModule>,
