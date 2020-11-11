@@ -30,6 +30,7 @@ function createWeeklyHeatmapChart(optionalColorSchema) {
 
         heatmapChart
             .boxSize(30)
+            .isAnimated(true)
             .on('customMouseOver', tooltip.show)
             .on('customMouseMove', tooltip.update)
             .on('customMouseOut', tooltip.hide);

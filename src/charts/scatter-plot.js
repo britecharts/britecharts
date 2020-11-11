@@ -82,7 +82,7 @@ export default function module() {
         width = 960,
         height = 500,
         aspectRatio = null,
-        nameColorMap,
+        nameToColorMap = null,
         dataPoints,
         xKey = 'x',
         yKey = 'y',
@@ -136,7 +136,7 @@ export default function module() {
         maskingRectangle,
         maskingRectangleId = 'scatter-clip-path',
         colorSchema = colorHelper.colorSchemas.britecharts,
-        isAnimated = true,
+        isAnimated = false,
         hasCrossHairs = false,
         hasTrendline = false,
         ease = easeCircleIn,
@@ -317,13 +317,14 @@ export default function module() {
          *     name3: 'color3',
          *     ...
          * }
-         * @private
          */
-        nameColorMap = colorScale.domain().reduce((accum, item, i) => {
-            accum[item] = colorRange[i];
+        nameToColorMap =
+            nameToColorMap ||
+            colorScale.domain().reduce((accum, item, i) => {
+                accum[item] = colorRange[i];
 
-            return accum;
-        }, {});
+                return accum;
+            }, {});
     }
 
     /**
@@ -529,9 +530,9 @@ export default function module() {
                 .ease(ease)
                 .attr('stroke-opacity', circleStrokeOpacity)
                 .attr('stroke-width', circleStrokeWidth)
-                .style('stroke', (d) => nameColorMap[d.name])
+                .style('stroke', (d) => nameToColorMap[d.name])
                 .attr('fill', (d) =>
-                    hasHollowCircles ? hollowColor : nameColorMap[d.name]
+                    hasHollowCircles ? hollowColor : nameToColorMap[d.name]
                 )
                 .attr('fill-opacity', circleOpacity)
                 .attr('r', (d) => areaScale(d.y))
@@ -544,9 +545,9 @@ export default function module() {
                 .attr('class', 'data-point')
                 .attr('stroke-opacity', circleStrokeOpacity)
                 .attr('stroke-width', circleStrokeWidth)
-                .style('stroke', (d) => nameColorMap[d.name])
+                .style('stroke', (d) => nameToColorMap[d.name])
                 .attr('fill', (d) =>
-                    hasHollowCircles ? hollowColor : nameColorMap[d.name]
+                    hasHollowCircles ? hollowColor : nameToColorMap[d.name]
                 )
                 .attr('fill-opacity', circleOpacity)
                 .attr('r', (d) => areaScale(d.y))
@@ -572,7 +573,7 @@ export default function module() {
         // Draw line perpendicular to y-axis
         highlightCrossHairContainer
             .selectAll('line.highlight-y-line')
-            .attr('stroke', nameColorMap[data.name])
+            .attr('stroke', nameToColorMap[data.name])
             .attr('class', 'highlight-y-line')
             .attr('x1', xScale(data.x) - areaScale(data.y))
             .attr('x2', 0)
@@ -582,7 +583,7 @@ export default function module() {
         // Draw line perpendicular to x-axis
         highlightCrossHairContainer
             .selectAll('line.highlight-x-line')
-            .attr('stroke', nameColorMap[data.name])
+            .attr('stroke', nameToColorMap[data.name])
             .attr('class', 'highlight-x-line')
             .attr('x1', xScale(data.x))
             .attr('x2', xScale(data.x))
@@ -593,7 +594,7 @@ export default function module() {
         highlightCrossHairLabelsContainer
             .selectAll('text.highlight-y-legend')
             .attr('text-anchor', 'middle')
-            .attr('fill', nameColorMap[data.name])
+            .attr('fill', nameToColorMap[data.name])
             .attr('class', 'highlight-y-legend')
             .attr('y', yScale(data.y) + areaScale(data.y) / 2)
             .attr('x', highlightTextLegendOffset)
@@ -603,7 +604,7 @@ export default function module() {
         highlightCrossHairLabelsContainer
             .selectAll('text.highlight-x-legend')
             .attr('text-anchor', 'middle')
-            .attr('fill', nameColorMap[data.name])
+            .attr('fill', nameToColorMap[data.name])
             .attr('class', 'highlight-x-legend')
             .attr(
                 'transform',
@@ -773,8 +774,8 @@ export default function module() {
 
         highlightCircle
             .attr('opacity', 1)
-            .attr('stroke', () => nameColorMap[data.name])
-            .attr('fill', () => nameColorMap[data.name])
+            .attr('stroke', () => nameToColorMap[data.name])
+            .attr('fill', () => nameToColorMap[data.name])
             .attr('fill-opacity', circleOpacity)
             .attr('cx', () => xScale(data.x))
             .attr('cy', () => yScale(data.y))
@@ -962,6 +963,22 @@ export default function module() {
             return circleOpacity;
         }
         circleOpacity = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the colorMap of the chart
+     * @param  {object} [_x=null]    Color map
+     * @return {object | module}     Current colorMap or Chart module to chain calls
+     * @example scatterPlot.colorMap({name: 'colorHex', name2: 'colorString'})
+     * @public
+     */
+    exports.colorMap = function (_x) {
+        if (!arguments.length) {
+            return nameToColorMap;
+        }
+        nameToColorMap = _x;
 
         return this;
     };

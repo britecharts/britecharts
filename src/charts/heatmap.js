@@ -72,7 +72,7 @@ export default function module() {
         colorScale,
         colorSchema = colorHelper.colorSchemas.red,
         animationDuration = 2000,
-        isAnimated = true,
+        isAnimated = false,
         yAxisLabels,
         dayLabels,
         daysHuman = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
@@ -366,7 +366,7 @@ export default function module() {
 
     /**
      * Gets or Sets the isAnimated value of the chart
-     * @param  {Boolean} _x=true          Decide whether to show chart animation
+     * @param  {Boolean} _x=false         Decide whether to show chart animation
      * @return {Boolean | module}         Current isAnimated value or Chart module to chain calls
      * @public
      */

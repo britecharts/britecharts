@@ -29,6 +29,7 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
 
         scatterChart
             .aspectRatio(0.7)
+            .isAnimated(true)
             .width(containerWidth)
             .circleOpacity(0.6)
             .hasTrendline(true)
@@ -79,6 +80,7 @@ function createScatterPlotWithIncreasedAreaAndHollowCircles() {
             .width(containerWidth)
             .hasCrossHairs(true)
             .hasHollowCircles(true)
+            .isAnimated(true)
             .margin({
                 left: 60,
                 bottom: 45,

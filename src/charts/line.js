@@ -203,8 +203,8 @@ export default function module() {
         monthAxisPadding = 28,
         tickPadding = 5,
         colorSchema = colorHelper.colorSchemas.britecharts,
+        nameToColorMap = null,
         singleLineGradientColors = colorHelper.colorGradients.greenBlue,
-        topicColorMap,
         linearGradient,
         lineGradientId = uniqueId('one-line-gradient'),
         highlightFilter = null,
@@ -259,7 +259,7 @@ export default function module() {
         getValue = ({ value }) => value,
         getTopic = ({ topic }) => topic,
         getVariableTopicName = (d) => d[topicNameLabel],
-        getLineColor = ({ topic }) => colorScale(topic),
+        getLineColor = ({ topic }) => nameToColorMap[topic],
         // events
         dispatcher = dispatch(
             'customMouseOver',
@@ -527,11 +527,13 @@ export default function module() {
 
         let range = colorScale.range();
 
-        topicColorMap = colorScale.domain().reduce((memo, item, i) => {
-            memo[item] = range[i];
+        nameToColorMap =
+            nameToColorMap ||
+            colorScale.domain().reduce((memo, item, i) => {
+                memo[item] = range[i];
 
-            return memo;
-        }, {});
+                return memo;
+            }, {});
     }
 
     /**
@@ -787,12 +789,12 @@ export default function module() {
             .merge(lines)
             .attr('id', ({ topic }) => topic)
             .attr('d', ({ dates }) => topicLine(dates))
-            .style('stroke', (d) =>
+            .attr('stroke', (d) =>
                 dataByTopic.length === 1
                     ? `url(#${lineGradientId})`
                     : getLineColor(d)
             )
-            .style('fill', 'none');
+            .attr('fill', 'none');
 
         lines.exit().remove();
     }
@@ -961,7 +963,7 @@ export default function module() {
             .classed('data-point-mark', true)
             .attr('r', highlightCircleRadius)
             .style('stroke-width', highlightCircleStroke)
-            .style('stroke', (d) => topicColorMap[d.topic.name])
+            .style('stroke', (d) => nameToColorMap[d.topic.name])
             .style('cursor', 'pointer')
             .attr('cx', (d) => xScale(new Date(d.topic.date)))
             .attr('cy', (d) =>
@@ -1071,7 +1073,7 @@ export default function module() {
                 'customMouseMove',
                 e,
                 dataPoint,
-                topicColorMap,
+                nameToColorMap,
                 dataPointXPosition,
                 yPosition
             );
@@ -1146,7 +1148,7 @@ export default function module() {
             .filter(({ topic }) => !!topic)
             .sort(
                 (a, b) =>
-                    topicColorMap[a.topic.name] < topicColorMap[b.topic.name]
+                    nameToColorMap[a.topic.name] < nameToColorMap[b.topic.name]
             );
 
         dataPoint.topics = topicsWithNode.map(({ topic }) => topic);
@@ -1165,7 +1167,7 @@ export default function module() {
                         ? highlightCircleStrokeAll
                         : highlightCircleStroke
                 )
-                .style('stroke', topicColorMap[d.name])
+                .style('stroke', nameToColorMap[d.name])
                 .style('cursor', 'pointer')
                 .on('click', function () {
                     addGlowFilter(this);
@@ -1328,6 +1330,22 @@ export default function module() {
             return colorSchema;
         }
         colorSchema = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the colorMap of the chart
+     * @param  {object} [_x=null]    Color map
+     * @return {object | module}     Current colorMap or Chart module to chain calls
+     * @example lineChart.colorMap({groupName: 'colorHex', groupName2: 'colorString'})
+     * @public
+     */
+    exports.colorMap = function (_x) {
+        if (!arguments.length) {
+            return nameToColorMap;
+        }
+        nameToColorMap = _x;
 
         return this;
     };

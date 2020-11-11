@@ -102,6 +102,7 @@ export default function module() {
         tickPadding = 5,
         colorSchema = colorHelper.colorSchemas.britecharts,
         lineGradient = colorHelper.colorGradients.greenBlue,
+        nameToColorMap = null,
         highlightFilter = null,
         highlightFilterId = null,
         highlightCircleSize = 12,
@@ -111,7 +112,6 @@ export default function module() {
         highlightCircleActiveStrokeWidth = 5,
         highlightCircleActiveStrokeOpacity = 0.6,
         areaOpacity = 0.24,
-        categoryColorMap,
         order,
         topicsOrder,
         xAxisFormat = null,
@@ -495,11 +495,13 @@ export default function module() {
         xScale = buildXAxisScale();
         yScale = buildYAxisScale();
 
-        categoryColorMap = order.reduce(
-            (memo, topic, index) =>
-                assign({}, memo, { [topic]: colorSchema[index] }),
-            {}
-        );
+        nameToColorMap =
+            nameToColorMap ||
+            order.reduce(
+                (memo, topic, index) =>
+                    assign({}, memo, { [topic]: colorSchema[index] }),
+                {}
+            );
     }
 
     /**
@@ -859,14 +861,14 @@ export default function module() {
                 .attr('class', 'layer')
                 .attr('d', areaShape)
                 .style('opacity', areaOpacity)
-                .style('fill', ({ key }) => categoryColorMap[key]);
+                .attr('fill', ({ key }) => nameToColorMap[key]);
 
             series
                 .append('path')
                 .attr('class', 'area-outline')
                 .attr('d', areaOutline)
-                .style('stroke', ({ key }) => categoryColorMap[key])
-                .style('fill', 'none');
+                .style('stroke', ({ key }) => nameToColorMap[key])
+                .attr('fill', 'none');
 
             // Update
             svg.select('.chart-group')
@@ -878,7 +880,7 @@ export default function module() {
                 .ease(ease)
                 .attr('d', areaShape)
                 .style('opacity', areaOpacity)
-                .style('fill', ({ key }) => categoryColorMap[key]);
+                .attr('fill', ({ key }) => nameToColorMap[key]);
 
             svg.select('.chart-group')
                 .selectAll('.area-outline')
@@ -888,7 +890,7 @@ export default function module() {
                 .duration(areaAnimationDuration)
                 .ease(ease)
                 .attr('d', areaOutline)
-                .style('fill', 'none');
+                .attr('fill', 'none');
         } else {
             series = svg
                 .select('.chart-group')
@@ -903,26 +905,26 @@ export default function module() {
                 .attr('class', 'layer')
                 .attr('d', areaShape)
                 .style('opacity', areaOpacity)
-                .style('fill', ({ key }) => categoryColorMap[key]);
+                .attr('fill', ({ key }) => nameToColorMap[key]);
 
             series
                 .append('path')
                 .attr('class', 'area-outline')
                 .attr('d', areaOutline)
-                .style('stroke', ({ key }) => categoryColorMap[key]);
+                .style('stroke', ({ key }) => nameToColorMap[key]);
 
             // Update
             svg.select('.chart-group')
                 .selectAll('.layer')
                 .attr('d', areaShape)
                 .style('opacity', areaOpacity)
-                .style('fill', ({ key }) => categoryColorMap[key]);
+                .attr('fill', ({ key }) => nameToColorMap[key]);
 
             svg.select('.chart-group')
                 .selectAll('.area-outline')
                 .attr('class', 'area-outline')
                 .attr('d', areaOutline)
-                .style('stroke', ({ key }) => categoryColorMap[key]);
+                .style('stroke', ({ key }) => nameToColorMap[key]);
         }
 
         if (!hasOutline) {
@@ -1112,7 +1114,7 @@ export default function module() {
                 'customMouseMove',
                 e,
                 dataPoint,
-                categoryColorMap,
+                nameToColorMap,
                 dataPointXPosition,
                 yPosition
             );
@@ -1142,7 +1144,7 @@ export default function module() {
                 'customMouseMove',
                 e,
                 dataPoint,
-                categoryColorMap,
+                nameToColorMap,
                 dataPointXPosition,
                 yPosition
             );
@@ -1216,7 +1218,7 @@ export default function module() {
                 .attr('cy', 0)
                 .attr('r', highlightCircleRadius)
                 .style('stroke-width', highlightCircleStroke)
-                .style('stroke', categoryColorMap[d.name])
+                .style('stroke', nameToColorMap[d.name])
                 .style('cursor', 'pointer')
                 .on('click', function () {
                     addGlowFilter(this);
@@ -1322,6 +1324,22 @@ export default function module() {
      *     area.xAxisFormat(area.axisTimeCombinations.HOUR_DAY)
      */
     exports.axisTimeCombinations = axisTimeCombinations;
+
+    /**
+     * Gets or Sets the colorMap of the chart
+     * @param  {object} [_x=null]    Color map
+     * @return {object | module}     Current colorMap or Chart module to chain calls
+     * @example stackedArea.colorMap({name: 'colorHex', name2: 'colorString'})
+     * @public
+     */
+    exports.colorMap = function (_x) {
+        if (!arguments.length) {
+            return nameToColorMap;
+        }
+        nameToColorMap = _x;
+
+        return this;
+    };
 
     /**
      * Gets or Sets the colorSchema of the chart
