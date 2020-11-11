@@ -19,6 +19,7 @@ import {
 } from './helpers/filter';
 import { calcLinearRegression } from './helpers/number';
 import { setDefaultLocale } from './helpers/locale';
+import { motion } from './helpers/constants';
 
 /**
  * @typedef ScatterPlotData
@@ -141,7 +142,7 @@ export default function module() {
         hasTrendline = false,
         ease = easeCircleIn,
         delay = 500,
-        duration = 500,
+        duration = motion.duration,
         hasHollowCircles = false,
         locale = null,
         localeFormatter = d3Format,
@@ -896,6 +897,20 @@ export default function module() {
     }
 
     // API
+    /**
+     * Gets or Sets the duration of the circle animation
+     * @param  {Number} _x=1200         Desired animation duration for the graph
+     * @return {duration | module}      Current animation duration or Chart module to chain calls
+     * @public
+     */
+    exports.animationDuration = function (_x) {
+        if (!arguments.length) {
+            return duration;
+        }
+        duration = _x;
+
+        return this;
+    };
 
     /**
      * Gets or Sets the aspect ratio of the chart

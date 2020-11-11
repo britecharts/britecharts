@@ -208,6 +208,18 @@ describe('Sparkline Chart', () => {
     });
 
     describe('API', () => {
+        it('should provide animationDuration getter and setter', () => {
+            let defaultAnimationDuration = sparklineChart.animationDuration(),
+                testAnimationDuration = 2000,
+                newAnimationDuration;
+
+            sparklineChart.animationDuration(testAnimationDuration);
+            newAnimationDuration = sparklineChart.animationDuration();
+
+            expect(defaultAnimationDuration).not.toBe(testAnimationDuration);
+            expect(newAnimationDuration).toBe(testAnimationDuration);
+        });
+
         it('should provide an areaGradient getter and setter', () => {
             let defaultGradient = sparklineChart.areaGradient(),
                 testGradient = ['#ffffff', '#fafefc'],
@@ -230,18 +242,6 @@ describe('Sparkline Chart', () => {
 
             expect(defaultDateLabel).not.toBe(testDateLabel);
             expect(newDateLabel).toBe(testDateLabel);
-        });
-
-        it('should provide animation duration getter and setter', () => {
-            let defaultAnimationDuration = sparklineChart.duration(),
-                testAnimationDuration = 2000,
-                newAnimationDuration;
-
-            sparklineChart.duration(testAnimationDuration);
-            newAnimationDuration = sparklineChart.duration();
-
-            expect(defaultAnimationDuration).not.toBe(testAnimationDuration);
-            expect(newAnimationDuration).toBe(testAnimationDuration);
         });
 
         describe('export chart', () => {

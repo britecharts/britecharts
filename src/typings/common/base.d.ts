@@ -5,8 +5,6 @@ import { ChartMarginParams } from './margin';
 export interface ChartBaseAPI<T> {
     /** Gets or Sets the number format of the chart */
     numberFormat(format?: string): T & ChartBaseAPI<T>;
-    /** Gets or Sets the isAnimated property of the chart, making it to animate when render */
-    isAnimated(isAnimated?: boolean): T & ChartBaseAPI<T>;
     /** Gets or Sets the height of the chart */
     height(height?: number): T & ChartBaseAPI<T>;
     /** Gets or Sets the loading state of the chart */
@@ -24,6 +22,7 @@ export interface ChartBaseAPI<T> {
     width(width?: number): T & ChartBaseAPI<T>;
 }
 
+// Using it on the brush chart, for charts with no 'numberFormat'
 export interface ChartBaseAPIMinimal<T> {
     /** Gets or Sets the height of the chart */
     height(height?: number): T & ChartBaseAPIMinimal<T>;
@@ -52,39 +51,6 @@ export interface ComponentBaseAPI<T> {
     margin(margin?: ChartMarginParams): T & ComponentBaseAPI<T>;
     /** Gets or Sets the width of the chart */
     width(width?: number): T & ComponentBaseAPI<T>;
-}
-
-// TODO: Deprecate once the API gets consistent (Release 3.0 at least)
-// https://github.com/britecharts/britecharts/issues/842
-// https://github.com/britecharts/britecharts/issues/841
-export interface GroupedBarBaseAPI<T> {
-    /** Gets or Sets the colorSchema of the chart */
-    colorSchema(schema: ColorsSchemasType): T & GroupedBarBaseAPI<T>;
-    /** Gets or Sets the isAnimated property of the chart, making it to animate when render */
-    isAnimated(isAnimated?: boolean): T & GroupedBarBaseAPI<T>;
-    /** Gets or Sets the height of the chart */
-    height(height?: number): T & GroupedBarBaseAPI<T>;
-    /** Gets or Sets the loading state of the chart */
-    loadingState(markup?: string): T & GroupedBarBaseAPI<T>;
-    /** Gets or Sets the margin object of the chart (top, bottom, left and right) */
-    margin(margin?: ChartMarginParams): T & GroupedBarBaseAPI<T>;
-    /** Gets or Sets the width of the chart */
-    width(width?: number): T & GroupedBarBaseAPI<T>;
-}
-
-export interface StackedBarBaseAPI<T> {
-    /** Gets or Sets the colorSchema of the chart */
-    colorSchema(schema: ColorsSchemasType): T & StackedBarBaseAPI<T>;
-    /** Gets or Sets the isAnimated property of the chart, making it to animate when render */
-    isAnimated(isAnimated?: boolean): T & StackedBarBaseAPI<T>;
-    /** Gets or Sets the height of the chart */
-    height(height?: number): T & StackedBarBaseAPI<T>;
-    /** Gets or Sets the loading state of the chart */
-    loadingState(markup?: string): T & StackedBarBaseAPI<T>;
-    /** Gets or Sets the margin object of the chart (top, bottom, left and right) */
-    margin(margin?: ChartMarginParams): T & StackedBarBaseAPI<T>;
-    /** Gets or Sets the width of the chart */
-    width(width?: number): T & StackedBarBaseAPI<T>;
 }
 
 // Using it on Heatmap until getting a good set of API configs
@@ -118,11 +84,11 @@ export interface ChartDimensionsAPI<T> {
     width(width?: number): T & ChartDimensionsAPI<T>;
 }
 
-export interface ChartAnimationAPI<T> {
+export interface AnimatedChartAPI<T> {
     /** Gets or Sets the isAnimated property of the chart, making it to animate when render */
-    isAnimated(isAnimated?: boolean): T & ChartAnimationAPI<T>;
+    isAnimated(isAnimated?: boolean): T & AnimatedChartAPI<T>;
     /** Gets or Sets the duration of the animation */
-    duration(duration?: number): T & ChartAnimationAPI<T>;
+    animationDuration(duration?: number): T & AnimatedChartAPI<T>;
 }
 
 export interface ExportableChartAPI {

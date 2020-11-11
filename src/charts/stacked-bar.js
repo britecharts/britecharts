@@ -15,6 +15,7 @@ import { exportChart } from './helpers/export';
 import { dataKeyDeprecationMessage } from './helpers/project';
 import colorHelper from './helpers/color';
 import { bar as barChartLoadingMarkup } from './helpers/load';
+import { motion } from './helpers/constants';
 
 const PERCENTAGE_FORMAT = '%';
 const NUMBER_FORMAT = ',f';
@@ -112,7 +113,7 @@ export default function module() {
         },
         barOpacity = 0.24,
         animationDelayStep = 20,
-        animationDuration = 1000,
+        animationDuration = motion.duration,
         animationDelays,
         grid = null,
         nameLabel = 'name',
@@ -826,6 +827,21 @@ export default function module() {
     }
 
     // API
+    /**
+     * Gets or Sets the duration of the animation
+     * @param  {Number} _x=1200         Desired animation duration for the graph
+     * @return {duration | module}      Current animation duration or Chart module to chain calls
+     * @public
+     */
+    exports.animationDuration = function (_x) {
+        if (!arguments.length) {
+            return animationDuration;
+        }
+        animationDuration = _x;
+
+        return this;
+    };
+
     /**
      * Gets or Sets the aspect ratio of the chart
      * @param  {Number} _x = null       Desired aspect ratio for the graph

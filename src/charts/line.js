@@ -15,7 +15,7 @@ import colorHelper from './helpers/color';
 import { line as lineChartLoadingMarkup } from './helpers/load';
 import { getTimeSeriesAxis, getSortedNumberAxis } from './helpers/axis';
 import { dataKeyDeprecationMessage } from './helpers/project';
-import { axisTimeCombinations, curveMap } from './helpers/constants';
+import { axisTimeCombinations, curveMap, motion } from './helpers/constants';
 import {
     createFilterContainer,
     createGlowWithMatrix,
@@ -225,7 +225,7 @@ export default function module() {
         shouldShowAllDataPoints = false,
         isAnimated = false,
         ease = easeQuadInOut,
-        animationDuration = 1500,
+        animationDuration = motion.duration,
         maskingRectangle,
         lineCurve = 'linear',
         dataByTopic,
@@ -1274,6 +1274,21 @@ export default function module() {
     }
 
     // API
+    /**
+     * Gets or Sets the duration of the animation
+     * @param  {Number} _x=1200         Desired animation duration for the graph
+     * @return {duration | module}      Current animation duration or Chart module to chain calls
+     * @public
+     */
+    exports.animationDuration = function (_x) {
+        if (!arguments.length) {
+            return animationDuration;
+        }
+        animationDuration = _x;
+
+        return this;
+    };
+
     /**
      * Gets or Sets the aspect ratio of the chart
      * @param  {Number} _x              Desired aspect ratio for the graph

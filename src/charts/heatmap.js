@@ -7,7 +7,7 @@ import 'd3-transition';
 
 import { exportChart } from './helpers/export';
 import colorHelper from './helpers/color';
-import { hoursHuman } from './helpers/constants';
+import { hoursHuman, motion } from './helpers/constants';
 
 /**
  * @typedef HeatmapData
@@ -71,7 +71,7 @@ export default function module() {
         boxBorderColor = '#FFFFFF',
         colorScale,
         colorSchema = colorHelper.colorSchemas.red,
-        animationDuration = 2000,
+        animationDuration = motion.duration,
         isAnimated = false,
         yAxisLabels,
         dayLabels,
@@ -309,6 +309,21 @@ export default function module() {
     }
 
     // API
+    /**
+     * Gets or Sets the duration of the animation
+     * @param  {Number} _x=1200         Desired animation duration for the graph
+     * @return {duration | module}      Current animation duration or Chart module to chain calls
+     * @public
+     */
+    exports.animationDuration = function (_x) {
+        if (!arguments.length) {
+            return animationDuration;
+        }
+        animationDuration = _x;
+
+        return this;
+    };
+
     /**
      * Gets or Sets the boxSize of the chart
      * @param  {Number} _x=30       Desired boxSize for the heatmap boxes

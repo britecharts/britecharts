@@ -86,6 +86,10 @@ export const hoursHuman = [
     '23h',
 ];
 
+export const motion = {
+    duration: 1200,
+};
+
 export const curveMap = {
     linear: curveLinear,
     basis: curveBasis,

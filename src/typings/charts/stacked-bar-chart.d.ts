@@ -1,9 +1,10 @@
 import { LocalObject } from '../common/local';
 import {
-    StackedBarBaseAPI,
+    ChartBaseAPI,
     InteractiveChartAPI,
     ExportableChartAPI,
     ThemableChartAPI,
+    AnimatedChartAPI,
 } from '../common/base';
 import { GridTypes } from '../common/grid';
 import { ChartModuleSelection } from '../common/selection';
@@ -31,9 +32,10 @@ export type StackedBarSelection = Selection<
 >;
 
 export interface StackedBarChartAPI
-    extends StackedBarBaseAPI<StackedBarChartModule>,
+    extends ChartBaseAPI<StackedBarChartModule>,
         InteractiveChartAPI<StackedBarChartModule>,
         ExportableChartAPI<StackedAreaChartModule>,
+        AnimatedChartAPI<StackedAreaChartModule>,
         ThemableChartAPI<StackedAreaChartModule> {
     /** Gets or Sets the aspect ratio of the chart */
     aspectRatio(ratio?: number): StackedBarChartModule;

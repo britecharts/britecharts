@@ -960,6 +960,18 @@ describe('Line Chart', () => {
             document.body.removeChild(document.getElementById('fixture'));
         });
 
+        it('should provide animationDuration getter and setter', () => {
+            let defaultAnimationDuration = lineChart.animationDuration(),
+                testAnimationDuration = 2000,
+                newAnimationDuration;
+
+            lineChart.animationDuration(testAnimationDuration);
+            newAnimationDuration = lineChart.animationDuration();
+
+            expect(defaultAnimationDuration).not.toBe(testAnimationDuration);
+            expect(newAnimationDuration).toBe(testAnimationDuration);
+        });
+
         describe('Aspect Ratio', () => {
             it('should provide an aspect ratio getter and setter', () => {
                 let previous = lineChart.aspectRatio(),
