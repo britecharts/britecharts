@@ -3,6 +3,7 @@ import {
     InteractiveChartAPI,
     ExportableChartAPI,
     ThemableChartAPI,
+    AnimatedChartAPI,
 } from '../common/base';
 import { GridTypes } from '../common/grid';
 import { ChartModuleSelection } from '../common/selection';
@@ -28,6 +29,7 @@ export interface ScatterPlotAPI
     extends ScatterPlotBaseAPI,
         InteractiveChartAPI<ScatterPlotModule>,
         ExportableChartAPI<ScatterPlotModule>,
+        AnimatedChartAPI<ScatterPlotModule>,
         ThemableChartAPI<ScatterPlotModule> {
     /** Gets or Sets the aspect ratio of the chart */
     aspectRatio(ratio?: number): ScatterPlotModule;

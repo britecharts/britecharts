@@ -3,6 +3,7 @@ import {
     InteractiveChartAPI,
     ExportableChartAPI,
     ThemableChartAPI,
+    AnimatedChartAPI,
 } from '../common/base';
 import { GridTypes } from '../common/grid';
 import { ChartModuleSelection } from '../common/selection';
@@ -42,6 +43,7 @@ export interface LineChartAPI
     extends ChartBaseAPI<LineChartModule>,
         InteractiveChartAPI<LineChartModule>,
         ExportableChartAPI<LineChartModule>,
+        AnimatedChartAPI<LineChartModule>,
         ThemableChartAPI<LineChartModule> {
     /**
      * Exposes the constants to be used to force the x axis to respect a certain granularity

@@ -12,6 +12,7 @@ import colorHelper from './helpers/color';
 import { calculatePercent } from './helpers/number';
 import { emptyDonutData } from './helpers/constants';
 import { donut } from './helpers/load';
+import { motion } from './helpers/constants';
 
 /**
  * @typedef DonutChartData
@@ -69,8 +70,7 @@ export default function module() {
         height = 300,
         loadingState = donut,
         ease = easeCubicInOut,
-        arcTransitionDuration = 750,
-        pieDrawingTransitionDuration = 1200,
+        pieDrawingTransitionDuration = motion.duration,
         pieHoverTransitionDuration = 150,
         radiusHoverOffset = 12,
         paddingAngle = 0,
@@ -612,6 +612,20 @@ export default function module() {
     }
 
     // API
+    /**
+     * Gets or Sets the duration of the animation
+     * @param  {Number} _x=1200         Desired animation duration for the graph
+     * @return {duration | module}      Current animation duration or Chart module to chain calls
+     * @public
+     */
+    exports.animationDuration = function (_x) {
+        if (!arguments.length) {
+            return pieDrawingTransitionDuration;
+        }
+        pieDrawingTransitionDuration = _x;
+
+        return this;
+    };
 
     /**
      * Gets or Sets the centeredTextFunction of the chart. If function is provided

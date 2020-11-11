@@ -382,6 +382,20 @@ donutDataSets.forEach((datasetName) => {
         });
 
         describe('API', () => {
+            it('should provide animationDuration getter and setter', () => {
+                let defaultAnimationDuration = donutChart.animationDuration(),
+                    testAnimationDuration = 2000,
+                    newAnimationDuration;
+
+                donutChart.animationDuration(testAnimationDuration);
+                newAnimationDuration = donutChart.animationDuration();
+
+                expect(defaultAnimationDuration).not.toBe(
+                    testAnimationDuration
+                );
+                expect(newAnimationDuration).toBe(testAnimationDuration);
+            });
+
             it('should provide colorMap getter and setter', () => {
                 let previous = donutChart.colorMap(),
                     expected = {

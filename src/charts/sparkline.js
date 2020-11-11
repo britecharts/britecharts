@@ -10,6 +10,7 @@ import { dataKeyDeprecationMessage } from './helpers/project';
 import colorHelper from './helpers/color';
 import { stackedArea as stackedAreaLoadingMarkup } from './helpers/load';
 import { uniqueId } from './helpers/number';
+import { motion } from './helpers/constants';
 
 const DEFAULT_TITLE_TEXT_STYLE = {
     'font-size': '22px',
@@ -84,7 +85,7 @@ export default function module() {
         data,
         hasArea = true,
         isAnimated = false,
-        clipDuration = 3000,
+        clipDuration = motion.duration,
         ease = easeQuadInOut,
         topLine,
         areaBelow,
@@ -377,6 +378,20 @@ export default function module() {
     }
 
     // API
+    /**
+     * Gets or Sets the duration of the animation
+     * @param  {Number} _x=1200         Desired animation duration for the graph
+     * @return {duration | module}      Current animation duration or Chart module to chain calls
+     * @public
+     */
+    exports.animationDuration = function (_x) {
+        if (!arguments.length) {
+            return clipDuration;
+        }
+        clipDuration = _x;
+
+        return this;
+    };
 
     /**
      * Gets or Sets the areaGradient of the chart
@@ -405,21 +420,6 @@ export default function module() {
         }
         dateLabel = _x;
         dataKeyDeprecationMessage('date');
-
-        return this;
-    };
-
-    /**
-     * Gets or Sets the duration of the animation
-     * @param  {Number} _x=3000         Desired animation duration for the graph
-     * @return {duration | module}      Current animation duration or Chart module to chain calls
-     * @public
-     */
-    exports.duration = function (_x) {
-        if (!arguments.length) {
-            return clipDuration;
-        }
-        clipDuration = _x;
 
         return this;
     };

@@ -15,7 +15,7 @@ import { dataKeyDeprecationMessage } from './helpers/project';
 import colorHelper from './helpers/color';
 import { getTimeSeriesAxis, getSortedNumberAxis } from './helpers/axis';
 import { castValueToType } from './helpers/type';
-import { axisTimeCombinations, curveMap } from './helpers/constants';
+import { axisTimeCombinations, curveMap, motion } from './helpers/constants';
 import {
     formatIntegerValue,
     formatDecimalValue,
@@ -144,7 +144,7 @@ export default function module() {
         pointsBorderColor = '#ffffff',
         isAnimated = false,
         ease = easeQuadInOut,
-        areaAnimationDuration = 1000,
+        areaAnimationDuration = motion.duration,
         hasOutline = true,
         svg,
         chartWidth,
@@ -1268,6 +1268,20 @@ export default function module() {
     }
 
     // API
+    /**
+     * Gets or Sets the duration of the area animation
+     * @param  {Number} _x=1200         Desired animation duration for the graph
+     * @return {duration | module}      Current animation duration or Chart module to chain calls
+     * @public
+     */
+    exports.animationDuration = function (_x) {
+        if (!arguments.length) {
+            return areaAnimationDuration;
+        }
+        areaAnimationDuration = _x;
+
+        return this;
+    };
 
     /**
      * Gets or Sets the area curve of the stacked area.
