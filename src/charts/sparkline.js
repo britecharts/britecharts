@@ -404,6 +404,7 @@ export default function module() {
             return areaGradient;
         }
         areaGradient = _x;
+
         return this;
     };
 
@@ -477,6 +478,7 @@ export default function module() {
             return lineGradient;
         }
         lineGradient = _x;
+
         return this;
     };
 

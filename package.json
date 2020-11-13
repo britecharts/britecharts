@@ -40,7 +40,7 @@
         "docs": "webpack --env=demos && yarn run styles && grunt docs",
         "format": "prettier --loglevel warn --write \"**/*.{js,css}\"",
         "lint:fix": "eslint src/charts/ webpack.*.js --cache --fix",
-        "lint": "eslint src/charts/ webpack.*.js --cache",
+        "lint": "eslint src/charts/ test/specs webpack.*.js --cache",
         "posttest": "npm run format",
         "prebuild": "yarn run styles",
         "release:major": "grunt release:major",
@@ -123,6 +123,97 @@
             ]
         ]
     },
+    "eslintConfig": {
+        "env": {
+            "es6": true,
+            "browser": true,
+            "jasmine": true,
+            "amd": true
+        },
+        "parser": "@babel/eslint-parser",
+        "parserOptions": {
+            "sourceType": "module",
+            "ecmaFeatures": {
+                "experimentalObjectRestSpread": true
+            }
+        },
+        "globals": {
+            "sinon": true
+        },
+        "rules": {
+            "block-scoped-var": 1,
+            "comma-style": [
+                2,
+                "last"
+            ],
+            "complexity": 1,
+            "consistent-this": [
+                0,
+                "self"
+            ],
+            "default-case": 1,
+            "dot-notation": 0,
+            "guard-for-in": 1,
+            "keyword-spacing": 1,
+            "padding-line-between-statements": [
+                "error",
+                {
+                    "blankLine": "always",
+                    "prev": "*",
+                    "next": "return"
+                }
+            ],
+            "no-alert": 2,
+            "no-console": 2,
+            "no-debugger": 2,
+            "no-div-regex": 1,
+            "no-eq-null": 1,
+            "no-floating-decimal": 1,
+            "no-multiple-empty-lines": [
+                2,
+                {
+                    "max": 2
+                }
+            ],
+            "no-nested-ternary": 1,
+            "no-param-reassign": 0,
+            "no-self-compare": 1,
+            "no-throw-literal": 1,
+            "no-void": 1,
+            "no-unused-vars": [
+                1,
+                {
+                    "varsIgnorePattern": "[d3Transition]"
+                }
+            ],
+            "no-underscore-dangle": 0,
+            "quotes": [
+                2,
+                "single"
+            ],
+            "one-var": [
+                1,
+                {
+                    "var": "always",
+                    "const": "never"
+                }
+            ],
+            "radix": 1,
+            "vars-on-top": 1,
+            "wrap-iife": [
+                2,
+                "inside"
+            ]
+        },
+        "overrides": [
+            {
+                "files": [
+                    "*.d.ts"
+                ],
+                "parser": "@typescript-eslint/parser"
+            }
+        ]
+    },
     "prettier": {
         "endOfLine": "lf",
         "tabWidth": 4,
@@ -179,7 +270,8 @@
         "lodash.assign": "^4.2.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.0.0",
+        "@babel/core": "^7.2.0",
+        "@babel/eslint-parser": "^7.12.1",
         "@babel/plugin-proposal-class-properties": "^7.0.0",
         "@babel/plugin-proposal-decorators": "^7.0.0",
         "@babel/plugin-proposal-do-expressions": "^7.0.0",
@@ -201,14 +293,13 @@
         "@babel/preset-env": "^7.0.0",
         "@types/d3-selection": "^1.4.1",
         "@typescript-eslint/parser": "^4.6.1",
-        "babel-eslint": "^9.0.0",
         "babel-istanbul": "^0.12.2",
         "babel-loader": "^8.0.0",
         "babel-plugin-async-import": "^2.0.2",
         "brace": "0.10.0",
         "concurrently": "^4.1.0",
         "css-loader": "3.0.0",
-        "eslint": "^5.16.0",
+        "eslint": "^7.13.0",
         "eslint-loader": "^2.1.2",
         "grunt": "1.0.4",
         "grunt-babel": "6.0.0",

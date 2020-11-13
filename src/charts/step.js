@@ -407,6 +407,7 @@ export default function module() {
             ...margin,
             ..._x,
         };
+
         return this;
     };
 
@@ -422,6 +423,7 @@ export default function module() {
             return yTicks;
         }
         yTicks = _x;
+
         return this;
     };
 
@@ -436,6 +438,7 @@ export default function module() {
             return height;
         }
         height = _x;
+
         return this;
     };
 
@@ -479,6 +482,7 @@ export default function module() {
             return width;
         }
         width = _x;
+
         return this;
     };
 
@@ -493,6 +497,7 @@ export default function module() {
             return xAxisLabel;
         }
         xAxisLabel = _x;
+
         return this;
     };
 
@@ -507,6 +512,7 @@ export default function module() {
             return xAxisLabelOffset;
         }
         xAxisLabelOffset = _x;
+
         return this;
     };
 
@@ -521,6 +527,7 @@ export default function module() {
             return yAxisLabel;
         }
         yAxisLabel = _x;
+
         return this;
     };
 
@@ -535,6 +542,7 @@ export default function module() {
             return yAxisLabelOffset;
         }
         yAxisLabelOffset = _x;
+
         return this;
     };
 

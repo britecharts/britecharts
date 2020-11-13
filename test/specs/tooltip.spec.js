@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import * as d3 from 'd3';
 import tooltip from 'tooltip';
 
@@ -11,7 +10,7 @@ const topicColorMap = {
 };
 
 describe('Tooltip Component', () => {
-    let tooltipChart, dataset, containerFixture, f;
+    let tooltipChart, dataset, containerFixture;
 
     beforeEach(() => {
         const fixture =
@@ -165,48 +164,74 @@ describe('Tooltip Component', () => {
             });
 
             xdescribe('when title is long', () => {
-
                 beforeEach(() => {
                     dataset = [];
-                    tooltipChart = tooltip().title('Super long and exciting Tooltip title');
+                    tooltipChart = tooltip().title(
+                        'Super long and exciting Tooltip title'
+                    );
 
-                    const fixture = '<div id="fixture"><div class="test-container"></div></div>';
+                    const fixture =
+                        '<div id="fixture"><div class="test-container"></div></div>';
 
                     document.body.insertAdjacentHTML('afterbegin', fixture);
 
-                    containerFixture = d3.select('.test-container').append('svg');
+                    containerFixture = d3
+                        .select('.test-container')
+                        .append('svg');
                     containerFixture.datum(dataset).call(tooltipChart);
                 });
 
                 afterEach(() => {
-                    document.body.removeChild(document.getElementById('fixture'));
+                    document.body.removeChild(
+                        document.getElementById('fixture')
+                    );
                 });
 
                 it('should be displayed in two rows', () => {
                     // the space between 'Tooltip' and 'title' dissappears because of the text wrap
-                    const expectedTitle = 'SuperlongandexcitingTooltiptitle-Aug05,2015';
+                    const expectedTitle =
+                        'SuperlongandexcitingTooltiptitle-Aug05,2015';
                     const expectedDividerYPosition = 48;
-                    let actualTitle, actualDividerY1Position, actualDividerY2Position;
+                    let actualTitle,
+                        actualDividerY1Position,
+                        actualDividerY2Position;
 
-                    tooltipChart.dateFormat(tooltipChart.axisTimeCombinations.DAY_MONTH);
-                    tooltipChart.update({
-                        date: '2015-08-05T07:00:00.000Z',
-                        topics: []
-                    }, topicColorMap, 0);
+                    tooltipChart.dateFormat(
+                        tooltipChart.axisTimeCombinations.DAY_MONTH
+                    );
+                    tooltipChart.update(
+                        {
+                            date: '2015-08-05T07:00:00.000Z',
+                            topics: [],
+                        },
+                        topicColorMap,
+                        0
+                    );
 
-                    actualTitle = containerFixture.select('.britechart-tooltip')
+                    actualTitle = containerFixture
+                        .select('.britechart-tooltip')
                         .selectAll('.tooltip-title')
                         .text();
 
-                    actualDividerY1Position = containerFixture.select('.britechart-tooltip')
-                        .select('.tooltip-divider').attr('y1');
+                    actualDividerY1Position = containerFixture
+                        .select('.britechart-tooltip')
+                        .select('.tooltip-divider')
+                        .attr('y1');
 
-                    actualDividerY2Position = containerFixture.select('.britechart-tooltip')
-                        .select('.tooltip-divider').attr('y2');
+                    actualDividerY2Position = containerFixture
+                        .select('.britechart-tooltip')
+                        .select('.tooltip-divider')
+                        .attr('y2');
 
-                    expect(actualTitle.split(' ').join('')).toEqual(expectedTitle);
-                    expect(parseInt(actualDividerY1Position)).toEqual(expectedDividerYPosition);
-                    expect(parseInt(actualDividerY2Position)).toEqual(expectedDividerYPosition);
+                    expect(actualTitle.split(' ').join('')).toEqual(
+                        expectedTitle
+                    );
+                    expect(parseInt(actualDividerY1Position, 10)).toEqual(
+                        expectedDividerYPosition
+                    );
+                    expect(parseInt(actualDividerY2Position, 10)).toEqual(
+                        expectedDividerYPosition
+                    );
                 });
             });
         });
