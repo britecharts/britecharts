@@ -6,7 +6,10 @@ import legend from 'legend';
 import { DonutDataBuilder } from 'donutChartDataBuilder';
 import { LineDataBuilder } from 'lineChartDataBuilder';
 import serializeWithStyles from './../../src/charts/helpers/style';
-import { wrapText, getApproximateNumberOfLines } from './../../src/charts/helpers/text';
+import {
+    wrapText,
+    getApproximateNumberOfLines,
+} from './../../src/charts/helpers/text';
 import { calculatePercent, isInteger } from './../../src/charts/helpers/number';
 import date from './../../src/charts/helpers/date';
 import exportChart from './../../src/charts/helpers/export';
@@ -108,7 +111,11 @@ describe('Helpers', () => {
             const availableWidth = 150;
             const expectedNumberOfLines = 2;
 
-            const actualNumberOfLines = getApproximateNumberOfLines(text, fontSize, availableWidth);
+            const actualNumberOfLines = getApproximateNumberOfLines(
+                text,
+                fontSize,
+                availableWidth
+            );
 
             expect(actualNumberOfLines).toEqual(expectedNumberOfLines);
         });
@@ -145,18 +152,43 @@ describe('Helpers', () => {
     });
 
     describe('date', () => {
-        it('should return difference between dates', () => {
-            const expected = 1;
-            const actual = date.diffDays('Thu Oct 05 2017', 'Thu Oct 04 2017');
+        describe('diffDays', () => {
+            it('should return difference between dates', () => {
+                const expected = 1;
+                const actual = date.diffDays(
+                    'Thu Oct 05 2017',
+                    'Thu Oct 04 2017'
+                );
 
-            expect(actual).toEqual(expected);
+                expect(actual).toEqual(expected);
+            });
         });
 
-        it('should add a number of days to a date', () => {
-            const expected = 'Fri Oct 06 2017';
-            const actual = date.addDays('Thu Oct 05 2017', 1).slice(0, 15);
+        describe('addDays', () => {
+            it('should add a number of days to a date', () => {
+                const expected = 'Fri Oct 06 2017';
+                const actual = date.addDays('Thu Oct 05 2017', 1).slice(0, 15);
 
-            expect(actual).toEqual(expected);
+                expect(actual).toEqual(expected);
+            });
+        });
+
+        describe('convertMillisecondsToDays', () => {
+            it('should transform milliseconds to days', () => {
+                const expected = 2;
+                const actual = date.convertMillisecondsToDays(
+                    expected * 24 * 60 * 60 * 1000
+                );
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should round up to at least one day', () => {
+                const expected = 1;
+                const actual = date.convertMillisecondsToDays(1000);
+
+                expect(actual).toEqual(expected);
+            });
         });
     });
 
