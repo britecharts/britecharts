@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import tooltip from 'mini-tooltip';
 
 describe('Mini Tooltip Component', () => {
-    let tooltipChart, containerFixture, dataset, f;
+    let tooltipChart, containerFixture, dataset;
 
     beforeEach(() => {
         const fixture =

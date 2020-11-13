@@ -9,7 +9,7 @@ const buildDataSet = (dataSetName) => {
 };
 
 describe('Bullet Chart', () => {
-    let bulletChart, dataset, containerFixture, f, dataPoint;
+    let bulletChart, dataset, containerFixture, dataPoint;
 
     beforeEach(() => {
         const fixture =

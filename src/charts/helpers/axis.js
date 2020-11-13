@@ -78,6 +78,7 @@ const getMaxNumOfHorizontalTicksForNumberRanges = (width, dataPointNumber) => {
     let ticksForWidth = Math.ceil(
         width / (singleTickWidth + horizontalTickSpacing)
     );
+
     return Math.min(dataPointNumber, ticksForWidth);
 };
 
