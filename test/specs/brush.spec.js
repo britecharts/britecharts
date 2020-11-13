@@ -92,6 +92,15 @@ describe('Brush Chart', () => {
             expect(actual).toEqual(expected);
         });
 
+        it('should not render a missing data area', () => {
+            const expected = 0;
+            const actual = containerFixture
+                .selectAll('.brush-chart .missing-brush-area')
+                .size();
+
+            expect(actual).toEqual(expected);
+        });
+
         it('should render a brush rect overlay', () => {
             const expected = 1;
             const actual = containerFixture
@@ -161,6 +170,53 @@ describe('Brush Chart', () => {
                 containerFixture.datum(newDataset).call(brushChart);
                 actual = containerFixture
                     .selectAll('.brush-chart .x.axis')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+        });
+
+        describe('when loading missing data', () => {
+            beforeEach(() => {
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
+
+                dataset = buildDataSet('withMissingData');
+                brushChart = chart();
+                // adds an html fixture to the DOM
+                document.body.insertAdjacentHTML('afterbegin', fixture);
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(dataset).call(brushChart);
+            });
+
+            // remove the html fixture from the DOM
+            afterEach(() => {
+                document.body.removeChild(document.getElementById('fixture'));
+            });
+
+            it('should still render the chart', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .selectAll('.brush-chart')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render the regular area', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .selectAll('.brush-chart .brush-area')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render a missing data area', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .selectAll('.brush-chart .missing-brush-area')
                     .size();
 
                 expect(actual).toEqual(expected);

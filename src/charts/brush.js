@@ -103,6 +103,8 @@ export default function module() {
         getValue = ({ value }) => value,
         getDate = ({ date }) => date;
 
+    const acceptNullValue = (value) => (value === null ? null : +value);
+
     /**
      * This function creates the graph using the selection as container
      * @param  {D3Selection} _selection A d3 selection that represents
@@ -257,7 +259,7 @@ export default function module() {
     function cleanData(originalData) {
         return originalData.reduce((acc, d) => {
             d.date = new Date(d[dateLabel]);
-            d.value = +d[valueLabel];
+            d.value = acceptNullValue(d[valueLabel]);
 
             return [...acc, d];
         }, []);
@@ -291,14 +293,25 @@ export default function module() {
     function drawArea() {
         if (brushArea) {
             svg.selectAll('.brush-area').remove();
+            svg.selectAll('.missing-brush-area').remove();
         }
 
         // Create and configure the area generator
         brushArea = area()
+            .defined(({ value }) => !isNaN(parseInt(value, 10)))
             .x(({ date }) => xScale(date))
             .y0(chartHeight)
             .y1(({ value }) => yScale(value))
             .curve(curveBasis);
+
+        // Add a missing brush area when there is missing data
+        if (data.filter(brushArea.defined()).length !== data.length) {
+            svg.select('.chart-group')
+                .append('path')
+                .datum(data.filter(brushArea.defined()))
+                .attr('class', 'missing-brush-area')
+                .attr('d', brushArea);
+        }
 
         // Create the area path
         svg.select('.chart-group')

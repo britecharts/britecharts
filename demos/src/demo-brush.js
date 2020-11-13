@@ -27,6 +27,9 @@ function createBrushChart() {
             .on('customBrushStart', function (brushExtent) {
                 let format = timeFormat('%m/%d/%Y');
 
+                // eslint-disable-next-line no-console
+                console.log('customBrushStart extent:', brushExtent);
+
                 select('.js-start-date').text(format(brushExtent[0]));
                 select('.js-end-date').text(format(brushExtent[1]));
 
@@ -34,7 +37,7 @@ function createBrushChart() {
             })
             .on('customBrushEnd', function (brushExtent) {
                 // eslint-disable-next-line no-console
-                console.log('rounded extent', brushExtent);
+                console.log('customBrushEnd extent:', brushExtent);
 
                 if (brushExtent[0] === null) {
                     elementDateRange.classed('is-hidden', true);
@@ -49,7 +52,7 @@ function createBrushChart() {
     return brushChart;
 }
 
-function createOtherBrushChart() {
+function createMissingDataBrushChart() {
     const brushChart = brush();
     const testDataSet = new BrushDataBuilder();
     const brushContainer = select('.js-other-brush-chart-container');
@@ -61,13 +64,15 @@ function createOtherBrushChart() {
     let elementDateRange = select('.js-other-date-range');
 
     if (containerWidth) {
-        dataset = testDataSet.withShortData().build();
+        dataset = testDataSet.withMissingData().build();
 
         brushChart
             .width(containerWidth)
             .height(125)
             .on('customBrushStart', function (brushExtent) {
                 let format = timeFormat('%m/%d/%Y');
+                // eslint-disable-next-line no-console
+                console.log('customBrushStart extent:', brushExtent);
 
                 select('.js-other-start-date').text(format(brushExtent[0]));
                 select('.js-other-end-date').text(format(brushExtent[1]));
@@ -76,7 +81,7 @@ function createOtherBrushChart() {
             })
             .on('customBrushEnd', function (brushExtent) {
                 // eslint-disable-next-line no-console
-                console.log('rounded extent', brushExtent);
+                console.log('customBrushEnd extent:', brushExtent);
 
                 if (brushExtent[0] === null) {
                     elementDateRange.classed('is-hidden', true);
@@ -85,7 +90,7 @@ function createOtherBrushChart() {
 
         brushContainer.datum(dataset).call(brushChart);
 
-        brushChart.dateRange(['1/06/2011', '1/07/2011']);
+        brushChart.dateRange(['7/10/2015', '7/15/2015']);
     }
 
     return brushChart;
@@ -94,23 +99,27 @@ function createOtherBrushChart() {
 // Show charts if container available
 if (select('.js-brush-chart-container').node()) {
     const brushChart = createBrushChart();
-    const otherBrushChart = createOtherBrushChart();
+    const missingDataBrushChart = createMissingDataBrushChart();
 
     const redrawCharts = function () {
         const brushContainer = select('.js-brush-chart-container');
         const containerWidth = brushContainer.node()
             ? brushContainer.node().getBoundingClientRect().width
             : false;
-        const otherBrushContainer = select('.js-other-brush-chart-container');
-        const otherContainerWidth = otherBrushContainer.node()
-            ? otherBrushContainer.node().getBoundingClientRect().width
+        const missingDataBrushContainer = select(
+            '.js-other-brush-chart-container'
+        );
+        const missingDataContainerWidth = missingDataBrushContainer.node()
+            ? missingDataBrushContainer.node().getBoundingClientRect().width
             : false;
 
         brushChart.width(containerWidth).dateRange([null, null]);
-        otherBrushChart.width(otherContainerWidth).dateRange([null, null]);
+        missingDataBrushChart
+            .width(missingDataContainerWidth)
+            .dateRange([null, null]);
 
         brushContainer.call(brushChart);
-        otherBrushContainer.call(otherBrushChart);
+        missingDataBrushContainer.call(missingDataBrushChart);
     };
 
     // Redraw charts on window resize
@@ -121,7 +130,7 @@ if (select('.js-brush-chart-container').node()) {
         event.preventDefault();
     });
     select('#other-clear-selection').on('click', function (e) {
-        otherBrushChart.dateRange([null, null]);
+        missingDataBrushChart.dateRange([null, null]);
         event.preventDefault();
     });
 }
