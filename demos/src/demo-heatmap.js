@@ -13,7 +13,7 @@ const aTestDataSet = () => new HeatmapDataBuilder();
 
 function createWeeklyHeatmapChart(optionalColorSchema) {
     let heatmapChart = heatmap(),
-        tooltip = miniTooltip(),
+        tooltip = miniTooltip().title('Tooltip Title'),
         heatmapContainer = select('.js-heatmap-chart-container'),
         containerWidth = heatmapContainer.node()
             ? heatmapContainer.node().getBoundingClientRect().width
@@ -41,7 +41,7 @@ function createWeeklyHeatmapChart(optionalColorSchema) {
 
         heatmapContainer.datum(dataset).call(heatmapChart);
 
-        tooltipContainer = d3Selection.select(
+        tooltipContainer = select(
             '.js-heatmap-chart-container .heatmap .metadata-group'
         );
         tooltipContainer.datum([]).call(tooltip);
