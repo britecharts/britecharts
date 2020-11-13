@@ -9,7 +9,7 @@ const buildDataSet = (dataSetName) => {
 };
 
 describe('Heatmap Chart', () => {
-    let heatmapChart, dataset, containerFixture, f;
+    let heatmapChart, dataset, containerFixture;
 
     beforeEach(() => {
         const fixture =

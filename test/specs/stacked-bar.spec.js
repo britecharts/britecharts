@@ -16,7 +16,7 @@ const differentStacksReducer = (acc, d) => {
 };
 
 describe('Stacked Bar Chart', () => {
-    let stackedBarChart, dataset, containerFixture, f;
+    let stackedBarChart, dataset, containerFixture;
 
     beforeEach(() => {
         const fixture =

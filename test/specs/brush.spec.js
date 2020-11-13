@@ -9,7 +9,7 @@ const buildDataSet = (dataSetName) => {
 };
 
 describe('Brush Chart', () => {
-    let brushChart, dataset, containerFixture, f;
+    let brushChart, dataset, containerFixture;
 
     beforeEach(() => {
         const fixture =
