@@ -17,7 +17,7 @@ const differentDatesReducer = (acc, d) => {
 };
 
 describe('Grouped Bar Chart', () => {
-    let groupedBarChart, dataset, containerFixture, f;
+    let groupedBarChart, dataset, containerFixture;
 
     beforeEach(() => {
         const fixture =

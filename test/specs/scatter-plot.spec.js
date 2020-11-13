@@ -9,7 +9,7 @@ const buildDataSet = (dataSetName) => {
 };
 
 describe('Scatter Plot', () => {
-    let scatterPlot, dataset, containerFixture, f;
+    let scatterPlot, dataset, containerFixture;
 
     beforeEach(() => {
         const fixture =
@@ -481,7 +481,7 @@ describe('Scatter Plot', () => {
         });
 
         describe('when axis labels are set', () => {
-            let scatterPlot, dataset, containerFixture, f;
+            let scatterPlot, dataset, containerFixture;
 
             beforeEach(() => {
                 const fixture =
