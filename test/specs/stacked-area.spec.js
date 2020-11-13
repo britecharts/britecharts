@@ -1,5 +1,4 @@
 import _ from 'underscore';
-import $ from 'jquery';
 import * as d3 from 'd3';
 
 import stackedArea from 'stacked-area';
@@ -14,7 +13,7 @@ const hasClass = (element, className) => {
 };
 
 describe('Stacked Area Chart', () => {
-    let dataset, containerFixture, f, stackedAreaChart;
+    let dataset, containerFixture, stackedAreaChart;
 
     beforeEach(() => {
         const fixture =

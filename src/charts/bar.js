@@ -802,6 +802,7 @@ export default function module() {
 
         if (hasSingleBarHighlight) {
             highlightBarFunction(select(e));
+
             return;
         }
 

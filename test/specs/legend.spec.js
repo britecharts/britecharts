@@ -9,7 +9,7 @@ const buildDataSet = (dataSetName) => {
 };
 
 describe('Legend', () => {
-    let legendChart, dataset, containerFixture, f;
+    let legendChart, dataset, containerFixture;
 
     beforeEach(() => {
         const fixture =

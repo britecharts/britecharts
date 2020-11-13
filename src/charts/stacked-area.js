@@ -453,8 +453,10 @@ export default function module() {
         layers = layers.map((section) => {
             section.map((entry) => {
                 entry[0] = yAxisBaseline;
+
                 return entry;
             });
+
             return section;
         });
 

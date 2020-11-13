@@ -576,6 +576,7 @@ export default function module() {
             for (let i = 0; i < layerEls.length; i++) {
                 layerEls[i] = getValOrDefaultToZero(layerEls[i]);
             }
+
             return layerEls;
         });
     }

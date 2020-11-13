@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import * as d3 from 'd3';
 
 import chart from 'step';
@@ -10,7 +9,7 @@ const buildDataSet = (dataSetName) => {
 };
 
 describe('Step Chart', () => {
-    let stepChart, dataset, containerFixture, f;
+    let stepChart, dataset, containerFixture;
 
     beforeEach(() => {
         const fixture =
