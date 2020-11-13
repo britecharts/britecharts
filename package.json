@@ -40,7 +40,7 @@
         "docs": "webpack --env=demos && yarn run styles && grunt docs",
         "format": "prettier --loglevel warn --write \"**/*.{js,css}\"",
         "lint:fix": "eslint src/charts/ webpack.*.js --cache --fix",
-        "lint": "eslint src/charts/ webpack.*.js --cache",
+        "lint": "eslint src/charts/ test/specs webpack.*.js --cache",
         "posttest": "npm run format",
         "prebuild": "yarn run styles",
         "release:major": "grunt release:major",

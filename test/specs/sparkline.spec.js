@@ -14,7 +14,7 @@ const hasClass = (element, className) => {
 };
 
 describe('Sparkline Chart', () => {
-    let dataset, containerFixture, f, sparklineChart;
+    let dataset, containerFixture, sparklineChart;
 
     beforeEach(() => {
         const fixture =
