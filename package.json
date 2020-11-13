@@ -130,6 +130,7 @@
             "jasmine": true,
             "amd": true
         },
+        "parser": "@babel/eslint-parser",
         "parserOptions": {
             "sourceType": "module",
             "ecmaFeatures": {
@@ -154,7 +155,14 @@
             "dot-notation": 0,
             "guard-for-in": 1,
             "keyword-spacing": 1,
-            "newline-after-var": 1,
+            "padding-line-between-statements": [
+                "error",
+                {
+                    "blankLine": "always",
+                    "prev": "*",
+                    "next": "return"
+                }
+            ],
             "no-alert": 2,
             "no-console": 2,
             "no-debugger": 2,
@@ -262,7 +270,8 @@
         "lodash.assign": "^4.2.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.0.0",
+        "@babel/core": "^7.2.0",
+        "@babel/eslint-parser": "^7.12.1",
         "@babel/plugin-proposal-class-properties": "^7.0.0",
         "@babel/plugin-proposal-decorators": "^7.0.0",
         "@babel/plugin-proposal-do-expressions": "^7.0.0",
@@ -284,14 +293,13 @@
         "@babel/preset-env": "^7.0.0",
         "@types/d3-selection": "^1.4.1",
         "@typescript-eslint/parser": "^4.6.1",
-        "babel-eslint": "^9.0.0",
         "babel-istanbul": "^0.12.2",
         "babel-loader": "^8.0.0",
         "babel-plugin-async-import": "^2.0.2",
         "brace": "0.10.0",
         "concurrently": "^4.1.0",
         "css-loader": "3.0.0",
-        "eslint": "^5.16.0",
+        "eslint": "^7.13.0",
         "eslint-loader": "^2.1.2",
         "grunt": "1.0.4",
         "grunt-babel": "6.0.0",
