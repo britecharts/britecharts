@@ -786,6 +786,23 @@ describe('Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
+        it('should provide valueLocale getter and setter', () => {
+            let defaultLocale = false,
+                testLocale = {
+                    thousands: '.',
+                    grouping: [3],
+                    currency: ['$', ''],
+                    decimal: '.',
+                },
+                newLocale;
+
+            barChart.valueLocale(testLocale);
+            newLocale = barChart.valueLocale();
+
+            expect(defaultLocale).not.toBe(newLocale);
+            expect(newLocale).toBe(testLocale);
+        });
+
         it('should provide width getter and setter', () => {
             let previous = barChart.width(),
                 expected = { top: 4, right: 4, bottom: 4, left: 4 },
@@ -904,18 +921,6 @@ describe('Bar Chart', () => {
 
             expect(defaultYAxisLabelOffset).not.toBe(newYAxisLabelOffset);
             expect(newYAxisLabelOffset).toBe(testYAxisLabelOffset);
-        });
-
-        it('should provide locale getter and setter', () => {
-            let defaultLocale = false,
-                testLocale = 'en-GB',
-                newLocale;
-
-            barChart.locale(testLocale);
-            newLocale = barChart.locale();
-
-            expect(defaultLocale).not.toBe(newLocale);
-            expect(newLocale).toBe(testLocale);
         });
     });
 });
