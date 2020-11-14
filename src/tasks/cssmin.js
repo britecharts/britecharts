@@ -1,4 +1,4 @@
-module.exports = function (grunt, configOptions) {
+module.exports = function (grunt) {
     'use strict';
 
     const distFiles = [
