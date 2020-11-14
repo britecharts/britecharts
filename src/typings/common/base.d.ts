@@ -102,6 +102,8 @@ export interface TimeSeriesChartAPI<T> {
     /**
      * Exposes the constants to be used to force the x axis to respect a certain granularity
      * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+     * @example
+     *     chart.xAxisCustomFormat(chart.axisTimeCombinations.HOUR_DAY)
      */
     axisTimeCombinations: {
         [key in keyof typeof AxisTimeCombination]: T & TimeSeriesChartAPI;
@@ -119,5 +121,5 @@ export interface TimeSeriesChartAPI<T> {
      */
     xAxisCustomFormat(format?: string): T & TimeSeriesChartAPI;
     /** Exposes the ability to force the chart to show a certain x axis grouping */
-    xAxisFormat(format?: string): T & TimeSeriesChartAPI;
+    xAxisFormat(format?: 'custom'): T & TimeSeriesChartAPI;
 }

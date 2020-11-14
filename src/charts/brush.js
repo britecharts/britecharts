@@ -699,9 +699,11 @@ export default function module() {
     /**
      * Exposes the ability to force the chart to show a certain x format
      * It requires a `xAxisFormat` of 'custom' in order to work.
-     * @param  {String} _x              Desired format for x axis
+     * @param  {String} _x              Desired format for x axis, one of the xAxisCustomFormats
      * @return {String | Module}        Current format or module to chain calls
      * @public
+     * @example
+     *     brushChart.xAxisCustomFormat(brushChart.axisTimeCombinations.HOUR_DAY)
      */
     exports.xAxisCustomFormat = function (_x) {
         if (!arguments.length) {
@@ -714,10 +716,8 @@ export default function module() {
 
     /**
      * Exposes the ability to force the chart to show a certain x axis grouping
-     * @param  {String} _x          Desired format
+     * @param  {String} _x          Desired format, set it to 'custom' to make use of specific formats with xAxisCustomFormat
      * @return {String | Module}    Current format or module to chain calls
-     * @example
-     *     brush.xAxisFormat(brush.axisTimeCombinations.HOUR_DAY)
      * @public
      */
     exports.xAxisFormat = function (_x) {

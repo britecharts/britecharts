@@ -427,7 +427,7 @@ export default function module() {
                 ({ minor, major } = getTimeSeriesAxis(
                     dataSorted,
                     width,
-                    xAxisFormat,
+                    xAxisCustomFormat,
                     locale
                 ));
 
@@ -1305,6 +1305,14 @@ export default function module() {
     };
 
     /**
+     * Exposes the constants to be used to force the x axis to respect a certain granularity
+     * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+     * @example
+     *     line.xAxisCustomFormat(line.axisTimeCombinations.HOUR_DAY)
+     */
+    exports.axisTimeCombinations = axisTimeCombinations;
+
+    /**
      * Gets or Sets the label of the X axis of the chart
      * @param  {String} _x              Desired label for the X axis
      * @return { (String | Module) }    Current label of the X axis or Line Chart module to chain calls
@@ -1383,35 +1391,35 @@ export default function module() {
     };
 
     /**
-     * Exposes the ability to force the chart to show a certain x axis grouping
-     * @param  {String} _x              Desired format
-     * @return { (String|Module) }      Current format or module to chain calls
-     * @public
-     * @example
-     *     line.xAxisFormat(line.axisTimeCombinations.HOUR_DAY)
-     */
-    exports.xAxisFormat = function (_x) {
-        if (!arguments.length) {
-            return xAxisFormat;
-        }
-        xAxisFormat = _x;
-
-        return this;
-    };
-
-    /**
      * Exposes the ability to force the chart to show a certain x format
      * It requires a `xAxisFormat` of 'custom' in order to work.
      * NOTE: localization not supported
-     * @param  {String} _x              Desired format for x axis
-     * @return { (String|Module) }      Current format or module to chain calls
+     * @param  {String} _x              Desired format for x axis, one of the xAxisCustomFormats
+     * @return { String|Module }        Current format or module to chain calls
      * @public
+     * @example
+     *     line.xAxisCustomFormat(line.axisTimeCombinations.HOUR_DAY)
      */
     exports.xAxisCustomFormat = function (_x) {
         if (!arguments.length) {
             return xAxisCustomFormat;
         }
         xAxisCustomFormat = _x;
+
+        return this;
+    };
+
+    /**
+     * Exposes the ability to force the chart to show a certain x axis grouping
+     * @param  {String} _x            Desired format, set it to 'custom' to make use of specific formats with xAxisCustomFormat
+     * @return { String|Module }      Current format or module to chain calls
+     * @public
+     */
+    exports.xAxisFormat = function (_x) {
+        if (!arguments.length) {
+            return xAxisFormat;
+        }
+        xAxisFormat = _x;
 
         return this;
     };
@@ -1738,14 +1746,6 @@ export default function module() {
 
         return value === dispatcher ? exports : value;
     };
-
-    /**
-     * Exposes the constants to be used to force the x axis to respect a certain granularity
-     * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
-     * @example
-     *     line.xAxisCustomFormat(line.axisTimeCombinations.HOUR_DAY)
-     */
-    exports.axisTimeCombinations = axisTimeCombinations;
 
     /**
      * Gets or Sets the `xAxisValueType`.
