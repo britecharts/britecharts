@@ -225,6 +225,30 @@ describe('Brush Chart', () => {
     });
 
     describe('API', () => {
+        it('should provide animationDuration getter and setter', () => {
+            let defaultAnimationDuration = brushChart.animationDuration(),
+                testAnimationDuration = 2000,
+                newAnimationDuration;
+
+            brushChart.animationDuration(testAnimationDuration);
+            newAnimationDuration = brushChart.animationDuration();
+
+            expect(defaultAnimationDuration).not.toBe(testAnimationDuration);
+            expect(newAnimationDuration).toBe(testAnimationDuration);
+        });
+
+        it('should provide areaCurve getter and setter', () => {
+            let previous = brushChart.areaCurve(),
+                expected = 'step',
+                actual;
+
+            brushChart.areaCurve(expected);
+            actual = brushChart.areaCurve();
+
+            expect(previous).not.toEqual(expected);
+            expect(actual).toEqual(expected);
+        });
+
         it('should provide a bush date range getter and setter', () => {
             let previous = brushChart.dateRange(),
                 expected = ['9/15/2015', '1/25/2016'],
@@ -259,6 +283,18 @@ describe('Brush Chart', () => {
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
+        });
+
+        it('should provide isAnimated getter and setter', () => {
+            let previous = brushChart.isAnimated(),
+                expected = true,
+                actual;
+
+            brushChart.isAnimated(expected);
+            actual = brushChart.isAnimated();
+
+            expect(previous).not.toEqual(expected);
+            expect(actual).toEqual(expected);
         });
 
         it('should provide loadingState getter and setter', () => {

@@ -2,7 +2,7 @@ import { extent, max } from 'd3-array';
 import { axisBottom } from 'd3-axis';
 import { brushX } from 'd3-brush';
 import { scaleLinear, scaleTime } from 'd3-scale';
-import { curveBasis, area } from 'd3-shape';
+import { area } from 'd3-shape';
 import { dispatch } from 'd3-dispatch';
 import { select, event } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
@@ -10,7 +10,12 @@ import 'd3-transition';
 
 import colorHelper from './helpers/color';
 import timeAxisHelper from './helpers/axis';
-import { axisTimeCombinations, timeIntervals } from './helpers/constants';
+import {
+    axisTimeCombinations,
+    timeIntervals,
+    motion,
+    curveMap,
+} from './helpers/constants';
 import { uniqueId } from './helpers/number';
 import { line } from './helpers/load';
 
@@ -74,7 +79,10 @@ export default function module() {
         height = 500,
         loadingState = line,
         data,
+        dataZeroed,
         svg,
+        isAnimated = false,
+        animationDuration = motion.duration,
         dateLabel = 'date',
         valueLabel = 'value',
         dateRange = [null, null],
@@ -90,6 +98,7 @@ export default function module() {
         brush,
         chartBrush,
         brushArea,
+        areaCurve = 'monotoneX',
         handle,
         tickPadding = 5,
         chartGradientEl,
@@ -257,12 +266,18 @@ export default function module() {
      * @private
      */
     function cleanData(originalData) {
-        return originalData.reduce((acc, d) => {
+        const cleanData = originalData.reduce((acc, d) => {
             d.date = new Date(d[dateLabel]);
             d.value = acceptNullValue(d[valueLabel]);
 
             return [...acc, d];
         }, []);
+
+        dataZeroed = cleanData.map((d) => {
+            return { ...d, value: d.value === null ? null : 0 };
+        });
+
+        return cleanData;
     }
 
     /**
@@ -302,23 +317,59 @@ export default function module() {
             .x(({ date }) => xScale(date))
             .y0(chartHeight)
             .y1(({ value }) => yScale(value))
-            .curve(curveBasis);
+            .curve(curveMap[areaCurve]);
 
-        // Add a missing brush area when there is missing data
-        if (data.filter(brushArea.defined()).length !== data.length) {
+        if (isAnimated) {
+            // Add a missing brush area when there is missing data
+            if (
+                dataZeroed.filter(brushArea.defined()).length !==
+                dataZeroed.length
+            ) {
+                svg.select('.chart-group')
+                    .append('path')
+                    .datum(dataZeroed.filter(brushArea.defined()))
+                    .attr('class', 'missing-brush-area')
+                    .attr('d', brushArea);
+
+                svg.select('.chart-group')
+                    .selectAll('.missing-brush-area')
+                    .datum(data.filter(brushArea.defined()))
+                    .transition()
+                    .duration(animationDuration)
+                    .attr('d', brushArea);
+            }
+
+            // Create the area path with zeroed data
             svg.select('.chart-group')
                 .append('path')
-                .datum(data.filter(brushArea.defined()))
-                .attr('class', 'missing-brush-area')
+                .datum(dataZeroed)
+                .attr('class', 'brush-area')
+                .attr('d', brushArea);
+
+            // Create the area path
+            svg.select('.chart-group')
+                .selectAll('.brush-area')
+                .datum(data)
+                .transition()
+                .duration(animationDuration)
+                .attr('d', brushArea);
+        } else {
+            // Add a missing brush area when there is missing data
+            if (data.filter(brushArea.defined()).length !== data.length) {
+                svg.select('.chart-group')
+                    .append('path')
+                    .datum(data.filter(brushArea.defined()))
+                    .attr('class', 'missing-brush-area')
+                    .attr('d', brushArea);
+            }
+
+            // Create the area path
+            svg.select('.chart-group')
+                .append('path')
+                .datum(data)
+                .attr('class', 'brush-area')
                 .attr('d', brushArea);
         }
-
-        // Create the area path
-        svg.select('.chart-group')
-            .append('path')
-            .datum(data)
-            .attr('class', 'brush-area')
-            .attr('d', brushArea);
     }
 
     /**
@@ -327,6 +378,17 @@ export default function module() {
      */
     function drawBrush() {
         chartBrush = svg.select('.brush-group').call(brush);
+
+        if (isAnimated) {
+            chartBrush.style('opacity', 0);
+
+            setTimeout(() => {
+                chartBrush
+                    .transition()
+                    .duration(animationDuration)
+                    .style('opacity', 1);
+            }, 0);
+        }
 
         // Update the height of the brushing rectangle
         chartBrush
@@ -421,6 +483,38 @@ export default function module() {
     }
 
     // API
+    /**
+     * Gets or Sets the duration of the area animation
+     * @param  {Number} _x=1200         Desired animation duration for the graph
+     * @return {duration | module}      Current animation duration or Chart module to chain calls
+     * @public
+     */
+    exports.animationDuration = function (_x) {
+        if (!arguments.length) {
+            return animationDuration;
+        }
+        animationDuration = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the area curve of the stacked area.
+     * @param {String} [_x='basis']     Desired curve for the area. Other options are:
+     * monotoneX, natural, linear, monotoneY, step, stepAfter, stepBefore, cardinal, and
+     * catmullRom. Visit https://github.com/d3/d3-shape#curves for more information.
+     * @return {String | module}            Current area curve setting or Chart module to chain calls
+     * @public
+     * @example brushChart.areaCurve('step')
+     */
+    exports.areaCurve = function (_x) {
+        if (!arguments.length) {
+            return areaCurve;
+        }
+        areaCurve = _x;
+
+        return this;
+    };
 
     /**
      * Exposes the constants to be used to force the x axis to respect a certain granularity
@@ -475,6 +569,21 @@ export default function module() {
             return height;
         }
         height = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the isAnimated property of the chart, making it to animate when render.
+     * @param  {Boolean} _x = false     Desired animation flag
+     * @return {Boolean | module}       Current isAnimated flag or Chart module
+     * @public
+     */
+    exports.isAnimated = function (_x) {
+        if (!arguments.length) {
+            return isAnimated;
+        }
+        isAnimated = _x;
 
         return this;
     };

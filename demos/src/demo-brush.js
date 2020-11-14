@@ -69,6 +69,7 @@ function createMissingDataBrushChart() {
         brushChart
             .width(containerWidth)
             .height(125)
+            .isAnimated(true)
             .on('customBrushStart', function (brushExtent) {
                 let format = timeFormat('%m/%d/%Y');
                 // eslint-disable-next-line no-console
