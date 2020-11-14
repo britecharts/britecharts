@@ -92,6 +92,15 @@ describe('Brush Chart', () => {
             expect(actual).toEqual(expected);
         });
 
+        it('should not render a missing data area', () => {
+            const expected = 0;
+            const actual = containerFixture
+                .selectAll('.brush-chart .missing-brush-area')
+                .size();
+
+            expect(actual).toEqual(expected);
+        });
+
         it('should render a brush rect overlay', () => {
             const expected = 1;
             const actual = containerFixture
@@ -166,9 +175,80 @@ describe('Brush Chart', () => {
                 expect(actual).toEqual(expected);
             });
         });
+
+        describe('when loading missing data', () => {
+            beforeEach(() => {
+                const fixture =
+                    '<div id="fixture"><div class="test-container"></div></div>';
+
+                dataset = buildDataSet('withMissingData');
+                brushChart = chart();
+                // adds an html fixture to the DOM
+                document.body.insertAdjacentHTML('afterbegin', fixture);
+
+                containerFixture = d3.select('.test-container');
+                containerFixture.datum(dataset).call(brushChart);
+            });
+
+            // remove the html fixture from the DOM
+            afterEach(() => {
+                document.body.removeChild(document.getElementById('fixture'));
+            });
+
+            it('should still render the chart', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .selectAll('.brush-chart')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render the regular area', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .selectAll('.brush-chart .brush-area')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+
+            it('should render a missing data area', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .selectAll('.brush-chart .missing-brush-area')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+        });
     });
 
     describe('API', () => {
+        it('should provide animationDuration getter and setter', () => {
+            let defaultAnimationDuration = brushChart.animationDuration(),
+                testAnimationDuration = 2000,
+                newAnimationDuration;
+
+            brushChart.animationDuration(testAnimationDuration);
+            newAnimationDuration = brushChart.animationDuration();
+
+            expect(defaultAnimationDuration).not.toBe(testAnimationDuration);
+            expect(newAnimationDuration).toBe(testAnimationDuration);
+        });
+
+        it('should provide areaCurve getter and setter', () => {
+            let previous = brushChart.areaCurve(),
+                expected = 'step',
+                actual;
+
+            brushChart.areaCurve(expected);
+            actual = brushChart.areaCurve();
+
+            expect(previous).not.toEqual(expected);
+            expect(actual).toEqual(expected);
+        });
+
         it('should provide a bush date range getter and setter', () => {
             let previous = brushChart.dateRange(),
                 expected = ['9/15/2015', '1/25/2016'],
@@ -203,6 +283,18 @@ describe('Brush Chart', () => {
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
+        });
+
+        it('should provide isAnimated getter and setter', () => {
+            let previous = brushChart.isAnimated(),
+                expected = true,
+                actual;
+
+            brushChart.isAnimated(expected);
+            actual = brushChart.isAnimated();
+
+            expect(previous).not.toEqual(expected);
+            expect(actual).toEqual(expected);
         });
 
         it('should provide loadingState getter and setter', () => {

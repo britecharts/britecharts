@@ -1,6 +1,7 @@
 import _ from 'underscore';
-import jsonShortData from '../json/brushDataBis.json';
+import jsonShortData from '../json/brushShortData.json';
 import jsonSimpleData from '../json/brushData.json';
+import jsonMissingData from '../json/brushMissingData.json';
 
 export function BrushDataBuilder(config) {
     this.Klass = BrushDataBuilder;
@@ -15,6 +16,12 @@ export function BrushDataBuilder(config) {
 
     this.withShortData = function () {
         var attributes = _.extend({}, this.config, jsonShortData);
+
+        return new this.Klass(attributes);
+    };
+
+    this.withMissingData = function () {
+        var attributes = _.extend({}, this.config, jsonMissingData);
 
         return new this.Klass(attributes);
     };
