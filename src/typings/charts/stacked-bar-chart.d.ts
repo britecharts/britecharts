@@ -8,6 +8,7 @@ import {
 } from '../common/base';
 import { GridTypes } from '../common/grid';
 import { ChartModuleSelection } from '../common/selection';
+import { LocalObject } from '../common/local';
 import { BaseType, Selection } from 'd3-selection';
 import { StackedAreaChartModule } from 'britecharts';
 import { StackedAreaChartModule } from './stacked-area';
@@ -58,8 +59,11 @@ export interface StackedBarChartAPI
     percentageAxisToMaxRatio(ratio?: number): StackedBarChartModule;
     /** Gets or Sets the minimum width of the graph in order to show the tooltip */
     tooltipThreshold(threshold?: number): StackedBarChartModule;
-    /** Gets or Sets the numberFormat of the chart */
-    valueLabelFormat(format?: string): StackedBarChartModule; //Deprecated on V3 into numberFormat
+    /**
+     * Gets or Sets the locale which our formatting functions use.
+     * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
+     */
+    valueLocale(localObject?: LocalObject | null): StackedBarChartModule;
     /** Gets or Sets the number of ticks of the x axis on the chart */
     xTicks(ticks?: number): StackedBarChartModule;
     /** Gets or Sets the y-axis label of the chart */

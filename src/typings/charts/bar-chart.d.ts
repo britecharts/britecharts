@@ -5,6 +5,7 @@ import {
     ThemableChartAPI,
     AnimatedChartAPI,
 } from '../common/base';
+import { LocalObject } from '../common/local';
 import { ChartModuleSelection } from '../common/selection';
 import { BaseType, Selection } from 'd3-selection';
 
@@ -77,6 +78,11 @@ export interface BarChartAPI
     shouldReverseColorList(shouldReverse?: boolean): BarChartModule;
     /** Gets or Sets the valueLabel of the chart */
     valueLabel(valueLabel?: string): BarChartModule;
+    /**
+     * Gets or Sets the locale which our formatting functions use.
+     * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
+     */
+    valueLocale(localObject?: LocalObject | null): BarChartModule;
     /** Gets or Sets the text of the xAxisLabel on the chart */
     xAxisLabel(xAxisLabel?: string): BarChartModule;
     /** Gets or Sets the offset of the xAxisLabel on the chart */

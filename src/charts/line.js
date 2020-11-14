@@ -1588,8 +1588,8 @@ export default function module() {
 
     /**
      * Gets or Sets the number format of the line chart
-     * @param  {string} _x              Desired number format for the line chart
-     * @return {numberFormat | module}  Current numberFormat or Chart module to chain calls
+     * @param  {string} _x = ',f'       Desired numberFormat for the chart. See examples [here]{@link https://observablehq.com/@d3/d3-format}
+     * @return {string | module}        Current numberFormat or Chart module to chain calls
      * @public
      */
     exports.numberFormat = function (_x) {

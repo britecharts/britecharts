@@ -1162,8 +1162,8 @@ export default function module() {
 
     /**
      * Gets or Sets the nameLabel of the chart
-     * @param  {Number} _x Desired nameLabel for the graph
-     * @return {nameLabel | module} Current nameLabel or Chart module to chain calls
+     * @param  {number} _x Desired nameLabel for the graph
+     * @return {number | module} Current nameLabel or Chart module to chain calls
      * @public
      * @deprecated
      */
@@ -1179,8 +1179,8 @@ export default function module() {
 
     /**
      * Gets or Sets the number format of the bar chart
-     * @param  {string} [_x=',f'] Desired number format for the bar chart
-     * @return {numberFormat | module} Current numberFormat or Chart module to chain calls
+     * @param  {string} _x = ',f'     Desired numberFormat for the chart. See examples [here]{@link https://observablehq.com/@d3/d3-format}
+     * @return {string | module}      Current numberFormat or Chart module to chain calls
      * @public
      */
     exports.numberFormat = function (_x) {
@@ -1264,6 +1264,25 @@ export default function module() {
         }
         valueLabel = _x;
         dataKeyDeprecationMessage('value');
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the locale which our formatting functions use.
+     * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
+     * @example
+     *  barChart
+     *  .valueLocale({thousands: '.', grouping: [3], currency: ["$", ""], decimal: "."})
+     * @param  {LocaleObject}  [_x=null]  _x    Desired locale object format.
+     * @return {LocaleObject | module}          Current locale object or Chart module to chain calls
+     * @public
+     */
+    exports.valueLocale = function (_x) {
+        if (!arguments.length) {
+            return locale;
+        }
+        locale = _x;
 
         return this;
     };
@@ -1384,25 +1403,6 @@ export default function module() {
             return yTicks;
         }
         yTicks = _x;
-
-        return this;
-    };
-
-    /**
-     * Gets or Sets the locale which our formatting functions use.
-     * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
-     * @example
-     *  barChart
-     *  .locale({thousands: '.', grouping: [3], currency: ["$", ""], decimal: "."})
-     * @param  {LocaleObject}  [_x=null]  _x    Desired locale object format.
-     * @return {LocaleObject | module}           Current locale object or Chart module to chain calls
-     * @public
-     */
-    exports.locale = function (_x) {
-        if (!arguments.length) {
-            return locale;
-        }
-        locale = _x;
 
         return this;
     };

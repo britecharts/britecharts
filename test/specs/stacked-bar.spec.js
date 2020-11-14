@@ -549,6 +549,23 @@ describe('Stacked Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
+        it('should provide valueLocale getter and setter', () => {
+            let defaultLocale = false,
+                testLocale = {
+                    thousands: '.',
+                    grouping: [3],
+                    currency: ['$', ''],
+                    decimal: '.',
+                },
+                newLocale;
+
+            stackedBarChart.valueLocale(testLocale);
+            newLocale = stackedBarChart.valueLocale();
+
+            expect(defaultLocale).not.toBe(newLocale);
+            expect(newLocale).toBe(testLocale);
+        });
+
         it('should provide numberFormat getter and setter', () => {
             let previous = stackedBarChart.numberFormat(),
                 expected = 's',
@@ -571,18 +588,6 @@ describe('Stacked Bar Chart', () => {
 
             expect(previous).not.toBe(actual);
             expect(actual).toBe(expected);
-        });
-
-        it('should provide locale getter and setter', () => {
-            let defaultLocale = null,
-                testValue = 'ru-RU',
-                newLocale;
-
-            stackedBarChart.locale(testValue);
-            newLocale = stackedBarChart.locale();
-
-            expect(defaultLocale).not.toBe(testValue);
-            expect(newLocale).toBe(testValue);
         });
 
         it('should provide xTicks getter and setter', () => {

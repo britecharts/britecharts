@@ -1057,26 +1057,6 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the locale which our formatting functions use.
-     * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
-     * @example
-     *  groupedBarChart
-     *  .locale({thousands: '.', grouping: [3], currency: ["$", ""], decimal: "."})
-     *
-     * @param  {LocaleObject}  [_x=null]  _x     Desired locale object format.
-     * @return {LocaleObject | module}           Current locale object or Chart module to chain calls
-     * @public
-     */
-    exports.locale = function (_x) {
-        if (!arguments.length) {
-            return locale;
-        }
-        locale = _x;
-
-        return this;
-    };
-
-    /**
      * Gets or Sets the margin of the chart
      * @param  {Object} _x          Margin object to get/set
      * @return { margin | module}   Current margin or Area Chart module to chain calls
@@ -1113,8 +1093,8 @@ export default function module() {
 
     /**
      * Gets or Sets the numberFormat of the chart
-     * @param  {String[]} [_x=',f']     Desired numberFormat for the graph
-     * @return {String[] | module}      Current numberFormat or Chart module to chain calls
+     * @param  {string[]} _x = ',f'     Desired numberFormat for the chart. See examples [here]{@link https://observablehq.com/@d3/d3-format}
+     * @return {string[] | module}      Current numberFormat or Chart module to chain calls
      * @public
      */
     exports.numberFormat = function (_x) {
@@ -1170,6 +1150,26 @@ export default function module() {
         }
         valueLabel = _x;
         dataKeyDeprecationMessage('value');
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the locale which our formatting functions use.
+     * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
+     * @example
+     *  groupedBarChart
+     *  .locale({thousands: '.', grouping: [3], currency: ["$", ""], decimal: "."})
+     *
+     * @param  {LocaleObject}  [_x=null]  _x     Desired locale object format.
+     * @return {LocaleObject | module}           Current locale object or Chart module to chain calls
+     * @public
+     */
+    exports.valueLocale = function (_x) {
+        if (!arguments.length) {
+            return locale;
+        }
+        locale = _x;
 
         return this;
     };
