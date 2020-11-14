@@ -455,18 +455,6 @@ describe('Grouped Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
-        it('should provide locale getter and setter', () => {
-            let defaultLocale = false,
-                testLocale = 'en-GB',
-                newLocale;
-
-            groupedBarChart.locale(testLocale);
-            newLocale = groupedBarChart.locale();
-
-            expect(defaultLocale).not.toBe(newLocale);
-            expect(newLocale).toBe(testLocale);
-        });
-
         it('should provide margin getter and setter', () => {
             let previous = groupedBarChart.margin(),
                 expected = { top: 4, right: 4, bottom: 4, left: 4 },
@@ -545,6 +533,23 @@ describe('Grouped Bar Chart', () => {
             expect(actual).toBe(expected);
         });
 
+        it('should provide valueLocale getter and setter', () => {
+            let defaultLocale = false,
+                testLocale = {
+                    thousands: '.',
+                    grouping: [3],
+                    currency: ['$', ''],
+                    decimal: '.',
+                },
+                newLocale;
+
+            groupedBarChart.valueLocale(testLocale);
+            newLocale = groupedBarChart.valueLocale();
+
+            expect(defaultLocale).not.toBe(newLocale);
+            expect(newLocale).toBe(testLocale);
+        });
+
         it('should provide width getter and setter', () => {
             let previous = groupedBarChart.width(),
                 expected = 200,
@@ -603,31 +608,6 @@ describe('Grouped Bar Chart', () => {
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
-        });
-
-        // TODO-locale: We need to figure out how to clear the default formatting, as this
-        // test is messing up with the rest of tests
-        xdescribe('locale', () => {
-            it('should show the € sign', () => {
-                const customSign = '€';
-                const customLocale = {
-                    decimal: ',',
-                    thousands: '.',
-                    grouping: [3],
-                    currency: [`${customSign} `, ''],
-                };
-
-                groupedBarChart.numberFormat('$,.2f').locale(customLocale);
-                containerFixture.datum(dataset.data).call(groupedBarChart);
-
-                const firstTickSelection = containerFixture
-                    .select('.y-axis-group.axis')
-                    .select('.tick');
-
-                expect(firstTickSelection.text()).toMatch(
-                    new RegExp(`${customSign} \\d+\\.?\\d*`)
-                );
-            });
         });
     });
 });

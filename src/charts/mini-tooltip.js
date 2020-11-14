@@ -378,8 +378,8 @@ export default function module() {
 
     /**
      * Gets or Sets the number format for the value displayed on the tooltip
-     * @param  {string} [_x=".2f"] Desired number format
-     * @return {string | module} Current numberFormat or Chart module to chain calls
+     * @param  {string} _x = '.2f'      Desired numberFormat for the chart. See examples [here]{@link https://observablehq.com/@d3/d3-format}
+     * @return {string | module}        Current numberFormat or Chart module to chain calls
      * @public
      */
     exports.numberFormat = function (_x) {

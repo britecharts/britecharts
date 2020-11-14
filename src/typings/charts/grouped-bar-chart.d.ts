@@ -7,6 +7,7 @@ import {
 } from '../common/base';
 import { ChartModuleSelection } from '../common/selection';
 import { Offset } from '../common/position';
+import { LocalObject } from '../common/local';
 import { GridTypes } from '../common/grid';
 import { BaseType, Selection } from 'd3-selection';
 
@@ -47,8 +48,11 @@ export interface GroupedBarChartAPI
     isHorizontal(isHorizontal?: boolean): GroupedBarChartModule;
     /** Gets or Sets the minimum width of the graph in order to show the tooltip */
     tooltipThreshold(threshold?: number): GroupedBarChartModule;
-    /** Gets or Sets the numberFormat of the chart */
-    valueLabelFormat(format?: string): GroupedBarChartModule;
+    /**
+     * Gets or Sets the locale which our formatting functions use.
+     * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
+     */
+    valueLocale(localObject?: LocalObject | null): GroupedBarChartModule;
     /** Gets or Sets the number of ticks of the x axis on the chart */
     xTicks(ticks?: number): GroupedBarChartModule;
     /** Gets or Sets the y-axis label of the chart */

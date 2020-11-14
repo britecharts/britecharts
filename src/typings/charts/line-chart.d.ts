@@ -4,8 +4,10 @@ import {
     ExportableChartAPI,
     ThemableChartAPI,
     AnimatedChartAPI,
+    TimeSeriesChartAPI,
 } from '../common/base';
 import { GridTypes } from '../common/grid';
+import { LocaleString } from '../common/local';
 import { ChartModuleSelection } from '../common/selection';
 import { AxisTimeCombination } from '../helpers/constants';
 
@@ -44,14 +46,8 @@ export interface LineChartAPI
         InteractiveChartAPI<LineChartModule>,
         ExportableChartAPI<LineChartModule>,
         AnimatedChartAPI<LineChartModule>,
+        TimeSeriesChartAPI<LineChartModule>,
         ThemableChartAPI<LineChartModule> {
-    /**
-     * Exposes the constants to be used to force the x axis to respect a certain granularity
-     * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
-     */
-    axisTimeCombinations: {
-        [key in keyof typeof AxisTimeCombination]: AxisTimeCombination | string;
-    };
     /** Gets or Sets the aspect ratio of the chart */
     aspectRatio(ratio?: number): LineChartModule;
     /** Gets or Sets the grid mode. */
@@ -72,14 +68,6 @@ export interface LineChartAPI
      * NOTE: This could also depend on the aspect ratio
      */
     tooltipThreshold(threshold?: number): LineChartModule;
-    /**
-     * Exposes the ability to force the chart to show a certain x format
-     * It requires a `xAxisFormat` of 'custom' in order to work.
-     * NOTE: localization not supported
-     */
-    xAxisCustomFormat(format?: string): LineChartModule;
-    /** Exposes the ability to force the chart to show a certain x axis grouping */
-    xAxisFormat(format?: string): LineChartModule;
     /** Gets or Sets the label of the X axis of the chart */
     xAxisLabel(label: string): LineChartModule;
     /**
