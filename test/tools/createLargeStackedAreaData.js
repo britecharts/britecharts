@@ -49,6 +49,7 @@ for (; i < 100; i++) {
 
 fs.writeFile(config.path, JSON.stringify(writable), function (err) {
     if (err) {
+        // eslint-disable-next-line no-console
         console.log('error', err);
     }
 });
@@ -57,6 +58,7 @@ function formatPrependZero(n) {
     if (JSON.stringify(n).length === 1) {
         return '0' + n;
     }
+
     return n;
 }
 
@@ -70,6 +72,7 @@ function formatDateUTC(_date, isUTC) {
     if (isUTC) {
         time = 'T08:00:00Z';
     }
+
     return (
         '' +
         year +

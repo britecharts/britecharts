@@ -224,7 +224,10 @@
   display: none; }
 
 .brush-chart .brush-area {
-  fill: #eff2f5; }
+  fill: #d2d6df; }
+
+.brush-chart .missing-brush-area {
+  fill: #f8f8fa; }
 
 .brush-chart .brush-rect.selection {
   fill-opacity: 0.08;
