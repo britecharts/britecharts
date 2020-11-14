@@ -798,18 +798,6 @@ describe('Scatter Plot', () => {
             expect(actual).toEqual(expected);
         });
 
-        it('should provide locale getter and setter', () => {
-            let previous = scatterPlot.locale(),
-                expected = 'en-US',
-                actual;
-
-            scatterPlot.locale(expected);
-            actual = scatterPlot.locale();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
         it('should provide margin getter and setter', () => {
             let previous = scatterPlot.margin(),
                 expected = { top: 4, right: 4, bottom: 4, left: 4 },
@@ -850,6 +838,23 @@ describe('Scatter Plot', () => {
 
             expect(previous).not.toBe(expected);
             expect(actual).toEqual(expected);
+        });
+
+        it('should provide valueLocale getter and setter', () => {
+            let defaultLocale = false,
+                testLocale = {
+                    thousands: '.',
+                    grouping: [3],
+                    currency: ['$', ''],
+                    decimal: '.',
+                },
+                newLocale;
+
+            scatterPlot.valueLocale(testLocale);
+            newLocale = scatterPlot.valueLocale();
+
+            expect(defaultLocale).not.toBe(newLocale);
+            expect(newLocale).toBe(testLocale);
         });
 
         it('should provide xAxisLabel getter and setter', () => {

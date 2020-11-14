@@ -604,8 +604,8 @@ export default function module() {
 
     /**
      * Gets or Sets the number format of the legend chart
-     * @param  {string} [_x='s']    Desired number format for the legend chart
-     * @return {string | module}    Current number format or Legend module to chain calls
+     * @param  {string[]} _x = 's'      Desired numberFormat for the chart. See examples [here]{@link https://observablehq.com/@d3/d3-format}
+     * @return {string | module}        Current number format or Legend module to chain calls
      * @public
      */
     exports.numberFormat = function (_x) {

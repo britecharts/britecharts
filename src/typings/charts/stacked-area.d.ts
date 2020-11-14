@@ -4,8 +4,10 @@ import {
     ExportableChartAPI,
     ThemableChartAPI,
     AnimatedChartAPI,
+    TimeSeriesChartAPI,
 } from '../common/base';
 import { GridTypes } from '../common/grid';
+import { LocaleString } from '../common/local';
 import { ChartModuleSelection } from '../common/selection';
 import { AxisTimeCombination } from '../helpers/constants';
 import { StackedBarChartModule } from 'britecharts';
@@ -33,14 +35,8 @@ export interface StackedAreaChartAPI
         InteractiveChartAPI<StackedBarChartModule>,
         ExportableChartAPI<StackedAreaChartModule>,
         AnimatedChartAPI<StackedAreaChartModule>,
+        TimeSeriesChartAPI<StackedAreaChartModule>,
         ThemableChartAPI<StackedAreaChartModule> {
-    /**
-     * Exposes the constants to be used to force the x axis to respect a certain granularity
-     * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
-     */
-    axisTimeCombinations: {
-        [key in keyof typeof AxisTimeCombination]: AxisTimeCombination | string;
-    };
     /** Gets or Sets the area curve of the stacked area. */
     areaCurve(curveType?: string): StackedAreaChartModule;
     /** Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity) */
@@ -61,14 +57,6 @@ export interface StackedAreaChartAPI
     tooltipThreshold(threshold?: number): StackedAreaChartModule;
     /** Pass an override for the ordering of the topics */
     topicsOrder(orderList?: string[]): StackedAreaChartModule;
-    /**
-     * Exposes the ability to force the chart to show a certain x format
-     * It requires a `xAxisFormat` of 'custom' in order to work.
-     * NOTE: localization not supported
-     */
-    xAxisCustomFormat(format?: string): StackedAreaChartModule;
-    /** Exposes the ability to force the chart to show a certain x axis grouping */
-    xAxisFormat(format?: string): StackedAreaChartModule;
     /**
      * Gets or Sets the `xAxisScale`.
      * Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to
