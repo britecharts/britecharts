@@ -30,6 +30,7 @@ function createBrushChart(optionalColorSchema) {
         brushChart
             .width(containerWidth)
             .height(100)
+            .isAnimated(true)
             .margin(brushMargin)
             .on('customBrushEnd', function (brushExtent) {
                 let format = timeFormat('%m/%d/%Y');
