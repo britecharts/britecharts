@@ -2,7 +2,11 @@
 
 .brush-chart {
     .brush-area {
-        fill: $grey-200;
+        fill: $grey-300;
+    }
+
+    .missing-brush-area {
+        fill: $grey-100;
     }
 
     .brush-rect.selection {

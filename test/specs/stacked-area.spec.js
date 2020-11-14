@@ -596,6 +596,18 @@ describe('Stacked Area Chart', () => {
             expect(newAnimationDuration).toBe(testAnimationDuration);
         });
 
+        it('should provide areaCurve getter and setter', () => {
+            let previous = stackedAreaChart.areaCurve(),
+                expected = 'step',
+                actual;
+
+            stackedAreaChart.areaCurve(expected);
+            actual = stackedAreaChart.areaCurve();
+
+            expect(previous).not.toEqual(expected);
+            expect(actual).toEqual(expected);
+        });
+
         describe('aspect ratio', function () {
             describe('when an aspect ratio is set', function () {
                 it('should modify the height depending on the width', () => {
@@ -929,18 +941,6 @@ describe('Stacked Area Chart', () => {
 
             stackedAreaChart.hasOutline(expected);
             actual = stackedAreaChart.hasOutline();
-
-            expect(previous).not.toEqual(expected);
-            expect(actual).toEqual(expected);
-        });
-
-        it('should provide areaCurve getter and setter', () => {
-            let previous = stackedAreaChart.areaCurve(),
-                expected = 'step',
-                actual;
-
-            stackedAreaChart.areaCurve(expected);
-            actual = stackedAreaChart.areaCurve();
 
             expect(previous).not.toEqual(expected);
             expect(actual).toEqual(expected);

@@ -1,4 +1,4 @@
-import { ChartBaseAPIMinimal, InteractiveChartAPI } from '../common/base';
+import { ChartBaseAPIMinimal, InteractiveChartAPI, AnimatedChartAPI } from '../common/base';
 import { ChartModuleSelection } from '../common/selection';
 import { BaseType, Selection } from 'd3-selection';
 import { AxisTimeCombination } from '../helpers/constants';
@@ -23,7 +23,10 @@ export type BrushSelection = Selection<
 
 export interface BrushChartAPI
     extends ChartBaseAPIMinimal<BrushChartModule>,
+        AnimatedChartAPI<BrushChartAPI>,
         InteractiveChartAPI<BrushChartAPI> {
+    /** Gets or Sets the area curve of the stacked area. */
+    areaCurve(curveType?: string): BrushChartModule;
     /**
      * Exposes the constants to be used to force the x axis to respect a certain granularity
      * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
