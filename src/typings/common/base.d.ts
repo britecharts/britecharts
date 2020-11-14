@@ -1,6 +1,8 @@
-import { LocalObject } from './local';
+import { LocaleString } from './local';
 import { ColorsSchemasType } from '../helpers/colors';
 import { ChartMarginParams } from './margin';
+import { AxisTimeCombination } from '../helpers/constants';
+
 
 export interface ChartBaseAPI<T> {
     /** Gets or Sets the number format of the chart */
@@ -8,14 +10,7 @@ export interface ChartBaseAPI<T> {
     /** Gets or Sets the height of the chart */
     height(height?: number): T & ChartBaseAPI<T>;
     /** Gets or Sets the loading state of the chart */
-    /** Gets or Sets the loading state of the chart */
     loadingState(markup?: string): T & ChartBaseAPI<T>;
-    /**
-     * Pass language tag for the tooltip to localize the date.
-     * Uses Intl.DateTimeFormat, for compatability and support, refer to
-     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-     */
-    locale(localObject?: LocalObject | null): T & ChartBaseAPI<T>;
     /** Gets or Sets the margin object of the chart (top, bottom, left and right) */
     margin(margin?: ChartMarginParams): T & ChartBaseAPI<T>;
     /** Gets or Sets the width of the chart */
@@ -28,12 +23,6 @@ export interface ChartBaseAPIMinimal<T> {
     height(height?: number): T & ChartBaseAPIMinimal<T>;
     /** Gets or Sets the loading state of the chart */
     loadingState(markup?: string): T & ChartBaseAPIMinimal<T>;
-    /**
-     * Pass language tag for the tooltip to localize the date.
-     * Uses Intl.DateTimeFormat, for compatability and support, refer to
-     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-     */
-    locale(localObject?: LocalObject | null): T & ChartBaseAPIMinimal<T>;
     /** Gets or Sets the margin object of the chart (top, bottom, left and right) */
     margin(margin?: ChartMarginParams): T & ChartBaseAPIMinimal<T>;
     /** Gets or Sets the width of the chart */
@@ -107,4 +96,28 @@ export interface ThemableChartAPI<T> {
     colorSchema(schema: ColorsSchemasType): T & ThemableChartAPI<T>;
     /** Gets or Sets the colorMap of the chart */
     colorMap(colorMap?: Record<string, string>): T & ThemableChartAPI<T>;
+}
+
+export interface TimeSeriesChartAPI<T> {
+    /**
+     * Exposes the constants to be used to force the x axis to respect a certain granularity
+     * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
+     */
+    axisTimeCombinations: {
+        [key in keyof typeof AxisTimeCombination]: T & TimeSeriesChartAPI;
+    };
+    /**
+     * Pass language tag for the tooltip to localize the date.
+     * Uses Intl.DateTimeFormat, for compatability and support, refer to
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
+     */
+    locale(localObject?: LocaleString | null): T & TimeSeriesChartAPI;
+    /**
+     * Exposes the ability to force the chart to show a certain x format
+     * It requires a `xAxisFormat` of 'custom' in order to work.
+     * NOTE: localization not supported
+     */
+    xAxisCustomFormat(format?: string): T & TimeSeriesChartAPI;
+    /** Exposes the ability to force the chart to show a certain x axis grouping */
+    xAxisFormat(format?: string): T & TimeSeriesChartAPI;
 }

@@ -8,3 +8,5 @@ export type LocalObject = {
   minus?: string;
   nan?: string;
 };
+
+export type LocaleString = string;

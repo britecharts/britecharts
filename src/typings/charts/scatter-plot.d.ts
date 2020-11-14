@@ -6,6 +6,7 @@ import {
     AnimatedChartAPI,
 } from '../common/base';
 import { GridTypes } from '../common/grid';
+import { LocalObject } from '../common/local';
 import { ChartModuleSelection } from '../common/selection';
 
 export enum ScatterPlotKeys {
@@ -75,6 +76,11 @@ export interface ScatterPlotAPI
     highlightTextLegendOffset(offset?: number): ScatterPlotModule;
     /** Gets or Sets the maximum value of the chart area */
     maxCircleArea(area?: number): ScatterPlotModule;
+    /**
+     * Gets or Sets the locale which our formatting functions use.
+     * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
+     */
+    valueLocale(localObject?: LocalObject | null): ScatterPlotModule;
     /** Exposes ability to set the format of x-axis values */
     xAxisFormat(format?: string): ScatterPlotModule;
     /**
