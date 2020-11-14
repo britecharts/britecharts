@@ -1128,25 +1128,6 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the locale which our formatting functions use.
-     * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
-     * @example
-     * scatterPlot
-     *  .locale({thousands: '.', grouping: [3], currency: ["$", ""], decimal: "."})
-     * @param  {LocaleObject}  [_x=null]  _x        Desired locale object format.
-     * @return {LocaleObject | module}              Current locale object or Chart module to chain calls
-     * @public
-     */
-    exports.locale = function (_x) {
-        if (!arguments.length) {
-            return locale;
-        }
-        locale = _x;
-
-        return this;
-    };
-
-    /**
      * Gets or Sets the margin object of the chart
      * @param  {Object} _x          Desired margin object properties for each side
      * @return {Object | module}    Current margin or Chart module to chain calls
@@ -1190,6 +1171,25 @@ export default function module() {
         let value = dispatcher.on.apply(dispatcher, arguments);
 
         return value === dispatcher ? exports : value;
+    };
+
+    /**
+     * Gets or Sets the locale which our formatting functions use.
+     * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
+     * @example
+     * scatterPlot
+     *  .locale({thousands: '.', grouping: [3], currency: ["$", ""], decimal: "."})
+     * @param  {LocaleObject}  [_x=null]  _x        Desired locale object format.
+     * @return {LocaleObject | module}              Current locale object or Chart module to chain calls
+     * @public
+     */
+    exports.valueLocale = function (_x) {
+        if (!arguments.length) {
+            return locale;
+        }
+        locale = _x;
+
+        return this;
     };
 
     /**

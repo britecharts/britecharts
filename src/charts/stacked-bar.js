@@ -3,6 +3,7 @@ import { axisLeft, axisBottom } from 'd3-axis';
 import { color } from 'd3-color';
 import { nest } from 'd3-collection';
 import { dispatch } from 'd3-dispatch';
+import * as d3Format from 'd3-format';
 import { easeQuadInOut } from 'd3-ease';
 import { interpolateNumber, interpolateRound } from 'd3-interpolate';
 import { scaleOrdinal, scaleBand, scaleLinear } from 'd3-scale';
@@ -15,6 +16,7 @@ import { exportChart } from './helpers/export';
 import { dataKeyDeprecationMessage } from './helpers/project';
 import colorHelper from './helpers/color';
 import { bar as barChartLoadingMarkup } from './helpers/load';
+import { setDefaultLocale } from './helpers/locale';
 import { motion } from './helpers/constants';
 
 const PERCENTAGE_FORMAT = '%';
@@ -82,7 +84,8 @@ export default function module() {
         betweenBarsPadding = 0.1,
         yTickTextYOffset = -8,
         yTickTextXOffset = -20,
-        locale,
+        locale = null,
+        localeFormatter = d3Format,
         yTicks = 5,
         xTicks = 5,
         percentageAxisToMaxRatio = 1,
@@ -141,6 +144,10 @@ export default function module() {
      * @param {stackedBarData} _data The data to attach and generate the chart
      */
     function exports(_selection) {
+        if (locale) {
+            localeFormatter = setDefaultLocale(locale);
+        }
+
         _selection.each(function (_data) {
             chartWidth = width - margin.left - margin.right;
             chartHeight = height - margin.top - margin.bottom;
@@ -151,7 +158,7 @@ export default function module() {
             buildLayers();
             buildSVG(this);
             drawGridLines();
-            buildAxis();
+            buildAxis(localeFormatter);
             drawAxis();
             drawStackedBar();
             addMouseEvents();
@@ -201,13 +208,16 @@ export default function module() {
      * Creates the d3 x and y axis, setting orientations
      * @private
      */
-    function buildAxis() {
+    function buildAxis(locale) {
         if (isHorizontal) {
-            xAxis = axisBottom(xScale).ticks(xTicks, numberFormat);
+            xAxis = axisBottom(xScale).ticks(
+                xTicks,
+                locale.format(numberFormat)
+            );
             yAxis = axisLeft(yScale);
         } else {
             xAxis = axisBottom(xScale);
-            yAxis = axisLeft(yScale).ticks(yTicks, numberFormat);
+            yAxis = axisLeft(yScale).ticks(yTicks, locale.format(numberFormat));
         }
     }
 
@@ -1029,22 +1039,6 @@ export default function module() {
     };
 
     /**
-     * Pass language tag for the tooltip to localize the date.
-     * Feature uses Intl.DateTimeFormat, for compatability and support, refer to
-     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-     * @param  {String} _x          Must be a language tag (BCP 47) like 'en-US' or 'fr-FR'
-     * @return {String | module}    Current locale or module to chain calls
-     */
-    exports.locale = function (_x) {
-        if (!arguments.length) {
-            return locale;
-        }
-        locale = _x;
-
-        return this;
-    };
-
-    /**
      * Gets or Sets the margin of the chart
      * @param  {Object} _x          Margin object to get/set
      * @return {Object | module}    Current margin or Area Chart module to chain calls
@@ -1081,8 +1075,8 @@ export default function module() {
 
     /**
      * Gets or Sets the numberFormat of the chart
-     * @param  {String[]} _x = ',f'     Desired numberFormat for the graph
-     * @return {String[] | module}      Current numberFormat or Chart module to chain calls
+     * @param  {String} _x = ',f'     Desired numberFormat for the graph. See examples [here]{@link https://observablehq.com/@d3/d3-format}
+     * @return {String | module}      Current numberFormat or Chart module to chain calls
      * @public
      */
     exports.numberFormat = function (_x) {
@@ -1170,6 +1164,25 @@ export default function module() {
         }
         valueLabel = _x;
         dataKeyDeprecationMessage('value');
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the locale which our formatting functions use.
+     * Check [the d3-format docs]{@link https://github.com/d3/d3-format#formatLocale} for the required values.
+     * @example
+     *  stackedBarChart
+     *  .valueLocale({thousands: '.', grouping: [3], currency: ["$", ""], decimal: "."})
+     * @param  {LocaleObject}  [_x=null]  _x    Desired locale object format.
+     * @return {LocaleObject | module}          Current locale object or Chart module to chain calls
+     * @public
+     */
+    exports.valueLocale = function (_x) {
+        if (!arguments.length) {
+            return locale;
+        }
+        locale = _x;
 
         return this;
     };
