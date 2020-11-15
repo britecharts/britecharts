@@ -323,7 +323,7 @@ export default function module() {
                 ({ minor, major } = getTimeSeriesAxis(
                     dataSorted,
                     width,
-                    xAxisCustomFormat,
+                    xAxisFormat,
                     locale
                 ));
 
@@ -369,7 +369,7 @@ export default function module() {
         container
             .selectAll('.x-axis-group')
             .append('g')
-            .classed('month-axis', true);
+            .classed('axis sub-x', true);
         container.append('g').classed('y-axis-group axis', true);
         container.append('g').classed('grid-lines-group', true);
         container.append('g').classed('y-axis-label', true);
@@ -616,7 +616,7 @@ export default function module() {
             .call(xAxis);
 
         if (xAxisFormat !== 'custom' && xAxisValueType !== 'number') {
-            svg.select('.x-axis-group .month-axis')
+            svg.select('.x-axis-group .axis.sub-x')
                 .attr(
                     'transform',
                     `translate(0, ${chartHeight + monthAxisPadding})`
@@ -1628,7 +1628,7 @@ export default function module() {
      * Exposes the ability to force the chart to show a certain x format
      * It requires a `xAxisFormat` of 'custom' in order to work.
      * NOTE: localization not supported
-     * @param  {String} _x            Desired format for x axis, one of the xAxisCustomFormats
+     * @param  {String} _x            Desired format for x axis, one of the d3.js date formats [here]{@link https://github.com/d3/d3-time-format#locale_format}
      * @return {String | Module}      Current format or module to chain calls
      * @public
      * @example
@@ -1645,15 +1645,54 @@ export default function module() {
 
     /**
      * Exposes the ability to force the chart to show a certain x axis grouping
-     * @param  {String} _x          Desired format, set it to 'custom' to make use of specific formats with xAxisCustomFormat
-     * @return {String | Module}    Current format or module to chain calls
+     * @param  {String} _x          Desired format, a combination of axisTimeCombinations (MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR)
+     * Set it to 'custom' to make use of specific formats with xAxisCustomFormat
+     * @return { String|Module }      Current format or module to chain calls
      * @public
+     * @example
+     *     stackedArea.xAxisCustomFormat(stackedArea.axisTimeCombinations.HOUR_DAY)
      */
     exports.xAxisFormat = function (_x) {
         if (!arguments.length) {
             return xAxisFormat;
         }
         xAxisFormat = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the `xAxisValueType`.
+     * Choose between 'date' and 'number'. When set to `number` the values of the x-axis must not
+     * be dates anymore, but can be arbitrary numbers.
+     * @param  {string} [_x='date']     Desired value type of the x-axis
+     * @return {string | module}        Current value type of the x-axis or Chart module to chain calls
+     * @public
+     * @example stackedArea.xAxisValueType('numeric')
+     */
+    exports.xAxisValueType = function (_x) {
+        if (!arguments.length) {
+            return xAxisValueType;
+        }
+        xAxisValueType = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the `xAxisScale`.
+     * Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to
+     * 'number' as well, otherwise it won't influence the visualization.
+     * @param  {string} [_x='linear']   Desired value type of the x-axis
+     * @return {string | module}        Current value type of the x-axis or Chart module to chain calls
+     * @public
+     * @example stackedArea.xAxisValueType('numeric').xAxisScale('logarithmic')
+     */
+    exports.xAxisScale = function (_x) {
+        if (!arguments.length) {
+            return xAxisScale;
+        }
+        xAxisScale = _x;
 
         return this;
     };
@@ -1736,42 +1775,6 @@ export default function module() {
             return yAxisBaseline;
         }
         yAxisBaseline = _x;
-
-        return this;
-    };
-
-    /**
-     * Gets or Sets the `xAxisValueType`.
-     * Choose between 'date' and 'number'. When set to `number` the values of the x-axis must not
-     * be dates anymore, but can be arbitrary numbers.
-     * @param  {string} [_x='date']     Desired value type of the x-axis
-     * @return {string | module}        Current value type of the x-axis or Chart module to chain calls
-     * @public
-     * @example stackedArea.xAxisValueType('numeric')
-     */
-    exports.xAxisValueType = function (_x) {
-        if (!arguments.length) {
-            return xAxisValueType;
-        }
-        xAxisValueType = _x;
-
-        return this;
-    };
-
-    /**
-     * Gets or Sets the `xAxisScale`.
-     * Choose between 'linear' and 'logarithmic'. The setting will only work if `xAxisValueType` is set to
-     * 'number' as well, otherwise it won't influence the visualization.
-     * @param  {string} [_x='linear']   Desired value type of the x-axis
-     * @return {string | module}        Current value type of the x-axis or Chart module to chain calls
-     * @public
-     * @example stackedArea.xAxisValueType('numeric').xAxisScale('logarithmic')
-     */
-    exports.xAxisScale = function (_x) {
-        if (!arguments.length) {
-            return xAxisScale;
-        }
-        xAxisScale = _x;
 
         return this;
     };

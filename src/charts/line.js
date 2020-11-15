@@ -200,7 +200,7 @@ export default function module() {
             right: 0,
         },
         verticalShift = 30,
-        monthAxisPadding = 28,
+        monthAxisPadding = 30,
         tickPadding = 5,
         colorSchema = colorHelper.colorSchemas.britecharts,
         nameToColorMap = null,
@@ -427,7 +427,7 @@ export default function module() {
                 ({ minor, major } = getTimeSeriesAxis(
                     dataSorted,
                     width,
-                    xAxisCustomFormat,
+                    xAxisFormat,
                     locale
                 ));
 
@@ -474,7 +474,7 @@ export default function module() {
         container
             .selectAll('.x-axis-group')
             .append('g')
-            .classed('month-axis', true);
+            .classed('axis sub-x', true);
         container
             .append('g')
             .classed('y-axis-group', true)
@@ -708,7 +708,7 @@ export default function module() {
             .call(xAxis);
 
         if (xAxisFormat !== 'custom' && xAxisValueType !== 'number') {
-            svg.select('.x-axis-group .month-axis')
+            svg.select('.x-axis-group .axis.sub-x')
                 .attr(
                     'transform',
                     `translate(0, ${chartHeight + monthAxisPadding})`
@@ -1308,7 +1308,7 @@ export default function module() {
      * Exposes the constants to be used to force the x axis to respect a certain granularity
      * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
      * @example
-     *     line.xAxisCustomFormat(line.axisTimeCombinations.HOUR_DAY)
+     *     line.xAxisFormat(line.axisTimeCombinations.HOUR_DAY)
      */
     exports.axisTimeCombinations = axisTimeCombinations;
 
@@ -1394,11 +1394,9 @@ export default function module() {
      * Exposes the ability to force the chart to show a certain x format
      * It requires a `xAxisFormat` of 'custom' in order to work.
      * NOTE: localization not supported
-     * @param  {String} _x              Desired format for x axis, one of the xAxisCustomFormats
+     * @param  {String} _x              Desired format for x axis, one of the d3.js date formats [here]{@link https://github.com/d3/d3-time-format#locale_format}
      * @return { String|Module }        Current format or module to chain calls
      * @public
-     * @example
-     *     line.xAxisCustomFormat(line.axisTimeCombinations.HOUR_DAY)
      */
     exports.xAxisCustomFormat = function (_x) {
         if (!arguments.length) {
@@ -1411,9 +1409,12 @@ export default function module() {
 
     /**
      * Exposes the ability to force the chart to show a certain x axis grouping
-     * @param  {String} _x            Desired format, set it to 'custom' to make use of specific formats with xAxisCustomFormat
+     * @param  {String} _x          Desired format, a combination of axisTimeCombinations (MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR)
+     * Set it to 'custom' to make use of specific formats with xAxisCustomFormat
      * @return { String|Module }      Current format or module to chain calls
      * @public
+     * @example
+     *     line.xAxisCustomFormat(line.axisTimeCombinations.HOUR_DAY)
      */
     exports.xAxisFormat = function (_x) {
         if (!arguments.length) {

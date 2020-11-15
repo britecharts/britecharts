@@ -9,11 +9,8 @@ $outline-stroke-width: 1.2;
     }
 
     // Axes
+    .x-axis-group path,
     .y-axis-group path {
-        display: none;
-    }
-
-    .x-axis-group path {
         display: none;
     }
 

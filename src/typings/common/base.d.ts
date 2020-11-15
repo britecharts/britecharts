@@ -103,7 +103,7 @@ export interface TimeSeriesChartAPI<T> {
      * Exposes the constants to be used to force the x axis to respect a certain granularity
      * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
      * @example
-     *     chart.xAxisCustomFormat(chart.axisTimeCombinations.HOUR_DAY)
+     *     chart.xAxisFormat(chart.axisTimeCombinations.HOUR_DAY)
      */
     axisTimeCombinations: {
         [key in keyof typeof AxisTimeCombination]: T & TimeSeriesChartAPI;
@@ -118,8 +118,15 @@ export interface TimeSeriesChartAPI<T> {
      * Exposes the ability to force the chart to show a certain x format
      * It requires a `xAxisFormat` of 'custom' in order to work.
      * NOTE: localization not supported
+     * Accepts the format for x axis, one of the d3.js date formats [here]{@link https://github.com/d3/d3-time-format#locale_format}
      */
     xAxisCustomFormat(format?: string): T & TimeSeriesChartAPI;
-    /** Exposes the ability to force the chart to show a certain x axis grouping */
-    xAxisFormat(format?: 'custom'): T & TimeSeriesChartAPI;
+    /**
+     * Exposes the ability to force the chart to show a certain x axis grouping
+     * It is a combination of axisTimeCombinations (MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR)
+     * Set it to 'custom' to make use of specific formats with xAxisCustomFormat
+     * * @example
+     *     chart.xAxisCustomFormat(chart.axisTimeCombinations.HOUR_DAY)
+     */
+    xAxisFormat(format?: 'custom' | string): T & TimeSeriesChartAPI;
 }
