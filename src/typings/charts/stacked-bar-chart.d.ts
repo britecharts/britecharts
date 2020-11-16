@@ -35,9 +35,9 @@ export type StackedBarSelection = Selection<
 export interface StackedBarChartAPI
     extends ChartBaseAPI<StackedBarChartModule>,
         InteractiveChartAPI<StackedBarChartModule>,
-        ExportableChartAPI<StackedAreaChartModule>,
-        AnimatedChartAPI<StackedAreaChartModule>,
-        ThemableChartAPI<StackedAreaChartModule> {
+        ExportableChartAPI<StackedBarChartModule>,
+        AnimatedChartAPI<StackedBarChartModule>,
+        ThemableChartAPI<StackedBarChartModule> {
     /** Gets or Sets the aspect ratio of the chart */
     aspectRatio(ratio?: number): StackedBarChartModule;
     /** Gets or Sets the padding of the stacked bar chart */
