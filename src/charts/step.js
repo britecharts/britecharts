@@ -118,7 +118,7 @@ export default function module() {
 
             // eslint-disable-next-line no-console
             console.log(
-                'The Step Chart is being deprecated! Please use other chart for your visualization!'
+                'The Step Chart is being deprecated! Please use a line chart with lineCurve "step" for your visualization!'
             );
 
             buildScales();
