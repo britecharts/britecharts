@@ -242,10 +242,6 @@ export default function module() {
             .classed('x-axis-group', true)
             .append('g')
             .classed('x axis', true);
-        container
-            .selectAll('.x-axis-group')
-            .append('g')
-            .classed('month-axis', true);
         container.append('g').classed('y-axis-group axis', true);
         container.append('g').classed('y-axis-label', true);
         container.append('g').classed('grid-lines-group', true);
