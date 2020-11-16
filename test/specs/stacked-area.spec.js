@@ -242,7 +242,7 @@ describe('Stacked Area Chart', () => {
             it('should draw a month X axis', () => {
                 const expected = 1;
                 const actual = containerFixture
-                    .select('.x-axis-group .month-axis')
+                    .select('.x-axis-group .axis.sub-x')
                     .size();
 
                 expect(actual).toEqual(expected);

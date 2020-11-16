@@ -1,3 +1,12 @@
+const localeTimeMap = {
+    minute: { minute: 'numeric' },
+    hour: { hour: 'numeric' },
+    day: { day: 'numeric' },
+    daymonth: { day: 'numeric', month: 'short' },
+    month: { month: 'short' },
+    year: { year: 'numeric' },
+};
+
 /**
  * Calculates a new date by summing a given amount of days to a given date
  * @param  {String}  startDate      Date
@@ -40,7 +49,7 @@ export const convertMillisecondsToDays = (milliseconds) =>
 /**
  * Takes a locale (string) and the format to return and returns a function to format dates
  * @param  {String} locale              Locale tag eg. en-US, fr-FR, ru-RU
- * @param  {String} [timeUnit='day']    Minute, hour, day, dayMonth, month, year
+ * @param  {String} [timeUnit='day']    One of minute, hour, day, daymonth, month, year
  * @return {Function}                   Function that formats dates in the proper locale
  */
 export const getLocaleDateFormatter = (locale, timeUnit = 'day') => {

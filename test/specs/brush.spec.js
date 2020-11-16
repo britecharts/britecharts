@@ -61,6 +61,15 @@ describe('Brush Chart', () => {
                 expect(actual).toEqual(expected);
             });
 
+            it('should draw a month X axis', () => {
+                const expected = 1;
+                const actual = containerFixture
+                    .select('.x-axis-group .axis.sub-x')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+
             it('should create a metadata-group', () => {
                 const expected = 1;
                 const actual = containerFixture
