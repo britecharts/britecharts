@@ -1245,7 +1245,7 @@ export default function module() {
 
     /**
      * Exposes ability to set the format of x-axis values
-     * @param  {String} _x        Desired height for the chart
+     * @param  {String} _x        Desired xAxisFormat for the chart
      * @return {String | module}  Current xAxisFormat or Chart module to chain calls
      * @public
      */
@@ -1260,7 +1260,7 @@ export default function module() {
 
     /**
      * Gets or Sets the xTicks of the chart
-     * @param  {Number} _x         Desired height for the chart
+     * @param  {Number} _x         Desired xTicks for the chart
      * @return {Number | module}   Current xTicks or Chart module to chain calls
      * @public
      */
@@ -1275,7 +1275,7 @@ export default function module() {
 
     /**
      * Exposes ability to set the format of y-axis values
-     * @param  {String} _x          Desired height for the chart
+     * @param  {String} _x          Desired yAxisForma for the chart
      * @return {String | module}    Current yAxisFormat or Chart module to chain calls
      * @public
      */

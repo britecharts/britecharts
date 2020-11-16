@@ -25,7 +25,7 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
         dataset;
 
     if (containerWidth) {
-        dataset = aTestDataSet().with6Sources().build();
+        dataset = aTestDataSet().withSalesChannelData().build();
 
         // StackedAreChart Setup and start
         stackedArea
