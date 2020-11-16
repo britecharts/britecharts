@@ -11,19 +11,15 @@ $text-size: 0.75rem;
 
     // Lines
     .topic .line {
-        stroke-width: $line-width;
+        fill: none;
         stroke-linecap: round;
         stroke-linejoin: round;
-        fill: none;
+        stroke-width: $line-width;
     }
 
     // Axes
-    .x.axis path,
-    .y.axis path {
-        display: none;
-    }
-
-    .month-axis path {
+    .x-axis-group path,
+    .y-axis-group path {
         display: none;
     }
 

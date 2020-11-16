@@ -123,11 +123,8 @@
   stroke-linejoin: round;
   fill: none; }
 
-.line-chart .x.axis path,
-.line-chart .y.axis path {
-  display: none; }
-
-.line-chart .month-axis path {
+.line-chart .x-axis-group path,
+.line-chart .y-axis-group path {
   display: none; }
 
 .line-chart .custom-line {
@@ -172,10 +169,8 @@
 .stacked-area .dot {
   display: none; }
 
+.stacked-area .x-axis-group path,
 .stacked-area .y-axis-group path {
-  display: none; }
-
-.stacked-area .x-axis-group path {
   display: none; }
 
 .stacked-area .area-outline {
@@ -237,7 +232,8 @@
   fill: #00d8d2;
   width: 0.2rem; }
 
-.brush-chart .axis path {
+.brush-chart .x-axis-group path,
+.brush-chart .y-axis-group path {
   display: none; }
 
 .bullet-chart .marker-line {
