@@ -20,9 +20,8 @@
     }
 
     // Axes
-    .axis {
-        path {
-            display: none;
-        }
+    .x-axis-group path,
+    .y-axis-group path {
+        display: none;
     }
 }

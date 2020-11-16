@@ -16,14 +16,6 @@ const formatMap = {
     month: timeFormat('%b'),
     year: timeFormat('%Y'),
 };
-const localeTimeMap = {
-    minute: { minute: 'numeric' },
-    hour: { hour: 'numeric' },
-    day: { day: 'numeric' },
-    daymonth: { day: 'numeric', month: 'short' },
-    month: { month: 'short' },
-    year: { year: 'numeric' },
-};
 const settingsToMajorTickMap = {
     [axisTimeCombinations.MINUTE_HOUR]: timeHour.every(1),
     [axisTimeCombinations.HOUR_DAY]: timeDay.every(1),
@@ -86,9 +78,9 @@ const getMaxNumOfHorizontalTicksForNumberRanges = (width, dataPointNumber) => {
  * Returns tick object to be used when building the x axis
  * @param {dataByDate} dataByDate       Chart data ordered by Date
  * @param {Number} width                Chart width
- * @param {String} [settings=null]      Optional forced settings for axis
+ * @param {String} [settings=null]      Optional forced settings for axis, a combination of one of minute, hour, day, daymonth, month, year separated by '-'
  * @param {String} [locale=null]        Optional forced locale
- * @return {object} tick settings for major and minr axis
+ * @return {object}                     Tick settings for major and minr axis
  */
 export const getTimeSeriesAxis = (
     dataByDate,
