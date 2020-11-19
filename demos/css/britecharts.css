@@ -118,10 +118,10 @@
   fill: #fff; }
 
 .line-chart .topic .line {
-  stroke-width: 2;
+  fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
-  fill: none; }
+  stroke-width: 2; }
 
 .line-chart .x-axis-group path,
 .line-chart .y-axis-group path {

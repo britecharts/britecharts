@@ -306,6 +306,18 @@ describe('Brush Chart', () => {
             expect(actual).toEqual(expected);
         });
 
+        it('should provide isLocked getter and setter', () => {
+            let previous = brushChart.isLocked(),
+                expected = true,
+                actual;
+
+            brushChart.isLocked(expected);
+            actual = brushChart.isLocked();
+
+            expect(previous).not.toEqual(expected);
+            expect(actual).toEqual(expected);
+        });
+
         it('should provide loadingState getter and setter', () => {
             let previous = brushChart.loadingState(),
                 expected = 'test',
