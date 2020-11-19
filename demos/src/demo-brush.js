@@ -70,6 +70,7 @@ function createMissingDataBrushChart() {
             .width(containerWidth)
             .height(125)
             .isAnimated(true)
+            .isLocked(true)
             .on('customBrushStart', function (brushExtent) {
                 let format = timeFormat('%m/%d/%Y');
                 // eslint-disable-next-line no-console

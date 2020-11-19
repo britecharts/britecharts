@@ -27,6 +27,8 @@ export interface BrushChartAPI
         InteractiveChartAPI<BrushChartAPI> {
     /** Gets or Sets the area curve of the stacked area. */
     areaCurve(curveType?: string): BrushChartModule;
+    /** Gets or Sets the isLocked property of the brush, enforcing the initial brush size set with dateRange */
+    isLocked(isLocked?: boolean): BrushChartModule;
     /** Gets or Sets the dateRange for the selected part of the brush */
     dateRange(dateRange?: [string, string]): BrushChartModule;
     /** Gets or Sets the gradient of the chart */
