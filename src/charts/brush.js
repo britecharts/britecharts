@@ -86,6 +86,7 @@ export default function module() {
         dateLabel = 'date',
         valueLabel = 'value',
         dateRange = [null, null],
+        isLocked = false,
         chartWidth,
         chartHeight,
         xScale,
@@ -441,12 +442,39 @@ export default function module() {
      */
     function handleBrushStart() {
         const selection = event.selection;
+        let newSelection;
 
         if (!selection) {
             return;
         }
 
-        dispatcher.call('customBrushStart', this, selection.map(xScale.invert));
+        if (isLocked) {
+            const lockedSelectionSize = Math.floor(
+                xScale(new Date(dateRange[1])) - xScale(new Date(dateRange[0]))
+            );
+            const selectedRange = Math.floor(selection[1] - selection[0]);
+
+            if (
+                selectedRange < lockedSelectionSize ||
+                selectedRange > lockedSelectionSize
+            ) {
+                // We round values so we don't get into an infinite loop
+                newSelection = [
+                    Math.floor(selection[0]),
+                    Math.floor(selection[0]) + lockedSelectionSize,
+                ];
+                brush.move(chartBrush, newSelection);
+            } else {
+                newSelection = selection;
+            }
+        } else {
+            newSelection = selection;
+        }
+        dispatcher.call(
+            'customBrushStart',
+            this,
+            newSelection.map(xScale.invert)
+        );
     }
 
     /**
@@ -483,6 +511,11 @@ export default function module() {
             select(this)
                 .transition()
                 .call(event.target.move, dateExtentRounded.map(xScale));
+        } else {
+            // When no selection (clicked on brush without dragging)
+            if (isLocked) {
+                setBrushByDates(...dateRange);
+            }
         }
 
         dispatcher.call('customBrushEnd', this, dateExtentRounded);
@@ -497,7 +530,14 @@ export default function module() {
         let selection = null;
 
         if (dateA !== null) {
-            selection = [xScale(new Date(dateA)), xScale(new Date(dateB))];
+            if (new Date(dateA) < new Date(dateB)) {
+                selection = [xScale(new Date(dateA)), xScale(new Date(dateB))];
+            } else {
+                // eslint-disable-next-line no-console
+                console.error(
+                    'dateRange Error: End date should be posterior to startDate!'
+                );
+            }
         }
 
         brush.move(chartBrush, selection);
@@ -605,6 +645,21 @@ export default function module() {
             return isAnimated;
         }
         isAnimated = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets the isLocked property of the brush, enforcing the initial brush size set with dateRange
+     * @param  {Boolean} _x = false     Whether the brush window is locked, requires a value set with '.dateRange` when true
+     * @return {Boolean | module}       Current isLocked flag or Chart module
+     * @public
+     */
+    exports.isLocked = function (_x) {
+        if (!arguments.length) {
+            return isLocked;
+        }
+        isLocked = _x;
 
         return this;
     };
