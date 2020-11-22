@@ -7,6 +7,8 @@ const isBrowser = typeof window !== 'undefined';
 const isIE = navigator.msSaveOrOpenBlob;
 const IE_ERROR_MSG =
     'Sorry, this feature is not available for IE. If you require this to work, check this issue https://github.com/eventbrite/britecharts/pull/652';
+const IMAGE_LOAD_DOWNLOAD_ERROR =
+    'Sorry, there was an issue with the chart download.';
 
 let encoder = isBrowser && window.btoa;
 
@@ -54,13 +56,21 @@ export function exportChart(d3svg, filename, title) {
         return false;
     }
 
-    let img = createImage(convertSvgToHtml.call(this, d3svg, title));
+    return loadImage(convertSvgToHtml.call(this, d3svg, title))
+        .then((img) => {
+            return {
+                canvas: createCanvas(this.width(), this.height()),
+                img,
+            };
+        })
+        .then(({ canvas, img }) => handleImageLoad.call(img, canvas, filename))
+        .then(() => true)
+        .catch(() => {
+            // eslint-disable-next-line no-console
+            console.error(IMAGE_LOAD_DOWNLOAD_ERROR);
 
-    img.onload = handleImageLoad.bind(
-        img,
-        createCanvas(this.width(), this.height()),
-        filename
-    );
+            return false;
+        });
 }
 
 /**
@@ -116,11 +126,15 @@ function createCanvas(width, height) {
 /**
  * Create Image
  * @param  {string} svgHtml string representation of svg el
+ * @param  {Function} callback function to prepare image for loading
  * @return {object}  TYPE element <img>, src points at svg
  */
-export function createImage(svgHtml) {
+function createImage(svgHtml, callback) {
     let img = new Image();
 
+    if (callback) {
+        callback(img);
+    }
     img.src = `${config.imageSourceBase}${b64EncodeUnicode(svgHtml)}`;
 
     return img;
@@ -180,12 +194,23 @@ function formatHtmlByBrowser(html) {
  * Handles on load event fired by img.onload, this=img
  * @param  {object} canvas TYPE: el <canvas>
  * @param  {string} filename
- * @param  {object} e
  */
-function handleImageLoad(canvas, filename, e) {
-    e.preventDefault();
-
+function handleImageLoad(canvas, filename) {
     downloadCanvas(drawImageOnCanvas(this, canvas), filename);
+}
+
+/**
+ * Create Image instance and attach event listeners for future promise
+ * @param  {string} svgHtml string representation of svg el
+ * @returns {Promise} promise that exposes loaded image instance
+ */
+function loadImage(svgHtml) {
+    return new Promise((res, rej) => {
+        createImage(svgHtml, (img) => {
+            img.addEventListener('load', () => res(img));
+            img.addEventListener('error', (err) => rej(err));
+        });
+    });
 }
 
 /**
@@ -218,4 +243,5 @@ export default {
     convertSvgToHtml,
     createImage,
     drawImageOnCanvas,
+    loadImage,
 };

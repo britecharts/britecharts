@@ -387,10 +387,11 @@ export default function module() {
      * Chart exported to png and a download action is fired
      * @param {String} filename     File title for the resulting picture
      * @param {String} title        Title to add at the top of the exported picture
+     * @return {Promise}   Promise containing status of whether image loaded and downloaded successfully or not
      * @public
      */
     exports.exportChart = function (filename) {
-        exportChart.call(exports, svg, filename);
+        return exportChart.call(exports, svg, filename);
     };
 
     /**

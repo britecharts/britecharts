@@ -413,6 +413,17 @@ export default function module() {
     };
 
     /**
+     * Chart exported to png and a download action is fired
+     * @param {String} filename     File title for the resulting picture
+     * @param {String} title        Title to add at the top of the exported picture
+     * @return {Promise}   Promise containing status of whether image loaded and downloaded successfully or not
+     * @public
+     */
+    exports.exportChart = function (filename, title) {
+        return exportChart.call(exports, svg, filename, title);
+    };
+
+    /**
      * Exposes an 'on' method that acts as a bridge with the event dispatcher
      * We are going to expose this events:
      * customMouseOver, customMouseMove, customMouseOut, and customClick
