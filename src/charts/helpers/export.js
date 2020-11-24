@@ -8,7 +8,7 @@ const isIE = navigator.msSaveOrOpenBlob;
 const IE_ERROR_MSG =
     'Sorry, this feature is not available for IE. If you require this to work, check this issue https://github.com/eventbrite/britecharts/pull/652';
 const IMAGE_LOAD_DOWNLOAD_ERROR =
-    'Sorry, there was an issue with the chart download.';
+    'Sorry, there was an issue downloading the chart.';
 
 let encoder = isBrowser && window.btoa;
 
@@ -127,7 +127,9 @@ function createImage(svgHtml, callback) {
 
     if (callback) {
         if (typeof callback !== 'function') {
-            throw new Error('The passed in callback should be a function');
+            throw new Error(
+                `The callback provided should be a function, we got a ${typeof callback} instead`
+            );
         }
         callback(img);
     }

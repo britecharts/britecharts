@@ -278,14 +278,11 @@ describe('Helpers', () => {
                 });
 
                 it('should throw an error if callback is not a function', () => {
-                    const expected =
-                        'The passed in callback should be a function';
+                    const notAFunc = 'something';
+                    const expected = `The callback provided should be a function, we got a ${typeof notAFunc} instead`;
 
                     expect(() =>
-                        exportChart.createImage(
-                            regularHTML,
-                            'notAFunctionCallback'
-                        )
+                        exportChart.createImage(regularHTML, notAFunc)
                     ).toThrow(new Error(expected));
                 });
             });
