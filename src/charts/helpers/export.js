@@ -128,7 +128,7 @@ function createImage(svgHtml, callback) {
     if (callback) {
         if (typeof callback !== 'function') {
             throw new Error(
-                `The callback provided should be a function, we got a ${typeof callback} instead`
+                `The callback provided should be a function, we got a ${typeof callback} instead.`
             );
         }
         callback(img);
