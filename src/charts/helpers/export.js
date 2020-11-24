@@ -63,14 +63,7 @@ export function exportChart(d3svg, filename, title) {
                 img,
             };
         })
-        .then(({ canvas, img }) => handleImageLoad.call(img, canvas, filename))
-        .then(() => true)
-        .catch(() => {
-            // eslint-disable-next-line no-console
-            console.error(IMAGE_LOAD_DOWNLOAD_ERROR);
-
-            return false;
-        });
+        .then(({ canvas, img }) => handleImageLoad.call(img, canvas, filename));
 }
 
 /**
@@ -133,6 +126,9 @@ function createImage(svgHtml, callback) {
     let img = new Image();
 
     if (callback) {
+        if (typeof callback !== 'function') {
+            throw new Error('The passed in callback should be a function');
+        }
         callback(img);
     }
     img.src = `${config.imageSourceBase}${b64EncodeUnicode(svgHtml)}`;
