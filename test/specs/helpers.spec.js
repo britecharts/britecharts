@@ -253,7 +253,40 @@ describe('Helpers', () => {
             });
         });
 
+        describe('loadImage', () => {
+            it('should return a promise', () => {
+                expect(exportChart.loadImage()).toBeInstanceOf(Promise);
+            });
+        });
+
         describe('createImage', () => {
+            describe('when callback is passed', () => {
+                it('should be called at least once with one arg', () => {
+                    const callbackSpy = jasmine.createSpy('callback');
+                    const expectedCalls = 1;
+                    const expectedArgumentsCount = 1;
+
+                    exportChart.createImage(regularHTML, callbackSpy);
+                    const actualCalls = callbackSpy.calls.count();
+                    const actualArgumentsCount = callbackSpy.calls.allArgs()[0]
+                        .length;
+
+                    expect(actualCalls).toEqual(expectedCalls);
+                    expect(actualArgumentsCount).toEqual(
+                        expectedArgumentsCount
+                    );
+                });
+
+                it('should throw an error if callback is not a function', () => {
+                    const notAFunc = 'something';
+                    const expected = `The callback provided should be a function, we got a ${typeof notAFunc} instead.`;
+
+                    expect(() =>
+                        exportChart.createImage(regularHTML, notAFunc)
+                    ).toThrow(new Error(expected));
+                });
+            });
+
             describe('when the title is regular text', () => {
                 it('should produce an image tag', () => {
                     const expected = 'IMG';
