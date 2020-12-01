@@ -1,11 +1,8 @@
 define(function(require) {
     'use strict';
 
-    const d3Array = require('d3-array');
     const d3Ease = require('d3-ease');
     const d3Axis = require('d3-axis');
-    const d3Color = require('d3-color');
-    const d3Dispatch = require('d3-dispatch');
     const d3Format = require('d3-format');
     const d3Scale = require('d3-scale');
     const d3Selection = require('d3-selection');
@@ -332,6 +329,10 @@ define(function(require) {
          * @private
          */
         function drawHorizontalExtendedLine() {
+            if (baseLine) {
+                baseLine.remove();
+            }
+
             baseLine = svg.select('.axis-group')
               .selectAll('line.extended-x-line')
               .data([0])
