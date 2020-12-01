@@ -70,6 +70,7 @@ define(function(require) {
             colorSchema = colorHelper.colorSchemas.britecharts,
             rangeColor,
             measureColor,
+            markerColor,
             numberFormat = '',
 
             baseLine,
@@ -199,6 +200,7 @@ define(function(require) {
             // initialize range and measure bars and marker line colors
             rangeColor = colorSchema[0];
             measureColor = colorSchema[1];
+            markerColor = colorSchema[2];
         }
 
         /**
@@ -310,19 +312,20 @@ define(function(require) {
                   .attr('y', getMeasureBarHeight);
 
             if (markers.length) {
-                markersEl = svg.select('.chart-group')
-                  .selectAll('line.marker-line')
-                  .data(markers)
-                  .enter()
-                    .append('line')
-                      .attr('class', 'marker-line')
-                      .attr('stroke', measureColor)
-                      .attr('stroke-width', markerStrokeWidth)
-                      .attr('opacity', measureOpacityScale[0])
-                      .attr('x1', xScale)
-                      .attr('x2', xScale)
-                      .attr('y1', 0)
-                      .attr('y2', chartHeight);
+                markersEl = svg
+                    .select(".chart-group")
+                    .selectAll("line.marker-line")
+                    .data(markers)
+                    .enter()
+                      .append("line")
+                        .attr("class", "marker-line")
+                        .attr("stroke", markerColor)
+                        .attr("stroke-width", markerStrokeWidth)
+                        .attr("opacity", measureOpacityScale[0])
+                        .attr("x1", xScale)
+                        .attr("x2", xScale)
+                        .attr("y1", 0)
+                        .attr("y2", chartHeight);
             }
         }
 
@@ -417,7 +420,8 @@ define(function(require) {
         /**
          * Gets or Sets the colorSchema of the chart.
          * The first color from the array will be applied to range bars (the wider bars).
-         * The second color from the array will be applied to measure bars (the narrow bars) and marker lines.
+         * The second color from the array will be applied to measure bars (the narrow bars) and
+         * the third color will be applied to the marker lines.
          * @param  {String[]} _x        Desired colorSchema for the graph
          * @return {String[] | module}  Current colorSchema or Chart module to chain calls
          * @public

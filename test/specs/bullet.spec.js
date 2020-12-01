@@ -186,9 +186,13 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
                 it('should assign first two indexed colors for range and measure/markers in order', () => {
                     const expectedRangeColor = '#bbb';
                     const expectedMeasureColor = '#ccc';
-                    const expectedMarkerColor = expectedMeasureColor;
+                    const expectedMarkerColor = '#ddd';
 
-                    bulletChart.colorSchema([expectedRangeColor, expectedMeasureColor]);
+                    bulletChart.colorSchema([
+                        expectedRangeColor,
+                        expectedMeasureColor,
+                        expectedMarkerColor,
+                    ]);
                     containerFixture.datum(dataset[1]).call(bulletChart);
 
                     const rangeBar = containerFixture.selectAll('rect.range').node();
