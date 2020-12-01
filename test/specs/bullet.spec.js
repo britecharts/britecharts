@@ -130,7 +130,6 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
             });
 
             describe('markers', () => {
-
                 it('should have proper attributes', () => {
                     const expectedClass = 'marker m';
                     const markerLines = containerFixture.selectAll('line.marker').nodes();
@@ -187,9 +186,13 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
                 it('should assign first two indexed colors for range and measure/markers in order', () => {
                     const expectedRangeColor = '#bbb';
                     const expectedMeasureColor = '#ccc';
-                    const expectedMarkerColor = expectedMeasureColor;
+                    const expectedMarkerColor = '#ddd';
 
-                    bulletChart.colorSchema([expectedRangeColor, expectedMeasureColor]);
+                    bulletChart.colorSchema([
+                        expectedRangeColor,
+                        expectedMeasureColor,
+                        expectedMarkerColor,
+                    ]);
                     containerFixture.datum(dataset[1]).call(bulletChart);
 
                     const rangeBar = containerFixture.selectAll('rect.range').node();
@@ -199,6 +202,48 @@ define(['d3', 'bullet', 'bulletChartDataBuilder'], function(d3, chart, dataBuild
                     expect(rangeBar).toHaveAttr('fill', expectedRangeColor);
                     expect(measureBar).toHaveAttr('fill', expectedMeasureColor);
                     expect(markerLine).toHaveAttr('stroke', expectedMarkerColor);
+                });
+            });
+
+            describe('when empty markers are passed', () => {
+                beforeEach(() => {
+                    dataset = buildDataSet('withNoMarker');
+                    bulletChart = chart();
+                    dataPoint = dataset[0];
+
+                    // DOM Fixture Setup
+                    f = jasmine.getFixtures();
+                    f.fixturesPath = 'base/test/fixtures/';
+                    f.load('testContainer.html');
+
+                    containerFixture = d3.select('.test-container');
+                    containerFixture.datum(dataPoint).call(bulletChart);
+                });
+
+                afterEach(() => {
+                    containerFixture.remove();
+                    f = jasmine.getFixtures();
+                    f.cleanUp();
+                    f.clearCache();
+                });
+
+                it('should render the chart', () => {
+                    const expected = 1;
+                    const actual = containerFixture
+                        .select('.bullet-chart')
+                        .size();
+
+                    expect(actual).toEqual(expected);
+                });
+
+                it('should have render no marker', () => {
+                    const expected = 0;
+                    const markerLines = containerFixture
+                        .selectAll('line.marker')
+                        .nodes();
+                    const actual = markerLines.length;
+
+                    expect(actual).toEqual(expected);
                 });
             });
         });

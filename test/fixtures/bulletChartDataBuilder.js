@@ -11,6 +11,24 @@ define(function(require) {
 
         this.config = _.defaults({}, config);
 
+        this.withNoMarker = function() {
+            var attributes = _.extend(
+                {},
+                this.config,
+                ({'data': [
+                    {
+                        title: 'CPU 1',
+                        subtitle: 'GHz',
+                        ranges: [1500, 2100, 3500],
+                        measures: [1800, 2200],
+                        markers: [],
+                    }
+                ]})
+            );
+
+            return new this.Klass(attributes);
+        }
+
         this.withCpuData = function() {
             var attributes = _.extend({}, this.config, jsonBulletData);
 

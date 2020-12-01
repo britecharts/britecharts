@@ -1,11 +1,8 @@
 define(function(require) {
     'use strict';
 
-    const d3Array = require('d3-array');
     const d3Ease = require('d3-ease');
     const d3Axis = require('d3-axis');
-    const d3Color = require('d3-color');
-    const d3Dispatch = require('d3-dispatch');
     const d3Format = require('d3-format');
     const d3Scale = require('d3-scale');
     const d3Selection = require('d3-selection');
@@ -73,6 +70,7 @@ define(function(require) {
             colorSchema = colorHelper.colorSchemas.britecharts,
             rangeColor,
             measureColor,
+            markerColor,
             numberFormat = '',
 
             baseLine,
@@ -185,9 +183,10 @@ define(function(require) {
          */
         function buildScales() {
             const decidedRange = isReverse ? [chartWidth, 0] : [0, chartWidth];
+            const maxMarker = markers.length ? markers[0] : 0;
 
             xScale = d3Scale.scaleLinear()
-                .domain([0, Math.max(ranges[0], markers[0], measures[0])])
+                .domain([0, Math.max(ranges[0], maxMarker, measures[0])])
                 .rangeRound(decidedRange)
                 .nice();
 
@@ -201,6 +200,7 @@ define(function(require) {
             // initialize range and measure bars and marker line colors
             rangeColor = colorSchema[0];
             measureColor = colorSchema[1];
+            markerColor = colorSchema[2];
         }
 
         /**
@@ -248,7 +248,7 @@ define(function(require) {
             const newData = {
                 ranges: originalData.ranges.slice().sort().reverse(),
                 measures: originalData.measures.slice().sort().reverse(),
-                markers: originalData.markers.slice().sort().reverse(),
+                markers: originalData.markers.length ? originalData.markers.slice().sort().reverse() : [],
                 subtitle: originalData.subtitle,
                 title: originalData.title
             };
@@ -311,19 +311,22 @@ define(function(require) {
                   .attr('x', isReverse ? xScale : 0)
                   .attr('y', getMeasureBarHeight);
 
-            markersEl = svg.select('.chart-group')
-              .selectAll('line.marker-line')
-              .data(markers)
-              .enter()
-                .append('line')
-                  .attr('class', 'marker-line')
-                  .attr('stroke', measureColor)
-                  .attr('stroke-width', markerStrokeWidth)
-                  .attr('opacity', measureOpacityScale[0])
-                  .attr('x1', xScale)
-                  .attr('x2', xScale)
-                  .attr('y1', 0)
-                  .attr('y2', chartHeight);
+            if (markers.length) {
+                markersEl = svg
+                    .select(".chart-group")
+                    .selectAll("line.marker-line")
+                    .data(markers)
+                    .enter()
+                      .append("line")
+                        .attr("class", "marker-line")
+                        .attr("stroke", markerColor)
+                        .attr("stroke-width", markerStrokeWidth)
+                        .attr("opacity", measureOpacityScale[0])
+                        .attr("x1", xScale)
+                        .attr("x2", xScale)
+                        .attr("y1", 0)
+                        .attr("y2", chartHeight);
+            }
         }
 
         /**
@@ -332,6 +335,10 @@ define(function(require) {
          * @private
          */
         function drawHorizontalExtendedLine() {
+            if (baseLine) {
+                baseLine.remove();
+            }
+
             baseLine = svg.select('.axis-group')
               .selectAll('line.extended-x-line')
               .data([0])
@@ -413,7 +420,8 @@ define(function(require) {
         /**
          * Gets or Sets the colorSchema of the chart.
          * The first color from the array will be applied to range bars (the wider bars).
-         * The second color from the array will be applied to measure bars (the narrow bars) and marker lines.
+         * The second color from the array will be applied to measure bars (the narrow bars) and
+         * the third color will be applied to the marker lines.
          * @param  {String[]} _x        Desired colorSchema for the graph
          * @return {String[] | module}  Current colorSchema or Chart module to chain calls
          * @public
