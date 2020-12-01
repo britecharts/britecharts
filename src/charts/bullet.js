@@ -182,9 +182,10 @@ define(function(require) {
          */
         function buildScales() {
             const decidedRange = isReverse ? [chartWidth, 0] : [0, chartWidth];
+            const maxMarker = markers.length ? markers[0] : 0;
 
             xScale = d3Scale.scaleLinear()
-                .domain([0, Math.max(ranges[0], markers[0], measures[0])])
+                .domain([0, Math.max(ranges[0], maxMarker, measures[0])])
                 .rangeRound(decidedRange)
                 .nice();
 
@@ -245,7 +246,7 @@ define(function(require) {
             const newData = {
                 ranges: originalData.ranges.slice().sort().reverse(),
                 measures: originalData.measures.slice().sort().reverse(),
-                markers: originalData.markers.slice().sort().reverse(),
+                markers: originalData.markers.length ? originalData.markers.slice().sort().reverse() : [],
                 subtitle: originalData.subtitle,
                 title: originalData.title
             };
@@ -308,19 +309,21 @@ define(function(require) {
                   .attr('x', isReverse ? xScale : 0)
                   .attr('y', getMeasureBarHeight);
 
-            markersEl = svg.select('.chart-group')
-              .selectAll('line.marker-line')
-              .data(markers)
-              .enter()
-                .append('line')
-                  .attr('class', 'marker-line')
-                  .attr('stroke', measureColor)
-                  .attr('stroke-width', markerStrokeWidth)
-                  .attr('opacity', measureOpacityScale[0])
-                  .attr('x1', xScale)
-                  .attr('x2', xScale)
-                  .attr('y1', 0)
-                  .attr('y2', chartHeight);
+            if (markers.length) {
+                markersEl = svg.select('.chart-group')
+                  .selectAll('line.marker-line')
+                  .data(markers)
+                  .enter()
+                    .append('line')
+                      .attr('class', 'marker-line')
+                      .attr('stroke', measureColor)
+                      .attr('stroke-width', markerStrokeWidth)
+                      .attr('opacity', measureOpacityScale[0])
+                      .attr('x1', xScale)
+                      .attr('x2', xScale)
+                      .attr('y1', 0)
+                      .attr('y2', chartHeight);
+            }
         }
 
         /**
