@@ -245,7 +245,7 @@ export default function module() {
         verticalMarkerLine,
         numberFormat,
         customLines = [],
-        defaultCustomLineColor = '#C3C6CF',
+        defaultCustomLineColor = colorHelper.colorSchemas.grey[3],
         verticalLines,
         verticalGridLines,
         horizontalGridLines,
