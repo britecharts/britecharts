@@ -64,7 +64,6 @@ import { motion } from './helpers/constants';
  * let scatterPlot = scatterPlot();
  *
  * scatterPlot
- *     .aspectRatio(0.5)
  *     .grid('horizontal')
  *     .width(500);
  *
@@ -81,7 +80,6 @@ export default function module() {
         },
         width = 960,
         height = 500,
-        aspectRatio = null,
         nameToColorMap = null,
         dataPoints,
         xKey = 'x',
@@ -896,21 +894,6 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the aspect ratio of the chart
-     * @param  {Number} _x              Desired aspect ratio for the graph
-     * @return {Number | module}        Current aspect ratio or Chart module to chain calls
-     * @public
-     */
-    exports.aspectRatio = function (_x) {
-        if (!arguments.length) {
-            return aspectRatio;
-        }
-        aspectRatio = _x;
-
-        return this;
-    };
-
-    /**
      * Gets or Sets each circle's border opacity value of the chart.
      * It makes each circle border transparent if it's less than 1.
      * @param  {Number} _x=1            Desired border opacity of circles of the chart
@@ -1084,9 +1067,6 @@ export default function module() {
         if (!arguments.length) {
             return height;
         }
-        if (aspectRatio) {
-            width = Math.ceil(_x / aspectRatio);
-        }
         height = _x;
 
         return this;
@@ -1201,9 +1181,6 @@ export default function module() {
     exports.width = function (_x) {
         if (!arguments.length) {
             return width;
-        }
-        if (aspectRatio) {
-            height = Math.ceil(_x * aspectRatio);
         }
         width = _x;
 

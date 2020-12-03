@@ -41,8 +41,6 @@ export interface StackedAreaChartAPI
     areaCurve(curveType?: string): StackedAreaChartModule;
     /** Gets or Sets the opacity of the stacked areas in the chart (all of them will have the same opacity) */
     areaOpacity(opacity?: number): StackedAreaChartModule;
-    /** Gets or Sets the aspect ratio of the chart */
-    aspectRatio(ratio?: number): StackedAreaChartModule;
     /** Gets or Sets the emptyDataConfig of the chart */
     emptyDataConfig(
         config?: StackedAreaEmptyDataConfig

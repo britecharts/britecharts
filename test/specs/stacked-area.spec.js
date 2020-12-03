@@ -608,38 +608,6 @@ describe('Stacked Area Chart', () => {
             expect(actual).toEqual(expected);
         });
 
-        describe('aspect ratio', function () {
-            describe('when an aspect ratio is set', function () {
-                it('should modify the height depending on the width', () => {
-                    let testAspectRatio = 0.5,
-                        testWidth = 400,
-                        newHeight;
-
-                    stackedAreaChart.aspectRatio(testAspectRatio);
-                    stackedAreaChart.width(testWidth);
-                    newHeight = stackedAreaChart.height();
-
-                    expect(newHeight).toEqual(
-                        Math.ceil(testWidth * testAspectRatio)
-                    );
-                });
-
-                it('should modify the width depending on the height', () => {
-                    let testAspectRatio = 0.5,
-                        testHeight = 400,
-                        newWidth;
-
-                    stackedAreaChart.aspectRatio(testAspectRatio);
-                    stackedAreaChart.height(testHeight);
-                    newWidth = stackedAreaChart.width();
-
-                    expect(newWidth).toEqual(
-                        Math.ceil(testHeight / testAspectRatio)
-                    );
-                });
-            });
-        });
-
         it('should provide areaOpacity getter and setter', () => {
             let previous = stackedAreaChart.areaOpacity(),
                 expected = 0.5,

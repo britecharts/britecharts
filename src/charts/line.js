@@ -163,7 +163,6 @@ import { castValueToType } from './helpers/type';
  * let lineChart = line();
  *
  * lineChart
- *     .aspectRatio(0.5)
  *     .width(500);
  *
  * d3Selection.select('.css-selector')
@@ -181,7 +180,6 @@ export default function module() {
         width = 960,
         height = 500,
         loadingState = lineChartLoadingMarkup,
-        aspectRatio = null,
         tooltipThreshold = 480,
         svg,
         paths,
@@ -1290,21 +1288,6 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the aspect ratio of the chart
-     * @param  {Number} _x              Desired aspect ratio for the graph
-     * @return { (Number | Module) }    Current aspect ratio or Line Chart module to chain calls
-     * @public
-     */
-    exports.aspectRatio = function (_x) {
-        if (!arguments.length) {
-            return aspectRatio;
-        }
-        aspectRatio = _x;
-
-        return this;
-    };
-
-    /**
      * Exposes the constants to be used to force the x axis to respect a certain granularity
      * current options: MINUTE_HOUR, HOUR_DAY, DAY_MONTH, MONTH_YEAR
      * @example
@@ -1468,9 +1451,6 @@ export default function module() {
     exports.height = function (_x) {
         if (!arguments.length) {
             return height;
-        }
-        if (aspectRatio) {
-            width = Math.ceil(_x / aspectRatio);
         }
         height = _x;
 
@@ -1714,9 +1694,6 @@ export default function module() {
     exports.width = function (_x) {
         if (!arguments.length) {
             return width;
-        }
-        if (aspectRatio) {
-            height = Math.ceil(_x * aspectRatio);
         }
         width = _x;
 
