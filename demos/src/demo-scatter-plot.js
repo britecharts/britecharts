@@ -28,7 +28,6 @@ function createScatterPlotWithSingleSource(optionalColorSchema) {
         dataset = aTestDataSet().withOneSource().build();
 
         scatterChart
-            .aspectRatio(0.7)
             .isAnimated(true)
             .width(containerWidth)
             .circleOpacity(0.6)

@@ -316,18 +316,6 @@ describe('Stacked Bar Chart', () => {
             expect(newAnimationDuration).toBe(testAnimationDuration);
         });
 
-        it('should provide an aspect ratio getter and setter', () => {
-            let previous = stackedBarChart.aspectRatio(),
-                expected = 600,
-                actual;
-
-            stackedBarChart.aspectRatio(expected);
-            actual = stackedBarChart.aspectRatio();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
         it('should provide a betweenBarsPadding getter and setter', () => {
             let previous = stackedBarChart.betweenBarsPadding(),
                 expected = 0.5,

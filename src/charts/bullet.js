@@ -37,7 +37,6 @@ import colorHelper from './helpers/color';
  * let bulletChart = bullet();
  *
  * bulletChart
- *     .aspectRatio(0.5)
  *     .width(containerWidth);
  *
  * d3Selection.select('.css-selector')
@@ -66,7 +65,6 @@ export default function module() {
         measureColor,
         numberFormat = '',
         baseLine,
-        aspectRatio = null,
         ticks = 6,
         tickPadding = 5,
         axis,
@@ -383,21 +381,6 @@ export default function module() {
 
     // API
     /**
-     * Gets or Sets the aspect ratio of the chart
-     * @param  {Number} _x              Desired aspect ratio for the graph
-     * @return {Number | module}        Current aspect ratio or Chart module to chain calls
-     * @public
-     */
-    exports.aspectRatio = function (_x) {
-        if (!arguments.length) {
-            return aspectRatio;
-        }
-        aspectRatio = _x;
-
-        return this;
-    };
-
-    /**
      * Gets or Sets the colorSchema of the chart.
      * The first color from the array will be applied to range bars (the wider bars).
      * The second color from the array will be applied to measure bars (the narrow bars) and marker lines.
@@ -467,9 +450,6 @@ export default function module() {
     exports.height = function (_x) {
         if (!arguments.length) {
             return height;
-        }
-        if (aspectRatio) {
-            width = Math.ceil(_x / aspectRatio);
         }
         height = _x;
 
@@ -580,9 +560,6 @@ export default function module() {
     exports.width = function (_x) {
         if (!arguments.length) {
             return width;
-        }
-        if (aspectRatio) {
-            height = Math.ceil(_x * aspectRatio);
         }
         width = _x;
 

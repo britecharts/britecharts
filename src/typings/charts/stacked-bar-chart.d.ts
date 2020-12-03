@@ -38,8 +38,6 @@ export interface StackedBarChartAPI
         ExportableChartAPI<StackedBarChartModule>,
         AnimatedChartAPI<StackedBarChartModule>,
         ThemableChartAPI<StackedBarChartModule> {
-    /** Gets or Sets the aspect ratio of the chart */
-    aspectRatio(ratio?: number): StackedBarChartModule;
     /** Gets or Sets the padding of the stacked bar chart */
     betweenBarsPadding(padding?: number): StackedBarChartModule;
     /** Gets or Sets the grid mode */

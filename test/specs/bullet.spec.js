@@ -258,18 +258,6 @@ describe('Bullet Chart', () => {
     });
 
     describe('API', () => {
-        it('should provide an aspect ratio getter and setter', () => {
-            let previous = bulletChart.aspectRatio(),
-                expected = 600,
-                actual;
-
-            bulletChart.aspectRatio(expected);
-            actual = bulletChart.aspectRatio();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
         it('should provide startMaxRangeOpacity getter and setter', () => {
             let previous = bulletChart.startMaxRangeOpacity(),
                 expected = 0.8,
