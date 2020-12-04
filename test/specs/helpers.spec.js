@@ -30,7 +30,7 @@ describe('Helpers', () => {
         // adds an html fixture to the DOM
         document.body.insertAdjacentHTML('afterbegin', fixture);
 
-        containerFixture = $('.test-container');
+        containerFixture = d3.select('.test-container');
     });
 
     // remove the html fixture from the DOM
@@ -42,7 +42,7 @@ describe('Helpers', () => {
         let styledHTML, serializer;
 
         beforeEach(() => {
-            containerFixture.append($('<span></span>', { class: 'child' }));
+            containerFixture.append('span').classed('child', true);
 
             serializer = serializeWithStyles.initializeSerializer();
             styles = document.createElement('style');
@@ -65,7 +65,7 @@ describe('Helpers', () => {
         it('should add styles from stylesheets to inline of element', () => {
             let actual;
 
-            node = containerFixture[0];
+            node = containerFixture.nodes()[0];
 
             styledHTML = serializer(node).replace(' ', '');
             actual = styledHTML.indexOf(randomColor).length;

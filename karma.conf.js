@@ -9,7 +9,7 @@ module.exports = function (config) {
         basePath: '',
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['jasmine-jquery', 'jasmine'],
+        frameworks: ['jasmine'],
         // list of files / patterns to load in the browser
         files: ['tests_index.js'],
 
@@ -54,7 +54,6 @@ module.exports = function (config) {
         plugins: [
             require('karma-webpack'),
             require('karma-jasmine'),
-            require('karma-jasmine-jquery'),
             require('karma-coverage'),
             require('karma-chrome-launcher'),
             require('karma-sourcemap-loader'),
