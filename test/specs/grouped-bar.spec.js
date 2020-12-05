@@ -320,18 +320,6 @@ describe('Grouped Bar Chart', () => {
             expect(newAnimationDuration).toBe(testAnimationDuration);
         });
 
-        it('should provide an aspect ratio getter and setter', () => {
-            let previous = groupedBarChart.aspectRatio(),
-                expected = 600,
-                actual;
-
-            groupedBarChart.aspectRatio(expected);
-            actual = groupedBarChart.aspectRatio();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
         it('should provide bar padding getter and setter', () => {
             let previous = groupedBarChart.betweenBarsPadding(),
                 expected = 0.5,

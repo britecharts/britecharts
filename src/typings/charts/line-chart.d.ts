@@ -48,8 +48,6 @@ export interface LineChartAPI
         AnimatedChartAPI<LineChartModule>,
         TimeSeriesChartAPI<LineChartModule>,
         ThemableChartAPI<LineChartModule> {
-    /** Gets or Sets the aspect ratio of the chart */
-    aspectRatio(ratio?: number): LineChartModule;
     /** Gets or Sets the grid mode. */
     grid(gridType?: GridTypes): LineChartModule;
     /** Gets or Sets the curve of the line chart */

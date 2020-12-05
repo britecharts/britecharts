@@ -80,7 +80,6 @@ export default function module() {
         yScale,
         yScale2,
         yAxis,
-        aspectRatio = null,
         yTickTextOffset = {
             y: -8,
             x: -20,
@@ -870,21 +869,6 @@ export default function module() {
     };
 
     /**
-     * Gets or Sets the aspect ratio of the chart
-     * @param  {Number} [_x = null]     Desired aspect ratio for the graph
-     * @return { (Number | Module) }    Current aspect ratio or Area Chart module to chain calls
-     * @public
-     */
-    exports.aspectRatio = function (_x) {
-        if (!arguments.length) {
-            return aspectRatio;
-        }
-        aspectRatio = _x;
-
-        return this;
-    };
-
-    /**
      * Gets or Sets the padding between bars.
      * @param  {Number} [_x = 0.1] Padding value to get/set
      * @return {Number | module} Current padding or Chart module to chain calls
@@ -997,9 +981,6 @@ export default function module() {
     exports.height = function (_x) {
         if (!arguments.length) {
             return height;
-        }
-        if (aspectRatio) {
-            width = Math.ceil(_x / aspectRatio);
         }
         height = _x;
 
@@ -1180,9 +1161,6 @@ export default function module() {
     exports.width = function (_x) {
         if (!arguments.length) {
             return width;
-        }
-        if (aspectRatio) {
-            height = Math.ceil(_x * aspectRatio);
         }
         width = _x;
 

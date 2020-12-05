@@ -76,7 +76,7 @@ function createStackedAreaChartWithTooltip(optionalColorSchema) {
     }
 }
 
-function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
+function createStackedAreaChart(optionalColorSchema) {
     let stackedArea = stackedAreaChart(),
         chartTooltip = tooltip(),
         container = select('.js-stacked-area-chart-fixed-container'),
@@ -92,7 +92,6 @@ function createStackedAreaChartWithFixedAspectRatio(optionalColorSchema) {
         // StackedAreChart Setup and start
         stackedArea
             .tooltipThreshold(600)
-            .aspectRatio(0.5)
             .grid('full')
             .xAxisFormat('custom')
             .xAxisCustomFormat('%Y/%m/%d')
@@ -192,7 +191,7 @@ function createLoadingState() {
 if (select('.js-stacked-area-chart-tooltip-container').node()) {
     // Chart creation
     createStackedAreaChartWithTooltip();
-    createStackedAreaChartWithFixedAspectRatio();
+    createStackedAreaChart();
     createStackedAreaChartWithSyncedTooltip();
     createLoadingState();
 
@@ -201,7 +200,7 @@ if (select('.js-stacked-area-chart-tooltip-container').node()) {
     redrawCharts = function () {
         selectAll('.stacked-area').remove();
         createStackedAreaChartWithTooltip();
-        createStackedAreaChartWithFixedAspectRatio();
+        createStackedAreaChart();
         createStackedAreaChartWithSyncedTooltip();
         createLoadingState();
     };
