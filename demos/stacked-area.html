@@ -41,7 +41,7 @@ tooltipContainer.datum([]).call(chartTooltip);
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-                <h2 class="tutorial__heading">Stacked Area Chart with fixed Aspect Ratio</h2>
+                <h2 class="tutorial__heading">Stacked Area Chart with custom axis format</h2>
                 <div class="js-stacked-area-chart-fixed-container card--chart"></div>
             </div>
             <div class="col-md-4 sidebar">
@@ -49,7 +49,6 @@ tooltipContainer.datum([]).call(chartTooltip);
                 <pre><code class="language-javascript">
 stackedArea
     .tooltipThreshold(600)
-    .aspectRatio(0.5)
     .grid('full')
     .xAxisFormat('custom')
     .xAxisCustomFormat('%Y/%m/%d')
@@ -89,7 +88,6 @@ tooltipContainer.datum([]).call(chartTooltip);
                 <pre><code class="language-javascript">
 stackedArea
     .tooltipThreshold(600)
-    .aspectRatio(0.6)
     .grid('full')
     .xAxisFormat('custom')
     .xAxisCustomFormat('%Y/%m/%d')

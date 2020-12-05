@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-8">
                 <article>
-                    <h2>Line Chart with fixed Aspect Ratio</h2>
+                    <h2>Line Chart</h2>
                     <div class="js-line-chart-container line-chart-container card--chart"></div>
                     <div class="js-line-brush-chart-container card--chart"></div>
                     <p class="js-date-range date-range is-hidden">Selected from <span class="js-start-date"></span> to <span class="js-end-date"></span></p>
@@ -14,11 +14,9 @@
                 <pre><code class="language-javascript">
 lineChart
     .isAnimated(true)
-    .aspectRatio(0.5)
     .grid('horizontal')
     .tooltipThreshold(600)
     .width(containerWidth)
-    .dateLabel('fullDate')
     .on('customMouseOver', chartTooltip.show)
     .on('customMouseMove', chartTooltip.update)
     .on('customMouseOut', chartTooltip.hide);

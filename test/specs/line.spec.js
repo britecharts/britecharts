@@ -972,50 +972,6 @@ describe('Line Chart', () => {
             expect(newAnimationDuration).toBe(testAnimationDuration);
         });
 
-        describe('Aspect Ratio', () => {
-            it('should provide an aspect ratio getter and setter', () => {
-                let previous = lineChart.aspectRatio(),
-                    expected = 600,
-                    actual;
-
-                lineChart.aspectRatio(expected);
-                actual = lineChart.aspectRatio();
-
-                expect(previous).not.toBe(expected);
-                expect(actual).toBe(expected);
-            });
-
-            describe('when an aspect ratio is set', () => {
-                it('should modify the height depending on the width', () => {
-                    let testAspectRatio = 0.5,
-                        testWidth = 400,
-                        newHeight;
-
-                    lineChart.aspectRatio(testAspectRatio);
-                    lineChart.width(testWidth);
-                    newHeight = lineChart.height();
-
-                    expect(newHeight).toBe(
-                        Math.ceil(testWidth * testAspectRatio)
-                    );
-                });
-
-                it('should modify the width depending on the height', () => {
-                    let testAspectRatio = 0.5,
-                        testHeight = 400,
-                        newWidth;
-
-                    lineChart.aspectRatio(testAspectRatio);
-                    lineChart.height(testHeight);
-                    newWidth = lineChart.width();
-
-                    expect(newWidth).toBe(
-                        Math.ceil(testHeight / testAspectRatio)
-                    );
-                });
-            });
-        });
-
         it('should provide an axisTimeCombinations accessor', () => {
             let axisTimeCombinations = lineChart.axisTimeCombinations;
 
