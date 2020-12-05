@@ -281,7 +281,11 @@ define(function(require) {
         function drawBullet() {
             if (rangesEl) {
                 rangesEl.remove();
+            }
+            if (measuresEl) {
                 measuresEl.remove();
+            }
+            if (markersEl) {
                 markersEl.remove();
             }
 
