@@ -36,8 +36,6 @@ export interface GroupedBarChartAPI
         ExportableChartAPI<GroupedBarChartModule>,
         AnimatedChartAPI<GroupedBarChartModule>,
         ThemableChartAPI<GroupedBarChartModule> {
-    /** Gets or Sets the aspect ratio of the chart */
-    aspectRatio(ratio?: number): GroupedBarChartModule;
     /** Gets or Sets the padding between bars. */
     betweenBarsPadding(padding?: number): GroupedBarChartModule;
     /** Gets or Sets the padding between groups of bars. */

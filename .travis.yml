@@ -3,7 +3,7 @@ os: "linux"
 dist: "xenial"
 
 node_js:
-  - 12.2.0
+  - 12.13.0
 env:
   - CXX=g++-4.8
 addons:

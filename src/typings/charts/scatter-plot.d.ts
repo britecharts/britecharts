@@ -32,8 +32,6 @@ export interface ScatterPlotAPI
         ExportableChartAPI<ScatterPlotModule>,
         AnimatedChartAPI<ScatterPlotModule>,
         ThemableChartAPI<ScatterPlotModule> {
-    /** Gets or Sets the aspect ratio of the chart */
-    aspectRatio(ratio?: number): ScatterPlotModule;
     /**
      * Gets or Sets each circle's border opacity value of the chart.
      * It makes each circle border transparent if it's less than 1.
