@@ -183,10 +183,9 @@ define(function(require) {
          */
         function buildScales() {
             const decidedRange = isReverse ? [chartWidth, 0] : [0, chartWidth];
-            const maxMarker = markers.length ? markers[0] : 0;
 
             xScale = d3Scale.scaleLinear()
-                .domain([0, Math.max(ranges[0], maxMarker, measures[0])])
+                .domain([0, Math.max(...ranges, ...markers, ...measures)])
                 .rangeRound(decidedRange)
                 .nice();
 
@@ -246,9 +245,9 @@ define(function(require) {
          */
         function cleanData(originalData) {
             const newData = {
-                ranges: originalData.ranges.slice().sort().reverse(),
-                measures: originalData.measures.slice().sort().reverse(),
-                markers: originalData.markers.length ? originalData.markers.slice().sort().reverse() : [],
+                ranges: [...originalData.ranges].sort().reverse(),
+                measures: [...originalData.measures].sort().reverse(),
+                markers: originalData.markers.length ? [...originalData.markers].sort().reverse() : [],
                 subtitle: originalData.subtitle,
                 title: originalData.title
             };

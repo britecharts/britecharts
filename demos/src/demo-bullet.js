@@ -20,7 +20,7 @@ function createBulletChart(optionalColorSchema) {
     let bulletChart, dataset;
 
     if (containerWidth) {
-        dataset = testDataSet.withCpuData().build();
+        dataset = testDataSet.withManyCPUData().build();
 
         // remove all current list of children before
         // appending the next one
