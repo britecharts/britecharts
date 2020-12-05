@@ -93,14 +93,15 @@ describe('Bullet Chart', () => {
                     .nodes();
 
                 measureBars.forEach((measureBar, i) => {
-                    expect(measureBar.getAttribute('class')).toEqual(
+                    expect(measureBar).toHaveAttr(
+                        'class',
                         `${expectedClass}${i}`
                     );
-                    expect(measureBar.getAttribute('fill')).toBeDefined();
-                    expect(measureBar.getAttribute('x')).toBeDefined();
-                    expect(measureBar.getAttribute('y')).toBeDefined();
-                    expect(measureBar.getAttribute('width')).toBeDefined();
-                    expect(measureBar.getAttribute('height')).toBeDefined();
+                    expect(measureBar).toHaveAttr('fill');
+                    expect(measureBar).toHaveAttr('x');
+                    expect(measureBar).toHaveAttr('y');
+                    expect(measureBar).toHaveAttr('width');
+                    expect(measureBar).toHaveAttr('height');
                 });
             });
         });
@@ -113,14 +114,15 @@ describe('Bullet Chart', () => {
                     .nodes();
 
                 rangeBars.forEach((rangeBar, i) => {
-                    expect(
-                        rangeBar.getAttribute('class', `${expectedClass}${i}`)
-                    ).toBeDefined();
-                    expect(rangeBar.getAttribute('opacity')).toBeDefined();
-                    expect(rangeBar.getAttribute('x')).toBeDefined();
-                    expect(rangeBar.getAttribute('width')).toBeDefined();
-                    expect(rangeBar.getAttribute('height')).toBeDefined();
-                    expect(rangeBar.getAttribute('y')).toBeNull();
+                    expect(rangeBar).toHaveAttr(
+                        'class',
+                        `${expectedClass}${i}`
+                    );
+                    expect(rangeBar).toHaveAttr('opacity');
+                    expect(rangeBar).toHaveAttr('x');
+                    expect(rangeBar).toHaveAttr('width');
+                    expect(rangeBar).toHaveAttr('height');
+                    expect(rangeBar).not.toHaveAttr('y');
                 });
             });
         });
@@ -133,13 +135,14 @@ describe('Bullet Chart', () => {
                     .nodes();
 
                 markerLines.forEach((markerLine, i) => {
-                    expect(markerLine.getAttribute('class')).toEqual(
+                    expect(markerLine).toHaveAttr(
+                        'class',
                         `${expectedClass}${i}`
                     );
-                    expect(markerLine.getAttribute('opacity')).toBeDefined();
-                    expect(markerLine.getAttribute('x')).toBeDefined();
-                    expect(markerLine.getAttribute('width')).toBeDefined();
-                    expect(markerLine.getAttribute('height')).toBeDefined();
+                    expect(markerLine).toHaveAttr('opacity');
+                    expect(markerLine).toHaveAttr('x');
+                    expect(markerLine).toHaveAttr('width');
+                    expect(markerLine).toHaveAttr('height');
                 });
             });
         });
@@ -155,7 +158,8 @@ describe('Bullet Chart', () => {
                     .reverse();
 
                 rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar.getAttribute('opacity')).toEqual(
+                    expect(rangeBar).toHaveAttr(
+                        'opacity',
                         `${expectedStartOpacity - i * diff}`
                     );
                 });
@@ -172,7 +176,8 @@ describe('Bullet Chart', () => {
                     .reverse();
 
                 rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar.getAttribute('opacity')).toEqual(
+                    expect(rangeBar).toHaveAttr(
+                        'opacity',
                         `${expectedStartMaxOpacity - i * diff}`
                     );
                 });
@@ -189,7 +194,8 @@ describe('Bullet Chart', () => {
                     .reverse();
 
                 rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar.getAttribute('opacity')).toEqual(
+                    expect(rangeBar).toHaveAttr(
+                        'opacity',
                         `${expectedStartMaxOpacity - i * diff}`
                     );
                 });
@@ -218,15 +224,9 @@ describe('Bullet Chart', () => {
                     .selectAll('line.marker-line')
                     .node();
 
-                expect(rangeBar.getAttribute('fill')).toEqual(
-                    expectedRangeColor
-                );
-                expect(measureBar.getAttribute('fill')).toEqual(
-                    expectedMeasureColor
-                );
-                expect(markerLine.getAttribute('stroke')).toEqual(
-                    expectedMarkerColor
-                );
+                expect(rangeBar).toHaveAttr('fill', expectedRangeColor);
+                expect(measureBar).toHaveAttr('fill', expectedMeasureColor);
+                expect(markerLine).toHaveAttr('stroke', expectedMarkerColor);
             });
         });
 

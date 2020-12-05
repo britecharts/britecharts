@@ -204,13 +204,13 @@ describe('Scatter Plot', () => {
                     .nodes();
 
                 circles.forEach((circle) => {
-                    expect(circle.getAttribute('class')).toEqual('data-point');
-                    expect(circle.getAttribute('fill-opacity')).toEqual('0.24');
-                    expect(circle.getAttribute('stroke-opacity')).toEqual('1');
-                    expect(circle.getAttribute('fill')).toBeDefined();
-                    expect(circle.getAttribute('cx')).toBeDefined();
-                    expect(circle.getAttribute('cy')).toBeDefined();
-                    expect(circle.getAttribute('style')).toBeDefined();
+                    expect(circle).toHaveAttr('class', 'data-point');
+                    expect(circle).toHaveAttr('fill-opacity', '0.24');
+                    expect(circle).toHaveAttr('stroke-opacity', '1');
+                    expect(circle).toHaveAttr('fill');
+                    expect(circle).toHaveAttr('cx');
+                    expect(circle).toHaveAttr('cy');
+                    expect(circle).toHaveAttr('style');
                 });
             });
         });
@@ -269,17 +269,13 @@ describe('Scatter Plot', () => {
                     .selectAll('.scatter-trendline')
                     .node();
 
-                expect(trendline.getAttribute('class')).toBeDefined();
-                expect(trendline.getAttribute('d')).toBeDefined();
-                expect(trendline.getAttribute('stroke')).toBeDefined();
-                expect(trendline.getAttribute('stroke-width')).toBeDefined();
-                expect(trendline.getAttribute('fill')).toBeDefined();
-                expect(
-                    trendline.getAttribute('stroke-dasharray')
-                ).toBeDefined();
-                expect(
-                    trendline.getAttribute('stroke-dashoffset')
-                ).toBeDefined();
+                expect(trendline).toHaveAttr('class');
+                expect(trendline).toHaveAttr('d');
+                expect(trendline).toHaveAttr('stroke');
+                expect(trendline).toHaveAttr('stroke-width');
+                expect(trendline).toHaveAttr('fill');
+                expect(trendline).toHaveAttr('stroke-dasharray');
+                expect(trendline).toHaveAttr('stroke-dashoffset');
             });
         });
 
@@ -300,12 +296,8 @@ describe('Scatter Plot', () => {
                     .selectAll('.highlight-circle')
                     .node();
 
-                expect(scatterPoint.getAttribute('cursor')).toEqual(
-                    expectedCursor
-                );
-                expect(scatterPoint.getAttribute('class')).toEqual(
-                    expectedClass
-                );
+                expect(scatterPoint).toHaveAttr('cursor', expectedCursor);
+                expect(scatterPoint).toHaveAttr('class', expectedClass);
             });
 
             it('should change attribute when a data point is hovered', () => {
@@ -323,26 +315,17 @@ describe('Scatter Plot', () => {
                     .selectAll('.highlight-circle')
                     .node();
 
-                expect(scatterPoint.getAttribute('cursor')).toEqual(
-                    expectedCursor
-                );
-                expect(scatterPoint.getAttribute('opacity')).toEqual(
-                    expectedOpacity
-                );
-                expect(scatterPoint.getAttribute('stroke')).toEqual(
-                    expectedStroke
-                );
-                expect(scatterPoint.getAttribute('fill')).toEqual(
-                    expectedStroke
-                );
-                expect(scatterPoint.getAttribute('fill-opacity')).toEqual(
+                expect(scatterPoint).toHaveAttr('cursor', expectedCursor);
+                expect(scatterPoint).toHaveAttr('opacity', expectedOpacity);
+                expect(scatterPoint).toHaveAttr('stroke', expectedStroke);
+                expect(scatterPoint).toHaveAttr('fill', expectedStroke);
+                expect(scatterPoint).toHaveAttr(
+                    'fill-opacity',
                     expectedFillOpacity
                 );
-                expect(scatterPoint.getAttribute('cx')).toEqual(expectedCx);
-                expect(scatterPoint.getAttribute('cy')).toEqual(expectedCy);
-                expect(scatterPoint.getAttribute('filter')).toEqual(
-                    expectedFilter
-                );
+                expect(scatterPoint).toHaveAttr('cx', expectedCx);
+                expect(scatterPoint).toHaveAttr('cy', expectedCy);
+                expect(scatterPoint).toHaveAttr('filter', expectedFilter);
             });
         });
 
@@ -380,13 +363,14 @@ describe('Scatter Plot', () => {
                             .select('line.highlight-x-line')
                             .node();
 
-                        expect(scatterPoint.getAttribute('stroke')).toEqual(
+                        expect(scatterPoint).toHaveAttr(
+                            'stroke',
                             expectedStroke
                         );
-                        expect(scatterPoint.getAttribute('x1')).toBeDefined();
-                        expect(scatterPoint.getAttribute('x2')).toBeDefined();
-                        expect(scatterPoint.getAttribute('y1')).toBeDefined();
-                        expect(scatterPoint.getAttribute('y2')).toBeDefined();
+                        expect(scatterPoint).toHaveAttr('x1');
+                        expect(scatterPoint).toHaveAttr('x2');
+                        expect(scatterPoint).toHaveAttr('y1');
+                        expect(scatterPoint).toHaveAttr('y2');
                     });
 
                     it('crosshair line with respect to y changes attributes', () => {
@@ -398,13 +382,14 @@ describe('Scatter Plot', () => {
                             .select('line.highlight-y-line')
                             .node();
 
-                        expect(scatterPoint.getAttribute('stroke')).toEqual(
+                        expect(scatterPoint).toHaveAttr(
+                            'stroke',
                             expectedStroke
                         );
-                        expect(scatterPoint.getAttribute('x1')).toBeDefined();
-                        expect(scatterPoint.getAttribute('x2')).toBeDefined();
-                        expect(scatterPoint.getAttribute('y1')).toBeDefined();
-                        expect(scatterPoint.getAttribute('y2')).toBeDefined();
+                        expect(scatterPoint).toHaveAttr('x1');
+                        expect(scatterPoint).toHaveAttr('x2');
+                        expect(scatterPoint).toHaveAttr('y1');
+                        expect(scatterPoint).toHaveAttr('y2');
                     });
                 });
 
@@ -435,14 +420,10 @@ describe('Scatter Plot', () => {
                             .select('text.highlight-x-legend')
                             .node();
 
-                        expect(scatterText.getAttribute('fill')).toEqual(
-                            expectedFill
-                        );
-                        expect(
-                            scatterText.getAttribute('text-anchor')
-                        ).toBeDefined();
-                        expect(scatterText.getAttribute('x')).toBeDefined();
-                        expect(scatterText.getAttribute('y')).toBeNull();
+                        expect(scatterText).toHaveAttr('fill', expectedFill);
+                        expect(scatterText).toHaveAttr('text-anchor');
+                        expect(scatterText).toHaveAttr('x');
+                        expect(scatterText).not.toHaveAttr('y');
                     });
 
                     it('crosshair label with respect to y changes attributes', () => {
@@ -454,14 +435,10 @@ describe('Scatter Plot', () => {
                             .select('text.highlight-y-legend')
                             .node();
 
-                        expect(scatterText.getAttribute('fill')).toEqual(
-                            expectedFill
-                        );
-                        expect(
-                            scatterText.getAttribute('text-anchor')
-                        ).toBeDefined();
-                        expect(scatterText.getAttribute('x')).toBeDefined();
-                        expect(scatterText.getAttribute('y')).toBeDefined();
+                        expect(scatterText).toHaveAttr('fill', expectedFill);
+                        expect(scatterText).toHaveAttr('text-anchor');
+                        expect(scatterText).toHaveAttr('x');
+                        expect(scatterText).toHaveAttr('y');
                     });
                 });
             });

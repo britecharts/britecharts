@@ -119,11 +119,12 @@ describe('Sparkline Chart', () => {
                     .selectAll('.sparkline-text')
                     .node();
 
-                expect(titleTextNode.getAttribute('x')).toBeDefined();
-                expect(titleTextNode.getAttribute('y')).toBeDefined();
-                expect(titleTextNode.getAttribute('text-anchor')).toBeDefined();
-                expect(titleTextNode.getAttribute('class')).toBeDefined();
-                expect(titleTextNode.getAttribute('style')).toBeDefined();
+                expect(titleTextNode).toBeInDOM();
+                expect(titleTextNode).toHaveAttr('x');
+                expect(titleTextNode).toHaveAttr('y');
+                expect(titleTextNode).toHaveAttr('text-anchor');
+                expect(titleTextNode).toHaveAttr('class');
+                expect(titleTextNode).toHaveAttr('style');
             });
 
             it('should properly set the text inside of text node', () => {

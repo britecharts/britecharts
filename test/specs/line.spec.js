@@ -14,7 +14,7 @@ const hasClass = (element, className) => {
 };
 
 describe('Line Chart', () => {
-    let dataset, containerFixture, lineChart;
+    let dataset, containerFixture, f, lineChart;
 
     describe('Render', () => {
         describe('when a single line of zeroes', () => {
@@ -538,9 +538,10 @@ describe('Line Chart', () => {
                     });
 
                     afterEach(() => {
-                        document.body.removeChild(
-                            document.getElementById('fixture')
-                        );
+                        containerFixture.remove();
+                        f = jasmine.getFixtures();
+                        f.cleanUp();
+                        f.clearCache();
                     });
 
                     it('The lowest Y-axis value is negative', () => {
@@ -594,9 +595,10 @@ describe('Line Chart', () => {
                     });
 
                     afterEach(() => {
-                        document.body.removeChild(
-                            document.getElementById('fixture')
-                        );
+                        containerFixture.remove();
+                        f = jasmine.getFixtures();
+                        f.cleanUp();
+                        f.clearCache();
                     });
 
                     it('The highest Y-axis value is negative', () => {
@@ -829,13 +831,11 @@ describe('Line Chart', () => {
                         .nodes();
 
                     circles.forEach((circle) => {
-                        expect(circle.getAttribute('class')).toEqual(
-                            'data-point-mark'
-                        );
-                        expect(circle.getAttribute('r')).toEqual('5');
-                        expect(circle.getAttribute('cx')).toBeDefined();
-                        expect(circle.getAttribute('cy')).toBeDefined();
-                        expect(circle.getAttribute('style')).toBeDefined();
+                        expect(circle).toHaveAttr('class', 'data-point-mark');
+                        expect(circle).toHaveAttr('r', '5');
+                        expect(circle).toHaveAttr('cx');
+                        expect(circle).toHaveAttr('cy');
+                        expect(circle).toHaveAttr('style');
                     });
                 });
             });

@@ -9,7 +9,7 @@ module.exports = function (config) {
         basePath: '',
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['jasmine'],
+        frameworks: ['jasmine-jquery', 'jasmine'],
         // list of files / patterns to load in the browser
         files: ['tests_index.js'],
 
@@ -34,7 +34,9 @@ module.exports = function (config) {
         // https://github.com/karma-runner/karma-coverage
         coverageReporter: {
             type: 'text',
-            reporters: [{ type: 'text' }],
+            reporters: [
+                {type: 'text'},
+            ],
             check: {
                 global: {
                     statements: 50,
@@ -54,6 +56,7 @@ module.exports = function (config) {
         plugins: [
             require('karma-webpack'),
             require('karma-jasmine'),
+            require('karma-jasmine-jquery'),
             require('karma-coverage'),
             require('karma-chrome-launcher'),
             require('karma-phantomjs-launcher'),
