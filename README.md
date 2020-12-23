@@ -64,9 +64,40 @@ All the components expose some **common API methods** like width, height, and ma
 
 Britecharts components are distributed in **UMD modules**, each one exposing a D3.js component written with the [Reusable API pattern][3]. To use any of the Britecharts modules, you will need to require the chart in your JS file using AMD/CommonJS modules or adding a script tag with the `src` pointing to the file. You would also need to load the [d3-selection][37] submodule to select the chart container.
 
-```js
+```bash
    npm install --save britecharts d3-selection
+   # or
    yarn add britecharts d3-selection
+```
+
+Then, in your JavaScript module file you can now import and use charts:
+```js
+import { bar } from 'britecharts';
+import { select } from 'd3-selection';
+
+const barChart = bar();
+const container = select('#container');
+
+const barData = [
+    { name: 'Luminous', value: 2 },
+    { name: 'Glittering', value: 5 },
+    { name: 'Intense', value: 4 },
+    { name: 'Radiant', value: 3 }
+];
+
+barChart
+    .margin({ left: 100 })
+    .isHorizontal(true)
+    .height(400)
+    .width(600);
+
+container.datum(barData).call(barChart);
+```
+
+Britecharts comes with custom CSS - to load CSS in your html file you may include it in the `<head>` tag
+
+```html
+<link rel="stylesheet" href="./node_modules/britecharts/dist/css/britecharts.css">
 ```
 
 You can also load Britecharts from our [CDN][cdnhome] as we do in this [demo][cdndemo] page or play around in our [JSBin][jsbinsandbox] and [CodePen][codependemos] demo projects.
