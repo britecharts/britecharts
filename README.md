@@ -102,7 +102,7 @@ Britecharts comes with custom CSS - to load CSS in your html file you may includ
 
 You can also load Britecharts from our [CDN][cdnhome] as we do in this [demo][cdndemo] page or play around in our [JSBin][jsbinsandbox] and [CodePen][codependemos] demo projects.
 
-They also provide some minimal CSS styling, that can be loaded independently or as a bundle. Check our [Styling Britecharts tutorial][stylingbritecharts] to see more options.
+You can customize CSS using new styles. Check our [Styling Britecharts tutorial][stylingbritecharts] to see more options.
 
 ## See Also
 
