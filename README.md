@@ -100,9 +100,8 @@ Britecharts comes with custom CSS - to load CSS in your html file you may includ
 <link rel="stylesheet" href="./node_modules/britecharts/dist/css/britecharts.css">
 ```
 
-You can also load Britecharts from our [CDN][cdnhome] as we do in this [demo][cdndemo] page or play around in our [JSBin][jsbinsandbox] and [CodePen][codependemos] demo projects.
-
-You can customize CSS using new styles. Check our [Styling Britecharts tutorial][stylingbritecharts] to see more options.
+Alternatively, you can load Britecharts from our [CDN][cdnhome] as we do in this [demo][cdndemo] page or play around in our [JSBin][jsbinsandbox] and [CodePen][codependemos] demo projects.
+In addition, you have an option to customize CSS using new styles. Check our [Styling Britecharts tutorial][stylingbritecharts] to see more options.
 
 ## See Also
 
