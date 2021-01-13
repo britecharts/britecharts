@@ -114,28 +114,6 @@ define(function (require) {
         }
 
         /**
-         * Draws the day labels
-         */
-        function drawDayLabels() {
-            const dayLabelsGroup = svg.select('.day-labels-group');
-            const arrayForYAxisLabels = yAxisLabels || daysHuman;
-
-            dayLabels = svg.select('.day-labels-group').selectAll('.day-label')
-                .data(arrayForYAxisLabels);
-
-            dayLabels.enter()
-                .append('text')
-                .text((label) => label)
-                .attr('x', 0)
-                .attr('y', (d, i) => i * boxSize)
-                .style('text-anchor', 'start')
-                .style('dominant-baseline', 'central')
-                .attr('class', 'day-label y-axis-label');
-
-            dayLabelsGroup.attr('transform', `translate(-${dayLabelWidth}, ${boxSize / 2})`);
-        }
-
-        /**
          * Builds the SVG element that will contain the chart
          * @param  {HTMLElement} container DOM element that will work as the container of the graph
          * @return {void}
@@ -243,13 +221,14 @@ define(function (require) {
          * Draws the day labels
          */
         function drawDayLabels() {
-            let dayLabelsGroup = svg.select('.day-labels-group');
+            const dayLabelsGroup = svg.select('.day-labels-group');
+            const arrayForYAxisLabels = yAxisLabels || daysHuman;
 
             dayLabels = svg.select('.day-labels-group').selectAll('.day-label')
-                .data(daysHuman);
+                .data(arrayForYAxisLabels);
 
             dayLabels.enter()
-              .append('text')
+                .append('text')
                 .text((label) => label)
                 .attr('x', 0)
                 .attr('y', (d, i) => i * boxSize)
