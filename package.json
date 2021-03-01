@@ -122,7 +122,7 @@
     "node-gyp": "4.0.0",
     "node-sass": "4.13.1",
     "phantomjs-polyfill-find": "ptim/phantomjs-polyfill-find",
-    "prismjs": "1.21.0",
+    "prismjs": "1.23.0",
     "pubsub-js": "1.7.0",
     "requirejs-plugins": "^1.0.2",
     "rimraf": "^2.6.3",
