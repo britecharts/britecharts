@@ -14,13 +14,15 @@ import colorHelper from './helpers/color';
  * @property {Number[]} measures    Range that encodes the performance measure
  * @property {Number[]} markers     Marker lines that encode the comparative measure
  * @property {String}   [title]     String that sets identification for the measure
- * @property {String} [subtitle]  String that provides more details on measure identification
+ * @property {String}   [subtitle]  String that provides more details on measure identification
  *
  * @example
  * {
  *      ranges: [130, 160, 250],
  *      measures: [150, 180],
- *      markers: [175]
+ *      markers: [175],
+ *      title: 'Title for Bullet',
+ *      subtitle: 'Subtitle'
  * }
  *
  */
@@ -50,7 +52,6 @@ export default function module() {
             bottom: 30,
             left: 20,
         },
-        data,
         width = 960,
         height = 150,
         chartWidth,
@@ -63,6 +64,7 @@ export default function module() {
         colorSchema = colorHelper.colorSchemas.britecharts,
         rangeColor,
         measureColor,
+        markerColor,
         numberFormat = '',
         baseLine,
         ticks = 6,
@@ -102,7 +104,7 @@ export default function module() {
         _selection.each(function (_data) {
             chartWidth = width - margin.left - margin.right;
             chartHeight = height - margin.top - margin.bottom;
-            data = cleanData(_data);
+            ({ title, subtitle, ranges, measures, markers } = cleanData(_data));
 
             if (hasTitle()) {
                 chartWidth -= legendSpacing;
@@ -159,8 +161,7 @@ export default function module() {
     function buildScales() {
         const decidedRange = isReverse ? [chartWidth, 0] : [0, chartWidth];
 
-        xScale = d3Scale
-            .scaleLinear()
+        xScale = scaleLinear()
             .domain([0, Math.max(...ranges, ...markers, ...measures)])
             .rangeRound(decidedRange)
             .nice();
@@ -177,9 +178,7 @@ export default function module() {
             .reverse();
 
         // initialize range and measure bars and marker line colors
-        rangeColor = colorSchema[0];
-        measureColor = colorSchema[1];
-        markerColor = colorSchema[2];
+        [rangeColor, measureColor, markerColor] = colorSchema;
     }
 
     /**
@@ -231,8 +230,6 @@ export default function module() {
             subtitle: originalData.subtitle,
             title: originalData.title,
         };
-
-        ({ title, subtitle, ranges, measures, markers } = newData);
 
         return newData;
     }
@@ -309,7 +306,7 @@ export default function module() {
                 .enter()
                 .append('line')
                 .attr('class', 'marker-line')
-                .attr('stroke', measureColor)
+                .attr('stroke', markerColor)
                 .attr('stroke-width', markerStrokeWidth)
                 .attr('opacity', measureOpacityScale[0])
                 .attr('x1', xScale)
@@ -325,6 +322,10 @@ export default function module() {
      * @private
      */
     function drawHorizontalExtendedLine() {
+        if (baseLine) {
+            baseLine.remove();
+        }
+
         baseLine = svg
             .select('.axis-group')
             .selectAll('line.extended-x-line')
@@ -360,6 +361,10 @@ export default function module() {
                 title = customTitle;
             }
 
+            if (titleEl) {
+                titleEl.remove();
+            }
+
             titleEl = legendGroup
                 .selectAll('text.bullet-title')
                 .data([1])
@@ -376,7 +381,11 @@ export default function module() {
                     subtitle = customSubtitle;
                 }
 
-                titleEl = legendGroup
+                if (subtitleEl) {
+                    subtitleEl.remove();
+                }
+
+                subtitleEl = legendGroup
                     .selectAll('text.bullet-subtitle')
                     .data([1])
                     .enter()

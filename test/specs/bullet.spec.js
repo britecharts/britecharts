@@ -60,32 +60,18 @@ describe('Bullet Chart', () => {
 
                 expect(actual).toEqual(expected);
             });
+        });
 
-            it('should render grid lines group', () => {
-                const expected = 1;
+        describe('measures', () => {
+            it('should render measures', () => {
+                const expected = 2;
                 const actual = containerFixture
-                    .select('.grid-lines-group')
+                    .selectAll('rect.measure')
                     .size();
 
                 expect(actual).toEqual(expected);
             });
 
-            it('should render ranges', () => {
-                const expected = 3;
-                const actual = containerFixture.selectAll('rect.range').size();
-
-                expect(actual).toEqual(expected);
-            });
-        });
-
-        it('should render measures', () => {
-            const expected = 2;
-            const actual = containerFixture.selectAll('rect.measure').size();
-
-            expect(actual).toEqual(expected);
-        });
-
-        describe('measures', () => {
             it('should have proper attributes', () => {
                 const expectedClass = 'measure m';
                 const measureBars = containerFixture
@@ -107,6 +93,13 @@ describe('Bullet Chart', () => {
         });
 
         describe('ranges', () => {
+            it('should render ranges', () => {
+                const expected = 3;
+                const actual = containerFixture.selectAll('rect.range').size();
+
+                expect(actual).toEqual(expected);
+            });
+
             it('should have proper attributes', () => {
                 const expectedClass = 'range r';
                 const rangeBars = containerFixture
@@ -125,9 +118,54 @@ describe('Bullet Chart', () => {
                     expect(rangeBar).not.toHaveAttr('y');
                 });
             });
+
+            describe('startMaxRangeOpacity', () => {
+                let diff = 0.2;
+
+                it('sets correct default range for range bars', () => {
+                    const expectedStartOpacity = bulletChart.startMaxRangeOpacity();
+                    const rangeBars = containerFixture
+                        .selectAll('rect.range')
+                        .nodes()
+                        .reverse();
+
+                    rangeBars.forEach((rangeBar, i) => {
+                        expect(rangeBar).toHaveAttr(
+                            'opacity',
+                            `${expectedStartOpacity - i * diff}`
+                        );
+                    });
+                });
+
+                it('can change the range for opacity', () => {
+                    const expectedStartMaxOpacity = 1;
+
+                    bulletChart.startMaxRangeOpacity(expectedStartMaxOpacity);
+                    containerFixture.datum(dataset[1]).call(bulletChart);
+                    const rangeBars = containerFixture
+                        .selectAll('rect.range')
+                        .nodes()
+                        .reverse();
+
+                    rangeBars.forEach((rangeBar, i) => {
+                        expect(rangeBar).toHaveAttr(
+                            'opacity',
+                            `${expectedStartMaxOpacity - i * diff}`
+                        );
+                    });
+                });
+            });
         });
 
         describe('markers', () => {
+            it('should render a marker', () => {
+                let expected = 1;
+                let actual = containerFixture.selectAll('.marker-line').nodes()
+                    .length;
+
+                expect(actual).toEqual(expected);
+            });
+
             it('should have proper attributes', () => {
                 const expectedClass = 'marker m';
                 const markerLines = containerFixture
@@ -145,150 +183,19 @@ describe('Bullet Chart', () => {
                     expect(markerLine).toHaveAttr('height');
                 });
             });
-        });
-
-        describe('startMaxRangeOpacity', () => {
-            let diff = 0.2;
-
-            it('sets correct default range for range bars', () => {
-                const expectedStartOpacity = bulletChart.startMaxRangeOpacity();
-                const rangeBars = containerFixture
-                    .selectAll('rect.range')
-                    .nodes()
-                    .reverse();
-
-                rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar).toHaveAttr(
-                        'opacity',
-                        `${expectedStartOpacity - i * diff}`
-                    );
-                });
-            });
-
-            it('can change the range for opacity', () => {
-                const expectedStartMaxOpacity = 1;
-
-                bulletChart.startMaxRangeOpacity(expectedStartMaxOpacity);
-                containerFixture.datum(dataset[1]).call(bulletChart);
-                const rangeBars = containerFixture
-                    .selectAll('rect.range')
-                    .nodes()
-                    .reverse();
-
-                rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar).toHaveAttr(
-                        'opacity',
-                        `${expectedStartMaxOpacity - i * diff}`
-                    );
-                });
-            });
-
-            it('can change the range for opacity', () => {
-                const expectedStartMaxOpacity = 1;
-
-                bulletChart.startMaxRangeOpacity(expectedStartMaxOpacity);
-                containerFixture.datum(dataset[1]).call(bulletChart);
-                const rangeBars = containerFixture
-                    .selectAll('rect.range')
-                    .nodes()
-                    .reverse();
-
-                rangeBars.forEach((rangeBar, i) => {
-                    expect(rangeBar).toHaveAttr(
-                        'opacity',
-                        `${expectedStartMaxOpacity - i * diff}`
-                    );
-                });
-            });
-        });
-
-        describe('when custom colorSchema is passed', () => {
-            it('should assign first two indexed colors for range and measure/markers in order', () => {
-                const expectedRangeColor = '#bbb';
-                const expectedMeasureColor = '#ccc';
-                const expectedMarkerColor = expectedMeasureColor;
-
-                bulletChart.colorSchema([
-                    expectedRangeColor,
-                    expectedMeasureColor,
-                ]);
-                containerFixture.datum(dataset[1]).call(bulletChart);
-
-                const rangeBar = containerFixture
-                    .selectAll('rect.range')
-                    .node();
-                const measureBar = containerFixture
-                    .selectAll('rect.measure')
-                    .node();
-                const markerLine = containerFixture
-                    .selectAll('line.marker-line')
-                    .node();
-
-                expect(rangeBar).toHaveAttr('fill', expectedRangeColor);
-                expect(measureBar).toHaveAttr('fill', expectedMeasureColor);
-                expect(markerLine).toHaveAttr('stroke', expectedMarkerColor);
-            });
-        });
-
-        describe('chart components', () => {
-            it('should render ranges', () => {
-                let expected = 3;
-                let actual = containerFixture.selectAll('rect.range').nodes()
-                    .length;
-
-                expect(actual).toEqual(expected);
-            });
-
-            it('should render measures', () => {
-                let expected = 2;
-                let actual = containerFixture.selectAll('rect.measure').nodes()
-                    .length;
-
-<<<<<<< HEAD
-                it('should assign first two indexed colors for range and measure/markers in order', () => {
-                    const expectedRangeColor = '#bbb';
-                    const expectedMeasureColor = '#ccc';
-                    const expectedMarkerColor = '#ddd';
-
-                    bulletChart.colorSchema([
-                        expectedRangeColor,
-                        expectedMeasureColor,
-                        expectedMarkerColor,
-                    ]);
-                    containerFixture.datum(dataset[1]).call(bulletChart);
-=======
-                expect(actual).toEqual(expected);
-            });
->>>>>>> Adds CSS and JavaScript linting plus code formatting
-
-            it('should render grid lines group', () => {
-                let expected = 1;
-                let actual = containerFixture.selectAll('.marker-line').nodes()
-                    .length;
-
-                expect(actual).toEqual(expected);
-            });
 
             describe('when empty markers are passed', () => {
                 beforeEach(() => {
+                    const fixture =
+                        '<div id="fixture"><div class="test-container"></div></div>';
                     dataset = buildDataSet('withNoMarker');
                     bulletChart = chart();
                     dataPoint = dataset[0];
 
-                    // DOM Fixture Setup
-                    f = jasmine.getFixtures();
-                    f.fixturesPath = 'base/test/fixtures/';
-                    f.load('testContainer.html');
-
+                    // adds an html fixture to the DOM
+                    document.body.insertAdjacentHTML('afterbegin', fixture);
                     containerFixture = d3.select('.test-container');
                     containerFixture.datum(dataPoint).call(bulletChart);
-                });
-
-                afterEach(() => {
-                    containerFixture.remove();
-                    f = jasmine.getFixtures();
-                    f.cleanUp();
-                    f.clearCache();
                 });
 
                 it('should render the chart', () => {
@@ -309,6 +216,35 @@ describe('Bullet Chart', () => {
 
                     expect(actual).toEqual(expected);
                 });
+            });
+        });
+
+        describe('when custom colorSchema is passed', () => {
+            it('should assign first two indexed colors for range and measure/markers in order', () => {
+                const expectedRangeColor = '#bbb';
+                const expectedMeasureColor = '#ccc';
+                const expectedMarkerColor = '#ddd';
+
+                bulletChart.colorSchema([
+                    expectedRangeColor,
+                    expectedMeasureColor,
+                    expectedMarkerColor,
+                ]);
+                containerFixture.datum(dataset[1]).call(bulletChart);
+
+                const rangeBar = containerFixture
+                    .selectAll('rect.range')
+                    .node();
+                const measureBar = containerFixture
+                    .selectAll('rect.measure')
+                    .node();
+                const markerLine = containerFixture
+                    .selectAll('line.marker-line')
+                    .node();
+
+                expect(rangeBar).toHaveAttr('fill', expectedRangeColor);
+                expect(measureBar).toHaveAttr('fill', expectedMeasureColor);
+                expect(markerLine).toHaveAttr('stroke', expectedMarkerColor);
             });
         });
     });
