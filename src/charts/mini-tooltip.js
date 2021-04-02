@@ -57,7 +57,7 @@ export default function module() {
         ease = easeQuadInOut,
         // tooltip
         tooltipBackground,
-        backgroundBorderRadius = 1,
+        backgroundBorderRadius = 2,
         tooltipTextContainer,
         tooltipOffset = {
             y: 0,
@@ -149,11 +149,7 @@ export default function module() {
             .attr('ry', backgroundBorderRadius)
             .attr('y', -margin.top)
             .attr('x', -margin.left)
-            .style('fill', bodyFillColor)
-            .style('stroke', borderStrokeColor)
-            .style('stroke-width', 1)
-            .style('pointer-events', 'none')
-            .style('opacity', 0.9);
+            .style('pointer-events', 'none');
     }
 
     /**

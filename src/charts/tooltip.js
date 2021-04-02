@@ -63,7 +63,7 @@ export default function module() {
         shouldShowDateInTitle = true,
         valueFormat = null,
         // tooltip
-        tooltip,
+        tooltipBackground,
         tooltipOffset = {
             y: -55,
             x: 0,
@@ -77,6 +77,7 @@ export default function module() {
         tooltipWidth = 250,
         tooltipHeight = 48,
         tooltipBorderRadius = 3,
+        tooltipContentPadding = 8,
         ttTextX = 0,
         ttTextY = 37,
         textHeight,
@@ -183,23 +184,22 @@ export default function module() {
      * @private
      */
     function drawTooltip() {
+        const textStartX = -tooltipWidth / 4 + tooltipContentPadding;
+
         tooltipTextContainer = svg
             .selectAll('.tooltip-group')
             .append('g')
             .classed('tooltip-text', true);
 
-        tooltip = tooltipTextContainer
+        tooltipBackground = tooltipTextContainer
             .append('rect')
-            .classed('tooltip-text-container', true)
-            .attr('x', -tooltipWidth / 4 + 8)
+            .classed('tooltip-background', true)
+            .attr('x', textStartX)
             .attr('y', 0)
             .attr('width', tooltipWidth)
             .attr('height', tooltipHeight)
             .attr('rx', tooltipBorderRadius)
-            .attr('ry', tooltipBorderRadius)
-            .style('fill', bodyFillColor)
-            .style('stroke', borderStrokeColor)
-            .style('stroke-width', 1);
+            .attr('ry', tooltipBorderRadius);
 
         tooltipTitle = tooltipTextContainer
             .append('text')
@@ -212,8 +212,8 @@ export default function module() {
         tooltipDivider = tooltipTextContainer
             .append('line')
             .classed('tooltip-divider', true)
-            .attr('x1', -tooltipWidth / 4 + 16)
-            .attr('x2', 265)
+            .attr('x1', textStartX + tooltipContentPadding)
+            .attr('x2', tooltipWidth - 8 * tooltipContentPadding)
             .attr(
                 'y1',
                 initialTooltipBodyYPosition - 6 + additionalTooltipTitleHeight
@@ -221,8 +221,7 @@ export default function module() {
             .attr(
                 'y2',
                 initialTooltipBodyYPosition - 6 + additionalTooltipTitleHeight
-            )
-            .style('stroke', borderStrokeColor);
+            );
 
         tooltipBody = tooltipTextContainer
             .append('g')
@@ -393,15 +392,15 @@ export default function module() {
     function updatePositionAndSize(dataPoint, xPosition, yPosition) {
         let [tooltipX, tooltipY] = getTooltipPosition([xPosition, yPosition]);
 
-        tooltip.attr('width', tooltipWidth).attr('height', tooltipHeight + 10);
+        tooltipBackground
+            .attr('width', tooltipWidth)
+            .attr('height', tooltipHeight + 10);
 
-        tooltipTextContainer
+        svg.selectAll('.tooltip-group')
             .transition()
             .duration(mouseChaseDuration)
             .ease(ease)
             .attr('transform', `translate(${tooltipX}, ${tooltipY})`);
-
-        tooltipDivider.attr('x2', tooltipWidth - 60);
     }
 
     /**
@@ -467,7 +466,7 @@ export default function module() {
      * @private
      */
     function getTooltipTitleXPosition() {
-        return -tooltipWidth / 4 + 16;
+        return -tooltipWidth / 4 + 2 * tooltipContentPadding;
     }
 
     /**

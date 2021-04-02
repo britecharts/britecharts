@@ -171,13 +171,13 @@ export default function module() {
     function addMouseEvents() {
         if (shouldShowTooltip()) {
             svg.on('mouseover', function (d) {
-                handleMouseOver(this, d);
+                handleMouseOver(this, d, chartWidth, chartHeight);
             })
                 .on('mouseout', function (d) {
-                    handleMouseOut(this, d);
+                    handleMouseOut(this, d, chartWidth, chartHeight);
                 })
                 .on('mousemove', function (d) {
-                    handleMouseMove(this, d);
+                    handleMouseMove(this, d, chartWidth, chartHeight);
                 })
                 .on('click', function (d) {
                     handleCustomClick(this, d);
@@ -186,10 +186,10 @@ export default function module() {
 
         svg.selectAll('.bar')
             .on('mouseover', function (d) {
-                handleBarsMouseOver(this, d);
+                handleBarsMouseOver(this, d, chartWidth, chartHeight);
             })
             .on('mouseout', function (d) {
-                handleBarsMouseOut(this, d);
+                handleBarsMouseOut(this, d, chartWidth, chartHeight);
             });
     }
 
