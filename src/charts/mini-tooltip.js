@@ -249,6 +249,7 @@ export default function module() {
      * @private
      */
     function showTooltip() {
+        updateContent();
         svg.style('visibility', 'visible').style('opacity', 0);
     }
 
