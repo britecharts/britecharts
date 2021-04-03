@@ -71,20 +71,20 @@ export default function module() {
         tooltipMaxTopicLength = 170,
         tooltipMaxTitleLength = 230,
         tooltipTextContainer,
-        tooltipDivider,
         tooltipBody,
         tooltipTitle,
         tooltipWidth = 250,
         tooltipHeight = 48,
         tooltipBorderRadius = 3,
-        tooltipContentPadding = 8,
+        tooltipContentPadding = 12,
+        circularMarkerRadius = 5,
         ttTextX = 0,
         ttTextY = 37,
         textHeight,
         entryLineLimit = 3,
         initialTooltipBodyYPosition = 37,
         additionalTooltipTitleHeight = 0,
-        initialTooltipTextXPosition = -25,
+        initialTooltipTextXPosition = -20,
         tooltipTextLinePadding = 5,
         tooltipRightWidth,
         // Animations
@@ -92,8 +92,6 @@ export default function module() {
         ease = easeQuadInOut,
         circleYOffset = 8,
         colorMap,
-        bodyFillColor = '#FFFFFF',
-        borderStrokeColor = '#D2D6DF',
         titleFillColor = '#6D717A',
         textFillColor = '#282C35',
         tooltipTextColor = '#000000',
@@ -205,28 +203,12 @@ export default function module() {
             .append('text')
             .classed('tooltip-title', true)
             .attr('x', getTooltipTitleXPosition())
-            .attr('dy', '.35em')
-            .attr('y', 16)
+            .attr('y', tooltipContentPadding * 2)
             .style('fill', titleFillColor);
-
-        tooltipDivider = tooltipTextContainer
-            .append('line')
-            .classed('tooltip-divider', true)
-            .attr('x1', textStartX + tooltipContentPadding)
-            .attr('x2', tooltipWidth - 8 * tooltipContentPadding)
-            .attr(
-                'y1',
-                initialTooltipBodyYPosition - 6 + additionalTooltipTitleHeight
-            )
-            .attr(
-                'y2',
-                initialTooltipBodyYPosition - 6 + additionalTooltipTitleHeight
-            );
 
         tooltipBody = tooltipTextContainer
             .append('g')
             .classed('tooltip-body', true)
-            .style('transform', 'translateY(8px)')
             .style('fill', textFillColor);
 
         updateTooltipTitleYPosition();
@@ -273,7 +255,7 @@ export default function module() {
             tooltipX = tooltipWidth - 185;
         } else {
             // Tooltip on the left
-            tooltipX = -205;
+            tooltipX = -215;
         }
 
         if (mouseY) {
@@ -370,9 +352,9 @@ export default function module() {
         tooltipBody
             .append('circle')
             .classed('tooltip-circle', true)
-            .attr('cx', 23 - tooltipWidth / 4)
+            .attr('cx', -tooltipWidth / 4 + 30)
             .attr('cy', ttTextY + circleYOffset)
-            .attr('r', 5)
+            .attr('r', circularMarkerRadius)
             .style('fill', colorMap[name])
             .style('stroke-width', 1);
 
