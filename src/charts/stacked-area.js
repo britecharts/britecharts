@@ -244,13 +244,13 @@ export default function module() {
      */
     function addMouseEvents() {
         svg.on('mouseover', function (d) {
-            handleMouseOver(this, d, chartWidth, chartHeight);
+            handleMouseOver(this, d);
         })
             .on('mouseout', function (d) {
-                handleMouseOut(this, d, chartWidth, chartHeight);
+                handleMouseOut(this, d);
             })
             .on('mousemove', function (d) {
-                handleMouseMove(this, d, chartWidth, chartHeight);
+                handleMouseMove(this, d);
             });
     }
 
@@ -261,7 +261,7 @@ export default function module() {
      */
     function addTouchEvents() {
         svg.on('touchmove', function (d) {
-            handleTouchMove(this, d, chartWidth, chartHeight);
+            handleTouchMove(this, d);
         });
     }
 

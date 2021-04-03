@@ -171,13 +171,13 @@ export default function module() {
     function addMouseEvents() {
         if (shouldShowTooltip()) {
             svg.on('mouseover', function (d) {
-                handleMouseOver(this, d, chartWidth, chartHeight);
+                handleMouseOver(this, d);
             })
                 .on('mouseout', function (d) {
-                    handleMouseOut(this, d, chartWidth, chartHeight);
+                    handleMouseOut(this, d);
                 })
                 .on('mousemove', function (d) {
-                    handleMouseMove(this, d, chartWidth, chartHeight);
+                    handleMouseMove(this, d);
                 })
                 .on('click', function (d) {
                     handleClick(this, d);
