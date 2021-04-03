@@ -552,7 +552,6 @@ export default function module() {
 
     /**
      * Shows the tooltip updating it's content
-     * @param  {Object} dataPoint Data point from the chart
      * @return {void}
      * @private
      */
