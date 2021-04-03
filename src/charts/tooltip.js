@@ -77,14 +77,14 @@ export default function module() {
         tooltipHeight = 48,
         tooltipBorderRadius = 3,
         tooltipContentPadding = 12,
-        circularMarkerRadius = 5,
+        circularMarkerRadius = 4,
         ttTextX = 0,
         ttTextY = 37,
         textHeight,
         entryLineLimit = 3,
         initialTooltipBodyYPosition = 37,
         additionalTooltipTitleHeight = 0,
-        initialTooltipTextXPosition = -20,
+        initialTooltipTextXPosition = -22,
         tooltipTextLinePadding = 5,
         tooltipRightWidth,
         // Animations
@@ -203,6 +203,7 @@ export default function module() {
             .append('text')
             .classed('tooltip-title', true)
             .attr('x', getTooltipTitleXPosition())
+            .attr('dy', '0em')
             .attr('y', tooltipContentPadding * 2)
             .style('fill', titleFillColor);
 
