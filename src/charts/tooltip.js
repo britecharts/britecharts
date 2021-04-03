@@ -89,6 +89,7 @@ export default function module() {
         tooltipRightWidth,
         // Animations
         mouseChaseDuration = 100,
+        fadeInDuration = 100,
         ease = easeQuadInOut,
         circleYOffset = 8,
         colorMap,
@@ -292,7 +293,8 @@ export default function module() {
      * position
      */
     function resetSizeAndPositionPointers() {
-        tooltipHeight = 48 + additionalTooltipTitleHeight;
+        tooltipHeight =
+            48 + additionalTooltipTitleHeight + tooltipContentPadding;
         ttTextY = initialTooltipBodyYPosition + additionalTooltipTitleHeight;
         ttTextX = 0;
     }
@@ -366,18 +368,22 @@ export default function module() {
      * Updates size and position of tooltip depending on the side of the chart we are in
      * TODO: This needs a refactor, following the mini-tooltip code.
      *
-     * @param  {Object} dataPoint DataPoint of the tooltip
      * @param  {Number} xPosition DataPoint's x position in the chart
      * @param  {Number} xPosition DataPoint's y position in the chart
      * @return void
      * @private
      */
-    function updatePositionAndSize(dataPoint, xPosition, yPosition) {
+    function updatePositionAndSize(xPosition, yPosition) {
         let [tooltipX, tooltipY] = getTooltipPosition([xPosition, yPosition]);
+
+        svg.transition()
+            .duration(fadeInDuration)
+            .ease(ease)
+            .style('opacity', 1);
 
         tooltipBackground
             .attr('width', tooltipWidth)
-            .attr('height', tooltipHeight + 10);
+            .attr('height', tooltipHeight);
 
         svg.selectAll('.tooltip-group')
             .transition()
@@ -485,6 +491,7 @@ export default function module() {
     /**
      * Calculates the number of lines the tooltip title will need and updates the
      * initialTooltipBodyYPosition accordingly
+     * @private
      */
     function updateTooltipTitleYPosition() {
         const approximateTitle = getTooltipTitle(Date.now());
@@ -532,6 +539,25 @@ export default function module() {
         }
 
         return textTitle;
+    }
+
+    /**
+     * Hides the tooltip
+     * @return {void}
+     * @private
+     */
+    function hideTooltip() {
+        svg.style('visibility', 'hidden');
+    }
+
+    /**
+     * Shows the tooltip updating it's content
+     * @param  {Object} dataPoint Data point from the chart
+     * @return {void}
+     * @private
+     */
+    function showTooltip() {
+        svg.style('visibility', 'visible').style('opacity', 0);
     }
 
     /**
@@ -625,7 +651,7 @@ export default function module() {
      */
     function updateTooltip(dataPoint, xPosition, yPosition) {
         updateContent(dataPoint);
-        updatePositionAndSize(dataPoint, xPosition, yPosition);
+        updatePositionAndSize(xPosition, yPosition);
     }
 
     // API
@@ -692,7 +718,7 @@ export default function module() {
      * @public
      */
     exports.hide = function () {
-        svg.style('visibility', 'hidden');
+        hideTooltip();
 
         return this;
     };
@@ -782,7 +808,7 @@ export default function module() {
      * @public
      */
     exports.show = function () {
-        svg.style('visibility', 'visible');
+        showTooltip();
 
         return this;
     };
