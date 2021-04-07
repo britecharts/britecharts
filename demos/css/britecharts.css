@@ -72,10 +72,12 @@
   stroke-width: 2; }
 
 .tooltip-background {
-  border-radius: 2px;
-  fill: rgba(255, 255, 255, 0.97);
+  fill: rgba(255, 255, 255, 0.9);
   stroke: #d2d6df;
   stroke-width: 1; }
+
+.tooltip-divider {
+  stroke: #d2d6df; }
 
 .britechart-legend .legend-entry {
   font-size: 12px; }

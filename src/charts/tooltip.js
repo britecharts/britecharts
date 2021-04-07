@@ -63,7 +63,7 @@ export default function module() {
         shouldShowDateInTitle = true,
         valueFormat = null,
         // tooltip
-        tooltip,
+        tooltipBackground,
         tooltipOffset = {
             y: -55,
             x: 0,
@@ -71,28 +71,28 @@ export default function module() {
         tooltipMaxTopicLength = 170,
         tooltipMaxTitleLength = 230,
         tooltipTextContainer,
-        tooltipDivider,
         tooltipBody,
         tooltipTitle,
         tooltipWidth = 250,
         tooltipHeight = 48,
         tooltipBorderRadius = 3,
+        tooltipContentPadding = 12,
+        circularMarkerRadius = 4,
         ttTextX = 0,
         ttTextY = 37,
         textHeight,
         entryLineLimit = 3,
         initialTooltipBodyYPosition = 37,
         additionalTooltipTitleHeight = 0,
-        initialTooltipTextXPosition = -25,
+        initialTooltipTextXPosition = -22,
         tooltipTextLinePadding = 5,
         tooltipRightWidth,
         // Animations
         mouseChaseDuration = 100,
+        fadeInDuration = 100,
         ease = easeQuadInOut,
         circleYOffset = 8,
         colorMap,
-        bodyFillColor = '#FFFFFF',
-        borderStrokeColor = '#D2D6DF',
         titleFillColor = '#6D717A',
         textFillColor = '#282C35',
         tooltipTextColor = '#000000',
@@ -183,51 +183,34 @@ export default function module() {
      * @private
      */
     function drawTooltip() {
+        const textStartX = -tooltipWidth / 4 + tooltipContentPadding;
+
         tooltipTextContainer = svg
             .selectAll('.tooltip-group')
             .append('g')
             .classed('tooltip-text', true);
 
-        tooltip = tooltipTextContainer
+        tooltipBackground = tooltipTextContainer
             .append('rect')
-            .classed('tooltip-text-container', true)
-            .attr('x', -tooltipWidth / 4 + 8)
+            .classed('tooltip-background', true)
+            .attr('x', textStartX)
             .attr('y', 0)
             .attr('width', tooltipWidth)
             .attr('height', tooltipHeight)
             .attr('rx', tooltipBorderRadius)
-            .attr('ry', tooltipBorderRadius)
-            .style('fill', bodyFillColor)
-            .style('stroke', borderStrokeColor)
-            .style('stroke-width', 1);
+            .attr('ry', tooltipBorderRadius);
 
         tooltipTitle = tooltipTextContainer
             .append('text')
             .classed('tooltip-title', true)
             .attr('x', getTooltipTitleXPosition())
-            .attr('dy', '.35em')
-            .attr('y', 16)
+            .attr('dy', '0em')
+            .attr('y', tooltipContentPadding * 2)
             .style('fill', titleFillColor);
-
-        tooltipDivider = tooltipTextContainer
-            .append('line')
-            .classed('tooltip-divider', true)
-            .attr('x1', -tooltipWidth / 4 + 16)
-            .attr('x2', 265)
-            .attr(
-                'y1',
-                initialTooltipBodyYPosition - 6 + additionalTooltipTitleHeight
-            )
-            .attr(
-                'y2',
-                initialTooltipBodyYPosition - 6 + additionalTooltipTitleHeight
-            )
-            .style('stroke', borderStrokeColor);
 
         tooltipBody = tooltipTextContainer
             .append('g')
             .classed('tooltip-body', true)
-            .style('transform', 'translateY(8px)')
             .style('fill', textFillColor);
 
         updateTooltipTitleYPosition();
@@ -274,7 +257,7 @@ export default function module() {
             tooltipX = tooltipWidth - 185;
         } else {
             // Tooltip on the left
-            tooltipX = -205;
+            tooltipX = -215;
         }
 
         if (mouseY) {
@@ -310,7 +293,8 @@ export default function module() {
      * position
      */
     function resetSizeAndPositionPointers() {
-        tooltipHeight = 48 + additionalTooltipTitleHeight;
+        tooltipHeight =
+            48 + additionalTooltipTitleHeight + tooltipContentPadding;
         ttTextY = initialTooltipBodyYPosition + additionalTooltipTitleHeight;
         ttTextX = 0;
     }
@@ -371,9 +355,9 @@ export default function module() {
         tooltipBody
             .append('circle')
             .classed('tooltip-circle', true)
-            .attr('cx', 23 - tooltipWidth / 4)
+            .attr('cx', -tooltipWidth / 4 + 30)
             .attr('cy', ttTextY + circleYOffset)
-            .attr('r', 5)
+            .attr('r', circularMarkerRadius)
             .style('fill', colorMap[name])
             .style('stroke-width', 1);
 
@@ -384,24 +368,28 @@ export default function module() {
      * Updates size and position of tooltip depending on the side of the chart we are in
      * TODO: This needs a refactor, following the mini-tooltip code.
      *
-     * @param  {Object} dataPoint DataPoint of the tooltip
      * @param  {Number} xPosition DataPoint's x position in the chart
      * @param  {Number} xPosition DataPoint's y position in the chart
      * @return void
      * @private
      */
-    function updatePositionAndSize(dataPoint, xPosition, yPosition) {
+    function updatePositionAndSize(xPosition, yPosition) {
         let [tooltipX, tooltipY] = getTooltipPosition([xPosition, yPosition]);
 
-        tooltip.attr('width', tooltipWidth).attr('height', tooltipHeight + 10);
+        svg.transition()
+            .duration(fadeInDuration)
+            .ease(ease)
+            .style('opacity', 1);
 
-        tooltipTextContainer
+        tooltipBackground
+            .attr('width', tooltipWidth)
+            .attr('height', tooltipHeight);
+
+        svg.selectAll('.tooltip-group')
             .transition()
             .duration(mouseChaseDuration)
             .ease(ease)
             .attr('transform', `translate(${tooltipX}, ${tooltipY})`);
-
-        tooltipDivider.attr('x2', tooltipWidth - 60);
     }
 
     /**
@@ -467,7 +455,7 @@ export default function module() {
      * @private
      */
     function getTooltipTitleXPosition() {
-        return -tooltipWidth / 4 + 16;
+        return -tooltipWidth / 4 + 2 * tooltipContentPadding;
     }
 
     /**
@@ -503,6 +491,7 @@ export default function module() {
     /**
      * Calculates the number of lines the tooltip title will need and updates the
      * initialTooltipBodyYPosition accordingly
+     * @private
      */
     function updateTooltipTitleYPosition() {
         const approximateTitle = getTooltipTitle(Date.now());
@@ -550,6 +539,24 @@ export default function module() {
         }
 
         return textTitle;
+    }
+
+    /**
+     * Hides the tooltip
+     * @return {void}
+     * @private
+     */
+    function hideTooltip() {
+        svg.style('visibility', 'hidden');
+    }
+
+    /**
+     * Shows the tooltip updating it's content
+     * @return {void}
+     * @private
+     */
+    function showTooltip() {
+        svg.style('visibility', 'visible').style('opacity', 0);
     }
 
     /**
@@ -643,7 +650,7 @@ export default function module() {
      */
     function updateTooltip(dataPoint, xPosition, yPosition) {
         updateContent(dataPoint);
-        updatePositionAndSize(dataPoint, xPosition, yPosition);
+        updatePositionAndSize(xPosition, yPosition);
     }
 
     // API
@@ -710,7 +717,7 @@ export default function module() {
      * @public
      */
     exports.hide = function () {
-        svg.style('visibility', 'hidden');
+        hideTooltip();
 
         return this;
     };
@@ -800,7 +807,7 @@ export default function module() {
      * @public
      */
     exports.show = function () {
-        svg.style('visibility', 'visible');
+        showTooltip();
 
         return this;
     };

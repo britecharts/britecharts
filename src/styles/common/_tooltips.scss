@@ -3,8 +3,8 @@
 $marker-stroke-width: 1;
 $marker-stroke-width-highlight: 2;
 
+$tooltip-background-opacity: 0.9;
 $tooltip-stroke-width: 1;
-$tooltip-border-radius: 2px;
 $tooltip-value-text-size: 27px;
 
 // Tooltip Container
@@ -27,10 +27,8 @@ $tooltip-value-text-size: 27px;
 }
 
 // Tooltip
-// TODO: Currently unused. Consider removing in refactoring for #113.
 .tooltip-background {
-    border-radius: $tooltip-border-radius;
-    fill: rgba($white, 0.97);
+    fill: rgba($white, $tooltip-background-opacity);
     stroke: $grey-300;
     stroke-width: $tooltip-stroke-width;
 }
