@@ -57,7 +57,7 @@ export default function module() {
         ease = easeQuadInOut,
         // tooltip
         tooltipBackground,
-        backgroundBorderRadius = 1,
+        backgroundBorderRadius = 2,
         tooltipTextContainer,
         tooltipOffset = {
             y: 0,
@@ -133,6 +133,7 @@ export default function module() {
     /**
      * Draws the different elements of the Tooltip box
      * @return void
+     * @private
      */
     function drawTooltip() {
         tooltipTextContainer = svg
@@ -149,17 +150,14 @@ export default function module() {
             .attr('ry', backgroundBorderRadius)
             .attr('y', -margin.top)
             .attr('x', -margin.left)
-            .style('fill', bodyFillColor)
-            .style('stroke', borderStrokeColor)
-            .style('stroke-width', 1)
-            .style('pointer-events', 'none')
-            .style('opacity', 0.9);
+            .style('pointer-events', 'none');
     }
 
     /**
      * Figures out the max length of the tooltip lines
      * @param  {D3Selection[]} texts    List of svg elements of each line
      * @return {Number}                 Max size of the lines
+     * @private
      */
     function getMaxLengthLine(...texts) {
         let textSizes = texts
@@ -204,6 +202,7 @@ export default function module() {
      * @param  {Number}  chartWidth Parent's chart
      * @param  {Number}  positionX  Mouse position
      * @return {Boolean}            If the mouse position allows space for the tooltip
+     * @private
      */
     function hasEnoughHorizontalRoom(parentChartWidth, positionX) {
         return (
@@ -221,6 +220,7 @@ export default function module() {
      * @param  {Number}  chartWidth Parent's chart
      * @param  {Number}  positionX  Mouse position
      * @return {Boolean}            If the mouse position allows space for the tooltip
+     * @private
      */
     function hasEnoughVerticalRoom(parentChartHeight, positionY) {
         return (
@@ -236,6 +236,7 @@ export default function module() {
     /**
      * Hides the tooltip
      * @return {void}
+     * @private
      */
     function hideTooltip() {
         svg.style('visibility', 'hidden');
@@ -245,9 +246,10 @@ export default function module() {
      * Shows the tooltip updating it's content
      * @param  {Object} dataPoint Data point from the chart
      * @return {void}
+     * @private
      */
-    function showTooltip(dataPoint) {
-        updateContent(dataPoint);
+    function showTooltip() {
+        updateContent();
         svg.style('visibility', 'visible').style('opacity', 0);
     }
 
@@ -255,6 +257,7 @@ export default function module() {
      * Draws the data entries inside the tooltip for a given topic
      * @param  {Object} topic Topic to extract data from
      * @return void
+     * @private
      */
     function updateContent(dataPoint = {}) {
         let value = dataPoint[valueLabel] || '',
@@ -317,6 +320,7 @@ export default function module() {
      * Updates size and position of tooltip depending on the side of the chart we are in
      * @param  {Object} dataPoint DataPoint of the tooltip
      * @return void
+     * @private
      */
     function updatePositionAndSize(mousePosition, parentChartSize) {
         let [tooltipX, tooltipY] = getTooltipPosition(
@@ -342,6 +346,7 @@ export default function module() {
      *
      * @param  {Object} dataPoint Current datapoint to show info about
      * @return void
+     * @private
      */
     function updateTooltip(dataPoint, position, chartSize) {
         updateContent(dataPoint);
