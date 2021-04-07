@@ -489,13 +489,13 @@ export default function module() {
             .attr('x', 0)
             .attr('height', yScale.bandwidth())
             .attr('width', ({ value }) => xScale(value))
-            .on('mouseover', function (d, index, barList) {
+            .on('mouseover', function (d, _, barList) {
                 handleMouseOver(this, d, barList, chartWidth, chartHeight);
             })
             .on('mousemove', function (d) {
                 handleMouseMove(this, d, chartWidth, chartHeight);
             })
-            .on('mouseout', function (d, index, barList) {
+            .on('mouseout', function (d, _, barList) {
                 handleMouseOut(this, d, barList, chartWidth, chartHeight);
             })
             .on('click', function (d) {
