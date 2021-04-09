@@ -10,7 +10,6 @@ import { scaleOrdinal, scaleBand, scaleLinear } from 'd3-scale';
 import { stack } from 'd3-shape';
 import { select, mouse } from 'd3-selection';
 import 'd3-transition';
-import assign from 'lodash/assign';
 
 import { exportChart } from './helpers/export';
 import { dataKeyDeprecationMessage } from './helpers/project';
@@ -53,7 +52,7 @@ const uniq = (arrArg) =>
  * @module Stacked-bar
  * @tutorial stacked-bar
  * @requires d3-array, d3-axis, d3-color, d3-collection, d3-dispatch, d3-ease,
- *  d3-interpolate, d3-scale, d3-shape, d3-selection, d3-transition, lodash assign
+ *  d3-interpolate, d3-scale, d3-shape, d3-selection, d3-transition
  *
  * @example
  * let stackedBar = stackedBar();
@@ -258,7 +257,7 @@ export default function module() {
                     ret[key] = item[key];
                 });
 
-                return assign({}, item, ret);
+                return Object.assign({}, item, ret);
             });
 
         layers = stack3(dataInitial);
@@ -794,7 +793,7 @@ export default function module() {
             })
             .entries(data)
             .map(function (data) {
-                return assign(
+                return Object.assign(
                     {},
                     {
                         total: sum(permute(data.value, stacks)),
