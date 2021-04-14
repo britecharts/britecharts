@@ -62,9 +62,7 @@ exports.noParseD3Vendor = () => ({
 });
 
 exports.externals = () => ({
-    externals: {
-        d3: 'd3',
-    },
+    externals: /^d3-/,
 });
 
 exports.aliasD3ToVendorPath = () => ({
