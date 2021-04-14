@@ -62,6 +62,9 @@
 .britechart-tooltip {
   font-size: 12px; }
 
+.britechart-mini-tooltip {
+  font-size: 16px; }
+
 .vertical-marker-container .vertical-marker {
   fill: none;
   stroke: #d2d6df;
@@ -75,9 +78,6 @@
   fill: rgba(255, 255, 255, 0.9);
   stroke: #d2d6df;
   stroke-width: 1; }
-
-.tooltip-divider {
-  stroke: #d2d6df; }
 
 .britechart-legend .legend-entry {
   font-size: 12px; }
