@@ -12,6 +12,10 @@ $tooltip-value-text-size: 27px;
     font-size: $text-size-medium;
 }
 
+.britechart-mini-tooltip {
+    font-size: $text-size-large;
+}
+
 // Vertical Marker Container
 .vertical-marker-container {
     .vertical-marker {

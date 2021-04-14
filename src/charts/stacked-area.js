@@ -8,7 +8,6 @@ import { line, area, stackOffsetNone, stackOrderNone, stack } from 'd3-shape';
 import { select, mouse, touch } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
 import 'd3-transition';
-import assign from 'lodash/assign';
 
 import { exportChart } from './helpers/export';
 import { dataKeyDeprecationMessage } from './helpers/project';
@@ -383,7 +382,7 @@ export default function module() {
      */
     function buildLayers() {
         dataSortedFormatted = dataSorted
-            .map((d) => assign({}, d, d.values))
+            .map((d) => Object.assign({}, d, d.values))
             .map((d) => {
                 Object.keys(d).forEach((k) => {
                     const entry = d[k];
@@ -393,13 +392,13 @@ export default function module() {
                     }
                 });
 
-                return assign({}, d, {
+                return Object.assign({}, d, {
                     date: castValueToType(d['key'], xAxisValueType),
                 });
             });
 
         dataSortedZeroed = dataSorted
-            .map((d) => assign({}, d, d.values))
+            .map((d) => Object.assign({}, d, d.values))
             .map((d) => {
                 Object.keys(d).forEach((k) => {
                     const entry = d[k];
@@ -409,19 +408,19 @@ export default function module() {
                     }
                 });
 
-                return assign({}, d, {
+                return Object.assign({}, d, {
                     date: castValueToType(d['key'], xAxisValueType),
                 });
             });
 
         let initialTotalsObject = uniq(data.map(getName)).reduce(
-            (memo, key) => assign({}, memo, { [key]: 0 }),
+            (memo, key) => Object.assign({}, memo, { [key]: 0 }),
             {}
         );
 
         let totals = data.reduce(
             (memo, item) =>
-                assign({}, memo, {
+                Object.assign({}, memo, {
                     [item.name]: (memo[item.name] += item.value),
                 }),
             initialTotalsObject
@@ -500,7 +499,7 @@ export default function module() {
             nameToColorMap ||
             order.reduce(
                 (memo, topic, index) =>
-                    assign({}, memo, { [topic]: colorSchema[index] }),
+                    Object.assign({}, memo, { [topic]: colorSchema[index] }),
                 {}
             );
     }
@@ -993,7 +992,7 @@ export default function module() {
             .key(getDate)
             .entries(data.sort((a, b) => a.date - b.date))
             .map((d) => {
-                return assign({}, d, {
+                return Object.assign({}, d, {
                     date: castValueToType(d.key, xAxisValueType),
                 });
             });

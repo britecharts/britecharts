@@ -9,7 +9,6 @@ import { interpolateNumber, interpolateRound } from 'd3-interpolate';
 import { scaleLinear, scaleBand, scaleOrdinal } from 'd3-scale';
 import { select, mouse } from 'd3-selection';
 import 'd3-transition';
-import assign from 'lodash/assign';
 
 import { exportChart } from './helpers/export';
 import { dataKeyDeprecationMessage } from './helpers/project';
@@ -51,7 +50,7 @@ const uniq = (arrArg) =>
  * @module Grouped-bar
  * @tutorial grouped-bar
  * @requires d3-array, d3-axis, d3-color, d3-collection, d3-dispatch, d3-ease,
- *  d3-interpolate, d3-scale, d3-selection, d3-transition, lodash assign
+ *  d3-interpolate, d3-scale, d3-selection, d3-transition
  *
  * @example
  * let groupedBar = GroupedBar();
@@ -261,7 +260,7 @@ export default function module() {
                 ret[key] = item[key];
             });
 
-            return assign({}, item, ret);
+            return Object.assign({}, item, ret);
         });
     }
 
@@ -815,7 +814,7 @@ export default function module() {
             })
             .entries(data)
             .map(function (data) {
-                return assign(
+                return Object.assign(
                     {},
                     {
                         total: sum(permute(data.value, groups)),
