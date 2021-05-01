@@ -440,7 +440,7 @@ describe('Line Chart', () => {
             });
 
             describe('axis Labels', () => {
-                describe("when axis labels aren't set", () => {
+                describe('when axis labels are not set', () => {
                     beforeEach(() => {
                         const fixture =
                             '<div id="fixture"><div class="test-container"></div></div>';

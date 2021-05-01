@@ -33,6 +33,7 @@
     ],
     "scripts": {
         "build": "webpack --env=production",
+        "check": "yarn run lint:styles && yarn run lint:js && yarn test:once",
         "clean": "yarn cache clean && rimraf node_modules",
         "demos:compile": "webpack --progress --colors --env=demos",
         "demos:serve": "webpack-dev-server --content-base docs/ --inline --hot --port 8001 --env=demos",
@@ -40,6 +41,8 @@
         "docs": "webpack --env=demos && yarn run styles && grunt docs",
         "format": "prettier --loglevel warn --write \"**/*.{js,css}\"",
         "lint:fix": "eslint src/charts/ webpack.*.js --cache --fix",
+        "lint:js": "yarn run lint",
+        "lint:styles": "yarn run stylelint",
         "lint": "eslint src/charts/ src/tasks test/ webpack.*.js --cache",
         "posttest": "npm run format",
         "prebuild": "yarn run styles",
@@ -52,6 +55,8 @@
         "stylelint:fix": "stylelint '**/*.scss' --fix",
         "stylelint": "stylelint '**/*.scss'",
         "styles": "grunt lint && grunt sass && grunt cssmin",
+        "test:ci": "karma start --single-run --browsers PhantomJS --env=test",
+        "test:once": "karma start --single-run",
         "test:travis": "karma start --single-run --browsers PhantomJS --env=test",
         "test": "karma start --env=test"
     },

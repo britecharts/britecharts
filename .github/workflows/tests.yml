@@ -1,0 +1,36 @@
+---
+jobs:
+  tests:
+    name: node ${{ matrix.node-version }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+      - name: Install Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Yarn 📦
+        run: npm i -g yarn@1.19.1
+      - name: Install Dependencies ⏬
+        run: yarn --frozen-lockfile
+      - name: Build Library 🔧
+        run: yarn build
+      - name: Generate Docs 📃
+        run: yarn run docs
+      - name: Linting Styles 🌈
+        run: yarn lint:styles
+      - name: Linting Code 🗃
+        run: yarn lint:js
+      - name: Testing Library 🕵️‍♀️
+        run: yarn test:ci
+    strategy:
+      matrix:
+        node-version:
+          - 12.x
+        os:
+          - ubuntu-latest
+name: tests
+'on':
+  - push
+  - pull_request
