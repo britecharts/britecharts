@@ -4,8 +4,8 @@ $line-width: 1;
 $dot-size: 0;
 
 .sparkline {
-    stroke: $grey-500;
     fill: none;
+    stroke: $grey-500;
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: $line-width;

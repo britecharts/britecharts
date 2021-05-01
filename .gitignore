@@ -46,3 +46,6 @@ docs
 *.tgz
 
 .eslintcache
+
+# Github actions sandbox
+.actrc
