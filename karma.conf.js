@@ -34,9 +34,7 @@ module.exports = function (config) {
         // https://github.com/karma-runner/karma-coverage
         coverageReporter: {
             type: 'text',
-            reporters: [
-                {type: 'text'},
-            ],
+            reporters: [{ type: 'text' }],
             check: {
                 global: {
                     statements: 50,
@@ -59,7 +57,6 @@ module.exports = function (config) {
             require('karma-jasmine-jquery'),
             require('karma-coverage'),
             require('karma-chrome-launcher'),
-            require('karma-phantomjs-launcher'),
             require('karma-sourcemap-loader'),
         ],
 
@@ -96,5 +93,12 @@ module.exports = function (config) {
         // Concurrency level
         // how many browser should be started simultaneous
         concurrency: Infinity,
+
+        customLaunchers: {
+            ChromeHeadlessCustom: {
+                base: 'ChromeHeadless',
+                flags: ['--no-sandbox', '--disable-gpu'],
+            },
+        },
     });
 };
