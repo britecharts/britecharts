@@ -7,8 +7,6 @@ const isBrowser = typeof window !== 'undefined';
 const isIE = navigator.msSaveOrOpenBlob;
 const IE_ERROR_MSG =
     'Sorry, this feature is not available for IE. If you require this to work, check this issue https://github.com/eventbrite/britecharts/pull/652';
-const IMAGE_LOAD_DOWNLOAD_ERROR =
-    'Sorry, there was an issue downloading the chart.';
 
 let encoder = isBrowser && window.btoa;
 
@@ -35,6 +33,7 @@ const config = {
     chartBackground: 'white',
     imageSourceBase: 'data:image/svg+xml;base64,',
     titleFontSize: '15px',
+    // eslint-disable-next-line quotes
     titleFontFamily: "'Benton Sans', sans-serif",
     titleTopOffset: 15,
     get styleBackgroundString() {
