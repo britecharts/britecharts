@@ -2,10 +2,10 @@ import { select, selectAll } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
 import PubSub from 'pubsub-js';
 
-import brush from './../../src/charts/brush';
-import line from './../../src/charts/line';
-import tooltip from './../../src/charts/tooltip';
-import { LineDataBuilder } from './../../test/fixtures/lineChartDataBuilder';
+import brush from './../../src/charts/brush/brush';
+import line from './../../src/charts/line/line';
+import tooltip from './../../src/charts/tooltip/tooltip';
+import { LineDataBuilder } from './../../src/charts/line/lineChartDataBuilder';
 import colorSelectorHelper from './helpers/colorSelector';
 
 require('./helpers/resizeHelper');

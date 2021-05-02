@@ -64,51 +64,37 @@ britecharts
     └── tools
 ```
 
-| Folder                 | Description                                                         |
-| ---------------------- | ------------------------------------------------------------------- |
-| **demos**              | Where we keep demo files for each of our charts and some extra docs |
-| **dist**               | Where the production ready versions of our charts will be placed    |
-| **docs**               | Where the generated documentation website lives                     |
-| **src**                | Where we will place the code we create                              |
-| **src/charts**         | Where our charts live                                               |
-| **src/charts/helpers** | Where the helping functions are                                     |
-| **src/styles**         | Where our .scss styles source code is                               |
-| **src/doc**            | Where the templates and configuration for our docs are              |
-| **src/tasks**          | Some of our grunt tasks configuration                               |
-| **test**               | Where our test related files live                                   |
-| **test/fixtures**      | Tools for generate data for our charts demos and tests              |
-| **test/json**          | Raw data for our charts                                             |
-| **test/specs**         | Our tests for the charts                                            |
-| **test/tools**         | Miscelaneous tools                                                  |
+| Folder | Description |
+| --- | --- |
+| **demos** | Where we keep demo files for each of our charts and some extra docs |
+| **dist** | Where the production ready versions of our charts will be placed |
+| **docs** | Where the generated documentation website lives |
+| **src** | Where we will place the code we create |
+| **src/charts/** | Where our charts live |
+| **src/charts/helpers** | Where the helping functions are |
+| **src/styles** | Where our .scss styles source code is |
+| **src/doc** | Where the templates and configuration for our docs are |
+| **src/tasks** | Some of our grunt tasks configuration |
+| **test** | Where our test related config and utilities are |
 
 ## Helpers
 
-**axis**
-Exposes `getTimeSeriesAxis`, the method that allows conditional formatting depending on the time series values.
+**axis** Exposes `getTimeSeriesAxis`, the method that allows conditional formatting depending on the time series values.
 
-**color**
-The color helper contains the objects with the color schemas, the color gradients, and their human-friendly names.
+**color** The color helper contains the objects with the color schemas, the color gradients, and their human-friendly names.
 
-**constants**
-The constants file holds reusable constants that we use through-ought the project.
+**constants** The constants file holds reusable constants that we use through-ought the project.
 
-**date**
-Date related methods like addDays, diffDays, getLocaleDateFormatter and similar.
+**date** Date related methods like addDays, diffDays, getLocaleDateFormatter and similar.
 
-**export**
-This helper provides methods that enable the chart export feature of Britecharts.
+**export** This helper provides methods that enable the chart export feature of Britecharts.
 
-**filter**
-Includes methods for creating SVG effects based on SVG filters. Provides blur and glows.
+**filter** Includes methods for creating SVG effects based on SVG filters. Provides blur and glows.
 
-**load**
-The load helper provides SVG components that render the different loading states Britecharts support. These are bar, donut and line loading states.
+**load** The load helper provides SVG components that render the different loading states Britecharts support. These are bar, donut and line loading states.
 
-**number**
-The number file supports developers by supplying methods that relate to numbers and number formatting. Includes a unique id generator, an integer checker and a method to calculate percentages.
+**number** The number file supports developers by supplying methods that relate to numbers and number formatting. Includes a unique id generator, an integer checker and a method to calculate percentages.
 
-**style**
-Methods for serializing styles used in the export feature.
+**style** Methods for serializing styles used in the export feature.
 
-**text**
-Functions to help with text related operations like wrapping text on a given width, adding ellipsis when not enough space is available or measuring text length.
+**text** Functions to help with text related operations like wrapping text on a given width, adding ellipsis when not enough space is available or measuring text length.

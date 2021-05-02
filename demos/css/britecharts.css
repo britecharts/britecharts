@@ -154,8 +154,8 @@
   stroke-width: 1.2; }
 
 .sparkline {
-  stroke: #adb0b6;
   fill: none;
+  stroke: #adb0b6;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1; }
