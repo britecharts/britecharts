@@ -9,14 +9,14 @@ module.exports = function (config) {
         basePath: '',
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['jasmine-jquery', 'jasmine'],
+        frameworks: ['jasmine'],
         // list of files / patterns to load in the browser
         files: ['tests_index.js'],
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'tests_index.js': ['webpack', 'sourcemap', 'coverage'],
+            'tests_index.js': ['webpack', 'sourcemap'],
         },
 
         webpack: webpackConfig('test'),
@@ -54,7 +54,6 @@ module.exports = function (config) {
         plugins: [
             require('karma-webpack'),
             require('karma-jasmine'),
-            require('karma-jasmine-jquery'),
             require('karma-coverage'),
             require('karma-chrome-launcher'),
             require('karma-sourcemap-loader'),
