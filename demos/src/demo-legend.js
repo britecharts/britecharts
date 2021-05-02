@@ -1,9 +1,9 @@
 import { select, selectAll } from 'd3-selection';
 import PubSub from 'pubsub-js';
 
-import donut from './../../src/charts/donut';
-import legend from './../../src/charts/legend';
-import { DonutDataBuilder } from './../../test/fixtures/donutChartDataBuilder';
+import donut from './../../src/charts/donut/donut';
+import legend from './../../src/charts/legend/legend';
+import { DonutDataBuilder } from './../../src/charts/donut/donutChartDataBuilder';
 import colorSelectorHelper from './helpers/colorSelector';
 
 require('./helpers/resizeHelper');

@@ -1,11 +1,11 @@
 import { select, selectAll } from 'd3-selection';
 import PubSub from 'pubsub-js';
 
-import groupedBarChart from './../../src/charts/grouped-bar';
-import tooltip from './../../src/charts/tooltip';
-import legend from './../../src/charts/legend';
+import groupedBarChart from './../../src/charts/grouped-bar/grouped-bar';
+import tooltip from './../../src/charts/tooltip/tooltip';
+import legend from './../../src/charts/legend/legend';
 
-import { GroupedBarChartDataBuilder } from './../../test/fixtures/groupedBarChartDataBuilder';
+import { GroupedBarChartDataBuilder } from './../../src/charts/grouped-bar/groupedBarChartDataBuilder';
 import colorSelectorHelper from './helpers/colorSelector';
 
 require('./helpers/resizeHelper');

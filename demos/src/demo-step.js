@@ -1,9 +1,9 @@
 import { select, selectAll } from 'd3-selection';
 import PubSub from 'pubsub-js';
 
-import step from './../../src/charts/step';
-import miniTooltip from './../../src/charts/mini-tooltip';
-import { StepDataBuilder } from './../../test/fixtures/stepChartDataBuilder';
+import step from './../../src/charts/step/step';
+import miniTooltip from './../../src/charts/mini-tooltip/mini-tooltip';
+import { StepDataBuilder } from './../../src/charts/step/stepChartDataBuilder';
 
 require('./helpers/resizeHelper');
 

@@ -1,9 +1,9 @@
 import { select, selectAll } from 'd3-selection';
 import PubSub from 'pubsub-js';
 
-import stackedAreaChart from './../../src/charts/stacked-area';
-import tooltip from './../../src/charts/tooltip';
-import { StackedAreaDataBuilder } from './../../test/fixtures/stackedAreaDataBuilder';
+import stackedAreaChart from './../../src/charts/stacked-area/stacked-area';
+import tooltip from './../../src/charts/tooltip/tooltip';
+import { StackedAreaDataBuilder } from './../../src/charts/stacked-area/stackedAreaDataBuilder';
 import colorSelectorHelper from './helpers/colorSelector';
 
 require('./helpers/resizeHelper');

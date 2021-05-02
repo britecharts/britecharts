@@ -2,8 +2,8 @@ import { select, event } from 'd3-selection';
 import { timeFormat } from 'd3-time-format';
 import PubSub from 'pubsub-js';
 
-import brush from './../../src/charts/brush';
-import { BrushDataBuilder } from './../../test/fixtures/brushChartDataBuilder';
+import brush from './../../src/charts/brush/brush';
+import { BrushDataBuilder } from './../../src/charts/brush/brushChartDataBuilder';
 
 require('./helpers/resizeHelper');
 

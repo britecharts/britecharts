@@ -1,5 +1,3 @@
-import path from 'path';
-
 import constants from '../constants/constants';
 import domHelpers from './domHelpers';
 
@@ -16,24 +14,17 @@ const req = require.context('babel-loader!./../../src/charts', true, /^\.\//);
  */
 function _safeLoadDependency(name) {
     try {
-        const moduleName = './' + name + '.js';
+        let moduleName = './' + name + '/' + name + '.js';
+        if (name.indexOf('/') > 0) {
+            moduleName = './' + name + '.js';
+        }
         const moduleFunction = req(moduleName);
-        console.log({ moduleName });
-        console.log({ moduleFunction });
-
-        // console.log('path', path.join('../../src/charts', name));
-        // const fn = require('../../src/charts/' + name + '.js');
-        // const fn = req(name + '.js');
-        // const fn = req(moduleName);
-        // window[name.split('/').pop()] = module;
-        // window[name.split('/').pop()] = require(path.basename('../../src/charts', name));
 
         return {
             chartName: name.split('/').pop(),
             fn: moduleFunction,
         };
     } catch (e) {
-        console.log('catch', e);
         errors.push({
             error: e,
             filePath: name,
@@ -47,7 +38,6 @@ function _safeLoadDependency(name) {
  */
 export default function getCharts() {
     const allModules = [...new Set([...charts, ...chartDependencies])];
-    // allModules = ["bar", "brush", "donut", "grouped-bar", "legend", "line", "sparkline", "step", "stacked-area", "scatter-plot", "helpers/color", "tooltip", "mini-tooltip"]
     const modules = allModules.map(_safeLoadDependency);
 
     if (errors.length) {
