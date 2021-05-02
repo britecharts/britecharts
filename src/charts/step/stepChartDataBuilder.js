@@ -1,6 +1,7 @@
 import _ from 'underscore';
-import jsonStepDataSmall from '../../../test/json/stepDataSmall.json';
-import jsonStepDataMedium from '../../../test/json/stepDataMedium.json';
+
+import jsonStepDataSmall from './stepDataSmall.json';
+import jsonStepDataMedium from './stepDataMedium.json';
 
 export function StepDataBuilder(config) {
     this.Klass = StepDataBuilder;

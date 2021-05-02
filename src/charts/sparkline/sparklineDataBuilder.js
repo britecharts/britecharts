@@ -1,6 +1,7 @@
 import _ from 'underscore';
-import jsonOneSource from '../../../test/json/sparklineOneSource.json';
-import jsonLowValues from '../../../test/json/sparklineLowValues.json';
+
+import jsonOneSource from './sparklineOneSource.json';
+import jsonLowValues from './sparklineLowValues.json';
 
 export function SparklineDataBuilder(config) {
     this.Klass = SparklineDataBuilder;

@@ -1,7 +1,7 @@
 import _ from 'underscore';
-import jsonShortData from '../../../test/json/brushShortData.json';
-import jsonSimpleData from '../../../test/json/brushData.json';
-import jsonMissingData from '../../../test/json/brushMissingData.json';
+import jsonShortData from './brushShortData.json';
+import jsonSimpleData from './brushData.json';
+import jsonMissingData from './brushMissingData.json';
 
 export function BrushDataBuilder(config) {
     this.Klass = BrushDataBuilder;

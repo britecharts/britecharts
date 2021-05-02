@@ -1,6 +1,6 @@
 import _ from 'underscore';
-import jsonColors from '../../../test/json/barColors.json';
-import jsonLetters from '../../../test/json/barDataLetters.json';
+import jsonColors from './barColors.json';
+import jsonLetters from './barDataLetters.json';
 
 export function BarDataBuilder(config) {
     this.Klass = BarDataBuilder;

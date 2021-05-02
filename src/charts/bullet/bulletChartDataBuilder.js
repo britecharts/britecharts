@@ -1,5 +1,4 @@
 import _ from 'underscore';
-import jsonBulletData from '../../../test/json/bulletDataCpuUsage.json';
 
 export function BulletChartDataBuilder(config) {
     this.Klass = BulletChartDataBuilder;
@@ -23,7 +22,31 @@ export function BulletChartDataBuilder(config) {
     };
 
     this.withCpuData = function () {
-        var attributes = _.extend({}, this.config, jsonBulletData);
+        var attributes = _.extend({}, this.config, {
+            data: [
+                {
+                    title: 'CPU 1',
+                    subtitle: 'GHz',
+                    ranges: [1500, 2100, 3500],
+                    measures: [1800, 2200],
+                    markers: [2600],
+                },
+                {
+                    title: 'CPU 2',
+                    subtitle: 'GHz',
+                    ranges: [1300, 1900, 3000],
+                    measures: [1700, 2000],
+                    markers: [1600],
+                },
+                {
+                    title: 'CPU 3',
+                    subtitle: 'GHz',
+                    ranges: [1300, 1500, 2000],
+                    measures: [1500, 1800],
+                    markers: [1950],
+                },
+            ],
+        });
 
         return new this.Klass(attributes);
     };

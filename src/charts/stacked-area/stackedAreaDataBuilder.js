@@ -1,11 +1,12 @@
 import _ from 'underscore';
-import jsonThreeSources from '../../../test/json/areaDataThreeSources.json';
-import jsonSixSources from '../../../test/json/areaDataSixSources.json';
-import jsonSalesChannel from '../../../test/json/areaDataSalesChannel.json';
-import jsonReportService from '../../../test/json/areaDataReportService.json';
-import jsonLargeService from '../../../test/json/areaDataLarge.json';
-import jsonNegativeValues from '../../../test/json/areaDataNegativeValues.json';
-import jsonNumericKeys from '../../../test/json/areaDataNumericKeys.json';
+
+import jsonThreeSources from './areaDataThreeSources.json';
+import jsonSixSources from './areaDataSixSources.json';
+import jsonSalesChannel from './areaDataSalesChannel.json';
+import jsonReportService from './areaDataReportService.json';
+import jsonLargeService from './areaDataLarge.json';
+import jsonNegativeValues from './areaDataNegativeValues.json';
+import jsonNumericKeys from './areaDataNumericKeys.json';
 
 export function StackedAreaDataBuilder(config) {
     this.Klass = StackedAreaDataBuilder;

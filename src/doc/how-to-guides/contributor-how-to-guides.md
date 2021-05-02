@@ -45,7 +45,6 @@ Adding a new chart is a bunch of work, but we hope that using the current code a
 1. On a new terminal, run `yarn run demos:serve` to get ready the docs and turn on the dev server.
 1. Given that your new chart is `chart-name`, create a folder within `src/charts` named `chart-name` and in the same folder a new test file `chart-name.spec.js`.
 1. Create a new data builder file. Name it something like `chartNameChartDataBuilder.js`.
-1. Go to `/test/json` and create a JSON file for the test data of your new chart. Load it with the previously created data builder.
 1. In the chart folder, create a new chart file called `chart-name.js`.
 1. Go to `/demos/src` and create a new demo script for the new chart, add it to `/demos/src/index.js`.
 1. Also in `/demos`, create a new HTML page called `chartName.html` and its .json file with the demo title.

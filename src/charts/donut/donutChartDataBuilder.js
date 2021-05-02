@@ -1,10 +1,11 @@
 import _ from 'underscore';
-import jsonLegendNoQuantity from '../../../test/json/legendDataNoQuantity.json';
-import jsonFivePlusOther from '../../../test/json/donutDataFivePlusOther.json';
-import jsonFivePlusOtherNoPercent from '../../../test/json/donutDataFivePlusOtherNoPercent.json';
-import jsonOneZeroed from '../../../test/json/donutDataOneZeroed.json';
-import jsonAllZeroed from '../../../test/json/donutDataAllZeroed.json';
-import jsonThreeCategories from '../../../test/json/donutDataThreeCategories.json';
+
+import jsonLegendNoQuantity from './legendDataNoQuantity.json';
+import jsonFivePlusOther from './donutDataFivePlusOther.json';
+import jsonFivePlusOtherNoPercent from './donutDataFivePlusOtherNoPercent.json';
+import jsonOneZeroed from './donutDataOneZeroed.json';
+import jsonAllZeroed from './donutDataAllZeroed.json';
+import jsonThreeCategories from './donutDataThreeCategories.json';
 
 export function DonutDataBuilder(config) {
     this.Klass = DonutDataBuilder;

@@ -75,8 +75,7 @@ britecharts
 | **src/styles** | Where our .scss styles source code is |
 | **src/doc** | Where the templates and configuration for our docs are |
 | **src/tasks** | Some of our grunt tasks configuration |
-| **test** | Where our test related utilities live |
-| **test/json** | Raw data for our charts |
+| **test** | Where our test related config and utilities are |
 
 ## Helpers
 

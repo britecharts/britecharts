@@ -1,6 +1,6 @@
 import _ from 'underscore';
-import jsonTwoSources from '../../../test/json/stackbarDataTwoSources.json';
-import jsonThreeSources from '../../../test/json/stackbarDataThreeSources.json';
+import jsonTwoSources from './stackedbarDataTwoSources.json';
+import jsonThreeSources from './stackedbarDataThreeSources.json';
 
 export function StackedBarDataBuilder(config) {
     this.Klass = StackedBarDataBuilder;

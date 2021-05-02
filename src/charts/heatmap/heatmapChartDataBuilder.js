@@ -1,6 +1,7 @@
 import _ from 'underscore';
-import jsonWeeklyBis from '../../../test/json/heatmapWeeklyBis.json';
-import jsonWeekly from '../../../test/json/heatmapWeekly.json';
+
+import jsonWeeklyBis from './heatmapWeeklyBis.json';
+import jsonWeekly from './heatmapWeekly.json';
 
 export function HeatmapDataBuilder(config) {
     this.Klass = HeatmapDataBuilder;
