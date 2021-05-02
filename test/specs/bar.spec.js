@@ -414,12 +414,10 @@ describe('Bar Chart', () => {
                     .nodes();
 
                 expect(bar.attr('fill')).toContain(expectedGradientRefStr);
-                expect(gradientStopEl[0]).toHaveAttr(
-                    'stop-color',
+                expect(gradientStopEl[0].getAttribute('stop-color')).toEqual(
                     expectedGradientColors[0]
                 );
-                expect(gradientStopEl[1]).toHaveAttr(
-                    'stop-color',
+                expect(gradientStopEl[1].getAttribute('stop-color')).toEqual(
                     expectedGradientColors[1]
                 );
             });
