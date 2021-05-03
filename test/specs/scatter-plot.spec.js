@@ -757,6 +757,18 @@ define(['d3', 'scatter-plot', 'scatterPlotDataBuilder'], function(d3, chart, dat
                 expect(actual).toBe(expected);
             });
 
+            it('should provide xAxisFormatType getter and setter', () => {
+                let previous = scatterPlot.xAxisFormatType(),
+                    expected = 'time',
+                    actual;
+
+                scatterPlot.xAxisFormatType(expected);
+                actual = scatterPlot.xAxisFormatType();
+
+                expect(previous).not.toBe(expected);
+                expect(actual).toBe(expected);
+            });
+
             it('should provide xAxisFormat getter and setter', () => {
                 let previous = scatterPlot.xAxisFormat(),
                     expected = '$',

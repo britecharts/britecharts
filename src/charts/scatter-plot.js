@@ -8,6 +8,7 @@ define(function(require) {
     const d3Dispatch = require('d3-dispatch');
     const d3Ease = require('d3-ease');
     const d3Format = require('d3-format');
+    const d3TimeFormat = require('d3-time-format');
     const d3Scale = require('d3-scale');
     const d3Shape = require('d3-shape');
     const d3Selection = require('d3-selection');
@@ -108,6 +109,7 @@ define(function(require) {
         voronoi,
 
         xAxis,
+        xAxisFormatType = 'number',
         xAxisFormat = '',
         xScale,
         yAxis,
@@ -245,7 +247,7 @@ define(function(require) {
             xAxis = d3Axis.axisBottom(xScale)
                 .ticks(xTicks)
                 .tickPadding(tickPadding)
-                .tickFormat(d3Format.format(xAxisFormat));
+                .tickFormat(getXAxisFormat());
 
             yAxis = d3Axis.axisLeft(yScale)
                 .ticks(yTicks)
@@ -620,7 +622,7 @@ define(function(require) {
               .attr('class', 'highlight-x-legend')
               .attr('transform', `translate(0, ${chartHeight - highlightTextLegendOffset})`)
               .attr('x', (xScale(data.x) - (areaScale(data.y) / 2)))
-              .text(`${d3Format.format(xAxisFormat)(data.x)}`);
+              .text(`${getXAxisFormat()(data.x)}`);
         }
 
         /**
@@ -870,7 +872,22 @@ define(function(require) {
             highlightCrossHairLabelsContainer.attr('opacity', opacityIndex);
         }
 
-        // API
+        /**
+         * Gets the formatter function for x-Axis based on `xAxisFormatType` setter
+         * Applies `timeFormat` formatter function if custom `xAxisFormatType`
+         * that is not equal to 'number' is provided
+         * @return {function(String): String}
+         * @private
+         */
+        function getXAxisFormat() {
+            if (xAxisFormatType === 'number') {
+                return d3Format.format(xAxisFormat);
+            } else {
+                return d3TimeFormat.timeFormat(xAxisFormat);
+            }
+        }
+
+        // api
 
         /**
          * Gets or Sets the aspect ratio of the chart
@@ -1199,6 +1216,23 @@ define(function(require) {
                 return xAxisLabelOffset;
             }
             xAxisLabelOffset = _x;
+
+            return this;
+        };
+
+        /**
+         * exposes ability to set the formatter of x-axis values
+         * @param  {string} _x          type of x-axis formatter
+         * @value 'number'
+         * @value 'time'
+         * @return {string | module}    current xAxisFormatType or Chart module to chain calls
+         * @public
+         */
+        exports.xAxisFormatType = function(_x) {
+            if (!arguments.length) {
+                return xAxisFormatType;
+            }
+            xAxisFormatType = _x;
 
             return this;
         };
