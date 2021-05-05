@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+
+<html lang="en" prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>Composing Your First Data Visualization</title>
+
+        
+            <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+            
+                <meta name="keywords" content="Britecharts, D3.js, JavaScript" />
+            
+        
+
+        <!-- Disable tap highlight on IE -->
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="msapplication-config" content="img/icons/browserconfig.xml">
+
+        <!-- Web Application Manifest -->
+        <link rel="manifest" href="manifest.json">
+
+        <!-- Add to homescreen for Chrome on Android -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="application-name" content="Britecharts">
+        <link rel="icon" sizes="192x192" href="img/icons/chrome-touch-icon-192x192.png">
+
+        <!-- Add to homescreen for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#009FA1">
+        <meta name="apple-mobile-web-app-title" content="Britecharts">
+        <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png">
+
+        <!-- MacOS -->
+        <link rel="mask-icon" href="img/icons/safari-pinned-tab.svg" color="#5bbad5">
+
+        <!-- Color the status bar on mobile devices -->
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="img/icons/favicon.ico">
+        <link rel="icon" type="image/png" href="img/icons/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="img/icons/favicon-16x16.png" sizes="16x16">
+
+        
+            <!-- Google / Search Engine Tags -->
+            <meta itemprop="name" content="Britecharts, a D3.js based charting library of reusable components">
+            <meta itemprop="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.">
+            <meta itemprop="image" content="https://britecharts.github.io/britecharts/img/logo-stripes-small.png">
+
+            <!-- Facebook Meta Tags -->
+            <meta property="og:title" content="Britecharts, a D3.js based charting library of reusable components"/>
+            <meta property="og:type" content="website"/>
+            <meta property="og:image" content="https://britecharts.github.io/britecharts/img/logo-stripes-small.png"/>
+            <meta property="og:site_name" content="Britecharts"/>
+            <meta property="og:url" content="http://britecharts.github.io/britecharts/"/>
+            <meta property="og:description" content="Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.">
+
+            <!-- Twitter Meta Tags -->
+            <meta name="twitter:card" content="summary_large_image">
+            <meta name="twitter:site" content="@britecharts" />
+            <meta name="twitter:title" content="Britecharts, a D3.js based charting library of reusable components">
+            <meta name="twitter:description" content="Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+            <meta name="twitter:image" content="https://britecharts.github.io/britecharts/img/logo-stripes-small.png">
+        
+
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <link type="text/css" rel="stylesheet" href="styles/custom.css">
+        <link type="text/css" rel="stylesheet" href="styles/demos.css">
+        <link type="text/css" rel="stylesheet" href="styles/prism.css"  />
+        <link type="text/css" rel="stylesheet" href="styles/britecharts.css" />
+        <script src="/britecharts/scripts/common.js"></script>
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top navbar-default">
+            <div class="container">
+                <a class="ribbon" href="https://github.com/britecharts/britecharts" title="Check this project in github"><svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 250 250" fill="#fff" style="position: absolute; top: 0; right: 0"><path d="M0 0l115 115h15l12 27 108 108V0z" fill="#000"/><path class="octo-arm" d="M128 109c-15-9-9-19-9-19 3-7 2-11 2-11-1-7 3-2 3-2 4 5 2 11 2 11-3 10 5 15 9 16" style="-webkit-transform-origin: 130px 106px; transform-origin: 130px 106px"/><path class="octo-body" d="M115 115s4 2 5 0l14-14c3-2 6-3 8-3-8-11-15-24 2-41 5-5 10-7 16-7 1-2 3-7 12-11 0 0 5 3 7 16 4 2 8 5 12 9s7 8 9 12c14 3 17 7 17 7-4 8-9 11-11 11 0 6-2 11-7 16-16 16-30 10-41 2 0 3-1 7-5 11l-12 11c-1 1 1 5 1 5z"/></svg></a>
+            	<div class="navbar-header">
+            		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="img/britecharts-logo.svg"
+            		alt="Britecharts - D3.js based charting library of reusable components"/></a>
+            		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+                    </button>
+            	</div>
+            	<div class="navbar-collapse collapse" id="topNavigation">
+            		<ul class="nav navbar-nav navbar-right">
+            			
+                        
+            			<li class="">
+            				<a href="tutorials-index.html" >Tutorials<b class=""></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="">
+            				<a href="how-to-index.html" >How-To Guides<b class=""></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="tutorials.list.html"  class="dropdown-toggle" data-toggle="dropdown" >Demos<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="tutorial-bar.html">Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-brush.html">Brush Chart</a></li>
+                                
+                                <li><a href="tutorial-bullet.html">Bullet Chart</a></li>
+                                
+                                <li><a href="tutorial-color.html">Color Palettes</a></li>
+                                
+                                <li><a href="tutorial-donut.html">Donut Chart</a></li>
+                                
+                                <li><a href="tutorial-grouped-bar.html">Grouped Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-heatmap.html">Heatmap Chart</a></li>
+                                
+                                <li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li>
+                                
+                                <li><a href="tutorial-legend.html">Legend Chart</a></li>
+                                
+                                <li><a href="tutorial-line.html">Line Chart</a></li>
+                                
+                                <li><a href="tutorial-scatter-plot.html">Scatter Plot</a></li>
+                                
+                                <li><a href="tutorial-sparkline.html">Sparkline Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-bar.html">Stacked Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-step.html">Step Chart</a></li>
+                                
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="modules.list.html"  class="dropdown-toggle" data-toggle="dropdown" >API<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="module-Bar.html">Bar</a></li>
+                                
+                                <li><a href="module-Brush.html">Brush</a></li>
+                                
+                                <li><a href="module-Bullet.html">Bullet</a></li>
+                                
+                                <li><a href="module-Donut.html">Donut</a></li>
+                                
+                                <li><a href="module-Grouped-bar.html">Grouped-bar</a></li>
+                                
+                                <li><a href="module-Heatmap.html">Heatmap</a></li>
+                                
+                                <li><a href="module-Legend.html">Legend</a></li>
+                                
+                                <li><a href="module-Line.html">Line</a></li>
+                                
+                                <li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li>
+                                
+                                <li><a href="module-Scatter-plot.html">Scatter-plot</a></li>
+                                
+                                <li><a href="module-Sparkline.html">Sparkline</a></li>
+                                
+                                <li><a href="module-Stacked-area.html">Stacked-area</a></li>
+                                
+                                <li><a href="module-Stacked-bar.html">Stacked-bar</a></li>
+                                
+                                <li><a href="module-Step.html">Step</a></li>
+                                
+                                <li><a href="module-Tooltip.html">Tooltip</a></li>
+                                
+                                <li><a href="global.html">Types</a></li>
+                                
+            				</ul>
+            			</li>
+            			
+                        <li class="dropdown">
+                            <a class="github-link" href="https://twitter.com/britecharts">Twitter</a>
+                        </li>
+            		</ul>
+                    
+                        <div class="col-sm-12 col-md-3 no-gutter pull-right">
+                            <form class="navbar-form" role="search">
+                                <div class="input-group search-container clearfix">
+                                    <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" id="search-submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <main class="container" id="toc-content">
+            <div class="row">
+            	
+            	<div class="col-md-9 col-lg-7 col-lg-offset-1 is-source ">
+            	
+            		<div id="main">
+            			
+
+	
+	<!--h1 class="page-title">Composing Your First Data Visualization</h1-->
+	
+	
+
+
+
+
+    <section class="readme-section tutorial">
+        <article>
+            <h1>Composing Your First Data Visualization</h1>
+<p>In the <a href="http://britecharts.github.io/britecharts/getting-started.html">Getting Started Guide</a>, we saw how to set up a responsive Bar chart using Britecharts. This tutorial was easy to follow; however, most of the times our real-world requirements include other components to help communicate our data.</p>
+<p>In this tutorial, we will create a complex data visualization. You will learn how to draw a line chart with a tooltip, how to add a legend and a data filtering tool using a brush chart.</p>
+<h2>Rendering a line chart</h2>
+<p>Let's build on top of the Bar Chart tutorial by using its code structure. This time, we download the full library bundle instead of just one chart:</p>
+<pre class="prettyprint source lang-html"><code>&lt;script src=&quot;https://cdn.jsdelivr.net/npm/britecharts@2.10.0/dist/bundled/britecharts.min.js&quot;>&lt;/script>
+</code></pre>
+<p>Then, we will instantiate a line chart:</p>
+<pre class="prettyprint source lang-js"><code>const lineChart = britecharts.line();
+</code></pre>
+<p>The shape of our data changed as well. We need to check the <a href="http://britecharts.github.io/britecharts/global.html#LineChartData">line chart data schema</a> for this chart. In our case, it looks like this:</p>
+<pre class="prettyprint source lang-js"><code>const lineData = {
+    &quot;dataByTopic&quot;: [
+        {
+            &quot;topic&quot;: -1,
+            &quot;topicName&quot;: &quot;Vivid&quot;,
+            &quot;dates&quot;: [
+                {
+                    &quot;value&quot;: 0,
+                    &quot;date&quot;: &quot;2016-08-01T00:00:00-07:00&quot;
+                },
+                {
+                    &quot;value&quot;: 3,
+                    &quot;date&quot;: &quot;2016-08-02T00:00:00-07:00&quot;
+                },
+                ...
+            ]
+        }
+    ]
+};
+</code></pre>
+<p>Before configuring the chart, we figure out the container's size to apply it as the chart width:</p>
+<pre class="prettyprint source lang-js"><code>const containerWidth = container.node().getBoundingClientRect().width;
+</code></pre>
+<p>Configuring and rendering the line chart follows an identical approach as with the bar chart:</p>
+<pre class="prettyprint source lang-js"><code>lineChart
+    .margin({bottom: 50})
+    .height(400)
+    .width(containerWidth);
+
+container.datum(lineData).call(lineChart);
+</code></pre>
+<p>That renders the following chart:
+<img src="https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/simple-line-chart.png" alt="Simple Line Chart"></p>
+<h2>Adding a Tooltip</h2>
+<p>Now that we have a line chart working, we are going to add a tooltip to allow users to check the specific values on each date. We start by instantiating a new <a href="http://britecharts.github.io/britecharts/module-Tooltip.html">Tooltip component</a>:</p>
+<pre class="prettyprint source lang-js"><code>const chartTooltip = tooltip();
+</code></pre>
+<p>In the next step, we are going to bind the events triggering when users hover, move or exit the line chart to the tooltip. The methods from the tooltip we are going to use are <code>show</code>, <code>update</code> and <code>hide</code>. Let's see how:</p>
+<pre class="prettyprint source lang-js"><code>lineChart
+    .margin({bottom: 50})
+    .height(400)
+    .width(containerWidth)
+    .on('customMouseOver', chartTooltip.show)
+    .on('customMouseMove', chartTooltip.update)
+    .on('customMouseOut', chartTooltip.hide);
+</code></pre>
+<p>Following the previous code, we expect the tooltip to appear whenever the user passes his mouse over the chart. It should hide when the mouse goes out of the area of the chart. Finally, the tooltip should update its values whenever the mouse moves within the limits of the chart.</p>
+<p>We still have to attach the tooltip to the rendered line chart. For that, and <em>only after we render the line chart</em>, we draw the tooltip inside the <code>metadata-group</code> within the line. Let's see it in code:</p>
+<pre class="prettyprint source lang-js"><code>const tooltipContainer = d3.select('.line-container .metadata-group .hover-marker');
+
+tooltipContainer.call(chartTooltip);
+</code></pre>
+<p>After the previous code, we will see a tooltip like the following:
+<img src="https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/line-chart-tooltip.png" alt="Line Chart with Tooltip"></p>
+<h2>Drawing a Legend</h2>
+<p>Up to now, we have been working with a dataset that contains only one topic. But what happens if we have two topics? In this section, we will update our data to contain another set of entries. We add a legend component to show our users which line corresponds to which topic.</p>
+<p>First, we make a copy of the topic we already have and change some values. We named the new topic &quot;Radiant,&quot; and due to our default color schema, it shows as a dark green line.</p>
+<p>Now we instantiate our new <a href="http://britecharts.github.io/britecharts/module-Legend.html">legend component</a>:</p>
+<pre class="prettyprint source lang-js"><code>const chartLegend = britecharts.legend();
+</code></pre>
+<p>The same way as we needed a container for the chart, we require another for the legend. To do it, we first create a div:</p>
+<pre class="prettyprint source lang-html"><code>&lt;div class=&quot;legend-container&quot;>&lt;/div>
+</code></pre>
+<p>And then select the container with a D3.js selection and save the reference:</p>
+<pre class="prettyprint source lang-js"><code>const legendContainer = d3.select('.legend-container');
+</code></pre>
+<p>The legend is a component that depends on the data and in a specific data shape. We check the Legend data schema, and it needs to be:</p>
+<pre class="prettyprint source lang-json"><code>[
+    {
+        id: 1,
+        quantity: 2,
+        name: 'glittering'
+    },
+    {
+        id: 2,
+        quantity: 3,
+        name: 'luminous'
+    }
+]
+</code></pre>
+<p>As we want to show an inline legend, which doesn't show the quantity, we only need to pass an array with our topic names, an id, and a random quantity. Here is how we create that data:</p>
+<pre class="prettyprint source lang-js"><code>const legendData = lineData.dataByTopic.map(
+    ({topicName, topic}) => ({
+            id: topic,
+            name: topicName,
+            quantity: 0
+    })
+);
+</code></pre>
+<p>And we are ready to configure and draw the legend:</p>
+<pre class="prettyprint source lang-js"><code>chartLegend
+    .width(containerWidth)
+    .height(60)
+    .isHorizontal(true);
+
+legendContainer.datum(legendData).call(chartLegend);
+</code></pre>
+<p>Note how we have used the container width to position the legend in the center. You can see the rest of the options of the legend component in its <a href="http://britecharts.github.io/britecharts/module-Legend.html">API reference page</a>.</p>
+<p>The resulting chart is:
+<img src="https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/line-chart-legend.png" alt="Line Chart with Legend"></p>
+<h2>Filtering Data with a Brush</h2>
+<p>Our current data is not that extensive, but in theory, our line chart could render datasets of any size. This could be a problem as we could get into a position where the data points get too close, and our users can't see the details of the data. One way of fixing this is by allowing to filter data, and the way we do it visually is by using a brush chart.</p>
+<p>In this section, we go over the process of adding a brush chart to our visualization, allowing to drag and drop a section of the data to zoom in that period.</p>
+<h3>Creating the brush chart</h3>
+<p>Let's first instantiate the brush chart and its container:</p>
+<pre class="prettyprint source lang-js"><code>const chartBrush = britecharts.brush();
+const brushContainer = d3.select('.brush-container');
+</code></pre>
+<p>We would need to add the container to the DOM:</p>
+<pre class="prettyprint source lang-html"><code>&lt;div class=&quot;brush-container&quot;>&lt;/div>
+</code></pre>
+<p>Now, as we did before, we are going to check the <a href="http://britecharts.github.io/britecharts/module-Brush.html">Brush Chart API</a> and its <a href="http://britecharts.github.io/britecharts/global.html#BrushChartData">data schema</a>. The data needs to look like this:</p>
+<pre class="prettyprint source lang-json"><code>[
+    {
+        value: 1,
+        date: &quot;2011-01-06T00:00:00Z&quot;
+    },
+    {
+        value: 2,
+        date: &quot;2011-01-07T00:00:00Z&quot;
+    }
+]
+</code></pre>
+<p>So, in order to get this data shape, we will need to do some modifications to our line chart data:</p>
+<pre class="prettyprint source lang-js"><code>const brushData = lineData.dataByTopic
+    .reduce(getDateAndValueReducer, [])
+    .reduce(consolidateDatesReducer, []);
+</code></pre>
+<p>In the first reducer function, we obtain the entries by date, keeping only date and values. On the second one, we remove duplicated dates and sum up the values to have an aggregate of them. You can check the details of these functions in the <a href="https://github.com/britecharts/britecharts/blob/master/src/doc/html/tutorial-composing-dataviz.html">final code</a>.</p>
+<p>Now we are ready to configure and render our brush using the usual pattern:</p>
+<pre class="prettyprint source lang-js"><code>chartBrush
+    .width(containerWidth)
+    .height(100)
+    .xAxisFormat(chartBrush.axisTimeCombinations.DAY_MONTH)
+    .margin({top:0, bottom: 40, left: 50, right: 30});
+
+brushContainer.datum(brushData).call(chartBrush);
+</code></pre>
+<p>Notice that we are setting the x-axis format to a constant called <code>DAY_MONTH</code> within the axisTimeCombinations object. This <code>xAxisFormat</code> option is a way for us to select a date format that works for our data. In this case, it is the day of the month, as the default one (hours) was showing the same hour every day.</p>
+<p>This code renders a simple Brush chart:
+<img src="https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/simple-brush-chart.png" alt="Simple Brush Chart"></p>
+<p>This chart only serves as an overview of the sum of data in our dataset. What we want to do is, when we drag and drop a section of the brush, select that portion of our dataset and re-render the line chart with it.</p>
+<p>For that, we listen to the <code>customBrushEnd</code> event on the brush, that returns the period of the brush selection. We take the beginning and end of that period and filter our original data with them. Finally, we apply it to the line chart and re-render. Here is the code for it:</p>
+<pre class="prettyprint source lang-js"><code>chartBrush
+    .width(containerWidth)
+    .height(100)
+    .xAxisFormat(chartBrush.axisTimeCombinations.DAY_MONTH)
+    .margin({ top: 0, bottom: 40, left: 50, right: 30 })
+    .on('customBrushEnd', ([brushStart, brushEnd]) => {
+        if (brushStart && brushEnd) {
+            let filteredLineData = filterData(brushStart, brushEnd);
+
+            container.datum(filteredLineData).call(lineChart);
+        }
+    });
+</code></pre>
+<p>This results in a data visualization where we can focus on different sections of the data, and use our tooltip to see the values on those:
+<img src="https://raw.githubusercontent.com/britecharts/britecharts/master/src/doc/images/tutorials/line-chart-with-brush-tooltip-legend.png" alt="Line with Brush, Tooltip and Legend"></p>
+<p>Here is the filtering logic for your reference:</p>
+<pre class="prettyprint source lang-js"><code>const isInRange = (startDate, endDate, {date}) => new Date(date) >= startDate && new Date(date) &lt;= endDate;
+const filterData = (brushStart, brushEnd) => {
+    // Copy the original data
+    let data = JSON.parse(JSON.stringify(lineData));
+
+    // Filter the data that is within the given range
+    data.dataByTopic = data.dataByTopic.map((topic) => {
+        topic.dates = topic.dates.filter(isInRange.bind(null, brushStart, brushEnd));
+
+        return topic;
+    });
+
+    return data;
+};
+</code></pre>
+<p>You can see the full code of this tutorial <a href="https://github.com/britecharts/britecharts/blob/master/src/doc/html/tutorial-composing-dataviz.html">in this file</a> and the <a href="http://britecharts.github.io/britecharts/tutorial-composing-dataviz.html">tutorial working here</a>.</p>
+<h2>Summary</h2>
+<p>In this tutorial, we have seen how we can use different support components like the legend and tooltip to provide information about our charts. We also saw how we could use the brush chart to provide a high-level view of our dataset. We saw how to configure the brush to filter the data and how to reload our main chart with this new data.</p>
+<p>To learn more, you can read our <a href="http://britecharts.github.io/britecharts/styling-dataviz.html">Styling Britecharts tutorial</a> or check our demos and documentation. If you decided to use Britecharts in your project, you could follow the <a href="http://britecharts.github.io/britecharts/installing-britecharts.html">Installing Britecharts tutorial</a> to learn what's the better way to use Britecharts. Check also the <a href="http://britecharts.github.io/britecharts/topics-index.html">Topics page</a> to learn more about our approach.</p>
+<p>If you are excited about Britecharts, want to add more configurable properties or even create your own chart, please check our [Contributing Guide][contribute]. In it, we walk you through the development environment setup, running our docs and demos and creating new Pull Requests.</p>
+        </article>
+    </section>
+
+
+
+
+
+
+
+            		</div>
+            	</div>
+            	
+            		<div class="col-md-3 col-lg-2">
+            			<div id="toc" class="col-md-3 col-lg-3 affix hidden-xs hidden-sm">
+                            <div style="padding-left:14px">
+                                <h4>Loving this project?</h4>
+                                <iframe src="https://github.com/sponsors/britecharts/button" title="Sponsor britecharts" height="35" width="130" style="border: 0; margin-bottom: 20px;"></iframe>
+                                <h4>Learn more about Britecharts</h4>
+                                <a
+                                    class="book-container"
+                                    href="http://bit.ly/pro-d3"
+                                    target="_blank"
+                                    rel="noreferrer noopener"
+                                >
+                                    <div class="book">
+                                        <img
+                                            alt="Marcos Iglesias - Pro D3.js cover"
+                                            src="https://images.springer.com/sgw/books/medium/9781484252024.jpg"
+                                        />
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+            		</div>
+            	
+            	<div class="clearfix"></div>
+            </div>
+        </main>
+
+        
+            <div class="modal fade" id="searchResults">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Search results</h4>
+                  </div>
+                  <div class="modal-body"></div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+
+        <footer class="footer">
+            
+            
+            <span class="jsdoc-message">
+            	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.1</a>
+            	
+            	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+            </span>
+        </footer>
+
+        <script src="/britecharts/scripts/docstrap.lib.js"></script>
+        <script src="/britecharts/scripts/toc.js"></script>
+        
+            <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
+        
+
+        <script src="/britecharts/scripts/prism.js"></script>
+        <script>
+        $( function () {
+        	$( "[id*='$']" ).each( function () {
+        		var $this = $( this );
+
+        		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+        	} );
+
+            // Highlight with prism
+            $( "pre.prettyprint.source" )
+                .each( function () {
+                    var $this = $( this );
+                    var example = $this.find( "code" );
+
+                    $this
+                        .wrap("<pre class='language-javascript' ></pre>" )
+                        .wrap("<code class='language-javascript'></code>" )
+                        .addClass( "language-javascript" )
+                        .html( example.html() );
+                } );
+
+        	$.catchAnchorLinks( {
+                navbarOffset: 10
+        	} );
+        	$( "#toc" ).toc( {
+        		anchorName  : function ( i, heading, prefix ) {
+        			return $( heading ).attr( "id" ) || ( prefix + i );
+        		},
+        		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+        		showAndHide : false,
+        		smoothScrolling: true
+        	} );
+
+        	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+        	$( '.dropdown-toggle' ).dropdown();
+
+            $( "table" ).each( function () {
+              var $this = $( this );
+              $this.addClass('table');
+            } );
+        } );
+        </script>
+
+
+        <!--Navigation and Symbol Display-->
+        
+
+        <!--Google Analytics-->
+        
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
+            <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-W3BQXCKSD9');
+            </script>
+        
+
+        <!-- Search Init -->
+        
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    SearcherDisplay.init();
+                });
+            </script>
+        
+    </body>
+</html>

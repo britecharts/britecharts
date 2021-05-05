@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tutorial - Composing Data Visualizations with Britecharts</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/britecharts/dist/css/britecharts.min.css"
+        type="text/css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/britecharts@2.10.0/dist/bundled/britecharts.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js" type="text/javascript" /></script>
+</head>
+
+<body>
+    <section style="padding: 50px;">
+        <h1>Composing a Data Visualization</h1>
+        <div class="line-container"></div>
+        <div class="legend-container"></div>
+        <div class="brush-container"></div>
+    </section>
+
+    <script>
+        // Instantiate Line Chart
+        const lineChart = britecharts.line();
+        const chartTooltip = britecharts.tooltip();
+        const chartLegend = britecharts.legend();
+        const chartBrush = britecharts.brush();
+
+        const container = d3.select('.line-container');
+        const legendContainer = d3.select('.legend-container');
+        const brushContainer = d3.select('.brush-container');
+
+        const containerWidth = container.node().getBoundingClientRect().width;
+
+        // Create Dataset with proper shape
+        const lineData = {
+            "dataByTopic": [
+                {
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "dates": [
+                        {
+                            "value": 0,
+                            "date": "2016-08-01T00:00:00-07:00"
+                        },
+                        {
+                            "value": 3,
+                            "date": "2016-08-02T00:00:00-07:00"
+                        },
+                        {
+                            "value": 1,
+                            "date": "2016-08-03T00:00:00-07:00"
+                        },
+                        {
+                            "value": 3,
+                            "date": "2016-08-04T00:00:00-07:00"
+                        },
+                        {
+                            "value": 3,
+                            "date": "2016-08-05T00:00:00-07:00"
+                        },
+                        {
+                            "value": 0,
+                            "date": "2016-08-06T00:00:00-07:00"
+                        },
+                        {
+                            "value": 1,
+                            "date": "2016-08-07T00:00:00-07:00"
+                        },
+                        {
+                            "value": 1,
+                            "date": "2016-08-08T00:00:00-07:00"
+                        },
+                        {
+                            "value": 0,
+                            "date": "2016-08-09T00:00:00-07:00"
+                        },
+                        {
+                            "value": 3,
+                            "date": "2016-08-10T00:00:00-07:00"
+                        },
+                        {
+                            "value": 4,
+                            "date": "2016-08-11T00:00:00-07:00"
+                        },
+                        {
+                            "value": 4,
+                            "date": "2016-08-12T00:00:00-07:00"
+                        },
+                        {
+                            "value": 2,
+                            "date": "2016-08-13T00:00:00-07:00"
+                        },
+                        {
+                            "value": 3,
+                            "date": "2016-08-14T00:00:00-07:00"
+                        },
+                        {
+                            "value": 0,
+                            "date": "2016-08-15T00:00:00-07:00"
+                        },
+                        {
+                            "value": 1,
+                            "date": "2016-08-16T00:00:00-07:00"
+                        },
+                        {
+                            "value": 0,
+                            "date": "2016-08-17T00:00:00-07:00"
+                        },
+                        {
+                            "value": 2,
+                            "date": "2016-08-18T00:00:00-07:00"
+                        },
+                        {
+                            "value": 5,
+                            "date": "2016-08-19T00:00:00-07:00"
+                        },
+                        {
+                            "value": 1,
+                            "date": "2016-08-20T00:00:00-07:00"
+                        },
+                        {
+                            "value": 2,
+                            "date": "2016-08-21T00:00:00-07:00"
+                        },
+                        {
+                            "value": 8,
+                            "date": "2016-08-22T00:00:00-07:00"
+                        },
+                        {
+                            "value": 4,
+                            "date": "2016-08-23T00:00:00-07:00"
+                        },
+                        {
+                            "value": 3,
+                            "date": "2016-08-24T00:00:00-07:00"
+                        },
+                        {
+                            "value": 2,
+                            "date": "2016-08-25T00:00:00-07:00"
+                        },
+                        {
+                            "value": 5,
+                            "date": "2016-08-26T00:00:00-07:00"
+                        }
+                    ]
+                },
+                {
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "dates": [
+                        {
+                            "value": 3,
+                            "date": "2016-08-01T00:00:00-07:00"
+                        },
+                        {
+                            "value": 2,
+                            "date": "2016-08-02T00:00:00-07:00"
+                        },
+                        {
+                            "value": 2,
+                            "date": "2016-08-03T00:00:00-07:00"
+                        },
+                        {
+                            "value": 1,
+                            "date": "2016-08-04T00:00:00-07:00"
+                        },
+                        {
+                            "value": 0,
+                            "date": "2016-08-05T00:00:00-07:00"
+                        },
+                        {
+                            "value": 2,
+                            "date": "2016-08-06T00:00:00-07:00"
+                        },
+                        {
+                            "value": 3,
+                            "date": "2016-08-07T00:00:00-07:00"
+                        },
+                        {
+                            "value": 4,
+                            "date": "2016-08-08T00:00:00-07:00"
+                        },
+                        {
+                            "value": 3,
+                            "date": "2016-08-09T00:00:00-07:00"
+                        },
+                        {
+                            "value": 4,
+                            "date": "2016-08-10T00:00:00-07:00"
+                        },
+                        {
+                            "value": 2,
+                            "date": "2016-08-11T00:00:00-07:00"
+                        },
+                        {
+                            "value": 1,
+                            "date": "2016-08-12T00:00:00-07:00"
+                        },
+                        {
+                            "value": 3,
+                            "date": "2016-08-13T00:00:00-07:00"
+                        },
+                        {
+                            "value": 1,
+                            "date": "2016-08-14T00:00:00-07:00"
+                        },
+                        {
+                            "value": 2,
+                            "date": "2016-08-15T00:00:00-07:00"
+                        },
+                        {
+                            "value": 0,
+                            "date": "2016-08-16T00:00:00-07:00"
+                        },
+                        {
+                            "value": 1,
+                            "date": "2016-08-17T00:00:00-07:00"
+                        },
+                        {
+                            "value": 3,
+                            "date": "2016-08-18T00:00:00-07:00"
+                        },
+                        {
+                            "value": 3,
+                            "date": "2016-08-19T00:00:00-07:00"
+                        },
+                        {
+                            "value": 2,
+                            "date": "2016-08-20T00:00:00-07:00"
+                        },
+                        {
+                            "value": 3,
+                            "date": "2016-08-21T00:00:00-07:00"
+                        },
+                        {
+                            "value": 1,
+                            "date": "2016-08-22T00:00:00-07:00"
+                        },
+                        {
+                            "value": 2,
+                            "date": "2016-08-23T00:00:00-07:00"
+                        },
+                        {
+                            "value": 3,
+                            "date": "2016-08-24T00:00:00-07:00"
+                        },
+                        {
+                            "value": 4,
+                            "date": "2016-08-25T00:00:00-07:00"
+                        },
+                        {
+                            "value": 6,
+                            "date": "2016-08-26T00:00:00-07:00"
+                        }
+                    ]
+                }
+            ]
+        };
+
+        // Configure chart
+        lineChart
+            .margin({bottom: 50})
+            .height(400)
+            .width(containerWidth)
+            .on('customMouseOver', chartTooltip.show)
+            .on('customMouseMove', chartTooltip.update)
+            .on('customMouseOut', chartTooltip.hide);
+
+        container.datum(lineData).call(lineChart);
+
+        // Attach tooltip to line chart
+        const tooltipContainer = d3.select('.line-container .metadata-group .hover-marker');
+        tooltipContainer.call(chartTooltip);
+
+        // Get the legend data
+        const legendData = lineData.dataByTopic.map(
+            ({ topicName, topic }) => ({
+                id: topic,
+                name: topicName,
+                quantity: 0
+            })
+        );
+
+        // Configure and draw Legend
+        chartLegend
+            .height(60)
+            .width(containerWidth)
+            .isHorizontal(true);
+
+        legendContainer.datum(legendData).call(chartLegend);
+
+        // Get the data format for the brush
+        const getDateAndValueReducer = (accum, topic) => {
+            topic.dates.forEach((date) => {
+                accum.push({
+                    date: date.date,
+                    value: date.value
+                });
+            });
+
+            return accum;
+        };
+        const consolidateDatesReducer = (accum, d) => {
+            let found;
+
+            accum.forEach((item) => {
+                if (item.date === d.date) {
+                    item.value = item.value + d.value;
+                    found = true;
+
+                    return;
+                }
+            });
+
+            if (found) {
+                return accum;
+            }
+
+            return [d, ...accum];
+        };
+        const brushData = lineData.dataByTopic
+            .reduce(getDateAndValueReducer, [])
+            .reduce(consolidateDatesReducer, []);
+        const isInRange = (startDate, endDate, {date}) => new Date(date) >= startDate && new Date(date) <= endDate;
+        const filterData = (brushStart, brushEnd) => {
+            // Copy the data
+            let data = JSON.parse(JSON.stringify(lineData));
+
+            // data.dataByDate = data.dataByDate.filter(isInRange.bind(null, brushStart, brushEnd));
+
+            data.dataByTopic = data.dataByTopic.map((topic) => {
+                topic.dates = topic.dates.filter(isInRange.bind(null, brushStart, brushEnd));
+
+                return topic;
+            });
+
+            return data;
+        };
+
+        // Configure the brush chart
+        chartBrush
+            .width(containerWidth)
+            .height(100)
+            .xAxisFormat(chartBrush.axisTimeCombinations.DAY_MONTH)
+            .margin({ top: 0, bottom: 40, left: 50, right: 30 })
+            .on('customBrushEnd', function ([brushStart, brushEnd]) {
+                if (brushStart && brushEnd) {
+                    let filteredLineData = filterData(brushStart, brushEnd);
+
+                    container.datum(filteredLineData).call(lineChart);
+                }
+            });
+
+        brushContainer.datum(brushData).call(chartBrush);
+
+
+        const redrawChart = () => {
+            const newContainerWidth = container.node() ? container.node().getBoundingClientRect().width : false;
+
+            // Setting the new width on the chart
+            lineChart.width(newContainerWidth);
+
+            // Rendering the chart again
+            container.call(lineChart);
+        };
+        const throttledRedraw = _.throttle(redrawChart, 200);
+
+        window.addEventListener("resize", throttledRedraw);
+    </script>
+</body>
+
+</html>

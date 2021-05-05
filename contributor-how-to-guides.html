@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html lang="en" prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>Contributor How-To Guides</title>
+
+        
+            <meta name="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+            
+                <meta name="keywords" content="Britecharts, D3.js, JavaScript" />
+            
+        
+
+        <!-- Disable tap highlight on IE -->
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="msapplication-config" content="img/icons/browserconfig.xml">
+
+        <!-- Web Application Manifest -->
+        <link rel="manifest" href="manifest.json">
+
+        <!-- Add to homescreen for Chrome on Android -->
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="application-name" content="Britecharts">
+        <link rel="icon" sizes="192x192" href="img/icons/chrome-touch-icon-192x192.png">
+
+        <!-- Add to homescreen for Safari on iOS -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#009FA1">
+        <meta name="apple-mobile-web-app-title" content="Britecharts">
+        <link rel="apple-touch-icon" sizes="180x180" href="img/icons/apple-touch-icon.png">
+
+        <!-- MacOS -->
+        <link rel="mask-icon" href="img/icons/safari-pinned-tab.svg" color="#5bbad5">
+
+        <!-- Color the status bar on mobile devices -->
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="img/icons/favicon.ico">
+        <link rel="icon" type="image/png" href="img/icons/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="img/icons/favicon-16x16.png" sizes="16x16">
+
+        
+            <!-- Google / Search Engine Tags -->
+            <meta itemprop="name" content="Britecharts, a D3.js based charting library of reusable components">
+            <meta itemprop="description" content="Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.">
+            <meta itemprop="image" content="https://britecharts.github.io/britecharts/img/logo-stripes-small.png">
+
+            <!-- Facebook Meta Tags -->
+            <meta property="og:title" content="Britecharts, a D3.js based charting library of reusable components"/>
+            <meta property="og:type" content="website"/>
+            <meta property="og:image" content="https://britecharts.github.io/britecharts/img/logo-stripes-small.png"/>
+            <meta property="og:site_name" content="Britecharts"/>
+            <meta property="og:url" content="http://britecharts.github.io/britecharts/"/>
+            <meta property="og:description" content="Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations.">
+
+            <!-- Twitter Meta Tags -->
+            <meta name="twitter:card" content="summary_large_image">
+            <meta name="twitter:site" content="@britecharts" />
+            <meta name="twitter:title" content="Britecharts, a D3.js based charting library of reusable components">
+            <meta name="twitter:description" content="Britecharts is a client-side reusable Charting Library based on D3.js v5 that allows easy and intuitive use of charts and components that can be composed together creating amazing visualizations." />
+            <meta name="twitter:image" content="https://britecharts.github.io/britecharts/img/logo-stripes-small.png">
+        
+
+        <!--[if lt IE 9]>
+            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <link type="text/css" rel="stylesheet" href="styles/custom.css">
+        <link type="text/css" rel="stylesheet" href="styles/demos.css">
+        <link type="text/css" rel="stylesheet" href="styles/prism.css"  />
+        <link type="text/css" rel="stylesheet" href="styles/britecharts.css" />
+        <script src="/britecharts/scripts/common.js"></script>
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top navbar-default">
+            <div class="container">
+                <a class="ribbon" href="https://github.com/britecharts/britecharts" title="Check this project in github"><svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 250 250" fill="#fff" style="position: absolute; top: 0; right: 0"><path d="M0 0l115 115h15l12 27 108 108V0z" fill="#000"/><path class="octo-arm" d="M128 109c-15-9-9-19-9-19 3-7 2-11 2-11-1-7 3-2 3-2 4 5 2 11 2 11-3 10 5 15 9 16" style="-webkit-transform-origin: 130px 106px; transform-origin: 130px 106px"/><path class="octo-body" d="M115 115s4 2 5 0l14-14c3-2 6-3 8-3-8-11-15-24 2-41 5-5 10-7 16-7 1-2 3-7 12-11 0 0 5 3 7 16 4 2 8 5 12 9s7 8 9 12c14 3 17 7 17 7-4 8-9 11-11 11 0 6-2 11-7 16-16 16-30 10-41 2 0 3-1 7-5 11l-12 11c-1 1 1 5 1 5z"/></svg></a>
+            	<div class="navbar-header">
+            		<a class="navbar-brand" href="index.html"><img class="branding-logo" src="img/britecharts-logo.svg"
+            		alt="Britecharts - D3.js based charting library of reusable components"/></a>
+            		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+                    </button>
+            	</div>
+            	<div class="navbar-collapse collapse" id="topNavigation">
+            		<ul class="nav navbar-nav navbar-right">
+            			
+                        
+            			<li class="">
+            				<a href="tutorials-index.html" >Tutorials<b class=""></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="">
+            				<a href="how-to-index.html" >How-To Guides<b class=""></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="tutorials.list.html"  class="dropdown-toggle" data-toggle="dropdown" >Demos<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="tutorial-bar.html">Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-brush.html">Brush Chart</a></li>
+                                
+                                <li><a href="tutorial-bullet.html">Bullet Chart</a></li>
+                                
+                                <li><a href="tutorial-color.html">Color Palettes</a></li>
+                                
+                                <li><a href="tutorial-donut.html">Donut Chart</a></li>
+                                
+                                <li><a href="tutorial-grouped-bar.html">Grouped Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-heatmap.html">Heatmap Chart</a></li>
+                                
+                                <li><a href="tutorial-kitchen-sink.html">Kitchen Sink</a></li>
+                                
+                                <li><a href="tutorial-legend.html">Legend Chart</a></li>
+                                
+                                <li><a href="tutorial-line.html">Line Chart</a></li>
+                                
+                                <li><a href="tutorial-scatter-plot.html">Scatter Plot</a></li>
+                                
+                                <li><a href="tutorial-sparkline.html">Sparkline Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-area.html">Stacked Area Chart</a></li>
+                                
+                                <li><a href="tutorial-stacked-bar.html">Stacked Bar Chart</a></li>
+                                
+                                <li><a href="tutorial-step.html">Step Chart</a></li>
+                                
+            				</ul>
+            			</li>
+            			
+                        
+            			<li class="dropdown">
+            				<a href="modules.list.html"  class="dropdown-toggle" data-toggle="dropdown" >API<b class="caret"></b></a>
+            				<ul class="dropdown-menu inline">
+            					
+                                <li><a href="module-Bar.html">Bar</a></li>
+                                
+                                <li><a href="module-Brush.html">Brush</a></li>
+                                
+                                <li><a href="module-Bullet.html">Bullet</a></li>
+                                
+                                <li><a href="module-Donut.html">Donut</a></li>
+                                
+                                <li><a href="module-Grouped-bar.html">Grouped-bar</a></li>
+                                
+                                <li><a href="module-Heatmap.html">Heatmap</a></li>
+                                
+                                <li><a href="module-Legend.html">Legend</a></li>
+                                
+                                <li><a href="module-Line.html">Line</a></li>
+                                
+                                <li><a href="module-Mini-tooltip.html">Mini-tooltip</a></li>
+                                
+                                <li><a href="module-Scatter-plot.html">Scatter-plot</a></li>
+                                
+                                <li><a href="module-Sparkline.html">Sparkline</a></li>
+                                
+                                <li><a href="module-Stacked-area.html">Stacked-area</a></li>
+                                
+                                <li><a href="module-Stacked-bar.html">Stacked-bar</a></li>
+                                
+                                <li><a href="module-Step.html">Step</a></li>
+                                
+                                <li><a href="module-Tooltip.html">Tooltip</a></li>
+                                
+                                <li><a href="global.html">Types</a></li>
+                                
+            				</ul>
+            			</li>
+            			
+                        <li class="dropdown">
+                            <a class="github-link" href="https://twitter.com/britecharts">Twitter</a>
+                        </li>
+            		</ul>
+                    
+                        <div class="col-sm-12 col-md-3 no-gutter pull-right">
+                            <form class="navbar-form" role="search">
+                                <div class="input-group search-container clearfix">
+                                    <input type="text" class="form-control pull-left" placeholder="Search" name="q" id="search-input">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" id="search-submit">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <main class="container" id="toc-content">
+            <div class="row">
+            	
+            	<div class="col-md-9 col-lg-7 col-lg-offset-1 is-source ">
+            	
+            		<div id="main">
+            			
+
+	
+	<!--h1 class="page-title">Contributor How-To Guides</h1-->
+	
+	
+
+
+
+
+    <section class="readme-section tutorial">
+        <article>
+            <h1>Contributor How To Guides</h1>
+<p>Our contributor how to guides are recipes to address specific use cases when working with Britecharts. They assume contributor knowledge about Britecharts and the library structure. If this is the first time you contribute to Britecharts, we recommend you to read the <a href="https://github.com/britecharts/britecharts/blob/master/.github/CONTRIBUTING.md">Contributing Guide</a> first.</p>
+<h2>How to Create a Pull Request</h2>
+<p>When you have a branch that you want to contribute back to Britecharts, you need to create a Pull Request(PR) to propose the addition of the code. Follow these steps:</p>
+<ol>
+<li>When you're finished coding, <code>git checkout master</code></li>
+<li>Run <code>git pull upstream master</code> (note that your local master should always reflect upstream master)</li>
+<li>Run <code>git checkout &lt;your branch&gt;</code></li>
+<li>Execute <code>git rebase master</code> &amp; reconcile all conflicts</li>
+<li>Push the branch to your fork with <code>git push origin &lt;your branch&gt;</code></li>
+<li>Create a new PR, filling the <a href="https://github.com/britecharts/britecharts/blob/master/.github/PULL_REQUEST_TEMPLATE.md">PR template</a>, and adding a link to the original issue filed (if you see &quot;unable to merge&quot;, please pull from your upstream and rebase again)</li>
+<li>Be patient while you wait for the maintainers to check it :)</li>
+</ol>
+<p>If you are new to Open Source, you can learn how to create <a href="makeAPR">Pull Requests here</a>.</p>
+<h2>How to Modify a Chart</h2>
+<p>This how-to guide helps you in modifying a chart. We assume you already created <a href="https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc">an issue</a> and got the green light form the maintainers of the project (or maybe you are working your fork if you are not contributing back to Britecharts).</p>
+<p>We have created our charts with a Tests First approach, and we encourage you to keep it the same. However, you can also write tests later too. For a TDD workflow, the process of modifying a component would look like this:</p>
+<ol>
+<li>Create a new branch for your modification</li>
+<li>On a new terminal, run <code>yarn run demos:serve</code> and navigate to the chart's demo</li>
+<li>Find the test of the chart you want to modify in <code>/test/specs/*.spec.js</code></li>
+<li>Write a failing test for the API accessor or the feature you want to add</li>
+<li>On a new terminal, run <code>yarn run test</code></li>
+<li>Check that the test fails</li>
+<li>Write the code that would make that test pass on the chart located in <code>/src/charts/</code>. Please follow our <a href="http://britecharts.github.io/britecharts/topics-index.html#toc5__anchor">API Guidelines</a>.</li>
+<li>Make the test pass by writing the less amount of code</li>
+<li>Refactor until you get a nice and clean code</li>
+<li>Add/update the JSDoc comments so that the proper documentation gets generated when you run <code>yarn run docs</code></li>
+<li>Check the demo to see the code in action (you can also add a new demo there if necessary)</li>
+<li>Create a pull request and ask the maintainers to review it</li>
+<li>Once you have their OK, they will merge your pull request</li>
+</ol>
+<h2>How to Create a New Chart</h2>
+<p>Adding a new chart is a bunch of work, but we hope that using the current code and documentation helps you in the process. The steps are:</p>
+<ol>
+<li>Create a new branch for your component</li>
+<li>On a new terminal, run <code>yarn run demos:serve</code> to get ready the docs and turn on the dev server.</li>
+<li>Given that your new chart is <code>ChartName</code>, create in <code>/test/specs</code> a new test file <code>ChartName.spec.js</code>.</li>
+<li>Go to <code>/test/fixtures</code> and create a new data builder file. Name it something like <code>chartNameChartDataBuilder.js</code>.</li>
+<li>Go to <code>/test/json</code> and create a JSON file for the test data of your new chart. Load it with the previously created data builder.</li>
+<li>Go to <code>/src/charts</code> and create a new chart file called <code>ChartName.js</code>.</li>
+<li>Go to <code>/demos/src</code> and create a new demo script for the new chart, add it to <code>/demos/src/index.js</code>.</li>
+<li>Also in <code>/demos</code>, create a new HTML page called <code>chartName.html</code> and its .json file with the demo title.</li>
+<li>Go to <code>webpack.config.js</code> and:
+<ol>
+<li>Add the new chart to the <code>currentCharts</code> object, give it a camel case name</li>
+<li>Include the new demo page to the <code>currentDemos</code> object, keeping the same format</li>
+</ol>
+</li>
+<li>Go to your test file <code>ChartName.spec.js</code> and, taking another test as an example, copy over pieces until you have the first test case</li>
+<li>Add one test and make it fail by calling <code>yarn run test</code></li>
+<li>Keep on coding according to our <a href="http://britecharts.github.io/britecharts/topics-index.html#toc5__anchor">API Guidelines</a></li>
+<li>Once you think you are close to having something working, start adding JSDoc comments to your code</li>
+<li>Generate your docs with <code>yarn run docs</code> and manually test the demos</li>
+<li>Create a pull request with your branch and ping one of the core authors to get it reviewed</li>
+<li>Once you have addressed all the comments and got the green light, the maintainers will merge the PR</li>
+</ol>
+<h2>How to Setup your environment with Docker</h2>
+<p>Docker makes it easier to get started contributing to Britecharts. In this how to, we describe the process to set up the developer environment using a Docker container. To use this approach, you will need to have <a href="https://docs.docker.com/">Docker</a> running in your machine.</p>
+<ol>
+<li>Go to the root of the repository, and with Docker running, type <code>make build</code>. This will install the dependencies inside a Docker container (disregard <code>fsevents</code> related warnings)</li>
+<li>Run <code>make run</code> in the console to start the project</li>
+<li>You should be able to open <code>http://localhost:1234</code> and see Britecharts working</li>
+</ol>
+<p>You can check the rest of make commands on the <code>Makefile</code> in the root of the repository.</p>
+        </article>
+    </section>
+
+
+
+
+
+
+
+            		</div>
+            	</div>
+            	
+            		<div class="col-md-3 col-lg-2">
+            			<div id="toc" class="col-md-3 col-lg-3 affix hidden-xs hidden-sm">
+                            <div style="padding-left:14px">
+                                <h4>Loving this project?</h4>
+                                <iframe src="https://github.com/sponsors/britecharts/button" title="Sponsor britecharts" height="35" width="130" style="border: 0; margin-bottom: 20px;"></iframe>
+                                <h4>Learn more about Britecharts</h4>
+                                <a
+                                    class="book-container"
+                                    href="http://bit.ly/pro-d3"
+                                    target="_blank"
+                                    rel="noreferrer noopener"
+                                >
+                                    <div class="book">
+                                        <img
+                                            alt="Marcos Iglesias - Pro D3.js cover"
+                                            src="https://images.springer.com/sgw/books/medium/9781484252024.jpg"
+                                        />
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+            		</div>
+            	
+            	<div class="clearfix"></div>
+            </div>
+        </main>
+
+        
+            <div class="modal fade" id="searchResults">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Search results</h4>
+                  </div>
+                  <div class="modal-body"></div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+
+        <footer class="footer">
+            
+            
+            <span class="jsdoc-message">
+            	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.1</a>
+            	
+            	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+            </span>
+        </footer>
+
+        <script src="/britecharts/scripts/docstrap.lib.js"></script>
+        <script src="/britecharts/scripts/toc.js"></script>
+        
+            <script type="text/javascript" src="/britecharts/scripts/fulltext-search-ui.js"></script>
+        
+
+        <script src="/britecharts/scripts/prism.js"></script>
+        <script>
+        $( function () {
+        	$( "[id*='$']" ).each( function () {
+        		var $this = $( this );
+
+        		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+        	} );
+
+            // Highlight with prism
+            $( "pre.prettyprint.source" )
+                .each( function () {
+                    var $this = $( this );
+                    var example = $this.find( "code" );
+
+                    $this
+                        .wrap("<pre class='language-javascript' ></pre>" )
+                        .wrap("<code class='language-javascript'></code>" )
+                        .addClass( "language-javascript" )
+                        .html( example.html() );
+                } );
+
+        	$.catchAnchorLinks( {
+                navbarOffset: 10
+        	} );
+        	$( "#toc" ).toc( {
+        		anchorName  : function ( i, heading, prefix ) {
+        			return $( heading ).attr( "id" ) || ( prefix + i );
+        		},
+        		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+        		showAndHide : false,
+        		smoothScrolling: true
+        	} );
+
+        	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+        	$( '.dropdown-toggle' ).dropdown();
+
+            $( "table" ).each( function () {
+              var $this = $( this );
+              $this.addClass('table');
+            } );
+        } );
+        </script>
+
+
+        <!--Navigation and Symbol Display-->
+        
+
+        <!--Google Analytics-->
+        
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-W3BQXCKSD9"></script>
+            <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-W3BQXCKSD9');
+            </script>
+        
+
+        <!-- Search Init -->
+        
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    SearcherDisplay.init();
+                });
+            </script>
+        
+    </body>
+</html>
