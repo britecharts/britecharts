@@ -132,7 +132,7 @@
     "sinon": "7.5.0",
     "style-loader": "0.23.1",
     "text": "requirejs/text",
-    "underscore": "1.9.1",
+    "underscore": "1.12.1",
     "webpack": "4.35.0",
     "webpack-bundle-analyzer": "3.3.2",
     "webpack-cli": "^3.3.5",
