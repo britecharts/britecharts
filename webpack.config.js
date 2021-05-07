@@ -51,11 +51,7 @@ const testConfig = merge([
     {
         mode: 'development',
         resolve: {
-            modules: [
-                path.resolve(__dirname, './src/charts'),
-                path.resolve(__dirname, './test/fixtures'),
-                'node_modules',
-            ],
+            modules: [path.resolve(__dirname, './src/charts'), 'node_modules'],
         },
     },
     parts.babelLoader(),

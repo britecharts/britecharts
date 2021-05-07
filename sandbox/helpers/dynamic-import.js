@@ -6,11 +6,11 @@ const { chartDependencies } = constants;
 const charts = Object.keys(defaultConfig);
 let errors = [];
 
-const req = require.context('babel-loader!./../../src/charts', true, /^\.\//);
+const req = require.context('babel-loader!./../../src/charts/', true, /\.js$/);
 
 /**
  * Safe load dependency. If there is an error, it loads the error to be displayed in the notification bar
- * @param  {file name} name     name of fiel at src/charts. probably could refactor to take full path
+ * @param  {file name} name     name of field at src/charts. probably could refactor to take full path
  */
 function _safeLoadDependency(name) {
     try {
