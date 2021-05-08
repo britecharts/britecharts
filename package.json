@@ -49,7 +49,8 @@
         "styles": "grunt lint && grunt sass && grunt cssmin",
         "test:ci": "karma start --single-run --browsers=ChromeHeadlessCustom --env=test",
         "test:once": "karma start --single-run",
-        "test": "karma start --env=test"
+        "test": "karma start --env=test",
+        "test:watch": "karma start --env=test"
     },
     "sideEffects": [
         "dist/css/**/*.css",
