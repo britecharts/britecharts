@@ -1,10 +1,10 @@
 import { select, selectAll } from 'd3-selection';
 import PubSub from 'pubsub-js';
 
-import scatterPlot from './../../src/charts/scatter-plot';
-import miniTooltip from './../../src/charts/mini-tooltip';
+import scatterPlot from './../../src/charts/scatter-plot/scatter-plot';
+import miniTooltip from './../../src/charts/mini-tooltip/mini-tooltip';
 import colorSelectorHelper from './helpers/colorSelector';
-import { ScatterPlotDataBuilder } from './../../test/fixtures/scatterPlotDataBuilder';
+import { ScatterPlotDataBuilder } from './../../src/charts/scatter-plot/scatterPlotDataBuilder';
 
 require('./helpers/resizeHelper');
 

@@ -1,12 +1,12 @@
 import { select, selectAll } from 'd3-selection';
 import PubSub from 'pubsub-js';
 
-import stackedBarChart from './../../src/charts/stacked-bar';
-import tooltip from './../../src/charts/tooltip';
-import legend from './../../src/charts/legend';
+import stackedBarChart from './../../src/charts/stacked-bar/stacked-bar';
+import tooltip from './../../src/charts/tooltip/tooltip';
+import legend from './../../src/charts/legend/legend';
 
+import { StackedBarDataBuilder } from './../../src/charts/stacked-bar/stackedBarDataBuilder';
 import colors from './../../src/charts/helpers/color';
-import { StackedBarDataBuilder } from './../../test/fixtures/stackedBarDataBuilder';
 import colorSelectorHelper from './helpers/colorSelector';
 
 require('./helpers/resizeHelper');

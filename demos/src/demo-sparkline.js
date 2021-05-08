@@ -1,8 +1,8 @@
 import { select, selectAll } from 'd3-selection';
 import PubSub from 'pubsub-js';
 
-import sparklineChart from './../../src/charts/sparkline';
-import { SparklineDataBuilder } from './../../test/fixtures/sparklineDataBuilder';
+import sparklineChart from './../../src/charts/sparkline/sparkline';
+import { SparklineDataBuilder } from './../../src/charts/sparkline/sparklineDataBuilder';
 
 require('./helpers/resizeHelper');
 

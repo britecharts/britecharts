@@ -1,11 +1,11 @@
 import { select, selectAll } from 'd3-selection';
 import PubSub from 'pubsub-js';
 
-import bar from './../../src/charts/bar';
-import miniTooltip from './../../src/charts/mini-tooltip';
+import bar from '../../src/charts/bar/bar';
+import miniTooltip from '../../src/charts/mini-tooltip/mini-tooltip';
 import colors from './../../src/charts/helpers/color';
 
-import { BarDataBuilder } from './../../test/fixtures/barChartDataBuilder';
+import { BarDataBuilder } from '../../src/charts/bar/barChartDataBuilder';
 
 const aTestDataSet = () => new BarDataBuilder();
 

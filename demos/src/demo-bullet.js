@@ -1,8 +1,8 @@
 import { select } from 'd3-selection';
 import PubSub from 'pubsub-js';
 
-import bullet from './../../src/charts/bullet';
-import { BulletChartDataBuilder } from './../../test/fixtures/bulletChartDataBuilder';
+import bullet from './../../src/charts/bullet/bullet';
+import { BulletChartDataBuilder } from './../../src/charts/bullet/bulletChartDataBuilder';
 import colorSelectorHelper from './helpers/colorSelector';
 
 require('./helpers/resizeHelper');

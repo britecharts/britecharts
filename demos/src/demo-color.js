@@ -1,4 +1,5 @@
 import { select } from 'd3-selection';
+
 import colors from './../../src/charts/helpers/color';
 
 function createColors() {
