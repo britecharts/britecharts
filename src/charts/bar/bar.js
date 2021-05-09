@@ -149,8 +149,6 @@ export default function module() {
         yAxisLabelEl = null,
         yAxisLabel = null,
         yAxisLabelOffset = -30,
-        baseLine,
-        maskGridLines,
         shouldReverseColorList = true,
         locale = null,
         localeFormatter = d3Format,
@@ -296,7 +294,7 @@ export default function module() {
 
             yScale = scaleBand()
                 .domain(data.map(getName))
-                .rangeRound([chartHeight, 0])
+                .rangeRound([0, chartHeight])
                 .padding(betweenBarsPadding);
         } else {
             xScale = scaleBand()
@@ -523,13 +521,13 @@ export default function module() {
             .attr('y', chartHeight)
             .attr('height', yScale.bandwidth())
             .attr('width', ({ value }) => xScale(value))
-            .on('mouseover', function (d, index, barList) {
+            .on('mouseover', function (d, _, barList) {
                 handleMouseOver(this, d, barList, chartWidth, chartHeight);
             })
             .on('mousemove', function (d) {
                 handleMouseMove(this, d, chartWidth, chartHeight);
             })
-            .on('mouseout', function (d, index, barList) {
+            .on('mouseout', function (d, _, barList) {
                 handleMouseOut(this, d, barList, chartWidth, chartHeight);
             })
             .on('click', function (d) {
@@ -561,13 +559,13 @@ export default function module() {
             .attr('y', ({ value }) => yScale(value))
             .attr('width', xScale.bandwidth())
             .attr('height', ({ value }) => chartHeight - yScale(value))
-            .on('mouseover', function (d, index, barList) {
+            .on('mouseover', function (d, _, barList) {
                 handleMouseOver(this, d, barList, chartWidth, chartHeight);
             })
             .on('mousemove', function (d) {
                 handleMouseMove(this, d, chartWidth, chartHeight);
             })
-            .on('mouseout', function (d, index, barList) {
+            .on('mouseout', function (d, _, barList) {
                 handleMouseOut(this, d, barList, chartWidth, chartHeight);
             })
             .on('click', function (d) {
@@ -599,13 +597,13 @@ export default function module() {
             .attr('y', ({ value }) => yScale(value))
             .attr('width', xScale.bandwidth())
             .attr('height', ({ value }) => chartHeight - yScale(value))
-            .on('mouseover', function (d, index, barList) {
+            .on('mouseover', function (d, _, barList) {
                 handleMouseOver(this, d, barList, chartWidth, chartHeight);
             })
             .on('mousemove', function (d) {
                 handleMouseMove(this, d, chartWidth, chartHeight);
             })
-            .on('mouseout', function (d, index, barList) {
+            .on('mouseout', function (d, _, barList) {
                 handleMouseOut(this, d, barList, chartWidth, chartHeight);
             })
             .on('click', function (d) {
@@ -717,8 +715,7 @@ export default function module() {
      * @return {void}
      */
     function drawHorizontalGridLines() {
-        maskGridLines = svg
-            .select('.grid-lines-group')
+        svg.select('.grid-lines-group')
             .selectAll('line.vertical-grid-line')
             .data(xScale.ticks(xTicks).slice(1))
             .enter()
@@ -737,8 +734,7 @@ export default function module() {
      * @return {void}
      */
     function drawVerticalExtendedLine() {
-        baseLine = svg
-            .select('.grid-lines-group')
+        svg.select('.grid-lines-group')
             .selectAll('line.extended-y-line')
             .data([0])
             .enter()
@@ -755,8 +751,7 @@ export default function module() {
      * @return {void}
      */
     function drawVerticalGridLines() {
-        maskGridLines = svg
-            .select('.grid-lines-group')
+        svg.select('.grid-lines-group')
             .selectAll('line.horizontal-grid-line')
             .data(yScale.ticks(yTicks).slice(1))
             .enter()
@@ -775,8 +770,7 @@ export default function module() {
      * @return {void}
      */
     function drawHorizontalExtendedLine() {
-        baseLine = svg
-            .select('.grid-lines-group')
+        svg.select('.grid-lines-group')
             .selectAll('line.extended-x-line')
             .data([0])
             .enter()
