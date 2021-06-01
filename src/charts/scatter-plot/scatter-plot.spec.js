@@ -741,6 +741,18 @@ describe('Scatter Plot', () => {
             expect(actual).toBe(expected);
         });
 
+        it('should provide enableZoom getter and setter', () => {
+            let previous = scatterPlot.enableZoom(),
+                expected = true,
+                actual;
+
+            scatterPlot.enableZoom(expected);
+            actual = scatterPlot.enableZoom();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
         it('should provide isAnimated getter and setter', () => {
             let previous = scatterPlot.isAnimated(),
                 expected = true,
