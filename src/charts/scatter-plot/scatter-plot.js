@@ -8,6 +8,7 @@ import { scaleSqrt, scaleOrdinal, scaleLinear } from 'd3-scale';
 import { curveBasis, line } from 'd3-shape';
 import { select, mouse } from 'd3-selection';
 import { voronoi } from 'd3-voronoi';
+import { zoom as d3Zoom, zoomTransform } from 'd3-zoom';
 import 'd3-transition';
 
 import { exportChart } from '../helpers/export';
@@ -98,9 +99,11 @@ export default function module() {
         xAxisFormatType = 'number',
         xAxisFormat = '',
         xScale,
+        xOriginalScale,
         yAxis,
         yAxisFormat = '',
         yScale,
+        yOriginalScale,
         areaScale,
         colorScale,
         yAxisLabel,
@@ -109,11 +112,14 @@ export default function module() {
         xAxisLabel,
         xAxisLabelEl,
         xAxisLabelOffset = -50,
+        minZoom = 0.5,
+        maxZoom = 20,
         trendLinePath,
         trendLineCurve = curveBasis,
         trendLineStrokWidth = '2',
         trendLineDelay = 1500,
         trendLineDuration = 2000,
+        highlightPointData,
         highlightFilter,
         highlightFilterId,
         highlightStrokeWidth = 10,
@@ -138,6 +144,7 @@ export default function module() {
         isAnimated = false,
         hasCrossHairs = false,
         hasTrendline = false,
+        enableZoom = false,
         ease = easeCircleIn,
         delay = 500,
         duration = motion.duration,
@@ -182,6 +189,7 @@ export default function module() {
             initHighlightComponents();
             drawDataPoints();
             drawMaskingClip();
+            initZoom();
 
             if (hasTrendline) {
                 drawTrendline(calcLinearRegression(dataPoints));
@@ -287,12 +295,12 @@ export default function module() {
         ];
         const yScaleBottomValue = Math.abs(minY) < 0 ? Math.abs(minY) : 0;
 
-        xScale = scaleLinear()
+        xOriginalScale = xScale = scaleLinear()
             .domain([minX, maxX])
             .rangeRound([0, chartWidth])
             .nice();
 
-        yScale = scaleLinear()
+        yOriginalScale = yScale = scaleLinear()
             .domain([yScaleBottomValue, maxY])
             .rangeRound([chartHeight, 0])
             .nice();
@@ -439,7 +447,64 @@ export default function module() {
             .attr('width', chartWidth)
             .attr('height', chartHeight)
             .attr('x', 0)
-            .attr('y', 0);
+            .attr('y', -1 * maxCircleArea);
+    }
+
+    /**
+     * Add Zoom control and event handling
+     * @return {void}
+     * @private
+     */
+    function initZoom() {
+        if (!enableZoom) {
+            return;
+        }
+
+        const zoom = d3Zoom();
+        zoom.scaleExtent([minZoom, maxZoom]) // This control how much you can unzoom (x0.5) and zoom (x20)
+            .extent([
+                [0, 0],
+                [width, height],
+            ])
+            .on('zoom', updateChartAfterZoom);
+
+        // This add an invisible rect on top of the chart area. This rect can recover pointer events: necessary to understand when the user zoom
+        svg.append('rect')
+            .attr('class', 'zoom')
+            .attr('width', chartWidth)
+            .attr('height', chartHeight)
+            .style('fill', 'none')
+            .style('pointer-events', 'all')
+            .attr('transform', `translate(${margin.left}, ${margin.top})`)
+            .call(zoom);
+    }
+
+    /**
+     * Update chart elements after zoom events
+     * @return {void}
+     * @private
+     */
+    function updateChartAfterZoom(data, index, elements) {
+        //update scale
+        const transform = zoomTransform(elements[0]);
+        xScale = transform.rescaleX(xOriginalScale);
+        yScale = transform.rescaleY(yOriginalScale);
+        //update axes
+        xAxis.scale(xScale);
+        yAxis.scale(yScale);
+        svg.select('.x-axis-group .axis.x').call(xAxis);
+        svg.select('.y-axis-group .axis.y').call(yAxis);
+
+        // update circle position
+        svg.select('.chart-group')
+            .selectAll('circle')
+            .attr('cx', (d) => xScale(d.x))
+            .attr('cy', (d) => yScale(d.y));
+
+        // update highlight location
+        highlightCircle
+            .attr('cx', () => xScale(highlightPointData.x))
+            .attr('cy', () => yScale(highlightPointData.y));
     }
 
     /**
@@ -783,6 +848,8 @@ export default function module() {
      * @private
      */
     function highlightDataPoint(data) {
+        highlightPointData = data;
+
         removePointHighlight();
 
         if (!highlightFilter) {
@@ -1077,6 +1144,22 @@ export default function module() {
             return hasTrendline;
         }
         hasTrendline = _x;
+
+        return this;
+    };
+
+    /**
+     * Gets or Sets weather the chart support zoom controls
+     * If true, zoom event handling will be added to the chart.
+     * @param  {boolean} _x=false       Choose whether chart should support zoom controls
+     * @return {boolean | module}       Current enableZoom value or Chart module to chain calls
+     * @public
+     */
+    exports.enableZoom = function (_x) {
+        if (!arguments.length) {
+            return enableZoom;
+        }
+        enableZoom = _x;
 
         return this;
     };
