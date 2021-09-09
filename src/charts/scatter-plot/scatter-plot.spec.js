@@ -693,6 +693,66 @@ describe('Scatter Plot', () => {
             expect(actual).toBe(expected);
         });
 
+        it('should provide a circleOpacity getter and setter', () => {
+            let previous = scatterPlot.circleOpacity(),
+                expected = 0.33,
+                actual;
+
+            scatterPlot.circleOpacity(expected);
+            actual = scatterPlot.circleOpacity();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide a circleStrokeOpacity getter and setter', () => {
+            let previous = scatterPlot.circleStrokeOpacity(),
+                expected = 0.33,
+                actual;
+
+            scatterPlot.circleStrokeOpacity(expected);
+            actual = scatterPlot.circleStrokeOpacity();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide a circleStrokeWidth getter and setter', () => {
+            let previous = scatterPlot.circleStrokeWidth(),
+                expected = 2,
+                actual;
+
+            scatterPlot.circleStrokeWidth(expected);
+            actual = scatterPlot.circleStrokeWidth();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide enableZoom getter and setter', () => {
+            let previous = scatterPlot.enableZoom(),
+                expected = true,
+                actual;
+
+            scatterPlot.enableZoom(expected);
+            actual = scatterPlot.enableZoom();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
+        it('should provide grid getter and setter', () => {
+            let previous = scatterPlot.grid(),
+                expected = 'vertical',
+                actual;
+
+            scatterPlot.grid(expected);
+            actual = scatterPlot.grid();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
+        });
+
         it('should provide hasHollowCircles getter and setter', () => {
             let previous = scatterPlot.hasHollowCircles(),
                 expected = true,
@@ -703,6 +763,18 @@ describe('Scatter Plot', () => {
 
             expect(previous).not.toBe(expected);
             expect(actual).toEqual(expected);
+        });
+
+        it('should provide hasCrossHairs getter and setter', () => {
+            let previous = scatterPlot.hasCrossHairs(),
+                expected = true,
+                actual;
+
+            scatterPlot.hasCrossHairs(expected);
+            actual = scatterPlot.hasCrossHairs();
+
+            expect(previous).not.toBe(expected);
+            expect(actual).toBe(expected);
         });
 
         it('should provide hasTrendline getter and setter', () => {
@@ -736,18 +808,6 @@ describe('Scatter Plot', () => {
 
             scatterPlot.highlightTextLegendOffset(expected);
             actual = scatterPlot.highlightTextLegendOffset();
-
-            expect(previous).not.toBe(expected);
-            expect(actual).toBe(expected);
-        });
-
-        it('should provide enableZoom getter and setter', () => {
-            let previous = scatterPlot.enableZoom(),
-                expected = true,
-                actual;
-
-            scatterPlot.enableZoom(expected);
-            actual = scatterPlot.enableZoom();
 
             expect(previous).not.toBe(expected);
             expect(actual).toBe(expected);
