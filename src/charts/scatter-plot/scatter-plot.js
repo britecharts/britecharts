@@ -1343,7 +1343,7 @@ export default function module() {
     };
 
     /**
-     * exposes ability to set the formatter of x-axis values
+     * Exposes ability to set the formatter of x-axis values
      * @param  {string} _x          type of x-axis formatter
      * @value 'number'
      * @value 'time'
