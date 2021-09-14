@@ -11,7 +11,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install Yarn 📦
-        run: npm i -g yarn@1.19.1
+        run: npm i -g yarn@1.22.5
       - name: Install Dependencies ⏬
         run: yarn --frozen-lockfile
       - name: Build Library 🔧
@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - 12.x
+          - 14.x
         os:
           - ubuntu-latest
 name: tests
