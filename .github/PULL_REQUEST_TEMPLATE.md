@@ -40,7 +40,6 @@ Include one of these prefixes:
 
 -   [ ] Latest master code has been merged into this branch
 -   [ ] No commented out code (if required, place // TODO above with explanation)
--   [ ] No linting issues
 -   [ ] Build is successful
 -   [ ] Code follows the [API Guidelines](http://britecharts.github.io/britecharts/topics-index.html#toc5__anchor)
 -   [ ] Updated the documentation

@@ -62,7 +62,7 @@ export default {
             { stack: 'Shiny', name: 'Q3', value: 13 },
             { stack: 'Blazing', name: 'Q3', value: 16 },
             { stack: 'Dazzling', name: 'Q3', value: 26 },
-        ]
+        ],
     },
     legend: {
         basicLegend: [
