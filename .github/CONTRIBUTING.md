@@ -33,8 +33,9 @@ To start contributing to Britecharts, you need to set up your machine to develop
 ### Getting Set Up to Contribute
 1. Fork the Britecharts repository by clicking the fork button on Github
 2. Clone the repository with `git clone https://github.com/<your handle>/britecharts.git`
-3. Navigate to the repository folder and install dependencies with: `yarn install` (we are using node 12.2.0 at the moment)
+3. Navigate to the repository folder and install dependencies with: `yarn` (we are using node 12.2.0 at the moment)
 4. If you don't have yarn installed, you can install it following the instructions in the [yarn docs][yarn]
+5. Make sure you have Chrome installed, and your `CHROME_BIN` environment variable is set.
 
 ### Creating Feature and Fix Branches
 1. In local master, set the upstream to https://github.com/britecharts/britecharts.git
@@ -50,11 +51,11 @@ To generate the demos and see the library' documentation you would need to:
 1. Clone the repository with:
     `git clone git@github.com:britecharts/britecharts.git`
 1. Change directory into the repository root and install its dependencies:
-    `yarn install`
+    `yarn`
 1. In the root or the repository folder, run:
     `yarn start`
 1. In the root or the repository folder, run:
-    `yarn run test`
+    `yarn run test:watch`
 
 This process generates docs and opens the user interface in a new browser tab. There you can navigate the API of each chart and see some examples under the “Demos” dropdown section. We recommend you to use these demos as your testing platform when modifying the charts.
 

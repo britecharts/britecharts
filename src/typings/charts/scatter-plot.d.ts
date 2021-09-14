@@ -48,6 +48,11 @@ export interface ScatterPlotAPI
      * It makes the area of each data point more transparent if it's less than 1.
      */
     circleOpacity(opacity?: number): ScatterPlotModule;
+    /**
+     * Gets or Sets weather the chart support zoom controls. `false` by default.
+     * If `true`, zoom event handling will be added to the chart.
+     */
+    enableZoom(enable?: boolean):  ScatterPlotModule;
     /** Gets or Sets the grid mode. */
     grid(opacity?: GridTypes): ScatterPlotModule;
     /**
@@ -81,6 +86,12 @@ export interface ScatterPlotAPI
     valueLocale(localObject?: LocalObject | null): ScatterPlotModule;
     /** Exposes ability to set the format of x-axis values */
     xAxisFormat(format?: string): ScatterPlotModule;
+    /** 
+     * Exposes ability to set the formatter of x-axis values 
+     * The `timeFormat` formatter function is applied if a custom `xAxisFormatType`
+     that is not equal to 'number' is provided
+     */
+    xAxisFormatType(formatType?: string): ScatterPlotModule;
     /**
      * Gets or Sets the xAxisLabel of the chart. Adds a
      * label bellow x-axis for better clarify of data representation.
