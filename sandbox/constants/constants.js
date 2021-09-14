@@ -105,12 +105,12 @@ export default {
                     top: 20,
                     bottom: 20,
                     left: 20,
-                    right: 20
+                    right: 20,
                 },
                 width: 300,
-                height: 300
+                height: 300,
             },
-            initialDataType: 'basicStackedBar'
+            initialDataType: 'basicStackedBar',
         },
         'scatter-plot': {
             ...baseConfig,

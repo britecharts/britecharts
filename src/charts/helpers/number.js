@@ -1,5 +1,5 @@
 import { format } from 'd3-format';
-import {max, min} from 'd3-array';
+import { max, min } from 'd3-array';
 
 let idCounter = 0;
 
@@ -64,16 +64,16 @@ export const calcLinearRegression = (dataPoints) => {
         xy = 0,
         x2 = 0;
 
-    dataPoints.forEach(d => {
+    dataPoints.forEach((d) => {
         x += d.x;
         y += d.y;
         xy += d.x * d.y;
         x2 += d.x * d.x;
     });
 
-    const denominator = (n * x2) - (x * x);
-    const intercept = ((y * x2) - (x * xy)) / denominator;
-    const slope = ((n * xy) - (x * y)) / denominator;
+    const denominator = n * x2 - x * x;
+    const intercept = (y * x2 - x * xy) / denominator;
+    const slope = (n * xy - x * y) / denominator;
     const minX = min(dataPoints, ({ x }) => x);
     const maxX = max(dataPoints, ({ x }) => x);
 
@@ -81,9 +81,9 @@ export const calcLinearRegression = (dataPoints) => {
         x1: minX,
         y1: slope * n + intercept,
         x2: maxX,
-        y2: slope * maxX + intercept
-    }
-}
+        y2: slope * maxX + intercept,
+    };
+};
 
 /**
  * Calculates percentage of value from total

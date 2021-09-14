@@ -173,7 +173,6 @@ export const getFontSize = function (node) {
     return defaultTextSize;
 };
 
-
 /**
  * Heuristic which gets the number of lines needed to display the title of the tooltip
  * If shouldShowDateInTitle is set to true, it takes the formatted Date.now() as additional influencer
@@ -184,7 +183,11 @@ export const getFontSize = function (node) {
  * @return  {Number}  approximateLineNumber  Approximative number of lines needed to display the title
  * @private
  */
-export const getApproximateNumberOfLines = function(title, fontSize, maxLength) {
+export const getApproximateNumberOfLines = function (
+    title,
+    fontSize,
+    maxLength
+) {
     const words = title.split(/\s+/).reverse();
 
     let line = [],
@@ -193,7 +196,11 @@ export const getApproximateNumberOfLines = function(title, fontSize, maxLength) 
     for (let word of words) {
         line.push(word);
 
-        const textWidth = getTextWidth(line.join(' '), fontSize, 'Karla, sans-serif');
+        const textWidth = getTextWidth(
+            line.join(' '),
+            fontSize,
+            'Karla, sans-serif'
+        );
 
         if (textWidth > maxLength) {
             line.pop();
@@ -203,7 +210,7 @@ export const getApproximateNumberOfLines = function(title, fontSize, maxLength) 
     }
 
     return approximateLineNumber;
-}
+};
 
 export default {
     getApproximateNumberOfLines,
