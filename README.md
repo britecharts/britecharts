@@ -177,7 +177,7 @@ Read more in the [license document][15]
 [twitter]: https://twitter.com/britecharts
 [sunsdribble]: https://dribbble.com/sundai
 [d3slack]: https://d3js.slack.com/
-[proposals]: https://github.com/britecharts/britecharts/issues?q=is%3Aissue+is%3Aopen+label%3Aproposal
+[proposals]: https://github.com/britecharts/britecharts/labels/Type%3A%20Feature
 [release3project]: https://github.com/britecharts/britecharts/projects/2
 [barchartdemo]: https://britecharts.github.io/britecharts/tutorial-bar.html "Check the Demo"
 [linechartdemo]: https://britecharts.github.io/britecharts/tutorial-line.html "Check the Demo"
