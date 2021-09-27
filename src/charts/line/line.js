@@ -40,7 +40,7 @@ import { castValueToType } from '../helpers/type';
  * @typedef lineChartFlatData
  * @type {Object}
  * @property {String} topicName    Topic name (required)
- * @property {Number} topic        Topic identifier (required)
+ * @property {Number} name         Topic identifier (required)
  * @property {Object[]} dates      All date entries with values for that topic in ISO8601 format (required)
  *
  * @example
@@ -594,8 +594,8 @@ export default function module() {
 
     /**
      * Parses dates and values into JS Date objects and numbers
-     * @param  {obj} dataByTopic    Raw data grouped by topic
-     * @return {obj}                Parsed data with dataByTopic and dataSorted
+     * @param  {obj} dataByTopic        Raw data grouped by topic
+     * @return {obj}                    Parsed data with dataByTopic and dataSorted
      */
     function cleanData({ dataByTopic, dataSorted, data }) {
         if (!dataByTopic && !data) {

@@ -1,1886 +1,2998 @@
 {
-    "dataByTopic": [
+  "dataByTopic": [
+    {
+      "topic": 103,
+      "dates": [
         {
-            "topic": 103,
-            "dates": [
-                {
-                    "value": 1,
-                    "date": "2015-06-27T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-06-28T07:00:00.000Z"
-                },
-                {
-                    "value": 4,
-                    "date": "2015-06-29T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-06-30T07:00:00.000Z"
-                },
-                {
-                    "value": 3,
-                    "date": "2015-07-01T07:00:00.000Z"
-                },
-                {
-                    "value": 3,
-                    "date": "2015-07-02T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-03T07:00:00.000Z"
-                },
-                {
-                    "value": 3,
-                    "date": "2015-07-04T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-05T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-06T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-07T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-08T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-09T07:00:00.000Z"
-                },
-                {
-                    "value": 4,
-                    "date": "2015-07-10T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-11T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-12T07:00:00.000Z"
-                },
-                {
-                    "value": 6,
-                    "date": "2015-07-13T07:00:00.000Z"
-                },
-                {
-                    "value": 5,
-                    "date": "2015-07-14T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-15T07:00:00.000Z"
-                },
-                {
-                    "value": 7,
-                    "date": "2015-07-16T07:00:00.000Z"
-                },
-                {
-                    "value": 3,
-                    "date": "2015-07-17T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-18T07:00:00.000Z"
-                },
-                {
-                    "value": 4,
-                    "date": "2015-07-19T07:00:00.000Z"
-                },
-                {
-                    "value": 8,
-                    "date": "2015-07-20T07:00:00.000Z"
-                },
-                {
-                    "value": 4,
-                    "date": "2015-07-21T07:00:00.000Z"
-                },
-                {
-                    "value": 11,
-                    "date": "2015-07-22T07:00:00.000Z"
-                },
-                {
-                    "value": 7,
-                    "date": "2015-07-23T07:00:00.000Z"
-                },
-                {
-                    "value": 5,
-                    "date": "2015-07-24T07:00:00.000Z"
-                },
-                {
-                    "value": 5,
-                    "date": "2015-07-25T07:00:00.000Z"
-                },
-                {
-                    "value": 6,
-                    "date": "2015-07-26T07:00:00.000Z"
-                },
-                {
-                    "value": 16,
-                    "date": "2015-07-27T07:00:00.000Z"
-                },
-                {
-                    "value": 17,
-                    "date": "2015-07-28T07:00:00.000Z"
-                },
-                {
-                    "value": 15,
-                    "date": "2015-07-29T07:00:00.000Z"
-                },
-                {
-                    "value": 12,
-                    "date": "2015-07-30T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-31T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-08-01T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-08-02T07:00:00.000Z"
-                }
-            ],
-            "topicName": "San Francisco"
+          "value": 1,
+          "date": "2015-06-27T07:00:00.000Z"
         },
         {
-            "topic": 149,
-            "dates": [
-                {
-                    "value": 0,
-                    "date": "2015-06-27T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-06-28T07:00:00.000Z"
-                },
-                {
-                    "value": 4,
-                    "date": "2015-06-29T07:00:00.000Z"
-                },
-                {
-                    "value": 3,
-                    "date": "2015-06-30T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-01T07:00:00.000Z"
-                },
-                {
-                    "value": 3,
-                    "date": "2015-07-02T07:00:00.000Z"
-                },
-                {
-                    "value": 3,
-                    "date": "2015-07-03T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-04T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-05T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-06T07:00:00.000Z"
-                },
-                {
-                    "value": 4,
-                    "date": "2015-07-07T07:00:00.000Z"
-                },
-                {
-                    "value": 7,
-                    "date": "2015-07-08T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-09T07:00:00.000Z"
-                },
-                {
-                    "value": 5,
-                    "date": "2015-07-10T07:00:00.000Z"
-                },
-                {
-                    "value": 9,
-                    "date": "2015-07-11T07:00:00.000Z"
-                },
-                {
-                    "value": 5,
-                    "date": "2015-07-12T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-13T07:00:00.000Z"
-                },
-                {
-                    "value": 8,
-                    "date": "2015-07-14T07:00:00.000Z"
-                },
-                {
-                    "value": 3,
-                    "date": "2015-07-15T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-16T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-17T07:00:00.000Z"
-                },
-                {
-                    "value": 7,
-                    "date": "2015-07-18T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-19T07:00:00.000Z"
-                },
-                {
-                    "value": 5,
-                    "date": "2015-07-20T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-21T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-22T07:00:00.000Z"
-                },
-                {
-                    "value": 5,
-                    "date": "2015-07-23T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-24T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-25T07:00:00.000Z"
-                },
-                {
-                    "value": 3,
-                    "date": "2015-07-26T07:00:00.000Z"
-                },
-                {
-                    "value": 8,
-                    "date": "2015-07-27T07:00:00.000Z"
-                },
-                {
-                    "value": 11,
-                    "date": "2015-07-28T07:00:00.000Z"
-                },
-                {
-                    "value": 17,
-                    "date": "2015-07-29T07:00:00.000Z"
-                },
-                {
-                    "value": 14,
-                    "date": "2015-07-30T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-31T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-08-01T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-08-02T07:00:00.000Z"
-                }
-            ],
-            "topicName": "Unknown Location with a super hyper mega very very very long name."
+          "value": 1,
+          "date": "2015-06-28T07:00:00.000Z"
         },
         {
-            "topic": 60,
-            "dates": [
-                {
-                    "value": 0,
-                    "date": "2015-06-27T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-06-28T07:00:00.000Z"
-                },
-                {
-                    "value": 18,
-                    "date": "2015-06-29T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-06-30T07:00:00.000Z"
-                },
-                {
-                    "value": 6,
-                    "date": "2015-07-01T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-02T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-03T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-04T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-05T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-06T07:00:00.000Z"
-                },
-                {
-                    "value": 15,
-                    "date": "2015-07-07T07:00:00.000Z"
-                },
-                {
-                    "value": 32,
-                    "date": "2015-07-08T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-09T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-10T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-11T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-12T07:00:00.000Z"
-                },
-                {
-                    "value": 3,
-                    "date": "2015-07-13T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-14T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-15T07:00:00.000Z"
-                },
-                {
-                    "value": 15,
-                    "date": "2015-07-16T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-17T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-18T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-19T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-20T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-21T07:00:00.000Z"
-                },
-                {
-                    "value": 5,
-                    "date": "2015-07-22T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-23T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-24T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-25T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-26T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-27T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-28T07:00:00.000Z"
-                },
-                {
-                    "value": 3,
-                    "date": "2015-07-29T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-30T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-31T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-08-01T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-08-02T07:00:00.000Z"
-                }
-            ],
-            "topicName": "Los Angeles"
+          "value": 4,
+          "date": "2015-06-29T07:00:00.000Z"
         },
         {
-            "topic": 81,
-            "dates": [
-                {
-                    "value": 0,
-                    "date": "2015-06-27T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-06-28T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-06-29T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-06-30T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-01T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-02T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-03T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-04T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-05T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-06T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-07T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-08T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-09T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-10T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-11T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-12T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-13T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-14T07:00:00.000Z"
-                },
-                {
-                    "value": 3,
-                    "date": "2015-07-15T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-16T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-17T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-18T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-19T07:00:00.000Z"
-                },
-                {
-                    "value": 7,
-                    "date": "2015-07-20T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-21T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-22T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-23T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-24T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-25T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-26T07:00:00.000Z"
-                },
-                {
-                    "value": 1,
-                    "date": "2015-07-27T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-28T07:00:00.000Z"
-                },
-                {
-                    "value": 2,
-                    "date": "2015-07-29T07:00:00.000Z"
-                },
-                {
-                    "value": 6,
-                    "date": "2015-07-30T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-31T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-08-01T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-08-02T07:00:00.000Z"
-                }
-            ],
-            "topicName": "Oakland"
+          "value": 2,
+          "date": "2015-06-30T07:00:00.000Z"
         },
         {
-            "topic": 0,
-            "topicName": "Other",
-            "dates": [
-                {
-                    "value": 3,
-                    "date": "2015-06-27T07:00:00.000Z"
-                },
-                {
-                    "value": 9,
-                    "date": "2015-06-28T07:00:00.000Z"
-                },
-                {
-                    "value": 6,
-                    "date": "2015-06-29T07:00:00.000Z"
-                },
-                {
-                    "value": 11,
-                    "date": "2015-06-30T07:00:00.000Z"
-                },
-                {
-                    "value": 7,
-                    "date": "2015-07-01T07:00:00.000Z"
-                },
-                {
-                    "value": 10,
-                    "date": "2015-07-02T07:00:00.000Z"
-                },
-                {
-                    "value": 5,
-                    "date": "2015-07-03T07:00:00.000Z"
-                },
-                {
-                    "value": 10,
-                    "date": "2015-07-04T07:00:00.000Z"
-                },
-                {
-                    "value": 8,
-                    "date": "2015-07-05T07:00:00.000Z"
-                },
-                {
-                    "value": 10,
-                    "date": "2015-07-06T07:00:00.000Z"
-                },
-                {
-                    "value": 6,
-                    "date": "2015-07-07T07:00:00.000Z"
-                },
-                {
-                    "value": 14,
-                    "date": "2015-07-08T07:00:00.000Z"
-                },
-                {
-                    "value": 12,
-                    "date": "2015-07-09T07:00:00.000Z"
-                },
-                {
-                    "value": 17,
-                    "date": "2015-07-10T07:00:00.000Z"
-                },
-                {
-                    "value": 9,
-                    "date": "2015-07-11T07:00:00.000Z"
-                },
-                {
-                    "value": 9,
-                    "date": "2015-07-12T07:00:00.000Z"
-                },
-                {
-                    "value": 9,
-                    "date": "2015-07-13T07:00:00.000Z"
-                },
-                {
-                    "value": 11,
-                    "date": "2015-07-14T07:00:00.000Z"
-                },
-                {
-                    "value": 16,
-                    "date": "2015-07-15T07:00:00.000Z"
-                },
-                {
-                    "value": 6,
-                    "date": "2015-07-16T07:00:00.000Z"
-                },
-                {
-                    "value": 7,
-                    "date": "2015-07-17T07:00:00.000Z"
-                },
-                {
-                    "value": 8,
-                    "date": "2015-07-18T07:00:00.000Z"
-                },
-                {
-                    "value": 4,
-                    "date": "2015-07-19T07:00:00.000Z"
-                },
-                {
-                    "value": 9,
-                    "date": "2015-07-20T07:00:00.000Z"
-                },
-                {
-                    "value": 5,
-                    "date": "2015-07-21T07:00:00.000Z"
-                },
-                {
-                    "value": 7,
-                    "date": "2015-07-22T07:00:00.000Z"
-                },
-                {
-                    "value": 7,
-                    "date": "2015-07-23T07:00:00.000Z"
-                },
-                {
-                    "value": 10,
-                    "date": "2015-07-24T07:00:00.000Z"
-                },
-                {
-                    "value": 8,
-                    "date": "2015-07-25T07:00:00.000Z"
-                },
-                {
-                    "value": 13,
-                    "date": "2015-07-26T07:00:00.000Z"
-                },
-                {
-                    "value": 18,
-                    "date": "2015-07-27T07:00:00.000Z"
-                },
-                {
-                    "value": 14,
-                    "date": "2015-07-28T07:00:00.000Z"
-                },
-                {
-                    "value": 30,
-                    "date": "2015-07-29T07:00:00.000Z"
-                },
-                {
-                    "value": 33,
-                    "date": "2015-07-30T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-07-31T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-08-01T07:00:00.000Z"
-                },
-                {
-                    "value": 0,
-                    "date": "2015-08-02T07:00:00.000Z"
-                }
-            ]
+          "value": 3,
+          "date": "2015-07-01T07:00:00.000Z"
+        },
+        {
+          "value": 3,
+          "date": "2015-07-02T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-03T07:00:00.000Z"
+        },
+        {
+          "value": 3,
+          "date": "2015-07-04T07:00:00.000Z"
+        },
+        {
+          "value": 1,
+          "date": "2015-07-05T07:00:00.000Z"
+        },
+        {
+          "value": 2,
+          "date": "2015-07-06T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-07T07:00:00.000Z"
+        },
+        {
+          "value": 2,
+          "date": "2015-07-08T07:00:00.000Z"
+        },
+        {
+          "value": 1,
+          "date": "2015-07-09T07:00:00.000Z"
+        },
+        {
+          "value": 4,
+          "date": "2015-07-10T07:00:00.000Z"
+        },
+        {
+          "value": 2,
+          "date": "2015-07-11T07:00:00.000Z"
+        },
+        {
+          "value": 1,
+          "date": "2015-07-12T07:00:00.000Z"
+        },
+        {
+          "value": 6,
+          "date": "2015-07-13T07:00:00.000Z"
+        },
+        {
+          "value": 5,
+          "date": "2015-07-14T07:00:00.000Z"
+        },
+        {
+          "value": 2,
+          "date": "2015-07-15T07:00:00.000Z"
+        },
+        {
+          "value": 7,
+          "date": "2015-07-16T07:00:00.000Z"
+        },
+        {
+          "value": 3,
+          "date": "2015-07-17T07:00:00.000Z"
+        },
+        {
+          "value": 1,
+          "date": "2015-07-18T07:00:00.000Z"
+        },
+        {
+          "value": 4,
+          "date": "2015-07-19T07:00:00.000Z"
+        },
+        {
+          "value": 8,
+          "date": "2015-07-20T07:00:00.000Z"
+        },
+        {
+          "value": 4,
+          "date": "2015-07-21T07:00:00.000Z"
+        },
+        {
+          "value": 11,
+          "date": "2015-07-22T07:00:00.000Z"
+        },
+        {
+          "value": 7,
+          "date": "2015-07-23T07:00:00.000Z"
+        },
+        {
+          "value": 5,
+          "date": "2015-07-24T07:00:00.000Z"
+        },
+        {
+          "value": 5,
+          "date": "2015-07-25T07:00:00.000Z"
+        },
+        {
+          "value": 6,
+          "date": "2015-07-26T07:00:00.000Z"
+        },
+        {
+          "value": 16,
+          "date": "2015-07-27T07:00:00.000Z"
+        },
+        {
+          "value": 17,
+          "date": "2015-07-28T07:00:00.000Z"
+        },
+        {
+          "value": 15,
+          "date": "2015-07-29T07:00:00.000Z"
+        },
+        {
+          "value": 12,
+          "date": "2015-07-30T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-31T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-08-01T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-08-02T07:00:00.000Z"
         }
-    ],
-    "dataByDate": [
+      ],
+      "topicName": "San Francisco"
+    },
+    {
+      "topic": 149,
+      "dates": [
         {
-            "date": "2015-06-27T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 103,
-                    "value": 1,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 149,
-                    "value": 0,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 0,
-                    "value": 3,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 0,
+          "date": "2015-06-27T07:00:00.000Z"
         },
         {
-            "date": "2015-06-28T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 103,
-                    "value": 1,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 2,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 9,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 2,
+          "date": "2015-06-28T07:00:00.000Z"
         },
         {
-            "date": "2015-06-29T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 60,
-                    "value": 18,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 1,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 4,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 4,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 0,
-                    "value": 6,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 4,
+          "date": "2015-06-29T07:00:00.000Z"
         },
         {
-            "date": "2015-06-30T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 60,
-                    "value": 1,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 103,
-                    "value": 2,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 3,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 11,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 3,
+          "date": "2015-06-30T07:00:00.000Z"
         },
         {
-            "date": "2015-07-01T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 60,
-                    "value": 6,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 103,
-                    "value": 3,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 1,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 7,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 1,
+          "date": "2015-07-01T07:00:00.000Z"
         },
         {
-            "date": "2015-07-02T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 103,
-                    "value": 3,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 3,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 10,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 3,
+          "date": "2015-07-02T07:00:00.000Z"
         },
         {
-            "date": "2015-07-03T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 149,
-                    "value": 3,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 0,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 0,
-                    "value": 5,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 3,
+          "date": "2015-07-03T07:00:00.000Z"
         },
         {
-            "date": "2015-07-04T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 103,
-                    "value": 3,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 1,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 10,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 1,
+          "date": "2015-07-04T07:00:00.000Z"
         },
         {
-            "date": "2015-07-05T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 103,
-                    "value": 1,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 2,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 8,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 2,
+          "date": "2015-07-05T07:00:00.000Z"
         },
         {
-            "date": "2015-07-06T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 103,
-                    "value": 2,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 2,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 10,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 2,
+          "date": "2015-07-06T07:00:00.000Z"
         },
         {
-            "date": "2015-07-07T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 60,
-                    "value": 15,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 149,
-                    "value": 4,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 0,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 0,
-                    "value": 6,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 4,
+          "date": "2015-07-07T07:00:00.000Z"
         },
         {
-            "date": "2015-07-08T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 60,
-                    "value": 32,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 103,
-                    "value": 2,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 7,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 14,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 7,
+          "date": "2015-07-08T07:00:00.000Z"
         },
         {
-            "date": "2015-07-09T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 81,
-                    "value": 1,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 1,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 1,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 0,
-                    "value": 12,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 1,
+          "date": "2015-07-09T07:00:00.000Z"
         },
         {
-            "date": "2015-07-10T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 103,
-                    "value": 4,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 5,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 17,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 5,
+          "date": "2015-07-10T07:00:00.000Z"
         },
         {
-            "date": "2015-07-11T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 81,
-                    "value": 1,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 2,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 9,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 0,
-                    "value": 9,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 9,
+          "date": "2015-07-11T07:00:00.000Z"
         },
         {
-            "date": "2015-07-12T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 81,
-                    "value": 1,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 1,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 5,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 0,
-                    "value": 9,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 5,
+          "date": "2015-07-12T07:00:00.000Z"
         },
         {
-            "date": "2015-07-13T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 60,
-                    "value": 3,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 103,
-                    "value": 6,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 2,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 9,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 2,
+          "date": "2015-07-13T07:00:00.000Z"
         },
         {
-            "date": "2015-07-14T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 81,
-                    "value": 2,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 5,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 8,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 0,
-                    "value": 11,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 8,
+          "date": "2015-07-14T07:00:00.000Z"
         },
         {
-            "date": "2015-07-15T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 81,
-                    "value": 3,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 2,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 3,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 0,
-                    "value": 16,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 3,
+          "date": "2015-07-15T07:00:00.000Z"
         },
         {
-            "date": "2015-07-16T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 60,
-                    "value": 15,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 103,
-                    "value": 7,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 1,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 6,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 1,
+          "date": "2015-07-16T07:00:00.000Z"
         },
         {
-            "date": "2015-07-17T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 103,
-                    "value": 3,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 2,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 7,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 2,
+          "date": "2015-07-17T07:00:00.000Z"
         },
         {
-            "date": "2015-07-18T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 103,
-                    "value": 1,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 7,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 8,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 7,
+          "date": "2015-07-18T07:00:00.000Z"
         },
         {
-            "date": "2015-07-19T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 81,
-                    "value": 2,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 4,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 1,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 0,
-                    "value": 4,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 1,
+          "date": "2015-07-19T07:00:00.000Z"
         },
         {
-            "date": "2015-07-20T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 81,
-                    "value": 7,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 8,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 5,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 0,
-                    "value": 9,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 5,
+          "date": "2015-07-20T07:00:00.000Z"
         },
         {
-            "date": "2015-07-21T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 103,
-                    "value": 4,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 149,
-                    "value": 0,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 0,
-                    "value": 5,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 0,
+          "date": "2015-07-21T07:00:00.000Z"
         },
         {
-            "date": "2015-07-22T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 60,
-                    "value": 5,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 1,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 11,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 2,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 0,
-                    "value": 7,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 2,
+          "date": "2015-07-22T07:00:00.000Z"
         },
         {
-            "date": "2015-07-23T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 81,
-                    "value": 2,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 7,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 5,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 0,
-                    "value": 7,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 5,
+          "date": "2015-07-23T07:00:00.000Z"
         },
         {
-            "date": "2015-07-24T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 60,
-                    "value": 1,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 103,
-                    "value": 5,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 2,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 10,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 2,
+          "date": "2015-07-24T07:00:00.000Z"
         },
         {
-            "date": "2015-07-25T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 103,
-                    "value": 5,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 2,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 8,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 2,
+          "date": "2015-07-25T07:00:00.000Z"
         },
         {
-            "date": "2015-07-26T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 60,
-                    "value": 1,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 103,
-                    "value": 6,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 3,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 0,
-                    "value": 13,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 3,
+          "date": "2015-07-26T07:00:00.000Z"
         },
         {
-            "date": "2015-07-27T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 81,
-                    "value": 1,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 16,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 8,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 0,
-                    "value": 18,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 8,
+          "date": "2015-07-27T07:00:00.000Z"
         },
         {
-            "date": "2015-07-28T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 81,
-                    "value": 2,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 17,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 11,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 0,
-                    "value": 14,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 11,
+          "date": "2015-07-28T07:00:00.000Z"
         },
         {
-            "date": "2015-07-29T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 60,
-                    "value": 3,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 2,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 15,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 17,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 0,
-                    "value": 30,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 17,
+          "date": "2015-07-29T07:00:00.000Z"
         },
         {
-            "date": "2015-07-30T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 60,
-                    "value": 2,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 6,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 12,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 14,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 0,
-                    "value": 33,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 14,
+          "date": "2015-07-30T07:00:00.000Z"
         },
         {
-            "date": "2015-07-31T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 0,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 0,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 0,
-                    "value": 0,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 0,
+          "date": "2015-07-31T07:00:00.000Z"
         },
         {
-            "date": "2015-08-01T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 0,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 0,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 0,
-                    "value": 0,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 0,
+          "date": "2015-08-01T07:00:00.000Z"
         },
         {
-            "date": "2015-08-02T07:00:00.000Z",
-            "topics": [
-                {
-                    "name": 60,
-                    "value": 0,
-                    "topicName": "Los Angeles"
-                },
-                {
-                    "name": 81,
-                    "value": 0,
-                    "topicName": "Oakland"
-                },
-                {
-                    "name": 103,
-                    "value": 0,
-                    "topicName": "San Francisco"
-                },
-                {
-                    "name": 149,
-                    "value": 0,
-                    "topicName": "Unknown Location with a super hyper mega very very very long name."
-                },
-                {
-                    "name": 0,
-                    "value": 0,
-                    "topicName": "Other"
-                }
-            ]
+          "value": 0,
+          "date": "2015-08-02T07:00:00.000Z"
         }
-    ]
+      ],
+      "topicName": "Unknown Location with a super hyper mega very very very long name."
+    },
+    {
+      "topic": 60,
+      "dates": [
+        {
+          "value": 0,
+          "date": "2015-06-27T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-06-28T07:00:00.000Z"
+        },
+        {
+          "value": 18,
+          "date": "2015-06-29T07:00:00.000Z"
+        },
+        {
+          "value": 1,
+          "date": "2015-06-30T07:00:00.000Z"
+        },
+        {
+          "value": 6,
+          "date": "2015-07-01T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-02T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-03T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-04T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-05T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-06T07:00:00.000Z"
+        },
+        {
+          "value": 15,
+          "date": "2015-07-07T07:00:00.000Z"
+        },
+        {
+          "value": 32,
+          "date": "2015-07-08T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-09T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-10T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-11T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-12T07:00:00.000Z"
+        },
+        {
+          "value": 3,
+          "date": "2015-07-13T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-14T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-15T07:00:00.000Z"
+        },
+        {
+          "value": 15,
+          "date": "2015-07-16T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-17T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-18T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-19T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-20T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-21T07:00:00.000Z"
+        },
+        {
+          "value": 5,
+          "date": "2015-07-22T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-23T07:00:00.000Z"
+        },
+        {
+          "value": 1,
+          "date": "2015-07-24T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-25T07:00:00.000Z"
+        },
+        {
+          "value": 1,
+          "date": "2015-07-26T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-27T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-28T07:00:00.000Z"
+        },
+        {
+          "value": 3,
+          "date": "2015-07-29T07:00:00.000Z"
+        },
+        {
+          "value": 2,
+          "date": "2015-07-30T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-31T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-08-01T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-08-02T07:00:00.000Z"
+        }
+      ],
+      "topicName": "Los Angeles"
+    },
+    {
+      "topic": 81,
+      "dates": [
+        {
+          "value": 0,
+          "date": "2015-06-27T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-06-28T07:00:00.000Z"
+        },
+        {
+          "value": 1,
+          "date": "2015-06-29T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-06-30T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-01T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-02T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-03T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-04T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-05T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-06T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-07T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-08T07:00:00.000Z"
+        },
+        {
+          "value": 1,
+          "date": "2015-07-09T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-10T07:00:00.000Z"
+        },
+        {
+          "value": 1,
+          "date": "2015-07-11T07:00:00.000Z"
+        },
+        {
+          "value": 1,
+          "date": "2015-07-12T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-13T07:00:00.000Z"
+        },
+        {
+          "value": 2,
+          "date": "2015-07-14T07:00:00.000Z"
+        },
+        {
+          "value": 3,
+          "date": "2015-07-15T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-16T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-17T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-18T07:00:00.000Z"
+        },
+        {
+          "value": 2,
+          "date": "2015-07-19T07:00:00.000Z"
+        },
+        {
+          "value": 7,
+          "date": "2015-07-20T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-21T07:00:00.000Z"
+        },
+        {
+          "value": 1,
+          "date": "2015-07-22T07:00:00.000Z"
+        },
+        {
+          "value": 2,
+          "date": "2015-07-23T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-24T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-25T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-26T07:00:00.000Z"
+        },
+        {
+          "value": 1,
+          "date": "2015-07-27T07:00:00.000Z"
+        },
+        {
+          "value": 2,
+          "date": "2015-07-28T07:00:00.000Z"
+        },
+        {
+          "value": 2,
+          "date": "2015-07-29T07:00:00.000Z"
+        },
+        {
+          "value": 6,
+          "date": "2015-07-30T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-31T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-08-01T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-08-02T07:00:00.000Z"
+        }
+      ],
+      "topicName": "Oakland"
+    },
+    {
+      "topic": 0,
+      "topicName": "Other",
+      "dates": [
+        {
+          "value": 3,
+          "date": "2015-06-27T07:00:00.000Z"
+        },
+        {
+          "value": 9,
+          "date": "2015-06-28T07:00:00.000Z"
+        },
+        {
+          "value": 6,
+          "date": "2015-06-29T07:00:00.000Z"
+        },
+        {
+          "value": 11,
+          "date": "2015-06-30T07:00:00.000Z"
+        },
+        {
+          "value": 7,
+          "date": "2015-07-01T07:00:00.000Z"
+        },
+        {
+          "value": 10,
+          "date": "2015-07-02T07:00:00.000Z"
+        },
+        {
+          "value": 5,
+          "date": "2015-07-03T07:00:00.000Z"
+        },
+        {
+          "value": 10,
+          "date": "2015-07-04T07:00:00.000Z"
+        },
+        {
+          "value": 8,
+          "date": "2015-07-05T07:00:00.000Z"
+        },
+        {
+          "value": 10,
+          "date": "2015-07-06T07:00:00.000Z"
+        },
+        {
+          "value": 6,
+          "date": "2015-07-07T07:00:00.000Z"
+        },
+        {
+          "value": 14,
+          "date": "2015-07-08T07:00:00.000Z"
+        },
+        {
+          "value": 12,
+          "date": "2015-07-09T07:00:00.000Z"
+        },
+        {
+          "value": 17,
+          "date": "2015-07-10T07:00:00.000Z"
+        },
+        {
+          "value": 9,
+          "date": "2015-07-11T07:00:00.000Z"
+        },
+        {
+          "value": 9,
+          "date": "2015-07-12T07:00:00.000Z"
+        },
+        {
+          "value": 9,
+          "date": "2015-07-13T07:00:00.000Z"
+        },
+        {
+          "value": 11,
+          "date": "2015-07-14T07:00:00.000Z"
+        },
+        {
+          "value": 16,
+          "date": "2015-07-15T07:00:00.000Z"
+        },
+        {
+          "value": 6,
+          "date": "2015-07-16T07:00:00.000Z"
+        },
+        {
+          "value": 7,
+          "date": "2015-07-17T07:00:00.000Z"
+        },
+        {
+          "value": 8,
+          "date": "2015-07-18T07:00:00.000Z"
+        },
+        {
+          "value": 4,
+          "date": "2015-07-19T07:00:00.000Z"
+        },
+        {
+          "value": 9,
+          "date": "2015-07-20T07:00:00.000Z"
+        },
+        {
+          "value": 5,
+          "date": "2015-07-21T07:00:00.000Z"
+        },
+        {
+          "value": 7,
+          "date": "2015-07-22T07:00:00.000Z"
+        },
+        {
+          "value": 7,
+          "date": "2015-07-23T07:00:00.000Z"
+        },
+        {
+          "value": 10,
+          "date": "2015-07-24T07:00:00.000Z"
+        },
+        {
+          "value": 8,
+          "date": "2015-07-25T07:00:00.000Z"
+        },
+        {
+          "value": 13,
+          "date": "2015-07-26T07:00:00.000Z"
+        },
+        {
+          "value": 18,
+          "date": "2015-07-27T07:00:00.000Z"
+        },
+        {
+          "value": 14,
+          "date": "2015-07-28T07:00:00.000Z"
+        },
+        {
+          "value": 30,
+          "date": "2015-07-29T07:00:00.000Z"
+        },
+        {
+          "value": 33,
+          "date": "2015-07-30T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-07-31T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-08-01T07:00:00.000Z"
+        },
+        {
+          "value": 0,
+          "date": "2015-08-02T07:00:00.000Z"
+        }
+      ]
+    }
+  ],
+  "dataByDate": [
+    {
+      "date": "2015-06-27T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 103,
+          "value": 1,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 149,
+          "value": 0,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 0,
+          "value": 3,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-06-28T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 103,
+          "value": 1,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 2,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 9,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-06-29T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 60,
+          "value": 18,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 1,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 4,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 4,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 0,
+          "value": 6,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-06-30T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 60,
+          "value": 1,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 103,
+          "value": 2,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 3,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 11,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-01T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 60,
+          "value": 6,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 103,
+          "value": 3,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 1,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 7,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-02T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 103,
+          "value": 3,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 3,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 10,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-03T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 149,
+          "value": 3,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 0,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 0,
+          "value": 5,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-04T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 103,
+          "value": 3,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 1,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 10,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-05T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 103,
+          "value": 1,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 2,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 8,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-06T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 103,
+          "value": 2,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 2,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 10,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-07T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 60,
+          "value": 15,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 149,
+          "value": 4,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 0,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 0,
+          "value": 6,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-08T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 60,
+          "value": 32,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 103,
+          "value": 2,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 7,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 14,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-09T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 81,
+          "value": 1,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 1,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 1,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 0,
+          "value": 12,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-10T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 103,
+          "value": 4,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 5,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 17,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-11T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 81,
+          "value": 1,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 2,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 9,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 0,
+          "value": 9,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-12T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 81,
+          "value": 1,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 1,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 5,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 0,
+          "value": 9,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-13T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 60,
+          "value": 3,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 103,
+          "value": 6,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 2,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 9,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-14T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 81,
+          "value": 2,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 5,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 8,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 0,
+          "value": 11,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-15T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 81,
+          "value": 3,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 2,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 3,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 0,
+          "value": 16,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-16T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 60,
+          "value": 15,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 103,
+          "value": 7,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 1,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 6,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-17T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 103,
+          "value": 3,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 2,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 7,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-18T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 103,
+          "value": 1,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 7,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 8,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-19T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 81,
+          "value": 2,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 4,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 1,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 0,
+          "value": 4,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-20T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 81,
+          "value": 7,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 8,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 5,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 0,
+          "value": 9,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-21T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 103,
+          "value": 4,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 149,
+          "value": 0,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 0,
+          "value": 5,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-22T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 60,
+          "value": 5,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 1,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 11,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 2,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 0,
+          "value": 7,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-23T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 81,
+          "value": 2,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 7,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 5,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 0,
+          "value": 7,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-24T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 60,
+          "value": 1,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 103,
+          "value": 5,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 2,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 10,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-25T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 103,
+          "value": 5,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 2,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 8,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-26T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 60,
+          "value": 1,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 103,
+          "value": 6,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 3,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 0,
+          "value": 13,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-27T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 81,
+          "value": 1,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 16,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 8,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 0,
+          "value": 18,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-28T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 81,
+          "value": 2,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 17,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 11,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 0,
+          "value": 14,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-29T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 60,
+          "value": 3,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 2,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 15,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 17,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 0,
+          "value": 30,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-30T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 60,
+          "value": 2,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 6,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 12,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 14,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 0,
+          "value": 33,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-07-31T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 0,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 0,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 0,
+          "value": 0,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-08-01T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 0,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 0,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 0,
+          "value": 0,
+          "topicName": "Other"
+        }
+      ]
+    },
+    {
+      "date": "2015-08-02T07:00:00.000Z",
+      "topics": [
+        {
+          "name": 60,
+          "value": 0,
+          "topicName": "Los Angeles"
+        },
+        {
+          "name": 81,
+          "value": 0,
+          "topicName": "Oakland"
+        },
+        {
+          "name": 103,
+          "value": 0,
+          "topicName": "San Francisco"
+        },
+        {
+          "name": 149,
+          "value": 0,
+          "topicName": "Unknown Location with a super hyper mega very very very long name."
+        },
+        {
+          "name": 0,
+          "value": 0,
+          "topicName": "Other"
+        }
+      ]
+    }
+  ],
+  "data": [
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 1,
+      "date": "2015-06-27T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 1,
+      "date": "2015-06-28T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 4,
+      "date": "2015-06-29T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 2,
+      "date": "2015-06-30T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 3,
+      "date": "2015-07-01T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 3,
+      "date": "2015-07-02T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 0,
+      "date": "2015-07-03T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 3,
+      "date": "2015-07-04T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 1,
+      "date": "2015-07-05T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 2,
+      "date": "2015-07-06T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 0,
+      "date": "2015-07-07T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 2,
+      "date": "2015-07-08T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 1,
+      "date": "2015-07-09T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 4,
+      "date": "2015-07-10T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 2,
+      "date": "2015-07-11T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 1,
+      "date": "2015-07-12T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 6,
+      "date": "2015-07-13T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 5,
+      "date": "2015-07-14T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 2,
+      "date": "2015-07-15T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 7,
+      "date": "2015-07-16T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 3,
+      "date": "2015-07-17T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 1,
+      "date": "2015-07-18T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 4,
+      "date": "2015-07-19T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 8,
+      "date": "2015-07-20T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 4,
+      "date": "2015-07-21T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 11,
+      "date": "2015-07-22T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 7,
+      "date": "2015-07-23T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 5,
+      "date": "2015-07-24T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 5,
+      "date": "2015-07-25T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 6,
+      "date": "2015-07-26T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 16,
+      "date": "2015-07-27T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 17,
+      "date": "2015-07-28T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 15,
+      "date": "2015-07-29T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 12,
+      "date": "2015-07-30T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 0,
+      "date": "2015-07-31T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 0,
+      "date": "2015-08-01T07:00:00.000Z"
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "value": 0,
+      "date": "2015-08-02T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 0,
+      "date": "2015-06-27T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 2,
+      "date": "2015-06-28T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 4,
+      "date": "2015-06-29T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 3,
+      "date": "2015-06-30T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 1,
+      "date": "2015-07-01T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 3,
+      "date": "2015-07-02T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 3,
+      "date": "2015-07-03T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 1,
+      "date": "2015-07-04T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 2,
+      "date": "2015-07-05T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 2,
+      "date": "2015-07-06T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 4,
+      "date": "2015-07-07T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 7,
+      "date": "2015-07-08T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 1,
+      "date": "2015-07-09T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 5,
+      "date": "2015-07-10T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 9,
+      "date": "2015-07-11T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 5,
+      "date": "2015-07-12T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 2,
+      "date": "2015-07-13T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 8,
+      "date": "2015-07-14T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 3,
+      "date": "2015-07-15T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 1,
+      "date": "2015-07-16T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 2,
+      "date": "2015-07-17T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 7,
+      "date": "2015-07-18T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 1,
+      "date": "2015-07-19T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 5,
+      "date": "2015-07-20T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 0,
+      "date": "2015-07-21T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 2,
+      "date": "2015-07-22T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 5,
+      "date": "2015-07-23T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 2,
+      "date": "2015-07-24T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 2,
+      "date": "2015-07-25T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 3,
+      "date": "2015-07-26T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 8,
+      "date": "2015-07-27T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 11,
+      "date": "2015-07-28T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 17,
+      "date": "2015-07-29T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 14,
+      "date": "2015-07-30T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 0,
+      "date": "2015-07-31T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 0,
+      "date": "2015-08-01T07:00:00.000Z"
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location with a super hyper mega very very very long name.",
+      "value": 0,
+      "date": "2015-08-02T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-06-27T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-06-28T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 18,
+      "date": "2015-06-29T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 1,
+      "date": "2015-06-30T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 6,
+      "date": "2015-07-01T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-02T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-03T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-04T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-05T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-06T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 15,
+      "date": "2015-07-07T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 32,
+      "date": "2015-07-08T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-09T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-10T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-11T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-12T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 3,
+      "date": "2015-07-13T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-14T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-15T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 15,
+      "date": "2015-07-16T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-17T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-18T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-19T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-20T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-21T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 5,
+      "date": "2015-07-22T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-23T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 1,
+      "date": "2015-07-24T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-25T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 1,
+      "date": "2015-07-26T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-27T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-28T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 3,
+      "date": "2015-07-29T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 2,
+      "date": "2015-07-30T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-07-31T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-08-01T07:00:00.000Z"
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "value": 0,
+      "date": "2015-08-02T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-06-27T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-06-28T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 1,
+      "date": "2015-06-29T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-06-30T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-01T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-02T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-03T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-04T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-05T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-06T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-07T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-08T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 1,
+      "date": "2015-07-09T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-10T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 1,
+      "date": "2015-07-11T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 1,
+      "date": "2015-07-12T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-13T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 2,
+      "date": "2015-07-14T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 3,
+      "date": "2015-07-15T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-16T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-17T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-18T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 2,
+      "date": "2015-07-19T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 7,
+      "date": "2015-07-20T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-21T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 1,
+      "date": "2015-07-22T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 2,
+      "date": "2015-07-23T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-24T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-25T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-26T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 1,
+      "date": "2015-07-27T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 2,
+      "date": "2015-07-28T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 2,
+      "date": "2015-07-29T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 6,
+      "date": "2015-07-30T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-07-31T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-08-01T07:00:00.000Z"
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "value": 0,
+      "date": "2015-08-02T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 3,
+      "date": "2015-06-27T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 9,
+      "date": "2015-06-28T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 6,
+      "date": "2015-06-29T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 11,
+      "date": "2015-06-30T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 7,
+      "date": "2015-07-01T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 10,
+      "date": "2015-07-02T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 5,
+      "date": "2015-07-03T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 10,
+      "date": "2015-07-04T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 8,
+      "date": "2015-07-05T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 10,
+      "date": "2015-07-06T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 6,
+      "date": "2015-07-07T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 14,
+      "date": "2015-07-08T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 12,
+      "date": "2015-07-09T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 17,
+      "date": "2015-07-10T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 9,
+      "date": "2015-07-11T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 9,
+      "date": "2015-07-12T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 9,
+      "date": "2015-07-13T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 11,
+      "date": "2015-07-14T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 16,
+      "date": "2015-07-15T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 6,
+      "date": "2015-07-16T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 7,
+      "date": "2015-07-17T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 8,
+      "date": "2015-07-18T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 4,
+      "date": "2015-07-19T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 9,
+      "date": "2015-07-20T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 5,
+      "date": "2015-07-21T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 7,
+      "date": "2015-07-22T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 7,
+      "date": "2015-07-23T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 10,
+      "date": "2015-07-24T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 8,
+      "date": "2015-07-25T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 13,
+      "date": "2015-07-26T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 18,
+      "date": "2015-07-27T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 14,
+      "date": "2015-07-28T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 30,
+      "date": "2015-07-29T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 33,
+      "date": "2015-07-30T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 0,
+      "date": "2015-07-31T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 0,
+      "date": "2015-08-01T07:00:00.000Z"
+    },
+    {
+      "name": 0,
+      "topicName": "Other",
+      "value": 0,
+      "date": "2015-08-02T07:00:00.000Z"
+    }
+  ]
 }
