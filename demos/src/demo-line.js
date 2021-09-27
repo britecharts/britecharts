@@ -103,11 +103,7 @@ function createLineChart(optionalColorSchema, optionalData) {
         chartTooltip
             // In order to change the date range on the tooltip title, uncomment this line
             // .dateFormat(chartTooltip.axisTimeCombinations.HOUR .title('Quantity Sold')
-            .topicsOrder(
-                dataset.dataByTopic.map(function (topic) {
-                    return topic.topic;
-                })
-            );
+            .topicsOrder([...new Set(dataset.data.map(({ name }) => name))]);
 
         // Note that if the viewport width is less than the tooltipThreshold value,
         // this container won't exist, and the tooltip won't show up
