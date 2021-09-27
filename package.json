@@ -25,6 +25,7 @@
     ],
     "scripts": {
         "build": "webpack --env=production",
+        "build:check": "es-check es5 \"./dist/bundled/britecharts.min.js\" \"./dist/umd/bar.min.js\"",
         "check": "yarn run lint:styles && yarn run lint:js && yarn test:once",
         "clean": "yarn cache clean && rimraf node_modules",
         "demos:compile": "webpack --progress --colors --env=demos",
@@ -319,6 +320,7 @@
         "concurrently": "^4.1.0",
         "css-loader": "3.0.0",
         "d3": "^5.16.0",
+        "es-check": "^6.0.0",
         "eslint": "^7.13.0",
         "eslint-loader": "^2.1.2",
         "grunt": "1.0.4",
