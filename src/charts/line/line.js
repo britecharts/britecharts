@@ -627,6 +627,11 @@ export default function module() {
 
                 return accum;
             }, []);
+
+            // eslint-disable-next-line no-console
+            console.debug(
+                'Lookout! You are using an old data shape (dataByTopic), please use the new flatter version as this one will be deprecated in version 4'
+            );
         }
 
         // Nest data by date or number and format

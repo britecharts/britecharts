@@ -10,7 +10,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/britecharts@2.10.0/dist/bundled/britecharts.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js" type="text/javascript" /></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js" type="text/javascript"></script>
 </head>
 
 <body>
@@ -36,226 +36,318 @@
 
         // Create Dataset with proper shape
         const lineData = {
-            "dataByTopic": [
+            "data": [
                 {
+                    "value": 0,
                     "topic": -1,
                     "topicName": "Vivid",
-                    "dates": [
-                        {
-                            "value": 0,
-                            "date": "2016-08-01T00:00:00-07:00"
-                        },
-                        {
-                            "value": 3,
-                            "date": "2016-08-02T00:00:00-07:00"
-                        },
-                        {
-                            "value": 1,
-                            "date": "2016-08-03T00:00:00-07:00"
-                        },
-                        {
-                            "value": 3,
-                            "date": "2016-08-04T00:00:00-07:00"
-                        },
-                        {
-                            "value": 3,
-                            "date": "2016-08-05T00:00:00-07:00"
-                        },
-                        {
-                            "value": 0,
-                            "date": "2016-08-06T00:00:00-07:00"
-                        },
-                        {
-                            "value": 1,
-                            "date": "2016-08-07T00:00:00-07:00"
-                        },
-                        {
-                            "value": 1,
-                            "date": "2016-08-08T00:00:00-07:00"
-                        },
-                        {
-                            "value": 0,
-                            "date": "2016-08-09T00:00:00-07:00"
-                        },
-                        {
-                            "value": 3,
-                            "date": "2016-08-10T00:00:00-07:00"
-                        },
-                        {
-                            "value": 4,
-                            "date": "2016-08-11T00:00:00-07:00"
-                        },
-                        {
-                            "value": 4,
-                            "date": "2016-08-12T00:00:00-07:00"
-                        },
-                        {
-                            "value": 2,
-                            "date": "2016-08-13T00:00:00-07:00"
-                        },
-                        {
-                            "value": 3,
-                            "date": "2016-08-14T00:00:00-07:00"
-                        },
-                        {
-                            "value": 0,
-                            "date": "2016-08-15T00:00:00-07:00"
-                        },
-                        {
-                            "value": 1,
-                            "date": "2016-08-16T00:00:00-07:00"
-                        },
-                        {
-                            "value": 0,
-                            "date": "2016-08-17T00:00:00-07:00"
-                        },
-                        {
-                            "value": 2,
-                            "date": "2016-08-18T00:00:00-07:00"
-                        },
-                        {
-                            "value": 5,
-                            "date": "2016-08-19T00:00:00-07:00"
-                        },
-                        {
-                            "value": 1,
-                            "date": "2016-08-20T00:00:00-07:00"
-                        },
-                        {
-                            "value": 2,
-                            "date": "2016-08-21T00:00:00-07:00"
-                        },
-                        {
-                            "value": 8,
-                            "date": "2016-08-22T00:00:00-07:00"
-                        },
-                        {
-                            "value": 4,
-                            "date": "2016-08-23T00:00:00-07:00"
-                        },
-                        {
-                            "value": 3,
-                            "date": "2016-08-24T00:00:00-07:00"
-                        },
-                        {
-                            "value": 2,
-                            "date": "2016-08-25T00:00:00-07:00"
-                        },
-                        {
-                            "value": 5,
-                            "date": "2016-08-26T00:00:00-07:00"
-                        }
-                    ]
+                    "date": "2016-08-01T00:00:00-07:00"
                 },
                 {
+                    "value": 3,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-02T00:00:00-07:00"
+                },
+                {
+                    "value": 1,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-03T00:00:00-07:00"
+                },
+                {
+                    "value": 3,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-04T00:00:00-07:00"
+                },
+                {
+                    "value": 3,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-05T00:00:00-07:00"
+                },
+                {
+                    "value": 0,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-06T00:00:00-07:00"
+                },
+                {
+                    "value": 1,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-07T00:00:00-07:00"
+                },
+                {
+                    "value": 1,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-08T00:00:00-07:00"
+                },
+                {
+                    "value": 0,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-09T00:00:00-07:00"
+                },
+                {
+                    "value": 3,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-10T00:00:00-07:00"
+                },
+                {
+                    "value": 4,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-11T00:00:00-07:00"
+                },
+                {
+                    "value": 4,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-12T00:00:00-07:00"
+                },
+                {
+                    "value": 2,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-13T00:00:00-07:00"
+                },
+                {
+                    "value": 3,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-14T00:00:00-07:00"
+                },
+                {
+                    "value": 0,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-15T00:00:00-07:00"
+                },
+                {
+                    "value": 1,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-16T00:00:00-07:00"
+                },
+                {
+                    "value": 0,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-17T00:00:00-07:00"
+                },
+                {
+                    "value": 2,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-18T00:00:00-07:00"
+                },
+                {
+                    "value": 5,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-19T00:00:00-07:00"
+                },
+                {
+                    "value": 1,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-20T00:00:00-07:00"
+                },
+                {
+                    "value": 2,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-21T00:00:00-07:00"
+                },
+                {
+                    "value": 8,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-22T00:00:00-07:00"
+                },
+                {
+                    "value": 4,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-23T00:00:00-07:00"
+                },
+                {
+                    "value": 3,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-24T00:00:00-07:00"
+                },
+                {
+                    "value": 2,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-25T00:00:00-07:00"
+                },
+                {
+                    "value": 5,
+                    "topic": -1,
+                    "topicName": "Vivid",
+                    "date": "2016-08-26T00:00:00-07:00"
+                },
+                {
+                    "value": 3,
                     "topic": 2,
                     "topicName": "Radiant",
-                    "dates": [
-                        {
-                            "value": 3,
-                            "date": "2016-08-01T00:00:00-07:00"
-                        },
-                        {
-                            "value": 2,
-                            "date": "2016-08-02T00:00:00-07:00"
-                        },
-                        {
-                            "value": 2,
-                            "date": "2016-08-03T00:00:00-07:00"
-                        },
-                        {
-                            "value": 1,
-                            "date": "2016-08-04T00:00:00-07:00"
-                        },
-                        {
-                            "value": 0,
-                            "date": "2016-08-05T00:00:00-07:00"
-                        },
-                        {
-                            "value": 2,
-                            "date": "2016-08-06T00:00:00-07:00"
-                        },
-                        {
-                            "value": 3,
-                            "date": "2016-08-07T00:00:00-07:00"
-                        },
-                        {
-                            "value": 4,
-                            "date": "2016-08-08T00:00:00-07:00"
-                        },
-                        {
-                            "value": 3,
-                            "date": "2016-08-09T00:00:00-07:00"
-                        },
-                        {
-                            "value": 4,
-                            "date": "2016-08-10T00:00:00-07:00"
-                        },
-                        {
-                            "value": 2,
-                            "date": "2016-08-11T00:00:00-07:00"
-                        },
-                        {
-                            "value": 1,
-                            "date": "2016-08-12T00:00:00-07:00"
-                        },
-                        {
-                            "value": 3,
-                            "date": "2016-08-13T00:00:00-07:00"
-                        },
-                        {
-                            "value": 1,
-                            "date": "2016-08-14T00:00:00-07:00"
-                        },
-                        {
-                            "value": 2,
-                            "date": "2016-08-15T00:00:00-07:00"
-                        },
-                        {
-                            "value": 0,
-                            "date": "2016-08-16T00:00:00-07:00"
-                        },
-                        {
-                            "value": 1,
-                            "date": "2016-08-17T00:00:00-07:00"
-                        },
-                        {
-                            "value": 3,
-                            "date": "2016-08-18T00:00:00-07:00"
-                        },
-                        {
-                            "value": 3,
-                            "date": "2016-08-19T00:00:00-07:00"
-                        },
-                        {
-                            "value": 2,
-                            "date": "2016-08-20T00:00:00-07:00"
-                        },
-                        {
-                            "value": 3,
-                            "date": "2016-08-21T00:00:00-07:00"
-                        },
-                        {
-                            "value": 1,
-                            "date": "2016-08-22T00:00:00-07:00"
-                        },
-                        {
-                            "value": 2,
-                            "date": "2016-08-23T00:00:00-07:00"
-                        },
-                        {
-                            "value": 3,
-                            "date": "2016-08-24T00:00:00-07:00"
-                        },
-                        {
-                            "value": 4,
-                            "date": "2016-08-25T00:00:00-07:00"
-                        },
-                        {
-                            "value": 6,
-                            "date": "2016-08-26T00:00:00-07:00"
-                        }
-                    ]
+                    "date": "2016-08-01T00:00:00-07:00"
+                },
+                {
+                    "value": 2,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-02T00:00:00-07:00"
+                },
+                {
+                    "value": 2,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-03T00:00:00-07:00"
+                },
+                {
+                    "value": 1,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-04T00:00:00-07:00"
+                },
+                {
+                    "value": 0,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-05T00:00:00-07:00"
+                },
+                {
+                    "value": 2,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-06T00:00:00-07:00"
+                },
+                {
+                    "value": 3,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-07T00:00:00-07:00"
+                },
+                {
+                    "value": 4,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-08T00:00:00-07:00"
+                },
+                {
+                    "value": 3,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-09T00:00:00-07:00"
+                },
+                {
+                    "value": 4,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-10T00:00:00-07:00"
+                },
+                {
+                    "value": 2,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-11T00:00:00-07:00"
+                },
+                {
+                    "value": 1,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-12T00:00:00-07:00"
+                },
+                {
+                    "value": 3,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-13T00:00:00-07:00"
+                },
+                {
+                    "value": 1,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-14T00:00:00-07:00"
+                },
+                {
+                    "value": 2,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-15T00:00:00-07:00"
+                },
+                {
+                    "value": 0,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-16T00:00:00-07:00"
+                },
+                {
+                    "value": 1,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-17T00:00:00-07:00"
+                },
+                {
+                    "value": 3,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-18T00:00:00-07:00"
+                },
+                {
+                    "value": 3,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-19T00:00:00-07:00"
+                },
+                {
+                    "value": 2,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-20T00:00:00-07:00"
+                },
+                {
+                    "value": 3,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-21T00:00:00-07:00"
+                },
+                {
+                    "value": 1,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-22T00:00:00-07:00"
+                },
+                {
+                    "value": 2,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-23T00:00:00-07:00"
+                },
+                {
+                    "value": 3,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-24T00:00:00-07:00"
+                },
+                {
+                    "value": 4,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-25T00:00:00-07:00"
+                },
+                {
+                    "value": 6,
+                    "topic": 2,
+                    "topicName": "Radiant",
+                    "date": "2016-08-26T00:00:00-07:00"
                 }
             ]
         };
@@ -276,13 +368,14 @@
         tooltipContainer.call(chartTooltip);
 
         // Get the legend data
-        const legendData = lineData.dataByTopic.map(
+        const topicInfo = lineData.data.map(
             ({ topicName, topic }) => ({
                 id: topic,
                 name: topicName,
                 quantity: 0
             })
         );
+        const legendData = [... new Set(topicInfo)];
 
         // Configure and draw Legend
         chartLegend
@@ -293,16 +386,6 @@
         legendContainer.datum(legendData).call(chartLegend);
 
         // Get the data format for the brush
-        const getDateAndValueReducer = (accum, topic) => {
-            topic.dates.forEach((date) => {
-                accum.push({
-                    date: date.date,
-                    value: date.value
-                });
-            });
-
-            return accum;
-        };
         const consolidateDatesReducer = (accum, d) => {
             let found;
 
@@ -321,8 +404,7 @@
 
             return [d, ...accum];
         };
-        const brushData = lineData.dataByTopic
-            .reduce(getDateAndValueReducer, [])
+        const brushData = lineData.data
             .reduce(consolidateDatesReducer, []);
         const isInRange = (startDate, endDate, {date}) => new Date(date) >= startDate && new Date(date) <= endDate;
         const filterData = (brushStart, brushEnd) => {
@@ -331,11 +413,7 @@
 
             // data.dataByDate = data.dataByDate.filter(isInRange.bind(null, brushStart, brushEnd));
 
-            data.dataByTopic = data.dataByTopic.map((topic) => {
-                topic.dates = topic.dates.filter(isInRange.bind(null, brushStart, brushEnd));
-
-                return topic;
-            });
+            data.data = data.data.filter(isInRange.bind(null, brushStart, brushEnd));
 
             return data;
         };
