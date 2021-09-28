@@ -1,620 +1,892 @@
 {
-    "dataByTopic": [
-        {
-            "topic": 103,
-            "dates": [
-                {
-                    "date": "2015-06-27T16:00:00-08:00",
-                    "value": 1
-                },
-                {
-                    "date": "2015-06-28T16:00:00-08:00",
-                    "value": 1
-                },
-                {
-                    "date": "2015-06-29T16:00:00-08:00",
-                    "value": 4
-                },
-                {
-                    "date": "2015-06-30T16:00:00-08:00",
-                    "value": 2
-                },
-                {
-                    "date": "1-Jul-15",
-                    "value": 3
-                },
-                {
-                    "date": "2-Jul-15",
-                    "value": 3
-                },
-                {
-                    "date": "3-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "4-Jul-15",
-                    "value": 3
-                },
-                {
-                    "date": "5-Jul-15",
-                    "value": 1
-                },
-                {
-                    "date": "6-Jul-15",
-                    "value": 2
-                },
-                {
-                    "date": "7-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "8-Jul-15",
-                    "value": 2
-                },
-                {
-                    "date": "9-Jul-15",
-                    "value": 1
-                },
-                {
-                    "date": "2015-07-10T16:00:00-08:00",
-                    "value": 4
-                },
-                {
-                    "date": "2015-07-11T16:00:00-08:00",
-                    "value": 2
-                },
-                {
-                    "date": "2015-07-12T16:00:00-08:00",
-                    "value": 1
-                },
-                {
-                    "date": "2015-07-13T16:00:00-08:00",
-                    "value": 6
-                },
-                {
-                    "date": "2015-07-14T16:00:00-08:00",
-                    "value": 5
-                },
-                {
-                    "date": "2015-07-15T16:00:00-08:00",
-                    "value": 2
-                },
-                {
-                    "date": "2015-07-16T16:00:00-08:00",
-                    "value": 7
-                },
-                {
-                    "date": "2015-07-17T16:00:00-08:00",
-                    "value": 3
-                },
-                {
-                    "date": "2015-07-18T16:00:00-08:00",
-                    "value": 1
-                },
-                {
-                    "date": "2015-07-19T16:00:00-08:00",
-                    "value": 4
-                },
-                {
-                    "date": "2015-07-20T16:00:00-08:00",
-                    "value": 8
-                },
-                {
-                    "date": "2015-07-21T16:00:00-08:00",
-                    "value": 4
-                },
-                {
-                    "date": "2015-07-22T16:00:00-08:00",
-                    "value": 11
-                },
-                {
-                    "date": "2015-07-23T16:00:00-08:00",
-                    "value": 7
-                },
-                {
-                    "date": "2015-07-24T16:00:00-08:00",
-                    "value": 5
-                },
-                {
-                    "date": "2015-07-25T16:00:00-08:00",
-                    "value": 5
-                },
-                {
-                    "date": "2015-07-26T16:00:00-08:00",
-                    "value": 6
-                },
-                {
-                    "date": "2015-07-27T16:00:00-08:00",
-                    "value": 16
-                },
-                {
-                    "date": "2015-07-28T16:00:00-08:00",
-                    "value": 17
-                },
-                {
-                    "date": "2015-07-29T16:00:00-08:00",
-                    "value": 15
-                },
-                {
-                    "date": "2015-07-30T16:00:00-08:00",
-                    "value": 12
-                },
-                {
-                    "date": "2015-07-31T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "1-Aug-15",
-                    "value": 0
-                },
-                {
-                    "date": "2-Aug-15",
-                    "value": 0
-                }
-            ],
-            "topicName": "San Francisco"
-        },
-        {
-            "topic": 149,
-            "dates": [
-                {
-                    "date": "2015-06-27T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-06-28T16:00:00-08:00",
-                    "value": 2
-                },
-                {
-                    "date": "2015-06-29T16:00:00-08:00",
-                    "value": 4
-                },
-                {
-                    "date": "2015-06-30T16:00:00-08:00",
-                    "value": 3
-                },
-                {
-                    "date": "1-Jul-15",
-                    "value": 1
-                },
-                {
-                    "date": "2-Jul-15",
-                    "value": 3
-                },
-                {
-                    "date": "3-Jul-15",
-                    "value": 3
-                },
-                {
-                    "date": "4-Jul-15",
-                    "value": 1
-                },
-                {
-                    "date": "5-Jul-15",
-                    "value": 2
-                },
-                {
-                    "date": "6-Jul-15",
-                    "value": 2
-                },
-                {
-                    "date": "7-Jul-15",
-                    "value": 4
-                },
-                {
-                    "date": "8-Jul-15",
-                    "value": 7
-                },
-                {
-                    "date": "9-Jul-15",
-                    "value": 1
-                },
-                {
-                    "date": "2015-07-10T16:00:00-08:00",
-                    "value": 5
-                },
-                {
-                    "date": "2015-07-11T16:00:00-08:00",
-                    "value": 9
-                },
-                {
-                    "date": "2015-07-12T16:00:00-08:00",
-                    "value": 5
-                },
-                {
-                    "date": "2015-07-13T16:00:00-08:00",
-                    "value": 2
-                },
-                {
-                    "date": "2015-07-14T16:00:00-08:00",
-                    "value": 8
-                },
-                {
-                    "date": "2015-07-15T16:00:00-08:00",
-                    "value": 3
-                },
-                {
-                    "date": "2015-07-16T16:00:00-08:00",
-                    "value": 1
-                },
-                {
-                    "date": "2015-07-17T16:00:00-08:00",
-                    "value": 2
-                },
-                {
-                    "date": "2015-07-18T16:00:00-08:00",
-                    "value": 7
-                },
-                {
-                    "date": "2015-07-19T16:00:00-08:00",
-                    "value": 1
-                },
-                {
-                    "date": "2015-07-20T16:00:00-08:00",
-                    "value": 5
-                },
-                {
-                    "date": "2015-07-21T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-22T16:00:00-08:00",
-                    "value": 2
-                },
-                {
-                    "date": "2015-07-23T16:00:00-08:00",
-                    "value": 5
-                },
-                {
-                    "date": "2015-07-24T16:00:00-08:00",
-                    "value": 2
-                },
-                {
-                    "date": "2015-07-25T16:00:00-08:00",
-                    "value": 2
-                },
-                {
-                    "date": "2015-07-26T16:00:00-08:00",
-                    "value": 3
-                },
-                {
-                    "date": "2015-07-27T16:00:00-08:00",
-                    "value": 8
-                },
-                {
-                    "date": "2015-07-28T16:00:00-08:00",
-                    "value": 11
-                },
-                {
-                    "date": "2015-07-29T16:00:00-08:00",
-                    "value": 17
-                },
-                {
-                    "date": "2015-07-30T16:00:00-08:00",
-                    "value": 14
-                },
-                {
-                    "date": "2015-07-31T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "1-Aug-15",
-                    "value": 0
-                },
-                {
-                    "date": "2-Aug-15",
-                    "value": 0
-                }
-            ],
-            "topicName": "Unknown Location"
-        },
-        {
-            "topic": 60,
-            "dates": [
-                {
-                    "date": "2015-06-27T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-06-28T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-06-29T16:00:00-08:00",
-                    "value": 18
-                },
-                {
-                    "date": "2015-06-30T16:00:00-08:00",
-                    "value": 1
-                },
-                {
-                    "date": "1-Jul-15",
-                    "value": 6
-                },
-                {
-                    "date": "2-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "3-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "4-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "5-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "6-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "7-Jul-15",
-                    "value": 15
-                },
-                {
-                    "date": "8-Jul-15",
-                    "value": 32
-                },
-                {
-                    "date": "9-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-10T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-11T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-12T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-13T16:00:00-08:00",
-                    "value": 3
-                },
-                {
-                    "date": "2015-07-14T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-15T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-16T16:00:00-08:00",
-                    "value": 15
-                },
-                {
-                    "date": "2015-07-17T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-18T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-19T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-20T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-21T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-22T16:00:00-08:00",
-                    "value": 5
-                },
-                {
-                    "date": "2015-07-23T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-24T16:00:00-08:00",
-                    "value": 1
-                },
-                {
-                    "date": "2015-07-25T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-26T16:00:00-08:00",
-                    "value": 1
-                },
-                {
-                    "date": "2015-07-27T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-28T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-29T16:00:00-08:00",
-                    "value": 3
-                },
-                {
-                    "date": "2015-07-30T16:00:00-08:00",
-                    "value": 2
-                },
-                {
-                    "date": "2015-07-31T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "1-Aug-15",
-                    "value": 0
-                },
-                {
-                    "date": "2-Aug-15",
-                    "value": 0
-                }
-            ],
-            "topicName": "Los Angeles"
-        },
-        {
-            "topic": 81,
-            "dates": [
-                {
-                    "date": "2015-06-27T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-06-28T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-06-29T16:00:00-08:00",
-                    "value": 1
-                },
-                {
-                    "date": "2015-06-30T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "1-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "2-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "3-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "4-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "5-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "6-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "7-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "8-Jul-15",
-                    "value": 0
-                },
-                {
-                    "date": "9-Jul-15",
-                    "value": 1
-                },
-                {
-                    "date": "2015-07-10T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-11T16:00:00-08:00",
-                    "value": 1
-                },
-                {
-                    "date": "2015-07-12T16:00:00-08:00",
-                    "value": 1
-                },
-                {
-                    "date": "2015-07-13T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-14T16:00:00-08:00",
-                    "value": 2
-                },
-                {
-                    "date": "2015-07-15T16:00:00-08:00",
-                    "value": 3
-                },
-                {
-                    "date": "2015-07-16T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-17T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-18T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-19T16:00:00-08:00",
-                    "value": 2
-                },
-                {
-                    "date": "2015-07-20T16:00:00-08:00",
-                    "value": 7
-                },
-                {
-                    "date": "2015-07-21T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-22T16:00:00-08:00",
-                    "value": 1
-                },
-                {
-                    "date": "2015-07-23T16:00:00-08:00",
-                    "value": 2
-                },
-                {
-                    "date": "2015-07-24T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-25T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-26T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "2015-07-27T16:00:00-08:00",
-                    "value": 1
-                },
-                {
-                    "date": "2015-07-28T16:00:00-08:00",
-                    "value": 2
-                },
-                {
-                    "date": "2015-07-29T16:00:00-08:00",
-                    "value": 2
-                },
-                {
-                    "date": "2015-07-30T16:00:00-08:00",
-                    "value": 6
-                },
-                {
-                    "date": "2015-07-31T16:00:00-08:00",
-                    "value": 0
-                },
-                {
-                    "date": "1-Aug-15",
-                    "value": 0
-                },
-                {
-                    "date": "2-Aug-15",
-                    "value": 0
-                }
-            ],
-            "topicName": "Oakland"
-        }
-    ]
+  "data": [
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-06-27T16:00:00-08:00",
+      "value": 1
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-06-28T16:00:00-08:00",
+      "value": 1
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-06-29T16:00:00-08:00",
+      "value": 4
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-06-30T16:00:00-08:00",
+      "value": 2
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "1-Jul-15",
+      "value": 3
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2-Jul-15",
+      "value": 3
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "3-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "4-Jul-15",
+      "value": 3
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "5-Jul-15",
+      "value": 1
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "6-Jul-15",
+      "value": 2
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "7-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "8-Jul-15",
+      "value": 2
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "9-Jul-15",
+      "value": 1
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-10T16:00:00-08:00",
+      "value": 4
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-11T16:00:00-08:00",
+      "value": 2
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-12T16:00:00-08:00",
+      "value": 1
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-13T16:00:00-08:00",
+      "value": 6
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-14T16:00:00-08:00",
+      "value": 5
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-15T16:00:00-08:00",
+      "value": 2
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-16T16:00:00-08:00",
+      "value": 7
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-17T16:00:00-08:00",
+      "value": 3
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-18T16:00:00-08:00",
+      "value": 1
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-19T16:00:00-08:00",
+      "value": 4
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-20T16:00:00-08:00",
+      "value": 8
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-21T16:00:00-08:00",
+      "value": 4
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-22T16:00:00-08:00",
+      "value": 11
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-23T16:00:00-08:00",
+      "value": 7
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-24T16:00:00-08:00",
+      "value": 5
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-25T16:00:00-08:00",
+      "value": 5
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-26T16:00:00-08:00",
+      "value": 6
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-27T16:00:00-08:00",
+      "value": 16
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-28T16:00:00-08:00",
+      "value": 17
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-29T16:00:00-08:00",
+      "value": 15
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-30T16:00:00-08:00",
+      "value": 12
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2015-07-31T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "1-Aug-15",
+      "value": 0
+    },
+    {
+      "name": 103,
+      "topicName": "San Francisco",
+      "date": "2-Aug-15",
+      "value": 0
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-06-27T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-06-28T16:00:00-08:00",
+      "value": 2
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-06-29T16:00:00-08:00",
+      "value": 4
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-06-30T16:00:00-08:00",
+      "value": 3
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "1-Jul-15",
+      "value": 1
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2-Jul-15",
+      "value": 3
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "3-Jul-15",
+      "value": 3
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "4-Jul-15",
+      "value": 1
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "5-Jul-15",
+      "value": 2
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "6-Jul-15",
+      "value": 2
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "7-Jul-15",
+      "value": 4
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "8-Jul-15",
+      "value": 7
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "9-Jul-15",
+      "value": 1
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-10T16:00:00-08:00",
+      "value": 5
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-11T16:00:00-08:00",
+      "value": 9
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-12T16:00:00-08:00",
+      "value": 5
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-13T16:00:00-08:00",
+      "value": 2
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-14T16:00:00-08:00",
+      "value": 8
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-15T16:00:00-08:00",
+      "value": 3
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-16T16:00:00-08:00",
+      "value": 1
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-17T16:00:00-08:00",
+      "value": 2
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-18T16:00:00-08:00",
+      "value": 7
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-19T16:00:00-08:00",
+      "value": 1
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-20T16:00:00-08:00",
+      "value": 5
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-21T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-22T16:00:00-08:00",
+      "value": 2
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-23T16:00:00-08:00",
+      "value": 5
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-24T16:00:00-08:00",
+      "value": 2
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-25T16:00:00-08:00",
+      "value": 2
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-26T16:00:00-08:00",
+      "value": 3
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-27T16:00:00-08:00",
+      "value": 8
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-28T16:00:00-08:00",
+      "value": 11
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-29T16:00:00-08:00",
+      "value": 17
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-30T16:00:00-08:00",
+      "value": 14
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2015-07-31T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "1-Aug-15",
+      "value": 0
+    },
+    {
+      "name": 149,
+      "topicName": "Unknown Location",
+      "date": "2-Aug-15",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-06-27T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-06-28T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-06-29T16:00:00-08:00",
+      "value": 18
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-06-30T16:00:00-08:00",
+      "value": 1
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "1-Jul-15",
+      "value": 6
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "3-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "4-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "5-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "6-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "7-Jul-15",
+      "value": 15
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "8-Jul-15",
+      "value": 32
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "9-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-10T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-11T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-12T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-13T16:00:00-08:00",
+      "value": 3
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-14T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-15T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-16T16:00:00-08:00",
+      "value": 15
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-17T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-18T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-19T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-20T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-21T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-22T16:00:00-08:00",
+      "value": 5
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-23T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-24T16:00:00-08:00",
+      "value": 1
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-25T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-26T16:00:00-08:00",
+      "value": 1
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-27T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-28T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-29T16:00:00-08:00",
+      "value": 3
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-30T16:00:00-08:00",
+      "value": 2
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2015-07-31T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "1-Aug-15",
+      "value": 0
+    },
+    {
+      "name": 60,
+      "topicName": "Los Angeles",
+      "date": "2-Aug-15",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-06-27T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-06-28T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-06-29T16:00:00-08:00",
+      "value": 1
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-06-30T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "1-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "3-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "4-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "5-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "6-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "7-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "8-Jul-15",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "9-Jul-15",
+      "value": 1
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-10T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-11T16:00:00-08:00",
+      "value": 1
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-12T16:00:00-08:00",
+      "value": 1
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-13T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-14T16:00:00-08:00",
+      "value": 2
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-15T16:00:00-08:00",
+      "value": 3
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-16T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-17T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-18T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-19T16:00:00-08:00",
+      "value": 2
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-20T16:00:00-08:00",
+      "value": 7
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-21T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-22T16:00:00-08:00",
+      "value": 1
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-23T16:00:00-08:00",
+      "value": 2
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-24T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-25T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-26T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-27T16:00:00-08:00",
+      "value": 1
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-28T16:00:00-08:00",
+      "value": 2
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-29T16:00:00-08:00",
+      "value": 2
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-30T16:00:00-08:00",
+      "value": 6
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2015-07-31T16:00:00-08:00",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "1-Aug-15",
+      "value": 0
+    },
+    {
+      "name": 81,
+      "topicName": "Oakland",
+      "date": "2-Aug-15",
+      "value": 0
+    }
+  ]
 }

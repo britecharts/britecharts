@@ -15,22 +15,20 @@ const lineChart = britecharts.line();
 The shape of our data changed as well. We need to check the [line chart data schema][lineChartDataSchema] for this chart. In our case, it looks like this:
 ```js
 const lineData = {
-    "dataByTopic": [
+    "data": [
         {
+            "value": 0,
             "topic": -1,
             "topicName": "Vivid",
-            "dates": [
-                {
-                    "value": 0,
-                    "date": "2016-08-01T00:00:00-07:00"
-                },
-                {
-                    "value": 3,
-                    "date": "2016-08-02T00:00:00-07:00"
-                },
-                ...
-            ]
-        }
+            "date": "2016-08-01T00:00:00-07:00"
+        },
+        {
+            "value": 3,
+            "topic": 2,
+            "topicName": "Radiant",
+            "date": "2016-08-01T00:00:00-07:00"
+        },
+        ...
     ]
 };
 ```
@@ -115,13 +113,14 @@ The legend is a component that depends on the data and in a specific data shape.
 ```
 As we want to show an inline legend, which doesn't show the quantity, we only need to pass an array with our topic names, an id, and a random quantity. Here is how we create that data:
 ```js
-const legendData = lineData.dataByTopic.map(
-    ({topicName, topic}) => ({
-            id: topic,
-            name: topicName,
-            quantity: 0
+const topicInfo = lineData.data.map(
+    ({ topicName, topic }) => ({
+        id: topic,
+        name: topicName,
+        quantity: 0
     })
 );
+const legendData = [... new Set(topicInfo)];
 ```
 And we are ready to configure and draw the legend:
 ```js
@@ -168,8 +167,7 @@ Now, as we did before, we are going to check the [Brush Chart API][brushChartAPI
 ```
 So, in order to get this data shape, we will need to do some modifications to our line chart data:
 ```js
-const brushData = lineData.dataByTopic
-    .reduce(getDateAndValueReducer, [])
+const brushData = lineData.data
     .reduce(consolidateDatesReducer, []);
 ```
 In the first reducer function, we obtain the entries by date, keeping only date and values. On the second one, we remove duplicated dates and sum up the values to have an aggregate of them. You can check the details of these functions in the [final code][composingDatavizTutorialHTML].
@@ -213,15 +211,10 @@ Here is the filtering logic for your reference:
 ```js
 const isInRange = (startDate, endDate, {date}) => new Date(date) >= startDate && new Date(date) <= endDate;
 const filterData = (brushStart, brushEnd) => {
-    // Copy the original data
+    // Copy the data
     let data = JSON.parse(JSON.stringify(lineData));
 
-    // Filter the data that is within the given range
-    data.dataByTopic = data.dataByTopic.map((topic) => {
-        topic.dates = topic.dates.filter(isInRange.bind(null, brushStart, brushEnd));
-
-        return topic;
-    });
+    data.data = data.data.filter(isInRange.bind(null, brushStart, brushEnd));
 
     return data;
 };

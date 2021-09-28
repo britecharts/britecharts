@@ -180,29 +180,6 @@ describe('Line Chart', () => {
 
                         expect(actual).toEqual(expected);
                     });
-
-                    it('0-axis is NOT highlited with an additional class', () => {
-                        let values = dataset.dataByTopic[0].dates.map(
-                            (it) => it.value
-                        );
-                        let minValue = Math.min(...values);
-
-                        expect(minValue).toEqual(0);
-                        let indexOf0 = -minValue;
-
-                        let horizontalGridLines = d3
-                            .selectAll('.horizontal-grid-line')
-                            .filter((_, i) => i === indexOf0);
-                        let classes = horizontalGridLines
-                            .attr('class')
-                            .split(' ');
-
-                        expect(
-                            classes.includes(
-                                'horizontal-grid-line--highlighted'
-                            )
-                        ).toEqual(false);
-                    });
                 });
 
                 describe('when grid is vertical', function () {
@@ -364,7 +341,7 @@ describe('Line Chart', () => {
             });
 
             it('should render a line for each data topic', () => {
-                const expected = dataset.dataByTopic.length;
+                const expected = 5;
                 const actual = containerFixture.selectAll('.line').size();
 
                 expect(actual).toEqual(expected);
@@ -543,10 +520,8 @@ describe('Line Chart', () => {
                         );
                     });
 
-                    it('The lowest Y-axis value is negative', () => {
-                        let values = dataset.dataByTopic[0].dates.map(
-                            (it) => it.value
-                        );
+                    it('the lowest Y-axis value is negative', () => {
+                        let values = dataset.data.map((d) => d.value);
                         let minValue = Math.min(...values);
                         let minValueText = '' + minValue;
 
@@ -556,10 +531,8 @@ describe('Line Chart', () => {
                         expect(text.text()).toEqual(minValueText);
                     });
 
-                    it('0-axis is highlited with an additional class', () => {
-                        let values = dataset.dataByTopic[0].dates.map(
-                            (it) => it.value
-                        );
+                    it('0-axis is highlighted with an additional class', () => {
+                        let values = dataset.data.map((d) => d.value);
                         let minValue = Math.min(...values);
                         let indexOf0 = -minValue;
 
@@ -599,18 +572,22 @@ describe('Line Chart', () => {
                         );
                     });
 
-                    it('The highest Y-axis value is negative', () => {
+                    it('the highest Y-axis value is negative', () => {
                         let yAxis = d3.selectAll('.y-axis-group');
                         let text = yAxis.selectAll('g.tick:nth-child(8)');
+                        const expected = '-1';
+                        const actual = text.text();
 
-                        expect(text.text()).toEqual('-1');
+                        expect(actual).toEqual(expected);
                     });
 
-                    it('The lowest Y-axis value is negative', () => {
+                    it('the lowest Y-axis value is negative', () => {
                         let yAxis = d3.selectAll('.y-axis-group');
                         let text = yAxis.selectAll('g.tick');
+                        const expected = '-4';
+                        const actual = text.text();
 
-                        expect(text.text()).toEqual('-4');
+                        expect(actual).toEqual(expected);
                     });
                 });
             });
