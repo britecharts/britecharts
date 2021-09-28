@@ -112,11 +112,16 @@ function createLoadingState() {
         barContainer = select('.js-loading-container'),
         containerWidth = barContainer.node()
             ? barContainer.node().getBoundingClientRect().width
-            : false,
-        dataset = null;
+            : false;
 
     if (containerWidth) {
-        barContainer.html(barChart.loadingState());
+        barChart
+            .margin({ left: 0 })
+            .width(containerWidth)
+            .height(300)
+            .isLoading(true);
+
+        barContainer.datum([]).call(barChart);
     }
 }
 
