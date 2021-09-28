@@ -90,7 +90,7 @@ export default function module() {
         },
         width = 960,
         height = 500,
-        loadingState = barChartLoadingMarkup,
+        isLoading = false,
         data,
         dataZeroed,
         chartWidth,
@@ -192,13 +192,17 @@ export default function module() {
             buildScales();
             buildAxis(localeFormatter);
             buildSVG(this);
-            buildGradient();
-            drawGridLines();
-            drawAxis();
-            drawBars();
+            if (!isLoading) {
+                buildGradient();
+                drawGridLines();
+                drawAxis();
+                drawBars();
 
-            if (enableLabels) {
-                drawLabels(localeFormatter);
+                if (enableLabels) {
+                    drawLabels(localeFormatter);
+                }
+            } else {
+                drawLoadingState();
             }
         });
     }
@@ -730,6 +734,16 @@ export default function module() {
     }
 
     /**
+     * Draws the loading state
+     * @private
+     */
+    function drawLoadingState() {
+        const loadingStateMarkup = svg
+            .select('.container-group')
+            .html(barChartLoadingMarkup);
+    }
+
+    /**
      * Draws a vertical line to extend y-axis till the edges
      * @return {void}
      */
@@ -1124,15 +1138,15 @@ export default function module() {
 
     /**
      * Gets or Sets the loading state of the chart
-     * @param  {string} markup Desired markup to show when null data
-     * @return {loadingState | module} Current loading state markup or Chart module to chain calls
+     * @param  {boolean} flag       Desired value for the loading state
+     * @return {boolean | module}   Current loading state flag or Chart module to chain calls
      * @public
      */
-    exports.loadingState = function (_markup) {
+    exports.isLoading = function (_flag) {
         if (!arguments.length) {
-            return loadingState;
+            return isLoading;
         }
-        loadingState = _markup;
+        isLoading = _flag;
 
         return this;
     };
