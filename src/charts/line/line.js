@@ -859,7 +859,10 @@ export default function module() {
      * @return void
      */
     function drawCustomLines() {
-        svg.select('.custom-lines-group').selectAll('line').remove();
+        svg.select('.custom-lines-group').selectAll('.custom-line').remove();
+        svg.select('.custom-lines-group')
+            .selectAll('.custom-line-annotation')
+            .remove();
 
         let yValues = customLines.map((line) => line.y);
 
