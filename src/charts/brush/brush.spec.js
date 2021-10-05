@@ -231,6 +231,21 @@ describe('Brush Chart', () => {
                 expect(actual).toEqual(expected);
             });
         });
+
+        describe('when isLoading is true', () => {
+            it('should render the loading state', () => {
+                const expected = 1;
+
+                brushChart.isLoading(true);
+                containerFixture.datum(dataset).call(brushChart);
+
+                const actual = containerFixture
+                    .select('.brush-load-state')
+                    .size();
+
+                expect(actual).toEqual(expected);
+            });
+        });
     });
 
     describe('API', () => {
@@ -318,13 +333,13 @@ describe('Brush Chart', () => {
             expect(actual).toEqual(expected);
         });
 
-        it('should provide loadingState getter and setter', () => {
-            let previous = brushChart.loadingState(),
-                expected = 'test',
+        it('should provide isLoading getter and setter', () => {
+            let previous = brushChart.isLoading(),
+                expected = true,
                 actual;
 
-            brushChart.loadingState(expected);
-            actual = brushChart.loadingState();
+            brushChart.isLoading(expected);
+            actual = brushChart.isLoading();
 
             expect(previous).not.toBe(actual);
             expect(actual).toBe(expected);

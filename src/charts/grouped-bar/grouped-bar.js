@@ -13,7 +13,7 @@ import 'd3-transition';
 import { exportChart } from '../helpers/export';
 import { dataKeyDeprecationMessage } from '../helpers/project';
 import colorHelper from '../helpers/color';
-import { bar } from '../helpers/load';
+import { barLoadingMarkup } from '../helpers/load';
 import { setDefaultLocale } from '../helpers/locale';
 import { motion } from '../helpers/constants';
 
@@ -72,7 +72,7 @@ export default function module() {
         },
         width = 960,
         height = 500,
-        loadingState = bar,
+        loadingState = barLoadingMarkup,
         xScale,
         xScale2,
         xAxis,

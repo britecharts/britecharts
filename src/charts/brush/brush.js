@@ -17,7 +17,7 @@ import {
     curveMap,
 } from '../helpers/constants';
 import { uniqueId } from '../helpers/number';
-import { line } from '../helpers/load';
+import { brushLoadingMarkup } from '../helpers/load';
 
 /**
  * @typedef BrushChartData
@@ -77,7 +77,7 @@ export default function module() {
         },
         width = 960,
         height = 500,
-        loadingState = line,
+        isLoading = false,
         data,
         dataZeroed,
         svg,
@@ -129,9 +129,15 @@ export default function module() {
             chartHeight = height - margin.top - margin.bottom;
             data = cleanData(cloneData(_data));
 
+            buildSVG(this);
+            if (isLoading) {
+                drawLoadingState();
+
+                return;
+            }
             buildScales();
             buildAxis();
-            buildSVG(this);
+            cleanLoadingState();
             buildGradient();
             buildBrush();
             drawArea();
@@ -194,10 +200,12 @@ export default function module() {
      * @private
      */
     function buildContainerGroups() {
-        let container = svg
+        const container = svg
             .append('g')
             .classed('container-group', true)
             .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+        svg.append('g').classed('loading-state-group', true);
 
         container.append('g').classed('chart-group', true);
         container
@@ -291,6 +299,16 @@ export default function module() {
         });
 
         return cleanData;
+    }
+
+    /**
+     * Cleans the loading state
+     * @private
+     */
+    function cleanLoadingState() {
+        const loadingStateMarkup = svg
+            .select('.loading-state-group svg')
+            .remove();
     }
 
     /**
@@ -432,6 +450,16 @@ export default function module() {
         handle = chartBrush
             .selectAll('.handle.brush-rect')
             .style('fill', handleFillColor);
+    }
+
+    /**
+     * Draws the loading state
+     * @private
+     */
+    function drawLoadingState() {
+        const loadingStateMarkup = svg
+            .select('.loading-state-group')
+            .html(brushLoadingMarkup);
     }
 
     /**
@@ -650,6 +678,21 @@ export default function module() {
     };
 
     /**
+     * Gets or Sets the loading state of the chart
+     * @param  {boolean} flag       Desired value for the loading state
+     * @return {boolean | module}   Current loading state flag or Chart module to chain calls
+     * @public
+     */
+    exports.isLoading = function (_flag) {
+        if (!arguments.length) {
+            return isLoading;
+        }
+        isLoading = _flag;
+
+        return this;
+    };
+
+    /**
      * Gets or Sets the isLocked property of the brush, enforcing the initial brush size set with dateRange
      * @param  {Boolean} _x = false     Whether the brush window is locked, requires a value set with '.dateRange` when true
      * @return {Boolean | module}       Current isLocked flag or Chart module
@@ -660,21 +703,6 @@ export default function module() {
             return isLocked;
         }
         isLocked = _x;
-
-        return this;
-    };
-
-    /**
-     * Gets or Sets the loading state of the chart
-     * @param  {string} markup              Desired markup to show when null data
-     * @return { loadingState | module}     Current loading state markup or Chart module to chain calls
-     * @public
-     */
-    exports.loadingState = function (_markup) {
-        if (!arguments.length) {
-            return loadingState;
-        }
-        loadingState = _markup;
 
         return this;
     };

@@ -11,7 +11,7 @@ import 'd3-transition';
 import { wrapTextWithEllipses } from '../helpers/text';
 import { exportChart } from '../helpers/export';
 import colorHelper from '../helpers/color';
-import { bar as barChartLoadingMarkup } from '../helpers/load';
+import { barLoadingMarkup } from '../helpers/load';
 import { uniqueId } from '../helpers/number';
 import { setDefaultLocale } from '../helpers/locale';
 import { dataKeyDeprecationMessage } from '../helpers/project';
@@ -754,7 +754,7 @@ export default function module() {
     function drawLoadingState() {
         const loadingStateMarkup = svg
             .select('.loading-state-group')
-            .html(barChartLoadingMarkup);
+            .html(barLoadingMarkup);
     }
 
     /**
