@@ -189,20 +189,22 @@ export default function module() {
             chartHeight = height - margin.top - margin.bottom;
             ({ data, dataZeroed } = sortData(cleanData(_data)));
 
+            buildSVG(this);
+            if (isLoading) {
+                drawLoadingState();
+
+                return;
+            }
             buildScales();
             buildAxis(localeFormatter);
-            buildSVG(this);
-            if (!isLoading) {
-                buildGradient();
-                drawGridLines();
-                drawAxis();
-                drawBars();
+            cleanLoadingState();
+            buildGradient();
+            drawGridLines();
+            drawAxis();
+            drawBars();
 
-                if (enableLabels) {
-                    drawLabels(localeFormatter);
-                }
-            } else {
-                drawLoadingState();
+            if (enableLabels) {
+                drawLabels(localeFormatter);
             }
         });
     }
@@ -239,6 +241,8 @@ export default function module() {
                     margin.top
                 })`
             );
+
+        svg.append('g').classed('loading-state-group', true);
 
         container.append('g').classed('grid-lines-group', true);
         container.append('g').classed('chart-group', true);
@@ -420,6 +424,16 @@ export default function module() {
      */
     function wrapText(text, containerWidth) {
         wrapTextWithEllipses(text, containerWidth, 0, yAxisLineWrapLimit);
+    }
+
+    /**
+     * Cleans the loading state
+     * @private
+     */
+    function cleanLoadingState() {
+        const loadingStateMarkup = svg
+            .select('.loading-state-group svg')
+            .remove();
     }
 
     /**
@@ -739,7 +753,7 @@ export default function module() {
      */
     function drawLoadingState() {
         const loadingStateMarkup = svg
-            .select('.container-group')
+            .select('.loading-state-group')
             .html(barChartLoadingMarkup);
     }
 

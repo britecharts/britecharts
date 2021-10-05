@@ -107,22 +107,25 @@ function createBarChartWithTooltip() {
     }
 }
 
-function createLoadingState() {
-    let barChart = bar(),
+function createLoadingState(isLoading, instance) {
+    let barChart = instance ? instance : bar(),
         barContainer = select('.js-loading-container'),
         containerWidth = barContainer.node()
             ? barContainer.node().getBoundingClientRect().width
             : false;
+    const dataset = aTestDataSet().withLettersFrequency().build();
 
     if (containerWidth) {
         barChart
-            .margin({ left: 0 })
             .width(containerWidth)
             .height(300)
-            .isLoading(true);
+            .isAnimated(true)
+            .isLoading(isLoading);
 
-        barContainer.datum([]).call(barChart);
+        barContainer.datum(dataset).call(barChart);
     }
+
+    return barChart;
 }
 
 // Show charts if container available
@@ -130,14 +133,14 @@ if (select('.js-bar-chart-tooltip-container').node()) {
     createBarChartWithTooltip();
     createHorizontalBarChart();
     createSimpleBarChart();
-    createLoadingState();
+    createLoadingState(true);
 
     let redrawCharts = function () {
         selectAll('.bar-chart').remove();
         createBarChartWithTooltip();
         createHorizontalBarChart();
         createSimpleBarChart();
-        createLoadingState();
+        createLoadingState(false);
     };
 
     // Redraw charts on window resize

@@ -14,7 +14,7 @@ export const bar = `
         <svg class="load-state bar-load-state" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 711 325">
             ${linearGradient}
             <g fill="none" fill-rule="evenodd">
-                <g transform="translate(0 29)">
+                <g transform="translate(-15 29)">
                     <g stroke="#EFF2F5" stroke-dasharray="4 4">
                         <path d="M.400592911 200.302477L710.674315 200.302477M.400592884 131.172748L710.674315 131.172748M.324410282 64.2071321L710.621499 64.2071321M.291004517.563888874L709.82431.563888889"/>
                     </g>
