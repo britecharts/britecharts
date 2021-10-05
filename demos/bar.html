@@ -99,14 +99,20 @@ barContainer.datum(dataset).call(barChart);
             <div class="col-md-6">
                 <article>
                     <a name="loading-state"></a>
-                    <h2 class="tutorial__heading">Loading State</h2>
+                    <h2 class="tutorial__heading">Loading State (until viewport resize)</h2>
                     <div class="js-loading-container"></div>
                 </article>
             </div>
             <div class="col-md-6 sidebar">
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
-barContainer.html(barChart.loadingState())
+barChart
+    .width(containerWidth)
+    .height(300)
+    .isAnimated(true)
+    .isLoading(true);
+    
+barContainer.datum(dataset).call(barChart);
                 </code></pre>
 
                 <h4>Demo Code</h4>
