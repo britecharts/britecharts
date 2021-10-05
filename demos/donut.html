@@ -126,14 +126,23 @@ donutContainer.datum(datasetWithThreeItems).call(donutChart);
             <div class="col-md-6">
                 <article>
                     <a name="loading-state"></a>
-                    <h2 class="tutorial__heading">Loading State</h2>
+                    <h2 class="tutorial__heading">Loading State (until viewport resize)</h2>
                     <div class="js-loading-container"></div>
                 </article>
             </div>
             <div class="col-md-6 sidebar">
                 <h3>The code</h3>
                 <pre><code class="language-javascript">
-donutContainer.html(donutChart.loadingState())
+donutChart
+    .isAnimated(true)
+    .highlightSliceById(2)
+    .width(containerWidth)
+    .height(containerWidth)
+    .externalRadius(containerWidth / 2.5)
+    .internalRadius(containerWidth / 5)
+    .isLoading(isLoading);
+    
+donutContainer.datum(dataset).call(donutChart);
                 </code></pre>
 
                 <h4>Demo Code</h4>

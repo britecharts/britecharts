@@ -379,6 +379,21 @@ donutDataSets.forEach((datasetName) => {
                     expect(actualLabel).toBe(expectedLabel);
                 });
             });
+
+            describe('when isLoading is true', () => {
+                it('should render the loading state', () => {
+                    const expected = 1;
+
+                    donutChart.isLoading(true);
+                    containerFixture.datum(dataset).call(donutChart);
+
+                    const actual = containerFixture
+                        .select('.donut-load-state')
+                        .size();
+
+                    expect(actual).toEqual(expected);
+                });
+            });
         });
 
         describe('API', () => {
@@ -519,13 +534,13 @@ donutDataSets.forEach((datasetName) => {
                 expect(newAnimation).toBe(testAnimation);
             });
 
-            it('should provide loadingState getter and setter', () => {
-                let previous = donutChart.loadingState(),
-                    expected = 'test',
+            it('should provide isLoading getter and setter', () => {
+                let previous = donutChart.isLoading(),
+                    expected = true,
                     actual;
 
-                donutChart.loadingState(expected);
-                actual = donutChart.loadingState();
+                donutChart.isLoading(expected);
+                actual = donutChart.isLoading();
 
                 expect(previous).not.toBe(actual);
                 expect(actual).toBe(expected);

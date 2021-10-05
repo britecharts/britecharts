@@ -431,9 +431,7 @@ export default function module() {
      * @private
      */
     function cleanLoadingState() {
-        const loadingStateMarkup = svg
-            .select('.loading-state-group svg')
-            .remove();
+        svg.select('.loading-state-group svg').remove();
     }
 
     /**
@@ -752,9 +750,7 @@ export default function module() {
      * @private
      */
     function drawLoadingState() {
-        const loadingStateMarkup = svg
-            .select('.loading-state-group')
-            .html(barLoadingMarkup);
+        svg.select('.loading-state-group').html(barLoadingMarkup);
     }
 
     /**

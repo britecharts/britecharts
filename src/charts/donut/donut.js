@@ -11,7 +11,7 @@ import * as textHelper from '../helpers/text';
 import colorHelper from '../helpers/color';
 import { calculatePercent } from '../helpers/number';
 import { emptyDonutData } from '../helpers/constants';
-import { donut } from '../helpers/load';
+import { donutLoadingMarkup } from '../helpers/load';
 import { motion } from '../helpers/constants';
 
 /**
@@ -68,7 +68,7 @@ export default function module() {
         },
         width = 300,
         height = 300,
-        loadingState = donut,
+        isLoading = false,
         ease = easeCubicInOut,
         pieDrawingTransitionDuration = motion.duration,
         pieHoverTransitionDuration = 150,
@@ -140,10 +140,16 @@ export default function module() {
             chartHeight = height - margin.top - margin.bottom;
             data = cleanData(_data);
 
+            buildSVG(this);
+            if (isLoading) {
+                drawLoadingState();
+
+                return;
+            }
+            cleanLoadingState();
             buildLayout();
             buildColorScale();
             buildShape();
-            buildSVG(this);
             drawSlices();
             initTooltip();
 
@@ -183,6 +189,8 @@ export default function module() {
      */
     function buildContainerGroups() {
         let container = svg.append('g').classed('container-group', true);
+
+        svg.append('g').classed('loading-state-group', true);
 
         container.append('g').classed('chart-group', true);
         container.append('g').classed('legend-group', true);
@@ -285,6 +293,14 @@ export default function module() {
     }
 
     /**
+     * Cleans the loading state
+     * @private
+     */
+    function cleanLoadingState() {
+        svg.select('.loading-state-group svg').remove();
+    }
+
+    /**
      * Draw an empty slice
      * @private
      */
@@ -332,6 +348,14 @@ export default function module() {
 
             svg.select('.donut-text').call(wrapText, legendWidth);
         }
+    }
+
+    /**
+     * Draws the loading state
+     * @private
+     */
+    function drawLoadingState() {
+        svg.select('.loading-state-group').html(donutLoadingMarkup);
     }
 
     /**
@@ -850,15 +874,15 @@ export default function module() {
 
     /**
      * Gets or Sets the loading state of the chart
-     * @param  {string} markup              Desired markup to show when null data
-     * @return { loadingState | module}     Current loading state markup or Chart module to chain calls
+     * @param  {boolean} flag       Desired value for the loading state
+     * @return {boolean | module}   Current loading state flag or Chart module to chain calls
      * @public
      */
-    exports.loadingState = function (_markup) {
+    exports.isLoading = function (_flag) {
         if (!arguments.length) {
-            return loadingState;
+            return isLoading;
         }
-        loadingState = _markup;
+        isLoading = _flag;
 
         return this;
     };

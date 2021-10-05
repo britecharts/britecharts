@@ -39,7 +39,7 @@ export const barLoadingMarkup = `
         </svg>
     `;
 
-export const donut = `
+export const donutLoadingMarkup = `
         <svg class="load-state donut-load-state" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 376 331">
             ${linearGradient}
             <g fill="none" fill-rule="evenodd">
@@ -125,7 +125,7 @@ export const brushLoadingMarkup = `
 export default {
     linearGradient,
     barLoadingMarkup,
-    donut,
+    donutLoadingMarkup,
     line,
     brushLoadingMarkup,
     stackedArea,
